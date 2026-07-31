@@ -146,6 +146,30 @@ export interface CheckpointLogger {
 
 const noopLogger: CheckpointLogger = { info() {} };
 
+/**
+ * Live-count source for recalibrating drift-prone global counters.
+ *
+ * Shape-compatible with the L0/L1 count methods of `IMemoryStore`, so any
+ * store instance can be passed directly. Both methods are expected to be
+ * fault-tolerant (store implementations return 0 rather than throw when
+ * degraded); `recalibrate()` additionally falls back to JSONL line counts.
+ */
+export interface CheckpointRecalibrateSource {
+  /** Live count of L0 conversation records. */
+  countL0(): number | Promise<number>;
+  /** Live count of L1 memory records. */
+  countL1(): number | Promise<number>;
+}
+
+const L0_JSONL_DIR = "conversations";
+const L1_JSONL_DIR = "records";
+
+/** Coerce an arbitrary count into a safe non-negative integer. */
+function clampNonNegativeCount(n: number): number {
+  if (!Number.isFinite(n)) return 0;
+  return Math.max(0, Math.floor(n));
+}
+
 // ============================
 // Per-file async lock
 // ============================
@@ -179,10 +203,12 @@ async function withFileLock<T>(filePath: string, fn: () => Promise<T>): Promise<
 }
 
 export class CheckpointManager {
+  private dataDir: string;
   private filePath: string;
   private logger: CheckpointLogger;
 
   constructor(dataDir: string, logger?: CheckpointLogger) {
+    this.dataDir = dataDir;
     this.filePath = path.join(dataDir, ".metadata", "recall_checkpoint.json");
     this.logger = logger ?? noopLogger;
   }
@@ -296,6 +322,105 @@ export class CheckpointManager {
   // ============================
   // Public API — mutating (all serialized via file lock)
   // ============================
+
+  // ============================
+  // Counter recalibration
+  // ============================
+
+  /**
+   * Reconcile drift-prone global counters with the actual stored data.
+   *
+   * `total_memories_extracted` and `l0_conversations_count` are increment-only:
+   * nothing ever decrements them when records are removed (memory-cleaner runs,
+   * manual JSONL pruning), so after any cleanup they permanently overstate
+   * reality. Since `memories_since_last_persona` feeds L2/L3 persona thresholds,
+   * the drift can make persona generation trigger prematurely or never.
+   *
+   * This method recounts against the authoritative source and clamps:
+   * - live store counts (`countL0`/`countL1`) when a source is available;
+   * - JSONL shard line counts as a degraded-mode fallback when it is not.
+   *
+   * `memories_since_last_persona` is clamped down to the actual L1 total so a
+   * phantom high count cannot fire persona generation early. Non-fatal: if a
+   * level cannot be counted, its counter is left untouched.
+   *
+   * @param source Optional live-count source (any `IMemoryStore` satisfies it).
+   *               Omit to count JSONL shard lines only.
+   */
+  async recalibrate(source?: CheckpointRecalibrateSource): Promise<void> {
+    const l0 = await this.safeCount(source ? () => source.countL0() : undefined, L0_JSONL_DIR);
+    const l1 = await this.safeCount(source ? () => source.countL1() : undefined, L1_JSONL_DIR);
+
+    if (l0 === undefined && l1 === undefined) {
+      this.logger.warn?.("[checkpoint] recalibrate: no counts available, counters left untouched");
+      return;
+    }
+
+    await this.mutate((cp) => {
+      if (l0 !== undefined) {
+        cp.l0_conversations_count = clampNonNegativeCount(l0);
+      }
+      if (l1 !== undefined) {
+        const actualL1 = clampNonNegativeCount(l1);
+        cp.total_memories_extracted = actualL1;
+        if (cp.memories_since_last_persona > actualL1) {
+          cp.memories_since_last_persona = actualL1;
+        }
+      }
+    });
+
+    this.logger.info(
+      `[checkpoint] recalibrate: l0_conversations_count=${l0 ?? "(kept)"}, ` +
+      `total_memories_extracted=${l1 ?? "(kept)"}`,
+    );
+  }
+
+  /**
+   * Count records for a level, preferring the live store source and falling
+   * back to JSONL shard line counts. Returns `undefined` when neither works.
+   */
+  private async safeCount(
+    storeCount: (() => number | Promise<number>) | undefined,
+    dirName: string,
+  ): Promise<number | undefined> {
+    if (storeCount) {
+      try {
+        const n = await storeCount();
+        if (Number.isFinite(n)) return n;
+      } catch {
+        // store unavailable — fall through to JSONL line count
+      }
+    }
+    return this.countJsonlLines(dirName);
+  }
+
+  /**
+   * Count non-empty JSONL lines across all shard files under `<dataDir>/<dirName>`.
+   * Returns 0 when the directory does not exist (no records).
+   */
+  private async countJsonlLines(dirName: string): Promise<number | undefined> {
+    const dir = path.join(this.dataDir, dirName);
+    let entries;
+    try {
+      entries = await fs.readdir(dir, { withFileTypes: true });
+    } catch {
+      return 0;
+    }
+
+    let total = 0;
+    for (const entry of entries) {
+      if (!entry.isFile() || !entry.name.endsWith(".jsonl")) continue;
+      try {
+        const raw = await fs.readFile(path.join(dir, entry.name), "utf-8");
+        for (const line of raw.split("\n")) {
+          if (line.trim().length > 0) total += 1;
+        }
+      } catch {
+        // skip unreadable shard
+      }
+    }
+    return total;
+  }
 
   // ============================
   // Persona methods (L3)
