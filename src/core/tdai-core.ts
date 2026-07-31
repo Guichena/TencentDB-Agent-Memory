@@ -518,7 +518,7 @@ export class TdaiCore {
         // restoring pipeline state so persona thresholds resume from accurate
         // numbers even after manual pruning (non-fatal).
         try {
-          await checkpoint.recalibrate(this.vectorStore);
+          await checkpoint.recalibrateFromStorage(this.vectorStore, "scheduler-startup");
         } catch (err) {
           this.logger.warn(
             `${TAG} Checkpoint recalibration failed (non-fatal): ${err instanceof Error ? err.message : String(err)}`,
