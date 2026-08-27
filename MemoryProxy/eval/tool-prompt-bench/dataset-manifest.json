@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0",
+  "files": {
+    "cases/dev.jsonl": {
+      "sha256": "d7f6e2c89f77b0219d04a092fa58921c0ca52c43a8c9a1d5deca9e2ef5aaf933",
+      "bytes": 86486
+    },
+    "cases/test.jsonl": {
+      "sha256": "5d9753e5f05e5b48c1556d2995100dd3732b8bf5ec2a5f3c81a9e02ee5a0f036",
+      "bytes": 56699
+    },
+    "cases/smoke-case-ids.json": {
+      "sha256": "8fde2ad276b1eb8b2d79ba7735570065d1fab26b7fae9356bff913ba0b91bf05",
+      "bytes": 575
+    },
+    "fixtures/fixtures.jsonl": {
+      "sha256": "984ad644940f8eddd3fa7edaaf2b59e9c67a1e34b8cf87e9d5edf542630c7e9d",
+      "bytes": 142319
+    },
+    "sources/manifest.json": {
+      "sha256": "c28085e7c7bec7e775e08543797bb399bd8c3a26f2b7334a5aed30cf15787271",
+      "bytes": 2277
+    }
+  }
+}
