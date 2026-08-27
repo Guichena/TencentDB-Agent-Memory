@@ -12,11 +12,18 @@ export {
   type ToolPromptProfileDefinition,
 } from "./profiles.js";
 export {
+  PROTOCOL_COMPACTION_INVENTORY,
+} from "./protocol-compact.js";
+export {
   buildCapabilitySignature,
   getRuntimeToolContracts,
   RUNTIME_TOOL_CONTRACTS,
 } from "./runtime-contract.js";
-export { coordinateToolPromptSurface, type ToolPromptSurfacePlan } from "./surface-coordinator.js";
+export {
+  coordinateToolPromptSurface,
+  coordinateToolPromptSurfaceFromCapabilitySignature,
+  type ToolPromptSurfacePlan,
+} from "./surface-coordinator.js";
 export {
   TOOL_PROMPT_FAMILIES,
   TOOL_PROMPT_PROFILES,
