@@ -30,11 +30,14 @@ import {
   getRuntimeToolContracts,
   getToolPromptProfileLineage,
   lintDuplicateSemanticUnits,
+  lintSelectionPolicy,
   parseToolPromptProfile,
+  SELECTION_POLICY_INVENTORY,
   SEMANTIC_UNIT_INVENTORY,
   toolPromptCacheIdentity,
   TOOL_PROMPT_PROFILES,
   type CompiledToolPromptProfile,
+  type SelectionSurfaceBundle,
 } from "../injection/tool-prompt/index.js";
 
 const CAPABILITY_SIGNATURE = buildCapabilitySignature({
@@ -244,7 +247,7 @@ async function renderProviderParityPrompt(
   });
 }
 
-describe("tool prompt compiler C00-C03", () => {
+describe("tool prompt compiler C00-C04", () => {
   it("keeps legacy as the default and rejects unknown profile names", () => {
     expect(DEFAULT_CONFIG.injection.toolPromptProfile).toBe("legacy");
     expect(parseToolPromptProfile("capability-pruned")).toBe("capability-pruned");
@@ -262,11 +265,12 @@ describe("tool prompt compiler C00-C03", () => {
     ]);
   });
 
-  it("keeps completed ancestors frozen and isolates the C01, C02, and C03 renderer boundaries", () => {
+  it("keeps completed ancestors frozen and isolates the C01 through C04 renderer boundaries", () => {
     const blocks = renderProductionFamilyBlocks(true);
     const correctedByFamily = new Map<string, string>();
     const protocolByFamily = new Map<string, string>();
     const semanticByFamily = new Map<string, string>();
+    const selectionByFamily = new Map<string, string>();
 
     for (const profile of COMPILED_PROFILES) {
       for (const [family, content] of Object.entries(blocks) as Array<
@@ -308,8 +312,12 @@ describe("tool prompt compiler C00-C03", () => {
             expect(compiled.content).not.toBe(protocolByFamily.get(family));
           }
           expect(compiled.units).toHaveLength(family === "memory" ? 3 : 1);
+        } else if (profile === "selection-calibrated") {
+          selectionByFamily.set(family, compiled.content);
+          expect(compiled.content).not.toBe(semanticByFamily.get(family));
+          expect(compiled.units).toHaveLength(family === "memory" ? 4 : 1);
         } else {
-          expect(compiled.content).toBe(semanticByFamily.get(family));
+          expect(compiled.content).toBe(selectionByFamily.get(family));
         }
       }
     }
@@ -355,6 +363,26 @@ describe("tool prompt compiler C00-C03", () => {
     expect(extractToolNames(semanticSkill)).toEqual(extractToolNames(compactSkill));
     expect(extractToolNames(semanticKnowledge)).toEqual(extractToolNames(compactKnowledge));
     expect(`${semanticSkill}\n${semanticKnowledge}\n${semanticMemory}`.length).toBeLessThan(combined.length);
+
+    const selectionMemory = selectionByFamily.get("memory") ?? "";
+    const selectionSkill = selectionByFamily.get("skill") ?? "";
+    const selectionKnowledge = selectionByFamily.get("knowledge") ?? "";
+    const extractExecution = (content: string): Array<{
+      name: string;
+      path: string;
+      body: string;
+    }> => [...content.matchAll(
+      /<tool name="([^"]+)">\n\s+path: (.+)\n\s+body: (.+)$/gm,
+    )].map((match) => ({ name: match[1], path: match[2], body: match[3] }));
+    expect(extractExecution(selectionMemory)).toEqual(extractExecution(semanticMemory));
+    expect(extractExecution(selectionSkill)).toEqual(extractExecution(semanticSkill));
+    expect(extractExecution(selectionKnowledge)).toEqual(extractExecution(semanticKnowledge));
+    expect(`${selectionSkill}\n${selectionKnowledge}\n${selectionMemory}`)
+      .toContain("## Tool / no-tool gate");
+    expect(`${selectionSkill}\n${selectionKnowledge}\n${selectionMemory}`)
+      .not.toContain("    use: ");
+    expect(selectionSkill).toContain("all of its versions must be physically deleted");
+    expect(selectionSkill).not.toContain("must be archived");
   });
 
   it("assigns every C03 duplicate semantic unit to exactly one retained owner", () => {
@@ -389,6 +417,50 @@ describe("tool prompt compiler C00-C03", () => {
     expect(bundle["skill-listing"]).toContain("不能用 read_file / tool_use 访问");
     expect(bundle["knowledge-tools"]).toContain("每个资源每会话最多一次");
     expect(bundle["knowledge-tools"]).toContain("不要全量 list_pages");
+  });
+
+  it("keeps the C04 selection policy neutral while preserving dynamic skill assets", () => {
+    const blocks = renderProductionFamilyBlocks(true);
+    const listing = [
+      "<available_skills>",
+      "- review: Review this repository",
+      "- testing: Run contract tests",
+      "</available_skills>",
+    ].join("\n");
+    const compile = (
+      family: "memory" | "skill" | "knowledge",
+      surface: "memory-tools" | "memory-guide" | "skill-tools" | "knowledge-tools",
+      content: string,
+    ): string => compileToolPrompt({
+      profile: "selection-calibrated",
+      family,
+      surface,
+      legacyUnits: [{ id: `${surface}.fixture`, kind: "legacy-body", content }],
+      capabilitySignature: CAPABILITY_SIGNATURE,
+    }).content;
+    const skillListing = wrapAvailableSkillsBlock(
+      listing,
+      "selection-calibrated",
+      CAPABILITY_SIGNATURE,
+    );
+    const bundle = {
+      "memory-tools": compile("memory", "memory-tools", blocks.memory),
+      "memory-guide": compile("memory", "memory-guide", MEMORY_TOOLS_GUIDE),
+      "skill-tools": compile("skill", "skill-tools", blocks.skill),
+      "skill-listing": skillListing,
+      "knowledge-tools": compile("knowledge", "knowledge-tools", blocks.knowledge),
+    };
+
+    expect(new Set(SELECTION_POLICY_INVENTORY.map((item) => item.id)).size)
+      .toBe(SELECTION_POLICY_INVENTORY.length);
+    expect(() => lintSelectionPolicy(bundle, CAPABILITY_SIGNATURE)).not.toThrow();
+    expect(skillListing.match(/<available_skills>[\s\S]*?<\/available_skills>/)?.[0])
+      .toBe(listing);
+    expect(skillListing).toContain("## Available skills");
+    expect(skillListing).not.toContain("mandatory");
+    expect(skillListing).not.toContain("partially relevant");
+    expect(bundle["memory-guide"]).toContain("## Memory constraints");
+    expect(bundle["knowledge-tools"]).not.toContain("凡是需要跨文件");
   });
 
   it("keeps the C01 correction inventory unique and source-backed", () => {
@@ -524,6 +596,49 @@ describe("tool prompt compiler C00-C03", () => {
     }
   });
 
+  it("hosts one neutral C04 gate with only the enabled family rows for every mask", () => {
+    const blocks = renderProductionFamilyBlocks();
+    for (let mask = 1; mask < 8; mask += 1) {
+      const active = {
+        memory: Boolean(mask & 1),
+        skill: Boolean(mask & 2),
+        knowledge: Boolean(mask & 4),
+      };
+      const signature = buildCapabilitySignature({
+        ...active,
+        wiki: active.knowledge,
+        codeGraph: active.knowledge,
+        skillWrite: false,
+        skillExtract: false,
+      });
+      const bundle: SelectionSurfaceBundle = {};
+      for (const [family, enabled] of Object.entries(active) as Array<
+        ["memory" | "skill" | "knowledge", boolean]
+      >) {
+        if (!enabled) continue;
+        const surface = family === "memory"
+          ? "memory-tools"
+          : family === "skill"
+            ? "skill-tools"
+            : "knowledge-tools";
+        bundle[surface] = compileToolPrompt({
+          profile: "selection-calibrated",
+          family,
+          surface,
+          legacyUnits: [{
+            id: `${family}.legacy-body`,
+            kind: "legacy-body",
+            content: blocks[family],
+          }],
+          capabilitySignature: signature,
+        }).content;
+      }
+      const combined = Object.values(bundle).join("\n");
+      expect(combined.match(/## Tool \/ no-tool gate/g)).toHaveLength(1);
+      expect(() => lintSelectionPolicy(bundle, signature)).not.toThrow();
+    }
+  });
+
   it("composes a compact contract-derived card into the safe curl parser form", () => {
     const memory = renderProductionFamilyBlocks().memory;
     const signature = buildCapabilitySignature({
@@ -560,7 +675,7 @@ describe("tool prompt compiler C00-C03", () => {
     });
   });
 
-  it("keeps C02 frozen and one provider-visible C03 result across descendants for every agent and task shape", async () => {
+  it("keeps C03 frozen and one provider-visible C04 result across descendants for every agent and task shape", async () => {
     const log = vi.spyOn(console, "log").mockImplementation(() => undefined);
     const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
     try {
@@ -573,9 +688,14 @@ describe("tool prompt compiler C00-C03", () => {
           expect(protocol).not.toEqual(corrected);
           const semantic = await renderProviderParityPrompt(agent, "compact", withTask);
           expect(semantic).not.toEqual(protocol);
-          for (const profile of ["selection-calibrated", "capability-pruned"] as const) {
-            expect(await renderProviderParityPrompt(agent, profile, withTask)).toEqual(semantic);
-          }
+          const selection = await renderProviderParityPrompt(
+            agent,
+            "selection-calibrated",
+            withTask,
+          );
+          expect(selection).not.toEqual(semantic);
+          expect(await renderProviderParityPrompt(agent, "capability-pruned", withTask))
+            .toEqual(selection);
         }
       }
     } finally {

@@ -26,7 +26,9 @@ import {
   compileToolPrompt,
   CONTRACT_CORRECTIONS,
   lintDuplicateSemanticUnits,
+  lintSelectionPolicy,
   PROTOCOL_COMPACTION_INVENTORY,
+  SELECTION_POLICY_INVENTORY,
   SEMANTIC_UNIT_INVENTORY,
   TOOL_PROMPT_COMPILER_VERSION,
   TOOL_PROMPT_PROFILES,
@@ -328,6 +330,7 @@ interface ArtifactManifest {
     bytes: number;
     tokensO200k: number;
     promptSha256: string;
+    dynamicAssetSha256: string;
   }>;
 }
 
@@ -611,6 +614,82 @@ function writeC03DiffArtifacts(sourceCommit: string, generatedAt: string): void 
   );
 }
 
+function writeC04DiffArtifacts(sourceCommit: string, generatedAt: string): void {
+  if (STAGE !== "C04") return;
+  const parent = readManifest("compact");
+  const current = readManifest("selection-calibrated");
+  if (parent.totalInjectionSha256 === current.totalInjectionSha256) {
+    throw new Error("C04 selection-calibrated output unexpectedly equals compact");
+  }
+  const inherited = readManifest("capability-pruned");
+  if (
+    inherited.totalInjectionSha256 !== current.totalInjectionSha256
+    || inherited.effectiveSystemSha256 !== current.effectiveSystemSha256
+  ) {
+    throw new Error("capability-pruned does not inherit the frozen C04 renderer");
+  }
+
+  const parentBlocks = new Map(parent.blocks.map((block) => [block.blockId, block]));
+  const blockDeltas = current.blocks.map((block) => {
+    const parentBlock = parentBlocks.get(block.blockId);
+    if (!parentBlock) throw new Error(`compact artifact lacks block ${block.blockId}`);
+    if (block.dynamicAssetSha256 !== parentBlock.dynamicAssetSha256) {
+      throw new Error(`${block.blockId} dynamic asset bytes changed during C04`);
+    }
+    return {
+      blockId: block.blockId,
+      changed: block.promptSha256 !== parentBlock.promptSha256,
+      dynamicAssetUnchanged: true,
+      parentSha256: parentBlock.promptSha256,
+      currentSha256: block.promptSha256,
+      characterDelta: block.characters - parentBlock.characters,
+      byteDelta: block.bytes - parentBlock.bytes,
+      tokenDeltaO200k: block.tokensO200k - parentBlock.tokensO200k,
+    };
+  });
+  const diff = {
+    schemaVersion: 1,
+    stage: STAGE,
+    sourceCommit,
+    compilerVersion: TOOL_PROMPT_COMPILER_VERSION,
+    generatedAt,
+    parentProfile: "compact",
+    currentProfile: "selection-calibrated",
+    firstChangedByte: current.firstChangedByteFromParent,
+    stablePrefixBytes: current.stablePrefixBytes,
+    totalInjection: {
+      parentSha256: parent.totalInjectionSha256,
+      currentSha256: current.totalInjectionSha256,
+      characterDelta: current.totalInjectionCharacters - parent.totalInjectionCharacters,
+      byteDelta: current.totalInjectionBytes - parent.totalInjectionBytes,
+      tokenDeltaO200k: current.totalInjectionTokens - parent.totalInjectionTokens,
+    },
+    effectiveSystem: {
+      parentSha256: parent.effectiveSystemSha256,
+      currentSha256: current.effectiveSystemSha256,
+      characterDelta: current.effectiveSystemCharacters - parent.effectiveSystemCharacters,
+      byteDelta: current.effectiveSystemBytes - parent.effectiveSystemBytes,
+      tokenDeltaO200k: current.effectiveSystemTokens - parent.effectiveSystemTokens,
+    },
+    blocks: blockDeltas,
+    selectionPolicyIds: SELECTION_POLICY_INVENTORY.map((item) => item.id),
+  };
+  const inventory = {
+    schemaVersion: 1,
+    stage: STAGE,
+    sourceCommit,
+    compilerVersion: TOOL_PROMPT_COMPILER_VERSION,
+    generatedAt,
+    policies: SELECTION_POLICY_INVENTORY,
+  };
+  writeFileSync(resolve(OUTPUT_ROOT, "v1-to-v2-diff.json"), `${JSON.stringify(diff, null, 2)}\n`, "utf8");
+  writeFileSync(
+    resolve(OUTPUT_ROOT, "selection-policy.json"),
+    `${JSON.stringify(inventory, null, 2)}\n`,
+    "utf8",
+  );
+}
+
 async function renderProfile(
   profile: ToolPromptProfile,
 ): Promise<{ injection: string; providerSystem: string; blocks: BlockArtifactInput[] }> {
@@ -657,7 +736,7 @@ async function renderProfile(
     l2Entries: [{ path: "task1/compiler.md", summary: "Compiler implementation decisions" }],
   }], memoryGuide).content;
 
-  if (["compact", "selection-calibrated", "capability-pruned"].includes(profile)) {
+  if (profile === "compact") {
     lintDuplicateSemanticUnits({
       "memory-tools": memoryTools,
       "memory-guide": memoryGuide,
@@ -665,6 +744,15 @@ async function renderProfile(
       "skill-listing": skillListing,
       "knowledge-tools": knowledgeTools,
     });
+  }
+  if (["selection-calibrated", "capability-pruned"].includes(profile)) {
+    lintSelectionPolicy({
+      "memory-tools": memoryTools,
+      "memory-guide": memoryGuide,
+      "skill-tools": skillTools,
+      "skill-listing": skillListing,
+      "knowledge-tools": knowledgeTools,
+    }, CAPABILITY_SIGNATURE);
   }
 
   const blocks: BlockArtifactInput[] = [
@@ -790,6 +878,7 @@ async function main(): Promise<void> {
   writeC01DiffArtifacts(sourceCommit, generatedAt);
   writeC02DiffArtifacts(sourceCommit, generatedAt);
   writeC03DiffArtifacts(sourceCommit, generatedAt);
+  writeC04DiffArtifacts(sourceCommit, generatedAt);
   encoding.free();
   console.log(`captured ${STAGE} prompt artifacts in ${OUTPUT_ROOT}`);
 }

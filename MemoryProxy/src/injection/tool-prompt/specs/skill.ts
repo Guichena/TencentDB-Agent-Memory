@@ -51,7 +51,7 @@ export const SKILL_TOOL_PROMPT_SPECS = [
   {
     id: "skill_delete",
     contractId: "skill_delete",
-    when: "An owned skill must be archived.",
+    when: "An owned skill and all of its versions must be physically deleted.",
   },
   {
     id: "skill_files_write",

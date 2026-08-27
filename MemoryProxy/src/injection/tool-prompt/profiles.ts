@@ -12,7 +12,8 @@ export interface ToolPromptProfileDefinition {
     | "frozen-compatibility"
     | "contract-corrected"
     | "protocol-compact"
-    | "semantic-compact";
+    | "semantic-compact"
+    | "selection-calibrated";
 }
 
 const DEFINITIONS: Record<ToolPromptProfile, ToolPromptProfileDefinition> = {
@@ -35,12 +36,12 @@ const DEFINITIONS: Record<ToolPromptProfile, ToolPromptProfileDefinition> = {
   "selection-calibrated": {
     id: "selection-calibrated",
     parent: "compact",
-    renderer: "semantic-compact",
+    renderer: "selection-calibrated",
   },
   "capability-pruned": {
     id: "capability-pruned",
     parent: "selection-calibrated",
-    renderer: "semantic-compact",
+    renderer: "selection-calibrated",
   },
 };
 
