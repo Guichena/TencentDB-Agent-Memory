@@ -77,22 +77,35 @@ The benchmark keeps prompt construction, protocol execution, and model execution
 
 ### Frozen model protocol
 
-- Iteration and primary reporting: `gpt-5.6-sol`, reasoning effort `medium`, verbosity `medium`.
-- Cross-model confirmation of shortlisted variants only: `gpt-5.6-terra`, reasoning effort `medium`, verbosity `medium`.
+- Iteration and primary reporting: `gpt-5.6-luna`, reasoning effort `high`, verbosity `medium`.
+- The current protocol uses one model. Any later cross-model confirmation must be preregistered and reported separately; it must not be pooled into the Luna result.
 - Standard Responses execution is used; Pro mode is not enabled.
 - The runner writes the exact model, reasoning effort, verbosity, and Codex CLI version to `run-manifest.json`. Never compare variants whose recorded model settings or Codex version differ.
-- `--reasoning-effort` and `--verbosity` are explicit experiment inputs. Both default to `medium`, but formal commands should still spell them out.
+- `--reasoning-effort` and `--verbosity` are explicit experiment inputs. Reasoning defaults to `high` and verbosity defaults to `medium`, but formal commands must still spell them out.
+
+### Asset provenance and real-service preflight
+
+The 100 primary fixtures are deterministic benchmark-owned snapshots. Memory records, conversations, scenes, Skill listings, team-library Skills, and Knowledge bindings are defined in `case-definitions.ts`, frozen into JSONL, and served by the isolated Mock Bridge. They prove that every Gold sequence is executable under a fixed asset state; they do **not** prove that MemoryCore generated those assets or that MemoryPanel displayed them.
+
+Before the formal V0 baseline, run a separate real-service preflight for a small representative subset:
+
+1. Generate Memory assets through the production data plane (`/v3/conversation/add`, followed by the L1 pipeline) and generate or register Skills through `/v3/skill/create` or `/v3/skill/extract`.
+2. Confirm the resulting Memory through atomic/conversation reads and the resulting Skill through listing/search/get-by-name. Inspect the same assets in MemoryPanel.
+3. Save non-secret generation receipts: case id, asset id, content hash, generation endpoint, request id, generation-log id when available, timestamps, and verification status. Never save credentials.
+4. Freeze the verified assets into one snapshot and reuse it across every Variant. Do not let a prior Variant generate new Memory or Skills for a later Variant.
+
+This preflight is an environment and contract gate. The primary metrics continue to score tool decision and execution against the deterministic Mock fixtures; asset-generation quality and final-answer quality remain outside Task 1's KPI.
 
 Inspect an isolated run without making an LLM request:
 
 ```powershell
-npm run eval:tool-prompt:codex -- --case memory-dev-preference-001 --model gpt-5.6-sol --reasoning-effort medium --verbosity medium --variant V0 --repeat 1 --dry-run
+npm run eval:tool-prompt:codex -- --case memory-dev-preference-001 --model gpt-5.6-luna --reasoning-effort high --verbosity medium --variant V0 --repeat 1 --dry-run
 ```
 
 Run one real case through a Responses-compatible endpoint (for example the project-local MemoryProxy/Langfuse route):
 
 ```powershell
-npm run eval:tool-prompt:codex -- --case memory-dev-preference-001 --model gpt-5.6-sol --reasoning-effort medium --verbosity medium --variant V0 --repeat 1 --provider-base-url http://127.0.0.1:8096/codex/tool-prompt-bench/v1
+npm run eval:tool-prompt:codex -- --case memory-dev-preference-001 --model gpt-5.6-luna --reasoning-effort high --verbosity medium --variant V0 --repeat 1 --provider-base-url http://127.0.0.1:8096/codex/tool-prompt-bench/v1
 ```
 
 Runtime files are written below `eval/tool-prompt-bench/runs/` and are git-ignored. A run contains the exact rendered prompt, Codex's audited complete prompt input, both SHA-256 values, the Codex version and invocation manifest, raw Codex JSONL, stderr, correlated Mock trace, and evaluation result. The prompt audit fails before an LLM call if the benchmark block is missing or client skill instructions reappear. Authentication is copied only into the temporary Codex home for the process and removed in `finally`; it is never written to the manifest.
