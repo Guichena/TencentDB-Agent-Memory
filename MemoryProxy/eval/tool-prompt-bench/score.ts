@@ -8,6 +8,7 @@ export interface TraceRecord {
   caseId: string;
   runId: string;
   attempts: TdaiAttempt[];
+  infrastructureError?: string;
 }
 
 export interface ScoredRecord extends ToolPromptEvaluation {
@@ -80,8 +81,23 @@ export function scoreTraceRecords(traces: TraceRecord[]): ScoredRecord[] {
     if (!item) throw new Error(`unknown caseId ${trace.caseId}`);
     const fixture = fixtureById.get(item.fixtureIds[0]);
     if (!fixture) throw new Error(`${trace.caseId}: missing fixture ${item.fixtureIds[0]}`);
+    const evaluation = trace.infrastructureError
+      ? {
+        caseId: item.caseId,
+        state: "INFRASTRUCTURE_ERROR" as const,
+        triggerAttempted: trace.attempts.length > 0,
+        effectiveCall: false,
+        falseCall: false,
+        firstActionCorrect: false,
+        conditionalToolCorrect: null,
+        argumentValid: false,
+        executionValid: false,
+        overcall: false,
+        observedTools: trace.attempts.map((attempt) => attempt.tool),
+      }
+      : evaluateToolPromptCase(item, fixture, trace.attempts);
     return {
-      ...evaluateToolPromptCase(item, fixture, trace.attempts),
+      ...evaluation,
       runId: trace.runId,
       split: item.split,
       goldFamily: item.gold.family,

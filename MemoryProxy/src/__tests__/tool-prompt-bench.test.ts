@@ -13,10 +13,13 @@ import {
 } from "../../eval/tool-prompt-bench/protocol-harness.js";
 import {
   auditCodexPromptInput,
+  buildCodexConfigArgs,
   buildCodexInvocation,
-  buildCodexProfile,
   codexProcessInfrastructureError,
+  countInjectionTokens,
+  extractCodexUsage,
   isolateCodexEnvironment,
+  normalizePromptCacheTemplate,
   resolveCodexInvocation,
 } from "../../eval/tool-prompt-bench/codex-runner.js";
 import { aggregateScores, scoreTraceRecords } from "../../eval/tool-prompt-bench/score.js";
@@ -254,12 +257,15 @@ describe("TDAI-ToolPromptBench dataset", () => {
     const invocation = buildCodexInvocation({
       workspaceDir: "D:/eval/run-001/workspace",
       model: "gpt-test",
-      profileName: "tdai-eval",
+      configArgs: ["-c", 'approval_policy="never"'],
     });
     expect(invocation.args).toEqual([
       "exec",
       "--ephemeral",
       "--ignore-rules",
+      "--ignore-user-config",
+      "-c",
+      'approval_policy="never"',
       "--json",
       "--skip-git-repo-check",
       "--sandbox",
@@ -268,8 +274,6 @@ describe("TDAI-ToolPromptBench dataset", () => {
       "D:/eval/run-001/workspace",
       "--model",
       "gpt-test",
-      "--profile",
-      "tdai-eval",
       "-",
     ]);
     const resolved = resolveCodexInvocation(invocation, {
@@ -297,13 +301,13 @@ describe("TDAI-ToolPromptBench dataset", () => {
       CODEX_SESSION_ID: "must-not-leak",
       CODEX_PERMISSION_PROFILE: "must-not-leak",
       CODEX_HOME: "old-home",
-    }, "D:/eval/run-001/codex-home");
+    }, "C:/Users/example/.codex", "D:/eval/run-001/isolated-home");
     expect(env).toMatchObject({
       PATH: "test-path",
-      CODEX_HOME: "D:/eval/run-001/codex-home",
-      CODEX_SQLITE_HOME: join("D:/eval/run-001/codex-home", "sqlite"),
-      HOME: "D:/eval/run-001/codex-home",
-      USERPROFILE: "D:/eval/run-001/codex-home",
+      CODEX_HOME: "C:/Users/example/.codex",
+      CODEX_SQLITE_HOME: join("D:/eval/run-001/isolated-home", "sqlite"),
+      HOME: "D:/eval/run-001/isolated-home",
+      USERPROFILE: "D:/eval/run-001/isolated-home",
     });
     expect(env.CODEX_THREAD_ID).toBeUndefined();
     expect(env.CODEX_SESSION_ID).toBeUndefined();
@@ -311,20 +315,17 @@ describe("TDAI-ToolPromptBench dataset", () => {
   });
 
   it("puts the fixture prompt in Codex developer instructions without embedding credentials", () => {
-    const profile = buildCodexProfile({
-      developerInstructions: "<tdai_injections>\nV0 PROMPT\n</tdai_injections>",
+    const configArgs = buildCodexConfigArgs({
+      developerInstructions: "<tdai_injections>V0 PROMPT</tdai_injections>",
       providerBaseUrl: "http://127.0.0.1:8096/codex/eval-space/v1",
       reasoningEffort: "high",
       verbosity: "medium",
     });
-    expect(profile).toContain('developer_instructions = "<tdai_injections>\\nV0 PROMPT\\n</tdai_injections>"');
-    expect(profile).toContain('base_url = "http://127.0.0.1:8096/codex/eval-space/v1"');
-    expect(profile).toContain('wire_api = "responses"');
-    expect(profile).toContain('model_reasoning_effort = "high"');
-    expect(profile).toContain('model_verbosity = "medium"');
-    expect(profile.indexOf('model_provider = "custom"')).toBeLessThan(profile.indexOf("[features]"));
-    expect(profile).toContain("[skills]\ninclude_instructions = false");
-    expect(profile).not.toMatch(/api[_-]?key|secret|bearer/i);
+    expect(configArgs).toContain('developer_instructions="<tdai_injections>V0 PROMPT</tdai_injections>"');
+    expect(configArgs).toContain('model_providers.custom.base_url="http://127.0.0.1:8096/codex/eval-space/v1"');
+    expect(configArgs).toContain("skills.include_instructions=false");
+    expect(configArgs).toContain("sandbox_workspace_write.network_access=true");
+    expect(configArgs.join("\n")).not.toMatch(/api[_-]?key|secret|bearer/i);
   });
 
   it("audits the complete Codex prompt and rejects client skill contamination", () => {
@@ -351,7 +352,40 @@ describe("TDAI-ToolPromptBench dataset", () => {
   it("classifies a non-zero Codex exit as infrastructure failure", () => {
     expect(codexProcessInfrastructureError({ timedOut: false, exitCode: 1 })).toBe("Codex runner exited with code 1");
     expect(codexProcessInfrastructureError({ timedOut: true, exitCode: null })).toBe("Codex runner timed out");
+    expect(codexProcessInfrastructureError({
+      timedOut: false,
+      exitCode: 0,
+      stderr: "CreateProcess rejected: blocked by policy",
+    })).toBe("Codex tool execution was blocked by local policy");
     expect(codexProcessInfrastructureError({ timedOut: false, exitCode: 0 })).toBeUndefined();
+  });
+
+  it("records injection and model token usage separately", () => {
+    expect(countInjectionTokens("memory tool prompt")).toBeGreaterThan(0);
+    expect(extractCodexUsage([
+      JSON.stringify({ type: "thread.started" }),
+      JSON.stringify({
+        type: "turn.completed",
+        usage: {
+          input_tokens: 100,
+          cached_input_tokens: 80,
+          cache_write_input_tokens: 0,
+          output_tokens: 20,
+          reasoning_output_tokens: 7,
+        },
+      }),
+    ].join("\n"))).toEqual({
+      inputTokens: 100,
+      cachedInputTokens: 80,
+      cacheWriteInputTokens: 0,
+      outputTokens: 20,
+      reasoningOutputTokens: 7,
+    });
+    expect(normalizePromptCacheTemplate(
+      "http://127.0.0.1:43127/tool session-123",
+      "http://127.0.0.1:43127",
+      "session-123",
+    )).toBe("<BRIDGE_BASE_URL>/tool <SESSION_ID>");
   });
 
   it("keeps generated JSONL synchronized with the TypeScript definitions", () => {
@@ -507,13 +541,8 @@ describe("TDAI-ToolPromptBench dataset", () => {
       {
         caseId: positive.caseId,
         runId: "infra-failure",
-        attempts: [{
-          tool: positive.gold.allowedFirstActions[0].tool,
-          family: positive.gold.family!,
-          endpoint: positive.gold.allowedFirstActions[0].endpoint,
-          method: "POST",
-          infrastructureError: "runner timeout",
-        }],
+        attempts: [],
+        infrastructureError: "Codex tool execution was blocked by local policy",
       },
     ]);
     expect(aggregateScores(scored)).toMatchObject({

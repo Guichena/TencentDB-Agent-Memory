@@ -73,7 +73,7 @@ The benchmark keeps prompt construction, protocol execution, and model execution
 
 1. `prompt-harness.ts` renders each fixture through the production `InjectionPipeline` and the production `render*Block()` functions. It does not maintain a second handwritten copy of V0.
 2. `protocol-harness.ts` parses the exact read-only curl subset used by V0, rejects shell operators, off-origin URLs, unsupported methods, and unknown endpoints, then sends a structured HTTP request to a random-port Mock Bridge. Every attempt records `intentId`, `runId`, `sessionId`, and timestamp.
-3. `codex-runner.ts` is the optional model layer. Every repeat gets a new workspace, session, Mock Bridge, `CODEX_HOME`, `CODEX_SQLITE_HOME`, `HOME`, and `USERPROFILE`; it uses `codex exec --ephemeral --ignore-rules --json`. The fresh Codex home contains only the benchmark profile and a temporary authentication copy. Codex skill instructions are disabled, so personal skills and the user's previous task state cannot affect the comparison. The same fixed Codex version and runner configuration must be used for V0 and candidate.
+3. `codex-runner.ts` is the optional model layer. Every repeat gets a new workspace, session, Mock Bridge, `CODEX_SQLITE_HOME`, `HOME`, and `USERPROFILE`; it uses `codex exec --ephemeral --ignore-rules --ignore-user-config --json`. Authentication points to the user's single existing `CODEX_HOME` and is never copied. Benchmark configuration is supplied only through invocation-scoped overrides. Codex skill instructions are disabled, so personal skills and the user's previous task state cannot affect the comparison. The same fixed Codex version and runner configuration must be used for V0 and candidate.
 
 ### Frozen model protocol
 
@@ -83,18 +83,20 @@ The benchmark keeps prompt construction, protocol execution, and model execution
 - The runner writes the exact model, reasoning effort, verbosity, and Codex CLI version to `run-manifest.json`. Never compare variants whose recorded model settings or Codex version differ.
 - `--reasoning-effort` and `--verbosity` are explicit experiment inputs. Reasoning defaults to `high` and verbosity defaults to `medium`, but formal commands must still spell them out.
 
-### Asset provenance and real-service preflight
+### Asset provenance and optional real-service smoke
 
 The 100 primary fixtures are deterministic benchmark-owned snapshots. Memory records, conversations, scenes, Skill listings, team-library Skills, and Knowledge bindings are defined in `case-definitions.ts`, frozen into JSONL, and served by the isolated Mock Bridge. They prove that every Gold sequence is executable under a fixed asset state; they do **not** prove that MemoryCore generated those assets or that MemoryPanel displayed them.
 
-Before the formal V0 baseline, run a separate real-service preflight for a small representative subset:
+The deterministic fixture assets are sufficient for the Task 1 metrics. Asset extraction and MemoryPanel verification are not prerequisites for the formal V0 baseline.
 
-1. Generate Memory assets through the production data plane (`/v3/conversation/add`, followed by the L1 pipeline) and generate or register Skills through `/v3/skill/create` or `/v3/skill/extract`.
+If a production-contract demonstration is useful, run a separate real-service smoke for a small representative subset:
+
+1. Upload or register representative Memory and Skill assets through the existing data-plane APIs. Automatic L1 extraction is optional because extraction quality is outside Task 1.
 2. Confirm the resulting Memory through atomic/conversation reads and the resulting Skill through listing/search/get-by-name. Inspect the same assets in MemoryPanel.
 3. Save non-secret generation receipts: case id, asset id, content hash, generation endpoint, request id, generation-log id when available, timestamps, and verification status. Never save credentials.
 4. Freeze the verified assets into one snapshot and reuse it across every Variant. Do not let a prior Variant generate new Memory or Skills for a later Variant.
 
-This preflight is an environment and contract gate. The primary metrics continue to score tool decision and execution against the deterministic Mock fixtures; asset-generation quality and final-answer quality remain outside Task 1's KPI.
+This smoke only demonstrates the real service contract. The primary metrics continue to score tool decision and execution against the deterministic Mock fixtures; asset-generation quality and final-answer quality remain outside Task 1's KPI.
 
 Inspect an isolated run without making an LLM request:
 
@@ -108,4 +110,6 @@ Run one real case through a Responses-compatible endpoint (for example the proje
 npm run eval:tool-prompt:codex -- --case memory-dev-preference-001 --model gpt-5.6-luna --reasoning-effort high --verbosity medium --variant V0 --repeat 1 --provider-base-url http://127.0.0.1:8096/codex/tool-prompt-bench/v1
 ```
 
-Runtime files are written below `eval/tool-prompt-bench/runs/` and are git-ignored. A run contains the exact rendered prompt, Codex's audited complete prompt input, both SHA-256 values, the Codex version and invocation manifest, raw Codex JSONL, stderr, correlated Mock trace, and evaluation result. The prompt audit fails before an LLM call if the benchmark block is missing or client skill instructions reappear. Authentication is copied only into the temporary Codex home for the process and removed in `finally`; it is never written to the manifest.
+Runtime files are written below `eval/tool-prompt-bench/runs/` and are git-ignored. A run contains the exact rendered prompt, Codex's audited complete prompt input, SHA-256 values, injection-token measurements, model usage, the Codex version and invocation manifest, raw Codex JSONL, stderr, correlated Mock trace, and evaluation result. The prompt audit fails before an LLM call if the benchmark block is missing or client skill instructions reappear. Authentication remains in the user's existing `CODEX_HOME`; the runner never copies or persists an authentication file.
+
+For the complete dataset, fairness, isolation, metric, token, and manual-run protocol, see `EXPERIMENT-DESIGN.md`.
