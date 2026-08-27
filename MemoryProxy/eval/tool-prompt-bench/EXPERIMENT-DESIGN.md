@@ -272,9 +272,9 @@ powershell -ExecutionPolicy Bypass -File .\eval\tool-prompt-bench\start-benchmar
 powershell -ExecutionPolicy Bypass -File .\eval\tool-prompt-bench\start-benchmark-proxy.ps1
 ```
 
-脚本把继承的 `config.yaml` 只读挂载进容器。YAML 保持不变，启动参数临时完成两项覆盖：
+脚本把当前 `config.yaml` 只读挂载进容器，启动时显式指定两项运行参数：
 
-- 上游使用当前官方 ChatGPT Codex endpoint，不使用旧的 `muyuan.do`。
+- 上游使用当前官方 ChatGPT Codex endpoint。
 - 容器内的 Langfuse 地址使用 `http://host.docker.internal:13000`。
 
 Langfuse 服务未启动时，MemoryProxy 仍可用于模型实验，但不会产生可查看的 Langfuse 页面。正式报告所需的本地 trace、usage 和评分仍由 benchmark runner 保存。
