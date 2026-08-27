@@ -3,9 +3,9 @@
 - status: `PASSED`
 - branch: `codex/task1-code-c00-compiler`
 - verified implementation commit: `60bbcf62d1d447d930247e88c343e5f8aa65ad93`
-- branch head: Gate 记录与冻结产物所在提交（本文件提交）
+- stage branch head: `7721d4295bcb41e0c71104f235ccdf0fc5caa0d3`
 - parent integration commit: `5832020bc5116782a1ea8baf09637c4e059ae077`
-- merge commit: 待以 `--no-ff` 合回 `codex/task1-code-integration` 后补记
+- merge commit: `7409f75f1bdc71701c09bed2749f5020c98ae2b9`
 - scope: C00 Compiler、Variant seam、Runtime Contract、Prompt Spec、PromptUnit、缓存隔离、Legacy parity 和静态 Token/Hash 冻结
 - checked at: `2026-08-28 Asia/Shanghai`
 
@@ -105,3 +105,14 @@ Provider-visible parity 测试覆盖：
 ## 决策
 
 C00 通过。它完成了 V6.1 要求的完整 Compiler 主路径和公平切换基础，且没有改变 Legacy 生产 Prompt，也没有提前混入后续优化。允许将本阶段以非 squash 方式合回 `codex/task1-code-integration`；集成主线复跑关键检查通过后，才能从新的集成提交创建 `codex/task1-code-c01-v0c`。
+
+## 集成主线复跑
+
+C00 已通过 merge commit `7409f75f1bdc71701c09bed2749f5020c98ae2b9` 以非 squash 方式合入 `codex/task1-code-integration`。合并后复跑：
+
+- `npm test`：39/39 通过。
+- `npm run eval:tool-prompt:validate`：100 case / 100 fixture 通过。
+- `npm run eval:tool-prompt:capture-c00`：成功且工作树无变化，证明 Artifact 生成可重复。
+- `npx tsc --noEmit --pretty false`：仍为 54 条基线诊断，标准化指纹仍为 `ba86b0be746c3844b3fe2763478117a6c2f0d053a2f8e147ebd15627173a8598`。
+
+集成 Gate 通过，允许从包含本记录更新的最新集成提交创建 C01 分支。
