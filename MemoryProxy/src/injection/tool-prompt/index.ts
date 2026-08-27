@@ -1,5 +1,10 @@
 export { compileToolPrompt, TOOL_PROMPT_COMPILER_VERSION } from "./compiler.js";
 export {
+  applyContractCorrections,
+  CONTRACT_CORRECTIONS,
+  type ContractCorrection,
+} from "./contract-corrections.js";
+export {
   getToolPromptProfileDefinition,
   getToolPromptProfileLineage,
   parseToolPromptProfile,

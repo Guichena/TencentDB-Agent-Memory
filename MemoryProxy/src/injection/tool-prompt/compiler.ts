@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { applyContractCorrections } from "./contract-corrections.js";
 import { getToolPromptProfileDefinition, getToolPromptProfileLineage } from "./profiles.js";
 import { getRuntimeToolContracts } from "./runtime-contract.js";
 import { KNOWLEDGE_TOOL_PROMPT_SPECS } from "./specs/knowledge.js";
@@ -12,7 +13,7 @@ import type {
   ToolPromptSpec,
 } from "./types.js";
 
-export const TOOL_PROMPT_COMPILER_VERSION = "c00.1";
+export const TOOL_PROMPT_COMPILER_VERSION = "c01.1";
 
 const SPECS_BY_FAMILY: Record<ToolPromptFamily, readonly ToolPromptSpec[]> = {
   memory: MEMORY_TOOL_PROMPT_SPECS,
@@ -58,18 +59,13 @@ function validateCatalog(
 /**
  * Compile one existing family block for a non-legacy profile.
  *
- * C00 deliberately uses a frozen compatibility Renderer. It validates the
- * Runtime Contract and decision Spec catalog, wraps the unchanged production
- * bytes in ordered PromptUnits, and emits deterministic audit metadata. A
- * mixed surface may already separate stable policy from dynamic assets without
- * changing their joined bytes. Later stages replace only the internal Renderer
- * selected by the profile definition.
+ * C00 uses a frozen compatibility Renderer. C01 applies only source-proven
+ * contract corrections through exact, auditable replacements. Later profiles
+ * inherit the latest completed renderer until their own stage implements a new
+ * transformation.
  */
 export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPrompt {
   const definition = getToolPromptProfileDefinition(input.profile);
-  if (definition.renderer !== "frozen-compatibility") {
-    throw new Error(`unsupported renderer ${definition.renderer} for ${input.profile}`);
-  }
   if (input.legacyUnits.length === 0) {
     throw new Error(`cannot compile empty ${input.surface} prompt surface`);
   }
@@ -81,7 +77,7 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
   assertUnique(input.legacyUnits.map((unit) => unit.id), `${input.surface} prompt unit id`);
   const allSpecIds = specs.map((spec) => spec.id);
   const knownSpecIds = new Set(allSpecIds);
-  const units = input.legacyUnits.map((unit) => {
+  const compatibilityUnits = input.legacyUnits.map((unit) => {
     const sourceSpecIds = unit.sourceSpecIds ?? allSpecIds;
     for (const specId of sourceSpecIds) {
       if (!knownSpecIds.has(specId)) {
@@ -96,6 +92,9 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
       sourceSpecIds,
     };
   });
+  const units = definition.renderer === "contract-corrected"
+    ? applyContractCorrections(input.surface, compatibilityUnits)
+    : compatibilityUnits;
   const content = units.map((unit) => unit.content).join("");
   if (content.length === 0) {
     throw new Error(`cannot compile empty ${input.surface} prompt content`);

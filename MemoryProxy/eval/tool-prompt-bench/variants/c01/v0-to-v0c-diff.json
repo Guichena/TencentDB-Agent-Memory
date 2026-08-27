@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "stage": "C01",
+  "sourceCommit": "1a836179c7f7d3348dc369d4b10ef7ce6a0ea49a",
+  "compilerVersion": "c01.1",
+  "generatedAt": "2026-08-28T01:53:59+08:00",
+  "parentProfile": "legacy",
+  "currentProfile": "contract-corrected",
+  "firstChangedByte": 903,
+  "stablePrefixBytes": 903,
+  "totalInjection": {
+    "parentSha256": "c84371246a0e9502fdbf78bc11dd98a7eebdf22bd2b26030f66d6206cee3842c",
+    "currentSha256": "8b3a11049a2125edef37db75e27f117a9f384f52e756b52287d493e70450594b",
+    "characterDelta": 772,
+    "byteDelta": 902,
+    "tokenDeltaO200k": 263
+  },
+  "effectiveSystem": {
+    "parentSha256": "69e866ec8b97dd65177d08f9d42bf703bdf6dbea1df2c760bb5f666926166f95",
+    "currentSha256": "f20d3e984d5365b415ae22eca8cf5bf6c286f30833255335a8d5af3f70ccdd86",
+    "characterDelta": 772,
+    "byteDelta": 902,
+    "tokenDeltaO200k": 263
+  },
+  "blocks": [
+    {
+      "blockId": "skill_tools",
+      "changed": true,
+      "parentSha256": "219faef24150f5a5c3a71c81eac3d0f3ff0388fef6958e6582726ec32b09f247",
+      "currentSha256": "e00315b961f561c6a00f628037f39dce79cecd5164f9f7225b38294b6138a74f",
+      "characterDelta": 690,
+      "byteDelta": 786,
+      "tokenDeltaO200k": 228
+    },
+    {
+      "blockId": "available_skills",
+      "changed": false,
+      "parentSha256": "6f581ef0102a380f9ce65bd0f0806c77079a2199041e453ea569b2e537c25f6d",
+      "currentSha256": "6f581ef0102a380f9ce65bd0f0806c77079a2199041e453ea569b2e537c25f6d",
+      "characterDelta": 0,
+      "byteDelta": 0,
+      "tokenDeltaO200k": 0
+    },
+    {
+      "blockId": "knowledge_tools",
+      "changed": true,
+      "parentSha256": "f8bdc46565478ad6627ef1e6fc68e20d20f4e053427bef4e620fb555e6dabafb",
+      "currentSha256": "b6667faa86b6a8736b58eefb2df6309064787fb36f018d7f33eb3b51afdd7192",
+      "characterDelta": 47,
+      "byteDelta": 81,
+      "tokenDeltaO200k": 21
+    },
+    {
+      "blockId": "tdai_memory_tools",
+      "changed": false,
+      "parentSha256": "e720977eebd3a607b3d952ecba2f72e717bd2637f23bb0b444035b1fa8715e8f",
+      "currentSha256": "e720977eebd3a607b3d952ecba2f72e717bd2637f23bb0b444035b1fa8715e8f",
+      "characterDelta": 0,
+      "byteDelta": 0,
+      "tokenDeltaO200k": 0
+    },
+    {
+      "blockId": "tdai_profile_memory",
+      "changed": true,
+      "parentSha256": "dd0d57e73d80ed8abe360c4aec3a284224c57e2c9ac3b27d5a1118f684b08175",
+      "currentSha256": "a9c0fb512d337eaba2572682ae78772bce550a12dbbcf602ed348ce46971756b",
+      "characterDelta": 35,
+      "byteDelta": 35,
+      "tokenDeltaO200k": 14
+    }
+  ],
+  "inventoryCorrectionIds": [
+    "memory-guide-required-service-header",
+    "skill-search-bm25-contract",
+    "skill-team-result-view-by-id",
+    "skill-file-read-json-only",
+    "skill-update-expected-version",
+    "skill-patch-expected-version",
+    "skill-delete-expected-version",
+    "skill-delete-physical-contract",
+    "skill-files-write-expected-version",
+    "skill-files-remove-expected-version",
+    "skill-error-contract-details",
+    "skill-not-found-scope",
+    "knowledge-node-requires-include-code",
+    "knowledge-source-response-contract",
+    "knowledge-file-search-contract"
+  ],
+  "appliedCorrectionIds": [
+    "memory-guide-required-service-header",
+    "skill-search-bm25-contract",
+    "skill-team-result-view-by-id",
+    "skill-file-read-json-only",
+    "skill-not-found-scope",
+    "knowledge-node-requires-include-code",
+    "knowledge-source-response-contract",
+    "knowledge-file-search-contract"
+  ]
+}
