@@ -3,6 +3,7 @@
 import { readFileSync } from "node:fs";
 import { load as yamlLoad } from "js-yaml";
 import type { CostGuardConfig, ProxyConfig, RawYamlConfig } from "./types.js";
+import { parseToolPromptProfile } from "./injection/tool-prompt/profiles.js";
 
 const DEFAULT_UPSTREAM = "https://llm-upstream.example.com/v2/chat/completions";
 
@@ -76,6 +77,7 @@ export const DEFAULT_CONFIG: ProxyConfig = {
   injection: {
     enabled: false,
     injectors: ["skill", "knowledge", "tdai-memory"],
+    toolPromptProfile: "legacy",
     // markerOptIn 默认 true —— 未配置时也开启 `/analyse` URL marker，让
     // AssetReflectionInjector 被注册。marker 仍是 opt-in（不带 `/analyse/` 段
     // 的请求完全无感），只是把「必须显式开启」的负担从运营侧移除。
@@ -386,6 +388,9 @@ export function buildConfig(overrides: CliOverrides = {}): ProxyConfig {
     injection: {
       enabled: yaml.injection?.enabled ?? DEFAULT_CONFIG.injection.enabled,
       injectors: yaml.injection?.injectors ?? DEFAULT_CONFIG.injection.injectors,
+      toolPromptProfile: parseToolPromptProfile(
+        yaml.injection?.toolPromptProfile ?? DEFAULT_CONFIG.injection.toolPromptProfile,
+      ),
       externalGatewayUrl: typeof yaml.injection?.externalGatewayUrl === "string" && yaml.injection.externalGatewayUrl.trim() !== ""
         ? yaml.injection.externalGatewayUrl.trim().replace(/\/$/, "")
         : undefined,

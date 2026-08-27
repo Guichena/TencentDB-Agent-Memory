@@ -43,14 +43,16 @@ const TAG = "[memory-bridge]";
  *
  * 写操作（write / rm / add / update / delete）一律不在 allowlist 里；写入走主链路。
  */
-const ALLOWED_SUBPATHS = new Set<string>([
+export const MEMORY_BRIDGE_ALLOWED_SUBPATHS = [
   "atomic/search",        // L1 原子记忆 hybrid search
   "atomic/query",         // L1 按 type/时间/分页
   "conversation/search",  // L0 对话 hybrid search
   "conversation/query",   // L0 按 session 取历史
   "scenario/ls",          // L2 场景列表（path 索引）
   "scenario/read",        // L2 按 path 读全文
-]);
+] as const;
+
+const ALLOWED_SUBPATHS = new Set<string>(MEMORY_BRIDGE_ALLOWED_SUBPATHS);
 
 interface SessionIdFields {
   user_id: string;

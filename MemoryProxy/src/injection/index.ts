@@ -79,6 +79,9 @@ export { TdaiToolsInjector } from "./injectors/tdai-tools-injector.js";
 export { KnowledgeToolsInjector } from "./injectors/knowledge-tools-injector.js";
 export { AssetReflectionInjector, renderAssetReflectionBlock } from "./injectors/asset-reflection-injector.js";
 
+// Tool prompt compiler
+export * from "./tool-prompt/index.js";
+
 // CodeBuddy
 export { isCodeBuddyPrompt, parseCodeBuddySystemPrompt } from "./agents/codebuddy/parser.js";
 export { rebuildSystemPrompt, insertBeforeTag, insertAfterTag, appendInsideTag, prependInsideTag } from "./agents/codebuddy/serializer.js";
@@ -133,6 +136,8 @@ import { getSessionStore } from "../session/store.js";
 import type { HookRegistry, PrewarmInput } from "./types.js";
 import { prewarmAll, type PrewarmOptions, type PrewarmResult } from "./prewarm.js";
 import { LoggingInjectionObserver, NoopInjectionObserver, LangfuseInjectionObserver } from "./observer.js";
+import { buildCapabilitySignature } from "./tool-prompt/runtime-contract.js";
+import { isExtractionAllowed } from "../extraction-gate.js";
 
 // ... (rest)
 
@@ -253,6 +258,22 @@ function buildPipelineBundle(config: ProxyConfig): PipelineBundle {
   // Register configured injectors. Each injector reads its own kernel config
   // (`coreSkill`, `tdai`, ...); there is no shared external endpoint anymore.
   const injectors = config.injection?.injectors ?? [];
+  const toolPromptProfile = config.injection.toolPromptProfile;
+  const memoryPromptEnabled = injectors.includes("tdai-memory")
+    && config.tdai.enabled
+    && config.tdai.memory.enabled
+    && config.tdai.memory.inject;
+  const skillPromptEnabled = injectors.includes("skill");
+  const knowledgePromptEnabled = shouldRegisterKnowledgeInjector(config);
+  const capabilitySignature = buildCapabilitySignature({
+    memory: memoryPromptEnabled,
+    skill: skillPromptEnabled,
+    knowledge: knowledgePromptEnabled,
+    wiki: knowledgePromptEnabled,
+    codeGraph: knowledgePromptEnabled,
+    skillWrite: skillPromptEnabled && (config.skillRuntime?.allowLlmWrite ?? false),
+    skillExtract: skillPromptEnabled && isExtractionAllowed(config, "skill"),
+  });
 
   // proxyBaseUrl 在 skill-tools-injector 和 tdai-tools-injector 之间共享。
   //
@@ -301,14 +322,23 @@ function buildPipelineBundle(config: ProxyConfig): PipelineBundle {
     // When coreSkill is unconfigured (no serviceToken), the searchSkills call
     // will fail and the injector silently degrades to no <cloud_skills> block.
     registry.register(
-      new SkillInjector({ coreSkill: config.coreSkill }),
+      new SkillInjector({
+        coreSkill: config.coreSkill,
+        toolPromptProfile,
+        capabilitySignature,
+      }),
     );
 
     // Always inject the curl-recipe `<skill_tools>` block alongside the
     // dynamic `<cloud_skills>` block. Even when there are no skills to
     // recommend, the LLM still needs to know how to create / search them.
     const allowLlmWrite = config.skillRuntime?.allowLlmWrite ?? false;
-    registry.register(new SkillToolsInjector({ proxyBaseUrl: proxyBaseUrl!, allowLlmWrite }));
+    registry.register(new SkillToolsInjector({
+      proxyBaseUrl: proxyBaseUrl!,
+      allowLlmWrite,
+      toolPromptProfile,
+      capabilitySignature,
+    }));
   }
 
   if (injectors.includes("knowledge")) {
@@ -318,6 +348,8 @@ function buildPipelineBundle(config: ProxyConfig): PipelineBundle {
     if (shouldRegisterKnowledgeInjector(config)) {
       registry.register(new KnowledgeToolsInjector({
         coreSkill: config.knowledge,
+        toolPromptProfile,
+        capabilitySignature,
       }));
     }
   }
@@ -342,7 +374,12 @@ function buildPipelineBundle(config: ProxyConfig): PipelineBundle {
     // fixed-asset-agents（self + 借入≤2）通过内核 MetadataClient 获取；
     // 内核不可达时 injector 自动降级为"只查当前 agent 的记忆"。
     if (config.tdai.memory.injectL2L3) {
-      registry.register(new TdaiProfileMemoryInjector(tdaiBaseConfig, config.coreSkill));
+      registry.register(new TdaiProfileMemoryInjector(
+        tdaiBaseConfig,
+        config.coreSkill,
+        toolPromptProfile,
+        capabilitySignature,
+      ));
     }
     // 注意：L0/L1 不再每轮自动召回注入到 user prompt（会破坏 KV/prompt cache）。
     // 改为只在 system prompt 暴露只读工具（见 TdaiToolsInjector），借助 system
@@ -351,7 +388,11 @@ function buildPipelineBundle(config: ProxyConfig): PipelineBundle {
     // <proxy>/memory-bridge/v3/* 调用只读工具。proxy 自动注入身份。
     // proxyBaseUrl 复用 skill-tools-injector 算出来的（同一 host:port）。
     if (typeof proxyBaseUrl !== "undefined") {
-      registry.register(new TdaiToolsInjector({ proxyBaseUrl }));
+      registry.register(new TdaiToolsInjector({
+        proxyBaseUrl,
+        toolPromptProfile,
+        capabilitySignature,
+      }));
     }
   }
 
@@ -441,6 +482,8 @@ function getOrBuildBundle(config: ProxyConfig): PipelineBundle {
     tdai: config.tdai,
     coreSkill: config.coreSkill,
     knowledge: config.knowledge,
+    skillRuntime: config.skillRuntime,
+    extraction: config.extraction,
     server: config.server,
   });
   if (cachedBundle && cachedConfigHash === configHash) {

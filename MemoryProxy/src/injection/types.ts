@@ -342,6 +342,12 @@ export interface InjectionHook {
   /** Human-readable description (for debugging/logging). */
   description: string;
   /**
+   * Optional persisted cache identity. The observable hook id and physical
+   * injection contract stay unchanged while profile-sensitive content receives
+   * an isolated cache entry. Defaults to `id` for full backward compatibility.
+   */
+  cacheIdentity?: string;
+  /**
    * Optional caching strategy (default: "none" → existing per-request behavior).
    * See {@link CacheStrategy} for semantics.
    */

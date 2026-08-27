@@ -120,7 +120,9 @@ log.info("server.starting", {
     ? `${config.rateLimit.tpm} TPM / ${config.rateLimit.qpm} QPM`
     : "disabled",
   sessionInit: config.sessionInit.enabled ? "enabled" : "disabled",
-  injection: config.injection.enabled ? config.injection.injectors.join(",") : "disabled",
+  injection: config.injection.enabled
+    ? `${config.injection.injectors.join(",")};toolPrompt=${config.injection.toolPromptProfile}`
+    : "disabled",
   tdai: config.tdai.enabled ? config.tdai.endpoint : "disabled",
   coreSkill: config.coreSkill.serviceToken ? config.coreSkill.endpoint : "disabled",
   skillRuntime: `allowLlmWrite=${config.skillRuntime.allowLlmWrite}`,

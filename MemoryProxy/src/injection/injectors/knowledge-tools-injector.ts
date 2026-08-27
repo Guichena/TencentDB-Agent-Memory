@@ -37,12 +37,17 @@ import {
   type KnowledgeItem,
 } from "../../knowledge/core-client.js";
 import type { CoreSkillConfig } from "../../types.js";
+import { compileToolPrompt } from "../tool-prompt/compiler.js";
+import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
+import type { ToolPromptProfile } from "../tool-prompt/types.js";
 
 const TAG = "[knowledge-tools-injector]";
 
 export interface KnowledgeToolsInjectorConfig {
   /** Core kernel config (same endpoint as skill — 8420). */
   coreSkill: CoreSkillConfig;
+  toolPromptProfile?: ToolPromptProfile;
+  capabilitySignature?: string;
 }
 
 export interface KnowledgeTelemetryContext {
@@ -252,12 +257,19 @@ export class KnowledgeToolsInjector implements InjectionHook {
   priority: HookPriority = HOOK_PRIORITY.WIKI;
   description = "Inject the <knowledge_tools> block with team knowledge resources.";
   cacheStrategy: CacheStrategy = "session_init";
+  cacheIdentity?: string;
 
   constructor(
     private config: KnowledgeToolsInjectorConfig,
     /** Optional override (tests). */
     private clientOverride?: CoreKnowledgeClient,
-  ) {}
+  ) {
+    this.cacheIdentity = toolPromptCacheIdentity(
+      this.id,
+      config.toolPromptProfile ?? "legacy",
+      config.capabilitySignature ?? "unconfigured",
+    );
+  }
 
   async execute(ctx: AgentContext): Promise<ContextBlock[]> {
     const ids = this.resolveSession(ctx);
@@ -355,8 +367,22 @@ export class KnowledgeToolsInjector implements InjectionHook {
       resources = filterResourcesByCapabilities(resources, assetCapabilities);
       // 注入 prompt 里给 LLM 用的 service-id 也要是 spaceId（LLM 拿它调 KS 的 tools/list|call）。
       const injectionServiceId = spaceId || this.config.coreSkill.serviceId;
-      const content = renderKnowledgeToolsBlock(resources, injectionServiceId, telemetryContext);
-      if (!content) return [];
+      const legacyContent = renderKnowledgeToolsBlock(resources, injectionServiceId, telemetryContext);
+      if (!legacyContent) return [];
+      const profile = this.config.toolPromptProfile ?? "legacy";
+      const content = profile === "legacy"
+        ? legacyContent
+          : compileToolPrompt({
+              profile,
+              family: "knowledge",
+              surface: "knowledge-tools",
+              legacyUnits: [{
+                id: "knowledge-tools.legacy-body",
+                kind: "legacy-body",
+                content: legacyContent,
+              }],
+              capabilitySignature: this.config.capabilitySignature ?? "unconfigured",
+            }).content;
       return [{
         type: "text",
         content,

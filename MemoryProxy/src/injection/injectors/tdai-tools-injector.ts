@@ -43,6 +43,9 @@ import type {
 } from "../types.js";
 import { HOOK_PRIORITY } from "../types.js";
 import { getTdaiIdentity } from "../../tdai/identity.js";
+import { compileToolPrompt } from "../tool-prompt/compiler.js";
+import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
+import type { ToolPromptProfile } from "../tool-prompt/types.js";
 
 export interface TdaiMemoryToolsInjectorConfig {
   /**
@@ -50,6 +53,8 @@ export interface TdaiMemoryToolsInjectorConfig {
    * E.g. `http://127.0.0.1:8096`. Trailing slash trimmed.
    */
   proxyBaseUrl: string;
+  toolPromptProfile?: ToolPromptProfile;
+  capabilitySignature?: string;
 }
 
 /** 渲染整段 `<tdai_memory_tools>` 文本，纯函数便于测试。 */
@@ -148,8 +153,15 @@ export class TdaiMemoryToolsInjector implements InjectionHook {
   description = "Inject <tdai_memory_tools> curl recipes block into system prompt";
   /** Static tool instructions are session-stable; render once at session_init. */
   cacheStrategy: CacheStrategy = "session_init";
+  cacheIdentity?: string;
 
-  constructor(private cfg: TdaiMemoryToolsInjectorConfig) {}
+  constructor(private cfg: TdaiMemoryToolsInjectorConfig) {
+    this.cacheIdentity = toolPromptCacheIdentity(
+      this.id,
+      cfg.toolPromptProfile ?? "legacy",
+      cfg.capabilitySignature ?? "unconfigured",
+    );
+  }
 
   execute(ctx: AgentContext): ContextBlock[] {
     const caps = ctx.metadata.custom?.assetCapabilities as { chat_memory?: boolean } | undefined;
@@ -170,9 +182,24 @@ export class TdaiMemoryToolsInjector implements InjectionHook {
   }
 
   private renderBlocks(sessionId: string, spaceId?: string): ContextBlock[] {
+    const profile = this.cfg.toolPromptProfile ?? "legacy";
+    const legacyContent = renderTdaiMemoryToolsBlock(this.cfg.proxyBaseUrl, sessionId, spaceId);
+    const content = profile === "legacy"
+      ? legacyContent
+      : compileToolPrompt({
+          profile,
+          family: "memory",
+          surface: "memory-tools",
+          legacyUnits: [{
+            id: "memory-tools.legacy-body",
+            kind: "legacy-body",
+            content: legacyContent,
+          }],
+          capabilitySignature: this.cfg.capabilitySignature ?? "unconfigured",
+        }).content;
     return [{
       type: "text",
-      content: renderTdaiMemoryToolsBlock(this.cfg.proxyBaseUrl, sessionId, spaceId),
+      content,
       metadata: {
         source: this.id,
         sessionId,
