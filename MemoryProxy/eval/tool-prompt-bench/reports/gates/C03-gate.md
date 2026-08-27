@@ -5,6 +5,7 @@
 - parent integration commit: `13b523f2cc421a41a912254e6c6c6b5e42508c79`
 - verified implementation commit: `fa42fb24b8a6b3d5e6b06a946726395d6a585f78`
 - verified artifact commit: `307e964`
+- merge commit: `87483d5aa4786a15ca8f7136879a09682dca366c`
 - scope: 在冻结 V1a 上完成 V1b Semantic Dedup，并以 `compact` profile 形成正式 V1；不含 Tool/No-Tool Gate、Family Gate、when/avoid/contrast、描述去偏、布局调整或 Capability 裁剪
 - checked at: `2026-08-28 Asia/Shanghai`
 
@@ -98,3 +99,15 @@ V1 total injection SHA-256 为 `444be855524cb01e8c0377eba8b36b9b4da8911f20e4df14
 ## 决策
 
 C03 通过。正式 V1 是 V1a 的递进子版本，只删除有等价保留位置的重复行为语义；唯一约束、运行时合同、工具集合、动态资产和注入布局均保持。允许以非 squash merge 合回 `codex/task1-code-integration`；集成主线复跑通过并补记 merge commit 后，才能创建 `codex/task1-code-c04-v2`。
+
+## 集成主线复跑
+
+C03 已通过 merge commit `87483d5aa4786a15ca8f7136879a09682dca366c` 以非 squash 方式合入 `codex/task1-code-integration`。合并后复跑：
+
+- `npm test`：45/45 通过。
+- `npm run eval:tool-prompt:validate`：100 case / 100 fixture 通过。
+- `npm run eval:tool-prompt:capture-c03`：成功且工作树无变化，C00/C01/C02 祖先逐字节比较再次通过。
+- `npx tsc --noEmit --pretty false`：仍为 54 条既有诊断，标准化指纹仍为 `ecf5cfe9c8c0d40163fb87f5622dee3cbb688a47aa649db245e2b27e1c50f65c`，阶段相关新增诊断为 0。
+- `git diff --check`：通过。
+
+集成 Gate 通过，允许从包含本记录更新的最新集成提交创建 `codex/task1-code-c04-v2`。
