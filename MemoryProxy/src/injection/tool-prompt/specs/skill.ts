@@ -9,7 +9,12 @@ export const SKILL_TOOL_PROMPT_SPECS = [
   {
     id: "skill_view",
     contractId: "skill_view",
-    when: "A known or discovered skill must be opened to read its instructions and resource manifest.",
+    when: "A skill owned by the current agent is known by name and must be opened to read its instructions and manifest.",
+  },
+  {
+    id: "skill_view_by_id",
+    contractId: "skill_view_by_id",
+    when: "A team skill returned by skill_search, or any skill known by exact skill_id, must be opened.",
   },
   {
     id: "skill_files_read",

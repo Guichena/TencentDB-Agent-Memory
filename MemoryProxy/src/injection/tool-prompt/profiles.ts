@@ -8,8 +8,7 @@ import {
 export interface ToolPromptProfileDefinition {
   id: ToolPromptProfile;
   parent: ToolPromptProfile | null;
-  /** C00 keeps every compiled profile byte-equivalent to the frozen renderer. */
-  renderer: "frozen-compatibility";
+  renderer: "frozen-compatibility" | "contract-corrected";
 }
 
 const DEFINITIONS: Record<ToolPromptProfile, ToolPromptProfileDefinition> = {
@@ -17,27 +16,27 @@ const DEFINITIONS: Record<ToolPromptProfile, ToolPromptProfileDefinition> = {
   "contract-corrected": {
     id: "contract-corrected",
     parent: "legacy",
-    renderer: "frozen-compatibility",
+    renderer: "contract-corrected",
   },
   "protocol-compact": {
     id: "protocol-compact",
     parent: "contract-corrected",
-    renderer: "frozen-compatibility",
+    renderer: "contract-corrected",
   },
   compact: {
     id: "compact",
     parent: "protocol-compact",
-    renderer: "frozen-compatibility",
+    renderer: "contract-corrected",
   },
   "selection-calibrated": {
     id: "selection-calibrated",
     parent: "compact",
-    renderer: "frozen-compatibility",
+    renderer: "contract-corrected",
   },
   "capability-pruned": {
     id: "capability-pruned",
     parent: "selection-calibrated",
-    renderer: "frozen-compatibility",
+    renderer: "contract-corrected",
   },
 };
 

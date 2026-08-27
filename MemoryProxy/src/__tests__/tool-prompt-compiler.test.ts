@@ -13,6 +13,7 @@ import { MEMORY_BRIDGE_ALLOWED_SUBPATHS } from "../memory/memory-bridge.js";
 import { SKILL_BRIDGE_ALLOWED_SUBPATHS, SKILL_BRIDGE_WRITE_SUBPATHS } from "../skill/skill-bridge.js";
 import { renderKnowledgeToolsBlock } from "../injection/injectors/knowledge-tools-injector.js";
 import { renderSkillToolsBlock } from "../injection/injectors/skill-tools-injector.js";
+import { MEMORY_TOOLS_GUIDE } from "../injection/injectors/tdai-profile-memory-injector.js";
 import { renderTdaiMemoryToolsBlock } from "../injection/injectors/tdai-tools-injector.js";
 import { prewarmAll } from "../injection/prewarm.js";
 import { InjectionPipeline } from "../injection/pipeline.js";
@@ -21,6 +22,7 @@ import type { AnchorTarget, InjectionPoint, Protocol } from "../injection/types.
 import {
   buildCapabilitySignature,
   compileToolPrompt,
+  CONTRACT_CORRECTIONS,
   coordinateToolPromptSurface,
   getRuntimeToolContracts,
   getToolPromptProfileLineage,
@@ -49,6 +51,47 @@ interface AgentParityCase {
   protocol: Protocol;
   profile: AgentProfile | null;
   system: string;
+}
+
+const KNOWLEDGE_FIXTURE = [{
+  knowledge_id: "code-graph-1",
+  type: "code-graph" as const,
+  name: "MemoryProxy",
+  summary: "Indexed repository",
+  service_url: "http://127.0.0.1:8421/v3",
+  team_id: "team-1",
+  user_id: null,
+  repo_url: "https://github.com/TencentDB/TencentDB-Agent-Memory.git",
+  branch: "main",
+  created_at: "2026-08-28T00:00:00.000Z",
+  updated_at: "2026-08-28T00:00:00.000Z",
+}];
+
+function renderProductionFamilyBlocks(allowLlmWrite = false): {
+  memory: string;
+  skill: string;
+  knowledge: string;
+} {
+  const knowledge = renderKnowledgeToolsBlock(
+    KNOWLEDGE_FIXTURE,
+    "space-parity",
+    { sessionKey: "session-parity" },
+  );
+  if (!knowledge) throw new Error("knowledge fixture must render a prompt block");
+  return {
+    memory: renderTdaiMemoryToolsBlock(
+      "http://127.0.0.1:8096",
+      "session-parity",
+      "space-parity",
+    ),
+    skill: renderSkillToolsBlock(
+      "http://127.0.0.1:8096",
+      allowLlmWrite,
+      "session-parity",
+      "space-parity",
+    ),
+    knowledge,
+  };
 }
 
 const AGENT_PARITY_CASES: readonly AgentParityCase[] = [
@@ -108,11 +151,7 @@ async function renderProviderParityPrompt(
   withTask: boolean,
 ): Promise<Record<string, unknown>> {
   const registry = new HookRegistryImpl();
-  const familyBlocks = {
-    skill: "<skill_tools>frozen skill bytes</skill_tools>",
-    knowledge: "<knowledge_tools>frozen knowledge bytes</knowledge_tools>",
-    memory: "<tdai_memory_tools>frozen memory bytes</tdai_memory_tools>",
-  } as const;
+  const familyBlocks = renderProductionFamilyBlocks();
   const content = (family: keyof typeof familyBlocks): string => {
     const frozen = familyBlocks[family];
     if (profile === "legacy") return frozen;
@@ -200,7 +239,7 @@ async function renderProviderParityPrompt(
   });
 }
 
-describe("tool prompt compiler C00", () => {
+describe("tool prompt compiler C00-C01", () => {
   it("keeps legacy as the default and rejects unknown profile names", () => {
     expect(DEFAULT_CONFIG.injection.toolPromptProfile).toBe("legacy");
     expect(parseToolPromptProfile("capability-pruned")).toBe("capability-pruned");
@@ -218,38 +257,23 @@ describe("tool prompt compiler C00", () => {
     ]);
   });
 
-  it("keeps every C00 compiled profile byte-equivalent to each frozen renderer", () => {
-    const memory = renderTdaiMemoryToolsBlock("http://127.0.0.1:8096", "session-1", "space-1");
-    const skill = renderSkillToolsBlock("http://127.0.0.1:8096", false, "session-1", "space-1");
-    const knowledge = renderKnowledgeToolsBlock([
-      {
-        knowledge_id: "wiki-1",
-        type: "wiki",
-        name: "Architecture decisions",
-        summary: "Why the proxy uses stable injection anchors",
-        service_url: "http://127.0.0.1:8421/v3",
-        team_id: "team-1",
-        user_id: null,
-        created_at: "2026-08-28T00:00:00.000Z",
-        updated_at: "2026-08-28T00:00:00.000Z",
-      },
-    ], "space-1", { sessionKey: "session-1" });
-    expect(knowledge).not.toBeNull();
+  it("keeps legacy frozen while every later profile inherits the C01 correction set", () => {
+    const blocks = renderProductionFamilyBlocks(true);
+    const correctedByFamily = new Map<string, string>();
 
     for (const profile of COMPILED_PROFILES) {
-      for (const [family, content] of [
-        ["memory", memory],
-        ["skill", skill],
-        ["knowledge", knowledge!],
-      ] as const) {
+      for (const [family, content] of Object.entries(blocks) as Array<
+        ["memory" | "skill" | "knowledge", string]
+      >) {
+        const surface = family === "memory"
+          ? "memory-tools"
+          : family === "skill"
+            ? "skill-tools"
+            : "knowledge-tools";
         const compiled = compileToolPrompt({
           profile,
           family,
-          surface: family === "memory"
-            ? "memory-tools"
-            : family === "skill"
-              ? "skill-tools"
-              : "knowledge-tools",
+          surface,
           legacyUnits: [{
             id: `${family}.legacy-body`,
             kind: "legacy-body",
@@ -257,12 +281,59 @@ describe("tool prompt compiler C00", () => {
           }],
           capabilitySignature: CAPABILITY_SIGNATURE,
         });
-        expect(compiled.content).toBe(content);
         expect(compiled.units).toHaveLength(1);
         expect(compiled.contractIds.length).toBeGreaterThan(0);
         expect(compiled.contractIds).toEqual(compiled.specIds);
+
+        if (profile === "contract-corrected") {
+          correctedByFamily.set(family, compiled.content);
+          if (family === "memory") expect(compiled.content).toBe(content);
+          else expect(compiled.content).not.toBe(content);
+        } else {
+          expect(compiled.content).toBe(correctedByFamily.get(family));
+        }
       }
     }
+
+    const correctedSkill = correctedByFamily.get("skill") ?? "";
+    expect(correctedSkill).toContain('<tool name="skill_view_by_id">');
+    expect(correctedSkill).toContain('<tool name="skill_files_download">');
+    expect(correctedSkill.match(/"expected_version": 3/g)).toHaveLength(5);
+    expect(correctedSkill).toContain("按 BM25 关键词检索匹配项");
+    expect(correctedSkill).toContain("物理删除该 skill 的全部版本");
+    expect(correctedSkill).toContain("skill_id / version 不存在");
+    expect(correctedSkill).not.toContain("proxy 会返回原始字节直接写入文件");
+    expect(correctedSkill).not.toContain("软删（archived；不递增版本）");
+
+    const correctedKnowledge = correctedByFamily.get("knowledge") ?? "";
+    expect(correctedKnowledge).toContain("node（includeCode=true）");
+    expect(correctedKnowledge).toContain("search 只按符号名定位");
+  });
+
+  it("keeps the C01 correction inventory unique and source-backed", () => {
+    const ids = CONTRACT_CORRECTIONS.map((correction) => correction.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const correction of CONTRACT_CORRECTIONS) {
+      expect(correction.evidence.length).toBeGreaterThan(0);
+      expect(correction.from).not.toBe(correction.to);
+    }
+  });
+
+  it("adds the required tenant header to the C01 memory guide only", () => {
+    const corrected = compileToolPrompt({
+      profile: "contract-corrected",
+      family: "memory",
+      surface: "memory-guide",
+      legacyUnits: [{
+        id: "memory-guide.policy",
+        kind: "policy",
+        content: MEMORY_TOOLS_GUIDE,
+      }],
+      capabilitySignature: CAPABILITY_SIGNATURE,
+    }).content;
+
+    expect(MEMORY_TOOLS_GUIDE).not.toContain("x-tdai-service-id: <space-id>");
+    expect(corrected).toContain("x-tdai-service-id: <space-id>");
   });
 
   it("is deterministic for bytes, units, lineage, and audit hash", () => {
@@ -280,15 +351,17 @@ describe("tool prompt compiler C00", () => {
     expect(compileToolPrompt(input)).toEqual(compileToolPrompt(input));
   });
 
-  it("keeps provider-visible bytes equal for every agent profile, fallback, and task shape", async () => {
+  it("keeps one provider-visible C01 result across descendants for every agent and task shape", async () => {
     const log = vi.spyOn(console, "log").mockImplementation(() => undefined);
     const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
     try {
       for (const agent of AGENT_PARITY_CASES) {
         for (const withTask of [false, true]) {
           const legacy = await renderProviderParityPrompt(agent, "legacy", withTask);
-          for (const profile of COMPILED_PROFILES) {
-            expect(await renderProviderParityPrompt(agent, profile, withTask)).toEqual(legacy);
+          const corrected = await renderProviderParityPrompt(agent, "contract-corrected", withTask);
+          expect(corrected).not.toEqual(legacy);
+          for (const profile of COMPILED_PROFILES.slice(1)) {
+            expect(await renderProviderParityPrompt(agent, profile, withTask)).toEqual(corrected);
           }
         }
       }
