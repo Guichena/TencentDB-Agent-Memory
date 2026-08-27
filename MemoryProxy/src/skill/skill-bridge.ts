@@ -137,7 +137,7 @@ const TAG = "[skill-bridge]";
 
 // Subpaths the bridge will forward. Keep this allowlist tight on purpose so we
 // can audit exactly which core endpoints are reachable from the LLM.
-const ALLOWED_SUBPATHS = new Set<string>([
+export const SKILL_BRIDGE_ALLOWED_SUBPATHS = [
   "search",
   "list",
   "get",
@@ -155,17 +155,21 @@ const ALLOWED_SUBPATHS = new Set<string>([
   // agent 侧 tool 名叫 skill_extract, bridge 转发到 core force-archive
   // (不依赖 messages, core 从 conversation buffer 拿)。见下方 sub === "extract" 分支。
   "extract",
-]);
+] as const;
+
+const ALLOWED_SUBPATHS = new Set<string>(SKILL_BRIDGE_ALLOWED_SUBPATHS);
 
 /** Write subpaths — rejected when `allowLlmWrite=false`. */
-const WRITE_SUBPATHS = new Set<string>([
+export const SKILL_BRIDGE_WRITE_SUBPATHS = [
   "create",
   "update",
   "patch",
   "delete",
   "files/write",
   "files/remove",
-]);
+] as const;
+
+const WRITE_SUBPATHS = new Set<string>(SKILL_BRIDGE_WRITE_SUBPATHS);
 
 // Note: 曾经有 RESET_EXTRACT_SUBPATHS 用来在 write 成功或 extract 完成后
 // 清零 proxy 侧 buffer 计数器 (老链路 KvExtractStore)。老链路删除后计数器

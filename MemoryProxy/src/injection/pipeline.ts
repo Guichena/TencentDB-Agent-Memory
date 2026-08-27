@@ -275,6 +275,7 @@ export class InjectionPipeline {
     sessionId: string | null,
   ): Promise<ContextBlock[]> {
     const strategy = hook.cacheStrategy ?? "none";
+    const cacheHookId = hook.cacheIdentity ?? hook.id;
 
     // Fast path: no cache configured, or no session_id available — legacy.
     if (!this.hookCacheRepo || !sessionId || strategy === "none") {
@@ -282,7 +283,7 @@ export class InjectionPipeline {
     }
 
     if (strategy === "session_init") {
-      const cached = await this.hookCacheRepo.get(spaceId, userId, agentSource, sessionId, hook.id);
+      const cached = await this.hookCacheRepo.get(spaceId, userId, agentSource, sessionId, cacheHookId);
       if (cached !== null) {
         console.log(`[hook-cache] session=${sessionId} hook=${hook.id} hit blocks=${cached.length}`);
         return cached;
@@ -303,7 +304,7 @@ export class InjectionPipeline {
       const readOnly = ctx.metadata.readOnly === true;
       if (fresh.length > 0 && !readOnly) {
         try {
-          await this.hookCacheRepo.put(spaceId, userId, agentSource, sessionId, hook.id, fresh);
+          await this.hookCacheRepo.put(spaceId, userId, agentSource, sessionId, cacheHookId, fresh);
           console.log(`[hook-cache] session=${sessionId} hook=${hook.id} miss → self-heal put (blocks=${fresh.length})`);
         } catch (err) {
           console.warn(
@@ -320,7 +321,7 @@ export class InjectionPipeline {
     }
 
     // strategy === "hybrid"
-    const cached = await this.hookCacheRepo.get(spaceId, userId, agentSource, sessionId, hook.id) ?? [];
+    const cached = await this.hookCacheRepo.get(spaceId, userId, agentSource, sessionId, cacheHookId) ?? [];
     const fresh = await hook.execute(ctx);
     if (cached.length === 0) return fresh;
     if (fresh.length === 0) return cached;

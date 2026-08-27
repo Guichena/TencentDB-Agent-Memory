@@ -36,12 +36,17 @@ import {
   type ListingResult,
 } from "../../skill/core-client.js";
 import type { CoreSkillConfig } from "../../types.js";
+import { compileToolPrompt } from "../tool-prompt/compiler.js";
+import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
+import type { ToolPromptProfile } from "../tool-prompt/types.js";
 
 const TAG = "[skill-injector]";
 
 export interface SkillInjectorConfig {
   /** Core skill client config; passed to `getCoreSkillClient(config)`. */
   coreSkill: CoreSkillConfig;
+  toolPromptProfile?: ToolPromptProfile;
+  capabilitySignature?: string;
 }
 
 /**
@@ -79,6 +84,16 @@ const SKILL_LISTING_HEADER =
 const SKILL_LISTING_FOOTER =
   "\nOnly proceed without loading a skill if genuinely none are relevant to the task.";
 
+const SKILL_LISTING_PREFIX = [
+  SKILL_LISTING_HEADER,
+  "以下是你（当前 agent）自带的云端 skill 列表。这些 skill 存储在你的 agent 名下，",
+  "优先使用它们完成任务。如果你觉得自带的 skill 不够，可以用 skill_search 工具",
+  "在团队的 skill 库中检索更多（跨 agent 共享）。",
+  "",
+  "**重要：这些 skill 存储在云端，不能使用 read_file / tool_use 直接访问，\n必须用 Bash 执行 curl 调用上方 <skill_tools> 块中的 skill-bridge 工具。**",
+  "",
+].join("\n");
+
 /**
  * Wrap the pre-rendered `<available_skills>` listing from plugin into a
  * context block, with additional instructions about skill-bridge access.
@@ -90,18 +105,37 @@ const SKILL_LISTING_FOOTER =
  *   3. `<available_skills>` listing (verbatim from core).
  *   4. SKILL_LISTING_FOOTER — "only skip if genuinely nothing matches".
  */
-export function wrapAvailableSkillsBlock(listing: string): string {
-  return [
-    SKILL_LISTING_HEADER,
-    "以下是你（当前 agent）自带的云端 skill 列表。这些 skill 存储在你的 agent 名下，",
-    "优先使用它们完成任务。如果你觉得自带的 skill 不够，可以用 skill_search 工具",
-    "在团队的 skill 库中检索更多（跨 agent 共享）。",
-    "",
-    "**重要：这些 skill 存储在云端，不能使用 read_file / tool_use 直接访问，\n必须用 Bash 执行 curl 调用上方 <skill_tools> 块中的 skill-bridge 工具。**",
-    "",
-    listing,
-    SKILL_LISTING_FOOTER,
-  ].join("\n");
+export function wrapAvailableSkillsBlock(
+  listing: string,
+  profile: ToolPromptProfile = "legacy",
+  capabilitySignature = "unconfigured",
+): string {
+  const legacyContent = `${SKILL_LISTING_PREFIX}${listing}\n${SKILL_LISTING_FOOTER}`;
+  if (profile === "legacy") return legacyContent;
+  return compileToolPrompt({
+    profile,
+    family: "skill",
+    surface: "skill-listing",
+    legacyUnits: [
+      {
+        id: "skill-listing.guidance-prefix",
+        kind: "policy",
+        content: SKILL_LISTING_PREFIX,
+      },
+      {
+        id: "skill-listing.dynamic-assets",
+        kind: "dynamic-assets",
+        content: listing,
+        sourceSpecIds: [],
+      },
+      {
+        id: "skill-listing.guidance-suffix",
+        kind: "policy",
+        content: `\n${SKILL_LISTING_FOOTER}`,
+      },
+    ],
+    capabilitySignature,
+  }).content;
 }
 
 /**
@@ -157,12 +191,19 @@ export class SkillInjector implements InjectionHook {
   description = "Inject agent-owned cloud skills via /v3/skill/listing before <agent_skills>.";
   /** Listing result is stable for the session. */
   cacheStrategy: CacheStrategy = "session_init";
+  cacheIdentity?: string;
 
   constructor(
     private config: SkillInjectorConfig,
     /** Optional override (tests). */
     private clientOverride?: CoreSkillClient,
-  ) {}
+  ) {
+    this.cacheIdentity = toolPromptCacheIdentity(
+      this.id,
+      config.toolPromptProfile ?? "legacy",
+      config.capabilitySignature ?? "unconfigured",
+    );
+  }
 
   /**
    * Live-path execute (cache-miss self-heal).
@@ -285,7 +326,11 @@ export class SkillInjector implements InjectionHook {
     const listing = result.listing;
     if (!listing || listing.includes("(none)")) return [];
 
-    const content = wrapAvailableSkillsBlock(listing);
+    const content = wrapAvailableSkillsBlock(
+      listing,
+      this.config.toolPromptProfile ?? "legacy",
+      this.config.capabilitySignature ?? "unconfigured",
+    );
     return [{
       type: "text",
       content,

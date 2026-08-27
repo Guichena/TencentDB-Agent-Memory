@@ -6,6 +6,9 @@ import { getTdaiIdentity } from "../../tdai/identity.js";
 import type { CoreSkillConfig } from "../../types.js";
 import { getMetadataClient } from "../../meta/client.js";
 import { resolveFixedAssetCtxs, type FixedAssetCtx } from "./tdai-fixed-asset.js";
+import { compileToolPrompt } from "../tool-prompt/compiler.js";
+import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
+import type { ToolPromptProfile } from "../tool-prompt/types.js";
 
 /**
  * L2/L3 注入（按 openclaw / hermes 官方做法重构）：
@@ -30,6 +33,7 @@ export class TdaiProfileMemoryInjector implements InjectionHook {
   description = "Inject TDAI L3 (persona) + L2 scene index (path-only, agent reads via tool)";
   /** L2/L3 profile snapshot is injected once after session registration, like skill listing. */
   cacheStrategy: CacheStrategy = "session_init";
+  cacheIdentity?: string;
 
   /**
    * @param baseConfig  starter TdaiClient config; per-request `serviceId` will
@@ -41,7 +45,15 @@ export class TdaiProfileMemoryInjector implements InjectionHook {
   constructor(
     private baseConfig: TdaiMemoryConfig,
     private coreSkillCfg: Pick<CoreSkillConfig, "endpoint" | "serviceToken" | "serviceId" | "timeoutMs"> | null = null,
-  ) {}
+    private toolPromptProfile: ToolPromptProfile = "legacy",
+    private capabilitySignature = "unconfigured",
+  ) {
+    this.cacheIdentity = toolPromptCacheIdentity(
+      this.id,
+      this.toolPromptProfile,
+      this.capabilitySignature,
+    );
+  }
 
   async execute(ctx: AgentContext): Promise<ContextBlock[]> {
     const caps = ctx.metadata.custom?.assetCapabilities as { chat_memory?: boolean } | undefined;
@@ -79,13 +91,26 @@ export class TdaiProfileMemoryInjector implements InjectionHook {
     // 对每个 agent 独立拉 L3 + L2 索引（不读 L2 全文）
     const groups = await Promise.all(ctxs.map((c) => loadAgentProfile(client, c)));
 
+    const guide = this.toolPromptProfile === "legacy"
+      ? MEMORY_TOOLS_GUIDE
+      : compileToolPrompt({
+          profile: this.toolPromptProfile,
+          family: "memory",
+          surface: "memory-guide",
+          legacyUnits: [{
+            id: "memory-guide.policy",
+            kind: "policy",
+            content: MEMORY_TOOLS_GUIDE,
+          }],
+          capabilitySignature: this.capabilitySignature,
+        }).content;
     return [renderTdaiProfileMemoryBlock(groups.map((group) => ({
       agentName: group.ctx.agentName,
       agentId: group.ctx.agentId,
       isSelf: group.ctx.isSelf,
       l3Content: group.l3?.content,
       l2Entries: group.l2Entries,
-    })))];
+    })), guide)];
   }
 }
 
@@ -98,12 +123,15 @@ export interface TdaiProfileRenderGroup {
 }
 
 /** Production renderer shared by the live injector and fixture-backed evals. */
-export function renderTdaiProfileMemoryBlock(groups: TdaiProfileRenderGroup[]): ContextBlock {
+export function renderTdaiProfileMemoryBlock(
+  groups: TdaiProfileRenderGroup[],
+  guide = MEMORY_TOOLS_GUIDE,
+): ContextBlock {
   const populated = groups.filter((group) => group.l3Content || group.l2Entries.length > 0);
   if (populated.length === 0) {
     return {
       type: "text",
-      content: MEMORY_TOOLS_GUIDE,
+      content: guide,
       metadata: { source: "tdai-profile-memory-injector", agentCount: 0, l3Count: 0, l2Count: 0, mode: "tools-only" },
     };
   }
@@ -133,7 +161,7 @@ export function renderTdaiProfileMemoryBlock(groups: TdaiProfileRenderGroup[]): 
     }
     lines.push("</agent>");
   }
-  lines.push("</tdai_profile_memory>", "", MEMORY_TOOLS_GUIDE);
+  lines.push("</tdai_profile_memory>", "", guide);
   return {
     type: "text",
     content: lines.join("\n"),

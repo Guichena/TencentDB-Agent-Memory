@@ -37,6 +37,9 @@ import type {
   PrewarmInput,
 } from "../types.js";
 import { HOOK_PRIORITY } from "../types.js";
+import { compileToolPrompt } from "../tool-prompt/compiler.js";
+import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
+import type { ToolPromptProfile } from "../tool-prompt/types.js";
 
 export interface SkillToolsInjectorConfig {
   /**
@@ -50,6 +53,8 @@ export interface SkillToolsInjectorConfig {
    * 显式设为 true 后注入全部 10 个工具。
    */
   allowLlmWrite?: boolean;
+  toolPromptProfile?: ToolPromptProfile;
+  capabilitySignature?: string;
 }
 
 /**
@@ -199,8 +204,15 @@ export class SkillToolsInjector implements InjectionHook {
   description = "Inject the static <skill_tools> curl-recipe block.";
   /** Block content depends only on proxy base URL — fully session-static. */
   cacheStrategy: CacheStrategy = "session_init";
+  cacheIdentity?: string;
 
-  constructor(private config: SkillToolsInjectorConfig) {}
+  constructor(private config: SkillToolsInjectorConfig) {
+    this.cacheIdentity = toolPromptCacheIdentity(
+      this.id,
+      config.toolPromptProfile ?? "legacy",
+      config.capabilitySignature ?? "unconfigured",
+    );
+  }
 
   async execute(ctx: AgentContext): Promise<ContextBlock[]> {
     const caps = ctx.metadata.custom?.assetCapabilities as { skill?: boolean } | undefined;
@@ -231,7 +243,21 @@ export class SkillToolsInjector implements InjectionHook {
       }
     }
 
-    const content = renderSkillToolsBlock(this.config.proxyBaseUrl, allowLlmWrite, sessionId, spaceId);
+    const profile = this.config.toolPromptProfile ?? "legacy";
+    const legacyContent = renderSkillToolsBlock(this.config.proxyBaseUrl, allowLlmWrite, sessionId, spaceId);
+    const content = profile === "legacy"
+      ? legacyContent
+      : compileToolPrompt({
+          profile,
+          family: "skill",
+          surface: "skill-tools",
+          legacyUnits: [{
+            id: "skill-tools.legacy-body",
+            kind: "legacy-body",
+            content: legacyContent,
+          }],
+          capabilitySignature: this.config.capabilitySignature ?? "unconfigured",
+        }).content;
     return [{
       type: "text",
       content,

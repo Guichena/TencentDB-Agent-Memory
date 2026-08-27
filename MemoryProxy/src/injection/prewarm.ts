@@ -141,9 +141,10 @@ export async function prewarmAll(
   // `totalBudget` so a single hang can't starve siblings (Promise.allSettled
   // ensures we observe all settlements regardless).
   const runs = targets.map(async (hook) => {
+    const cacheHookId = hook.cacheIdentity ?? hook.id;
     try {
       if (typeof hook.prewarm !== "function") {
-        return { hookId: hook.id, status: "skipped" as const, reason: "no prewarm() implemented" };
+        return { hookId: hook.id, cacheHookId, status: "skipped" as const, reason: "no prewarm() implemented" };
       }
       const blocks = await withTimeout(
         Promise.resolve(hook.prewarm(input)),
@@ -152,12 +153,13 @@ export async function prewarmAll(
       );
       const arr: ContextBlock[] = Array.isArray(blocks) ? blocks : [];
       if (arr.length === 0) {
-        return { hookId: hook.id, status: "skipped" as const, reason: "empty blocks" };
+        return { hookId: hook.id, cacheHookId, status: "skipped" as const, reason: "empty blocks" };
       }
-      return { hookId: hook.id, status: "ok" as const, blocks: arr };
+      return { hookId: hook.id, cacheHookId, status: "ok" as const, blocks: arr };
     } catch (err) {
       return {
         hookId: hook.id,
+        cacheHookId,
         status: "error" as const,
         reason: err instanceof Error ? err.message : String(err),
       };
@@ -189,11 +191,11 @@ export async function prewarmAll(
       continue;
     }
     const r = s.value as
-      | { hookId: string; status: "ok"; blocks: ContextBlock[] }
-      | { hookId: string; status: "skipped"; reason: string }
-      | { hookId: string; status: "error"; reason: string };
+      | { hookId: string; cacheHookId: string; status: "ok"; blocks: ContextBlock[] }
+      | { hookId: string; cacheHookId: string; status: "skipped"; reason: string }
+      | { hookId: string; cacheHookId: string; status: "error"; reason: string };
     if (r.status === "ok") {
-      okEntries.push({ hookId: r.hookId, blocks: r.blocks });
+      okEntries.push({ hookId: r.cacheHookId, blocks: r.blocks });
       cachedHookIds.push(r.hookId);
     } else {
       skipped.push({ hookId: r.hookId, reason: r.reason });

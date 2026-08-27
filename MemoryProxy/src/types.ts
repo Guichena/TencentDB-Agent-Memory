@@ -1,5 +1,7 @@
 /** Shared type definitions for context-proxy. */
 
+import type { ToolPromptProfile } from "./injection/tool-prompt/types.js";
+
 /**
  * Optional private forwarding extension config.
  *
@@ -576,6 +578,8 @@ export interface MemCommandConfig {
 export interface InjectionConfig {
   enabled: boolean;
   injectors: string[];  // List of injector names to enable (e.g. ["skill", "knowledge", "tdai-memory"])
+  /** Static tool-description profile. Defaults to the frozen production renderer. */
+  toolPromptProfile: ToolPromptProfile;
   /**
    * 对外统一 gateway 地址。LLM 生成的 curl 示例（<skill_tools> /
    * <tdai_memory_tools> 段里嵌的路径）都以这个 URL 为 base。
@@ -819,6 +823,7 @@ export interface RawYamlConfig {
     enabled?: boolean;
     endpoint?: string;
     injectors?: string[];
+    toolPromptProfile?: ToolPromptProfile;
     externalGatewayUrl?: string;
     assetReflection?: {
       markerOptIn?: boolean;
