@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import { parseCurlCommand } from "../../eval/tool-prompt-bench/protocol-harness.js";
 import { DEFAULT_CONFIG } from "../config.js";
 import type { HookCacheEntry, HookCacheRepo } from "../db/hookCacheRepo.js";
 import { AnthropicAdapter } from "../injection/adapters/anthropic.js";
@@ -24,6 +25,7 @@ import {
   compileToolPrompt,
   CONTRACT_CORRECTIONS,
   coordinateToolPromptSurface,
+  coordinateToolPromptSurfaceFromCapabilitySignature,
   getRuntimeToolContracts,
   getToolPromptProfileLineage,
   parseToolPromptProfile,
@@ -239,7 +241,7 @@ async function renderProviderParityPrompt(
   });
 }
 
-describe("tool prompt compiler C00-C01", () => {
+describe("tool prompt compiler C00-C02", () => {
   it("keeps legacy as the default and rejects unknown profile names", () => {
     expect(DEFAULT_CONFIG.injection.toolPromptProfile).toBe("legacy");
     expect(parseToolPromptProfile("capability-pruned")).toBe("capability-pruned");
@@ -257,9 +259,10 @@ describe("tool prompt compiler C00-C01", () => {
     ]);
   });
 
-  it("keeps legacy frozen while every later profile inherits the C01 correction set", () => {
+  it("keeps legacy frozen and isolates the C01 and C02 renderer boundaries", () => {
     const blocks = renderProductionFamilyBlocks(true);
     const correctedByFamily = new Map<string, string>();
+    const compactByFamily = new Map<string, string>();
 
     for (const profile of COMPILED_PROFILES) {
       for (const [family, content] of Object.entries(blocks) as Array<
@@ -281,16 +284,20 @@ describe("tool prompt compiler C00-C01", () => {
           }],
           capabilitySignature: CAPABILITY_SIGNATURE,
         });
-        expect(compiled.units).toHaveLength(1);
         expect(compiled.contractIds.length).toBeGreaterThan(0);
         expect(compiled.contractIds).toEqual(compiled.specIds);
 
         if (profile === "contract-corrected") {
+          expect(compiled.units).toHaveLength(1);
           correctedByFamily.set(family, compiled.content);
           if (family === "memory") expect(compiled.content).toBe(content);
           else expect(compiled.content).not.toBe(content);
+        } else if (profile === "protocol-compact") {
+          compactByFamily.set(family, compiled.content);
+          expect(compiled.content).not.toBe(correctedByFamily.get(family));
+          expect(compiled.units).toHaveLength(family === "memory" ? 3 : 1);
         } else {
-          expect(compiled.content).toBe(correctedByFamily.get(family));
+          expect(compiled.content).toBe(compactByFamily.get(family));
         }
       }
     }
@@ -308,6 +315,23 @@ describe("tool prompt compiler C00-C01", () => {
     const correctedKnowledge = correctedByFamily.get("knowledge") ?? "";
     expect(correctedKnowledge).toContain("node（includeCode=true）");
     expect(correctedKnowledge).toContain("search 只按符号名定位");
+
+    const compactMemory = compactByFamily.get("memory") ?? "";
+    const compactSkill = compactByFamily.get("skill") ?? "";
+    const compactKnowledge = compactByFamily.get("knowledge") ?? "";
+    const combined = `${compactSkill}\n${compactKnowledge}\n${compactMemory}`;
+    expect(combined.match(/## 统一工具调用协议/g)).toHaveLength(1);
+    expect(combined.match(/canonical form:/g)).toHaveLength(1);
+    expect(combined.match(/curl -sSk -X POST/g)).toHaveLength(1);
+    expect(compactMemory).toContain("endpoint-base: http://127.0.0.1:8096/memory-bridge/v3");
+    expect(compactMemory).toContain("path: /atomic/search");
+    expect(compactMemory).not.toContain("## 完整示例");
+    expect(compactSkill).toContain("endpoint-base: http://127.0.0.1:8096/skill-bridge/v3/skill");
+    expect(compactSkill).toContain("path: /get-by-name");
+    expect(compactSkill).not.toContain("错误处理：响应是");
+    expect(compactKnowledge).toContain('<tool name="knowledge_tools_list">');
+    expect(compactKnowledge).toContain("path: /tools/call");
+    expect(compactKnowledge).not.toContain("### Step 1:");
   });
 
   it("keeps the C01 correction inventory unique and source-backed", () => {
@@ -344,14 +368,94 @@ describe("tool prompt compiler C00-C01", () => {
       legacyUnits: [{
         id: "memory-tools.legacy-body",
         kind: "legacy-body" as const,
-        content: "<tdai_memory_tools>frozen</tdai_memory_tools>",
+        content: renderTdaiMemoryToolsBlock(
+          "http://127.0.0.1:8096",
+          "session-parity",
+          "space-parity",
+        ),
       }],
       capabilitySignature: CAPABILITY_SIGNATURE,
     };
     expect(compileToolPrompt(input)).toEqual(compileToolPrompt(input));
   });
 
-  it("keeps one provider-visible C01 result across descendants for every agent and task shape", async () => {
+  it("hosts the shared protocol exactly once for every non-empty family mask", () => {
+    const blocks = renderProductionFamilyBlocks();
+    for (let mask = 1; mask < 8; mask += 1) {
+      const active = {
+        memory: Boolean(mask & 1),
+        skill: Boolean(mask & 2),
+        knowledge: Boolean(mask & 4),
+      };
+      const signature = buildCapabilitySignature({
+        ...active,
+        wiki: active.knowledge,
+        codeGraph: active.knowledge,
+        skillWrite: false,
+        skillExtract: false,
+      });
+      const output = (Object.entries(active) as Array<
+        ["memory" | "skill" | "knowledge", boolean]
+      >)
+        .filter(([, enabled]) => enabled)
+        .map(([family]) => compileToolPrompt({
+          profile: "protocol-compact",
+          family,
+          surface: family === "memory"
+            ? "memory-tools"
+            : family === "skill"
+              ? "skill-tools"
+              : "knowledge-tools",
+          legacyUnits: [{
+            id: `${family}.legacy-body`,
+            kind: "legacy-body",
+            content: blocks[family],
+          }],
+          capabilitySignature: signature,
+        }).content)
+        .join("\n");
+      expect(output.match(/## 统一工具调用协议/g)).toHaveLength(1);
+      expect(output.match(/canonical form:/g)).toHaveLength(1);
+    }
+  });
+
+  it("composes a compact contract-derived card into the safe curl parser form", () => {
+    const memory = renderProductionFamilyBlocks().memory;
+    const signature = buildCapabilitySignature({
+      memory: true,
+      skill: false,
+      knowledge: false,
+      wiki: false,
+      codeGraph: false,
+      skillWrite: false,
+      skillExtract: false,
+    });
+    const compact = compileToolPrompt({
+      profile: "protocol-compact",
+      family: "memory",
+      surface: "memory-tools",
+      legacyUnits: [{ id: "memory.legacy-body", kind: "legacy-body", content: memory }],
+      capabilitySignature: signature,
+    }).content;
+    const base = compact.match(/^endpoint-base: (.+)$/m)?.[1];
+    const path = compact.match(/<tool name="tdai_memory_search">\n    path: (.+)$/m)?.[1];
+    expect(base).toBe("http://127.0.0.1:8096/memory-bridge/v3");
+    expect(path).toBe("/atomic/search");
+
+    const parsed = parseCurlCommand(
+      `curl -sSk -X POST '${base}${path}' -H 'content-type: application/json' `
+        + "-H 'x-tdai-service-id: space-parity' -H 'x-conversation-id: session-parity' "
+        + `-d '{"query":"历史偏好","limit":5}'`,
+      "http://127.0.0.1:8096",
+    );
+    expect(parsed).toMatchObject({
+      method: "POST",
+      url: "http://127.0.0.1:8096/memory-bridge/v3/atomic/search",
+      body: { query: "历史偏好", limit: 5 },
+    });
+  });
+
+  it("keeps one provider-visible C02 result across descendants for every agent and task shape", async () => {
     const log = vi.spyOn(console, "log").mockImplementation(() => undefined);
     const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
     try {
@@ -360,8 +464,10 @@ describe("tool prompt compiler C00-C01", () => {
           const legacy = await renderProviderParityPrompt(agent, "legacy", withTask);
           const corrected = await renderProviderParityPrompt(agent, "contract-corrected", withTask);
           expect(corrected).not.toEqual(legacy);
-          for (const profile of COMPILED_PROFILES.slice(1)) {
-            expect(await renderProviderParityPrompt(agent, profile, withTask)).toEqual(corrected);
+          const compact = await renderProviderParityPrompt(agent, "protocol-compact", withTask);
+          expect(compact).not.toEqual(corrected);
+          for (const profile of COMPILED_PROFILES.slice(2)) {
+            expect(await renderProviderParityPrompt(agent, profile, withTask)).toEqual(compact);
           }
         }
       }
@@ -417,6 +523,13 @@ describe("tool prompt compiler C00-C01", () => {
       policyHost: null,
       executionGrammarHost: null,
     });
+    expect(coordinateToolPromptSurfaceFromCapabilitySignature(CAPABILITY_SIGNATURE)).toEqual({
+      activeFamilies: ["memory", "skill", "knowledge"],
+      policyHost: "memory",
+      executionGrammarHost: "memory",
+    });
+    expect(() => coordinateToolPromptSurfaceFromCapabilitySignature("unconfigured"))
+      .toThrow(/missing memory=0\|1/);
   });
 
   it("persists prewarmed candidate content under cacheIdentity while reporting the hook id", async () => {
