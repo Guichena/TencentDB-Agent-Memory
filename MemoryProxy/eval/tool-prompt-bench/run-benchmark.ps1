@@ -13,7 +13,8 @@ param(
   [ValidateSet("low", "medium", "high")]
   [string]$Verbosity = "medium",
   [string]$CodexHome = $(if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $env:USERPROFILE ".codex" }),
-  [string]$ProviderBaseUrl,
+  [string]$ProviderBaseUrl = "http://127.0.0.1:8096/codex/tool-prompt-bench/v1",
+  [string]$ProxyHealthUrl = "http://127.0.0.1:8096/health",
   [ValidateRange(10000, 1800000)]
   [int]$TimeoutMs = 180000,
   [switch]$AllowHeldOutTest,
@@ -62,15 +63,21 @@ $commonArgs = @(
   "--timeout-ms", [string]$TimeoutMs,
   "--out", $campaignRoot
 )
-if ($ProviderBaseUrl) { $commonArgs += @("--provider-base-url", $ProviderBaseUrl) }
+if ([string]::IsNullOrWhiteSpace($ProviderBaseUrl)) {
+  throw "Formal benchmark runs must use MemoryProxy. ProviderBaseUrl cannot be empty."
+}
+$commonArgs += @("--provider-base-url", $ProviderBaseUrl)
 
 Write-Host "Experiment plan only uses the existing CODEX_HOME; auth.json will not be copied."
 Write-Host "Scope=$Scope Cases=$($caseIds.Count) Repeats=$Repeats Model=$Model Reasoning=$ReasoningEffort Variant=$Variant"
 Write-Host "CODEX_HOME=$resolvedCodexHome"
+Write-Host "MemoryProxy=$ProviderBaseUrl"
 
 if ($PrepareOnly) {
   Write-Host "`nValidation command:"
   Write-Host "  $npmCommand run eval:tool-prompt:validate"
+  Write-Host "`nRequired health check:"
+  Write-Host "  Invoke-WebRequest $ProxyHealthUrl"
   Write-Host "`nCodex commands:"
   foreach ($repeat in 1..$Repeats) {
     foreach ($id in $caseIds) {
@@ -83,6 +90,15 @@ if ($PrepareOnly) {
 
 Push-Location $proxyRoot
 try {
+  try {
+    $health = Invoke-WebRequest -Uri $ProxyHealthUrl -UseBasicParsing -TimeoutSec 5
+    if ($health.StatusCode -lt 200 -or $health.StatusCode -ge 300) {
+      throw "unexpected HTTP status $($health.StatusCode)"
+    }
+  } catch {
+    throw "MemoryProxy is not healthy at $ProxyHealthUrl. Start it before the benchmark. $($_.Exception.Message)"
+  }
+
   & $npmCommand run eval:tool-prompt:validate
   if ($LASTEXITCODE -ne 0) { throw "Dataset validation failed." }
 

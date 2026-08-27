@@ -23,6 +23,8 @@ import {
   resolveCodexInvocation,
 } from "../../eval/tool-prompt-bench/codex-runner.js";
 import { aggregateScores, scoreTraceRecords } from "../../eval/tool-prompt-bench/score.js";
+import { parseArgv } from "../config.js";
+import { joinUrl } from "../guard-adapter.js";
 import type { AllowedToolAction, ArgumentRules } from "../../eval/tool-prompt-bench/schema.js";
 
 function readJsonl(path: string): unknown[] {
@@ -66,6 +68,27 @@ function bodyFromRules(
 }
 
 describe("TDAI-ToolPromptBench dataset", () => {
+  it("supports invocation-only upstream and Langfuse host overrides", () => {
+    expect(parseArgv([
+      "node",
+      "src/index.ts",
+      "--config",
+      "config.yaml",
+      "--upstream",
+      "https://chatgpt.com/backend-api/codex",
+      "--langfuse-host",
+      "http://host.docker.internal:13000",
+    ])).toMatchObject({
+      configFile: "config.yaml",
+      upstreamUrl: "https://chatgpt.com/backend-api/codex",
+      langfuseHost: "http://host.docker.internal:13000",
+    });
+    expect(joinUrl(
+      "https://chatgpt.com/backend-api/codex",
+      "/codex/tool-prompt-bench/v1/responses",
+    )).toBe("https://chatgpt.com/backend-api/codex/responses");
+  });
+
   it("contains the registered 60/40 split and family quotas", () => {
     expect(CASES).toHaveLength(100);
     expect(FIXTURES).toHaveLength(100);
