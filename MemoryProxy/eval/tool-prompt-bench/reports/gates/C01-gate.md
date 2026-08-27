@@ -5,7 +5,7 @@
 - parent integration commit: `bc904285eba817beda3bd2b35ecccf9f1d607451`
 - verified implementation commit: `1a836179c7f7d3348dc369d4b10ef7ce6a0ea49a`
 - verified artifact commit: `29eed92e226e3c838d057cd5fc70f2c049b2b8d1`
-- merge commit: `PENDING_INTEGRATION`
+- merge commit: `7e0e4e1df6e1f5f169bbd6b79192c7dc7a7ccb15`
 - scope: V0-C 运行合同纠错、源码证据清单、Prompt/Token/Hash 冻结；不含压缩、去重、选择校准、布局调整或 Capability 裁剪
 - checked at: `2026-08-28 Asia/Shanghai`
 
@@ -111,3 +111,15 @@ C01 的目标是正确性而不是省 Token。`+263` 是补齐可执行 Skill �
 ## 决策
 
 C01 通过。V0-C 只包含有源码证据的运行合同修正，Legacy parity 保持，后继 profile 递进关系正确，静态结果可复现且全部 Token/hash 已保存。允许以非 squash merge 合回 `codex/task1-code-integration`；集成主线复跑通过并补记 merge commit 后，才能创建 `codex/task1-code-c02-v1a`。
+
+## 集成主线复跑
+
+C01 已通过 merge commit `7e0e4e1df6e1f5f169bbd6b79192c7dc7a7ccb15` 以非 squash 方式合入 `codex/task1-code-integration`。合并后复跑：
+
+- `npm test`：41/41 通过。
+- `npm run eval:tool-prompt:validate`：100 case / 100 fixture 通过。
+- `npm run eval:tool-prompt:capture-c01`：成功且工作树无变化，Legacy 与 C00 的逐字节比较再次通过。
+- `npx tsc --noEmit --pretty false`：仍为 54 条既有诊断，标准化指纹仍为 `ecf5cfe9c8c0d40163fb87f5622dee3cbb688a47aa649db245e2b27e1c50f65c`，阶段相关新增诊断为 0。
+- `git diff --check`：通过。
+
+集成 Gate 通过，允许从包含本记录更新的最新集成提交创建 `codex/task1-code-c02-v1a`。
