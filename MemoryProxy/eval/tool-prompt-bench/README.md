@@ -73,7 +73,9 @@ The benchmark keeps prompt construction, protocol execution, and model execution
 
 1. `prompt-harness.ts` renders each fixture through the production `InjectionPipeline` and the production `render*Block()` functions. It does not maintain a second handwritten copy of V0.
 2. `protocol-harness.ts` parses the exact read-only curl subset used by V0, rejects shell operators, off-origin URLs, unsupported methods, and unknown endpoints, then sends a structured HTTP request to a random-port Mock Bridge. Every attempt records `intentId`, `runId`, `sessionId`, and timestamp.
-3. `codex-runner.ts` is the optional model layer. Every repeat gets a new workspace, session, Mock Bridge, `CODEX_SQLITE_HOME`, `HOME`, and `USERPROFILE`; it uses `codex exec --ephemeral --ignore-rules --ignore-user-config --json`. Authentication points to the user's single existing `CODEX_HOME` and is never copied. Benchmark configuration is supplied only through invocation-scoped overrides. Codex skill instructions are disabled, so personal skills and the user's previous task state cannot affect the comparison. The same fixed Codex version and runner configuration must be used for V0 and candidate.
+3. `codex-runner.ts` is the isolated model layer. Formal runs send the Responses request through a running MemoryProxy at `127.0.0.1:8096`; direct-to-provider runs are diagnostics only. Every repeat gets a new workspace, session, Mock Bridge, `CODEX_SQLITE_HOME`, `HOME`, and `USERPROFILE`; it uses `codex exec --ephemeral --ignore-rules --ignore-user-config --json`. Authentication points to the user's single existing `CODEX_HOME` and is never copied. Benchmark configuration is supplied only through invocation-scoped overrides. Codex skill instructions are disabled, so personal skills and the user's previous task state cannot affect the comparison. The same fixed Codex version, MemoryProxy build, and runner configuration must be used for V0 and candidate.
+
+Prompt construction and live forwarding have different responsibilities. The case-specific fixture is rendered by MemoryProxy's production `InjectionPipeline` and production `render*Block()` functions before the request reaches the live Proxy. The running Proxy keeps its own injection disabled for this route, preventing a second injection, and provides the real Codex Responses forwarding and Langfuse observation path. This isolates the Task 1 variable while still exercising MemoryProxy as the model gateway.
 
 ### Frozen model protocol
 
@@ -98,13 +100,27 @@ If a production-contract demonstration is useful, run a separate real-service sm
 
 This smoke only demonstrates the real service contract. The primary metrics continue to score tool decision and execution against the deterministic Mock fixtures; asset-generation quality and final-answer quality remain outside Task 1's KPI.
 
-Inspect an isolated run without making an LLM request:
+Preview the Docker commands that start the benchmark MemoryProxy without changing `config.yaml`:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\eval\tool-prompt-bench\start-benchmark-proxy.ps1 -PrepareOnly
+```
+
+The start script mounts the inherited config read-only. It overrides the upstream at invocation time to the official ChatGPT Codex endpoint used by the installed client and maps the container's Langfuse host to `host.docker.internal:13000`.
+
+Start MemoryProxy before any formal model run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\eval\tool-prompt-bench\start-benchmark-proxy.ps1
+```
+
+Inspect an isolated prompt without making an LLM request:
 
 ```powershell
 npm run eval:tool-prompt:codex -- --case memory-dev-preference-001 --model gpt-5.6-luna --reasoning-effort high --verbosity medium --variant V0 --repeat 1 --dry-run
 ```
 
-Run one real case through a Responses-compatible endpoint (for example the project-local MemoryProxy/Langfuse route):
+Run one real case through the required MemoryProxy route:
 
 ```powershell
 npm run eval:tool-prompt:codex -- --case memory-dev-preference-001 --model gpt-5.6-luna --reasoning-effort high --verbosity medium --variant V0 --repeat 1 --provider-base-url http://127.0.0.1:8096/codex/tool-prompt-bench/v1

@@ -187,6 +187,7 @@ export interface CliOverrides {
   host?: string;
   port?: number;
   upstreamUrl?: string;
+  langfuseHost?: string;
   logFile?: string;
   opikEnabled?: boolean;
   opikUrl?: string;
@@ -309,7 +310,7 @@ export function buildConfig(overrides: CliOverrides = {}): ProxyConfig {
     },
     langfuse: {
       enabled: yaml.langfuse?.enabled ?? DEFAULT_CONFIG.langfuse.enabled,
-      host: yaml.langfuse?.host ?? DEFAULT_CONFIG.langfuse.host,
+      host: overrides.langfuseHost ?? yaml.langfuse?.host ?? DEFAULT_CONFIG.langfuse.host,
       publicKey: yaml.langfuse?.publicKey ?? DEFAULT_CONFIG.langfuse.publicKey,
       secretKey: yaml.langfuse?.secretKey ?? DEFAULT_CONFIG.langfuse.secretKey,
       debug: yaml.langfuse?.debug ?? DEFAULT_CONFIG.langfuse.debug,
@@ -578,6 +579,10 @@ export function parseArgv(argv: string[]): CliOverrides {
         break;
       case "--upstream":
         overrides.upstreamUrl = next;
+        i++;
+        break;
+      case "--langfuse-host":
+        overrides.langfuseHost = next;
         i++;
         break;
       case "--log-file":

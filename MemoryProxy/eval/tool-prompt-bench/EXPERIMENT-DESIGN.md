@@ -129,6 +129,14 @@ Knowledge 16 条覆盖两类资产：
 
 ## 8. 每次运行如何隔离
 
+正式请求路径固定为：
+
+`benchmark runner → MemoryProxy:8096 → 官方 ChatGPT Codex 上游`
+
+模型生成的工具命令再访问本 case 独占的 Mock Bridge。正式 campaign 不允许绕过 MemoryProxy，运行脚本会先检查 `http://127.0.0.1:8096/health`，Proxy 未启动就停止。
+
+case Prompt 由 MemoryProxy 仓库中的生产 `InjectionPipeline` 和 `render*Block()` 函数渲染。运行中的 Proxy 对 benchmark route 不再做第二次注入，只负责实际 Responses 转发和 Langfuse 上报。这样既执行了本任务真正修改的生产渲染代码，也避免真实服务资产和 fixture 同时注入造成重复 Prompt。
+
 每个 `case × variant × repeat` 都创建：
 
 - 新 Codex 进程。
@@ -249,7 +257,29 @@ Prompt cache 的最终验收还要检查生产请求中首次变化的位置：�
 
 ## 14. 用户手动执行顺序
 
-所有命令从 `MemoryProxy` 目录执行。先只打印将要运行的命令，不启动 Codex：
+所有命令从 `MemoryProxy` 目录执行。
+
+先查看 MemoryProxy 的 Docker 启动命令。此命令不构建镜像，也不启动容器：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\eval\tool-prompt-bench\start-benchmark-proxy.ps1 `
+  -PrepareOnly
+```
+
+确认后启动 MemoryProxy：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\eval\tool-prompt-bench\start-benchmark-proxy.ps1
+```
+
+脚本把继承的 `config.yaml` 只读挂载进容器。YAML 保持不变，启动参数临时完成两项覆盖：
+
+- 上游使用当前官方 ChatGPT Codex endpoint，不使用旧的 `muyuan.do`。
+- 容器内的 Langfuse 地址使用 `http://host.docker.internal:13000`。
+
+Langfuse 服务未启动时，MemoryProxy 仍可用于模型实验，但不会产生可查看的 Langfuse 页面。正式报告所需的本地 trace、usage 和评分仍由 benchmark runner 保存。
+
+MemoryProxy 健康后，只打印将要运行的 benchmark 命令，不启动 Codex：
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\eval\tool-prompt-bench\run-benchmark.ps1 `
@@ -301,6 +331,7 @@ powershell -ExecutionPolicy Bypass -File .\eval\tool-prompt-bench\run-benchmark.
 
 - 数据生成物 hash 与 `dataset-manifest.json` 一致。
 - 100 条 Gold 序列全部能通过 Mock Bridge 单元测试。
+- MemoryProxy `8096/health` 正常，正式请求的 `providerBaseUrl` 指向本机 Proxy。
 - 手动 PowerShell Smoke 不再出现策略拦截。
 - 当前 Codex 登录态在运行前后保持正常，runner 产物中不存在认证文件副本。
 - Smoke 的 12 个 run 都产生 `trace.jsonl`、`evaluation.json` 和 `usage.json`。
