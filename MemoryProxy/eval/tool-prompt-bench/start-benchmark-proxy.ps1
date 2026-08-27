@@ -42,9 +42,9 @@ $runArgs += @(
   "--langfuse-host", $LangfuseHost
 )
 
-Write-Host "The inherited config remains read-only and unchanged."
-Write-Host "Official upstream override=$OfficialUpstream"
-Write-Host "Langfuse host override=$LangfuseHost"
+Write-Host "The current config is mounted read-only."
+Write-Host "Official upstream=$OfficialUpstream"
+Write-Host "Langfuse host=$LangfuseHost"
 Write-Host "Proxy URL=http://127.0.0.1:$Port"
 
 if ($PrepareOnly) {
