@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
-import { mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { get_encoding } from "tiktoken";
 import type { KnowledgeItem } from "../../src/knowledge/core-client.js";
@@ -24,6 +24,7 @@ import type {
 import {
   buildCapabilitySignature,
   compileToolPrompt,
+  CONTRACT_CORRECTIONS,
   TOOL_PROMPT_COMPILER_VERSION,
   TOOL_PROMPT_PROFILES,
   type CompiledToolPromptProfile,
@@ -31,6 +32,19 @@ import {
   type ToolPromptProfile,
   type ToolPromptSurface,
 } from "../../src/injection/tool-prompt/index.js";
+
+const requestedStage = process.argv[2]?.toUpperCase();
+if (!requestedStage || !/^C0[0-6]$/.test(requestedStage)) {
+  throw new Error("usage: capture-profile-artifacts.ts C00|C01|...|C06");
+}
+const STAGE = requestedStage;
+const STAGE_DIR = STAGE.toLowerCase();
+const expectedCompilerVersion = `${STAGE_DIR}.1`;
+if (TOOL_PROMPT_COMPILER_VERSION !== expectedCompilerVersion) {
+  throw new Error(
+    `refusing to capture ${STAGE} with compiler ${TOOL_PROMPT_COMPILER_VERSION}; expected ${expectedCompilerVersion}`,
+  );
+}
 
 const CANONICAL = {
   proxyOrigin: "http://127.0.0.1:8096",
@@ -53,7 +67,7 @@ const CAPABILITY_SIGNATURE = buildCapabilitySignature({
 });
 
 const CAPABILITY_DIR = "full-readonly";
-const OUTPUT_ROOT = resolve("eval/tool-prompt-bench/variants/c00");
+const OUTPUT_ROOT = resolve(`eval/tool-prompt-bench/variants/${STAGE_DIR}`);
 const encoding = get_encoding("o200k_base");
 
 function sha256(content: string | Uint8Array): string {
@@ -293,6 +307,133 @@ function firstChangedByte(parent: Buffer, current: Buffer): number | null {
   return parent.length === current.length ? null : length;
 }
 
+interface ArtifactManifest {
+  profile: ToolPromptProfile;
+  totalInjectionCharacters: number;
+  totalInjectionBytes: number;
+  totalInjectionTokens: number;
+  totalInjectionSha256: string;
+  effectiveSystemCharacters: number;
+  effectiveSystemBytes: number;
+  effectiveSystemTokens: number;
+  effectiveSystemSha256: string;
+  stablePrefixBytes: number;
+  firstChangedByteFromParent: number | null;
+  blocks: Array<{
+    blockId: string;
+    characters: number;
+    bytes: number;
+    tokensO200k: number;
+    promptSha256: string;
+  }>;
+}
+
+function readManifest(profile: ToolPromptProfile): ArtifactManifest {
+  const path = resolve(OUTPUT_ROOT, profile, CAPABILITY_DIR, "manifest.json");
+  return JSON.parse(readFileSync(path, "utf8")) as ArtifactManifest;
+}
+
+function assertFrozenLegacy(): void {
+  if (STAGE === "C00") return;
+  const c00Root = resolve("eval/tool-prompt-bench/variants/c00/legacy", CAPABILITY_DIR);
+  for (const filename of ["injection.txt", "prompt.txt"] as const) {
+    const frozenPath = resolve(c00Root, filename);
+    const currentPath = resolve(OUTPUT_ROOT, "legacy", CAPABILITY_DIR, filename);
+    if (!existsSync(frozenPath)) {
+      throw new Error(`cannot verify legacy parity; missing ${frozenPath}`);
+    }
+    if (!readFileSync(frozenPath).equals(readFileSync(currentPath))) {
+      throw new Error(`${STAGE} legacy ${filename} differs from frozen C00 bytes`);
+    }
+  }
+}
+
+function writeC01DiffArtifacts(sourceCommit: string, generatedAt: string): void {
+  if (STAGE !== "C01") return;
+  const legacy = readManifest("legacy");
+  const corrected = readManifest("contract-corrected");
+  if (legacy.totalInjectionSha256 === corrected.totalInjectionSha256) {
+    throw new Error("C01 contract-corrected output unexpectedly equals legacy");
+  }
+  for (const profile of TOOL_PROMPT_PROFILES.slice(2)) {
+    const inherited = readManifest(profile);
+    if (
+      inherited.totalInjectionSha256 !== corrected.totalInjectionSha256
+      || inherited.effectiveSystemSha256 !== corrected.effectiveSystemSha256
+    ) {
+      throw new Error(`${profile} does not inherit the frozen C01 renderer`);
+    }
+  }
+
+  const legacyBlocks = new Map(legacy.blocks.map((block) => [block.blockId, block]));
+  const blockDeltas = corrected.blocks.map((block) => {
+    const parent = legacyBlocks.get(block.blockId);
+    if (!parent) throw new Error(`legacy artifact lacks block ${block.blockId}`);
+    return {
+      blockId: block.blockId,
+      changed: block.promptSha256 !== parent.promptSha256,
+      parentSha256: parent.promptSha256,
+      currentSha256: block.promptSha256,
+      characterDelta: block.characters - parent.characters,
+      byteDelta: block.bytes - parent.bytes,
+      tokenDeltaO200k: block.tokensO200k - parent.tokensO200k,
+    };
+  });
+  const diff = {
+    schemaVersion: 1,
+    stage: STAGE,
+    sourceCommit,
+    compilerVersion: TOOL_PROMPT_COMPILER_VERSION,
+    generatedAt,
+    parentProfile: "legacy",
+    currentProfile: "contract-corrected",
+    firstChangedByte: corrected.firstChangedByteFromParent,
+    stablePrefixBytes: corrected.stablePrefixBytes,
+    totalInjection: {
+      parentSha256: legacy.totalInjectionSha256,
+      currentSha256: corrected.totalInjectionSha256,
+      characterDelta: corrected.totalInjectionCharacters - legacy.totalInjectionCharacters,
+      byteDelta: corrected.totalInjectionBytes - legacy.totalInjectionBytes,
+      tokenDeltaO200k: corrected.totalInjectionTokens - legacy.totalInjectionTokens,
+    },
+    effectiveSystem: {
+      parentSha256: legacy.effectiveSystemSha256,
+      currentSha256: corrected.effectiveSystemSha256,
+      characterDelta: corrected.effectiveSystemCharacters - legacy.effectiveSystemCharacters,
+      byteDelta: corrected.effectiveSystemBytes - legacy.effectiveSystemBytes,
+      tokenDeltaO200k: corrected.effectiveSystemTokens - legacy.effectiveSystemTokens,
+    },
+    blocks: blockDeltas,
+    inventoryCorrectionIds: CONTRACT_CORRECTIONS.map((correction) => correction.id),
+    appliedCorrectionIds: CONTRACT_CORRECTIONS
+      .filter((correction) => !("optionalWhenCapabilityAbsent" in correction))
+      .map((correction) => correction.id),
+  };
+  const corrections = {
+    schemaVersion: 1,
+    stage: STAGE,
+    sourceCommit,
+    compilerVersion: TOOL_PROMPT_COMPILER_VERSION,
+    generatedAt,
+    corrections: CONTRACT_CORRECTIONS.map((correction) => ({
+      ...correction,
+      appliedInCapabilityFixture: !("optionalWhenCapabilityAbsent" in correction),
+      fromBytes: Buffer.byteLength(correction.from, "utf8"),
+      toBytes: Buffer.byteLength(correction.to, "utf8"),
+      byteDelta: Buffer.byteLength(correction.to, "utf8")
+        - Buffer.byteLength(correction.from, "utf8"),
+      fromSha256: sha256(correction.from),
+      toSha256: sha256(correction.to),
+    })),
+  };
+  writeFileSync(resolve(OUTPUT_ROOT, "v0-to-v0c-diff.json"), `${JSON.stringify(diff, null, 2)}\n`, "utf8");
+  writeFileSync(
+    resolve(OUTPUT_ROOT, "contract-corrections.json"),
+    `${JSON.stringify(corrections, null, 2)}\n`,
+    "utf8",
+  );
+}
+
 async function renderProfile(
   profile: ToolPromptProfile,
 ): Promise<{ injection: string; providerSystem: string; blocks: BlockArtifactInput[] }> {
@@ -393,6 +534,10 @@ async function main(): Promise<void> {
     cwd: resolve(".."),
     encoding: "utf8",
   }).trim();
+  const generatedAt = execFileSync("git", ["show", "-s", "--format=%cI", sourceCommit], {
+    cwd: resolve(".."),
+    encoding: "utf8",
+  }).trim();
   let parentPrompt: string | null = null;
   for (const profile of TOOL_PROMPT_PROFILES) {
     const rendered = await renderProfile(profile);
@@ -405,7 +550,7 @@ async function main(): Promise<void> {
     const measuredBlocks = rendered.blocks.map(measureBlock);
     const manifest = {
       schemaVersion: 1,
-      stage: "C00",
+      stage: STAGE,
       profile,
       parentProfile: parentPrompt === null
         ? null
@@ -416,7 +561,7 @@ async function main(): Promise<void> {
       tokenizer: "o200k_base",
       componentTokenAccounting:
         "Static templates, dynamic assets, and bindings are encoded independently; tokenizer boundaries make these diagnostic components non-additive. totalInjectionTokens is authoritative.",
-      generatedAt: "2026-08-28T00:00:00.000Z",
+      generatedAt,
       totalInjectionCharacters: rendered.injection.length,
       totalInjectionBytes: injectionBytes.length,
       totalInjectionTokens: tokens(rendered.injection),
@@ -453,8 +598,10 @@ async function main(): Promise<void> {
     writeFileSync(resolve(outputDir, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
     parentPrompt = rendered.providerSystem;
   }
+  assertFrozenLegacy();
+  writeC01DiffArtifacts(sourceCommit, generatedAt);
   encoding.free();
-  console.log(`captured C00 prompt artifacts in ${OUTPUT_ROOT}`);
+  console.log(`captured ${STAGE} prompt artifacts in ${OUTPUT_ROOT}`);
 }
 
 await main();

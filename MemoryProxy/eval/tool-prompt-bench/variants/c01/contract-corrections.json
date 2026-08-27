@@ -1,0 +1,264 @@
+{
+  "schemaVersion": 1,
+  "stage": "C01",
+  "sourceCommit": "1a836179c7f7d3348dc369d4b10ef7ce6a0ea49a",
+  "compilerVersion": "c01.1",
+  "generatedAt": "2026-08-28T01:53:59+08:00",
+  "corrections": [
+    {
+      "id": "memory-guide-required-service-header",
+      "surface": "memory-guide",
+      "summary": "The guide example must carry the tenant-routing header required by the canonical memory tool recipe.",
+      "evidence": [
+        "MemoryProxy/src/memory/memory-bridge.ts#deriveSessionId",
+        "MemoryProxy/src/memory/memory-bridge.ts#spaceId",
+        "MemoryProxy/src/injection/injectors/tdai-tools-injector.ts#renderTdaiMemoryToolsBlock"
+      ],
+      "from": "  -H 'Content-Type: application/json' -H 'x-conversation-id: <sid>' \\",
+      "to": "  -H 'Content-Type: application/json' -H 'x-tdai-service-id: <space-id>' -H 'x-conversation-id: <sid>' \\",
+      "appliedInCapabilityFixture": true,
+      "fromBytes": 69,
+      "toBytes": 104,
+      "byteDelta": 35,
+      "fromSha256": "01d19236f064b7f66397c22b9881fa259f77887db459b7da9d4a48c22e1793c8",
+      "toSha256": "0767459e2fb40f59a27c35bc86322d9997ff520fdf31c4e60be21b101e8d1f7c"
+    },
+    {
+      "id": "skill-search-bm25-contract",
+      "surface": "skill-tools",
+      "summary": "The bridge drops caller mode and Core defaults this search to BM25, not semantic search.",
+      "evidence": [
+        "MemoryProxy/src/skill/skill-bridge.ts#Hard-whitelist inbound",
+        "MemoryCore/src/core/skill/skill-store.ts#requestedMode"
+      ],
+      "from": "在**你在团队中有权限访问**的 skill 中按关键词 + 语义检索匹配项",
+      "to": "在**你在团队中有权限访问**的 skill 中按 BM25 关键词检索匹配项",
+      "appliedInCapabilityFixture": true,
+      "fromBytes": 86,
+      "toBytes": 83,
+      "byteDelta": -3,
+      "fromSha256": "3a7d70a602e1ba1b694cc0c048fae1229c0b663b9f2fb4888b8ff07ae8bb3f9c",
+      "toSha256": "a869cc08915e5c6f13d4687c41b82570b331d66f8b1f88929d9fec9e0073b980"
+    },
+    {
+      "id": "skill-team-result-view-by-id",
+      "surface": "skill-tools",
+      "summary": "Team search hits need the /get path because /get-by-name is scoped to the current owner agent.",
+      "evidence": [
+        "MemoryProxy/src/skill/skill-bridge.ts#isTeamWideSearch",
+        "MemoryCore/src/gateway/skill-handlers.ts#handleGetByName",
+        "MemoryCore/src/core/skill/skill-core.ts#async get"
+      ],
+      "from": "skill_name 用 <available_skills> 里 `- name: description` 那个 name，或 skill_search 结果里的 name 字段。\n  </tool>\n\n  <tool name=\"skill_files_read\">",
+      "to": "skill_name 用 <available_skills> 里 `- name: description` 那个 name；skill_search 返回的跨 agent 结果改用 skill_view_by_id。\n  </tool>\n\n  <tool name=\"skill_view_by_id\">\n    path: {{bridge}}/get\n    body: {\"skill_id\": \"skl-xxx\", \"version\": 3, \"include_content\": true, \"include_manifest\": true}\n    use:  按 skill_id 打开 skill。用于 skill_search 返回的团队 skill，或已经知道精确 skill_id 时；version 用搜索结果中的数值，可省略以读取当前版本。返回 SKILL.md、manifest 和 version。\n  </tool>\n\n  <tool name=\"skill_files_read\">",
+      "appliedInCapabilityFixture": true,
+      "fromBytes": 162,
+      "toBytes": 582,
+      "byteDelta": 420,
+      "fromSha256": "bb877356fba3867deacd7795b758916d506f4c5a8c0c044c4922a983a7241595",
+      "toSha256": "66db20099108459e78c3e35a869b79e6b69730d740184f6365d01cc17d5bbe85"
+    },
+    {
+      "id": "skill-file-read-json-only",
+      "surface": "skill-tools",
+      "summary": "The /files/read endpoint returns a JSON envelope; raw bytes use /files/download.",
+      "evidence": [
+        "MemoryProxy/src/skill/skill-bridge.ts#files/download",
+        "MemoryCore/src/gateway/skill-schemas.ts#filesReadRequestSchema"
+      ],
+      "from": "读取单个资源文件内容。**必须先调 skill_view 拿 manifest**，从里面挑出 skill_id + path，本工具才能定位。默认返回 JSON 信封（含 base64/utf-8 编码的字节）。\n    若需下载到本地：在 curl 末尾加 -o <本地路径>，proxy 会返回原始字节直接写入文件，不进上下文。下载的脚本需 chmod +x 后再执行。\n  </tool>\n\n  <tool name=\"skill_extract\">",
+      "to": "读取单个资源文件内容。**必须先调 skill_view 或 skill_view_by_id 拿 manifest**，从里面挑出 skill_id + path，本工具才能定位。返回 JSON 信封（含 base64/utf-8 编码的内容）。\n  </tool>\n\n  <tool name=\"skill_files_download\">\n    path: {{bridge}}/files/download\n    body: {\"skill_id\": \"skl-xxx\", \"version\": 3, \"path\": \"scripts/run.sh\", \"encoding\": \"utf-8|base64\"}\n    use:  下载 manifest 中的单个资源文件并返回原始字节。version 使用 skill_view / skill_view_by_id 返回的数值；调用这个路径时在 curl 末尾加 -o <本地路径>，脚本下载后按需 chmod +x。\n  </tool>\n\n  <tool name=\"skill_extract\">",
+      "appliedInCapabilityFixture": true,
+      "fromBytes": 417,
+      "toBytes": 672,
+      "byteDelta": 255,
+      "fromSha256": "73993f0d351e78b3a9574b329786f92095dac86c4725a9dbfc3c38a24aec8fba",
+      "toSha256": "ea8f0beb47ff11208c55403e2e4da780bc20841f10dea3f3fd3bf355b0a42bd0"
+    },
+    {
+      "id": "skill-update-expected-version",
+      "surface": "skill-tools",
+      "summary": "Core update schema requires expected_version.",
+      "evidence": [
+        "MemoryCore/src/gateway/skill-schemas.ts#updateRequestSchema"
+      ],
+      "optionalWhenCapabilityAbsent": true,
+      "from": "body: {\"skill_id\": \"skl-xxx\", \"content\": \"新 SKILL.md\"}",
+      "to": "body: {\"skill_id\": \"skl-xxx\", \"expected_version\": 3, \"content\": \"新 SKILL.md\"}",
+      "appliedInCapabilityFixture": false,
+      "fromBytes": 56,
+      "toBytes": 79,
+      "byteDelta": 23,
+      "fromSha256": "ca09d9c5c77cc95e83ad4c26bdf3429cf30e2d741e6d8dbc38d22a32aa5b9225",
+      "toSha256": "5ef8ddcfee0026fdffefeb83732f5a945121d3eb7def7078958e7d61d9e394a4"
+    },
+    {
+      "id": "skill-patch-expected-version",
+      "surface": "skill-tools",
+      "summary": "Core patch schema requires expected_version.",
+      "evidence": [
+        "MemoryCore/src/gateway/skill-schemas.ts#patchRequestSchema"
+      ],
+      "optionalWhenCapabilityAbsent": true,
+      "from": "body: {\"skill_id\": \"skl-xxx\", \"old_string\": \"...\", \"new_string\": \"...\", \"replace_all\": false}",
+      "to": "body: {\"skill_id\": \"skl-xxx\", \"expected_version\": 3, \"old_string\": \"...\", \"new_string\": \"...\", \"replace_all\": false}",
+      "appliedInCapabilityFixture": false,
+      "fromBytes": 93,
+      "toBytes": 116,
+      "byteDelta": 23,
+      "fromSha256": "ec10ff66fe92bc9f8b2e0851405da7d1e28ae481b28cd7fd028da6fd798a164d",
+      "toSha256": "565335b99d2d3d4932c71e76935972826d22d0b67d5ed67402a71214618b3894"
+    },
+    {
+      "id": "skill-delete-expected-version",
+      "surface": "skill-tools",
+      "summary": "Core delete schema requires expected_version.",
+      "evidence": [
+        "MemoryCore/src/gateway/skill-schemas.ts#deleteRequestSchema"
+      ],
+      "optionalWhenCapabilityAbsent": true,
+      "from": "body: {\"skill_id\": \"skl-xxx\"}\n    use:  软删（archived；不递增版本）",
+      "to": "body: {\"skill_id\": \"skl-xxx\", \"expected_version\": 3}\n    use:  软删（archived；不递增版本）",
+      "appliedInCapabilityFixture": false,
+      "fromBytes": 78,
+      "toBytes": 101,
+      "byteDelta": 23,
+      "fromSha256": "eb3092893b736b04ceaa291784dab32c64858b109c0e0aec7ad9a0c4ac0e1573",
+      "toSha256": "1080dda47bd8fda1c7e66735a74ad9860781c0ff14162bab84c16bf880ce1467"
+    },
+    {
+      "id": "skill-delete-physical-contract",
+      "surface": "skill-tools",
+      "summary": "Delete now physically removes all versions; archived=true is retained only for wire compatibility.",
+      "evidence": [
+        "MemoryCore/src/core/skill/skill-core.ts#async delete"
+      ],
+      "optionalWhenCapabilityAbsent": true,
+      "from": "use:  软删（archived；不递增版本）",
+      "to": "use:  物理删除该 skill 的全部版本；返回 archived=true 表示删除已完成（兼容字段）",
+      "appliedInCapabilityFixture": false,
+      "fromBytes": 44,
+      "toBytes": 106,
+      "byteDelta": 62,
+      "fromSha256": "915fed7fd7acb5b877a734620ec403d845c581890501f938da6ccef64b089cbf",
+      "toSha256": "6367056e3d33aaf5ae9e461aca96282ddf271a2f735b6bbe93ffd0b7f40d1313"
+    },
+    {
+      "id": "skill-files-write-expected-version",
+      "surface": "skill-tools",
+      "summary": "Core files/write schema requires expected_version.",
+      "evidence": [
+        "MemoryCore/src/gateway/skill-schemas.ts#filesWriteRequestSchema"
+      ],
+      "optionalWhenCapabilityAbsent": true,
+      "from": "body: {\"skill_id\": \"skl-xxx\", \"files\": [{\"path\": \"scripts/x.sh\", \"content\": \"...\", \"encoding\": \"utf-8\", \"is_executable\": true}]}",
+      "to": "body: {\"skill_id\": \"skl-xxx\", \"expected_version\": 3, \"files\": [{\"path\": \"scripts/x.sh\", \"content\": \"...\", \"encoding\": \"utf-8\", \"is_executable\": true}]}",
+      "appliedInCapabilityFixture": false,
+      "fromBytes": 128,
+      "toBytes": 151,
+      "byteDelta": 23,
+      "fromSha256": "267119c7e47b10246e42b20f6c5a3ee4c1da739b8fe481802597b70ce6ea3e35",
+      "toSha256": "9dacef6365929660ac5932f9ae82e9f14e8181dab558b21808ed5e3e40229800"
+    },
+    {
+      "id": "skill-files-remove-expected-version",
+      "surface": "skill-tools",
+      "summary": "Core files/remove schema requires expected_version.",
+      "evidence": [
+        "MemoryCore/src/gateway/skill-schemas.ts#filesRemoveRequestSchema"
+      ],
+      "optionalWhenCapabilityAbsent": true,
+      "from": "body: {\"skill_id\": \"skl-xxx\", \"paths\": [\"scripts/old.sh\"]}",
+      "to": "body: {\"skill_id\": \"skl-xxx\", \"expected_version\": 3, \"paths\": [\"scripts/old.sh\"]}",
+      "appliedInCapabilityFixture": false,
+      "fromBytes": 58,
+      "toBytes": 81,
+      "byteDelta": 23,
+      "fromSha256": "24efe759aa8faf48923209e0ef7e7a06dd69451cc500f6d245b9e20cfd7042e3",
+      "toSha256": "0457a8b64b42d5045d159fe8338c7fb9be8ab2d390dabf48554df76635ad4a40"
+    },
+    {
+      "id": "skill-error-contract-details",
+      "surface": "skill-tools",
+      "summary": "Clarify the exact duplicate, stale-version, and patch error contracts.",
+      "evidence": [
+        "MemoryCore/src/gateway/skill-handlers.ts#ERROR_CODE_MAP",
+        "MemoryCore/src/core/skill/skill-core.ts#SKILL_PATCH_NOT_UNIQUE"
+      ],
+      "optionalWhenCapabilityAbsent": true,
+      "from": "- 40901 SKILL_VERSION_STALE：版本过期，先 skill_view 拿最新版本再写。\n- 42201 SKILL_NAME_DUPLICATE：同 team 重名。\n- 42202 SKILL_PATCH_NOT_UNIQUE：old_string 不唯一，传 replace_all=true。",
+      "to": "- 40901 SKILL_VERSION_STALE：expected_version 过期，先 skill_view / skill_view_by_id 拿最新 version 再写。\n- 42201 SKILL_NAME_DUPLICATE：同 team + owner agent 下重名。\n- 42202 SKILL_PATCH_NOT_UNIQUE：old_string 未找到或不唯一；仅在确实要全部替换时传 replace_all=true。",
+      "appliedInCapabilityFixture": false,
+      "fromBytes": 214,
+      "toBytes": 306,
+      "byteDelta": 92,
+      "fromSha256": "3d06236724905c5b2ff33063c91fee19855a8482c4d26d53858b3c9fa50d5849",
+      "toSha256": "07940b8d543bcc2184a2cd8291f3cbeafeeab5ce655023409e3108b469dc3b64"
+    },
+    {
+      "id": "skill-not-found-scope",
+      "surface": "skill-tools",
+      "summary": "The id-based read is team-scoped, while get-by-name is scoped to the current owner agent.",
+      "evidence": [
+        "MemoryCore/src/core/skill/skill-core.ts#async get",
+        "MemoryCore/src/gateway/skill-handlers.ts#handleGetByName"
+      ],
+      "from": "- 40401 SKILL_NOT_FOUND：skill 不存在或不属于你所在的 agent；先用 skill_search 找同类 skill。",
+      "to": "- 40401 SKILL_NOT_FOUND：skill_id / version 不存在，或 skill_view 的 name 不属于当前 agent；从 skill_search 或 <available_skills> 重新确认。",
+      "appliedInCapabilityFixture": true,
+      "fromBytes": 112,
+      "toBytes": 160,
+      "byteDelta": 48,
+      "fromSha256": "8bf527d251ad98d8c40e9a6dfb81d8b20f888a15e1596dd0cbcedd0dca11f887",
+      "toSha256": "399f4867f156144d71e8067b21eb21b7ceaddf5551d1c857b66d7f961ba447c8"
+    },
+    {
+      "id": "knowledge-node-requires-include-code",
+      "surface": "knowledge-tools",
+      "summary": "node returns source only when includeCode=true.",
+      "evidence": [
+        "MemoryKnowledge/src/routes/tools.ts#CODE_GRAPH_TOOLS node"
+      ],
+      "from": "X 在哪 → search；只要单个符号的定义 → node；",
+      "to": "符号名在哪 → search；要单个符号的完整定义 / 源码 → node（includeCode=true）；",
+      "appliedInCapabilityFixture": true,
+      "fromBytes": 61,
+      "toBytes": 102,
+      "byteDelta": 41,
+      "fromSha256": "8ee28666b1ec5967044fc6aab660295f3626b203516ee900bba3138478972ce8",
+      "toSha256": "44ca74b3637f21b7eb844c6ef82635c8e3eea5d37cbc9fc802ffeee79b3faf32"
+    },
+    {
+      "id": "knowledge-source-response-contract",
+      "surface": "knowledge-tools",
+      "summary": "Only explore and node(includeCode=true) guarantee source in their response.",
+      "evidence": [
+        "MemoryKnowledge/src/routes/tools.ts#CODE_GRAPH_TOOLS"
+      ],
+      "from": "explore / node 返回的源码是逐字的",
+      "to": "explore / node（includeCode=true）返回的源码是逐字的",
+      "appliedInCapabilityFixture": true,
+      "fromBytes": 42,
+      "toBytes": 63,
+      "byteDelta": 21,
+      "fromSha256": "6bacf2c62b512c813f2358b41d911539d194ace0e5e5dd33f02bbc7387c1cb47",
+      "toSha256": "b443766dc2fd64cdda4f4008db1327a49c26dcfce8819f17f02efc4b71b8482e"
+    },
+    {
+      "id": "knowledge-file-search-contract",
+      "surface": "knowledge-tools",
+      "summary": "search is symbol-name search; explore accepts file names.",
+      "evidence": [
+        "MemoryKnowledge/src/routes/tools.ts#CODE_GRAPH_TOOLS"
+      ],
+      "from": "- 找文件用 explore / search（query 直接支持文件名，如 \"session-manager.ts\"）；files 只用于一次性总览目录结构，每个资源每会话最多一次。",
+      "to": "- 找文件名用 explore（query 支持文件名，如 \"session-manager.ts\"）；search 只按符号名定位，files 只用于一次性总览目录结构，每个资源每会话最多一次。",
+      "appliedInCapabilityFixture": true,
+      "fromBytes": 175,
+      "toBytes": 194,
+      "byteDelta": 19,
+      "fromSha256": "e77d29ec30fa87ea01783a74d224c3e6f38c25601600d2959089bce28fa40244",
+      "toSha256": "565c9e0b1b0e3cffc9881619c606022d620b96c098357b8a66ad9c7656920e4e"
+    }
+  ]
+}
