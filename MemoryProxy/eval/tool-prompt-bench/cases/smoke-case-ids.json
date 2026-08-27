@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0",
+  "note": "A fixed subset of Dev for infrastructure smoke only. These are not additional cases.",
+  "caseIds": [
+    "memory-dev-preference-001",
+    "memory-dev-exact-quote-004",
+    "memory-dev-scene-refresh-009",
+    "skill-dev-dialogue-view-001",
+    "skill-dev-grpo-search-003",
+    "skill-dev-dialogue-files-002",
+    "knowledge-dev-entrypoint-001",
+    "knowledge-dev-wiki-rationale-005",
+    "notool-dev-humaneval-001",
+    "notool-dev-profile-l3-017",
+    "notool-dev-overlap-011",
+    "notool-dev-wrong-repo-012"
+  ]
+}

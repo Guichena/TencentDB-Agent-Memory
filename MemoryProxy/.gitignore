@@ -35,6 +35,9 @@ docs/e2e-suite/logs/
 
 # JSONL runtime artifacts anywhere in the tree
 *.jsonl
+!eval/tool-prompt-bench/cases/*.jsonl
+!eval/tool-prompt-bench/fixtures/*.jsonl
+eval/tool-prompt-bench/runs/
 
 # Unix sockets
 *.sock

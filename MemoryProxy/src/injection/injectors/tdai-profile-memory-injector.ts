@@ -79,68 +79,72 @@ export class TdaiProfileMemoryInjector implements InjectionHook {
     // 对每个 agent 独立拉 L3 + L2 索引（不读 L2 全文）
     const groups = await Promise.all(ctxs.map((c) => loadAgentProfile(client, c)));
 
-    // 全部为空 → 仍注入 tools-guide（LLM 可主动 search L1 / 读 L2）
-    const hasAnything = groups.some((g) => g.l3 || g.l2Entries.length > 0);
-    if (!hasAnything) {
-      return [{
-        type: "text",
-        content: MEMORY_TOOLS_GUIDE,
-        metadata: { source: this.id, agentCount: 0, l3Count: 0, l2Count: 0, mode: "tools-only" },
-      }];
-    }
-
-    const lines: string[] = [
-      "<tdai_profile_memory>",
-      "以下是 TDAI 为当前 agent 维护的长期工作记忆（自有 + 借入分段；L2 仅给索引，按需用工具读全文）：",
-    ];
-
-    let l2TotalCount = 0;
-    let l3Count = 0;
-    for (const g of groups) {
-      if (!g.l3 && g.l2Entries.length === 0) continue;
-      const tag = g.ctx.isSelf ? "self" : "imported_from";
-      lines.push(
-        `<agent name=${JSON.stringify(g.ctx.agentName)} role=${JSON.stringify(tag)} agent_id=${JSON.stringify(g.ctx.agentId)}>`,
-      );
-      if (g.l3?.content) {
-        l3Count++;
-        lines.push("<l3_core_memory>", truncate(g.l3.content, 6000), "</l3_core_memory>");
-      }
-      if (g.l2Entries.length > 0) {
-        lines.push("<l2_scene_index>");
-        for (const e of g.l2Entries) {
-          l2TotalCount++;
-          // 索引行：路径 + summary（如果有）；正文用 tool 拉
-          if (e.summary) {
-            lines.push(`- \`${e.path}\` — ${truncate(e.summary, 200)}`);
-          } else {
-            lines.push(`- \`${e.path}\``);
-          }
-        }
-        lines.push("</l2_scene_index>");
-      }
-      lines.push("</agent>");
-    }
-
-    lines.push("</tdai_profile_memory>");
-    // 紧跟一段 memory-tools-guide，告诉 LLM 三个工具的用法 + 调用上限
-    lines.push("");
-    lines.push(MEMORY_TOOLS_GUIDE);
-
-    return [
-      {
-        type: "text",
-        content: lines.join("\n"),
-        metadata: {
-          source: this.id,
-          agentCount: groups.length,
-          l3Count,
-          l2IndexCount: l2TotalCount,
-          mode: "index+tools",
-        },
-      },
-    ];
+    return [renderTdaiProfileMemoryBlock(groups.map((group) => ({
+      agentName: group.ctx.agentName,
+      agentId: group.ctx.agentId,
+      isSelf: group.ctx.isSelf,
+      l3Content: group.l3?.content,
+      l2Entries: group.l2Entries,
+    })))];
   }
+}
+
+export interface TdaiProfileRenderGroup {
+  agentName: string;
+  agentId: string;
+  isSelf: boolean;
+  l3Content?: string;
+  l2Entries: Array<{ path: string; summary?: string }>;
+}
+
+/** Production renderer shared by the live injector and fixture-backed evals. */
+export function renderTdaiProfileMemoryBlock(groups: TdaiProfileRenderGroup[]): ContextBlock {
+  const populated = groups.filter((group) => group.l3Content || group.l2Entries.length > 0);
+  if (populated.length === 0) {
+    return {
+      type: "text",
+      content: MEMORY_TOOLS_GUIDE,
+      metadata: { source: "tdai-profile-memory-injector", agentCount: 0, l3Count: 0, l2Count: 0, mode: "tools-only" },
+    };
+  }
+
+  const lines: string[] = [
+    "<tdai_profile_memory>",
+    "以下是 TDAI 为当前 agent 维护的长期工作记忆（自有 + 借入分段；L2 仅给索引，按需用工具读全文）：",
+  ];
+  let l2TotalCount = 0;
+  let l3Count = 0;
+  for (const group of populated) {
+    const role = group.isSelf ? "self" : "imported_from";
+    lines.push(`<agent name=${JSON.stringify(group.agentName)} role=${JSON.stringify(role)} agent_id=${JSON.stringify(group.agentId)}>`);
+    if (group.l3Content) {
+      l3Count++;
+      lines.push("<l3_core_memory>", truncate(group.l3Content, 6000), "</l3_core_memory>");
+    }
+    if (group.l2Entries.length > 0) {
+      lines.push("<l2_scene_index>");
+      for (const entry of group.l2Entries) {
+        l2TotalCount++;
+        lines.push(entry.summary
+          ? `- \`${entry.path}\` — ${truncate(entry.summary, 200)}`
+          : `- \`${entry.path}\``);
+      }
+      lines.push("</l2_scene_index>");
+    }
+    lines.push("</agent>");
+  }
+  lines.push("</tdai_profile_memory>", "", MEMORY_TOOLS_GUIDE);
+  return {
+    type: "text",
+    content: lines.join("\n"),
+    metadata: {
+      source: "tdai-profile-memory-injector",
+      agentCount: groups.length,
+      l3Count,
+      l2IndexCount: l2TotalCount,
+      mode: "index+tools",
+    },
+  };
 }
 
 function createPrewarmAgentContext(input: PrewarmInput): AgentContext {

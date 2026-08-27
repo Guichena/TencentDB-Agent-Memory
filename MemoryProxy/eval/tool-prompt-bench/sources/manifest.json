@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1.0",
+  "selectionPolicy": "Cases are selected by TDAI decision boundary and confusion pair. No source is randomly sampled or renamed mechanically.",
+  "sources": [
+    {
+      "id": "project-authored",
+      "url": "https://github.com/TencentCloud/TencentDB-Agent-Memory",
+      "revision": "97f94654280b2932c35ba4806a491999ed244cc9",
+      "license": "MIT",
+      "use": "TDAI-native cases and fixtures derived from current Memory, Skill, and Knowledge contracts"
+    },
+    {
+      "id": "human-eval",
+      "url": "https://github.com/openai/human-eval",
+      "revision": "6d43fb980f9fee3c892a914eda09951f772ad10d",
+      "license": "MIT",
+      "use": "Selected self-contained coding structures for No-Tool guardrails"
+    },
+    {
+      "id": "longmemeval-cleaned",
+      "url": "https://huggingface.co/datasets/xiaowu0162/longmemeval-cleaned",
+      "revision": "98d7416c24c778c2fee6e6f3006e7a073259d48f",
+      "license": "MIT",
+      "use": "Selected preference, knowledge-update, multi-session, and temporal memory structures"
+    },
+    {
+      "id": "skillsbench",
+      "url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "license": "Apache-2.0",
+      "use": "Selected coding tasks whose success depends on a specific workflow, reference, or executable skill asset"
+    },
+    {
+      "id": "crosscodeeval",
+      "url": "https://github.com/amazon-science/cceval",
+      "revision": "40c68d2b7ca2a8eae95d901ac80e6a540a84a53d",
+      "license": "Apache-2.0",
+      "use": "Structural template for repository-matched cross-file context and dependency questions"
+    },
+    {
+      "id": "bfcl",
+      "url": "https://github.com/ShishirPatil/gorilla",
+      "revision": "6ea57973c7a6097fd7c5915698c54c17c5b1b6c8",
+      "license": "Apache-2.0",
+      "use": "Method only: irrelevance, missing capability, first-action, and argument scoring patterns"
+    },
+    {
+      "id": "metatool",
+      "url": "https://github.com/HowieHwong/MetaTool",
+      "revision": "35e81bb7576826e980c80fed8f8c0a2b4a1e6fbb",
+      "license": "MIT",
+      "use": "Method only: tool-awareness and similar-tool confusion patterns"
+    }
+  ]
+}

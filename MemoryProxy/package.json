@@ -10,7 +10,12 @@
     "dev:config": "node --import tsx/esm --watch src/index.ts --config config.yaml",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "eval:tool-prompt:generate": "tsx eval/tool-prompt-bench/generate.ts",
+    "eval:tool-prompt:validate": "tsx eval/tool-prompt-bench/validate.ts",
+    "eval:tool-prompt:test": "vitest run src/__tests__/tool-prompt-bench.test.ts",
+    "eval:tool-prompt:score": "tsx eval/tool-prompt-bench/score.ts",
+    "eval:tool-prompt:codex": "tsx eval/tool-prompt-bench/codex-runner.ts"
   },
   "optionalDependencies": {
     "better-sqlite3": "^11.5.0",
