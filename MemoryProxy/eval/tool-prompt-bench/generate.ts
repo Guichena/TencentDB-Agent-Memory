@@ -25,7 +25,13 @@ const frozenFiles = [
   "sources/manifest.json",
 ];
 const files = Object.fromEntries(frozenFiles.map((relativePath) => {
-  const content = readFileSync(resolve(root, relativePath));
+  // Git stores every frozen benchmark input as LF via .gitattributes. Hash the
+  // same canonical bytes even if a Windows editor has temporarily written the
+  // working-tree copy with CRLF before it is staged.
+  const content = Buffer.from(
+    readFileSync(resolve(root, relativePath), "utf8").replace(/\r\n?/g, "\n"),
+    "utf8",
+  );
   return [relativePath, {
     sha256: createHash("sha256").update(content).digest("hex"),
     bytes: content.byteLength,

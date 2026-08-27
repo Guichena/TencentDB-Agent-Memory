@@ -10,16 +10,16 @@
       "bytes": 56699
     },
     "cases/smoke-case-ids.json": {
-      "sha256": "8fde2ad276b1eb8b2d79ba7735570065d1fab26b7fae9356bff913ba0b91bf05",
-      "bytes": 575
+      "sha256": "7ebfe47e70da5da0388b85360f660e144164fe9a03fe3d718c06e81259b0c784",
+      "bytes": 557
     },
     "fixtures/fixtures.jsonl": {
       "sha256": "984ad644940f8eddd3fa7edaaf2b59e9c67a1e34b8cf87e9d5edf542630c7e9d",
       "bytes": 142319
     },
     "sources/manifest.json": {
-      "sha256": "c28085e7c7bec7e775e08543797bb399bd8c3a26f2b7334a5aed30cf15787271",
-      "bytes": 2277
+      "sha256": "0e30908815ef31be29cb0299a4992c9466adb2adb78799e740fd80938b941581",
+      "bytes": 2222
     }
   }
 }
