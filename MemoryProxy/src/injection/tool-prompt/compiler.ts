@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { applyContractCorrections } from "./contract-corrections.js";
 import { applyProtocolCompaction } from "./protocol-compact.js";
+import { applySemanticCompaction } from "./semantic-compact.js";
 import { getToolPromptProfileDefinition, getToolPromptProfileLineage } from "./profiles.js";
 import { getRuntimeToolContracts } from "./runtime-contract.js";
 import { KNOWLEDGE_TOOL_PROMPT_SPECS } from "./specs/knowledge.js";
@@ -14,7 +15,7 @@ import type {
   ToolPromptSpec,
 } from "./types.js";
 
-export const TOOL_PROMPT_COMPILER_VERSION = "c02.1";
+export const TOOL_PROMPT_COMPILER_VERSION = "c03.1";
 
 const SPECS_BY_FAMILY: Record<ToolPromptFamily, readonly ToolPromptSpec[]> = {
   memory: MEMORY_TOOL_PROMPT_SPECS,
@@ -62,8 +63,9 @@ function validateCatalog(
  *
  * C00 uses a frozen compatibility Renderer. C01 applies source-proven contract
  * corrections. C02 then compiles shared protocol grammar and contract-derived
- * paths without changing decision semantics. Later profiles inherit the latest
- * completed renderer until their own stage implements a new transformation.
+ * paths without changing decision semantics. C03 assigns each repeated
+ * behaviour rule one stable owner. Later profiles inherit the latest completed
+ * renderer until their own stage implements a new transformation.
  */
 export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPrompt {
   const definition = getToolPromptProfileDefinition(input.profile);
@@ -96,7 +98,8 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
   const correctedUnits = definition.renderer === "frozen-compatibility"
     ? compatibilityUnits
     : applyContractCorrections(input.surface, compatibilityUnits);
-  const units = definition.renderer === "protocol-compact"
+  const protocolUnits = definition.renderer === "protocol-compact"
+    || definition.renderer === "semantic-compact"
     ? applyProtocolCompaction({
         family: input.family,
         surface: input.surface,
@@ -105,6 +108,9 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
         units: correctedUnits,
       })
     : correctedUnits;
+  const units = definition.renderer === "semantic-compact"
+    ? applySemanticCompaction(input.surface, protocolUnits)
+    : protocolUnits;
   const content = units.map((unit) => unit.content).join("");
   if (content.length === 0) {
     throw new Error(`cannot compile empty ${input.surface} prompt content`);

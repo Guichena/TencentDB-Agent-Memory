@@ -13,6 +13,7 @@ import { WorkbuddyProfile } from "../injection/agents/workbuddy/profile.js";
 import { MEMORY_BRIDGE_ALLOWED_SUBPATHS } from "../memory/memory-bridge.js";
 import { SKILL_BRIDGE_ALLOWED_SUBPATHS, SKILL_BRIDGE_WRITE_SUBPATHS } from "../skill/skill-bridge.js";
 import { renderKnowledgeToolsBlock } from "../injection/injectors/knowledge-tools-injector.js";
+import { wrapAvailableSkillsBlock } from "../injection/injectors/skill-injector.js";
 import { renderSkillToolsBlock } from "../injection/injectors/skill-tools-injector.js";
 import { MEMORY_TOOLS_GUIDE } from "../injection/injectors/tdai-profile-memory-injector.js";
 import { renderTdaiMemoryToolsBlock } from "../injection/injectors/tdai-tools-injector.js";
@@ -28,7 +29,9 @@ import {
   coordinateToolPromptSurfaceFromCapabilitySignature,
   getRuntimeToolContracts,
   getToolPromptProfileLineage,
+  lintDuplicateSemanticUnits,
   parseToolPromptProfile,
+  SEMANTIC_UNIT_INVENTORY,
   toolPromptCacheIdentity,
   TOOL_PROMPT_PROFILES,
   type CompiledToolPromptProfile,
@@ -241,7 +244,7 @@ async function renderProviderParityPrompt(
   });
 }
 
-describe("tool prompt compiler C00-C02", () => {
+describe("tool prompt compiler C00-C03", () => {
   it("keeps legacy as the default and rejects unknown profile names", () => {
     expect(DEFAULT_CONFIG.injection.toolPromptProfile).toBe("legacy");
     expect(parseToolPromptProfile("capability-pruned")).toBe("capability-pruned");
@@ -259,10 +262,11 @@ describe("tool prompt compiler C00-C02", () => {
     ]);
   });
 
-  it("keeps legacy frozen and isolates the C01 and C02 renderer boundaries", () => {
+  it("keeps completed ancestors frozen and isolates the C01, C02, and C03 renderer boundaries", () => {
     const blocks = renderProductionFamilyBlocks(true);
     const correctedByFamily = new Map<string, string>();
-    const compactByFamily = new Map<string, string>();
+    const protocolByFamily = new Map<string, string>();
+    const semanticByFamily = new Map<string, string>();
 
     for (const profile of COMPILED_PROFILES) {
       for (const [family, content] of Object.entries(blocks) as Array<
@@ -293,11 +297,19 @@ describe("tool prompt compiler C00-C02", () => {
           if (family === "memory") expect(compiled.content).toBe(content);
           else expect(compiled.content).not.toBe(content);
         } else if (profile === "protocol-compact") {
-          compactByFamily.set(family, compiled.content);
+          protocolByFamily.set(family, compiled.content);
           expect(compiled.content).not.toBe(correctedByFamily.get(family));
           expect(compiled.units).toHaveLength(family === "memory" ? 3 : 1);
+        } else if (profile === "compact") {
+          semanticByFamily.set(family, compiled.content);
+          if (family === "knowledge") {
+            expect(compiled.content).toBe(protocolByFamily.get(family));
+          } else {
+            expect(compiled.content).not.toBe(protocolByFamily.get(family));
+          }
+          expect(compiled.units).toHaveLength(family === "memory" ? 3 : 1);
         } else {
-          expect(compiled.content).toBe(compactByFamily.get(family));
+          expect(compiled.content).toBe(semanticByFamily.get(family));
         }
       }
     }
@@ -316,9 +328,9 @@ describe("tool prompt compiler C00-C02", () => {
     expect(correctedKnowledge).toContain("node（includeCode=true）");
     expect(correctedKnowledge).toContain("search 只按符号名定位");
 
-    const compactMemory = compactByFamily.get("memory") ?? "";
-    const compactSkill = compactByFamily.get("skill") ?? "";
-    const compactKnowledge = compactByFamily.get("knowledge") ?? "";
+    const compactMemory = protocolByFamily.get("memory") ?? "";
+    const compactSkill = protocolByFamily.get("skill") ?? "";
+    const compactKnowledge = protocolByFamily.get("knowledge") ?? "";
     const combined = `${compactSkill}\n${compactKnowledge}\n${compactMemory}`;
     expect(combined.match(/## 统一工具调用协议/g)).toHaveLength(1);
     expect(combined.match(/canonical form:/g)).toHaveLength(1);
@@ -332,6 +344,51 @@ describe("tool prompt compiler C00-C02", () => {
     expect(compactKnowledge).toContain('<tool name="knowledge_tools_list">');
     expect(compactKnowledge).toContain("path: /tools/call");
     expect(compactKnowledge).not.toContain("### Step 1:");
+
+    const semanticMemory = semanticByFamily.get("memory") ?? "";
+    const semanticSkill = semanticByFamily.get("skill") ?? "";
+    const semanticKnowledge = semanticByFamily.get("knowledge") ?? "";
+    const extractToolNames = (content: string): string[] => [
+      ...content.matchAll(/<tool name="([^"]+)">/g),
+    ].map((match) => match[1]);
+    expect(extractToolNames(semanticMemory)).toEqual(extractToolNames(compactMemory));
+    expect(extractToolNames(semanticSkill)).toEqual(extractToolNames(compactSkill));
+    expect(extractToolNames(semanticKnowledge)).toEqual(extractToolNames(compactKnowledge));
+    expect(`${semanticSkill}\n${semanticKnowledge}\n${semanticMemory}`.length).toBeLessThan(combined.length);
+  });
+
+  it("assigns every C03 duplicate semantic unit to exactly one retained owner", () => {
+    const blocks = renderProductionFamilyBlocks(true);
+    const compile = (
+      family: "memory" | "skill" | "knowledge",
+      surface: "memory-tools" | "memory-guide" | "skill-tools" | "knowledge-tools",
+      content: string,
+    ): string => compileToolPrompt({
+      profile: "compact",
+      family,
+      surface,
+      legacyUnits: [{ id: `${surface}.fixture`, kind: "legacy-body", content }],
+      capabilitySignature: CAPABILITY_SIGNATURE,
+    }).content;
+    const bundle = {
+      "memory-tools": compile("memory", "memory-tools", blocks.memory),
+      "memory-guide": compile("memory", "memory-guide", MEMORY_TOOLS_GUIDE),
+      "skill-tools": compile("skill", "skill-tools", blocks.skill),
+      "skill-listing": wrapAvailableSkillsBlock(
+        "<available_skills>\n<skill><name>review</name></skill>\n</available_skills>",
+        "compact",
+        CAPABILITY_SIGNATURE,
+      ),
+      "knowledge-tools": compile("knowledge", "knowledge-tools", blocks.knowledge),
+    };
+
+    expect(new Set(SEMANTIC_UNIT_INVENTORY.map((item) => item.id)).size)
+      .toBe(SEMANTIC_UNIT_INVENTORY.length);
+    expect(() => lintDuplicateSemanticUnits(bundle)).not.toThrow();
+    expect(bundle["memory-tools"]).toContain("HTTP 5xx 可一次性 retry；HTTP 4xx 不要重试");
+    expect(bundle["skill-listing"]).toContain("不能用 read_file / tool_use 访问");
+    expect(bundle["knowledge-tools"]).toContain("每个资源每会话最多一次");
+    expect(bundle["knowledge-tools"]).toContain("不要全量 list_pages");
   });
 
   it("keeps the C01 correction inventory unique and source-backed", () => {
@@ -419,6 +476,54 @@ describe("tool prompt compiler C00-C02", () => {
     }
   });
 
+  it("keeps the C03 proxy-identity owner accurate for every non-empty family mask", () => {
+    const blocks = renderProductionFamilyBlocks();
+    for (let mask = 1; mask < 8; mask += 1) {
+      const active = {
+        memory: Boolean(mask & 1),
+        skill: Boolean(mask & 2),
+        knowledge: Boolean(mask & 4),
+      };
+      const signature = buildCapabilitySignature({
+        ...active,
+        wiki: active.knowledge,
+        codeGraph: active.knowledge,
+        skillWrite: false,
+        skillExtract: false,
+      });
+      const output = (Object.entries(active) as Array<
+        ["memory" | "skill" | "knowledge", boolean]
+      >)
+        .filter(([, enabled]) => enabled)
+        .map(([family]) => compileToolPrompt({
+          profile: "compact",
+          family,
+          surface: family === "memory"
+            ? "memory-tools"
+            : family === "skill"
+              ? "skill-tools"
+              : "knowledge-tools",
+          legacyUnits: [{
+            id: `${family}.legacy-body`,
+            kind: "legacy-body",
+            content: blocks[family],
+          }],
+          capabilitySignature: signature,
+        }).content)
+        .join("\n");
+      const expectedIdentityFamilies = [
+        ...(active.memory ? ["memory"] : []),
+        ...(active.skill ? ["skill"] : []),
+      ];
+      if (expectedIdentityFamilies.length === 0) {
+        expect(output).not.toContain("身份由 proxy 从 session 注入");
+      } else {
+        expect(output.match(/身份由 proxy 从 session 注入/g)).toHaveLength(1);
+        expect(output).toContain(`${expectedIdentityFamilies.join(" / ")} 身份由 proxy 从 session 注入`);
+      }
+    }
+  });
+
   it("composes a compact contract-derived card into the safe curl parser form", () => {
     const memory = renderProductionFamilyBlocks().memory;
     const signature = buildCapabilitySignature({
@@ -455,7 +560,7 @@ describe("tool prompt compiler C00-C02", () => {
     });
   });
 
-  it("keeps one provider-visible C02 result across descendants for every agent and task shape", async () => {
+  it("keeps C02 frozen and one provider-visible C03 result across descendants for every agent and task shape", async () => {
     const log = vi.spyOn(console, "log").mockImplementation(() => undefined);
     const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
     try {
@@ -464,10 +569,12 @@ describe("tool prompt compiler C00-C02", () => {
           const legacy = await renderProviderParityPrompt(agent, "legacy", withTask);
           const corrected = await renderProviderParityPrompt(agent, "contract-corrected", withTask);
           expect(corrected).not.toEqual(legacy);
-          const compact = await renderProviderParityPrompt(agent, "protocol-compact", withTask);
-          expect(compact).not.toEqual(corrected);
-          for (const profile of COMPILED_PROFILES.slice(2)) {
-            expect(await renderProviderParityPrompt(agent, profile, withTask)).toEqual(compact);
+          const protocol = await renderProviderParityPrompt(agent, "protocol-compact", withTask);
+          expect(protocol).not.toEqual(corrected);
+          const semantic = await renderProviderParityPrompt(agent, "compact", withTask);
+          expect(semantic).not.toEqual(protocol);
+          for (const profile of ["selection-calibrated", "capability-pruned"] as const) {
+            expect(await renderProviderParityPrompt(agent, profile, withTask)).toEqual(semantic);
           }
         }
       }
