@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "stage": "C03",
+  "sourceCommit": "fa42fb24b8a6b3d5e6b06a946726395d6a585f78",
+  "compilerVersion": "c03.1",
+  "generatedAt": "2026-08-28T02:37:05+08:00",
+  "parentProfile": "protocol-compact",
+  "currentProfile": "compact",
+  "firstChangedByte": 155,
+  "stablePrefixBytes": 155,
+  "totalInjection": {
+    "parentSha256": "1ca0590a3ed8919995f6e6f1ffdc9240ee67f6229235ca1e39833076168552fa",
+    "currentSha256": "444be855524cb01e8c0377eba8b36b9b4da8911f20e4df14b8bba7dfc24e8167",
+    "characterDelta": -1150,
+    "byteDelta": -1636,
+    "tokenDeltaO200k": -386
+  },
+  "effectiveSystem": {
+    "parentSha256": "70771044aac4c998fdb69ce0fefc2f402cc1a13048e78e5f5a5292066c9bc429",
+    "currentSha256": "9dac01f195138de458e1e2d85b554daf274b6c138c76ef35998d269335f9af14",
+    "characterDelta": -1150,
+    "byteDelta": -1636,
+    "tokenDeltaO200k": -386
+  },
+  "blocks": [
+    {
+      "blockId": "skill_tools",
+      "changed": true,
+      "parentSha256": "76b55ed821dcd3dacea0b0387781e7fc7441cc6f2fca77d7f82cd414f44c7aec",
+      "currentSha256": "def663e54c9ef23547d2e0bb7aa3df31385096f8890e8cf074a0ad218ee33fa2",
+      "characterDelta": -38,
+      "byteDelta": -82,
+      "tokenDeltaO200k": -17
+    },
+    {
+      "blockId": "available_skills",
+      "changed": true,
+      "parentSha256": "d7328551ffdca390dfab1924bbb20599d54f355211f0d6e79d10ad916ee0aa57",
+      "currentSha256": "1ba0799734e396985f32cbbe60234aa06b40d9b0c5f2eab7eeaf7b9f4e67bf67",
+      "characterDelta": -710,
+      "byteDelta": -716,
+      "tokenDeltaO200k": -135
+    },
+    {
+      "blockId": "knowledge_tools",
+      "changed": false,
+      "parentSha256": "4a292a357b2ddb003c85613d3e57a538c5f3144339169d901e17b2bb50aaf648",
+      "currentSha256": "4a292a357b2ddb003c85613d3e57a538c5f3144339169d901e17b2bb50aaf648",
+      "characterDelta": 0,
+      "byteDelta": 0,
+      "tokenDeltaO200k": 0
+    },
+    {
+      "blockId": "tdai_memory_tools",
+      "changed": true,
+      "parentSha256": "e658a521b5100f6da5789fe7e7225f819b94e3a7f24475205e5fa1611dd109c5",
+      "currentSha256": "fec76a360cb8c49682c13b9112037425f4ed73664e789fc24a0e841cb0892d78",
+      "characterDelta": -387,
+      "byteDelta": -807,
+      "tokenDeltaO200k": -227
+    },
+    {
+      "blockId": "tdai_profile_memory",
+      "changed": true,
+      "parentSha256": "dc62988360fea66248ac8c1ff9a1d8388c553e3f12acb2ee81cdbd220b6bc729",
+      "currentSha256": "ba7dfaa6576965a2425510f275e9a4816a131aed230720c67153abd5706eb98a",
+      "characterDelta": -15,
+      "byteDelta": -31,
+      "tokenDeltaO200k": -7
+    }
+  ],
+  "semanticUnitIds": [
+    "memory.capability-owner-guide",
+    "memory.trigger-owner-guide",
+    "memory.denial-owner-guide",
+    "memory.layer-overview-owner-guide",
+    "memory.search-budget-owner-guide",
+    "memory.path-repeat-owner-guide",
+    "execution.identity-owner-shared-grammar",
+    "memory.identity-owner-shared-grammar",
+    "skill.mandatory-load-single-rule",
+    "skill.skip-rule-folded-into-mandatory-rule"
+  ]
+}

@@ -25,7 +25,9 @@ import {
   buildCapabilitySignature,
   compileToolPrompt,
   CONTRACT_CORRECTIONS,
+  lintDuplicateSemanticUnits,
   PROTOCOL_COMPACTION_INVENTORY,
+  SEMANTIC_UNIT_INVENTORY,
   TOOL_PROMPT_COMPILER_VERSION,
   TOOL_PROMPT_PROFILES,
   type CompiledToolPromptProfile,
@@ -335,10 +337,23 @@ function readManifest(profile: ToolPromptProfile): ArtifactManifest {
 }
 
 function assertFrozenAncestors(): void {
-  if (STAGE === "C00") return;
-  assertFrozenProfile("legacy", "c00");
-  if (STAGE !== "C01") {
-    assertFrozenProfile("contract-corrected", "c01");
+  const stageNumber = Number(STAGE.slice(1));
+  const ancestors: Array<{
+    completedAt: number;
+    profile: ToolPromptProfile;
+    frozenStage: string;
+  }> = [
+    { completedAt: 0, profile: "legacy", frozenStage: "c00" },
+    { completedAt: 1, profile: "contract-corrected", frozenStage: "c01" },
+    { completedAt: 2, profile: "protocol-compact", frozenStage: "c02" },
+    { completedAt: 3, profile: "compact", frozenStage: "c03" },
+    { completedAt: 4, profile: "selection-calibrated", frozenStage: "c04" },
+    { completedAt: 5, profile: "capability-pruned", frozenStage: "c05" },
+  ];
+  for (const ancestor of ancestors) {
+    if (stageNumber > ancestor.completedAt) {
+      assertFrozenProfile(ancestor.profile, ancestor.frozenStage);
+    }
   }
 }
 
@@ -519,6 +534,83 @@ function writeC02DiffArtifacts(sourceCommit: string, generatedAt: string): void 
   );
 }
 
+function writeC03DiffArtifacts(sourceCommit: string, generatedAt: string): void {
+  if (STAGE !== "C03") return;
+  const parent = readManifest("protocol-compact");
+  const current = readManifest("compact");
+  if (parent.totalInjectionSha256 === current.totalInjectionSha256) {
+    throw new Error("C03 compact output unexpectedly equals protocol-compact");
+  }
+  if (current.totalInjectionTokens >= parent.totalInjectionTokens) {
+    throw new Error("C03 compact output does not reduce total injection tokens");
+  }
+  for (const profile of TOOL_PROMPT_PROFILES.slice(4)) {
+    const inherited = readManifest(profile);
+    if (
+      inherited.totalInjectionSha256 !== current.totalInjectionSha256
+      || inherited.effectiveSystemSha256 !== current.effectiveSystemSha256
+    ) {
+      throw new Error(`${profile} does not inherit the frozen C03 renderer`);
+    }
+  }
+
+  const parentBlocks = new Map(parent.blocks.map((block) => [block.blockId, block]));
+  const blockDeltas = current.blocks.map((block) => {
+    const parentBlock = parentBlocks.get(block.blockId);
+    if (!parentBlock) throw new Error(`protocol-compact artifact lacks block ${block.blockId}`);
+    return {
+      blockId: block.blockId,
+      changed: block.promptSha256 !== parentBlock.promptSha256,
+      parentSha256: parentBlock.promptSha256,
+      currentSha256: block.promptSha256,
+      characterDelta: block.characters - parentBlock.characters,
+      byteDelta: block.bytes - parentBlock.bytes,
+      tokenDeltaO200k: block.tokensO200k - parentBlock.tokensO200k,
+    };
+  });
+  const diff = {
+    schemaVersion: 1,
+    stage: STAGE,
+    sourceCommit,
+    compilerVersion: TOOL_PROMPT_COMPILER_VERSION,
+    generatedAt,
+    parentProfile: "protocol-compact",
+    currentProfile: "compact",
+    firstChangedByte: current.firstChangedByteFromParent,
+    stablePrefixBytes: current.stablePrefixBytes,
+    totalInjection: {
+      parentSha256: parent.totalInjectionSha256,
+      currentSha256: current.totalInjectionSha256,
+      characterDelta: current.totalInjectionCharacters - parent.totalInjectionCharacters,
+      byteDelta: current.totalInjectionBytes - parent.totalInjectionBytes,
+      tokenDeltaO200k: current.totalInjectionTokens - parent.totalInjectionTokens,
+    },
+    effectiveSystem: {
+      parentSha256: parent.effectiveSystemSha256,
+      currentSha256: current.effectiveSystemSha256,
+      characterDelta: current.effectiveSystemCharacters - parent.effectiveSystemCharacters,
+      byteDelta: current.effectiveSystemBytes - parent.effectiveSystemBytes,
+      tokenDeltaO200k: current.effectiveSystemTokens - parent.effectiveSystemTokens,
+    },
+    blocks: blockDeltas,
+    semanticUnitIds: SEMANTIC_UNIT_INVENTORY.map((item) => item.id),
+  };
+  const inventory = {
+    schemaVersion: 1,
+    stage: STAGE,
+    sourceCommit,
+    compilerVersion: TOOL_PROMPT_COMPILER_VERSION,
+    generatedAt,
+    units: SEMANTIC_UNIT_INVENTORY,
+  };
+  writeFileSync(resolve(OUTPUT_ROOT, "v1a-to-v1-diff.json"), `${JSON.stringify(diff, null, 2)}\n`, "utf8");
+  writeFileSync(
+    resolve(OUTPUT_ROOT, "semantic-unit-ownership.json"),
+    `${JSON.stringify(inventory, null, 2)}\n`,
+    "utf8",
+  );
+}
+
 async function renderProfile(
   profile: ToolPromptProfile,
 ): Promise<{ injection: string; providerSystem: string; blocks: BlockArtifactInput[] }> {
@@ -556,13 +648,24 @@ async function renderProfile(
     "knowledge-tools",
     legacyKnowledge,
   );
+  const memoryGuide = compiledMemoryGuide(profile);
   const profileMemory = renderTdaiProfileMemoryBlock([{
     agentName: "task1-agent",
     agentId: CANONICAL.agentId,
     isSelf: true,
     l3Content: "Prefers evidence-backed prompt changes.",
     l2Entries: [{ path: "task1/compiler.md", summary: "Compiler implementation decisions" }],
-  }], compiledMemoryGuide(profile)).content;
+  }], memoryGuide).content;
+
+  if (["compact", "selection-calibrated", "capability-pruned"].includes(profile)) {
+    lintDuplicateSemanticUnits({
+      "memory-tools": memoryTools,
+      "memory-guide": memoryGuide,
+      "skill-tools": skillTools,
+      "skill-listing": skillListing,
+      "knowledge-tools": knowledgeTools,
+    });
+  }
 
   const blocks: BlockArtifactInput[] = [
     {
@@ -686,6 +789,7 @@ async function main(): Promise<void> {
   assertFrozenAncestors();
   writeC01DiffArtifacts(sourceCommit, generatedAt);
   writeC02DiffArtifacts(sourceCommit, generatedAt);
+  writeC03DiffArtifacts(sourceCommit, generatedAt);
   encoding.free();
   console.log(`captured ${STAGE} prompt artifacts in ${OUTPUT_ROOT}`);
 }

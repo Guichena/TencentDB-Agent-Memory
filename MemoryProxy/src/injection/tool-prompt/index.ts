@@ -15,6 +15,11 @@ export {
   PROTOCOL_COMPACTION_INVENTORY,
 } from "./protocol-compact.js";
 export {
+  lintDuplicateSemanticUnits,
+  SEMANTIC_UNIT_INVENTORY,
+  type SemanticSurfaceBundle,
+} from "./semantic-compact.js";
+export {
   buildCapabilitySignature,
   getRuntimeToolContracts,
   RUNTIME_TOOL_CONTRACTS,

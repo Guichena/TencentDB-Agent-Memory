@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "stage": "C03",
+  "sourceCommit": "fa42fb24b8a6b3d5e6b06a946726395d6a585f78",
+  "compilerVersion": "c03.1",
+  "generatedAt": "2026-08-28T02:37:05+08:00",
+  "units": [
+    {
+      "id": "memory.capability-owner-guide",
+      "removedSurface": "memory-tools",
+      "removedMarker": "**这些是你可以主动调用的记忆能力**（不是文档）。",
+      "retainedSurface": "memory-guide",
+      "retainedMarker": "等，是**你可以主动调用的能力**（不是仅供参考的文档）。",
+      "rationale": "Capability activation belongs to the memory policy guide, not the transport catalogue."
+    },
+    {
+      "id": "memory.trigger-owner-guide",
+      "removedSurface": "memory-tools",
+      "removedMarker": "遇到用户问身份/历史/偏好/过往结论/项目约定时，必须先使用下面的 TDAI 记忆工具查询，再基于查询结果回答。",
+      "retainedSurface": "memory-guide",
+      "retainedMarker": "### 必须先查记忆再回答的场景（命中任一条即触发工具调用）",
+      "rationale": "Detailed trigger rules in the guide own the broad trigger summary."
+    },
+    {
+      "id": "memory.denial-owner-guide",
+      "removedSurface": "memory-tools",
+      "removedMarker": "禁止说\"我没有这个工具 / 需要 MCP / 只能查本地记忆\"",
+      "retainedSurface": "memory-guide",
+      "retainedMarker": "**禁止**回答类似\"我没有这个工具 / 需要 MCP / 需要斜杠命令\"。",
+      "rationale": "The guide keeps the single refusal-prevention rule."
+    },
+    {
+      "id": "memory.layer-overview-owner-guide",
+      "removedSurface": "memory-tools",
+      "removedMarker": "覆盖范围：",
+      "retainedSurface": "memory-guide",
+      "retainedMarker": "L3（persona 长期画像）与 L2 场景索引已直接注入 system。L0/L1 需要用工具主动检索。",
+      "rationale": "The guide owns the layer overview; individual cards keep distinct tool-specific read details."
+    },
+    {
+      "id": "memory.search-budget-owner-guide",
+      "removedSurface": "memory-tools",
+      "removedMarker": "每轮对话中，atomic_search + conversation_search **合计 ≤ 3 次**",
+      "retainedSurface": "memory-guide",
+      "retainedMarker": "每轮 `tdai_memory_search` + `tdai_conversation_search` **合计 ≤ 3 次**",
+      "rationale": "The policy guide is the sole owner of the memory search budget."
+    },
+    {
+      "id": "memory.path-repeat-owner-guide",
+      "removedSurface": "memory-tools",
+      "removedMarker": "同一 path 不要重复读。",
+      "retainedSurface": "memory-guide",
+      "retainedMarker": "- 同一 L2 path 不要重复读",
+      "rationale": "The guide is the sole owner of the no-repeat scene rule."
+    },
+    {
+      "id": "execution.identity-owner-shared-grammar",
+      "removedSurface": "skill-tools",
+      "removedMarker": "身份由 proxy 从 session 注入",
+      "retainedSurface": "shared-host",
+      "retainedMarker": "memory / skill 身份由 proxy 从 session 注入",
+      "rationale": "Identity injection is cross-family execution grammar, not a Skill-only rule."
+    },
+    {
+      "id": "memory.identity-owner-shared-grammar",
+      "removedSurface": "memory-guide",
+      "removedMarker": "身份由 proxy 自动注入",
+      "retainedSurface": "shared-host",
+      "retainedMarker": "memory / skill 身份由 proxy 从 session 注入",
+      "rationale": "The memory guide references the shared execution owner without repeating identity semantics."
+    },
+    {
+      "id": "skill.mandatory-load-single-rule",
+      "removedSurface": "skill-listing",
+      "removedMarker": "Err on the side of loading",
+      "retainedSurface": "skill-listing",
+      "retainedMarker": "If a listed skill matches or is even partially relevant, you MUST load it",
+      "rationale": "One mandatory-load sentence replaces several escalating restatements without weakening it."
+    },
+    {
+      "id": "skill.skip-rule-folded-into-mandatory-rule",
+      "removedSurface": "skill-listing",
+      "removedMarker": "Only proceed without loading a skill if genuinely none are relevant to the task.",
+      "retainedSurface": "skill-listing",
+      "retainedMarker": "If a listed skill matches or is even partially relevant, you MUST load it",
+      "rationale": "The positive mandatory condition already defines the only skip condition."
+    }
+  ]
+}

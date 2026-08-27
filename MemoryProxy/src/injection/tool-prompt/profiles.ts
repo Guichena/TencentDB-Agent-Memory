@@ -8,7 +8,11 @@ import {
 export interface ToolPromptProfileDefinition {
   id: ToolPromptProfile;
   parent: ToolPromptProfile | null;
-  renderer: "frozen-compatibility" | "contract-corrected" | "protocol-compact";
+  renderer:
+    | "frozen-compatibility"
+    | "contract-corrected"
+    | "protocol-compact"
+    | "semantic-compact";
 }
 
 const DEFINITIONS: Record<ToolPromptProfile, ToolPromptProfileDefinition> = {
@@ -26,17 +30,17 @@ const DEFINITIONS: Record<ToolPromptProfile, ToolPromptProfileDefinition> = {
   compact: {
     id: "compact",
     parent: "protocol-compact",
-    renderer: "protocol-compact",
+    renderer: "semantic-compact",
   },
   "selection-calibrated": {
     id: "selection-calibrated",
     parent: "compact",
-    renderer: "protocol-compact",
+    renderer: "semantic-compact",
   },
   "capability-pruned": {
     id: "capability-pruned",
     parent: "selection-calibrated",
-    renderer: "protocol-compact",
+    renderer: "semantic-compact",
   },
 };
 
