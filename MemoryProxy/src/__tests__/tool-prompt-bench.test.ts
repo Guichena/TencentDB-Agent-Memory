@@ -314,10 +314,14 @@ describe("TDAI-ToolPromptBench dataset", () => {
     const profile = buildCodexProfile({
       developerInstructions: "<tdai_injections>\nV0 PROMPT\n</tdai_injections>",
       providerBaseUrl: "http://127.0.0.1:8096/codex/eval-space/v1",
+      reasoningEffort: "medium",
+      verbosity: "medium",
     });
     expect(profile).toContain('developer_instructions = "<tdai_injections>\\nV0 PROMPT\\n</tdai_injections>"');
     expect(profile).toContain('base_url = "http://127.0.0.1:8096/codex/eval-space/v1"');
     expect(profile).toContain('wire_api = "responses"');
+    expect(profile).toContain('model_reasoning_effort = "medium"');
+    expect(profile).toContain('model_verbosity = "medium"');
     expect(profile.indexOf('model_provider = "custom"')).toBeLessThan(profile.indexOf("[features]"));
     expect(profile).toContain("[skills]\ninclude_instructions = false");
     expect(profile).not.toMatch(/api[_-]?key|secret|bearer/i);
