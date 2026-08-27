@@ -1,17 +1,15 @@
 import { spawn } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
 import {
-  chmodSync,
-  copyFileSync,
   existsSync,
   mkdirSync,
   mkdtempSync,
-  unlinkSync,
   writeFileSync,
 } from "node:fs";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { get_encoding } from "tiktoken";
 import { CASES, FIXTURES } from "./case-definitions.js";
 import { evaluateToolPromptCase } from "./evaluator.js";
 import { renderFixturePrompt } from "./prompt-harness.js";
@@ -20,7 +18,7 @@ import { startToolPromptMockServer } from "./protocol-harness.js";
 export interface CodexInvocationInput {
   workspaceDir: string;
   model: string;
-  profileName: string;
+  configArgs: string[];
 }
 
 export interface CodexInvocation {
@@ -58,7 +56,7 @@ export interface CodexRunOptions {
   outputRoot: string;
   providerBaseUrl?: string;
   codexExecutable?: string;
-  authPath?: string;
+  codexHome?: string;
   timeoutMs?: number;
   dryRun?: boolean;
   reasoningEffort: CodexReasoningEffort;
@@ -74,10 +72,66 @@ export interface CodexPromptAudit {
 export function codexProcessInfrastructureError(result: {
   timedOut: boolean;
   exitCode: number | null;
+  stdout?: string;
+  stderr?: string;
 }): string | undefined {
   if (result.timedOut) return "Codex runner timed out";
+  const processOutput = `${result.stderr ?? ""}\n${result.stdout ?? ""}`;
+  if (/(?:rejected:\s*)?blocked by (?:execution )?policy|command execution[^\n]*(?:denied|blocked)/i.test(processOutput)) {
+    return "Codex tool execution was blocked by local policy";
+  }
   if (result.exitCode !== 0) return `Codex runner exited with code ${String(result.exitCode)}`;
   return undefined;
+}
+
+export interface CodexUsage {
+  inputTokens: number;
+  cachedInputTokens: number;
+  cacheWriteInputTokens: number;
+  outputTokens: number;
+  reasoningOutputTokens: number;
+}
+
+export function countInjectionTokens(prompt: string): number {
+  const encoding = get_encoding("o200k_base");
+  try {
+    return encoding.encode(prompt).length;
+  } finally {
+    encoding.free();
+  }
+}
+
+export function normalizePromptCacheTemplate(
+  prompt: string,
+  bridgeBaseUrl: string,
+  sessionId: string,
+): string {
+  return prompt
+    .split(bridgeBaseUrl.replace(/\/$/, "")).join("<BRIDGE_BASE_URL>")
+    .split(sessionId).join("<SESSION_ID>");
+}
+
+export function extractCodexUsage(eventsJsonl: string): CodexUsage | null {
+  const records = eventsJsonl.split(/\r?\n/).filter(Boolean).flatMap((line) => {
+    try {
+      const parsed = JSON.parse(line) as Record<string, unknown>;
+      return parsed.type === "turn.completed" && parsed.usage && typeof parsed.usage === "object"
+        ? [parsed.usage as Record<string, unknown>]
+        : [];
+    } catch {
+      return [];
+    }
+  });
+  const usage = records.at(-1);
+  if (!usage) return null;
+  const number = (field: string): number => typeof usage[field] === "number" ? usage[field] : 0;
+  return {
+    inputTokens: number("input_tokens"),
+    cachedInputTokens: number("cached_input_tokens"),
+    cacheWriteInputTokens: number("cache_write_input_tokens"),
+    outputTokens: number("output_tokens"),
+    reasoningOutputTokens: number("reasoning_output_tokens"),
+  };
 }
 
 /** Verify the effective client prompt, not only the benchmark-owned block. */
@@ -123,6 +177,8 @@ export function buildCodexInvocation(input: CodexInvocationInput): CodexInvocati
       "exec",
       "--ephemeral",
       "--ignore-rules",
+      "--ignore-user-config",
+      ...input.configArgs,
       "--json",
       "--skip-git-repo-check",
       "--sandbox",
@@ -131,8 +187,6 @@ export function buildCodexInvocation(input: CodexInvocationInput): CodexInvocati
       input.workspaceDir,
       "--model",
       input.model,
-      "--profile",
-      input.profileName,
       "-",
     ],
   };
@@ -168,51 +222,48 @@ export function resolveCodexInvocation(
 
 export function isolateCodexEnvironment(
   source: NodeJS.ProcessEnv,
-  codexHome: string,
+  authenticatedCodexHome: string,
+  isolatedHome: string,
 ): NodeJS.ProcessEnv {
   const isolated = Object.fromEntries(Object.entries(source).filter(([name]) => !name.toUpperCase().startsWith("CODEX_")));
-  isolated.CODEX_HOME = codexHome;
-  isolated.CODEX_SQLITE_HOME = join(codexHome, "sqlite");
+  // Authentication remains in the single, already logged-in CODEX_HOME. Never
+  // copy auth.json: OAuth refresh/rotation from a copied cache can invalidate the
+  // cache used by the desktop app or the user's normal CLI session.
+  isolated.CODEX_HOME = authenticatedCodexHome;
+  isolated.CODEX_SQLITE_HOME = join(isolatedHome, "sqlite");
   isolated.CODEX_CI = "1";
   // Codex also discovers user-level assets below the platform home directory
   // (for example ~/.agents/skills). Point both home variables at the fresh run
   // directory so a benchmark cannot inherit personal skills or prior state.
-  isolated.HOME = codexHome;
-  isolated.USERPROFILE = codexHome;
+  isolated.HOME = isolatedHome;
+  isolated.USERPROFILE = isolatedHome;
   return isolated;
 }
 
-export function buildCodexProfile(input: CodexProfileInput): string {
-  const lines = [
-    `developer_instructions = ${JSON.stringify(input.developerInstructions)}`,
-    'approval_policy = "never"',
-    `model_reasoning_effort = ${JSON.stringify(input.reasoningEffort)}`,
-    `model_verbosity = ${JSON.stringify(input.verbosity)}`,
+/** Convert the benchmark-only profile into invocation-scoped CLI overrides. */
+export function buildCodexConfigArgs(input: CodexProfileInput): string[] {
+  const values = [
+    `developer_instructions=${JSON.stringify(input.developerInstructions)}`,
+    'approval_policy="never"',
+    `model_reasoning_effort=${JSON.stringify(input.reasoningEffort)}`,
+    `model_verbosity=${JSON.stringify(input.verbosity)}`,
+    "features.plugins=false",
+    "features.apps=false",
+    "features.multi_agent=false",
+    "features.skill_search=false",
+    "skills.include_instructions=false",
+    "sandbox_workspace_write.network_access=true",
   ];
   if (input.providerBaseUrl) {
-    lines.push(
-      "",
-      'model_provider = "custom"',
-      "",
-      "[model_providers.custom]",
-      'name = "TDAI Eval Proxy"',
-      `base_url = ${JSON.stringify(input.providerBaseUrl.replace(/\/$/, ""))}`,
-      'wire_api = "responses"',
-      "requires_openai_auth = true",
+    values.push(
+      'model_provider="custom"',
+      'model_providers.custom.name="TDAI Eval Proxy"',
+      `model_providers.custom.base_url=${JSON.stringify(input.providerBaseUrl.replace(/\/$/, ""))}`,
+      'model_providers.custom.wire_api="responses"',
+      "model_providers.custom.requires_openai_auth=true",
     );
   }
-  lines.push(
-    "",
-    "[features]",
-    "plugins = false",
-    "apps = false",
-    "multi_agent = false",
-    "skill_search = false",
-    "",
-    "[skills]",
-    "include_instructions = false",
-  );
-  return `${lines.join("\n")}\n`;
+  return values.flatMap((value) => ["-c", value]);
 }
 
 function safeSegment(value: string): string {
@@ -275,20 +326,14 @@ export async function runCodexCase(options: CodexRunOptions): Promise<Record<str
   mkdirSync(outputRoot, { recursive: true });
   const runDir = mkdtempSync(join(outputRoot, `${safeSegment(item.caseId)}-${safeSegment(options.variant)}-r${options.repeat}-`));
   const workspaceDir = join(runDir, "workspace");
-  const codexHome = join(runDir, "codex-home");
+  const isolatedHome = join(runDir, "isolated-home");
+  const codexHome = resolve(options.codexHome ?? process.env.CODEX_HOME ?? join(homedir(), ".codex"));
   mkdirSync(workspaceDir);
-  mkdirSync(codexHome);
-  mkdirSync(join(codexHome, "sqlite"));
+  mkdirSync(isolatedHome);
+  mkdirSync(join(isolatedHome, "sqlite"));
   const runId = randomUUID();
   const sessionId = randomUUID();
-  const profileName = "tdai-eval";
-  const invocation = resolveCodexInvocation(
-    buildCodexInvocation({ workspaceDir, model: options.model, profileName }),
-    { explicitExecutable: options.codexExecutable },
-  );
-
   const server = await startToolPromptMockServer(fixture, { runId, sessionId });
-  const authDestination = join(codexHome, "auth.json");
   try {
     const rendered = await renderFixturePrompt(item, fixture, {
       bridgeBaseUrl: server.baseUrl,
@@ -297,17 +342,21 @@ export async function runCodexCase(options: CodexRunOptions): Promise<Record<str
       modelId: options.model,
     });
     const developerInstructions = `${rendered.prompt}${conversationContext(item.contextMessages)}`;
-    const profile = buildCodexProfile({
+    const injectionTokenCount = countInjectionTokens(rendered.prompt);
+    const promptCacheTemplate = normalizePromptCacheTemplate(rendered.prompt, server.baseUrl, sessionId);
+    const configArgs = buildCodexConfigArgs({
       developerInstructions,
       providerBaseUrl: options.providerBaseUrl,
       reasoningEffort: options.reasoningEffort,
       verbosity: options.verbosity,
     });
-    const profilePath = join(codexHome, `${profileName}.config.toml`);
-    writeFileSync(profilePath, profile, "utf8");
+    const invocation = resolveCodexInvocation(
+      buildCodexInvocation({ workspaceDir, model: options.model, configArgs }),
+      { explicitExecutable: options.codexExecutable },
+    );
     writeFileSync(join(runDir, "prompt.txt"), `${developerInstructions}\n`, "utf8");
 
-    const codexEnv = isolateCodexEnvironment(process.env, codexHome);
+    const codexEnv = isolateCodexEnvironment(process.env, codexHome, isolatedHome);
     const versionResult = await runChild(
       invocation.executable,
       [...(invocation.commandPrefix ?? []), "--version"],
@@ -321,7 +370,14 @@ export async function runCodexCase(options: CodexRunOptions): Promise<Record<str
     }
     const promptAuditResult = await runChild(
       invocation.executable,
-      [...(invocation.commandPrefix ?? []), "--profile", profileName, "debug", "prompt-input", item.query],
+      [
+        ...(invocation.commandPrefix ?? []),
+        "--ignore-user-config",
+        ...configArgs,
+        "debug",
+        "prompt-input",
+        item.query,
+      ],
       workspaceDir,
       codexEnv,
       "",
@@ -345,27 +401,30 @@ export async function runCodexCase(options: CodexRunOptions): Promise<Record<str
       reasoningEffort: options.reasoningEffort,
       verbosity: options.verbosity,
       codexVersion: versionResult.stdout.trim(),
+      injectionPromptSha256: rendered.promptSha256,
+      promptCacheTemplateSha256: createHash("sha256").update(promptCacheTemplate).digest("hex"),
+      injectionTokenEncoding: "o200k_base",
+      injectionTokenCount,
+      injectionCharacterCount: rendered.prompt.length,
+      injectionUtf8ByteCount: Buffer.byteLength(rendered.prompt, "utf8"),
       promptSha256: createHash("sha256").update(developerInstructions).digest("hex"),
       codexPromptInputSha256: promptAudit.sha256,
       codexPromptMessageCount: promptAudit.messageCount,
       workspaceDir,
       codexHome,
+      isolatedHome,
       executable: invocation.executable,
       args: invocation.args,
       providerBaseUrl: options.providerBaseUrl ?? null,
       ephemeral: true,
       isolatedUserConfig: true,
+      authenticationMode: "shared-codex-home-no-copy",
       clientSkillsDisabled: true,
       ignoresRules: true,
     };
     writeFileSync(join(runDir, "run-manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
 
     if (options.dryRun) return { ...manifest, runDir, dryRun: true };
-    const authSource = resolve(options.authPath ?? join(homedir(), ".codex", "auth.json"));
-    if (!existsSync(authSource)) throw new Error(`Codex auth file not found: ${authSource}`);
-    copyFileSync(authSource, authDestination);
-    chmodSync(authDestination, 0o600);
-
     const result = await runChild(
       invocation.executable,
       invocation.args,
@@ -376,19 +435,35 @@ export async function runCodexCase(options: CodexRunOptions): Promise<Record<str
     );
     writeFileSync(join(runDir, "codex-events.jsonl"), result.stdout, "utf8");
     writeFileSync(join(runDir, "codex-stderr.log"), result.stderr, "utf8");
+    const modelUsage = extractCodexUsage(result.stdout);
     const infrastructureError = codexProcessInfrastructureError(result);
     const evaluation = infrastructureError
       ? { caseId: item.caseId, state: "INFRASTRUCTURE_ERROR", infrastructureError }
       : evaluateToolPromptCase(item, fixture, server.bridge.attempts);
-    const trace = { caseId: item.caseId, runId, attempts: server.bridge.attempts };
+    const trace = { caseId: item.caseId, runId, attempts: server.bridge.attempts, infrastructureError };
     writeFileSync(join(runDir, "trace.jsonl"), `${JSON.stringify(trace)}\n`, "utf8");
     writeFileSync(join(runDir, "evaluation.json"), `${JSON.stringify(evaluation, null, 2)}\n`, "utf8");
-    return { ...manifest, runDir, exitCode: result.exitCode, timedOut: result.timedOut, evaluation };
+    const usage = {
+      injection: {
+        encoding: "o200k_base",
+        tokens: injectionTokenCount,
+        characters: rendered.prompt.length,
+        utf8Bytes: Buffer.byteLength(rendered.prompt, "utf8"),
+      },
+      model: modelUsage,
+    };
+    writeFileSync(join(runDir, "usage.json"), `${JSON.stringify(usage, null, 2)}\n`, "utf8");
+    const runResult = {
+      exitCode: result.exitCode,
+      timedOut: result.timedOut,
+      infrastructureError: infrastructureError ?? null,
+      usage,
+      evaluation,
+    };
+    writeFileSync(join(runDir, "run-result.json"), `${JSON.stringify(runResult, null, 2)}\n`, "utf8");
+    return { ...manifest, runDir, ...runResult };
   } finally {
     await server.close();
-    // The copied auth token exists only for this process and is never retained
-    // with experiment artifacts.
-    if (existsSync(authDestination)) unlinkSync(authDestination);
   }
 }
 
@@ -416,7 +491,7 @@ if (isMain) {
   const caseId = cliValue("--case");
   const model = cliValue("--model");
   if (!caseId || !model) {
-    console.error("usage: tsx eval/tool-prompt-bench/codex-runner.ts --case <id> --model <model> [--reasoning-effort high] [--verbosity medium] [--variant V0] [--repeat 1] [--provider-base-url <url>] [--out <dir>] [--dry-run]");
+    console.error("usage: tsx eval/tool-prompt-bench/codex-runner.ts --case <id> --model <model> [--reasoning-effort high] [--verbosity medium] [--variant V0] [--repeat 1] [--provider-base-url <url>] [--codex-home <dir>] [--out <dir>] [--dry-run]");
     process.exitCode = 2;
   } else {
     const result = await runCodexCase({
@@ -429,7 +504,7 @@ if (isMain) {
       outputRoot: cliValue("--out") ?? resolve(process.cwd(), "eval", "tool-prompt-bench", "runs"),
       providerBaseUrl: cliValue("--provider-base-url"),
       codexExecutable: cliValue("--codex-bin"),
-      authPath: cliValue("--auth"),
+      codexHome: cliValue("--codex-home"),
       timeoutMs: Number(cliValue("--timeout-ms") ?? "180000"),
       dryRun: process.argv.includes("--dry-run"),
     });
