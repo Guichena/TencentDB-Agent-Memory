@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "stage": "C04",
+  "sourceCommit": "a0d6e5fc0f97c79e63bd1865f2fceeefff5979f5",
+  "compilerVersion": "c04.1",
+  "generatedAt": "2026-08-28T02:51:33+08:00",
+  "parentProfile": "compact",
+  "currentProfile": "selection-calibrated",
+  "firstChangedByte": 443,
+  "stablePrefixBytes": 443,
+  "totalInjection": {
+    "parentSha256": "444be855524cb01e8c0377eba8b36b9b4da8911f20e4df14b8bba7dfc24e8167",
+    "currentSha256": "80d6f7f3e2289649d62280fa87a41372938eab35c2f0f27095261c9af045bc03",
+    "characterDelta": -1593,
+    "byteDelta": -5609,
+    "tokenDeltaO200k": -1719
+  },
+  "effectiveSystem": {
+    "parentSha256": "9dac01f195138de458e1e2d85b554daf274b6c138c76ef35998d269335f9af14",
+    "currentSha256": "420680e1be50559bc9a3e416029d98001ec987087ec7fa8b59c0f3b5ba70fdf2",
+    "characterDelta": -1593,
+    "byteDelta": -5609,
+    "tokenDeltaO200k": -1719
+  },
+  "blocks": [
+    {
+      "blockId": "skill_tools",
+      "changed": true,
+      "dynamicAssetUnchanged": true,
+      "parentSha256": "def663e54c9ef23547d2e0bb7aa3df31385096f8890e8cf074a0ad218ee33fa2",
+      "currentSha256": "a3b6f3ed03a45afd604ecff4b6e0aeadb78e62d410a364f28aacf02b3954bf10",
+      "characterDelta": -272,
+      "byteDelta": -1112,
+      "tokenDeltaO200k": -322
+    },
+    {
+      "blockId": "available_skills",
+      "changed": true,
+      "dynamicAssetUnchanged": true,
+      "parentSha256": "1ba0799734e396985f32cbbe60234aa06b40d9b0c5f2eab7eeaf7b9f4e67bf67",
+      "currentSha256": "e098e9968c2d6aa03524923fb71d530363b4c7d69c6646401ecdb338fa751d94",
+      "characterDelta": -391,
+      "byteDelta": -529,
+      "tokenDeltaO200k": -132
+    },
+    {
+      "blockId": "knowledge_tools",
+      "changed": true,
+      "dynamicAssetUnchanged": true,
+      "parentSha256": "4a292a357b2ddb003c85613d3e57a538c5f3144339169d901e17b2bb50aaf648",
+      "currentSha256": "4904592e61b31c85b4fd8baf0e13d74306baa337da71db531a833e35907461ec",
+      "characterDelta": -868,
+      "byteDelta": -2264,
+      "tokenDeltaO200k": -616
+    },
+    {
+      "blockId": "tdai_memory_tools",
+      "changed": true,
+      "dynamicAssetUnchanged": true,
+      "parentSha256": "fec76a360cb8c49682c13b9112037425f4ed73664e789fc24a0e841cb0892d78",
+      "currentSha256": "5f5fdd80cd6106d187f840464490f088900dbd3684464b20e2f1551762d2370d",
+      "characterDelta": 932,
+      "byteDelta": 356,
+      "tokenDeltaO200k": -49
+    },
+    {
+      "blockId": "tdai_profile_memory",
+      "changed": true,
+      "dynamicAssetUnchanged": true,
+      "parentSha256": "ba7dfaa6576965a2425510f275e9a4816a131aed230720c67153abd5706eb98a",
+      "currentSha256": "3330b79dd199bad69b065ecb0c32dbaca14107259c309336347c7a68b1d862c6",
+      "characterDelta": -994,
+      "byteDelta": -2060,
+      "tokenDeltaO200k": -600
+    }
+  ],
+  "selectionPolicyIds": [
+    "selection.tool-no-tool-gate",
+    "selection.no-tool-self-contained",
+    "selection.local-source-priority",
+    "selection.family-memory",
+    "selection.family-skill",
+    "selection.family-knowledge",
+    "selection.narrow-card"
+  ]
+}

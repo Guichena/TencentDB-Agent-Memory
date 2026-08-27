@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "stage": "C04",
+  "sourceCommit": "a0d6e5fc0f97c79e63bd1865f2fceeefff5979f5",
+  "compilerVersion": "c04.1",
+  "generatedAt": "2026-08-28T02:51:33+08:00",
+  "policies": [
+    {
+      "id": "selection.tool-no-tool-gate",
+      "owner": "shared.selection-gate",
+      "purpose": "Call only for missing asset information or a supported asset lifecycle/write action."
+    },
+    {
+      "id": "selection.no-tool-self-contained",
+      "owner": "shared.selection-gate",
+      "purpose": "Keep self-contained coding, general knowledge, and current-context answers tool-free."
+    },
+    {
+      "id": "selection.local-source-priority",
+      "owner": "shared.selection-gate",
+      "purpose": "Use local source for exact or current working-tree code."
+    },
+    {
+      "id": "selection.family-memory",
+      "owner": "shared.selection-gate",
+      "purpose": "Route missing user history, preferences, decisions, wording, and scene bodies to Memory."
+    },
+    {
+      "id": "selection.family-skill",
+      "owner": "shared.selection-gate",
+      "purpose": "Route clearly matched reusable workflow instructions to Skill without keyword bias."
+    },
+    {
+      "id": "selection.family-knowledge",
+      "owner": "shared.selection-gate",
+      "purpose": "Route matching cross-file structure or design rationale to Knowledge."
+    },
+    {
+      "id": "selection.narrow-card",
+      "owner": "shared.selection-gate",
+      "purpose": "Select the narrowest card by when, avoid, and contrast fields."
+    }
+  ]
+}
