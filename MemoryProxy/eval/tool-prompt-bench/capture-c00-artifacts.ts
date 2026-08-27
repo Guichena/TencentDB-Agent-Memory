@@ -378,7 +378,18 @@ async function renderProfile(
 }
 
 async function main(): Promise<void> {
-  const sourceCommit = execFileSync("git", ["rev-parse", "HEAD"], {
+  const sourceCommit = execFileSync("git", [
+    "rev-list",
+    "-1",
+    "HEAD",
+    "--",
+    "MemoryProxy/src/injection/tool-prompt",
+    "MemoryProxy/src/injection/injectors/tdai-tools-injector.ts",
+    "MemoryProxy/src/injection/injectors/tdai-profile-memory-injector.ts",
+    "MemoryProxy/src/injection/injectors/skill-tools-injector.ts",
+    "MemoryProxy/src/injection/injectors/skill-injector.ts",
+    "MemoryProxy/src/injection/injectors/knowledge-tools-injector.ts",
+  ], {
     cwd: resolve(".."),
     encoding: "utf8",
   }).trim();
