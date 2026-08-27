@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "stage": "C02",
+  "sourceCommit": "8aa7f86a41a8da78ef355ebbac246896d92fb6be",
+  "compilerVersion": "c02.1",
+  "generatedAt": "2026-08-28T02:14:57+08:00",
+  "parentProfile": "contract-corrected",
+  "currentProfile": "protocol-compact",
+  "firstChangedByte": 155,
+  "stablePrefixBytes": 155,
+  "totalInjection": {
+    "parentSha256": "8b3a11049a2125edef37db75e27f117a9f384f52e756b52287d493e70450594b",
+    "currentSha256": "1ca0590a3ed8919995f6e6f1ffdc9240ee67f6229235ca1e39833076168552fa",
+    "characterDelta": -1555,
+    "byteDelta": -1803,
+    "tokenDeltaO200k": -713
+  },
+  "effectiveSystem": {
+    "parentSha256": "f20d3e984d5365b415ae22eca8cf5bf6c286f30833255335a8d5af3f70ccdd86",
+    "currentSha256": "70771044aac4c998fdb69ce0fefc2f402cc1a13048e78e5f5a5292066c9bc429",
+    "characterDelta": -1555,
+    "byteDelta": -1803,
+    "tokenDeltaO200k": -713
+  },
+  "blocks": [
+    {
+      "blockId": "skill_tools",
+      "changed": true,
+      "parentSha256": "e00315b961f561c6a00f628037f39dce79cecd5164f9f7225b38294b6138a74f",
+      "currentSha256": "76b55ed821dcd3dacea0b0387781e7fc7441cc6f2fca77d7f82cd414f44c7aec",
+      "characterDelta": -826,
+      "byteDelta": -1114,
+      "tokenDeltaO200k": -348
+    },
+    {
+      "blockId": "available_skills",
+      "changed": true,
+      "parentSha256": "6f581ef0102a380f9ce65bd0f0806c77079a2199041e453ea569b2e537c25f6d",
+      "currentSha256": "d7328551ffdca390dfab1924bbb20599d54f355211f0d6e79d10ad916ee0aa57",
+      "characterDelta": -54,
+      "byteDelta": -78,
+      "tokenDeltaO200k": -22
+    },
+    {
+      "blockId": "knowledge_tools",
+      "changed": true,
+      "parentSha256": "b6667faa86b6a8736b58eefb2df6309064787fb36f018d7f33eb3b51afdd7192",
+      "currentSha256": "4a292a357b2ddb003c85613d3e57a538c5f3144339169d901e17b2bb50aaf648",
+      "characterDelta": -627,
+      "byteDelta": -811,
+      "tokenDeltaO200k": -304
+    },
+    {
+      "blockId": "tdai_memory_tools",
+      "changed": true,
+      "parentSha256": "e720977eebd3a607b3d952ecba2f72e717bd2637f23bb0b444035b1fa8715e8f",
+      "currentSha256": "e658a521b5100f6da5789fe7e7225f819b94e3a7f24475205e5fa1611dd109c5",
+      "characterDelta": 143,
+      "byteDelta": 409,
+      "tokenDeltaO200k": 41
+    },
+    {
+      "blockId": "tdai_profile_memory",
+      "changed": true,
+      "parentSha256": "a9c0fb512d337eaba2572682ae78772bce550a12dbbcf602ed348ce46971756b",
+      "currentSha256": "dc62988360fea66248ac8c1ff9a1d8388c553e3f12acb2ee81cdbd220b6bc729",
+      "characterDelta": -191,
+      "byteDelta": -209,
+      "tokenDeltaO200k": -80
+    }
+  ],
+  "transformationIds": [
+    "shared-post-json-grammar",
+    "contract-derived-relative-paths",
+    "single-family-bindings",
+    "remove-duplicate-examples-and-envelopes"
+  ]
+}

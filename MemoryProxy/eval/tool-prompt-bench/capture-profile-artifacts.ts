@@ -25,6 +25,7 @@ import {
   buildCapabilitySignature,
   compileToolPrompt,
   CONTRACT_CORRECTIONS,
+  PROTOCOL_COMPACTION_INVENTORY,
   TOOL_PROMPT_COMPILER_VERSION,
   TOOL_PROMPT_PROFILES,
   type CompiledToolPromptProfile,
@@ -333,17 +334,27 @@ function readManifest(profile: ToolPromptProfile): ArtifactManifest {
   return JSON.parse(readFileSync(path, "utf8")) as ArtifactManifest;
 }
 
-function assertFrozenLegacy(): void {
+function assertFrozenAncestors(): void {
   if (STAGE === "C00") return;
-  const c00Root = resolve("eval/tool-prompt-bench/variants/c00/legacy", CAPABILITY_DIR);
+  assertFrozenProfile("legacy", "c00");
+  if (STAGE !== "C01") {
+    assertFrozenProfile("contract-corrected", "c01");
+  }
+}
+
+function assertFrozenProfile(profile: ToolPromptProfile, frozenStage: string): void {
+  const frozenRoot = resolve(
+    `eval/tool-prompt-bench/variants/${frozenStage}/${profile}`,
+    CAPABILITY_DIR,
+  );
   for (const filename of ["injection.txt", "prompt.txt"] as const) {
-    const frozenPath = resolve(c00Root, filename);
-    const currentPath = resolve(OUTPUT_ROOT, "legacy", CAPABILITY_DIR, filename);
+    const frozenPath = resolve(frozenRoot, filename);
+    const currentPath = resolve(OUTPUT_ROOT, profile, CAPABILITY_DIR, filename);
     if (!existsSync(frozenPath)) {
-      throw new Error(`cannot verify legacy parity; missing ${frozenPath}`);
+      throw new Error(`cannot verify ${profile} parity; missing ${frozenPath}`);
     }
     if (!readFileSync(frozenPath).equals(readFileSync(currentPath))) {
-      throw new Error(`${STAGE} legacy ${filename} differs from frozen C00 bytes`);
+      throw new Error(`${STAGE} ${profile} ${filename} differs from frozen ${frozenStage} bytes`);
     }
   }
 }
@@ -430,6 +441,80 @@ function writeC01DiffArtifacts(sourceCommit: string, generatedAt: string): void 
   writeFileSync(
     resolve(OUTPUT_ROOT, "contract-corrections.json"),
     `${JSON.stringify(corrections, null, 2)}\n`,
+    "utf8",
+  );
+}
+
+function writeC02DiffArtifacts(sourceCommit: string, generatedAt: string): void {
+  if (STAGE !== "C02") return;
+  const parent = readManifest("contract-corrected");
+  const current = readManifest("protocol-compact");
+  if (parent.totalInjectionSha256 === current.totalInjectionSha256) {
+    throw new Error("C02 protocol-compact output unexpectedly equals contract-corrected");
+  }
+  for (const profile of TOOL_PROMPT_PROFILES.slice(3)) {
+    const inherited = readManifest(profile);
+    if (
+      inherited.totalInjectionSha256 !== current.totalInjectionSha256
+      || inherited.effectiveSystemSha256 !== current.effectiveSystemSha256
+    ) {
+      throw new Error(`${profile} does not inherit the frozen C02 renderer`);
+    }
+  }
+
+  const parentBlocks = new Map(parent.blocks.map((block) => [block.blockId, block]));
+  const blockDeltas = current.blocks.map((block) => {
+    const parentBlock = parentBlocks.get(block.blockId);
+    if (!parentBlock) throw new Error(`contract-corrected artifact lacks block ${block.blockId}`);
+    return {
+      blockId: block.blockId,
+      changed: block.promptSha256 !== parentBlock.promptSha256,
+      parentSha256: parentBlock.promptSha256,
+      currentSha256: block.promptSha256,
+      characterDelta: block.characters - parentBlock.characters,
+      byteDelta: block.bytes - parentBlock.bytes,
+      tokenDeltaO200k: block.tokensO200k - parentBlock.tokensO200k,
+    };
+  });
+  const diff = {
+    schemaVersion: 1,
+    stage: STAGE,
+    sourceCommit,
+    compilerVersion: TOOL_PROMPT_COMPILER_VERSION,
+    generatedAt,
+    parentProfile: "contract-corrected",
+    currentProfile: "protocol-compact",
+    firstChangedByte: current.firstChangedByteFromParent,
+    stablePrefixBytes: current.stablePrefixBytes,
+    totalInjection: {
+      parentSha256: parent.totalInjectionSha256,
+      currentSha256: current.totalInjectionSha256,
+      characterDelta: current.totalInjectionCharacters - parent.totalInjectionCharacters,
+      byteDelta: current.totalInjectionBytes - parent.totalInjectionBytes,
+      tokenDeltaO200k: current.totalInjectionTokens - parent.totalInjectionTokens,
+    },
+    effectiveSystem: {
+      parentSha256: parent.effectiveSystemSha256,
+      currentSha256: current.effectiveSystemSha256,
+      characterDelta: current.effectiveSystemCharacters - parent.effectiveSystemCharacters,
+      byteDelta: current.effectiveSystemBytes - parent.effectiveSystemBytes,
+      tokenDeltaO200k: current.effectiveSystemTokens - parent.effectiveSystemTokens,
+    },
+    blocks: blockDeltas,
+    transformationIds: PROTOCOL_COMPACTION_INVENTORY.map((item) => item.id),
+  };
+  const inventory = {
+    schemaVersion: 1,
+    stage: STAGE,
+    sourceCommit,
+    compilerVersion: TOOL_PROMPT_COMPILER_VERSION,
+    generatedAt,
+    transformations: PROTOCOL_COMPACTION_INVENTORY,
+  };
+  writeFileSync(resolve(OUTPUT_ROOT, "v0c-to-v1a-diff.json"), `${JSON.stringify(diff, null, 2)}\n`, "utf8");
+  writeFileSync(
+    resolve(OUTPUT_ROOT, "protocol-compaction.json"),
+    `${JSON.stringify(inventory, null, 2)}\n`,
     "utf8",
   );
 }
@@ -598,8 +683,9 @@ async function main(): Promise<void> {
     writeFileSync(resolve(outputDir, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
     parentPrompt = rendered.providerSystem;
   }
-  assertFrozenLegacy();
+  assertFrozenAncestors();
   writeC01DiffArtifacts(sourceCommit, generatedAt);
+  writeC02DiffArtifacts(sourceCommit, generatedAt);
   encoding.free();
   console.log(`captured ${STAGE} prompt artifacts in ${OUTPUT_ROOT}`);
 }

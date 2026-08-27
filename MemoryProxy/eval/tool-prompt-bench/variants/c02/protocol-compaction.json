@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "stage": "C02",
+  "sourceCommit": "8aa7f86a41a8da78ef355ebbac246896d92fb6be",
+  "compilerVersion": "c02.1",
+  "generatedAt": "2026-08-28T02:14:57+08:00",
+  "transformations": [
+    {
+      "id": "shared-post-json-grammar",
+      "scope": "cross-family",
+      "summary": "Render POST, JSON, required-header, response-envelope, and error classification rules once.",
+      "evidence": [
+        "MemoryProxy/src/injection/tool-prompt/runtime-contract.ts"
+      ]
+    },
+    {
+      "id": "contract-derived-relative-paths",
+      "scope": "memory+skill+knowledge",
+      "summary": "Render tool-specific paths and validate required/forbidden body fields from RuntimeToolContract.",
+      "evidence": [
+        "MemoryProxy/src/injection/tool-prompt/runtime-contract.ts"
+      ]
+    },
+    {
+      "id": "single-family-bindings",
+      "scope": "memory+skill+knowledge",
+      "summary": "Keep runtime base URLs and telemetry values once per family instead of once per curl recipe.",
+      "evidence": [
+        "MemoryProxy/src/injection/injectors/tdai-tools-injector.ts",
+        "MemoryProxy/src/injection/injectors/skill-tools-injector.ts",
+        "MemoryProxy/src/injection/injectors/knowledge-tools-injector.ts"
+      ]
+    },
+    {
+      "id": "remove-duplicate-examples-and-envelopes",
+      "scope": "all-static-surfaces",
+      "summary": "Remove duplicate curl shells, response envelopes, and error-code catalogues while preserving decision text.",
+      "evidence": [
+        "MemoryProxy/eval/tool-prompt-bench/TASK1-CODE-STAGE-GATED-EXECUTION-PLAN.md#C02"
+      ]
+    }
+  ]
+}
