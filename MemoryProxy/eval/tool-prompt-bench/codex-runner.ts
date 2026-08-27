@@ -40,7 +40,15 @@ export interface ResolveCodexInvocationOptions {
 export interface CodexProfileInput {
   developerInstructions: string;
   providerBaseUrl?: string;
+  reasoningEffort: CodexReasoningEffort;
+  verbosity: CodexVerbosity;
 }
+
+export type CodexReasoningEffort = "minimal" | "low" | "medium" | "high" | "xhigh";
+export type CodexVerbosity = "low" | "medium" | "high";
+
+export const DEFAULT_CODEX_REASONING_EFFORT: CodexReasoningEffort = "medium";
+export const DEFAULT_CODEX_VERBOSITY: CodexVerbosity = "medium";
 
 export interface CodexRunOptions {
   caseId: string;
@@ -53,6 +61,8 @@ export interface CodexRunOptions {
   authPath?: string;
   timeoutMs?: number;
   dryRun?: boolean;
+  reasoningEffort: CodexReasoningEffort;
+  verbosity: CodexVerbosity;
 }
 
 export interface CodexPromptAudit {
@@ -176,6 +186,8 @@ export function buildCodexProfile(input: CodexProfileInput): string {
   const lines = [
     `developer_instructions = ${JSON.stringify(input.developerInstructions)}`,
     'approval_policy = "never"',
+    `model_reasoning_effort = ${JSON.stringify(input.reasoningEffort)}`,
+    `model_verbosity = ${JSON.stringify(input.verbosity)}`,
   ];
   if (input.providerBaseUrl) {
     lines.push(
@@ -288,6 +300,8 @@ export async function runCodexCase(options: CodexRunOptions): Promise<Record<str
     const profile = buildCodexProfile({
       developerInstructions,
       providerBaseUrl: options.providerBaseUrl,
+      reasoningEffort: options.reasoningEffort,
+      verbosity: options.verbosity,
     });
     const profilePath = join(codexHome, `${profileName}.config.toml`);
     writeFileSync(profilePath, profile, "utf8");
@@ -328,6 +342,8 @@ export async function runCodexCase(options: CodexRunOptions): Promise<Record<str
       variant: options.variant,
       repeat: options.repeat,
       model: options.model,
+      reasoningEffort: options.reasoningEffort,
+      verbosity: options.verbosity,
       codexVersion: versionResult.stdout.trim(),
       promptSha256: createHash("sha256").update(developerInstructions).digest("hex"),
       codexPromptInputSha256: promptAudit.sha256,
@@ -381,17 +397,33 @@ function cliValue(name: string): string | undefined {
   return index >= 0 ? process.argv[index + 1] : undefined;
 }
 
+function parseReasoningEffort(value: string | undefined): CodexReasoningEffort {
+  const candidate = value ?? DEFAULT_CODEX_REASONING_EFFORT;
+  if (["minimal", "low", "medium", "high", "xhigh"].includes(candidate)) {
+    return candidate as CodexReasoningEffort;
+  }
+  throw new Error(`unsupported Codex reasoning effort: ${candidate}`);
+}
+
+function parseVerbosity(value: string | undefined): CodexVerbosity {
+  const candidate = value ?? DEFAULT_CODEX_VERBOSITY;
+  if (["low", "medium", "high"].includes(candidate)) return candidate as CodexVerbosity;
+  throw new Error(`unsupported Codex verbosity: ${candidate}`);
+}
+
 const isMain = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (isMain) {
   const caseId = cliValue("--case");
   const model = cliValue("--model");
   if (!caseId || !model) {
-    console.error("usage: tsx eval/tool-prompt-bench/codex-runner.ts --case <id> --model <model> [--variant V0] [--repeat 1] [--provider-base-url <url>] [--out <dir>] [--dry-run]");
+    console.error("usage: tsx eval/tool-prompt-bench/codex-runner.ts --case <id> --model <model> [--reasoning-effort medium] [--verbosity medium] [--variant V0] [--repeat 1] [--provider-base-url <url>] [--out <dir>] [--dry-run]");
     process.exitCode = 2;
   } else {
     const result = await runCodexCase({
       caseId,
       model,
+      reasoningEffort: parseReasoningEffort(cliValue("--reasoning-effort")),
+      verbosity: parseVerbosity(cliValue("--verbosity")),
       variant: cliValue("--variant") ?? "V0",
       repeat: Number(cliValue("--repeat") ?? "1"),
       outputRoot: cliValue("--out") ?? resolve(process.cwd(), "eval", "tool-prompt-bench", "runs"),

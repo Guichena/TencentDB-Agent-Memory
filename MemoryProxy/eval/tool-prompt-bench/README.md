@@ -75,16 +75,24 @@ The benchmark keeps prompt construction, protocol execution, and model execution
 2. `protocol-harness.ts` parses the exact read-only curl subset used by V0, rejects shell operators, off-origin URLs, unsupported methods, and unknown endpoints, then sends a structured HTTP request to a random-port Mock Bridge. Every attempt records `intentId`, `runId`, `sessionId`, and timestamp.
 3. `codex-runner.ts` is the optional model layer. Every repeat gets a new workspace, session, Mock Bridge, `CODEX_HOME`, `CODEX_SQLITE_HOME`, `HOME`, and `USERPROFILE`; it uses `codex exec --ephemeral --ignore-rules --json`. The fresh Codex home contains only the benchmark profile and a temporary authentication copy. Codex skill instructions are disabled, so personal skills and the user's previous task state cannot affect the comparison. The same fixed Codex version and runner configuration must be used for V0 and candidate.
 
+### Frozen model protocol
+
+- Iteration and primary reporting: `gpt-5.6-sol`, reasoning effort `medium`, verbosity `medium`.
+- Cross-model confirmation of shortlisted variants only: `gpt-5.6-terra`, reasoning effort `medium`, verbosity `medium`.
+- Standard Responses execution is used; Pro mode is not enabled.
+- The runner writes the exact model, reasoning effort, verbosity, and Codex CLI version to `run-manifest.json`. Never compare variants whose recorded model settings or Codex version differ.
+- `--reasoning-effort` and `--verbosity` are explicit experiment inputs. Both default to `medium`, but formal commands should still spell them out.
+
 Inspect an isolated run without making an LLM request:
 
 ```powershell
-npm run eval:tool-prompt:codex -- --case memory-dev-preference-001 --model <model> --variant V0 --repeat 1 --dry-run
+npm run eval:tool-prompt:codex -- --case memory-dev-preference-001 --model gpt-5.6-sol --reasoning-effort medium --verbosity medium --variant V0 --repeat 1 --dry-run
 ```
 
 Run one real case through a Responses-compatible endpoint (for example the project-local MemoryProxy/Langfuse route):
 
 ```powershell
-npm run eval:tool-prompt:codex -- --case memory-dev-preference-001 --model <model> --variant V0 --repeat 1 --provider-base-url http://127.0.0.1:8096/codex/tool-prompt-bench/v1
+npm run eval:tool-prompt:codex -- --case memory-dev-preference-001 --model gpt-5.6-sol --reasoning-effort medium --verbosity medium --variant V0 --repeat 1 --provider-base-url http://127.0.0.1:8096/codex/tool-prompt-bench/v1
 ```
 
 Runtime files are written below `eval/tool-prompt-bench/runs/` and are git-ignored. A run contains the exact rendered prompt, Codex's audited complete prompt input, both SHA-256 values, the Codex version and invocation manifest, raw Codex JSONL, stderr, correlated Mock trace, and evaluation result. The prompt audit fails before an LLM call if the benchmark block is missing or client skill instructions reappear. Authentication is copied only into the temporary Codex home for the process and removed in `finally`; it is never written to the manifest.
