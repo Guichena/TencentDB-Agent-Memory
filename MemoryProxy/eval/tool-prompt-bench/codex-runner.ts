@@ -47,7 +47,7 @@ export interface CodexProfileInput {
 export type CodexReasoningEffort = "minimal" | "low" | "medium" | "high" | "xhigh";
 export type CodexVerbosity = "low" | "medium" | "high";
 
-export const DEFAULT_CODEX_REASONING_EFFORT: CodexReasoningEffort = "medium";
+export const DEFAULT_CODEX_REASONING_EFFORT: CodexReasoningEffort = "high";
 export const DEFAULT_CODEX_VERBOSITY: CodexVerbosity = "medium";
 
 export interface CodexRunOptions {
@@ -416,7 +416,7 @@ if (isMain) {
   const caseId = cliValue("--case");
   const model = cliValue("--model");
   if (!caseId || !model) {
-    console.error("usage: tsx eval/tool-prompt-bench/codex-runner.ts --case <id> --model <model> [--reasoning-effort medium] [--verbosity medium] [--variant V0] [--repeat 1] [--provider-base-url <url>] [--out <dir>] [--dry-run]");
+    console.error("usage: tsx eval/tool-prompt-bench/codex-runner.ts --case <id> --model <model> [--reasoning-effort high] [--verbosity medium] [--variant V0] [--repeat 1] [--provider-base-url <url>] [--out <dir>] [--dry-run]");
     process.exitCode = 2;
   } else {
     const result = await runCodexCase({
