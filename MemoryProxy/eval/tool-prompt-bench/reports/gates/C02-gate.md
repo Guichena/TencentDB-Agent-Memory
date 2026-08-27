@@ -5,7 +5,7 @@
 - parent integration commit: `ff8815b63e6afb6f4579d8dbc324f290d9bef0b1`
 - verified implementation commit: `8aa7f86a41a8da78ef355ebbac246896d92fb6be`
 - verified artifact commit: `cb0716a984993aac6636edc5ec255e40583cafc3`
-- merge commit: `PENDING_INTEGRATION`
+- merge commit: `5ef7c7e5dec6976e8b514a328b55856949739a69`
 - scope: V1a 共享调用协议、RuntimeToolContract 驱动的 endpoint/body 校验、Prompt/Token/Hash 冻结；不含行为语义去重、Tool/No-Tool Gate、Family Gate、选择校准、布局调整或 Capability 裁剪
 - checked at: `2026-08-28 Asia/Shanghai`
 
@@ -116,3 +116,15 @@ V1a total injection SHA-256 为 `1ca0590a3ed8919995f6e6f1ffdc9240ee67f6229235ca1
 ## 决策
 
 C02 通过。V1a 相对 V0-C 的变化仅属于调用协议表示与合同驱动的 transport 编译，决策规则、动态资产和注入布局未变；静态 Prompt Token 明显下降，所有祖先 profile 可复现。允许以非 squash merge 合回 `codex/task1-code-integration`；集成主线复跑通过并补记 merge commit 后，才能创建 `codex/task1-code-c03-v1b`。
+
+## 集成主线复跑
+
+C02 已通过 merge commit `5ef7c7e5dec6976e8b514a328b55856949739a69` 以非 squash 方式合入 `codex/task1-code-integration`。合并后复跑：
+
+- `npm test`：43/43 通过。
+- `npm run eval:tool-prompt:validate`：100 case / 100 fixture 通过。
+- `npm run eval:tool-prompt:capture-c02`：成功且工作树无变化，Legacy/C01 祖先逐字节比较再次通过。
+- `npx tsc --noEmit --pretty false`：仍为 54 条既有诊断，标准化指纹仍为 `ecf5cfe9c8c0d40163fb87f5622dee3cbb688a47aa649db245e2b27e1c50f65c`，阶段相关新增诊断为 0。
+- `git diff --check`：通过。
+
+集成 Gate 通过，允许从包含本记录更新的最新集成提交创建 `codex/task1-code-c03-v1b`。
