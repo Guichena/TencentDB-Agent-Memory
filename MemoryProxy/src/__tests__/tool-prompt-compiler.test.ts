@@ -511,6 +511,50 @@ describe("tool prompt compiler C00-C05", () => {
     expect(bundle["knowledge-tools"]).not.toContain("凡是需要跨文件");
   });
 
+  it("keeps V3 byte-identical to V2 when every production capability is enabled", () => {
+    const signature = buildCapabilitySignature({
+      memory: true,
+      skill: true,
+      knowledge: true,
+      wiki: true,
+      codeGraph: true,
+      skillWrite: true,
+      skillExtract: true,
+    });
+    const blocks = renderProductionFamilyBlocks(true);
+    const knowledge = renderKnowledgeToolsBlock(
+      KNOWLEDGE_CAPABILITY_FIXTURE,
+      "space-parity",
+      { sessionKey: "session-parity" },
+    );
+    if (!knowledge) throw new Error("full-capability knowledge fixture must render");
+    const listing = "<available_skills>\n- review: Review this repository\n</available_skills>";
+    const surfaces = [
+      { family: "memory", surface: "memory-tools", content: blocks.memory },
+      { family: "memory", surface: "memory-guide", content: MEMORY_TOOLS_GUIDE },
+      { family: "skill", surface: "skill-tools", content: blocks.skill },
+      { family: "knowledge", surface: "knowledge-tools", content: knowledge },
+    ] as const;
+
+    for (const item of surfaces) {
+      const compile = (profile: "selection-calibrated" | "capability-pruned") =>
+        compileToolPrompt({
+          profile,
+          family: item.family,
+          surface: item.surface,
+          legacyUnits: [{
+            id: `${item.surface}.full-capability`,
+            kind: "legacy-body",
+            content: item.content,
+          }],
+          capabilitySignature: signature,
+        }).content;
+      expect(compile("capability-pruned")).toBe(compile("selection-calibrated"));
+    }
+    expect(wrapAvailableSkillsBlock(listing, "capability-pruned", signature))
+      .toBe(wrapAvailableSkillsBlock(listing, "selection-calibrated", signature));
+  });
+
   it("projects the C05 prompt onto each production-supported capability matrix row", () => {
     const rows: Array<{ id: string; state: ToolPromptCapabilityState }> = [
       {
