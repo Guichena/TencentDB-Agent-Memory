@@ -15,6 +15,11 @@ export {
   PROTOCOL_COMPACTION_INVENTORY,
 } from "./protocol-compact.js";
 export {
+  lintSelectionPolicy,
+  SELECTION_POLICY_INVENTORY,
+  type SelectionSurfaceBundle,
+} from "./selection-calibrated.js";
+export {
   lintDuplicateSemanticUnits,
   SEMANTIC_UNIT_INVENTORY,
   type SemanticSurfaceBundle,
