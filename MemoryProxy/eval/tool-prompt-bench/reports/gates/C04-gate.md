@@ -5,6 +5,7 @@
 - parent integration commit: `93381f712365fa26836f85c80e33c1e3bf8437aa`
 - verified implementation commit: `a0d6e5fc0f97c79e63bd1865f2fceeefff5979f5`
 - verified artifact commit: `b9bfdca`
+- merge commit: `68ff94f68db45efe3f90e7ebdb0a0d1ec9cb441c`
 - scope: 在冻结 V1 上完成 V2 Tool/No-Tool 与 Family 选择校准；不含注入位置调整、动态资产改写、Capability 裁剪、Query/Gold/历史驱动的动态 profile 或模型评测
 - checked at: `2026-08-28 Asia/Shanghai`
 
@@ -114,3 +115,15 @@ V2 total injection SHA-256 为 `80d6f7f3e2289649d62280fa87a41372938eab35c2f0f270
 ## 决策
 
 C04 通过。V2 仅改变静态选择语义和中性描述，Runtime Contract、共享协议、工具执行字段、动态资产、注入位置和 Capability 配置均保持。允许以非 squash merge 合回 `codex/task1-code-integration`；集成主线复跑通过并补记 merge commit 后，才能创建 `codex/task1-code-c05-v3`。
+
+## 集成主线复跑
+
+C04 已通过 merge commit `68ff94f68db45efe3f90e7ebdb0a0d1ec9cb441c` 以非 squash 方式合入 `codex/task1-code-integration`。合并后复跑：
+
+- `npm test`：47/47 通过。
+- `npm run eval:tool-prompt:validate`：100 case / 100 fixture 通过。
+- `npm run eval:tool-prompt:capture-c04`：成功且工作树无变化，C00/C01/C02/C03 祖先逐字节比较再次通过。
+- `npx tsc --noEmit --pretty false`：仍为 54 条既有诊断，标准化指纹仍为 `ecf5cfe9c8c0d40163fb87f5622dee3cbb688a47aa649db245e2b27e1c50f65c`，阶段相关新增诊断为 0。
+- `git diff --check`：通过。
+
+集成 Gate 通过，允许从包含本记录更新的最新集成提交创建 `codex/task1-code-c05-v3`。
