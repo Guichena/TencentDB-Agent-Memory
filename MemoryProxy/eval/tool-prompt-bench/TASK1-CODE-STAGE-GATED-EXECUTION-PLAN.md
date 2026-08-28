@@ -515,12 +515,12 @@ tool-prompt/
 
 重点检查：
 
-- [ ] 六个冻结 Prompt、Token、bytes、hash 和稳定前缀零变化。
-- [ ] 普通生产请求不能触发 Pilot bypass。
-- [ ] `x-tdai-user-key` 不进入上游、shell、Langfuse debug 或运行产物。
-- [ ] 实际 Codex 上游或鉴权模式不符合预注册值时，在模型运行前失败。
-- [ ] Pilot 结果无法被误标为正式任务一指标。
-- [ ] 全量类型诊断数量与标准化指纹不变。
+- [x] 六个冻结 Prompt、Token、bytes、hash 和稳定前缀零变化。
+- [x] 普通生产请求不能触发 Pilot bypass。
+- [x] `x-tdai-user-key` 不进入上游、shell、Langfuse debug 或运行产物。
+- [x] 实际 Codex 上游或鉴权模式不符合预注册值时，在模型运行前失败。
+- [x] Pilot 结果无法被误标为正式任务一指标。
+- [x] 全量类型诊断数量与标准化指纹不变。
 
 退出条件：C07 Gate 为 `PASSED`，实现和 Gate 记录提交完成；`task1-code-freeze` 继续保持原 Prompt 冻结含义，实验集成线改用 C07 通过提交作为运行器基点。
 
@@ -563,7 +563,7 @@ tool-prompt/
 | C04 | `PASSED` | V2 选择校准已冻结 |
 | C05 | `PASSED` | V3 Capability/Lifecycle 裁剪已冻结 |
 | C06 | `PASSED` | 全 profile、Runner 接线与集成主线复跑均已通过 |
-| C07 | `IN PROGRESS` | Prompt 不变；正在收口身份、上游、usage 和 Pilot 隔离 |
+| C07 | `PASSED` | Prompt 零变化；身份、上游、usage、Skill 合同和 Pilot 隔离均已通过门禁 |
 | 模型评测 | 不属于本会话 | 等待代码与数据两边冻结 |
 
 ## 本会话代码线结果

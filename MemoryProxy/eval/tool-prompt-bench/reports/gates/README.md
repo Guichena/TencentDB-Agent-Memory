@@ -11,6 +11,7 @@
 | C04 | V2 Tool/No-Tool 与 family 选择校准 | `codex/task1-code-c04-v2` | [C04-gate.md](C04-gate.md) | `task1-c04-pass` |
 | C05 | V3 Capability/Lifecycle 裁剪 | `codex/task1-code-c05-v3` | [C05-gate.md](C05-gate.md) | `task1-c05-pass` |
 | C06 | 全 profile 回归、Runner 实接线与代码冻结 | `codex/task1-code-c06-freeze` | [C06-gate.md](C06-gate.md) | `task1-c06-pass` |
+| C07 | 评测正确性、身份链路与 Pilot/正式分层 | `codex/task1-c07-eval-correctness` | [C07-gate.md](C07-gate.md) | `task1-c07-pass` |
 
 ## 不可变基点
 
@@ -19,5 +20,6 @@
 - 生产基线 tag：`task1-v0-baseline-20260828`
 - 代码集成分支：`codex/task1-code-integration`
 - 代码冻结 tag：`task1-code-freeze`
+- 评测运行器基点 tag：`task1-c07-pass`
 
 阶段 tag、Gate 内容 hash、相邻版本 diff hash 和全部 Prompt 指标同时保存在 `variants/code-freeze/code-freeze-manifest.json`。该机器清单是实验线校验代码交接完整性的主入口。
