@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "stage": "C05",
+  "sourceCommit": "3962bf45953eff692540a495f5bfe35592f446e5",
+  "compilerVersion": "c05.1",
+  "generatedAt": "2026-08-28T11:38:03+08:00",
+  "transformations": [
+    {
+      "id": "capability.family-intersection",
+      "source": "injector registration + AssetCapabilityFlags",
+      "effect": "Suppress disabled Memory, Skill, and Knowledge surfaces."
+    },
+    {
+      "id": "capability.skill-write",
+      "source": "skillRuntime.allowLlmWrite",
+      "effect": "Expose skill write cards only when the production bridge path is enabled."
+    },
+    {
+      "id": "capability.skill-extract",
+      "source": "isExtractionAllowed(config, skill)",
+      "effect": "Expose skill_extract only while the main-dialog buffer is populated."
+    },
+    {
+      "id": "capability.knowledge-subtype",
+      "source": "AssetCapabilityFlags.llm_wiki/code_graph",
+      "effect": "Keep only executable Wiki and Code Graph resource records and policy text."
+    },
+    {
+      "id": "capability.stable-signature",
+      "source": "session-init capability intersection",
+      "effect": "Drive shared hosts, prompt bytes, audit ids, and cache separation deterministically."
+    }
+  ]
+}

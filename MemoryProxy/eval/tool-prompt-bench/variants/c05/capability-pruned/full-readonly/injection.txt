@@ -1,0 +1,171 @@
+<skill_tools>
+以下是云端 skill 操作工具。
+
+endpoint-base: http://127.0.0.1:8096/skill-bridge/v3/skill
+headers: x-tdai-service-id: space-c00; x-conversation-id: session-c00
+
+可用工具：
+
+  <tool name="skill_search">
+    path: /search
+    body: {"query": "描述你要找什么 skill 的关键词（必填，>=1字符）"}
+    when: A reusable team workflow may exist but its exact skill name is not known.
+  </tool>
+
+  <tool name="skill_view">
+    path: /get-by-name
+    body: {"skill_name": "<skill 名字>", "include_content": true, "include_manifest": true}
+    when: A skill owned by the current agent is known by name and must be opened to read its instructions and manifest.
+  </tool>
+
+  <tool name="skill_view_by_id">
+    path: /get
+    body: {"skill_id": "skl-xxx", "version": 3, "include_content": true, "include_manifest": true}
+    when: A team skill returned by skill_search, or any skill known by exact skill_id, must be opened.
+  </tool>
+
+  <tool name="skill_files_read">
+    path: /files/read
+    body: {"skill_id": "skl-xxx", "path": "scripts/run.sh", "encoding": "utf-8|base64"}
+    when: A specific resource path from a viewed skill manifest must be read into context.
+    avoid: Do not guess skill ids or resource paths.
+  </tool>
+
+  <tool name="skill_files_download">
+    path: /files/download
+    body: {"skill_id": "skl-xxx", "version": 3, "path": "scripts/run.sh", "encoding": "utf-8|base64"}
+    response: bytes
+    when: A specific resource path from a viewed skill manifest must be downloaded as raw bytes.
+    avoid: Do not guess skill ids or resource paths.
+  </tool>
+
+注意：当前仅开放只读操作。如需创建/修改 skill 请联系管理员。
+</skill_tools>
+## Available skills
+These are optional cloud workflow assets for the current agent. Open one only when its description clearly matches missing task guidance; keyword overlap or availability alone is insufficient.
+Use `skill_search` only when a reusable team workflow is needed and no listed skill matches.
+
+**重要：这些 skill 在云端，不能用 read_file / tool_use 访问；按统一协议调用 `<skill_tools>`。**
+<available_skills>
+- task1-review: Review proxy prompt contracts and evidence
+- typescript-tests: Run deterministic TypeScript contract tests
+</available_skills>
+
+<knowledge_tools>
+## 已绑定资源
+<knowledge type="wiki" id="wiki-c00"
+  url="http://127.0.0.1:8421/v3"
+  name="Task 1 architecture"
+  about="Frozen design decisions for proxy prompt injection" />
+
+## 知识库专用流程
+endpoint-base: 使用目标 `<knowledge>` 的 `url`；knowledge_id 只放 body，不拼进 URL。
+headers: x-tdai-service-id: space-c00; x-conversation-id: session-c00; x-tdai-user-id: user-c00; x-tdai-team-id: team-c00; x-tdai-agent-id: agent-c00; x-tdai-agent-source: codex; x-tdai-space-id: space-c00
+
+  <tool name="knowledge_tools_list">
+    path: /tools/list
+    body: {"knowledge_id":"<知识id>"}
+    when: A matching knowledge resource is needed and its resource-specific tool schema has not been discovered in this session.
+  </tool>
+
+  <tool name="knowledge_tools_call">
+    path: /tools/call
+    body: {"knowledge_id":"<知识id>","tool_name":"<list 返回的 name>","params":{}}
+    when: A tool name and parameter schema returned by tools/list must be executed against the same knowledge resource.
+    avoid: Do not invent dynamic tool names or parameters.
+  </tool>
+
+## 约定
+
+- 找文件名用 explore（query 支持文件名，如 "session-manager.ts"）；search 只按符号名定位，files 只用于一次性总览目录结构，每个资源每会话最多一次。
+- wiki 先 search 命中再 read_page，不要全量 list_pages。
+- 多个资源可并行发起，无需串行等待。同一调用连续失败 2 次即放弃，回退本地检索。
+
+</knowledge_tools>
+
+<tdai_memory_tools>
+## 统一工具调用协议
+适用于当前已启用的 memory / skill / knowledge 工具；这些条目不是宿主原生函数，需要时用 Bash 发 HTTP 请求。
+- method 固定为 POST；公共 headers: content-type, x-tdai-service-id。每个 family 的 `headers:` 只列运行时值和额外 header。
+- endpoint = 当前 family 的 `endpoint-base` + 工具 `path`；knowledge 使用目标资源的 `url` + `path`。
+- `body` 必须是 JSON object，只传工具卡列出的业务字段；memory / skill 身份由 proxy 从 session 注入，除工具卡明确列出外不传 user_id / team_id / agent_id / task_id。
+- memory / skill 调用必须带当前 session 的 x-conversation-id；其余 family 按自己的 headers 行。
+- JSON 响应按 `{code, message, data}` 处理，只有 code=0 才成功；HTTP 或业务错误先看 message 和字段，不把错误信封当结果。
+- 仅 response=bytes 的工具返回原始字节；需要落盘时才给 curl 加 `-o <path>`。
+canonical form: `curl -sSk -X POST '<endpoint>' -H 'content-type: application/json' <按 headers: 逐项加 -H> -d '<body>'`
+
+## Tool / no-tool gate
+Call an injected tool only when required information is missing from current context and supplied by an enabled persistent asset, or when a supported asset lifecycle/write action matches a tool card.
+Do not call for pure or self-contained coding, general knowledge, current-context answers, or exact/current local-source work.
+Choose the needed family before choosing a tool:
+- memory: missing user history, preferences, prior decisions, exact past wording, or a known L2 scene body; injected L3 and the L2 index already count as current context.
+- skill: missing reusable workflow instructions clearly matched by a listed/team skill; keyword overlap or availability alone is insufficient.
+- knowledge: a matching resource is needed for cross-file structure or design rationale; reject mismatched repository indexes and use local source for exact/current code.
+Choose the narrowest card by `when`; obey `avoid` and `contrast`. Use multiple families only when each supplies distinct missing information.
+
+
+endpoint-base: http://127.0.0.1:8096/memory-bridge/v3
+headers: x-tdai-service-id: space-c00; x-conversation-id: session-c00
+
+  <tool name="tdai_memory_search">
+    path: /atomic/search
+    body: {"query": "<text>", "limit": 5}
+    when: A stable preference, past conclusion, instruction, or fact may exist in atomic memory.
+    contrast[tdai_conversation_search]: Use conversation search for exact message text or timeline details.
+  </tool>
+
+  <tool name="tdai_atomic_query">
+    path: /atomic/query
+    body: {"type": "?episodic|persona|instruction", "limit": 20, "offset": 0, "time_start": "?ISO", "time_end": "?ISO"}
+    when: The caller needs atomic memories filtered by type, time window, or page rather than semantic similarity.
+  </tool>
+
+  <tool name="tdai_conversation_search">
+    path: /conversation/search
+    body: {"query": "<text>", "limit": 5, "session_id": "?<sid>"}
+    when: Exact historical wording, quotations, or fine-grained timeline evidence is missing from the current context.
+    contrast[tdai_memory_search]: Use atomic search for distilled preferences and conclusions.
+  </tool>
+
+  <tool name="tdai_conversation_query">
+    path: /conversation/query
+    body: {"session_id": "<sid>", "limit": 50, "offset": 0}
+    when: A known session id must be read in chronological order.
+  </tool>
+
+  <tool name="tdai_scenario_ls">
+    path: /scenario/ls
+    body: {"path_prefix": "?可选前缀"}
+    when: The injected scene index is absent, stale, or must be filtered by path prefix.
+  </tool>
+
+  <tool name="tdai_read_scene">
+    path: /scenario/read
+    body: {"path": "<scene path>", "agent_id": "?来自 <agent agent_id=...>，读取 imported 记忆时传"}
+    when: A scene path is known from the injected index or scenario listing and its full body is required.
+    avoid: Do not invent a scene path.
+  </tool>
+
+## 调用约束
+- 这些是只读工具；要修改 L1/L2/L3 必须用主链路（agent_id 自动归属）。
+- 失败重试：HTTP 5xx 可一次性 retry；HTTP 4xx 不要重试。
+
+</tdai_memory_tools>
+<tdai_profile_memory>
+以下是 TDAI 为当前 agent 维护的长期工作记忆（自有 + 借入分段；L2 仅给索引，按需用工具读全文）：
+<agent name="task1-agent" role="self" agent_id="agent-c00">
+<l3_core_memory>
+Prefers evidence-backed prompt changes.
+</l3_core_memory>
+<l2_scene_index>
+- `task1/compiler.md` — Compiler implementation decisions
+</l2_scene_index>
+</agent>
+</tdai_profile_memory>
+
+<memory-tools-guide>
+## Memory constraints
+- `tdai_memory_search` + `tdai_conversation_search` total ≤ 3 calls per turn.
+- If retrieval is empty, say the memory was not found; do not invent it.
+- Do not read the same L2 path twice in one turn.
+</memory-tools-guide>
