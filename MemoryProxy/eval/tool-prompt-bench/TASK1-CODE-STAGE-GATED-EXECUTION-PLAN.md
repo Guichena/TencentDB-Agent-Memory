@@ -527,22 +527,22 @@ tool-prompt/
 |---|---|---|
 | 生产 V0 基线分支 | `FROZEN` | `codex/task1-v0-baseline` / `task1-v0-baseline-20260828` 均指向 `5299c00` |
 | P01 计划文档收口 | `COMPLETED` | V6.1 已收敛为代码专用分阶段执行口径 |
-| 代码集成分支 | `ACTIVE` | C00 至 C05 已按非 squash 顺序合入，C06 等待最终合并 |
+| 代码集成分支 | `FROZEN` | C00 至 C06 已按非 squash 顺序合入，最终提交由 `task1-code-freeze` 标识 |
 | C00 | `PASSED` | Compiler、Runtime Contract 与 Profile seam 已冻结 |
 | C01 | `PASSED` | V0-C 合同纠错已冻结 |
 | C02 | `PASSED` | V1a 协议压缩已冻结 |
 | C03 | `PASSED` | V1 语义去重已冻结 |
 | C04 | `PASSED` | V2 选择校准已冻结 |
 | C05 | `PASSED` | V3 Capability/Lifecycle 裁剪已冻结 |
-| C06 | `GATE_PASSED` | 全 profile 与 Runner 接线已通过；等待合回集成分支并打冻结 tag |
+| C06 | `PASSED` | 全 profile、Runner 接线与集成主线复跑均已通过 |
 | 模型评测 | 不属于本会话 | 等待代码与数据两边冻结 |
 
-## 本会话剩余收口动作
+## 本会话代码线结果
 
-1. 提交 C06 Gate、总 Gate 索引、冻结机器清单与实验线交接清单。
-2. 推送 `codex/task1-code-c06-freeze`，以非 squash merge 合回 `codex/task1-code-integration`。
-3. 在集成分支复跑测试、合同校验、冻结清单、类型诊断比较和 whitespace 检查。
-4. 补记 C06 merge commit，把最终记录提交标记为 `task1-c06-pass` 与 `task1-code-freeze`。
+1. 生产基线、C00 至 C06 阶段分支、集成分支和各阶段 Gate 均已建立并保留。
+2. 每个阶段均先通过门禁，再以非 squash merge 合入集成分支；提交历史可逐阶段回溯。
+3. 六个 Variant 在同一构建中选择真实生产 Profile，Token、bytes、Hash、稳定前缀、缓存身份与类型诊断基线均已冻结。
+4. C06 集成主线复跑通过，最终集成记录由 `task1-c06-pass` 和 `task1-code-freeze` 标识。
 5. 代码线停止修改 Prompt；等待独立数据线 Gate 完成后再进入模型实验。
 
-这套分支和 Gate 记录保证每一类改造仍可单独回溯，后续实验能够准确归因到相邻版本差异。
+这套分支和 Gate 记录保证每一类改造可单独回溯，后续实验能够准确归因到相邻版本差异。

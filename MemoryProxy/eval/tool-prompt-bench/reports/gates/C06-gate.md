@@ -6,8 +6,8 @@
 - verified implementation commit: `99fd4da8e8e16f876c967c2d53afaf4da9b4b155`
 - verified campaign fix commit: `d935e88a5e53eba3eb3b8aa74316ec5b4d064b73`
 - verified inventory commit: `df031ab09dce589a3ba65ed957834a8596c417e5`
-- merge commit: `PENDING_INTEGRATION`
-- code-freeze tag: `PENDING_INTEGRATION`
+- merge commit: `a36a6cff1cec3ae74f8d8cba40c2cf540ae4902b`
+- code-freeze tag: `task1-code-freeze`
 - scope: 冻结 V0、V0-C、V1a、V1、V2、V3 的同构建选择链路、Token/Hash/稳定前缀清单和实验交接面；不新增 Prompt 优化，不运行模型，不导入 World、Gold 或真实资产
 - checked at: `2026-08-28 Asia/Shanghai`
 
@@ -76,6 +76,17 @@ V3 相对 V0 减少 2,639 个注入 token（约 54.3%）；这是静态 Token �
 - 全量类型检查的 54 条既有错误需由原生产基线单独治理；它们不影响本阶段测试与 Prompt 评测链路，且本任务没有扩大范围修复。
 - 正式实验仍须等待数据交接 Gate，通过后由用户手动启动 MemoryProxy/Codex campaign。
 
+## 集成主线复跑
+
+C06 已通过 merge commit `a36a6cff1cec3ae74f8d8cba40c2cf540ae4902b` 以非 squash 方式合入 `codex/task1-code-integration`。合并后复跑：
+
+- `npm test`：51/51 通过。
+- `npm run eval:tool-prompt:validate`：100 case / 100 fixture 通过。
+- `npm run eval:tool-prompt:capture-freeze`：成功且机器清单零差异，仍指向 C06 最后一个相关源码提交 `d935e88a5e53eba3eb3b8aa74316ec5b4d064b73`。
+- `npx tsc --noEmit --pretty false`：仍为 54 条既有诊断，任务一相关新增诊断为 0。
+- V3 `-PrepareOnly`：成功，固定 `gpt-5.6-luna` / `high`，使用现有 `CODEX_HOME`，未复制 `auth.json`，未调用模型。
+- `git diff --check`：通过。
+
 ## 决策
 
-C06 分支 Gate 通过。允许以非 squash merge 合回 `codex/task1-code-integration`。合并后必须复跑关键门禁，补记 merge commit，并把最终集成记录提交同时标记为 `task1-c06-pass` 和唯一 `task1-code-freeze`；在此之前不得宣告代码线冻结完成。
+C06 与集成 Gate 均通过。最终集成记录提交由 `task1-c06-pass` 和 `task1-code-freeze` 两个 tag 共同标识，其中 `task1-code-freeze^{}` 是交给实验线的唯一 code-freeze commit。代码线自此停止修改 Prompt；后续若行为评测要求修订，必须另建阶段分支。

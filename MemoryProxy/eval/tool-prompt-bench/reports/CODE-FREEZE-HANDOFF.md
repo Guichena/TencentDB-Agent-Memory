@@ -2,8 +2,8 @@
 
 ## 交接状态
 
-- code-freeze commit：`PENDING_INTEGRATION`
-- immutable tag：`PENDING_INTEGRATION`
+- code-freeze commit：`task1-code-freeze^{}`（以 tag 解析出的完整 commit 为唯一权威值）
+- immutable tag：`task1-code-freeze`
 - integration branch：`codex/task1-code-integration`
 - baseline commit：`5299c00aaf65481703c180fd69df066d11254eb7`
 - production default：`injection.toolPromptProfile: legacy`
@@ -60,7 +60,7 @@
 
 数据线冻结并完成真实资产预检后，去掉 `-PrepareOnly` 才会启动正式运行。V0 至 V3 必须使用相同模型、推理强度、数据快照、资产可见范围、会话隔离和运行顺序随机化设置；这些实验控制由数据/实验线 Gate 负责。
 
-## 合并前检查
+## 代码交接检查
 
 - [x] V0 至 V3 在同一构建中可选。
 - [x] Variant 选择实际进入生产 Compiler/Profile 和 Pipeline。
@@ -70,8 +70,8 @@
 - [x] 51/51 测试通过；100/100 合同数据通过。
 - [x] 类型检查相对基线新增诊断 0。
 - [x] 代码分支不含 World、Gold、真实资产和模型运行结果。
-- [ ] C06 非 squash 合回集成分支并复跑门禁。
-- [ ] 写入唯一 code-freeze tag。
+- [x] C06 已通过 `a36a6cff1cec3ae74f8d8cba40c2cf540ae4902b` 非 squash 合回集成分支并复跑门禁。
+- [x] 最终集成记录同时标记 `task1-c06-pass` 与唯一 `task1-code-freeze`。
 
 ## 已知限制和回退
 
