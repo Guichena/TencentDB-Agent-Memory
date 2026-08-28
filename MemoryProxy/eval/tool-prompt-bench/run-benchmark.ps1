@@ -3,7 +3,7 @@ param(
   [ValidateSet("case", "smoke", "dev", "test")]
   [string]$Scope = "case",
   [string]$CaseId,
-  [ValidateSet("V0")]
+  [ValidateSet("V0", "V0-C", "V1a", "V1", "V2", "V3")]
   [string]$Variant = "V0",
   [ValidateRange(1, 10)]
   [int]$Repeats = 1,

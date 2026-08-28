@@ -176,6 +176,7 @@ async function main(): Promise<void> {
     "MemoryProxy/eval/tool-prompt-bench/variant-profiles.ts",
     "MemoryProxy/eval/tool-prompt-bench/prompt-harness.ts",
     "MemoryProxy/eval/tool-prompt-bench/codex-runner.ts",
+    "MemoryProxy/eval/tool-prompt-bench/run-benchmark.ps1",
     "MemoryProxy/src/injection/tool-prompt",
     "MemoryProxy/src/injection/injectors/tdai-tools-injector.ts",
     "MemoryProxy/src/injection/injectors/tdai-profile-memory-injector.ts",

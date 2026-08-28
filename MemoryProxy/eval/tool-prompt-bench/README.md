@@ -71,7 +71,7 @@ Source revisions and licenses are pinned in `sources/manifest.json`. Cases marke
 
 The benchmark keeps prompt construction, protocol execution, and model execution separate so failures can be attributed correctly:
 
-1. `prompt-harness.ts` renders each fixture through the production `InjectionPipeline` and the production `render*Block()` functions. It does not maintain a second handwritten copy of V0.
+1. `prompt-harness.ts` renders each fixture through the production `InjectionPipeline`, production `render*Block()` functions, and the selected production ToolPrompt Compiler profile. It does not maintain a second handwritten Prompt implementation.
 2. `protocol-harness.ts` parses the exact read-only curl subset used by V0, rejects shell operators, off-origin URLs, unsupported methods, and unknown endpoints, then sends a structured HTTP request to a random-port Mock Bridge. Every attempt records `intentId`, `runId`, `sessionId`, and timestamp.
 3. `codex-runner.ts` is the isolated model layer. Formal runs send the Responses request through a running MemoryProxy at `127.0.0.1:8096`; direct-to-provider runs are diagnostics only. Every repeat gets a new workspace, session, Mock Bridge, `CODEX_SQLITE_HOME`, `HOME`, and `USERPROFILE`; it uses `codex exec --ephemeral --ignore-rules --ignore-user-config --json`. Authentication points to the user's single existing `CODEX_HOME` and is never copied. Benchmark configuration is supplied only through invocation-scoped overrides. Codex skill instructions are disabled, so personal skills and the user's previous task state cannot affect the comparison. The same fixed Codex version, MemoryProxy build, and runner configuration must be used for V0 and candidate.
 
@@ -119,6 +119,19 @@ Inspect an isolated prompt without making an LLM request:
 ```powershell
 npm run eval:tool-prompt:codex -- --case memory-dev-preference-001 --model gpt-5.6-luna --reasoning-effort high --verbosity medium --variant V0 --repeat 1 --dry-run
 ```
+
+`--variant` is a strict production-profile selector, not a result label:
+
+| Variant | `injection.toolPromptProfile` |
+|---|---|
+| `V0` | `legacy` |
+| `V0-C` | `contract-corrected` |
+| `V1a` | `protocol-compact` |
+| `V1` | `compact` |
+| `V2` | `selection-calibrated` |
+| `V3` | `capability-pruned` |
+
+The runner writes both values and the effective Capability Signature into every `run-manifest.json`. Formal Task 1 runs disable automatic Skill extraction; V0 through V2 retain their frozen Prompt exposure, while V3 removes `skill_extract` through its production capability projection.
 
 Run one real case through the required MemoryProxy route:
 
