@@ -14,6 +14,7 @@ import { CASES, FIXTURES } from "./case-definitions.js";
 import { evaluateToolPromptCase } from "./evaluator.js";
 import { renderFixturePrompt } from "./prompt-harness.js";
 import { startToolPromptMockServer } from "./protocol-harness.js";
+import { resolveToolPromptVariant } from "./variant-profiles.js";
 
 export interface CodexInvocationInput {
   workspaceDir: string;
@@ -317,6 +318,7 @@ function runChild(
 }
 
 export async function runCodexCase(options: CodexRunOptions): Promise<Record<string, unknown>> {
+  const resolvedVariant = resolveToolPromptVariant(options.variant);
   const item = CASES.find((candidate) => candidate.caseId === options.caseId);
   if (!item) throw new Error(`unknown caseId ${options.caseId}`);
   const fixture = FIXTURES.find((candidate) => candidate.fixtureId === item.fixtureIds[0]);
@@ -340,6 +342,8 @@ export async function runCodexCase(options: CodexRunOptions): Promise<Record<str
       sessionId,
       spaceId: "tool-prompt-bench",
       modelId: options.model,
+      profile: resolvedVariant.profile,
+      skillExtractionEnabled: false,
     });
     const developerInstructions = `${rendered.prompt}${conversationContext(item.contextMessages)}`;
     const injectionTokenCount = countInjectionTokens(rendered.prompt);
@@ -395,7 +399,9 @@ export async function runCodexCase(options: CodexRunOptions): Promise<Record<str
       sessionId,
       caseId: item.caseId,
       fixtureId: fixture.fixtureId,
-      variant: options.variant,
+      variant: resolvedVariant.variant,
+      toolPromptProfile: rendered.toolPromptProfile,
+      capabilitySignature: rendered.capabilitySignature,
       repeat: options.repeat,
       model: options.model,
       reasoningEffort: options.reasoningEffort,
@@ -491,7 +497,7 @@ if (isMain) {
   const caseId = cliValue("--case");
   const model = cliValue("--model");
   if (!caseId || !model) {
-    console.error("usage: tsx eval/tool-prompt-bench/codex-runner.ts --case <id> --model <model> [--reasoning-effort high] [--verbosity medium] [--variant V0] [--repeat 1] [--provider-base-url <url>] [--codex-home <dir>] [--out <dir>] [--dry-run]");
+    console.error("usage: tsx eval/tool-prompt-bench/codex-runner.ts --case <id> --model <model> [--reasoning-effort high] [--verbosity medium] [--variant V0|V0-C|V1a|V1|V2|V3] [--repeat 1] [--provider-base-url <url>] [--codex-home <dir>] [--out <dir>] [--dry-run]");
     process.exitCode = 2;
   } else {
     const result = await runCodexCase({

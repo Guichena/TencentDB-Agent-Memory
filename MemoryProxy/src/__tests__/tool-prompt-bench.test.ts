@@ -7,6 +7,10 @@ import { evaluateToolPromptCase } from "../../eval/tool-prompt-bench/evaluator.j
 import { createToolPromptMockBridge } from "../../eval/tool-prompt-bench/mock-bridge.js";
 import { renderFixturePrompt } from "../../eval/tool-prompt-bench/prompt-harness.js";
 import {
+  resolveToolPromptVariant,
+  TOOL_PROMPT_VARIANT_PROFILES,
+} from "../../eval/tool-prompt-bench/variant-profiles.js";
+import {
   executeCurlCommand,
   parseCurlCommand,
   startToolPromptMockServer,
@@ -184,6 +188,49 @@ describe("TDAI-ToolPromptBench dataset", () => {
     expect(rendered.prompt).toContain("http://127.0.0.1:43127");
     expect(rendered.promptSha256).toMatch(/^[a-f0-9]{64}$/);
     expect((rendered.body.messages as Array<{ content: string }>)[0].content).toBe(rendered.prompt);
+  });
+
+  it("maps every evaluation variant to a real production profile", async () => {
+    expect(TOOL_PROMPT_VARIANT_PROFILES).toEqual({
+      V0: "legacy",
+      "V0-C": "contract-corrected",
+      V1a: "protocol-compact",
+      V1: "compact",
+      V2: "selection-calibrated",
+      V3: "capability-pruned",
+    });
+    expect(() => resolveToolPromptVariant("latest")).toThrow(/unsupported tool prompt variant/);
+
+    const item = CASES.find((candidate) => candidate.preconditions.answerInProfileL3);
+    expect(item).toBeDefined();
+    if (!item) return;
+    const fixture = FIXTURES.find((candidate) => candidate.fixtureId === item.fixtureIds[0]);
+    expect(fixture).toBeDefined();
+    if (!fixture) return;
+
+    const rendered = await Promise.all(
+      Object.entries(TOOL_PROMPT_VARIANT_PROFILES).map(async ([variant, profile]) => {
+        const result = await renderFixturePrompt(item, fixture, {
+          bridgeBaseUrl: "http://127.0.0.1:43127",
+          sessionId: "eval-session-profile-map",
+          spaceId: "eval-space",
+          profile,
+          skillExtractionEnabled: false,
+        });
+        expect(resolveToolPromptVariant(variant)).toEqual({ variant, profile });
+        expect(result.toolPromptProfile).toBe(profile);
+        return [variant, result] as const;
+      }),
+    );
+    const byVariant = new Map(rendered);
+
+    expect(new Set(rendered.map(([, result]) => result.promptSha256)).size).toBe(6);
+    expect(byVariant.get("V0")?.prompt).toContain("## Skills (mandatory)");
+    expect(byVariant.get("V1a")?.prompt).toContain("## 统一工具调用协议");
+    expect(byVariant.get("V2")?.prompt).toContain("## Tool / no-tool gate");
+    expect(byVariant.get("V2")?.prompt).toContain('<tool name="skill_extract">');
+    expect(byVariant.get("V3")?.prompt).not.toContain('<tool name="skill_extract">');
+    expect(byVariant.get("V3")?.capabilitySignature).toContain("skill_extract=0");
   });
 
   it("safely executes an allowed curl intent and correlates it with the bridge call", async () => {

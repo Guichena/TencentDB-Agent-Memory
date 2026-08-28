@@ -5,11 +5,19 @@ import { renderKnowledgeToolsBlock } from "../../src/injection/injectors/knowled
 import { renderSkillToolsBlock } from "../../src/injection/injectors/skill-tools-injector.js";
 import { wrapAvailableSkillsBlock } from "../../src/injection/injectors/skill-injector.js";
 import {
+  MEMORY_TOOLS_GUIDE,
   renderTdaiProfileMemoryBlock,
 } from "../../src/injection/injectors/tdai-profile-memory-injector.js";
 import { renderTdaiMemoryToolsBlock } from "../../src/injection/injectors/tdai-tools-injector.js";
 import { InjectionPipeline } from "../../src/injection/pipeline.js";
 import { HookRegistryImpl } from "../../src/injection/registry.js";
+import { compileToolPrompt } from "../../src/injection/tool-prompt/compiler.js";
+import { buildCapabilitySignature } from "../../src/injection/tool-prompt/runtime-contract.js";
+import type {
+  ToolPromptFamily,
+  ToolPromptProfile,
+  ToolPromptSurface,
+} from "../../src/injection/tool-prompt/types.js";
 import { HOOK_PRIORITY, type ContextBlock, type InjectionHook, type InjectionPoint } from "../../src/injection/types.js";
 import type { EvalFixture, ToolPromptEvalCase } from "./schema.js";
 
@@ -18,12 +26,17 @@ export interface FixturePromptOptions {
   sessionId: string;
   spaceId: string;
   modelId?: string;
+  profile?: ToolPromptProfile;
+  /** Formal Task 1 campaigns disable automatic Skill extraction. */
+  skillExtractionEnabled?: boolean;
 }
 
 export interface RenderedFixturePrompt {
   body: Record<string, unknown>;
   prompt: string;
   promptSha256: string;
+  toolPromptProfile: ToolPromptProfile;
+  capabilitySignature: string;
 }
 
 function staticHook(
@@ -36,7 +49,7 @@ function staticHook(
     id,
     point,
     priority,
-    description: `Fixture-backed V0 ${id}`,
+    description: `Fixture-backed ${id}`,
     execute: () => {
       if (!content) return [];
       return [typeof content === "string" ? { type: "text", content, metadata: { source: id } } : content];
@@ -44,11 +57,19 @@ function staticHook(
   };
 }
 
-function renderSkillListing(fixture: EvalFixture): string | null {
+function renderSkillListing(
+  fixture: EvalFixture,
+  profile: ToolPromptProfile,
+  capabilitySignature: string,
+): string | null {
   const listed = fixture.assets.skills?.listed ?? [];
   if (listed.length === 0) return null;
   const lines = listed.map((skill) => `- ${String(skill.name ?? "")}: ${String(skill.description ?? "")}`);
-  return wrapAvailableSkillsBlock(`<available_skills>\n${lines.join("\n")}\n</available_skills>`);
+  return wrapAvailableSkillsBlock(
+    `<available_skills>\n${lines.join("\n")}\n</available_skills>`,
+    profile,
+    capabilitySignature,
+  );
 }
 
 function fixtureKnowledge(fixture: EvalFixture, bridgeBaseUrl: string): KnowledgeItem[] {
@@ -69,7 +90,7 @@ function fixtureKnowledge(fixture: EvalFixture, bridgeBaseUrl: string): Knowledg
   }));
 }
 
-function fixtureProfile(fixture: EvalFixture): ContextBlock {
+function fixtureProfile(fixture: EvalFixture, memoryGuide: string): ContextBlock {
   const l3Content = fixture.assets.profileL3?.join("\n");
   const l2Entries = (fixture.assets.sceneIndex ?? []).flatMap((entry) => (
     typeof entry.path === "string"
@@ -82,10 +103,31 @@ function fixtureProfile(fixture: EvalFixture): ContextBlock {
     isSelf: true,
     l3Content,
     l2Entries,
-  }]);
+  }], memoryGuide);
 }
 
-/** Render a case with the same InjectionPipeline and V0 block renderers used by Codex. */
+function compileFixtureSurface(
+  profile: ToolPromptProfile,
+  family: ToolPromptFamily,
+  surface: ToolPromptSurface,
+  legacyContent: string,
+  capabilitySignature: string,
+): string {
+  if (profile === "legacy") return legacyContent;
+  return compileToolPrompt({
+    profile,
+    family,
+    surface,
+    legacyUnits: [{
+      id: `fixture.${surface}`,
+      kind: "legacy-body",
+      content: legacyContent,
+    }],
+    capabilitySignature,
+  }).content;
+}
+
+/** Render a case through the production InjectionPipeline and selected Compiler profile. */
 export async function renderFixturePrompt(
   item: ToolPromptEvalCase,
   fixture: EvalFixture,
@@ -93,19 +135,42 @@ export async function renderFixturePrompt(
 ): Promise<RenderedFixturePrompt> {
   const registry = new HookRegistryImpl();
   const baseUrl = options.bridgeBaseUrl.replace(/\/$/, "");
+  const profile = options.profile ?? "legacy";
+  const knowledge = item.capabilities.llmWiki || item.capabilities.codeGraph;
+  const capabilitySignature = buildCapabilitySignature({
+    memory: item.capabilities.chatMemory,
+    skill: item.capabilities.skill,
+    knowledge,
+    wiki: item.capabilities.llmWiki,
+    codeGraph: item.capabilities.codeGraph,
+    skillWrite: item.capabilities.skill && item.capabilities.allowLlmWrite,
+    skillExtract: item.capabilities.skill && (options.skillExtractionEnabled ?? false),
+  });
 
   if (item.capabilities.skill) {
+    const skillTools = renderSkillToolsBlock(
+      baseUrl,
+      item.capabilities.allowLlmWrite,
+      options.sessionId,
+      options.spaceId,
+    );
     registry.register(staticHook(
       "skill-tools-injector",
       "system.before_tools",
       HOOK_PRIORITY.SKILL - 1,
-      renderSkillToolsBlock(baseUrl, item.capabilities.allowLlmWrite, options.sessionId, options.spaceId),
+      compileFixtureSurface(
+        profile,
+        "skill",
+        "skill-tools",
+        skillTools,
+        capabilitySignature,
+      ),
     ));
     registry.register(staticHook(
       "skill-injector",
       "system.before_tools",
       HOOK_PRIORITY.SKILL,
-      renderSkillListing(fixture),
+      renderSkillListing(fixture, profile, capabilitySignature),
     ));
   }
 
@@ -113,33 +178,56 @@ export async function renderFixturePrompt(
     const resources = fixtureKnowledge(fixture, baseUrl).filter((resource) => (
       resource.type === "wiki" ? item.capabilities.llmWiki : item.capabilities.codeGraph
     ));
+    const legacyKnowledge = renderKnowledgeToolsBlock(resources, options.spaceId, {
+      sessionKey: options.sessionId,
+      userId: "eval-user",
+      teamId: "eval-team",
+      agentId: "eval-agent",
+      agentSource: "codex",
+      spaceId: options.spaceId,
+    });
     registry.register(staticHook(
       "knowledge-tools-injector",
       "system.before_tools",
       HOOK_PRIORITY.WIKI,
-      renderKnowledgeToolsBlock(resources, options.spaceId, {
-        sessionKey: options.sessionId,
-        userId: "eval-user",
-        teamId: "eval-team",
-        agentId: "eval-agent",
-        agentSource: "codex",
-        spaceId: options.spaceId,
-      }),
+      legacyKnowledge
+        ? compileFixtureSurface(
+            profile,
+            "knowledge",
+            "knowledge-tools",
+            legacyKnowledge,
+            capabilitySignature,
+          )
+        : null,
     ));
   }
 
   if (item.capabilities.chatMemory) {
+    const memoryTools = renderTdaiMemoryToolsBlock(baseUrl, options.sessionId, options.spaceId);
+    const memoryGuide = compileFixtureSurface(
+      profile,
+      "memory",
+      "memory-guide",
+      MEMORY_TOOLS_GUIDE,
+      capabilitySignature,
+    );
     registry.register(staticHook(
       "tdai-memory-tools-injector",
       "system.suffix",
       HOOK_PRIORITY.MEMORY + 5,
-      renderTdaiMemoryToolsBlock(baseUrl, options.sessionId, options.spaceId),
+      compileFixtureSurface(
+        profile,
+        "memory",
+        "memory-tools",
+        memoryTools,
+        capabilitySignature,
+      ),
     ));
     registry.register(staticHook(
       "tdai-profile-memory-injector",
       "system.suffix",
       HOOK_PRIORITY.MEMORY + 10,
-      fixtureProfile(fixture),
+      fixtureProfile(fixture, memoryGuide),
     ));
   }
 
@@ -180,5 +268,7 @@ export async function renderFixturePrompt(
     body,
     prompt,
     promptSha256: createHash("sha256").update(prompt).digest("hex"),
+    toolPromptProfile: profile,
+    capabilitySignature,
   };
 }

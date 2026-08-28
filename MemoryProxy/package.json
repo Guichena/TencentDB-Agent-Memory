@@ -18,6 +18,7 @@
     "eval:tool-prompt:capture-c03": "tsx eval/tool-prompt-bench/capture-profile-artifacts.ts C03",
     "eval:tool-prompt:capture-c04": "tsx eval/tool-prompt-bench/capture-profile-artifacts.ts C04",
     "eval:tool-prompt:capture-c05": "tsx eval/tool-prompt-bench/capture-profile-artifacts.ts C05",
+    "eval:tool-prompt:capture-freeze": "tsx eval/tool-prompt-bench/capture-code-freeze.ts",
     "eval:tool-prompt:validate": "tsx eval/tool-prompt-bench/validate.ts",
     "eval:tool-prompt:test": "vitest run src/__tests__/tool-prompt-bench.test.ts",
     "eval:tool-prompt:score": "tsx eval/tool-prompt-bench/score.ts",
