@@ -41,7 +41,7 @@
 | `npm test` | 0 | 3 个测试文件、58 个测试全部通过 |
 | `npm run eval:tool-prompt:validate` | 0 | 100 case / 100 fixture 合同回归通过 |
 | 评测目录独立 strict TypeScript 编译 | 0 | 所有 `eval/tool-prompt-bench/*.ts` 通过 |
-| `npm run eval:tool-prompt:capture-freeze` | 0 | 六个冻结 Prompt 复算成功，工作树无生成差异 |
+| `npm run eval:tool-prompt:capture-freeze` | 0 | 六个冻结 Prompt 复算成功；清单只把相关源码基点更新为 C07 实现提交，Prompt/Token/Hash 字段无变化 |
 | `start-benchmark-proxy.ps1 ... -PrepareOnly` | 0 | 只生成 Docker 命令；Codex-only 官方上游、client passthrough、只读 config 和诊断开关均明确 |
 | `run-benchmark.ps1 ... -PrepareOnly` | 0 | 固定 `gpt-5.6-luna` / `high` / `medium`，未启动 Codex 或模型 |
 | `npx tsc --noEmit --pretty false` | 2 | 仍为 54 条既有诊断；标准化指纹未变；C07 新增诊断 0 |
@@ -51,7 +51,7 @@
 
 ## Prompt 与 Token 冻结证明
 
-`src/injection/**` 和 `variants/code-freeze/**` 在 C07 中均无 diff。复跑冻结捕获后，六个 Variant 仍保持 C06 清单：
+`src/injection/**` 在 C07 中无 diff。`variants/code-freeze/code-freeze-manifest.json` 只更新 `sourceCommit` 与由该提交派生的 `generatedAt`，用于把实验运行器基点指向 `f440ac63c6d27d3cd62ea21834dbcd38bcecad47`；全部 Prompt、Token、bytes、hash、稳定前缀和缓存身份字段保持不变。复跑冻结捕获后，六个 Variant 仍保持 C06 清单：
 
 | Variant | Injection tokens (`o200k_base`) | Provider tokens |
 |---|---:|---:|
