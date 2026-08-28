@@ -51,7 +51,11 @@ export interface ResolveCodexInvocationOptions {
 }
 
 export interface CodexProfileInput {
-  developerInstructions: string;
+  /**
+   * Mock-contract runs pre-render the benchmark prompt here. Formal real-chain
+   * runs omit it so MemoryProxy remains the sole owner of TDAI injection.
+   */
+  developerInstructions?: string;
   providerBaseUrl?: string;
   providerHeaders?: Record<string, string>;
   /** Provider header -> environment variable name. Secret values never enter CLI args. */
@@ -348,7 +352,6 @@ export function isolateCodexEnvironment(
 /** Convert the benchmark-only profile into invocation-scoped CLI overrides. */
 export function buildCodexConfigArgs(input: CodexProfileInput): string[] {
   const values = [
-    `developer_instructions=${JSON.stringify(input.developerInstructions)}`,
     'approval_policy="never"',
     `model_reasoning_effort=${JSON.stringify(input.reasoningEffort)}`,
     `model_verbosity=${JSON.stringify(input.verbosity)}`,
@@ -359,6 +362,9 @@ export function buildCodexConfigArgs(input: CodexProfileInput): string[] {
     "skills.include_instructions=false",
     "sandbox_workspace_write.network_access=true",
   ];
+  if (input.developerInstructions !== undefined) {
+    values.unshift(`developer_instructions=${JSON.stringify(input.developerInstructions)}`);
+  }
   if (input.providerBaseUrl) {
     values.push(
       'model_provider="custom"',

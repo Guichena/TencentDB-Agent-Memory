@@ -2,6 +2,8 @@
 
 This frozen 100-case dataset is the Mock-contract/Pilot layer for Task 1. It evaluates whether an agent should call a TDAI tool, which family and first action it selects, and whether the generated request satisfies the frozen contract. It does not score asset quality, and its numbers are not eligible for the formal V0-versus-candidate report.
 
+The formal 10-Space/400-case dataset is a separate source-grounded layer. Its source selection, TDAI entity mapping, W01–W03 rebuild, provenance fields and stage gates are defined in [`DATASET-BASE-AND-WORLD-REBUILD.md`](./DATASET-BASE-AND-WORLD-REBUILD.md); stage-by-stage execution files are indexed in [`data-stages/README.md`](./data-stages/README.md), benchmark terminology is fixed in [`CONTEXT.md`](./CONTEXT.md), and external-source observations are tracked in [`DATASET-SOURCE-LEDGER.md`](./DATASET-SOURCE-LEDGER.md).
+
 Each case is a dialogue. `contextMessages` contains any preceding turns and `query` is the final user turn. When `contextMessages` is absent, the case is a valid one-turn dialogue.
 
 All primary cases expose Memory, Skill, Wiki, and Code Graph read capabilities and preserve V0's currently exposed manual `skill_extract` action while disabling direct LLM writes. Manual extraction is forbidden unless a future, explicitly labelled lifecycle case requires it, so false calls remain observable without silently changing the baseline prompt surface.
@@ -74,10 +76,19 @@ The benchmark keeps prompt construction, protocol execution, and model execution
 1. `prompt-harness.ts` renders each fixture through the production `InjectionPipeline`, production `render*Block()` functions, and the selected production ToolPrompt Compiler profile. It does not maintain a second handwritten Prompt implementation.
 2. `protocol-harness.ts` parses the exact read-only curl subset used by V0, rejects shell operators, off-origin URLs, unsupported methods, and unknown endpoints, then sends a structured HTTP request to a random-port Mock Bridge. Every attempt records `intentId`, `runId`, `sessionId`, and timestamp.
 3. `codex-runner.ts` is the isolated Mock-contract model layer. Every repeat gets a new workspace, session, Mock Bridge, `CODEX_SQLITE_HOME`, `HOME`, and `USERPROFILE`; it uses `codex exec --ephemeral --ignore-rules --ignore-user-config --json`. Official provider authentication points to the user's single existing `CODEX_HOME` and is never copied. When Proxy TDAI auth is enabled, `TDAI_EVAL_USER_KEY` is sent only as the environment-backed `x-tdai-user-key` provider header; the header is removed before upstream forwarding, the value is excluded from model shell subprocesses, and no artifact saves it. Codex skill instructions are disabled, so personal skills and prior task state cannot affect the Pilot comparison.
+4. `real-chain-adapter.ts` is the formal MemoryProxy boundary. It points the Codex provider at `/codex/{spaceId}/v1`, sends a fresh session plus validated Team/Agent/Task headers, omits runner-owned TDAI developer instructions, and never enables the Mock-contract bypass. Its transport seam supports both a running Proxy over HTTP and an in-process production Hono app for no-model Gate tests.
 
 For this Pilot layer only, the case fixture is rendered before forwarding. Codex sends `x-tdai-eval-mode: mock-contract`; a benchmark Proxy started with `TDAI_TOOL_PROMPT_DIAGNOSTIC=1` bypasses Session Init and its own injection only for `spaceId=tool-prompt-bench`, preventing a second injection. Every run manifest is marked `evaluationLayer=mock-contract` and `formalMetricEligible=false`. Normal production requests cannot activate this bypass.
 
 Formal Task 1 evaluation is a different execution layer: the runner must send real history, workspace, Query, and fixed Team/Agent/Task identity without a pre-rendered TDAI block; the production `InjectionPipeline` must be the sole injection owner; and scoring must use the first request observed at the real Memory/Skill/Knowledge entry. Until that adapter and the real World snapshots are frozen, no output from this directory may be presented as the formal before/after metric.
+
+The real-chain Adapter Gate does not call Codex or an LLM. It drives the production Hono route through Auth, header-based Session Init, prewarm, InjectionPipeline, and a capture upstream; then it requires exactly one `<tdai_injections>` wrapper and records its `o200k_base` tokens, characters, UTF-8 bytes, and SHA-256:
+
+```powershell
+npm run eval:tool-prompt:real-chain:gate
+```
+
+Passing this Gate proves only the Adapter seam. Its manifest remains `formalMetricEligible=false` until the World Loader and real first-entry Observer gates also pass.
 
 ### Frozen model protocol
 
