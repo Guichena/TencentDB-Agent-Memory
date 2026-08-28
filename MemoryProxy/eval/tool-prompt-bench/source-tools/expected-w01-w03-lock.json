@@ -1,0 +1,16 @@
+{
+  "datasets": [
+    {
+      "id": "SWE-Gym/SWE-Gym",
+      "revision": "bb94ed9e39bbeb96a7fcbfb533b80f25a7fd59cb",
+      "file_sha256": "60569cea74bb281f7a5579467436a2bc1932c6e0c5f2f7fa0d084392abd9ad97",
+      "row_count": 2438
+    },
+    {
+      "id": "SWE-Gym/OpenHands-SFT-Trajectories",
+      "revision": "4aaa5a4a4b5861f4799d2336908760c190ac3b17",
+      "file_sha256": "ea4bf37de020e165c5210bedddeef523d8834a89a35a8c65fec24f76f0eae4f1",
+      "row_count": 491
+    }
+  ]
+}

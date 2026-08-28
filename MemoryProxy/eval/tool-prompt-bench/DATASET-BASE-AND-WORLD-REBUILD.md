@@ -205,11 +205,12 @@ W01～W03 先全部使用 SWE-Gym + MIT 标注的成功轨迹，验证最严格�
 | W02 | A | `pandas-dev/pandas` | DataFrame、索引、IO、pytest | 任务密度和跨文件上下文丰富，Knowledge/CodeGraph 题充足 |
 | W02 | B | `dask/dask` | 分布式计算、collections、scheduler | 同属数据工程但规则不同，适合构造真实语义竞争 |
 | W03 | A | `iterative/dvc` | CLI、pipeline、cache、remote | 工作流型 Skill、历史决策和本地优先题都容易落到真实证据 |
-| W03 | B | `pydantic/pydantic`（reserve） | schema、validation、typing | 仅 7 个推断唯一任务，虽然达到最低门槛但余量不足；确定性 join 或去泄漏失败时必须替换 |
+| W03 | B | `Project-MONAI/MONAI` | 医疗影像、PyTorch、transforms、测试 | 确定性 join 后有 53 个唯一 task（50 条轨迹 messages≥20），足以把历史资产来源和当前问题锚点分开 |
 
 最终准入不以名称或总任务数决定。每个 Team 必须先证明：
 
-- 至少 6 条成功且 source task 不重叠的轨迹；
+- 至少 12 个官方 source task：history 至少 6 个、current anchor 至少 6 个，二者不重叠；
+- history 至少 6 条成功且 source task 不重叠的轨迹，当前 anchor 的 reference patch 不得进入历史资产；
 - 至少 20 条可保留的历史消息；
 - 至少 10 条可证据化 L1；
 - 至少 4 个由两个以上 Session 支撑的 L2；
@@ -220,7 +221,7 @@ W01～W03 先全部使用 SWE-Gym + MIT 标注的成功轨迹，验证最严格�
 
 某个候选未通过时，从同一 SWE-Gym 来源池替换 Team，不降低 Gate，也不手写补足缺失轨迹。
 
-当前只读密度初筛为：moto 155/71、mypy 46/27、pandas 70/61、dask 45/29、dvc 36/24、pydantic 11/7（成功轨迹/按 PR 描述 hash 推断的唯一任务）。这些数字只证明候选容量；OpenHands 没有正式顶层 `source_task_id`，必须先与 SWE-Gym 的 `instance_id/base_commit` 确定性 join，才能升级为正式准入结果。
+确定性 join 已得到 487 条全局唯一匹配、4 条歧义排除、0 条未匹配。按官方 `instance_id` 去重后的候选容量为：moto 69、mypy 27、pandas 61、dask 29、dvc 23、MONAI 53、Conan 12、Pydantic 7；正式六 Team 选择前六者，后两者只作 reserve。该统计只证明来源容量，不能替代业务场景、许可、Gold 唯一性和人工证据复核。
 
 ## 8. 时间边界与防泄漏
 
@@ -283,16 +284,16 @@ D0 必须建立独立的 Formal V2 合同：
 
 逐阶段的命令前置、产物和勾选式验收清单见 [`data-stages/README.md`](./data-stages/README.md)。每一阶段使用独立分支，通过 Gate 并合入数据集成主线后才创建下一阶段分支。
 
-### D0：冻结来源合同
+### D0：冻结 W01～W03 来源合同
 
-- 锁 SWE-Gym、OpenHands-SFT、Open-SWE-Traces 和 ContextBench revision。
-- 锁 SWE-rebench-V2 revision，并验证 Open-SWE `instance_id` 到 source task/base commit 的 m:1 join。
+- 锁 W01～W03 实际使用的 SWE-Gym、OpenHands-SFT revision、文件 hash 和确定性 join。
+- Open-SWE、SWE-rebench-V2 与 ContextBench 只保留候选台账，在 D3 或首次实际使用阶段冻结，不提前阻塞 W01。
 - 定义 source registry、license manifest、时间字段和 transform 类型。
 - 建立 Formal V2 public/private schema、身份可见性解析、snapshot 与 run-record 合同。
 - 冻结评测策略：`allowLlmWrite=false`、`allowLlmExtract=false`、反射/归档写回关闭；当前 Pilot 的 `allowLlmExtract: true` 只能服务旧 smoke，不得沿用到正式运行。
 - 输出 repo/trajectory 密度报告。
 
-Gate：所有准入候选的 dataset + repo license、commit、trajectory id 和消息数可机器复核；公开输入不含任何私有标注；相同 snapshot 的可见资产与注入 hash 可重复；跨 Case 无 Session、存储、缓存或 workspace 残留。
+Gate：W01～W03 六个 Team 的 dataset + repo license、commit、trajectory id 和消息数可机器复核；公开输入不含任何私有标注；相同 snapshot 的可见资产与 workspace hash 可重复。真实 Session、存储、缓存和 workspace 残留在 D5、正式评测前验证。
 
 ### D1：重建 W01
 
@@ -310,6 +311,7 @@ Gate：W01～W03 共 120 条通过，repo/trajectory/patch/query/Skill family �
 
 ### D3：构建 W04 Dev 与多语言选择器
 
+- 在本阶段锁 Open-SWE/SWE-rebench-V2 的 revision、文件 hash、join 与许可证。
 - 从冻结的 Open-SWE-Traces 子集选择两个高密度、许可清楚、语言不同的 Team。
 - 完成 W04 后，Dev 形成 160 条。
 

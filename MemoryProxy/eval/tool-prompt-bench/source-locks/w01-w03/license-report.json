@@ -1,0 +1,41 @@
+{
+  "schema_version": "d0-license-report-v1",
+  "source_pack": {
+    "locator": "MemoryProxy\\eval\\tool-prompt-bench\\source-locks\\w01-w03\\W01-W03-SOURCE-PACK-SELECTION.md",
+    "sha256": "34534fe096eeaa47f18ef5a3c7dfcc2f70bdb7099be5e34138dd077176fed598"
+  },
+  "selected_count": 72,
+  "base_commit_count": 72,
+  "manifest_record_count": 77,
+  "blocker_counts": {},
+  "blockers": [],
+  "fail_closed": false,
+  "network_cache_entries": 77,
+  "notice_probe": false,
+  "coverage": {
+    "Project-MONAI/MONAI": {
+      "task_count": 12,
+      "base_commit_count": 12
+    },
+    "dask/dask": {
+      "task_count": 12,
+      "base_commit_count": 12
+    },
+    "getmoto/moto": {
+      "task_count": 12,
+      "base_commit_count": 12
+    },
+    "iterative/dvc": {
+      "task_count": 12,
+      "base_commit_count": 12
+    },
+    "pandas-dev/pandas": {
+      "task_count": 12,
+      "base_commit_count": 12
+    },
+    "python/mypy": {
+      "task_count": 12,
+      "base_commit_count": 12
+    }
+  }
+}

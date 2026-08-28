@@ -1,0 +1,3154 @@
+{
+  "schema_version": "d0-source-pack-selection-v1",
+  "selection_policy": "compiled from final Markdown selection and verified against candidate inventory",
+  "payload_policy": "metadata only; no full problem, patch, test_patch, messages, or Gold",
+  "selection_source": {
+    "locator": "MemoryProxy\\eval\\tool-prompt-bench\\source-locks\\w01-w03\\W01-W03-SOURCE-PACK-SELECTION.md",
+    "sha256": "34534fe096eeaa47f18ef5a3c7dfcc2f70bdb7099be5e34138dd077176fed598"
+  },
+  "inventory_source": {
+    "locator": "MemoryProxy\\eval\\tool-prompt-bench\\source-locks\\w01-w03\\candidate-inventory.json",
+    "sha256": "cef68ca404bac59c61b5746ee28bea912659e31dbe6aaccaf2c7bfd416ed9fb0"
+  },
+  "selected_count": 72,
+  "history_count": 36,
+  "current_anchor_count": 36,
+  "teams": {
+    "W01-Team-A": {
+      "history": [
+        {
+          "selection_order": 1,
+          "world": "W01",
+          "team": "A",
+          "role": "history",
+          "instance_id": "getmoto__moto-5134",
+          "repo": "getmoto/moto",
+          "base_commit": "0e3ac260682f3354912fe552c61d9b3e590903b8",
+          "created_at": "2022-05-13 19:55:51",
+          "problem_title": "EventBridge rule doesn't match null value with \"exists\" filter",
+          "problem_statement_sha256": "e214cd0d071ac915a6651b54eca3291b5b144b19d19ab08968ef1bd01d190dbc",
+          "trajectory_row": 154,
+          "message_count": 100,
+          "patch_touched_files": [
+            "moto/events/models.py"
+          ],
+          "test_files": [
+            "tests/test_events/test_event_pattern.py",
+            "tests/test_events/test_events_integration.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 2,
+          "world": "W01",
+          "team": "A",
+          "role": "history",
+          "instance_id": "getmoto__moto-6567",
+          "repo": "getmoto/moto",
+          "base_commit": "b52fd80cb1cfd8ecc02c3ec75f481001d33c194e",
+          "created_at": "2023-07-28 10:14:41",
+          "problem_title": "Missing vpc security group name from rds.create_db_cluster response",
+          "problem_statement_sha256": "ca293dd4ca303c9eb680a847cf9835797b0ff895f2ce7c56729fe5f446075c7c",
+          "trajectory_row": 253,
+          "message_count": 100,
+          "patch_touched_files": [
+            "moto/rds/models.py",
+            "moto/rds/responses.py"
+          ],
+          "test_files": [
+            "tests/test_rds/test_rds_clusters.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 3,
+          "world": "W01",
+          "team": "A",
+          "role": "history",
+          "instance_id": "getmoto__moto-7365",
+          "repo": "getmoto/moto",
+          "base_commit": "7f6c9cb1deafb280fe7fcc7551c38e397f11a706",
+          "created_at": "2024-02-19 20:29:03",
+          "problem_title": "DynamoDB's `update_item` performs floating-point arithmetic with mock table created via `boto3`",
+          "problem_statement_sha256": "98b2d3dfde2c2d04ca8249b63c1babbaec47f36f36a57f5f4f1ddf85875791af",
+          "trajectory_row": 340,
+          "message_count": 82,
+          "patch_touched_files": [
+            "moto/dynamodb/models/dynamo_type.py"
+          ],
+          "test_files": [
+            "tests/test_dynamodb/test_dynamodb_update_expressions.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 4,
+          "world": "W01",
+          "team": "A",
+          "role": "history",
+          "instance_id": "getmoto__moto-5587",
+          "repo": "getmoto/moto",
+          "base_commit": "80ab997010f9f8a2c26272671e6216ad12fac5c3",
+          "created_at": "2022-10-21 20:58:13",
+          "problem_title": "Versioned S3 buckets leak keys",
+          "problem_statement_sha256": "c2abfbf6abd9f0bc4e6796dc1278b92aeaf14fb0f0beab31058c27f1814fdc9b",
+          "trajectory_row": 306,
+          "message_count": 100,
+          "patch_touched_files": [
+            "moto/s3/models.py"
+          ],
+          "test_files": [
+            "tests/test_s3/test_s3_file_handles.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 5,
+          "world": "W01",
+          "team": "A",
+          "role": "history",
+          "instance_id": "getmoto__moto-6585",
+          "repo": "getmoto/moto",
+          "base_commit": "6843eb4c86ee0abad140d02930af95050120a0ef",
+          "created_at": "2023-08-01 16:05:18",
+          "problem_title": "lambda get_function() returns config working directory in error",
+          "problem_statement_sha256": "2e1793eefa9b683bd7da1df6833276ac5cf92f0ce014965e1efb14ec0ebf5bd5",
+          "trajectory_row": 347,
+          "message_count": 100,
+          "patch_touched_files": [
+            "moto/awslambda/models.py"
+          ],
+          "test_files": [
+            "tests/test_awslambda/test_lambda.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 6,
+          "world": "W01",
+          "team": "A",
+          "role": "history",
+          "instance_id": "getmoto__moto-6913",
+          "repo": "getmoto/moto",
+          "base_commit": "f59e178f272003ba39694d68390611e118d8eaa9",
+          "created_at": "2023-10-13 19:07:22",
+          "problem_title": "SESV2 send_email saves wrong body in ses_backend",
+          "problem_statement_sha256": "4c66a74d499f66dbcb0ceea1255bea78e93d7f5d5beca02ffdd3b42107686b79",
+          "trajectory_row": 113,
+          "message_count": 100,
+          "patch_touched_files": [
+            "moto/sesv2/responses.py"
+          ],
+          "test_files": [
+            "tests/test_sesv2/test_sesv2.py"
+          ],
+          "join_method": "exact_problem_statement"
+        }
+      ],
+      "current_anchor": [
+        {
+          "selection_order": 7,
+          "world": "W01",
+          "team": "A",
+          "role": "current_anchor",
+          "instance_id": "getmoto__moto-7635",
+          "repo": "getmoto/moto",
+          "base_commit": "e51192b71db45d79b68c56d5e6c36af9d8a497b9",
+          "created_at": "2024-04-27 20:50:03",
+          "problem_title": "SNS: `create_platform_endpoint` is not idempotent with default attributes",
+          "problem_statement_sha256": "923b4d0afe15ee53bcb02e149f63377c8afa8af95c05d43e9270f5a8b26242cc",
+          "trajectory_row": 343,
+          "message_count": 52,
+          "patch_touched_files": [
+            "moto/sns/models.py"
+          ],
+          "test_files": [
+            "tests/test_sns/test_application_boto3.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 8,
+          "world": "W01",
+          "team": "A",
+          "role": "current_anchor",
+          "instance_id": "getmoto__moto-7490",
+          "repo": "getmoto/moto",
+          "base_commit": "db862bcf3b5ea051d412620caccbc08d72c8f441",
+          "created_at": "2024-03-19 08:54:09",
+          "problem_title": "Adding `StreamSummaries` to kinesis.list_streams response",
+          "problem_statement_sha256": "c0703c3b54b53528c70838814bcacb1abc4712fdacd14529a4e0594063aff615",
+          "trajectory_row": 326,
+          "message_count": 56,
+          "patch_touched_files": [
+            "moto/kinesis/responses.py"
+          ],
+          "test_files": [
+            "tests/test_kinesis/test_kinesis.py",
+            "tests/test_kinesis/test_server.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 9,
+          "world": "W01",
+          "team": "A",
+          "role": "current_anchor",
+          "instance_id": "getmoto__moto-7317",
+          "repo": "getmoto/moto",
+          "base_commit": "652eabda5170e772742d4a68234a26fa8765e6a9",
+          "created_at": "2024-02-06 11:56:34",
+          "problem_title": "glue.create_database does not create tags",
+          "problem_statement_sha256": "c1e2944f9416dc1d02ab36ba55847bef6cd285ab742e90ea76dc53974c5a8a04",
+          "trajectory_row": 357,
+          "message_count": 66,
+          "patch_touched_files": [
+            "moto/glue/models.py",
+            "moto/glue/responses.py"
+          ],
+          "test_files": [
+            "tests/test_glue/helpers.py",
+            "tests/test_glue/test_datacatalog.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 10,
+          "world": "W01",
+          "team": "A",
+          "role": "current_anchor",
+          "instance_id": "getmoto__moto-7212",
+          "repo": "getmoto/moto",
+          "base_commit": "455fbd5eaa0270e03eac85a532e47ec75c7acd21",
+          "created_at": "2024-01-13 20:50:57",
+          "problem_title": "Cognito ID/Access Token do not contain user pool custom attributes",
+          "problem_statement_sha256": "cac2416955684cb457d6abb9016be01315a75ddf9513187c3bb2ce3a4a52172d",
+          "trajectory_row": 316,
+          "message_count": 44,
+          "patch_touched_files": [
+            "moto/cognitoidp/models.py"
+          ],
+          "test_files": [
+            "tests/test_cognitoidp/test_cognitoidp.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 11,
+          "world": "W01",
+          "team": "A",
+          "role": "current_anchor",
+          "instance_id": "getmoto__moto-7105",
+          "repo": "getmoto/moto",
+          "base_commit": "85156f59396a85e83e83200c9df41b66d6f82b68",
+          "created_at": "2023-12-09 23:39:02",
+          "problem_title": "moto batch - \"RuntimeError: cannot join thread before it is started\"",
+          "problem_statement_sha256": "5f5a542df5756408619b7f51e94c2675ef16c9b0dace1e3e8df98df2317153b9",
+          "trajectory_row": 78,
+          "message_count": 30,
+          "patch_touched_files": [
+            "moto/batch/models.py"
+          ],
+          "test_files": [
+            "tests/test_batch/test_batch_jobs.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 12,
+          "world": "W01",
+          "team": "A",
+          "role": "current_anchor",
+          "instance_id": "getmoto__moto-7081",
+          "repo": "getmoto/moto",
+          "base_commit": "55c589072fc88363fdde9ae8656909f8f24dd13f",
+          "created_at": "2023-11-30 19:31:29",
+          "problem_title": "IoT - thingId not present after create_thing()",
+          "problem_statement_sha256": "75bd53cccb6ec35d6e24f4bda406f9782dfec77b0bc8cd1e324dfdf0ac0295bd",
+          "trajectory_row": 324,
+          "message_count": 66,
+          "patch_touched_files": [
+            "moto/iot/models.py",
+            "moto/iot/responses.py"
+          ],
+          "test_files": [
+            "tests/test_iot/test_iot_things.py"
+          ],
+          "join_method": "exact_problem_statement"
+        }
+      ]
+    },
+    "W01-Team-B": {
+      "history": [
+        {
+          "selection_order": 13,
+          "world": "W01",
+          "team": "B",
+          "role": "history",
+          "instance_id": "python__mypy-10424",
+          "repo": "python/mypy",
+          "base_commit": "4518b55663bc689646280a0ab2247c4a724bf3c0",
+          "created_at": "2021-05-05T12:28:20Z",
+          "problem_title": "Narrowing types using a metaclass can cause false positives",
+          "problem_statement_sha256": "7da0a529033f3f1cce712fb742e2c7f8ec6336273f4561a64a4c755897556cfd",
+          "trajectory_row": 130,
+          "message_count": 100,
+          "patch_touched_files": [
+            "mypy/meet.py"
+          ],
+          "test_files": [
+            "test-data/unit/check-narrowing.test"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 14,
+          "world": "W01",
+          "team": "B",
+          "role": "history",
+          "instance_id": "python__mypy-5617",
+          "repo": "python/mypy",
+          "base_commit": "5db3e1a024a98af4184d6864c71d6abbf00dc3b3",
+          "created_at": "2018-09-13T18:26:38Z",
+          "problem_title": "Can't assign to ()",
+          "problem_statement_sha256": "05162f954667ea9719ce0aa0d9f5862403a7c0a6080a03a91bf961cd60f093b8",
+          "trajectory_row": 285,
+          "message_count": 86,
+          "patch_touched_files": [
+            "mypy/semanal.py"
+          ],
+          "test_files": [
+            "test-data/unit/check-tuples.test",
+            "test-data/unit/semanal-errors.test"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 15,
+          "world": "W01",
+          "team": "B",
+          "role": "history",
+          "instance_id": "python__mypy-15184",
+          "repo": "python/mypy",
+          "base_commit": "13f35ad0915e70c2c299e2eb308968c86117132d",
+          "created_at": "2023-05-04T15:43:32Z",
+          "problem_title": "assert_type: Use fully qualified types when names are ambiguous",
+          "problem_statement_sha256": "b10ddb3287e51f732b746284c667303f498000ca5114f4cde117f4347fe9149f",
+          "trajectory_row": 129,
+          "message_count": 70,
+          "patch_touched_files": [
+            "mypy/messages.py"
+          ],
+          "test_files": [
+            "test-data/unit/check-assert-type-fail.test"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 16,
+          "world": "W01",
+          "team": "B",
+          "role": "history",
+          "instance_id": "python__mypy-12943",
+          "repo": "python/mypy",
+          "base_commit": "9611e2d0b1d9130ca1591febdd60a3523cf739eb",
+          "created_at": "2022-06-05T18:48:06Z",
+          "problem_title": "Crash when analysing qiskit",
+          "problem_statement_sha256": "81776d529be9eaa840fa8aac93a3b4fd56781c0f1f4b138e51e6085975008ff1",
+          "trajectory_row": 336,
+          "message_count": 44,
+          "patch_touched_files": [
+            "mypy/checker.py"
+          ],
+          "test_files": [
+            "test-data/unit/check-classes.test"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 17,
+          "world": "W01",
+          "team": "B",
+          "role": "history",
+          "instance_id": "python__mypy-16869",
+          "repo": "python/mypy",
+          "base_commit": "8c2ef9dde8aa803e04038427ad84f09664d9d93f",
+          "created_at": "2024-02-04T19:37:58Z",
+          "problem_title": "Stubgen crashes on TypeVarTuple usage",
+          "problem_statement_sha256": "583f7d7e92494075c5e880a355adb53d5c8ce1d3026a4ab9d8afcf6d0ba53d50",
+          "trajectory_row": 158,
+          "message_count": 44,
+          "patch_touched_files": [
+            "mypy/stubgen.py"
+          ],
+          "test_files": [
+            "mypy/test/teststubgen.py",
+            "test-data/unit/stubgen.test"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 18,
+          "world": "W01",
+          "team": "B",
+          "role": "history",
+          "instance_id": "python__mypy-11567",
+          "repo": "python/mypy",
+          "base_commit": "7f0ad943e4b189224f2fedf43aa7b38f53ec561e",
+          "created_at": "2021-11-16T15:58:55Z",
+          "problem_title": "AST diff crash related to ParamSpec",
+          "problem_statement_sha256": "4bc241e33d82e5c980b3c99b23d050ca6c4f3815121a991094c378360225e448",
+          "trajectory_row": 302,
+          "message_count": 88,
+          "patch_touched_files": [
+            "mypy/server/astdiff.py"
+          ],
+          "test_files": [
+            "test-data/unit/diff.test"
+          ],
+          "join_method": "exact_problem_statement"
+        }
+      ],
+      "current_anchor": [
+        {
+          "selection_order": 19,
+          "world": "W01",
+          "team": "B",
+          "role": "current_anchor",
+          "instance_id": "python__mypy-15976",
+          "repo": "python/mypy",
+          "base_commit": "d7b24514d7301f86031b7d1e2215cf8c2476bec0",
+          "created_at": "2023-08-28T04:20:29Z",
+          "problem_title": "attrs & dataclasses false positive error with slots=True when subclassing from non-slots base class",
+          "problem_statement_sha256": "6853180bcf71505d453e7664c340247a7c128e29ae065bb5c14e8f594eee75e1",
+          "trajectory_row": 281,
+          "message_count": 46,
+          "patch_touched_files": [
+            "mypy/plugins/attrs.py",
+            "mypy/plugins/dataclasses.py"
+          ],
+          "test_files": [
+            "test-data/unit/check-dataclasses.test",
+            "test-data/unit/check-plugin-attrs.test"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 20,
+          "world": "W01",
+          "team": "B",
+          "role": "current_anchor",
+          "instance_id": "python__mypy-15155",
+          "repo": "python/mypy",
+          "base_commit": "6b1fc865902bf2b845d3c58b6b9973b5a412241f",
+          "created_at": "2023-04-28T23:16:19Z",
+          "problem_title": "Crash type-checking overloaded function",
+          "problem_statement_sha256": "428993dfe854e9fa03c41c76898933c7e45aaf99ea77e60c0d924dc1fa8c7897",
+          "trajectory_row": 339,
+          "message_count": 60,
+          "patch_touched_files": [
+            "mypy/applytype.py",
+            "mypy/expandtype.py",
+            "mypy/subtypes.py"
+          ],
+          "test_files": [
+            "test-data/unit/check-generics.test"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 21,
+          "world": "W01",
+          "team": "B",
+          "role": "current_anchor",
+          "instance_id": "python__mypy-12548",
+          "repo": "python/mypy",
+          "base_commit": "222029b07e0fdcb3c174f15b61915b3b2e1665ca",
+          "created_at": "2022-04-08T03:43:15Z",
+          "problem_title": "\"Parameters cannot be constrained\" with generic ParamSpec",
+          "problem_statement_sha256": "ea06bd304e33226f67e3cbaad29a6dd876d4dc2e6d1b4de5022efbd40fcfbc33",
+          "trajectory_row": 198,
+          "message_count": 38,
+          "patch_touched_files": [
+            "mypy/constraints.py"
+          ],
+          "test_files": [
+            "test-data/unit/check-parameter-specification.test"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 22,
+          "world": "W01",
+          "team": "B",
+          "role": "current_anchor",
+          "instance_id": "python__mypy-10683",
+          "repo": "python/mypy",
+          "base_commit": "2ebdbca3b5afbfa1113f01b583522f4afcc4b3e3",
+          "created_at": "2021-06-21T14:22:54Z",
+          "problem_title": "Fix typeguards crash when assigning guarded value in if statement",
+          "problem_statement_sha256": "1c02e0486ed12650cbdb5d5e575f93208f6cd707d3938c063f9ff7affe453357",
+          "trajectory_row": 264,
+          "message_count": 24,
+          "patch_touched_files": [
+            "mypy/binder.py"
+          ],
+          "test_files": [
+            "test-data/unit/check-typeguard.test"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 23,
+          "world": "W01",
+          "team": "B",
+          "role": "current_anchor",
+          "instance_id": "python__mypy-10430",
+          "repo": "python/mypy",
+          "base_commit": "204c7dada412b0ca4ce22315d2acae640adb128f",
+          "created_at": "2021-05-06T11:15:11Z",
+          "problem_title": "Crash from module level __getattr__ in incremental mode",
+          "problem_statement_sha256": "dd26f86a91dce03b33dc6928fe53a1332abf586163b3f286154e038345c61a02",
+          "trajectory_row": 161,
+          "message_count": 40,
+          "patch_touched_files": [
+            "mypy/nodes.py"
+          ],
+          "test_files": [
+            "test-data/unit/check-incremental.test"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 24,
+          "world": "W01",
+          "team": "B",
+          "role": "current_anchor",
+          "instance_id": "python__mypy-10401",
+          "repo": "python/mypy",
+          "base_commit": "44925f4b121392135440f53d7c8a3fb30593d6cc",
+          "created_at": "2021-05-02T04:23:21Z",
+          "problem_title": "Unresolved references + tuples crashes mypy",
+          "problem_statement_sha256": "9e66515c107cc878fc342be0d6f13c6956de67f9f127a315a5c209bc5589c890",
+          "trajectory_row": 122,
+          "message_count": 56,
+          "patch_touched_files": [
+            "mypy/join.py"
+          ],
+          "test_files": [
+            "test-data/unit/check-tuples.test"
+          ],
+          "join_method": "exact_problem_statement"
+        }
+      ]
+    },
+    "W02-Team-A": {
+      "history": [
+        {
+          "selection_order": 25,
+          "world": "W02",
+          "team": "A",
+          "role": "history",
+          "instance_id": "pandas-dev__pandas-53418",
+          "repo": "pandas-dev/pandas",
+          "base_commit": "26bbd4b2c52f975d33a7f2211e9fd07533ed671c",
+          "created_at": "2023-05-27T17:02:57Z",
+          "problem_title": "BUG: Pandas uint64 sums to int64",
+          "problem_statement_sha256": "156df3a550b65590cf73239399c727ec18df43dfac52758bfb9399abe645f502",
+          "trajectory_row": 427,
+          "message_count": 100,
+          "patch_touched_files": [
+            "doc/source/whatsnew/v2.1.0.rst",
+            "pandas/core/nanops.py"
+          ],
+          "test_files": [
+            "pandas/tests/reductions/test_reductions.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 26,
+          "world": "W02",
+          "team": "A",
+          "role": "history",
+          "instance_id": "pandas-dev__pandas-51793",
+          "repo": "pandas-dev/pandas",
+          "base_commit": "c71645fff865c29e77bb81bd9510dba97d93a67c",
+          "created_at": "2023-03-04T23:48:15Z",
+          "problem_title": "CLN: Refactor PeriodArray._format_native_types to use DatetimeArray",
+          "problem_statement_sha256": "65a3e0f107acec605f41dba922cb33c3915c6394290bdfac2b7268334694cb30",
+          "trajectory_row": 417,
+          "message_count": 56,
+          "patch_touched_files": [
+            "pandas/_libs/tslibs/period.pyi",
+            "pandas/_libs/tslibs/period.pyx",
+            "pandas/core/arrays/period.py"
+          ],
+          "test_files": [
+            "pandas/tests/indexes/period/test_formats.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 27,
+          "world": "W02",
+          "team": "A",
+          "role": "history",
+          "instance_id": "pandas-dev__pandas-52076",
+          "repo": "pandas-dev/pandas",
+          "base_commit": "c2ef58e55936668c81b2cc795d1812924236e1a6",
+          "created_at": "2023-03-19T18:24:52Z",
+          "problem_title": "BUG: Passing pyarrow string array + dtype to `pd.Series` throws ArrowInvalidError on 2.0rc",
+          "problem_statement_sha256": "64f5dd3cbd1d3d756156b9e38c7cc315347e56684419f497d9f23d6feff57b79",
+          "trajectory_row": 419,
+          "message_count": 42,
+          "patch_touched_files": [
+            "pandas/_libs/lib.pyx",
+            "pandas/core/arrays/string_.py",
+            "pandas/core/arrays/string_arrow.py"
+          ],
+          "test_files": [
+            "pandas/tests/extension/test_arrow.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 28,
+          "world": "W02",
+          "team": "A",
+          "role": "history",
+          "instance_id": "pandas-dev__pandas-54087",
+          "repo": "pandas-dev/pandas",
+          "base_commit": "dbb19b9f6ec77edcbdf535ff506c3b7659fc0c69",
+          "created_at": "2023-07-11T19:18:46Z",
+          "problem_title": "BUG: In development version, `pd.merge` with `Series` arguments an `how=\"cross\"` fails",
+          "problem_statement_sha256": "703d60055d5fdc641b35b45ab5a6707e2f3013358c0307d5c6934198ae8e378a",
+          "trajectory_row": 416,
+          "message_count": 38,
+          "patch_touched_files": [
+            "pandas/core/reshape/merge.py"
+          ],
+          "test_files": [
+            "pandas/tests/reshape/merge/test_merge_cross.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 29,
+          "world": "W02",
+          "team": "A",
+          "role": "history",
+          "instance_id": "pandas-dev__pandas-48619",
+          "repo": "pandas-dev/pandas",
+          "base_commit": "85246fe460e93d2b891a1c116bcef3cb1a698664",
+          "created_at": "2022-09-18T12:43:37Z",
+          "problem_title": "BUG: \"ValueError: The truth value ... is ambiguous\" when using .loc setitem",
+          "problem_statement_sha256": "61707903b2b36dea405bd8b14932a4d9f4b375f45cfbf15a2d2f1fccb3000f9b",
+          "trajectory_row": 420,
+          "message_count": 38,
+          "patch_touched_files": [
+            "pandas/core/indexing.py"
+          ],
+          "test_files": [
+            "pandas/tests/series/indexing/test_indexing.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 30,
+          "world": "W02",
+          "team": "A",
+          "role": "history",
+          "instance_id": "pandas-dev__pandas-55807",
+          "repo": "pandas-dev/pandas",
+          "base_commit": "51f3d03087414bdff763d3f45b11e37b2a28ea84",
+          "created_at": "2023-11-03T07:12:23Z",
+          "problem_title": "ENH: _openpyxl.py load_workbook allow to modify the read_only, data_only and keep_links parameters using engine_kwargs",
+          "problem_statement_sha256": "9496e031501d514a11625c8cb94c1fae67f8523b0f5a764bcda54f0bbaa73429",
+          "trajectory_row": 214,
+          "message_count": 100,
+          "patch_touched_files": [
+            "doc/source/whatsnew/v2.2.0.rst",
+            "pandas/io/excel/_openpyxl.py"
+          ],
+          "test_files": [
+            "pandas/tests/io/excel/test_openpyxl.py"
+          ],
+          "join_method": "exact_problem_statement"
+        }
+      ],
+      "current_anchor": [
+        {
+          "selection_order": 31,
+          "world": "W02",
+          "team": "A",
+          "role": "current_anchor",
+          "instance_id": "pandas-dev__pandas-58549",
+          "repo": "pandas-dev/pandas",
+          "base_commit": "1556dc050511f7caaf3091a94660721840bb8c9a",
+          "created_at": "2024-05-03T12:37:53Z",
+          "problem_title": "BUG: DatetimeIndex.is_year_start breaks on double-digit frequencies",
+          "problem_statement_sha256": "23f93da452f42048d3506b24c7d80f6640d28a8d52c460e17e19a7d6346e16c2",
+          "trajectory_row": 408,
+          "message_count": 36,
+          "patch_touched_files": [
+            "doc/source/whatsnew/v3.0.0.rst",
+            "pandas/_libs/tslibs/fields.pyi",
+            "pandas/_libs/tslibs/fields.pyx",
+            "pandas/_libs/tslibs/timestamps.pyx",
+            "pandas/core/arrays/datetimes.py"
+          ],
+          "test_files": [
+            "pandas/tests/indexes/datetimes/test_scalar_compat.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 32,
+          "world": "W02",
+          "team": "A",
+          "role": "current_anchor",
+          "instance_id": "pandas-dev__pandas-57758",
+          "repo": "pandas-dev/pandas",
+          "base_commit": "a93fd6e218d0082579eee624e547a72f0fd961bc",
+          "created_at": "2024-03-07T08:38:04Z",
+          "problem_title": "BUG: DataFrame Interchange Protocol errors on Boolean columns",
+          "problem_statement_sha256": "5a709704a5258e5c7f267983d385173547d9669e715f75758481a81f4321aff4",
+          "trajectory_row": 412,
+          "message_count": 54,
+          "patch_touched_files": [
+            "doc/source/whatsnew/v2.2.2.rst",
+            "pandas/core/interchange/utils.py"
+          ],
+          "test_files": [
+            "pandas/tests/interchange/test_impl.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 33,
+          "world": "W02",
+          "team": "A",
+          "role": "current_anchor",
+          "instance_id": "pandas-dev__pandas-47804",
+          "repo": "pandas-dev/pandas",
+          "base_commit": "f7e0e68f340b62035c30c8bf1ea4cba38a39613d",
+          "created_at": "2022-07-20T17:12:56Z",
+          "problem_title": "BUG: Interchange `Column.null_count` is a NumPy scalar, not a builtin `int`",
+          "problem_statement_sha256": "907319916823f5fcf6953541030c791565610cd758606ac1b79c00bff3030cc6",
+          "trajectory_row": 425,
+          "message_count": 26,
+          "patch_touched_files": [
+            "pandas/core/exchange/column.py"
+          ],
+          "test_files": [
+            "pandas/tests/exchange/test_spec_conformance.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 34,
+          "world": "W02",
+          "team": "A",
+          "role": "current_anchor",
+          "instance_id": "pandas-dev__pandas-50773",
+          "repo": "pandas-dev/pandas",
+          "base_commit": "c426dc0d8a6952f7d4689eaa6a5294aceae66e1e",
+          "created_at": "2023-01-16T10:55:14Z",
+          "problem_title": "BUG: DatetimeIndex with non-nano values and freq='D' throws ValueError",
+          "problem_statement_sha256": "ab2b358ba7902142637ff830c4b8d6ea688fcea70737442ae70c979f868933de",
+          "trajectory_row": 436,
+          "message_count": 28,
+          "patch_touched_files": [
+            "pandas/core/arrays/datetimelike.py"
+          ],
+          "test_files": [
+            "pandas/tests/frame/methods/test_asfreq.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 35,
+          "world": "W02",
+          "team": "A",
+          "role": "current_anchor",
+          "instance_id": "pandas-dev__pandas-51605",
+          "repo": "pandas-dev/pandas",
+          "base_commit": "b070d87f118709f7493dfd065a17ed506c93b59a",
+          "created_at": "2023-02-23T23:33:21Z",
+          "problem_title": "REGR: MultiIndex.isin with an empty iterable raises",
+          "problem_statement_sha256": "e31fcacd970747527c361128180baa6a263edf6150589ba7fef4073a19a949f8",
+          "trajectory_row": 191,
+          "message_count": 28,
+          "patch_touched_files": [
+            "pandas/core/indexes/multi.py"
+          ],
+          "test_files": [
+            "pandas/tests/indexes/multi/test_isin.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 36,
+          "world": "W02",
+          "team": "A",
+          "role": "current_anchor",
+          "instance_id": "pandas-dev__pandas-48970",
+          "repo": "pandas-dev/pandas",
+          "base_commit": "c34da509497717308c97c4a211ad3ff9bab92d87",
+          "created_at": "2022-10-06T12:24:33Z",
+          "problem_title": "BUG: to_datetime(..., infer_datetime_format=True) fails if argument is np.str_",
+          "problem_statement_sha256": "61381cfd9f5286eec4abce16a0c068a9f8329909b9ed50fc9281638b13ec8c84",
+          "trajectory_row": 439,
+          "message_count": 22,
+          "patch_touched_files": [
+            "pandas/_libs/tslibs/parsing.pyx",
+            "pandas/core/tools/datetimes.py"
+          ],
+          "test_files": [
+            "pandas/tests/tools/test_to_datetime.py"
+          ],
+          "join_method": "exact_problem_statement"
+        }
+      ]
+    },
+    "W02-Team-B": {
+      "history": [
+        {
+          "selection_order": 37,
+          "world": "W02",
+          "team": "B",
+          "role": "history",
+          "instance_id": "dask__dask-9378",
+          "repo": "dask/dask",
+          "base_commit": "8b95f983c232c1bd628e9cba0695d3ef229d290b",
+          "created_at": "2022-08-12T16:25:22Z",
+          "problem_title": "Mask preserving *_like functions",
+          "problem_statement_sha256": "ecbb121f5eae924939169e62324099f367de593ecfb51090b4707d66f16d5084",
+          "trajectory_row": 112,
+          "message_count": 100,
+          "patch_touched_files": [
+            "dask/array/ma.py"
+          ],
+          "test_files": [
+            "dask/array/tests/test_masked.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 38,
+          "world": "W02",
+          "team": "B",
+          "role": "history",
+          "instance_id": "dask__dask-8484",
+          "repo": "dask/dask",
+          "base_commit": "c79a4be64bf6108aeb5dd7ff1cef0c3302bbb696",
+          "created_at": "2021-12-14T14:28:09Z",
+          "problem_title": "nanmin & nanmax no longer work for scalar input",
+          "problem_statement_sha256": "ed3a982ba0df88472701357417a047fb5012e1fa7c133a2ae8c7829cb5aeeb3f",
+          "trajectory_row": 361,
+          "message_count": 76,
+          "patch_touched_files": [
+            "dask/array/reductions.py"
+          ],
+          "test_files": [
+            "dask/array/tests/test_reductions.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 39,
+          "world": "W02",
+          "team": "B",
+          "role": "history",
+          "instance_id": "dask__dask-6809",
+          "repo": "dask/dask",
+          "base_commit": "80239dab180ea9b2a444ef03b1998cf9fd589292",
+          "created_at": "2020-11-05T16:39:00Z",
+          "problem_title": "DataFrame.join doesn't accept Series as other",
+          "problem_statement_sha256": "c4030d6fdd1767c4ba87c1e3810449f439f7cbdb0cf7827bb5bb27db514982eb",
+          "trajectory_row": 398,
+          "message_count": 28,
+          "patch_touched_files": [
+            "dask/dataframe/core.py"
+          ],
+          "test_files": [
+            "dask/dataframe/tests/test_dataframe.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 40,
+          "world": "W02",
+          "team": "B",
+          "role": "history",
+          "instance_id": "dask__dask-8185",
+          "repo": "dask/dask",
+          "base_commit": "9460bc4ed1295d240dd464206ec81b82d9f495e2",
+          "created_at": "2021-09-27T19:15:59Z",
+          "problem_title": "Inconsistent Tokenization due to Lazy Registration",
+          "problem_statement_sha256": "a040de72ad9a37f059ee56aef6b33f98c5e256785a88816acbc4b28b6321e5a0",
+          "trajectory_row": 373,
+          "message_count": 24,
+          "patch_touched_files": [
+            "dask/utils.py"
+          ],
+          "test_files": [
+            "dask/tests/test_utils.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 41,
+          "world": "W02",
+          "team": "B",
+          "role": "history",
+          "instance_id": "dask__dask-9213",
+          "repo": "dask/dask",
+          "base_commit": "0ee07e3cc1ccd822227545936c1be0c94f84ad54",
+          "created_at": "2022-06-24T12:02:02Z",
+          "problem_title": "datetime.timedelta deterministic hashing",
+          "problem_statement_sha256": "2ad865fa45004d27dc1a385f4e0cdfcec9e6b128155cff317af0deda32565fff",
+          "trajectory_row": 397,
+          "message_count": 54,
+          "patch_touched_files": [
+            "dask/base.py"
+          ],
+          "test_files": [
+            "dask/tests/test_base.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 42,
+          "world": "W02",
+          "team": "B",
+          "role": "history",
+          "instance_id": "dask__dask-7894",
+          "repo": "dask/dask",
+          "base_commit": "bf4bc7dd8dc96021b171e0941abde7a5f60ce89f",
+          "created_at": "2021-07-14T03:51:29Z",
+          "problem_title": "map_overlap does not always trim properly when drop_axis is not None",
+          "problem_statement_sha256": "73f9fe85a45fb87537f64868a4b06c5cf57c90121770a607e82993a5751d6e09",
+          "trajectory_row": 155,
+          "message_count": 30,
+          "patch_touched_files": [
+            "dask/array/overlap.py"
+          ],
+          "test_files": [
+            "dask/array/tests/test_overlap.py"
+          ],
+          "join_method": "exact_problem_statement"
+        }
+      ],
+      "current_anchor": [
+        {
+          "selection_order": 43,
+          "world": "W02",
+          "team": "B",
+          "role": "current_anchor",
+          "instance_id": "dask__dask-10972",
+          "repo": "dask/dask",
+          "base_commit": "9c20facdfb5f20e28f0e9259147283f8a7982728",
+          "created_at": "2024-03-01T10:57:38Z",
+          "problem_title": "test_encoding_gh601[utf-16] doesn't always fail",
+          "problem_statement_sha256": "ae50f3c8bb4b519ad026d1626091ac565f74bd44819fe46b0e87051ec49ef245",
+          "trajectory_row": 164,
+          "message_count": 70,
+          "patch_touched_files": [
+            "dask/dataframe/io/csv.py"
+          ],
+          "test_files": [
+            "dask/dataframe/io/tests/test_csv.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 44,
+          "world": "W02",
+          "team": "B",
+          "role": "current_anchor",
+          "instance_id": "dask__dask-7656",
+          "repo": "dask/dask",
+          "base_commit": "07d5ad0ab1bc8903554b37453f02cc8024460f2a",
+          "created_at": "2021-05-14T14:34:08Z",
+          "problem_title": "dataclass issue with fields that have init=False",
+          "problem_statement_sha256": "a2a09f910c38551c353c2aa2ffaa039741ced50c512ab6773e91d39ce56af83d",
+          "trajectory_row": 45,
+          "message_count": 26,
+          "patch_touched_files": [
+            "dask/delayed.py"
+          ],
+          "test_files": [
+            "dask/tests/test_delayed.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 45,
+          "world": "W02",
+          "team": "B",
+          "role": "current_anchor",
+          "instance_id": "dask__dask-10521",
+          "repo": "dask/dask",
+          "base_commit": "da256320ef0167992f7183c3a275d092f5727f62",
+          "created_at": "2023-09-19T16:56:23Z",
+          "problem_title": "Incorrect behavior of override_with argument in dask.config.get",
+          "problem_statement_sha256": "9929b4d50d8241f5b883e4269fe6e8e4456d0ff36a0b471c041a195a90536e2a",
+          "trajectory_row": 372,
+          "message_count": 22,
+          "patch_touched_files": [
+            "dask/config.py"
+          ],
+          "test_files": [
+            "dask/tests/test_config.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 46,
+          "world": "W02",
+          "team": "B",
+          "role": "current_anchor",
+          "instance_id": "dask__dask-7191",
+          "repo": "dask/dask",
+          "base_commit": "2640241fbdf0c5efbcf35d96eb8cc9c3df4de2fd",
+          "created_at": "2021-02-08T22:20:23Z",
+          "problem_title": "HighLevelGraph erroneously propagates into local scheduler optimization routines",
+          "problem_statement_sha256": "1c3708ddef0cd4bd2390048470cab6c9991300629251293b0471a76e9d9d0778",
+          "trajectory_row": 217,
+          "message_count": 20,
+          "patch_touched_files": [
+            "dask/multiprocessing.py"
+          ],
+          "test_files": [
+            "dask/tests/test_multiprocessing.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 47,
+          "world": "W02",
+          "team": "B",
+          "role": "current_anchor",
+          "instance_id": "dask__dask-10422",
+          "repo": "dask/dask",
+          "base_commit": "7ace31f93ddc0b879f14bb54755b9f547bf60188",
+          "created_at": "2023-07-20T15:31:45Z",
+          "problem_title": "dask.array.core.to_zarr with distributed scheduler, MutableMapping should be ok if backed by disk",
+          "problem_statement_sha256": "60161cb2fa602e221134331ff5802c813e8412823365d955fc0e876abc9c731e",
+          "trajectory_row": 382,
+          "message_count": 28,
+          "patch_touched_files": [
+            "dask/array/core.py"
+          ],
+          "test_files": [
+            "dask/tests/test_distributed.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 48,
+          "world": "W02",
+          "team": "B",
+          "role": "current_anchor",
+          "instance_id": "dask__dask-6749",
+          "repo": "dask/dask",
+          "base_commit": "e85942f8e1499488fec4a11efd137014e5f4fa27",
+          "created_at": "2020-10-19T20:57:38Z",
+          "problem_title": "Missing 2D case for residuals in dask.array.linalg.lstsq",
+          "problem_statement_sha256": "ddbd8cde5d253208daa869378ed0ec827deb14ab1551ab408f5f876f7ad901d4",
+          "trajectory_row": 379,
+          "message_count": 32,
+          "patch_touched_files": [
+            "dask/array/linalg.py"
+          ],
+          "test_files": [
+            "dask/array/tests/test_linalg.py"
+          ],
+          "join_method": "exact_problem_statement"
+        }
+      ]
+    },
+    "W03-Team-A": {
+      "history": [
+        {
+          "selection_order": 49,
+          "world": "W03",
+          "team": "A",
+          "role": "history",
+          "instance_id": "iterative__dvc-4075",
+          "repo": "iterative/dvc",
+          "base_commit": "a2f1367a9a75849ef6ad7ee23a5bacc18580f102",
+          "created_at": "2020-06-20T02:43:19Z",
+          "problem_title": "Implement `--no-exec` option for `import-url` command",
+          "problem_statement_sha256": "bc83a2690a839ee1a92e42462683ae9793d3fc9fcd9226db3dee6e016ca8eb13",
+          "trajectory_row": 275,
+          "message_count": 100,
+          "patch_touched_files": [
+            "dvc/command/imp_url.py",
+            "dvc/repo/imp_url.py"
+          ],
+          "test_files": [
+            "tests/func/test_import_url.py",
+            "tests/unit/command/test_imp_url.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 50,
+          "world": "W03",
+          "team": "A",
+          "role": "history",
+          "instance_id": "iterative__dvc-2231",
+          "repo": "iterative/dvc",
+          "base_commit": "817e3f8bfaa15b2494dae4853c6c3c3f5f701ad9",
+          "created_at": "2019-07-05T00:00:28Z",
+          "problem_title": "Delete the Output-Files by checkout to other branches.",
+          "problem_statement_sha256": "06bd17790310edf54dc01ff16a2f547968bc97cb7bfdf5e9faa5db0c2b349cd8",
+          "trajectory_row": 126,
+          "message_count": 52,
+          "patch_touched_files": [
+            "dvc/remote/base.py"
+          ],
+          "test_files": [
+            "tests/func/test_checkout.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 51,
+          "world": "W03",
+          "team": "A",
+          "role": "history",
+          "instance_id": "iterative__dvc-6954",
+          "repo": "iterative/dvc",
+          "base_commit": "28dd39a1a0d710585ff21bf66199208b1b83cbde",
+          "created_at": "2021-11-10T14:10:57Z",
+          "problem_title": "Negative numbers from a Python file are not recognized as parameters",
+          "problem_statement_sha256": "05336d5b1edc4174be1772e0aee6fa9bcd404db514732c25877a20d1072b9347",
+          "trajectory_row": 184,
+          "message_count": 36,
+          "patch_touched_files": [
+            "dvc/utils/serialize/_py.py"
+          ],
+          "test_files": [
+            "tests/unit/utils/serialize/test_python.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 52,
+          "world": "W03",
+          "team": "A",
+          "role": "history",
+          "instance_id": "iterative__dvc-8380",
+          "repo": "iterative/dvc",
+          "base_commit": "e556c632b371b3474d6546bdf68dd4bb6f9ec093",
+          "created_at": "2022-09-29T08:47:22Z",
+          "problem_title": "UnicodeDecodeError during parsing Config file",
+          "problem_statement_sha256": "5447a48f44ab8d59be69eaaf5ac1b65593261bc619221f925040728c1563654c",
+          "trajectory_row": 350,
+          "message_count": 26,
+          "patch_touched_files": [
+            "dvc/config.py"
+          ],
+          "test_files": [
+            "tests/unit/test_config.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 53,
+          "world": "W03",
+          "team": "A",
+          "role": "history",
+          "instance_id": "iterative__dvc-5004",
+          "repo": "iterative/dvc",
+          "base_commit": "7c45711e34f565330be416621037f983d0034bef",
+          "created_at": "2020-12-01T09:44:12Z",
+          "problem_title": "Boolean value might get unnecessarily uppercased",
+          "problem_statement_sha256": "952ad75fbf51cc1628b8731d93765f056e0f146bcc18c745b38e8e1c4cc935b0",
+          "trajectory_row": 173,
+          "message_count": 76,
+          "patch_touched_files": [
+            "dvc/parsing/interpolate.py"
+          ],
+          "test_files": [
+            "tests/func/test_stage_resolver.py",
+            "tests/unit/test_context.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 54,
+          "world": "W03",
+          "team": "A",
+          "role": "history",
+          "instance_id": "iterative__dvc-2254",
+          "repo": "iterative/dvc",
+          "base_commit": "217f2c4dbd4b38ab465f0b8bd85b369b30734d3d",
+          "created_at": "2019-07-11T15:00:11Z",
+          "problem_title": "run: running the same command twice on a callback stage doesn't reproduce",
+          "problem_statement_sha256": "79d29ac7eddb940353c0c7fd08d1c2a3672efdc35cb70a685b6ce4cd9a204a8d",
+          "trajectory_row": 41,
+          "message_count": 46,
+          "patch_touched_files": [
+            "dvc/stage.py"
+          ],
+          "test_files": [
+            "tests/func/test_run.py"
+          ],
+          "join_method": "exact_problem_statement"
+        }
+      ],
+      "current_anchor": [
+        {
+          "selection_order": 55,
+          "world": "W03",
+          "team": "A",
+          "role": "current_anchor",
+          "instance_id": "iterative__dvc-6600",
+          "repo": "iterative/dvc",
+          "base_commit": "eb6562207b0ee9bd7fd2067103f3ff3b6c6cd18b",
+          "created_at": "2021-09-13T10:03:02Z",
+          "problem_title": "pull -r remote: Disregards specified http remote",
+          "problem_statement_sha256": "c9d9f304a30b489ddcbed46681bfc6ba90f5ddf1eb27e9f50d7eb95d564c371a",
+          "trajectory_row": 299,
+          "message_count": 28,
+          "patch_touched_files": [
+            "dvc/output.py"
+          ],
+          "test_files": [
+            "tests/func/test_data_cloud.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 56,
+          "world": "W03",
+          "team": "A",
+          "role": "current_anchor",
+          "instance_id": "iterative__dvc-4785",
+          "repo": "iterative/dvc",
+          "base_commit": "7da3de451f1580d0c48d7f0a82b1f96ea0e91157",
+          "created_at": "2020-10-25T13:36:02Z",
+          "problem_title": "http: do not ignore HTTP statuses when working with HTTP(S) remotes",
+          "problem_statement_sha256": "344ba2ab0593a2da7444093b87b898aca4ab9ab9ae2a259300f6980f41e1bc35",
+          "trajectory_row": 148,
+          "message_count": 26,
+          "patch_touched_files": [
+            "dvc/tree/http.py"
+          ],
+          "test_files": [
+            "tests/unit/remote/test_http.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 57,
+          "world": "W03",
+          "team": "A",
+          "role": "current_anchor",
+          "instance_id": "iterative__dvc-1651",
+          "repo": "iterative/dvc",
+          "base_commit": "9a298fc835e0266d919fde046d6c567e52d4f045",
+          "created_at": "2019-02-22T00:34:45Z",
+          "problem_title": "status: using the --remote would imply --cloud",
+          "problem_statement_sha256": "cda1336763016e3bfc63e92f91892fa89d286c463e27daee8b329cd443829385",
+          "trajectory_row": 360,
+          "message_count": 32,
+          "patch_touched_files": [
+            "dvc/repo/status.py"
+          ],
+          "test_files": [
+            "tests/test_status.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 58,
+          "world": "W03",
+          "team": "A",
+          "role": "current_anchor",
+          "instance_id": "iterative__dvc-6683",
+          "repo": "iterative/dvc",
+          "base_commit": "0bf1802d4bc045d5dc2a2c3258c3d6b0d9425761",
+          "created_at": "2021-09-24T14:04:04Z",
+          "problem_title": "alias `list` as `ls`?",
+          "problem_statement_sha256": "4ff1cbada1e250decf53e3b44dad3cacf66df9840e65029806071454c9fe517b",
+          "trajectory_row": 370,
+          "message_count": 100,
+          "patch_touched_files": [
+            "dvc/command/ls/__init__.py"
+          ],
+          "test_files": [
+            "tests/unit/command/ls/test_ls.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 59,
+          "world": "W03",
+          "team": "A",
+          "role": "current_anchor",
+          "instance_id": "iterative__dvc-5839",
+          "repo": "iterative/dvc",
+          "base_commit": "daf07451f8e8f3e76a791c696b0ea175e8ed3ac1",
+          "created_at": "2021-04-17T12:10:06Z",
+          "problem_title": "metrics show: --precision argument has no effect",
+          "problem_statement_sha256": "37ca6c3a40e0556444858a7e8b2594e289ecb83ae1f702e6359fdf1cc5a83bb8",
+          "trajectory_row": 15,
+          "message_count": 60,
+          "patch_touched_files": [
+            "dvc/command/metrics.py"
+          ],
+          "test_files": [
+            "tests/unit/command/test_metrics.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 60,
+          "world": "W03",
+          "team": "A",
+          "role": "current_anchor",
+          "instance_id": "iterative__dvc-4778",
+          "repo": "iterative/dvc",
+          "base_commit": "f8ba5daae23ffc5c2135f86670bd562d6ce654d7",
+          "created_at": "2020-10-23T09:40:04Z",
+          "problem_title": "Cannot dvc add an already tracked file that lies in a folder",
+          "problem_statement_sha256": "ef757ecfd1846a0bad1986fa06fdcfea7770a4abda1dd13e8c66f4224ed62b82",
+          "trajectory_row": 141,
+          "message_count": 100,
+          "patch_touched_files": [
+            "dvc/utils/__init__.py"
+          ],
+          "test_files": [
+            "tests/func/test_add.py"
+          ],
+          "join_method": "exact_problem_statement"
+        }
+      ]
+    },
+    "W03-Team-B": {
+      "history": [
+        {
+          "selection_order": 61,
+          "world": "W03",
+          "team": "B",
+          "role": "history",
+          "instance_id": "Project-MONAI__MONAI-6147",
+          "repo": "Project-MONAI/MONAI",
+          "base_commit": "678b5124a74f32859d692d142728ca1f7fa98a25",
+          "created_at": "2023-03-14T23:39:58Z",
+          "problem_title": "Inconsistent writing of Metadata. Loading +  Saving results in different metadata.",
+          "problem_statement_sha256": "2a7f270912eb1dc08c951a4dbae737ca4d369e0754fca1f16e2b0bf05134fc46",
+          "trajectory_row": 459,
+          "message_count": 74,
+          "patch_touched_files": [
+            "monai/data/image_writer.py",
+            "monai/networks/layers/filtering.py",
+            "monai/transforms/io/array.py",
+            "monai/transforms/io/dictionary.py"
+          ],
+          "test_files": [
+            "tests/test_auto3dseg_ensemble.py",
+            "tests/test_image_rw.py",
+            "tests/test_integration_autorunner.py",
+            "tests/test_integration_gpu_customization.py",
+            "tests/test_itk_writer.py",
+            "tests/testing_data/integration_answers.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 62,
+          "world": "W03",
+          "team": "B",
+          "role": "history",
+          "instance_id": "Project-MONAI__MONAI-4745",
+          "repo": "Project-MONAI/MONAI",
+          "base_commit": "9c12cd8aab54e31f7c87956ca6fc20573d2148ec",
+          "created_at": "2022-07-22T06:57:01Z",
+          "problem_title": "Unsupported data type in `ConcatItemsD`",
+          "problem_statement_sha256": "fb14fcca9b902189f5c295b7f5c72a9340cb4538cafa843df563855ea26ddcc1",
+          "trajectory_row": 489,
+          "message_count": 66,
+          "patch_touched_files": [
+            "monai/transforms/utility/dictionary.py"
+          ],
+          "test_files": [
+            "tests/test_concat_itemsd.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 63,
+          "world": "W03",
+          "team": "B",
+          "role": "history",
+          "instance_id": "Project-MONAI__MONAI-907",
+          "repo": "Project-MONAI/MONAI",
+          "base_commit": "f2ea6fa7a75acc235037e91611638be6bf34188a",
+          "created_at": "2020-08-18T08:44:51Z",
+          "problem_title": "sliding_window_inference() in monai.inferers went wrong when roi_size=(M,N,1)",
+          "problem_statement_sha256": "9cec72527af5143d666e1f0dde2933a99d968a7a1d12d4d85f0e9b0c91a8fa5e",
+          "trajectory_row": 47,
+          "message_count": 56,
+          "patch_touched_files": [
+            "monai/inferers/utils.py"
+          ],
+          "test_files": [
+            "tests/test_sliding_window_inference.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 64,
+          "world": "W03",
+          "team": "B",
+          "role": "history",
+          "instance_id": "Project-MONAI__MONAI-7548",
+          "repo": "Project-MONAI/MONAI",
+          "base_commit": "95f69dea3d2ff9fb3d0695d922213aefaf5f0c39",
+          "created_at": "2024-03-14T20:53:33Z",
+          "problem_title": "Perceptual loss with medicalnet_resnet50_23datasets errors due to a typo.",
+          "problem_statement_sha256": "0777439af7f2f820f2b34e3dab898d81aa525ef1624ccadb5272aa3c0b233e3f",
+          "trajectory_row": 472,
+          "message_count": 34,
+          "patch_touched_files": [
+            "monai/losses/perceptual.py"
+          ],
+          "test_files": [
+            "tests/test_perceptual_loss.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 65,
+          "world": "W03",
+          "team": "B",
+          "role": "history",
+          "instance_id": "Project-MONAI__MONAI-1571",
+          "repo": "Project-MONAI/MONAI",
+          "base_commit": "866d53df3f754e25fb4635abeb3f27cdaaa718cd",
+          "created_at": "2021-02-09T03:44:28Z",
+          "problem_title": "Classification can't work in distributed data parallel if has rich meta data",
+          "problem_statement_sha256": "bee21012a58595b9f01df4429918495a4ca2c60c4942e3f2ebc6cc3f25c6a323",
+          "trajectory_row": 201,
+          "message_count": 30,
+          "patch_touched_files": [
+            "monai/handlers/classification_saver.py",
+            "monai/handlers/utils.py"
+          ],
+          "test_files": [
+            "tests/test_handler_classification_saver_dist.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 66,
+          "world": "W03",
+          "team": "B",
+          "role": "history",
+          "instance_id": "Project-MONAI__MONAI-6560",
+          "repo": "Project-MONAI/MONAI",
+          "base_commit": "9d6ccce3d46d64b3ffe289349f50323bd0a1b6eb",
+          "created_at": "2023-05-30T05:57:08Z",
+          "problem_title": "Enhance `check_properties` in `monai.bundle.workflows`",
+          "problem_statement_sha256": "c150293f79a38559e911f8f1bc6980228528937df1c85672981bdb3f499516b9",
+          "trajectory_row": 266,
+          "message_count": 68,
+          "patch_touched_files": [
+            "monai/bundle/workflows.py"
+          ],
+          "test_files": [
+            "tests/test_bundle_workflow.py"
+          ],
+          "join_method": "exact_problem_statement"
+        }
+      ],
+      "current_anchor": [
+        {
+          "selection_order": 67,
+          "world": "W03",
+          "team": "B",
+          "role": "current_anchor",
+          "instance_id": "Project-MONAI__MONAI-6895",
+          "repo": "Project-MONAI/MONAI",
+          "base_commit": "59bcad45030a9abce369e5acaf6aa726fb48a5c8",
+          "created_at": "2023-08-21T13:23:15Z",
+          "problem_title": "RankFilter in a single gpu environment",
+          "problem_statement_sha256": "0b7163df3adc228a136703dc282d162ab51ae0b7478078886f5653f8222e8e90",
+          "trajectory_row": 468,
+          "message_count": 24,
+          "patch_touched_files": [
+            "monai/utils/dist.py"
+          ],
+          "test_files": [
+            "tests/test_rankfilter_dist.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 68,
+          "world": "W03",
+          "team": "B",
+          "role": "current_anchor",
+          "instance_id": "Project-MONAI__MONAI-5543",
+          "repo": "Project-MONAI/MONAI",
+          "base_commit": "e4b99e15353a86fc1f14b34ddbc337ff9cd759b0",
+          "created_at": "2022-11-18T18:17:46Z",
+          "problem_title": "Amend extract_levels for LocalNet",
+          "problem_statement_sha256": "c8da1f6798ed20a791e00edb0bb13f1d88dfcfe8ead3826f27ee7965cec216e8",
+          "trajectory_row": 238,
+          "message_count": 38,
+          "patch_touched_files": [
+            "monai/networks/nets/regunet.py"
+          ],
+          "test_files": [
+            "tests/test_localnet.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 69,
+          "world": "W03",
+          "team": "B",
+          "role": "current_anchor",
+          "instance_id": "Project-MONAI__MONAI-4662",
+          "repo": "Project-MONAI/MONAI",
+          "base_commit": "cbe16eb326830ef31479fd34ae1e44d27fc2d64d",
+          "created_at": "2022-07-09T14:18:58Z",
+          "problem_title": "BUG in `RandCropBoxByPosNegLabeld`",
+          "problem_statement_sha256": "dd861eae04bad044e3dbd01c0963f6cb75f13ee874fc8826dc1ddd36c3229b8e",
+          "trajectory_row": 256,
+          "message_count": 58,
+          "patch_touched_files": [
+            "monai/apps/detection/transforms/dictionary.py"
+          ],
+          "test_files": [
+            "tests/test_box_transform.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 70,
+          "world": "W03",
+          "team": "B",
+          "role": "current_anchor",
+          "instance_id": "Project-MONAI__MONAI-3715",
+          "repo": "Project-MONAI/MONAI",
+          "base_commit": "d36b835b226ab95ffae5780629a5304d8df5883e",
+          "created_at": "2022-01-26T02:57:00Z",
+          "problem_title": "`mode` of Evaluator can't work with string input",
+          "problem_statement_sha256": "a3c555b484df2cd448559fbeb38a5b3de3e97aed1b46747603bd08675aff4d49",
+          "trajectory_row": 70,
+          "message_count": 60,
+          "patch_touched_files": [
+            "monai/engines/evaluator.py"
+          ],
+          "test_files": [
+            "tests/test_prepare_batch_default.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 71,
+          "world": "W03",
+          "team": "B",
+          "role": "current_anchor",
+          "instance_id": "Project-MONAI__MONAI-3675",
+          "repo": "Project-MONAI/MONAI",
+          "base_commit": "b2cc1668c0fe5b961721e5387ac6bc992e72d4d7",
+          "created_at": "2022-01-18T15:20:50Z",
+          "problem_title": "Change exception to warning in AUC metric",
+          "problem_statement_sha256": "39c1bde08cc80fcbf180cf9f92b947d3ae2be9acdc51db990ac0ed6f3b005587",
+          "trajectory_row": 466,
+          "message_count": 20,
+          "patch_touched_files": [
+            "monai/metrics/rocauc.py"
+          ],
+          "test_files": [
+            "tests/test_compute_roc_auc.py"
+          ],
+          "join_method": "exact_problem_statement"
+        },
+        {
+          "selection_order": 72,
+          "world": "W03",
+          "team": "B",
+          "role": "current_anchor",
+          "instance_id": "Project-MONAI__MONAI-6975",
+          "repo": "Project-MONAI/MONAI",
+          "base_commit": "392c5c1b860c0f0cfd0aa14e9d4b342c8b5ef5e7",
+          "created_at": "2023-09-13T06:37:14Z",
+          "problem_title": "`Lazy=True` ignored when using `Dataset` call",
+          "problem_statement_sha256": "f7cae208ad325d5cee00026395f6476ada6f71c4769b59695e054992851d3716",
+          "trajectory_row": 168,
+          "message_count": 64,
+          "patch_touched_files": [
+            "monai/transforms/transform.py"
+          ],
+          "test_files": [
+            "tests/test_compose.py",
+            "tests/test_dataset.py"
+          ],
+          "join_method": "exact_problem_statement"
+        }
+      ]
+    }
+  },
+  "selected": [
+    {
+      "selection_order": 1,
+      "world": "W01",
+      "team": "A",
+      "role": "history",
+      "instance_id": "getmoto__moto-5134",
+      "repo": "getmoto/moto",
+      "base_commit": "0e3ac260682f3354912fe552c61d9b3e590903b8",
+      "created_at": "2022-05-13 19:55:51",
+      "problem_title": "EventBridge rule doesn't match null value with \"exists\" filter",
+      "problem_statement_sha256": "e214cd0d071ac915a6651b54eca3291b5b144b19d19ab08968ef1bd01d190dbc",
+      "trajectory_row": 154,
+      "message_count": 100,
+      "patch_touched_files": [
+        "moto/events/models.py"
+      ],
+      "test_files": [
+        "tests/test_events/test_event_pattern.py",
+        "tests/test_events/test_events_integration.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 2,
+      "world": "W01",
+      "team": "A",
+      "role": "history",
+      "instance_id": "getmoto__moto-6567",
+      "repo": "getmoto/moto",
+      "base_commit": "b52fd80cb1cfd8ecc02c3ec75f481001d33c194e",
+      "created_at": "2023-07-28 10:14:41",
+      "problem_title": "Missing vpc security group name from rds.create_db_cluster response",
+      "problem_statement_sha256": "ca293dd4ca303c9eb680a847cf9835797b0ff895f2ce7c56729fe5f446075c7c",
+      "trajectory_row": 253,
+      "message_count": 100,
+      "patch_touched_files": [
+        "moto/rds/models.py",
+        "moto/rds/responses.py"
+      ],
+      "test_files": [
+        "tests/test_rds/test_rds_clusters.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 3,
+      "world": "W01",
+      "team": "A",
+      "role": "history",
+      "instance_id": "getmoto__moto-7365",
+      "repo": "getmoto/moto",
+      "base_commit": "7f6c9cb1deafb280fe7fcc7551c38e397f11a706",
+      "created_at": "2024-02-19 20:29:03",
+      "problem_title": "DynamoDB's `update_item` performs floating-point arithmetic with mock table created via `boto3`",
+      "problem_statement_sha256": "98b2d3dfde2c2d04ca8249b63c1babbaec47f36f36a57f5f4f1ddf85875791af",
+      "trajectory_row": 340,
+      "message_count": 82,
+      "patch_touched_files": [
+        "moto/dynamodb/models/dynamo_type.py"
+      ],
+      "test_files": [
+        "tests/test_dynamodb/test_dynamodb_update_expressions.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 4,
+      "world": "W01",
+      "team": "A",
+      "role": "history",
+      "instance_id": "getmoto__moto-5587",
+      "repo": "getmoto/moto",
+      "base_commit": "80ab997010f9f8a2c26272671e6216ad12fac5c3",
+      "created_at": "2022-10-21 20:58:13",
+      "problem_title": "Versioned S3 buckets leak keys",
+      "problem_statement_sha256": "c2abfbf6abd9f0bc4e6796dc1278b92aeaf14fb0f0beab31058c27f1814fdc9b",
+      "trajectory_row": 306,
+      "message_count": 100,
+      "patch_touched_files": [
+        "moto/s3/models.py"
+      ],
+      "test_files": [
+        "tests/test_s3/test_s3_file_handles.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 5,
+      "world": "W01",
+      "team": "A",
+      "role": "history",
+      "instance_id": "getmoto__moto-6585",
+      "repo": "getmoto/moto",
+      "base_commit": "6843eb4c86ee0abad140d02930af95050120a0ef",
+      "created_at": "2023-08-01 16:05:18",
+      "problem_title": "lambda get_function() returns config working directory in error",
+      "problem_statement_sha256": "2e1793eefa9b683bd7da1df6833276ac5cf92f0ce014965e1efb14ec0ebf5bd5",
+      "trajectory_row": 347,
+      "message_count": 100,
+      "patch_touched_files": [
+        "moto/awslambda/models.py"
+      ],
+      "test_files": [
+        "tests/test_awslambda/test_lambda.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 6,
+      "world": "W01",
+      "team": "A",
+      "role": "history",
+      "instance_id": "getmoto__moto-6913",
+      "repo": "getmoto/moto",
+      "base_commit": "f59e178f272003ba39694d68390611e118d8eaa9",
+      "created_at": "2023-10-13 19:07:22",
+      "problem_title": "SESV2 send_email saves wrong body in ses_backend",
+      "problem_statement_sha256": "4c66a74d499f66dbcb0ceea1255bea78e93d7f5d5beca02ffdd3b42107686b79",
+      "trajectory_row": 113,
+      "message_count": 100,
+      "patch_touched_files": [
+        "moto/sesv2/responses.py"
+      ],
+      "test_files": [
+        "tests/test_sesv2/test_sesv2.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 7,
+      "world": "W01",
+      "team": "A",
+      "role": "current_anchor",
+      "instance_id": "getmoto__moto-7635",
+      "repo": "getmoto/moto",
+      "base_commit": "e51192b71db45d79b68c56d5e6c36af9d8a497b9",
+      "created_at": "2024-04-27 20:50:03",
+      "problem_title": "SNS: `create_platform_endpoint` is not idempotent with default attributes",
+      "problem_statement_sha256": "923b4d0afe15ee53bcb02e149f63377c8afa8af95c05d43e9270f5a8b26242cc",
+      "trajectory_row": 343,
+      "message_count": 52,
+      "patch_touched_files": [
+        "moto/sns/models.py"
+      ],
+      "test_files": [
+        "tests/test_sns/test_application_boto3.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 8,
+      "world": "W01",
+      "team": "A",
+      "role": "current_anchor",
+      "instance_id": "getmoto__moto-7490",
+      "repo": "getmoto/moto",
+      "base_commit": "db862bcf3b5ea051d412620caccbc08d72c8f441",
+      "created_at": "2024-03-19 08:54:09",
+      "problem_title": "Adding `StreamSummaries` to kinesis.list_streams response",
+      "problem_statement_sha256": "c0703c3b54b53528c70838814bcacb1abc4712fdacd14529a4e0594063aff615",
+      "trajectory_row": 326,
+      "message_count": 56,
+      "patch_touched_files": [
+        "moto/kinesis/responses.py"
+      ],
+      "test_files": [
+        "tests/test_kinesis/test_kinesis.py",
+        "tests/test_kinesis/test_server.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 9,
+      "world": "W01",
+      "team": "A",
+      "role": "current_anchor",
+      "instance_id": "getmoto__moto-7317",
+      "repo": "getmoto/moto",
+      "base_commit": "652eabda5170e772742d4a68234a26fa8765e6a9",
+      "created_at": "2024-02-06 11:56:34",
+      "problem_title": "glue.create_database does not create tags",
+      "problem_statement_sha256": "c1e2944f9416dc1d02ab36ba55847bef6cd285ab742e90ea76dc53974c5a8a04",
+      "trajectory_row": 357,
+      "message_count": 66,
+      "patch_touched_files": [
+        "moto/glue/models.py",
+        "moto/glue/responses.py"
+      ],
+      "test_files": [
+        "tests/test_glue/helpers.py",
+        "tests/test_glue/test_datacatalog.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 10,
+      "world": "W01",
+      "team": "A",
+      "role": "current_anchor",
+      "instance_id": "getmoto__moto-7212",
+      "repo": "getmoto/moto",
+      "base_commit": "455fbd5eaa0270e03eac85a532e47ec75c7acd21",
+      "created_at": "2024-01-13 20:50:57",
+      "problem_title": "Cognito ID/Access Token do not contain user pool custom attributes",
+      "problem_statement_sha256": "cac2416955684cb457d6abb9016be01315a75ddf9513187c3bb2ce3a4a52172d",
+      "trajectory_row": 316,
+      "message_count": 44,
+      "patch_touched_files": [
+        "moto/cognitoidp/models.py"
+      ],
+      "test_files": [
+        "tests/test_cognitoidp/test_cognitoidp.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 11,
+      "world": "W01",
+      "team": "A",
+      "role": "current_anchor",
+      "instance_id": "getmoto__moto-7105",
+      "repo": "getmoto/moto",
+      "base_commit": "85156f59396a85e83e83200c9df41b66d6f82b68",
+      "created_at": "2023-12-09 23:39:02",
+      "problem_title": "moto batch - \"RuntimeError: cannot join thread before it is started\"",
+      "problem_statement_sha256": "5f5a542df5756408619b7f51e94c2675ef16c9b0dace1e3e8df98df2317153b9",
+      "trajectory_row": 78,
+      "message_count": 30,
+      "patch_touched_files": [
+        "moto/batch/models.py"
+      ],
+      "test_files": [
+        "tests/test_batch/test_batch_jobs.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 12,
+      "world": "W01",
+      "team": "A",
+      "role": "current_anchor",
+      "instance_id": "getmoto__moto-7081",
+      "repo": "getmoto/moto",
+      "base_commit": "55c589072fc88363fdde9ae8656909f8f24dd13f",
+      "created_at": "2023-11-30 19:31:29",
+      "problem_title": "IoT - thingId not present after create_thing()",
+      "problem_statement_sha256": "75bd53cccb6ec35d6e24f4bda406f9782dfec77b0bc8cd1e324dfdf0ac0295bd",
+      "trajectory_row": 324,
+      "message_count": 66,
+      "patch_touched_files": [
+        "moto/iot/models.py",
+        "moto/iot/responses.py"
+      ],
+      "test_files": [
+        "tests/test_iot/test_iot_things.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 13,
+      "world": "W01",
+      "team": "B",
+      "role": "history",
+      "instance_id": "python__mypy-10424",
+      "repo": "python/mypy",
+      "base_commit": "4518b55663bc689646280a0ab2247c4a724bf3c0",
+      "created_at": "2021-05-05T12:28:20Z",
+      "problem_title": "Narrowing types using a metaclass can cause false positives",
+      "problem_statement_sha256": "7da0a529033f3f1cce712fb742e2c7f8ec6336273f4561a64a4c755897556cfd",
+      "trajectory_row": 130,
+      "message_count": 100,
+      "patch_touched_files": [
+        "mypy/meet.py"
+      ],
+      "test_files": [
+        "test-data/unit/check-narrowing.test"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 14,
+      "world": "W01",
+      "team": "B",
+      "role": "history",
+      "instance_id": "python__mypy-5617",
+      "repo": "python/mypy",
+      "base_commit": "5db3e1a024a98af4184d6864c71d6abbf00dc3b3",
+      "created_at": "2018-09-13T18:26:38Z",
+      "problem_title": "Can't assign to ()",
+      "problem_statement_sha256": "05162f954667ea9719ce0aa0d9f5862403a7c0a6080a03a91bf961cd60f093b8",
+      "trajectory_row": 285,
+      "message_count": 86,
+      "patch_touched_files": [
+        "mypy/semanal.py"
+      ],
+      "test_files": [
+        "test-data/unit/check-tuples.test",
+        "test-data/unit/semanal-errors.test"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 15,
+      "world": "W01",
+      "team": "B",
+      "role": "history",
+      "instance_id": "python__mypy-15184",
+      "repo": "python/mypy",
+      "base_commit": "13f35ad0915e70c2c299e2eb308968c86117132d",
+      "created_at": "2023-05-04T15:43:32Z",
+      "problem_title": "assert_type: Use fully qualified types when names are ambiguous",
+      "problem_statement_sha256": "b10ddb3287e51f732b746284c667303f498000ca5114f4cde117f4347fe9149f",
+      "trajectory_row": 129,
+      "message_count": 70,
+      "patch_touched_files": [
+        "mypy/messages.py"
+      ],
+      "test_files": [
+        "test-data/unit/check-assert-type-fail.test"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 16,
+      "world": "W01",
+      "team": "B",
+      "role": "history",
+      "instance_id": "python__mypy-12943",
+      "repo": "python/mypy",
+      "base_commit": "9611e2d0b1d9130ca1591febdd60a3523cf739eb",
+      "created_at": "2022-06-05T18:48:06Z",
+      "problem_title": "Crash when analysing qiskit",
+      "problem_statement_sha256": "81776d529be9eaa840fa8aac93a3b4fd56781c0f1f4b138e51e6085975008ff1",
+      "trajectory_row": 336,
+      "message_count": 44,
+      "patch_touched_files": [
+        "mypy/checker.py"
+      ],
+      "test_files": [
+        "test-data/unit/check-classes.test"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 17,
+      "world": "W01",
+      "team": "B",
+      "role": "history",
+      "instance_id": "python__mypy-16869",
+      "repo": "python/mypy",
+      "base_commit": "8c2ef9dde8aa803e04038427ad84f09664d9d93f",
+      "created_at": "2024-02-04T19:37:58Z",
+      "problem_title": "Stubgen crashes on TypeVarTuple usage",
+      "problem_statement_sha256": "583f7d7e92494075c5e880a355adb53d5c8ce1d3026a4ab9d8afcf6d0ba53d50",
+      "trajectory_row": 158,
+      "message_count": 44,
+      "patch_touched_files": [
+        "mypy/stubgen.py"
+      ],
+      "test_files": [
+        "mypy/test/teststubgen.py",
+        "test-data/unit/stubgen.test"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 18,
+      "world": "W01",
+      "team": "B",
+      "role": "history",
+      "instance_id": "python__mypy-11567",
+      "repo": "python/mypy",
+      "base_commit": "7f0ad943e4b189224f2fedf43aa7b38f53ec561e",
+      "created_at": "2021-11-16T15:58:55Z",
+      "problem_title": "AST diff crash related to ParamSpec",
+      "problem_statement_sha256": "4bc241e33d82e5c980b3c99b23d050ca6c4f3815121a991094c378360225e448",
+      "trajectory_row": 302,
+      "message_count": 88,
+      "patch_touched_files": [
+        "mypy/server/astdiff.py"
+      ],
+      "test_files": [
+        "test-data/unit/diff.test"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 19,
+      "world": "W01",
+      "team": "B",
+      "role": "current_anchor",
+      "instance_id": "python__mypy-15976",
+      "repo": "python/mypy",
+      "base_commit": "d7b24514d7301f86031b7d1e2215cf8c2476bec0",
+      "created_at": "2023-08-28T04:20:29Z",
+      "problem_title": "attrs & dataclasses false positive error with slots=True when subclassing from non-slots base class",
+      "problem_statement_sha256": "6853180bcf71505d453e7664c340247a7c128e29ae065bb5c14e8f594eee75e1",
+      "trajectory_row": 281,
+      "message_count": 46,
+      "patch_touched_files": [
+        "mypy/plugins/attrs.py",
+        "mypy/plugins/dataclasses.py"
+      ],
+      "test_files": [
+        "test-data/unit/check-dataclasses.test",
+        "test-data/unit/check-plugin-attrs.test"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 20,
+      "world": "W01",
+      "team": "B",
+      "role": "current_anchor",
+      "instance_id": "python__mypy-15155",
+      "repo": "python/mypy",
+      "base_commit": "6b1fc865902bf2b845d3c58b6b9973b5a412241f",
+      "created_at": "2023-04-28T23:16:19Z",
+      "problem_title": "Crash type-checking overloaded function",
+      "problem_statement_sha256": "428993dfe854e9fa03c41c76898933c7e45aaf99ea77e60c0d924dc1fa8c7897",
+      "trajectory_row": 339,
+      "message_count": 60,
+      "patch_touched_files": [
+        "mypy/applytype.py",
+        "mypy/expandtype.py",
+        "mypy/subtypes.py"
+      ],
+      "test_files": [
+        "test-data/unit/check-generics.test"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 21,
+      "world": "W01",
+      "team": "B",
+      "role": "current_anchor",
+      "instance_id": "python__mypy-12548",
+      "repo": "python/mypy",
+      "base_commit": "222029b07e0fdcb3c174f15b61915b3b2e1665ca",
+      "created_at": "2022-04-08T03:43:15Z",
+      "problem_title": "\"Parameters cannot be constrained\" with generic ParamSpec",
+      "problem_statement_sha256": "ea06bd304e33226f67e3cbaad29a6dd876d4dc2e6d1b4de5022efbd40fcfbc33",
+      "trajectory_row": 198,
+      "message_count": 38,
+      "patch_touched_files": [
+        "mypy/constraints.py"
+      ],
+      "test_files": [
+        "test-data/unit/check-parameter-specification.test"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 22,
+      "world": "W01",
+      "team": "B",
+      "role": "current_anchor",
+      "instance_id": "python__mypy-10683",
+      "repo": "python/mypy",
+      "base_commit": "2ebdbca3b5afbfa1113f01b583522f4afcc4b3e3",
+      "created_at": "2021-06-21T14:22:54Z",
+      "problem_title": "Fix typeguards crash when assigning guarded value in if statement",
+      "problem_statement_sha256": "1c02e0486ed12650cbdb5d5e575f93208f6cd707d3938c063f9ff7affe453357",
+      "trajectory_row": 264,
+      "message_count": 24,
+      "patch_touched_files": [
+        "mypy/binder.py"
+      ],
+      "test_files": [
+        "test-data/unit/check-typeguard.test"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 23,
+      "world": "W01",
+      "team": "B",
+      "role": "current_anchor",
+      "instance_id": "python__mypy-10430",
+      "repo": "python/mypy",
+      "base_commit": "204c7dada412b0ca4ce22315d2acae640adb128f",
+      "created_at": "2021-05-06T11:15:11Z",
+      "problem_title": "Crash from module level __getattr__ in incremental mode",
+      "problem_statement_sha256": "dd26f86a91dce03b33dc6928fe53a1332abf586163b3f286154e038345c61a02",
+      "trajectory_row": 161,
+      "message_count": 40,
+      "patch_touched_files": [
+        "mypy/nodes.py"
+      ],
+      "test_files": [
+        "test-data/unit/check-incremental.test"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 24,
+      "world": "W01",
+      "team": "B",
+      "role": "current_anchor",
+      "instance_id": "python__mypy-10401",
+      "repo": "python/mypy",
+      "base_commit": "44925f4b121392135440f53d7c8a3fb30593d6cc",
+      "created_at": "2021-05-02T04:23:21Z",
+      "problem_title": "Unresolved references + tuples crashes mypy",
+      "problem_statement_sha256": "9e66515c107cc878fc342be0d6f13c6956de67f9f127a315a5c209bc5589c890",
+      "trajectory_row": 122,
+      "message_count": 56,
+      "patch_touched_files": [
+        "mypy/join.py"
+      ],
+      "test_files": [
+        "test-data/unit/check-tuples.test"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 25,
+      "world": "W02",
+      "team": "A",
+      "role": "history",
+      "instance_id": "pandas-dev__pandas-53418",
+      "repo": "pandas-dev/pandas",
+      "base_commit": "26bbd4b2c52f975d33a7f2211e9fd07533ed671c",
+      "created_at": "2023-05-27T17:02:57Z",
+      "problem_title": "BUG: Pandas uint64 sums to int64",
+      "problem_statement_sha256": "156df3a550b65590cf73239399c727ec18df43dfac52758bfb9399abe645f502",
+      "trajectory_row": 427,
+      "message_count": 100,
+      "patch_touched_files": [
+        "doc/source/whatsnew/v2.1.0.rst",
+        "pandas/core/nanops.py"
+      ],
+      "test_files": [
+        "pandas/tests/reductions/test_reductions.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 26,
+      "world": "W02",
+      "team": "A",
+      "role": "history",
+      "instance_id": "pandas-dev__pandas-51793",
+      "repo": "pandas-dev/pandas",
+      "base_commit": "c71645fff865c29e77bb81bd9510dba97d93a67c",
+      "created_at": "2023-03-04T23:48:15Z",
+      "problem_title": "CLN: Refactor PeriodArray._format_native_types to use DatetimeArray",
+      "problem_statement_sha256": "65a3e0f107acec605f41dba922cb33c3915c6394290bdfac2b7268334694cb30",
+      "trajectory_row": 417,
+      "message_count": 56,
+      "patch_touched_files": [
+        "pandas/_libs/tslibs/period.pyi",
+        "pandas/_libs/tslibs/period.pyx",
+        "pandas/core/arrays/period.py"
+      ],
+      "test_files": [
+        "pandas/tests/indexes/period/test_formats.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 27,
+      "world": "W02",
+      "team": "A",
+      "role": "history",
+      "instance_id": "pandas-dev__pandas-52076",
+      "repo": "pandas-dev/pandas",
+      "base_commit": "c2ef58e55936668c81b2cc795d1812924236e1a6",
+      "created_at": "2023-03-19T18:24:52Z",
+      "problem_title": "BUG: Passing pyarrow string array + dtype to `pd.Series` throws ArrowInvalidError on 2.0rc",
+      "problem_statement_sha256": "64f5dd3cbd1d3d756156b9e38c7cc315347e56684419f497d9f23d6feff57b79",
+      "trajectory_row": 419,
+      "message_count": 42,
+      "patch_touched_files": [
+        "pandas/_libs/lib.pyx",
+        "pandas/core/arrays/string_.py",
+        "pandas/core/arrays/string_arrow.py"
+      ],
+      "test_files": [
+        "pandas/tests/extension/test_arrow.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 28,
+      "world": "W02",
+      "team": "A",
+      "role": "history",
+      "instance_id": "pandas-dev__pandas-54087",
+      "repo": "pandas-dev/pandas",
+      "base_commit": "dbb19b9f6ec77edcbdf535ff506c3b7659fc0c69",
+      "created_at": "2023-07-11T19:18:46Z",
+      "problem_title": "BUG: In development version, `pd.merge` with `Series` arguments an `how=\"cross\"` fails",
+      "problem_statement_sha256": "703d60055d5fdc641b35b45ab5a6707e2f3013358c0307d5c6934198ae8e378a",
+      "trajectory_row": 416,
+      "message_count": 38,
+      "patch_touched_files": [
+        "pandas/core/reshape/merge.py"
+      ],
+      "test_files": [
+        "pandas/tests/reshape/merge/test_merge_cross.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 29,
+      "world": "W02",
+      "team": "A",
+      "role": "history",
+      "instance_id": "pandas-dev__pandas-48619",
+      "repo": "pandas-dev/pandas",
+      "base_commit": "85246fe460e93d2b891a1c116bcef3cb1a698664",
+      "created_at": "2022-09-18T12:43:37Z",
+      "problem_title": "BUG: \"ValueError: The truth value ... is ambiguous\" when using .loc setitem",
+      "problem_statement_sha256": "61707903b2b36dea405bd8b14932a4d9f4b375f45cfbf15a2d2f1fccb3000f9b",
+      "trajectory_row": 420,
+      "message_count": 38,
+      "patch_touched_files": [
+        "pandas/core/indexing.py"
+      ],
+      "test_files": [
+        "pandas/tests/series/indexing/test_indexing.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 30,
+      "world": "W02",
+      "team": "A",
+      "role": "history",
+      "instance_id": "pandas-dev__pandas-55807",
+      "repo": "pandas-dev/pandas",
+      "base_commit": "51f3d03087414bdff763d3f45b11e37b2a28ea84",
+      "created_at": "2023-11-03T07:12:23Z",
+      "problem_title": "ENH: _openpyxl.py load_workbook allow to modify the read_only, data_only and keep_links parameters using engine_kwargs",
+      "problem_statement_sha256": "9496e031501d514a11625c8cb94c1fae67f8523b0f5a764bcda54f0bbaa73429",
+      "trajectory_row": 214,
+      "message_count": 100,
+      "patch_touched_files": [
+        "doc/source/whatsnew/v2.2.0.rst",
+        "pandas/io/excel/_openpyxl.py"
+      ],
+      "test_files": [
+        "pandas/tests/io/excel/test_openpyxl.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 31,
+      "world": "W02",
+      "team": "A",
+      "role": "current_anchor",
+      "instance_id": "pandas-dev__pandas-58549",
+      "repo": "pandas-dev/pandas",
+      "base_commit": "1556dc050511f7caaf3091a94660721840bb8c9a",
+      "created_at": "2024-05-03T12:37:53Z",
+      "problem_title": "BUG: DatetimeIndex.is_year_start breaks on double-digit frequencies",
+      "problem_statement_sha256": "23f93da452f42048d3506b24c7d80f6640d28a8d52c460e17e19a7d6346e16c2",
+      "trajectory_row": 408,
+      "message_count": 36,
+      "patch_touched_files": [
+        "doc/source/whatsnew/v3.0.0.rst",
+        "pandas/_libs/tslibs/fields.pyi",
+        "pandas/_libs/tslibs/fields.pyx",
+        "pandas/_libs/tslibs/timestamps.pyx",
+        "pandas/core/arrays/datetimes.py"
+      ],
+      "test_files": [
+        "pandas/tests/indexes/datetimes/test_scalar_compat.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 32,
+      "world": "W02",
+      "team": "A",
+      "role": "current_anchor",
+      "instance_id": "pandas-dev__pandas-57758",
+      "repo": "pandas-dev/pandas",
+      "base_commit": "a93fd6e218d0082579eee624e547a72f0fd961bc",
+      "created_at": "2024-03-07T08:38:04Z",
+      "problem_title": "BUG: DataFrame Interchange Protocol errors on Boolean columns",
+      "problem_statement_sha256": "5a709704a5258e5c7f267983d385173547d9669e715f75758481a81f4321aff4",
+      "trajectory_row": 412,
+      "message_count": 54,
+      "patch_touched_files": [
+        "doc/source/whatsnew/v2.2.2.rst",
+        "pandas/core/interchange/utils.py"
+      ],
+      "test_files": [
+        "pandas/tests/interchange/test_impl.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 33,
+      "world": "W02",
+      "team": "A",
+      "role": "current_anchor",
+      "instance_id": "pandas-dev__pandas-47804",
+      "repo": "pandas-dev/pandas",
+      "base_commit": "f7e0e68f340b62035c30c8bf1ea4cba38a39613d",
+      "created_at": "2022-07-20T17:12:56Z",
+      "problem_title": "BUG: Interchange `Column.null_count` is a NumPy scalar, not a builtin `int`",
+      "problem_statement_sha256": "907319916823f5fcf6953541030c791565610cd758606ac1b79c00bff3030cc6",
+      "trajectory_row": 425,
+      "message_count": 26,
+      "patch_touched_files": [
+        "pandas/core/exchange/column.py"
+      ],
+      "test_files": [
+        "pandas/tests/exchange/test_spec_conformance.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 34,
+      "world": "W02",
+      "team": "A",
+      "role": "current_anchor",
+      "instance_id": "pandas-dev__pandas-50773",
+      "repo": "pandas-dev/pandas",
+      "base_commit": "c426dc0d8a6952f7d4689eaa6a5294aceae66e1e",
+      "created_at": "2023-01-16T10:55:14Z",
+      "problem_title": "BUG: DatetimeIndex with non-nano values and freq='D' throws ValueError",
+      "problem_statement_sha256": "ab2b358ba7902142637ff830c4b8d6ea688fcea70737442ae70c979f868933de",
+      "trajectory_row": 436,
+      "message_count": 28,
+      "patch_touched_files": [
+        "pandas/core/arrays/datetimelike.py"
+      ],
+      "test_files": [
+        "pandas/tests/frame/methods/test_asfreq.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 35,
+      "world": "W02",
+      "team": "A",
+      "role": "current_anchor",
+      "instance_id": "pandas-dev__pandas-51605",
+      "repo": "pandas-dev/pandas",
+      "base_commit": "b070d87f118709f7493dfd065a17ed506c93b59a",
+      "created_at": "2023-02-23T23:33:21Z",
+      "problem_title": "REGR: MultiIndex.isin with an empty iterable raises",
+      "problem_statement_sha256": "e31fcacd970747527c361128180baa6a263edf6150589ba7fef4073a19a949f8",
+      "trajectory_row": 191,
+      "message_count": 28,
+      "patch_touched_files": [
+        "pandas/core/indexes/multi.py"
+      ],
+      "test_files": [
+        "pandas/tests/indexes/multi/test_isin.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 36,
+      "world": "W02",
+      "team": "A",
+      "role": "current_anchor",
+      "instance_id": "pandas-dev__pandas-48970",
+      "repo": "pandas-dev/pandas",
+      "base_commit": "c34da509497717308c97c4a211ad3ff9bab92d87",
+      "created_at": "2022-10-06T12:24:33Z",
+      "problem_title": "BUG: to_datetime(..., infer_datetime_format=True) fails if argument is np.str_",
+      "problem_statement_sha256": "61381cfd9f5286eec4abce16a0c068a9f8329909b9ed50fc9281638b13ec8c84",
+      "trajectory_row": 439,
+      "message_count": 22,
+      "patch_touched_files": [
+        "pandas/_libs/tslibs/parsing.pyx",
+        "pandas/core/tools/datetimes.py"
+      ],
+      "test_files": [
+        "pandas/tests/tools/test_to_datetime.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 37,
+      "world": "W02",
+      "team": "B",
+      "role": "history",
+      "instance_id": "dask__dask-9378",
+      "repo": "dask/dask",
+      "base_commit": "8b95f983c232c1bd628e9cba0695d3ef229d290b",
+      "created_at": "2022-08-12T16:25:22Z",
+      "problem_title": "Mask preserving *_like functions",
+      "problem_statement_sha256": "ecbb121f5eae924939169e62324099f367de593ecfb51090b4707d66f16d5084",
+      "trajectory_row": 112,
+      "message_count": 100,
+      "patch_touched_files": [
+        "dask/array/ma.py"
+      ],
+      "test_files": [
+        "dask/array/tests/test_masked.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 38,
+      "world": "W02",
+      "team": "B",
+      "role": "history",
+      "instance_id": "dask__dask-8484",
+      "repo": "dask/dask",
+      "base_commit": "c79a4be64bf6108aeb5dd7ff1cef0c3302bbb696",
+      "created_at": "2021-12-14T14:28:09Z",
+      "problem_title": "nanmin & nanmax no longer work for scalar input",
+      "problem_statement_sha256": "ed3a982ba0df88472701357417a047fb5012e1fa7c133a2ae8c7829cb5aeeb3f",
+      "trajectory_row": 361,
+      "message_count": 76,
+      "patch_touched_files": [
+        "dask/array/reductions.py"
+      ],
+      "test_files": [
+        "dask/array/tests/test_reductions.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 39,
+      "world": "W02",
+      "team": "B",
+      "role": "history",
+      "instance_id": "dask__dask-6809",
+      "repo": "dask/dask",
+      "base_commit": "80239dab180ea9b2a444ef03b1998cf9fd589292",
+      "created_at": "2020-11-05T16:39:00Z",
+      "problem_title": "DataFrame.join doesn't accept Series as other",
+      "problem_statement_sha256": "c4030d6fdd1767c4ba87c1e3810449f439f7cbdb0cf7827bb5bb27db514982eb",
+      "trajectory_row": 398,
+      "message_count": 28,
+      "patch_touched_files": [
+        "dask/dataframe/core.py"
+      ],
+      "test_files": [
+        "dask/dataframe/tests/test_dataframe.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 40,
+      "world": "W02",
+      "team": "B",
+      "role": "history",
+      "instance_id": "dask__dask-8185",
+      "repo": "dask/dask",
+      "base_commit": "9460bc4ed1295d240dd464206ec81b82d9f495e2",
+      "created_at": "2021-09-27T19:15:59Z",
+      "problem_title": "Inconsistent Tokenization due to Lazy Registration",
+      "problem_statement_sha256": "a040de72ad9a37f059ee56aef6b33f98c5e256785a88816acbc4b28b6321e5a0",
+      "trajectory_row": 373,
+      "message_count": 24,
+      "patch_touched_files": [
+        "dask/utils.py"
+      ],
+      "test_files": [
+        "dask/tests/test_utils.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 41,
+      "world": "W02",
+      "team": "B",
+      "role": "history",
+      "instance_id": "dask__dask-9213",
+      "repo": "dask/dask",
+      "base_commit": "0ee07e3cc1ccd822227545936c1be0c94f84ad54",
+      "created_at": "2022-06-24T12:02:02Z",
+      "problem_title": "datetime.timedelta deterministic hashing",
+      "problem_statement_sha256": "2ad865fa45004d27dc1a385f4e0cdfcec9e6b128155cff317af0deda32565fff",
+      "trajectory_row": 397,
+      "message_count": 54,
+      "patch_touched_files": [
+        "dask/base.py"
+      ],
+      "test_files": [
+        "dask/tests/test_base.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 42,
+      "world": "W02",
+      "team": "B",
+      "role": "history",
+      "instance_id": "dask__dask-7894",
+      "repo": "dask/dask",
+      "base_commit": "bf4bc7dd8dc96021b171e0941abde7a5f60ce89f",
+      "created_at": "2021-07-14T03:51:29Z",
+      "problem_title": "map_overlap does not always trim properly when drop_axis is not None",
+      "problem_statement_sha256": "73f9fe85a45fb87537f64868a4b06c5cf57c90121770a607e82993a5751d6e09",
+      "trajectory_row": 155,
+      "message_count": 30,
+      "patch_touched_files": [
+        "dask/array/overlap.py"
+      ],
+      "test_files": [
+        "dask/array/tests/test_overlap.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 43,
+      "world": "W02",
+      "team": "B",
+      "role": "current_anchor",
+      "instance_id": "dask__dask-10972",
+      "repo": "dask/dask",
+      "base_commit": "9c20facdfb5f20e28f0e9259147283f8a7982728",
+      "created_at": "2024-03-01T10:57:38Z",
+      "problem_title": "test_encoding_gh601[utf-16] doesn't always fail",
+      "problem_statement_sha256": "ae50f3c8bb4b519ad026d1626091ac565f74bd44819fe46b0e87051ec49ef245",
+      "trajectory_row": 164,
+      "message_count": 70,
+      "patch_touched_files": [
+        "dask/dataframe/io/csv.py"
+      ],
+      "test_files": [
+        "dask/dataframe/io/tests/test_csv.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 44,
+      "world": "W02",
+      "team": "B",
+      "role": "current_anchor",
+      "instance_id": "dask__dask-7656",
+      "repo": "dask/dask",
+      "base_commit": "07d5ad0ab1bc8903554b37453f02cc8024460f2a",
+      "created_at": "2021-05-14T14:34:08Z",
+      "problem_title": "dataclass issue with fields that have init=False",
+      "problem_statement_sha256": "a2a09f910c38551c353c2aa2ffaa039741ced50c512ab6773e91d39ce56af83d",
+      "trajectory_row": 45,
+      "message_count": 26,
+      "patch_touched_files": [
+        "dask/delayed.py"
+      ],
+      "test_files": [
+        "dask/tests/test_delayed.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 45,
+      "world": "W02",
+      "team": "B",
+      "role": "current_anchor",
+      "instance_id": "dask__dask-10521",
+      "repo": "dask/dask",
+      "base_commit": "da256320ef0167992f7183c3a275d092f5727f62",
+      "created_at": "2023-09-19T16:56:23Z",
+      "problem_title": "Incorrect behavior of override_with argument in dask.config.get",
+      "problem_statement_sha256": "9929b4d50d8241f5b883e4269fe6e8e4456d0ff36a0b471c041a195a90536e2a",
+      "trajectory_row": 372,
+      "message_count": 22,
+      "patch_touched_files": [
+        "dask/config.py"
+      ],
+      "test_files": [
+        "dask/tests/test_config.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 46,
+      "world": "W02",
+      "team": "B",
+      "role": "current_anchor",
+      "instance_id": "dask__dask-7191",
+      "repo": "dask/dask",
+      "base_commit": "2640241fbdf0c5efbcf35d96eb8cc9c3df4de2fd",
+      "created_at": "2021-02-08T22:20:23Z",
+      "problem_title": "HighLevelGraph erroneously propagates into local scheduler optimization routines",
+      "problem_statement_sha256": "1c3708ddef0cd4bd2390048470cab6c9991300629251293b0471a76e9d9d0778",
+      "trajectory_row": 217,
+      "message_count": 20,
+      "patch_touched_files": [
+        "dask/multiprocessing.py"
+      ],
+      "test_files": [
+        "dask/tests/test_multiprocessing.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 47,
+      "world": "W02",
+      "team": "B",
+      "role": "current_anchor",
+      "instance_id": "dask__dask-10422",
+      "repo": "dask/dask",
+      "base_commit": "7ace31f93ddc0b879f14bb54755b9f547bf60188",
+      "created_at": "2023-07-20T15:31:45Z",
+      "problem_title": "dask.array.core.to_zarr with distributed scheduler, MutableMapping should be ok if backed by disk",
+      "problem_statement_sha256": "60161cb2fa602e221134331ff5802c813e8412823365d955fc0e876abc9c731e",
+      "trajectory_row": 382,
+      "message_count": 28,
+      "patch_touched_files": [
+        "dask/array/core.py"
+      ],
+      "test_files": [
+        "dask/tests/test_distributed.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 48,
+      "world": "W02",
+      "team": "B",
+      "role": "current_anchor",
+      "instance_id": "dask__dask-6749",
+      "repo": "dask/dask",
+      "base_commit": "e85942f8e1499488fec4a11efd137014e5f4fa27",
+      "created_at": "2020-10-19T20:57:38Z",
+      "problem_title": "Missing 2D case for residuals in dask.array.linalg.lstsq",
+      "problem_statement_sha256": "ddbd8cde5d253208daa869378ed0ec827deb14ab1551ab408f5f876f7ad901d4",
+      "trajectory_row": 379,
+      "message_count": 32,
+      "patch_touched_files": [
+        "dask/array/linalg.py"
+      ],
+      "test_files": [
+        "dask/array/tests/test_linalg.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 49,
+      "world": "W03",
+      "team": "A",
+      "role": "history",
+      "instance_id": "iterative__dvc-4075",
+      "repo": "iterative/dvc",
+      "base_commit": "a2f1367a9a75849ef6ad7ee23a5bacc18580f102",
+      "created_at": "2020-06-20T02:43:19Z",
+      "problem_title": "Implement `--no-exec` option for `import-url` command",
+      "problem_statement_sha256": "bc83a2690a839ee1a92e42462683ae9793d3fc9fcd9226db3dee6e016ca8eb13",
+      "trajectory_row": 275,
+      "message_count": 100,
+      "patch_touched_files": [
+        "dvc/command/imp_url.py",
+        "dvc/repo/imp_url.py"
+      ],
+      "test_files": [
+        "tests/func/test_import_url.py",
+        "tests/unit/command/test_imp_url.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 50,
+      "world": "W03",
+      "team": "A",
+      "role": "history",
+      "instance_id": "iterative__dvc-2231",
+      "repo": "iterative/dvc",
+      "base_commit": "817e3f8bfaa15b2494dae4853c6c3c3f5f701ad9",
+      "created_at": "2019-07-05T00:00:28Z",
+      "problem_title": "Delete the Output-Files by checkout to other branches.",
+      "problem_statement_sha256": "06bd17790310edf54dc01ff16a2f547968bc97cb7bfdf5e9faa5db0c2b349cd8",
+      "trajectory_row": 126,
+      "message_count": 52,
+      "patch_touched_files": [
+        "dvc/remote/base.py"
+      ],
+      "test_files": [
+        "tests/func/test_checkout.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 51,
+      "world": "W03",
+      "team": "A",
+      "role": "history",
+      "instance_id": "iterative__dvc-6954",
+      "repo": "iterative/dvc",
+      "base_commit": "28dd39a1a0d710585ff21bf66199208b1b83cbde",
+      "created_at": "2021-11-10T14:10:57Z",
+      "problem_title": "Negative numbers from a Python file are not recognized as parameters",
+      "problem_statement_sha256": "05336d5b1edc4174be1772e0aee6fa9bcd404db514732c25877a20d1072b9347",
+      "trajectory_row": 184,
+      "message_count": 36,
+      "patch_touched_files": [
+        "dvc/utils/serialize/_py.py"
+      ],
+      "test_files": [
+        "tests/unit/utils/serialize/test_python.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 52,
+      "world": "W03",
+      "team": "A",
+      "role": "history",
+      "instance_id": "iterative__dvc-8380",
+      "repo": "iterative/dvc",
+      "base_commit": "e556c632b371b3474d6546bdf68dd4bb6f9ec093",
+      "created_at": "2022-09-29T08:47:22Z",
+      "problem_title": "UnicodeDecodeError during parsing Config file",
+      "problem_statement_sha256": "5447a48f44ab8d59be69eaaf5ac1b65593261bc619221f925040728c1563654c",
+      "trajectory_row": 350,
+      "message_count": 26,
+      "patch_touched_files": [
+        "dvc/config.py"
+      ],
+      "test_files": [
+        "tests/unit/test_config.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 53,
+      "world": "W03",
+      "team": "A",
+      "role": "history",
+      "instance_id": "iterative__dvc-5004",
+      "repo": "iterative/dvc",
+      "base_commit": "7c45711e34f565330be416621037f983d0034bef",
+      "created_at": "2020-12-01T09:44:12Z",
+      "problem_title": "Boolean value might get unnecessarily uppercased",
+      "problem_statement_sha256": "952ad75fbf51cc1628b8731d93765f056e0f146bcc18c745b38e8e1c4cc935b0",
+      "trajectory_row": 173,
+      "message_count": 76,
+      "patch_touched_files": [
+        "dvc/parsing/interpolate.py"
+      ],
+      "test_files": [
+        "tests/func/test_stage_resolver.py",
+        "tests/unit/test_context.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 54,
+      "world": "W03",
+      "team": "A",
+      "role": "history",
+      "instance_id": "iterative__dvc-2254",
+      "repo": "iterative/dvc",
+      "base_commit": "217f2c4dbd4b38ab465f0b8bd85b369b30734d3d",
+      "created_at": "2019-07-11T15:00:11Z",
+      "problem_title": "run: running the same command twice on a callback stage doesn't reproduce",
+      "problem_statement_sha256": "79d29ac7eddb940353c0c7fd08d1c2a3672efdc35cb70a685b6ce4cd9a204a8d",
+      "trajectory_row": 41,
+      "message_count": 46,
+      "patch_touched_files": [
+        "dvc/stage.py"
+      ],
+      "test_files": [
+        "tests/func/test_run.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 55,
+      "world": "W03",
+      "team": "A",
+      "role": "current_anchor",
+      "instance_id": "iterative__dvc-6600",
+      "repo": "iterative/dvc",
+      "base_commit": "eb6562207b0ee9bd7fd2067103f3ff3b6c6cd18b",
+      "created_at": "2021-09-13T10:03:02Z",
+      "problem_title": "pull -r remote: Disregards specified http remote",
+      "problem_statement_sha256": "c9d9f304a30b489ddcbed46681bfc6ba90f5ddf1eb27e9f50d7eb95d564c371a",
+      "trajectory_row": 299,
+      "message_count": 28,
+      "patch_touched_files": [
+        "dvc/output.py"
+      ],
+      "test_files": [
+        "tests/func/test_data_cloud.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 56,
+      "world": "W03",
+      "team": "A",
+      "role": "current_anchor",
+      "instance_id": "iterative__dvc-4785",
+      "repo": "iterative/dvc",
+      "base_commit": "7da3de451f1580d0c48d7f0a82b1f96ea0e91157",
+      "created_at": "2020-10-25T13:36:02Z",
+      "problem_title": "http: do not ignore HTTP statuses when working with HTTP(S) remotes",
+      "problem_statement_sha256": "344ba2ab0593a2da7444093b87b898aca4ab9ab9ae2a259300f6980f41e1bc35",
+      "trajectory_row": 148,
+      "message_count": 26,
+      "patch_touched_files": [
+        "dvc/tree/http.py"
+      ],
+      "test_files": [
+        "tests/unit/remote/test_http.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 57,
+      "world": "W03",
+      "team": "A",
+      "role": "current_anchor",
+      "instance_id": "iterative__dvc-1651",
+      "repo": "iterative/dvc",
+      "base_commit": "9a298fc835e0266d919fde046d6c567e52d4f045",
+      "created_at": "2019-02-22T00:34:45Z",
+      "problem_title": "status: using the --remote would imply --cloud",
+      "problem_statement_sha256": "cda1336763016e3bfc63e92f91892fa89d286c463e27daee8b329cd443829385",
+      "trajectory_row": 360,
+      "message_count": 32,
+      "patch_touched_files": [
+        "dvc/repo/status.py"
+      ],
+      "test_files": [
+        "tests/test_status.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 58,
+      "world": "W03",
+      "team": "A",
+      "role": "current_anchor",
+      "instance_id": "iterative__dvc-6683",
+      "repo": "iterative/dvc",
+      "base_commit": "0bf1802d4bc045d5dc2a2c3258c3d6b0d9425761",
+      "created_at": "2021-09-24T14:04:04Z",
+      "problem_title": "alias `list` as `ls`?",
+      "problem_statement_sha256": "4ff1cbada1e250decf53e3b44dad3cacf66df9840e65029806071454c9fe517b",
+      "trajectory_row": 370,
+      "message_count": 100,
+      "patch_touched_files": [
+        "dvc/command/ls/__init__.py"
+      ],
+      "test_files": [
+        "tests/unit/command/ls/test_ls.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 59,
+      "world": "W03",
+      "team": "A",
+      "role": "current_anchor",
+      "instance_id": "iterative__dvc-5839",
+      "repo": "iterative/dvc",
+      "base_commit": "daf07451f8e8f3e76a791c696b0ea175e8ed3ac1",
+      "created_at": "2021-04-17T12:10:06Z",
+      "problem_title": "metrics show: --precision argument has no effect",
+      "problem_statement_sha256": "37ca6c3a40e0556444858a7e8b2594e289ecb83ae1f702e6359fdf1cc5a83bb8",
+      "trajectory_row": 15,
+      "message_count": 60,
+      "patch_touched_files": [
+        "dvc/command/metrics.py"
+      ],
+      "test_files": [
+        "tests/unit/command/test_metrics.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 60,
+      "world": "W03",
+      "team": "A",
+      "role": "current_anchor",
+      "instance_id": "iterative__dvc-4778",
+      "repo": "iterative/dvc",
+      "base_commit": "f8ba5daae23ffc5c2135f86670bd562d6ce654d7",
+      "created_at": "2020-10-23T09:40:04Z",
+      "problem_title": "Cannot dvc add an already tracked file that lies in a folder",
+      "problem_statement_sha256": "ef757ecfd1846a0bad1986fa06fdcfea7770a4abda1dd13e8c66f4224ed62b82",
+      "trajectory_row": 141,
+      "message_count": 100,
+      "patch_touched_files": [
+        "dvc/utils/__init__.py"
+      ],
+      "test_files": [
+        "tests/func/test_add.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 61,
+      "world": "W03",
+      "team": "B",
+      "role": "history",
+      "instance_id": "Project-MONAI__MONAI-6147",
+      "repo": "Project-MONAI/MONAI",
+      "base_commit": "678b5124a74f32859d692d142728ca1f7fa98a25",
+      "created_at": "2023-03-14T23:39:58Z",
+      "problem_title": "Inconsistent writing of Metadata. Loading +  Saving results in different metadata.",
+      "problem_statement_sha256": "2a7f270912eb1dc08c951a4dbae737ca4d369e0754fca1f16e2b0bf05134fc46",
+      "trajectory_row": 459,
+      "message_count": 74,
+      "patch_touched_files": [
+        "monai/data/image_writer.py",
+        "monai/networks/layers/filtering.py",
+        "monai/transforms/io/array.py",
+        "monai/transforms/io/dictionary.py"
+      ],
+      "test_files": [
+        "tests/test_auto3dseg_ensemble.py",
+        "tests/test_image_rw.py",
+        "tests/test_integration_autorunner.py",
+        "tests/test_integration_gpu_customization.py",
+        "tests/test_itk_writer.py",
+        "tests/testing_data/integration_answers.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 62,
+      "world": "W03",
+      "team": "B",
+      "role": "history",
+      "instance_id": "Project-MONAI__MONAI-4745",
+      "repo": "Project-MONAI/MONAI",
+      "base_commit": "9c12cd8aab54e31f7c87956ca6fc20573d2148ec",
+      "created_at": "2022-07-22T06:57:01Z",
+      "problem_title": "Unsupported data type in `ConcatItemsD`",
+      "problem_statement_sha256": "fb14fcca9b902189f5c295b7f5c72a9340cb4538cafa843df563855ea26ddcc1",
+      "trajectory_row": 489,
+      "message_count": 66,
+      "patch_touched_files": [
+        "monai/transforms/utility/dictionary.py"
+      ],
+      "test_files": [
+        "tests/test_concat_itemsd.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 63,
+      "world": "W03",
+      "team": "B",
+      "role": "history",
+      "instance_id": "Project-MONAI__MONAI-907",
+      "repo": "Project-MONAI/MONAI",
+      "base_commit": "f2ea6fa7a75acc235037e91611638be6bf34188a",
+      "created_at": "2020-08-18T08:44:51Z",
+      "problem_title": "sliding_window_inference() in monai.inferers went wrong when roi_size=(M,N,1)",
+      "problem_statement_sha256": "9cec72527af5143d666e1f0dde2933a99d968a7a1d12d4d85f0e9b0c91a8fa5e",
+      "trajectory_row": 47,
+      "message_count": 56,
+      "patch_touched_files": [
+        "monai/inferers/utils.py"
+      ],
+      "test_files": [
+        "tests/test_sliding_window_inference.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 64,
+      "world": "W03",
+      "team": "B",
+      "role": "history",
+      "instance_id": "Project-MONAI__MONAI-7548",
+      "repo": "Project-MONAI/MONAI",
+      "base_commit": "95f69dea3d2ff9fb3d0695d922213aefaf5f0c39",
+      "created_at": "2024-03-14T20:53:33Z",
+      "problem_title": "Perceptual loss with medicalnet_resnet50_23datasets errors due to a typo.",
+      "problem_statement_sha256": "0777439af7f2f820f2b34e3dab898d81aa525ef1624ccadb5272aa3c0b233e3f",
+      "trajectory_row": 472,
+      "message_count": 34,
+      "patch_touched_files": [
+        "monai/losses/perceptual.py"
+      ],
+      "test_files": [
+        "tests/test_perceptual_loss.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 65,
+      "world": "W03",
+      "team": "B",
+      "role": "history",
+      "instance_id": "Project-MONAI__MONAI-1571",
+      "repo": "Project-MONAI/MONAI",
+      "base_commit": "866d53df3f754e25fb4635abeb3f27cdaaa718cd",
+      "created_at": "2021-02-09T03:44:28Z",
+      "problem_title": "Classification can't work in distributed data parallel if has rich meta data",
+      "problem_statement_sha256": "bee21012a58595b9f01df4429918495a4ca2c60c4942e3f2ebc6cc3f25c6a323",
+      "trajectory_row": 201,
+      "message_count": 30,
+      "patch_touched_files": [
+        "monai/handlers/classification_saver.py",
+        "monai/handlers/utils.py"
+      ],
+      "test_files": [
+        "tests/test_handler_classification_saver_dist.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 66,
+      "world": "W03",
+      "team": "B",
+      "role": "history",
+      "instance_id": "Project-MONAI__MONAI-6560",
+      "repo": "Project-MONAI/MONAI",
+      "base_commit": "9d6ccce3d46d64b3ffe289349f50323bd0a1b6eb",
+      "created_at": "2023-05-30T05:57:08Z",
+      "problem_title": "Enhance `check_properties` in `monai.bundle.workflows`",
+      "problem_statement_sha256": "c150293f79a38559e911f8f1bc6980228528937df1c85672981bdb3f499516b9",
+      "trajectory_row": 266,
+      "message_count": 68,
+      "patch_touched_files": [
+        "monai/bundle/workflows.py"
+      ],
+      "test_files": [
+        "tests/test_bundle_workflow.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 67,
+      "world": "W03",
+      "team": "B",
+      "role": "current_anchor",
+      "instance_id": "Project-MONAI__MONAI-6895",
+      "repo": "Project-MONAI/MONAI",
+      "base_commit": "59bcad45030a9abce369e5acaf6aa726fb48a5c8",
+      "created_at": "2023-08-21T13:23:15Z",
+      "problem_title": "RankFilter in a single gpu environment",
+      "problem_statement_sha256": "0b7163df3adc228a136703dc282d162ab51ae0b7478078886f5653f8222e8e90",
+      "trajectory_row": 468,
+      "message_count": 24,
+      "patch_touched_files": [
+        "monai/utils/dist.py"
+      ],
+      "test_files": [
+        "tests/test_rankfilter_dist.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 68,
+      "world": "W03",
+      "team": "B",
+      "role": "current_anchor",
+      "instance_id": "Project-MONAI__MONAI-5543",
+      "repo": "Project-MONAI/MONAI",
+      "base_commit": "e4b99e15353a86fc1f14b34ddbc337ff9cd759b0",
+      "created_at": "2022-11-18T18:17:46Z",
+      "problem_title": "Amend extract_levels for LocalNet",
+      "problem_statement_sha256": "c8da1f6798ed20a791e00edb0bb13f1d88dfcfe8ead3826f27ee7965cec216e8",
+      "trajectory_row": 238,
+      "message_count": 38,
+      "patch_touched_files": [
+        "monai/networks/nets/regunet.py"
+      ],
+      "test_files": [
+        "tests/test_localnet.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 69,
+      "world": "W03",
+      "team": "B",
+      "role": "current_anchor",
+      "instance_id": "Project-MONAI__MONAI-4662",
+      "repo": "Project-MONAI/MONAI",
+      "base_commit": "cbe16eb326830ef31479fd34ae1e44d27fc2d64d",
+      "created_at": "2022-07-09T14:18:58Z",
+      "problem_title": "BUG in `RandCropBoxByPosNegLabeld`",
+      "problem_statement_sha256": "dd861eae04bad044e3dbd01c0963f6cb75f13ee874fc8826dc1ddd36c3229b8e",
+      "trajectory_row": 256,
+      "message_count": 58,
+      "patch_touched_files": [
+        "monai/apps/detection/transforms/dictionary.py"
+      ],
+      "test_files": [
+        "tests/test_box_transform.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 70,
+      "world": "W03",
+      "team": "B",
+      "role": "current_anchor",
+      "instance_id": "Project-MONAI__MONAI-3715",
+      "repo": "Project-MONAI/MONAI",
+      "base_commit": "d36b835b226ab95ffae5780629a5304d8df5883e",
+      "created_at": "2022-01-26T02:57:00Z",
+      "problem_title": "`mode` of Evaluator can't work with string input",
+      "problem_statement_sha256": "a3c555b484df2cd448559fbeb38a5b3de3e97aed1b46747603bd08675aff4d49",
+      "trajectory_row": 70,
+      "message_count": 60,
+      "patch_touched_files": [
+        "monai/engines/evaluator.py"
+      ],
+      "test_files": [
+        "tests/test_prepare_batch_default.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 71,
+      "world": "W03",
+      "team": "B",
+      "role": "current_anchor",
+      "instance_id": "Project-MONAI__MONAI-3675",
+      "repo": "Project-MONAI/MONAI",
+      "base_commit": "b2cc1668c0fe5b961721e5387ac6bc992e72d4d7",
+      "created_at": "2022-01-18T15:20:50Z",
+      "problem_title": "Change exception to warning in AUC metric",
+      "problem_statement_sha256": "39c1bde08cc80fcbf180cf9f92b947d3ae2be9acdc51db990ac0ed6f3b005587",
+      "trajectory_row": 466,
+      "message_count": 20,
+      "patch_touched_files": [
+        "monai/metrics/rocauc.py"
+      ],
+      "test_files": [
+        "tests/test_compute_roc_auc.py"
+      ],
+      "join_method": "exact_problem_statement"
+    },
+    {
+      "selection_order": 72,
+      "world": "W03",
+      "team": "B",
+      "role": "current_anchor",
+      "instance_id": "Project-MONAI__MONAI-6975",
+      "repo": "Project-MONAI/MONAI",
+      "base_commit": "392c5c1b860c0f0cfd0aa14e9d4b342c8b5ef5e7",
+      "created_at": "2023-09-13T06:37:14Z",
+      "problem_title": "`Lazy=True` ignored when using `Dataset` call",
+      "problem_statement_sha256": "f7cae208ad325d5cee00026395f6476ada6f71c4769b59695e054992851d3716",
+      "trajectory_row": 168,
+      "message_count": 64,
+      "patch_touched_files": [
+        "monai/transforms/transform.py"
+      ],
+      "test_files": [
+        "tests/test_compose.py",
+        "tests/test_dataset.py"
+      ],
+      "join_method": "exact_problem_statement"
+    }
+  ]
+}

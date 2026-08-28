@@ -6,7 +6,7 @@
 |---|---|---|---|---|
 | TencentDB-Agent-Memory 源码 | 当前 P01 集成工作树 | `MemoryProxy/src/session/types.ts`、`tdai/types.ts`、`injection/injectors/*`、`knowledge/core-client.ts`、`skill/core-client.ts` | Session 绑定 Space/Team/Agent/Task；Skill owner 为 Team+Agent；Knowledge 优先 Agent fixed assets；Memory 为 self + 同 Team 最多 2 个 imported Agent | 定义运行时领域模型和 Gold 可见边界 |
 | SWE-Gym | `bb94ed9e39bbeb96a7fcbfb533b80f25a7fd59cb` | https://huggingface.co/datasets/SWE-Gym/SWE-Gym/tree/bb94ed9e39bbeb96a7fcbfb533b80f25a7fd59cb | 2,438 条、11 个 Python repo；含 instance_id/repo/base_commit/problem/patch/test patch；数据卡标 MIT | W01～W03 task registry/base-commit 锚点，不是轨迹 |
-| OpenHands-SFT-Trajectories | `4aaa5a4a4b5861f4799d2336908760c190ac3b17`，split=`train.success.oss` | https://huggingface.co/datasets/SWE-Gym/OpenHands-SFT-Trajectories/tree/4aaa5a4a4b5861f4799d2336908760c190ac3b17 | 491 条成功轨迹，messages 长度约 13～101；数据卡标 MIT；无正式顶层 source_task_id/instance_id/base_commit | W01～W03 L0 操作证据候选；必须先确定性 join SWE-Gym，不能直接充当 L1/L2/Skill/No-tool 成品 |
+| OpenHands-SFT-Trajectories | `4aaa5a4a4b5861f4799d2336908760c190ac3b17`，split=`train.success.oss` | https://huggingface.co/datasets/SWE-Gym/OpenHands-SFT-Trajectories/tree/4aaa5a4a4b5861f4799d2336908760c190ac3b17 | 491 条成功轨迹，messages 长度约 13～101；数据卡标 MIT；无正式顶层 source_task_id/instance_id/base_commit；已用首个 user message 的 `<pr_description>` 与 SWE-Gym 做全局唯一精确匹配：487 命中、4 歧义、0 未命中 | W01～W03 L0 操作证据候选；4 条歧义记录排除，不能直接充当 L1/L2/Skill/No-tool 成品 |
 | OpenHands-Sampled-Trajectories | 当前页面 6,055 rows；README 为空，页面未展示明确 license | https://huggingface.co/datasets/SWE-Gym/OpenHands-Sampled-Trajectories | messages 长度 7～101，包含 resolved 与工具历史 | 许可未确认前不进正式包 |
 | Open-SWE-Traces | v1.0 候选锁 `6c426da40f5478986398531f065ac5b523fa3ec6`，`config=v1.0`，splits=`openhands+sweagent`；当前 main `435fd8f...` 不作冻结引用 | https://huggingface.co/datasets/nvidia/Open-SWE-Traces | CC BY 4.0；冻结 v1.0 实测 84,066 + 67,153 = 151,219 trajectories；字段为 `trajectory` 而非 main 文档的 `messages`；含 repo/license/language/resolved/instance_id/trajectory_id | W04～W10 多语言首选；按固定 parquet hash 重算，排除 `resolved=-1` 和显式 reasoning/think |
 | SWE-rebench-V2 | 不可变 revision 待 D0 解析 | https://huggingface.co/datasets/nebius/SWE-rebench-V2 | Open-SWE-Traces 本体无 `base_commit`；可按 `instance_id` m:1 join 得到 source task 的 repo/base_commit/created_at/license/problem/patch/test | Open-SWE 的必需 source-task/base-commit 补全来源；join 输出也需 hash |
@@ -28,27 +28,29 @@
 | Pilot capability 为 `allowLlmExtract: true` | 运行时可能产生新资产或写回，使后续 Case 与 Variant 不公平 | 正式策略固定 write/extract/reflection/archive 均关闭 |
 | mock bridge 只验证 fixture 合同，不执行完整生产权限路径 | 不能证明真实 Session Init 后模型实际看到的资产集合一致 | D0/D5 分别保留 fixture replay 和 real-chain smoke，记录 visible/injection hashes |
 
-## 仍需在 D0 实测的字段
+## 分阶段仍需实测的字段
 
-- SWE-Gym/OpenHands-SFT 固定数据文件 hash，以及 OpenHands `<pr_description>` 到 SWE-Gym `instance_id/base_commit` 的确定性 join；内容 hash 推断的 source task 只能作候选统计，不能作发布方 ID。
-- W01～W03 六个 repo 在每条 source task base commit 的 LICENSE/NOTICE。
-- Open-SWE-Traces v1.0 固定 parquet 的逐文件 hash，以及 `openhands=84,066`、`sweagent=67,153` 的本地重算结果。
-- SWE-rebench-V2 的不可变 revision 和 `instance_id` join 输出 hash；每个候选 repo 必须同时满足 `unique_tasks>=6` 与 `unique_trajectories>=6`。
-- W04 Go 候选 `open-telemetry/opentelemetry-go-contrib` 及 Node/TS 候选 `elastic/synthetics` / `webpack-contrib/copy-webpack-plugin` 的 `resolved=1` 全量密度；未通过前均为 `PENDING`。
-- ContextBench overlay 是否与目标 repo、commit family、source task 时间边界完全一致。
+- SWE-Gym/OpenHands-SFT 文件和 join 已冻结在 `source-locks/w01-w03/`：SWE-Gym 2,438 行，SHA-256 `60569cea74bb281f7a5579467436a2bc1932c6e0c5f2f7fa0d084392abd9ad97`；OpenHands 491 行，SHA-256 `ea4bf37de020e165c5210bedddeef523d8834a89a35a8c65fec24f76f0eae4f1`；487 条全局唯一精确匹配、4 条歧义排除、0 条未匹配。
+- W01～W03 的 72 个 selected base commit 已生成 `license-manifest.jsonl`：72 条根许可证与 5 条 Dask NumPy 条件许可证均为 HTTP 200、SPDX 可识别，当前无 blocker。
+- D3：Open-SWE-Traces v1.0 固定 parquet 的逐文件 hash，以及 `openhands=84,066`、`sweagent=67,153` 的本地重算结果。
+- D3：SWE-rebench-V2 的不可变 revision 和 `instance_id` join 输出 hash；每个候选 repo 必须同时满足 `unique_tasks>=6` 与 `unique_trajectories>=6`。
+- D3：W04 Go 候选 `open-telemetry/opentelemetry-go-contrib` 及 Node/TS 候选 `elastic/synthetics` / `webpack-contrib/copy-webpack-plugin` 的 `resolved=1` 全量密度；未通过前均为 `PENDING`。
+- 首次使用 ContextBench overlay 时：验证其与目标 repo、commit family、source task 时间边界完全一致。
 - 所有纳入消息的 PII、凭证、绝对路径和未来答案扫描结果。
 
-## W01～W03 候选密度（D0 只读初筛）
+## W01～W03 候选密度（D0 确定性 join 后）
 
-> “推断唯一 task”由轨迹中的 `<pr_description>` 规范化后 hash 得到，不是正式 source ID；完成 SWE-Gym join 前，状态只能是 `CANDIDATE_PASS`。
+> 下表只统计已映射到 SWE-Gym 官方 `instance_id` 的合格 source task；每个 task 只保留最长成功轨迹。正式 Team 还要求 history source tasks 与 current-anchor tasks 完全不重叠。
 
-| Repo | 成功轨迹 | 推断唯一 task | 6 条最长轨迹总可用消息 | 决定 |
-|---|---:|---:|---:|---|
-| `getmoto/moto` | 155 | 71 | 600 | 优先候选，余量大 |
-| `python/mypy` | 46 | 27 | 528 | 优先候选；保留 mypy/typeshed 等附加许可 |
-| `pandas-dev/pandas` | 70 | 61 | 526 | 优先候选；保留 LICENSES 第三方许可 |
-| `dask/dask` | 45 | 29 | 388 | 可用候选；保留 NumPy 相关许可 |
-| `iterative/dvc` | 36 | 24 | 508 | 优先候选 |
-| `pydantic/pydantic` | 11 | 7 | 356 | 仅 reserve；join 或去泄漏失败即替换 |
+| Repo | 唯一官方 task | 其中 messages≥20 | 决定 |
+|---|---:|---:|---|
+| `getmoto/moto` | 69 | 69 | W01 Team A，余量大 |
+| `python/mypy` | 27 | 27 | W01 Team B；复核 mypy/typeshed 附加许可 |
+| `pandas-dev/pandas` | 61 | 60 | W02 Team A；复核 `LICENSES/` 第三方许可 |
+| `dask/dask` | 29 | 28 | W02 Team B；复核 NumPy 相关许可 |
+| `iterative/dvc` | 23 | 23 | W03 Team A |
+| `Project-MONAI/MONAI` | 53 | 50 | W03 Team B；容量足以分离历史与当前锚点 |
+| `conan-io/conan` | 12 | 11 | reserve；余量过小 |
+| `pydantic/pydantic` | 7 | 7 | reserve；不足以可靠分离两类 source task |
 
-数据角色限制：L1 只能从单条 L0 与代码/测试证据抽取；L2 必须由同 repo 的两个以上独立 source task/session 共同支持；Skill 必须由重复、可复验的操作序列提炼；No-tool 必须重新构造并验证当前证据充分。任何一项都不能把上游字段机械改名后直接使用。
+数据角色限制：每个正式 Team 至少锁定 12 个互不重复的 source task，其中 history 至少 6 个、current anchor 至少 6 个；当前问题的 reference patch 不得进入历史。L1 只能从单条 L0 与代码/测试证据抽取；L2 必须由同 repo 的两个以上独立 source task/session 共同支持；Skill 必须由重复、可复验的操作序列提炼；No-tool 必须重新构造并验证当前证据充分。任何一项都不能把上游字段机械改名后直接使用。

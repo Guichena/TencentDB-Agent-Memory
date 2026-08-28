@@ -1,0 +1,4 @@
+[
+  {"trajectory_id": "problem-traj-1", "messages": [{"role": "system", "content": "harness"}, {"role": "user", "content": "<pr_description>Fix the widget.  \r\nKeep this line.   </pr_description>"}, {"role": "assistant", "content": "tool result"}]},
+  {"trajectory_id": "problem-traj-amb", "messages": [{"role": "user", "content": "<pr_description>Repeated issue.</pr_description>"}]}
+]

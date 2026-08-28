@@ -1,0 +1,431 @@
+{
+  "schema_version": "d0-trajectory-density-v1",
+  "join_policy": "official_id_then_unique_exact_problem_statement",
+  "fail_closed": false,
+  "repos": {
+    "getmoto/moto": {
+      "raw": {
+        "successful_matched_trajectories": 152,
+        "unique_source_tasks": 69,
+        "selected_longest_trajectory_per_task": 69,
+        "unique_source_tasks_with_20_messages": 69,
+        "trajectories_with_20_messages": 69,
+        "top_six_message_counts": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "top_six_total_messages": 600
+      },
+      "eligible": {
+        "successful_matched_trajectories": 152,
+        "unique_source_tasks": 69,
+        "selected_longest_trajectory_per_task": 69,
+        "unique_source_tasks_with_20_messages": 69,
+        "trajectories_with_20_messages": 69,
+        "top_six_message_counts": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "top_six_total_messages": 600
+      },
+      "successful_matched_trajectories": 152,
+      "unique_source_tasks": 69,
+      "unique_source_tasks_with_20_messages": 69,
+      "trajectories_with_20_messages": 69,
+      "top_six_message_counts": [
+        100,
+        100,
+        100,
+        100,
+        100,
+        100
+      ],
+      "top_six_total_messages": 600,
+      "gate": {
+        "join_report_fail_closed": false,
+        "at_least_six_source_tasks": true,
+        "at_least_six_trajectories": true,
+        "pass": true
+      }
+    },
+    "python/mypy": {
+      "raw": {
+        "successful_matched_trajectories": 46,
+        "unique_source_tasks": 27,
+        "selected_longest_trajectory_per_task": 27,
+        "unique_source_tasks_with_20_messages": 27,
+        "trajectories_with_20_messages": 27,
+        "top_six_message_counts": [
+          100,
+          100,
+          88,
+          86,
+          84,
+          70
+        ],
+        "top_six_total_messages": 528
+      },
+      "eligible": {
+        "successful_matched_trajectories": 46,
+        "unique_source_tasks": 27,
+        "selected_longest_trajectory_per_task": 27,
+        "unique_source_tasks_with_20_messages": 27,
+        "trajectories_with_20_messages": 27,
+        "top_six_message_counts": [
+          100,
+          100,
+          88,
+          86,
+          84,
+          70
+        ],
+        "top_six_total_messages": 528
+      },
+      "successful_matched_trajectories": 46,
+      "unique_source_tasks": 27,
+      "unique_source_tasks_with_20_messages": 27,
+      "trajectories_with_20_messages": 27,
+      "top_six_message_counts": [
+        100,
+        100,
+        88,
+        86,
+        84,
+        70
+      ],
+      "top_six_total_messages": 528,
+      "gate": {
+        "join_report_fail_closed": false,
+        "at_least_six_source_tasks": true,
+        "at_least_six_trajectories": true,
+        "pass": true
+      }
+    },
+    "pandas-dev/pandas": {
+      "raw": {
+        "successful_matched_trajectories": 70,
+        "unique_source_tasks": 61,
+        "selected_longest_trajectory_per_task": 61,
+        "unique_source_tasks_with_20_messages": 60,
+        "trajectories_with_20_messages": 60,
+        "top_six_message_counts": [
+          100,
+          100,
+          88,
+          86,
+          78,
+          74
+        ],
+        "top_six_total_messages": 526
+      },
+      "eligible": {
+        "successful_matched_trajectories": 70,
+        "unique_source_tasks": 61,
+        "selected_longest_trajectory_per_task": 61,
+        "unique_source_tasks_with_20_messages": 60,
+        "trajectories_with_20_messages": 60,
+        "top_six_message_counts": [
+          100,
+          100,
+          88,
+          86,
+          78,
+          74
+        ],
+        "top_six_total_messages": 526
+      },
+      "successful_matched_trajectories": 70,
+      "unique_source_tasks": 61,
+      "unique_source_tasks_with_20_messages": 60,
+      "trajectories_with_20_messages": 60,
+      "top_six_message_counts": [
+        100,
+        100,
+        88,
+        86,
+        78,
+        74
+      ],
+      "top_six_total_messages": 526,
+      "gate": {
+        "join_report_fail_closed": false,
+        "at_least_six_source_tasks": true,
+        "at_least_six_trajectories": true,
+        "pass": true
+      }
+    },
+    "dask/dask": {
+      "raw": {
+        "successful_matched_trajectories": 45,
+        "unique_source_tasks": 29,
+        "selected_longest_trajectory_per_task": 29,
+        "unique_source_tasks_with_20_messages": 28,
+        "trajectories_with_20_messages": 28,
+        "top_six_message_counts": [
+          100,
+          76,
+          70,
+          54,
+          46,
+          42
+        ],
+        "top_six_total_messages": 388
+      },
+      "eligible": {
+        "successful_matched_trajectories": 45,
+        "unique_source_tasks": 29,
+        "selected_longest_trajectory_per_task": 29,
+        "unique_source_tasks_with_20_messages": 28,
+        "trajectories_with_20_messages": 28,
+        "top_six_message_counts": [
+          100,
+          76,
+          70,
+          54,
+          46,
+          42
+        ],
+        "top_six_total_messages": 388
+      },
+      "successful_matched_trajectories": 45,
+      "unique_source_tasks": 29,
+      "unique_source_tasks_with_20_messages": 28,
+      "trajectories_with_20_messages": 28,
+      "top_six_message_counts": [
+        100,
+        76,
+        70,
+        54,
+        46,
+        42
+      ],
+      "top_six_total_messages": 388,
+      "gate": {
+        "join_report_fail_closed": false,
+        "at_least_six_source_tasks": true,
+        "at_least_six_trajectories": true,
+        "pass": true
+      }
+    },
+    "iterative/dvc": {
+      "raw": {
+        "successful_matched_trajectories": 35,
+        "unique_source_tasks": 23,
+        "selected_longest_trajectory_per_task": 23,
+        "unique_source_tasks_with_20_messages": 23,
+        "trajectories_with_20_messages": 23,
+        "top_six_message_counts": [
+          100,
+          100,
+          100,
+          76,
+          72,
+          60
+        ],
+        "top_six_total_messages": 508
+      },
+      "eligible": {
+        "successful_matched_trajectories": 35,
+        "unique_source_tasks": 23,
+        "selected_longest_trajectory_per_task": 23,
+        "unique_source_tasks_with_20_messages": 23,
+        "trajectories_with_20_messages": 23,
+        "top_six_message_counts": [
+          100,
+          100,
+          100,
+          76,
+          72,
+          60
+        ],
+        "top_six_total_messages": 508
+      },
+      "successful_matched_trajectories": 35,
+      "unique_source_tasks": 23,
+      "unique_source_tasks_with_20_messages": 23,
+      "trajectories_with_20_messages": 23,
+      "top_six_message_counts": [
+        100,
+        100,
+        100,
+        76,
+        72,
+        60
+      ],
+      "top_six_total_messages": 508,
+      "gate": {
+        "join_report_fail_closed": false,
+        "at_least_six_source_tasks": true,
+        "at_least_six_trajectories": true,
+        "pass": true
+      }
+    },
+    "Project-MONAI/MONAI": {
+      "raw": {
+        "successful_matched_trajectories": 95,
+        "unique_source_tasks": 53,
+        "selected_longest_trajectory_per_task": 53,
+        "unique_source_tasks_with_20_messages": 50,
+        "trajectories_with_20_messages": 50,
+        "top_six_message_counts": [
+          74,
+          68,
+          66,
+          64,
+          60,
+          60
+        ],
+        "top_six_total_messages": 392
+      },
+      "eligible": {
+        "successful_matched_trajectories": 95,
+        "unique_source_tasks": 53,
+        "selected_longest_trajectory_per_task": 53,
+        "unique_source_tasks_with_20_messages": 50,
+        "trajectories_with_20_messages": 50,
+        "top_six_message_counts": [
+          74,
+          68,
+          66,
+          64,
+          60,
+          60
+        ],
+        "top_six_total_messages": 392
+      },
+      "successful_matched_trajectories": 95,
+      "unique_source_tasks": 53,
+      "unique_source_tasks_with_20_messages": 50,
+      "trajectories_with_20_messages": 50,
+      "top_six_message_counts": [
+        74,
+        68,
+        66,
+        64,
+        60,
+        60
+      ],
+      "top_six_total_messages": 392,
+      "gate": {
+        "join_report_fail_closed": false,
+        "at_least_six_source_tasks": true,
+        "at_least_six_trajectories": true,
+        "pass": true
+      }
+    },
+    "conan-io/conan": {
+      "raw": {
+        "successful_matched_trajectories": 20,
+        "unique_source_tasks": 12,
+        "selected_longest_trajectory_per_task": 12,
+        "unique_source_tasks_with_20_messages": 11,
+        "trajectories_with_20_messages": 11,
+        "top_six_message_counts": [
+          100,
+          76,
+          64,
+          60,
+          52,
+          40
+        ],
+        "top_six_total_messages": 392
+      },
+      "eligible": {
+        "successful_matched_trajectories": 20,
+        "unique_source_tasks": 12,
+        "selected_longest_trajectory_per_task": 12,
+        "unique_source_tasks_with_20_messages": 11,
+        "trajectories_with_20_messages": 11,
+        "top_six_message_counts": [
+          100,
+          76,
+          64,
+          60,
+          52,
+          40
+        ],
+        "top_six_total_messages": 392
+      },
+      "successful_matched_trajectories": 20,
+      "unique_source_tasks": 12,
+      "unique_source_tasks_with_20_messages": 11,
+      "trajectories_with_20_messages": 11,
+      "top_six_message_counts": [
+        100,
+        76,
+        64,
+        60,
+        52,
+        40
+      ],
+      "top_six_total_messages": 392,
+      "gate": {
+        "join_report_fail_closed": false,
+        "at_least_six_source_tasks": true,
+        "at_least_six_trajectories": true,
+        "pass": true
+      }
+    },
+    "pydantic/pydantic": {
+      "raw": {
+        "successful_matched_trajectories": 11,
+        "unique_source_tasks": 7,
+        "selected_longest_trajectory_per_task": 7,
+        "unique_source_tasks_with_20_messages": 7,
+        "trajectories_with_20_messages": 7,
+        "top_six_message_counts": [
+          100,
+          78,
+          76,
+          52,
+          26,
+          24
+        ],
+        "top_six_total_messages": 356
+      },
+      "eligible": {
+        "successful_matched_trajectories": 11,
+        "unique_source_tasks": 7,
+        "selected_longest_trajectory_per_task": 7,
+        "unique_source_tasks_with_20_messages": 7,
+        "trajectories_with_20_messages": 7,
+        "top_six_message_counts": [
+          100,
+          78,
+          76,
+          52,
+          26,
+          24
+        ],
+        "top_six_total_messages": 356
+      },
+      "successful_matched_trajectories": 11,
+      "unique_source_tasks": 7,
+      "unique_source_tasks_with_20_messages": 7,
+      "trajectories_with_20_messages": 7,
+      "top_six_message_counts": [
+        100,
+        78,
+        76,
+        52,
+        26,
+        24
+      ],
+      "top_six_total_messages": 356,
+      "gate": {
+        "join_report_fail_closed": false,
+        "at_least_six_source_tasks": true,
+        "at_least_six_trajectories": true,
+        "pass": true
+      }
+    }
+  }
+}

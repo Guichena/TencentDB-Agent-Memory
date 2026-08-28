@@ -6,11 +6,11 @@
 
 ## 前置
 
-D2 Gate 全通过；Open-SWE-Traces revision、config/split 和许可合同已由 D0 锁定。
+D2 Gate 全通过；Formal V2、转换与 provenance 合同已由 D0 锁定。Open-SWE-Traces 是本阶段首次实际使用的新来源，因此必须在生成 W04 前完成本阶段 source lock。
 
 ## 执行
 
-1. 只读取 revision `6c426da40f5478986398531f065ac5b523fa3ec6` 的 `config=v1.0`、`openhands+sweagent`；校验 parquet hash 与 84,066/67,153 split 数，适配字段 `trajectory`。
+1. 锁定 Open-SWE-Traces revision `6c426da40f5478986398531f065ac5b523fa3ec6` 的 `config=v1.0`、`openhands+sweagent`；校验 parquet hash 与 84,066/67,153 split 数，适配字段 `trajectory`。
 2. 只在 `resolved=1`、许可为 MIT/Apache-2.0/BSD-2/BSD-3，且可按 `instance_id` m:1 join 冻结 SWE-rebench-V2 base commit 的记录中统计 repo 密度；同时要求独立 task 与独立 trajectory 均不少于 6。
 3. 优先核查 Go 候选 `open-telemetry/opentelemetry-go-contrib`，以及 Node/TS 候选 `elastic/synthetics`、`webpack-contrib/copy-webpack-plugin`；只在全量密度通过后冻结，不按名称直接准入。
 4. 复核行级 SPDX 与每个 pinned repo commit 的 LICENSE/NOTICE；记录 CC BY attribution。

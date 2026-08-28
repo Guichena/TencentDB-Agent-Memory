@@ -1,0 +1,42 @@
+schema_version: "d0-source-lock-v1"
+join_policy: "official_id_then_unique_exact_problem_statement"
+download_policy: "no_implicit_download; URLs require --allow-download"
+datasets:
+  - id: "SWE-Gym/SWE-Gym"
+    url: "https://huggingface.co/datasets/SWE-Gym/SWE-Gym"
+    canonical_locator: "https://huggingface.co/datasets/SWE-Gym/SWE-Gym/resolve/bb94ed9e39bbeb96a7fcbfb533b80f25a7fd59cb/data/train-00000-of-00001.parquet"
+    revision: "bb94ed9e39bbeb96a7fcbfb533b80f25a7fd59cb"
+    license: "MIT"
+    split: "train"
+    local_input: "swe-gym-bb94.parquet"
+    format: "parquet"
+    file_sha256: "60569cea74bb281f7a5579467436a2bc1932c6e0c5f2f7fa0d084392abd9ad97"
+    byte_count: 43644473
+    row_count: 2438
+    fields:
+      - "FAIL_TO_PASS"
+      - "PASS_TO_PASS"
+      - "base_commit"
+      - "created_at"
+      - "hints_text"
+      - "instance_id"
+      - "patch"
+      - "problem_statement"
+      - "repo"
+      - "test_patch"
+      - "version"
+  - id: "SWE-Gym/OpenHands-SFT-Trajectories"
+    url: "https://huggingface.co/datasets/SWE-Gym/OpenHands-SFT-Trajectories"
+    canonical_locator: "https://huggingface.co/datasets/SWE-Gym/OpenHands-SFT-Trajectories/resolve/4aaa5a4a4b5861f4799d2336908760c190ac3b17/data/train.success.oss-00000-of-00001.parquet"
+    revision: "4aaa5a4a4b5861f4799d2336908760c190ac3b17"
+    license: "MIT"
+    split: "train.success.oss"
+    local_input: "openhands-4aaa.parquet"
+    format: "parquet"
+    file_sha256: "ea4bf37de020e165c5210bedddeef523d8834a89a35a8c65fec24f76f0eae4f1"
+    byte_count: 10379409
+    row_count: 491
+    fields:
+      - "messages"
+join_options:
+  exclude_ambiguous: true

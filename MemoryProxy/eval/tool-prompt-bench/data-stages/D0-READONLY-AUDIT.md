@@ -1,7 +1,7 @@
 # D0 只读复核报告
 
 > 日期：2026-08-29
-> 状态：`PARTIAL_PASS`。来源容量和设计方向通过；source-task join、逐 commit 许可、文件 hash 与 Formal V2 schema 尚未完成，因此不得开始正式 W01 生成。
+> 状态：`PASS`。W01～W03 的来源文件、source-task join、72-task source pack、逐 commit 许可、Formal V2、公私隔离、真实可见性、快照与 provenance gate 均已冻结并通过测试，可以从本提交创建 D1 分支开始 W01 draft 转换。
 
 ## 1. 结论
 
@@ -13,26 +13,34 @@
 
 因此，正确路线是“真实来源 + TDAI 专属重编排”，不是复制 benchmark，也不是手写一个看起来像真实团队的故事。
 
-## 2. 已通过的来源容量初筛
+## 2. 已通过的来源与 source-pack Gate
 
 ### SWE-Gym / OpenHands-SFT
 
 - SWE-Gym revision：`bb94ed9e39bbeb96a7fcbfb533b80f25a7fd59cb`。
 - OpenHands-SFT revision：`4aaa5a4a4b5861f4799d2336908760c190ac3b17`，split `train.success.oss`，491 条成功轨迹。
-- 六个候选 repo 均达到“至少 6 条候选 task、至少 20 条可保留消息”的容量下限。
+- 两个文件已冻结：SWE-Gym 2,438 行，SHA-256 `60569cea74bb281f7a5579467436a2bc1932c6e0c5f2f7fa0d084392abd9ad97`；OpenHands-SFT 491 行，SHA-256 `ea4bf37de020e165c5210bedddeef523d8834a89a35a8c65fec24f76f0eae4f1`。
+- 使用全局唯一精确 join：487 条匹配、4 条歧义排除、0 条未匹配；合格记录均取得 SWE-Gym 官方 `instance_id/base_commit`。
+- 六个正式候选 repo 均达到“history/current anchor 各至少 6 个且互不重叠”的容量下限。
 
-| Repo | 成功轨迹 | 推断唯一 task | 6 条最长轨迹总可用消息 | 初筛 |
-|---|---:|---:|---:|---|
-| `getmoto/moto` | 155 | 71 | 600 | 通过 |
-| `python/mypy` | 46 | 27 | 528 | 通过 |
-| `pandas-dev/pandas` | 70 | 61 | 526 | 通过 |
-| `dask/dask` | 45 | 29 | 388 | 通过 |
-| `iterative/dvc` | 36 | 24 | 508 | 通过 |
-| `pydantic/pydantic` | 11 | 7 | 356 | 仅 reserve |
+| Repo | 唯一官方 task | messages≥20 | 决定 |
+|---|---:|---:|---|
+| `getmoto/moto` | 69 | 69 | W01 A |
+| `python/mypy` | 27 | 27 | W01 B |
+| `pandas-dev/pandas` | 61 | 60 | W02 A |
+| `dask/dask` | 29 | 28 | W02 B |
+| `iterative/dvc` | 23 | 23 | W03 A |
+| `Project-MONAI/MONAI` | 53 | 50 | W03 B |
+| `conan-io/conan` | 12 | 11 | reserve |
+| `pydantic/pydantic` | 7 | 7 | reserve |
 
-这里的唯一 task 是由 `<pr_description>` 规范化后 hash 推断，不能替代发布方 ID。正式准入必须先 join SWE-Gym 的 `instance_id/base_commit`。
+正式 Team 至少锁 12 个官方 task，并拆成互斥的 history≥6/current-anchor≥6。公开任务只提供事实和锚点，不能自动成为 MemoryProxy Query、资产或 Gold。
 
-### Open-SWE-Traces v1.0
+六个正式 Team 已各选 12 个 task，共 72 条（36 history + 36 current anchor）。机器 Gate 已验证：预期 Team/repo 映射、6/6 分工、40 位 base commit、64 位 problem hash、messages≥20、Team 内 instance/problem hash/patch path 唯一。选型同时按真实子系统复核，而不是只取最长轨迹；Dask 库存没有 `dask/bag/` task，因此不虚构 Bag 覆盖。
+
+逐 base commit 许可报告覆盖 72 条根许可证和 5 条由所选 `dask/array` 路径触发的 NumPy 条件许可证；77 条均为 HTTP 200、SHA-256 已保存、SPDX 可识别，`fail_closed=false`。许可证正文不写入仓库。
+
+### D3 候选：Open-SWE-Traces v1.0
 
 - 候选冻结 revision：`6c426da40f5478986398531f065ac5b523fa3ec6`，只使用 `config=v1.0`。
 - splits：`openhands=84,066`、`sweagent=67,153`，合计 151,219；正式 lock 以固定 parquet 的本地重算和 hash 为准。
@@ -41,7 +49,7 @@
 - 只准入 `resolved=1` 且 repo license 为 MIT/Apache-2.0/BSD-2-Clause/BSD-3-Clause 的记录；每个 Team 同时要求 `unique_tasks>=6` 和 `unique_trajectories>=6`。
 - 不导入 `reasoning_content`、`think`、reference patch 或 model patch 到 L0/L1/L2/Skill。
 
-W04 当前只保留候选：Go `open-telemetry/opentelemetry-go-contrib`，Node/TS 从 `elastic/synthetics` 与 `webpack-contrib/copy-webpack-plugin` 中按全量成功密度选择。全部为 `PENDING`。
+W04 当前只保留候选：Go `open-telemetry/opentelemetry-go-contrib`，Node/TS 从 `elastic/synthetics` 与 `webpack-contrib/copy-webpack-plugin` 中按全量成功密度选择。全部为 `PENDING`，在 D3 首次使用时锁定，不阻塞 W01～W03 的 D0 Gate。
 
 ## 3. 已确认的源码约束
 
@@ -53,21 +61,23 @@ W04 当前只保留候选：Go `open-telemetry/opentelemetry-go-contrib`，Node/
 - 旧 `compileWorldFixture()` 会暴露全 World 资产，且正式来源不能继续使用硬编码 `project-authored/MIT`。
 - 旧 Pilot 的 `allowLlmExtract: true` 不适合正式公平评测；正式策略必须关闭 write/extract/reflection/archive/write-back。
 
-## 4. D0 未完成项
+## 4. D0 完成证据
 
-| 未完成项 | 为什么阻塞正式 W01 | 完成证据 |
-|---|---|---|
-| OpenHands → SWE-Gym 确定性 join | 目前无法证明每条轨迹的正式 task/base commit | join 规则、成功率、歧义/失败清单与输出 hash |
-| 逐 source task commit 的 LICENSE/NOTICE | 当前 main 许可不能代表历史 commit 和第三方文件 | license manifest 与文件 hash |
-| 数据文件 hash | revision 仍不足以证明下载内容与统计一致 | source-lock、逐文件 SHA-256、row counts |
-| Formal V2 schema | 旧扁平 World 会破坏可见性、公私字段隔离 | schema/types/tests 全通过 |
-| visible-set resolver | 不能让 Team B 或非绑定资产进入 Case | Team/Agent/fixed-asset/imported-memory 权限测试 |
-| snapshot/reset/run record | Variant 或 Case 之间可能受残留状态影响 | 重建 hash 一致、跨 Case 残留测试、run record |
-| Gold/Pair 审计器 | 不能仅凭改写 query 声称唯一或无需工具 | asset ablation、controlled delta、no-tool evidence |
+| Gate | 证据 |
+|---|---|
+| 数据文件与 join | `source-lock.yaml`、`join-report.json`、`trajectory-density.json` |
+| 真实任务选择 | `candidate-inventory.json`、`W01-W03-SOURCE-PACK-SELECTION.md`、`source-pack-selection.json` |
+| 许可 | `license-manifest.jsonl`、`license-report.json`（77 records，0 blocker） |
+| 禁止照抄 | `TRANSFORM-CONTRACT.md` 与 FormalTransform allowlist |
+| 源码实体/可见性 | `formal-schema.ts`、`formal-visibility.ts`、`formal-compile.ts` 及 tests |
+| 公私隔离/快照/防泄漏 | `formal-snapshot.ts`、`formal-provenance.ts` 及 tests |
+| 自动验证 | Formal Vitest 17/17；source-tools unittest 19/19；目标 Formal 模块 strict TypeScript 通过 |
+
+真实 SQLite/KV/cache/workspace reset 需要实际 Case 与服务链路，归入 D5、正式评测前 Gate。Positive 消融、paired Negative 单变量差异和 Gold 唯一性需要 D1/D2 的实际 Case，不能在不生成 Case 的 D0 中伪造“已验证”。
 
 ## 5. 下一步顺序
 
-1. 先完成 source lock、join 和 license manifest；失败轨迹直接剔除，Pydantic 余量不足则替换 repo。
-2. 实现 Formal V2 schema 与 public/private 编译边界。
-3. 实现 identity-aware visible-set、snapshot/reset 和审计测试。
-4. D0 Gate 全通过后，再创建 D1 分支转换 W01；不提前批量生成对话、Memory、Skill 或 Gold。
+1. 提交 D0 来源合同与机器产物，从该提交创建 `codex/task1-data-d1-w01`。
+2. D1 只处理 W01 的 moto/mypy：先转换 history L0 draft，再从证据提炼 L1/L2/Skill/Knowledge draft。
+3. 完成资产和 workspace 复核后才构造 40 个 Case；Gold 不由上游标签自动生成。
+4. W01 的 source、time、pair、asset-ablation、Gold uniqueness 和 snapshot Gate 全通过后，才进入 D2。

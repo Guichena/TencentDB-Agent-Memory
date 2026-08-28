@@ -2,7 +2,7 @@
 
 ## 目标
 
-在不改变 D1 schema/合同的前提下，使用 D0 准入的四个 repo Team（当前候选为 `pandas+dask` 与 `dvc+reserve pydantic`）完成两个 Space，形成 120 条 trajectory-first Dev 数据。Pydantic 只有 7 个推断唯一 task，确定性 join、去泄漏或 Gold 密度任一不足即从同一 SWE-Gym 来源池替换；不降低合同。
+在不改变 D1 schema/合同的前提下，使用 D0 准入的四个 repo Team（`pandas+dask` 与 `dvc+MONAI`）完成两个 Space，形成 120 条 trajectory-first Dev 数据。四个 Team 均须使用互斥的 history/current-anchor source tasks；不能把公开 benchmark 的题目或 reference patch 原样当成 MemoryProxy Case 与 Gold。
 
 ## 前置
 

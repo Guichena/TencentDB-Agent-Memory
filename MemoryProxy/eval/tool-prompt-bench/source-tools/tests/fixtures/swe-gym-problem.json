@@ -1,0 +1,5 @@
+[
+  {"instance_id": "problem-1", "repo": "getmoto/moto", "base_commit": "a111111111111111111111111111111111111111", "problem_statement": "Fix the widget.\nKeep this line."},
+  {"instance_id": "problem-amb-a", "repo": "python/mypy", "base_commit": "b222222222222222222222222222222222222222", "problem_statement": "Repeated issue."},
+  {"instance_id": "problem-amb-b", "repo": "python/mypy", "base_commit": "c333333333333333333333333333333333333333", "problem_statement": "Repeated issue."}
+]
