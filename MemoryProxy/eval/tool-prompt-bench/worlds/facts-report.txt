@@ -1,0 +1,70 @@
+=== W01 MemoryProxy 与 Prompt 优化 ===
+  12       in 5 assets: mem:mem-proxy-v0-baseline, conv:sess-w01-v0-baseline#1, conv:sess-w01-gate-checklist#1, conv:sess-w01-grpo-collapse#1, conv:sess-w01-etl-skew#1
+  8096     in 5 assets: mem:mem-proxy-ports, conv:sess-w01-gate-checklist#1, scene:plans/proxy/benchmark-gate.md, skill:benchmark-campaign-runbook, skillfile:benchmark-campaign-runbook/preflight.md
+  4812     in 4 assets: mem:mem-proxy-v0-baseline, conv:sess-w01-v1-scope#1, conv:sess-w01-v0-baseline#3, conv:sess-w01-token-accounting#3
+  180      in 4 assets: conv:sess-w01-v1-scope#15, conv:sess-w01-smoke-failures#3, conv:sess-w01-memory-guide#1, wiki:wiki-prx01002/compression-history.md
+  127.0    in 3 assets: conv:sess-w01-endpoint-verbatim#3, conv:sess-w01-langfuse#1, skillfile:benchmark-campaign-runbook/preflight.md
+  400      in 3 assets: conv:sess-w01-grpo-collapse#1, conv:sess-w01-grpo-collapse#9, conv:sess-w01-curl-example-merge#5
+  13       in 3 assets: conv:sess-w01-mobile-jank#0, scene:incidents/mobile/flatlist-jank.md, wiki:wiki-trn01005/run-history.md
+  256      in 3 assets: scene:plans/proxy/token-accounting.md, skill:prompt-cache-analysis, skillfile:prompt-cache-analysis/checklist.md
+  13000    in 2 assets: mem:mem-proxy-ports, conv:sess-w01-langfuse#1
+  418      in 2 assets: conv:sess-w01-v1-scope#1, conv:sess-w01-v1-scope#15
+  38       in 2 assets: conv:sess-w01-v1-scope#3, conv:sess-w01-grpo-collapse#1
+  140      in 2 assets: conv:sess-w01-v1-scope#3, conv:sess-w01-curl-example-merge#9
+  630      in 2 assets: conv:sess-w01-v1-scope#9, conv:sess-w01-curl-example-merge#9
+  240      in 2 assets: conv:sess-w01-v1-scope#9, conv:sess-w01-curl-example-merge#9
+  1900     in 2 assets: conv:sess-w01-cache-safety#3, wiki:wiki-prx01002/prefix-stability.md
+  001      in 2 assets: conv:sess-w01-v0-baseline#3, conv:sess-w01-v0-baseline#11
+  11240    in 2 assets: conv:sess-w01-v0-baseline#7, conv:sess-w01-token-accounting#3
+  10       in 2 assets: conv:sess-w01-smoke-failures#10, conv:sess-w01-smoke-failures#11
+  11       in 2 assets: conv:sess-w01-memory-guide#3, wiki:wiki-trn01005/run-history.md
+  300      in 2 assets: conv:sess-w01-grpo-collapse#0, conv:sess-w01-grpo-collapse#1
+  200      in 2 assets: conv:sess-w01-grpo-collapse#1, skillfile:prompt-cache-analysis/diff-procedure.md
+  412      in 2 assets: conv:sess-w01-mobile-jank#1, conv:sess-w01-mobile-jank#7
+  40       in 2 assets: conv:sess-w01-etl-skew#1, conv:sess-w01-etl-skew#9
+  2026     in 2 assets: wiki:wiki-prx01002/compression-history.md, wiki:wiki-trn01005/run-history.md
+  06       in 2 assets: wiki:wiki-prx01002/compression-history.md, wiki:wiki-trn01005/run-history.md
+  (25 numbers shared across assets, 55 appear once)
+
+=== W02 Spring Boot / Jakarta 迁移 ===
+  24       in 6 assets: mem:mem-w02-idempotency-store, conv:sess-w02-rollout-checklist#5, conv:sess-w02-idempotency#3, conv:sess-w02-idempotency#6, conv:sess-w02-idempotency#7, conv:sess-w02-idempotency#13
+  11       in 6 assets: mem:mem-w02-batch-jdk, conv:sess-w02-duplicate-charge#1, conv:sess-w02-batch-freeze#2, conv:sess-w02-batch-freeze#11, conv:sess-w02-batch-jdk#1, wiki:wiki-ord02002/batch-boundary.md
+  17       in 5 assets: mem:mem-w02-batch-jdk, conv:sess-w02-batch-freeze#11, conv:sess-w02-batch-jdk#0, conv:sess-w02-batch-jdk#1, wiki:wiki-ord02002/batch-boundary.md
+  29       in 5 assets: conv:sess-w02-phasing#3, conv:sess-w02-admin-module#0, scene:plans/order-service/module-order.md, wiki:wiki-ord02002/dry-run-history.md, wiki:wiki-inf02005/rollback-history.md
+  14       in 5 assets: conv:sess-w02-idempotency#5, conv:sess-w02-duplicate-charge#1, conv:sess-w02-retry-window#1, wiki:wiki-ord02002/dry-run-history.md, wiki:wiki-inf02005/rollback-history.md
+  48       in 4 assets: mem:mem-w02-soak-window, conv:sess-w02-rollout-checklist#1, conv:sess-w02-rollout-checklist#2, scene:plans/order-service/rollout-checklist.md
+  23       in 4 assets: conv:sess-w02-duplicate-charge#0, conv:sess-w02-duplicate-charge#1, conv:sess-w02-duplicate-charge#11, wiki:wiki-ord02002/dry-run-history.md
+  47       in 3 assets: conv:sess-w02-phasing#3, conv:sess-w02-testcontainers#1, scene:plans/order-service/module-order.md
+  12       in 3 assets: conv:sess-w02-phasing#3, conv:sess-w02-events-module#1, scene:plans/order-service/module-order.md
+  18       in 3 assets: conv:sess-w02-phasing#3, conv:sess-w02-admin-module#1, scene:plans/order-service/module-order.md
+  15       in 3 assets: conv:sess-w02-phasing#3, conv:sess-w02-leaf-first#1, scene:plans/order-service/module-order.md
+  185      in 3 assets: conv:sess-w02-phasing#3, conv:sess-w02-phasing#8, wiki:wiki-ord02002/phase-rationale.md
+  17.9     in 3 assets: conv:sess-w02-chart-pinning#7, scene:incidents/infra/rollback-failure.md, wiki:wiki-inf02005/rollback-history.md
+  17.4     in 3 assets: conv:sess-w02-chart-pinning#7, scene:incidents/infra/rollback-failure.md, wiki:wiki-inf02005/rollback-history.md
+  34       in 2 assets: conv:sess-w02-phasing#3, scene:plans/order-service/module-order.md
+  21       in 2 assets: conv:sess-w02-phasing#3, scene:plans/order-service/module-order.md
+  99.4     in 2 assets: conv:sess-w02-idempotency#5, conv:sess-w02-retry-window#1
+  90       in 2 assets: conv:sess-w02-idempotency#5, conv:sess-w02-retry-window#1
+  17.0     in 2 assets: conv:sess-w02-chart-pinning#5, wiki:wiki-inf02005/chart-pinning.md
+  340      in 2 assets: conv:sess-w02-entity-fetch#1, conv:sess-w02-entity-fetch#7
+  2026     in 2 assets: wiki:wiki-ord02002/dry-run-history.md, wiki:wiki-inf02005/rollback-history.md
+  04       in 2 assets: wiki:wiki-ord02002/dry-run-history.md, wiki:wiki-inf02005/rollback-history.md
+  (22 numbers shared across assets, 8 appear once)
+
+=== W03 React/Three.js 前端性能 ===
+  5000     in 16 assets: mem:mem-w03-dashboard-scale, conv:sess-w03-table-strategy#1, conv:sess-w03-table-strategy#3, conv:sess-w03-table-strategy#5, conv:sess-w03-profiling-setup#5, conv:sess-w03-perf-review#4, conv:sess-w03-virtualization-rollout#9, conv:sess-w03-dashboard-scale#1, conv:sess-w03-sort-location#1, conv:sess-w03-sort-location#3, conv:sess-w03-sort-location#7, conv:sess-w03-a11y-rowcount#9, scene:incidents/console/memo-attempt.md, skillfile:table-virtualization-rollout/sorting.md, wiki:wiki-con03002/table-strategy.md, wiki:wiki-con03002/profiling-policy.md
+  12       in 14 assets: mem:mem-w03-dashboard-scale, conv:sess-w03-table-strategy#1, conv:sess-w03-legend-finding#7, conv:sess-w03-draw-calls#1, conv:sess-w03-draw-calls#7, conv:sess-w03-dashboard-scale#1, conv:sess-w03-dashboard-scale#3, conv:sess-w03-series-p95#0, conv:sess-w03-series-p95#1, scene:incidents/console/legend-rerender.md, skill:legend-scale-memoization, skillfile:legend-scale-memoization/verification.md, wiki:wiki-con03002/table-strategy.md, wiki:wiki-con03002/legend-scale.md
+  30       in 9 assets: conv:sess-w03-table-strategy#9, conv:sess-w03-perf-review#5, conv:sess-w03-cache-stampede#7, conv:sess-w03-cache-stampede#10, conv:sess-w03-a11y-rowcount#0, conv:sess-w03-a11y-rowcount#1, conv:sess-w03-a11y-rowcount#9, wiki:wiki-con03002/table-strategy.md, file:src/cache.ts
+  16       in 7 assets: conv:sess-w03-perf-review#3, conv:sess-w03-perf-review#4, scene:plans/console/perf-review.md, scene:incidents/console/memo-attempt.md, scene:plans/console/interaction-budget.md, skill:playwright-perf-assertions, wiki:wiki-con03002/perf-review.md
+  24       in 5 assets: conv:sess-w03-legend-finding#7, conv:sess-w03-legend-finding#13, scene:incidents/console/legend-rerender.md, skill:legend-scale-memoization, wiki:wiki-con03002/legend-scale.md
+  120      in 5 assets: conv:sess-w03-cache-stampede#7, conv:sess-w03-cache-stampede#10, conv:sess-w03-stale-window#0, conv:sess-w03-stale-window#1, file:src/cache.ts
+  20000    in 4 assets: conv:sess-w03-table-strategy#1, conv:sess-w03-table-strategy#3, conv:sess-w03-table-strategy#5, wiki:wiki-con03002/table-strategy.md
+  36       in 4 assets: conv:sess-w03-virtualization-rollout#6, conv:sess-w03-draw-calls#1, conv:sess-w03-row-height#8, conv:sess-w03-row-height#9
+  2400     in 3 assets: mem:mem-w03-draw-calls, conv:sess-w03-draw-calls#1, scene:incidents/viewer/draw-calls.md
+  310      in 3 assets: mem:mem-w03-draw-calls, conv:sess-w03-draw-calls#13, scene:incidents/viewer/draw-calls.md
+  40       in 2 assets: mem:mem-w03-legend-cost, conv:sess-w03-legend-finding#1
+  60       in 2 assets: conv:sess-w03-table-strategy#9, wiki:wiki-con03002/table-strategy.md
+  10000    in 2 assets: conv:sess-w03-profiling-setup#5, wiki:wiki-con03002/profiling-policy.md
+  58       in 2 assets: conv:sess-w03-draw-calls#13, scene:incidents/viewer/draw-calls.md
+  200      in 2 assets: conv:sess-w03-cache-stampede#1, skillfile:table-virtualization-rollout/thresholds.md
+  (15 numbers shared across assets, 10 appear once)

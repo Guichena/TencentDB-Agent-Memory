@@ -20,6 +20,7 @@
     "eval:tool-prompt:capture-c05": "tsx eval/tool-prompt-bench/capture-profile-artifacts.ts C05",
     "eval:tool-prompt:capture-freeze": "tsx eval/tool-prompt-bench/capture-code-freeze.ts",
     "eval:tool-prompt:validate": "tsx eval/tool-prompt-bench/validate.ts",
+    "eval:tool-prompt:worlds:gate": "tsx eval/tool-prompt-bench/worlds/validate-worlds.ts && tsx eval/tool-prompt-bench/worlds/smoke-worlds.ts && tsx eval/tool-prompt-bench/worlds/audit-worlds.ts && tsx eval/tool-prompt-bench/worlds/audit-completeness.ts && python eval/tool-prompt-bench/worlds/check-quotes.py",
     "eval:tool-prompt:test": "vitest run src/__tests__/tool-prompt-bench.test.ts",
     "eval:tool-prompt:score": "tsx eval/tool-prompt-bench/score.ts",
     "eval:tool-prompt:codex": "tsx eval/tool-prompt-bench/codex-runner.ts"

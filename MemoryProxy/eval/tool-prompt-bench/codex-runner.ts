@@ -14,7 +14,21 @@ import { CASES, FIXTURES } from "./case-definitions.js";
 import { evaluateToolPromptCase } from "./evaluator.js";
 import { renderFixturePrompt } from "./prompt-harness.js";
 import { startToolPromptMockServer } from "./protocol-harness.js";
+import type { EvalFixture, ToolPromptEvalCase } from "./schema.js";
 import { resolveToolPromptVariant } from "./variant-profiles.js";
+import {
+  materializeWorkspace,
+  projectOf,
+  workspacePathFor,
+} from "./worlds/compile.js";
+import {
+  WORLD_CASES,
+  WORLD_FIXTURES,
+  worldOf,
+  type World,
+} from "./worlds/index.js";
+import type { ProjectContext } from "./worlds/world-schema.js";
+import { startWorldMockServer } from "./worlds/worlds-bridge.js";
 
 export interface CodexInvocationInput {
   workspaceDir: string;
@@ -67,6 +81,71 @@ export interface CodexRunOptions {
   dryRun?: boolean;
   reasoningEffort: CodexReasoningEffort;
   verbosity: CodexVerbosity;
+}
+
+export interface ResolvedBenchmarkCase {
+  item: ToolPromptEvalCase;
+  fixture: EvalFixture;
+  world?: World;
+  activeProject?: ProjectContext;
+}
+
+export interface PreparedBenchmarkWorkspace {
+  workspaceDir: string;
+  writtenFiles: string[];
+}
+
+/** Resolve both the frozen one-case fixtures and the shared World pilot cases. */
+export function resolveBenchmarkCase(caseId: string): ResolvedBenchmarkCase {
+  const legacyItem = CASES.find((candidate) => candidate.caseId === caseId);
+  const worldItem = WORLD_CASES.find((candidate) => candidate.caseId === caseId);
+  if (legacyItem && worldItem) throw new Error(`ambiguous caseId ${caseId}`);
+
+  if (worldItem) {
+    const world = worldOf(caseId);
+    const fixture = WORLD_FIXTURES.find((candidate) => candidate.fixtureId === worldItem.fixtureIds[0]);
+    if (!fixture) throw new Error(`${caseId}: missing World fixture ${worldItem.fixtureIds[0]}`);
+    return {
+      item: worldItem,
+      fixture,
+      world,
+      activeProject: projectOf(world, worldItem.activeProject),
+    };
+  }
+
+  if (!legacyItem) throw new Error(`unknown caseId ${caseId}`);
+  const fixture = FIXTURES.find((candidate) => candidate.fixtureId === legacyItem.fixtureIds[0]);
+  if (!fixture) throw new Error(`${caseId}: missing fixture ${legacyItem.fixtureIds[0]}`);
+  return { item: legacyItem, fixture };
+}
+
+/** Create a clean case workspace and materialize only the active World project. */
+export function prepareBenchmarkWorkspace(
+  runDir: string,
+  resolvedCase: ResolvedBenchmarkCase,
+): PreparedBenchmarkWorkspace {
+  if (resolvedCase.world && resolvedCase.activeProject) {
+    const workspaceDir = workspacePathFor(runDir, resolvedCase.activeProject);
+    mkdirSync(workspaceDir, { recursive: true });
+    return {
+      workspaceDir,
+      writtenFiles: materializeWorkspace(resolvedCase.activeProject, workspaceDir),
+    };
+  }
+
+  const workspaceDir = join(runDir, "workspace");
+  mkdirSync(workspaceDir);
+  return { workspaceDir, writtenFiles: [] };
+}
+
+export async function startBenchmarkMockServer(
+  resolvedCase: ResolvedBenchmarkCase,
+  context: { runId: string; sessionId: string },
+) {
+  if (resolvedCase.world) {
+    return startWorldMockServer(resolvedCase.fixture, resolvedCase.world.knowledge, context);
+  }
+  return startToolPromptMockServer(resolvedCase.fixture, context);
 }
 
 export interface CodexPromptAudit {
@@ -368,28 +447,26 @@ function runChild(
 
 export async function runCodexCase(options: CodexRunOptions): Promise<Record<string, unknown>> {
   const resolvedVariant = resolveToolPromptVariant(options.variant);
-  const item = CASES.find((candidate) => candidate.caseId === options.caseId);
-  if (!item) throw new Error(`unknown caseId ${options.caseId}`);
-  const fixture = FIXTURES.find((candidate) => candidate.fixtureId === item.fixtureIds[0]);
-  if (!fixture) throw new Error(`${item.caseId}: missing fixture ${item.fixtureIds[0]}`);
+  const resolvedCase = resolveBenchmarkCase(options.caseId);
+  const { item, fixture, world, activeProject } = resolvedCase;
 
   const outputRoot = resolve(options.outputRoot);
   mkdirSync(outputRoot, { recursive: true });
   const runDir = mkdtempSync(join(outputRoot, `${safeSegment(item.caseId)}-${safeSegment(options.variant)}-r${options.repeat}-`));
-  const workspaceDir = join(runDir, "workspace");
+  const preparedWorkspace = prepareBenchmarkWorkspace(runDir, resolvedCase);
+  const { workspaceDir } = preparedWorkspace;
   const isolatedHome = join(runDir, "isolated-home");
   const codexHome = resolve(options.codexHome ?? process.env.CODEX_HOME ?? join(homedir(), ".codex"));
-  mkdirSync(workspaceDir);
   mkdirSync(isolatedHome);
   mkdirSync(join(isolatedHome, "sqlite"));
   const runId = randomUUID();
   const sessionId = randomUUID();
-  const server = await startToolPromptMockServer(fixture, { runId, sessionId });
+  const server = await startBenchmarkMockServer(resolvedCase, { runId, sessionId });
   try {
     const rendered = await renderFixturePrompt(item, fixture, {
       bridgeBaseUrl: server.baseUrl,
       sessionId,
-      spaceId: "tool-prompt-bench",
+      spaceId: world?.worldId.toLowerCase() ?? "tool-prompt-bench",
       modelId: options.model,
       profile: resolvedVariant.profile,
       skillExtractionEnabled: false,
@@ -451,11 +528,14 @@ export async function runCodexCase(options: CodexRunOptions): Promise<Record<str
       evaluationLayer: MOCK_CONTRACT_RUN_MODE,
       formalMetricEligible: false,
       injectionOwner: "runner-pre-rendered-production-renderers",
-      toolEndpointMode: "isolated-mock-bridge",
+      toolEndpointMode: world ? "isolated-world-mock-bridge" : "isolated-mock-bridge",
       runId,
       sessionId,
       caseId: item.caseId,
       fixtureId: fixture.fixtureId,
+      worldId: world?.worldId ?? null,
+      activeProject: activeProject?.projectId ?? null,
+      workspaceFiles: preparedWorkspace.writtenFiles,
       variant: resolvedVariant.variant,
       toolPromptProfile: rendered.toolPromptProfile,
       capabilitySignature: rendered.capabilitySignature,
