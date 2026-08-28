@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "stage": "C05",
+  "sourceCommit": "3962bf45953eff692540a495f5bfe35592f446e5",
+  "compilerVersion": "c05.1",
+  "generatedAt": "2026-08-28T11:38:03+08:00",
+  "rows": [
+    {
+      "id": "full-readonly",
+      "capabilitySignature": "memory=1;skill=1;knowledge=1;wiki=1;code_graph=1;skill_write=0;skill_extract=0",
+      "activeFamilies": [
+        "memory",
+        "skill",
+        "knowledge"
+      ],
+      "injectionBytes": 8887,
+      "injectionTokensO200k": 2285,
+      "injectionSha256": "ba9d754ff0f80f148d85f4c6a4e07b018b34c46dc76704a974f958a7d4bbbe40",
+      "toolIds": [
+        "skill_search",
+        "skill_view",
+        "skill_view_by_id",
+        "skill_files_read",
+        "skill_files_download",
+        "knowledge_tools_list",
+        "knowledge_tools_call",
+        "tdai_memory_search",
+        "tdai_atomic_query",
+        "tdai_conversation_search",
+        "tdai_conversation_query",
+        "tdai_scenario_ls",
+        "tdai_read_scene"
+      ],
+      "knowledgeResourceTypes": [
+        "wiki",
+        "code-graph"
+      ]
+    },
+    {
+      "id": "full-write-extract",
+      "capabilitySignature": "memory=1;skill=1;knowledge=1;wiki=1;code_graph=1;skill_write=1;skill_extract=1",
+      "activeFamilies": [
+        "memory",
+        "skill",
+        "knowledge"
+      ],
+      "injectionBytes": 10631,
+      "injectionTokensO200k": 2765,
+      "injectionSha256": "8bcf57220757cd0fd0bf0389b620fd5255cf5de83d59ada2b449b88c49b2d562",
+      "toolIds": [
+        "skill_search",
+        "skill_view",
+        "skill_view_by_id",
+        "skill_files_read",
+        "skill_files_download",
+        "skill_extract",
+        "skill_create",
+        "skill_update",
+        "skill_patch",
+        "skill_delete",
+        "skill_files_write",
+        "skill_files_remove",
+        "knowledge_tools_list",
+        "knowledge_tools_call",
+        "tdai_memory_search",
+        "tdai_atomic_query",
+        "tdai_conversation_search",
+        "tdai_conversation_query",
+        "tdai_scenario_ls",
+        "tdai_read_scene"
+      ],
+      "knowledgeResourceTypes": [
+        "wiki",
+        "code-graph"
+      ]
+    },
+    {
+      "id": "memory-only",
+      "capabilitySignature": "memory=1;skill=0;knowledge=0;wiki=0;code_graph=0;skill_write=0;skill_extract=0",
+      "activeFamilies": [
+        "memory"
+      ],
+      "injectionBytes": 4466,
+      "injectionTokensO200k": 1146,
+      "injectionSha256": "a9c6cf9187bf397f6809b5993b067a0e47e368773267233c1beb90c96cab8889",
+      "toolIds": [
+        "tdai_memory_search",
+        "tdai_atomic_query",
+        "tdai_conversation_search",
+        "tdai_conversation_query",
+        "tdai_scenario_ls",
+        "tdai_read_scene"
+      ],
+      "knowledgeResourceTypes": []
+    },
+    {
+      "id": "skill-readonly",
+      "capabilitySignature": "memory=0;skill=1;knowledge=0;wiki=0;code_graph=0;skill_write=0;skill_extract=0",
+      "activeFamilies": [
+        "skill"
+      ],
+      "injectionBytes": 4081,
+      "injectionTokensO200k": 997,
+      "injectionSha256": "9bb39463dc9a963b00168af6f8a5116f1833cefd665038625ca8c66203c7c1b5",
+      "toolIds": [
+        "skill_search",
+        "skill_view",
+        "skill_view_by_id",
+        "skill_files_read",
+        "skill_files_download"
+      ],
+      "knowledgeResourceTypes": []
+    },
+    {
+      "id": "skill-write",
+      "capabilitySignature": "memory=0;skill=1;knowledge=0;wiki=0;code_graph=0;skill_write=1;skill_extract=0",
+      "activeFamilies": [
+        "skill"
+      ],
+      "injectionBytes": 5492,
+      "injectionTokensO200k": 1400,
+      "injectionSha256": "3ef0eee330da30e8f03a0f4e9ca914a9bedceb9ed96ce2d1da86ab58a493b050",
+      "toolIds": [
+        "skill_search",
+        "skill_view",
+        "skill_view_by_id",
+        "skill_files_read",
+        "skill_files_download",
+        "skill_create",
+        "skill_update",
+        "skill_patch",
+        "skill_delete",
+        "skill_files_write",
+        "skill_files_remove"
+      ],
+      "knowledgeResourceTypes": []
+    },
+    {
+      "id": "skill-extract",
+      "capabilitySignature": "memory=0;skill=1;knowledge=0;wiki=0;code_graph=0;skill_write=0;skill_extract=1",
+      "activeFamilies": [
+        "skill"
+      ],
+      "injectionBytes": 4441,
+      "injectionTokensO200k": 1080,
+      "injectionSha256": "3c083a20667c0ddf9947a9671a14c08beab88925f2a8a3ab1d83f52593804178",
+      "toolIds": [
+        "skill_search",
+        "skill_view",
+        "skill_view_by_id",
+        "skill_files_read",
+        "skill_files_download",
+        "skill_extract"
+      ],
+      "knowledgeResourceTypes": []
+    },
+    {
+      "id": "wiki-only",
+      "capabilitySignature": "memory=0;skill=0;knowledge=1;wiki=1;code_graph=0;skill_write=0;skill_extract=0",
+      "activeFamilies": [
+        "knowledge"
+      ],
+      "injectionBytes": 3067,
+      "injectionTokensO200k": 772,
+      "injectionSha256": "abd8962d73c712e57bdb437d96f1fa7a5533b6405b17dce205a052f668720c46",
+      "toolIds": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "knowledgeResourceTypes": [
+        "wiki"
+      ]
+    },
+    {
+      "id": "code-graph-only",
+      "capabilitySignature": "memory=0;skill=0;knowledge=1;wiki=0;code_graph=1;skill_write=0;skill_extract=0",
+      "activeFamilies": [
+        "knowledge"
+      ],
+      "injectionBytes": 3156,
+      "injectionTokensO200k": 799,
+      "injectionSha256": "b1371bff7a96e2753669be16c64a55cf3a133e53dff5e8d9924410c9042b6da2",
+      "toolIds": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "knowledgeResourceTypes": [
+        "code-graph"
+      ]
+    },
+    {
+      "id": "skill-and-wiki",
+      "capabilitySignature": "memory=0;skill=1;knowledge=1;wiki=1;code_graph=0;skill_write=0;skill_extract=0",
+      "activeFamilies": [
+        "skill",
+        "knowledge"
+      ],
+      "injectionBytes": 5686,
+      "injectionTokensO200k": 1421,
+      "injectionSha256": "12d50a11cc2558304cb33ec853e6954a7e9357a1225835138ed68e0acf7b2956",
+      "toolIds": [
+        "skill_search",
+        "skill_view",
+        "skill_view_by_id",
+        "skill_files_read",
+        "skill_files_download",
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "knowledgeResourceTypes": [
+        "wiki"
+      ]
+    }
+  ]
+}

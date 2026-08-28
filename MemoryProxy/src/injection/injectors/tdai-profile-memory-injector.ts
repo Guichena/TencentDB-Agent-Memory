@@ -1,4 +1,4 @@
-import type { AgentContext, AnchorTarget, CacheStrategy, ContextBlock, InjectionHook, HookPriority, PrewarmInput } from "../types.js";
+import type { AgentContext, AnchorTarget, AssetCapabilityFlags, CacheStrategy, ContextBlock, InjectionHook, HookPriority, PrewarmInput } from "../types.js";
 import { HOOK_PRIORITY } from "../types.js";
 import { TdaiClient } from "../../tdai/client.js";
 import type { TdaiMemoryConfig } from "../../tdai/types.js";
@@ -7,6 +7,7 @@ import type { CoreSkillConfig } from "../../types.js";
 import { getMetadataClient } from "../../meta/client.js";
 import { resolveFixedAssetCtxs, type FixedAssetCtx } from "./tdai-fixed-asset.js";
 import { compileToolPrompt } from "../tool-prompt/compiler.js";
+import { resolveSessionCapabilitySignature } from "../tool-prompt/capability-pruned.js";
 import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
 import type { ToolPromptProfile } from "../tool-prompt/types.js";
 
@@ -91,6 +92,12 @@ export class TdaiProfileMemoryInjector implements InjectionHook {
     // 对每个 agent 独立拉 L3 + L2 索引（不读 L2 全文）
     const groups = await Promise.all(ctxs.map((c) => loadAgentProfile(client, c)));
 
+    const assetCapabilities = ctx.metadata.custom?.assetCapabilities as
+      | AssetCapabilityFlags
+      | undefined;
+    const capabilitySignature = this.toolPromptProfile === "capability-pruned"
+      ? resolveSessionCapabilitySignature(this.capabilitySignature, assetCapabilities)
+      : this.capabilitySignature;
     const guide = this.toolPromptProfile === "legacy"
       ? MEMORY_TOOLS_GUIDE
       : compileToolPrompt({
@@ -102,15 +109,22 @@ export class TdaiProfileMemoryInjector implements InjectionHook {
             kind: "policy",
             content: MEMORY_TOOLS_GUIDE,
           }],
-          capabilitySignature: this.capabilitySignature,
+          capabilitySignature,
         }).content;
-    return [renderTdaiProfileMemoryBlock(groups.map((group) => ({
+    const block = renderTdaiProfileMemoryBlock(groups.map((group) => ({
       agentName: group.ctx.agentName,
       agentId: group.ctx.agentId,
       isSelf: group.ctx.isSelf,
       l3Content: group.l3?.content,
       l2Entries: group.l2Entries,
-    })), guide)];
+    })), guide);
+    if (this.toolPromptProfile === "capability-pruned") {
+      block.metadata = {
+        ...block.metadata,
+        cacheKey: `tdai-profile-memory-injector:${capabilitySignature}`,
+      };
+    }
+    return [block];
   }
 }
 
@@ -187,7 +201,10 @@ function createPrewarmAgentContext(input: PrewarmInput): AgentContext {
       modelId: "prewarm",
       stream: false,
       agentSource: "session-init",
-      custom: { session: input.sessionInfo },
+      custom: {
+        session: input.sessionInfo,
+        assetCapabilities: input.assetCapabilities,
+      },
     },
   };
 }

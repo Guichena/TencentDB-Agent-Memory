@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "stage": "C05",
+  "sourceCommit": "3962bf45953eff692540a495f5bfe35592f446e5",
+  "compilerVersion": "c05.1",
+  "generatedAt": "2026-08-28T11:38:03+08:00",
+  "parentProfile": "selection-calibrated",
+  "currentProfile": "capability-pruned",
+  "capabilitySignature": "memory=1;skill=1;knowledge=1;wiki=1;code_graph=1;skill_write=0;skill_extract=0",
+  "firstChangedByte": 1714,
+  "stablePrefixBytes": 1714,
+  "totalInjection": {
+    "parentSha256": "80d6f7f3e2289649d62280fa87a41372938eab35c2f0f27095261c9af045bc03",
+    "currentSha256": "625dba5f8a74df608c3fcabd92b9cc9aea191e4c1d14c89df70d28767587f607",
+    "characterDelta": -292,
+    "byteDelta": -368,
+    "tokenDeltaO200k": -84
+  },
+  "effectiveSystem": {
+    "parentSha256": "420680e1be50559bc9a3e416029d98001ec987087ec7fa8b59c0f3b5ba70fdf2",
+    "currentSha256": "ce4fe51c20b815e0288c3b54bcd355b9003f93f48539479f3d1a06d2bb762e70",
+    "characterDelta": -292,
+    "byteDelta": -368,
+    "tokenDeltaO200k": -84
+  },
+  "blocks": [
+    {
+      "blockId": "skill_tools",
+      "changed": true,
+      "dynamicAssetUnchanged": true,
+      "parentSha256": "a3b6f3ed03a45afd604ecff4b6e0aeadb78e62d410a364f28aacf02b3954bf10",
+      "currentSha256": "daa134c99dba061b772d56721da59885a64c0ac38d8a8adc6b1487992925727c",
+      "characterDelta": -247,
+      "byteDelta": -323,
+      "tokenDeltaO200k": -76
+    },
+    {
+      "blockId": "available_skills",
+      "changed": false,
+      "dynamicAssetUnchanged": true,
+      "parentSha256": "e098e9968c2d6aa03524923fb71d530363b4c7d69c6646401ecdb338fa751d94",
+      "currentSha256": "e098e9968c2d6aa03524923fb71d530363b4c7d69c6646401ecdb338fa751d94",
+      "characterDelta": 0,
+      "byteDelta": 0,
+      "tokenDeltaO200k": 0
+    },
+    {
+      "blockId": "knowledge_tools",
+      "changed": false,
+      "dynamicAssetUnchanged": true,
+      "parentSha256": "4904592e61b31c85b4fd8baf0e13d74306baa337da71db531a833e35907461ec",
+      "currentSha256": "4904592e61b31c85b4fd8baf0e13d74306baa337da71db531a833e35907461ec",
+      "characterDelta": 0,
+      "byteDelta": 0,
+      "tokenDeltaO200k": 0
+    },
+    {
+      "blockId": "tdai_memory_tools",
+      "changed": true,
+      "dynamicAssetUnchanged": true,
+      "parentSha256": "5f5fdd80cd6106d187f840464490f088900dbd3684464b20e2f1551762d2370d",
+      "currentSha256": "cc865cc42507b45ce64f8bd9f17b714e5cbc0a4d55a7c0f8efb0765fd6945be8",
+      "characterDelta": -45,
+      "byteDelta": -45,
+      "tokenDeltaO200k": -8
+    },
+    {
+      "blockId": "tdai_profile_memory",
+      "changed": false,
+      "dynamicAssetUnchanged": true,
+      "parentSha256": "3330b79dd199bad69b065ecb0c32dbaca14107259c309336347c7a68b1d862c6",
+      "currentSha256": "3330b79dd199bad69b065ecb0c32dbaca14107259c309336347c7a68b1d862c6",
+      "characterDelta": 0,
+      "byteDelta": 0,
+      "tokenDeltaO200k": 0
+    }
+  ],
+  "pruningIds": [
+    "capability.family-intersection",
+    "capability.skill-write",
+    "capability.skill-extract",
+    "capability.knowledge-subtype",
+    "capability.stable-signature"
+  ]
+}

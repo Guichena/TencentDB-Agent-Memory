@@ -23,9 +23,11 @@ import type {
 } from "../../src/injection/types.js";
 import {
   buildCapabilitySignature,
+  CAPABILITY_PRUNING_INVENTORY,
   compileToolPrompt,
   CONTRACT_CORRECTIONS,
   lintDuplicateSemanticUnits,
+  lintCapabilityPrunedSurface,
   lintSelectionPolicy,
   PROTOCOL_COMPACTION_INVENTORY,
   SELECTION_POLICY_INVENTORY,
@@ -34,6 +36,7 @@ import {
   TOOL_PROMPT_PROFILES,
   type CompiledToolPromptProfile,
   type ToolPromptFamily,
+  type ToolPromptCapabilityState,
   type ToolPromptProfile,
   type ToolPromptSurface,
 } from "../../src/injection/tool-prompt/index.js";
@@ -129,6 +132,23 @@ const KNOWLEDGE: KnowledgeItem[] = [{
   created_at: "2026-08-28T00:00:00.000Z",
   updated_at: "2026-08-28T00:00:00.000Z",
 }];
+
+const CAPABILITY_MATRIX_KNOWLEDGE: KnowledgeItem[] = [
+  ...KNOWLEDGE,
+  {
+    knowledge_id: "code-graph-c05",
+    type: "code-graph",
+    service_url: "http://127.0.0.1:8421/v3",
+    name: "Task 1 source graph",
+    summary: "Indexed MemoryProxy source",
+    team_id: CANONICAL.teamId,
+    user_id: CANONICAL.userId,
+    repo_url: "https://github.com/TencentDB/TencentDB-Agent-Memory.git",
+    branch: "main",
+    created_at: "2026-08-28T00:00:00.000Z",
+    updated_at: "2026-08-28T00:00:00.000Z",
+  },
+];
 
 interface BlockArtifactInput {
   blockId: string;
@@ -690,6 +710,203 @@ function writeC04DiffArtifacts(sourceCommit: string, generatedAt: string): void 
   );
 }
 
+function writeC05DiffArtifacts(sourceCommit: string, generatedAt: string): void {
+  if (STAGE !== "C05") return;
+  const parent = readManifest("selection-calibrated");
+  const current = readManifest("capability-pruned");
+  if (parent.totalInjectionSha256 === current.totalInjectionSha256) {
+    throw new Error("C05 capability-pruned output unexpectedly equals selection-calibrated");
+  }
+  if (current.totalInjectionTokens >= parent.totalInjectionTokens) {
+    throw new Error("C05 full-readonly capability projection does not reduce injection tokens");
+  }
+
+  const parentBlocks = new Map(parent.blocks.map((block) => [block.blockId, block]));
+  const blockDeltas = current.blocks.map((block) => {
+    const parentBlock = parentBlocks.get(block.blockId);
+    if (!parentBlock) throw new Error(`selection-calibrated artifact lacks block ${block.blockId}`);
+    if (block.dynamicAssetSha256 !== parentBlock.dynamicAssetSha256) {
+      throw new Error(`${block.blockId} dynamic asset bytes changed during canonical C05 capture`);
+    }
+    return {
+      blockId: block.blockId,
+      changed: block.promptSha256 !== parentBlock.promptSha256,
+      dynamicAssetUnchanged: true,
+      parentSha256: parentBlock.promptSha256,
+      currentSha256: block.promptSha256,
+      characterDelta: block.characters - parentBlock.characters,
+      byteDelta: block.bytes - parentBlock.bytes,
+      tokenDeltaO200k: block.tokensO200k - parentBlock.tokensO200k,
+    };
+  });
+  const diff = {
+    schemaVersion: 1,
+    stage: STAGE,
+    sourceCommit,
+    compilerVersion: TOOL_PROMPT_COMPILER_VERSION,
+    generatedAt,
+    parentProfile: "selection-calibrated",
+    currentProfile: "capability-pruned",
+    capabilitySignature: CAPABILITY_SIGNATURE,
+    firstChangedByte: current.firstChangedByteFromParent,
+    stablePrefixBytes: current.stablePrefixBytes,
+    totalInjection: {
+      parentSha256: parent.totalInjectionSha256,
+      currentSha256: current.totalInjectionSha256,
+      characterDelta: current.totalInjectionCharacters - parent.totalInjectionCharacters,
+      byteDelta: current.totalInjectionBytes - parent.totalInjectionBytes,
+      tokenDeltaO200k: current.totalInjectionTokens - parent.totalInjectionTokens,
+    },
+    effectiveSystem: {
+      parentSha256: parent.effectiveSystemSha256,
+      currentSha256: current.effectiveSystemSha256,
+      characterDelta: current.effectiveSystemCharacters - parent.effectiveSystemCharacters,
+      byteDelta: current.effectiveSystemBytes - parent.effectiveSystemBytes,
+      tokenDeltaO200k: current.effectiveSystemTokens - parent.effectiveSystemTokens,
+    },
+    blocks: blockDeltas,
+    pruningIds: CAPABILITY_PRUNING_INVENTORY.map((item) => item.id),
+  };
+  const inventory = {
+    schemaVersion: 1,
+    stage: STAGE,
+    sourceCommit,
+    compilerVersion: TOOL_PROMPT_COMPILER_VERSION,
+    generatedAt,
+    transformations: CAPABILITY_PRUNING_INVENTORY,
+  };
+  writeFileSync(resolve(OUTPUT_ROOT, "v2-to-v3-diff.json"), `${JSON.stringify(diff, null, 2)}\n`, "utf8");
+  writeFileSync(
+    resolve(OUTPUT_ROOT, "capability-pruning.json"),
+    `${JSON.stringify(inventory, null, 2)}\n`,
+    "utf8",
+  );
+  writeC05CapabilityMatrix(sourceCommit, generatedAt);
+}
+
+function writeC05CapabilityMatrix(sourceCommit: string, generatedAt: string): void {
+  const rows: Array<{ id: string; state: ToolPromptCapabilityState }> = [
+    { id: "full-readonly", state: { memory: true, skill: true, knowledge: true, wiki: true, codeGraph: true, skillWrite: false, skillExtract: false } },
+    { id: "full-write-extract", state: { memory: true, skill: true, knowledge: true, wiki: true, codeGraph: true, skillWrite: true, skillExtract: true } },
+    { id: "memory-only", state: { memory: true, skill: false, knowledge: false, wiki: false, codeGraph: false, skillWrite: false, skillExtract: false } },
+    { id: "skill-readonly", state: { memory: false, skill: true, knowledge: false, wiki: false, codeGraph: false, skillWrite: false, skillExtract: false } },
+    { id: "skill-write", state: { memory: false, skill: true, knowledge: false, wiki: false, codeGraph: false, skillWrite: true, skillExtract: false } },
+    { id: "skill-extract", state: { memory: false, skill: true, knowledge: false, wiki: false, codeGraph: false, skillWrite: false, skillExtract: true } },
+    { id: "wiki-only", state: { memory: false, skill: false, knowledge: true, wiki: true, codeGraph: false, skillWrite: false, skillExtract: false } },
+    { id: "code-graph-only", state: { memory: false, skill: false, knowledge: true, wiki: false, codeGraph: true, skillWrite: false, skillExtract: false } },
+    { id: "skill-and-wiki", state: { memory: false, skill: true, knowledge: true, wiki: true, codeGraph: false, skillWrite: false, skillExtract: false } },
+  ];
+  const listing = [
+    "<available_skills>",
+    "- task1-review: Review proxy prompt contracts and evidence",
+    "- typescript-tests: Run deterministic TypeScript contract tests",
+    "</available_skills>",
+  ].join("\n");
+  const legacyKnowledge = renderKnowledgeToolsBlock(
+    CAPABILITY_MATRIX_KNOWLEDGE,
+    CANONICAL.spaceId,
+    {
+      sessionKey: CANONICAL.sessionId,
+      userId: CANONICAL.userId,
+      teamId: CANONICAL.teamId,
+      agentId: CANONICAL.agentId,
+      agentSource: CANONICAL.agentSource,
+      spaceId: CANONICAL.spaceId,
+    },
+  );
+  if (!legacyKnowledge) throw new Error("C05 capability matrix knowledge fixture is empty");
+
+  const matrixRows = rows.map(({ id, state }) => {
+    const signature = buildCapabilitySignature(state);
+    const bundle: Partial<Record<ToolPromptSurface, string>> = {};
+    const orderedBlocks: string[] = [];
+    const compile = (
+      family: ToolPromptFamily,
+      surface: ToolPromptSurface,
+      legacyContent: string,
+    ): string => compileToolPrompt({
+      profile: "capability-pruned",
+      family,
+      surface,
+      legacyUnits: [{ id: `${id}.${surface}`, kind: "legacy-body", content: legacyContent }],
+      capabilitySignature: signature,
+    }).content;
+
+    if (state.skill) {
+      const skillTools = compile(
+        "skill",
+        "skill-tools",
+        renderSkillToolsBlock(
+          CANONICAL.proxyOrigin,
+          state.skillWrite,
+          CANONICAL.sessionId,
+          CANONICAL.spaceId,
+        ),
+      );
+      const skillListing = wrapAvailableSkillsBlock(listing, "capability-pruned", signature);
+      bundle["skill-tools"] = skillTools;
+      bundle["skill-listing"] = skillListing;
+      orderedBlocks.push(skillTools, skillListing);
+    }
+    if (state.knowledge) {
+      const knowledge = compile("knowledge", "knowledge-tools", legacyKnowledge);
+      bundle["knowledge-tools"] = knowledge;
+      orderedBlocks.push(knowledge);
+    }
+    if (state.memory) {
+      const memoryTools = compile(
+        "memory",
+        "memory-tools",
+        renderTdaiMemoryToolsBlock(
+          CANONICAL.proxyOrigin,
+          CANONICAL.sessionId,
+          CANONICAL.spaceId,
+        ),
+      );
+      const memoryGuide = compile("memory", "memory-guide", MEMORY_TOOLS_GUIDE);
+      const profileMemory = renderTdaiProfileMemoryBlock([{
+        agentName: "task1-agent",
+        agentId: CANONICAL.agentId,
+        isSelf: true,
+        l3Content: "Prefers evidence-backed prompt changes.",
+        l2Entries: [{ path: "task1/compiler.md", summary: "Compiler implementation decisions" }],
+      }], memoryGuide).content;
+      bundle["memory-tools"] = memoryTools;
+      bundle["memory-guide"] = memoryGuide;
+      orderedBlocks.push(memoryTools, profileMemory);
+    }
+    lintCapabilityPrunedSurface(bundle, signature);
+    const injection = orderedBlocks.join("\n");
+    return {
+      id,
+      capabilitySignature: signature,
+      activeFamilies: [
+        ...(state.memory ? ["memory"] : []),
+        ...(state.skill ? ["skill"] : []),
+        ...(state.knowledge ? ["knowledge"] : []),
+      ],
+      injectionBytes: Buffer.byteLength(injection, "utf8"),
+      injectionTokensO200k: tokens(injection),
+      injectionSha256: sha256(injection),
+      toolIds: [...injection.matchAll(/<tool name="([^"]+)">/g)].map((match) => match[1]),
+      knowledgeResourceTypes: [...injection.matchAll(/<knowledge type="([^"]+)"/g)]
+        .map((match) => match[1]),
+    };
+  });
+  writeFileSync(
+    resolve(OUTPUT_ROOT, "capability-matrix.json"),
+    `${JSON.stringify({
+      schemaVersion: 1,
+      stage: STAGE,
+      sourceCommit,
+      compilerVersion: TOOL_PROMPT_COMPILER_VERSION,
+      generatedAt,
+      rows: matrixRows,
+    }, null, 2)}\n`,
+    "utf8",
+  );
+}
+
 async function renderProfile(
   profile: ToolPromptProfile,
 ): Promise<{ injection: string; providerSystem: string; blocks: BlockArtifactInput[] }> {
@@ -745,8 +962,17 @@ async function renderProfile(
       "knowledge-tools": knowledgeTools,
     });
   }
-  if (["selection-calibrated", "capability-pruned"].includes(profile)) {
+  if (profile === "selection-calibrated") {
     lintSelectionPolicy({
+      "memory-tools": memoryTools,
+      "memory-guide": memoryGuide,
+      "skill-tools": skillTools,
+      "skill-listing": skillListing,
+      "knowledge-tools": knowledgeTools,
+    }, CAPABILITY_SIGNATURE);
+  }
+  if (profile === "capability-pruned") {
+    lintCapabilityPrunedSurface({
       "memory-tools": memoryTools,
       "memory-guide": memoryGuide,
       "skill-tools": skillTools,
@@ -879,6 +1105,7 @@ async function main(): Promise<void> {
   writeC02DiffArtifacts(sourceCommit, generatedAt);
   writeC03DiffArtifacts(sourceCommit, generatedAt);
   writeC04DiffArtifacts(sourceCommit, generatedAt);
+  writeC05DiffArtifacts(sourceCommit, generatedAt);
   encoding.free();
   console.log(`captured ${STAGE} prompt artifacts in ${OUTPUT_ROOT}`);
 }

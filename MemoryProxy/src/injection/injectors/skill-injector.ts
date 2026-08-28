@@ -23,6 +23,7 @@
 import type {
   AgentContext,
   AnchorTarget,
+  AssetCapabilityFlags,
   CacheStrategy,
   ContextBlock,
   HookPriority,
@@ -37,6 +38,7 @@ import {
 } from "../../skill/core-client.js";
 import type { CoreSkillConfig } from "../../types.js";
 import { compileToolPrompt } from "../tool-prompt/compiler.js";
+import { resolveSessionCapabilitySignature } from "../tool-prompt/capability-pruned.js";
 import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
 import type { ToolPromptProfile } from "../tool-prompt/types.js";
 
@@ -227,7 +229,7 @@ export class SkillInjector implements InjectionHook {
    */
   async execute(ctx: AgentContext): Promise<ContextBlock[]> {
     const custom = ctx.metadata.custom as Record<string, unknown> | undefined;
-    const caps = custom?.assetCapabilities as { skill?: boolean } | undefined;
+    const caps = custom?.assetCapabilities as AssetCapabilityFlags | undefined;
     if (caps?.skill === false) return [];
     const session = custom?.session as {
       team_id?: string;
@@ -241,6 +243,7 @@ export class SkillInjector implements InjectionHook {
       space_id: session?.space_id,
       query: undefined,
       trigger: "execute",
+      assetCapabilities: caps,
     });
   }
 
@@ -262,6 +265,7 @@ export class SkillInjector implements InjectionHook {
       space_id: ids?.space_id,
       query,
       trigger: "prewarm",
+      assetCapabilities: input.assetCapabilities,
     });
   }
 
@@ -284,8 +288,9 @@ export class SkillInjector implements InjectionHook {
     space_id?: string;
     query: string | undefined;
     trigger: "prewarm" | "execute";
+    assetCapabilities?: AssetCapabilityFlags;
   }): Promise<ContextBlock[]> {
-    const { team_id, agent_id, space_id, query, trigger } = args;
+    const { team_id, agent_id, space_id, query, trigger, assetCapabilities } = args;
     if (!team_id || !agent_id) {
       console.log(
         `${TAG} ${trigger}: missing session identity (team_id/agent_id) — skipping listing`,
@@ -326,10 +331,15 @@ export class SkillInjector implements InjectionHook {
     const listing = result.listing;
     if (!listing || listing.includes("(none)")) return [];
 
+    const profile = this.config.toolPromptProfile ?? "legacy";
+    const baseSignature = this.config.capabilitySignature ?? "unconfigured";
+    const capabilitySignature = profile === "capability-pruned"
+      ? resolveSessionCapabilitySignature(baseSignature, assetCapabilities)
+      : baseSignature;
     const content = wrapAvailableSkillsBlock(
       listing,
-      this.config.toolPromptProfile ?? "legacy",
-      this.config.capabilitySignature ?? "unconfigured",
+      profile,
+      capabilitySignature,
     );
     return [{
       type: "text",
@@ -340,7 +350,8 @@ export class SkillInjector implements InjectionHook {
         mode: result.mode,
         // Shared cache key across prewarm + execute so pipeline self-heal
         // writes replace, not fragment, the prewarmed entry.
-        cacheKey: "skill-injector:catalog",
+        cacheKey: "skill-injector:catalog"
+          + (profile === "capability-pruned" ? `:${capabilitySignature}` : ""),
       },
     }];
   }

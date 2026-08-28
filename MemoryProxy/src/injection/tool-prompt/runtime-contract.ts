@@ -364,3 +364,57 @@ export function buildCapabilitySignature(state: ToolPromptCapabilityState): stri
     `skill_extract=${Number(state.skillExtract)}`,
   ].join(";");
 }
+
+export function parseCapabilitySignature(
+  signature: string,
+): ToolPromptCapabilityState {
+  const fields = new Map(
+    signature.split(";").map((part) => {
+      const separator = part.indexOf("=");
+      if (separator <= 0) return [part, ""] as const;
+      return [part.slice(0, separator), part.slice(separator + 1)] as const;
+    }),
+  );
+  const read = (key: string): boolean => {
+    const value = fields.get(key);
+    if (value !== "0" && value !== "1") {
+      throw new Error(
+        `invalid capability signature ${JSON.stringify(signature)}: missing ${key}=0|1`,
+      );
+    }
+    return value === "1";
+  };
+  return {
+    memory: read("memory"),
+    skill: read("skill"),
+    knowledge: read("knowledge"),
+    wiki: read("wiki"),
+    codeGraph: read("code_graph"),
+    skillWrite: read("skill_write"),
+    skillExtract: read("skill_extract"),
+  };
+}
+
+/** Intersect process-level capability facts with one Session's access flags. */
+export function constrainCapabilitySignature(
+  signature: string,
+  allowed: Partial<ToolPromptCapabilityState>,
+): string {
+  const base = parseCapabilitySignature(signature);
+  const memory = base.memory && allowed.memory !== false;
+  const skill = base.skill && allowed.skill !== false;
+  const wiki = base.wiki && allowed.wiki !== false;
+  const codeGraph = base.codeGraph && allowed.codeGraph !== false;
+  const knowledge = base.knowledge
+    && allowed.knowledge !== false
+    && (wiki || codeGraph);
+  return buildCapabilitySignature({
+    memory,
+    skill,
+    knowledge,
+    wiki: knowledge && wiki,
+    codeGraph: knowledge && codeGraph,
+    skillWrite: skill && base.skillWrite && allowed.skillWrite !== false,
+    skillExtract: skill && base.skillExtract && allowed.skillExtract !== false,
+  });
+}

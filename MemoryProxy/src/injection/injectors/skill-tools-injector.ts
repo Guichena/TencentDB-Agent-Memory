@@ -30,6 +30,7 @@
 import type {
   AgentContext,
   AnchorTarget,
+  AssetCapabilityFlags,
   CacheStrategy,
   ContextBlock,
   HookPriority,
@@ -38,6 +39,7 @@ import type {
 } from "../types.js";
 import { HOOK_PRIORITY } from "../types.js";
 import { compileToolPrompt } from "../tool-prompt/compiler.js";
+import { resolveSessionCapabilitySignature } from "../tool-prompt/capability-pruned.js";
 import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
 import type { ToolPromptProfile } from "../tool-prompt/types.js";
 
@@ -215,17 +217,27 @@ export class SkillToolsInjector implements InjectionHook {
   }
 
   async execute(ctx: AgentContext): Promise<ContextBlock[]> {
-    const caps = ctx.metadata.custom?.assetCapabilities as { skill?: boolean } | undefined;
+    const caps = ctx.metadata.custom?.assetCapabilities as AssetCapabilityFlags | undefined;
     if (caps?.skill === false) return [];
-    return this.renderBlocks(ctx);
+    return this.renderBlocks(ctx, undefined, undefined, caps);
   }
 
   async prewarm(input: PrewarmInput): Promise<ContextBlock[]> {
     if (input.assetCapabilities?.skill === false) return [];
-    return this.renderBlocks(undefined, input.sessionInfo.session_id, input.sessionInfo.space_id);
+    return this.renderBlocks(
+      undefined,
+      input.sessionInfo.session_id,
+      input.sessionInfo.space_id,
+      input.assetCapabilities,
+    );
   }
 
-  private renderBlocks(ctx?: AgentContext, prewarmSessionId?: string, prewarmSpaceId?: string): ContextBlock[] {
+  private renderBlocks(
+    ctx?: AgentContext,
+    prewarmSessionId?: string,
+    prewarmSpaceId?: string,
+    assetCapabilities?: AssetCapabilityFlags,
+  ): ContextBlock[] {
     const allowLlmWrite = this.config.allowLlmWrite ?? false;
 
     let sessionId = prewarmSessionId;
@@ -244,6 +256,10 @@ export class SkillToolsInjector implements InjectionHook {
     }
 
     const profile = this.config.toolPromptProfile ?? "legacy";
+    const baseSignature = this.config.capabilitySignature ?? "unconfigured";
+    const capabilitySignature = profile === "capability-pruned"
+      ? resolveSessionCapabilitySignature(baseSignature, assetCapabilities)
+      : baseSignature;
     const legacyContent = renderSkillToolsBlock(this.config.proxyBaseUrl, allowLlmWrite, sessionId, spaceId);
     const content = profile === "legacy"
       ? legacyContent
@@ -256,7 +272,7 @@ export class SkillToolsInjector implements InjectionHook {
             kind: "legacy-body",
             content: legacyContent,
           }],
-          capabilitySignature: this.config.capabilitySignature ?? "unconfigured",
+          capabilitySignature,
         }).content;
     return [{
       type: "text",
@@ -264,7 +280,8 @@ export class SkillToolsInjector implements InjectionHook {
       metadata: {
         source: this.id,
         // Stable cache-dedup key — varies by allowLlmWrite to avoid stale cache
-        cacheKey: `skill-tools-injector:catalog:${allowLlmWrite ? "rw" : "ro"}`,
+        cacheKey: `skill-tools-injector:catalog:${allowLlmWrite ? "rw" : "ro"}`
+          + (profile === "capability-pruned" ? `:${capabilitySignature}` : ""),
       },
     }];
   }

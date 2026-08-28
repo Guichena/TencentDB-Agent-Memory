@@ -18,6 +18,13 @@ export interface SelectionCalibrationInput {
 
 export type SelectionSurfaceBundle = Partial<Record<ToolPromptSurface, string>>;
 
+export interface SelectionGateCapabilityDetail {
+  wiki: boolean;
+  codeGraph: boolean;
+  skillWrite: boolean;
+  skillExtract: boolean;
+}
+
 export const SELECTION_POLICY_INVENTORY = [
   {
     id: "selection.tool-no-tool-gate",
@@ -170,13 +177,34 @@ export function lintSelectionPolicy(
   }
 }
 
-function renderSelectionGate(activeFamilies: readonly ToolPromptFamily[]): string {
+export function renderSelectionGate(
+  activeFamilies: readonly ToolPromptFamily[],
+  detail?: SelectionGateCapabilityDetail,
+): string {
+  const familyRows = activeFamilies.map((family) => {
+    if (!detail || family === "memory") return FAMILY_GATE[family];
+    if (family === "skill") {
+      const action = detail.skillWrite && detail.skillExtract
+        ? ", or a supported skill lifecycle/write action"
+        : detail.skillWrite
+          ? ", or a supported skill write action"
+          : detail.skillExtract
+            ? ", or a supported skill extract action"
+            : "";
+      return `- skill: missing reusable workflow instructions clearly matched by a listed/team skill${action}; keyword overlap or availability alone is insufficient.`;
+    }
+    if (detail.wiki && detail.codeGraph) return FAMILY_GATE.knowledge;
+    if (detail.wiki) {
+      return "- knowledge: a matching wiki resource is needed for design rationale or historical decisions.";
+    }
+    return "- knowledge: a matching code-graph resource is needed for cross-file structure or impact; reject mismatched repository indexes and use local source for exact/current code.";
+  });
   return [
     "## Tool / no-tool gate",
     "Call an injected tool only when required information is missing from current context and supplied by an enabled persistent asset, or when a supported asset lifecycle/write action matches a tool card.",
     "Do not call for pure or self-contained coding, general knowledge, current-context answers, or exact/current local-source work.",
     "Choose the needed family before choosing a tool:",
-    ...activeFamilies.map((family) => FAMILY_GATE[family]),
+    ...familyRows,
     "Choose the narrowest card by `when`; obey `avoid` and `contrast`. Use multiple families only when each supplies distinct missing information.",
   ].join("\n");
 }

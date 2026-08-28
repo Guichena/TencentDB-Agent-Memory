@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { applyCapabilityPruning } from "./capability-pruned.js";
 import { applyContractCorrections } from "./contract-corrections.js";
 import { applyProtocolCompaction } from "./protocol-compact.js";
 import { applySelectionCalibration } from "./selection-calibrated.js";
@@ -16,7 +17,7 @@ import type {
   ToolPromptSpec,
 } from "./types.js";
 
-export const TOOL_PROMPT_COMPILER_VERSION = "c04.1";
+export const TOOL_PROMPT_COMPILER_VERSION = "c05.1";
 
 const SPECS_BY_FAMILY: Record<ToolPromptFamily, readonly ToolPromptSpec[]> = {
   memory: MEMORY_TOOL_PROMPT_SPECS,
@@ -66,8 +67,9 @@ function validateCatalog(
  * corrections. C02 then compiles shared protocol grammar and contract-derived
  * paths without changing decision semantics. C03 assigns each repeated
  * behaviour rule one stable owner. C04 then compiles a neutral global gate and
- * contract-backed when/avoid/contrast cards. Later profiles inherit the latest
- * completed renderer until their own stage implements a new transformation.
+ * contract-backed when/avoid/contrast cards. C05 deterministically intersects
+ * those surfaces with Session Init capability facts. Later profiles inherit
+ * the latest completed renderer until their own stage implements a new change.
  */
 export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPrompt {
   const definition = getToolPromptProfileDefinition(input.profile);
@@ -103,6 +105,7 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
   const protocolUnits = definition.renderer === "protocol-compact"
     || definition.renderer === "semantic-compact"
     || definition.renderer === "selection-calibrated"
+    || definition.renderer === "capability-pruned"
     ? applyProtocolCompaction({
         family: input.family,
         surface: input.surface,
@@ -113,9 +116,11 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
     : correctedUnits;
   const semanticUnits = definition.renderer === "semantic-compact"
     || definition.renderer === "selection-calibrated"
+    || definition.renderer === "capability-pruned"
     ? applySemanticCompaction(input.surface, protocolUnits)
     : protocolUnits;
-  const units = definition.renderer === "selection-calibrated"
+  const selectionUnits = definition.renderer === "selection-calibrated"
+    || definition.renderer === "capability-pruned"
     ? applySelectionCalibration({
         family: input.family,
         surface: input.surface,
@@ -125,6 +130,16 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
         units: semanticUnits,
       })
     : semanticUnits;
+  const capabilityResult = definition.renderer === "capability-pruned"
+    ? applyCapabilityPruning({
+        family: input.family,
+        surface: input.surface,
+        capabilitySignature: input.capabilitySignature,
+        contracts,
+        units: selectionUnits,
+      })
+    : null;
+  const units = capabilityResult?.units ?? selectionUnits;
   const content = units.map((unit) => unit.content).join("");
   if (content.length === 0) {
     throw new Error(`cannot compile empty ${input.surface} prompt content`);
@@ -140,7 +155,12 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
     content,
     contentSha256: createHash("sha256").update(content).digest("hex"),
     units,
-    contractIds: contracts.map((contract) => contract.id),
-    specIds: specs.map((spec) => spec.id),
+    contractIds: capabilityResult?.visibleContractIds
+      ?? contracts.map((contract) => contract.id),
+    specIds: capabilityResult
+      ? specs
+          .filter((spec) => capabilityResult.visibleContractIds.includes(spec.contractId))
+          .map((spec) => spec.id)
+      : specs.map((spec) => spec.id),
   };
 }
