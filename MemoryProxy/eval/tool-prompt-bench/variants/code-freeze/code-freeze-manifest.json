@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "stage": "C06",
-  "sourceCommit": "99fd4da8e8e16f876c967c2d53afaf4da9b4b155",
-  "generatedAt": "2026-08-28T12:11:21+08:00",
+  "sourceCommit": "d935e88a5e53eba3eb3b8aa74316ec5b4d064b73",
+  "generatedAt": "2026-08-28T12:22:04+08:00",
   "baselineCommit": "5299c00aaf65481703c180fd69df066d11254eb7",
   "defaultProductionProfile": "legacy",
   "canonicalCapabilitySignature": "memory=1;skill=1;knowledge=1;wiki=1;code_graph=1;skill_write=0;skill_extract=0",
