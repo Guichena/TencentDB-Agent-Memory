@@ -105,7 +105,7 @@ World 资产写入真实本地数据栈
 | Wiki 与 Code Graph | 开启 |
 | LLM 直接写入 | 关闭 |
 | 自动资产抽取与归档写回 | 关闭 |
-| 主实验重复 | Dev 单次，入围复核和 Test 三次 |
+| 主实验重复 | Dev 单次；入围候选三次；Test 240 条单次全量 + 预登记 80 条平衡子集三次稳定性复核 |
 
 Primary Campaign 只用 Luna。若时间和预算允许，可在最终候选冻结后增加第二模型复核，结果单独成表，不能与 Luna 汇总成一个比例。
 
@@ -124,21 +124,21 @@ Capability Fixture 在 V0、V0-C、V1 和 V2 中保持不变。V3 只根据生�
 | `case-definitions.ts` 生成的冻结数据 | Dev 60，Test 40 | Schema、Parser、Scorer 和 Mock 合同回归 |
 | `worlds/` 中的种子数据 | 3 个 World，48 条 case | 共享世界结构、资产密度和 loader 的 Pilot |
 
-旧 100 条 case 大多是一题一个小 fixture，上下文、同类干扰资产和本地工作区不足，不能作为最终 V0 与 Final 的唯一证据。现有 3 个 World 已经被开发过程查看和修改，其中原标记为 test 的 World 也不能继续当 Sealed Test。正式切分时，W01 至 W03 全部归入 Pilot 或 Dev。
+旧 100 条 case 大多是一题一个小 fixture，上下文、同类干扰资产和本地工作区不足，不能作为最终 V0 与 Final 的唯一证据。现有 3 个手写 World 已经被开发过程查看和修改，其中原标记为 test 的 World 也不能继续当 Sealed Test；它们统一保留为 synthetic contract smoke，不占用正式 World 编号。正式 W01 至 W10 按 `DATASET-BASE-AND-WORLD-REBUILD.md` 从可追溯的软件工程任务和 Agent 轨迹重建。
 
 ### World 与源码实体的映射
 
-一个 World 对应一个 Space。每个 Space 包含两个 Team，每个 Team 放十个真实编程 Task，共二十条 case。每条 case 在 Session Init 中选择一个 Team、一个中性 Agent 和一个 Task。
+一个 World 对应一个 Space。每个 Space 包含两个 Team，每个 Team 放 6 至 10 个真实编程 Task，并围绕这些 Task 构造二十条 case；因此每个 World 共四十条 case。每条 case 在 Session Init 中选择一个 Team、一个中性 Agent 和一个 Task。
 
 ```text
 World = Space
 ├─ Team A
 │  ├─ General Software Engineering Agent
-│  ├─ 10 个 Task
+│  ├─ 6～10 个 Task / 20 条 Case
 │  └─ 多个项目主题的 Memory、Skill、Knowledge
 └─ Team B
    ├─ General Software Engineering Agent
-   ├─ 10 个 Task
+   ├─ 6～10 个 Task / 20 条 Case
    └─ 多个项目主题的 Memory、Skill、Knowledge
 ```
 
@@ -148,23 +148,25 @@ Session 绑定 Team 后，另一个 Team 的资产不会被该 Session 看到，
 
 ### 规模与切分
 
-正式目标是 10 个 Space，共 200 条 case。切分单位是完整 Space，不能把同一 Space 的 case 分到 Dev 和 Test。
+正式目标是 10 个 Space，共 400 条 case。切分单位是完整 Space，不能把同一 Space 的 case 分到 Dev 和 Test。
 
 | Split | Space | Memory | Skill | Knowledge | No Tool | 合计 |
 |---|---:|---:|---:|---:|---:|---:|
-| Dev | 6 | 30 | 30 | 18 | 42 | 120 |
-| Test | 4 | 20 | 20 | 12 | 28 | 80 |
-| 合计 | 10 | 50 | 50 | 30 | 70 | 200 |
+| Dev | 4 | 24 | 24 | 24 | 88 | 160 |
+| Test | 6 | 36 | 36 | 36 | 132 | 240 |
+| 合计 | 10 | 60 | 60 | 60 | 220 | 400 |
 
-每个 Space 固定 20 条，类别分布为 Memory 5、Skill 5、Knowledge 3、No Tool 7。Smoke 从 6 个 Dev Space 中各选 2 条，共 12 条，不增加重复 case。
+每个 Team 固定 20 条：Memory、Skill、Knowledge Positive 各 3 条，9 条与 Positive 一一配对的 No-tool Negative，以及 2 条自然 Coding Negative。每个 Space 因此为三类 Positive 各 6 条、18 条 paired negative 和 4 条 natural negative。Smoke 从 4 个 Dev Space 中各选 5 条，共 20 条，不增加重复 case。
 
 建议的编号和使用顺序如下：
 
-- W01 至 W03：现有 Pilot，修订后进入 Dev。
-- W04 至 W06：新增 Dev World。
-- W07 至 W10：新增 Sealed Test World，只做结构、资产和 Gold 合同验证，不用模型结果调 Prompt。
+- W01 至 W03：使用 SWE-Gym 真实任务和明确许可的成功 Agent 轨迹重建，进入 Dev。
+- W04：使用冻结的多语言 Open-SWE-Traces 子集重建，进入 Dev，使 Prompt 调整阶段不只看到 Python。
+- W05 至 W10：新增 Sealed Test World，只做结构、来源、资产和 Gold 合同验证，不用模型结果调 Prompt。
 
-Dev 与 Test 之间不得复用可识别的 Skill 名、Memory id、session id、L2 路径、Knowledge id、仓库 slug 或原样 Query。题型模板可以一致，具体语义和资产必须独立。
+Dev 与 Test 之间不得复用 repo/fork family、source task、trajectory、patch hash、Skill body family、Wiki source、CodeGraph commit、Memory/session id、L2 路径、Knowledge id 或近重复 Query。题型模板可以一致，具体语义和资产必须独立。
+
+数据基座、许可门禁、轨迹转换、W01 至 W03 候选和逐阶段数据 Gate 以 `DATASET-BASE-AND-WORLD-REBUILD.md` 为准。
 
 ### 每个 Team 的资产密度
 
@@ -504,10 +506,10 @@ Gate：任何人只看冻结清单和一条 case，都能判断哪些内容是�
 - 把 Attempt、Malformed Attempt、真实 Entry Call 和 Infrastructure Error 分开。
 - 把历史上下文作为真实 Responses 消息发送，把活动项目文件写入临时工作区。
 - 保留 Mock Bridge 的 100 case 回归和完整 Gold 序列 smoke。
-- 完成 W01 至 W03 Pilot，随后补齐 W04 至 W06 Dev。
-- 创建 W07 至 W10 Test，做结构与合同验证后封存。
+- 完成正式 W01 至 W03，再补齐多语言 W04，形成 160 条 Dev。
+- 创建 W05 至 W10 Test，做结构、来源与合同验证后封存 240 条。
 
-Gate：十个 World 都能完成无模型 dry run、Session Init、生产 Prompt 捕获和合同重放。数据与真实资产快照冻结，运行前后资产 hash 不变。模型驱动的 12 条 Smoke 留到 P04，不在数据准备阶段执行。
+Gate：十个 World 都能完成无模型 dry run、Session Init、生产 Prompt 捕获和合同重放。数据与真实资产快照冻结，运行前后资产 hash 不变。模型驱动的 20 条 Smoke 留到 P04，不在数据准备阶段执行。
 
 阶段产物：World manifest、snapshot manifest、真实链路 runner、无模型 dry-run manifest 和合同 trace。
 
@@ -554,8 +556,8 @@ Gate：每个 Variant 只有声明的改造类型发生变化，静态 Prompt di
 工作内容：
 
 - 只在 P01 数据 Gate 与 P03 代码 Gate 都通过后建立实验集成分支。
-- 先用 V0 完成 12 条真实链路 Smoke，确认 Session Init、生产 InjectionPipeline、真实入口观测和本地产物完整。
-- 依次完成 V0 对 V0-C、V0-C 对 V1a、V1a 对 V1、V1 对 V2、V2 对 V3 的 120 条 Dev 配对比较。
+- 先用 V0 完成 20 条真实链路 Smoke，确认 Session Init、生产 InjectionPipeline、真实入口观测和本地产物完整。
+- 依次完成 V0 对 V0-C、V0-C 对 V1a、V1a 对 V1、V1 对 V2、V2 对 V3 的 160 条 Dev 配对比较。
 - 每一组完成并做出阶段决定后才运行下一组，同组两个 Variant 按 case 交错。
 - 对 V0-C、V1 和 V2 交错运行固定的 Baseline Sentinel，观察时间漂移。
 - 先应用行为 Gate，再比较 FCR、Static Tool Tokens 和改动范围。
@@ -566,7 +568,7 @@ Gate：每个 Variant 只有声明的改造类型发生变化，静态 Prompt di
 
 优秀目标：Pure Coding FCR 为 0，整体 FCR 下降，Conditional Tool@1 不下降，静态工具 Token 至少减少 25%。25% 是目标，不应为了达到数字删除必要触发信息。
 
-阶段产物：12 条 Smoke 报告、各相邻版本配对结果、Pareto 表、候选选择记录和 Final freeze manifest。
+阶段产物：20 条 Smoke 报告、各相邻版本配对结果、Pareto 表、候选选择记录和 Final freeze manifest。
 
 ### P05：Sealed Test、Cache 和真实链路复核
 
@@ -575,7 +577,7 @@ Gate：每个 Variant 只有声明的改造类型发生变化，静态 Prompt di
 工作内容：
 
 - 只运行 V0、V0-C 和 Final，不再修改 Prompt 或 Gold。
-- 在 80 条 Test 上每个 Variant 运行三次，按 case 和 repeat 交错。
+- 在 240 条 Test 上运行 V0、V0-C 和 Final 的单次全量；再对预登记的 80 条 Family/语言/难度平衡子集运行到三次，单次全量主表与重复稳定性表分开报告，按 case 和 repeat 交错。
 - 保存完整 Token、Hash、稳定前缀和 Provider usage。
 - 在每个 Family 选少量 case 做完整真实链路 smoke，结果单独报告。
 - 若预算允许，增加第二模型的平衡子集复核，不与 Luna 合并。
@@ -645,11 +647,11 @@ Campaign 至少保存 `campaign-manifest.json`、`scores.jsonl`、`summary.json`
 
 满足以下条件后才采集 V0 正式基线：
 
-- W01 至 W06 共 120 条 Dev case 完成结构、唯一性、干扰项和合同验证。
-- W07 至 W10 共 80 条 Test case 已冻结，未参与 Prompt 调整。
+- W01 至 W04 共 160 条 Dev case 完成来源、结构、唯一性、干扰项和合同验证。
+- W05 至 W10 共 240 条 Test case 已冻结，未参与 Prompt 调整。
 - 真实本地 MemoryCore、Skill 和 MemoryKnowledge 可以从同一快照恢复。
 - 自动写回和抽取已关闭，或每个 Variant 前能恢复同一快照。
-- 12 条 Smoke 全部经过正常 Session Init 和生产 InjectionPipeline。
+- 20 条 Smoke 全部经过正常 Session Init 和生产 InjectionPipeline。
 - runner 没有预渲染正式 Prompt，真实入口观测能区分 Attempt、Malformed 和 Entry Call。
 - 工作区文件和历史消息通过真实 Codex 输入加载。
 - Luna、`high`、`medium`、CLI 版本、官方上游和 MemoryProxy commit 被完整记录。
