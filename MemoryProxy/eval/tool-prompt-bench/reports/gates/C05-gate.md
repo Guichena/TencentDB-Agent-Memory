@@ -6,7 +6,7 @@
 - verified implementation commit: `3962bf45953eff692540a495f5bfe35592f446e5`
 - verified artifact commit: `50e3e22`
 - verified test-head commit: `bceacf680235619b5ed675e6f7e3163777d1228a`
-- merge commit: `PENDING`
+- merge commit: `e3bbfcf0391b1e21a3f86c7692ea21e7f1ff2a99`
 - scope: 在冻结 V2 上只按现有生产能力事实完成 V3 Capability/Lifecycle 确定性裁剪；不含 Query/Gold/历史驱动的动态 Prompt、Bridge 权限或 endpoint 变更、注入位置调整、数据集改造和模型评测
 - checked at: `2026-08-28 Asia/Shanghai`
 
@@ -115,3 +115,15 @@ V3 Provider-visible system SHA-256 为 `ce4fe51c20b815e0288c3b54bcd355b9003f93f4
 ## 决策
 
 C05 通过。V3 只按生产已有能力事实删除不可执行暴露面，未改变工具执行合同、动态资产内容、注入位置或权限。允许以非 squash merge 合回 `codex/task1-code-integration`；集成主线复跑通过并补记 merge commit 后，才能创建 `codex/task1-code-c06-freeze`。
+
+## 集成主线复跑
+
+C05 已通过 merge commit `e3bbfcf0391b1e21a3f86c7692ea21e7f1ff2a99` 以非 squash 方式合入 `codex/task1-code-integration`。合并后复跑：
+
+- `npm test`：50/50 通过。
+- `npm run eval:tool-prompt:validate`：100 case / 100 fixture 通过。
+- `npm run eval:tool-prompt:capture-c05`：成功且工作树无变化；产物 `sourceCommit` 仍精确指向实现提交 `3962bf45953eff692540a495f5bfe35592f446e5`，V0 至 V2 冻结祖先再次通过。
+- `npx tsc --noEmit --pretty false`：仍为 54 条既有诊断，标准化指纹仍为 `ecf5cfe9c8c0d40163fb87f5622dee3cbb688a47aa649db245e2b27e1c50f65c`，阶段相关新增诊断为 0。
+- `git diff --check`：通过。
+
+集成 Gate 通过，允许从包含本记录更新的最新集成提交创建 `codex/task1-code-c06-freeze`。
