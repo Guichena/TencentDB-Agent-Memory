@@ -5,6 +5,8 @@ import { CASES, FIXTURES } from "./case-definitions.js";
 import { evaluateToolPromptCase, type TdaiAttempt, type ToolPromptEvaluation } from "./evaluator.js";
 
 export interface TraceRecord {
+  evaluationLayer?: string;
+  formalMetricEligible?: boolean;
   caseId: string;
   runId: string;
   attempts: TdaiAttempt[];
@@ -12,6 +14,8 @@ export interface TraceRecord {
 }
 
 export interface ScoredRecord extends ToolPromptEvaluation {
+  evaluationLayer: string;
+  formalMetricEligible: boolean;
   runId: string;
   split: "dev" | "test";
   goldFamily: "memory" | "skill" | "knowledge" | null;
@@ -98,6 +102,8 @@ export function scoreTraceRecords(traces: TraceRecord[]): ScoredRecord[] {
       : evaluateToolPromptCase(item, fixture, trace.attempts);
     return {
       ...evaluation,
+      evaluationLayer: trace.evaluationLayer ?? "unspecified",
+      formalMetricEligible: trace.formalMetricEligible === true,
       runId: trace.runId,
       split: item.split,
       goldFamily: item.gold.family,
@@ -122,6 +128,8 @@ if (isMain) {
     const scored = scoreTraceRecords(readJsonl<TraceRecord>(resolve(tracePath)));
     writeJsonl(resolve(outputPath), scored);
     const summary = {
+      evaluationLayers: [...new Set(scored.map((record) => record.evaluationLayer))],
+      formalMetricEligible: scored.length > 0 && scored.every((record) => record.formalMetricEligible),
       overall: aggregateScores(scored),
       dev: aggregateScores(scored.filter((record) => record.split === "dev")),
       test: aggregateScores(scored.filter((record) => record.split === "test")),

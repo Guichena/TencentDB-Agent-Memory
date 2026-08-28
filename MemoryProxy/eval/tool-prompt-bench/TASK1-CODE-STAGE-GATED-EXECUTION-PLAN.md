@@ -6,10 +6,10 @@
 | 任务 | Proxy 系统提示词注入优化 |
 | 本会话范围 | 只做代码改造，不构造数据，不运行模型评测 |
 | 方法依据 | V6.1、当前源码和已冻结实验口径 |
-| 当前 worktree | P01 Harness worktree |
-| 当前分支 | `codex/task1-p01-benchmark-harness` |
-| P01 审计起点 | `0762564469dd4be07742d6486c56a043aec45beb` |
-| 当前上游 | `mine/codex/task1-p01-benchmark-harness` |
+| 当前 worktree | `D:\projects\TencentDB-Agent-Memory-task1-code` |
+| 当前分支 | `codex/task1-c07-eval-correctness` |
+| C07 审计起点 | `d0996809ed63f6cfc67504ad180db0d48ac70475`（`task1-code-freeze`） |
+| 当前上游 | 尚未推送 |
 | 生产源码基线 | `5299c00aaf65481703c180fd69df066d11254eb7` |
 | 基线上游 | `origin/feat/server_team` |
 
@@ -28,6 +28,7 @@
 | 调用后选对 Memory、Skill 或 Knowledge 工具 | C04 Family Gate、when/avoid/contrast | Conditional Tool@1 与家族选择正确率 |
 | 尽量减少注入 Token | C02 协议压缩、C03 语义去重，C05 在能力关闭时裁剪 | 逐块静态 Token 和相邻版本差值 |
 | 不破坏 Prompt Cache | C00 确定性与缓存身份，C06 稳定前缀审计 | 四层 Hash、首个变化字节和 Provider usage |
+| 正式指标不被运行器污染 | C07 身份分离、上游预检、Pilot 隔离与完整 usage | `/health` 预检、`formalMetricEligible`、五类 usage 字段 |
 | 不评价资产内容质量 | 所有代码阶段保持动态资产加载语义不变 | Static 与 Dynamic 分层产物 |
 | 优化说明、实验报告和代码 PR | C06 交接后由实验与交付阶段完成 | code-freeze commit、Gate 报告和最终结果 |
 
@@ -497,6 +498,32 @@ tool-prompt/
 
 退出条件：C06 Gate 为 `PASSED`，合回 `codex/task1-code-integration`，记录唯一 code-freeze commit，并打 `task1-code-freeze` tag。此后本会话停止修改 Prompt，除非后续评测明确创建新的修订阶段和分支。
 
+## C07：评测正确性与身份链路收口
+
+分支：`codex/task1-c07-eval-correctness`，从 `task1-code-freeze` 创建。
+
+目标：不修改任何 V0 至 V3 Prompt，只修复会阻断链路或污染指标的运行器、身份、上游和产物问题。
+
+任务：
+
+- 把旧 100 case 明确降级为 `mock-contract` Pilot，所有 manifest、evaluation、score 和 usage 标记 `formalMetricEligible=false`。
+- Pilot 的预渲染 Prompt 只注入一次；只有显式诊断环境、专用 Space 和专用 Header 同时满足时，MemoryProxy 才跳过第二次 Session Init/注入。
+- 分离官方 Provider Bearer 与 TDAI user key；后者只使用环境映射 Header，禁止转发上游、进入模型 shell、日志或实验产物。
+- 增加 Codex-only invocation override，并从 `/health` 校验实际 URL、client-auth passthrough、TDAI 鉴权和诊断模式，避免旧 YAML 或 per-agent key 偷换上游。
+- 缺失或不完整的模型 usage 一律记为基础设施错误；逐运行和 Campaign 保存 input、cached input、cache-write input、output、reasoning output 与静态注入 Token。
+- 补齐 V0-C 新增 Skill 读合同的 Mock Bridge 可执行覆盖。
+
+重点检查：
+
+- [ ] 六个冻结 Prompt、Token、bytes、hash 和稳定前缀零变化。
+- [ ] 普通生产请求不能触发 Pilot bypass。
+- [ ] `x-tdai-user-key` 不进入上游、shell、Langfuse debug 或运行产物。
+- [ ] 实际 Codex 上游或鉴权模式不符合预注册值时，在模型运行前失败。
+- [ ] Pilot 结果无法被误标为正式任务一指标。
+- [ ] 全量类型诊断数量与标准化指纹不变。
+
+退出条件：C07 Gate 为 `PASSED`，实现和 Gate 记录提交完成；`task1-code-freeze` 继续保持原 Prompt 冻结含义，实验集成线改用 C07 通过提交作为运行器基点。
+
 ## 代码线交接 Gate
 
 代码冻结以后，只交付以下内容给实验集成线：
@@ -509,6 +536,7 @@ tool-prompt/
 - Prompt、Token、bytes、hash、稳定前缀和 Capability 产物。
 - 基线类型错误指纹与无新增错误证明。
 - 选择真实 profile 的 dry-run 命令。
+- Provider/TDAI 双身份接线、有效 Codex 上游预检和 Pilot/正式层次标记。
 - 已知限制和回退到 `legacy` 的方法。
 
 以下内容不在本会话处理：
@@ -535,6 +563,7 @@ tool-prompt/
 | C04 | `PASSED` | V2 选择校准已冻结 |
 | C05 | `PASSED` | V3 Capability/Lifecycle 裁剪已冻结 |
 | C06 | `PASSED` | 全 profile、Runner 接线与集成主线复跑均已通过 |
+| C07 | `IN PROGRESS` | Prompt 不变；正在收口身份、上游、usage 和 Pilot 隔离 |
 | 模型评测 | 不属于本会话 | 等待代码与数据两边冻结 |
 
 ## 本会话代码线结果
@@ -542,7 +571,8 @@ tool-prompt/
 1. 生产基线、C00 至 C06 阶段分支、集成分支和各阶段 Gate 均已建立并保留。
 2. 每个阶段均先通过门禁，再以非 squash merge 合入集成分支；提交历史可逐阶段回溯。
 3. 六个 Variant 在同一构建中选择真实生产 Profile，Token、bytes、Hash、稳定前缀、缓存身份与类型诊断基线均已冻结。
-4. C06 集成主线复跑通过，最终集成记录由 `task1-c06-pass` 和 `task1-code-freeze` 标识。
-5. 代码线停止修改 Prompt；等待独立数据线 Gate 完成后再进入模型实验。
+4. C06 集成主线复跑通过，原 Prompt 冻结记录仍由 `task1-c06-pass` 和 `task1-code-freeze` 标识。
+5. C07 只处理运行器与指标正确性，不改变冻结 Prompt；通过后把其提交交给实验集成线。
+6. 代码线停止修改 Prompt；等待独立数据线 Gate 完成后再进入模型实验。
 
 这套分支和 Gate 记录保证每一类改造可单独回溯，后续实验能够准确归因到相邻版本差异。

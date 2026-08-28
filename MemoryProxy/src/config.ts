@@ -189,6 +189,8 @@ export interface CliOverrides {
   host?: string;
   port?: number;
   upstreamUrl?: string;
+  /** Codex-only upstream override; preserves the client's provider auth. */
+  codexUpstreamUrl?: string;
   langfuseHost?: string;
   logFile?: string;
   opikEnabled?: boolean;
@@ -269,6 +271,12 @@ function parseUpstreamAgents(
 export function buildConfig(overrides: CliOverrides = {}): ProxyConfig {
   const configPath = overrides.configFile || "config.yaml";
   const yaml = loadYamlConfig(configPath);
+  const upstreamAgents = parseUpstreamAgents(yaml.upstream?.agents);
+  if (overrides.codexUpstreamUrl) {
+    // Invocation-only benchmark/diagnostic routing must not inherit a stale
+    // agent apiKey from YAML: Codex supplies its current provider bearer.
+    upstreamAgents.codex = { url: overrides.codexUpstreamUrl };
+  }
 
   return {
     server: {
@@ -284,7 +292,7 @@ export function buildConfig(overrides: CliOverrides = {}): ProxyConfig {
         yaml.upstream?.url ??
         DEFAULT_CONFIG.upstream.url,
       apiKey: yaml.upstream?.apiKey ?? DEFAULT_CONFIG.upstream.apiKey,
-      agents: parseUpstreamAgents(yaml.upstream?.agents),
+      agents: upstreamAgents,
     },
     log: {
       file: overrides.logFile ?? yaml.log?.file ?? DEFAULT_CONFIG.log.file,
@@ -584,6 +592,10 @@ export function parseArgv(argv: string[]): CliOverrides {
         break;
       case "--upstream":
         overrides.upstreamUrl = next;
+        i++;
+        break;
+      case "--codex-upstream":
+        overrides.codexUpstreamUrl = next;
         i++;
         break;
       case "--langfuse-host":

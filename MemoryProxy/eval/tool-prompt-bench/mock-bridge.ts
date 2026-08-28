@@ -11,7 +11,9 @@ export const TOOL_PROMPT_ENDPOINTS: Readonly<Record<string, { tool: string; fami
   "/memory-bridge/v3/scenario/read": { tool: "tdai_read_scene", family: "memory" },
   "/skill-bridge/v3/skill/search": { tool: "skill_search", family: "skill" },
   "/skill-bridge/v3/skill/get-by-name": { tool: "skill_view", family: "skill" },
+  "/skill-bridge/v3/skill/get": { tool: "skill_view_by_id", family: "skill" },
   "/skill-bridge/v3/skill/files/read": { tool: "skill_files_read", family: "skill" },
+  "/skill-bridge/v3/skill/files/download": { tool: "skill_files_download", family: "skill" },
   "/tools/list": { tool: "knowledge_tools_list", family: "knowledge" },
   "/tools/call": { tool: "knowledge_tools_call", family: "knowledge" },
 };
@@ -196,12 +198,33 @@ export function createToolPromptMockBridge(
       const skill = fixture.assets.skills?.teamLibrary.find((item) => item.name === body.skill_name);
       if (!skill) return fail("skill not found", 404);
       data = skill;
+    } else if (endpoint === "/skill-bridge/v3/skill/get") {
+      if (typeof body.skill_id !== "string" || !body.skill_id) return fail("skill_id is required");
+      const skill = fixture.assets.skills?.teamLibrary.find((item) => item.skill_id === body.skill_id);
+      if (!skill) return fail("skill not found", 404);
+      data = skill;
     } else if (endpoint === "/skill-bridge/v3/skill/files/read") {
       if (typeof body.skill_id !== "string" || typeof body.path !== "string") return fail("skill_id and path are required");
       const skill = fixture.assets.skills?.teamLibrary.find((item) => item.skill_id === body.skill_id);
       const files = skill?.files && typeof skill.files === "object" ? skill.files as Record<string, unknown> : {};
       if (!(body.path in files)) return fail("skill file not found", 404);
       data = files[body.path];
+    } else if (endpoint === "/skill-bridge/v3/skill/files/download") {
+      if (typeof body.skill_id !== "string" || typeof body.path !== "string") return fail("skill_id and path are required");
+      const skill = fixture.assets.skills?.teamLibrary.find((item) => item.skill_id === body.skill_id);
+      const files = skill?.files && typeof skill.files === "object" ? skill.files as Record<string, unknown> : {};
+      if (!(body.path in files)) return fail("skill file not found", 404);
+      const file = files[body.path];
+      const content = typeof file === "string"
+        ? file
+        : file && typeof file === "object" && typeof (file as Record<string, unknown>).content === "string"
+          ? (file as Record<string, unknown>).content as string
+          : null;
+      if (content === null) return fail("skill file content is not downloadable", 422);
+      attempt.status = 200;
+      attempt.response = { bytes: Buffer.byteLength(content, "utf8") };
+      attempts.push(attempt);
+      return c.body(content, 200, { "content-type": "application/octet-stream" });
     } else if (endpoint === "/tools/list") {
       if (typeof body.knowledge_id !== "string" || !body.knowledge_id) return fail("knowledge_id is required");
       const resource = fixture.assets.knowledge?.find((item) => item.knowledge_id === body.knowledge_id);

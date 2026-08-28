@@ -96,6 +96,8 @@ World 资产写入真实本地数据栈
 | verbosity | `medium` |
 | 上游 | 当前官方 ChatGPT Codex endpoint |
 | 模型请求路径 | 必须经过当前构建的 MemoryProxy |
+| Provider 身份 | 复用当前 `CODEX_HOME` 的官方登录；MemoryProxy 对 Codex 路由必须为 client-auth passthrough |
+| TDAI 身份 | 独立 `x-tdai-user-key`；由 `TDAI_EVAL_USER_KEY` 环境映射注入，禁止进入上游、模型 shell 和实验产物 |
 | Agent | 每个 Team 一个中性的 General Software Engineering Agent |
 | Agent 描述与 prompt | 不写工具选择、调用倾向或 Gold 提示 |
 | Memory | 开启读取能力 |
@@ -106,6 +108,8 @@ World 资产写入真实本地数据栈
 | 主实验重复 | Dev 单次，入围复核和 Test 三次 |
 
 Primary Campaign 只用 Luna。若时间和预算允许，可在最终候选冻结后增加第二模型复核，结果单独成表，不能与 Luna 汇总成一个比例。
+
+运行前必须从 MemoryProxy `/health` 保存并校验 `codexUpstream`、`codexUpstreamAuth`、`tdaiAuth` 和诊断模式。只校验 YAML 的 `upstream.url` 不够，因为 `upstream.agents.codex` 及其 apiKey 的优先级更高；任何上游不一致、配置 key 覆盖官方 Bearer 或 TDAI 鉴权缺 key 都属于 `INFRASTRUCTURE_ERROR`，不得进入指标分母。现有 YAML 只读挂载，实验通过 invocation-only Codex override 选择官方上游，不改持久配置。
 
 Capability Fixture 在 V0、V0-C、V1 和 V2 中保持不变。V3 只根据生产源码已经存在的 Injector、`AssetCapabilityFlags`、Memory、Knowledge、`allowLlmWrite` 和 `isExtractionAllowed()` 等能力事实，对不可执行工具做确定性裁剪。正式 Fixture 关闭自动 Skill 抽取后，V3 移除依赖 conversation buffer 的 `skill_extract`；V0 至 V2 仍保留原 Prompt 暴露面，保证前序版本只比较各自声明的改造。任务一不新增 `allowLlmExtract` 或其他产品能力开关，也不改变 Bridge 权限。此时改变的是 Prompt 暴露面，运行时配置保持原值。
 
@@ -313,6 +317,8 @@ ConditionalToolAt1 = \frac{P\ 中首个\ Attempt\ 选择正确}{P\ 中有\ Attem
 | 总输入与输出 Token | Cost | 模型实际 usage，不代替静态注入 Token |
 | 完整序列成功率 | Contract smoke | 不进入主实验结论 |
 
+每次运行必须分别保存静态注入 Token，以及模型返回的 `input_tokens`、`cached_input_tokens`、`cache_write_input_tokens`、`output_tokens`、`reasoning_output_tokens`。任一模型 usage 字段缺失时整条运行记为 `INFRASTRUCTURE_ERROR`，不能用 0 补齐，也不能先聚合再剔除。
+
 如果一个 case 合理允许多个第一步，`allowedFirstActions` 必须在数据冻结前登记。运行结束后不能因为模型选了另一个动作再修改 Gold。
 
 ## Token 与 Prompt Cache 全量保存
@@ -487,12 +493,13 @@ Gate：任何人只看冻结清单和一条 case，都能判断哪些内容是�
 
 ### P01：真实链路 Harness、World 数据和评分真值
 
-时间：Day 2 至 Day 4。当前分支的工作属于这一阶段。
+时间：Day 2 至 Day 4。该阶段由独立数据/真实链路准备分支承担；代码冻结线只提供经过验证的身份分离、上游预检和生产注入接缝。
 
 工作内容：
 
 - 为正式模式增加真实 World Loader，通过现有数据面 Interface 准备 Space、Team、Agent、Task 和资产快照。
 - 让 runner 走正常 Session Init 和生产 InjectionPipeline，不再预渲染正式 Prompt。
+- 复用官方 Provider 登录，同时用独立 `x-tdai-user-key` 完成 TDAI 鉴权；预检实际 Codex 上游与 client-auth passthrough，不读取或改写用户 Codex 配置。
 - 在 Memory Bridge、Skill Bridge 和 Knowledge 入口建立只读观测 Seam。
 - 把 Attempt、Malformed Attempt、真实 Entry Call 和 Infrastructure Error 分开。
 - 把历史上下文作为真实 Responses 消息发送，把活动项目文件写入临时工作区。

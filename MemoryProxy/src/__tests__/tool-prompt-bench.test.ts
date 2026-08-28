@@ -20,6 +20,7 @@ import {
   buildCodexConfigArgs,
   buildCodexInvocation,
   codexProcessInfrastructureError,
+  codexRunInfrastructureError,
   countInjectionTokens,
   extractCodexUsage,
   isolateCodexEnvironment,
@@ -27,8 +28,15 @@ import {
   resolveCodexInvocation,
 } from "../../eval/tool-prompt-bench/codex-runner.js";
 import { aggregateScores, scoreTraceRecords } from "../../eval/tool-prompt-bench/score.js";
-import { parseArgv } from "../config.js";
+import { buildConfig, parseArgv } from "../config.js";
+import {
+  buildCodexUpstreamHeaders,
+  isToolPromptMockContractRequest,
+  resolveCodexRequestCredentials,
+  resolveCodexUpstream,
+} from "../codexHandler.js";
 import { joinUrl } from "../guard-adapter.js";
+import { buildRequestDebugMetadata } from "../common/langfuse-debug.js";
 import type { AllowedToolAction, ArgumentRules } from "../../eval/tool-prompt-bench/schema.js";
 
 function readJsonl(path: string): unknown[] {
@@ -72,20 +80,26 @@ function bodyFromRules(
 }
 
 describe("TDAI-ToolPromptBench dataset", () => {
-  it("supports invocation-only upstream and Langfuse host overrides", () => {
-    expect(parseArgv([
+  it("supports an invocation-only Codex upstream with client auth passthrough", () => {
+    const overrides = parseArgv([
       "node",
       "src/index.ts",
       "--config",
-      "config.yaml",
-      "--upstream",
+      "config.example.yaml",
+      "--codex-upstream",
       "https://chatgpt.com/backend-api/codex",
       "--langfuse-host",
       "http://host.docker.internal:13000",
-    ])).toMatchObject({
-      configFile: "config.yaml",
-      upstreamUrl: "https://chatgpt.com/backend-api/codex",
+    ]);
+    expect(overrides).toMatchObject({
+      configFile: "config.example.yaml",
+      codexUpstreamUrl: "https://chatgpt.com/backend-api/codex",
       langfuseHost: "http://host.docker.internal:13000",
+    });
+    const config = buildConfig(overrides);
+    expect(resolveCodexUpstream(config)).toMatchObject({
+      url: "https://chatgpt.com/backend-api/codex",
+      authMode: "client-passthrough",
     });
     expect(joinUrl(
       "https://chatgpt.com/backend-api/codex",
@@ -312,6 +326,44 @@ describe("TDAI-ToolPromptBench dataset", () => {
     }
   });
 
+  it("executes the corrected Skill get-by-id and raw file-download contracts", async () => {
+    const fixture = FIXTURES.find((candidate) => candidate.fixtureId === "skill-dev-dialogue-files-002-fixture");
+    expect(fixture).toBeDefined();
+    if (!fixture) return;
+    const bridge = createToolPromptMockBridge(fixture);
+    const headers = {
+      "content-type": "application/json",
+      "x-tdai-service-id": "svc-tool-prompt-bench",
+      "x-conversation-id": "session-tool-prompt-bench",
+    };
+
+    const view = await bridge.app.request("http://mock.local/skill-bridge/v3/skill/get", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ skill_id: "skl-dialogue-graph", include_content: true, include_manifest: true }),
+    });
+    expect(view.status).toBe(200);
+    expect(await view.json()).toMatchObject({ data: { skill_id: "skl-dialogue-graph", name: "dialogue-graph" } });
+
+    const download = await bridge.app.request("http://mock.local/skill-bridge/v3/skill/files/download", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        skill_id: "skl-dialogue-graph",
+        version: 3,
+        path: "scripts/dialogue_graph.py",
+        encoding: "utf-8",
+      }),
+    });
+    expect(download.status).toBe(200);
+    expect(download.headers.get("content-type")).toContain("application/octet-stream");
+    expect(await download.text()).toBe("Fixture content for scripts/dialogue_graph.py");
+    expect(bridge.attempts.map((attempt) => attempt.tool)).toEqual([
+      "skill_view_by_id",
+      "skill_files_download",
+    ]);
+  });
+
   it("rejects shell syntax and off-origin curl before any request is sent", () => {
     expect(() => parseCurlCommand(
       "curl -X POST http://127.0.0.1:43127/tools/list -d '{}' ; echo unsafe",
@@ -384,18 +436,76 @@ describe("TDAI-ToolPromptBench dataset", () => {
     expect(env.CODEX_PERMISSION_PROFILE).toBeUndefined();
   });
 
-  it("puts the fixture prompt in Codex developer instructions without embedding credentials", () => {
+  it("marks the mock-contract request so MemoryProxy can bypass its own injection exactly once", () => {
     const configArgs = buildCodexConfigArgs({
       developerInstructions: "<tdai_injections>V0 PROMPT</tdai_injections>",
       providerBaseUrl: "http://127.0.0.1:8096/codex/eval-space/v1",
+      providerHeaders: { "x-tdai-eval-mode": "mock-contract" },
+      providerEnvHeaders: { "x-tdai-user-key": "TDAI_EVAL_USER_KEY" },
       reasoningEffort: "high",
       verbosity: "medium",
     });
     expect(configArgs).toContain('developer_instructions="<tdai_injections>V0 PROMPT</tdai_injections>"');
     expect(configArgs).toContain('model_providers.custom.base_url="http://127.0.0.1:8096/codex/eval-space/v1"');
+    expect(configArgs).toContain('model_providers.custom.http_headers={ "x-tdai-eval-mode" = "mock-contract" }');
+    expect(configArgs).toContain('model_providers.custom.env_http_headers={ "x-tdai-user-key" = "TDAI_EVAL_USER_KEY" }');
+    expect(configArgs).toContain('shell_environment_policy.exclude=["TDAI_EVAL_USER_KEY"]');
     expect(configArgs).toContain("skills.include_instructions=false");
     expect(configArgs).toContain("sandbox_workspace_write.network_access=true");
     expect(configArgs.join("\n")).not.toMatch(/api[_-]?key|secret|bearer/i);
+  });
+
+  it("allows the mock-contract bypass only for the dedicated space and opted-in proxy", () => {
+    const headers = { "x-tdai-eval-mode": "mock-contract" };
+    expect(isToolPromptMockContractRequest(headers, "tool-prompt-bench", {
+      TDAI_TOOL_PROMPT_DIAGNOSTIC: "1",
+    })).toBe(true);
+    expect(isToolPromptMockContractRequest(headers, "production-space", {
+      TDAI_TOOL_PROMPT_DIAGNOSTIC: "1",
+    })).toBe(false);
+    expect(isToolPromptMockContractRequest(headers, "tool-prompt-bench", {})).toBe(false);
+  });
+
+  it("keeps the official provider bearer separate from the TDAI user key", () => {
+    expect(resolveCodexRequestCredentials({
+      authorization: "Bearer chatgpt-oauth-token",
+      "x-tdai-user-key": "tdai-eval-user-key-placeholder",
+    })).toEqual({
+      providerBearerToken: "chatgpt-oauth-token",
+      tdaiUserKey: "tdai-eval-user-key-placeholder",
+    });
+    expect(resolveCodexRequestCredentials({
+      authorization: "Bearer legacy-shared-key",
+    })).toEqual({
+      providerBearerToken: "legacy-shared-key",
+      tdaiUserKey: "legacy-shared-key",
+    });
+    expect(buildRequestDebugMetadata({
+      debug: true,
+      body: {},
+      headers: {
+        "x-tdai-user-key": "tdai-user-key-must-not-be-observed",
+        "x-client-version": "0.149.1",
+      },
+    })).toEqual({
+      messages_len: 0,
+      "header_x-client-version": "0.149.1",
+    });
+  });
+
+  it("removes TDAI-only headers before forwarding the official provider request", () => {
+    const forwarded = buildCodexUpstreamHeaders(new Headers({
+      authorization: "Bearer chatgpt-oauth-token",
+      "content-type": "application/json",
+      "x-tdai-eval-mode": "mock-contract",
+      "x-tdai-user-key": "tdai-eval-user-key-placeholder",
+    }));
+    expect(forwarded).toMatchObject({
+      authorization: "Bearer chatgpt-oauth-token",
+      "content-type": "application/json",
+    });
+    expect(forwarded).not.toHaveProperty("x-tdai-user-key");
+    expect(forwarded).not.toHaveProperty("x-tdai-eval-mode");
   });
 
   it("audits the complete Codex prompt and rejects client skill contamination", () => {
@@ -430,6 +540,23 @@ describe("TDAI-ToolPromptBench dataset", () => {
     expect(codexProcessInfrastructureError({ timedOut: false, exitCode: 0 })).toBeUndefined();
   });
 
+  it("rejects a successful Codex process when complete model usage is missing", () => {
+    expect(codexRunInfrastructureError(
+      { timedOut: false, exitCode: 0 },
+      null,
+    )).toBe("Codex JSONL did not contain complete turn.completed usage");
+    expect(codexRunInfrastructureError(
+      { timedOut: false, exitCode: 0 },
+      {
+        inputTokens: 100,
+        cachedInputTokens: 80,
+        cacheWriteInputTokens: 0,
+        outputTokens: 20,
+        reasoningOutputTokens: 7,
+      },
+    )).toBeUndefined();
+  });
+
   it("records injection and model token usage separately", () => {
     expect(countInjectionTokens("memory tool prompt")).toBeGreaterThan(0);
     expect(extractCodexUsage([
@@ -456,6 +583,13 @@ describe("TDAI-ToolPromptBench dataset", () => {
       "http://127.0.0.1:43127",
       "session-123",
     )).toBe("<BRIDGE_BASE_URL>/tool <SESSION_ID>");
+  });
+
+  it("does not turn a partial usage event into misleading zero token metrics", () => {
+    expect(extractCodexUsage(JSON.stringify({
+      type: "turn.completed",
+      usage: { input_tokens: 100 },
+    }))).toBeNull();
   });
 
   it("keeps generated JSONL synchronized with the TypeScript definitions", () => {
@@ -621,6 +755,22 @@ describe("TDAI-ToolPromptBench dataset", () => {
       positiveCases: 0,
       negativeCases: 1,
       falseCallRate: 0,
+    });
+  });
+
+  it("keeps Mock-contract scores explicitly ineligible for formal metrics", () => {
+    const item = CASES.find((candidate) => !candidate.gold.needTdaiTool);
+    expect(item).toBeDefined();
+    if (!item) return;
+    expect(scoreTraceRecords([{
+      evaluationLayer: "mock-contract",
+      formalMetricEligible: false,
+      caseId: item.caseId,
+      runId: "pilot-run",
+      attempts: [],
+    }])[0]).toMatchObject({
+      evaluationLayer: "mock-contract",
+      formalMetricEligible: false,
     });
   });
 

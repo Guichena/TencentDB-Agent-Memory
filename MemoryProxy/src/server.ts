@@ -4,10 +4,15 @@ import { Hono } from "hono";
 import { handleChatCompletions } from "./handler.js";
 import { handleAnthropicMessages } from "./anthropicHandler.js";
 import { handleAuxiliaryEndpoint } from "./auxiliaryHandler.js";
-import { handleCodexEndpoint } from "./codexHandler.js";
+import {
+  handleCodexEndpoint,
+  isToolPromptDiagnosticEnabled,
+  resolveCodexUpstream,
+} from "./codexHandler.js";
 import { handleWorkbuddyEndpoint } from "./workbuddyHandler.js";
 import { apiKeyToKeyId, extractBearerToken } from "./opik.js";
 import { createSkillBridgeHandler } from "./skill/skill-bridge.js";
+import { isAuthEnabled } from "./auth.js";
 import { createMemoryBridgeHandler } from "./memory/memory-bridge.js";
 import { createInstanceDestroyHandler } from "./routes/instance-destroy.js";
 import { createRateLimitHandlers } from "./routes/rate-limits.js";
@@ -83,15 +88,20 @@ export function createApp(config: ProxyConfig): Hono {
   // 文件也是不共享的。见 docs/design/2026-07-13-proxy-multinode-state-audit.md P0-2。
   app.get("/health", (c) => {
     const eff = getEffectiveBackend();
+    const codexUpstream = resolveCodexUpstream(config);
     const wantsShared = config.storage?.enabled && eff.requested === "cos";
     const degraded = wantsShared && eff.effective !== eff.requested;
     const body = {
       status: degraded ? "degraded" : "ok",
       version: "0.2.0",
       upstream: config.upstream.url,
+      codexUpstream: codexUpstream.url,
+      codexUpstreamAuth: codexUpstream.authMode,
+      tdaiAuth: isAuthEnabled() ? "enabled" : "disabled",
       opik: config.opik.enabled ? config.opik.url : "disabled",
       costGuard: config.costGuard.enabled ? "enabled" : "disabled",
       rateLimit: config.rateLimit.tpm > 0 || config.rateLimit.qpm > 0 ? "enabled" : "disabled",
+      toolPromptDiagnostic: isToolPromptDiagnosticEnabled() ? "mock-contract-enabled" : "disabled",
       storage: {
         enabled: !!config.storage?.enabled,
         requested: eff.requested,

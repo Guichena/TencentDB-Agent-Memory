@@ -39,6 +39,9 @@ export interface ResolveCodexInvocationOptions {
 export interface CodexProfileInput {
   developerInstructions: string;
   providerBaseUrl?: string;
+  providerHeaders?: Record<string, string>;
+  /** Provider header -> environment variable name. Secret values never enter CLI args. */
+  providerEnvHeaders?: Record<string, string>;
   reasoningEffort: CodexReasoningEffort;
   verbosity: CodexVerbosity;
 }
@@ -48,6 +51,8 @@ export type CodexVerbosity = "low" | "medium" | "high";
 
 export const DEFAULT_CODEX_REASONING_EFFORT: CodexReasoningEffort = "high";
 export const DEFAULT_CODEX_VERBOSITY: CodexVerbosity = "medium";
+export const MOCK_CONTRACT_RUN_MODE = "mock-contract" as const;
+export const TDAI_EVAL_USER_KEY_ENV = "TDAI_EVAL_USER_KEY" as const;
 
 export interface CodexRunOptions {
   caseId: string;
@@ -93,6 +98,14 @@ export interface CodexUsage {
   reasoningOutputTokens: number;
 }
 
+export function codexRunInfrastructureError(
+  result: Parameters<typeof codexProcessInfrastructureError>[0],
+  usage: CodexUsage | null,
+): string | undefined {
+  return codexProcessInfrastructureError(result)
+    ?? (usage ? undefined : "Codex JSONL did not contain complete turn.completed usage");
+}
+
 export function countInjectionTokens(prompt: string): number {
   const encoding = get_encoding("o200k_base");
   try {
@@ -125,7 +138,19 @@ export function extractCodexUsage(eventsJsonl: string): CodexUsage | null {
   });
   const usage = records.at(-1);
   if (!usage) return null;
-  const number = (field: string): number => typeof usage[field] === "number" ? usage[field] : 0;
+  const requiredFields = [
+    "input_tokens",
+    "cached_input_tokens",
+    "cache_write_input_tokens",
+    "output_tokens",
+    "reasoning_output_tokens",
+  ] as const;
+  if (requiredFields.some((field) => (
+    typeof usage[field] !== "number"
+    || !Number.isFinite(usage[field])
+    || (usage[field] as number) < 0
+  ))) return null;
+  const number = (field: typeof requiredFields[number]): number => usage[field] as number;
   return {
     inputTokens: number("input_tokens"),
     cachedInputTokens: number("cached_input_tokens"),
@@ -263,6 +288,30 @@ export function buildCodexConfigArgs(input: CodexProfileInput): string[] {
       'model_providers.custom.wire_api="responses"',
       "model_providers.custom.requires_openai_auth=true",
     );
+    const providerHeaders = Object.entries(input.providerHeaders ?? {}).sort(([left], [right]) => left.localeCompare(right));
+    if (providerHeaders.length > 0) {
+      for (const [name] of providerHeaders) {
+        if (!/^[a-z0-9-]+$/i.test(name)) throw new Error(`invalid provider header name: ${name}`);
+      }
+      const inlineTable = providerHeaders
+        .map(([name, value]) => `${JSON.stringify(name.toLowerCase())} = ${JSON.stringify(value)}`)
+        .join(", ");
+      values.push(`model_providers.custom.http_headers={ ${inlineTable} }`);
+    }
+    const providerEnvHeaders = Object.entries(input.providerEnvHeaders ?? {}).sort(([left], [right]) => left.localeCompare(right));
+    if (providerEnvHeaders.length > 0) {
+      for (const [name, environmentName] of providerEnvHeaders) {
+        if (!/^[a-z0-9-]+$/i.test(name)) throw new Error(`invalid provider header name: ${name}`);
+        if (!/^[A-Z_][A-Z0-9_]*$/i.test(environmentName)) {
+          throw new Error(`invalid provider header environment name: ${environmentName}`);
+        }
+      }
+      const inlineTable = providerEnvHeaders
+        .map(([name, environmentName]) => `${JSON.stringify(name.toLowerCase())} = ${JSON.stringify(environmentName)}`)
+        .join(", ");
+      values.push(`model_providers.custom.env_http_headers={ ${inlineTable} }`);
+      values.push(`shell_environment_policy.exclude=${JSON.stringify(providerEnvHeaders.map(([, environmentName]) => environmentName))}`);
+    }
   }
   return values.flatMap((value) => ["-c", value]);
 }
@@ -351,6 +400,10 @@ export async function runCodexCase(options: CodexRunOptions): Promise<Record<str
     const configArgs = buildCodexConfigArgs({
       developerInstructions,
       providerBaseUrl: options.providerBaseUrl,
+      providerHeaders: { "x-tdai-eval-mode": "mock-contract" },
+      providerEnvHeaders: process.env[TDAI_EVAL_USER_KEY_ENV]
+        ? { "x-tdai-user-key": TDAI_EVAL_USER_KEY_ENV }
+        : undefined,
       reasoningEffort: options.reasoningEffort,
       verbosity: options.verbosity,
     });
@@ -395,6 +448,10 @@ export async function runCodexCase(options: CodexRunOptions): Promise<Record<str
 
     const manifest = {
       schemaVersion: "1.0",
+      evaluationLayer: MOCK_CONTRACT_RUN_MODE,
+      formalMetricEligible: false,
+      injectionOwner: "runner-pre-rendered-production-renderers",
+      toolEndpointMode: "isolated-mock-bridge",
       runId,
       sessionId,
       caseId: item.caseId,
@@ -425,6 +482,7 @@ export async function runCodexCase(options: CodexRunOptions): Promise<Record<str
       ephemeral: true,
       isolatedUserConfig: true,
       authenticationMode: "shared-codex-home-no-copy",
+      tdaiUserKeyHeaderConfigured: Boolean(process.env[TDAI_EVAL_USER_KEY_ENV]),
       clientSkillsDisabled: true,
       ignoresRules: true,
     };
@@ -442,14 +500,28 @@ export async function runCodexCase(options: CodexRunOptions): Promise<Record<str
     writeFileSync(join(runDir, "codex-events.jsonl"), result.stdout, "utf8");
     writeFileSync(join(runDir, "codex-stderr.log"), result.stderr, "utf8");
     const modelUsage = extractCodexUsage(result.stdout);
-    const infrastructureError = codexProcessInfrastructureError(result);
-    const evaluation = infrastructureError
+    const infrastructureError = codexRunInfrastructureError(result, modelUsage);
+    const evaluationResult = infrastructureError
       ? { caseId: item.caseId, state: "INFRASTRUCTURE_ERROR", infrastructureError }
       : evaluateToolPromptCase(item, fixture, server.bridge.attempts);
-    const trace = { caseId: item.caseId, runId, attempts: server.bridge.attempts, infrastructureError };
+    const evaluation = {
+      evaluationLayer: MOCK_CONTRACT_RUN_MODE,
+      formalMetricEligible: false,
+      ...evaluationResult,
+    };
+    const trace = {
+      evaluationLayer: MOCK_CONTRACT_RUN_MODE,
+      formalMetricEligible: false,
+      caseId: item.caseId,
+      runId,
+      attempts: server.bridge.attempts,
+      infrastructureError,
+    };
     writeFileSync(join(runDir, "trace.jsonl"), `${JSON.stringify(trace)}\n`, "utf8");
     writeFileSync(join(runDir, "evaluation.json"), `${JSON.stringify(evaluation, null, 2)}\n`, "utf8");
     const usage = {
+      evaluationLayer: MOCK_CONTRACT_RUN_MODE,
+      formalMetricEligible: false,
       injection: {
         encoding: "o200k_base",
         tokens: injectionTokenCount,

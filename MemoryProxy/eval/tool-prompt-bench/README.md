@@ -1,6 +1,6 @@
 # TDAI-ToolPromptBench
 
-This dataset evaluates only the atomic behavior required by Task 1: whether an agent should call a TDAI tool, which family and first action it should select, and whether the request is executable. It does not score the quality of returned Memory, Skill, or Knowledge assets.
+This frozen 100-case dataset is the Mock-contract/Pilot layer for Task 1. It evaluates whether an agent should call a TDAI tool, which family and first action it selects, and whether the generated request satisfies the frozen contract. It does not score asset quality, and its numbers are not eligible for the formal V0-versus-candidate report.
 
 Each case is a dialogue. `contextMessages` contains any preceding turns and `query` is the final user turn. When `contextMessages` is absent, the case is a valid one-turn dialogue.
 
@@ -15,7 +15,7 @@ The 100 unique cases are selected by TDAI decision boundary, not randomly sample
 | Dev | 15 | 15 | 10 | 20 | 60 |
 | Test | 10 | 10 | 6 | 14 | 40 |
 
-The Test split is held out for the final V0 versus candidate comparison. It is public, not secret: operational freezing is enforced by `dataset-manifest.json` SHA-256 hashes. Prompt wording must be tuned only on Dev. Each `case x variant x repeat` must use a fresh Codex process, fresh session, reset fixture, and clean working directory.
+The Test split is held out inside this Pilot layer. It is public, not secret: operational freezing is enforced by `dataset-manifest.json` SHA-256 hashes. Prompt wording must be tuned only on Dev. Each `case x variant x repeat` uses a fresh Codex process, fresh session, reset fixture, and clean working directory. The formal V6.1 comparison uses the separately frozen real Worlds and production entry observation described in `EXPERIMENT-DESIGN.md`.
 
 The fixed 12-case Smoke list is a subset of Dev and adds no duplicate tasks. It covers semantic Memory search, exact conversation search, scene discovery, direct and searched Skills, Skill resources, code graph, wiki, self-contained coding, injected-L3 sufficiency, current-context/lexical overlap, and a mismatched repository.
 
@@ -73,9 +73,11 @@ The benchmark keeps prompt construction, protocol execution, and model execution
 
 1. `prompt-harness.ts` renders each fixture through the production `InjectionPipeline`, production `render*Block()` functions, and the selected production ToolPrompt Compiler profile. It does not maintain a second handwritten Prompt implementation.
 2. `protocol-harness.ts` parses the exact read-only curl subset used by V0, rejects shell operators, off-origin URLs, unsupported methods, and unknown endpoints, then sends a structured HTTP request to a random-port Mock Bridge. Every attempt records `intentId`, `runId`, `sessionId`, and timestamp.
-3. `codex-runner.ts` is the isolated model layer. Formal runs send the Responses request through a running MemoryProxy at `127.0.0.1:8096`; direct-to-provider runs are diagnostics only. Every repeat gets a new workspace, session, Mock Bridge, `CODEX_SQLITE_HOME`, `HOME`, and `USERPROFILE`; it uses `codex exec --ephemeral --ignore-rules --ignore-user-config --json`. Authentication points to the user's single existing `CODEX_HOME` and is never copied. Benchmark configuration is supplied only through invocation-scoped overrides. Codex skill instructions are disabled, so personal skills and the user's previous task state cannot affect the comparison. The same fixed Codex version, MemoryProxy build, and runner configuration must be used for V0 and candidate.
+3. `codex-runner.ts` is the isolated Mock-contract model layer. Every repeat gets a new workspace, session, Mock Bridge, `CODEX_SQLITE_HOME`, `HOME`, and `USERPROFILE`; it uses `codex exec --ephemeral --ignore-rules --ignore-user-config --json`. Official provider authentication points to the user's single existing `CODEX_HOME` and is never copied. When Proxy TDAI auth is enabled, `TDAI_EVAL_USER_KEY` is sent only as the environment-backed `x-tdai-user-key` provider header; the header is removed before upstream forwarding, the value is excluded from model shell subprocesses, and no artifact saves it. Codex skill instructions are disabled, so personal skills and prior task state cannot affect the Pilot comparison.
 
-Prompt construction and live forwarding have different responsibilities. The case-specific fixture is rendered by MemoryProxy's production `InjectionPipeline` and production `render*Block()` functions before the request reaches the live Proxy. The running Proxy keeps its own injection disabled for this route, preventing a second injection, and provides the real Codex Responses forwarding and Langfuse observation path. This isolates the Task 1 variable while still exercising MemoryProxy as the model gateway.
+For this Pilot layer only, the case fixture is rendered before forwarding. Codex sends `x-tdai-eval-mode: mock-contract`; a benchmark Proxy started with `TDAI_TOOL_PROMPT_DIAGNOSTIC=1` bypasses Session Init and its own injection only for `spaceId=tool-prompt-bench`, preventing a second injection. Every run manifest is marked `evaluationLayer=mock-contract` and `formalMetricEligible=false`. Normal production requests cannot activate this bypass.
+
+Formal Task 1 evaluation is a different execution layer: the runner must send real history, workspace, Query, and fixed Team/Agent/Task identity without a pre-rendered TDAI block; the production `InjectionPipeline` must be the sole injection owner; and scoring must use the first request observed at the real Memory/Skill/Knowledge entry. Until that adapter and the real World snapshots are frozen, no output from this directory may be presented as the formal before/after metric.
 
 ### Frozen model protocol
 
@@ -83,13 +85,13 @@ Prompt construction and live forwarding have different responsibilities. The cas
 - The current protocol uses one model. Any later cross-model confirmation must be preregistered and reported separately; it must not be pooled into the Luna result.
 - Standard Responses execution is used; Pro mode is not enabled.
 - The runner writes the exact model, reasoning effort, verbosity, and Codex CLI version to `run-manifest.json`. Never compare variants whose recorded model settings or Codex version differ.
-- `--reasoning-effort` and `--verbosity` are explicit experiment inputs. Reasoning defaults to `high` and verbosity defaults to `medium`, but formal commands must still spell them out.
+- `--reasoning-effort` and `--verbosity` are explicit experiment inputs. Reasoning defaults to `high` and verbosity defaults to `medium`, but recorded Pilot commands still spell them out.
 
 ### Asset provenance and optional real-service smoke
 
 The 100 primary fixtures are deterministic benchmark-owned snapshots. Memory records, conversations, scenes, Skill listings, team-library Skills, and Knowledge bindings are defined in `case-definitions.ts`, frozen into JSONL, and served by the isolated Mock Bridge. They prove that every Gold sequence is executable under a fixed asset state; they do **not** prove that MemoryCore generated those assets or that MemoryPanel displayed them.
 
-The deterministic fixture assets are sufficient for the Task 1 metrics. Asset extraction and MemoryPanel verification are not prerequisites for the formal V0 baseline.
+The deterministic fixtures are sufficient for parser, scorer, Prompt-regression, and Pilot model checks. They are not sufficient for the formal Task 1 metrics.
 
 If a production-contract demonstration is useful, run a separate real-service smoke for a small representative subset:
 
@@ -98,21 +100,23 @@ If a production-contract demonstration is useful, run a separate real-service sm
 3. Save non-secret generation receipts: case id, asset id, content hash, generation endpoint, request id, generation-log id when available, timestamps, and verification status. Never save credentials.
 4. Freeze the verified assets into one snapshot and reuse it across every Variant. Do not let a prior Variant generate new Memory or Skills for a later Variant.
 
-This smoke only demonstrates the real service contract. The primary metrics continue to score tool decision and execution against the deterministic Mock fixtures; asset-generation quality and final-answer quality remain outside Task 1's KPI.
+This smoke demonstrates the service contract only. Formal metrics still require the real-chain setup in `EXPERIMENT-DESIGN.md`; asset-generation quality and final-answer quality remain outside Task 1's KPI.
 
 Preview the Docker commands that start the benchmark MemoryProxy without changing `config.yaml`:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\eval\tool-prompt-bench\start-benchmark-proxy.ps1 -PrepareOnly
+powershell -ExecutionPolicy Bypass -File .\eval\tool-prompt-bench\start-benchmark-proxy.ps1 -ConfigPath <absolute-or-relative-config.yaml> -PrepareOnly
 ```
 
-The start script mounts the inherited config read-only. It overrides the upstream at invocation time to the official ChatGPT Codex endpoint used by the installed client and maps the container's Langfuse host to `host.docker.internal:13000`.
+The start script requires an explicit existing config path and mounts it read-only, including when it lives outside the current worktree. It enables the narrowly scoped Mock-contract bypass, overrides only the effective Codex upstream at invocation time, forces client-auth passthrough for that route, and maps Langfuse to `host.docker.internal:13000`. After startup it rejects a stale per-agent URL or configured upstream key by checking `/health`; it never edits the inherited YAML.
 
-Start MemoryProxy before any formal model run:
+Start this diagnostic MemoryProxy before a Mock-contract model run:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\eval\tool-prompt-bench\start-benchmark-proxy.ps1
+powershell -ExecutionPolicy Bypass -File .\eval\tool-prompt-bench\start-benchmark-proxy.ps1 -ConfigPath <absolute-or-relative-config.yaml>
 ```
+
+If `/health` reports `tdaiAuth=enabled`, set `TDAI_EVAL_USER_KEY` in the same PowerShell process before running a campaign. Do not put the value in a command, Markdown file, or tracked config. The runner records only whether the header was configured.
 
 Inspect an isolated prompt without making an LLM request:
 
@@ -131,14 +135,14 @@ npm run eval:tool-prompt:codex -- --case memory-dev-preference-001 --model gpt-5
 | `V2` | `selection-calibrated` |
 | `V3` | `capability-pruned` |
 
-The runner writes both values and the effective Capability Signature into every `run-manifest.json`. Formal Task 1 runs disable automatic Skill extraction; V0 through V2 retain their frozen Prompt exposure, while V3 removes `skill_extract` through its production capability projection.
+The Pilot runner writes both values and the effective Capability Signature into every `run-manifest.json`. V0 through V2 retain their frozen Prompt exposure, while V3 removes `skill_extract` through its production capability projection.
 
-Run one real case through the required MemoryProxy route:
+Run one Mock-contract Pilot case through MemoryProxy forwarding:
 
 ```powershell
 npm run eval:tool-prompt:codex -- --case memory-dev-preference-001 --model gpt-5.6-luna --reasoning-effort high --verbosity medium --variant V0 --repeat 1 --provider-base-url http://127.0.0.1:8096/codex/tool-prompt-bench/v1
 ```
 
-Runtime files are written below `eval/tool-prompt-bench/runs/` and are git-ignored. A run contains the exact rendered prompt, Codex's audited complete prompt input, SHA-256 values, injection-token measurements, model usage, the Codex version and invocation manifest, raw Codex JSONL, stderr, correlated Mock trace, and evaluation result. The prompt audit fails before an LLM call if the benchmark block is missing or client skill instructions reappear. Authentication remains in the user's existing `CODEX_HOME`; the runner never copies or persists an authentication file.
+Runtime files are written below `eval/tool-prompt-bench/runs/` and are git-ignored. A run contains the rendered Pilot prompt, Codex's audited prompt input, hashes, injection-token measurements, complete model usage (input, cached input, cache-write input, output, and reasoning output), Codex version, raw JSONL, stderr, correlated Mock trace, and evaluation. Run, evaluation, score, and usage artifacts all retain `evaluationLayer=mock-contract` and `formalMetricEligible=false`. Missing or partial model usage makes the run `INFRASTRUCTURE_ERROR`; the campaign rejects it before scoring or aggregation. Authentication remains in the existing `CODEX_HOME`; the runner never copies or persists an authentication file or user-key value.
 
 For the complete dataset, fairness, isolation, metric, token, and manual-run protocol, see `EXPERIMENT-DESIGN.md`.

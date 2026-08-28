@@ -15,6 +15,7 @@ param(
   [string]$CodexHome = $(if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $env:USERPROFILE ".codex" }),
   [string]$ProviderBaseUrl = "http://127.0.0.1:8096/codex/tool-prompt-bench/v1",
   [string]$ProxyHealthUrl = "http://127.0.0.1:8096/health",
+  [string]$ExpectedCodexUpstream = "https://chatgpt.com/backend-api/codex",
   [ValidateRange(10000, 1800000)]
   [int]$TimeoutMs = 180000,
   [switch]$AllowHeldOutTest,
@@ -52,7 +53,7 @@ $caseIds = switch ($Scope) {
   "test" { @(Read-JsonLines (Join-Path $benchmarkRoot "cases/test.jsonl") | ForEach-Object { $_.caseId }) }
 }
 
-$campaignName = "{0}-{1}-{2}" -f (Get-Date -Format "yyyyMMdd-HHmmss"), $Scope, $Variant
+$campaignName = "pilot-{0}-{1}-{2}" -f (Get-Date -Format "yyyyMMdd-HHmmss"), $Scope, $Variant
 $campaignRoot = Join-Path $benchmarkRoot "runs/$campaignName"
 $commonArgs = @(
   "--model", $Model,
@@ -64,7 +65,7 @@ $commonArgs = @(
   "--out", $campaignRoot
 )
 if ([string]::IsNullOrWhiteSpace($ProviderBaseUrl)) {
-  throw "Formal benchmark runs must use MemoryProxy. ProviderBaseUrl cannot be empty."
+  throw "Mock-contract pilot runs must use MemoryProxy forwarding. ProviderBaseUrl cannot be empty."
 }
 $commonArgs += @("--provider-base-url", $ProviderBaseUrl)
 
@@ -72,12 +73,14 @@ Write-Host "Experiment plan only uses the existing CODEX_HOME; auth.json will no
 Write-Host "Scope=$Scope Cases=$($caseIds.Count) Repeats=$Repeats Model=$Model Reasoning=$ReasoningEffort Variant=$Variant"
 Write-Host "CODEX_HOME=$resolvedCodexHome"
 Write-Host "MemoryProxy=$ProviderBaseUrl"
+Write-Warning "This runner uses pre-rendered prompts and an isolated Mock Bridge. Its results are Pilot/contract evidence only and MUST NOT enter the formal Task 1 metrics."
 
 if ($PrepareOnly) {
   Write-Host "`nValidation command:"
   Write-Host "  $npmCommand run eval:tool-prompt:validate"
   Write-Host "`nRequired health check:"
   Write-Host "  Invoke-WebRequest $ProxyHealthUrl"
+  Write-Host "  If health reports tdaiAuth=enabled, set TDAI_EVAL_USER_KEY in this PowerShell process. Its value is not written to the run artifacts."
   Write-Host "`nCodex commands:"
   foreach ($repeat in 1..$Repeats) {
     foreach ($id in $caseIds) {
@@ -95,6 +98,19 @@ try {
     if ($health.StatusCode -lt 200 -or $health.StatusCode -ge 300) {
       throw "unexpected HTTP status $($health.StatusCode)"
     }
+    $healthBody = $health.Content | ConvertFrom-Json
+    if ($healthBody.toolPromptDiagnostic -ne "mock-contract-enabled") {
+      throw "Proxy does not advertise the required mock-contract bypass. Start it with start-benchmark-proxy.ps1."
+    }
+    if ($healthBody.codexUpstream.TrimEnd("/") -ne $ExpectedCodexUpstream.TrimEnd("/")) {
+      throw "Effective Codex upstream is '$($healthBody.codexUpstream)', expected '$ExpectedCodexUpstream'."
+    }
+    if ($healthBody.codexUpstreamAuth -ne "client-passthrough") {
+      throw "Effective Codex auth mode is '$($healthBody.codexUpstreamAuth)', expected client-passthrough."
+    }
+    if ($healthBody.tdaiAuth -eq "enabled" -and [string]::IsNullOrWhiteSpace($env:TDAI_EVAL_USER_KEY)) {
+      throw "TDAI auth is enabled but TDAI_EVAL_USER_KEY is not set. Set it only in this PowerShell process; the runner passes it as an environment-backed header and never writes its value."
+    }
   } catch {
     throw "MemoryProxy is not healthy at $ProxyHealthUrl. Start it before the benchmark. $($_.Exception.Message)"
   }
@@ -105,6 +121,8 @@ try {
   New-Item -ItemType Directory -Path $campaignRoot -Force | Out-Null
   $campaignManifest = [ordered]@{
     schemaVersion = "1.0"
+    evaluationLayer = "mock-contract"
+    formalMetricEligible = $false
     createdAt = (Get-Date).ToUniversalTime().ToString("o")
     scope = $Scope
     caseCount = $caseIds.Count
@@ -116,6 +134,10 @@ try {
     timeoutMs = $TimeoutMs
     codexHomeMode = "shared-no-copy"
     providerBaseUrl = if ($ProviderBaseUrl) { $ProviderBaseUrl } else { $null }
+    codexUpstream = $healthBody.codexUpstream
+    codexUpstreamAuth = $healthBody.codexUpstreamAuth
+    tdaiAuth = $healthBody.tdaiAuth
+    tdaiUserKeyHeaderConfigured = -not [string]::IsNullOrWhiteSpace($env:TDAI_EVAL_USER_KEY)
     caseIds = $caseIds
   }
   Write-Utf8NoBom (Join-Path $campaignRoot "campaign-manifest.json") ($campaignManifest | ConvertTo-Json -Depth 8)
@@ -127,6 +149,13 @@ try {
       & $npmCommand @runnerArgs
       if ($LASTEXITCODE -ne 0) { throw "Runner process failed for $id repeat $repeat." }
     }
+  }
+
+  $invalidRuns = Get-ChildItem -LiteralPath $campaignRoot -Recurse -Filter "evaluation.json" | Where-Object {
+    (Get-Content -LiteralPath $_.FullName -Raw | ConvertFrom-Json).state -eq "INFRASTRUCTURE_ERROR"
+  }
+  if ($invalidRuns.Count -gt 0) {
+    throw "$($invalidRuns.Count) infrastructure-invalid run(s) were rejected before scoring or usage aggregation."
   }
 
   $traceLines = Get-ChildItem -LiteralPath $campaignRoot -Recurse -Filter "trace.jsonl" |
@@ -141,12 +170,21 @@ try {
 
   $usageRows = Get-ChildItem -LiteralPath $campaignRoot -Recurse -Filter "usage.json" | Sort-Object FullName | ForEach-Object {
     $usage = Get-Content -LiteralPath $_.FullName -Raw | ConvertFrom-Json
+    if ($null -eq $usage.model) {
+      throw "Missing model usage in $($_.FullName)."
+    }
+    foreach ($field in @("inputTokens", "cachedInputTokens", "cacheWriteInputTokens", "outputTokens", "reasoningOutputTokens")) {
+      if ($null -eq $usage.model.$field) {
+        throw "Missing model usage field '$field' in $($_.FullName)."
+      }
+    }
     [ordered]@{
       runDirectory = Split-Path -Parent $_.FullName
       injectionTokens = $usage.injection.tokens
       injectionCharacters = $usage.injection.characters
       inputTokens = $usage.model.inputTokens
       cachedInputTokens = $usage.model.cachedInputTokens
+      cacheWriteInputTokens = $usage.model.cacheWriteInputTokens
       outputTokens = $usage.model.outputTokens
       reasoningOutputTokens = $usage.model.reasoningOutputTokens
     }
@@ -157,23 +195,23 @@ try {
     injectionTokenMean = ($usageRows | Measure-Object -Property injectionTokens -Average).Average
     inputTokenTotal = ($usageRows | Measure-Object -Property inputTokens -Sum).Sum
     cachedInputTokenTotal = ($usageRows | Measure-Object -Property cachedInputTokens -Sum).Sum
+    cacheWriteInputTokenTotal = ($usageRows | Measure-Object -Property cacheWriteInputTokens -Sum).Sum
     outputTokenTotal = ($usageRows | Measure-Object -Property outputTokens -Sum).Sum
     reasoningOutputTokenTotal = ($usageRows | Measure-Object -Property reasoningOutputTokens -Sum).Sum
   }
-  $campaignUsage = [ordered]@{ encoding = "o200k_base"; aggregate = $usageAggregate; runs = $usageRows }
+  $campaignUsage = [ordered]@{
+    evaluationLayer = "mock-contract"
+    formalMetricEligible = $false
+    encoding = "o200k_base"
+    aggregate = $usageAggregate
+    runs = $usageRows
+  }
   Write-Utf8NoBom (Join-Path $campaignRoot "campaign-usage.json") ($campaignUsage | ConvertTo-Json -Depth 8)
 
   & $npmCommand run eval:tool-prompt:score -- --traces (Join-Path $campaignRoot "traces.jsonl") --out (Join-Path $campaignRoot "scores.jsonl")
   if ($LASTEXITCODE -ne 0) { throw "Scoring failed." }
 
-  $invalidRuns = Get-ChildItem -LiteralPath $campaignRoot -Recurse -Filter "evaluation.json" | Where-Object {
-    (Get-Content -LiteralPath $_.FullName -Raw | ConvertFrom-Json).state -eq "INFRASTRUCTURE_ERROR"
-  }
-  if ($invalidRuns.Count -gt 0) {
-    throw "$($invalidRuns.Count) infrastructure-invalid run(s) were excluded. Inspect the campaign before continuing."
-  }
-
-  Write-Host "`nCampaign complete: $campaignRoot"
+  Write-Host "`nMock-contract Pilot campaign complete: $campaignRoot"
 } finally {
   Pop-Location
 }

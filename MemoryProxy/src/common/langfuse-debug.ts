@@ -188,7 +188,7 @@ export function buildRequestDebugMetadata(
       for (const [rawK, v] of Object.entries(opts.headers)) {
         const k = rawK.toLowerCase();
         // 跳过含敏感信息的 header
-        if (k === "authorization" || k === "x-api-key" || k === "cookie") continue;
+        if (k === "authorization" || k === "x-api-key" || k === "x-tdai-user-key" || k === "cookie") continue;
         if (!HEADER_PREFIX_WHITELIST.some((p) => k.startsWith(p))) continue;
         out[`header_${k}`] = truncate(String(v), STRING_TRUNC);
       }

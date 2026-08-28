@@ -63,6 +63,7 @@ const SKIP_REQUEST_HEADERS = new Set([
   "transfer-encoding",
   "connection",
   "x-tdai-user-key",
+  "x-tdai-eval-mode",
 ]);
 
 const SKIP_RESPONSE_HEADERS = new Set([
@@ -71,6 +72,42 @@ const SKIP_RESPONSE_HEADERS = new Set([
   "content-length",
   "connection",
 ]);
+
+export interface CodexRequestCredentials {
+  /** Provider credential that remains in Authorization/x-api-key for upstream. */
+  providerBearerToken: string;
+  /** TDAI credential used only for Proxy auth, Session Init and asset APIs. */
+  tdaiUserKey: string;
+}
+
+export function resolveCodexRequestCredentials(headers: Record<string, string>): CodexRequestCredentials {
+  const normalized = Object.fromEntries(Object.entries(headers).map(([name, value]) => [name.toLowerCase(), value]));
+  const providerBearerToken = extractBearerToken(normalized.authorization ?? "")
+    ?? normalized["x-api-key"]
+    ?? "";
+  return {
+    providerBearerToken,
+    tdaiUserKey: normalized["x-tdai-user-key"]?.trim() || providerBearerToken,
+  };
+}
+
+export interface CodexUpstreamResolution {
+  url: string;
+  authMode: "client-passthrough" | "configured-key";
+  /** Internal-only value; callers must never log or expose it. */
+  apiKeyOverride?: string;
+}
+
+/** Resolve Codex routing and auth together so health preflight matches forwarding. */
+export function resolveCodexUpstream(config: ProxyConfig): CodexUpstreamResolution {
+  const agentEntry = config.upstream.agents?.codex;
+  const apiKeyOverride = agentEntry ? agentEntry.apiKey : config.upstream.apiKey;
+  return {
+    url: agentEntry?.url || config.upstream.url,
+    authMode: apiKeyOverride ? "configured-key" : "client-passthrough",
+    ...(apiKeyOverride ? { apiKeyOverride } : {}),
+  };
+}
 
 // ── TDAI L0 helpers (对齐 anthropicHandler / handler 姿势) ───────────────────
 
@@ -174,6 +211,26 @@ export function extractCodexSessionId(
   return null;
 }
 
+/**
+ * The legacy 100-case model runner owns a pre-rendered prompt and a Mock
+ * Bridge. It is a pilot/contract surface, never a formal production metric.
+ * Its explicit opt-in bypass prevents Session Init or the production
+ * InjectionPipeline from adding a second prompt on the forwarding hop.
+ */
+export function isToolPromptMockContractRequest(
+  headers: Record<string, string>,
+  spaceId: string,
+  environment: NodeJS.ProcessEnv = process.env,
+): boolean {
+  return isToolPromptDiagnosticEnabled(environment)
+    && spaceId === "tool-prompt-bench"
+    && headers["x-tdai-eval-mode"] === "mock-contract";
+}
+
+export function isToolPromptDiagnosticEnabled(environment: NodeJS.ProcessEnv = process.env): boolean {
+  return environment.TDAI_TOOL_PROMPT_DIAGNOSTIC === "1";
+}
+
 // ── Default mode gate detection (exported for unit tests) ────────────────────
 
 /**
@@ -233,19 +290,19 @@ export function injectCodexAssets(
 
 // ── Upstream request helpers ─────────────────────────────────────────────────
 
-function buildUpstreamHeaders(
-  c: Context,
-  config: ProxyConfig,
+export function buildCodexUpstreamHeaders(
+  source: Headers,
+  apiKeyOverride?: string,
 ): Record<string, string> {
   const headers: Record<string, string> = {};
-  for (const [k, v] of c.req.raw.headers.entries()) {
+  for (const [k, v] of source.entries()) {
     if (!SKIP_REQUEST_HEADERS.has(k.toLowerCase())) {
       headers[k] = v;
     }
   }
   // Codex uses OpenAI protocol: inject Bearer token
-  if (config.upstream.apiKey) {
-    headers["authorization"] = `Bearer ${config.upstream.apiKey}`;
+  if (apiKeyOverride) {
+    headers["authorization"] = `Bearer ${apiKeyOverride}`;
     delete headers["x-api-key"];
   }
   return headers;
@@ -278,15 +335,18 @@ export async function handleCodexEndpoint(
   const startTime = new Date().toISOString();
   const path = c.req.path;
 
-  // ── 1. Auth ────────────────────────────────────────────────────────────────
-  const apiKey =
-    extractBearerToken(c.req.header("authorization") ?? c.req.header("Authorization") ?? "") ??
-    c.req.header("x-api-key") ??
-    "";
+  // Keep provider auth and TDAI identity separate. Official Codex auth stays
+  // in Authorization; x-tdai-user-key is consumed locally and never forwarded.
+  const headers: Record<string, string> = {};
+  for (const [k, v] of c.req.raw.headers.entries()) {
+    headers[k.toLowerCase()] = v;
+  }
+  const { tdaiUserKey } = resolveCodexRequestCredentials(headers);
 
+  // ── 1. Auth ────────────────────────────────────────────────────────────────
   const spaceId = extractSpaceIdFromPath(path) ?? "";
   const { userId, rejected: userKeyRejected, rejectReason } =
-    await verifyUserKey(apiKey, spaceId);
+    await verifyUserKey(tdaiUserKey, spaceId);
   if (userKeyRejected) {
     return c.json(
       { error: `Authentication failed: ${rejectReason ?? "unknown"}` },
@@ -294,7 +354,7 @@ export async function handleCodexEndpoint(
     );
   }
 
-  const keyId = userId || (apiKey ? apiKeyToKeyId(apiKey) : "unknown");
+  const keyId = userId || (tdaiUserKey ? apiKeyToKeyId(tdaiUserKey) : "unknown");
 
   // ── 2. Read body ───────────────────────────────────────────────────────────
   let body: Record<string, unknown>;
@@ -302,12 +362,6 @@ export async function handleCodexEndpoint(
     body = await c.req.json<Record<string, unknown>>();
   } catch {
     return c.json({ error: "Invalid JSON body" }, 400);
-  }
-
-  // ── 3. Extract headers as plain object ─────────────────────────────────────
-  const headers: Record<string, string> = {};
-  for (const [k, v] of c.req.raw.headers.entries()) {
-    headers[k.toLowerCase()] = v;
   }
 
   // ── DEBUG: dump request_user_input tool schema once so we can see codex's
@@ -350,7 +404,7 @@ export async function handleCodexEndpoint(
   const agentSource = "codex";
   const isStream = body.stream !== false;
 
-  const callerUserKey = apiKey || null;
+  const callerUserKey = tdaiUserKey || null;
 
   // ── 6b. Langfuse turn context (one trace = one turn) ────────────────────────
   // codex 的 turn 序号从 body.input[] 里"人类输入"数量推导（同 CC/CB 惯例；
@@ -375,6 +429,15 @@ export async function handleCodexEndpoint(
     routeTags: [],
     userQuery,
   };
+
+  // Pilot-only Mock contract route. The runner already supplied the selected
+  // variant as developer instructions, so running Session Init or production
+  // injection here would intercept or double-inject the request and invalidate
+  // even the pilot comparison. Formal Task 1 runs must not use this bypass.
+  if (isToolPromptMockContractRequest(headers, spaceId)) {
+    pipe.info("CODEX_TOOL_PROMPT_DIAGNOSTIC", "mock-contract request -> forwarding without Session Init or injection");
+    return forwardToUpstream(c, config, body, traceId, startTime, keyId, modelId, pipe, lf, null);
+  }
 
   // ── 7. Session-init state machine ──────────────────────────────────────────
   let sessionInfo: Record<string, unknown> | null | undefined;
@@ -454,7 +517,7 @@ export async function handleCodexEndpoint(
       const { getSessionStore, handleSessionInit, parsePresetIdentity } = await import("./session/index.js");
       const { getMetadataClient } = await import("./meta/client.js");
       const store = getSessionStore();
-      const metadataClient = getMetadataClient(config.coreSkill, spaceId, apiKey);
+      const metadataClient = getMetadataClient(config.coreSkill, spaceId, tdaiUserKey);
       const presetIdentity = parsePresetIdentity(config.sessionInit, headers);
 
       const compositeKey = `${agentSource}:${sessionKey}`;
@@ -533,7 +596,7 @@ export async function handleCodexEndpoint(
           },
           agentSource,
           metadataClient,
-          apiKey,
+          tdaiUserKey,
           spaceId,
           presetIdentity,
         );
@@ -751,7 +814,7 @@ export async function handleCodexEndpoint(
           config,
           spaceId,
           userId: userId || "",
-          apiKey: apiKey || "",
+          apiKey: tdaiUserKey,
           sessionInfo: sessionInfo as Record<string, unknown>,
           protocol: "responses",
           stream: isStream,
@@ -1080,19 +1143,10 @@ async function forwardToUpstream(
   // 对齐 anthropicHandler.ts:1029 的解析姿势。codex 通常需要单独指向支持
   // Responses API 的兼容层——部分 OpenAI 兼容上游只实现
   // messages/chat_completions，不支持 /responses，此处允许按 agent 覆盖。
-  const agentUpstreamEntry = config.upstream.agents?.["codex"];
-  const upstreamBase = agentUpstreamEntry?.url || config.upstream.url;
-  const upstreamUrl = joinUrl(upstreamBase, c.req.path);
-  const upstreamHeaders = buildUpstreamHeaders(c, config);
+  const upstream = resolveCodexUpstream(config);
+  const upstreamUrl = joinUrl(upstream.url, c.req.path);
+  const upstreamHeaders = buildCodexUpstreamHeaders(c.req.raw.headers, upstream.apiKeyOverride);
   upstreamHeaders["content-type"] = "application/json";
-  // 覆盖 apiKey 与 per-agent 策略一致：agentUpstreamEntry.apiKey 优先，
-  // 否则透传客户端 Bearer。
-  if (agentUpstreamEntry) {
-    if (agentUpstreamEntry.apiKey) {
-      upstreamHeaders["authorization"] = `Bearer ${agentUpstreamEntry.apiKey}`;
-    }
-    // else: 保留 c.req.header('authorization') 里的客户端 key 透传
-  }
 
   pipe.forwardStart(upstreamUrl);
 
