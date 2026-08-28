@@ -1,4 +1,5 @@
 import { TOOL_PROMPT_FAMILIES, type ToolPromptFamily } from "./types.js";
+import { parseCapabilitySignature } from "./runtime-contract.js";
 
 export interface ToolPromptSurfacePlan {
   activeFamilies: readonly ToolPromptFamily[];
@@ -31,21 +32,7 @@ export function coordinateToolPromptSurface(
 export function coordinateToolPromptSurfaceFromCapabilitySignature(
   capabilitySignature: string,
 ): ToolPromptSurfacePlan {
-  const fields = new Map(
-    capabilitySignature.split(";").map((part) => {
-      const separator = part.indexOf("=");
-      if (separator <= 0) return [part, ""] as const;
-      return [part.slice(0, separator), part.slice(separator + 1)] as const;
-    }),
-  );
-  const activeFamilies = TOOL_PROMPT_FAMILIES.filter((family) => {
-    const value = fields.get(family);
-    if (value !== "0" && value !== "1") {
-      throw new Error(
-        `invalid capability signature ${JSON.stringify(capabilitySignature)}: missing ${family}=0|1`,
-      );
-    }
-    return value === "1";
-  });
+  const state = parseCapabilitySignature(capabilitySignature);
+  const activeFamilies = TOOL_PROMPT_FAMILIES.filter((family) => state[family]);
   return coordinateToolPromptSurface(activeFamilies);
 }

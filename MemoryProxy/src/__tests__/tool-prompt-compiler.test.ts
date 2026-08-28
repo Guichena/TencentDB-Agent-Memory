@@ -14,7 +14,10 @@ import { MEMORY_BRIDGE_ALLOWED_SUBPATHS } from "../memory/memory-bridge.js";
 import { SKILL_BRIDGE_ALLOWED_SUBPATHS, SKILL_BRIDGE_WRITE_SUBPATHS } from "../skill/skill-bridge.js";
 import { renderKnowledgeToolsBlock } from "../injection/injectors/knowledge-tools-injector.js";
 import { wrapAvailableSkillsBlock } from "../injection/injectors/skill-injector.js";
-import { renderSkillToolsBlock } from "../injection/injectors/skill-tools-injector.js";
+import {
+  renderSkillToolsBlock,
+  SkillToolsInjector,
+} from "../injection/injectors/skill-tools-injector.js";
 import { MEMORY_TOOLS_GUIDE } from "../injection/injectors/tdai-profile-memory-injector.js";
 import { renderTdaiMemoryToolsBlock } from "../injection/injectors/tdai-tools-injector.js";
 import { prewarmAll } from "../injection/prewarm.js";
@@ -23,21 +26,29 @@ import { HookRegistryImpl } from "../injection/registry.js";
 import type { AnchorTarget, InjectionPoint, Protocol } from "../injection/types.js";
 import {
   buildCapabilitySignature,
+  CAPABILITY_PRUNING_INVENTORY,
   compileToolPrompt,
+  constrainCapabilitySignature,
   CONTRACT_CORRECTIONS,
   coordinateToolPromptSurface,
   coordinateToolPromptSurfaceFromCapabilitySignature,
   getRuntimeToolContracts,
   getToolPromptProfileLineage,
+  getVisibleRuntimeToolContracts,
+  lintCapabilityPrunedSurface,
   lintDuplicateSemanticUnits,
   lintSelectionPolicy,
   parseToolPromptProfile,
+  parseCapabilitySignature,
+  resolveSessionCapabilitySignature,
   SELECTION_POLICY_INVENTORY,
   SEMANTIC_UNIT_INVENTORY,
   toolPromptCacheIdentity,
   TOOL_PROMPT_PROFILES,
   type CompiledToolPromptProfile,
+  type CapabilitySurfaceBundle,
   type SelectionSurfaceBundle,
+  type ToolPromptCapabilityState,
 } from "../injection/tool-prompt/index.js";
 
 const CAPABILITY_SIGNATURE = buildCapabilitySignature({
@@ -74,6 +85,21 @@ const KNOWLEDGE_FIXTURE = [{
   created_at: "2026-08-28T00:00:00.000Z",
   updated_at: "2026-08-28T00:00:00.000Z",
 }];
+
+const KNOWLEDGE_CAPABILITY_FIXTURE = [
+  ...KNOWLEDGE_FIXTURE,
+  {
+    knowledge_id: "wiki-1",
+    type: "wiki" as const,
+    name: "Task 1 decisions",
+    summary: "Prompt optimization rationale and prior decisions",
+    service_url: "http://127.0.0.1:8421/v3",
+    team_id: "team-1",
+    user_id: null,
+    created_at: "2026-08-28T00:00:00.000Z",
+    updated_at: "2026-08-28T00:00:00.000Z",
+  },
+];
 
 function renderProductionFamilyBlocks(allowLlmWrite = false): {
   memory: string;
@@ -247,7 +273,7 @@ async function renderProviderParityPrompt(
   });
 }
 
-describe("tool prompt compiler C00-C04", () => {
+describe("tool prompt compiler C00-C05", () => {
   it("keeps legacy as the default and rejects unknown profile names", () => {
     expect(DEFAULT_CONFIG.injection.toolPromptProfile).toBe("legacy");
     expect(parseToolPromptProfile("capability-pruned")).toBe("capability-pruned");
@@ -265,12 +291,13 @@ describe("tool prompt compiler C00-C04", () => {
     ]);
   });
 
-  it("keeps completed ancestors frozen and isolates the C01 through C04 renderer boundaries", () => {
+  it("keeps completed ancestors frozen and isolates the C01 through C05 renderer boundaries", () => {
     const blocks = renderProductionFamilyBlocks(true);
     const correctedByFamily = new Map<string, string>();
     const protocolByFamily = new Map<string, string>();
     const semanticByFamily = new Map<string, string>();
     const selectionByFamily = new Map<string, string>();
+    const capabilityByFamily = new Map<string, string>();
 
     for (const profile of COMPILED_PROFILES) {
       for (const [family, content] of Object.entries(blocks) as Array<
@@ -317,7 +344,19 @@ describe("tool prompt compiler C00-C04", () => {
           expect(compiled.content).not.toBe(semanticByFamily.get(family));
           expect(compiled.units).toHaveLength(family === "memory" ? 4 : 1);
         } else {
-          expect(compiled.content).toBe(selectionByFamily.get(family));
+          capabilityByFamily.set(family, compiled.content);
+          if (family === "knowledge") {
+            expect(compiled.content).toBe(selectionByFamily.get(family));
+          } else {
+            expect(compiled.content).not.toBe(selectionByFamily.get(family));
+          }
+          expect(compiled.units).toHaveLength(family === "memory" ? 4 : 1);
+          expect(compiled.contractIds).toEqual(
+            getVisibleRuntimeToolContracts(CAPABILITY_SIGNATURE, family).map(
+              (contract) => contract.id,
+            ),
+          );
+          expect(compiled.specIds).toEqual(compiled.contractIds);
         }
       }
     }
@@ -383,6 +422,15 @@ describe("tool prompt compiler C00-C04", () => {
       .not.toContain("    use: ");
     expect(selectionSkill).toContain("all of its versions must be physically deleted");
     expect(selectionSkill).not.toContain("must be archived");
+
+    const capabilitySkill = capabilityByFamily.get("skill") ?? "";
+    expect(capabilitySkill).not.toContain('<tool name="skill_extract">');
+    expect(capabilitySkill).not.toMatch(
+      /<tool name="skill_(?:create|update|patch|delete|files_write|files_remove)">/,
+    );
+    expect(capabilityByFamily.get("memory")).toContain(
+      "- skill: missing reusable workflow instructions clearly matched by a listed/team skill;",
+    );
   });
 
   it("assigns every C03 duplicate semantic unit to exactly one retained owner", () => {
@@ -461,6 +509,173 @@ describe("tool prompt compiler C00-C04", () => {
     expect(skillListing).not.toContain("partially relevant");
     expect(bundle["memory-guide"]).toContain("## Memory constraints");
     expect(bundle["knowledge-tools"]).not.toContain("凡是需要跨文件");
+  });
+
+  it("projects the C05 prompt onto each production-supported capability matrix row", () => {
+    const rows: Array<{ id: string; state: ToolPromptCapabilityState }> = [
+      {
+        id: "full-readonly",
+        state: { memory: true, skill: true, knowledge: true, wiki: true, codeGraph: true, skillWrite: false, skillExtract: false },
+      },
+      {
+        id: "full-write-extract",
+        state: { memory: true, skill: true, knowledge: true, wiki: true, codeGraph: true, skillWrite: true, skillExtract: true },
+      },
+      {
+        id: "memory-only",
+        state: { memory: true, skill: false, knowledge: false, wiki: false, codeGraph: false, skillWrite: false, skillExtract: false },
+      },
+      {
+        id: "skill-readonly",
+        state: { memory: false, skill: true, knowledge: false, wiki: false, codeGraph: false, skillWrite: false, skillExtract: false },
+      },
+      {
+        id: "skill-write",
+        state: { memory: false, skill: true, knowledge: false, wiki: false, codeGraph: false, skillWrite: true, skillExtract: false },
+      },
+      {
+        id: "skill-extract",
+        state: { memory: false, skill: true, knowledge: false, wiki: false, codeGraph: false, skillWrite: false, skillExtract: true },
+      },
+      {
+        id: "wiki-only",
+        state: { memory: false, skill: false, knowledge: true, wiki: true, codeGraph: false, skillWrite: false, skillExtract: false },
+      },
+      {
+        id: "code-graph-only",
+        state: { memory: false, skill: false, knowledge: true, wiki: false, codeGraph: true, skillWrite: false, skillExtract: false },
+      },
+      {
+        id: "skill-and-wiki",
+        state: { memory: false, skill: true, knowledge: true, wiki: true, codeGraph: false, skillWrite: false, skillExtract: false },
+      },
+    ];
+    const listing = "<available_skills>\n- review: Review this repository\n</available_skills>";
+    const memory = renderProductionFamilyBlocks().memory;
+    const knowledge = renderKnowledgeToolsBlock(
+      KNOWLEDGE_CAPABILITY_FIXTURE,
+      "space-parity",
+      { sessionKey: "session-parity" },
+    );
+    if (!knowledge) throw new Error("capability knowledge fixture must render");
+
+    for (const { id, state } of rows) {
+      const signature = buildCapabilitySignature(state);
+      const bundle: CapabilitySurfaceBundle = {};
+      const compile = (
+        family: "memory" | "skill" | "knowledge",
+        surface: "memory-tools" | "memory-guide" | "skill-tools" | "knowledge-tools",
+        content: string,
+      ): string => compileToolPrompt({
+        profile: "capability-pruned",
+        family,
+        surface,
+        legacyUnits: [{ id: `${id}.${surface}`, kind: "legacy-body", content }],
+        capabilitySignature: signature,
+      }).content;
+
+      if (state.memory) {
+        bundle["memory-tools"] = compile("memory", "memory-tools", memory);
+        bundle["memory-guide"] = compile("memory", "memory-guide", MEMORY_TOOLS_GUIDE);
+      }
+      if (state.skill) {
+        const skillTools = renderSkillToolsBlock(
+          "http://127.0.0.1:8096",
+          state.skillWrite,
+          "session-parity",
+          "space-parity",
+        );
+        bundle["skill-tools"] = compile("skill", "skill-tools", skillTools);
+        bundle["skill-listing"] = wrapAvailableSkillsBlock(
+          listing,
+          "capability-pruned",
+          signature,
+        );
+        expect(bundle["skill-listing"]?.match(
+          /<available_skills>[\s\S]*?<\/available_skills>/,
+        )?.[0]).toBe(listing);
+      }
+      if (state.knowledge) {
+        bundle["knowledge-tools"] = compile("knowledge", "knowledge-tools", knowledge);
+      }
+
+      expect(() => lintCapabilityPrunedSurface(bundle, signature)).not.toThrow();
+      expect(Object.values(bundle).join("\n").match(/## Tool \/ no-tool gate/g))
+        .toHaveLength(1);
+    }
+
+    expect(new Set(CAPABILITY_PRUNING_INVENTORY.map((item) => item.id)).size)
+      .toBe(CAPABILITY_PRUNING_INVENTORY.length);
+  });
+
+  it("intersects the process signature with Session Init asset flags deterministically", async () => {
+    const base = buildCapabilitySignature({
+      memory: true,
+      skill: true,
+      knowledge: true,
+      wiki: true,
+      codeGraph: true,
+      skillWrite: true,
+      skillExtract: true,
+    });
+    const flags = {
+      chat_memory: false,
+      skill: true,
+      llm_wiki: false,
+      code_graph: true,
+    };
+    const expected = buildCapabilitySignature({
+      memory: false,
+      skill: true,
+      knowledge: true,
+      wiki: false,
+      codeGraph: true,
+      skillWrite: true,
+      skillExtract: true,
+    });
+    expect(resolveSessionCapabilitySignature(base, flags)).toBe(expected);
+    expect(resolveSessionCapabilitySignature(base, flags)).toBe(
+      constrainCapabilitySignature(base, {
+        memory: false,
+        skill: true,
+        wiki: false,
+        codeGraph: true,
+      }),
+    );
+    expect(parseCapabilitySignature(expected)).toMatchObject({
+      memory: false,
+      skill: true,
+      knowledge: true,
+      wiki: false,
+      codeGraph: true,
+    });
+
+    const injector = new SkillToolsInjector({
+      proxyBaseUrl: "http://127.0.0.1:8096",
+      allowLlmWrite: true,
+      toolPromptProfile: "capability-pruned",
+      capabilitySignature: base,
+    });
+    const blocks = await injector.prewarm!({
+      keyId: "capability-session",
+      userId: "user-parity",
+      agentSource: "codex",
+      spaceId: "space-parity",
+      sessionInfo: {
+        session_id: "session-parity",
+        space_id: "space-parity",
+        user_id: "user-parity",
+        team_id: "team-parity",
+        agent_id: "agent-parity",
+      },
+      agentDetail: null,
+      taskDetail: null,
+      assetCapabilities: flags,
+    });
+    expect(blocks).toHaveLength(1);
+    expect(blocks[0].content).not.toContain("- memory:");
+    expect(blocks[0].content).toContain("- knowledge: a matching code-graph resource");
+    expect(blocks[0].metadata?.cacheKey).toContain(expected);
   });
 
   it("keeps the C01 correction inventory unique and source-backed", () => {
@@ -675,7 +890,7 @@ describe("tool prompt compiler C00-C04", () => {
     });
   });
 
-  it("keeps C03 frozen and one provider-visible C04 result across descendants for every agent and task shape", async () => {
+  it("keeps C04 frozen and produces one provider-visible C05 result for every agent and task shape", async () => {
     const log = vi.spyOn(console, "log").mockImplementation(() => undefined);
     const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
     try {
@@ -694,8 +909,12 @@ describe("tool prompt compiler C00-C04", () => {
             withTask,
           );
           expect(selection).not.toEqual(semantic);
-          expect(await renderProviderParityPrompt(agent, "capability-pruned", withTask))
-            .toEqual(selection);
+          const capability = await renderProviderParityPrompt(
+            agent,
+            "capability-pruned",
+            withTask,
+          );
+          expect(capability).not.toEqual(selection);
         }
       }
     } finally {

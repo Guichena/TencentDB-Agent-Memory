@@ -38,6 +38,7 @@ import {
 } from "../../knowledge/core-client.js";
 import type { CoreSkillConfig } from "../../types.js";
 import { compileToolPrompt } from "../tool-prompt/compiler.js";
+import { resolveSessionCapabilitySignature } from "../tool-prompt/capability-pruned.js";
 import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
 import type { ToolPromptProfile } from "../tool-prompt/types.js";
 
@@ -370,6 +371,10 @@ export class KnowledgeToolsInjector implements InjectionHook {
       const legacyContent = renderKnowledgeToolsBlock(resources, injectionServiceId, telemetryContext);
       if (!legacyContent) return [];
       const profile = this.config.toolPromptProfile ?? "legacy";
+      const baseSignature = this.config.capabilitySignature ?? "unconfigured";
+      const capabilitySignature = profile === "capability-pruned"
+        ? resolveSessionCapabilitySignature(baseSignature, assetCapabilities)
+        : baseSignature;
       const content = profile === "legacy"
         ? legacyContent
           : compileToolPrompt({
@@ -381,14 +386,15 @@ export class KnowledgeToolsInjector implements InjectionHook {
                 kind: "legacy-body",
                 content: legacyContent,
               }],
-              capabilitySignature: this.config.capabilitySignature ?? "unconfigured",
+              capabilitySignature,
             }).content;
       return [{
         type: "text",
         content,
         metadata: {
           source: this.id,
-          cacheKey: `knowledge-tools-injector:${scope}`,
+          cacheKey: `knowledge-tools-injector:${scope}`
+            + (profile === "capability-pruned" ? `:${capabilitySignature}` : ""),
         },
       }];
     } catch (err) {

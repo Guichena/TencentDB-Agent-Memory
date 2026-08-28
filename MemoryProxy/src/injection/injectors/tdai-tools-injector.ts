@@ -35,6 +35,7 @@
 import type {
   AgentContext,
   AnchorTarget,
+  AssetCapabilityFlags,
   CacheStrategy,
   ContextBlock,
   HookPriority,
@@ -44,6 +45,7 @@ import type {
 import { HOOK_PRIORITY } from "../types.js";
 import { getTdaiIdentity } from "../../tdai/identity.js";
 import { compileToolPrompt } from "../tool-prompt/compiler.js";
+import { resolveSessionCapabilitySignature } from "../tool-prompt/capability-pruned.js";
 import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
 import type { ToolPromptProfile } from "../tool-prompt/types.js";
 
@@ -164,7 +166,7 @@ export class TdaiMemoryToolsInjector implements InjectionHook {
   }
 
   execute(ctx: AgentContext): ContextBlock[] {
-    const caps = ctx.metadata.custom?.assetCapabilities as { chat_memory?: boolean } | undefined;
+    const caps = ctx.metadata.custom?.assetCapabilities as AssetCapabilityFlags | undefined;
     if (caps?.chat_memory === false) return [];
     // 没识别身份 → 不注入（即便 LLM 调 curl，bridge 也会 401）
     const identity = getTdaiIdentity(ctx.metadata.custom);
@@ -173,16 +175,28 @@ export class TdaiMemoryToolsInjector implements InjectionHook {
       | Record<string, unknown>
       | undefined;
     const spaceId = typeof session?.space_id === "string" ? session.space_id : undefined;
-    return this.renderBlocks(identity.sessionId, spaceId);
+    return this.renderBlocks(identity.sessionId, spaceId, caps);
   }
 
   prewarm(input: PrewarmInput): ContextBlock[] {
     if (input.assetCapabilities?.chat_memory === false) return [];
-    return this.renderBlocks(input.sessionInfo.session_id, input.sessionInfo.space_id);
+    return this.renderBlocks(
+      input.sessionInfo.session_id,
+      input.sessionInfo.space_id,
+      input.assetCapabilities,
+    );
   }
 
-  private renderBlocks(sessionId: string, spaceId?: string): ContextBlock[] {
+  private renderBlocks(
+    sessionId: string,
+    spaceId?: string,
+    assetCapabilities?: AssetCapabilityFlags,
+  ): ContextBlock[] {
     const profile = this.cfg.toolPromptProfile ?? "legacy";
+    const baseSignature = this.cfg.capabilitySignature ?? "unconfigured";
+    const capabilitySignature = profile === "capability-pruned"
+      ? resolveSessionCapabilitySignature(baseSignature, assetCapabilities)
+      : baseSignature;
     const legacyContent = renderTdaiMemoryToolsBlock(this.cfg.proxyBaseUrl, sessionId, spaceId);
     const content = profile === "legacy"
       ? legacyContent
@@ -195,7 +209,7 @@ export class TdaiMemoryToolsInjector implements InjectionHook {
             kind: "legacy-body",
             content: legacyContent,
           }],
-          capabilitySignature: this.cfg.capabilitySignature ?? "unconfigured",
+          capabilitySignature,
         }).content;
     return [{
       type: "text",
@@ -203,7 +217,8 @@ export class TdaiMemoryToolsInjector implements InjectionHook {
       metadata: {
         source: this.id,
         sessionId,
-        cacheKey: "tdai-memory-tools-injector:tools",
+        cacheKey: "tdai-memory-tools-injector:tools"
+          + (profile === "capability-pruned" ? `:${capabilitySignature}` : ""),
       },
     }];
   }

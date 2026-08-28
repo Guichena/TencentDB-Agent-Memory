@@ -13,7 +13,8 @@ export interface ToolPromptProfileDefinition {
     | "contract-corrected"
     | "protocol-compact"
     | "semantic-compact"
-    | "selection-calibrated";
+    | "selection-calibrated"
+    | "capability-pruned";
 }
 
 const DEFINITIONS: Record<ToolPromptProfile, ToolPromptProfileDefinition> = {
@@ -41,7 +42,7 @@ const DEFINITIONS: Record<ToolPromptProfile, ToolPromptProfileDefinition> = {
   "capability-pruned": {
     id: "capability-pruned",
     parent: "selection-calibrated",
-    renderer: "selection-calibrated",
+    renderer: "capability-pruned",
   },
 };
 

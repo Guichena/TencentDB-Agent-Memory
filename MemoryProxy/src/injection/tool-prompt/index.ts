@@ -1,5 +1,12 @@
 export { compileToolPrompt, TOOL_PROMPT_COMPILER_VERSION } from "./compiler.js";
 export {
+  CAPABILITY_PRUNING_INVENTORY,
+  getVisibleRuntimeToolContracts,
+  lintCapabilityPrunedSurface,
+  resolveSessionCapabilitySignature,
+  type CapabilitySurfaceBundle,
+} from "./capability-pruned.js";
+export {
   applyContractCorrections,
   CONTRACT_CORRECTIONS,
   type ContractCorrection,
@@ -26,7 +33,9 @@ export {
 } from "./semantic-compact.js";
 export {
   buildCapabilitySignature,
+  constrainCapabilitySignature,
   getRuntimeToolContracts,
+  parseCapabilitySignature,
   RUNTIME_TOOL_CONTRACTS,
 } from "./runtime-contract.js";
 export {
