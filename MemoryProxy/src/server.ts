@@ -1,5 +1,6 @@
 /** Hono app factory — registers all routes. */
 
+import { randomUUID } from "node:crypto";
 import { Hono } from "hono";
 import { handleChatCompletions } from "./handler.js";
 import { handleAnthropicMessages } from "./anthropicHandler.js";
@@ -24,10 +25,16 @@ import type { ProxyConfig } from "./types.js";
 
 export interface CreateAppDeps {
   bridgeEntryObserver?: BridgeEntryObserver;
+  /** Deterministic test seam; production instances receive a fresh UUID. */
+  serverInstanceId?: string;
+  /** Deterministic test seam; production instances use their creation time. */
+  serverStartedAt?: string;
 }
 
 export function createApp(config: ProxyConfig, deps: CreateAppDeps = {}): Hono {
   const app = new Hono();
+  const serverInstanceId = deps.serverInstanceId ?? randomUUID();
+  const serverStartedAt = deps.serverStartedAt ?? new Date().toISOString();
 
   // Eagerly activate storage/bindingRepo so bridge-only requests (no main
   // /v1/messages hits yet) can still recover session state via L2 fallthrough
@@ -99,10 +106,14 @@ export function createApp(config: ProxyConfig, deps: CreateAppDeps = {}): Hono {
     const body = {
       status: degraded ? "degraded" : "ok",
       version: "0.2.0",
+      serverInstanceId,
+      serverStartedAt,
       upstream: config.upstream.url,
       codexUpstream: codexUpstream.url,
       codexUpstreamAuth: codexUpstream.authMode,
       tdaiAuth: isAuthEnabled() ? "enabled" : "disabled",
+      injectionEnabled: config.injection.enabled,
+      toolPromptProfile: config.injection.toolPromptProfile,
       opik: config.opik.enabled ? config.opik.url : "disabled",
       costGuard: config.costGuard.enabled ? "enabled" : "disabled",
       rateLimit: config.rateLimit.tpm > 0 || config.rateLimit.qpm > 0 ? "enabled" : "disabled",

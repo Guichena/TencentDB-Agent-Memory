@@ -3,7 +3,10 @@
 import { readFileSync } from "node:fs";
 import { load as yamlLoad } from "js-yaml";
 import type { CostGuardConfig, ProxyConfig, RawYamlConfig } from "./types.js";
-import { parseToolPromptProfile } from "./injection/tool-prompt/profiles.js";
+import {
+  parseToolPromptProfile,
+  type ToolPromptProfile,
+} from "./injection/tool-prompt/profiles.js";
 
 const DEFAULT_UPSTREAM = "https://llm-upstream.example.com/v2/chat/completions";
 
@@ -191,6 +194,8 @@ export interface CliOverrides {
   upstreamUrl?: string;
   /** Codex-only upstream override; preserves the client's provider auth. */
   codexUpstreamUrl?: string;
+  /** Invocation-only experiment selector; never rewrites the YAML file. */
+  toolPromptProfile?: ToolPromptProfile;
   langfuseHost?: string;
   logFile?: string;
   opikEnabled?: boolean;
@@ -397,7 +402,9 @@ export function buildConfig(overrides: CliOverrides = {}): ProxyConfig {
       enabled: yaml.injection?.enabled ?? DEFAULT_CONFIG.injection.enabled,
       injectors: yaml.injection?.injectors ?? DEFAULT_CONFIG.injection.injectors,
       toolPromptProfile: parseToolPromptProfile(
-        yaml.injection?.toolPromptProfile ?? DEFAULT_CONFIG.injection.toolPromptProfile,
+        overrides.toolPromptProfile
+          ?? yaml.injection?.toolPromptProfile
+          ?? DEFAULT_CONFIG.injection.toolPromptProfile,
       ),
       externalGatewayUrl: typeof yaml.injection?.externalGatewayUrl === "string" && yaml.injection.externalGatewayUrl.trim() !== ""
         ? yaml.injection.externalGatewayUrl.trim().replace(/\/$/, "")
@@ -596,6 +603,10 @@ export function parseArgv(argv: string[]): CliOverrides {
         break;
       case "--codex-upstream":
         overrides.codexUpstreamUrl = next;
+        i++;
+        break;
+      case "--tool-prompt-profile":
+        overrides.toolPromptProfile = parseToolPromptProfile(next);
         i++;
         break;
       case "--langfuse-host":
