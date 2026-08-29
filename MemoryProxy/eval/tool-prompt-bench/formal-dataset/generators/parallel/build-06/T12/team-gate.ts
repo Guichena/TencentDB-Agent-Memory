@@ -64,6 +64,15 @@ const skillSearchDistractors = positives.filter((item: any) => item.gold.family 
 });
 const expected = { cases: 40, pairs: 15, memoryPositive: 6, skillPositive: 6, knowledgePositive: 3, pairedNegative: 15, naturalNegative: 10 };
 const errors = [...schema.errors];
+const expectedVisibleSha = canonicalSha256({
+  teamId: "T12",
+  userId: "user-task1-t12-eval",
+  agentId: "agent-task1-t12-general",
+  assetIds: [...fragment.snapshotAssetIds].sort((left, right) => left.localeCompare(right)),
+});
+for (const item of fragment.publicCases) {
+  if (item.visibleAssetSetSha256 !== expectedVisibleSha) errors.push(`${item.caseId}: identity-aware visible asset hash mismatch`);
+}
 function verifyContentHashes(value: any, location: string): void {
   if (Array.isArray(value)) return value.forEach((entry, index) => verifyContentHashes(entry, `${location}[${index}]`));
   if (!value || typeof value !== "object") return;
