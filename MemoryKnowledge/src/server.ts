@@ -33,10 +33,15 @@ import {
   createKnowledgeTelemetry,
   createKnowledgeTelemetryMiddleware,
 } from "./clickhouse-telemetry.js";
+import type { KnowledgeToolsEntryObserver } from "./tools-entry-observer.js";
 
 const log = createLogger("server");
 
-export function createApp() {
+export interface CreateAppDeps {
+  toolsEntryObserver?: KnowledgeToolsEntryObserver;
+}
+
+export function createApp(deps: CreateAppDeps = {}) {
   const config = loadConfig();
   const knowledgeTelemetry = createKnowledgeTelemetry(config.clickhouse);
 
@@ -80,6 +85,7 @@ export function createApp() {
     wikiMgr: knowledgeModule.wikiMgr,
     cgService: knowledgeModule.cgService,
     instancePool: knowledgeModule.instancePool,
+    toolsEntryObserver: deps.toolsEntryObserver,
   }));
 
   // internal/* — control-plane endpoints (TMC / operator). Per-instance LLM routing.

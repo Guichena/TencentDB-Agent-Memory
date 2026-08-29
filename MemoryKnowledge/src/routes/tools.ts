@@ -19,12 +19,17 @@ import type { WikiSourceManager } from "../engines/wiki/index.js";
 import { executeTool as executeCodeTool } from "../engines/code/index.js";
 import { wrapOk, wrapError, isValidIdSegment } from "../api-helpers.js";
 import { isWikiId, isCodeGraphId } from "../store/ids.js";
+import {
+  observeKnowledgeToolsEntry,
+  type KnowledgeToolsEntryObserver,
+} from "../tools-entry-observer.js";
 
 export interface ToolsRouteDeps {
   wikiService: WikiService;
   wikiMgr: WikiSourceManager;
   cgService: CodeGraphService;
   instancePool: CodeGraphInstancePool;
+  toolsEntryObserver?: KnowledgeToolsEntryObserver;
 }
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -192,6 +197,7 @@ export function createToolsRoutes(deps: ToolsRouteDeps): Hono {
   // ── POST /tools/list ──
 
   app.post("/list", async (c) => {
+    await observeKnowledgeToolsEntry(c.req.raw, deps.toolsEntryObserver);
     const body = await c.req.json<Record<string, unknown>>();
     const serviceId = c.req.header("x-tdai-service-id");
     if (!isValidIdSegment(serviceId)) {
@@ -245,6 +251,7 @@ export function createToolsRoutes(deps: ToolsRouteDeps): Hono {
   // ── POST /tools/call ──
 
   app.post("/call", async (c) => {
+    await observeKnowledgeToolsEntry(c.req.raw, deps.toolsEntryObserver);
     const body = await c.req.json<Record<string, unknown>>();
     const serviceId = c.req.header("x-tdai-service-id");
     if (!isValidIdSegment(serviceId)) {

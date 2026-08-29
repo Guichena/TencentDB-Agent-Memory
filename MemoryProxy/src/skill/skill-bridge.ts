@@ -32,6 +32,7 @@ import { KvVersionPinRepo } from "./kv-version-pin-repo.js";
 import { getProxyStorage } from "../storage/factory.js";
 import { getMetadataClient } from "../meta/client.js";
 import type { ProxyConfig } from "../types.js";
+import { observeBridgeEntry, type BridgeEntryObserver } from "../bridge-entry-observer.js";
 import { emitBridgeToolCallTelemetry, emitBridgeRejectTelemetry, agentSourceFromSessionKey } from "../memory/bridge-telemetry.js";
 import { getCoreSkillClient, type CoreSkillClient } from "./core-client.js";
 
@@ -382,6 +383,7 @@ export interface SkillBridgeDeps {
    * (B) and already-injected skills (C) — see whitelist composition below.
    */
   coreClient?: CoreSkillClient;
+  bridgeEntryObserver?: BridgeEntryObserver;
 }
 
 /**
@@ -452,6 +454,7 @@ export function createSkillBridgeHandler(
   const fetcher = deps.fetcher ?? globalThis.fetch.bind(globalThis);
 
   return async (c: Context): Promise<Response> => {
+    await observeBridgeEntry(c.req.raw, "skill", deps.bridgeEntryObserver);
     const t0 = (deps.now ?? Date.now)();
 
     const path = new URL(c.req.url).pathname;
