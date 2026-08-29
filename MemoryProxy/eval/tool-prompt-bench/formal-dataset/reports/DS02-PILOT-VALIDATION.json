@@ -1,0 +1,44 @@
+{
+  "schema_version": "task1.formal_dataset_validation.v1",
+  "valid": true,
+  "errors": [],
+  "splits": [
+    "dev"
+  ],
+  "case_count": 10,
+  "team_case_counts": {
+    "T01": 10,
+    "T02": 0,
+    "T03": 0,
+    "T04": 0,
+    "T05": 0,
+    "T06": 0,
+    "T07": 0,
+    "T08": 0,
+    "T09": 0,
+    "T10": 0
+  },
+  "pair_count": 5,
+  "pairs_by_team": {
+    "T01": 5,
+    "T02": 0,
+    "T03": 0,
+    "T04": 0,
+    "T05": 0,
+    "T06": 0,
+    "T07": 0,
+    "T08": 0,
+    "T09": 0,
+    "T10": 0
+  },
+  "pair_integrity_error_count": 0,
+  "pair_integrity_errors": [],
+  "provider_leakage_count": 0,
+  "invalid_sequence_count": 0,
+  "missing_source_ref_count": 0,
+  "provider_sha256": "03f9aca397313fbdf296af121b3802326b6d55d47215d7687ef7ea334cc26cd2",
+  "snapshot_sha256": {
+    "dev": "84cf53372c436cbce8bd493c1d0e4c4391b9f8a76ac303b5f1e53dae2537e1f4",
+    "hidden_test": "2d4314a64f02ee29a276626bea918036dfe9c9cd4cdd15ca8b75c1ac02af7892"
+  }
+}

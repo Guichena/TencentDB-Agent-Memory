@@ -1,0 +1,18 @@
+{
+  "schema_version": "task1.ds02_pilot_authoring.v1",
+  "generated_at": "2026-08-29T18:10:00+08:00",
+  "contract_sha256": "da67389b9cebba62535b69ac6fe10807329b7c07237728ebfdf16b113926743b",
+  "fixture_sha256": "1aaf055129e473b8c64738bdbb74897b738e897d0c9b237ade640a558c33832f",
+  "t01_l0_count": 12,
+  "t01_skill_count": 2,
+  "t01_knowledge_count": 3,
+  "t01_case_count": 10,
+  "t01_pair_count": 5,
+  "pilot_pairs": [
+    "T01-PAIR-004",
+    "T01-PAIR-002",
+    "T01-PAIR-005"
+  ],
+  "model_runs": 0,
+  "luna_batches": 0
+}

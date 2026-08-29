@@ -45,19 +45,19 @@ describe("Task 1 DS00 identity registry", () => {
   });
 });
 
-describe("Task 1 DS01 T01 migration", () => {
-  it("migrates four pairs with source-grounded L0 and distinct listed/search Skill chains", () => {
+describe("Task 1 T01 staged construction", () => {
+  it("retains the DS01 migration while admitting the DS02 retrieval-pressure pilot", () => {
     const contractText = readFileSync(resolve(root, "registry/contracts/formal-v1.json"), "utf8");
     const contract = JSON.parse(contractText) as FormalWorldContract;
     expect(validateFormalWorldContract(contract)).toEqual({ valid: true, errors: [] });
     expect(contract.world.spaceId).toBe("space-task1-engineering");
     expect(contract.teams).toHaveLength(10);
-    expect(contract.publicCases.filter((item) => item.identity.teamId === "T01")).toHaveLength(8);
-    expect(contract.pairs).toHaveLength(4);
-    expect(compileFormalSplitInputs(contract, "dev")).toHaveLength(8);
+    expect(contract.publicCases.filter((item) => item.identity.teamId === "T01").length).toBeGreaterThanOrEqual(10);
+    expect(contract.pairs.length).toBeGreaterThanOrEqual(5);
+    expect(compileFormalSplitInputs(contract, "dev").length).toBeGreaterThanOrEqual(10);
     expect(compileFormalSplitInputs(contract, "hidden_test")).toHaveLength(0);
 
-    expect(contract.assets.l0Conversations).toHaveLength(6);
+    expect(contract.assets.l0Conversations).toHaveLength(12);
     for (const session of contract.assets.l0Conversations) {
       expect(session.messages.length).toBeGreaterThanOrEqual(12);
       expect(session.messages.length).toBeLessThanOrEqual(40);
@@ -65,6 +65,19 @@ describe("Task 1 DS01 T01 migration", () => {
     expect(contract.assets.l1Memories).toEqual([]);
     expect(contract.assets.l2Scenes).toEqual([]);
     expect(contract.assets.l3Profiles).toEqual([]);
+
+    expect(contract.pairs.map((item) => item.pairId)).toEqual(expect.arrayContaining([
+      "T01-PAIR-001",
+      "T01-PAIR-002",
+      "T01-PAIR-003",
+      "T01-PAIR-004",
+      "T01-PAIR-005",
+    ]));
+    expect(contract.assets.knowledge.map((item) => item.assetId).sort()).toEqual([
+      "cg-t01mypy1",
+      "cg-t01ujs01",
+      "wiki-t01rel01",
+    ]);
 
     const annotationById = new Map(contract.privateAnnotations.map((item) => [item.caseId, item]));
     const listed = annotationById.get("T01-SKILL-TARGET-001-P")!.gold;

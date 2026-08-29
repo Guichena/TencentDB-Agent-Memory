@@ -103,7 +103,9 @@ export function compileFormalCaseInput(
     agentId: input.identity.agentId,
     assetIds,
   });
-  if (JSON.stringify(assetIds) !== JSON.stringify([...frozenSet.assetIds].sort())) {
+  if (JSON.stringify(assetIds) !== JSON.stringify(
+    [...frozenSet.assetIds].sort((left, right) => left.localeCompare(right)),
+  )) {
     throw new Error(`Formal compiler: resolved visible assets differ from frozen snapshot for ${caseId}`);
   }
   if (frozenSet.sha256 !== actualSha256 || input.visibleAssetSetSha256 !== actualSha256) {
