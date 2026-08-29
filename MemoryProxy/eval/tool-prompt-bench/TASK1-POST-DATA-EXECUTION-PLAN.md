@@ -1,19 +1,21 @@
 # Task 1 数据冻结后的执行计划
 
-状态日期：2026-08-29
+状态日期：2026-08-30
 
 适用任务：Proxy 系统提示词注入优化
 
-本计划从正式数据建设完成后开始执行。执行前默认以下条件已经成立：
+本计划从正式数据建设完成后开始执行。执行前必须以当前仓库和 Tag 重新证明以下条件，不得只引用本文的状态描述：
 
-- 五个数据建设任务已经完成 T01 至 T10。
+- 全部并行数据建设任务已经完成 T01 至 T16。
 - `THREAD-00-INTEGRATION.md` 已完成分支验收和数据集成。
-- Dev 160 条、Hidden 240 条、全集 400 条均通过正式 validator。
-- `formal-v1` contract、provider input、private Gold、snapshot 和全部 canonical hash 已冻结。
-- annotated Tag `task1-data-formal-v1` 已创建，且集成 worktree 干净。
+- Dev 240 条、Hidden 400 条、全集 640 条均通过正式 validator；Pair 共 240 对，其中 Dev 90 对、Hidden 150 对。
+- `formal-v1` contract、provider input、Measurement-v2 private Gold/Pair overlay、snapshot 和全部 canonical hash 已冻结。
+- 纠正后的 annotated Tag `task1-data-formal-v1.1` 已创建，且它解引的提交包含完整 DS06 overlay，数据集成 worktree 干净。
 - 数据构造阶段没有运行 V0 至 V3，也没有根据模型得分修改 Query、上下文或 Gold。
 
-若任一条件不成立，停止本计划，回到数据验收任务。不要用 Pilot 数据或未冻结 staging 代替 `formal-v1`。
+若任一条件不成立，停止本计划，回到数据验收任务。不要用 Pilot 数据、未冻结 staging、`task1-data-core-formal-v1` 或旧 `task1-data-formal-v1` 代替 `task1-data-formal-v1.1`。后两个 Tag 即使存在，也必须被 R02 拒绝。
+
+数据线 DS06 的四个 overlay 检查统一称为 `DS06-G1` 至 `DS06-G4`（private Gold v2、Pair v2、overlay validator、provider exclusion/compatibility）。它们不是本文的真实链路 R01、R02、R03 或 R04-FINAL，不得用数据报告中旧的 `R01_*`…`R04_*` 字段声称 real-chain Gate 已通过。
 
 ## 交付目标
 
@@ -59,24 +61,27 @@ task1-c07-pass
   └─ codex/task1-real-chain-adapter-v1
        └─ Gate R01
             └─ codex/task1-experiment-integration-v1
-                 ├─ 导入 task1-data-formal-v1
+                 ├─ 导入 task1-data-formal-v1.1
                  ├─ Gate R02：正式合同与 Runner
                  ├─ Gate R03：资产恢复
-                 ├─ Gate R04：真实链路无模型验证
-                 ├─ E01：12 条 Smoke
-                 ├─ E02：Dev 160 条
-                 └─ E03：Hidden 240 条
-                      └─ codex/task1-final-profile
-                           └─ 报告与 PR
+                 └─ codex/task1-measurement-v2-integration
+                      ├─ non-squash 汇合 M0 / M1 / M2
+                      ├─ Gate R04-FINAL：最终生产链路无模型验证
+                      ├─ 冻结 task1-measurement-v2 / task1-candidate-base-v1
+                      ├─ E01：12 条 Smoke
+                      ├─ E02：Dev 240 条
+                      └─ E03：Hidden 400 条
+                           └─ codex/task1-final-profile
+                                └─ 报告与 PR
 ```
 
-每个阶段通过 Gate 后再进入下一阶段。已经用于实验的 commit、Tag、数据 revision 和结果目录不得改写。
+每个阶段通过 Gate 后再进入下一阶段。已经用于实验的 commit、Tag、数据 revision 和结果目录不得改写。如果在 M2 合入前为调试跑过类似的真实链路检查，只能标记为 `R04a-debug`；它不能代替 M2 生产代码合入后的 `R04-FINAL`。
 
 ## R01：移植真实链路 Adapter 基础设施
 
 ### 目标
 
-从旧实验分支移植仍然有效的生产请求边界、入口 observer 和停止控制，形成与数据加载解耦的 Adapter。本阶段只使用手工合同 fixture 验证链路，不导入正式 case，不生成正式指标。`formal-v1` 的 provider loader、snapshot loader 和 private Gold scorer 在 R02 接入。
+从旧实验分支移植仍然有效的生产请求边界、入口 observer 和停止控制，形成与数据加载解耦的 Adapter。本阶段只使用手工合同 fixture 做无模型验证，不导入正式 case，不生成正式指标。R02 只接入 `formal-v1` provider/private loader；private Gold 的正式评分只在后续 Measurement Integration 中由 M0/M1 执行。
 
 ### 分支与 worktree
 
@@ -138,13 +143,13 @@ MemoryProxy/package.json
 - Adapter 接受标准化的 Query、历史上下文、Space、Team、Agent、Task 和 session identity，不直接依赖旧 World 类型。
 - Adapter 不读取 split、Gold 或 snapshot，不承担数据加载和评分。
 - R02 的正式 loader 负责把 `formal-v1` provider case 映射到这个标准化输入。
-- private Gold 只能由 R02 scorer 读取，Adapter 的类型和产物中不得出现 Gold 字段。
+- private Gold 只能由 Measurement Integration 的 scorer 读取，Adapter 的类型和产物中不得出现 Gold 字段。
 - Adapter 经过真实 Session Init、生产 InjectionPipeline 和真实入口 observer。
 - Mock Bridge 只保留合同测试用途，不产生正式指标。
 
 ### 停止边界
 
-Positive case 在模型完成目标资产所需的最短合法 TDAI 链路后停止，不继续执行 Coding。多步 case 必须允许入口发现、读取或查询等完整链路。
+本阶段只冻结停止控制器的事件与状态转移合同。Positive case 在后续正式运行到达目标资产所需的最短合法 TDAI 链路后停止，不继续执行 Coding；多步 case 允许发现、读取或查询等完整链路。R01 的固定事件重放只能证明控制器按合同工作，绝不证明模型会触发正确工具或因 Prompt 而产生了正确因果链。
 
 No-tool case 在以下任一事件发生后停止：
 
@@ -170,7 +175,6 @@ Attempt 表示模型有调用意图，Entry Call 表示请求真实到达工具�
 MemoryProxy/eval/tool-prompt-bench/real-chain-adapter.ts
 MemoryProxy/eval/tool-prompt-bench/codex-runner.ts
 MemoryProxy/eval/tool-prompt-bench/schema.ts
-MemoryProxy/eval/tool-prompt-bench/score.ts
 MemoryProxy/eval/tool-prompt-bench/README.md
 MemoryProxy/src/__tests__/real-chain-adapter.test.ts
 MemoryProxy/src/__tests__/tool-prompt-bench.test.ts
@@ -189,7 +193,20 @@ MemoryProxy 持久配置
 用户 CODEX_HOME 和认证文件
 ```
 
-### Gate R01
+### Gate R01（两段式 no-model）
+
+**R01-A：纯合同与停止状态机**
+
+- 不启动 MemoryProxy 外部服务，使用手工 fixture 覆盖 Memory、Skill、Knowledge、No-tool、多步、Malformed、Infrastructure Error 和 Timeout。
+- 验证 `TDAI_ATTEMPT` 与 `ENTRY_CALL` 分层、最短 terminal 停止、No-tool 首次误尝试停止和基础设施错误不进行为分母。
+- 这一段只验证软件合同，不发出 Provider 请求，不得使用“有效调用率已通过”等模型行为表述。
+
+**R01-B：生产请求边界的 in-process capture**
+
+- 请求经过真实 Session Init、prewarm 和生产 InjectionPipeline，在 capture upstream 前停止，不启动模型。
+- 使用同一标准身份和手工合同请求，分别回放到真实的 Memory/Skill bridge 与 Knowledge tools 入口；observer 记录 accepted/rejected、HTTP/基础设施结果和有序 entry，但不得把这段回放伪装成模型产生的 Attempt。
+- 验证只有一个 `<tdai_injections>`、身份头正确、runner 未预注入 TDAI 内容、未激活 Mock bypass，且本地 observer 能关联 run/case/session 和有序事件。
+- Adapter、fixture 和 Gate 产物必须不含 `formalMetricEligible=true`；它们仍然不是正式模型结果。
 
 在 `MemoryProxy` 目录运行：
 
@@ -200,7 +217,7 @@ npm run eval:tool-prompt:capture-freeze
 git diff --check
 ```
 
-Gate 要求：
+R01 总 Gate 要求：
 
 - Adapter 测试覆盖 Memory、Skill、Knowledge、No-tool、多步链路和 Infrastructure Error。
 - private Gold 不进入 Provider 输入。
@@ -217,7 +234,7 @@ Gate 要求：
 
 ### 目标
 
-把通过 R01 的代码与 `task1-data-formal-v1` 合入一个可运行构建，统一正式数据的 split、case loader、runner、scorer、结果目录和冻结清单。
+把通过 R01 的代码与纠正后的 `task1-data-formal-v1.1` 接入一个可运行构建，统一正式数据的 split、provider/private loader、runner 输入、raw evidence 产物、结果目录和冻结清单。R02 不实现或修改 M0/M1 scorer，不拥有 `formalMetricEligible`。
 
 ### 分支
 
@@ -238,14 +255,16 @@ D:\projects\TencentDB-Agent-Memory-task1-experiment-v1
 先读取并验证：
 
 ```powershell
-git rev-parse 'task1-data-formal-v1^{commit}'
-git show --stat --oneline 'task1-data-formal-v1^{commit}'
+git rev-parse 'task1-data-formal-v1.1^{commit}'
+git show --stat --oneline 'task1-data-formal-v1.1^{commit}'
 git status --short --branch -uall
 ```
 
-记录数据 commit、Tag object、contract SHA、Dev/Hidden provider SHA、private Gold SHA 和 snapshot SHA。不要从可变分支名读取正式数据。
+如果 `task1-data-formal-v1.1` 不存在、不是 annotated Tag、解引提交未包含完整 DS06 overlay，或数据 worktree 不干净，R02 立即停止。`task1-data-core-formal-v1` 和旧 `task1-data-formal-v1` 在 R02 中都是 rejected input，不得因为其名称接近而 fallback。
 
-数据分支与代码分支来自不同工作线，不能未经审计直接合并整个历史。导入前列出 `task1-data-formal-v1` 相对共同祖先的文件，按以下范围接入：
+记录数据 commit、Tag object、contract SHA、Dev/Hidden provider SHA、private Gold v2 SHA、Pair v2 SHA、21 个 Runtime contracts SHA 和 Dev/Hidden snapshot SHA。不要从可变分支名读取正式数据。本文不预写未冻结的 commit 或 hash，以 Tag 实际解引和 manifest 校验结果为准。
+
+数据分支与代码分支来自不同工作线，不能未经审计直接合并整个历史。导入前列出 `task1-data-formal-v1.1` 相对共同祖先的文件，按以下范围接入：
 
 ```text
 MemoryProxy/eval/tool-prompt-bench/formal-dataset/**
@@ -265,17 +284,18 @@ MemoryProxy/eval/tool-prompt-bench/worlds/formal-provenance.ts
 
 当前 `run-benchmark.ps1` 和 `codex-runner.ts` 仍包含旧 Pilot 的 `dev/test`、100 条清单和旧 case loader。改为：
 
-- `dev` 对应正式 160 条。
-- `hidden_test` 对应正式 240 条。
+- `dev` 对应正式 240 条和 90 个 Pair。
+- `hidden_test` 对应正式 400 条和 150 个 Pair。
 - `case` 允许按正式 case id 单条运行。
 - `smoke` 使用预登记的 12 条 Dev case。
 - `hidden_test` 必须显式传入 held-out 授权参数。
 - 增加 `dataset_revision` 和 dataset commit。
 - 从正式 provider JSONL 读取模型输入。
-- scorer 从 private Gold JSONL 读取 Gold。
-- 每次运行前恢复对应 snapshot。
+- private loader 只把 Gold v2、Pair v2 和 Runtime contracts 交给后续 Measurement Integration，绝不序列化到 Provider 请求。
+- runner 只保存 R03 snapshot receipt 和预运行绑定；R02 的 `-PrepareOnly` 不执行资产恢复。
 - 每个 case 使用 fresh session。
 - 相同 case 的所有 Variant 使用同一动态资产和同一 provider 输入。
+- R02 的 manifest、loader 和 PrepareOnly 产物必须不包含 `formalMetricEligible=true`；最终资格由 Measurement Integration 基于真实 run evidence 判定。
 
 现有 Variant 映射保持：
 
@@ -313,6 +333,8 @@ evaluation.json
 asset-check.json
 ```
 
+`evaluation.json` 和正式 `asset-check.json` 只在 Measurement Integration 与 R04-FINAL 通过后的真实运行中产生。R02 `-PrepareOnly` 只生成命令、路径和不含 Gold 的 manifest。
+
 `run-manifest.json` 必须记录：
 
 ```text
@@ -322,6 +344,7 @@ contract_sha256
 provider_input_sha256
 private_gold_sha256
 snapshot_sha256
+pair_contract_sha256
 code_commit
 prompt_freeze_commit
 variant_id
@@ -336,6 +359,8 @@ session_id
 started_at
 finished_at
 ```
+
+R02 不能预填尚不存在的 Measurement 或 R04-FINAL hash。真实 campaign 的最终 manifest 在 R04-FINAL 通过后再追加 `measurement_v2_commit`、`real_chain_gate_sha256` 和 `candidate_base_commit`，且必须取自实际 Tag/文件解引结果。
 
 ### Token 和 cache 字段
 
@@ -372,20 +397,23 @@ git diff --check
 Gate 要求：
 
 - 代码 freeze 和数据 freeze 都能由 Tag 解析到固定提交。
-- 正式 400 条都能被 runner 枚举，Dev 160、Hidden 240。
+- R02 的数据 Tag 精确为 `task1-data-formal-v1.1`，且旧 `task1-data-formal-v1` 和 `task1-data-core-formal-v1` 都会被负向测试拒绝。
+- 正式 640 条都能被 runner 枚举，Dev 240、Hidden 400；Pair 固定为 Dev 90、Hidden 150。
 - provider input 与 private Gold 完全分离。
+- private Gold v2、Pair v2、21 个 Runtime contracts 与 snapshot 都与同一 corrected Tag/manifest 绑定。
 - 六个 Variant 的静态 Prompt 仍与冻结清单一致。
 - `-PrepareOnly` 不读取、复制或改写 `auth.json`。
 - 默认模型为 Luna，推理强度为 High。
 - 没有模型调用，没有容器副作用，没有正式结果文件。
+- R02 不计算 ECR/TSR/PairExact，不决定 terminal，不产生 `formalMetricEligible=true`。
 
-通过后创建 `EXPERIMENT-FREEZE-MANIFEST.json`，记录所有代码、数据、Prompt、runner、scorer 和命令 hash。
+通过后创建 `EXPERIMENT-FREEZE-MANIFEST.json`，记录所有代码、数据、Prompt、runner、loader/evidence interface 和命令 hash。
 
 ## R03：恢复真实资产
 
 ### 目标
 
-通过项目现有数据面接口把 `formal-v1` snapshot 恢复到本地 Memory、Skill 和 Knowledge 服务。恢复脚本只操作 Task 1 使用的冻结 Space 和数据 revision。
+通过项目现有数据面接口把 `task1-data-formal-v1.1` 绑定的 `formal-v1` snapshot 恢复到本地 Memory、Skill 和 Knowledge 服务。恢复脚本只操作 Task 1 使用的冻结 Space 和数据 revision。R03 只验证恢复、可见性、绑定和哈希恒等性，不评价资产正文是否“好”、是否能帮助完成最终 Coding 任务。
 
 恢复内容：
 
@@ -414,11 +442,11 @@ archive write-back
 1. 校验 snapshot、provider 和 contract hash。
 2. 清理同一 Task 1 revision 的旧测试资产。
 3. 导入 Dev snapshot。
-4. 用只读接口核对所有 id、数量、内容 hash、listing 和 binding。
+4. 用只读接口核对所有 id、数量、canonical snapshot hash、listing、visible-assets hash 和 binding；hash 只用于证明输入一致，不作资产质量分数。
 5. 保存 receipt。
 6. 重复清理与恢复。
 7. 比较两次资产集合和 canonical hash。
-8. 对 Hidden snapshot 重复相同步骤，但不打开 Hidden Query 和 Gold 给 Prompt 开发会话。
+8. Hidden snapshot 仅在 Dev Final 和 Hidden campaign 命令已冻结后，由单独 sealed lane 重复相同步骤；Prompt 开发会话不得打开 Hidden Query 或 Gold。R03 的 Dev Gate 不以提前恢复 Hidden 为通过条件。
 
 receipt 至少包含：
 
@@ -443,14 +471,44 @@ verification_status
 - 每个搜索池达到正式数据合同规定的干扰数量。
 - 没有残留上次运行新增的 Memory、Skill、session 或 Knowledge 状态。
 - 没有写入非 Task 1 revision 的数据。
+- 没有资产语义质量、最终回答或 Coding 成功率检查。
 
 失败时归类为资产恢复问题，不修改 Prompt 或 Gold。
 
-## R04：真实 MemoryProxy 无模型 Gate
+## M-INT：Measurement-v2 Integration
+
+### 目标与顺序
+
+R03 通过后，从实验集成提交创建 `codex/task1-measurement-v2-integration`。按 `M0 -> M1 -> M2` 的依赖顺序做 non-squash 汇合，保留每个来源提交、merge commit 和验证结果；不得把三项压成一个无法追溯的提交，也不得在汇合时改 Prompt、Query、Gold、Pair 或 snapshot。
+
+- M0：实现最短充分工具决策链的 terminal/entry scorer，并把首动作与完整链路拆开。
+- M1：实现 Pair v2 的配对统计、工具/不工具决策与工具家族选择统计。
+- M2：接入 usage、隔离和 cache telemetry，并包含 Measurement-v2 所需的生产 `InjectionPipeline`、adapter/handler metadata 修正。
+
+Measurement Integration 是 `formalMetricEligible` 的唯一 owner：只有它能在汇总真实模型 run evidence 时组装最终资格；R01 fixture、R02 loader/manifest、R03 restore receipt、M0/M1/M2 的单项 Gate 和 R04-FINAL 都必须保持 `false` 或不提供该字段。M0/M1 只定义和验证评分合同，不能把 synthetic replay 或无模型结果标成正式指标。
+
+### Gate M-INT
+
+- M0、M1、M2 均从已审计来源提交按固定顺序 non-squash 汇合，来源 SHA 与 merge SHA 写入清单。
+- M0 的 terminal 判定只评价是否到达正确工具决策链，不评价工具返回的资产正文、最终答案或 Coding 是否完成。
+- M1 使用 `task1-data-formal-v1.1` 的 private Gold v2、Pair v2 和 21 个 Runtime contracts；这些 private 字段不进入 Provider 输入、Prompt 或 Langfuse Prompt。
+- M2 的 usage 字段保持 Provider 原始语义，cache telemetry 与工具行为指标分栏保存。
+- 汇合后复跑代码、合同、provider-exclusion 和 private-loader 测试；任何 Prompt hash、数据 hash 或 snapshot hash 变化都停止。
+- 此时仍未运行模型，不产生正式分数，也不创建 `task1-measurement-v2` 或 `task1-candidate-base-v1` Tag。
+
+## 三条正式隔离 lane
+
+三条 lane 分开建清单和收据，不得把“fresh session”写成 snapshot 已恢复或 cache 已冷启动的替代证明：
+
+1. **Session/local-state lane**：每个 case 使用新的 session、context、run namespace 和本地 trace 目录；不得继承上一 case 的消息、工具 attempts、本地会话文件或写回状态。
+2. **Snapshot/asset lane**：同一配对 case 的所有 Variant 绑定同一冻结 snapshot、visible-assets hash 和 restore receipt；运行前后核对 Memory、Skill、Knowledge 只读状态，且不把资产内容质量作为 Task 1 指标。
+3. **Provider-cache lane**：只记录 Provider 实际返回的 input、cached-input/cache-write 等 usage 和稳定前缀；fresh session 不等于 cold cache。行为主实验保持既定交错顺序，cache 诊断若需要 warm/cold 对照则单列 campaign，不与工具调用分数混算。
+
+## R04-FINAL：M2 后真实 MemoryProxy 无模型 Gate
 
 ### 目标
 
-证明正式请求会经过生产链路，且 runner、身份、注入、observer 和停止边界不会污染指标。
+只在包含 M0、M1、M2，特别是 M2 生产代码修改的最终集成提交上，证明正式输入能经过生产链路，且 loader、runner、身份、注入、observer 和停止边界的连接没有污染指标。M2 前的同类检查统一记为 `R04a-debug`，不得冒充或替代 R04-FINAL。
 
 链路：
 
@@ -464,23 +522,16 @@ Auth
 -> observer trace
 ```
 
-每个 Team 至少抽取：
+这一阶段不让模型作决策。使用 loader 枚举、身份/可见性探针、合同重放和固定工具调用完成三层覆盖：
 
-- 1 条 Memory Positive。
-- 1 条 Skill Positive。
-- 1 条 Knowledge Positive。
-- 1 条 No-tool Negative。
-
-这一阶段不让模型作决策。使用合同重放和固定工具调用验证：
-
-- Space、Team、Agent、Task 解析正确。
-- 每个请求只注入一次 `<tdai_injections>`。
-- L3、L2 index、Skill listing 和 Knowledge metadata 与 snapshot 一致。
+- loader 必须枚举正式 640 条：Dev 240、Hidden 400；Pair 240 对：Dev 90、Hidden 150，不得漏项、重号或跨 split。
+- T01 至 T16 每个 Team 至少运行一个生产身份与可见性探针；总体覆盖 Memory、Skill、Knowledge 和 No-tool，但不读取 Hidden Query/Gold 来调 Prompt。
+- 21 个 Runtime contracts 全部通过生产只读入口重放，覆盖单步、多步、停止边界和 malformed/over-call 记录形状。
+- Space、Team、Agent、Task 解析正确，每个请求只注入一次 `<tdai_injections>`。
+- L3、L2 index、Skill listing 和 Knowledge metadata 的 canonical/visible hash 与冻结 snapshot 一致；这只证明输入身份与可见性，不评价资产内容质量。
 - 静态工具描述来自指定 Variant 的 production renderer。
-- observer 能关联 run id、case id、session id 和有序 attempts。
-- 入口参数符合生产协议。
-- 运行前后资产 hash 不变。
-- No-tool case 的 runner 不会自行制造 TDAI Attempt。
+- observer 能关联 run id、case id、session id 和有序 attempts，入口参数符合生产协议。
+- 运行前后资产 hash 不变，No-tool replay 的 runner 不会自行制造 TDAI Attempt。
 - Langfuse 不可用时，本地 trace 仍完整，模型输入不发生变化。
 
 运行：
@@ -491,11 +542,11 @@ npm run eval:tool-prompt:d0:test
 npm run eval:tool-prompt:test
 ```
 
-通过后冻结 `REAL-CHAIN-NO-MODEL-GATE.json`。此后修改 Adapter、runner、scorer、snapshot restore 或生产注入代码，都必须重新运行 R04。
+R04-FINAL 的固定 replay 只能证明链路与观测合同，不证明模型会主动调用、选对工具或完成工具决策链；其产物必须保持 `formalMetricEligible=false`。通过后冻结 `REAL-CHAIN-NO-MODEL-GATE.json`，绑定精确的代码、数据、Measurement Integration、Prompt、snapshot 和 640-case loader hash，然后才在同一通过提交上创建 annotated `task1-measurement-v2` 与 `task1-candidate-base-v1`。此后修改 Adapter、loader、runner、scorer、snapshot restore、M2 生产代码或生产注入代码，都必须重新运行 R04-FINAL 并创建新候选 revision。
 
 ## E01：用户手动运行 12 条 Smoke
 
-只有 R01 至 R04 全部通过，才允许调用模型。
+只有 R01、R02、R03、Measurement Integration 和 R04-FINAL 全部通过，才允许调用模型。
 
 ### 固定设置
 
@@ -527,7 +578,7 @@ Smoke 只判断链路和产物是否完整，不据此选择 Final。失败时�
 
 Gate：12 条均产生完整 manifest、Prompt、events、entry trace、usage、evaluation 和 asset check，且运行前后 snapshot hash 不变。
 
-## E02：Dev 160 条逐版本评测
+## E02：Dev 240 条逐版本评测
 
 ### 运行顺序
 
@@ -554,7 +605,8 @@ case 4: B, A
 - 每次使用 fresh session。
 - 模型、推理强度、verbosity 和超时一致。
 - 除 Variant profile 外，不改变 system、developer、messages 或工具可见性。
-- 不携带上一 case 的 Memory、缓存写入或本地会话状态。
+- 不携带上一 case 的消息、session、本地 trace 或资产写回状态；冻结 snapshot 保持只读。
+- Provider cache 不承诺逐 case 清空，只按实际 usage 记录，并由交错顺序平衡；需要 cold/warm 对照时进入单独 cache 诊断 campaign，不混入行为主指标。
 - 基础设施错误重跑时使用同一 Variant 和输入，原失败记录保留。
 - 不根据阶段分数修改数据、Gold、scorer 或已冻结 Prompt。
 
@@ -597,7 +649,7 @@ Complete Chain Success Rate
 
 编号更高不构成入选理由。
 
-## E03：Hidden 240 条冻结评测
+## E03：Hidden 400 条冻结评测
 
 Hidden 只运行：
 
@@ -707,7 +759,7 @@ PR 包含：
 - RuntimeToolContract、ToolPromptSpec、PromptUnit 和 Compiler。
 - V0 至 V3 profile。
 - Final profile 选择与回退配置。
-- formal-v1 Adapter、runner、scorer 和 observer。
+- formal-v1 Adapter、runner 和 observer，以及 Measurement-v2 的 M0/M1 scorer 与 M2 telemetry/isolation 集成。
 - Token、usage、hash 和 cache 记录。
 - 相关测试、Gate、复现命令和已知限制。
 
@@ -736,7 +788,7 @@ feat(proxy-prompt): select final evaluated profile
 
 出现以下情况时停止当前阶段：
 
-- `task1-code-freeze` 或 `task1-data-formal-v1` 解引用发生变化。
+- `task1-code-freeze` 或纠正后的 `task1-data-formal-v1.1` 解引用发生变化。
 - Prompt、provider、private Gold 或 snapshot hash 与冻结清单不一致。
 - 同一个 case 的不同 Variant 使用了不同动态资产或上下文。
 - runner 把 Infrastructure Error 计为漏调或误调。
@@ -752,7 +804,7 @@ feat(proxy-prompt): select final evaluated profile
 
 满足以下条件后，Task 1 才算完成：
 
-- `formal-v1` 数据、代码 freeze、Final profile 和实验结果都有不可变 commit 或 Tag。
+- `task1-data-formal-v1.1`、代码 freeze、`task1-measurement-v2`、`task1-candidate-base-v1`、Final profile 和实验结果都有不可变 commit 或 annotated Tag。
 - 正式实验经过真实 MemoryProxy 链路。
 - Dev 与 Hidden 的主指标、Token 和 cache 数据完整。
 - 有效调用率、误调用率、工具选择正确率和注入 Token 均有优化前后对比。
