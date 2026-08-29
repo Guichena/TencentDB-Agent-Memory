@@ -125,7 +125,7 @@ export type NormalizedOperationV2 =
     kind: "invalid";
     explicitValue?: string;
     selectorValues: readonly string[];
-    reason: "missing_selector" | "unrecognized_selector";
+    reason: "missing_selector" | "non_string_selector" | "unrecognized_selector";
   };
 
 export type ChainFailureLayerV2 =

@@ -308,6 +308,27 @@ function firstCompleteFailureLayer(
   return null;
 }
 
+function firstPrerequisiteArgumentOrBindingFailure(
+  attempts: readonly NormalizedTdaiAttemptV2[],
+  match: SequenceMatch,
+): "arguments" | "binding" | null {
+  const terminalIndex = terminalStepIndex(match.sequence);
+  for (let stepIndex = 0; stepIndex < terminalIndex; stepIndex += 1) {
+    const step = match.sequence.steps[stepIndex];
+    const attempt = attempts[match.positions[stepIndex]];
+    if (!attempt.matchedRuntimeContractIds.includes(step.runtimeContractId)) continue;
+    if (!matchesArguments(attempt, step)) return "arguments";
+    if (!matchesBindingsAtPositions(
+      attempt,
+      stepIndex,
+      attempts,
+      match.sequence,
+      match.positions,
+    )) return "binding";
+  }
+  return null;
+}
+
 function findSequenceMatch(
   attempts: readonly NormalizedTdaiAttemptV2[],
   sequence: AllowedChainSequenceV2,
@@ -530,6 +551,20 @@ export function scoreCaseChain(input: ScoreCaseChainInputV2): CaseChainScoreV2 {
   const acceptedTerminalHorizonPosition = acceptedTerminalHorizonMatch === null
     ? null
     : terminalPosition(acceptedTerminalHorizonMatch);
+  const blockedPrerequisiteFailures = acceptedTerminalHorizonPosition === null
+    ? []
+    : sequenceMatches(attempts, gold.allowedSequences, "terminal_horizon")
+      .filter((candidate) => (
+        terminalPosition(candidate) === acceptedTerminalHorizonPosition
+        && !allBarrierIndices.some((index) => index < terminalPosition(candidate))
+      ))
+      .flatMap((match) => {
+        const layer = firstPrerequisiteArgumentOrBindingFailure(attempts, match);
+        return layer === null ? [] : [{ match, layer }];
+      });
+  const blockedSequenceIds = new Set(blockedPrerequisiteFailures.map(({ match }) => (
+    match.sequence.sequenceId
+  )));
   const prefixLength = acceptedTerminalHorizonPosition !== null
     ? acceptedTerminalHorizonPosition + 1
     : Math.min(attempts.length, gold.attemptBudget);
@@ -557,7 +592,7 @@ export function scoreCaseChain(input: ScoreCaseChainInputV2): CaseChainScoreV2 {
   );
   const completeMatch = earliestSequenceMatch(
     evaluationPrefix,
-    gold.allowedSequences,
+    gold.allowedSequences.filter((sequence) => !blockedSequenceIds.has(sequence.sequenceId)),
     "complete",
     prefixBarrierIndices,
   );
@@ -588,10 +623,15 @@ export function scoreCaseChain(input: ScoreCaseChainInputV2): CaseChainScoreV2 {
   const toolSplContribution = completeChainSuccess
     ? shortestAllowedLength / Math.max(shortestAllowedLength, evaluationPrefix.length)
     : 0;
-  const completeFailureMatch = acceptedTerminalHorizonMatch ?? selectionMatch;
-  const completeFailureLayer = completeFailureMatch === null
-    ? null
-    : firstCompleteFailureLayer(evaluationPrefix, completeFailureMatch);
+  const blockingPrerequisiteFailure = [...blockedPrerequisiteFailures]
+    .sort((left, right) => compareSequenceMatches(left.match, right.match))[0] ?? null;
+  const completeFailureMatch = blockingPrerequisiteFailure?.match
+    ?? acceptedTerminalHorizonMatch
+    ?? selectionMatch;
+  const completeFailureLayer = blockingPrerequisiteFailure?.layer
+    ?? (completeFailureMatch === null
+      ? null
+      : firstCompleteFailureLayer(evaluationPrefix, completeFailureMatch));
 
   return {
     evaluationSchemaVersion: 2,

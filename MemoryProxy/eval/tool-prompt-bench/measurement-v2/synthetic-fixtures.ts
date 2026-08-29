@@ -376,6 +376,37 @@ export const KNOWLEDGE_BRANCH_CONTRACTS = [{
   acceptedStatusCodes: [200],
 }] as const satisfies readonly RuntimeToolContractV2[];
 
+export const KNOWLEDGE_NONE_OPERATION_CONTRACTS = [{
+  contractId: "knowledge-none-operation-contract",
+  family: "knowledge",
+  tool: "knowledge_tools_call",
+  endpoint: "/tools/call",
+  method: "POST",
+  operation: { kind: "none" },
+  acceptedStatusCodes: [200],
+}, KNOWLEDGE_BRANCH_CONTRACTS[2]] as const satisfies readonly RuntimeToolContractV2[];
+
+export const KNOWLEDGE_NONE_OPERATION_GOLD = {
+  evaluationSchemaVersion: 2,
+  caseId: "knowledge-none-operation",
+  expectation: "tool",
+  attemptBudget: 1,
+  allowedSequences: [{
+    sequenceId: "knowledge-none-operation",
+    steps: [{
+      stepId: "call",
+      family: "knowledge",
+      tool: "knowledge_tools_call",
+      endpoint: "/tools/call",
+      method: "POST",
+      operation: { kind: "none" },
+      bindings: [],
+      runtimeContractId: "knowledge-none-operation-contract",
+      terminal: true,
+    }],
+  }],
+} as const satisfies PrivateChainGoldV2;
+
 export const KNOWLEDGE_BRANCH_GOLD = {
   evaluationSchemaVersion: 2,
   caseId: "knowledge-second-branch",

@@ -22,15 +22,15 @@ M0 does **not** emit or own `formalMetricEligible`. Measurement-v2 Integration m
 
 - Source: `synthetic-fixtures.ts`
 - Canonicalization: raw UTF-8 file bytes
-- Bytes: `14795`
-- SHA-256: `611985055db9421111ae38076ad5d1d73fbb2b1e60e8723afea957482a0f92dc`
+- Bytes: `15720`
+- SHA-256: `aab4f994b9fb8aaacbd840977fc651823223aace44c0f3de7a1a219fe2b2bd53`
 - Freeze assertion: `__tests__/artifacts.test.ts`
 
 ## No-model Gate results
 
 | Gate | Result |
 |---|---|
-| Focused M0 Vitest (`vitest .../measurement-v2/vitest.config.ts`) | 52/52 passed |
+| Focused M0 Vitest (`vitest .../measurement-v2/vitest.config.ts`) | 61/61 passed |
 | Measurement-v2 strict TypeScript check (`tsc -p .../measurement-v2/tsconfig.json`) | passed |
 | Existing Pilot v1 (`npm run eval:tool-prompt:test`) | 30/30 passed; files unchanged |
 | V0–V3 capture freeze (`npm run eval:tool-prompt:capture-freeze`) | command passed; prompt inventory unchanged |
@@ -42,17 +42,24 @@ M0 does **not** emit or own `formalMetricEligible`. Measurement-v2 Integration m
 
 The capture command rewrote only historical gate-document SHA values because of worktree line-ending normalization. Those existing values were restored exactly; the final diff contains no code-freeze, Prompt, Variant, runner, adapter, config, data, evaluator, or score change.
 
+## P1 TDD repair record
+
+- Operation selector RED: focused scorer run exited `1`; all five present non-string selector cases (`42`, `null`, object, array, boolean) failed because they incorrectly produced TSR/ECR/Strict success. Missing-selector and pure-none controls passed.
+- Operation selector GREEN: the same focused scorer suite passed `55/55` after present non-string selectors became an explicit invalid normalization state.
+- Prerequisite retry RED: focused scorer run exited `1`; two exact cases failed because corrected prerequisite args/binding retries incorrectly produced ECR success, non-zero ToolSPL, and no failure layer.
+- Prerequisite retry GREEN: the same focused scorer suite passed `57/57` after complete matches with the earliest same-sequence prerequisite args/binding failure at the accepted terminal horizon were blocked while Qi remained true.
+
 ## Synthetic behavior coverage
 
 - Positive no-call and single-step success.
 - Wrong family, endpoint, Knowledge operation, and Gold-relevant arguments.
 - Exact referenced RuntimeToolContract acceptance, contract 4xx, provider 5xx, and timeout.
-- Runtime operation-selector/body agreement, distinct none/value/conflict/invalid normalization, conflicting explicit operation rejection, and multiple selector-path resolution.
+- Runtime operation-selector/body agreement, distinct none/value/conflict/invalid normalization, conflicting explicit operation rejection, present non-string selector rejection, genuinely missing selector and pure-none controls, and multiple selector-path resolution.
 - Memory, Skill, and Knowledge multi-step chains with prior-output binding.
 - A second legal Knowledge sequence with branch-local operation, argument, and binding predicates.
 - Earliest binding-valid terminal and branch-order-independent matching, including overlapping exact legal sequences.
 - ECR/Strict separation for pre-terminal duplicate/unexpected/over-budget attempts.
-- A terminal call whose own args/binding are invalid can be repaired, but the first terminal with valid own args/binding and exact contract acceptance freezes the horizon; prerequisite args/binding failures and their earliest failure layer cannot be washed out by a later complete retry.
+- A terminal call whose own args/binding are invalid can be repaired, but the first terminal with valid own args/binding and exact contract acceptance freezes the horizon; prerequisite args/binding failures and their earliest failure layer cannot be washed out by a later complete retry before or after that terminal.
 - Forbidden wrong-family and typed wrong-terminal barriers; a genuinely premature accepted terminal cannot be repaired later, while a later barrier cannot erase an already-reached Qi terminal.
 - `terminalAttemptIndex` identifies the accepted terminal horizon (including when an earlier Qi terminal was contract-rejected), otherwise the scored complete/Qi terminal, and never points beyond a failed evaluation horizon.
 - Attempt indexes use executor-bound ordinals even when unbound raw facts precede a bound attempt; normalizer and scorer share one JSON-path implementation.

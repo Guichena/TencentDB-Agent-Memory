@@ -3,6 +3,8 @@ import { scoreCaseChain } from "../scorer.js";
 import {
   KNOWLEDGE_BRANCH_CONTRACTS,
   KNOWLEDGE_BRANCH_GOLD,
+  KNOWLEDGE_NONE_OPERATION_CONTRACTS,
+  KNOWLEDGE_NONE_OPERATION_GOLD,
   KNOWLEDGE_SECOND_BRANCH_SUCCESS_TRACE,
   MEMORY_MULTI_STEP_CONTRACTS,
   MEMORY_MULTI_STEP_GOLD,
@@ -438,6 +440,109 @@ describe("Measurement v2 public case-chain scorer", () => {
     });
   });
 
+  it.each([
+    ["number", 42],
+    ["null", null],
+    ["object", { nested: "lookup_symbols" }],
+    ["array", ["lookup_symbols"]],
+    ["boolean", true],
+  ] as const)("treats a present non-string %s operation selector as invalid", (_label, selector) => {
+    const score = scoreCaseChain({
+      observation: {
+        evaluationSchemaVersion: 2,
+        caseId: KNOWLEDGE_NONE_OPERATION_GOLD.caseId,
+        runId: `run-knowledge-non-string-selector-${_label}`,
+        variantId: "synthetic",
+        rawTraceStatus: "complete",
+        attempts: [{
+          attemptId: `attempt-knowledge-non-string-selector-${_label}`,
+          executorBound: true,
+          family: "knowledge",
+          tool: "knowledge_tools_call",
+          endpoint: "/tools/call",
+          method: "POST",
+          arguments: { tool_name: selector },
+          status: 200,
+          response: { ok: true },
+        }],
+      },
+      gold: KNOWLEDGE_NONE_OPERATION_GOLD,
+      runtimeContracts: KNOWLEDGE_NONE_OPERATION_CONTRACTS,
+    });
+
+    expect(score).toMatchObject({
+      firstActionSelectionCorrect: false,
+      terminalSelectionCorrect: false,
+      completeChainSuccess: false,
+      strictChainExact: false,
+      terminalAttemptIndex: null,
+      toolSplContribution: 0,
+      failureLayer: "wrong_operation",
+    });
+  });
+
+  it("keeps a genuinely missing selector on the mixed identity as none", () => {
+    const score = scoreCaseChain({
+      observation: {
+        evaluationSchemaVersion: 2,
+        caseId: KNOWLEDGE_NONE_OPERATION_GOLD.caseId,
+        runId: "run-knowledge-missing-selector",
+        variantId: "synthetic",
+        rawTraceStatus: "complete",
+        attempts: [{
+          attemptId: "attempt-knowledge-missing-selector",
+          executorBound: true,
+          family: "knowledge",
+          tool: "knowledge_tools_call",
+          endpoint: "/tools/call",
+          method: "POST",
+          arguments: {},
+          status: 200,
+          response: { ok: true },
+        }],
+      },
+      gold: KNOWLEDGE_NONE_OPERATION_GOLD,
+      runtimeContracts: KNOWLEDGE_NONE_OPERATION_CONTRACTS,
+    });
+
+    expect(score).toMatchObject({
+      terminalSelectionCorrect: true,
+      completeChainSuccess: true,
+      strictChainExact: true,
+    });
+  });
+
+  it("does not interpret an undeclared selector-like field under a pure none contract", () => {
+    const score = scoreCaseChain({
+      observation: {
+        evaluationSchemaVersion: 2,
+        caseId: KNOWLEDGE_NONE_OPERATION_GOLD.caseId,
+        runId: "run-knowledge-pure-none-selector-like-field",
+        variantId: "synthetic",
+        rawTraceStatus: "complete",
+        attempts: [{
+          attemptId: "attempt-knowledge-pure-none-selector-like-field",
+          executorBound: true,
+          family: "knowledge",
+          tool: "knowledge_tools_call",
+          endpoint: "/tools/call",
+          method: "POST",
+          arguments: { tool_name: 42 },
+          status: 200,
+          response: { ok: true },
+        }],
+      },
+      gold: KNOWLEDGE_NONE_OPERATION_GOLD,
+      runtimeContracts: [KNOWLEDGE_NONE_OPERATION_CONTRACTS[0]],
+    });
+
+    expect(score).toMatchObject({
+      terminalSelectionCorrect: true,
+      completeChainSuccess: true,
+      strictChainExact: true,
+    });
+  });
+
   it("checks every matching contract operation path instead of trusting the first string path", () => {
     const score = scoreCaseChain({
       observation: {
@@ -859,6 +964,39 @@ describe("Measurement v2 public case-chain scorer", () => {
     });
   });
 
+  it("does not let a corrected prerequisite wash out earlier invalid arguments before the accepted terminal", () => {
+    const [prerequisite, terminal] = MEMORY_MULTI_STEP_SUCCESS_TRACE.attempts;
+    const score = scoreCaseChain({
+      observation: {
+        ...MEMORY_MULTI_STEP_SUCCESS_TRACE,
+        runId: "run-memory-corrected-prerequisite-args-before-terminal",
+        attempts: [{
+          ...prerequisite,
+          attemptId: "attempt-scenario-list-earliest-bad-args",
+          arguments: {},
+        }, {
+          ...prerequisite,
+          attemptId: "attempt-scenario-list-corrected-args",
+        }, terminal],
+      },
+      gold: MEMORY_MULTI_STEP_GOLD,
+      runtimeContracts: MEMORY_MULTI_STEP_CONTRACTS,
+    });
+
+    expect(score).toMatchObject({
+      observedAttemptCount: 3,
+      evaluationPrefixAttemptCount: 3,
+      terminalAttemptIndex: 2,
+      terminalSelectionCorrect: true,
+      completeChainSuccess: false,
+      strictChainExact: false,
+      positiveOvercall: true,
+      matchedSequenceId: null,
+      toolSplContribution: 0,
+      failureLayer: "arguments",
+    });
+  });
+
   it("reports the accepted horizon terminal instead of an earlier contract-rejected Qi terminal", () => {
     const score = scoreCaseChain({
       observation: {
@@ -938,6 +1076,44 @@ describe("Measurement v2 public case-chain scorer", () => {
       completeChainSuccess: false,
       strictChainExact: false,
       positiveOvercall: false,
+      matchedSequenceId: null,
+      toolSplContribution: 0,
+      failureLayer: "binding",
+    });
+  });
+
+  it("does not let a corrected prerequisite wash out an earlier binding failure before the accepted terminal", () => {
+    const [list, readBridge, readPrerequisite, terminal] = (
+      MEMORY_PREREQUISITE_CHAIN_SUCCESS_TRACE.attempts
+    );
+    const score = scoreCaseChain({
+      observation: {
+        ...MEMORY_PREREQUISITE_CHAIN_SUCCESS_TRACE,
+        runId: "run-memory-corrected-prerequisite-binding-before-terminal",
+        attempts: [list, {
+          ...readBridge,
+          attemptId: "attempt-prerequisite-read-bridge-earliest-bad-binding",
+          arguments: { path: "deployment/invented.md" },
+        }, {
+          ...readBridge,
+          attemptId: "attempt-prerequisite-read-bridge-corrected-binding",
+        }, readPrerequisite, terminal],
+      },
+      gold: MEMORY_PREREQUISITE_CHAIN_GOLD,
+      runtimeContracts: [
+        ...MEMORY_MULTI_STEP_CONTRACTS,
+        ...SYNTHETIC_RUNTIME_CONTRACTS,
+      ],
+    });
+
+    expect(score).toMatchObject({
+      observedAttemptCount: 5,
+      evaluationPrefixAttemptCount: 5,
+      terminalAttemptIndex: 4,
+      terminalSelectionCorrect: true,
+      completeChainSuccess: false,
+      strictChainExact: false,
+      positiveOvercall: true,
       matchedSequenceId: null,
       toolSplContribution: 0,
       failureLayer: "binding",

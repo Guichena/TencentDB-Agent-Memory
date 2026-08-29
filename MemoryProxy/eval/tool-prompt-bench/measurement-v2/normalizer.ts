@@ -28,6 +28,11 @@ function normalizedOperation(
   const operationContracts = baseContracts.filter((contract) => (
     contract.operation.kind === "argument"
   ));
+  const hasNonStringSelector = operationContracts.some((contract) => {
+    if (contract.operation.kind !== "argument") return false;
+    const value = readJsonPath(attempt.arguments, contract.operation.path);
+    return value !== undefined && typeof value !== "string";
+  });
   const selectorValues = [...new Set(operationContracts.flatMap((contract) => {
     if (contract.operation.kind !== "argument") return [];
     const value = readJsonPath(attempt.arguments, contract.operation.path);
@@ -39,6 +44,15 @@ function normalizedOperation(
       ? [contract.operation.value]
       : []
   )))];
+
+  if (hasNonStringSelector) {
+    return {
+      kind: "invalid",
+      explicitValue: attempt.operation,
+      selectorValues,
+      reason: "non_string_selector",
+    };
+  }
 
   if (attempt.operation !== undefined) {
     if (operationContracts.length === 0) {
