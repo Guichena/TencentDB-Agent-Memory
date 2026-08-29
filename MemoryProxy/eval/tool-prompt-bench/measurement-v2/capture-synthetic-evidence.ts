@@ -6,9 +6,11 @@ import { get_encoding } from "tiktoken";
 import { AnthropicAdapter } from "../../../src/injection/adapters/anthropic.js";
 import { ClaudeCodeProfile } from "../../../src/injection/agents/claude-code/index.js";
 import { InjectionPipeline } from "../../../src/injection/pipeline.js";
+import { isInjectionInfrastructureError } from "../../../src/injection/errors.js";
 import { HookRegistryImpl } from "../../../src/injection/registry.js";
 import type { NormalizeProviderUsageInput } from "./provider-usage.js";
 import {
+  assessPairedIsolationEvidence,
   buildM2EligibilityEvidence,
   buildRunIsolationEvidence,
   buildTokenLedger,
@@ -20,8 +22,10 @@ const SHA = {
   caseInput: "1".repeat(64),
   comparisonGroup: "2".repeat(64),
   providerRequest: "3".repeat(64),
+  providerRequestB: "7".repeat(64),
   snapshot: "4".repeat(64),
   visibleAssets: "5".repeat(64),
+  staticPrompt: "6".repeat(64),
 } as const;
 
 function sha256(text: string): string {
@@ -157,12 +161,14 @@ const providerFixtureInputs: Array<{ fixtureId: string; input: NormalizeProvider
 
 interface MetadataParityCase {
   caseId: string;
-  outcome: "injected_with_parity" | "hook_failed_closed";
-  markerCount: number;
-  markerOrderSha256: string;
+  outcome: "injected_with_parity" | "pipeline_infrastructure_failure";
+  forwardableProviderRequestProduced: boolean;
+  infrastructureErrorCode: "INJECTION_METADATA_PARITY_FAILURE" | null;
+  markerCount: number | null;
+  markerOrderSha256: string | null;
   expectedMarkerOrderSha256: string;
-  modelVisibleTextSha256: string;
-  expectedModelVisibleTextSha256: string;
+  modelVisibleTextSha256: string | null;
+  expectedModelVisibleTextSha256: string | null;
   status: "pass";
 }
 
@@ -212,25 +218,53 @@ async function captureMetadataCase(input: {
   const originalError = console.error;
   console.log = () => undefined;
   console.error = () => undefined;
-  let result: Record<string, unknown>;
+  let result: Record<string, unknown> | undefined;
+  let failure: unknown;
   try {
-    result = await pipeline.process({
-      model: "synthetic-model",
-      system: input.system,
-      messages: [{ role: "user", content: [{ type: "text", text: "hello" }] }],
-    }, {
-      protocol: "anthropic",
-      traceId: input.caseId,
-      keyId: "synthetic",
-      modelId: "synthetic-model",
-      stream: false,
-      agentSource: "claude-code",
-    });
+    try {
+      result = await pipeline.process({
+        model: "synthetic-model",
+        system: input.system,
+        messages: [{ role: "user", content: [{ type: "text", text: "hello" }] }],
+      }, {
+        protocol: "anthropic",
+        traceId: input.caseId,
+        keyId: "synthetic",
+        modelId: "synthetic-model",
+        stream: false,
+        agentSource: "claude-code",
+      });
+    } catch (error) {
+      failure = error;
+    }
   } finally {
     console.log = originalLog;
     console.error = originalError;
   }
   const expectedMarkers = input.system.map((block) => block.cache_control);
+  const expectedOutcome = input.expectedOutcome ?? "injected_with_parity";
+  if (expectedOutcome === "pipeline_infrastructure_failure") {
+    if (!isInjectionInfrastructureError(failure)
+      || failure.code !== "INJECTION_METADATA_PARITY_FAILURE"
+      || result !== undefined) {
+      throw new Error(`metadata infrastructure failure was not fail-closed for ${input.caseId}`);
+    }
+    return {
+      caseId: input.caseId,
+      outcome: expectedOutcome,
+      forwardableProviderRequestProduced: false,
+      infrastructureErrorCode: failure.code,
+      markerCount: null,
+      markerOrderSha256: null,
+      expectedMarkerOrderSha256: sha256(JSON.stringify(expectedMarkers)),
+      modelVisibleTextSha256: null,
+      expectedModelVisibleTextSha256: null,
+      status: "pass",
+    };
+  }
+  if (failure !== undefined || result === undefined) {
+    throw new Error(`metadata parity pipeline unexpectedly failed for ${input.caseId}`);
+  }
   const actualMarkers = systemMarkers(result);
   const actualText = modelVisibleSystem(result);
   if (JSON.stringify(actualMarkers) !== JSON.stringify(expectedMarkers) || actualText !== input.expectedText) {
@@ -238,7 +272,9 @@ async function captureMetadataCase(input: {
   }
   return {
     caseId: input.caseId,
-    outcome: input.expectedOutcome ?? "injected_with_parity",
+    outcome: expectedOutcome,
+    forwardableProviderRequestProduced: true,
+    infrastructureErrorCode: null,
     markerCount: actualMarkers.length,
     markerOrderSha256: sha256(JSON.stringify(actualMarkers)),
     expectedMarkerOrderSha256: sha256(JSON.stringify(expectedMarkers)),
@@ -299,6 +335,8 @@ async function main(): Promise<void> {
     caseInputControlSha256: SHA.caseInput,
     comparisonGroupSha256: SHA.comparisonGroup,
     providerRequestSha256: SHA.providerRequest,
+    staticPromptSha256: SHA.staticPrompt,
+    execution: { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
     counterfactualRole: null,
     session: { id: "synthetic-session", fresh: true },
     memoryProxyContext: { id: "synthetic-proxy-context", fresh: true },
@@ -316,6 +354,39 @@ async function main(): Promise<void> {
     },
     usage,
   });
+  const repeatedRunIsolation = buildRunIsolationEvidence({
+    runId: "synthetic-m2-evidence-repeat-1",
+    runNamespace: "task1/synthetic-m2-evidence-repeat-1",
+    caseId: "synthetic-case",
+    variantId: tokenLedger.variantId,
+    repeatIndex: 1,
+    caseInputControlSha256: SHA.caseInput,
+    comparisonGroupSha256: SHA.comparisonGroup,
+    providerRequestSha256: SHA.providerRequestB,
+    staticPromptSha256: SHA.staticPrompt,
+    execution: { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
+    counterfactualRole: null,
+    session: { id: "synthetic-session-repeat-1", fresh: true },
+    memoryProxyContext: { id: "synthetic-proxy-context-repeat-1", fresh: true },
+    snapshot: {
+      id: "synthetic-snapshot",
+      expectedSha256: SHA.snapshot,
+      restoredSha256: SHA.snapshot,
+      restoreSucceeded: true,
+    },
+    visibleAssetsSha256: SHA.visibleAssets,
+    localState: {
+      pathId: "synthetic-local-state-repeat-1",
+      fresh: true,
+      inheritedHistory: false,
+    },
+    usage,
+  });
+  const repeatIsolation = assessPairedIsolationEvidence(
+    runIsolation,
+    repeatedRunIsolation,
+    { purpose: "repeat" },
+  );
   const eligibility = buildM2EligibilityEvidence({
     formalDataState: "blocked",
     evaluationLayer: "mock-contract",
@@ -336,6 +407,8 @@ async function main(): Promise<void> {
   artifacts.push(writeArtifact("ISOLATION-ELIGIBILITY-SYNTHETIC.json", {
     formalDataState: "blocked",
     runIsolation,
+    repeatedRunIsolation,
+    repeatIsolation,
     eligibility,
   }));
 
@@ -366,7 +439,7 @@ async function main(): Promise<void> {
     schemaVersion: 2,
     measurementModuleId: "M2",
     supportedScope:
-      "Single text blocks and multi-text-block insertion-only rebuilds whose original blocks remain exact ordered substrings. Unsupported rewrites fail the hook closed.",
+      "Single text blocks and multi-text-block insertion-only rebuilds whose original blocks remain exact ordered substrings. Unsupported rewrites raise a typed infrastructure failure before a forwardable provider request exists.",
     cases: [
       await captureMetadataCase({
         caseId: "no-hook-single-marker",
@@ -405,7 +478,7 @@ async function main(): Promise<void> {
         hook: { id: "synthetic-two-markers", content: "<synthetic_memory_tools />" },
       }),
       await captureMetadataCase({
-        caseId: "anchor-two-markers-in-block-fail-closed",
+        caseId: "anchor-two-markers-in-block-infrastructure-failure",
         system: [
           {
             type: "text",
@@ -419,7 +492,7 @@ async function main(): Promise<void> {
           },
         ],
         expectedText: [firstText, secondText].join("\n"),
-        expectedOutcome: "hook_failed_closed",
+        expectedOutcome: "pipeline_infrastructure_failure",
         hook: {
           id: "synthetic-two-markers-unsupported",
           content: "<synthetic_memory_tools />",
@@ -435,6 +508,11 @@ async function main(): Promise<void> {
     measurementModuleId: "M2",
     formalDataState: "blocked",
     formalMetricEligibleOwner: "Integration",
+    identitySeparation: {
+      measurementModuleId: "M2",
+      variantId: "per-run Prompt candidate such as V0, V0-C, V1, V2, or V3",
+      rule: "measurementModuleId and variantId are independent identities",
+    },
     providerContracts: providerFixtureInputs.map((fixture) => ({
       fixtureId: fixture.fixtureId,
       provider: fixture.input.provider,
@@ -458,15 +536,47 @@ async function main(): Promise<void> {
     hashSemantics: {
       caseInputControlSha256: "Frozen case/query/context control; excludes Variant prompt text.",
       comparisonGroupSha256: "Binds planned variant, counterfactual, or repeat comparison members.",
-      providerRequestSha256: "Complete provider request; diagnostic and only equality-gated for repeat comparisons.",
+      providerRequestSha256: "Complete provider request for diagnostics; never an equality Gate because fresh runtime bindings may differ.",
+      staticPromptSha256: "Frozen model-visible Variant/static Prompt before fresh runtime bindings.",
+      executionIdentitySha256: "Frozen model, reasoning effort, provider, usage schema, API/adapter versions, and usage-field contract.",
       snapshotSha256: "Expected and restored MemoryProxy asset snapshot identity.",
       visibleAssetsSha256: "Exact provider-visible asset-set identity.",
     },
     comparisonPurposes: {
-      variant: "Same case input and repeat; Prompt Variant and full provider request may differ.",
-      counterfactual: "Same comparison group and repeat; positive/negative case inputs and requests must differ.",
-      repeat: "Same case, Variant, input, and complete provider request; repeat index and run state differ.",
+      variant: "Same case input, repeat, execution identity, snapshot, and assets; Variant/static Prompt and full provider request may differ.",
+      counterfactual: "Same Variant/static Prompt, repeat, execution identity, snapshot, and assets; paired positive/negative case inputs and full requests differ.",
+      repeat: "Same case input, Variant/static Prompt, execution identity, snapshot, and assets; repeat index and fresh run state differ, so full provider request equality is diagnostic only.",
       none: "Ordinary run; paired evidence is not required.",
+    },
+    comparisonControlManifest: {
+      universalEqual: [
+        "comparisonGroupSha256",
+        "executionIdentity.canonicalSha256",
+        "snapshot.id+expectedSha256+restoredSha256",
+        "visibleAssetsSha256",
+      ],
+      universalDistinct: [
+        "runId",
+        "runNamespace",
+        "session.id",
+        "memoryProxyContext.id",
+        "localState.pathId",
+      ],
+      variant: {
+        equal: ["caseId", "repeatIndex", "caseInputControlSha256"],
+        distinct: ["variantId"],
+        diagnosticOnly: ["providerRequestSha256", "staticPromptSha256"],
+      },
+      counterfactual: {
+        equal: ["repeatIndex", "variantId", "staticPromptSha256"],
+        distinct: ["caseInputControlSha256", "counterfactualRole"],
+        diagnosticOnly: ["providerRequestSha256", "caseId"],
+      },
+      repeat: {
+        equal: ["caseId", "variantId", "caseInputControlSha256", "staticPromptSha256"],
+        distinct: ["repeatIndex"],
+        diagnosticOnly: ["providerRequestSha256"],
+      },
     },
     m0Integration: {
       requiredInterface: "M0_EVALUATION_PREFIX",
@@ -497,6 +607,11 @@ async function main(): Promise<void> {
     m2EvidenceStatus: eligibility.m2EvidenceStatus,
     blockers: eligibility.blockers,
     tokenLedgerCanonicalSha256: tokenLedger.canonicalSha256,
+    unsupportedMetadataForwardableRequestsProduced: metadataParity.cases.filter(
+      (item) => item.outcome === "pipeline_infrastructure_failure"
+        && item.forwardableProviderRequestProduced,
+    ).length,
+    repeatIsolationStatus: repeatIsolation.pairStatus,
   }));
 
   writeArtifact("ARTIFACT-SHA256.json", {

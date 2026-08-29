@@ -54,6 +54,7 @@ import { trackWrite, withL0Retry } from "./tdai/pending-writes.js";
 import type { TdaiIdentity, TdaiMessage } from "./tdai/types.js";
 import { triggerSkillExtractIfReady } from "./skill/handler-glue.js";
 import { isExtractionAllowed, logExtractionSkipped } from "./extraction-gate.js";
+import { isInjectionInfrastructureError } from "./injection/errors.js";
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
@@ -970,6 +971,7 @@ export async function handleCodexEndpoint(
         body = injectCodexAssets(body, { raw: injectedText });
       }
     } catch (err: unknown) {
+      if (isInjectionInfrastructureError(err)) throw err;
       console.error("[codex] injection pipeline error:", err instanceof Error ? err.message : String(err));
       // Degrade gracefully: forward without injection
     }

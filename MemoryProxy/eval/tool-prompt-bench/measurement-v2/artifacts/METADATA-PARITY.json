@@ -1,11 +1,13 @@
 {
   "schemaVersion": 2,
   "measurementModuleId": "M2",
-  "supportedScope": "Single text blocks and multi-text-block insertion-only rebuilds whose original blocks remain exact ordered substrings. Unsupported rewrites fail the hook closed.",
+  "supportedScope": "Single text blocks and multi-text-block insertion-only rebuilds whose original blocks remain exact ordered substrings. Unsupported rewrites raise a typed infrastructure failure before a forwardable provider request exists.",
   "cases": [
     {
       "caseId": "no-hook-single-marker",
       "outcome": "injected_with_parity",
+      "forwardableProviderRequestProduced": true,
+      "infrastructureErrorCode": null,
       "markerCount": 1,
       "markerOrderSha256": "449cfc169faa3b18c8c15b026a0817ecbaf16999be2cf0cc9393305d811245ae",
       "expectedMarkerOrderSha256": "449cfc169faa3b18c8c15b026a0817ecbaf16999be2cf0cc9393305d811245ae",
@@ -16,6 +18,8 @@
     {
       "caseId": "anchor-single-marker",
       "outcome": "injected_with_parity",
+      "forwardableProviderRequestProduced": true,
+      "infrastructureErrorCode": null,
       "markerCount": 1,
       "markerOrderSha256": "449cfc169faa3b18c8c15b026a0817ecbaf16999be2cf0cc9393305d811245ae",
       "expectedMarkerOrderSha256": "449cfc169faa3b18c8c15b026a0817ecbaf16999be2cf0cc9393305d811245ae",
@@ -26,6 +30,8 @@
     {
       "caseId": "anchor-two-markers",
       "outcome": "injected_with_parity",
+      "forwardableProviderRequestProduced": true,
+      "infrastructureErrorCode": null,
       "markerCount": 2,
       "markerOrderSha256": "a7281c5379b02bc51b985945d6791f039dad0e3fef201463f95ec20237053673",
       "expectedMarkerOrderSha256": "a7281c5379b02bc51b985945d6791f039dad0e3fef201463f95ec20237053673",
@@ -34,13 +40,15 @@
       "status": "pass"
     },
     {
-      "caseId": "anchor-two-markers-in-block-fail-closed",
-      "outcome": "hook_failed_closed",
-      "markerCount": 2,
-      "markerOrderSha256": "a7281c5379b02bc51b985945d6791f039dad0e3fef201463f95ec20237053673",
+      "caseId": "anchor-two-markers-in-block-infrastructure-failure",
+      "outcome": "pipeline_infrastructure_failure",
+      "forwardableProviderRequestProduced": false,
+      "infrastructureErrorCode": "INJECTION_METADATA_PARITY_FAILURE",
+      "markerCount": null,
+      "markerOrderSha256": null,
       "expectedMarkerOrderSha256": "a7281c5379b02bc51b985945d6791f039dad0e3fef201463f95ec20237053673",
-      "modelVisibleTextSha256": "a2c264db51053f2d1f869915bb62f1e6beb9c573bd9dd9cdbab29eaa0a042243",
-      "expectedModelVisibleTextSha256": "a2c264db51053f2d1f869915bb62f1e6beb9c573bd9dd9cdbab29eaa0a042243",
+      "modelVisibleTextSha256": null,
+      "expectedModelVisibleTextSha256": null,
       "status": "pass"
     }
   ]

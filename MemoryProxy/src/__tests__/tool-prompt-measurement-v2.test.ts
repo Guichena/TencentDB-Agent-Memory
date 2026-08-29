@@ -20,6 +20,8 @@ const EVIDENCE_SHA = {
   providerRequestB: "4".repeat(64),
   snapshot: "5".repeat(64),
   visibleAssets: "6".repeat(64),
+  staticPromptA: "7".repeat(64),
+  staticPromptB: "9".repeat(64),
 } as const;
 
 describe("Task 1 measurement v2 provider usage", () => {
@@ -547,6 +549,8 @@ describe("Task 1 measurement v2 isolation evidence", () => {
       caseInputControlSha256: EVIDENCE_SHA.caseInput,
       comparisonGroupSha256: EVIDENCE_SHA.comparisonGroup,
       providerRequestSha256: EVIDENCE_SHA.providerRequestA,
+      staticPromptSha256: EVIDENCE_SHA.staticPromptA,
+      execution: { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
       counterfactualRole: null,
       session: { id: "session-a", fresh: true },
       memoryProxyContext: { id: "proxy-context-a", fresh: true },
@@ -603,6 +607,8 @@ describe("Task 1 measurement v2 isolation evidence", () => {
       caseInputControlSha256: "",
       comparisonGroupSha256: "not-a-sha",
       providerRequestSha256: "",
+      staticPromptSha256: EVIDENCE_SHA.staticPromptA,
+      execution: { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
       counterfactualRole: null,
       session: { id: "", fresh: true },
       memoryProxyContext: { id: "", fresh: true },
@@ -637,6 +643,97 @@ describe("Task 1 measurement v2 isolation evidence", () => {
     ]));
   });
 
+  it("freezes a non-empty model and provider usage contract into the run execution identity", () => {
+    const usage = normalizeProviderUsage({
+      provider: "openai",
+      schema: "openai.responses",
+      apiVersion: "2026-08-01",
+      adapterVersion: "responses-v1",
+      requiredFields: ["cacheReadInputTokens"],
+      unsupportedFields: ["cacheWriteInputTokens"],
+      rawUsage: {
+        input_tokens: 1,
+        input_tokens_details: { cached_tokens: 0 },
+        output_tokens: 1,
+      },
+    });
+    const baseInput = {
+      runId: "identity-run",
+      runNamespace: "task1/identity-run",
+      caseId: "identity-case",
+      variantId: "V0",
+      repeatIndex: 0,
+      caseInputControlSha256: EVIDENCE_SHA.caseInput,
+      comparisonGroupSha256: EVIDENCE_SHA.comparisonGroup,
+      providerRequestSha256: EVIDENCE_SHA.providerRequestA,
+      staticPromptSha256: EVIDENCE_SHA.staticPromptA,
+      execution: { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
+      counterfactualRole: null,
+      session: { id: "identity-session", fresh: true },
+      memoryProxyContext: { id: "identity-context", fresh: true },
+      snapshot: {
+        id: "identity-snapshot",
+        expectedSha256: EVIDENCE_SHA.snapshot,
+        restoredSha256: EVIDENCE_SHA.snapshot,
+        restoreSucceeded: true,
+      },
+      visibleAssetsSha256: EVIDENCE_SHA.visibleAssets,
+      localState: { pathId: "identity-local", fresh: true, inheritedHistory: false },
+      usage,
+    };
+
+    const ready = buildRunIsolationEvidence(baseInput);
+    const invalid = buildRunIsolationEvidence({
+      ...baseInput,
+      runId: "invalid-identity-run",
+      runNamespace: "task1/invalid-identity-run",
+      staticPromptSha256: "",
+      execution: { modelId: "", reasoningEffort: "" },
+      usage: {
+        ...usage,
+        apiVersion: "",
+        adapterVersion: "",
+      },
+    });
+    const missingRequiredUsage = normalizeProviderUsage({
+      provider: "openai",
+      schema: "openai.responses",
+      apiVersion: "2026-08-01",
+      adapterVersion: "responses-v1",
+      requiredFields: ["cacheReadInputTokens"],
+      unsupportedFields: ["cacheWriteInputTokens"],
+      rawUsage: { input_tokens: 1, output_tokens: 1 },
+    });
+    const usageBlocked = buildRunIsolationEvidence({
+      ...baseInput,
+      runId: "missing-usage-run",
+      runNamespace: "task1/missing-usage-run",
+      usage: missingRequiredUsage,
+    });
+
+    expect(ready.executionIdentity).toMatchObject({
+      modelId: "gpt-5.6-luna",
+      reasoningEffort: "high",
+      provider: "openai",
+      usageSchema: "openai.responses",
+      apiVersion: "2026-08-01",
+      adapterVersion: "responses-v1",
+      requiredUsageFields: ["cacheReadInputTokens"],
+      unsupportedUsageFields: ["cacheWriteInputTokens"],
+    });
+    expect(ready.executionIdentity.canonicalSha256).toMatch(/^[0-9a-f]{64}$/);
+    expect(invalid.isolationStatus).toBe("blocked");
+    expect(invalid.blockers).toEqual(expect.arrayContaining([
+      "STATIC_PROMPT_SHA256_INVALID",
+      "MODEL_ID_INVALID",
+      "REASONING_EFFORT_INVALID",
+      "USAGE_API_VERSION_INVALID",
+      "USAGE_ADAPTER_VERSION_INVALID",
+    ]));
+    expect(usageBlocked.isolationStatus).toBe("blocked");
+    expect(usageBlocked.blockers).toContain("USAGE_NORMALIZATION_BLOCKED");
+  });
+
   it("requires paired variants to share frozen inputs but use isolated run state", () => {
     const usage = normalizeProviderUsage({
       provider: "openai",
@@ -651,7 +748,12 @@ describe("Task 1 measurement v2 isolation evidence", () => {
         output_tokens: 2,
       },
     });
-    const makeRun = (suffix: string, variantId: string) => buildRunIsolationEvidence({
+    const makeRun = (
+      suffix: string,
+      variantId: string,
+      execution = { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
+      usageOverride = usage,
+    ) => buildRunIsolationEvidence({
       runId: `run-${suffix}`,
       runNamespace: `task1/run-${suffix}`,
       caseId: "case-paired",
@@ -662,6 +764,10 @@ describe("Task 1 measurement v2 isolation evidence", () => {
       providerRequestSha256: suffix === "a"
         ? EVIDENCE_SHA.providerRequestA
         : EVIDENCE_SHA.providerRequestB,
+      staticPromptSha256: variantId === "V0"
+        ? EVIDENCE_SHA.staticPromptA
+        : EVIDENCE_SHA.staticPromptB,
+      execution,
       counterfactualRole: null,
       session: { id: `session-${suffix}`, fresh: true },
       memoryProxyContext: { id: `proxy-${suffix}`, fresh: true },
@@ -677,7 +783,7 @@ describe("Task 1 measurement v2 isolation evidence", () => {
         fresh: true,
         inheritedHistory: false,
       },
-      usage,
+      usage: usageOverride,
     });
 
     const pair = assessPairedIsolationEvidence(
@@ -702,6 +808,64 @@ describe("Task 1 measurement v2 isolation evidence", () => {
         distinctLocalState: true,
       },
     });
+
+    const usageWithContract = (apiVersion: string, adapterVersion: string) => normalizeProviderUsage({
+      provider: "openai",
+      schema: "openai.responses",
+      apiVersion,
+      adapterVersion,
+      requiredFields: ["cacheReadInputTokens"],
+      unsupportedFields: ["cacheWriteInputTokens"],
+      rawUsage: {
+        input_tokens: 20,
+        input_tokens_details: { cached_tokens: 0 },
+        output_tokens: 2,
+      },
+    });
+    const anthropicUsage = normalizeProviderUsage({
+      provider: "anthropic",
+      schema: "anthropic.messages",
+      apiVersion: "2026-08-01",
+      adapterVersion: "messages-v1",
+      requiredFields: ["cacheReadInputTokens"],
+      unsupportedFields: [],
+      rawUsage: {
+        input_tokens: 20,
+        cache_read_input_tokens: 0,
+        cache_creation_input_tokens: 0,
+        output_tokens: 2,
+      },
+    });
+    const mismatchedRuns = [
+      makeRun("model", "V1", { modelId: "gpt-5.6-sol", reasoningEffort: "high" }),
+      makeRun("reasoning", "V1", { modelId: "gpt-5.6-luna", reasoningEffort: "medium" }),
+      makeRun(
+        "api-version",
+        "V1",
+        { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
+        usageWithContract("2026-09-01", "responses-v1"),
+      ),
+      makeRun(
+        "adapter-version",
+        "V1",
+        { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
+        usageWithContract("2026-08-01", "responses-v2"),
+      ),
+      makeRun(
+        "provider",
+        "V1",
+        { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
+        anthropicUsage,
+      ),
+    ];
+    for (const right of mismatchedRuns) {
+      const mismatched = assessPairedIsolationEvidence(makeRun("a", "V0"), right, {
+        purpose: "variant",
+      });
+      expect(mismatched.pairStatus).toBe("blocked");
+      expect(mismatched.blockers).toContain("PAIR_EXECUTION_IDENTITY_MISMATCH");
+      expect(mismatched.controls.sameExecutionIdentity).toBe(false);
+    }
   });
 
   it("allows counterfactual queries and full provider requests to differ under an explicit group control", () => {
@@ -718,11 +882,15 @@ describe("Task 1 measurement v2 isolation evidence", () => {
         output_tokens: 2,
       },
     });
-    const makeRun = (role: "positive" | "negative") => buildRunIsolationEvidence({
+    const makeRun = (
+      role: "positive" | "negative",
+      variantId = "V1",
+      staticPromptSha256 = EVIDENCE_SHA.staticPromptA,
+    ) => buildRunIsolationEvidence({
       runId: `counterfactual-${role}`,
       runNamespace: `task1/counterfactual-${role}`,
       caseId: `case-${role}`,
-      variantId: "V1",
+      variantId,
       repeatIndex: 0,
       caseInputControlSha256: role === "positive"
         ? EVIDENCE_SHA.caseInput
@@ -731,6 +899,8 @@ describe("Task 1 measurement v2 isolation evidence", () => {
       providerRequestSha256: role === "positive"
         ? EVIDENCE_SHA.providerRequestA
         : EVIDENCE_SHA.providerRequestB,
+      staticPromptSha256,
+      execution: { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
       counterfactualRole: role,
       session: { id: `session-${role}`, fresh: true },
       memoryProxyContext: { id: `context-${role}`, fresh: true },
@@ -763,6 +933,95 @@ describe("Task 1 measurement v2 isolation evidence", () => {
         distinctCounterfactualRole: true,
       },
     });
+
+    const wrongVariant = assessPairedIsolationEvidence(
+      makeRun("positive"),
+      makeRun("negative", "V2"),
+      { purpose: "counterfactual" },
+    );
+    expect(wrongVariant.blockers).toContain("PAIR_VARIANT_MISMATCH");
+
+    const wrongStaticPrompt = assessPairedIsolationEvidence(
+      makeRun("positive"),
+      makeRun("negative", "V1", EVIDENCE_SHA.staticPromptB),
+      { purpose: "counterfactual" },
+    );
+    expect(wrongStaticPrompt.blockers).toContain("PAIR_STATIC_PROMPT_MISMATCH");
+  });
+
+  it("compares repeat controls without requiring fresh full provider requests to be byte-identical", () => {
+    const usage = normalizeProviderUsage({
+      provider: "openai",
+      schema: "openai.responses",
+      apiVersion: "2026-08-01",
+      adapterVersion: "responses-v1",
+      requiredFields: ["cacheReadInputTokens"],
+      unsupportedFields: ["cacheWriteInputTokens"],
+      rawUsage: {
+        input_tokens: 20,
+        input_tokens_details: { cached_tokens: 0 },
+        output_tokens: 2,
+      },
+    });
+    const makeRun = (
+      suffix: string,
+      repeatIndex: number,
+      staticPromptSha256 = EVIDENCE_SHA.staticPromptA,
+    ) => buildRunIsolationEvidence({
+      runId: `repeat-${suffix}`,
+      runNamespace: `task1/repeat-${suffix}`,
+      caseId: "repeat-case",
+      variantId: "V1",
+      repeatIndex,
+      caseInputControlSha256: EVIDENCE_SHA.caseInput,
+      comparisonGroupSha256: EVIDENCE_SHA.comparisonGroup,
+      providerRequestSha256: suffix === "a"
+        ? EVIDENCE_SHA.providerRequestA
+        : EVIDENCE_SHA.providerRequestB,
+      staticPromptSha256,
+      execution: { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
+      counterfactualRole: null,
+      session: { id: `repeat-session-${suffix}`, fresh: true },
+      memoryProxyContext: { id: `repeat-context-${suffix}`, fresh: true },
+      snapshot: {
+        id: "repeat-snapshot",
+        expectedSha256: EVIDENCE_SHA.snapshot,
+        restoredSha256: EVIDENCE_SHA.snapshot,
+        restoreSucceeded: true,
+      },
+      visibleAssetsSha256: EVIDENCE_SHA.visibleAssets,
+      localState: { pathId: `repeat-local-${suffix}`, fresh: true, inheritedHistory: false },
+      usage,
+    });
+
+    const pair = assessPairedIsolationEvidence(
+      makeRun("a", 0),
+      makeRun("b", 1),
+      { purpose: "repeat" },
+    );
+
+    expect(pair).toMatchObject({
+      pairStatus: "ready",
+      blockers: [],
+      controls: {
+        sameCase: true,
+        sameVariant: true,
+        sameCaseInputControl: true,
+        sameProviderRequest: false,
+        sameStaticPrompt: true,
+        sameExecutionIdentity: true,
+        sameSnapshot: true,
+        sameVisibleAssets: true,
+      },
+    });
+
+    const wrongStaticPrompt = assessPairedIsolationEvidence(
+      makeRun("a", 0),
+      makeRun("b", 1, EVIDENCE_SHA.staticPromptB),
+      { purpose: "repeat" },
+    );
+    expect(wrongStaticPrompt.pairStatus).toBe("blocked");
+    expect(wrongStaticPrompt.blockers).toContain("PAIR_STATIC_PROMPT_MISMATCH");
   });
 });
 
@@ -799,6 +1058,10 @@ describe("Task 1 measurement v2 final-eligibility evidence", () => {
       providerRequestSha256: suffix === "a"
         ? EVIDENCE_SHA.providerRequestA
         : EVIDENCE_SHA.providerRequestB,
+      staticPromptSha256: variantId === "V0"
+        ? EVIDENCE_SHA.staticPromptA
+        : EVIDENCE_SHA.staticPromptB,
+      execution: { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
       counterfactualRole: null,
       session: { id: `session-${suffix}`, fresh: true },
       memoryProxyContext: { id: `context-${suffix}`, fresh: true },
@@ -912,6 +1175,8 @@ describe("Task 1 measurement v2 final-eligibility evidence", () => {
       caseInputControlSha256: EVIDENCE_SHA.caseInput,
       comparisonGroupSha256: EVIDENCE_SHA.comparisonGroup,
       providerRequestSha256: EVIDENCE_SHA.providerRequestA,
+      staticPromptSha256: EVIDENCE_SHA.staticPromptA,
+      execution: { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
       counterfactualRole: null,
       session: { id: "ordinary-session", fresh: true },
       memoryProxyContext: { id: "ordinary-context", fresh: true },
@@ -1107,7 +1372,7 @@ describe("Task 1 measurement v2 cache metadata parity", () => {
     ].join("\n"));
   });
 
-  it("fails a multi-marker in-block anchor closed instead of moving metadata", async () => {
+  it("raises an infrastructure failure instead of producing a request with a missing injection", async () => {
     const registry = new HookRegistryImpl();
     registry.register({
       id: "synthetic-unsupported-marker-rewrite",
@@ -1142,22 +1407,28 @@ describe("Task 1 measurement v2 cache metadata parity", () => {
     const originalError = console.error;
     console.log = () => undefined;
     console.error = () => undefined;
-    let result: Record<string, unknown>;
+    let failure: unknown;
     try {
-      result = await pipeline.process(body, {
-        protocol: "anthropic",
-        traceId: "synthetic-cache-unsupported-anchor",
-        keyId: "synthetic",
-        modelId: "synthetic-model",
-        stream: false,
-        agentSource: "claude-code",
-      });
+      try {
+        await pipeline.process(body, {
+          protocol: "anthropic",
+          traceId: "synthetic-cache-unsupported-anchor",
+          keyId: "synthetic",
+          modelId: "synthetic-model",
+          stream: false,
+          agentSource: "claude-code",
+        });
+      } catch (error) {
+        failure = error;
+      }
     } finally {
       console.log = originalLog;
       console.error = originalError;
     }
 
-    expect(result.system).toEqual(body.system);
-    expect(JSON.stringify(result.system)).not.toContain("synthetic_memory_tools");
+    expect(failure).toMatchObject({
+      name: "InjectionInfrastructureError",
+      code: "INJECTION_METADATA_PARITY_FAILURE",
+    });
   });
 });

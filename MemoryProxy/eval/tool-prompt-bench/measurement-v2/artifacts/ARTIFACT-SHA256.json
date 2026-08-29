@@ -12,19 +12,19 @@
     },
     {
       "file": "ISOLATION-ELIGIBILITY-SYNTHETIC.json",
-      "sha256": "0a8aed3fc832502583414ef36a54a690c7d1bfb6773e211ddb4d21e94d880715"
+      "sha256": "7618cfe926d25bf2608937d08100355ad4cb51787ad2c2e408f4f5445d93e059"
     },
     {
       "file": "METADATA-PARITY.json",
-      "sha256": "a8eaa3d8611390b33428870951dd3c16aa4e7ab58563263f584fcc8badf2d0af"
+      "sha256": "94dd7771a4e39623bffcf377b93621ad23b54467cbbf196dd4530f711150360f"
     },
     {
       "file": "INTERFACE-MANIFEST.json",
-      "sha256": "61eac7223115834d1c1f5a00107e1a6a1a28c0f1668bff915e39fa24b5e23c4e"
+      "sha256": "d3f4daf9b6e4ac02b553ff9236ccb6e4e0768904f8973dc0397a836b8bb3ec91"
     },
     {
       "file": "NO-MODEL-GATE.json",
-      "sha256": "6cddae1bf30bf551bbc9d149a7fafe2d7ea51dd7345072f96c720421f2ec1a31"
+      "sha256": "090c3c688151f907b53ec9b2a3c13cf7882f05be963484ac144c1a7800e4b556"
     }
   ]
 }

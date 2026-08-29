@@ -53,6 +53,7 @@ import {
   isRateLimitExceededError,
   recordInputTokenUsage,
 } from "./rate-limit/guard.js";
+import { isInjectionInfrastructureError } from "./injection/errors.js";
 
 /**
  * Build a per-request TdaiClient. `spaceId` (extracted from the request path
@@ -1263,6 +1264,7 @@ export async function handleChatCompletions(
       body = injectedBody;
       messages = Array.isArray(injectedBody.messages) ? injectedBody.messages : messages;
     } catch (err: unknown) {
+      if (isInjectionInfrastructureError(err)) throw err;
       // Injection failure is non-fatal — fall back to original body
     }
   }

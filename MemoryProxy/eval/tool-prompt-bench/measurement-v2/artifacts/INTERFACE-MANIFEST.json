@@ -3,6 +3,11 @@
   "measurementModuleId": "M2",
   "formalDataState": "blocked",
   "formalMetricEligibleOwner": "Integration",
+  "identitySeparation": {
+    "measurementModuleId": "M2",
+    "variantId": "per-run Prompt candidate such as V0, V0-C, V1, V2, or V3",
+    "rule": "measurementModuleId and variantId are independent identities"
+  },
   "providerContracts": [
     {
       "fixtureId": "openai-responses-cache-write-unsupported",
@@ -102,15 +107,75 @@
   "hashSemantics": {
     "caseInputControlSha256": "Frozen case/query/context control; excludes Variant prompt text.",
     "comparisonGroupSha256": "Binds planned variant, counterfactual, or repeat comparison members.",
-    "providerRequestSha256": "Complete provider request; diagnostic and only equality-gated for repeat comparisons.",
+    "providerRequestSha256": "Complete provider request for diagnostics; never an equality Gate because fresh runtime bindings may differ.",
+    "staticPromptSha256": "Frozen model-visible Variant/static Prompt before fresh runtime bindings.",
+    "executionIdentitySha256": "Frozen model, reasoning effort, provider, usage schema, API/adapter versions, and usage-field contract.",
     "snapshotSha256": "Expected and restored MemoryProxy asset snapshot identity.",
     "visibleAssetsSha256": "Exact provider-visible asset-set identity."
   },
   "comparisonPurposes": {
-    "variant": "Same case input and repeat; Prompt Variant and full provider request may differ.",
-    "counterfactual": "Same comparison group and repeat; positive/negative case inputs and requests must differ.",
-    "repeat": "Same case, Variant, input, and complete provider request; repeat index and run state differ.",
+    "variant": "Same case input, repeat, execution identity, snapshot, and assets; Variant/static Prompt and full provider request may differ.",
+    "counterfactual": "Same Variant/static Prompt, repeat, execution identity, snapshot, and assets; paired positive/negative case inputs and full requests differ.",
+    "repeat": "Same case input, Variant/static Prompt, execution identity, snapshot, and assets; repeat index and fresh run state differ, so full provider request equality is diagnostic only.",
     "none": "Ordinary run; paired evidence is not required."
+  },
+  "comparisonControlManifest": {
+    "universalEqual": [
+      "comparisonGroupSha256",
+      "executionIdentity.canonicalSha256",
+      "snapshot.id+expectedSha256+restoredSha256",
+      "visibleAssetsSha256"
+    ],
+    "universalDistinct": [
+      "runId",
+      "runNamespace",
+      "session.id",
+      "memoryProxyContext.id",
+      "localState.pathId"
+    ],
+    "variant": {
+      "equal": [
+        "caseId",
+        "repeatIndex",
+        "caseInputControlSha256"
+      ],
+      "distinct": [
+        "variantId"
+      ],
+      "diagnosticOnly": [
+        "providerRequestSha256",
+        "staticPromptSha256"
+      ]
+    },
+    "counterfactual": {
+      "equal": [
+        "repeatIndex",
+        "variantId",
+        "staticPromptSha256"
+      ],
+      "distinct": [
+        "caseInputControlSha256",
+        "counterfactualRole"
+      ],
+      "diagnosticOnly": [
+        "providerRequestSha256",
+        "caseId"
+      ]
+    },
+    "repeat": {
+      "equal": [
+        "caseId",
+        "variantId",
+        "caseInputControlSha256",
+        "staticPromptSha256"
+      ],
+      "distinct": [
+        "repeatIndex"
+      ],
+      "diagnosticOnly": [
+        "providerRequestSha256"
+      ]
+    }
   },
   "m0Integration": {
     "requiredInterface": "M0_EVALUATION_PREFIX",
@@ -122,5 +187,5 @@
       "timeToTerminalMs"
     ]
   },
-  "metadataParityScope": "Single text blocks and multi-text-block insertion-only rebuilds whose original blocks remain exact ordered substrings. Unsupported rewrites fail the hook closed."
+  "metadataParityScope": "Single text blocks and multi-text-block insertion-only rebuilds whose original blocks remain exact ordered substrings. Unsupported rewrites raise a typed infrastructure failure before a forwardable provider request exists."
 }

@@ -16,5 +16,7 @@
     "FORMAL_DATA_BLOCKED",
     "MOCK_LAYER_NOT_FORMAL"
   ],
-  "tokenLedgerCanonicalSha256": "42c3d32d3a0d91972ddc082d29b1b28204a744fd1119adb14dba100736e9d371"
+  "tokenLedgerCanonicalSha256": "42c3d32d3a0d91972ddc082d29b1b28204a744fd1119adb14dba100736e9d371",
+  "unsupportedMetadataForwardableRequestsProduced": 0,
+  "repeatIsolationStatus": "ready"
 }

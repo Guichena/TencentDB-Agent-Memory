@@ -10,6 +10,24 @@
     "caseInputControlSha256": "1111111111111111111111111111111111111111111111111111111111111111",
     "comparisonGroupSha256": "2222222222222222222222222222222222222222222222222222222222222222",
     "providerRequestSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+    "staticPromptSha256": "6666666666666666666666666666666666666666666666666666666666666666",
+    "executionIdentity": {
+      "modelId": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "provider": "openai",
+      "usageSchema": "openai.responses",
+      "apiVersion": "2026-08-01",
+      "adapterVersion": "responses-v2-cache-write",
+      "requiredUsageFields": [
+        "cacheReadInputTokens",
+        "cacheWriteInputTokens",
+        "ordinaryInputTokens",
+        "outputTokens",
+        "providerTotalInputTokens"
+      ],
+      "unsupportedUsageFields": [],
+      "canonicalSha256": "271e961818c2fb878908afc9601763f36f4d0d666996aca63d57e6268b6e645f"
+    },
     "counterfactualRole": null,
     "session": {
       "id": "synthetic-session",
@@ -40,6 +58,92 @@
       "telemetryUsable": true
     },
     "isolationStatus": "ready",
+    "blockers": []
+  },
+  "repeatedRunIsolation": {
+    "schemaVersion": 2,
+    "runId": "synthetic-m2-evidence-repeat-1",
+    "runNamespace": "task1/synthetic-m2-evidence-repeat-1",
+    "caseId": "synthetic-case",
+    "variantId": "V0",
+    "repeatIndex": 1,
+    "caseInputControlSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "comparisonGroupSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+    "providerRequestSha256": "7777777777777777777777777777777777777777777777777777777777777777",
+    "staticPromptSha256": "6666666666666666666666666666666666666666666666666666666666666666",
+    "executionIdentity": {
+      "modelId": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "provider": "openai",
+      "usageSchema": "openai.responses",
+      "apiVersion": "2026-08-01",
+      "adapterVersion": "responses-v2-cache-write",
+      "requiredUsageFields": [
+        "cacheReadInputTokens",
+        "cacheWriteInputTokens",
+        "ordinaryInputTokens",
+        "outputTokens",
+        "providerTotalInputTokens"
+      ],
+      "unsupportedUsageFields": [],
+      "canonicalSha256": "271e961818c2fb878908afc9601763f36f4d0d666996aca63d57e6268b6e645f"
+    },
+    "counterfactualRole": null,
+    "session": {
+      "id": "synthetic-session-repeat-1",
+      "fresh": true
+    },
+    "memoryProxyContext": {
+      "id": "synthetic-proxy-context-repeat-1",
+      "fresh": true
+    },
+    "snapshot": {
+      "id": "synthetic-snapshot",
+      "expectedSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+      "restoredSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+      "restoreSucceeded": true
+    },
+    "visibleAssetsSha256": "5555555555555555555555555555555555555555555555555555555555555555",
+    "localState": {
+      "pathId": "synthetic-local-state-repeat-1",
+      "fresh": true,
+      "inheritedHistory": false
+    },
+    "providerCache": {
+      "cacheLane": "warm",
+      "cacheReadInputTokens": 40,
+      "cacheWriteInputTokens": 10,
+      "cacheReadState": "reported",
+      "cacheWriteState": "reported",
+      "telemetryUsable": true
+    },
+    "isolationStatus": "ready",
+    "blockers": []
+  },
+  "repeatIsolation": {
+    "schemaVersion": 2,
+    "leftRunId": "synthetic-m2-evidence",
+    "rightRunId": "synthetic-m2-evidence-repeat-1",
+    "comparisonPurpose": "repeat",
+    "controls": {
+      "sameCase": true,
+      "sameRepeat": false,
+      "sameVariant": true,
+      "sameCaseInputControl": true,
+      "sameProviderRequest": false,
+      "sameStaticPrompt": true,
+      "sameExecutionIdentity": true,
+      "sameComparisonGroup": true,
+      "distinctCounterfactualRole": false,
+      "sameSnapshot": true,
+      "sameVisibleAssets": true,
+      "distinctRunId": true,
+      "distinctRunNamespace": true,
+      "distinctSession": true,
+      "distinctMemoryProxyContext": true,
+      "distinctLocalState": true
+    },
+    "pairStatus": "ready",
     "blockers": []
   },
   "eligibility": {
