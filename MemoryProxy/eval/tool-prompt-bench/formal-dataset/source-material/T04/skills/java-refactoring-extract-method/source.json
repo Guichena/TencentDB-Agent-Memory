@@ -1,0 +1,27 @@
+{
+  "schema_version": "task1.skill_source_lock.v1",
+  "team_id": "T04",
+  "asset_id": "T04-SKILL-JAVA-REFACTOR",
+  "name": "java-refactoring-extract-method",
+  "repository": "https://github.com/github/awesome-copilot",
+  "commit_sha": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+  "path": "skills/java-refactoring-extract-method/SKILL.md",
+  "license": "MIT",
+  "license_path": "LICENSE",
+  "license_sha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+  "raw_file_sha256": "4f23304d1c3ea81035cae02381e6f6bf70d4652a46990cfd71620f384ad78a2b",
+  "adapted_file_sha256": "4f23304d1c3ea81035cae02381e6f6bf70d4652a46990cfd71620f384ad78a2b",
+  "package_sha256": "966b2aa3f1576e4ce1c9ca23b687e7e88f3b8f7aeb70600acaaf8082206f2a6c",
+  "resource_files": [],
+  "adaptation": {
+    "kind": "registry_metadata_only",
+    "technical_body_changed": false,
+    "allowed_changes": [
+      "listing description",
+      "use_when",
+      "do_not_use_when"
+    ],
+    "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "frozen_at": "2026-08-29T22:55:00+08:00"
+}

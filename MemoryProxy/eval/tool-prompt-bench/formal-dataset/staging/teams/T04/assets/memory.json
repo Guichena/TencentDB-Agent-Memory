@@ -1,0 +1,2017 @@
+{
+  "schema_version": "task1.formal_memory_assets.v1",
+  "team_id": "T04",
+  "l0Conversations": [
+    {
+      "assetId": "T04-L0-PETCLINIC-NAMESPACE",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l0"
+      ],
+      "observedAt": "2026-08-03T12:00:00+08:00",
+      "sessionId": "T04-L0-PETCLINIC-NAMESPACE",
+      "messages": [
+        {
+          "messageId": "T04-L0-PETCLINIC-NAMESPACE-M001",
+          "role": "user",
+          "content": "今天先复核 PetClinic 的 Jakarta 迁移，工作区和提交保持不变。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-03T12:00:00+08:00",
+          "contentHash": "d82c4f348ea4c6537a7dad52d5ac5219b017afde16d24da73d47aa637eefb2bb"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-NAMESPACE-M002",
+          "role": "assistant",
+          "content": "我把业务 API、校验、持久化和 JDK 自带类型分成四类，不把安全配置混进来。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-03T12:00:00+08:00",
+          "contentHash": "7554cb4dea4127f795518535da2ec76d62eb35055df3075043b0bf7ba06d43ca"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-NAMESPACE-M003",
+          "role": "user",
+          "content": "编译器报错集中在旧的 Java EE 导入，但有几处看起来像 JDK 类型。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-03T12:00:00+08:00",
+          "contentHash": "49cf1b3ad151c803c797cbad05055f2f780cd24166aaa7c36429d7c43902cda1"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-NAMESPACE-M004",
+          "role": "assistant",
+          "content": "先记录每个失败文件和使用场景，再决定哪些需要迁移。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-03T12:00:00+08:00",
+          "contentHash": "6a1f084f634f94b0d546226edd334205a0b2ec796468ef5d6e66e0a9e5336763"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-NAMESPACE-M005",
+          "role": "user",
+          "content": "控制器和实体校验的导入确实来自旧 API，数据库日期类型的报错表现不一样。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-03T12:00:00+08:00",
+          "contentHash": "805092006692309fd053c7e1487607e4135c08496048376e9ec6ac3447db2d22"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-NAMESPACE-M006",
+          "role": "assistant",
+          "content": "这两个现象不能用同一条替换规则解释，先保留原始错误。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-03T12:00:00+08:00",
+          "contentHash": "d71de15160748b3ec78453de5a630f51af624e1d410b3276fb29d07c34b72c38"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-NAMESPACE-M007",
+          "role": "user",
+          "content": "我排除了依赖下载和测试容器问题，剩下的是命名空间边界。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-03T12:00:00+08:00",
+          "contentHash": "5ec09bdba4db9d92ac2fe7647ca40c107818e7ed5489386ba6610235918fc03e"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-NAMESPACE-M008",
+          "role": "assistant",
+          "content": "迁移说明需要写出业务包和 JDK 所有包的区别，避免全局替换。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-03T12:00:00+08:00",
+          "contentHash": "7ab0c77a41fb6c8560bfd209645fd35709c283170d845a67b698e3f80e7dc960"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-NAMESPACE-M009",
+          "role": "user",
+          "content": "第一次改动让主代码能编译，但一个安全相关类仍然需要重新核对。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-03T12:00:00+08:00",
+          "contentHash": "e2bc9631d4a50cb16268327bc0c17f1bc9f8fe9239b3917d8c6af3ab3f070122"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-NAMESPACE-M010",
+          "role": "assistant",
+          "content": "安全类先按它所属 API 判断，不能因为类名相似就改包。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-03T12:00:00+08:00",
+          "contentHash": "3df9f5bf9c8e19b8de74d8c96d2b71642351d78d19044d0d8329f9ef0e2f77e4"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-NAMESPACE-M011",
+          "role": "user",
+          "content": "回归前要恢复之前验证过的最小修改原则和保留清单。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-03T12:00:00+08:00",
+          "contentHash": "22acf4dddb8495e3fd1aaed4b103566bdd00f5aee22e8f78194bccabee0c438a"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-NAMESPACE-M012",
+          "role": "assistant",
+          "content": "我会把最终分类和未改动的 JDK 类型一起写进交接，旁支另行记录。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-03T12:00:00+08:00",
+          "contentHash": "03bef9315697b43f9b370df0348f3332bd22965dcb01d6e3e63c9a895f4e5c13"
+        }
+      ],
+      "contentHash": "d874facc18ce476fe7e0e24d7df6731e20a3fc047f6ac7934339bee17bbd4bb7"
+    },
+    {
+      "assetId": "T04-L0-PETCLINIC-SECURITY",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l0"
+      ],
+      "observedAt": "2026-08-15T12:00:00+08:00",
+      "sessionId": "T04-L0-PETCLINIC-SECURITY",
+      "messages": [
+        {
+          "messageId": "T04-L0-PETCLINIC-SECURITY-M001",
+          "role": "user",
+          "content": "这次只复盘 PetClinic 安全过滤链迁移后的请求行为，不重新改命名空间。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "8263a47f8730a65fe3517a371fd22cbc8283fd87d51119857a089375f2725afe"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-SECURITY-M002",
+          "role": "assistant",
+          "content": "我先区分公开页面、登录入口和管理区域的访问边界。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "7f4cedc1fef017c754d2f770c561a182738dacd368bdfc6d2c224b54f64bc42b"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-SECURITY-M003",
+          "role": "user",
+          "content": "匿名访问首页正常，但静态资源偶尔被当成需要认证的请求。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "0a0363c4cf2e96fcc38e1825e5836e317a181c36ba61bf59896b4e756266aac8"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-SECURITY-M004",
+          "role": "assistant",
+          "content": "先比对匹配顺序和路径表达式，不把它归因到数据库。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "c313544742f4081d08d4f21a8cad6d83611fe98b63681a0d1df4278a4f79b35b"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-SECURITY-M005",
+          "role": "user",
+          "content": "登录成功后的会话能访问宠物列表，管理路径仍按预期拒绝。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "3e4bcc8968adae5d2d99a45ad81257e0c24e0c75394105d9bbc68fc3de60eae6"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-SECURITY-M006",
+          "role": "assistant",
+          "content": "这说明主体认证已经工作，剩下要核对放行规则的范围。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "a9935f055ec2fa8d896bf7b0f92fc9913a1a3ff27e3abacb2996b14491fa0515"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-SECURITY-M007",
+          "role": "user",
+          "content": "测试里还混有一个校验注解迁移失败，和这次访问控制不是同一个问题。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "92f6ca1119a0c5a3bf925a2351bfc0e6b45b9a2117bab9f6d1bcf592746afe37"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-SECURITY-M008",
+          "role": "assistant",
+          "content": "我会把校验编译错误单独标注，避免安全回归被旁支干扰。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "9fd0c6ff59d233cc9a93f523d86f0e3f1eb5c211912af58d5f649f5d7a50e274"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-SECURITY-M009",
+          "role": "user",
+          "content": "目前只缺一次历史复盘里确认过的路径顺序。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "868f47a687c2b3ad4ac65d183cf4ac035a87c764f50f358f8b13500a6cf024fd"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-SECURITY-M010",
+          "role": "assistant",
+          "content": "当前日志足以定位现象，但没有保留当时最终采用的边界写法。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "a447f72999e5bae78728781ae5779439beefd0465673d5c36c6da274187387ae"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-SECURITY-M011",
+          "role": "user",
+          "content": "交接需要说明哪些请求先放行、哪些请求必须经过认证。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "6a426682c8f9929e191797a3e56b7489581932d8e36410db3379fde5387c58b9"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-SECURITY-M012",
+          "role": "assistant",
+          "content": "我会寻找同一安全迁移时间线中的确认记录，不从现象猜配置。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "0bde740e34bfe06383b3facf1d8ada1194e9b85736716df434f92f642ba3987c"
+        }
+      ],
+      "contentHash": "8d46c17a935fab7774dce25ce22913c29716ceca8916aaab02b6469e01f59cff"
+    },
+    {
+      "assetId": "T04-L0-PETCLINIC-VALIDATION",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l0"
+      ],
+      "observedAt": "2026-08-28T12:00:00+08:00",
+      "sessionId": "T04-L0-PETCLINIC-VALIDATION",
+      "messages": [
+        {
+          "messageId": "T04-L0-PETCLINIC-VALIDATION-M001",
+          "role": "user",
+          "content": "今天补 PetClinic 校验注解迁移的交接，安全过滤链先不展开。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-28T12:00:00+08:00",
+          "contentHash": "24ff680286f46b02eb8da43826af99e1b2d776c7a852ffa0a1b9caf1b6e7f415"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-VALIDATION-M002",
+          "role": "assistant",
+          "content": "我按表单输入、实体约束和控制器参数三处检查旧导入。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-28T12:00:00+08:00",
+          "contentHash": "f2f02d3ce15051c05586f52feea5acf295db86901218a22b0204feff50e8165a"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-VALIDATION-M003",
+          "role": "user",
+          "content": "表单校验已经恢复，实体上的日期约束仍有一处编译提示。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-28T12:00:00+08:00",
+          "contentHash": "5115cbf9cfe5e73e73b59a5918dddf45edeaefe3142c3a7537fed5d8fb4364cd"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-VALIDATION-M004",
+          "role": "assistant",
+          "content": "先确认提示来自注解包还是来自 JDK 日期类型。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-28T12:00:00+08:00",
+          "contentHash": "3474a5193a65a9c500b3e1a57286a3653da8a3492a3d8c3897027b9ecabe6612"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-VALIDATION-M005",
+          "role": "user",
+          "content": "注解来自 Java EE API，日期类型只是同文件里的字段。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-28T12:00:00+08:00",
+          "contentHash": "2ea508463f266eafe0292322da48aa2edac463be553e77dbb13d8801a45fdfb2"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-VALIDATION-M006",
+          "role": "assistant",
+          "content": "那就只处理注解归属，保留日期类型原有声明。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-28T12:00:00+08:00",
+          "contentHash": "20314ee351ce59c58a551f2b9b803c730f3ab129198e32002bb093e7ca56a67f"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-VALIDATION-M007",
+          "role": "user",
+          "content": "单元测试覆盖了空值和格式错误，集成测试暂时没有变化。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-28T12:00:00+08:00",
+          "contentHash": "c22eb5166560bf387fcbaed30dc89da24ea45d8ad75ffb16c5a17bf548663d7e"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-VALIDATION-M008",
+          "role": "assistant",
+          "content": "测试结果能证明约束行为，但不能替代迁移包分类记录。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-28T12:00:00+08:00",
+          "contentHash": "fd1547f04a53913cc900bc8ef943b60fd4064fdefaaafaa8f8882e9702064a94"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-VALIDATION-M009",
+          "role": "user",
+          "content": "交接还缺少一次最终检查的文件范围。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-28T12:00:00+08:00",
+          "contentHash": "8ed4d66f1e328e22b24043d1fefd9913883da0054ed4912519735a29e09b19a8"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-VALIDATION-M010",
+          "role": "assistant",
+          "content": "我会把已改文件和明确未改文件分开列出。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-28T12:00:00+08:00",
+          "contentHash": "ecba3761a82350fac1e78802da1cf7cf03356a40fb18a54fa6ea3a2a058d9b9c"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-VALIDATION-M011",
+          "role": "user",
+          "content": "不要把安全规则或 REST 客户端的结论抄到这份说明。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-28T12:00:00+08:00",
+          "contentHash": "278a23dc9fbb36e781f1cbe6f9a46c388183d811d11b3138cfae803b2816a833"
+        },
+        {
+          "messageId": "T04-L0-PETCLINIC-VALIDATION-M012",
+          "role": "assistant",
+          "content": "收到，这条记录只保留校验迁移的局部事实和验证边界。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-28T12:00:00+08:00",
+          "contentHash": "a076e0c9f5cfd85bc97e9e8180577fd17fa604a5ef679d47ffc7da0d7d56237e"
+        }
+      ],
+      "contentHash": "1a75d8e272931a5e50bc2e163ce76de7bacbc6794877c422ca9a0110859347f9"
+    },
+    {
+      "assetId": "T04-L0-REST-MAPPING",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l0"
+      ],
+      "observedAt": "2026-08-06T12:00:00+08:00",
+      "sessionId": "T04-L0-REST-MAPPING",
+      "messages": [
+        {
+          "messageId": "T04-L0-REST-MAPPING-M001",
+          "role": "user",
+          "content": "今天对照同步客户端迁移后的响应映射，目标是保持原有业务结果。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-06T12:00:00+08:00",
+          "contentHash": "cf076a95fadae6adf729ac6c999c06140039929ce40689b2aee2fb9e2f40db6d"
+        },
+        {
+          "messageId": "T04-L0-REST-MAPPING-M002",
+          "role": "assistant",
+          "content": "我把请求构造、响应反序列化和异常处理分开比较。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-06T12:00:00+08:00",
+          "contentHash": "791569b748f92d75725160847aa9940a3f0b2fee8d041081d4997c522d6c8c88"
+        },
+        {
+          "messageId": "T04-L0-REST-MAPPING-M003",
+          "role": "user",
+          "content": "正常响应能拿到状态和名称，但集合响应的泛型映射看起来不同。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-06T12:00:00+08:00",
+          "contentHash": "9040b3718fe12746cf994f014c7b04f44a52828f4472d562ad0e577218d92484"
+        },
+        {
+          "messageId": "T04-L0-REST-MAPPING-M004",
+          "role": "assistant",
+          "content": "先记录原客户端返回的对象形状，再核对新实现的读取方式。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-06T12:00:00+08:00",
+          "contentHash": "b50d66d8e4a8915b650d5b3bd063e3a9081508e09f75d21909ff70119a6844da"
+        },
+        {
+          "messageId": "T04-L0-REST-MAPPING-M005",
+          "role": "user",
+          "content": "服务端返回的 JSON 没变，差异只在客户端的调用链。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-06T12:00:00+08:00",
+          "contentHash": "baf54f953f92059487107d70cbb31941d7fe8d6d882dfe02001cecbc831ca72f"
+        },
+        {
+          "messageId": "T04-L0-REST-MAPPING-M006",
+          "role": "assistant",
+          "content": "这更像响应类型声明或读取时机的差异，不是服务端契约变化。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-06T12:00:00+08:00",
+          "contentHash": "1bdb5b3c5c81fd79038976864db235317eb4b3fa11deae3b4d4cc4a7f5520be3"
+        },
+        {
+          "messageId": "T04-L0-REST-MAPPING-M007",
+          "role": "user",
+          "content": "错误状态以前会转成业务异常，新代码目前只抛通用异常。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-06T12:00:00+08:00",
+          "contentHash": "fa610a9815e8b94ef58b32d96892662a27502d7da6de5cb6ba785bde16517dad"
+        },
+        {
+          "messageId": "T04-L0-REST-MAPPING-M008",
+          "role": "assistant",
+          "content": "把错误状态、响应体和异常类型并列记录，避免只看状态码。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-06T12:00:00+08:00",
+          "contentHash": "f42b65d54d30aafc8cc1bd405f2d35cc29874881a3ccd55bffcb92a7aa20bcf4"
+        },
+        {
+          "messageId": "T04-L0-REST-MAPPING-M009",
+          "role": "user",
+          "content": "测试夹具已经覆盖一个成功和一个错误响应。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-06T12:00:00+08:00",
+          "contentHash": "91efac3cfe2dac39c9ed66c3229502c0f873d57f6b66dee1e78de8c885574079"
+        },
+        {
+          "messageId": "T04-L0-REST-MAPPING-M010",
+          "role": "assistant",
+          "content": "还需要回看历史上确认的映射与错误处理顺序。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-06T12:00:00+08:00",
+          "contentHash": "ffafacb48fb6dfc0090b20a16cbd0d8c0fe0d72f89ac82c85dc7418c1c84a522"
+        },
+        {
+          "messageId": "T04-L0-REST-MAPPING-M011",
+          "role": "user",
+          "content": "当前任务只要求行为对照，不继续改造为异步客户端。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-06T12:00:00+08:00",
+          "contentHash": "ae52ff4cacddf087be027b2fd1bc16fb46bf30c75c7a2d446904611548936f6a"
+        },
+        {
+          "messageId": "T04-L0-REST-MAPPING-M012",
+          "role": "assistant",
+          "content": "我会查找同一同步迁移会话的最终结论，找到后停止扩展范围。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-06T12:00:00+08:00",
+          "contentHash": "eb432a1ddae18d3e29366640abb5b573b645b0d94b538292def8d2ce1ff329b4"
+        }
+      ],
+      "contentHash": "084543830d4451037b632fd5a59c5049f5f663d59aae601fc75db03316cb694a"
+    },
+    {
+      "assetId": "T04-L0-REST-ERROR-TEST",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l0"
+      ],
+      "observedAt": "2026-08-18T12:00:00+08:00",
+      "sessionId": "T04-L0-REST-ERROR-TEST",
+      "messages": [
+        {
+          "messageId": "T04-L0-REST-ERROR-TEST-M001",
+          "role": "user",
+          "content": "这次补同步客户端的错误测试，保留原来阻塞式调用的使用方式。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-18T12:00:00+08:00",
+          "contentHash": "56d0a0daf59a70d0dc78dcee66587f6872e180171dc6ab9e779b5ccdc9f86188"
+        },
+        {
+          "messageId": "T04-L0-REST-ERROR-TEST-M002",
+          "role": "assistant",
+          "content": "先列出连接失败、非成功状态和响应体解析失败三种路径。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-18T12:00:00+08:00",
+          "contentHash": "b1bcc896c92c0e26fed5e4fc05200b1bc4355aa5fa479352a8f712a110872b33"
+        },
+        {
+          "messageId": "T04-L0-REST-ERROR-TEST-M003",
+          "role": "user",
+          "content": "连接失败已经能在夹具里重现，非成功状态的消息还不一致。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-18T12:00:00+08:00",
+          "contentHash": "6dda9978509896a05b947d41c348ddcf55887e93eec4ab7cfc018e3edbad7938"
+        },
+        {
+          "messageId": "T04-L0-REST-ERROR-TEST-M004",
+          "role": "assistant",
+          "content": "先固定测试响应头和正文，再比较异常映射。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-18T12:00:00+08:00",
+          "contentHash": "68155f4baa17ba9c6ae798b2189d8585987cfa1a4cbab2529b80f5581ba5f305"
+        },
+        {
+          "messageId": "T04-L0-REST-ERROR-TEST-M005",
+          "role": "user",
+          "content": "正文是一个简单错误对象，正常响应则是列表。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-18T12:00:00+08:00",
+          "contentHash": "e518d53a2237be72547bda26ce8ded4d33dd0f5a46761c23b79700f39662aeb3"
+        },
+        {
+          "messageId": "T04-L0-REST-ERROR-TEST-M006",
+          "role": "assistant",
+          "content": "列表和错误对象要使用各自的目标类型，不能共用一个宽泛映射。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-18T12:00:00+08:00",
+          "contentHash": "d3af72759ee259017e4c26a8a92ac33d8dafbcc1d76cf2479be91619c7672fbb"
+        },
+        {
+          "messageId": "T04-L0-REST-ERROR-TEST-M007",
+          "role": "user",
+          "content": "同事提到过一次保留原行为的检查顺序，但笔记没有写全。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-18T12:00:00+08:00",
+          "contentHash": "c797e0c4c80c7686fe2ef1858b9548f9ee1bb634238b14f28e366d7bb8a207cb"
+        },
+        {
+          "messageId": "T04-L0-REST-ERROR-TEST-M008",
+          "role": "assistant",
+          "content": "我会把顺序当作独立历史事实，不从测试名称推断。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-18T12:00:00+08:00",
+          "contentHash": "d1f1df5c6c59e29d5821b9f987ac7b6994aff1cee924ddd7f5071a421e298de0"
+        },
+        {
+          "messageId": "T04-L0-REST-ERROR-TEST-M009",
+          "role": "user",
+          "content": "这条记录不涉及 Jakarta 包，也不涉及 Maven 插件。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-18T12:00:00+08:00",
+          "contentHash": "b49cf98796d90608d2e2cdd646b4cdd5b16701561d451deb3065a67b89ef1ac6"
+        },
+        {
+          "messageId": "T04-L0-REST-ERROR-TEST-M010",
+          "role": "assistant",
+          "content": "已经把其他项目词汇排除，剩下只看同步调用和错误路径。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-18T12:00:00+08:00",
+          "contentHash": "df8a7d6cb01d8c814cfcc9aa7218f65e68d2eee6b79d7d2719f40ced574c3537"
+        },
+        {
+          "messageId": "T04-L0-REST-ERROR-TEST-M011",
+          "role": "user",
+          "content": "完成前要确认成功响应和错误响应都保持可观察的旧语义。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-18T12:00:00+08:00",
+          "contentHash": "1eed655ad67e38648d82a3b72d77c01eb098d05ed5fbb04252cc999b5438da21"
+        },
+        {
+          "messageId": "T04-L0-REST-ERROR-TEST-M012",
+          "role": "assistant",
+          "content": "先找回以前的对照结论，再据此补局部测试说明。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-18T12:00:00+08:00",
+          "contentHash": "8fb17d31f9ceb778a17ca10b6f6db6152bfda9a236b3e8e0a9b40d9c0b583353"
+        }
+      ],
+      "contentHash": "96796930f00db3806273c5c1d6334069e19e4fa8ac5e03fd03a2067fe9626e63"
+    },
+    {
+      "assetId": "T04-L0-GA-LIFECYCLE",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l0"
+      ],
+      "observedAt": "2026-08-09T12:00:00+08:00",
+      "sessionId": "T04-L0-GA-LIFECYCLE",
+      "messages": [
+        {
+          "messageId": "T04-L0-GA-LIFECYCLE-M001",
+          "role": "user",
+          "content": "今天诊断 Google Auto 多模块构建，现象是某个模块单独通过但聚合构建失败。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-09T12:00:00+08:00",
+          "contentHash": "4a2bdabf1ccc0120226f0532ab4c5b9e5e0a4b1f9192b157afc944a04f9ef601"
+        },
+        {
+          "messageId": "T04-L0-GA-LIFECYCLE-M002",
+          "role": "assistant",
+          "content": "我先按父工程、模块和生命周期阶段分层记录，不把依赖版本问题先定性。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-09T12:00:00+08:00",
+          "contentHash": "4579bd9174fda446e59e6b90a411e8840709805715ab21a896c581541f795588"
+        },
+        {
+          "messageId": "T04-L0-GA-LIFECYCLE-M003",
+          "role": "user",
+          "content": "编译阶段没有错误，失败出现在打包前后的某个插件步骤。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-09T12:00:00+08:00",
+          "contentHash": "8aee58399e308133d4c7b868b7852db22f05ee61da37cbfb116c1b173eb5bce2"
+        },
+        {
+          "messageId": "T04-L0-GA-LIFECYCLE-M004",
+          "role": "assistant",
+          "content": "先确认阶段顺序和插件是否绑定到聚合模块。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-09T12:00:00+08:00",
+          "contentHash": "53b7792fe426cef8a9eb849a6b052a16287eab7b3c42eb13fa540a3e6414c207"
+        },
+        {
+          "messageId": "T04-L0-GA-LIFECYCLE-M005",
+          "role": "user",
+          "content": "不同模块的日志时间相近，容易把子模块失败看成父工程失败。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-09T12:00:00+08:00",
+          "contentHash": "37d454174930349fb2653ea1793b3c018312c0ef74aaa5c6fd507e5ca18bbc7d"
+        },
+        {
+          "messageId": "T04-L0-GA-LIFECYCLE-M006",
+          "role": "assistant",
+          "content": "我会用模块前缀和阶段标记拆开日志。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-09T12:00:00+08:00",
+          "contentHash": "c0c820337b8ee245a9406817b189da935f5962c70a7e3e20e6652dc3728e16e6"
+        },
+        {
+          "messageId": "T04-L0-GA-LIFECYCLE-M007",
+          "role": "user",
+          "content": "一个 profile 只在发布构建打开，日常验证不会经过它。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-09T12:00:00+08:00",
+          "contentHash": "ab01c16e32fc28ee211a3ac7f714e08caa7e5f6ab843d908953d200f64381b72"
+        },
+        {
+          "messageId": "T04-L0-GA-LIFECYCLE-M008",
+          "role": "assistant",
+          "content": "这条条件要和默认生命周期分开，避免把发布路径当成常规路径。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-09T12:00:00+08:00",
+          "contentHash": "847618aecb0e3801514ce502b78e0c7f6c90b6e35e444814356d743447bb7523"
+        },
+        {
+          "messageId": "T04-L0-GA-LIFECYCLE-M009",
+          "role": "user",
+          "content": "当前记录没有保留最终确认的阶段和执行顺序。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-09T12:00:00+08:00",
+          "contentHash": "fe9fb8861d26c4cd278f6046643a29e5ef3ce90f5ff862f27528a38fb9697e1d"
+        },
+        {
+          "messageId": "T04-L0-GA-LIFECYCLE-M010",
+          "role": "assistant",
+          "content": "已有日志能定位失败类别，但不能还原历史上的最短诊断步骤。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-09T12:00:00+08:00",
+          "contentHash": "3d50de41120515c7f84532d6c8d9ee26d14fbaf4d09dd23db8225d059df1bc46"
+        },
+        {
+          "messageId": "T04-L0-GA-LIFECYCLE-M011",
+          "role": "user",
+          "content": "交接只需要那次诊断的阶段证据，不需要现在运行整套构建。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-09T12:00:00+08:00",
+          "contentHash": "d4175375016cb36d85243188984a94ba988d2e41a1e11f52063400157418d1b8"
+        },
+        {
+          "messageId": "T04-L0-GA-LIFECYCLE-M012",
+          "role": "assistant",
+          "content": "我会查同一构建会话的阶段记录，拿到结论后停止。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-09T12:00:00+08:00",
+          "contentHash": "c543d2a11ae9cd6d0ca4fba18faaa37a9f2c41e786d7ee85a75981bc0d722825"
+        }
+      ],
+      "contentHash": "dbc74f7520e39cbc473941497e9d165ce561df68a63de11a877808e260a0389a"
+    },
+    {
+      "assetId": "T04-L0-GA-DEPENDENCY",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l0"
+      ],
+      "observedAt": "2026-08-21T12:00:00+08:00",
+      "sessionId": "T04-L0-GA-DEPENDENCY",
+      "messages": [
+        {
+          "messageId": "T04-L0-GA-DEPENDENCY-M001",
+          "role": "user",
+          "content": "这次整理 Google Auto 依赖收敛，重点是传递版本从哪里进入。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-21T12:00:00+08:00",
+          "contentHash": "609020e11694ddb58b272bfafa198e46d0c6dcfae0ebf3f91bbdc5813232f9d1"
+        },
+        {
+          "messageId": "T04-L0-GA-DEPENDENCY-M002",
+          "role": "assistant",
+          "content": "我把直接声明、父工程管理和传递依赖分成三列。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-21T12:00:00+08:00",
+          "contentHash": "7bb84bb752b92c01b3a878b4e0391822e3cbf227eff62c19866ff029f4e5b687"
+        },
+        {
+          "messageId": "T04-L0-GA-DEPENDENCY-M003",
+          "role": "user",
+          "content": "冲突只在测试模块出现，主模块的编译类路径看起来稳定。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-21T12:00:00+08:00",
+          "contentHash": "d769afdde132fbc4c188345cd444b235e19ae988ce96c602ad772a187dd6189b"
+        },
+        {
+          "messageId": "T04-L0-GA-DEPENDENCY-M004",
+          "role": "assistant",
+          "content": "先比较模块边界和作用域，再判断是不是同一个版本冲突。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-21T12:00:00+08:00",
+          "contentHash": "10e42be8a021d90d0c1c6bd516b02737283e86b8e3356866a622389d372667c9"
+        },
+        {
+          "messageId": "T04-L0-GA-DEPENDENCY-M005",
+          "role": "user",
+          "content": "依赖树里有两个相近版本，日志没有说明最终选择依据。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-21T12:00:00+08:00",
+          "contentHash": "94ee55b8fe7c10bf9b1aad14fccd5a63d127c12096a3bdcaddd9f23526d1ad69"
+        },
+        {
+          "messageId": "T04-L0-GA-DEPENDENCY-M006",
+          "role": "assistant",
+          "content": "把声明位置、管理位置和最近路径一起记下，不能只看最终版本。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-21T12:00:00+08:00",
+          "contentHash": "0e334c7e596002c2d0ec7a493d999ea3e53a9bdbe2b9baae4dcddcac93174b43"
+        },
+        {
+          "messageId": "T04-L0-GA-DEPENDENCY-M007",
+          "role": "user",
+          "content": "一次临时排除让测试通过，但不确定是否破坏其他模块。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-21T12:00:00+08:00",
+          "contentHash": "12831f8593c77348e6136c5e5a577e88814bbc913e13f261e53953373024c490"
+        },
+        {
+          "messageId": "T04-L0-GA-DEPENDENCY-M008",
+          "role": "assistant",
+          "content": "临时排除先作为实验记录，不能直接当成收敛结论。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-21T12:00:00+08:00",
+          "contentHash": "b52bc9a96dc76a4dc7284bb94c9d409ca3b8df77b4f4d0527189f3d8bda7b6d5"
+        },
+        {
+          "messageId": "T04-L0-GA-DEPENDENCY-M009",
+          "role": "user",
+          "content": "我只需要恢复历史上验证过的依赖证据链。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-21T12:00:00+08:00",
+          "contentHash": "c340511b00bb076500af63c8559fee9691923bdfd801d4e11b65b40f949201af"
+        },
+        {
+          "messageId": "T04-L0-GA-DEPENDENCY-M010",
+          "role": "assistant",
+          "content": "当前上下文有冲突现象，却没有那次会话里写下的最终来源判断。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-21T12:00:00+08:00",
+          "contentHash": "e77ebb6b2f5b03b1ca40f439f4def29cecbe165de03f394b40ded138c394311f"
+        },
+        {
+          "messageId": "T04-L0-GA-DEPENDENCY-M011",
+          "role": "user",
+          "content": "不要把生命周期插件的执行问题并到依赖说明。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-21T12:00:00+08:00",
+          "contentHash": "cdc50520246333fcd126440d3c6dcc1629cc08ee8e391d02db63fbb33e7b71e3"
+        },
+        {
+          "messageId": "T04-L0-GA-DEPENDENCY-M012",
+          "role": "assistant",
+          "content": "我会只追踪依赖管理时间线，找到来源结论后结束。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-21T12:00:00+08:00",
+          "contentHash": "4e869c19f7022d52c081390c61b32ead1081c079d5fd6748bcce3bf6a4eace09"
+        }
+      ],
+      "contentHash": "9d5fcbcabdeacf5646157643978f0a8233fc2683ad84c033300b087a4120bb55"
+    },
+    {
+      "assetId": "T04-L0-MAVEN-PLUGIN-DIAGNOSIS",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l0"
+      ],
+      "observedAt": "2026-08-26T12:00:00+08:00",
+      "sessionId": "T04-L0-MAVEN-PLUGIN-DIAGNOSIS",
+      "messages": [
+        {
+          "messageId": "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M001",
+          "role": "user",
+          "content": "今天看 Google Auto 插件配置差异，只有特定 profile 下会出现失败。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-26T12:00:00+08:00",
+          "contentHash": "9df01633b6408f0a00c88e028c9d163c0d08298df9525f2b784fa8c0c4ddb438"
+        },
+        {
+          "messageId": "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M002",
+          "role": "assistant",
+          "content": "我先区分插件参数、绑定阶段和 profile 激活条件。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-26T12:00:00+08:00",
+          "contentHash": "3405dc79c6c2895de5d4d1a78584906eb684a6d09eaf30bb1e5ef61a1ee478b1"
+        },
+        {
+          "messageId": "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M003",
+          "role": "user",
+          "content": "默认构建通过，发布 profile 会多出一次生成步骤。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-26T12:00:00+08:00",
+          "contentHash": "a0c637f113c8b8d453459c33e4973f13bccaaaa75e3aa4ad6f95634044f0bf9b"
+        },
+        {
+          "messageId": "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M004",
+          "role": "assistant",
+          "content": "先比较有效配置，再看生成步骤是否重复绑定。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-26T12:00:00+08:00",
+          "contentHash": "6b94000e574a89e99b5764f969ea14f25e3c88774df53135b594a48c25cb7f92"
+        },
+        {
+          "messageId": "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M005",
+          "role": "user",
+          "content": "日志显示生成目录不同，但没有说明哪个参数改变了目录。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-26T12:00:00+08:00",
+          "contentHash": "3721bb99ef737e089d275d12e945b6bac1a951ab012b1bc6f70dccba6efc467d"
+        },
+        {
+          "messageId": "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M006",
+          "role": "assistant",
+          "content": "把参数来源和最终生效值并列，避免只凭目录猜测。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-26T12:00:00+08:00",
+          "contentHash": "309bfeb8e1662afbe6497a205dfe85be3328a13c4cf6ebb9be612896120f697b"
+        },
+        {
+          "messageId": "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M007",
+          "role": "user",
+          "content": "同一插件在另一个模块里没有问题，模块级配置可能不同。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-26T12:00:00+08:00",
+          "contentHash": "ea583a75fed6dbb3737265bda9c87bec4267487ddf30596d725770c0641f0528"
+        },
+        {
+          "messageId": "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M008",
+          "role": "assistant",
+          "content": "我会按模块和 profile 逐项对照，不把依赖收敛结论带入。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-26T12:00:00+08:00",
+          "contentHash": "ae7a61672cfc5f95282d987bb28989424d51cdc0675ceff84ecd30240702ce33"
+        },
+        {
+          "messageId": "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M009",
+          "role": "user",
+          "content": "之前有人验证过最小配置，但交接只留下通过与否。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-26T12:00:00+08:00",
+          "contentHash": "ecea5434beb8eeb3c1c0a89c3ff8c19695b01196a8d62f34097f2d6a55a161d2"
+        },
+        {
+          "messageId": "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M010",
+          "role": "assistant",
+          "content": "缺少的是历史里的具体参数与阶段关系，不是新的配置建议。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-26T12:00:00+08:00",
+          "contentHash": "d43028da86e38d02cae34d81214b0a3b6f09a9fc2ef8031c78bbf920b93d0d90"
+        },
+        {
+          "messageId": "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M011",
+          "role": "user",
+          "content": "当前不需要重新执行构建，只要恢复已验证的诊断顺序。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-26T12:00:00+08:00",
+          "contentHash": "878468e83826879af5cc112aca920f8983d60682c62accb92d28065c46917d22"
+        },
+        {
+          "messageId": "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M012",
+          "role": "assistant",
+          "content": "我会查找那段插件诊断会话，确认顺序后只返回相关事实。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-26T12:00:00+08:00",
+          "contentHash": "9ba16d8799ccca5c3c8a598b1e380efe06b7f5acd98b5eb7152a06b5acc25caf"
+        }
+      ],
+      "contentHash": "30d7b84a9627ed1d7c059398bed23f4b085294cbd4a7ec3e3802c9dbe03db103"
+    },
+    {
+      "assetId": "T04-L0-DRUID-JACKSON",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l0"
+      ],
+      "observedAt": "2026-08-12T12:00:00+08:00",
+      "sessionId": "T04-L0-DRUID-JACKSON",
+      "messages": [
+        {
+          "messageId": "T04-L0-DRUID-JACKSON-M001",
+          "role": "user",
+          "content": "今天复核 Druid 后端的 Jackson 解析边界，既要挡住对抗请求也要保留合法请求。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "85a2e1dbaffd19f6c008665788ced1e8e627397b90a230392293a0143dd7eace"
+        },
+        {
+          "messageId": "T04-L0-DRUID-JACKSON-M002",
+          "role": "assistant",
+          "content": "我把输入形状、类型解析和响应兼容性分开观察。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "7f8d5f9db9af3b9416b9bce78140b89cc979cc8a629d5ba1631681817d3404c0"
+        },
+        {
+          "messageId": "T04-L0-DRUID-JACKSON-M003",
+          "role": "user",
+          "content": "恶意多态类型字段会触发拒绝，普通对象请求仍能通过。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "29196ad9bbdb1ae57eec23a2ceaccb4e5c42acd00fd99887aa4966b7a861d090"
+        },
+        {
+          "messageId": "T04-L0-DRUID-JACKSON-M004",
+          "role": "assistant",
+          "content": "先保留两类请求的最小样例，不把所有解析错误归为同一根因。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "2c293d396494c21f2558a4d926a1c6c2adf6d1a4c6d07ec860a6fa984c9cb61e"
+        },
+        {
+          "messageId": "T04-L0-DRUID-JACKSON-M005",
+          "role": "user",
+          "content": "问题只在一个后端模块出现，其他模块使用不同的读取边界。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "aa258c125476eaa787484c0f1313a5d8779bc4dd2dd93df8a41d80d262489976"
+        },
+        {
+          "messageId": "T04-L0-DRUID-JACKSON-M006",
+          "role": "assistant",
+          "content": "模块隔离很重要，先锁定实际入口和配置作用域。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "7e331597e0ebcca71b0c8f9db29e145b65e6c3ce8ed9d82d055eff25a1e3380b"
+        },
+        {
+          "messageId": "T04-L0-DRUID-JACKSON-M007",
+          "role": "user",
+          "content": "测试已覆盖恶意字段和正常字段，但历史记录没写清最终边界。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "4067882c1a1903610334e74c93870e564eaba10141dffc5441c9bb30b780e814"
+        },
+        {
+          "messageId": "T04-L0-DRUID-JACKSON-M008",
+          "role": "assistant",
+          "content": "当前测试说明了现象，不能代替之前验证过的解析器选择。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "4f2fef57fd390e747b007a6e85d097d65c9b530da1eb618605b935c3c3d0a5ec"
+        },
+        {
+          "messageId": "T04-L0-DRUID-JACKSON-M009",
+          "role": "user",
+          "content": "这轮不需要修改代码，只要找回安全复盘里的具体判断。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "e30070f7b9c7833b74809ccacd8342cd48ccbf39663324c602cba90106ee2ca0"
+        },
+        {
+          "messageId": "T04-L0-DRUID-JACKSON-M010",
+          "role": "assistant",
+          "content": "我会按请求类型和模块时间线查回原先的验证记录。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "7a8f3f202d31d3214cea23d5d8b727a92729e7139b999778cc89dd6ed6b1d6c5"
+        },
+        {
+          "messageId": "T04-L0-DRUID-JACKSON-M011",
+          "role": "user",
+          "content": "不要把 Google Auto 的 Maven 诊断词汇混到安全说明。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "bcf0f823233925e99ccab6ef16264de94044a41c2888c5a53221cb7c20b2cd9c"
+        },
+        {
+          "messageId": "T04-L0-DRUID-JACKSON-M012",
+          "role": "assistant",
+          "content": "收到，我只追踪 Jackson 边界和合法请求兼容性。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "4a05e4d5adf43b37fa7c1efa2b62399d3e48f9117a16de572987667a78d12b3c"
+        }
+      ],
+      "contentHash": "5cb00fd268cf0d2c8d7865e3daca0312339974b96c44e2027a55532fe735e164"
+    },
+    {
+      "assetId": "T04-L0-DRUID-MODULE",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l0"
+      ],
+      "observedAt": "2026-08-24T12:00:00+08:00",
+      "sessionId": "T04-L0-DRUID-MODULE",
+      "messages": [
+        {
+          "messageId": "T04-L0-DRUID-MODULE-M001",
+          "role": "user",
+          "content": "这次回归 Druid 的解析器模块隔离，重点是安全边界不向其他模块扩散。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-24T12:00:00+08:00",
+          "contentHash": "0fe804c17f303804bfe2be45b00a2f4d58908cd8a758aeab0ab698eac66796ba"
+        },
+        {
+          "messageId": "T04-L0-DRUID-MODULE-M002",
+          "role": "assistant",
+          "content": "我先检查模块依赖、注册点和请求到达的实际路径。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-24T12:00:00+08:00",
+          "contentHash": "c7f6d587e3ea5592ee4b60b2178fac6e7a95560404be57be2fcbe35349da3993"
+        },
+        {
+          "messageId": "T04-L0-DRUID-MODULE-M003",
+          "role": "user",
+          "content": "目标模块的白名单解析能拒绝未知类型，旁边模块仍使用普通数据绑定。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-24T12:00:00+08:00",
+          "contentHash": "75fdf35e41239d5baa6a0ef681d059f8d842fc662c42d74fc34647a55a26acac"
+        },
+        {
+          "messageId": "T04-L0-DRUID-MODULE-M004",
+          "role": "assistant",
+          "content": "两条路径的输入契约不同，不能用一个全局开关解释。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-24T12:00:00+08:00",
+          "contentHash": "17c3578e9d72edb709beeb3f1a655d95dc81df51b14e90386c339e613ee6cdf2"
+        },
+        {
+          "messageId": "T04-L0-DRUID-MODULE-M005",
+          "role": "user",
+          "content": "一次集成测试误把旁边模块的请求发到了目标入口。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-24T12:00:00+08:00",
+          "contentHash": "c89999d809ec9dbe188b8ebe876b761cd38ffdb75008421c1234220d3369821e"
+        },
+        {
+          "messageId": "T04-L0-DRUID-MODULE-M006",
+          "role": "assistant",
+          "content": "先修正测试路由，再看拒绝结果是否稳定。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-24T12:00:00+08:00",
+          "contentHash": "d18978e8adf805a65b6b70d7cc0da2b5f9766bf8fd6d7c396426a7962a5be303"
+        },
+        {
+          "messageId": "T04-L0-DRUID-MODULE-M007",
+          "role": "user",
+          "content": "修正后合法请求保持兼容，未知类型仍被拒绝。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-24T12:00:00+08:00",
+          "contentHash": "c62c7d6d2913d1c38586b98f860c97a411d6ac922a1d496734db184ad1ac83cd"
+        },
+        {
+          "messageId": "T04-L0-DRUID-MODULE-M008",
+          "role": "assistant",
+          "content": "这支持按模块隔离解析策略，而不是扩大白名单。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-24T12:00:00+08:00",
+          "contentHash": "02ebe76211a5d9dcd6a62898e82de85b97c17fcaa156c8f16659bf9e5cf12a54"
+        },
+        {
+          "messageId": "T04-L0-DRUID-MODULE-M009",
+          "role": "user",
+          "content": "历史复盘里还有一次关于 Jackson 配置边界的确认，但摘要不完整。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-24T12:00:00+08:00",
+          "contentHash": "78c0af6fe7d72d983d7bb3fd19d5f659035b58c7b4d34dcc100b1ce42f2a2bea"
+        },
+        {
+          "messageId": "T04-L0-DRUID-MODULE-M010",
+          "role": "assistant",
+          "content": "当前回归证明了方向，没有保留那次确认使用的精确边界描述。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-24T12:00:00+08:00",
+          "contentHash": "f67f0b341483b500e0dd312505a6d1b78c89b89cf037486b55ccf6fe6b5c5e44"
+        },
+        {
+          "messageId": "T04-L0-DRUID-MODULE-M011",
+          "role": "user",
+          "content": "交接只要模块隔离与合法请求兼容性的结论。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-24T12:00:00+08:00",
+          "contentHash": "0f4ebaa7fcc3e9d06e7ccdd45f99a978118bdf64ba9344035f5dcec5a6dc0e14"
+        },
+        {
+          "messageId": "T04-L0-DRUID-MODULE-M012",
+          "role": "assistant",
+          "content": "我会找回对应安全会话，不延伸到其他项目或完整修复。",
+          "sourceEvidenceIds": [
+            "source-t04-memory-l0"
+          ],
+          "observedAt": "2026-08-24T12:00:00+08:00",
+          "contentHash": "9909f2e3b465115a18f79672fadd10d15f1b4f198d396359186a0f085d1ee150"
+        }
+      ],
+      "contentHash": "9a74521913cfdce3e3ba787cd3df2d75fcfaec1ab298b52f5766772e9db19b8a"
+    }
+  ],
+  "l1Memories": [
+    {
+      "assetId": "T04-L1-PETCLINIC-NAMESPACE-RULE",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00+08:00",
+      "type": "decision",
+      "content": "PetClinic 迁移时，业务 API、校验和持久化相关的 Java EE 导入迁到 jakarta 命名空间；java.sql、javax.crypto 等 JDK 所有类型保持原包，避免全局替换。",
+      "status": "active",
+      "validFrom": "2026-08-05T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T04-L0-PETCLINIC-NAMESPACE-M001",
+        "T04-L0-PETCLINIC-NAMESPACE-M002",
+        "T04-L0-PETCLINIC-NAMESPACE-M003",
+        "T04-L0-PETCLINIC-NAMESPACE-M004",
+        "T04-L0-PETCLINIC-NAMESPACE-M005",
+        "T04-L0-PETCLINIC-NAMESPACE-M006",
+        "T04-L0-PETCLINIC-NAMESPACE-M007",
+        "T04-L0-PETCLINIC-NAMESPACE-M008",
+        "T04-L0-PETCLINIC-NAMESPACE-M009",
+        "T04-L0-PETCLINIC-NAMESPACE-M010",
+        "T04-L0-PETCLINIC-NAMESPACE-M011",
+        "T04-L0-PETCLINIC-NAMESPACE-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "ebe640a68279b3a9aeb8ea9b7616d46ff3bc097f725feef2fb1909506a311c3d"
+    },
+    {
+      "assetId": "T04-L1-PETCLINIC-SECURITY-BOUNDARY",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00+08:00",
+      "type": "decision",
+      "content": "安全过滤链迁移只按请求边界做最小修改：公开资源保持放行，登录后访问受保护区域，管理路径仍需认证；命名空间判断单独记录。",
+      "status": "active",
+      "validFrom": "2026-08-05T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T04-L0-PETCLINIC-SECURITY-M001",
+        "T04-L0-PETCLINIC-SECURITY-M002",
+        "T04-L0-PETCLINIC-SECURITY-M003",
+        "T04-L0-PETCLINIC-SECURITY-M004",
+        "T04-L0-PETCLINIC-SECURITY-M005",
+        "T04-L0-PETCLINIC-SECURITY-M006",
+        "T04-L0-PETCLINIC-SECURITY-M007",
+        "T04-L0-PETCLINIC-SECURITY-M008",
+        "T04-L0-PETCLINIC-SECURITY-M009",
+        "T04-L0-PETCLINIC-SECURITY-M010",
+        "T04-L0-PETCLINIC-SECURITY-M011",
+        "T04-L0-PETCLINIC-SECURITY-M012",
+        "T04-L0-PETCLINIC-NAMESPACE-M001",
+        "T04-L0-PETCLINIC-NAMESPACE-M002",
+        "T04-L0-PETCLINIC-NAMESPACE-M003",
+        "T04-L0-PETCLINIC-NAMESPACE-M004",
+        "T04-L0-PETCLINIC-NAMESPACE-M005",
+        "T04-L0-PETCLINIC-NAMESPACE-M006",
+        "T04-L0-PETCLINIC-NAMESPACE-M007",
+        "T04-L0-PETCLINIC-NAMESPACE-M008",
+        "T04-L0-PETCLINIC-NAMESPACE-M009",
+        "T04-L0-PETCLINIC-NAMESPACE-M010",
+        "T04-L0-PETCLINIC-NAMESPACE-M011",
+        "T04-L0-PETCLINIC-NAMESPACE-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "42d941109f7fc97ab7c97b5fdb2f4ba15aba36466825deec7163dad4bd00c7cb"
+    },
+    {
+      "assetId": "T04-L1-PETCLINIC-VALIDATION-SCOPE",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00+08:00",
+      "type": "fact",
+      "content": "校验注解属于迁移范围，和同文件中的 JDK 日期类型分开判断；局部替换后用空值与格式错误测试确认行为。",
+      "status": "active",
+      "validFrom": "2026-08-05T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T04-L0-PETCLINIC-VALIDATION-M001",
+        "T04-L0-PETCLINIC-VALIDATION-M002",
+        "T04-L0-PETCLINIC-VALIDATION-M003",
+        "T04-L0-PETCLINIC-VALIDATION-M004",
+        "T04-L0-PETCLINIC-VALIDATION-M005",
+        "T04-L0-PETCLINIC-VALIDATION-M006",
+        "T04-L0-PETCLINIC-VALIDATION-M007",
+        "T04-L0-PETCLINIC-VALIDATION-M008",
+        "T04-L0-PETCLINIC-VALIDATION-M009",
+        "T04-L0-PETCLINIC-VALIDATION-M010",
+        "T04-L0-PETCLINIC-VALIDATION-M011",
+        "T04-L0-PETCLINIC-VALIDATION-M012",
+        "T04-L0-PETCLINIC-NAMESPACE-M001",
+        "T04-L0-PETCLINIC-NAMESPACE-M002",
+        "T04-L0-PETCLINIC-NAMESPACE-M003",
+        "T04-L0-PETCLINIC-NAMESPACE-M004",
+        "T04-L0-PETCLINIC-NAMESPACE-M005",
+        "T04-L0-PETCLINIC-NAMESPACE-M006",
+        "T04-L0-PETCLINIC-NAMESPACE-M007",
+        "T04-L0-PETCLINIC-NAMESPACE-M008",
+        "T04-L0-PETCLINIC-NAMESPACE-M009",
+        "T04-L0-PETCLINIC-NAMESPACE-M010",
+        "T04-L0-PETCLINIC-NAMESPACE-M011",
+        "T04-L0-PETCLINIC-NAMESPACE-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "bb9bd5f4704cd4deb5063e9336c0f48df15586e6154c33495c2413b3c43d9b0b"
+    },
+    {
+      "assetId": "T04-L1-PETCLINIC-REGRESSION-ORDER",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00+08:00",
+      "type": "fact",
+      "content": "PetClinic 迁移回归先核对导入分类，再分别检查校验行为和安全过滤路径，不用编译日志推断未记录的边界。",
+      "status": "active",
+      "validFrom": "2026-08-05T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T04-L0-PETCLINIC-NAMESPACE-M001",
+        "T04-L0-PETCLINIC-NAMESPACE-M002",
+        "T04-L0-PETCLINIC-NAMESPACE-M003",
+        "T04-L0-PETCLINIC-NAMESPACE-M004",
+        "T04-L0-PETCLINIC-NAMESPACE-M005",
+        "T04-L0-PETCLINIC-NAMESPACE-M006",
+        "T04-L0-PETCLINIC-NAMESPACE-M007",
+        "T04-L0-PETCLINIC-NAMESPACE-M008",
+        "T04-L0-PETCLINIC-NAMESPACE-M009",
+        "T04-L0-PETCLINIC-NAMESPACE-M010",
+        "T04-L0-PETCLINIC-NAMESPACE-M011",
+        "T04-L0-PETCLINIC-NAMESPACE-M012",
+        "T04-L0-PETCLINIC-SECURITY-M001",
+        "T04-L0-PETCLINIC-SECURITY-M002",
+        "T04-L0-PETCLINIC-SECURITY-M003",
+        "T04-L0-PETCLINIC-SECURITY-M004",
+        "T04-L0-PETCLINIC-SECURITY-M005",
+        "T04-L0-PETCLINIC-SECURITY-M006",
+        "T04-L0-PETCLINIC-SECURITY-M007",
+        "T04-L0-PETCLINIC-SECURITY-M008",
+        "T04-L0-PETCLINIC-SECURITY-M009",
+        "T04-L0-PETCLINIC-SECURITY-M010",
+        "T04-L0-PETCLINIC-SECURITY-M011",
+        "T04-L0-PETCLINIC-SECURITY-M012",
+        "T04-L0-PETCLINIC-VALIDATION-M001",
+        "T04-L0-PETCLINIC-VALIDATION-M002",
+        "T04-L0-PETCLINIC-VALIDATION-M003",
+        "T04-L0-PETCLINIC-VALIDATION-M004",
+        "T04-L0-PETCLINIC-VALIDATION-M005",
+        "T04-L0-PETCLINIC-VALIDATION-M006",
+        "T04-L0-PETCLINIC-VALIDATION-M007",
+        "T04-L0-PETCLINIC-VALIDATION-M008",
+        "T04-L0-PETCLINIC-VALIDATION-M009",
+        "T04-L0-PETCLINIC-VALIDATION-M010",
+        "T04-L0-PETCLINIC-VALIDATION-M011",
+        "T04-L0-PETCLINIC-VALIDATION-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "a98f421b4c5d87eff1b01a5d9045988d01487176ed57090d61dc9ea7c5faa838"
+    },
+    {
+      "assetId": "T04-L1-RESTCLIENT-PARITY",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00+08:00",
+      "type": "fact",
+      "content": "同步客户端迁移要保持请求构造、成功响应映射和非成功状态异常语义；集合与错误对象使用各自类型，不改为异步调用。",
+      "status": "active",
+      "validFrom": "2026-08-05T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T04-L0-REST-MAPPING-M001",
+        "T04-L0-REST-MAPPING-M002",
+        "T04-L0-REST-MAPPING-M003",
+        "T04-L0-REST-MAPPING-M004",
+        "T04-L0-REST-MAPPING-M005",
+        "T04-L0-REST-MAPPING-M006",
+        "T04-L0-REST-MAPPING-M007",
+        "T04-L0-REST-MAPPING-M008",
+        "T04-L0-REST-MAPPING-M009",
+        "T04-L0-REST-MAPPING-M010",
+        "T04-L0-REST-MAPPING-M011",
+        "T04-L0-REST-MAPPING-M012",
+        "T04-L0-REST-ERROR-TEST-M001",
+        "T04-L0-REST-ERROR-TEST-M002",
+        "T04-L0-REST-ERROR-TEST-M003",
+        "T04-L0-REST-ERROR-TEST-M004",
+        "T04-L0-REST-ERROR-TEST-M005",
+        "T04-L0-REST-ERROR-TEST-M006",
+        "T04-L0-REST-ERROR-TEST-M007",
+        "T04-L0-REST-ERROR-TEST-M008",
+        "T04-L0-REST-ERROR-TEST-M009",
+        "T04-L0-REST-ERROR-TEST-M010",
+        "T04-L0-REST-ERROR-TEST-M011",
+        "T04-L0-REST-ERROR-TEST-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "7dbba2e2b21bef216631fcefab0d955350ab96274688e5bc3b98d07b62e7a020"
+    },
+    {
+      "assetId": "T04-L1-RESTCLIENT-MAPPING",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00+08:00",
+      "type": "fact",
+      "content": "服务端 JSON 契约不变时，优先比较客户端读取时机与泛型声明；不要把响应映射差异归因到服务端变化。",
+      "status": "active",
+      "validFrom": "2026-08-05T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T04-L0-REST-MAPPING-M001",
+        "T04-L0-REST-MAPPING-M002",
+        "T04-L0-REST-MAPPING-M003",
+        "T04-L0-REST-MAPPING-M004",
+        "T04-L0-REST-MAPPING-M005",
+        "T04-L0-REST-MAPPING-M006",
+        "T04-L0-REST-MAPPING-M007",
+        "T04-L0-REST-MAPPING-M008",
+        "T04-L0-REST-MAPPING-M009",
+        "T04-L0-REST-MAPPING-M010",
+        "T04-L0-REST-MAPPING-M011",
+        "T04-L0-REST-MAPPING-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "459053ca9cf2aba32d61f15f0af8d1199468ebb9b6a9be3f8c65204b9fa35ef3"
+    },
+    {
+      "assetId": "T04-L1-RESTCLIENT-ERRORS",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00+08:00",
+      "type": "fact",
+      "content": "同步调用的错误对照至少区分连接失败、非成功状态和错误正文解析失败，并保留状态、正文与异常类型的对应关系。",
+      "status": "active",
+      "validFrom": "2026-08-05T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T04-L0-REST-ERROR-TEST-M001",
+        "T04-L0-REST-ERROR-TEST-M002",
+        "T04-L0-REST-ERROR-TEST-M003",
+        "T04-L0-REST-ERROR-TEST-M004",
+        "T04-L0-REST-ERROR-TEST-M005",
+        "T04-L0-REST-ERROR-TEST-M006",
+        "T04-L0-REST-ERROR-TEST-M007",
+        "T04-L0-REST-ERROR-TEST-M008",
+        "T04-L0-REST-ERROR-TEST-M009",
+        "T04-L0-REST-ERROR-TEST-M010",
+        "T04-L0-REST-ERROR-TEST-M011",
+        "T04-L0-REST-ERROR-TEST-M012",
+        "T04-L0-REST-MAPPING-M001",
+        "T04-L0-REST-MAPPING-M002",
+        "T04-L0-REST-MAPPING-M003",
+        "T04-L0-REST-MAPPING-M004",
+        "T04-L0-REST-MAPPING-M005",
+        "T04-L0-REST-MAPPING-M006",
+        "T04-L0-REST-MAPPING-M007",
+        "T04-L0-REST-MAPPING-M008",
+        "T04-L0-REST-MAPPING-M009",
+        "T04-L0-REST-MAPPING-M010",
+        "T04-L0-REST-MAPPING-M011",
+        "T04-L0-REST-MAPPING-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "d58f583c4c4c067a76b387f374dcd12f5d15cf7af3bb5ea5fbef0166fab0b34e"
+    },
+    {
+      "assetId": "T04-L1-RESTCLIENT-TEST-BOUNDARY",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00+08:00",
+      "type": "decision",
+      "content": "客户端测试用一个成功列表和一个错误对象覆盖行为对照；测试目标是语义保持，不扩展到响应式客户端。",
+      "status": "active",
+      "validFrom": "2026-08-05T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T04-L0-REST-ERROR-TEST-M001",
+        "T04-L0-REST-ERROR-TEST-M002",
+        "T04-L0-REST-ERROR-TEST-M003",
+        "T04-L0-REST-ERROR-TEST-M004",
+        "T04-L0-REST-ERROR-TEST-M005",
+        "T04-L0-REST-ERROR-TEST-M006",
+        "T04-L0-REST-ERROR-TEST-M007",
+        "T04-L0-REST-ERROR-TEST-M008",
+        "T04-L0-REST-ERROR-TEST-M009",
+        "T04-L0-REST-ERROR-TEST-M010",
+        "T04-L0-REST-ERROR-TEST-M011",
+        "T04-L0-REST-ERROR-TEST-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "70e69a96372303570617f6a9b1fa712ccc4d39b76db9676e78e44423d8ea89ca"
+    },
+    {
+      "assetId": "T04-L1-GA-LIFECYCLE",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00+08:00",
+      "type": "fact",
+      "content": "Google Auto 聚合构建诊断应按父工程、模块和生命周期阶段拆日志，区分默认构建与仅在发布 profile 激活的路径。",
+      "status": "active",
+      "validFrom": "2026-08-05T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T04-L0-GA-LIFECYCLE-M001",
+        "T04-L0-GA-LIFECYCLE-M002",
+        "T04-L0-GA-LIFECYCLE-M003",
+        "T04-L0-GA-LIFECYCLE-M004",
+        "T04-L0-GA-LIFECYCLE-M005",
+        "T04-L0-GA-LIFECYCLE-M006",
+        "T04-L0-GA-LIFECYCLE-M007",
+        "T04-L0-GA-LIFECYCLE-M008",
+        "T04-L0-GA-LIFECYCLE-M009",
+        "T04-L0-GA-LIFECYCLE-M010",
+        "T04-L0-GA-LIFECYCLE-M011",
+        "T04-L0-GA-LIFECYCLE-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "85f0a7c85834d9ac8c92dfa41cbc1507b4d27f184ed83808da4928dc5607d451"
+    },
+    {
+      "assetId": "T04-L1-MAVEN-DEPENDENCY-CONVERGENCE",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00+08:00",
+      "type": "fact",
+      "content": "依赖收敛要同时记录直接声明、父工程管理、传递路径和作用域；临时排除使测试通过不等于形成全局结论。",
+      "status": "active",
+      "validFrom": "2026-08-05T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T04-L0-GA-DEPENDENCY-M001",
+        "T04-L0-GA-DEPENDENCY-M002",
+        "T04-L0-GA-DEPENDENCY-M003",
+        "T04-L0-GA-DEPENDENCY-M004",
+        "T04-L0-GA-DEPENDENCY-M005",
+        "T04-L0-GA-DEPENDENCY-M006",
+        "T04-L0-GA-DEPENDENCY-M007",
+        "T04-L0-GA-DEPENDENCY-M008",
+        "T04-L0-GA-DEPENDENCY-M009",
+        "T04-L0-GA-DEPENDENCY-M010",
+        "T04-L0-GA-DEPENDENCY-M011",
+        "T04-L0-GA-DEPENDENCY-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "55f8536fd5764ad14a7dd19614068ddda5dcbdecb9e747fbf0214719085576c8"
+    },
+    {
+      "assetId": "T04-L1-GA-PLUGIN",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00+08:00",
+      "type": "fact",
+      "content": "插件失败诊断分开核对参数、绑定阶段和 profile 激活条件，并按模块比较最终生效值，不从生成目录反推参数。",
+      "status": "active",
+      "validFrom": "2026-08-05T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M001",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M002",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M003",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M004",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M005",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M006",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M007",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M008",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M009",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M010",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M011",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "4ef32c02f493f6b9612e052e902c71d6c46ac64f2d2f2d7126621a2a86ed3448"
+    },
+    {
+      "assetId": "T04-L1-GA-BUILD-EVIDENCE",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00+08:00",
+      "type": "fact",
+      "content": "Google Auto 构建交接把生命周期、依赖来源和插件配置作为三类独立证据，保留模块前缀、阶段标记与 profile 条件。",
+      "status": "active",
+      "validFrom": "2026-08-05T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T04-L0-GA-LIFECYCLE-M001",
+        "T04-L0-GA-LIFECYCLE-M002",
+        "T04-L0-GA-LIFECYCLE-M003",
+        "T04-L0-GA-LIFECYCLE-M004",
+        "T04-L0-GA-LIFECYCLE-M005",
+        "T04-L0-GA-LIFECYCLE-M006",
+        "T04-L0-GA-LIFECYCLE-M007",
+        "T04-L0-GA-LIFECYCLE-M008",
+        "T04-L0-GA-LIFECYCLE-M009",
+        "T04-L0-GA-LIFECYCLE-M010",
+        "T04-L0-GA-LIFECYCLE-M011",
+        "T04-L0-GA-LIFECYCLE-M012",
+        "T04-L0-GA-DEPENDENCY-M001",
+        "T04-L0-GA-DEPENDENCY-M002",
+        "T04-L0-GA-DEPENDENCY-M003",
+        "T04-L0-GA-DEPENDENCY-M004",
+        "T04-L0-GA-DEPENDENCY-M005",
+        "T04-L0-GA-DEPENDENCY-M006",
+        "T04-L0-GA-DEPENDENCY-M007",
+        "T04-L0-GA-DEPENDENCY-M008",
+        "T04-L0-GA-DEPENDENCY-M009",
+        "T04-L0-GA-DEPENDENCY-M010",
+        "T04-L0-GA-DEPENDENCY-M011",
+        "T04-L0-GA-DEPENDENCY-M012",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M001",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M002",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M003",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M004",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M005",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M006",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M007",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M008",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M009",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M010",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M011",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "7ab6e53044f3a90ccf8792d34c6880f7c308c41bb831128d9c9013ab9efc0796"
+    },
+    {
+      "assetId": "T04-L1-DRUID-SECURITY-BOUNDARY",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00+08:00",
+      "type": "decision",
+      "content": "Druid 解析边界采用模块内的白名单策略拒绝未知多态类型，同时保持普通对象请求兼容；不要用全局开关扩大范围。",
+      "status": "active",
+      "validFrom": "2026-08-05T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T04-L0-DRUID-JACKSON-M001",
+        "T04-L0-DRUID-JACKSON-M002",
+        "T04-L0-DRUID-JACKSON-M003",
+        "T04-L0-DRUID-JACKSON-M004",
+        "T04-L0-DRUID-JACKSON-M005",
+        "T04-L0-DRUID-JACKSON-M006",
+        "T04-L0-DRUID-JACKSON-M007",
+        "T04-L0-DRUID-JACKSON-M008",
+        "T04-L0-DRUID-JACKSON-M009",
+        "T04-L0-DRUID-JACKSON-M010",
+        "T04-L0-DRUID-JACKSON-M011",
+        "T04-L0-DRUID-JACKSON-M012",
+        "T04-L0-DRUID-MODULE-M001",
+        "T04-L0-DRUID-MODULE-M002",
+        "T04-L0-DRUID-MODULE-M003",
+        "T04-L0-DRUID-MODULE-M004",
+        "T04-L0-DRUID-MODULE-M005",
+        "T04-L0-DRUID-MODULE-M006",
+        "T04-L0-DRUID-MODULE-M007",
+        "T04-L0-DRUID-MODULE-M008",
+        "T04-L0-DRUID-MODULE-M009",
+        "T04-L0-DRUID-MODULE-M010",
+        "T04-L0-DRUID-MODULE-M011",
+        "T04-L0-DRUID-MODULE-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "02b094d75edae6ef884c6ff6f66538746d0cd6844d7518eeddb2283dc0a6cb9b"
+    },
+    {
+      "assetId": "T04-L1-DRUID-REQUEST-CLASSES",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00+08:00",
+      "type": "fact",
+      "content": "安全复核把对抗请求与合法请求分开保留最小样例，解析错误按输入形状和类型边界区分，不笼统归因。",
+      "status": "active",
+      "validFrom": "2026-08-05T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T04-L0-DRUID-JACKSON-M001",
+        "T04-L0-DRUID-JACKSON-M002",
+        "T04-L0-DRUID-JACKSON-M003",
+        "T04-L0-DRUID-JACKSON-M004",
+        "T04-L0-DRUID-JACKSON-M005",
+        "T04-L0-DRUID-JACKSON-M006",
+        "T04-L0-DRUID-JACKSON-M007",
+        "T04-L0-DRUID-JACKSON-M008",
+        "T04-L0-DRUID-JACKSON-M009",
+        "T04-L0-DRUID-JACKSON-M010",
+        "T04-L0-DRUID-JACKSON-M011",
+        "T04-L0-DRUID-JACKSON-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "3484f0dd2fc3203d727d4d4eaa0b3b6d75b02e361b1527b041ee45455216f842"
+    },
+    {
+      "assetId": "T04-L1-DRUID-MODULE-ISOLATION",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00+08:00",
+      "type": "fact",
+      "content": "Druid 安全解析器只绑定实际目标模块和入口，旁边模块保留普通数据绑定；集成测试必须先确认请求没有误投入口。",
+      "status": "active",
+      "validFrom": "2026-08-05T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T04-L0-DRUID-MODULE-M001",
+        "T04-L0-DRUID-MODULE-M002",
+        "T04-L0-DRUID-MODULE-M003",
+        "T04-L0-DRUID-MODULE-M004",
+        "T04-L0-DRUID-MODULE-M005",
+        "T04-L0-DRUID-MODULE-M006",
+        "T04-L0-DRUID-MODULE-M007",
+        "T04-L0-DRUID-MODULE-M008",
+        "T04-L0-DRUID-MODULE-M009",
+        "T04-L0-DRUID-MODULE-M010",
+        "T04-L0-DRUID-MODULE-M011",
+        "T04-L0-DRUID-MODULE-M012",
+        "T04-L0-DRUID-JACKSON-M001",
+        "T04-L0-DRUID-JACKSON-M002",
+        "T04-L0-DRUID-JACKSON-M003",
+        "T04-L0-DRUID-JACKSON-M004",
+        "T04-L0-DRUID-JACKSON-M005",
+        "T04-L0-DRUID-JACKSON-M006",
+        "T04-L0-DRUID-JACKSON-M007",
+        "T04-L0-DRUID-JACKSON-M008",
+        "T04-L0-DRUID-JACKSON-M009",
+        "T04-L0-DRUID-JACKSON-M010",
+        "T04-L0-DRUID-JACKSON-M011",
+        "T04-L0-DRUID-JACKSON-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "c3a8afac79d3e77c71ecce67d8384c14de08f3ec471bc13a85442743fd9b7431"
+    },
+    {
+      "assetId": "T04-L1-DRUID-COMPATIBILITY",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00+08:00",
+      "type": "fact",
+      "content": "解析器回归同时验证未知类型被拒绝和合法对象保持兼容，安全修复的边界是隔离策略而非放宽白名单。",
+      "status": "active",
+      "validFrom": "2026-08-05T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T04-L0-DRUID-MODULE-M001",
+        "T04-L0-DRUID-MODULE-M002",
+        "T04-L0-DRUID-MODULE-M003",
+        "T04-L0-DRUID-MODULE-M004",
+        "T04-L0-DRUID-MODULE-M005",
+        "T04-L0-DRUID-MODULE-M006",
+        "T04-L0-DRUID-MODULE-M007",
+        "T04-L0-DRUID-MODULE-M008",
+        "T04-L0-DRUID-MODULE-M009",
+        "T04-L0-DRUID-MODULE-M010",
+        "T04-L0-DRUID-MODULE-M011",
+        "T04-L0-DRUID-MODULE-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "80d1bb1641c153189aacdeb36b025fb3a5dc483aec4ad0922e93dc8fab2570be"
+    }
+  ],
+  "l2Scenes": [
+    {
+      "assetId": "T04-L2-SCENE-PETCLINIC-MIGRATION",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l2"
+      ],
+      "observedAt": "2026-08-28T14:00:00+08:00",
+      "path": "/t04/t04-project-petclinic/t04-l2-scene-petclinic-migration",
+      "summary": "PetClinic 的迁移记录把业务 Java EE 导入、JDK 所有类型、校验约束和安全过滤链分层核对；相近错误共享词汇，但每条边界都有独立回归证据。",
+      "content": "PetClinic 的迁移记录把业务 Java EE 导入、JDK 所有类型、校验约束和安全过滤链分层核对；相近错误共享词汇，但每条边界都有独立回归证据。 支撑会话：T04-L0-PETCLINIC-NAMESPACE、T04-L0-PETCLINIC-SECURITY、T04-L0-PETCLINIC-VALIDATION。",
+      "injected": false,
+      "supportingSessionIds": [
+        "T04-L0-PETCLINIC-NAMESPACE",
+        "T04-L0-PETCLINIC-SECURITY",
+        "T04-L0-PETCLINIC-VALIDATION"
+      ],
+      "contentHash": "94c0d8f52933354327df3182cba5c685af54434f47e023bb444204c4c22d81f4"
+    },
+    {
+      "assetId": "T04-L2-SCENE-RESTCLIENT-PARITY",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l2"
+      ],
+      "observedAt": "2026-08-28T14:00:00+08:00",
+      "path": "/t04/t04-project-rest-consumer/t04-l2-scene-restclient-parity",
+      "summary": "同步客户端迁移围绕请求构造、正常响应映射和错误语义保持展开；服务端契约稳定，集合与错误对象的测试边界分别记录。",
+      "content": "同步客户端迁移围绕请求构造、正常响应映射和错误语义保持展开；服务端契约稳定，集合与错误对象的测试边界分别记录。 支撑会话：T04-L0-REST-MAPPING、T04-L0-REST-ERROR-TEST。",
+      "injected": false,
+      "supportingSessionIds": [
+        "T04-L0-REST-MAPPING",
+        "T04-L0-REST-ERROR-TEST"
+      ],
+      "contentHash": "defbd44245ecb0f06418e3e45b844457d45a3bc46219414bd541e5adf632749b"
+    },
+    {
+      "assetId": "T04-L2-SCENE-GA-BUILD-ROOT-CAUSES",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l2"
+      ],
+      "observedAt": "2026-08-28T14:00:00+08:00",
+      "path": "/t04/t04-project-google-auto/t04-l2-scene-ga-build-root-causes",
+      "summary": "Google Auto 多模块构建把生命周期阶段、依赖收敛和插件配置视为三类根因；父子模块、作用域和 profile 条件需要在同一时间线中区分。",
+      "content": "Google Auto 多模块构建把生命周期阶段、依赖收敛和插件配置视为三类根因；父子模块、作用域和 profile 条件需要在同一时间线中区分。 支撑会话：T04-L0-GA-LIFECYCLE、T04-L0-GA-DEPENDENCY、T04-L0-MAVEN-PLUGIN-DIAGNOSIS。",
+      "injected": false,
+      "supportingSessionIds": [
+        "T04-L0-GA-LIFECYCLE",
+        "T04-L0-GA-DEPENDENCY",
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS"
+      ],
+      "contentHash": "e8832ccfb5a24075b11f3a696de6d00e77b476a35dd8e46e36bc9be2b7ca4870"
+    },
+    {
+      "assetId": "T04-L2-SCENE-DRUID-SECURITY",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l2"
+      ],
+      "observedAt": "2026-08-28T14:00:00+08:00",
+      "path": "/t04/t04-project-druid-backend/t04-l2-scene-druid-security",
+      "summary": "Druid 安全复核将对抗输入、合法对象和模块入口分开；白名单解析只在目标边界内生效，兼容性与拒绝行为成对验证。",
+      "content": "Druid 安全复核将对抗输入、合法对象和模块入口分开；白名单解析只在目标边界内生效，兼容性与拒绝行为成对验证。 支撑会话：T04-L0-DRUID-JACKSON、T04-L0-DRUID-MODULE。",
+      "injected": false,
+      "supportingSessionIds": [
+        "T04-L0-DRUID-JACKSON",
+        "T04-L0-DRUID-MODULE"
+      ],
+      "contentHash": "57beb3e0acac2bfaeaaa8030764711caf2ac80c6db16fedc7b8fce2045d14a19"
+    },
+    {
+      "assetId": "T04-L2-SPRING-MIGRATION-BOUNDARIES",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l2"
+      ],
+      "observedAt": "2026-08-28T14:00:00+08:00",
+      "path": "/t04/t04-project-petclinic/t04-l2-spring-migration-boundaries",
+      "summary": "四条后端项目流都强调最小边界：PetClinic 区分迁移包与安全链，客户端保持同步语义，构建按根因分层，解析器限制在模块入口。",
+      "content": "四条后端项目流都强调最小边界：PetClinic 区分迁移包与安全链，客户端保持同步语义，构建按根因分层，解析器限制在模块入口。 支撑会话：T04-L0-PETCLINIC-NAMESPACE、T04-L0-PETCLINIC-SECURITY、T04-L0-REST-MAPPING、T04-L0-GA-LIFECYCLE、T04-L0-DRUID-JACKSON。",
+      "injected": false,
+      "supportingSessionIds": [
+        "T04-L0-PETCLINIC-NAMESPACE",
+        "T04-L0-PETCLINIC-SECURITY",
+        "T04-L0-REST-MAPPING",
+        "T04-L0-GA-LIFECYCLE",
+        "T04-L0-DRUID-JACKSON"
+      ],
+      "contentHash": "18ca7e48a932f66f0eed11e4736f71f92180934e603fe527fa09a996e76c7d18"
+    }
+  ],
+  "l3Profiles": [
+    {
+      "assetId": "T04-L3-PROFILE-BACKEND-BOUNDARIES",
+      "ownerAgentId": "agent-task1-t04-general",
+      "sourceEvidenceIds": [
+        "source-t04-memory-l3"
+      ],
+      "observedAt": "2026-08-28T16:00:00+08:00",
+      "content": "该合成团队处理 Java 后端迁移与构建时，偏好先锁定项目边界，再把现象拆成可验证的最小根因。会保留请求、配置、模块和测试证据的对应关系，区分历史结论与当前观察，不用相近术语替代未确认的细节。",
+      "stability": "team",
+      "contentHash": "b2aa82acca8ba8bd0a9ec90351397828d86b270684d5145ab8d670c66fa6a31d"
+    }
+  ]
+}

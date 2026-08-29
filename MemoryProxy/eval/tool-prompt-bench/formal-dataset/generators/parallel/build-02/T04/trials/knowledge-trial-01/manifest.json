@@ -1,0 +1,16 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "t04-knowledge-trial-01",
+  "team_id": "T04",
+  "stage": "DS03",
+  "external_source_ids": [],
+  "generated_at": "2026-08-29T23:20:00+08:00",
+  "actual_count": 1,
+  "raw_output_file": "draft.json",
+  "raw_output_sha256": "666d4b4a8bc1c1325448c1490e33f646a444a8a5cf8aa2e06ddf50d5264e7446",
+  "input_pack_sha256": "2068931a10bfa2d0d39cf2d84c9634b3b4a92fd950aba2a90819ef9cfa2e67b9"
+}

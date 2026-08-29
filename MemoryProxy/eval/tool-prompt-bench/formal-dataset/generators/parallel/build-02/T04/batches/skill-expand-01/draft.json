@@ -1,0 +1,277 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t04-skill-expand-01",
+  "stage": "DS03",
+  "team_id": "T04",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T04-SKILL-EXPAND-01-JAKARTA",
+      "external_source_ids": [
+        "formal-dataset/source-material/T04/skills/jakarta-namespace/raw/SKILL.md",
+        "formal-dataset/source-material/T04/skills/jakarta-namespace/adapted/SKILL.md"
+      ],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"我在固定提交的 Spring PetClinic Jakarta 迁移工作线上复查编译错误；这轮只处理 Java EE 到 Jakarta 的命名空间边界，不改业务行为。"},
+        {"role":"assistant","content":"我会把排查限定在导入、注解和相关配置的命名空间映射，并保留 JDK 自带包的边界。"},
+        {"role":"user","content":"错误同时出现在实体、校验和 servlet 代码里，测试源码也可能仍有旧导入；我还没有一份完整的扫描到验证顺序。"},
+        {"role":"assistant","content":"需要先建立按文件扫描、批量映射、实体与测试复核、最终搜索验证的迁移链路，不能只改第一条报错。"},
+        {"role":"user","content":"项目里也会用到数据源和加密相关的 javax 类型，我不确定它们是否属于同一迁移范围。"},
+        {"role":"assistant","content":"迁移范围必须按包的所有权区分 Java EE API 与 JDK API，不能对所有 javax 前缀做机械替换。"},
+        {"role":"user","content":"代码、测试和 XML 配置都已冻结；这轮只要恢复可执行的映射和完成检查，不执行修改。"},
+        {"role":"assistant","content":"当前缺口是冻结命名空间资料中的逐项映射、保留边界、扫描替换方式和完成验证条件。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请给出这次 PetClinic Jakarta 命名空间迁移的可执行排查顺序：哪些 javax 包应映射、哪些必须保留，如何覆盖测试/XML 并验证完成；先不改代码。",
+      "positive": {
+        "delta_message": {"role":"user","content":"我没有这套迁移流程的完整步骤。请先从团队已列出的命名空间参考中找到适用说明并按范围概述，停在可以开始逐项扫描的位置，暂不改文件。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结 Jakarta 参考的 Java EE 包映射、javax.sql/javax.crypto JDK 保留边界、按导入扫描与批量替换的顺序，以及实体/测试/XML/依赖兼容和最终 grep 验证条件。",
+          "route": "skill",
+          "target_asset_ids": ["T04-SKILL-JAKARTA"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "查看 listed 的 Jakarta 命名空间参考并概述映射、保留边界和扫描验证起点，暂不修改代码。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"user","content":"我把缺失流程补齐：先扫描 Java 文件中的 javax 导入，并排除 javax.sql、javax.crypto 与 javax.net；将 javax.persistence、javax.validation、javax.servlet、javax.annotation 的常用类型以及 javax.transaction 分别映射到对应 jakarta 包，通配导入也要处理。逐个确认 JPA 实体使用 jakarta.persistence，校验和 servlet 类型同样更新；测试源码、persistence.xml 等配置和第三方依赖的 Jakarta 兼容性一起复核。完成前搜索旧的 persistence/validation/servlet/transaction/指定 annotation 导入必须无结果，并确认实体确有 jakarta.persistence 和校验导入；本轮只给顺序，不改文件。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已给出冻结参考中的包映射、javax.sql/javax.crypto/javax.net 保留边界、扫描替换、实体与测试/XML复核及旧新导入验证，足以回答 query 而无需读取 Skill。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T04-SKILL-JAVAX-AWESOME", "T04-SKILL-HIBERNATE", "T04-SKILL-JAVA-SPRINGBOOT"],
+      "controlled_delta_note": "两种变体共享 PetClinic 固定提交、编译症状、JDK 保留疑问、只读范围和 query；Positive 保留冻结命名空间流程缺口，Negative 只补齐该流程并改变是否需要工具。",
+      "source_fact_map": [
+        {"claim":"The frozen technical file is from https://github.com/benchflow-ai/skillsbench at commit b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af, path tasks/spring-boot-jakarta-migration/environment/skills/jakarta-namespace/SKILL.md, licensed Apache-2.0, raw sha 6af9ccbf16fff0f7cb65ed15a2433256cb48ca2328ebd86f5e556570f86f93a1.","source_id":"formal-dataset/source-material/T04/skills/jakarta-namespace/source.json","locator":"repository; commit_sha; path; license; raw_file_sha256"},
+        {"claim":"The adapted technical body is byte-identical to raw; only listing metadata is adapted.","source_id":"formal-dataset/source-material/T04/skills/jakarta-namespace/adapted/SKILL.md","locator":"ADAPTATION.md; technical_body_changed=false"},
+        {"claim":"Java EE javax.persistence, javax.validation, javax.servlet, javax.annotation, javax.transaction and related packages map to corresponding jakarta packages, while javax.sql and javax.crypto remain JDK-owned.","source_id":"formal-dataset/source-material/T04/skills/jakarta-namespace/raw/SKILL.md","locator":"Overview; Important; Required Package Mappings"},
+        {"claim":"The procedure scans imports while excluding JDK-owned packages, performs package and wildcard replacements, then checks entities, tests, XML, dependencies and old/new imports.","source_id":"formal-dataset/source-material/T04/skills/jakarta-namespace/raw/SKILL.md","locator":"## Migration Commands; ## Critical: Entity Classes Must Use jakarta.persistence; ## Verification; ## Common Pitfalls"}
+      ],
+      "sol_review_questions": [
+        "确认 listed 目标是 Jakarta 命名空间 Skill，唯一链路为直接查看；作者侧三个干扰均不改变目标路由。",
+        "确认目标证据覆盖 Java EE 映射和 JDK-owned javax.sql/javax.crypto 保留边界，并覆盖测试、XML 与完成验证。",
+        "确认 Negative 只补冻结正文逐项支持的扫描、映射、复核和验证，不把 Maven 或 RestClient 流程混入。",
+        "确认 provider-visible 文本没有资产 ID、动作名、端点、Gold 或其他评测字段。"
+      ]
+    },
+    {
+      "draft_pair_id": "T04-SKILL-EXPAND-02-RESTCLIENT",
+      "external_source_ids": [
+        "formal-dataset/source-material/T04/skills/restclient-migration/raw/SKILL.md",
+        "formal-dataset/source-material/T04/skills/restclient-migration/adapted/SKILL.md"
+      ],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"我在固定提交的 Spring consuming-rest 示例里迁移同步 HTTP 客户端；这轮只保持现有请求语义和错误行为，不改服务接口。"},
+        {"role":"assistant","content":"我会逐个对照现有同步调用的 URL、方法、请求体、响应类型和异常行为，再安排等价的 fluent 调用。"},
+        {"role":"user","content":"代码里有 GET、带 JSON body 的 POST、带请求头的调用和 DELETE；泛型响应与空响应的处理也没有统一。"},
+        {"role":"assistant","content":"迁移不能只替换类型名，还要分别保留 URI 占位符、媒体类型、泛型映射、无 body 返回和错误分支。"},
+        {"role":"user","content":"现有服务有时自己创建客户端，有时依赖 base URL；目前没有一套从 bean 配置到方法级改写的顺序。"},
+        {"role":"assistant","content":"应先确定客户端构造方式，再按请求种类迁移，最后核对状态处理和返回值的同步语义。"},
+        {"role":"user","content":"旧实现和失败响应样例都已保存；这轮只输出行为等价的迁移检查，不执行代码改动。"},
+        {"role":"assistant","content":"当前缺口是冻结 RestClient 参考中的同步迁移映射、类型安全响应、配置和状态处理完成条件。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请给出这次同步 Spring HTTP 客户端迁移的可执行顺序：如何保持 RestTemplate 到 RestClient 的请求、响应和错误处理等价，并说明完成检查；先不改代码。",
+      "positive": {
+        "delta_message": {"role":"user","content":"我还没有这套迁移的完整步骤。请先从团队已列出的同步客户端参考中找到适用说明并概述 GET/POST/DELETE、类型映射、配置和错误处理的核对起点，暂不修改代码。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结 RestClient 参考中同步 RestTemplate→RestClient 的 GET/POST/DELETE 等价写法、URI 与媒体类型保留、ParameterizedTypeReference/直接类型映射、配置 bean、状态处理和完成验证边界。",
+          "route": "skill",
+          "target_asset_ids": ["T04-SKILL-RESTCLIENT"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "查看 listed 的同步客户端迁移参考并概述请求改写和错误处理核对起点，暂不修改代码。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"user","content":"我把缺失步骤补全：先把旧的 GET 改成 RestClient.get().uri(...).retrieve()，简单返回用 body(Class)，Map/List 等泛型用 ParameterizedTypeReference；POST 保留 JSON body、contentType、accept，并以 toBodilessEntity 对应空响应；带头请求把 accept 和 URI 占位符保留。DELETE 仍在同步调用外围保留 try/catch 和成功布尔结果。需要统一配置时用 builder 设置 baseUrl 和默认 CONTENT_TYPE/ACCEPT，再通过构造注入客户端。用 onStatus 分别处理 4xx 与 5xx，再按原异常/返回约定核对；最后逐种请求检查 URI、方法、头、body、响应类型和错误分支，本轮只给顺序，不改代码。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已给出冻结参考的同步 GET/POST/DELETE 映射、泛型与空响应处理、builder 配置、构造注入、状态处理和行为等价检查，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T04-SKILL-JAKARTA", "T04-SKILL-SPRING-TESTING", "T04-SKILL-JAVA-SPRINGBOOT"],
+      "controlled_delta_note": "两种变体共享 consuming-rest 固定提交、同步调用种类、行为保持范围、证据状态和 query；Positive 留出冻结迁移流程，Negative 只补齐同一流程并改变工具需求。",
+      "source_fact_map": [
+        {"claim":"The frozen technical file is from https://github.com/benchflow-ai/skillsbench at commit b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af, path tasks/spring-boot-jakarta-migration/environment/skills/restclient-migration/SKILL.md, licensed Apache-2.0, raw sha eb2568b08d96c567b2aaa15f7adfea49a1f71db5ef769a7245be92d2b8e9088e.","source_id":"formal-dataset/source-material/T04/skills/restclient-migration/source.json","locator":"repository; commit_sha; path; license; raw_file_sha256"},
+        {"claim":"The adapted technical body is byte-identical to raw; only listing metadata is adapted.","source_id":"formal-dataset/source-material/T04/skills/restclient-migration/adapted/SKILL.md","locator":"ADAPTATION.md; technical_body_changed=false"},
+        {"claim":"RestClient is the fluent synchronous replacement for RestTemplate; GET uses uri/retrieve/body, POST preserves JSON headers and body, and DELETE can retain exception-to-boolean behavior.","source_id":"formal-dataset/source-material/T04/skills/restclient-migration/raw/SKILL.md","locator":"Overview; ## Migration Examples; 1. Basic GET Request; 2. POST Request with Body; 4. DELETE Request"},
+        {"claim":"The guide covers builder baseUrl/default headers, constructor injection, onStatus 4xx/5xx handlers, ParameterizedTypeReference for generic responses, and direct class mapping.","source_id":"formal-dataset/source-material/T04/skills/restclient-migration/raw/SKILL.md","locator":"## RestClient Configuration; ## Error Handling; ## Type-Safe Responses"}
+      ],
+      "sol_review_questions": [
+        "确认 listed 目标是同步 RestClient 迁移 Skill，唯一链路为直接查看；干扰只覆盖相邻 Jakarta、测试和通用 Spring。",
+        "确认 query、information gap 和 Negative 都保持同步请求语义、RestTemplate→RestClient 等价、响应与错误处理边界，并未引入异步客户端术语。",
+        "确认 Negative 每个核心步骤都可回溯到冻结 raw/adapted 正文，不补写未冻结的项目实现细节。",
+        "确认 provider-visible 文本不泄漏资产 ID、工具动作、端点、Gold 或评测标签。"
+      ]
+    },
+    {
+      "draft_pair_id": "T04-SKILL-EXPAND-03-MAVEN-LIFECYCLE",
+      "external_source_ids": [
+        "formal-dataset/source-material/T04/skills/maven-build-lifecycle/raw/SKILL.md",
+        "formal-dataset/source-material/T04/skills/maven-build-lifecycle/adapted/SKILL.md"
+      ],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"我在固定提交的 Google Auto 多模块 Maven 构建线上排查一个只在特定构建入口出现的失败；这轮只判断生命周期阶段、profile 和模块选择。"},
+        {"role":"assistant","content":"我会先按生命周期顺序和 reactor 选择重现入口，把阶段选择与依赖版本、插件配置分开。"},
+        {"role":"user","content":"同一仓库在默认构建、CI profile 和单模块构建下表现不同；现在不能确定是跑错阶段、profile 未激活还是模块范围不对。"},
+        {"role":"assistant","content":"这些是生命周期选择问题的不同分支，需要分别记录实际阶段、激活 profile 和 reactor 选项，不能用一次全量构建代替。"},
+        {"role":"user","content":"父子模块、profile 定义和构建日志都已冻结；我暂时不想改 POM 或插件，只想恢复诊断顺序。"},
+        {"role":"assistant","content":"先用只读的阶段、profile 和模块证据缩小范围，再决定是否需要任何配置变更。"},
+        {"role":"user","content":"目前缺少从阶段与 goal 区分、到 profile 激活、再到 -pl/-am/-amd/-rf 模块核对的完整停止条件。"},
+        {"role":"assistant","content":"唯一缺口是冻结生命周期参考中阶段执行顺序、profile 激活和多模块 reactor 选择的可执行流程。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请给出这次 Google Auto 生命周期问题的可执行诊断顺序：如何核对阶段与 goal、profile 激活和多模块选择，并说明何时完成；先不改 POM。",
+      "positive": {
+        "delta_message": {"role":"user","content":"我没有这套生命周期诊断的完整步骤。请先在团队资料中检索适用的 Maven 构建生命周期参考，再按检索结果查看目标内容，概述排查起点，暂不改 POM。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结 Maven lifecycle 参考的 phase 顺序与 phase/goal 区分、profile 激活与停用、effective profile 证据，以及多模块 -pl/-am/-amd/-rf 选择和完成边界。",
+          "route": "skill",
+          "target_asset_ids": ["T04-SKILL-MAVEN-LIFECYCLE"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "在同 Team 范围检索并查看 Maven lifecycle 参考，概述阶段、profile 和模块选择的诊断起点后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"user","content":"我把缺失流程补齐：先把 validate 到 verify/install 的默认阶段顺序列出，并区分执行 phase 会带上此前阶段、直接执行 goal 只调用该目标。分别用默认入口与明确的 -Pprofile（必要时 -P!profile）记录实际 profile；用 active-profiles/effective-settings 之类的只读证据确认激活条件。多模块时先确认 reactor 顺序，再用 -pl module -am 带上依赖、-amd 选依赖者，必要时 -rf :module 从指定模块恢复；只有阶段、profile 和模块集合与失败入口一致且重现证据完整，才算生命周期诊断完成，本轮不改 POM。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已给出冻结 lifecycle 正文的阶段顺序、phase/goal 区分、profile 激活与只读确认、reactor 选择及完成边界，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T04-SKILL-MAVEN-DEPENDENCY", "T04-SKILL-MAVEN-PLUGIN", "T04-SKILL-JAVA-SPRINGBOOT"],
+      "controlled_delta_note": "两种变体共享 Google Auto 固定提交、默认/CI/单模块症状、只读 POM 范围和 query；Positive 保留阶段/profile/module 流程缺口，Negative 只补齐冻结 lifecycle 步骤。",
+      "source_fact_map": [
+        {"claim":"The frozen technical file is from https://github.com/benchflow-ai/skillsbench at commit b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af, path tasks/fix-build-google-auto/environment/skills/maven-build-lifecycle/SKILL.md, licensed Apache-2.0, raw sha 8d65a5ace544deb6beafebe9275eaa9f0673ac1286899c7f7ddecd3dfce03974.","source_id":"formal-dataset/source-material/T04/skills/maven-build-lifecycle/source.json","locator":"repository; commit_sha; path; license; raw_file_sha256"},
+        {"claim":"The adapted technical body is byte-identical to raw; only listing metadata is adapted.","source_id":"formal-dataset/source-material/T04/skills/maven-build-lifecycle/adapted/SKILL.md","locator":"ADAPTATION.md; technical_body_changed=false"},
+        {"claim":"The guide lists the default phase order, explains phase execution versus direct goals, and gives clean/build/test commands.","source_id":"formal-dataset/source-material/T04/skills/maven-build-lifecycle/raw/SKILL.md","locator":"## Default Lifecycle Phases; ### Common Phase Commands; ## Goals vs Phases"},
+        {"claim":"The guide defines named and triggered profile activation, effective-profile inspection, and reactor options -pl, -am, -amd and -rf for multi-module selection.","source_id":"formal-dataset/source-material/T04/skills/maven-build-lifecycle/raw/SKILL.md","locator":"## Build Profiles; ### Profile Activation; ### Activation Triggers; ## Multi-Module Builds; ### Reactor Options"}
+      ],
+      "sol_review_questions": [
+        "确认目标是 team-visible 且未 listed 的 lifecycle Skill，路由固定为搜索后按返回标识查看。",
+        "确认本对只谈 phase/goal、profile 激活与 module/reactor 选择，未把依赖 mediation 或插件 execution/configuration 当作生命周期根因。",
+        "确认 Negative 的阶段顺序、profile 命令、只读 profile 证据和 reactor 选项均由冻结 lifecycle 正文逐项支持。",
+        "确认 provider-visible 文本未泄漏私有资产标识、工具动作、端点、Gold 或评测字段。"
+      ]
+    },
+    {
+      "draft_pair_id": "T04-SKILL-EXPAND-04-MAVEN-PLUGIN",
+      "external_source_ids": [
+        "formal-dataset/source-material/T04/skills/maven-plugin-configuration/raw/SKILL.md",
+        "formal-dataset/source-material/T04/skills/maven-plugin-configuration/adapted/SKILL.md"
+      ],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"我在固定提交的 Google Auto 多模块 Maven 构建线上排查插件行为异常；这轮只处理插件版本、execution、goal、继承和参数配置。"},
+        {"role":"assistant","content":"我会沿着插件声明、父级管理、execution 绑定和具体参数核对，把插件根因与生命周期入口和依赖解析分开。"},
+        {"role":"user","content":"日志显示同一插件可能执行两次，某个 goal 没有得到预期参数，子模块还表现出与父 POM 不同的结果。"},
+        {"role":"assistant","content":"需要分别查版本是否固定、execution id/phase/goals 是否重复、配置是否继承以及参数是否落到实际目标。"},
+        {"role":"user","content":"插件声明、pluginManagement 和失败日志都已冻结；这轮不改 POM，也不把依赖冲突当作插件故障。"},
+        {"role":"assistant","content":"先恢复一套从有效声明到目标执行证据的插件诊断顺序，再决定是否提出配置修正。"},
+        {"role":"user","content":"目前缺少插件版本、execution/goal、继承关系、参数配置和重复执行的逐项核对以及结束标准。"},
+        {"role":"assistant","content":"唯一缺口是冻结插件配置参考中的声明结构、版本锁定、execution 绑定、pluginManagement 继承和参数验证流程。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请给出这次 Google Auto Maven 插件问题的可执行诊断顺序：如何核对插件版本、execution/goal、继承和参数，并说明完成边界；先不改 POM。",
+      "positive": {
+        "delta_message": {"role":"user","content":"我还没有这套插件诊断的完整步骤。请先在团队资料中检索适用的 Maven 插件配置参考，再按检索结果查看目标内容，概述从声明到执行证据的起点，暂不改 POM。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结 Maven plugin 参考中插件版本锁定、pluginManagement 与实际使用继承、execution id/phase/goal、插件参数、重复执行和目标验证的顺序。",
+          "route": "skill",
+          "target_asset_ids": ["T04-SKILL-MAVEN-PLUGIN"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "在同 Team 范围检索并查看 Maven plugin 参考，概述声明、继承和 execution/parameter 核对起点后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"user","content":"我把缺失流程补齐：先在有效 POM 中定位 groupId/artifactId/version，确保插件版本被明确固定；再核对 pluginManagement 里共享的版本和配置是否被实际 plugins 声明继承。逐个 execution 检查唯一 id、绑定 phase 和 goals，确认目标没有重复绑定或遗漏。随后按插件专属 configuration 核对参数是否落到目标 execution，并检查父子模块继承造成的覆盖。对 compiler、surefire/failsafe、enforcer 等现有声明，只按其对应 goal 和参数验证，不拿 dependencyManagement 解释插件行为；最后用目标执行和一次受影响的构建确认版本、execution 次数、goal、继承和参数均符合预期，才算完成，本轮不改 POM。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已给出冻结 plugin 正文的版本固定、pluginManagement 继承、execution/phase/goals、参数、重复执行、模块覆盖和目标验证顺序，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T04-SKILL-MAVEN-DEPENDENCY", "T04-SKILL-MAVEN-LIFECYCLE", "T04-SKILL-JAVA-SPRINGBOOT"],
+      "controlled_delta_note": "两种变体共享 Google Auto 固定提交、插件重复/参数/继承症状、依赖排除范围、只读 POM 约束和 query；Positive 保留插件流程缺口，Negative 只补齐冻结 plugin 步骤。",
+      "source_fact_map": [
+        {"claim":"The frozen technical file is from https://github.com/benchflow-ai/skillsbench at commit b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af, path tasks/fix-build-google-auto/environment/skills/maven-plugin-configuration/SKILL.md, licensed Apache-2.0, raw sha ff8b766a8283c035d0fba5cf71f0dd194c14a21e136c2a2916bf7bff3fcdd01c.","source_id":"formal-dataset/source-material/T04/skills/maven-plugin-configuration/source.json","locator":"repository; commit_sha; path; license; raw_file_sha256"},
+        {"claim":"The adapted technical body is byte-identical to raw; only listing metadata is adapted.","source_id":"formal-dataset/source-material/T04/skills/maven-plugin-configuration/adapted/SKILL.md","locator":"ADAPTATION.md; technical_body_changed=false"},
+        {"claim":"A plugin declaration consists of group/artifact/version, configuration and executions with id, phase and goals; pluginManagement defines shared configuration that actual use inherits.","source_id":"formal-dataset/source-material/T04/skills/maven-plugin-configuration/raw/SKILL.md","locator":"## Plugin Basics; ### Plugin Structure; ### Plugin Management"},
+        {"claim":"The guide recommends pinning plugin versions, meaningful execution IDs, appropriate phase bindings, pluginManagement inheritance and checks for duplicate executions, wrong phase, missing versions and unintended inheritance.","source_id":"formal-dataset/source-material/T04/skills/maven-plugin-configuration/raw/SKILL.md","locator":"## Best Practices; ## Common Pitfalls"}
+      ],
+      "sol_review_questions": [
+        "确认目标是 team-visible 且未 listed 的 plugin Skill，路由固定为搜索后按返回标识查看。",
+        "确认本对明确围绕 plugin version/execution/goal/inheritance/parameter，未与 lifecycle 的 profile/module 选择或 dependency 的 mediation/convergence 混模板。",
+        "确认 Negative 的版本、pluginManagement、execution、goal、参数和重复验证均可从冻结 plugin 正文逐项追溯。",
+        "确认 provider-visible 文本未泄漏私有资产标识、动作名、端点、Gold 或评测字段。"
+      ]
+    },
+    {
+      "draft_pair_id": "T04-SKILL-EXPAND-05-SPRING-TESTING",
+      "external_source_ids": [
+        "formal-dataset/source-material/T04/skills/spring-boot-testing/raw/SKILL.md",
+        "formal-dataset/source-material/T04/skills/spring-boot-testing/adapted/SKILL.md",
+        "formal-dataset/source-material/T04/skills/spring-boot-testing/raw/references/restclienttest.md",
+        "formal-dataset/source-material/T04/skills/spring-boot-testing/adapted/references/restclienttest.md"
+      ],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"我在 consuming-rest 示例中为同步 RestClient 服务补回归测试；这轮只确定 Spring 测试切片和请求断言，不改生产客户端。"},
+        {"role":"assistant","content":"我会把测试范围限定在外部 REST 客户端隔离，先选择窄切片，再核对 mock server 的请求与响应断言。"},
+        {"role":"user","content":"服务已有成功响应和失败响应样例，但测试还没有覆盖 URL、方法、查询参数、JSON body、headers 和状态错误。"},
+        {"role":"assistant","content":"需要一份客户端测试的逐项流程，既验证发出的请求，也验证映射后的结果和错误分支。"},
+        {"role":"user","content":"我知道有专门的 Spring 测试切片，却没有找到 RestClient 测试中 server 初始化、响应配置和完成校验的具体写法。"},
+        {"role":"assistant","content":"应先确认切片对应的 service，再恢复 mock server 的期望、响应、调用和 verify 顺序。"},
+        {"role":"user","content":"客户端实现、测试入口和固定响应都已在工作区；本轮只输出测试设计，不执行测试。"},
+        {"role":"assistant","content":"唯一缺口是冻结测试资料随附的 RestClient 测试 procedure 及其请求匹配、响应错误和 reset/verify 边界。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请给出这次同步 RestClient 服务的 Spring 隔离测试顺序：如何设置测试切片、mock server、请求/响应断言和错误场景，并说明完成边界；先不改代码。",
+      "positive": {
+        "delta_message": {"role":"user","content":"我还没有 RestClient 测试的具体 procedure。请先查看团队已列出的 Spring testing 参考，再读取其中实际随附的客户端测试说明，概述可以开始写测试的起点，暂不执行测试。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结 Spring testing 的 RestClient 测试资源中 @RestClientTest 切片、MockRestServiceServer 注入、请求匹配、成功/错误响应、服务调用、断言、verify 与 reset 的逐步 procedure。",
+          "route": "skill",
+          "target_asset_ids": ["T04-SKILL-SPRING-TESTING"],
+          "allowed_sequence_candidates": [["skill_view", "skill_files_read"]],
+          "stop_after_candidate": "查看 listed 的 Spring testing 参考并读取其中真实列出的 RestClient 测试资源，概述隔离测试起点后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"user","content":"我把客户端 procedure 补齐：测试类用 @RestClientTest(WeatherService.class) 聚焦服务，并注入服务与 MockRestServiceServer；先为精确 URL 或匹配模式设置期望，按需断言 GET/POST 方法、query 参数、JSON content type/body 和 headers。用 withSuccess 配置 JSON body 或资源响应，也覆盖 not found、server error、bad request 等错误响应；调用服务后断言映射结果，并在测试末尾 server.verify()，每个测试前可 server.reset()。必要时用 ExpectedCount 检查调用次数，最后补超时响应和主要错误分支；本轮只据此设计，不改代码。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息逐项给出冻结 references/restclienttest.md 的切片、MockRestServiceServer、请求匹配、响应构造、错误场景、断言、verify、reset、调用次数和超时 procedure，唯一缺口已消除。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T04-SKILL-RESTCLIENT", "T04-SKILL-JAVA-JUNIT", "T04-SKILL-JAVA-SPRINGBOOT"],
+      "controlled_delta_note": "两种变体共享 consuming-rest 固定提交、同步 RestClient 服务、隔离测试范围、现有响应样例和不执行测试约束；Positive 保留随附客户端测试资源缺口，Negative 只补齐该资源 procedure。",
+      "source_fact_map": [
+        {"claim":"The frozen skill is from https://github.com/github/awesome-copilot at commit f11a4e441c5ff061b4f8ae37952be8c602e4034e, path skills/spring-boot-testing/SKILL.md, licensed MIT, raw sha 8161940340dc52766242ab30589369623b31089b41ebd7baa19a27f411648550; its package lists references/restclienttest.md with sha a15252889125344f8cf2caf0cfc873c944a80577f73ceac00060a9108b457e88.","source_id":"formal-dataset/source-material/T04/skills/spring-boot-testing/source.json","locator":"repository; commit_sha; path; license; raw_file_sha256; resource_files[0]"},
+        {"claim":"The adapted skill and resource are byte-identical to raw; only listing metadata is adapted.","source_id":"formal-dataset/source-material/T04/skills/spring-boot-testing/adapted/SKILL.md","locator":"ADAPTATION.md; technical_body_changed=false"},
+        {"claim":"The skill selects @RestClientTest for REST clients and external APIs and points to the RestClient-specific reference.","source_id":"formal-dataset/source-material/T04/skills/spring-boot-testing/raw/SKILL.md","locator":"## Which Test Slice?; ## Test Slices Reference"},
+        {"claim":"The resource procedure uses @RestClientTest, MockRestServiceServer, request matching for URL/method/query/body/headers, success and error responses, service assertions, verify, reset and ExpectedCount/timeout examples.","source_id":"formal-dataset/source-material/T04/skills/spring-boot-testing/raw/references/restclienttest.md","locator":"## Basic Setup; ## Request Matching; ## Response Types; ## Verifying Requests; ## Reset Between Tests; ## Testing Timeouts"},
+        {"claim":"The resource is frozen at repository https://github.com/github/awesome-copilot commit f11a4e441c5ff061b4f8ae37952be8c602e4034e path skills/spring-boot-testing/references/restclienttest.md, MIT package, sha a15252889125344f8cf2caf0cfc873c944a80577f73ceac00060a9108b457e88.","source_id":"formal-dataset/source-material/T04/skills/spring-boot-testing/source.json","locator":"resource_files[0]; upstreamPath; sha256"}
+      ],
+      "sol_review_questions": [
+        "确认 listed 目标是 Spring testing Skill，且只有查看 Skill 后读取其 manifest 列出的 references/restclienttest.md 资源这一条链路。",
+        "确认目标缺口唯一落在 RestClient test procedure；Java JUnit、通用 Spring 和迁移 Skill 只是作者侧干扰。",
+        "确认 Negative 的所有步骤均由资源正文逐项支持，且资源确为冻结的 references/restclienttest.md。",
+        "确认 provider-visible 文本未泄漏资产 ID、工具动作、端点、Gold 或评测标签。"
+      ]
+    }
+  ]
+}

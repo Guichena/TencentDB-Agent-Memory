@@ -1,0 +1,175 @@
+{
+  "schema_version": "task1.formal_knowledge_assets.v1",
+  "team_id": "T04",
+  "knowledge": [
+    {
+      "assetId": "T04-KNOW-PETCLINIC-CODEGRAPH",
+      "ownerAgentId": "agent-task1-t04-general",
+      "sourceEvidenceIds": [
+        "source-t04-knowledge-t04-know-petclinic-codegraph"
+      ],
+      "observedAt": "2026-08-29T22:55:00+08:00",
+      "type": "code_graph",
+      "name": "PetClinic Jakarta and security code graph",
+      "repoUrl": "https://github.com/spring-projects/spring-petclinic",
+      "repoCommit": "818c4136ea971c21674525f9053de0d9c7ad8cfe",
+      "indexVersion": "task1-t04-codegraph-fixture-v1",
+      "snapshotSha256": "da44c055ce8c0cf57ac3022f473323db7758bb138368518b997eaaf77687bfbc",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t04-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "f226005bdcadfbf532b0738fb112c3f045595c66c066bab5262003f3b5e7423d"
+    },
+    {
+      "assetId": "T04-KNOW-GOOGLE-AUTO-CODEGRAPH",
+      "ownerAgentId": "agent-task1-t04-general",
+      "sourceEvidenceIds": [
+        "source-t04-knowledge-t04-know-google-auto-codegraph"
+      ],
+      "observedAt": "2026-08-29T22:55:00+08:00",
+      "type": "code_graph",
+      "name": "Google Auto multi-module Maven build graph",
+      "repoUrl": "https://github.com/google/auto",
+      "repoCommit": "2776e288bd3011800e46581b0b810668cc6d664b",
+      "indexVersion": "task1-t04-codegraph-fixture-v1",
+      "snapshotSha256": "8e228a88ada8eba773a1e79875b0c04ce170f906aa750bc65203dae6bfa6bbe6",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t04-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "9782844d711a3e6ed72e11907c6de2fbc4adbe10bdc4b2e2cdeb2d327f6a0309"
+    },
+    {
+      "assetId": "T04-KNOW-BACKEND-MIGRATION-WIKI",
+      "ownerAgentId": "agent-task1-t04-general",
+      "sourceEvidenceIds": [
+        "source-t04-knowledge-t04-know-backend-migration-wiki"
+      ],
+      "observedAt": "2026-08-29T22:55:00+08:00",
+      "type": "wiki",
+      "name": "Java backend migration decision wiki",
+      "snapshotSha256": "77dbbd60a2d3ca03112e75fdf7a31be88bfcde73363cd2a4d0a73baed44e205a",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t04-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "6d850931741912f5d852eff639184a39869b40dfe1fd480d6350c3b39a35ffd8"
+    }
+  ],
+  "fixtures": {
+    "T04-KNOW-PETCLINIC-CODEGRAPH": {
+      "schema_version": "task1.knowledge_retrieval_fixture.v1",
+      "knowledge_id": "T04-KNOW-PETCLINIC-CODEGRAPH",
+      "status": "ready",
+      "tools": [
+        "get_info",
+        "search",
+        "explore",
+        "callers",
+        "callees",
+        "impact",
+        "node",
+        "status",
+        "files"
+      ],
+      "call": {
+        "tool": "search",
+        "params": {
+          "query": "Jakarta namespace retained JDK javax validation persistence security boundary",
+          "limit": 8
+        },
+        "read_only": true,
+        "expected_status": "success"
+      },
+      "result": "交接摘要已补齐唯一缺口。以下值全部明确属于 fixed synthetic fixture，不是未经冻结源码核对的外部实现事实：fixture/petclinic/src/main/java/org/springframework/samples/petclinic/model/Owner.java --imports--> jakarta.persistence.Entity 与 jakarta.validation.constraints.NotEmpty，表示 Java EE-owned 命名空间由该节点负责；fixture/petclinic/src/main/java/org/springframework/samples/petclinic/config/JdbcConfig.java --imports--> javax.sql.DataSource，javax.sql 属于 JDK-owned、必须保留的边界；fixture/petclinic/src/main/java/org/springframework/samples/petclinic/security/KeyMaterialLoader.java --imports--> javax.crypto.SecretKey 和 javax.crypto.spec.SecretKeySpec，javax.crypto 同样属于 JDK-owned、必须保留的边界。迁移决定是仅把 Java EE-owned javax.persistence/javax.validation 映射到 jakarta.persistence/jakarta.validation，不改 javax.sql 或 javax.crypto。该摘要不引入 REST 客户端、Maven 或其他项目结论。"
+    },
+    "T04-KNOW-GOOGLE-AUTO-CODEGRAPH": {
+      "schema_version": "task1.knowledge_retrieval_fixture.v1",
+      "knowledge_id": "T04-KNOW-GOOGLE-AUTO-CODEGRAPH",
+      "status": "ready",
+      "tools": [
+        "get_info",
+        "search",
+        "explore",
+        "callers",
+        "callees",
+        "impact",
+        "node",
+        "status",
+        "files"
+      ],
+      "call": {
+        "tool": "search",
+        "params": {
+          "query": "aggregator dependencyManagement plugin execution profile module build graph",
+          "limit": 8
+        },
+        "read_only": true,
+        "expected_status": "success",
+        "fixture_note": "The result is a fixed synthetic fixture: it supplies structural graph edges and node file locations for this evaluation case, not an externally verified implementation claim.",
+        "expected_relations": [
+          {
+            "from": "synthetic aggregator root",
+            "from_path": "fixture/google-auto/pom.xml",
+            "to": "synthetic affected module",
+            "to_path": "fixture/google-auto/auto-processor/pom.xml",
+            "kind": "aggregates",
+            "synthetic": true
+          },
+          {
+            "from": "synthetic dependency-management node",
+            "from_path": "fixture/google-auto/pom.xml",
+            "to": "synthetic affected module",
+            "to_path": "fixture/google-auto/auto-processor/pom.xml",
+            "kind": "manages_dependencies",
+            "synthetic": true
+          },
+          {
+            "from": "synthetic affected module",
+            "from_path": "fixture/google-auto/auto-processor/pom.xml",
+            "to": "synthetic Maven plugin execution node",
+            "to_path": "fixture/google-auto/auto-processor/pom.xml#synthetic-compile",
+            "kind": "binds_plugin_execution",
+            "synthetic": true
+          }
+        ],
+        "expected_profile_scope": {
+          "profile": "synthetic-jdk17",
+          "scope_path": "fixture/google-auto/auto-processor/pom.xml",
+          "applies_to": "synthetic affected module",
+          "synthetic": true
+        }
+      },
+      "result": "交接摘要已补齐唯一缺口。以下值均明确属于本题的 fixed synthetic fixture，不是未经冻结源码核对的外部实现事实：fixture/google-auto/pom.xml --aggregates--> fixture/google-auto/auto-processor/pom.xml；dependencyManagement 节点是 fixture/google-auto/pom.xml，管理目标 fixture/google-auto/auto-processor/pom.xml；plugin execution 节点是 fixture/google-auto/auto-processor/pom.xml，绑定 synthetic-compile execution；profile synthetic-jdk17 仅作用于 fixture/google-auto/auto-processor/pom.xml。该摘要不引入其他项目结论。"
+    },
+    "T04-KNOW-BACKEND-MIGRATION-WIKI": {
+      "schema_version": "task1.knowledge_retrieval_fixture.v1",
+      "knowledge_id": "T04-KNOW-BACKEND-MIGRATION-WIKI",
+      "status": "ready",
+      "tools": [
+        "get_info",
+        "search",
+        "open",
+        "status",
+        "files"
+      ],
+      "call": {
+        "tool": "search",
+        "params": {
+          "query": "backend migration decision boundary Jakarta RestClient security Maven",
+          "limit": 6
+        },
+        "read_only": true,
+        "expected_status": "success"
+      },
+      "result": "交接摘要已补齐唯一缺口。以下决策全部明确属于 fixed synthetic wiki，不是外部仓库事实：同步阻塞式 HTTP 调用从 RestTemplate 迁移时选择 RestClient，并保持同步响应映射与错误处理语义；Java EE-owned javax.persistence/javax.validation 统一迁移到 jakarta.persistence/jakarta.validation，而 JDK-owned javax.sql/javax.crypto 不在该映射范围；Spring Security 配置变化单独归入 Security migration，不由客户端或 namespace 症状推断；仅 Maven 依赖、插件或 profile 失败时归入 build-only diagnosis，不修改 HTTP 或命名空间业务代码。该摘要不引入 PetClinic 图或模块构建图结论。"
+    }
+  }
+}

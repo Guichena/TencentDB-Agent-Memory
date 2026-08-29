@@ -1,0 +1,16 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "t04-memory-trial-01",
+  "team_id": "T04",
+  "stage": "DS03",
+  "external_source_ids": [],
+  "input_pack_sha256": "2068931a10bfa2d0d39cf2d84c9634b3b4a92fd950aba2a90819ef9cfa2e67b9",
+  "generated_at": "2026-08-29T23:24:00+08:00",
+  "raw_output_file": "draft.json",
+  "actual_count": 1,
+  "raw_output_sha256": "a6406dcd950c06467a5459fc0eb60a9a8928abe733f635576a924cf4b91f4814"
+}

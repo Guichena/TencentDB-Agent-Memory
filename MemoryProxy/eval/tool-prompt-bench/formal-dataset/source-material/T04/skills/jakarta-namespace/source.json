@@ -1,0 +1,27 @@
+{
+  "schema_version": "task1.skill_source_lock.v1",
+  "team_id": "T04",
+  "asset_id": "T04-SKILL-JAKARTA",
+  "name": "jakarta-namespace",
+  "repository": "https://github.com/benchflow-ai/skillsbench",
+  "commit_sha": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+  "path": "tasks/spring-boot-jakarta-migration/environment/skills/jakarta-namespace/SKILL.md",
+  "license": "Apache-2.0",
+  "license_path": "LICENSE",
+  "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+  "raw_file_sha256": "6af9ccbf16fff0f7cb65ed15a2433256cb48ca2328ebd86f5e556570f86f93a1",
+  "adapted_file_sha256": "6af9ccbf16fff0f7cb65ed15a2433256cb48ca2328ebd86f5e556570f86f93a1",
+  "package_sha256": "e775c2a40a60cc24e99f5b6db642829fbc277792bc8f085b52c90917b30a10e4",
+  "resource_files": [],
+  "adaptation": {
+    "kind": "registry_metadata_only",
+    "technical_body_changed": false,
+    "allowed_changes": [
+      "listing description",
+      "use_when",
+      "do_not_use_when"
+    ],
+    "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "frozen_at": "2026-08-29T22:55:00+08:00"
+}

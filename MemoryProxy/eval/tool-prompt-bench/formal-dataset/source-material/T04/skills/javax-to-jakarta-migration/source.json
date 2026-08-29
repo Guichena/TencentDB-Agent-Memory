@@ -1,0 +1,27 @@
+{
+  "schema_version": "task1.skill_source_lock.v1",
+  "team_id": "T04",
+  "asset_id": "T04-SKILL-JAVAX-AWESOME",
+  "name": "javax-to-jakarta-migration",
+  "repository": "https://github.com/github/awesome-copilot",
+  "commit_sha": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+  "path": "skills/javax-to-jakarta-migration/SKILL.md",
+  "license": "MIT",
+  "license_path": "LICENSE",
+  "license_sha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+  "raw_file_sha256": "f93b85539e4f58f0254f935c053fb8a1923b1482ff17062046d884b6ed910c79",
+  "adapted_file_sha256": "f93b85539e4f58f0254f935c053fb8a1923b1482ff17062046d884b6ed910c79",
+  "package_sha256": "ddea07b7f8de27428b1ffa4afe03498692866783857fe448c99c72304c887861",
+  "resource_files": [],
+  "adaptation": {
+    "kind": "registry_metadata_only",
+    "technical_body_changed": false,
+    "allowed_changes": [
+      "listing description",
+      "use_when",
+      "do_not_use_when"
+    ],
+    "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "frozen_at": "2026-08-29T22:55:00+08:00"
+}

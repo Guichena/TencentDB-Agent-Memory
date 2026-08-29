@@ -1,0 +1,33 @@
+{
+  "schema_version": "task1.skill_source_lock.v1",
+  "team_id": "T04",
+  "asset_id": "T04-SKILL-SPRING-TESTING",
+  "name": "spring-boot-testing",
+  "repository": "https://github.com/github/awesome-copilot",
+  "commit_sha": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+  "path": "skills/spring-boot-testing/SKILL.md",
+  "license": "MIT",
+  "license_path": "LICENSE",
+  "license_sha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+  "raw_file_sha256": "8161940340dc52766242ab30589369623b31089b41ebd7baa19a27f411648550",
+  "adapted_file_sha256": "8161940340dc52766242ab30589369623b31089b41ebd7baa19a27f411648550",
+  "package_sha256": "f32fd903268697195fe9cbbd0d508c2c281f2206d57a3477ffcccd9ec7756d0a",
+  "resource_files": [
+    {
+      "upstreamPath": "skills/spring-boot-testing/references/restclienttest.md",
+      "localPath": "references/restclienttest.md",
+      "sha256": "a15252889125344f8cf2caf0cfc873c944a80577f73ceac00060a9108b457e88"
+    }
+  ],
+  "adaptation": {
+    "kind": "registry_metadata_only",
+    "technical_body_changed": false,
+    "allowed_changes": [
+      "listing description",
+      "use_when",
+      "do_not_use_when"
+    ],
+    "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "frozen_at": "2026-08-29T22:55:00+08:00"
+}
