@@ -1,0 +1,88 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t09-knowledge-trial-01",
+  "stage": "DS05",
+  "team_id": "T09",
+  "family": "knowledge",
+  "external_source_ids": [],
+  "pairs": [
+    {
+      "draft_pair_id": "T09-DRAFT-KNOW-001",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "今天继续处理 nebula-console 的离线 Node.js 发布依赖审计，工作区仍是 aegis/nebula-console，不能访问外网；这条线只讨论依赖审计，不要和 SAST 配置或普通版本升级混在一起。"
+        },
+        {
+          "role": "assistant",
+          "content": "边界已确认。当前审计使用固定的离线漏洞数据库和发布前的冻结输入，不启动真实发布，也不把源代码静态分析结论当成依赖扫描结果。"
+        },
+        {
+          "role": "user",
+          "content": "审计记录显示这次数据库快照来自 2026-07-15；运行包装器的流程和报告格式都已经整理好，但交接文档还缺一个过期数据库时的例外处理说明。"
+        },
+        {
+          "role": "assistant",
+          "content": "我先核对现有冻结输入和操作背景。既然报告流程已经完成，眼下要补的是运维规则中的一个窄事实，而不是重新扫描或改写报告。"
+        },
+        {
+          "role": "user",
+          "content": "我一开始想直接在本地脚本里加一个过期判断，后来发现这会把团队约定和脚本实现混为一谈，也无法证明例外编号应该怎样写。"
+        },
+        {
+          "role": "assistant",
+          "content": "方向改为只核对与当前仓库匹配的内部审计运维资料；代码图和合规导出资料属于相邻工作流，不能拿来替代这条运维规则。"
+        },
+        {
+          "role": "user",
+          "content": "已经完成的是确认仓库、离线场景、快照日期和审计范围，也确认不需要执行新的扫描；现在只剩把资料中的过期数据库例外编号补进交接摘要。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前上下文没有这个例外编号本身。为了避免凭经验编造编号，先把这个唯一信息缺口保留下来，再核对匹配的运维资料。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请先确认固定离线漏洞数据库超过规定期限时，交接摘要应记录的准确例外编号；只返回资料中的编号，不要扩展到扫描、SAST 或普通升级方案。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充日志仍只有快照日期和过期场景，没有写出团队约定的例外编号；请保留这个唯一缺口，不要按经验推断。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "与 aegis/nebula-console 匹配的离线审计运维资料中，冻结漏洞数据库超过十四天时使用的准确例外编号尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": ["wiki-t09audit01"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "先发现固定运维资料提供的只读检索能力，再以过期冻结漏洞数据库为查询条件检索并返回 AIRGAP-DB-AGE-14 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已补齐唯一缺口：固定漏洞数据库超过十四天时，运维资料规定记录例外编号 AIRGAP-DB-AGE-14；其他审计范围和工作流边界不变。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已明确匹配的离线审计场景、数据库过期条件及准确例外编号 AIRGAP-DB-AGE-14；无需再次读取内部资料。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "cg-t09risk01",
+        "wiki-t09comp01",
+        "T09-L1-01"
+      ],
+      "controlled_delta_note": "Positive 只保留过期冻结数据库的例外编号缺口；Negative 只补入 AIRGAP-DB-AGE-14，保持同一仓库、离线日期、审计边界、排除项和最终 query 不变。",
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为超过十四天的冻结漏洞数据库例外编号，没有暗示扫描结果、命令或报告格式？",
+        "Negative 是否只补入 AIRGAP-DB-AGE-14，并保持仓库、离线场景、审计边界和 query 完全不变？",
+        "nebula-console、离线审计和运维规则线索是否足以在三个 ready 资源中唯一选择匹配的运维 wiki？",
+        "provider-visible 文本是否没有暴露内部资源标识、检索动作名称、私有知识字段或最终 Gold 信息？"
+      ]
+    }
+  ]
+}

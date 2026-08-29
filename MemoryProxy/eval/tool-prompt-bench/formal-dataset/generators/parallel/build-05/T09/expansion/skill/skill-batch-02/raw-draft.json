@@ -1,0 +1,238 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t09-skill-batch-02",
+  "stage": "DS05",
+  "team_id": "T09",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T09-DRAFT-SKILL-002",
+      "external_source_ids": ["source-t09-skill-cvss-extraction"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我在 risk-catalog 里处理一份已经产出的漏洞 JSON，目标是规范化每条记录的 CVSS 字段。当前只做提取设计，不重新扫描输入。"},
+        {"role": "assistant", "content": "已确认扫描结果文件可读，记录中包含漏洞标识、包名、版本和嵌套的评分对象；这一步不改变原始 JSON，也不生成最终报告。"},
+        {"role": "user", "content": "最初我想直接取每条记录的第一个分数，后来发现不同来源和版本并不总是同时存在。"},
+        {"role": "assistant", "content": "方向调整为先固定评分版本和来源优先级，再定义缺失值与异常结构的处理，避免把来源差异误当成风险变化。"},
+        {"role": "user", "content": "样例记录和调用方字段已经整理完毕，调用方只等待一个可复用的提取步骤，后续报告暂不在本轮处理。"},
+        {"role": "assistant", "content": "现在剩下的是把来源级联、版本回退、无分数返回值和类型校验串成可执行顺序；我手头没有现成流程正文。"}
+      ],
+      "changed_message_index": 6,
+      "query": "针对已生成的漏洞 JSON，请先给出 CVSS 分数提取的可执行下一步，暂不生成 CSV。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "我还缺评分提取的具体流程。请先查找适用的既有流程材料，概述版本选择、来源优先级、缺失值回退和输入校验，停在可以开始实现的位置。"},
+        "private_proposal": {
+          "unique_information_gap": "扫描 JSON 已存在，当前只缺 CVSS 来源优先级、版本回退和缺失分数处理的可复用提取程序；目标是已列出的评分提取 Skill。",
+          "route": "skill",
+          "target_asset_ids": ["T09-SKILL-CVSS-EXTRACTION"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "返回已列出 CVSS 提取 Skill 的正文和 manifest 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "我把缺失流程补全：优先取 NVD、GHSA、RedHat 依次提供的 CVSS v3 分数；若三者都没有 v3，则回退到 NVD v2；仍无分数返回 N/A，并记录版本和来源。输入对象缺失或类型不对也返回 N/A，数值必须先校验。请据此给出下一步，仍不要生成 CSV。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已提供 v3 优先级、NVD v2 回退、N/A 结果、来源与版本元数据以及对象和数值校验，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T09-SKILL-TRIVY-OFFLINE", "T09-SKILL-VULNERABILITY-CSV", "T09-SKILL-THREAT-MITIGATION"],
+      "controlled_delta_note": "Positive 仅保留已有漏洞 JSON 的评分提取流程缺口；Negative 仅补齐 v3 来源级联、v2 回退、N/A 和输入校验，shared context 与 query 完全相同。",
+      "source_fact_map": [
+        {"claim": "评分提取按 NVD、GHSA、RedHat 的顺序选择 v3 分数，并在都缺失时返回 N/A。", "source_id": "source-t09-skill-cvss-extraction", "locator": "raw/benchflow-skillsbench/cvss-score-extraction/SKILL.md#Source Priority Strategy; #Basic Score Extraction"},
+        {"claim": "增强流程在 v3 缺失时回退到 NVD v2，并返回分数、版本和来源元数据。", "source_id": "source-t09-skill-cvss-extraction", "locator": "raw/benchflow-skillsbench/cvss-score-extraction/SKILL.md#Enhanced Version with V2 Fallback"},
+        {"claim": "安全提取流程校验评分对象和数值类型，异常结构返回 N/A。", "source_id": "source-t09-skill-cvss-extraction", "locator": "raw/benchflow-skillsbench/cvss-score-extraction/SKILL.md#Error Handling"}
+      ],
+      "sol_review_questions": [
+        "确认该组仅包含 T09-DRAFT-SKILL-002，且 Positive 首动作仅为冻结的 listed target skill_view。",
+        "确认 provider-visible 文本未出现内部动作名、Skill 名、私有资产 ID、Gold 或评测字样。",
+        "确认 Negative 只补齐冻结正文支持的 CVSS 级联、版本回退和校验，没有决定最终 Gold。"
+      ]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-SKILL-003",
+      "external_source_ids": ["source-t09-skill-vulnerability-csv"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我在 compliance-export 里要把已经解析好的漏洞记录导出成审计 CSV，发现集合本身已经确定。当前只整理报告步骤，不重新发现漏洞。"},
+        {"role": "assistant", "content": "已确认解析结果包含包、版本、漏洞标识、严重性、修复版本和评分等字段，输出需要稳定、可被下游表格工具读取。"},
+        {"role": "user", "content": "最初我想把所有记录原样写出，后来审计方要求报告聚焦高风险项，并明确缺失字段的写法。"},
+        {"role": "assistant", "content": "方向调整为先做严重性筛选，再完成 JSON 到平面列的映射和 CSV 编码处理；扫描和发现阶段保持不变。"},
+        {"role": "user", "content": "输入解析、报告目录和下游读取方式都已确认，字段也能从记录中取得；现在只缺一个可复用的生成流程。"},
+        {"role": "assistant", "content": "剩下的缺口是筛选边界、字段映射、表头写入、无结果分支和 UTF-8 文件写出顺序，我手头没有现成流程正文。"}
+      ],
+      "changed_message_index": 6,
+      "query": "针对已经解析的漏洞记录，请先给出高风险 CSV 审计报告的可执行下一步，暂不执行写出。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请先查找适用的既有报告流程，概述严重性筛选、字段映射、表头和编码处理，并停在可以开始写出 CSV 的位置。"},
+        "private_proposal": {
+          "unique_information_gap": "解析记录已存在，当前缺少按严重性筛选、字段映射和 CSV 写出的可复用报告程序；目标未列出但可通过同团队搜索定位后打开。",
+          "route": "skill",
+          "target_asset_ids": ["T09-SKILL-VULNERABILITY-CSV"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "搜索结果返回目标 Skill id 并打开其正文后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "我把缺失规则补全：遍历已解析记录，只保留 HIGH 和 CRITICAL；每行映射为 Package、Version、CVE_ID、Severity、CVSS_Score、Fixed_Version、Title、Url，缺失值分别使用 N/A 或空字符串约定；先写表头，再以 UTF-8、newline 为空的方式写出，若没有匹配项只报告没有高风险漏洞。请据此给出下一步，仍不要执行写出。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已提供高风险筛选、完整列映射、缺失值约定、表头顺序、UTF-8/newline 写出以及无匹配分支，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T09-SKILL-CVSS-EXTRACTION", "T09-SKILL-DEPENDENCY-UPGRADE", "T09-SKILL-GITLAB-CI"],
+      "controlled_delta_note": "Positive 仅保留解析记录到 CSV 报告的筛选与映射缺口；Negative 仅补齐筛选、列映射、编码和空结果分支，shared context 与 query 完全相同。",
+      "source_fact_map": [
+        {"claim": "报告流程按 HIGH/CRITICAL 过滤已解析记录，并将字段映射到结构化 CSV 行。", "source_id": "source-t09-skill-vulnerability-csv", "locator": "raw/benchflow-skillsbench/vulnerability-csv-reporting/SKILL.md#Severity-Based Filtering; #Field Mapping from JSON to CSV"},
+        {"claim": "CSV 写出使用预先定义的表头、DictWriter、UTF-8 编码和 newline=''，无匹配项时输出无高风险漏洞信息。", "source_id": "source-t09-skill-vulnerability-csv", "locator": "raw/benchflow-skillsbench/vulnerability-csv-reporting/SKILL.md#Basic Usage; #Complete Vulnerability CSV Report Generator"}
+      ],
+      "sol_review_questions": [
+        "确认该组仅包含 T09-DRAFT-SKILL-003，且 Positive 首动作严格为冻结的 search 后 view_by_id。",
+        "确认 provider-visible 文本未出现内部动作名、Skill 名、私有资产 ID、Gold 或评测字样。",
+        "确认 Negative 只补齐冻结正文支持的 CSV 筛选、映射和写出规则，没有决定最终 Gold。"
+      ]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-SKILL-004",
+      "external_source_ids": ["source-t09-skill-dependency-upgrade"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我在 harbor-gateway 里已经确认一个依赖需要升级，当前版本、目标版本和受影响的直接调用方都列好了。现在做兼容性计划，不重新计算漏洞集合。"},
+        {"role": "assistant", "content": "已确认 package.json、锁文件和现有测试命令可用，升级需要控制破坏性变化，并保留可以回退的工作状态。"},
+        {"role": "user", "content": "最初我想一次性把相关包全部更新，后来发现目标版本跨越了主要版本，调用方和 peer 依赖可能要分阶段处理。"},
+        {"role": "assistant", "content": "方向调整为先核对兼容矩阵和迁移说明，再按阶段更新、逐阶段验证，最后准备回滚路径；本轮不执行安装。"},
+        {"role": "user", "content": "当前版本差异、受影响模块、验收测试和目标版本都已整理完毕，升级范围也得到确认。"},
+        {"role": "assistant", "content": "现在只缺一份可复用的兼容性敏感升级步骤，尤其是分阶段顺序、测试门和失败后的恢复做法。"}
+      ],
+      "changed_message_index": 6,
+      "query": "针对已确认目标版本的依赖升级，请先给出兼容性验证的可执行下一步，暂不执行安装或修改。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请先查找适用的既有升级流程，概述兼容性分析、分阶段更新、每阶段验证和回滚准备，停在可以开始制定计划的位置。"},
+        "private_proposal": {
+          "unique_information_gap": "依赖和目标版本已知，当前缺少兼容性敏感、分阶段升级、验证和回滚的可复用程序；目标未列出但可通过同团队搜索定位后打开。",
+          "route": "skill",
+          "target_asset_ids": ["T09-SKILL-DEPENDENCY-UPGRADE"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "搜索结果返回依赖升级 Skill id 并打开其正文后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "我把缺失步骤补全：先列出当前直接依赖并阅读 CHANGELOG/MIGRATION，建立兼容矩阵和升级顺序；每次只更新一个逻辑阶段，立即运行测试和构建，再检查 peer 依赖；升级失败就保留当前状态并按回滚方案恢复锁文件，全部通过后再提交。请据此给出下一步，仍不要执行安装。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已提供版本分析、兼容矩阵、分阶段顺序、测试/构建/peer 验证和锁文件回滚策略，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T09-SKILL-TRIVY-OFFLINE", "T09-SKILL-DEPLOYMENT-PIPELINE", "T09-SKILL-GITHUB-ACTIONS"],
+      "controlled_delta_note": "Positive 仅保留兼容性升级程序缺口；Negative 仅补齐兼容矩阵、分阶段更新、验证与回滚，shared context 与 query 完全相同。",
+      "source_fact_map": [
+        {"claim": "升级前应检查当前版本、破坏性变更和迁移说明，并建立升级顺序。", "source_id": "source-t09-skill-dependency-upgrade", "locator": "raw/wshobson-agents/dependency-upgrade/SKILL.md#Staged Upgrade Strategy"},
+        {"claim": "升级采用增量阶段，每阶段运行测试和构建，并检查兼容性和 peer 依赖。", "source_id": "source-t09-skill-dependency-upgrade", "locator": "raw/wshobson-agents/dependency-upgrade/SKILL.md#Compatibility Matrix; #Phase 2: Incremental Updates; #Phase 3: Validation"},
+        {"claim": "升级失败时应按回滚方案恢复分支和锁定状态。", "source_id": "source-t09-skill-dependency-upgrade", "locator": "raw/wshobson-agents/dependency-upgrade/SKILL.md#Rollback Plan"}
+      ],
+      "sol_review_questions": [
+        "确认该组仅包含 T09-DRAFT-SKILL-004，且 Positive 首动作严格为冻结的 search 后 view_by_id。",
+        "确认 provider-visible 文本未出现内部动作名、Skill 名、私有资产 ID、Gold 或评测字样。",
+        "确认 Negative 只补齐冻结正文支持的升级计划和验证步骤，没有决定最终 Gold。"
+      ]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-SKILL-005",
+      "external_source_ids": ["source-t09-skill-sast-configuration"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我在 sentinel-api 负责配置应用源代码的静态安全分析，目标是建立基线、规则和质量门。依赖清单漏洞报告另有流程，本轮不处理。"},
+        {"role": "assistant", "content": "已确认主要语言、合规要求、CI 环境和现有代码仓库都已盘点，配置工作需要可渐进采用并控制误报。"},
+        {"role": "user", "content": "最初我想直接把所有检查设为阻断，后来发现应先建立基线，再逐步收紧规则并保留已知安全例外的记录。"},
+        {"role": "assistant", "content": "方向调整为先选定适合语言和集成方式的分析工具，运行基线，调优规则与路径过滤，再设置分级质量门和持续集成接入。"},
+        {"role": "user", "content": "语言清单、合规目标、仓库结构和流水线入口已经准备好，也确认任务只针对源代码分析。"},
+        {"role": "assistant", "content": "现在只缺一份覆盖初始评估、工具配置、规则治理、性能和流水线接入的可复用实施步骤。"}
+      ],
+      "changed_message_index": 6,
+      "query": "针对应用源代码的静态安全分析配置，请先给出可执行下一步，暂不修改流水线或规则文件。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请先查找适用的既有配置流程，概述初始评估、基线扫描、规则和误报治理、质量门及 CI 接入，停在可以开始配置的位置。"},
+        "private_proposal": {
+          "unique_information_gap": "任务明确是源代码静态分析配置，当前缺少工具选择、基线、规则治理、质量门和 CI 接入的可复用程序；目标未列出但可通过同团队搜索定位后打开。",
+          "route": "skill",
+          "target_asset_ids": ["T09-SKILL-SAST-CONFIGURATION"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "搜索结果返回 SAST 配置 Skill id 并打开其正文后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "我把缺失流程补全：先按语言和合规要求选择 Semgrep、SonarQube 或 CodeQL，并运行基线；从安全规则开始渐进启用，过滤测试和生成文件，记录抑制原因，优化缓存和增量扫描；最后在 CI 接入扫描并把严重问题设为质量门，定期复核误报。请据此给出下一步，仍不要改文件。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已提供初始评估、工具选择、基线、规则渐进、误报治理、性能优化和 CI 质量门，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T09-SKILL-TRIVY-OFFLINE", "T09-SKILL-ATTACK-TREE", "T09-SKILL-SECURITY-REQUIREMENTS"],
+      "controlled_delta_note": "Positive 仅保留源代码静态分析配置程序缺口；Negative 仅补齐评估、基线、规则治理、误报、性能和 CI 门禁，shared context 与 query 完全相同。",
+      "source_fact_map": [
+        {"claim": "配置前应识别主要语言和合规要求，选择合适的静态分析工具并审查基线。", "source_id": "source-t09-skill-sast-configuration", "locator": "raw/wshobson-agents/sast-configuration/SKILL.md#Initial Assessment"},
+        {"claim": "流程覆盖安全规则、质量门、误报抑制、路径排除、增量扫描和缓存优化。", "source_id": "source-t09-skill-sast-configuration", "locator": "raw/wshobson-agents/sast-configuration/SKILL.md#Core Capabilities; #Best Practices"},
+        {"claim": "静态分析可接入持续集成，并需要验证凭据、输出格式和 Runner 权限。", "source_id": "source-t09-skill-sast-configuration", "locator": "raw/wshobson-agents/sast-configuration/SKILL.md#Integration Patterns; #Troubleshooting"}
+      ],
+      "sol_review_questions": [
+        "确认该组仅包含 T09-DRAFT-SKILL-005，且 Positive 首动作严格为冻结的 search 后 view_by_id。",
+        "确认 provider-visible 文本未出现内部动作名、Skill 名、私有资产 ID、Gold 或评测字样。",
+        "确认 Negative 只补齐冻结正文支持的 SAST 配置步骤，没有把依赖扫描或漏洞报告混入。"
+      ]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-SKILL-006",
+      "external_source_ids": ["source-t09-skill-fortify-remediate"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我在 vault-line 处理一个已经确认的应用安全发现，目标、平台、版本和问题清单都已由负责人确认。现在进入实施准备，不重新扫描或扩大范围。"},
+        {"role": "assistant", "content": "已确认这是源代码或运行时配置层面的既有发现，不是开源依赖问题；修复计划已经评审通过，实施需要逐项验证。"},
+        {"role": "user", "content": "最初我想直接批量修改所有相关文件，后来决定遵循已批准计划，一次只实施一个逻辑单元并在每步后验证。"},
+        {"role": "assistant", "content": "方向调整为先核对平台与目标状态，再按计划应用改动、构建、测试和自审；任何不完整修复都先停下说明。"},
+        {"role": "user", "content": "目标问题和拟改文件已经列明，用户也确认可以进入实施；当前工作区只缺最后一份实施检查清单。"},
+        {"role": "assistant", "content": "已列出的整改流程正文不包含逐项实施细节，我需要找到其中指定的实施参考材料后才能继续。"}
+      ],
+      "changed_message_index": 6,
+      "query": "针对已确认的应用安全发现，请先给出逐项实施与验证的可执行下一步，暂不修改代码。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请先查找适用的既有整改流程，并读取其中指定的实施检查清单，概述逐项应用、构建测试、自审和完成门，停在可以开始改动的位置。"},
+        "private_proposal": {
+          "unique_information_gap": "已确认的问题与修复计划都存在，但列出的整改流程正文缺少指定实施参考文件；需要先打开目标 Skill，再读取 references/sast-dast-implementation.md。",
+          "route": "skill",
+          "target_asset_ids": ["T09-SKILL-FORTIFY-REMEDIATE"],
+          "allowed_sequence_candidates": [["skill_view", "skill_files_read"]],
+          "stop_after_candidate": "列出的整改 Skill 已打开且 references/sast-dast-implementation.md 返回后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "我把缺失检查清单补全：每次只应用一个逻辑单元，随后构建、运行可用测试并自审根因和边界；安全意图注释不得包含问题编号或产品术语。完成前逐项确认目标问题已修复或明确延期、构建无误、测试通过且每项改动已自审。请据此给出下一步，仍不要改代码。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已提供逐逻辑单元实施、构建/测试/自审、注释约束和完成门，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T09-SKILL-SAST-CONFIGURATION", "T09-SKILL-THREAT-MITIGATION", "T09-SKILL-SECRETS-MANAGEMENT"],
+      "controlled_delta_note": "Positive 仅保留指定实施参考材料缺口；Negative 仅补齐逐项修改、构建测试、自审和完成门，shared context 与 query 完全相同。",
+      "source_fact_map": [
+        {"claim": "实施参考要求一次只处理一个逻辑单元，每次改动后构建、运行测试并自审。", "source_id": "source-t09-skill-fortify-remediate", "locator": "raw/fortify-skills/fortify-remediate/references/sast-dast-implementation.md#Step 1: Apply Fixes"},
+        {"claim": "安全意图注释应解释原因，不得引用问题编号、扫描日期或产品术语。", "source_id": "source-t09-skill-fortify-remediate", "locator": "raw/fortify-skills/fortify-remediate/references/sast-dast-implementation.md#Step 2: Code Comment Guidelines"},
+        {"claim": "完成门要求每个问题已修复或延期说明、构建无误、测试通过并完成自审。", "source_id": "source-t09-skill-fortify-remediate", "locator": "raw/fortify-skills/fortify-remediate/references/sast-dast-implementation.md#Step 4 Completion Gate"}
+      ],
+      "sol_review_questions": [
+        "确认该组仅包含 T09-DRAFT-SKILL-006，且 Positive 首动作严格为冻结的 skill_view 后 skill_files_read，并使用精确资源路径。",
+        "确认 provider-visible 文本未出现内部动作名、Skill 名、私有资产 ID、Gold 或评测字样。",
+        "确认 Negative 只补齐冻结参考文件支持的实施检查清单，没有扩大问题范围或决定最终 Gold。"
+      ]
+    }
+  ]
+}

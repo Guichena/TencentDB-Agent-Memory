@@ -1,0 +1,97 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t09-memory-trial-01",
+  "stage": "DS05",
+  "team_id": "T09",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T09-DRAFT-MEM-001",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "这轮要处理 nebula-console 的隔离网络依赖审计，当前发布工作区使用固定的漏洞数据库；我需要核此前包装流程留下的原始审计产物。"
+        },
+        {
+          "role": "assistant",
+          "content": "我先把它归到 nebula-console 的离线发布审计流，并把风险字段整理、合规报表和普通依赖升级分别隔离，避免混用它们的结论。"
+        },
+        {
+          "role": "user",
+          "content": "现在的工作区只能确认固定数据库和发布目标，笔记里只留下了审计完成的结果，没有保留包装器写入位置的完整记录。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前文件可以帮助确认现状，但不能替代上一次已经验证过的包装约定；我也排除了在线扫描、容器镜像扫描和已有结果的字段提取。"
+        },
+        {
+          "role": "user",
+          "content": "方向已经从重新跑一遍审计改成找回上一次验证过的包装决定，这样不会把本轮的工作区状态误写成历史产物位置。"
+        },
+        {
+          "role": "assistant",
+          "content": "项目、固定输入、时间线和相近工作流都核对完了；实现前只差找回历史记录里缓存与原始输出的准确位置。"
+        },
+        {
+          "role": "user",
+          "content": "交接摘要没有保存那两个路径，我不想根据目录名猜一个看似合理的位置再继续。"
+        },
+        {
+          "role": "assistant",
+          "content": "那就先恢复此前会话中已经确认的路径，再决定后续审计命令和报告步骤。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请找回此前 nebula-console 隔离审计包装器使用的缓存路径和原始输出路径；只需要准确路径，不要重新运行审计。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "当前日志仍只有固定数据库已加载和审计完成的概括，没有记录包装器实际写入的缓存目录与原始 JSON 文件路径。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "The exact prior air-gap wrapper cache path and raw output path are absent from current context and exist only in the prior session.",
+          "route": "memory",
+          "target_asset_ids": [
+            "T09-L0-01"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_conversation_search"
+            ]
+          ],
+          "stop_after_candidate": "The search result returns the exact T09-L0-01 message."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接记录已经补全此前的决定：缓存目录是 .audit-cache/2026-07-15，原始审计 JSON 写入 build/audit/trivy.raw.json。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta supplies exactly the two missing paths from the prior wrapper decision; no historical retrieval is needed."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T09-L0-02",
+        "T09-L1-03",
+        "T09-SKILL-TRIVY-OFFLINE"
+      ],
+      "controlled_delta_note": "Positive and Negative share the same project, workspace, fixed-input assumptions, history boundary, and final query. Only message 8 changes: Positive leaves the two exact paths unresolved; Negative supplies exactly those paths.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否接受 T09-L0-01 作为一次 conversation_search 即可恢复两个准确路径的候选目标？",
+        "Negative delta 是否只补足缓存目录与原始 JSON 路径，没有改变离线审计任务背景？"
+      ]
+    }
+  ]
+}

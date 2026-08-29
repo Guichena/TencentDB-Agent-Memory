@@ -1,0 +1,209 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t09-memory-batch-02",
+  "stage": "DS05",
+  "team_id": "T09",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T09-DRAFT-MEM-002",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮要处理 nebula-console 的离线依赖审计结果，当前交接材料需要恢复团队已经确认过的筛选政策。"},
+        {"role": "assistant", "content": "我先把固定输入下的审计、漏洞字段整理、报表输出和普通升级分成独立工作流，避免把它们的边界混在一起。"},
+        {"role": "user", "content": "工作区里能看到近期审计记录和一些字段样例，但没有保留那条政策记忆的完整摘要。"},
+        {"role": "assistant", "content": "现有样例只能说明当前输入形态，不能替代已经批准的筛选和缺失值处理约定。"},
+        {"role": "user", "content": "方向已经从重新检查每条结果改成找回过去确认过的团队决策，以免临时推断改变报表含义。"},
+        {"role": "assistant", "content": "项目、固定数据库和当前产物都核对完了；实现前只差恢复那条可复用的审计政策。"},
+        {"role": "user", "content": "我不想从某个样例的严重性或空字段外观推导出团队规则。"},
+        {"role": "assistant", "content": "那就先恢复已确认的政策摘要，再决定解析和报告步骤。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请找回团队已经确认的漏洞审计筛选和缺失修复版本政策；只要决策摘要，不要重新扫描。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前交接只说明审计结果已经产生，没有写明保留哪些严重性、修复版本缺失时怎么表示，也没有说明是否可以补造扫描中没有的漏洞。"},
+        "private_proposal": {
+          "unique_information_gap": "The accepted team policy for severity filtering and absent fixed versions is missing; a distilled decision is required, not verbatim history.",
+          "route": "memory",
+          "target_asset_ids": ["T09-L1-01"],
+          "allowed_sequence_candidates": [["tdai_memory_search"]],
+          "stop_after_candidate": "The semantic memory search returns T09-L1-01."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接记录已经补全团队政策：报表只保留 HIGH 与 CRITICAL；修复版本缺失时保留空字段；不得从冻结扫描 JSON 之外臆造漏洞结果。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies exactly the accepted severity filter, absent fixed-version representation, and no-invention boundary; historical retrieval is unnecessary."}
+      },
+      "visible_distractor_ids_author_only": ["T09-L1-02", "T09-L1-06", "T09-SKILL-CVSS-EXTRACTION"],
+      "controlled_delta_note": "Positive and Negative share the same project, workspace, fixed-input assumptions, history boundary, and final query. Only message 8 changes: Positive leaves the three-part policy unresolved; Negative supplies exactly those three policy facts.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 是否只留下严重性筛选、空修复版本和禁止臆造结果这三个政策事实的缺口？",
+        "Negative 是否只补足 T09-L1-01 的决策摘要而没有改变审计任务背景？"
+      ]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-MEM-003",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮要整理 risk-catalog 对既有漏洞 JSON 的 CVSS 归一化决策，当前任务只需要恢复历史评审链。"},
+        {"role": "assistant", "content": "我把已有漏洞记录的分数来源、依赖扫描、报表字段和普通升级分别处理，先不把发现步骤带进归一化评审。"},
+        {"role": "user", "content": "当前工作区只有部分结论和搜索线索，交接摘要没有保留早先评审如何比较候选顺序。"},
+        {"role": "assistant", "content": "局部结论不足以说明哪些替代方案被否决，也不能仅凭最终顺序补出评审过程。"},
+        {"role": "user", "content": "方向已经从重新讨论来源优先级改成定位并复核那次完整的历史评审。"},
+        {"role": "assistant", "content": "项目、已有 JSON 输入和审阅边界都核对完了；实现前还缺那次评审会话的完整链路。"},
+        {"role": "user", "content": "我不想把一次搜索摘要误当成包含反对意见和取舍理由的完整记录。"},
+        {"role": "assistant", "content": "先定位正确的历史会话，再读取完整内容，拿到冻结的顺序和被否决的替代方案后就停止。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请恢复那次 CVSS 来源优先级评审的完整链路，包括采用顺序和被否决的替代方案；不要重新设计规则。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "现有笔记只写着最终需要一个可解释的来源顺序，没有保存那次评审的会话标识、完整比较过程或两种被否决的候选方案。"},
+        "private_proposal": {
+          "unique_information_gap": "The task needs the complete earlier review chain, including rejected CVSS fallback alternatives; search locates the session and the full session supplies the ordered reasoning.",
+          "route": "memory",
+          "target_asset_ids": ["T09-L0-03"],
+          "allowed_sequence_candidates": [["tdai_conversation_search", "tdai_conversation_query"]],
+          "stop_after_candidate": "The complete target session is returned after its id comes from search."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接记录已经补全评审链：先查 NVD，再查 GHSA，最后查供应商公告；之前尝试的只查 NVD和供应商优先两种方案都被否决。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies the complete requested order and the two rejected alternatives, including the reasoning boundary needed for this historical summary."}
+      },
+      "visible_distractor_ids_author_only": ["T09-L0-04", "T09-L1-04", "T09-SKILL-CVSS-EXTRACTION"],
+      "controlled_delta_note": "Positive and Negative share the same project, workspace, existing-JSON assumptions, review boundary, and final query. Only message 8 changes: Positive leaves the session chain unresolved; Negative supplies exactly the ordered sources and two rejected alternatives.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 是否需要先搜索定位会话，再读取完整会话以获得被否决方案？",
+        "Negative 是否只补足 NVD→GHSA→供应商顺序和两个被否决候选，而未引入新的来源？"
+      ]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-MEM-004",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮要整理 compliance-export 的漏洞 CSV 导出契约，当前代码能找到字段但不能证明历史批准的列顺序。"},
+        {"role": "assistant", "content": "我先把已解析记录、发现过程、原始 JSON 和普通升级分开，避免把字段名称列表当成报告契约。"},
+        {"role": "user", "content": "工作区目前暴露了若干无序字段，交接摘要没有保留过去决定的稳定列排列。"},
+        {"role": "assistant", "content": "无序字段只能说明可用数据，不能替代消费者依赖的固定列顺序。"},
+        {"role": "user", "content": "方向已经从猜测排列并更新快照改成恢复原先确认的导出决定。"},
+        {"role": "assistant", "content": "项目、输入记录和报告边界都核对完了；实现前只差找回固定列顺序。"},
+        {"role": "user", "content": "我不想根据代码当前迭代顺序或一个样例文件推断兼容契约。"},
+        {"role": "assistant", "content": "先恢复历史决策中的顺序，再决定如何调整映射和验证。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请找回漏洞 CSV 已批准的列顺序；只需要顺序，不要生成报告或重新解析发现。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "交接材料只列出 vulnerability_id、package_name、installed_version、fixed_version、severity 和 cvss_score 这些字段，没有保存它们应输出的固定顺序。"},
+        "private_proposal": {
+          "unique_information_gap": "The approved CSV field order from a past decision is absent; the current code only exposes unordered field names.",
+          "route": "memory",
+          "target_asset_ids": ["T09-L1-05"],
+          "allowed_sequence_candidates": [["tdai_memory_search"]],
+          "stop_after_candidate": "The semantic memory search returns T09-L1-05."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接记录已经补全固定顺序：vulnerability_id、package_name、installed_version、fixed_version、severity、cvss_score。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies exactly the approved six-column order; no historical retrieval is needed."}
+      },
+      "visible_distractor_ids_author_only": ["T09-L1-06", "T09-L0-06", "T09-SKILL-VULNERABILITY-CSV"],
+      "controlled_delta_note": "Positive and Negative share the same project, workspace, parsed-record assumptions, contract boundary, and final query. Only message 8 changes: Positive leaves the order unresolved; Negative supplies exactly the six-column sequence.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 是否只留下列顺序这一项缺口，而没有把空值、排序或转义规则混入？",
+        "Negative 是否仅补足 T09-L1-05 的六列顺序？"
+      ]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-MEM-005",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮要处理 harbor-gateway 的普通依赖升级复核，当前需要确认历史上最近一条相关决策，而不是直接执行升级。"},
+        {"role": "assistant", "content": "我把兼容性验证、漏洞结果提取、审计扫描和报表生成保持为不同工作流，先限定要找的决策记录。"},
+        {"role": "user", "content": "工作区有若干升级笔记，但没有按日期和记录类型筛出最近的正式决策。"},
+        {"role": "assistant", "content": "按标题或内容相似度浏览可能拿到计划或说明，不能替代明确的时间和类型条件。"},
+        {"role": "user", "content": "方向已经从重新评估所有升级方案改成找回 2026-07-20 之后最近的 decision 记录。"},
+        {"role": "assistant", "content": "项目、升级范围和时间边界都核对完了；实现前只缺符合时间与类型筛选的最新决策。"},
+        {"role": "user", "content": "我不想从一条较新的普通备注推断它就是正式 decision。"},
+        {"role": "assistant", "content": "先按日期下限和记录类型做结构化检索，命中目标决策后就停止。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请找出 2026-07-20 之后最近一条 type 为 decision 的升级记忆，并给出其中的结论；不要重新评估升级。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前笔记只有几条升级活动摘要，没有明确标出记录类型，也没有确认哪条是 2026-07-20 之后最近的正式决策。"},
+        "private_proposal": {
+          "unique_information_gap": "The user explicitly asks for the most recent decision memory after 2026-07-20 with type decision; structured time/type filtering is required.",
+          "route": "memory",
+          "target_asset_ids": ["T09-L1-09"],
+          "allowed_sequence_candidates": [["tdai_atomic_query"]],
+          "stop_after_candidate": "The structured atomic query returns T09-L1-09."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接记录已经补全：2026-07-28 的 type 为 decision，确认 routine upgrade review 必须把兼容性工作与扫描结果提取分开。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies the date, decision type, and complete conclusion requested; no structured retrieval is needed."}
+      },
+      "visible_distractor_ids_author_only": ["T09-L1-08", "T09-L1-10", "T09-SKILL-DEPENDENCY-UPGRADE"],
+      "controlled_delta_note": "Positive and Negative share the same project, workspace, upgrade-only boundary, date cutoff, and final query. Only message 8 changes: Positive leaves the typed latest decision unresolved; Negative supplies exactly T09-L1-09’s date, type, and conclusion.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 是否确实需要同时按日期下限和 type=decision 过滤？",
+        "Negative 是否只补足 2026-07-28 的决策记录及其分离兼容性与扫描提取的结论？"
+      ]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-MEM-006",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮要复核 nebula-console 的隔离审计运行手册，已知场景路径，但交接摘要没有保留包装器的退出处理细节。"},
+        {"role": "assistant", "content": "我先把离线审计运行、已有结果解析、报表生成和普通升级拆开，避免用报告流程替代运行手册。"},
+        {"role": "user", "content": "场景索引能确认运行手册的位置和大致用途，当前工作区没有完整正文。"},
+        {"role": "assistant", "content": "索引摘要只足以确认主题，不能证明不同退出码对应的包装器状态和后续动作。"},
+        {"role": "user", "content": "方向已经从重新运行一次审计改成读取已知场景中的冻结运行约定。"},
+        {"role": "assistant", "content": "项目、固定数据库和当前审计边界都核对完了；实现前只差退出处理的准确映射。"},
+        {"role": "user", "content": "我不想根据常见扫描工具习惯猜测返回 5 或其他非零值应怎样处理。"},
+        {"role": "assistant", "content": "先读取已知场景路径的完整正文，拿到退出映射后就停止，不执行真实扫描。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请从已知离线审计运行手册中恢复包装器对返回码的精确处理；只要映射，不要运行扫描。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "场景索引只留下 /security/audit/offline-runbook 的概述，没有写出返回 0、返回 5 和其他非零值分别如何标记及是否继续生成报告。"},
+        "private_proposal": {
+          "unique_information_gap": "The injected scene index gives /security/audit/offline-runbook, but its summary omits the exact exit-condition mapping needed now.",
+          "route": "memory",
+          "target_asset_ids": ["T09-L2-01"],
+          "allowed_sequence_candidates": [["tdai_read_scene"]],
+          "stop_after_candidate": "Reading the known scene path returns T09-L2-01."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接记录已经补全退出映射：扫描返回 0 时标记 success；返回 5 表示发现漏洞，仍标记 completed_with_findings 并保留原始 JSON；其他非零返回标记 failed，并停止报告生成。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies exactly the three return-code branches, their wrapper states, raw-JSON retention, and report-generation stop rule."}
+      },
+      "visible_distractor_ids_author_only": ["T09-L2-02", "T09-L2-04", "T09-SKILL-TRIVY-OFFLINE"],
+      "controlled_delta_note": "Positive and Negative share the same project, workspace, known scene path, fixed-input assumptions, and final query. Only message 8 changes: Positive leaves the exit mapping unresolved; Negative supplies exactly the three declared branches and actions.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 是否只留下场景正文中的退出码映射缺口，并已明确已知路径？",
+        "Negative 是否只补足 0、5、其他非零三种处理及其后续动作？"
+      ]
+    }
+  ]
+}

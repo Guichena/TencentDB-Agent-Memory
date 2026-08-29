@@ -1,0 +1,416 @@
+{
+  "schema_version": "task1.team_skill_assets.v1",
+  "team_id": "T09",
+  "skills": [
+    {
+      "assetId": "T09-SKILL-TRIVY-OFFLINE",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-skill-trivy-offline"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "trivy-offline-vulnerability-scanning",
+      "version": "1",
+      "description": "在固定离线漏洞数据库下，对依赖文件执行可复现的离线漏洞扫描并生成 JSON 结果的流程。",
+      "useWhen": "依赖文件尚未扫描，且环境需要使用固定数据库完成不联网的漏洞发现。",
+      "doNotUseWhen": "扫描 JSON 已经存在、任务是源代码静态分析、或任务只是普通依赖版本升级。",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "37e20d74bedb935cd52826f55391ce8448486d233159f9231caa44f141704efb"
+        }
+      ],
+      "contentHash": "8e316e52a9c05d027c6b9c05d5bf8b1d119523e5c45305e957c6f84745752328"
+    },
+    {
+      "assetId": "T09-SKILL-CVSS-EXTRACTION",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-skill-cvss-extraction"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "cvss-score-extraction",
+      "version": "1",
+      "description": "从已有漏洞记录提取 CVSS 分数，并按来源优先级处理缺失分数的流程。",
+      "useWhen": "漏洞记录已经存在，当前缺口是 CVSS 版本、来源优先级或缺失值回退。",
+      "doNotUseWhen": "仍需发现漏洞、执行扫描，或需要把完整结果筛选并格式化为 CSV。",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "67befed4cdcf0593ae84bb94b06ee3047acaa5c288454712dd46edb70c476ca3"
+        }
+      ],
+      "contentHash": "cd253445112b7a26c21cdc166bff07513d94094a97f33ce3c98a2d0bda6d617b"
+    },
+    {
+      "assetId": "T09-SKILL-VULNERABILITY-CSV",
+      "ownerAgentId": "agent-task1-t09-assets-a",
+      "sourceEvidenceIds": [
+        "source-t09-skill-vulnerability-csv"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "vulnerability-csv-reporting",
+      "version": "1",
+      "description": "将已解析的漏洞记录按严重性筛选、完成字段映射并生成结构化 CSV 审计报告。",
+      "useWhen": "漏洞发现和解析已经完成，当前需要确定字段、筛选行并写出 CSV。",
+      "doNotUseWhen": "需要从依赖文件发现漏洞，或缺少可供报告处理的解析记录。",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "6ef5e5564fb3a7b5b17554c639988595124d2f8c3b4e139c674542e9aa42647e"
+        }
+      ],
+      "contentHash": "eb7704819467e2736ee92ec982ceb95046e7bc729c128f0d0bfab86969422808"
+    },
+    {
+      "assetId": "T09-SKILL-DEPENDENCY-UPGRADE",
+      "ownerAgentId": "agent-task1-t09-assets-b",
+      "sourceEvidenceIds": [
+        "source-t09-skill-dependency-upgrade"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "dependency-upgrade",
+      "version": "1",
+      "description": "通过兼容性分析、分阶段更新、测试验证和回滚准备管理依赖版本升级。",
+      "useWhen": "需要规划兼容性敏感的依赖升级、处理重大版本变化或验证升级路径。",
+      "doNotUseWhen": "任务是从未扫描的锁定文件确定漏洞集合，或只是提取扫描结果和生成报告。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "1ef79a297276765fc3adebf47a9ad37c0e109291aef3a3afc380f055231c49fa"
+        }
+      ],
+      "contentHash": "9c614f3e8785594e4a2e4e4c7622f9e80f86640d78393d988e7441e4b0eedbef"
+    },
+    {
+      "assetId": "T09-SKILL-SAST-CONFIGURATION",
+      "ownerAgentId": "agent-task1-t09-assets-a",
+      "sourceEvidenceIds": [
+        "source-t09-skill-sast-configuration"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "sast-configuration",
+      "version": "1",
+      "description": "为应用源代码配置静态安全分析、规则、质量门和持续集成集成。",
+      "useWhen": "任务是源代码静态分析的工具选择、规则配置、误报治理或流水线接入。",
+      "doNotUseWhen": "任务是 package-lock.json 等依赖清单的软件组成分析或依赖漏洞报告。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "d42b6a2515cfa2be26b3f4e7b4aaa0bfcf0d58c96a9ce310d6219952dabaa242"
+        }
+      ],
+      "contentHash": "36d54a8f30512d6dd80a22380e787579b6c029d642881face8393024884ac886"
+    },
+    {
+      "assetId": "T09-SKILL-FORTIFY-REMEDIATE",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-skill-fortify-remediate"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "fortify-remediate",
+      "version": "1",
+      "description": "针对已经确认的 Fortify SAST/DAST 发现，按目标确认、修复计划、用户确认和逐项验证流程实施整改。",
+      "useWhen": "已有具体的 Fortify SAST 或 DAST 发现，需要依照其修复流程实施并验证。",
+      "doNotUseWhen": "需要发现或复核新问题、处理 SCA/开源依赖问题，或需要配置扫描与持续集成。",
+      "repoCommit": "d84c98c8930454949395c55a4853652028fd842b",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "8afaa8ef24d4c0ad888509e06a405c91502f4188a25c2aa6f60027a427cebe51"
+        },
+        {
+          "path": "references/sast-dast-implementation.md",
+          "sha256": "23ccf57ecee5229f504cd7f45a9e5a07b9faacdee7589e6280552c45b0a9da85"
+        }
+      ],
+      "contentHash": "1c1e8e2c0da33813b9a801ca88b18eb688881e43969bbed2295782574538ea2c"
+    },
+    {
+      "assetId": "T09-SKILL-ATTACK-TREE",
+      "ownerAgentId": "agent-task1-t09-assets-a",
+      "sourceEvidenceIds": [
+        "source-t09-skill-attack-tree"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "attack-tree-construction",
+      "version": "1",
+      "description": "使用根目标、AND/OR 节点、叶节点及攻击属性构建攻击树来分析威胁路径。",
+      "useWhen": "需要可视化复杂攻击场景、识别防御缺口或沟通安全风险。",
+      "doNotUseWhen": "任务是直接映射控制措施、提取安全需求或执行依赖漏洞扫描。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "87922080c56b3fab56bb6ef43f255ae6f04bc71a08adf635e466593de61053f4"
+        }
+      ],
+      "contentHash": "24b2f0b092d8a0b7dbe0047b7c775fa289e1e366cc9d54f251fafa2d399a0acd"
+    },
+    {
+      "assetId": "T09-SKILL-SECURITY-REQUIREMENTS",
+      "ownerAgentId": "agent-task1-t09-assets-b",
+      "sourceEvidenceIds": [
+        "source-t09-skill-security-requirements"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "security-requirement-extraction",
+      "version": "1",
+      "description": "从威胁模型和业务上下文提取可追踪、可测试且带优先级的安全需求。",
+      "useWhen": "需要把威胁、合规或业务背景转化为安全用户故事、验收标准或测试案例。",
+      "doNotUseWhen": "任务是识别攻击路径、直接配置扫描器，或对已发现问题执行修复。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "bc2f3302ecf1e577c4c992754af2121fac87e4139f5ce2d7e3365b26ed1d6c66"
+        }
+      ],
+      "contentHash": "d8ff8b9eef0793fe6b345649ca1348c4484ea8f208df1c5ec3273f0f7206f23e"
+    },
+    {
+      "assetId": "T09-SKILL-STRIDE-ANALYSIS",
+      "ownerAgentId": "agent-task1-t09-assets-a",
+      "sourceEvidenceIds": [
+        "source-t09-skill-stride-analysis"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "stride-analysis-patterns",
+      "version": "1",
+      "description": "使用 STRIDE 类别系统识别威胁并形成威胁分析文档。",
+      "useWhen": "开始威胁建模、审查系统架构或需要系统化覆盖六类威胁。",
+      "doNotUseWhen": "已有威胁清单只需映射控制措施，或任务是依赖扫描、SAST 配置和漏洞修复。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "9b48b2393ae5c478ec22b3c02e3b741d8ca366a593970e80711d922e7888d808"
+        }
+      ],
+      "contentHash": "45e40c58544232366251541481fcd1d16dd16b61d7f1ae051d0c315d03d4fe90"
+    },
+    {
+      "assetId": "T09-SKILL-THREAT-MITIGATION",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-skill-threat-mitigation"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "threat-mitigation-mapping",
+      "version": "1",
+      "description": "把已识别威胁映射到预防、检测和纠正控制，并用纵深防御组织缓解计划。",
+      "useWhen": "需要规划威胁处置、检查控制覆盖或制定分层防御路线图。",
+      "doNotUseWhen": "尚未识别威胁、只需进行威胁分类，或任务是扫描依赖与配置 CI。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "a173638800ba862e22e63eda93243addf022f03ede03274572fb22708a60d229"
+        }
+      ],
+      "contentHash": "94c08450718958076f8ba8f3829aee32440260c3912c1d843a9be89dc71118d3"
+    },
+    {
+      "assetId": "T09-SKILL-DEPLOYMENT-PIPELINE",
+      "ownerAgentId": "agent-task1-t09-assets-a",
+      "sourceEvidenceIds": [
+        "source-t09-skill-deployment-pipeline"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "deployment-pipeline-design",
+      "version": "1",
+      "description": "设计带阶段、质量与安全门、健康检查、发布策略及回滚计划的多阶段持续交付流水线。",
+      "useWhen": "需要规划多环境发布、审批门、渐进式发布或自动回滚。",
+      "doNotUseWhen": "只需一份特定平台的流水线片段，或当前缺口是依赖扫描、报告提取或单个漏洞修复。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "6b6d54166cfda592b1f88c94e85943e6c36b545b6d02ac75de7e86c2cab4ef63"
+        }
+      ],
+      "contentHash": "2fb55dbe0c61883df79229e0134f921ff1dc4c1cfd09d1d01e61fba35a12027d"
+    },
+    {
+      "assetId": "T09-SKILL-GITHUB-ACTIONS",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-skill-github-actions"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "github-actions-templates",
+      "version": "1",
+      "description": "为 GitHub Actions 创建测试、构建、部署、安全检查、矩阵和可复用工作流模板。",
+      "useWhen": "任务明确需要实现 GitHub Actions 工作流或其测试、构建和部署步骤。",
+      "doNotUseWhen": "任务是离线依赖扫描本身、GitLab CI 实现，或与平台无关的流水线架构设计。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "91ac679c256799a5ff8939dfbb4dfcd6fe41d5c2ad833e839e57eb5f2b985189"
+        }
+      ],
+      "contentHash": "206a3e74f073f8ff2ebcedc12ed9907d1f637f642736091e66a09d34f43b5412"
+    },
+    {
+      "assetId": "T09-SKILL-GITLAB-CI",
+      "ownerAgentId": "agent-task1-t09-assets-a",
+      "sourceEvidenceIds": [
+        "source-t09-skill-gitlab-ci"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "gitlab-ci-patterns",
+      "version": "1",
+      "description": "为 GitLab CI 构建带阶段、缓存、制品、Runner、部署和安全检查的自动化流水线。",
+      "useWhen": "任务明确需要实现或优化 GitLab CI/CD 流程。",
+      "doNotUseWhen": "任务是 GitHub Actions、平台无关的发布架构，或依赖漏洞扫描和报告字段处理。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "de875ad8c810f8581892395e0016fae8dcf7276a36172079cef5af30a81773c9"
+        }
+      ],
+      "contentHash": "1d8b248f7b5fb67f8ff87244debc3f166b6cda9cb3e938b9b9b9b1b688ed6015"
+    },
+    {
+      "assetId": "T09-SKILL-SECRETS-MANAGEMENT",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-skill-secrets-management"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "secrets-management",
+      "version": "1",
+      "description": "在持续交付环境中安全存储、注入、轮换和审计凭据及其他敏感配置。",
+      "useWhen": "需要设计凭据存储、最小权限、轮换、掩码或外部密钥管理集成。",
+      "doNotUseWhen": "主要问题是依赖漏洞发现、源代码静态分析、流水线架构或漏洞报告格式化。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "2da9a1a255a424c3dcbac42944e7cb8045250ae723431e6b26feb80c202f00b6"
+        }
+      ],
+      "contentHash": "0396d8dacc804385601b5036c58c859e11500e00375789439f92918def9b2424"
+    }
+  ],
+  "listing": {
+    "active_agent_id": "agent-task1-t09-general",
+    "bound_skill_ids": [
+      "T09-SKILL-TRIVY-OFFLINE",
+      "T09-SKILL-CVSS-EXTRACTION",
+      "T09-SKILL-FORTIFY-REMEDIATE",
+      "T09-SKILL-THREAT-MITIGATION",
+      "T09-SKILL-GITHUB-ACTIONS",
+      "T09-SKILL-SECRETS-MANAGEMENT"
+    ],
+    "team_searchable_skill_ids": [
+      "T09-SKILL-VULNERABILITY-CSV",
+      "T09-SKILL-DEPENDENCY-UPGRADE",
+      "T09-SKILL-SAST-CONFIGURATION",
+      "T09-SKILL-ATTACK-TREE",
+      "T09-SKILL-SECURITY-REQUIREMENTS",
+      "T09-SKILL-STRIDE-ANALYSIS",
+      "T09-SKILL-DEPLOYMENT-PIPELINE",
+      "T09-SKILL-GITLAB-CI"
+    ],
+    "listing_sha256": "e9d3b134cccc9ac057485f6b1e1e0489b571e76709dbc37421c9be6851c03d36",
+    "search_assertions": [
+      {
+        "pair_id": "T09-SKILL-003",
+        "target_asset_id": "T09-SKILL-VULNERABILITY-CSV",
+        "absent_from_bound_listing": true,
+        "present_in_same_team_search": true
+      },
+      {
+        "pair_id": "T09-SKILL-004",
+        "target_asset_id": "T09-SKILL-DEPENDENCY-UPGRADE",
+        "absent_from_bound_listing": true,
+        "present_in_same_team_search": true
+      },
+      {
+        "pair_id": "T09-SKILL-005",
+        "target_asset_id": "T09-SKILL-SAST-CONFIGURATION",
+        "absent_from_bound_listing": true,
+        "present_in_same_team_search": true
+      }
+    ]
+  }
+}

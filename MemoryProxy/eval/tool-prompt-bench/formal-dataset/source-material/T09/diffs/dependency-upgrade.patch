@@ -1,0 +1,10 @@
+--- a/raw/wshobson-agents/dependency-upgrade/SKILL.md
++++ b/adapted/dependency-upgrade/SKILL.md
+@@ -1,4 +1,6 @@
+ ---
+ name: dependency-upgrade
+-description: Manage major dependency version upgrades with compatibility analysis, staged rollout, and comprehensive testing. Use when upgrading framework versions, updating major dependencies, or managing breaking changes in libraries.
++description: "通过兼容性分析、分阶段更新、测试验证和回滚准备管理依赖版本升级。"
++use_when: "需要规划兼容性敏感的依赖升级、处理重大版本变化或验证升级路径。"
++do_not_use_when: "任务是从未扫描的锁定文件确定漏洞集合，或只是提取扫描结果和生成报告。"
+ ---

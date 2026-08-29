@@ -1,0 +1,16 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "t09-skill-batch-02",
+  "external_source_ids": [
+    "source-t09-skill-cvss-extraction",
+    "source-t09-skill-vulnerability-csv",
+    "source-t09-skill-dependency-upgrade",
+    "source-t09-skill-sast-configuration",
+    "source-t09-skill-fortify-remediate"
+  ],
+  "generated_at": "2026-08-29T22:30:00+08:00",
+  "actual_count": 5
+}

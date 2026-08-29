@@ -1,0 +1,10 @@
+--- a/raw/wshobson-agents/deployment-pipeline-design/SKILL.md
++++ b/adapted/deployment-pipeline-design/SKILL.md
+@@ -1,4 +1,6 @@
+ ---
+ name: deployment-pipeline-design
+-description: Design multi-stage CI/CD pipelines with approval gates, security checks, and deployment orchestration. Use this skill when designing zero-downtime deployment pipelines, implementing canary rollout strategies, setting up multi-environment promotion workflows, or debugging failed deployment gates in CI/CD.
++description: "设计带阶段、质量与安全门、健康检查、发布策略及回滚计划的多阶段持续交付流水线。"
++use_when: "需要规划多环境发布、审批门、渐进式发布或自动回滚。"
++do_not_use_when: "只需一份特定平台的流水线片段，或当前缺口是依赖扫描、报告提取或单个漏洞修复。"
+ ---
