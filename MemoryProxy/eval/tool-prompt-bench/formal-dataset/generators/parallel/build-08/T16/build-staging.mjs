@@ -11,7 +11,6 @@ const SNAPSHOT_ID = "snapshot-task1-hidden-v1";
 const WORLD_AS_OF = "2026-08-29T23:59:59+08:00";
 const OBSERVED_AT = "2026-08-29T20:00:00+08:00";
 const LAUNCH_COMMIT = "8257782c23eaa5e31f05b0ea33aa2ac7f2b6bb84";
-const T15_COMMIT = "4293fdf254ffa2f963eda72b7a0a5f9e6cde9006";
 const REPO_URL = "https://github.com/TencentCloud/TencentDB-Agent-Memory.git";
 const REPO_SLUG = "TencentCloud/TencentDB-Agent-Memory";
 const REPO_LICENSE = "MIT";
@@ -60,8 +59,7 @@ function gitBytes(args) {
   return execFileSync("git", args, { cwd: ROOT, encoding: "buffer" });
 }
 
-const actualHead = execFileSync("git", ["rev-parse", "HEAD"], { cwd: ROOT, encoding: "utf8" }).trim();
-if (actualHead !== T15_COMMIT) throw new Error(`unexpected pre-build HEAD ${actualHead}`);
+execFileSync("git", ["merge-base", "--is-ancestor", LAUNCH_COMMIT, "HEAD"], { cwd: ROOT, stdio: "ignore" });
 const treeSha256 = sha(gitBytes(["ls-tree", "-r", LAUNCH_COMMIT]));
 const fileManifestSha256 = sha(gitBytes(["ls-tree", "-r", LAUNCH_COMMIT]));
 
@@ -591,7 +589,7 @@ function addPair(pair, family, index, batchId) {
     positiveCaseId,
     negativeCaseId,
     counterfactualKind: "answer_in_current_context",
-    controlledDeltaSha256: sha({ positive: pair.positive.delta_message, negative: pair.negative.delta_message }),
+    controlledDeltaSha256: createHash("sha256").update(JSON.stringify({ positive_delta_message: pair.positive.delta_message, negative_delta_message: pair.negative.delta_message, query: pair.query }), "utf8").digest("hex"),
     currentEvidenceRefs: [pairEvidence],
   };
   pairs.push(withHash(pairCore));
