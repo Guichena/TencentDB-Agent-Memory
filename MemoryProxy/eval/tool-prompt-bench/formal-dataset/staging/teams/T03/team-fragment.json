@@ -5285,165 +5285,165 @@
       "positiveCaseId": "T03-KNOW-001-P",
       "negativeCaseId": "T03-KNOW-001-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "ceb4f92108c03c7b931a9bc4e6863e9a47ddb9d5232862798a1c3aeedf3c3cf8",
+      "controlledDeltaSha256": "4957b7478f97f5e9da32511995e662e9e29f880b24e2cd227b3792d0aef0a637",
       "currentEvidenceRefs": [
         "source-t03-t03-knowledge-trial-01"
       ],
-      "contentHash": "9365cbac2f62949ba3a9fa7898701786fb106a5116b5bb47498f64dd14e79b54"
+      "contentHash": "ce750b8bebabe24a81178a193bd591c9a5bfa6c826900c85a04ee4a1fa524200"
     },
     {
       "pairId": "T03-PAIR-KNOW-002",
       "positiveCaseId": "T03-KNOW-002-P",
       "negativeCaseId": "T03-KNOW-002-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "db8792c493f99e24fa6f305e007a982afcfeb1cf5bf6ea69c4072fbbfff489d5",
+      "controlledDeltaSha256": "98506e65bd45fdcb62db9a2f75e06cf5b456f10570575c2bc0df6fe268eeb3ba",
       "currentEvidenceRefs": [
         "source-t03-t03-knowledge-expand-01"
       ],
-      "contentHash": "1dacad6dde1b9d2243fede635e5c58ad5da231098ca105dd039c5e3ae8dd429c"
+      "contentHash": "3f6a1bb80496be301c8f36c877a00535f8a1aa1326fcfab4ae20f373139e5542"
     },
     {
       "pairId": "T03-PAIR-KNOW-003",
       "positiveCaseId": "T03-KNOW-003-P",
       "negativeCaseId": "T03-KNOW-003-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "c45ccd7217ba90b13c1261b06c82cb51ad846946c79eeab6e21b610f2d2d7530",
+      "controlledDeltaSha256": "c1d98f2c87dc89c9a3aeed94d9bf8e2c56d36527b015b13abf1bc8c4891820f1",
       "currentEvidenceRefs": [
         "source-t03-t03-knowledge-expand-01"
       ],
-      "contentHash": "de7a2d519eb331e3c5fc17ead4724923cb54327abbbe9d78e45786bcf38b6ee7"
+      "contentHash": "a7241727ea69e84b448f9a5ecb50ac417912cc5b98e757b4374ea4a9da9c8f7a"
     },
     {
       "pairId": "T03-PAIR-MEM-001",
       "positiveCaseId": "T03-MEM-001-P",
       "negativeCaseId": "T03-MEM-001-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "0a31c35826ac73392345a11f5e1e3e0ca450007f001abdcdbac5e99af669bc80",
+      "controlledDeltaSha256": "ed1fa0cbcddd8cba4f28b76ad4109a5208c4cac6d1d5e1ac2cc2137dcd5261c0",
       "currentEvidenceRefs": [
         "source-t03-t03-memory-trial-01"
       ],
-      "contentHash": "b89c3908885e1ee8dc2bb0029684cdb965a579ff9493d979900346f6cb28ebeb"
+      "contentHash": "955e66d35ebc29ba397ea9bbab15861411e09b216efcc34df4f37aebd1f68a9d"
     },
     {
       "pairId": "T03-PAIR-MEM-002",
       "positiveCaseId": "T03-MEM-002-P",
       "negativeCaseId": "T03-MEM-002-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "032a05ba8dfc34d15d7037531aad946c9108c1c12382ec4385dfea841ac85669",
+      "controlledDeltaSha256": "1a8153e6adbf356e868645af75aa983d1a3a8a89903fdfa5dbd2391f9faa0053",
       "currentEvidenceRefs": [
         "source-t03-t03-memory-expand-01"
       ],
-      "contentHash": "ca666cb2c7a77fad54bbe8cfce639b66a0be8fb3deeb5e1406b4168f69ddb787"
+      "contentHash": "41e1917fc48771e2484e7a94c12fb263b9aeda781395f455582966f28aaf8cff"
     },
     {
       "pairId": "T03-PAIR-MEM-003",
       "positiveCaseId": "T03-MEM-003-P",
       "negativeCaseId": "T03-MEM-003-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "a1e1bc744706cf84b66a9e96a5744ff82013b7c0ea06d961e4e2618c6ccb5d4b",
+      "controlledDeltaSha256": "7506574fa6ce38fd6edbc7d6fec8b179073dc241beec9994a3c8757b6f061a1e",
       "currentEvidenceRefs": [
         "source-t03-t03-memory-expand-01"
       ],
-      "contentHash": "d48332dd2e35378beb641d2391f248332a905538eb8b975018edea77a6d7b230"
+      "contentHash": "6365de6721cfe08ab22e1e27c9929686cb487ddf1d799d848cd3e99b10d669c5"
     },
     {
       "pairId": "T03-PAIR-MEM-004",
       "positiveCaseId": "T03-MEM-004-P",
       "negativeCaseId": "T03-MEM-004-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "2a6c84473ab2726bb159ce161b53c8ddbbb0323c3c280a021ba5f2febea5705c",
+      "controlledDeltaSha256": "503c651890f58de2842c56dda1b82bf4f298bbbc637d32a3dd6b424964068c0b",
       "currentEvidenceRefs": [
         "source-t03-t03-memory-expand-01"
       ],
-      "contentHash": "e79a848c1c0837b3d8df834d82c0a9c4d2082f07a7d19e147bc227eb19441e08"
+      "contentHash": "55a6aeb7d25eaa0d8aa8969c762cc0479201d8010a81d843f1c466916f6e2f64"
     },
     {
       "pairId": "T03-PAIR-MEM-005",
       "positiveCaseId": "T03-MEM-005-P",
       "negativeCaseId": "T03-MEM-005-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "fc3ae43f000468d50d5238c35c4f88e5aee281272ef6b83224de8a91c55ead85",
+      "controlledDeltaSha256": "327e8a0e1f10df34d3780af3e725cb05ba6b5e031ade7bc20fe7e6a0c36bf19b",
       "currentEvidenceRefs": [
         "source-t03-t03-memory-expand-01"
       ],
-      "contentHash": "1753d30973cf92b962faf14aae4abdacacdcccb4f388b6d86e1f5f51a2a9d3ed"
+      "contentHash": "79947ceb7dd7e110ce4a46f4153f489ef619c45349b8f21284c95384f064d5c6"
     },
     {
       "pairId": "T03-PAIR-MEM-006",
       "positiveCaseId": "T03-MEM-006-P",
       "negativeCaseId": "T03-MEM-006-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "77a0a69b0e4bd9d255054e7cc00e421a78c83983ffa0aefc97dc611c55f0a4e7",
+      "controlledDeltaSha256": "ece7946b81dea70b46414e33a6af8d023f203eec2b05e2bbe4da5453aeaff10d",
       "currentEvidenceRefs": [
         "source-t03-t03-memory-expand-01"
       ],
-      "contentHash": "cf268047a3dcdef2ad5e25977fbb55dd66f2e6deb92849b7d9bac741b92bafdf"
+      "contentHash": "c2c66c4fd3dcc4ec5b4ae2fbfcd6a1549ee1c836a2be515ad5cadc6677bc2b50"
     },
     {
       "pairId": "T03-PAIR-SKILL-001",
       "positiveCaseId": "T03-SKILL-001-P",
       "negativeCaseId": "T03-SKILL-001-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "47724263d5e17af734a3fa28b79c964feaeef84460133aeccf240e81c00845cf",
+      "controlledDeltaSha256": "dc58c5d49369109c4c429015c40e9faea7fab28f9d91d1dd94a08b4bed85dec6",
       "currentEvidenceRefs": [
         "source-t03-t03-skill-trial-01"
       ],
-      "contentHash": "65da9e4b56216dfd07f6cd62dca7723e2f5590e0b6748ac43a03725ace1d9851"
+      "contentHash": "cfab091c67271e328c8c3ce6bfda7a6677ed1cf5693d548448388a5db787b72c"
     },
     {
       "pairId": "T03-PAIR-SKILL-002",
       "positiveCaseId": "T03-SKILL-002-P",
       "negativeCaseId": "T03-SKILL-002-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "b34a1e66818f8de263c06914a8ccaa46ceb92643b84f430139f28ea324cd7143",
+      "controlledDeltaSha256": "33f5b3a7775900ed2a3895a1149a2c7aa408ea2957cc2e7cc411d267edb0bb34",
       "currentEvidenceRefs": [
         "source-t03-t03-skill-expand-01"
       ],
-      "contentHash": "a22605ca7c3ecdb46c24ca3e0e6de8986c04b49d3f515ce4ef89be7dc7c0cdeb"
+      "contentHash": "81e6d2ccd2c65b5f04d3f95d50bb9434ee84bb5e42a03c87ed13c5677dd67145"
     },
     {
       "pairId": "T03-PAIR-SKILL-003",
       "positiveCaseId": "T03-SKILL-003-P",
       "negativeCaseId": "T03-SKILL-003-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "df9e6b09fc31e4b83c0e78d9c770bd0fdd640eaa7cc4b121117cff70266ae7f9",
+      "controlledDeltaSha256": "967b3b0f439819e10298c6b4c2c1376edeb3771afc94be6efd946df1d8892360",
       "currentEvidenceRefs": [
         "source-t03-t03-skill-expand-01"
       ],
-      "contentHash": "7b9727eee4b3a5a6bd0b69a6f14dcca6cc60e39f13342a254f5caf8cadfbe172"
+      "contentHash": "672ef5039c6e68e740423031cb93d1eb43cce61134e64ed111040cd2e9af6b0c"
     },
     {
       "pairId": "T03-PAIR-SKILL-004",
       "positiveCaseId": "T03-SKILL-004-P",
       "negativeCaseId": "T03-SKILL-004-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "9d6b0d4e2333e32c9a77203c8da731a438accf08d102947e581bf761518e376d",
+      "controlledDeltaSha256": "98ce19d22ec98a6d9cbf13afd680cf159836da0d1237bd69c73c0a23d2736d5e",
       "currentEvidenceRefs": [
         "source-t03-t03-skill-expand-01"
       ],
-      "contentHash": "94baeea2e4dae98f50e8278616b4c2cd63dd56dcdc3ce16234b7ff6a8c7e4da9"
+      "contentHash": "400b099235fd656e7422b7852a097596fcd7645b6499246a70912d639af5af80"
     },
     {
       "pairId": "T03-PAIR-SKILL-005",
       "positiveCaseId": "T03-SKILL-005-P",
       "negativeCaseId": "T03-SKILL-005-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "9e6c17b769987dcfbf4ab5ea83ffa4c0838d621dc55ed512fae565ec01c698c5",
+      "controlledDeltaSha256": "700098365e28d5b79d68cddbbd5cdbadd59bd95d7f1190e191292efe8645b47b",
       "currentEvidenceRefs": [
         "source-t03-t03-skill-expand-01"
       ],
-      "contentHash": "26705d1c92094fc4e5467afd92b2148de17086f4076700ef205ff9ba6e867d20"
+      "contentHash": "a7d9aa304651d6d2e57d0e97c81b0c4960a7b68287568552a6468f05e1b2ee2f"
     },
     {
       "pairId": "T03-PAIR-SKILL-006",
       "positiveCaseId": "T03-SKILL-006-P",
       "negativeCaseId": "T03-SKILL-006-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "8655ad8ca03e171ba3c587b0c6f4a45ca1a4ba8c9847b4063517719f41ca7308",
+      "controlledDeltaSha256": "a8a082817a2ece46a6c0821599ef7035000e539aac8330b964c764317ff664f4",
       "currentEvidenceRefs": [
         "source-t03-t03-skill-expand-01"
       ],
-      "contentHash": "60807ea75d155182fb587c873a4d680d191ce635a62ce23990a8ac71b4709a07"
+      "contentHash": "a802c59d998617ccbc8a3e86c5eef87d3ab6f763073ee8c83be46441cf113f58"
     }
   ],
   "snapshotAssetIds": [

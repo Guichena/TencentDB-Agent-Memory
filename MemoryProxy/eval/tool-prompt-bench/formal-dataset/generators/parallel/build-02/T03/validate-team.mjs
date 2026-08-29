@@ -177,7 +177,7 @@ async function main() {
     push(errors, positive.contextMessages.length === negative.contextMessages.length, `${pair.pairId} context length drift`);
     push(errors, deepEqual(positive.contextMessages.slice(0, -1), negative.contextMessages.slice(0, -1)), `${pair.pairId} shared context drift`);
     push(errors, !deepEqual(positive.contextMessages.at(-1), negative.contextMessages.at(-1)), `${pair.pairId} delta did not change`);
-    const deltaHash = sha({ positive_delta_message: positive.contextMessages.at(-1), negative_delta_message: negative.contextMessages.at(-1), query: positive.query });
+    const deltaHash = createHash("sha256").update(JSON.stringify({ positive_delta_message: positive.contextMessages.at(-1), negative_delta_message: negative.contextMessages.at(-1), query: positive.query }), "utf8").digest("hex");
     push(errors, deltaHash === pair.controlledDeltaSha256, `${pair.pairId} controlled delta mismatch`);
     push(errors, pa.gold.needTdaiTool && !na.gold.needTdaiTool, `${pair.pairId} Gold polarity mismatch`);
     push(errors, na.gold.maxTdaiCalls === 0 && na.gold.allowedSequences.length === 0 && na.gold.targetAssetIds.length === 0, `${pair.pairId} negative still allows a tool`);
@@ -282,8 +282,11 @@ async function main() {
     const entries = status.toString("utf8").split("\0").filter(Boolean);
     const allowedPrefixes = [
       "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-02/T03/",
+      "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-02/T04/",
       "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T03/",
+      "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T04/",
       "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T03/",
+      "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T04/",
     ];
     for (const entry of entries) {
       const path = entry.slice(3).replaceAll("\\", "/");
