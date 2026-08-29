@@ -110,7 +110,7 @@ function matchesAction(
 }
 
 function expectedActionAt(item: ToolPromptEvalCase, index: number): AllowedToolAction | null {
-  if (index === 0) return item.gold.allowedFirstActions[0] ?? null;
+  if (index === 0) return null;
   if (item.gold.family !== "knowledge") return item.gold.expectedFollowupActions?.[index - 1] ?? null;
 
   const expectation = item.gold.expectedKnowledgeCalls?.[index - 1];
@@ -132,6 +132,12 @@ function matchesExpectedAt(
   attempts: TdaiAttempt[],
   index: number,
 ): boolean {
+  if (index === 0) {
+    const attempt = attempts[0];
+    return Boolean(attempt && item.gold.allowedFirstActions.some((action) => (
+      matchesAction(attempt, action, fixture)
+    )));
+  }
   const action = expectedActionAt(item, index);
   const attempt = attempts[index];
   if (!action || !attempt || !matchesAction(attempt, action, fixture, attempts[index - 1]?.response)) return false;
@@ -230,10 +236,15 @@ export function evaluateToolPromptCase(
     && attempts[0].method.toUpperCase() === "POST"
   ));
   const firstSelectionCorrect = firstFamilyCorrect && firstEndpointExpected;
-  const expectedLength = item.gold.allowedSequences[0]?.length ?? 0;
-  const fullSequenceCorrect = expectedLength > 0
-    && attempts.length >= expectedLength
-    && Array.from({ length: expectedLength }, (_, index) => matchesExpectedAt(item, fixture, attempts, index)).every(Boolean);
+  const matchedSequence = item.gold.allowedSequences
+    .filter((sequence) => sequence.length > 0 && attempts.length >= sequence.length)
+    .sort((left, right) => left.length - right.length)
+    .find((sequence) => sequence.every((tool, index) => (
+      attempts[index]?.tool === tool && matchesExpectedAt(item, fixture, attempts, index)
+    )));
+  const allowedLengths = item.gold.allowedSequences.map((sequence) => sequence.length).filter((length) => length > 0);
+  const expectedLength = matchedSequence?.length ?? (allowedLengths.length > 0 ? Math.min(...allowedLengths) : 0);
+  const fullSequenceCorrect = Boolean(matchedSequence);
   const overcall = attempts.length > item.gold.maxTdaiCalls;
   const executionValid = fullSequenceCorrect
     && attempts.slice(0, expectedLength).every((attempt) => (
@@ -250,7 +261,7 @@ export function evaluateToolPromptCase(
   return {
     ...base,
     state,
-    effectiveCall: executionValid,
+    effectiveCall: executionValid && !overcall,
     firstActionCorrect: firstSelectionCorrect,
     conditionalToolCorrect: firstSelectionCorrect,
     argumentValid: fullSequenceCorrect,

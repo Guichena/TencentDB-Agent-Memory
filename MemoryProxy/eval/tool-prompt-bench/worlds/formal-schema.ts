@@ -6,12 +6,18 @@
  * with runtime identity, asset visibility and provenance as first-class data.
  */
 
+import type {
+  AllowedToolAction,
+  KnowledgeCallExpectation,
+} from "../schema.js";
+
 export type FormalSplit = "dev" | "hidden_test";
 export type FormalOrigin =
   | "synthetic_agent_replay"
   | "evidence_grounded_synthesis"
   | "repo_document"
   | "repo_code";
+export type FormalSourceRole = "history" | "skill_source" | "current_anchor" | "repo_context" | "evaluation_derivation";
 /** Every formal asset is transformed for the TDAI role; verbatim benchmark copying is not a valid transform. */
 export type FormalTransform =
   | "redacted_replay"
@@ -19,14 +25,18 @@ export type FormalTransform =
   | "multi_session_scene_synthesis"
   | "stable_profile_derivation"
   | "skill_procedure_derivation"
+  | "skill_package_import"
+  | "grounded_skill_authoring"
   | "repo_document_snapshot"
   | "code_graph_build"
+  | "current_task_anchor"
   | "paired_counterfactual"
   | "natural_negative_selection";
 export type FormalFamily = "memory" | "skill" | "knowledge" | "none";
 export type PairRole = "positive" | "negative";
 /** A private Skill is usable by its owner; a team Skill is discoverable by teammates. */
 export type SkillVisibility = "private" | "team";
+export type SkillProvenanceMode = "history_derived" | "imported_open_source" | "evidence_grounded_authored";
 export type KnowledgeVisibility = "fixed";
 
 export interface SourceEvidence {
@@ -39,6 +49,8 @@ export interface SourceEvidence {
   sourceRepoLicense: string;
   sourceTaskId?: string;
   trajectoryId?: string;
+  /** How this evidence may be used in the reconstructed World; never inferred from a dataset field name. */
+  role: FormalSourceRole;
   origin: FormalOrigin;
   sourceTaskTime: string;
   trajectoryGeneratedAt: string;
@@ -56,7 +68,11 @@ export interface SourceEvidence {
 
 export interface RuntimePolicy {
   allowLlmWrite: false;
-  allowLlmExtract: false;
+  /** Exact production extraction-gate configuration, not an invented model capability. */
+  extraction: {
+    enabled: false;
+    extractors: readonly [];
+  };
   assetReflection: false;
   writeL0: false;
   archiveWriteBack: false;
@@ -65,12 +81,11 @@ export interface RuntimePolicy {
 export interface FormalWorld {
   worldId: string;
   spaceId: string;
-  split: FormalSplit;
   status: "draft" | "frozen";
   worldAsOf: string;
-  teamIds: readonly [string, string];
+  teamIds: string[];
   sourceEvidenceIds: string[];
-  snapshotId: string;
+  snapshotIds: Readonly<Record<FormalSplit, string>>;
   leakageGroup: string;
   runtimePolicy: RuntimePolicy;
   contentHash: string;
@@ -79,6 +94,7 @@ export interface FormalWorld {
 export interface FormalTeam {
   teamId: string;
   worldId: string;
+  split: FormalSplit;
   name: string;
   businessAgentIds: string[];
   taskIds: string[];
@@ -167,6 +183,9 @@ export interface L1Memory extends AssetBase {
   supersededBy?: string;
   validFrom: string;
   validUntil?: string;
+  supportingMessageIds: string[];
+  codeEvidenceLocators: string[];
+  testEvidenceLocators: string[];
 }
 
 export interface L2Scene extends AssetBase {
@@ -191,6 +210,10 @@ export interface SkillAsset extends AssetBase {
   repoCommit: string;
   /** Resolver visibility: own Skills are always usable; team Skills are shared in-team. */
   visibility: SkillVisibility;
+  provenanceMode: SkillProvenanceMode;
+  supportingSessionIds: string[];
+  codeEvidenceLocators: string[];
+  testEvidenceLocators: string[];
   manifest: Array<{ path: string; sha256: string }>;
 }
 
@@ -251,20 +274,19 @@ export interface ProviderVisibleCase {
   query: string;
 }
 
-export interface FormalToolCall {
-  family: Exclude<FormalFamily, "none">;
-  operation: string;
-  endpoint: string;
-  requiredFields: string[];
-}
-
 export interface FormalGold {
-  route: FormalFamily;
-  requiredSequences: FormalToolCall[][];
-  allowedAlternativeSequences: FormalToolCall[][];
-  forbiddenFamilies: Exclude<FormalFamily, "none">[];
-  maxAssetCalls: number;
-  goldAssetIds: string[];
+  needTdaiTool: boolean;
+  family: Exclude<FormalFamily, "none"> | null;
+  allowedFirstActions: AllowedToolAction[];
+  expectedFollowupActions?: AllowedToolAction[];
+  expectedKnowledgeCalls?: KnowledgeCallExpectation[];
+  allowedSequences: string[][];
+  forbiddenTools: string[];
+  maxTdaiCalls: number;
+  targetAssetIds: string[];
+  informationGap?: string;
+  stopAfter?: string;
+  maxCallsReviewReason?: string;
   evidenceRefs: string[];
   ablationEvidence: string;
   noToolEvidence?: string;
@@ -310,6 +332,7 @@ export interface VisibleAssetSet {
 export interface WorldSnapshot {
   snapshotId: string;
   worldId: string;
+  split: FormalSplit;
   sourcePackSha256: string;
   visibleAssetSets: VisibleAssetSet[];
   workspaceManifestSha256: string;
@@ -342,7 +365,7 @@ export interface FormalWorldContract {
   publicCases: PublicCaseInput[];
   privateAnnotations: PrivateCaseAnnotation[];
   pairs: FormalPair[];
-  snapshot: WorldSnapshot;
+  snapshots: WorldSnapshot[];
   runRecords?: FormalRunRecord[];
 }
 
@@ -359,23 +382,49 @@ const FORMAL_TRANSFORMS = new Set<FormalTransform>([
   "multi_session_scene_synthesis",
   "stable_profile_derivation",
   "skill_procedure_derivation",
+  "skill_package_import",
+  "grounded_skill_authoring",
   "repo_document_snapshot",
   "code_graph_build",
+  "current_task_anchor",
   "paired_counterfactual",
   "natural_negative_selection",
 ]);
+const FORMAL_SOURCE_ROLES = new Set<FormalSourceRole>([
+  "history", "skill_source", "current_anchor", "repo_context", "evaluation_derivation",
+]);
+const TRANSFORMS_BY_SOURCE_ROLE: Readonly<Record<FormalSourceRole, ReadonlySet<FormalTransform>>> = {
+  history: new Set([
+    "redacted_replay",
+    "atomic_fact_extraction",
+    "multi_session_scene_synthesis",
+    "stable_profile_derivation",
+    "skill_procedure_derivation",
+  ]),
+  skill_source: new Set(["skill_package_import", "grounded_skill_authoring"]),
+  current_anchor: new Set(["current_task_anchor"]),
+  repo_context: new Set(["repo_document_snapshot", "code_graph_build"]),
+  evaluation_derivation: new Set(["paired_counterfactual", "natural_negative_selection"]),
+};
 const PRIVATE_PUBLIC_KEYS = new Set([
-  "gold", "pairId", "pairRole", "sourceEvidenceIds", "goldAssetIds",
-  "requiredSequences", "allowedAlternativeSequences", "forbiddenFamilies",
-  "annotationReason", "ablationEvidence", "noToolEvidence", "route", "family",
+  "gold", "pairId", "pairRole", "sourceEvidenceIds", "targetAssetIds",
+  "allowedFirstActions", "expectedFollowupActions", "expectedKnowledgeCalls",
+  "allowedSequences", "forbiddenTools", "informationGap", "stopAfter",
+  "annotationReason", "ablationEvidence", "noToolEvidence", "needTdaiTool", "family",
 ]);
 
+const ISO_TIMESTAMP_WITH_ZONE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
+
 function validTimestamp(value: string): boolean {
-  return !Number.isNaN(Date.parse(value));
+  return ISO_TIMESTAMP_WITH_ZONE.test(value) && !Number.isNaN(Date.parse(value));
 }
 
 function beforeOrEqual(left: string, right: string): boolean {
   return new Date(left).getTime() <= new Date(right).getTime();
+}
+
+function strictlyBefore(left: string, right: string): boolean {
+  return new Date(left).getTime() < new Date(right).getTime();
 }
 
 function requireText(errors: string[], path: string, value: unknown): void {
@@ -391,7 +440,7 @@ function requireCommit(errors: string[], path: string, value: unknown): void {
 }
 
 function requireTimestamp(errors: string[], path: string, value: unknown): void {
-  if (typeof value !== "string" || !validTimestamp(value)) errors.push(`${path} must be an ISO timestamp`);
+  if (typeof value !== "string" || !validTimestamp(value)) errors.push(`${path} must be an ISO timestamp with timezone`);
 }
 
 function ids<T>(items: T[], getId: (item: T) => string): Set<string> {
@@ -483,11 +532,16 @@ function validateEvidence(errors: string[], source: SourceEvidence, worldAsOf: s
   requireHash(errors, `${prefix}.transformInputSha256`, source.transformInputSha256);
   requireHash(errors, `${prefix}.contentHash`, source.contentHash);
   if (!FORMAL_TRANSFORMS.has(source.transform)) errors.push(`${prefix}.transform is not a formal TDAI transform`);
+  if (!FORMAL_SOURCE_ROLES.has(source.role)) errors.push(`${prefix}.role is not a formal source role`);
+  if (FORMAL_SOURCE_ROLES.has(source.role) && FORMAL_TRANSFORMS.has(source.transform)
+    && !TRANSFORMS_BY_SOURCE_ROLE[source.role].has(source.transform)) {
+    errors.push(`${prefix}.transform ${source.transform} is incompatible with role ${source.role}`);
+  }
   if (source.origin === "synthetic_agent_replay" && !source.trajectoryId) {
     errors.push(`${prefix}.trajectoryId is required for synthetic_agent_replay`);
   }
-  if (validTimestamp(source.sourceTaskTime) && validTimestamp(worldAsOf) && !beforeOrEqual(source.sourceTaskTime, worldAsOf)) {
-    errors.push(`${prefix}.sourceTaskTime is after worldAsOf`);
+  if (validTimestamp(source.sourceTaskTime) && validTimestamp(worldAsOf) && !strictlyBefore(source.sourceTaskTime, worldAsOf)) {
+    errors.push(`${prefix}.sourceTaskTime must be before worldAsOf`);
   }
   if (source.worldAsOf !== worldAsOf) errors.push(`${prefix}.worldAsOf must equal world.worldAsOf`);
   if (source.piiScan !== "passed") errors.push(`${prefix}.piiScan must be passed`);
@@ -500,27 +554,46 @@ function validateEvidence(errors: string[], source: SourceEvidence, worldAsOf: s
  */
 export function validateFormalWorldContract(contract: FormalWorldContract): FormalValidationResult {
   const errors: string[] = [];
-  const { world, teams, businessAgents, tasks, assets, sourceEvidence, publicCases, privateAnnotations, pairs, snapshot } = contract;
+  const {
+    world, teams, businessAgents, tasks, assets, sourceEvidence,
+    publicCases, privateAnnotations, pairs, snapshots,
+  } = contract;
   requireText(errors, "world.worldId", world.worldId);
   requireText(errors, "world.spaceId", world.spaceId);
   requireTimestamp(errors, "world.worldAsOf", world.worldAsOf);
   requireHash(errors, "world.contentHash", world.contentHash);
-  if (world.teamIds.length !== 2 || world.teamIds[0] === world.teamIds[1]) errors.push("world must declare exactly two distinct teams");
-  if (world.runtimePolicy.allowLlmWrite || world.runtimePolicy.allowLlmExtract || world.runtimePolicy.assetReflection || world.runtimePolicy.writeL0 || world.runtimePolicy.archiveWriteBack) {
+  if (world.teamIds.length === 0) errors.push("world must declare at least one team");
+  if (new Set(world.teamIds).size !== world.teamIds.length) errors.push("world team ids must be distinct");
+  requireText(errors, "world.snapshotIds.dev", world.snapshotIds?.dev);
+  requireText(errors, "world.snapshotIds.hidden_test", world.snapshotIds?.hidden_test);
+  if (world.snapshotIds?.dev === world.snapshotIds?.hidden_test) errors.push("dev and hidden_test must use different snapshots");
+  if (
+    world.runtimePolicy.allowLlmWrite
+    || world.runtimePolicy.extraction?.enabled !== false
+    || !Array.isArray(world.runtimePolicy.extraction?.extractors)
+    || world.runtimePolicy.extraction.extractors.length !== 0
+    || world.runtimePolicy.assetReflection
+    || world.runtimePolicy.writeL0
+    || world.runtimePolicy.archiveWriteBack
+  ) {
     errors.push("world.runtimePolicy must disable writes, extraction, reflection, L0 writes, and archive write-back");
   }
 
   const sourceIds = ids(sourceEvidence, (source) => source.sourceId);
+  const sourceById = new Map(sourceEvidence.map((source) => [source.sourceId, source]));
   if (sourceIds.size !== sourceEvidence.length) errors.push("source evidence ids must be unique");
   for (const source of sourceEvidence) validateEvidence(errors, source, world.worldAsOf);
   requireKnownRefs(errors, "world.sourceEvidenceIds", world.sourceEvidenceIds, sourceIds);
 
   const teamIds = ids(teams, (team) => team.teamId);
-  if (teams.length !== 2) errors.push("formal world contract must contain exactly two teams");
+  if (teams.length !== world.teamIds.length) errors.push("formal world contract teams must exactly match world.teamIds");
   if (teamIds.size !== teams.length) errors.push("team ids must be unique");
   for (const teamId of world.teamIds) if (!teamIds.has(teamId)) errors.push(`world references unknown team ${teamId}`);
+  for (const teamId of teamIds) if (!world.teamIds.includes(teamId)) errors.push(`contract contains unregistered team ${teamId}`);
+  const teamById = new Map(teams.map((team) => [team.teamId, team]));
   for (const team of teams) {
     if (team.worldId !== world.worldId) errors.push(`team ${team.teamId} belongs to another world`);
+    if (team.split !== "dev" && team.split !== "hidden_test") errors.push(`team ${team.teamId} has invalid split`);
     requireHash(errors, `team ${team.teamId}.contentHash`, team.contentHash);
     requireKnownRefs(errors, `team ${team.teamId}.sourceEvidenceIds`, team.sourceEvidenceIds, sourceIds);
   }
@@ -564,6 +637,8 @@ export function validateFormalWorldContract(contract: FormalWorldContract): Form
     if (task.workspace.overlayPatchSha256) requireHash(errors, `task ${task.taskId}.workspace.overlayPatchSha256`, task.workspace.overlayPatchSha256);
     requireKnownRefs(errors, `task ${task.taskId}.sourceEvidenceIds`, task.sourceEvidenceIds, sourceIds);
     requireKnownRefs(errors, `task ${task.taskId}.projectRef.sourceEvidenceIds`, task.projectRef.sourceEvidenceIds, sourceIds);
+    if (!task.sourceEvidenceIds.some((sourceId) => sourceById.get(sourceId)?.role === "current_anchor")) errors.push(`task ${task.taskId} lacks current_anchor evidence`);
+    if (!task.projectRef.sourceEvidenceIds.some((sourceId) => sourceById.get(sourceId)?.role === "current_anchor")) errors.push(`task ${task.taskId}.projectRef lacks current_anchor evidence`);
     requireHash(errors, `task ${task.taskId}.contentHash`, task.contentHash);
     for (const agentId of task.eligibleAgentIds) if (agentsById.get(agentId)?.teamId !== task.teamId) errors.push(`task ${task.taskId} has ineligible agent ${agentId}`);
   }
@@ -579,6 +654,12 @@ export function validateFormalWorldContract(contract: FormalWorldContract): Form
     requireKnownRefs(errors, `asset ${asset.assetId}.sourceEvidenceIds`, asset.sourceEvidenceIds, sourceIds);
   }
   for (const session of assets.l0Conversations) {
+    for (const sourceId of session.sourceEvidenceIds) {
+      const source = sourceById.get(sourceId);
+      if (source && (source.role !== "history" || source.transform !== "redacted_replay")) {
+        errors.push(`L0 conversation ${session.assetId} must use history redacted_replay evidence`);
+      }
+    }
     if (session.messages.length === 0) errors.push(`L0 conversation ${session.assetId} has no messages`);
     for (const message of session.messages) {
       requireText(errors, `L0 message ${message.messageId}.content`, message.content);
@@ -591,14 +672,92 @@ export function validateFormalWorldContract(contract: FormalWorldContract): Form
     }
   }
   const sessionIds = ids(assets.l0Conversations, (session) => session.sessionId);
+  const messageIds = new Set<string>();
+  for (const session of assets.l0Conversations) {
+    for (const message of session.messages) {
+      if (messageIds.has(message.messageId)) errors.push(`L0 message id ${message.messageId} is not globally unique`);
+      messageIds.add(message.messageId);
+    }
+  }
+  const distinctHistorySourceTasks = (supportingSessionIds: string[]): Set<string> => {
+    const taskIds = new Set<string>();
+    for (const sessionId of supportingSessionIds) {
+      const session = assets.l0Conversations.find((candidate) => candidate.sessionId === sessionId);
+      if (!session) continue;
+      for (const sourceId of session.sourceEvidenceIds) {
+        const source = sourceById.get(sourceId);
+        if (source?.role === "history" && source.sourceTaskId) taskIds.add(source.sourceTaskId);
+      }
+    }
+    return taskIds;
+  };
+  for (const memory of assets.l1Memories) {
+    for (const sourceId of memory.sourceEvidenceIds) {
+      const source = sourceById.get(sourceId);
+      if (source && (source.role !== "history" || source.transform !== "atomic_fact_extraction")) {
+        errors.push(`L1 memory ${memory.assetId} must use history atomic_fact_extraction evidence`);
+      }
+    }
+    if (memory.supportingMessageIds.length === 0) errors.push(`L1 memory ${memory.assetId} lacks supporting messages`);
+    for (const messageId of memory.supportingMessageIds) if (!messageIds.has(messageId)) errors.push(`L1 memory ${memory.assetId} references unknown message ${messageId}`);
+    if (memory.codeEvidenceLocators.length === 0) errors.push(`L1 memory ${memory.assetId} lacks code evidence locator`);
+    if (memory.testEvidenceLocators.length === 0) errors.push(`L1 memory ${memory.assetId} lacks test evidence locator`);
+    memory.codeEvidenceLocators.forEach((locator, index) => requireText(errors, `L1 memory ${memory.assetId}.codeEvidenceLocators[${index}]`, locator));
+    memory.testEvidenceLocators.forEach((locator, index) => requireText(errors, `L1 memory ${memory.assetId}.testEvidenceLocators[${index}]`, locator));
+  }
   for (const scene of assets.l2Scenes) {
     for (const sessionId of scene.supportingSessionIds) if (!sessionIds.has(sessionId)) errors.push(`L2 scene ${scene.assetId} references unknown session ${sessionId}`);
+    if (new Set(scene.supportingSessionIds).size !== scene.supportingSessionIds.length) errors.push(`L2 scene ${scene.assetId} repeats a supporting session`);
+    for (const sourceId of scene.sourceEvidenceIds) {
+      const source = sourceById.get(sourceId);
+      if (source && (source.role !== "history" || source.transform !== "multi_session_scene_synthesis")) {
+        errors.push(`L2 scene ${scene.assetId} must use history multi_session_scene_synthesis evidence`);
+      }
+    }
   }
   for (const scene of assets.l2Scenes) if (scene.supportingSessionIds.length < 2) errors.push(`L2 scene ${scene.assetId} needs at least two supporting sessions`);
+  for (const scene of assets.l2Scenes) if (distinctHistorySourceTasks(scene.supportingSessionIds).size < 2) errors.push(`L2 scene ${scene.assetId} needs two independent history source tasks`);
   for (const memory of assets.l1Memories) if (memory.status === "superseded" && !memory.supersededBy) errors.push(`superseded memory ${memory.assetId} lacks supersededBy`);
+  for (const profile of assets.l3Profiles) {
+    for (const sourceId of profile.sourceEvidenceIds) {
+      const source = sourceById.get(sourceId);
+      if (source && (source.role !== "history" || source.transform !== "stable_profile_derivation")) {
+        errors.push(`L3 profile ${profile.assetId} must use history stable_profile_derivation evidence`);
+      }
+    }
+  }
   for (const skill of assets.skills) {
     requireCommit(errors, `skill ${skill.assetId}.repoCommit`, skill.repoCommit);
     if (skill.visibility !== "private" && skill.visibility !== "team") errors.push(`skill ${skill.assetId} has invalid visibility`);
+    const expectedSkillEvidence = skill.provenanceMode === "history_derived"
+      ? { role: "history" as const, transform: "skill_procedure_derivation" as const }
+      : skill.provenanceMode === "imported_open_source"
+        ? { role: "skill_source" as const, transform: "skill_package_import" as const }
+        : skill.provenanceMode === "evidence_grounded_authored"
+          ? { role: "skill_source" as const, transform: "grounded_skill_authoring" as const }
+          : undefined;
+    if (!expectedSkillEvidence) errors.push(`skill ${skill.assetId} has invalid provenanceMode`);
+    for (const sourceId of skill.sourceEvidenceIds) {
+      const source = sourceById.get(sourceId);
+      if (source && expectedSkillEvidence
+        && (source.role !== expectedSkillEvidence.role || source.transform !== expectedSkillEvidence.transform)) {
+        errors.push(`skill ${skill.assetId} must use ${expectedSkillEvidence.role} ${expectedSkillEvidence.transform} evidence`);
+      }
+      if (source && skill.provenanceMode === "evidence_grounded_authored" && source.origin !== "evidence_grounded_synthesis") {
+        errors.push(`skill ${skill.assetId} authored evidence must use evidence_grounded_synthesis origin`);
+      }
+    }
+    if (skill.provenanceMode === "history_derived" && skill.supportingSessionIds.length < 2) errors.push(`skill ${skill.assetId} needs at least two supporting sessions`);
+    if (skill.provenanceMode !== "history_derived" && skill.supportingSessionIds.length !== 0) errors.push(`skill ${skill.assetId} must not invent supporting sessions for ${skill.provenanceMode}`);
+    if (new Set(skill.supportingSessionIds).size !== skill.supportingSessionIds.length) errors.push(`skill ${skill.assetId} repeats a supporting session`);
+    for (const sessionId of skill.supportingSessionIds) if (!sessionIds.has(sessionId)) errors.push(`skill ${skill.assetId} references unknown session ${sessionId}`);
+    if (skill.provenanceMode === "history_derived" && distinctHistorySourceTasks(skill.supportingSessionIds).size < 2) errors.push(`skill ${skill.assetId} needs two independent history source tasks`);
+    if (skill.provenanceMode !== "imported_open_source" && skill.codeEvidenceLocators.length === 0) errors.push(`skill ${skill.assetId} lacks code evidence locator`);
+    if (skill.provenanceMode !== "imported_open_source" && skill.testEvidenceLocators.length === 0) errors.push(`skill ${skill.assetId} lacks test evidence locator`);
+    skill.codeEvidenceLocators.forEach((locator, index) => requireText(errors, `skill ${skill.assetId}.codeEvidenceLocators[${index}]`, locator));
+    skill.testEvidenceLocators.forEach((locator, index) => requireText(errors, `skill ${skill.assetId}.testEvidenceLocators[${index}]`, locator));
+    if (skill.manifest.length === 0) errors.push(`skill ${skill.assetId} has an empty manifest`);
+    skill.manifest.forEach((file, index) => requireText(errors, `skill ${skill.assetId}.manifest[${index}].path`, file.path));
     for (const file of skill.manifest) requireHash(errors, `skill ${skill.assetId}.manifest ${file.path}`, file.sha256);
   }
   for (const knowledge of assets.knowledge) {
@@ -607,6 +766,13 @@ export function validateFormalWorldContract(contract: FormalWorldContract): Form
       requireText(errors, `knowledge ${knowledge.assetId}.repoUrl`, knowledge.repoUrl);
       requireCommit(errors, `knowledge ${knowledge.assetId}.repoCommit`, knowledge.repoCommit);
       requireText(errors, `knowledge ${knowledge.assetId}.indexVersion`, knowledge.indexVersion);
+    }
+    const expectedTransform: FormalTransform = knowledge.type === "code_graph" ? "code_graph_build" : "repo_document_snapshot";
+    for (const sourceId of knowledge.sourceEvidenceIds) {
+      const source = sourceById.get(sourceId);
+      if (source && (source.role !== "repo_context" || source.transform !== expectedTransform)) {
+        errors.push(`knowledge ${knowledge.assetId} must use repo_context ${expectedTransform} evidence`);
+      }
     }
     for (const binding of knowledge.bindings) if (agentsById.get(binding.agentId)?.teamId !== assetTeamId(knowledge, agentsById)) errors.push(`knowledge ${knowledge.assetId} is bound across teams`);
   }
@@ -628,49 +794,70 @@ export function validateFormalWorldContract(contract: FormalWorldContract): Form
     }
   }
 
-  requireHash(errors, "snapshot.sourcePackSha256", snapshot.sourcePackSha256);
-  requireHash(errors, "snapshot.workspaceManifestSha256", snapshot.workspaceManifestSha256);
-  requireHash(errors, "snapshot.runtimePolicySha256", snapshot.runtimePolicySha256);
-  requireHash(errors, "snapshot.cacheResetRecipeSha256", snapshot.cacheResetRecipeSha256);
-  requireHash(errors, "snapshot.contentHash", snapshot.contentHash);
-  if (snapshot.worldId !== world.worldId || snapshot.snapshotId !== world.snapshotId) errors.push("snapshot does not belong to world");
-  const visibleByIdentity = new Map(snapshot.visibleAssetSets.map((set) => [`${set.userId}\0${set.agentId}`, set]));
-  if (visibleByIdentity.size !== snapshot.visibleAssetSets.length) errors.push("snapshot has duplicate visible sets for a user/agent identity");
-  for (const set of snapshot.visibleAssetSets) {
-    requireText(errors, `visible asset set ${set.agentId}.userId`, set.userId);
-    requireHash(errors, `visible asset set ${set.agentId}.sha256`, set.sha256);
-    const agent = agentsById.get(set.agentId);
-    if (!agent || agent.teamId !== set.teamId) errors.push(`visible asset set ${set.agentId} has invalid identity`);
-    for (const assetId of set.assetIds) {
-      const asset = assetById.get(assetId);
-      if (!asset) { errors.push(`visible asset set ${set.agentId} references unknown asset ${assetId}`); continue; }
-      if (!agent) continue;
-      const ownerTeam = assetTeamId(asset, agentsById);
-      if (ownerTeam !== agent.teamId) errors.push(`visible asset ${assetId} crosses team boundary for ${agent.agentId}`);
-      if (assets.l0Conversations.includes(asset as L0Conversation)
-        || assets.l1Memories.includes(asset as L1Memory)
-        || assets.l2Scenes.includes(asset as L2Scene)
-        || assets.l3Profiles.includes(asset as L3Profile)) {
-        if (asset.ownerAgentId !== agent.agentId && !agent.importedMemoryAgentIds.includes(asset.ownerAgentId)) {
-          errors.push(`visible memory asset ${assetId} is not self/imported for ${agent.agentId}`);
+  const snapshotById = new Map(snapshots.map((snapshot) => [snapshot.snapshotId, snapshot]));
+  if (snapshotById.size !== snapshots.length) errors.push("snapshot ids must be unique");
+  const visibleBySnapshotIdentity = new Map<string, VisibleAssetSet>();
+  for (const split of ["dev", "hidden_test"] as const) {
+    const expectedId = world.snapshotIds?.[split];
+    const snapshot = snapshotById.get(expectedId);
+    if (!snapshot) errors.push(`world references missing ${split} snapshot ${expectedId}`);
+    else if (snapshot.split !== split) errors.push(`snapshot ${snapshot.snapshotId} has split ${snapshot.split}, expected ${split}`);
+  }
+  for (const snapshot of snapshots) {
+    const prefix = `snapshot ${snapshot.snapshotId}`;
+    requireHash(errors, `${prefix}.sourcePackSha256`, snapshot.sourcePackSha256);
+    requireHash(errors, `${prefix}.workspaceManifestSha256`, snapshot.workspaceManifestSha256);
+    requireHash(errors, `${prefix}.runtimePolicySha256`, snapshot.runtimePolicySha256);
+    requireHash(errors, `${prefix}.cacheResetRecipeSha256`, snapshot.cacheResetRecipeSha256);
+    requireHash(errors, `${prefix}.contentHash`, snapshot.contentHash);
+    if (snapshot.worldId !== world.worldId || snapshot.snapshotId !== world.snapshotIds?.[snapshot.split]) {
+      errors.push(`${prefix} does not belong to the World/split`);
+    }
+    const localVisible = new Set<string>();
+    for (const set of snapshot.visibleAssetSets) {
+      const identityKey = `${set.userId}\0${set.agentId}`;
+      if (localVisible.has(identityKey)) errors.push(`${prefix} has duplicate visible sets for a user/agent identity`);
+      localVisible.add(identityKey);
+      visibleBySnapshotIdentity.set(`${snapshot.snapshotId}\0${identityKey}`, set);
+      requireText(errors, `visible asset set ${set.agentId}.userId`, set.userId);
+      requireHash(errors, `visible asset set ${set.agentId}.sha256`, set.sha256);
+      const agent = agentsById.get(set.agentId);
+      const team = teamById.get(set.teamId);
+      if (!agent || agent.teamId !== set.teamId) errors.push(`visible asset set ${set.agentId} has invalid identity`);
+      if (!team || team.split !== snapshot.split) errors.push(`visible asset set ${set.agentId} is in the wrong split snapshot`);
+      for (const assetId of set.assetIds) {
+        const asset = assetById.get(assetId);
+        if (!asset) { errors.push(`visible asset set ${set.agentId} references unknown asset ${assetId}`); continue; }
+        if (!agent) continue;
+        const ownerTeam = assetTeamId(asset, agentsById);
+        if (ownerTeam !== agent.teamId) errors.push(`visible asset ${assetId} crosses team boundary for ${agent.agentId}`);
+        if (assets.l0Conversations.includes(asset as L0Conversation)
+          || assets.l1Memories.includes(asset as L1Memory)
+          || assets.l2Scenes.includes(asset as L2Scene)
+          || assets.l3Profiles.includes(asset as L3Profile)) {
+          if (asset.ownerAgentId !== agent.agentId && !agent.importedMemoryAgentIds.includes(asset.ownerAgentId)) {
+            errors.push(`visible memory asset ${assetId} is not self/imported for ${agent.agentId}`);
+          }
+        } else if (assets.skills.includes(asset as SkillAsset)) {
+          const skill = asset as SkillAsset;
+          const owner = agentsById.get(skill.ownerAgentId);
+          const isOwnedByCurrentAgent = skill.ownerAgentId === agent.agentId;
+          const isTeamVisible = skill.visibility === "team" && owner?.teamId === agent.teamId;
+          if (!isOwnedByCurrentAgent && !isTeamVisible) {
+            errors.push(`visible skill ${assetId} is neither current-agent owned nor team-visible for ${agent.agentId}`);
+          }
+        } else if (assets.knowledge.includes(asset as KnowledgeAsset)
+          && !(asset as KnowledgeAsset).bindings.some((binding) => binding.agentId === agent.agentId)) {
+          errors.push(`visible knowledge ${assetId} is not fixed for ${agent.agentId}`);
         }
-      } else if (assets.skills.includes(asset as SkillAsset)) {
-        const skill = asset as SkillAsset;
-        const owner = agentsById.get(skill.ownerAgentId);
-        const isOwnedByCurrentAgent = skill.ownerAgentId === agent.agentId;
-        const isTeamVisible = skill.visibility === "team" && owner?.teamId === agent.teamId;
-        if (!isOwnedByCurrentAgent && !isTeamVisible) {
-          errors.push(`visible skill ${assetId} is neither current-agent owned nor team-visible for ${agent.agentId}`);
-        }
-      } else if (assets.knowledge.includes(asset as KnowledgeAsset)
-        && !(asset as KnowledgeAsset).bindings.some((binding) => binding.agentId === agent.agentId)) {
-        errors.push(`visible knowledge ${assetId} is not fixed for ${agent.agentId}`);
       }
     }
   }
   for (const agent of businessAgents) {
-    if (![...visibleByIdentity.values()].some((set) => set.agentId === agent.agentId)) {
-      errors.push(`snapshot lacks a visible asset set for ${agent.agentId}`);
+    const team = teamById.get(agent.teamId);
+    const snapshotId = team ? world.snapshotIds?.[team.split] : undefined;
+    if (!snapshotId || ![...visibleBySnapshotIdentity.entries()].some(([key, set]) => key.startsWith(`${snapshotId}\0`) && set.agentId === agent.agentId)) {
+      errors.push(`split snapshot lacks a visible asset set for ${agent.agentId}`);
     }
   }
 
@@ -679,6 +866,8 @@ export function validateFormalWorldContract(contract: FormalWorldContract): Form
   for (const item of publicCases) {
     errors.push(...validatePublicCaseInput(item).errors.map((error) => `${item.caseId}: ${error}`));
     if (item.identity.spaceId !== world.spaceId) errors.push(`${item.caseId}: identity belongs to another space`);
+    const team = teamById.get(item.identity.teamId);
+    const expectedSnapshotId = team ? world.snapshotIds?.[team.split] : undefined;
     const task = taskById.get(item.identity.taskId);
     if (!task || task.teamId !== item.identity.teamId || !task.eligibleAgentIds.includes(item.identity.agentId)) errors.push(`${item.caseId}: identity cannot access task`);
     if (task && (
@@ -690,23 +879,76 @@ export function validateFormalWorldContract(contract: FormalWorldContract): Form
     )) {
       errors.push(`${item.caseId}: workspace does not match selected task snapshot`);
     }
-    const visible = visibleByIdentity.get(`${item.identity.userId}\0${item.identity.agentId}`);
+    const visible = visibleBySnapshotIdentity.get(`${item.snapshotId}\0${item.identity.userId}\0${item.identity.agentId}`);
     if (!visible || visible.teamId !== item.identity.teamId || visible.userId !== item.identity.userId || visible.sha256 !== item.visibleAssetSetSha256) errors.push(`${item.caseId}: visible asset set does not match snapshot identity`);
-    if (item.snapshotId !== snapshot.snapshotId) errors.push(`${item.caseId}: snapshot mismatch`);
+    if (!team || item.snapshotId !== expectedSnapshotId) errors.push(`${item.caseId}: snapshot does not match Team split`);
   }
 
   const annotationByCase = new Map(privateAnnotations.map((item) => [item.caseId, item]));
   if (annotationByCase.size !== privateAnnotations.length) errors.push("private annotation case ids must be unique");
+  for (const item of publicCases) {
+    if (!annotationByCase.has(item.caseId)) errors.push(`public case ${item.caseId} lacks a private annotation`);
+  }
   for (const annotation of privateAnnotations) {
     if (!publicById.has(annotation.caseId)) errors.push(`private annotation ${annotation.caseId} has no public case`);
     requireKnownRefs(errors, `private annotation ${annotation.caseId}.sourceEvidenceIds`, annotation.sourceEvidenceIds, sourceIds);
     requireHash(errors, `private annotation ${annotation.caseId}.contentHash`, annotation.contentHash);
     requireHash(errors, `gold ${annotation.caseId}.contentHash`, annotation.gold.contentHash);
     requireKnownRefs(errors, `gold ${annotation.caseId}.evidenceRefs`, annotation.gold.evidenceRefs, sourceIds);
-    if (annotation.gold.route === "none") {
-      if (annotation.gold.maxAssetCalls !== 0 || annotation.gold.requiredSequences.length !== 0 || !annotation.gold.noToolEvidence) errors.push(`no-tool Gold ${annotation.caseId} is incomplete`);
-    } else if (annotation.gold.requiredSequences.length === 0 || annotation.gold.goldAssetIds.length === 0 || !annotation.gold.ablationEvidence) {
-      errors.push(`positive Gold ${annotation.caseId} lacks sequence, asset, or ablation evidence`);
+    const gold = annotation.gold;
+    if (!gold.needTdaiTool) {
+      if (
+        gold.family !== null
+        || gold.maxTdaiCalls !== 0
+        || gold.allowedFirstActions.length !== 0
+        || (gold.expectedFollowupActions?.length ?? 0) !== 0
+        || (gold.expectedKnowledgeCalls?.length ?? 0) !== 0
+        || gold.allowedSequences.length !== 0
+        || gold.targetAssetIds.length !== 0
+        || !gold.noToolEvidence
+      ) {
+        errors.push(`no-tool Gold ${annotation.caseId} is incomplete`);
+      }
+    } else {
+      if (
+        gold.family === null
+        || gold.allowedFirstActions.length === 0
+        || gold.allowedSequences.length === 0
+        || gold.targetAssetIds.length === 0
+        || !gold.informationGap
+        || !gold.stopAfter
+        || !gold.ablationEvidence
+      ) {
+        errors.push(`positive Gold ${annotation.caseId} lacks family, action, sequence, asset, gap, stop point, or ablation evidence`);
+      }
+      const firstTools = new Set(gold.allowedFirstActions.map((action) => action.tool));
+      for (const [index, sequence] of gold.allowedSequences.entries()) {
+        if (sequence.length === 0) errors.push(`positive Gold ${annotation.caseId} has empty sequence ${index}`);
+        else if (!firstTools.has(sequence[0])) errors.push(`positive Gold ${annotation.caseId} sequence ${index} starts outside allowedFirstActions`);
+        const expectedFollowupTools = gold.family === "knowledge"
+          ? (gold.expectedKnowledgeCalls ?? []).map(() => "knowledge_tools_call")
+          : (gold.expectedFollowupActions ?? []).map((action) => action.tool);
+        sequence.slice(1).forEach((tool, followupIndex) => {
+          if (tool !== expectedFollowupTools[followupIndex]) {
+            errors.push(`positive Gold ${annotation.caseId} sequence ${index} disagrees with follow-up expectation ${followupIndex}`);
+          }
+        });
+      }
+      const shortest = gold.allowedSequences.length > 0
+        ? Math.min(...gold.allowedSequences.map((sequence) => sequence.length))
+        : 0;
+      if (gold.maxTdaiCalls !== shortest && !gold.maxCallsReviewReason) {
+        errors.push(`positive Gold ${annotation.caseId} maxTdaiCalls must equal the shortest allowed sequence or have a review reason`);
+      }
+      const followupCount = Math.max(0, shortest - 1);
+      if (gold.family === "knowledge") {
+        if ((gold.expectedKnowledgeCalls?.length ?? 0) < followupCount) errors.push(`positive Gold ${annotation.caseId} lacks Knowledge follow-up expectations`);
+      } else if ((gold.expectedFollowupActions?.length ?? 0) < followupCount) {
+        errors.push(`positive Gold ${annotation.caseId} lacks follow-up action expectations`);
+      }
+      for (const assetId of gold.targetAssetIds) {
+        if (!assetById.has(assetId)) errors.push(`positive Gold ${annotation.caseId} references unknown target asset ${assetId}`);
+      }
     }
     if (Boolean(annotation.pairId) !== Boolean(annotation.pairRole)) errors.push(`private annotation ${annotation.caseId} must set pairId and pairRole together`);
   }
@@ -734,8 +976,9 @@ export function validateFormalWorldContract(contract: FormalWorldContract): Form
   }
 
   for (const run of contract.runRecords ?? []) {
-    if (!publicById.has(run.caseId)) errors.push(`run ${run.runId} has unknown case`);
-    if (run.snapshotId !== snapshot.snapshotId) errors.push(`run ${run.runId} has wrong snapshot`);
+    const publicCase = publicById.get(run.caseId);
+    if (!publicCase) errors.push(`run ${run.runId} has unknown case`);
+    else if (run.snapshotId !== publicCase.snapshotId) errors.push(`run ${run.runId} has wrong snapshot`);
     ["visibleAssetSetSha256", "runtimeConfigSha256", "injectionSha256", "staticToolDescriptionSha256", "attemptTraceSha256", "recordHash"].forEach((field) => requireHash(errors, `run ${run.runId}.${field}`, run[field as keyof FormalRunRecord]));
     if (!run.cacheResetVerified) errors.push(`run ${run.runId} has not verified cache reset`);
   }

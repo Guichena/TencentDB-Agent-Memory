@@ -1,28 +1,35 @@
 # Task 1 数据基座选择与正式 World 重建方案
 
+> 历史设计说明：来源选择、许可和轨迹转换仍可参考。正式数据已改为一个 Space、十个 Team，并按最小合法链路计算有效调用。实体、数量和执行 Gate 以 [`TASK1-DATASET-CONSTRUCTION-RUNBOOK.md`](./TASK1-DATASET-CONSTRUCTION-RUNBOOK.md) 为准。
+>
 > 状态：已完成源码对齐和来源初筛；W01～W03 可以按本方案进入来源锁定与数据构造，但在各自 Gate 通过前不得计入正式指标。
 >
 > 适用范围：Proxy 系统提示词工具触发评测。本文只设计用于判断 Memory、Skill、Knowledge 是否应调用以及首个工具是否正确的数据，不评价工具返回资产的最终质量。
 
 ## 1. 结论
 
-正式数据不直接照抄任何公开 benchmark，也不继续扩写现有三个手写 Pilot World。采用“真实软件工程任务与 Agent 轨迹作事实基座，转换为 TDAI 运行时实体”的方式。外部数据只回答“真实任务里发生过什么”，MemoryProxy 源码回答“这些事实由谁拥有、在什么 Session 中可见、何时应该触发哪个工具”；两者不能互相替代：
+正式数据不直接照抄任何公开 benchmark，也不继续扩写现有三个手写 Pilot World。采用“开源 Skill 与真实工程任务先配对，再补真实仓库历史和 TDAI 运行时实体”的方式。开源数据回答“这个任务与流程是否自然对应”，MemoryProxy 源码回答“资产由谁拥有、在什么 Session 中可见、何时应该触发哪个工具”；两者不能互相替代。第一批配对与 W01～W03 新结构见 [`OPEN-SKILL-TARGET-MATRIX.md`](./OPEN-SKILL-TARGET-MATRIX.md)。
 
-1. **W01～W03 首批基座：SWE-Gym + OpenHands-SFT-Trajectories。**
+每条 Case 不是孤立单句题：当前可见多轮对话、同 Team 历史 Session 和运行时资产必须分层构造，具体密度与 paired-context 规则见 [`CONVERSATION-CONTEXT-CONTRACT.md`](./CONVERSATION-CONTEXT-CONTRACT.md)。
+
+1. **W01～W03 的 Memory/Knowledge 基座：SWE-Gym + OpenHands-SFT-Trajectories。**
    - SWE-Gym 提供真实 GitHub 软件工程任务、仓库和可执行任务锚点。
-   - OpenHands-SFT-Trajectories 提供 MIT 标注的成功多轮 Agent 轨迹，可直接转换为历史 Session，并从中派生 L1、L2 和 Skill。
-2. **W04～W10 扩展基座：NVIDIA Open-SWE-Traces 的冻结子集。**
+   - OpenHands-SFT-Trajectories 提供 MIT 标注的成功多轮 Agent 轨迹，转换为历史 Session，并从中派生 L1/L2 和旧版本干扰；不再要求所有 Skill 都由它提供。
+2. **W01～W03 的 Skill 靶子：SkillsBench 配对包 + 许可清楚的官方 Skill 仓库。**
+   - SkillsBench v1.1 提供 task 与同目录 Skills，workspace/verifier 仅作可选真实性参考，优先用于 Skill Positive。
+   - `github/awesome-copilot` 和 `openai/skills` 中许可明确、边界清楚的 Skill 可直接导入或裁剪适配；repo 专属 Skill 由 Luna 根据固定代码/测试/文档生成。
+3. **W04～W10 扩展基座：NVIDIA Open-SWE-Traces 的冻结子集。**
    - 数据卡为 CC BY 4.0，记录逐行 repo、repo license、language、完整 messages、resolved 和 reference patch。
    - 用它补齐 Go、TypeScript、JavaScript、Rust、Java、PHP、C/C++ 等语言，避免正式结论只建立在 Python 上。
-3. **ContextBench 只作 Knowledge Gold overlay。**
+4. **ContextBench 只作 Knowledge Gold overlay。**
    - 仅当 repo、commit family 和许可证都匹配时，用其人工 Gold Context 验证 CodeGraph/Wiki query 的证据位置。
    - 它没有可直接复用的历史轨迹，不作为 L0 主来源。
-4. **When2Call、LongMemEval-V2、LoCoBench-Agent 只借鉴构造方法和覆盖分类。**
+5. **When2Call、LongMemEval-V2、LoCoBench-Agent 只借鉴构造方法和覆盖分类。**
    - 不直接复制其通用工具调用、Web Agent 或外置场景内容。
-   - Skill-Use-Bench、SWE-Skills-Bench 只作 Skill schema/rubric 参考；正式 Skill 必须从当前 Team 的历史轨迹提炼。
-5. **SWE-ContextBench 不使用。** 锁定版本没有 LICENSE，也没有规范假设的 Agent 轨迹。
+   - Skill-Use-Bench 因锁定版本缺少顶层 LICENSE 不使用；SWE-Skills-Bench 因 repo commit 缺失率过高不使用。
+6. **SWE-ContextBench 不使用。** 锁定版本没有 LICENSE，也没有规范假设的 Agent 轨迹。
 
-这不是多数据集内容拼接。一个 Team 的历史、Skill、任务、代码和文档必须来自同一 repo family 与明确时间边界；其他数据集只能作校验或方法参考。
+一个 Team 可以像真实工程团队一样维护多个开源项目，但每条资产必须声明适用 repo/commit/Task，不能把 A 项目的事实改名后用于 B 项目。跨来源只允许在运行时 Team 层共存，不允许在一条 Memory、Skill 或 Knowledge 中混合不相关事实。
 
 ### 1.1 “真实”不等于“原样复制”
 
@@ -32,7 +39,7 @@
 2. **系统真实**：Space、Team、业务 Agent、Task、Session、fixed asset 和 imported Memory 的关系必须由 MemoryProxy 实际身份与可见性规则解析，不能把外部 dataset 的 `repo`、`project`、`agent` 字段机械改名。
 3. **决策真实**：Query 应像当前 Team 在真实代码工作中会遇到的下一步任务；Positive 的缺失信息确实只能由目标资产补足，Negative 则确实能从当前上下文或 workspace 完成。
 
-以下做法直接拒绝进入正式集：跨 repo 拼接出一个虚构 Team、把另一个 Team 的不可见资产算作干扰、把 trajectory 中的工具名当成 TDAI Gold、把参考 patch 写入历史资产、只替换实体名的模板扩写、以及为了让答案唯一而制造现实中不会出现的问题。
+以下做法直接拒绝进入正式集：把不相关 repo 的事实混进同一资产、把另一个 Team 的不可见资产算作干扰、把 trajectory 中的工具名当成 TDAI Gold、把参考 patch 写入历史资产、只替换实体名的模板扩写、以及为了让答案唯一而制造现实中不会出现的问题。
 
 ## 2. 为什么不能继续扩写现有 W01～W03
 
@@ -97,6 +104,9 @@ Case = 一次真实 Session
 |---|---|---|---|
 | SWE-Gym/SWE-Gym | W01～W03 的真实任务、repo、base commit、测试和 patch 锚点 | 不直接提供 TDAI 资产 | 锁 revision `bb94ed9e39bbeb96a7fcbfb533b80f25a7fd59cb`，并复核每个 repo 在对应 commit 的 LICENSE |
 | SWE-Gym/OpenHands-SFT-Trajectories | W01～W03 的 L0 原始 Agent replay与 L1/L2/Skill 的候选证据 | 不冒充真人团队会话，也不直接提供成品 Memory/Skill/No-tool | 锁 revision `4aaa5a4a4b5861f4799d2336908760c190ac3b17`；只选成功轨迹；先确定性 join SWE-Gym，再保留消息顺序和 `origin=synthetic_agent_replay` |
+| benchflow-ai/skillsbench v1.1 | task/workspace/verifier 与开源 Skill 的成对靶子 | 不直接决定 TDAI Gold，不把 task.md 原文作为最终 Query | 锁 revision `b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af`；只用 `tasks/` active 包；逐 task 保存 digest、Skill path 和资源 manifest |
+| github/awesome-copilot | 成熟通用 Skill 与同 Team 语义干扰 | 不因仓库知名度自动成为 Positive | 锁 revision `f11a4e441c5ff061b4f8ae37952be8c602e4034e`；保留 MIT 归属；个别目录许可证/NOTICE 同时保留 |
+| openai/skills | 官方通用 Skill 与资源包 | 不假设所有 Skill 都适合软件工程 World | 锁 revision `49f948faa9258a0c61caceaf225e179651397431`；逐 Skill 读取目录许可证；本批优先 `jupyter-notebook` |
 | nvidia/Open-SWE-Traces | W04～W10 的多语言任务与轨迹 | 不直接把全量数据纳入仓库，也不使用显式 reasoning/think | 固定 v1.0 revision `6c426da40f5478986398531f065ac5b523fa3ec6`、config/split/parquet hash/trajectory id；只纳入 resolved=1 且逐行许可证为 MIT/Apache-2.0/BSD-2/BSD-3 的 repo |
 | nebius/SWE-rebench-V2 | 为 Open-SWE `instance_id` 补 source task、base commit、created_at、patch/test 锚点 | 不单独充当历史轨迹 | 固定不可变 revision；m:1 join 并保存 join 输出 hash；同 repo 同时满足独立 task 与独立 trajectory 密度 |
 | EuniAI/ContextBench | 同 repo/commit family 的 Knowledge Gold overlay | 不作 L0 | 只保存 Gold span locator/hash，不把 scorer 信息注入模型 |
@@ -175,10 +185,12 @@ Split 以完整 Space 为单位。repo/fork family、source task、trajectory、
 
 ### 6.4 Skill
 
-- 只从成功轨迹中重复出现且可复验的操作序列提炼。
-- 命令、路径、验证顺序和失败边界必须有 trajectory evidence；不能凭常识补步骤。
-- 当前 Agent 绑定 4～6 个直接相关 Skill；同 Team 额外放 6～10 个可搜索 Skill 和近义/旧版干扰。
-- 每个 Skill 同时写 `use_when`、`do_not_use_when`、source trajectories、repo/commit 范围和版本。
+- Skill 来源分为 `imported_open_source`、`paired_open_source`、`evidence_grounded_authored` 和可选的 `history_derived`，四类必须分别记录，不能伪称为同一种历史资产。
+- 开源导入必须冻结原始 `SKILL.md`、resources、revision、license、原始/导入后 hash 和适配 diff；宿主专属工具名只做显式适配。
+- Luna 生成的 repo 专属 Skill 只能使用固定代码、测试、文档和任务事实；每个技术步骤都要有 locator，并人工复核是否构成合理、唯一的首次调用。
+- 只有 `history_derived` Skill 才要求两条独立历史 Session；开源导入 Skill 不伪造 Session。
+- 当前 Agent 先绑定 3～5 个直接相关 Skill，同 Team 再放 4～8 个可搜索的近义、旧版或项目不适用 Skill。数量可扩大，但只有真实语义竞争才算干扰。
+- 每个 Skill 同时写 `use_when`、`do_not_use_when`、适用 repo/commit/Task、版本和 source refs。
 
 ### 6.5 Knowledge
 
@@ -190,38 +202,37 @@ Split 以完整 Space 为单位。repo/fork family、source task、trajectory、
 ### 6.6 Task、Workspace 与 Query
 
 - 每 Team 维护 6～10 个真实 Task；多条 Case 可以围绕同一 Task 形成正负对。
-- Workspace 使用真实 repo 的最小可运行切片或冻结 checkout，不把几行手写文件称为真实项目。
+- 当前可见会话按短 2～4、中 6～10、长 12～18 条消息分层；多数 Case 使用中长上下文，包含任务来源、已有排查、失败尝试、版本约束和状态收口。
+- 同 Team 维护 12～20 个历史 Session、80～160 个历史 turn；这些历史通过 MemoryProxy 检索，不直接倒入当前 Prompt。
+- Workspace 只需提供真实 repo/commit、涉及文件和必要代码片段；Task 1 不要求构造可运行 checkout，也不执行后续 coding。
 - Paired Negative 与 Positive 保持同 Team、repo、语言、Task 和资产快照，只改变一个信息条件：例如答案已出现在当前消息、本地文件已有精确实现、目标 Skill 版本不适用、Knowledge repo/commit 不匹配。
 - Gold、family、allowed actions、pair role、source refs 都只供 loader/scorer 使用，绝不进入 Provider-visible prompt。
 
 ## 7. W01～W03 重建候选
 
-W01～W03 先全部使用 SWE-Gym + MIT 标注的成功轨迹，验证最严格、最少来源模式的流水线。每个 Space 两个 Team：
+W01～W03 按技术工作域组织，每个 Team 可以维护多个项目；Skill 靶子、任务包和 repo 历史的具体对应见 [`OPEN-SKILL-TARGET-MATRIX.md`](./OPEN-SKILL-TARGET-MATRIX.md)。
 
-| World | Team | Repo | 栈/场景 | 选择理由 |
+| World | Team | 工作域 | 开源任务/Skill 靶子 | repo 历史与 Knowledge |
 |---|---|---|---|---|
-| W01 | A | `getmoto/moto` | Python、pytest、AWS mock | 成功轨迹密度高，服务模块、测试和文档边界清楚 |
-| W01 | B | `python/mypy` | Python、typing、stubs、回归测试 | 适合类型诊断、测试 fixture 和近义 Skill 干扰 |
-| W02 | A | `pandas-dev/pandas` | DataFrame、索引、IO、pytest | 任务密度和跨文件上下文丰富，Knowledge/CodeGraph 题充足 |
-| W02 | B | `dask/dask` | 分布式计算、collections、scheduler | 同属数据工程但规则不同，适合构造真实语义竞争 |
-| W03 | A | `iterative/dvc` | CLI、pipeline、cache、remote | 工作流型 Skill、历史决策和本地优先题都容易落到真实证据 |
-| W03 | B | `Project-MONAI/MONAI` | 医疗影像、PyTorch、transforms、测试 | 确定性 join 后有 53 个唯一 task（50 条轨迹 messages≥20），足以把历史资产来源和当前问题锚点分开 |
+| W01 | A | Python CI 与测试 | `fix-build-agentops` + `testing-python`；`pytest-coverage` | Moto |
+| W01 | B | 类型与安全验证 | `setup-fuzzing-py` + `fuzzing-python` | Mypy |
+| W02 | A | DataFrame 与分析 | `econ-detrending-correlation` + `timeseries-detrending` | Pandas |
+| W02 | B | 分布式与性能 | `parallel-tfidf-search` + `python-parallelization` | Dask |
+| W03 | A | 环境与复现 | `simpo-code-reproduction` + `nlp-research-repo-package-installment`；`jupyter-notebook` | DVC |
+| W03 | B | 训练与框架调试 | `debug-trl-grpo` + `rl-post-training`/`grpo`/`trl` | MONAI |
 
-最终准入不以名称或总任务数决定。每个 Team 必须先证明：
+最终准入以“任务与 Skill 能否形成可验证决策边界”为准。每个 Team 先通过最小靶子 Gate，再扩数量：
 
-- 至少 12 个官方 source task：history 至少 6 个、current anchor 至少 6 个，二者不重叠；
-- history 至少 6 条成功且 source task 不重叠的轨迹，当前 anchor 的 reference patch 不得进入历史资产；
-- 至少 20 条可保留的历史消息；
-- 至少 10 条可证据化 L1；
-- 至少 4 个由两个以上 Session 支撑的 L2；
-- 至少 4 个可复验 Skill；
-- 至少 1 个 Wiki 和 1 个 CodeGraph Knowledge；
-- 至少 9 个可形成唯一首动作的 Positive，以及各自的单变量 Negative；
-- repo commit、dataset revision、许可证、时间边界和 hash 完整。
+- 至少 2 个首动作边界清楚的 Skill target pair，其中至少 1 个来自开源 task+Skill 同包来源；扩为正式 Team 前达到 3 个 Skill Positive；
+- 每个 Skill Positive 有同 snapshot、只改变一个信息条件的 No-tool Negative；
+- 至少 6 个历史 source task 和 6 个 current anchor，二者不重叠；历史主要服务 Memory/L2，不再负责证明所有 Skill；
+- 至少 6 条可证据化 L1 与 2 个双 Session L2，后续可继续扩充；L2 不足不阻塞已经独立成立的开源 Skill 靶子；
+- 至少 1 个 Wiki 和 1 个 CodeGraph Knowledge，并能形成 3 个 Knowledge Positive；
+- 3 个 Memory Positive、3 个 Skill Positive、3 个 Knowledge Positive 均通过唯一首动作或显式允许动作审计；
+- repo/task/Skill revision、许可证、时间边界、manifest 和 hash 完整；
+- 原始 task 文本、Skill 名称、reference patch、verifier 期望和 Gold 不进入 Provider-visible prompt。
 
-某个候选未通过时，从同一 SWE-Gym 来源池替换 Team，不降低 Gate，也不手写补足缺失轨迹。
-
-确定性 join 已得到 487 条全局唯一匹配、4 条歧义排除、0 条未匹配。按官方 `instance_id` 去重后的候选容量为：moto 69、mypy 27、pandas 61、dask 29、dvc 23、MONAI 53、Conan 12、Pydantic 7；正式六 Team 选择前六者，后两者只作 reserve。该统计只证明来源容量，不能替代业务场景、许可、Gold 唯一性和人工证据复核。
+SWE-Gym/OpenHands 的确定性 join 已得到 487 条全局唯一匹配、4 条歧义排除、0 条未匹配。moto、mypy、pandas、dask、dvc、MONAI 继续作为历史/Knowledge repo，不再因为某个 repo 缺少四组重复 procedure 就替换整个 Team。若某个开源 Skill 无法形成自然 Positive，则替换 Skill 靶子，不降低 Gold Gate。
 
 ## 8. 时间边界与防泄漏
 
@@ -290,7 +301,7 @@ D0 必须建立独立的 Formal V2 合同：
 - Open-SWE、SWE-rebench-V2 与 ContextBench 只保留候选台账，在 D3 或首次实际使用阶段冻结，不提前阻塞 W01。
 - 定义 source registry、license manifest、时间字段和 transform 类型。
 - 建立 Formal V2 public/private schema、身份可见性解析、snapshot 与 run-record 合同。
-- 冻结评测策略：`allowLlmWrite=false`、`allowLlmExtract=false`、反射/归档写回关闭；当前 Pilot 的 `allowLlmExtract: true` 只能服务旧 smoke，不得沿用到正式运行。
+- 冻结评测策略：`allowLlmWrite=false`、生产配置 `extraction.enabled=false` 且 `extraction.extractors=[]`、反射/归档写回关闭；Pilot schema 的 `allowLlmExtract` 只服务旧 smoke，不能被当成生产 extraction Gate。
 - 输出 repo/trajectory 密度报告。
 
 Gate：W01～W03 六个 Team 的 dataset + repo license、commit、trajectory id 和消息数可机器复核；公开输入不含任何私有标注；相同 snapshot 的可见资产与 workspace hash 可重复。真实 Session、存储、缓存和 workspace 残留在 D5、正式评测前验证。
@@ -331,13 +342,14 @@ Gate：240 条 Hidden Test 冻结，provenance graph 与 Dev 零交叉。
 
 Gate：数据 Gate 和代码 Variant Gate 都通过后，才能采集正式 V0/V0-C/候选指标。
 
-## 11. 可以委派给 Luna/Terra 的任务
+## 11. 可以委派给 Luna 的任务
 
 子智能体只做有确定输入/输出的批处理，不能自行降低 Gate：
 
-- Luna：按冻结 source pack 转换 L0、提取候选 L1、生成 paired-negative 草稿。
-- Terra：按两条以上成功轨迹提炼 Skill/L2、审查事实证据和版本边界。
-- Luna/Terra：从 repo docs/code 生成 Knowledge query 草稿和 natural coding negative 草稿。
+- Luna：按冻结 source pack 转换 L0、提取候选 L1/L2、生成 paired-negative 草稿。
+- Luna：把通过许可证 Gate 的开源 Skill 转换为 MemoryProxy package；只适配宿主路径/工具名并保存 diff。
+- Luna：根据 repo code/docs/test 生成系统专属 Skill、Knowledge query 和 natural coding negative 草稿；技术步骤必须逐条引用 locator。
+- Luna：对每个靶子输出 Skill Positive、单变量 Negative、近义干扰和首动作判定说明。
 - 主会话：决定 World/Team/repo、批准来源、处理冲突、冻结 Gold 和验收每阶段 Gate。
 
 每批生成后必须保存 generator prompt/version、输入 source ids、输出 hash 和人工 review 状态。未经 review 的内容只能是 draft。
@@ -351,5 +363,5 @@ Gate：数据 Gate 和代码 Variant Gate 都通过后，才能采集正式 V0/V
 | 另一个 Team 能否当干扰 | 不能；只有当前 Session 可见集合算干扰 |
 | GitHub discussion 能否直接作 L0 | 默认不能打包评论原文；首选明确许可的 Agent trajectory |
 | 真实轨迹是否等于真人历史 | 不等于；明确标记 `synthetic_agent_replay`，只保留真实任务事实和真实操作序列 |
-| 外部 Skill 数据能否照抄 | 不能；正式 Skill 必须由同 Team 轨迹提炼，外部 benchmark 只提供 rubric |
+| 外部 Skill 数据能否照抄 | 许可清楚且 task/Skill 可验证时可导入；必须冻结 revision/license/hash、适配 MemoryProxy manifest，并重写自然 Query 与 Gold |
 | W01～W03 能否原地补齐 | 不能；保留旧数据为 contract smoke，正式内容整体重建 |

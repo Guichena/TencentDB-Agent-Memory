@@ -3,6 +3,7 @@ import {
   assertFormalWorldContract,
   toProviderVisibleCase,
   type FormalWorldContract,
+  type FormalSplit,
   type ProviderVisibleCase,
   type RuntimeIdentity,
   type WorkspaceRef,
@@ -88,7 +89,9 @@ export function compileFormalCaseInput(
 
   const resolved = resolveVisibleSnapshot(contract, input.identity);
   const assetIds = visibleAssetIds(resolved);
-  const frozenSet = contract.snapshot.visibleAssetSets.find((candidate) =>
+  const snapshot = contract.snapshots.find((candidate) => candidate.snapshotId === input.snapshotId);
+  if (!snapshot) throw new Error(`Formal compiler: unknown snapshot ${input.snapshotId} for ${caseId}`);
+  const frozenSet = snapshot.visibleAssetSets.find((candidate) =>
     candidate.teamId === input.identity.teamId
     && candidate.userId === input.identity.userId
     && candidate.agentId === input.identity.agentId,
@@ -116,4 +119,19 @@ export function compileFormalCaseInput(
     visibleAssetIds: assetIds,
     visibleAssetSetSha256: actualSha256,
   };
+}
+
+/** Compile one split without exposing the other split's provider inputs. */
+export function compileFormalSplitInputs(
+  contract: FormalWorldContract,
+  split: FormalSplit,
+): CompiledFormalCaseInput[] {
+  assertFormalWorldContract(contract);
+  const teamIds = new Set(
+    contract.teams.filter((team) => team.split === split).map((team) => team.teamId),
+  );
+  return contract.publicCases
+    .filter((item) => teamIds.has(item.identity.teamId))
+    .sort((left, right) => left.caseId.localeCompare(right.caseId))
+    .map((item) => compileFormalCaseInput(contract, item.caseId));
 }

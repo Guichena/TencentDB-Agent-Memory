@@ -1,6 +1,6 @@
 # 正式数据阶段索引
 
-这些文件把 `DATASET-BASE-AND-WORLD-REBUILD.md` 的 D0～D5 拆成可独立验收的执行阶段。必须按顺序通过 Gate；失败时停留在当前阶段，不用手写数据绕过来源、许可、唯一性或真实链路问题。
+正式数据已改为一个 Space、十个 Team，并以完整最小链路作为有效调用主口径。新的端到端步骤见 [`TASK1-DATASET-CONSTRUCTION-RUNBOOK.md`](../TASK1-DATASET-CONSTRUCTION-RUNBOOK.md)。下表中的 D0 至 D5 文件保留为旧十 Space 方案的来源、许可和 W01 草稿记录，不再决定正式实体布局、数量或评分口径。
 
 | 阶段 | 文件 | 建议分支 | 完成条件 |
 |---|---|---|---|
@@ -11,4 +11,4 @@
 | D4 | [W05～W10 Hidden](./D4-W05-W10-HIDDEN.md) | `codex/task1-data-d4-hidden` | Hidden 240 Case 密封 |
 | D5 | [真实链路交接](./D5-REAL-CHAIN-HANDOFF.md) | `codex/task1-data-d5-handoff` | 20 条 Smoke 和评测交接 Gate 通过 |
 
-每个阶段只在前一阶段合入数据集成主线后创建分支。生成批次可以委派给 Luna/Terra，但来源选择、Gold 冻结和 Gate 结论由主会话负责。
+每个阶段只在前一阶段合入数据集成主线后创建分支。生成和适配批次统一委派给 Luna；来源选择、许可证结论、Gold 冻结和 Gate 结论由主会话负责。

@@ -1,0 +1,25 @@
+{
+  "schema_version": "task1.dataset_build_status.v1",
+  "dataset_revision": "formal-v1",
+  "active_stage": "DS00",
+  "stage_status": "passed",
+  "next_stage": "DS01",
+  "branch": "codex/task1-data-contract-one-space",
+  "baseline_commit": "5b7f2734cff5b93840b5622c2b344058882ddf9c",
+  "completed_gates": ["DS00"],
+  "team_progress": {
+    "T01": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
+    "T02": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
+    "T03": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
+    "T04": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
+    "T05": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
+    "T06": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
+    "T07": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
+    "T08": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
+    "T09": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
+    "T10": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" }
+  },
+  "blocking_issues": [],
+  "last_command": "npm run eval:tool-prompt:d0:test && npm run eval:tool-prompt:test; npm run typecheck (54 unrelated baseline errors, 0 Task 1 errors)",
+  "last_verified_commit": "5b7f2734cff5b93840b5622c2b344058882ddf9c"
+}

@@ -13,7 +13,7 @@ export interface FormalRuntimePolicy extends RuntimePolicy {
 
 export const FORMAL_READ_ONLY_RUNTIME_POLICY: Readonly<FormalRuntimePolicy> = Object.freeze({
   allowLlmWrite: false,
-  allowLlmExtract: false,
+  extraction: Object.freeze({ enabled: false, extractors: Object.freeze([]) as readonly [] }),
   assetReflection: false,
   writeL0: false,
   archiveWriteBack: false,
@@ -96,12 +96,15 @@ export function canonicalSha256(value: unknown): string {
 
 /** Rejects any policy that could mutate or derive assets during a formal run. */
 export function assertFormalReadOnlyRuntimePolicy(policy: FormalRuntimePolicy): void {
-  const required: FormalRuntimePolicy = FORMAL_READ_ONLY_RUNTIME_POLICY;
-  for (const [key, expected] of Object.entries(required) as Array<[keyof FormalRuntimePolicy, boolean]>) {
-    if (policy[key] !== expected) {
-      throw new Error(`Formal snapshot policy requires ${key}=${String(expected)}`);
-    }
+  if (policy.allowLlmWrite !== false) throw new Error("Formal snapshot policy requires allowLlmWrite=false");
+  if (policy.extraction?.enabled !== false || !Array.isArray(policy.extraction?.extractors) || policy.extraction.extractors.length !== 0) {
+    throw new Error("Formal snapshot policy requires extraction.enabled=false and extraction.extractors=[]");
   }
+  if (policy.assetReflection !== false) throw new Error("Formal snapshot policy requires assetReflection=false");
+  if (policy.writeL0 !== false) throw new Error("Formal snapshot policy requires writeL0=false");
+  if (policy.archiveWriteBack !== false) throw new Error("Formal snapshot policy requires archiveWriteBack=false");
+  if (policy.freshSessionPerCase !== true) throw new Error("Formal snapshot policy requires freshSessionPerCase=true");
+  if (policy.resetSnapshotBeforeCase !== true) throw new Error("Formal snapshot policy requires resetSnapshotBeforeCase=true");
 }
 
 /**

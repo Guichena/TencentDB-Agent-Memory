@@ -113,7 +113,7 @@ Primary Campaign 只用 Luna。若时间和预算允许，可在最终候选冻�
 
 Capability Fixture 在 V0、V0-C、V1 和 V2 中保持不变。V3 只根据生产源码已经存在的 Injector、`AssetCapabilityFlags`、Memory、Knowledge、`allowLlmWrite` 和 `isExtractionAllowed()` 等能力事实，对不可执行工具做确定性裁剪。正式 Fixture 关闭自动 Skill 抽取后，V3 移除依赖 conversation buffer 的 `skill_extract`；V0 至 V2 仍保留原 Prompt 暴露面，保证前序版本只比较各自声明的改造。任务一不新增 `allowLlmExtract` 或其他产品能力开关，也不改变 Bridge 权限。此时改变的是 Prompt 暴露面，运行时配置保持原值。
 
-## 正式数据集采用共享 World
+## 正式数据集采用一个 Space 下的多个 Team
 
 ### 当前数据只能作为准备材料
 
@@ -124,69 +124,71 @@ Capability Fixture 在 V0、V0-C、V1 和 V2 中保持不变。V3 只根据生�
 | `case-definitions.ts` 生成的冻结数据 | Dev 60，Test 40 | Schema、Parser、Scorer 和 Mock 合同回归 |
 | `worlds/` 中的种子数据 | 3 个 World，48 条 case | 共享世界结构、资产密度和 loader 的 Pilot |
 
-旧 100 条 case 大多是一题一个小 fixture，上下文、同类干扰资产和本地工作区不足，不能作为最终 V0 与 Final 的唯一证据。现有 3 个手写 World 已经被开发过程查看和修改，其中原标记为 test 的 World 也不能继续当 Sealed Test；它们统一保留为 synthetic contract smoke，不占用正式 World 编号。正式 W01 至 W10 按 `DATASET-BASE-AND-WORLD-REBUILD.md` 从可追溯的软件工程任务和 Agent 轨迹重建。
+旧 100 条 case 大多是一题一个小 fixture，上下文、同类干扰资产和本地工作区不足，不能作为最终 V0 与 Final 的唯一证据。现有手写 World 已经被开发过程查看和修改，其中原标记为 test 的 World 也不能继续当 Sealed Test。它们统一保留为 synthetic contract smoke。正式数据的实体、数量、构造步骤和阶段 Gate 以 [`TASK1-DATASET-CONSTRUCTION-RUNBOOK.md`](./TASK1-DATASET-CONSTRUCTION-RUNBOOK.md) 为准。
 
-### World 与源码实体的映射
+### 数据集与源码实体的映射
 
-一个 World 对应一个 Space。每个 Space 包含两个 Team，每个 Team 放 6 至 10 个真实编程 Task，并围绕这些 Task 构造二十条 case；因此每个 World 共四十条 case。每条 case 在 Session Init 中选择一个 Team、一个中性 Agent 和一个 Task。
+正式数据使用一个 Space，其中包含十个 Team。每个 Team 维护多个真实工程项目流、一个通用业务 Agent 和四十条 case。每条 case 在 Session Init 中选择一个 Team、Agent 和 Task。
 
 ```text
-World = Space
-├─ Team A
-│  ├─ General Software Engineering Agent
-│  ├─ 6～10 个 Task / 20 条 Case
-│  └─ 多个项目主题的 Memory、Skill、Knowledge
-└─ Team B
-   ├─ General Software Engineering Agent
-   ├─ 6～10 个 Task / 20 条 Case
-   └─ 多个项目主题的 Memory、Skill、Knowledge
+Space: space-task1-engineering
+├─ T01 至 T04: Dev，160 条 Case
+└─ T05 至 T10: Hidden，240 条 Case
+   每个 Team 均包含：
+   ├─ 一个 General Software Engineering Agent
+   ├─ 3 至 6 个并行项目流
+   └─ 当前 Team 可见的 Memory、Skill、Knowledge
 ```
 
-Session 绑定 Team 后，另一个 Team 的资产不会被该 Session 看到，不能拿它们充当干扰项。强干扰资产必须放在当前活动 Team 内，包括同领域但错误仓库、旧版本流程、相似 Skill 和相关但不足以回答问题的 Knowledge。
+Session 绑定 Team 后，强干扰资产必须位于当前活动 Team 的可见范围，包括同领域的其他项目、旧版本结论、相似 Skill 和相关但不足以回答问题的 Knowledge。跨 Team 隔离只作 Session Init 正确性检查，不是 Task 1 指标。
 
 源码没有一项通用的 `projectId` 运行参数。项目语义通过 Task 的标题和描述、工作区文件、Git 仓库信息、Knowledge 的 `repo_url` 或 `repo_slug`、历史对话和 Memory 内容表达。数据集内部可以保留 `projectRef` 方便组织，但不能把它作为虚构参数注入真实请求。
 
 ### 规模与切分
 
-正式目标是 10 个 Space，共 400 条 case。切分单位是完整 Space，不能把同一 Space 的 case 分到 Dev 和 Test。
+正式目标是一个 Space、十个 Team，共 400 条 case。切分单位是完整 Team，同一 Team 不能同时进入 Dev 和 Hidden。两个 split 使用互斥快照，运行时不会同时恢复。
 
-| Split | Space | Memory | Skill | Knowledge | No Tool | 合计 |
+| Split | Team | Memory | Skill | Knowledge | No Tool | 合计 |
 |---|---:|---:|---:|---:|---:|---:|
-| Dev | 4 | 24 | 24 | 24 | 88 | 160 |
-| Test | 6 | 36 | 36 | 36 | 132 | 240 |
-| 合计 | 10 | 60 | 60 | 60 | 220 | 400 |
+| Dev | 4 | 24 | 24 | 12 | 100 | 160 |
+| Hidden | 6 | 36 | 36 | 18 | 150 | 240 |
+| 合计 | 10 | 60 | 60 | 30 | 250 | 400 |
 
-每个 Team 固定 20 条：Memory、Skill、Knowledge Positive 各 3 条，9 条与 Positive 一一配对的 No-tool Negative，以及 2 条自然 Coding Negative。每个 Space 因此为三类 Positive 各 6 条、18 条 paired negative 和 4 条 natural negative。Smoke 从 4 个 Dev Space 中各选 5 条，共 20 条，不增加重复 case。
+每个 Team 目标四十条：Memory 与 Skill Positive 各 6 条、Knowledge Positive 3 条、15 条与 Positive 一一配对的 No-tool Negative，以及 10 条自然 Coding Negative。Knowledge 数量收缩到三十条，因为正式任务只检查资源选择和最小自发现链路，不建设大规模 Wiki 或 CodeGraph。Smoke 从四个 Dev Team 中各选五条，共二十条，不增加重复 case。
+
+每个 Team 的十五条 Positive 中，十条从搜索或发现入口开始：四条 Memory search、三条 `skill_search`、三条 Knowledge `tools/list`。另外五条保留结构化 query、已知 Skill 和已知 scene 等直接入口。目标 Skill 必须在真实 prewarm 后仍未进入 `<available_skills>`，同时能从 same-Team Skill 池搜到，不能由评测器临时隐藏。
 
 建议的编号和使用顺序如下：
 
-- W01 至 W03：使用 SWE-Gym 真实任务和明确许可的成功 Agent 轨迹重建，进入 Dev。
-- W04：使用冻结的多语言 Open-SWE-Traces 子集重建，进入 Dev，使 Prompt 调整阶段不只看到 Python。
-- W05 至 W10：新增 Sealed Test World，只做结构、来源、资产和 Gold 合同验证，不用模型结果调 Prompt。
+- T01 至 T03：按 [`OPEN-SKILL-TARGET-MATRIX.md`](./OPEN-SKILL-TARGET-MATRIX.md) 使用开源 task/Skill 配对包构造 Skill 靶子，并用已锁来源的真实 repo 与轨迹补 Memory 和历史。
+- T04：后端工程 Dev，使 Prompt 调整阶段不只看到 Python。
+- T05 至 T10：前端、客户端、SDK、测试、安全、构建 Hidden Team，只做结构、来源、资产和 Gold 合同验证，不用模型结果调 Prompt。
 
-Dev 与 Test 之间不得复用 repo/fork family、source task、trajectory、patch hash、Skill body family、Wiki source、CodeGraph commit、Memory/session id、L2 路径、Knowledge id 或近重复 Query。题型模板可以一致，具体语义和资产必须独立。
+Dev 与 Hidden 之间不得复用 source task、trajectory、patch hash、Memory/session id、L2 路径、Knowledge id 或近重复 Query。通用开源 Skill 可以在真实业务需要时复用，但不能围绕同一个来源任务和同一组表述构造两边样本。
 
-数据基座、许可门禁、轨迹转换、W01 至 W03 候选和逐阶段数据 Gate 以 `DATASET-BASE-AND-WORLD-REBUILD.md` 为准。
+数据基座、许可门禁和轨迹转换可以继续参考 `DATASET-BASE-AND-WORLD-REBUILD.md`。正式实体、数量和逐阶段 Gate 以 `TASK1-DATASET-CONSTRUCTION-RUNBOOK.md` 为准。
 
 ### 每个 Team 的资产密度
 
 | 资产 | 推荐密度 | 设计要求 |
 |---|---:|---|
-| 项目主题 | 3 至 4 个 | 同一技术域中既有目标项目，也有相似项目 |
+| 项目主题 | 3 至 6 个 | 同一技术域中既有目标项目，也有相似项目 |
 | 活动 Agent | 1 个 | 中性描述，不携带工具提示 |
-| Memory 来源 Agent | 0 至 2 个 | 仅用于同 Team 的导入记忆，不参与当前 Session 选择 |
-| 历史 Session | 10 至 15 个 | 覆盖当前和其他项目主题，包含新旧状态 |
-| 历史对话轮次 | 50 至 100 轮 | 目标事实不能只靠关键词命中 |
-| Atomic Memory | 30 至 50 条 | 包含目标、近义干扰、旧版本和无关项 |
-| L2 Scene | 6 至 10 个 | 路径稳定，直接读取和先发现两类 case 都可构造 |
+| 资产来源 Agent | 0 至 2 个 | 只持有 team-visible Skill 或 imported Memory，不作为 case 运行主体 |
+| 历史 Session | 8 至 12 个 | 覆盖至少三个并行项目主题，目标消息和干扰消息并存 |
+| 历史对话消息 | 每 Session 12 至 40 条 | 目标事实不能只靠关键词命中，也不能把答案复制到 summary |
+| Atomic Memory | 12 至 20 条 | 包含目标、近义干扰和旧版本结论 |
+| L2 Scene | 4 至 6 个 | path 与 summary 注入，正文仍按需读取 |
 | L3 Profile | 1 份 | 只放长期画像，不泄漏需要搜索的具体答案 |
-| Team Skill Pool | 20 至 30 个 | 目标 Skill、近义 Skill、旧流程和其他项目流程并存 |
-| 注入 Skill Listing | 8 至 12 个 | 不超过生产 TopK 和字符预算，顺序固定 |
-| Knowledge | 4 至 6 个 | 目标仓库或 Wiki 与相似、过期、错仓库资源并存 |
-| 当前上下文 | 0 至 6 条真实消息 | 作为 Responses 历史消息发送，不塞进 developer instructions |
+| Team Skill Pool | 14 至 20 个 | 5 至 7 个当前 Agent listing，9 至 13 个 same-Team searchable |
+| 注入 Skill Listing | 5 至 7 个目标值 | 以真实 prewarm 结果为准，记录 listing mode、命中 ids 和 hash |
+| Knowledge | 3 个最小资源 | 一个目标与两个干扰，均 ready，可完成 `list -> call` 链路 |
+| 当前上下文 | 短 4 至 6、中 8 至 12、长 14 至 20 条消息 | 20%/60%/20% 分层；作为 Responses 历史消息发送 |
 | 工作区 | 活动项目的真实最小文件集 | No Tool 和本地源码优先题必须能从文件直接完成 |
 
 资产密度是目标范围，不要求每个 Team 机械达到同一个数字。每个正式 case 必须通过唯一性审计和干扰项审计。只有数量、没有语义竞争的资产不能算有效干扰。
+
+当前会话与历史 Session 的分层、消息组成、各工具家族写法和 paired delta 合同以 [`CONVERSATION-CONTEXT-CONTRACT.md`](./CONVERSATION-CONTEXT-CONTRACT.md) 为准。复杂度来自真实任务演进、失败尝试、版本约束和并行项目，不来自随机日志灌水；同一 Case 的所有 Prompt Variant 必须使用完全相同的消息内容和顺序。
 
 ### 题型覆盖
 
@@ -210,8 +212,8 @@ Memory case 覆盖语义记忆搜索、原始会话搜索、已知 session 回�
 ```ts
 interface WorldEvalCase {
   caseId: string;
-  split: "dev" | "test";
-  worldId: string;
+  split: "dev" | "hidden";
+  spaceId: string;
   activeTeamRef: string;
   activeAgentRef: string;
   activeTaskRef: string;
@@ -223,6 +225,8 @@ interface WorldEvalCase {
     needTdaiTool: boolean;
     family?: "memory" | "skill" | "knowledge";
     allowedFirstActions?: AllowedAction[];
+    expectedFollowupActions?: AllowedAction[];
+    allowedSequences: string[][];
     maxTdaiAttempts: number;
     negativeType?: string;
   };
@@ -243,7 +247,7 @@ interface WorldEvalCase {
 
 资产验证看的是能否支持唯一的工具决策，不评价自动抽取算法的质量。若直接上传已经构造好的资产，报告中应明确说明资产是 benchmark-owned snapshot。
 
-## 首调用评分合同
+## 最小链路评分合同
 
 ### 哪些行为算 TDAI Attempt
 
@@ -263,26 +267,27 @@ interface WorldEvalCase {
 |---|---|
 | `NO_TDAI_ATTEMPT` | 模型完成当前轮，没有尝试 TDAI |
 | `MALFORMED_TDAI_ATTEMPT` | 有明确 TDAI 意图，但命令、路径、请求头或 JSON 无法形成合法请求 |
-| `WRONG_TDAI_CALL` | 合法请求进入真实入口，但 Family、工具、资源或最小参数不符合 Gold |
-| `CORRECT_TDAI_CALL` | 首个合法请求进入正确真实入口，工具和最小参数符合 Gold |
+| `WRONG_TDAI_CALL` | 合法请求进入真实入口，但 Family、工具、资源、顺序或最小参数不符合 Gold |
+| `CORRECT_TDAI_CALL` | 单步调用或完整最小链路进入正确真实入口，工具、资源、顺序和最小参数符合 Gold |
 | `INFRASTRUCTURE_ERROR` | 上游、Proxy、数据栈、认证或 runner 异常，无法观察模型行为 |
 
-正样本中，`CORRECT_TDAI_CALL` 表示任务一的首个有效调用成功。没有调用是漏调，错误 Family 或工具是选错，malformed 单独记录。No Tool 样本出现任何 TDAI Attempt 都算误调用，即使 Safe Parser 或真实入口随后拒绝。
+正样本中，`CORRECT_TDAI_CALL` 表示模型已经完成获取目标资产所需的最短合法链路。没有调用是漏调，错误 Family、工具、资源、顺序或参数是选错，malformed 单独记录。No Tool 样本出现任何 TDAI Attempt 都算误调用，即使 Safe Parser 或真实入口随后拒绝。
 
-### 多步 case 只评第一步
+### 多步 case 走到第一个目标资产响应
 
-主实验保留多步任务语义，但只检查该任务的正确第一步：
+主实验不继续执行 coding，也不评价资产正文。它会执行并检查获取目标资产所需的最短链路：
 
-| 完整语义 | 正式 Gold 首动作 |
+| 任务语义 | 正式最小链路 |
 |---|---|
-| `skill_search -> skill_view -> files_read` | `skill_search`，搜索词需指向目标 Skill |
-| `scenario_ls -> read_scene` | `scenario_ls`，过滤范围需正确 |
-| `conversation_search -> conversation_query` | `conversation_search` |
-| Knowledge `tools/list -> tools/call` | 正确 `knowledge_id` 的 `/tools/list` |
+| 目标 Skill 不在 listing | `skill_search -> skill_view_by_id` |
+| 任务需要 Skill 资源文件 | `skill_view -> skill_files_read` |
+| L2 path 需要刷新或过滤 | `scenario_ls -> read_scene` |
+| 先定位历史 session 再读完整对话 | `conversation_search -> conversation_query` |
+| Knowledge 首次使用 | `tools/list -> tools/call` |
 | 已知 Skill 名直接读取 | `skill_view` |
 | 已知 scene 路径直接读取 | `read_scene` |
 
-完整序列仍保存在合同数据中，由 Mock Bridge 和少量真实链路 smoke 验证。它不进入任务一主表的有效调用率，避免资产返回质量、第二步参数绑定和最终回答能力混入 Prompt 触发效果。
+每条序列都保存在合同数据中，并通过真实入口执行。最后一个动作成功返回目标 Skill、资源文件、Memory、scene 或 Knowledge 查询结果后立即停止。评分只检查调用协议和冻结资源 id，不检查返回内容是否帮助模型完成最终任务。
 
 ### 指标与公式
 
@@ -295,7 +300,7 @@ TriggerRecall = \frac{P\ 中出现任意\ TDAI\ Attempt}{P}
 \]
 
 \[
-EffectiveCallRate = \frac{P\ 中首个调用为\ CORRECT\_TDAI\_CALL}{P}
+EffectiveCallRate = \frac{P\ 中完整最小链路为\ CORRECT\_TDAI\_CALL}{P}
 \]
 
 \[
@@ -303,23 +308,23 @@ FalseCallRate = \frac{N\ 中出现任意\ TDAI\ Attempt}{N}
 \]
 
 \[
-ConditionalToolAt1 = \frac{P\ 中首个\ Attempt\ 选择正确}{P\ 中有\ Attempt\ 的样本}
+ConditionalSequenceAccuracy = \frac{P\ 中完整工具序列、资源和参数正确}{P\ 中有\ Attempt\ 的样本}
 \]
 
 | 指标 | 角色 | 说明 |
 |---|---|---|
-| Effective Call Rate | Primary | 应调用时，首个合法请求进入正确入口的比例 |
+| Effective Call Rate | Primary | 应调用时，完整最小链路执行成功的比例 |
 | False Call Rate | Primary | 不应调用时出现任意 TDAI Attempt 的比例 |
-| Conditional Tool@1 | Primary | 已经决定调用后，首个 Family、工具和资源选对的比例 |
+| Conditional Sequence Accuracy | Primary | 已经决定调用后，完整工具序列、资源和参数选对的比例 |
 | Static Tool Tokens | Primary | 静态工具说明的固定编码 Token |
 | Trigger Recall | Diagnostic | 区分没有触发与触发后选错 |
-| FirstAction@1 | Diagnostic | 全部正样本中首动作语义正确的比例 |
+| FirstRoute@1 | Diagnostic | 全部正样本中首个 Family、工具和资源正确的比例 |
+| Chain Drop-off by Step | Diagnostic | 多步链路在哪一步中断或选错 |
 | Malformed Attempt Rate | Diagnostic | TDAI 意图无法形成合法请求的比例 |
 | Entry FCR | Diagnostic | No Tool 中真正到达 TDAI 入口的比例 |
 | 总输入与输出 Token | Cost | 模型实际 usage，不代替静态注入 Token |
-| 完整序列成功率 | Contract smoke | 不进入主实验结论 |
 
-每次运行必须分别保存静态注入 Token，以及模型返回的 `input_tokens`、`cached_input_tokens`、`cache_write_input_tokens`、`output_tokens`、`reasoning_output_tokens`。任一模型 usage 字段缺失时整条运行记为 `INFRASTRUCTURE_ERROR`，不能用 0 补齐，也不能先聚合再剔除。
+每次运行必须分别保存静态注入 Token，以及模型返回的 `input_tokens`、`cached_input_tokens`、`cache_write_input_tokens`、`output_tokens`、`reasoning_output_tokens`。Provider 明确不支持的字段保存 `null`，同时记录 `usage_schema_version`；运行协议声明支持但单次缺失的字段才记为 `INFRASTRUCTURE_ERROR`。任何缺失值都不能用 0 补齐，也不能先聚合再剔除。
 
 如果一个 case 合理允许多个第一步，`allowedFirstActions` 必须在数据冻结前登记。运行结束后不能因为模型选了另一个动作再修改 Gold。
 

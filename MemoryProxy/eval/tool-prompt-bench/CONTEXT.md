@@ -5,7 +5,7 @@
 ## Language
 
 **World**:
-一个隔离的正式评测环境，对应 MemoryProxy 的一个 Space，包含两个 Team 及其可恢复资产快照。
+一个隔离的正式评测环境；Task 1 的正式 World 对应一个 MemoryProxy Space，包含 T01 至 T10，并按 Team split 使用互斥的 Dev/Hidden 可恢复快照。旧的“每个 World 固定两个 Team”只保留为历史设计。
 _Avoid_: Project, Scenario, Dataset row
 
 **Space**:
@@ -73,5 +73,5 @@ _Avoid_: World snapshot
 _Avoid_: Source Pack, Run artifact
 
 **TDAI Attempt**:
-模型实际尝试访问 Memory Bridge、Skill Bridge 或 Knowledge tools 入口的行为，是首调用评分的观测单位。
+模型实际尝试访问 Memory Bridge、Skill Bridge 或 Knowledge tools 入口的单次行为。正式评分按有序 Attempt 组成的最小合法链路判断有效调用，首个 Attempt 只用于诊断路由错误。
 _Avoid_: Any Bash call, Tool name mention

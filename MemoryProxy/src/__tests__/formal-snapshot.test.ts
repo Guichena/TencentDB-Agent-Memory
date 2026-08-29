@@ -38,7 +38,7 @@ describe("Formal V2 snapshots", () => {
   });
 
   it("rejects write, extract, reflection, archive/write-back, and reset drift", () => {
-    expect(() => assertFormalReadOnlyRuntimePolicy({ ...FORMAL_READ_ONLY_RUNTIME_POLICY, allowLlmExtract: true } as never)).toThrow(/allowLlmExtract=false/);
+    expect(() => assertFormalReadOnlyRuntimePolicy({ ...FORMAL_READ_ONLY_RUNTIME_POLICY, extraction: { enabled: true, extractors: ["skill"] } } as never)).toThrow(/extraction.enabled=false/);
     expect(() => assertFormalReadOnlyRuntimePolicy({ ...FORMAL_READ_ONLY_RUNTIME_POLICY, assetReflection: true } as never)).toThrow(/assetReflection=false/);
     expect(() => assertFormalReadOnlyRuntimePolicy({ ...FORMAL_READ_ONLY_RUNTIME_POLICY, archiveWriteBack: true } as never)).toThrow(/archiveWriteBack=false/);
     expect(() => assertFormalReadOnlyRuntimePolicy({ ...FORMAL_READ_ONLY_RUNTIME_POLICY, resetSnapshotBeforeCase: false } as never)).toThrow(/resetSnapshotBeforeCase=true/);
