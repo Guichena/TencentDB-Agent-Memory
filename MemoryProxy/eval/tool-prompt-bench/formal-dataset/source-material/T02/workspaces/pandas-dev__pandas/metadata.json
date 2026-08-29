@@ -1,0 +1,46 @@
+{
+  "schema_version": "task1.github_workspace_source.v1",
+  "team_id": "T02",
+  "task_id": "T02-TASK-PANDAS-RESAMPLING",
+  "title": "Pandas timezone-aware resampling review",
+  "repository_url": "https://github.com/pandas-dev/pandas",
+  "repo_slug": "pandas-dev/pandas",
+  "revision": "4f86f278709810f97841f8e130f888146cc0a998",
+  "commit_time": "2026-08-29T12:07:55Z",
+  "license_spdx": "BSD-3-Clause",
+  "files": [
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/pandas-dev/pandas/4f86f278709810f97841f8e130f888146cc0a998/LICENSE",
+      "sha256": "9850f6b5bdef7346503065807b878deb8058b976c5c329f4c4d23bf4796ce9ae",
+      "byte_length": 1634
+    },
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/pandas-dev/pandas/4f86f278709810f97841f8e130f888146cc0a998/README.md",
+      "sha256": "5c63b18d017b2200be7474166621177a311f461a9a5cf15813b865bacb4f2b9b",
+      "byte_length": 11348
+    },
+    {
+      "path": "pandas/core/resample.py",
+      "url": "https://raw.githubusercontent.com/pandas-dev/pandas/4f86f278709810f97841f8e130f888146cc0a998/pandas/core/resample.py",
+      "sha256": "5242219939e9f30a78eaeb4ada605fbd2bf323ce2a53a9fcb4284559607e011f",
+      "byte_length": 105659
+    },
+    {
+      "path": "pandas/core/frame.py",
+      "url": "https://raw.githubusercontent.com/pandas-dev/pandas/4f86f278709810f97841f8e130f888146cc0a998/pandas/core/frame.py",
+      "sha256": "083c0dfeecb1d79d3b8624dae33fbba115d1e3b57d1a51a10bd285f2b78e270d",
+      "byte_length": 700568
+    },
+    {
+      "path": "pandas/tests/resample/test_datetime_index.py",
+      "url": "https://raw.githubusercontent.com/pandas-dev/pandas/4f86f278709810f97841f8e130f888146cc0a998/pandas/tests/resample/test_datetime_index.py",
+      "sha256": "cbd4c70f084f86ae7f74536ab2936c57ba297f94d7a39d86c0d44c3315a54e27",
+      "byte_length": 81422
+    }
+  ],
+  "file_manifest_sha256": "f2c7d305b53c5ec91f6016de4148be710d64d597240f2e5460df2862752ea62c",
+  "tree_sha256": "7181f9258db42999dd49519f06ad85ffec90d3048e7207da9c135647e4bfef03",
+  "frozen": true
+}

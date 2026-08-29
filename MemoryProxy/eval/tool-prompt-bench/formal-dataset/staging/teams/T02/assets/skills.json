@@ -1,0 +1,494 @@
+{
+  "skills": [
+    {
+      "assetId": "T02-SKILL-TIMESERIES-DETRENDING",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-skill-timeseries-detrending"
+      ],
+      "observedAt": "2026-08-29T21:30:00+08:00",
+      "name": "timeseries-detrending",
+      "version": "1.0.0",
+      "description": "Detrend two time series before correlation analysis while preserving the chosen trend model and validation steps.",
+      "useWhen": "The task asks for time-series detrending before a correlation or comparison.",
+      "doNotUseWhen": "The task is ordinary resampling, worker scheduling, or Notebook structure.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "1169a82443b6b4571dbc37017c41e1b2b1e05e86e9d0b304af726c711111d4cd"
+        }
+      ],
+      "contentHash": "3ff4d505b6863a56e47811bcec661719022c21a57d08b4ee5dabe4a0687f3e13"
+    },
+    {
+      "assetId": "T02-SKILL-JUPYTER-NOTEBOOK",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-skill-jupyter-notebook"
+      ],
+      "observedAt": "2026-08-29T21:30:00+08:00",
+      "name": "jupyter-notebook",
+      "version": "1.0.0",
+      "description": "Create and maintain reproducible Jupyter notebooks with clear structure, runnable cells, and reviewable outputs.",
+      "useWhen": "A data-computing result must be delivered or audited as a reproducible Notebook.",
+      "doNotUseWhen": "The main gap is a Dask partition plan or a time-series detrending method.",
+      "repoCommit": "49f948faa9258a0c61caceaf225e179651397431",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "agents/openai.yaml",
+          "sha256": "3a2d6a8f9ed10e18f6caa66aeb26a02305bc61f36fc4b333c904e02f9988fb9c"
+        },
+        {
+          "path": "assets/experiment-template.ipynb",
+          "sha256": "25f85914103cd84244e20ef378f59097479c72481cd18d3a931354d107c3f300"
+        },
+        {
+          "path": "assets/jupyter-small.svg",
+          "sha256": "a36bd27bef3775f111309241754b386db81e7d356f07672190e2fcb24478a250"
+        },
+        {
+          "path": "assets/jupyter.png",
+          "sha256": "852fd5468885bb176d266d547e61684792332e44a88cfbc8cd07323937040ccb"
+        },
+        {
+          "path": "assets/tutorial-template.ipynb",
+          "sha256": "704a809c09c7c9e6e5c437860df95524412b50c58571a14204610d73e0744765"
+        },
+        {
+          "path": "LICENSE.txt",
+          "sha256": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9"
+        },
+        {
+          "path": "references/experiment-patterns.md",
+          "sha256": "1ff9c04281c01e8e2209bde9f1fd910b8e4b620dd1f1f040e2101f1d88513a91"
+        },
+        {
+          "path": "references/notebook-structure.md",
+          "sha256": "a85051a2e88fd3424bbed2636e952ec5f858e7efa4e076c28d62a8cc2cc9dc06"
+        },
+        {
+          "path": "references/quality-checklist.md",
+          "sha256": "ed01afe6ff47714d85935d11053b64c414772f02250fdc604e3fca65e5139136"
+        },
+        {
+          "path": "references/tutorial-patterns.md",
+          "sha256": "8c194bb640de2fb7747e3db87006ecec5219252d301f53670975dbb5310ff659"
+        },
+        {
+          "path": "scripts/new_notebook.py",
+          "sha256": "a004e2ea3115edb24313928be0be6d1dc07e571d7ca6c1b24375f0569c616d2f"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "62f102e8554b25716dccef0ffab4572d4e3eaf05ccc76562d33a065bc9c521fb"
+        }
+      ],
+      "contentHash": "fcf4aec2cda9c20c9543f1b5108f3ca74ad9e1bd948e15ed6cae6891fd130458"
+    },
+    {
+      "assetId": "T02-SKILL-PYTHON-PARALLELIZATION",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-skill-python-parallelization"
+      ],
+      "observedAt": "2026-08-29T21:30:00+08:00",
+      "name": "python-parallelization",
+      "version": "1.0.0",
+      "description": "Organize CPU-bound Python work into bounded process-level parallel execution.",
+      "useWhen": "The computation needs an explicit Python parallel execution plan.",
+      "doNotUseWhen": "The bottleneck is worker memory, uneven work distribution, or detrending.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "references/advanced_techniques.md",
+          "sha256": "17e11133f8618855d6248fb0f1a605fe1959c51797ddd827ab07e6b37dd3513b"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "71585d7d3c6691b2116b7ebfb90cf9133747b4fa08537f7a5657f03539f8fdc3"
+        }
+      ],
+      "contentHash": "b54b4cee391fe09deb09d717fd4020a5cff9c05174313f20423de105c480d429"
+    },
+    {
+      "assetId": "T02-SKILL-MEMORY-OPTIMIZATION",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-skill-memory-optimization"
+      ],
+      "observedAt": "2026-08-29T21:30:00+08:00",
+      "name": "memory-optimization",
+      "version": "1.0.0",
+      "description": "Reduce peak memory in Python batch processing through bounded intermediates and data-flow choices.",
+      "useWhen": "Peak memory or intermediate materialization is the primary constraint.",
+      "doNotUseWhen": "The main issue is load distribution or choosing a detrending method.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "references/advanced_techniques.md",
+          "sha256": "87651f6e14412a75169312054759272d36237940524b96ca185601e141f45419"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "30daf5237b91ce4487f516fa623b624ac205f9a64a3b56978bdadaa76e5a50e5"
+        }
+      ],
+      "contentHash": "3a13a66df54036c7c426955f18aaee4b3511a8ae2832bc25d0745f4a7f2f22d6"
+    },
+    {
+      "assetId": "T02-SKILL-WORKLOAD-BALANCING",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-skill-workload-balancing"
+      ],
+      "observedAt": "2026-08-29T21:30:00+08:00",
+      "name": "workload-balancing",
+      "version": "1.0.0",
+      "description": "Balance uneven parallel workloads after the worker model is already selected.",
+      "useWhen": "Workers exist but partition or task sizes are uneven.",
+      "doNotUseWhen": "The task has not selected a parallel model or is only about Notebook structure.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "references/advanced_techniques.md",
+          "sha256": "3062fb49e3b83bdbcb0699715d9a393660038c9b8b507ed4bea08d2e080ef49f"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "a2b1f4653bd7939bd6c25f12051bed930f0e23dc2f2a269026fc39cb59cc5ef0"
+        }
+      ],
+      "contentHash": "8aeadfa8da5e8423ba63948a95f7a751f0ba866fb2f69ee680f3db43d105393b"
+    },
+    {
+      "assetId": "T02-SKILL-TESTING-PYTHON",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-skill-testing-python"
+      ],
+      "observedAt": "2026-08-29T21:30:00+08:00",
+      "name": "testing-python",
+      "version": "1.0.0",
+      "description": "Audit and repair Python test or build failures with explicit evidence and rerun outputs.",
+      "useWhen": "A Python data-computing change needs a failure-triage and test workflow.",
+      "doNotUseWhen": "The missing method is specifically detrending, parallel scheduling, or Notebook construction.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "3a210279d297921c5c32c8be3e9938c711e5da80fe4a9625324b541e86d9333c"
+        }
+      ],
+      "contentHash": "fdbfa873cbdd5e797a5c7b94501bf01496af7f6162ee34c030fd69729e7f02b9"
+    },
+    {
+      "assetId": "T02-SKILL-PYTEST-COVERAGE",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-skill-pytest-coverage"
+      ],
+      "observedAt": "2026-08-29T21:30:00+08:00",
+      "name": "pytest-coverage",
+      "version": "1.0.0",
+      "description": "Use pytest coverage reports to locate untested Python branches and add focused tests.",
+      "useWhen": "Coverage gaps are the explicit target.",
+      "doNotUseWhen": "The task is performance, memory, or time-series methodology.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "1057ea1dd6a32fceb0cf79d542b703427e7970e86e4ce85f051d76a0d5f94379"
+        }
+      ],
+      "contentHash": "2cf0156e8b18623b1b684c331bdfc3649ab5a8de1374560b8ccfe90aa28ce225"
+    },
+    {
+      "assetId": "T02-SKILL-ANALYZE-CI",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-skill-analyze-ci"
+      ],
+      "observedAt": "2026-08-29T21:30:00+08:00",
+      "name": "analyze-ci",
+      "version": "1.0.0",
+      "description": "Separate CI log symptoms from root causes and preserve the evidence for a build decision.",
+      "useWhen": "The data project is blocked on a CI failure snapshot.",
+      "doNotUseWhen": "The request is an analysis method or worker-layout plan.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "ebf10c1c4f7e49efbb7112ac0b5160d0549596d1db7ee961b9ecd4c6182ae6c5"
+        }
+      ],
+      "contentHash": "8e74156366e91bf08136d51a0b68b869c3b6b2c3ed1a6a8b3b3ff02e6f86d700"
+    },
+    {
+      "assetId": "T02-SKILL-SETUP-ENV",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-skill-setup-env"
+      ],
+      "observedAt": "2026-08-29T21:30:00+08:00",
+      "name": "setup-env",
+      "version": "1.0.0",
+      "description": "Create a Python environment from frozen dependency inputs.",
+      "useWhen": "Environment construction is the unresolved step.",
+      "doNotUseWhen": "The environment already works and the gap is data logic.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "8d2af56a04428681a3cab42a70ba889f8d03aab9ca32958739428617ac8230f9"
+        }
+      ],
+      "contentHash": "ef18accd22f3036587ec8d77d476a3b555452446f78532651e1063521b86f891"
+    },
+    {
+      "assetId": "T02-SKILL-UV-PACKAGE-MANAGER",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-skill-uv-package-manager"
+      ],
+      "observedAt": "2026-08-29T21:30:00+08:00",
+      "name": "uv-package-manager",
+      "version": "1.0.0",
+      "description": "Manage Python dependencies and virtual environments with uv.",
+      "useWhen": "Dependency or environment management is the primary task.",
+      "doNotUseWhen": "The request is data-frame logic, partitioning, or detrending.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "1f79787d9dd198563d52047056aaaea06f1ef19442a1c07abe0429e51bc7e2c6"
+        }
+      ],
+      "contentHash": "ae84fbcb7ffa9ad6b356f363fcb71d69511e45cd245c5f92bde6dcda952b331d"
+    },
+    {
+      "assetId": "T02-SKILL-QDRANT-CLIENTS-SDK",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-skill-qdrant-clients-sdk"
+      ],
+      "observedAt": "2026-08-29T21:30:00+08:00",
+      "name": "qdrant-clients-sdk",
+      "version": "1.0.0",
+      "description": "Use the Qdrant client for collections, payload filters, and idempotent vector operations.",
+      "useWhen": "The project requires Qdrant client integration.",
+      "doNotUseWhen": "The task is local Pandas or Dask computation.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "d7b38e979bfdc5cb621862e8a91a6e10cf101ae53980fdc3181a9dc219fa56f1"
+        }
+      ],
+      "contentHash": "23f53cb6c6697134457525a1eda2d17445f65f324f66f1dab123d3e23188b405"
+    },
+    {
+      "assetId": "T02-SKILL-QDRANT-PERFORMANCE-OPTIMIZATION",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-skill-qdrant-performance-optimization"
+      ],
+      "observedAt": "2026-08-29T21:30:00+08:00",
+      "name": "qdrant-performance-optimization",
+      "version": "1.0.0",
+      "description": "Tune Qdrant indexing and search performance.",
+      "useWhen": "Vector-search latency or throughput is the explicit bottleneck.",
+      "doNotUseWhen": "The system is a Pandas/Dask batch pipeline.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "indexing-performance-optimization/SKILL.md",
+          "sha256": "2c274262f9c4e9351e24808abe028d7db91ca07fb2d1786baf90d51c1b04fa8d"
+        },
+        {
+          "path": "memory-usage-optimization/SKILL.md",
+          "sha256": "a36c4e2f257ffe93378c35886c4c27338d3e991ad9814e272aa34ad491e536cb"
+        },
+        {
+          "path": "search-speed-optimization/SKILL.md",
+          "sha256": "2e9e85246e8f7ddc4b37b8f846052e51894dad671c8d0ddf8b3fc9e5a0cecbac"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "f861884a0605993abfc81c082c6ed116f5f7ec07e3ef6b4e9b65b3a479ebfa80"
+        }
+      ],
+      "contentHash": "c29656a65c34ac2ddab5dc7852bb9ec7d24f910d20b0de3a85747e874f2f97d4"
+    },
+    {
+      "assetId": "T02-SKILL-QDRANT-SEARCH-QUALITY",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-skill-qdrant-search-quality"
+      ],
+      "observedAt": "2026-08-29T21:30:00+08:00",
+      "name": "qdrant-search-quality",
+      "version": "1.0.0",
+      "description": "Evaluate Qdrant search quality, filtering, and ranking behavior.",
+      "useWhen": "Retrieval quality is the target.",
+      "doNotUseWhen": "The task concerns data-frame resampling or parallel partitions.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "diagnosis/SKILL.md",
+          "sha256": "41f144f5e022a5dc0e3d60b93bc868c91a181c6cd719a702362fca54083d29a4"
+        },
+        {
+          "path": "search-strategies/SKILL.md",
+          "sha256": "fcfeacf499615dbafe7cdbc22313b67a8492821f865944ff8520d2503745127f"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "21404b6887fe46e8acde2767cf6856de478240976f23111f6a8ffd010d362542"
+        }
+      ],
+      "contentHash": "f90ac49c030081f0967afc628e38a780154a7359f937a7a38ae488f8d7653bae"
+    },
+    {
+      "assetId": "T02-SKILL-TEMPORAL-PYTHON-TESTING",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-skill-temporal-python-testing"
+      ],
+      "observedAt": "2026-08-29T21:30:00+08:00",
+      "name": "temporal-python-testing",
+      "version": "1.0.0",
+      "description": "Choose local integration, replay, and unit-test boundaries for Temporal Python workflows.",
+      "useWhen": "Temporal workflow testing is the explicit project.",
+      "doNotUseWhen": "The target is a data analysis Notebook or Dask partition plan.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "resources/integration-testing.md",
+          "sha256": "3942e67339a7fd2582653be5c1c09d7ed85f0f79c9ad5082ade4b78b774e5a7c"
+        },
+        {
+          "path": "resources/local-setup.md",
+          "sha256": "b253de4813b9a9dde36b91b26a03e17df1bf627fe87a3e7765f2cf7c8a5bab78"
+        },
+        {
+          "path": "resources/replay-testing.md",
+          "sha256": "95ee0b49c680e459d299fd8fae2dbd1a4e64e188e8020eecef8aa720db634d92"
+        },
+        {
+          "path": "resources/unit-testing.md",
+          "sha256": "0b57c54014aa115b040fda79d30a92b394ccb92cc95d0467a805a088db170604"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "3e232b7d6c4d30c80b09024e83e1c7f229f031b0e511cabed45958cd8928af2e"
+        }
+      ],
+      "contentHash": "a6bab299765ace7cda8664247dfcd96edcfb48483776258432dcd0c01c328936"
+    },
+    {
+      "assetId": "T02-SKILL-GRPO",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-skill-grpo"
+      ],
+      "observedAt": "2026-08-29T21:30:00+08:00",
+      "name": "grpo",
+      "version": "1.0.0",
+      "description": "Reason about GRPO trainer internals and algorithm-specific diagnostics.",
+      "useWhen": "The task is specifically a GRPO trainer or algorithm issue.",
+      "doNotUseWhen": "The task is Pandas, time-series detrending, Dask, or Notebook structure.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "references/grpo-algorithm.md",
+          "sha256": "85c467949b9cae1fadbb1da6882125b64f5a8d475bac7ec97bebb6f4ad41ae70"
+        },
+        {
+          "path": "references/grpo-trainer-internals.md",
+          "sha256": "3365f4815e5789d1205bf3dbb738083141da4ecc45ce46f612bddc38148890a7"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "85ea906ed63ffc4dbe03ef21a9bfaede187cb8660d1e758e7ba7c39d1582f5c0"
+        }
+      ],
+      "contentHash": "9a23a877c6e093b7df38cc7bac8b6b24f064305b87cdc1b6f376c8433ad2c5bb"
+    }
+  ]
+}

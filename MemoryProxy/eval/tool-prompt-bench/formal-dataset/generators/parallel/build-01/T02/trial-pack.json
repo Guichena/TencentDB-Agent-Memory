@@ -1,0 +1,63 @@
+{
+  "schema_version": "task1.t02_trial_pack.v1",
+  "frozen": true,
+  "stage": "DS03",
+  "team_id": "T02",
+  "input_pack": {
+    "path": "../input-pack.json",
+    "sha256": "f190ede8852d94441c7da26d3737158dfced230bab8996d446cd99f0abb2c8cc"
+  },
+  "source_pack": {
+    "skill_manifest_sha256": "be77f6fdfa5523ea027c6b53296d8a32c10a8de77392addb4041bb6b5f34fc57",
+    "project_manifest_sha256": "1aa33c0934dd7df151ee5e5bc657f8365ecc71efb5ffb0a239354e1ff4dd1f66"
+  },
+  "asset_world": {
+    "batch_id": "t02-asset-world-batch-01",
+    "draft_path": "asset-world/asset-world-batch-01/draft.json",
+    "draft_sha256": "7673cfc3a7048aad3fddbc52e614eeca8868bc64e1a65ec9b3149871a14d5435"
+  },
+  "trials": [
+    {
+      "trial_id": "T02-TRIAL-MEMORY-01",
+      "family": "memory",
+      "start": "search",
+      "target_asset_ids": ["T02-L1-PANDAS-RESAMPLE-TIMEZONE"],
+      "allowed_sequence_candidates": [["tdai_memory_search"]],
+      "task_id": "T02-TASK-PANDAS-RESAMPLING",
+      "design": "The positive delta leaves the Team's timezone-normalization order missing; the negative delta alone supplies the exact UTC, Asia/Shanghai boundary, then daily-resample order."
+    },
+    {
+      "trial_id": "T02-TRIAL-SKILL-01",
+      "family": "skill",
+      "start": "direct",
+      "target_asset_ids": ["timeseries-detrending"],
+      "allowed_sequence_candidates": [["skill_view"]],
+      "task_id": "T02-TASK-TIMESERIES-DETREND",
+      "design": "The positive delta lacks the pinned detrending procedure; the negative delta alone supplies the relevant executable procedure."
+    },
+    {
+      "trial_id": "T02-TRIAL-KNOWLEDGE-01",
+      "family": "knowledge",
+      "start": "discovery",
+      "target_asset_ids": ["cg-t02pnd01"],
+      "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+      "task_id": "T02-TASK-PANDAS-RESAMPLING",
+      "design": "The positive delta lacks the pinned code-graph location of Resampler; the negative delta alone supplies pandas/core/resample.py:119."
+    }
+  ],
+  "generation_contract": {
+    "generator_model": "gpt-5.6-luna",
+    "reasoning_effort": "high",
+    "fork_turns": "none",
+    "prompt_version": "task1.luna-batch.v1",
+    "files": ["draft.json", "manifest.json", "questions.md"],
+    "pair_schema_version": "task1.luna_pair_draft.v1",
+    "pair_count_per_batch": 1,
+    "visible_text_must_not_contain": [
+      "asset ids",
+      "provider action names",
+      "Gold or scoring language",
+      "generator or model names"
+    ]
+  }
+}

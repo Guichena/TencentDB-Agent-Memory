@@ -1,0 +1,33 @@
+{
+  "schema_version": "task1.github_skill_source.v1",
+  "team_id": "T02",
+  "name": "uv-package-manager",
+  "repository_url": "https://github.com/benchflow-ai/skillsbench",
+  "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+  "source_path": "tasks/fix-build-agentops/environment/skills/uv-package-manager/SKILL.md",
+  "license_spdx": "Apache-2.0",
+  "license_file": "../../licenses/Apache-2.0.txt",
+  "visibility": "listed",
+  "description": "Manage Python dependencies and virtual environments with uv.",
+  "use_when": "Dependency or environment management is the primary task.",
+  "do_not_use_when": "The request is data-frame logic, partitioning, or detrending.",
+  "main_raw_sha256": "85c71e75e63966eb06a72dc0a7ed2046c45c38bb5574d748603917c4a3801878",
+  "raw_files": [
+    {
+      "path": "SKILL.md",
+      "source_path": "tasks/fix-build-agentops/environment/skills/uv-package-manager/SKILL.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/fix-build-agentops/environment/skills/uv-package-manager/SKILL.md",
+      "sha256": "85c71e75e63966eb06a72dc0a7ed2046c45c38bb5574d748603917c4a3801878",
+      "byte_length": 16048
+    }
+  ],
+  "adapted_files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "1f79787d9dd198563d52047056aaaea06f1ef19442a1c07abe0429e51bc7e2c6",
+      "byte_length": 16879
+    }
+  ],
+  "adaptation_diff": "adaptation.diff",
+  "frozen": true
+}

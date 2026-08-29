@@ -1,0 +1,20 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "t02-memory-trial-01",
+  "stage": "DS03",
+  "team_id": "T02",
+  "input_pack": "../../input-pack.json",
+  "input_pack_sha256": "f190ede8852d94441c7da26d3737158dfced230bab8996d446cd99f0abb2c8cc",
+  "asset_world_draft": "../../asset-world/asset-world-batch-01/draft.json",
+  "asset_world_draft_sha256": "7673cfc3a7048aad3fddbc52e614eeca8868bc64e1a65ec9b3149871a14d5435",
+  "source_pack_lock": "../../source-pack.lock.json",
+  "source_pack_lock_sha256": "3c0ae48822172d600a2d728bf47c4e888c44670abd726903de7500e3497b60ab",
+  "generated_at": "2026-08-29T22:00:00+08:00",
+  "raw_output_file": "draft.json",
+  "raw_output_sha256": "d3c68614c06244fb2b13c4d5b0995b0d208fd2a5b7cbe127add3a9e75bcdf008",
+  "actual_count": 1
+}

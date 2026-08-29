@@ -1,0 +1,230 @@
+{
+  "schema_version": "task1.luna_natural_negative_draft.v1",
+  "batch_id": "t02-natural-negative-batch-01",
+  "stage": "DS03",
+  "team_id": "T02",
+  "cases": [
+    {
+      "draft_case_id": "T02-DS03-NN-001",
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {"role":"user","content":"我在审查客服事件日报的时间边界。原始事件来自北京、东京和伦敦，时间列已经带有各自时区；日报要按上海自然日汇总。"},
+        {"role":"assistant","content":"审查清单需要明确时间标准化、报表边界和日汇总的先后，不能把不同地区的本地时间直接当成同一时区。"},
+        {"role":"user","content":"这次输入没有混合的无时区时间，事件时间都能先还原到统一时间轴；报表边界固定按 Asia/Shanghai 解释。"},
+        {"role":"assistant","content":"因此可以把统一时间轴和报表时区作为两个连续检查项，并把日重采样放在边界转换之后。"},
+        {"role":"user","content":"我只要一份给代码审查者看的顺序清单，不需要运行示例，也不需要讨论缺失小时如何补齐。"},
+        {"role":"assistant","content":"清单范围限定为时区处理和日报聚合顺序；输入的时间语义和报表边界已经足够确定这两个检查项。"}
+      ],
+      "query": "请给出这份日报的三步检查清单，明确 UTC 标准化、Asia/Shanghai 报表边界与按日重采样的顺序。",
+      "why_current_context_is_sufficient": "当前上下文已经给出输入时间带时区、统一到 UTC、按 Asia/Shanghai 解释日报边界以及随后按日汇总所需的全部规则；只需将既定顺序整理成清单，不需要补充外部事实。",
+      "visible_distractor_ids_author_only": ["T02-L0-10","T02-L1-PANDAS-MISSING-BUCKETS"],
+      "source_fact_map": [
+        {"claim":"该任务属于 Pandas 时区感知重采样审查。","source_id":"T02-TASK-PANDAS-RESAMPLING","locator":"input-pack.json#project_streams[T02-TASK-PANDAS-RESAMPLING]"},
+        {"claim":"事件时间先标准化为 UTC，再转换为 Asia/Shanghai 作为报表边界，最后按日重采样，不能直接处理混合无时区时间。","source_id":"T02-F01","locator":"input-pack.json#synthetic_world_facts[T02-F01]"},
+        {"claim":"对应冻结记忆是时区规范。","source_id":"T02-L1-PANDAS-RESAMPLE-TIMEZONE","locator":"asset-world/asset-world-batch-01/draft.json#l1_memories[T02-L1-PANDAS-RESAMPLE-TIMEZONE]"}
+      ],
+      "sol_review_questions": ["回答是否只整理当前已给出的三步时间处理顺序？","是否避免引入缺失桶、运行结果或其他未给出的重采样行为？"]
+    },
+    {
+      "draft_case_id": "T02-DS03-NN-002",
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {"role":"user","content":"支付流水的小时报表出现了没有事件的时段。原始表只记录实际到达的流水，聚合结果按小时保存金额和笔数。"},
+        {"role":"assistant","content":"验证计划要把真实聚合和报表时间轴区分开，不能先为没有原始事件的时段制造记录。"},
+        {"role":"user","content":"当前团队约定是先对实际流水做小时聚合，再把缺少的小时桶补到结果时间轴；补出的桶只表示该小时没有观测。"},
+        {"role":"assistant","content":"这意味着补桶属于聚合后的展示整理，不能改变原始事件集合，也不能把补出的金额或笔数当成新流水。"},
+        {"role":"user","content":"我只需要一个简短核验方案：检查顺序和对补出小时的解释即可，不要提出新的填充值策略。"},
+        {"role":"assistant","content":"核验范围已经完整：先聚合、后补桶，并确认补桶不虚构原始事件；无需读取其他资料才能写出方案。"}
+      ],
+      "query": "请写一份两项的核验计划，确认小时聚合与缺失桶整理的先后，并说明补出的小时应如何解释。",
+      "why_current_context_is_sufficient": "上下文明确原始数据只含真实流水、先完成小时聚合、再补齐缺失小时桶，以及补桶不代表新增事件；查询只要求把这些规则整理成核验计划。",
+      "visible_distractor_ids_author_only": ["T02-L1-PANDAS-RESAMPLE-TIMEZONE","T02-L0-10"],
+      "source_fact_map": [
+        {"claim":"该任务属于 Pandas 缺失小时桶的重采样核验。","source_id":"T02-TASK-PANDAS-RESAMPLING","locator":"input-pack.json#project_streams[T02-TASK-PANDAS-RESAMPLING]"},
+        {"claim":"批准顺序是在聚合后补齐缺失小时桶，而不是聚合前补齐，因此不会虚构缺失的原始事件。","source_id":"T02-F02","locator":"input-pack.json#synthetic_world_facts[T02-F02]"},
+        {"claim":"对应冻结记忆记录了聚合后补桶规则。","source_id":"T02-L1-PANDAS-MISSING-BUCKETS","locator":"asset-world/asset-world-batch-01/draft.json#l1_memories[T02-L1-PANDAS-MISSING-BUCKETS]"}
+      ],
+      "sol_review_questions": ["核验计划是否只覆盖先聚合后补桶及其含义？","是否避免发明补值、金额或运行性能结论？"]
+    },
+    {
+      "draft_case_id": "T02-DS03-NN-003",
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {"role":"user","content":"我在做一次重采样前的输入质量旁支检查。抽取了 2026-07-18 当天 10,000 行样本，时间列 dtype 是 datetime64[ns, UTC]，索引是 DatetimeIndex。"},
+        {"role":"assistant","content":"这份旁支摘要应把 dtype、索引类型、排序状态和重复情况分开记录，并且标明它只覆盖样本。"},
+        {"role":"user","content":"样本索引已按升序排列，没有重复索引，时间列也没有空值；这些结论只来自这 10,000 行。"},
+        {"role":"assistant","content":"可以把输入形状写成已观察项，同时明确未检查样本之外的行，避免把局部观察写成全量证明。"},
+        {"role":"user","content":"主流程的时区和补桶规则不在这次旁支范围内；我只要一段可放进诊断附件的保守摘要。"},
+        {"role":"assistant","content":"当前材料已经包含摘要所需的四个输入属性和采样边界，诊断附件可以直接据此成文。"}
+      ],
+      "query": "请写出这次 Pandas 输入诊断摘要，包含 dtype、索引、排序/重复检查和样本范围，并明确它不代表全量证明。",
+      "why_current_context_is_sufficient": "当前消息直接给出了时间列 dtype、索引类型、排序、重复、空值、样本行数和日期范围，以及样本不代表全量的边界；查询只是要求保守改写这些已知结果。",
+      "visible_distractor_ids_author_only": ["T02-L1-PANDAS-RESAMPLE-TIMEZONE","T02-L1-PANDAS-MISSING-BUCKETS"],
+      "source_fact_map": [
+        {"claim":"该任务属于 Pandas 重采样输入诊断。","source_id":"T02-TASK-PANDAS-RESAMPLING","locator":"input-pack.json#project_streams[T02-TASK-PANDAS-RESAMPLING]"},
+        {"claim":"团队偏好先记录时间列 dtype、索引类型、排序和重复情况。","source_id":"T02-L1-PANDAS-DTYPE-CHECK","locator":"asset-world/asset-world-batch-01/draft.json#l1_memories[T02-L1-PANDAS-DTYPE-CHECK]"},
+        {"claim":"旁支检查需标出采样范围和未覆盖风险，不能将局部观察表述为全量证明。","source_id":"T02-L1-PANDAS-SAMPLE-SCOPE","locator":"asset-world/asset-world-batch-01/draft.json#l1_memories[T02-L1-PANDAS-SAMPLE-SCOPE]"}
+      ],
+      "sol_review_questions": ["摘要是否完整保留 dtype、索引、排序、重复与样本边界？","是否明确局部样本不能推出全量输入质量？"]
+    },
+    {
+      "draft_case_id": "T02-DS03-NN-004",
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {"role":"user","content":"我在检查按月生成特征的 Dask 表，区域之间的记录量差异很大。当前有两个分区方案：按月份和地区组合观察，或只按 customer_id 切分。"},
+        {"role":"assistant","content":"偏斜审查要先固定业务维度和候选方案，再明确哪一个方案被保留、哪一个只是记录中的否决项。"},
+        {"role":"user","content":"评审已经把 feature workload 按 month 与 region 分组后再做 repartition；customer_id-only 只保留作被拒方案，不能当作最终布局。"},
+        {"role":"assistant","content":"因此报告应将月份与地区组合写为采用的观察顺序，并把 customer_id-only 标为明确排除，避免把候选清单误读成并列选项。"},
+        {"role":"user","content":"我不会在这次说明里讨论 worker 内存或加速倍数，只需要把这项分区决策写清楚。"},
+        {"role":"assistant","content":"决策内容和范围都已给出，可以直接形成简短的偏斜审查结论。"}
+      ],
+      "query": "请用两句话总结分区偏斜审查的采用方案和被拒方案。",
+      "why_current_context_is_sufficient": "当前上下文明确给出了按月份与地区组合分组后再调整分区、仅将 customer_id 方案作为被拒选项，以及不讨论内存和加速的范围；两句话总结不需要其他资料。",
+      "visible_distractor_ids_author_only": ["T02-L1-DASK-MEMORY-BOUNDARY","T02-L1-DASK-ROW-SPREAD-FIRST"],
+      "source_fact_map": [
+        {"claim":"该任务属于 Dask 分区与 worker 可靠性审查。","source_id":"T02-TASK-DASK-PARALLEL","locator":"input-pack.json#project_streams[T02-TASK-DASK-PARALLEL]"},
+        {"claim":"偏斜审查按月份和地区分组后再调整分区，customer_id-only 被保留为记录在案的拒绝选项。","source_id":"T02-F05","locator":"input-pack.json#synthetic_world_facts[T02-F05]"},
+        {"claim":"对应冻结记忆记录了 month-region 分区决策。","source_id":"T02-L1-DASK-PARTITION-SKEW","locator":"asset-world/asset-world-batch-01/draft.json#l1_memories[T02-L1-DASK-PARTITION-SKEW]"}
+      ],
+      "sol_review_questions": ["总结是否明确区分采用的 month-region 顺序和被拒的 customer_id-only？","是否避免带入 worker 内存、基准或其他分区指标？"]
+    },
+    {
+      "draft_case_id": "T02-DS03-NN-005",
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {"role":"user","content":"一个 Dask 特征作业在诊断阶段接近 worker 内存上限。现在只需要审查操作边界，不执行完整表计算。"},
+        {"role":"assistant","content":"先把单 worker 上限、持久化前的数据列范围和诊断阶段禁止的物化动作分开写，便于审查实现是否越界。"},
+        {"role":"user","content":"团队规定每个 worker 最多使用 6 GiB；persist 之前先投影出必需列，诊断时不能对完整 DataFrame 做 compute。"},
+        {"role":"assistant","content":"这三条是同一组操作边界：控制 worker 峰值、缩小持久化输入、避免诊断阶段把完整表拉入内存。"},
+        {"role":"user","content":"审查结果只要列出这三条和各自的检查点，不需要测量耗时，也不需要比较不同调度器。"},
+        {"role":"assistant","content":"范围、数值上限和禁止动作都已明确，检查清单可以完全依据当前上下文编写。"}
+      ],
+      "query": "请列出这次 Dask 内存边界审查的三项检查点，保留 6 GiB、持久化前列投影和诊断阶段不做全表计算。",
+      "why_current_context_is_sufficient": "上下文已明确 6 GiB 的单 worker 上限、persist 前只保留必需列、诊断阶段不对完整 DataFrame compute，以及不测耗时的范围；查询只需将三条边界转换为检查点。",
+      "visible_distractor_ids_author_only": ["T02-L1-DASK-PARTITION-SKEW","T02-L1-DASK-ROW-SPREAD-FIRST"],
+      "source_fact_map": [
+        {"claim":"该任务属于 Dask 分区与 worker 内存可靠性审查。","source_id":"T02-TASK-DASK-PARALLEL","locator":"input-pack.json#project_streams[T02-TASK-DASK-PARALLEL]"},
+        {"claim":"每个 worker 限制为 6 GiB，persist 前投影必需列，诊断时避免完整表 compute。","source_id":"T02-F06","locator":"input-pack.json#synthetic_world_facts[T02-F06]"},
+        {"claim":"对应冻结记忆记录了 worker 内存边界。","source_id":"T02-L1-DASK-MEMORY-BOUNDARY","locator":"asset-world/asset-world-batch-01/draft.json#l1_memories[T02-L1-DASK-MEMORY-BOUNDARY]"}
+      ],
+      "sol_review_questions": ["三项检查点是否准确保留 6 GiB、列投影和禁止全表计算？","是否没有扩展到耗时、调度器或未经给出的内存测量？"]
+    },
+    {
+      "draft_case_id": "T02-DS03-NN-006",
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {"role":"user","content":"我有一份 Dask 分区诊断的测量摘要，准备写进周报。八个分区行数依次为 1,020,000、980,000、1,110,000、995,000、1,045,000、1,005,000、990,000、1,030,000。"},
+        {"role":"assistant","content":"周报应先描述分区行数的 spread，再说明这只是分布证据；不要把行数摘要直接写成性能提升。"},
+        {"role":"user","content":"这组数字来自同一批输入和同一统计窗口，最大与最小相差 130,000 行；本次没有做基准运行。"},
+        {"role":"assistant","content":"因此可以总结分区规模相对集中但存在可见差异，并明确没有足够证据声称有测量依据的加速结论。"},
+        {"role":"user","content":"我只要一个客观的测量摘要，不讨论分区键如何选择，也不把 worker 利用率当作本次结论。"},
+        {"role":"assistant","content":"当前已有全部行数、范围和无基准限制，摘要只需围绕 row-count spread 与证据边界表述。"}
+      ],
+      "query": "请用一段话总结这组分区行数 spread 的测量证据，并明确本次不能声称有测量依据的加速结论。",
+      "why_current_context_is_sufficient": "当前上下文给出了八个分区的完整行数、同一输入与统计窗口、最大最小差值及未做基准运行的事实；查询只要求客观概括这些数字和证据边界。",
+      "visible_distractor_ids_author_only": ["T02-L1-DASK-PARTITION-SKEW","T02-L1-DASK-MEMORY-BOUNDARY"],
+      "source_fact_map": [
+        {"claim":"该任务属于 Dask 分区行数分布诊断。","source_id":"T02-TASK-DASK-PARALLEL","locator":"input-pack.json#project_streams[T02-TASK-DASK-PARALLEL]"},
+        {"claim":"批准的审查先比较 partition row-count spread，再解读 worker utilization；没有实际测量就不能声称有测量依据的加速结论。","source_id":"T02-F07","locator":"input-pack.json#synthetic_world_facts[T02-F07]"},
+        {"claim":"对应冻结记忆规定先看行数 spread。","source_id":"T02-L1-DASK-ROW-SPREAD-FIRST","locator":"asset-world/asset-world-batch-01/draft.json#l1_memories[T02-L1-DASK-ROW-SPREAD-FIRST]"}
+      ],
+      "sol_review_questions": ["摘要是否使用给出的八个行数和 130,000 差值，而非虚构指标？","是否明确无基准运行，因此不能声称 speedup？"]
+    },
+    {
+      "draft_case_id": "T02-DS03-NN-007",
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {"role":"user","content":"季度销量与广告投入两条序列都带有长期上升趋势，我在写相关性复核的实现无关检查清单。"},
+        {"role":"assistant","content":"检查清单要把两条序列的处理对象和季节项范围分开，避免把相关性目标误写成具体实现步骤。"},
+        {"role":"user","content":"当前决定是对每条序列分别移除线性趋势；季节调整不属于这一步，另行处理。"},
+        {"role":"assistant","content":"因此清单可以检查‘分别处理’和‘线性趋势’两个要求，再检查季节调整是否被留在边界之外。"},
+        {"role":"user","content":"我只要实现前的三项核对，不需要残差数值、图表或其他预处理建议。"},
+        {"role":"assistant","content":"处理规则和排除项已经完整给出，三项核对可以直接从当前上下文整理出来。"}
+      ],
+      "query": "请给出三项实现无关的核对清单，确认两条序列分别线性去趋势，并确认季节调整不包含在这一步。",
+      "why_current_context_is_sufficient": "上下文明确有两条序列、每条分别移除线性趋势、季节调整置于该步骤之外，以及不涉及残差和图表的范围；查询只需把这些规则列成检查项。",
+      "visible_distractor_ids_author_only": ["T02-L1-TIMESERIES-DIFFERENCE-OLD","T02-L1-TIMESERIES-RESIDUAL-AUDIT"],
+      "source_fact_map": [
+        {"claim":"该任务属于时间序列去趋势相关性复核。","source_id":"T02-TASK-TIMESERIES-DETREND","locator":"input-pack.json#project_streams[T02-TASK-TIMESERIES-DETREND]"},
+        {"claim":"季度相关性复核要求每条序列分别移除线性趋势，季节调整留在该步骤之外。","source_id":"T02-F03","locator":"input-pack.json#synthetic_world_facts[T02-F03]"},
+        {"claim":"对应冻结记忆记录了当前线性去趋势边界。","source_id":"T02-L1-TIMESERIES-DETREND-LINEAR","locator":"asset-world/asset-world-batch-01/draft.json#l1_memories[T02-L1-TIMESERIES-DETREND-LINEAR]"}
+      ],
+      "sol_review_questions": ["检查清单是否覆盖分别处理、线性趋势和季节调整置外？","是否避免引入差分、残差数值或具体实现假设？"]
+    },
+    {
+      "draft_case_id": "T02-DS03-NN-008",
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {"role":"user","content":"项目笔记里有两条关于季度相关性的预处理记录：2026-06-28 的旧笔记建议先差分，2026-07-14 的复核记录讨论了当前规则。"},
+        {"role":"assistant","content":"判断当前规则时需要同时保留两条记录的日期和状态，不能只看较早笔记的措辞。"},
+        {"role":"user","content":"较早建议已经标成 superseded；较新的决定是两条序列分别移除线性趋势，季节调整放在这一步之外。"},
+        {"role":"assistant","content":"这样 recency 在当前材料内即可判定：采用 2026-07-14 的线性去趋势边界，旧差分建议只作为被取代背景。"},
+        {"role":"user","content":"我要一段给审阅者看的结论，不讨论代码实现，也不重新评价这两条记录。"},
+        {"role":"assistant","content":"日期、superseded 状态和新决定已足够写出不混淆历史先后的结论。"}
+      ],
+      "query": "请说明当前应采用哪条预处理决定，并解释 2026-06-28 的差分建议在结论中应如何标注。",
+      "why_current_context_is_sufficient": "上下文直接给出了两条记录的日期、旧记录已被取代的状态，以及新记录的线性去趋势和季节边界；因此无需查找历史即可确定当前采用项和旧建议标注方式。",
+      "visible_distractor_ids_author_only": ["T02-L0-03","T02-L1-TIMESERIES-RESIDUAL-AUDIT"],
+      "source_fact_map": [
+        {"claim":"该任务属于时间序列去趋势决定的复核。","source_id":"T02-TASK-TIMESERIES-DETREND","locator":"input-pack.json#project_streams[T02-TASK-TIMESERIES-DETREND]"},
+        {"claim":"旧的 2026-06-28 差分建议已被 2026-07-14 的线性去趋势决定取代。","source_id":"T02-F04","locator":"input-pack.json#synthetic_world_facts[T02-F04]"},
+        {"claim":"当前决定是每条序列分别移除线性趋势，并把季节调整置于该步骤之外。","source_id":"T02-F03","locator":"input-pack.json#synthetic_world_facts[T02-F03]"},
+        {"claim":"对应冻结记忆保存了旧记录与新决定的关系。","source_id":"T02-L1-TIMESERIES-DIFFERENCE-OLD","locator":"asset-world/asset-world-batch-01/draft.json#l1_memories[T02-L1-TIMESERIES-DIFFERENCE-OLD]"}
+      ],
+      "sol_review_questions": ["结论是否选择 2026-07-14 的当前决定，并将旧差分建议标为 superseded？","是否没有把旧建议重新包装成并列可选方案？"]
+    },
+    {
+      "draft_case_id": "T02-DS03-NN-009",
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {"role":"user","content":"我要把季度数据复核 notebook 交给值班同事。当前文档列出了时间语义检查、频率检查、趋势处理和图表，但原作者习惯跳着运行。"},
+        {"role":"assistant","content":"交接说明应把执行顺序写成线性流程，并把输入诊断放在最前，避免图表先于必要的预处理。"},
+        {"role":"user","content":"批准的安排是 notebook 从上到下运行；第一段诊断先验证 timezone 和 frequency，趋势处理完成后才允许出现图表。"},
+        {"role":"assistant","content":"这三项足以形成交接检查：顺序必须线性、首段检查时间语义与频率、图表位置晚于去趋势。"},
+        {"role":"user","content":"这次只写执行安排，不核验旧输出的新鲜度，也不改动任何分析内容。"},
+        {"role":"assistant","content":"当前上下文已经给出了完整执行安排和范围排除，可以直接写交接清单。"}
+      ],
+      "query": "请写出 notebook 交接的三项执行要求，包含从上到下运行、首段 timezone/frequency 诊断和图表出现的先后。",
+      "why_current_context_is_sufficient": "当前上下文明确了从上到下运行、第一诊断段验证 timezone 与 frequency、图表在去趋势之后出现，以及不讨论输出新鲜度的范围；三项交接要求可直接由此整理。",
+      "visible_distractor_ids_author_only": ["T02-L1-NOTEBOOK-STALE-OUTPUT","T02-L0-10"],
+      "source_fact_map": [
+        {"claim":"该任务属于可复现数据计算 notebook 交接。","source_id":"T02-TASK-NOTEBOOK-HANDOFF","locator":"input-pack.json#project_streams[T02-TASK-NOTEBOOK-HANDOFF]"},
+        {"claim":"交接 notebook 必须自上而下运行，第一诊断段验证 timezone 与 frequency，图表只能在去趋势后出现。","source_id":"T02-F08","locator":"input-pack.json#synthetic_world_facts[T02-F08]"},
+        {"claim":"对应冻结记忆记录了 notebook 执行顺序。","source_id":"T02-L1-NOTEBOOK-EXECUTION-ORDER","locator":"asset-world/asset-world-batch-01/draft.json#l1_memories[T02-L1-NOTEBOOK-EXECUTION-ORDER]"}
+      ],
+      "sol_review_questions": ["三项要求是否准确覆盖线性执行、首段诊断和图表位置？","是否没有混入 stale output、新数据或分析实现要求？"]
+    },
+    {
+      "draft_case_id": "T02-DS03-NN-010",
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {"role":"user","content":"我在验收交接 notebook 的执行证据。当前输入指纹是 sha256:9b7e，最近一次顺序执行时间为 2026-08-28 18:20；复核者也按从上到下重新执行过。"},
+        {"role":"assistant","content":"验收时需要把输入指纹、执行顺序和保存的 cell output 分开核对，不能只凭页面上已有的输出判断新鲜度。"},
+        {"role":"user","content":"保存的图表输出来自 sha256:71c2 的旧输入，而且当时是先运行末尾汇总段、再补跑前面的诊断段。"},
+        {"role":"assistant","content":"这份保存输出同时存在输入指纹不一致和执行顺序过时两个问题，即使图表看起来完整，也不能作为本次验收证据。"},
+        {"role":"user","content":"当前没有其他失败日志；我只要根据现有指纹和顺序证据写出验收结论，不讨论图表内容。"},
+        {"role":"assistant","content":"现有材料已经给出当前与旧输入的指纹、两种执行顺序及验收范围，结论可以在本地完成。"}
+      ],
+      "query": "请判断这份保存的 cell output 能否作为验收证据，并用两点说明理由。",
+      "why_current_context_is_sufficient": "上下文给出了当前输入指纹、旧输出指纹、当前顺序执行证据以及旧输出的逆序运行情况；冻结规则明确指纹或执行顺序过时时保存输出均不被接受，因此判断不需要额外信息。",
+      "visible_distractor_ids_author_only": ["T02-L1-NOTEBOOK-EXECUTION-ORDER","T02-L0-10"],
+      "source_fact_map": [
+        {"claim":"该任务属于可复现 notebook 的交接证据验收。","source_id":"T02-TASK-NOTEBOOK-HANDOFF","locator":"input-pack.json#project_streams[T02-TASK-NOTEBOOK-HANDOFF]"},
+        {"claim":"当输入 hash 或执行顺序过时时，保存的 cell output 不能作为执行证据。","source_id":"T02-F09","locator":"input-pack.json#synthetic_world_facts[T02-F09]"},
+        {"claim":"对应冻结记忆记录了 stale output 的拒绝规则。","source_id":"T02-L1-NOTEBOOK-STALE-OUTPUT","locator":"asset-world/asset-world-batch-01/draft.json#l1_memories[T02-L1-NOTEBOOK-STALE-OUTPUT]"},
+        {"claim":"交接笔记本在开头记录输入指纹和最近一次顺序执行时间。","source_id":"T02-L1-NOTEBOOK-INPUT-FINGERPRINT","locator":"asset-world/asset-world-batch-01/draft.json#l1_memories[T02-L1-NOTEBOOK-INPUT-FINGERPRINT]"}
+      ],
+      "sol_review_questions": ["结论是否同时指出输入指纹不一致和执行顺序过时？","是否没有把图表外观或缺失日志当作额外验收依据？"]
+    }
+  ]
+}

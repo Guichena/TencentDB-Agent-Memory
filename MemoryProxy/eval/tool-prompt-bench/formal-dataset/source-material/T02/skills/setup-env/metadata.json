@@ -1,0 +1,33 @@
+{
+  "schema_version": "task1.github_skill_source.v1",
+  "team_id": "T02",
+  "name": "setup-env",
+  "repository_url": "https://github.com/benchflow-ai/skillsbench",
+  "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+  "source_path": "tasks/setup-fuzzing-py/environment/skills/setup-env/SKILL.md",
+  "license_spdx": "Apache-2.0",
+  "license_file": "../../licenses/Apache-2.0.txt",
+  "visibility": "search",
+  "description": "Create a Python environment from frozen dependency inputs.",
+  "use_when": "Environment construction is the unresolved step.",
+  "do_not_use_when": "The environment already works and the gap is data logic.",
+  "main_raw_sha256": "7b95dc92985ab21b131c5f1d14ec05cf27d145c5384e28bbf3022c7ea89f4202",
+  "raw_files": [
+    {
+      "path": "SKILL.md",
+      "source_path": "tasks/setup-fuzzing-py/environment/skills/setup-env/SKILL.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/setup-fuzzing-py/environment/skills/setup-env/SKILL.md",
+      "sha256": "7b95dc92985ab21b131c5f1d14ec05cf27d145c5384e28bbf3022c7ea89f4202",
+      "byte_length": 1773
+    }
+  ],
+  "adapted_files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "8d2af56a04428681a3cab42a70ba889f8d03aab9ca32958739428617ac8230f9",
+      "byte_length": 1850
+    }
+  ],
+  "adaptation_diff": "adaptation.diff",
+  "frozen": true
+}

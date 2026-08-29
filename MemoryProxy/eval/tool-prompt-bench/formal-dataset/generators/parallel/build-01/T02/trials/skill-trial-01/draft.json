@@ -1,0 +1,101 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t02-skill-trial-01",
+  "stage": "DS03",
+  "team_id": "T02",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T02-TRIAL-SKILL-01-P001",
+      "external_source_ids": [
+        "source-t02-skill-timeseries-detrending"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我在 T02 的季度数据复核里准备比较实际产出和实际消费的相关性，当前只整理分析步骤，不改上游仓库代码。"
+        },
+        {
+          "role": "assistant",
+          "content": "我已确认这轮是两条经济时间序列的相关性分析；先把输入条件、预处理边界和可复核输出列清楚，再决定是否实现。"
+        },
+        {
+          "role": "user",
+          "content": "如果直接对原始 level 序列算相关系数，长期共同上升可能会掩盖真正的周期关系。"
+        },
+        {
+          "role": "assistant",
+          "content": "同意，相关性计算前要先处理长期趋势，并保留原序列与处理后的中间结果，避免把趋势共振误当成周期共振。"
+        },
+        {
+          "role": "user",
+          "content": "两列都是按季度排列的正值 level 数据，时间顺序已大致整理，但缺失值处理和是否取对数还没有写进清单。"
+        },
+        {
+          "role": "assistant",
+          "content": "目前还缺一套可复用的去趋势操作说明：包括清洗和实际值转换、正值序列的变换条件、季度参数、滤波返回值以及相关性前的检查。"
+        },
+        {
+          "role": "user",
+          "content": "这次先确定从数据到周期相关系数的工作顺序和验收点，季节性处理另行讨论，暂时不要写代码。"
+        },
+        {
+          "role": "assistant",
+          "content": "可以；不过我手头还没有那套固定流程的具体参数和示例输出，不能凭空补齐实现级步骤。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请基于当前两条季度序列，给出从预处理、去趋势到周期相关性计算的可执行下一步和检查点，暂时不要修改代码。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我还缺这套去趋势流程的精确步骤，尤其是季度平滑参数、正值 level 的变换条件、滤波结果如何取出，以及两条序列应该怎样分别处理后再算相关。请先查看适用的既有流程材料并概述到可以开始审计的位置，不要修改代码。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结去趋势流程中关于数据清洗、实际值转换、正值 level 的自然对数、按频率选择 HP 平滑参数、分别取得 cycle/trend 以及对两个 cyclical components 计算相关性的完整可执行步骤。",
+          "route": "skill",
+          "target_asset_ids": [
+            "timeseries-detrending"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_view"
+            ]
+          ],
+          "stop_after_candidate": "查看流程正文并概述审计起点后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把缺的执行清单补全：先处理缺失值并确认时间顺序，再把名义量折算成实际值；对于为正的 level 变量，先做自然对数后再滤波，已经是比率或百分比、含零或可能为负的序列不要取对数。季度数据使用 HP 滤波的 λ=1600，调用 `hpfilter(series, lamb=1600)`，返回周期项 cycle 和趋势项 trend；两条序列必须分别滤波，不能把它们拼在一起拟合。最后只对两个 cycle 用 `np.corrcoef(cycle_a, cycle_b)[0, 1]` 计算相关系数，并记录频率、λ、缺失值和时间顺序检查、两组 cycle/trend 的长度及相关系数。年度和月度数据分别使用 λ=100 和 λ=14400；季节性调整不并入这一步。请据此给出下一步和检查点，仍不要修改代码。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已提供从清洗、实际值转换、对数条件、按频率选择 λ、分别取得 HP 周期/趋势项到周期相关系数与审计记录的完整程序，足以直接回答 query，无需读取流程资产。"
+        }
+      },
+      "visible_distractor_ids_author_only": [],
+      "controlled_delta_note": "Positive 只缺冻结去趋势流程的精确执行步骤；Negative 仅补齐该流程及其可复核输出，其他上下文和 query 不变。",
+      "source_fact_map": [
+        {
+          "claim": "冻结流程按年度、季度、月度分别推荐 λ=100、1600、14400，且 Python 参数名为 lamb。",
+          "source_id": "source-t02-skill-timeseries-detrending",
+          "locator": "formal-dataset/source-material/T02/skills/timeseries-detrending/raw/SKILL.md#Choosing Lambda (λ); #Python Implementation"
+        },
+        {
+          "claim": "冻结流程要求正值 level 在 HP 滤波前取自然对数，并对两条序列分别提取 cycle/trend 后计算周期项相关性。",
+          "source_id": "source-t02-skill-timeseries-detrending",
+          "locator": "formal-dataset/source-material/T02/skills/timeseries-detrending/raw/SKILL.md#Log Transformation for Growth Series; #Example: Business Cycle Correlation"
+        }
+      ],
+      "sol_review_questions": [
+        "确认 Positive 的唯一缺口是冻结去趋势流程正文，首动作严格为 skill_view，且 target_asset_ids 只含 timeseries-detrending。",
+        "确认 Negative 已完整覆盖清洗、实际值、取对数条件、季度 λ=1600、分别滤波、cycle 相关性和检查记录，足以无需读取资产回答。",
+        "确认所有资产标识、动作名及生成/评分元语言均未进入 provider-visible 文本。"
+      ]
+    }
+  ]
+}

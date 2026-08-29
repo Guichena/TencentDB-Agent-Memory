@@ -1,0 +1,40 @@
+{
+  "schema_version": "task1.github_workspace_source.v1",
+  "team_id": "T02",
+  "task_id": "T02-TASK-TIMESERIES-DETREND",
+  "title": "Time-series detrending correlation review",
+  "repository_url": "https://github.com/statsmodels/statsmodels",
+  "repo_slug": "statsmodels/statsmodels",
+  "revision": "159fe37c3ecd973b208d37fae5b55c0cb735e2a7",
+  "commit_time": "2026-08-29T13:22:50Z",
+  "license_spdx": "BSD-3-Clause",
+  "files": [
+    {
+      "path": "LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/statsmodels/statsmodels/159fe37c3ecd973b208d37fae5b55c0cb735e2a7/LICENSE.txt",
+      "sha256": "1ca78e1dec9dcebc55f3b96a862317f23e76422c5fc943568d955aad1f6b5fad",
+      "byte_length": 1636
+    },
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/statsmodels/statsmodels/159fe37c3ecd973b208d37fae5b55c0cb735e2a7/README.md",
+      "sha256": "d430fa04083d240c9f0e75aa90bc73c13cb1a874f4c7b4ce29bddbb6366c4a42",
+      "byte_length": 5994
+    },
+    {
+      "path": "statsmodels/tsa/filters/filtertools.py",
+      "url": "https://raw.githubusercontent.com/statsmodels/statsmodels/159fe37c3ecd973b208d37fae5b55c0cb735e2a7/statsmodels/tsa/filters/filtertools.py",
+      "sha256": "15cdd47b03ef0d1d02e82c3fa5a7bd49bf341a3e32351482552f1b9b1596d3a2",
+      "byte_length": 13886
+    },
+    {
+      "path": "statsmodels/tsa/tsatools.py",
+      "url": "https://raw.githubusercontent.com/statsmodels/statsmodels/159fe37c3ecd973b208d37fae5b55c0cb735e2a7/statsmodels/tsa/tsatools.py",
+      "sha256": "786ec958264edd6e4569cf8ebd7fe9014a767377feff7ac11e0c4eb5b5c86c64",
+      "byte_length": 29185
+    }
+  ],
+  "file_manifest_sha256": "489136f99bef54faafccc0e95c2af7bcf6b2ca266dc2245f6b75cddb8a320779",
+  "tree_sha256": "8d4f59835bb405383074a96bed77f1a7ec394a8f5bb1c68d86065c4e21e2d814",
+  "frozen": true
+}

@@ -1,0 +1,1732 @@
+{
+  "l0Conversations": [
+    {
+      "assetId": "T02-L0-01",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l0"
+      ],
+      "observedAt": "2026-07-09T09:15:00+08:00",
+      "sessionId": "T02-L0-01",
+      "messages": [
+        {
+          "messageId": "T02-L0-01-M001",
+          "role": "user",
+          "content": "今天先把事件时间的时区边界定下来，日报跨天时最容易出错。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-09T09:15:00+08:00",
+          "contentHash": "a6d9215264793ea0da12d38673eef0daf903365f1c12747571f4642a547e0305"
+        },
+        {
+          "messageId": "T02-L0-01-M002",
+          "role": "assistant",
+          "content": "我建议先统一事件时间，再按报告时区确定日界线，避免混合时区直接分桶。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-09T09:15:00+08:00",
+          "contentHash": "447759766c94894548303e4c1f52472c642993ed749f7f0ac09cedeb59009562"
+        },
+        {
+          "messageId": "T02-L0-01-M003",
+          "role": "user",
+          "content": "团队记录里希望先落到 UTC，展示和边界判断再转成 Asia/Shanghai。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-09T09:15:00+08:00",
+          "contentHash": "d88baa93527c46a9c4cf626b0bfba262426fc95021532e4a87938decaadc5b41"
+        },
+        {
+          "messageId": "T02-L0-01-M004",
+          "role": "assistant",
+          "content": "可以，流程就是先归一化到 UTC，再转换到 Asia/Shanghai，最后做 daily resample。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-09T09:15:00+08:00",
+          "contentHash": "8d8f640f1cfd21d8b93d37fc537fb7f680554bd91fd5f27e3651295abf2db57e"
+        },
+        {
+          "messageId": "T02-L0-01-M005",
+          "role": "user",
+          "content": "如果原始列里同时有带时区和不带时区的值，是否也沿用这条流程？",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-09T09:15:00+08:00",
+          "contentHash": "554f2d9d8d272e3c7676f98fac8c31f4ed41480e995eb5d64f04958ca6c9e9a5"
+        },
+        {
+          "messageId": "T02-L0-01-M006",
+          "role": "assistant",
+          "content": "不沿用；naive mixed-zone timestamps 不能直接 resample，必须先清理并明确每个值的时区。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-09T09:15:00+08:00",
+          "contentHash": "18408709bf821192f7c4457ef50677e49d94f89e8a1e2dad9fcb05af54e6901f"
+        },
+        {
+          "messageId": "T02-L0-01-M007",
+          "role": "user",
+          "content": "我把这点写成评审边界，强调报告日界线不是原始采集日界线。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-09T09:15:00+08:00",
+          "contentHash": "33d5480287175be8d109f636c12f165decba48ecffefb5885ba208ffa295e47c"
+        },
+        {
+          "messageId": "T02-L0-01-M008",
+          "role": "assistant",
+          "content": "很好，保留原始瞬时点的统一表示，只有报告分组使用上海时区。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-09T09:15:00+08:00",
+          "contentHash": "9c42fad89810daaceae70858cefbcc1f561a08652d20c3e51bbb1962a7772aee"
+        },
+        {
+          "messageId": "T02-L0-01-M009",
+          "role": "user",
+          "content": "这样夏令时或跨午夜的样本也能在同一个规则下复核。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-09T09:15:00+08:00",
+          "contentHash": "8e64e3dfcfc9c8c09a98a8b138a42ca47b81e754ca954036b6e62fca70bc43dd"
+        },
+        {
+          "messageId": "T02-L0-01-M010",
+          "role": "assistant",
+          "content": "对，复核时先看 UTC 归一化，再看上海本地日期，顺序不要交换。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-09T09:15:00+08:00",
+          "contentHash": "97cc18dfd05c594410057e06d78c599896a19c0224e2446b6d6d19a02374c22c"
+        },
+        {
+          "messageId": "T02-L0-01-M011",
+          "role": "user",
+          "content": "我会在说明里使用‘先 UTC、后 Asia/Shanghai、再 daily resample’这句固定表述。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-09T09:15:00+08:00",
+          "contentHash": "fed4160cdfa47c6d0ecc23c384572be3a9bc7fa629c6fbc1ea28166cb839d18b"
+        },
+        {
+          "messageId": "T02-L0-01-M012",
+          "role": "assistant",
+          "content": "确认，这就是我们这条内部数据流的时区规范，不把它描述成外部项目的既定事实。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-09T09:15:00+08:00",
+          "contentHash": "56c8954491a73ee6281c5b98a9332a51752a2997b6141e563e72722762fcf590"
+        }
+      ],
+      "contentHash": "b9e373c821f62f2bed51a8dc86c3d43a366aa4f574e40828bac47077074c90ef"
+    },
+    {
+      "assetId": "T02-L0-02",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l0"
+      ],
+      "observedAt": "2026-07-10T10:05:00+08:00",
+      "sessionId": "T02-L0-02",
+      "messages": [
+        {
+          "messageId": "T02-L0-02-M001",
+          "role": "user",
+          "content": "小时桶缺失的问题又出现了，原始事件本来就可能没有记录。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-10T10:05:00+08:00",
+          "contentHash": "b686cc262684b3b831016813fc391658a08fd3a4885425510861664b6e67c104"
+        },
+        {
+          "messageId": "T02-L0-02-M002",
+          "role": "assistant",
+          "content": "我们要区分缺失桶和缺失事件，先聚合已有事件，再补齐小时桶。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-10T10:05:00+08:00",
+          "contentHash": "4a239296365464feee96b6a5696f7bf1e6f0261ebb442370b028ea1efbc5daa2"
+        },
+        {
+          "messageId": "T02-L0-02-M003",
+          "role": "user",
+          "content": "也就是说填充发生在 aggregation 之后，而不是把原始表先铺成完整网格。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-10T10:05:00+08:00",
+          "contentHash": "4ca2e1ed074c4102f4f9db7b3174fc1039ab797dbb65a8fedce382dff7c8caaa"
+        },
+        {
+          "messageId": "T02-L0-02-M004",
+          "role": "assistant",
+          "content": "对，团队的 approved order 是 after aggregation 再 fills missing hourly buckets。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-10T10:05:00+08:00",
+          "contentHash": "aae45f60a88be7e0be30ede45a2e1124641a84cc2f14ae793510bd011699d9e2"
+        },
+        {
+          "messageId": "T02-L0-02-M005",
+          "role": "user",
+          "content": "这样不会把没有发生的 raw events 误当成零值，对吗？",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-10T10:05:00+08:00",
+          "contentHash": "5479ba2b5588faf04212a6aaafed838005f1f04200b6699706f7687b27ece447"
+        },
+        {
+          "messageId": "T02-L0-02-M006",
+          "role": "assistant",
+          "content": "对，absent raw events are not invented；补齐只表达时间轴上可见的空桶。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-10T10:05:00+08:00",
+          "contentHash": "89321c3bd8a69ee23fb54bcaa534f82732a9dab2477a467638641a047a2a45e5"
+        },
+        {
+          "messageId": "T02-L0-02-M007",
+          "role": "user",
+          "content": "我会同时记录聚合前后的行数，方便确认补齐没有改变真实事件数量。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-10T10:05:00+08:00",
+          "contentHash": "d1a8b6e7f47e4fd4f5a144a4ab8123b6009a1e5a7d40c8f454e2211ca4afdb07"
+        },
+        {
+          "messageId": "T02-L0-02-M008",
+          "role": "assistant",
+          "content": "还要注明填充值的语义，空桶只是可报告的时间位置，不代表采集到零事件。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-10T10:05:00+08:00",
+          "contentHash": "02e9492d3278044aacbbb599d82a6b694d0d7a96413e11c98bb84799ea78e925"
+        },
+        {
+          "messageId": "T02-L0-02-M009",
+          "role": "user",
+          "content": "如果一天完全没有原始事件，也按同一顺序处理吗？",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-10T10:05:00+08:00",
+          "contentHash": "c16c575ce308d53faaff73156cb4783f99913c4533d43ff50701be24a35e1088"
+        },
+        {
+          "messageId": "T02-L0-02-M010",
+          "role": "assistant",
+          "content": "按同一顺序处理，但要从报告范围生成桶，不能回填任何不存在的事件明细。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-10T10:05:00+08:00",
+          "contentHash": "9dbbdacb6dee8f5024c31ba634380a44fefb86c9ebf2d5857315d656d443be0f"
+        },
+        {
+          "messageId": "T02-L0-02-M011",
+          "role": "user",
+          "content": "这条规则和时区规范衔接起来，就是先确定本地边界，再聚合，再补桶。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-10T10:05:00+08:00",
+          "contentHash": "b7f1e20237cc4684e02e63cad2661b6d4c30e29f734f01a785617278a4f78306"
+        },
+        {
+          "messageId": "T02-L0-02-M012",
+          "role": "assistant",
+          "content": "是的，我会把这看作团队内部的缺失桶约定，并标注它不是外部仓库事实。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-10T10:05:00+08:00",
+          "contentHash": "8e881aa80b9c93752ef5cc308b630bf17baa0296352f93d402a309316cea6597"
+        }
+      ],
+      "contentHash": "d7cfc590cb2b691d2a3fff9964f1968437f1efc6296d28941675253a5036383e"
+    },
+    {
+      "assetId": "T02-L0-03",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l0"
+      ],
+      "observedAt": "2026-07-14T14:20:00+08:00",
+      "sessionId": "T02-L0-03",
+      "messages": [
+        {
+          "messageId": "T02-L0-03-M001",
+          "role": "user",
+          "content": "季度相关性复核前，需要先明确两条序列的趋势怎么处理。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-14T14:20:00+08:00",
+          "contentHash": "e8dbae3245a5dfb35c8ca36b44ea9aa269bbd79bd156316fb360545879a23811"
+        },
+        {
+          "messageId": "T02-L0-03-M002",
+          "role": "assistant",
+          "content": "团队倾向于对每条序列分别移除线性趋势，再计算后续相关性。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-14T14:20:00+08:00",
+          "contentHash": "ccf3f8be5f6d5c1dcf5c3fcf668afc034bf9d1030174a1599284c02c04e48c65"
+        },
+        {
+          "messageId": "T02-L0-03-M003",
+          "role": "user",
+          "content": "请把 seasonal adjustment 和这一步分开，别在去趋势时顺便做季节调整。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-14T14:20:00+08:00",
+          "contentHash": "4acde18a19ef53ca4b5097fcc11928f683412ea6d582dd7251f92d8e661793b0"
+        },
+        {
+          "messageId": "T02-L0-03-M004",
+          "role": "assistant",
+          "content": "确认：for the quarterly correlation review, remove the linear trend from each series separately and keep seasonal adjustment outside this step。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-14T14:20:00+08:00",
+          "contentHash": "00291b36ac7157c500c21d255075ec1c3efd4cf1d7904bd757e3dcfa52a2a669"
+        },
+        {
+          "messageId": "T02-L0-03-M005",
+          "role": "user",
+          "content": "分别拟合比把两条序列拼起来拟合更容易解释，也便于逐条检查残差。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-14T14:20:00+08:00",
+          "contentHash": "abeffa90baf9864492496ec8196adda389dc25530207c2aa933e81b56fa3698a"
+        },
+        {
+          "messageId": "T02-L0-03-M006",
+          "role": "assistant",
+          "content": "对，每条序列保留自己的线性拟合和残差摘要，季度窗口保持一致。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-14T14:20:00+08:00",
+          "contentHash": "c754c165072dba756cc3bf3dca0af66d701fa9a6216c324b93740a7b32813641"
+        },
+        {
+          "messageId": "T02-L0-03-M007",
+          "role": "user",
+          "content": "我担心有人把季调参数混进趋势模型，所以在评审清单里单列一项。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-14T14:20:00+08:00",
+          "contentHash": "49ef4edda3b27119090e8c57821a3aaba4b1b7554e0436abe2ff040139ea24d7"
+        },
+        {
+          "messageId": "T02-L0-03-M008",
+          "role": "assistant",
+          "content": "可以，清单要求先确认线性去趋势完成，再在独立步骤讨论季节性。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-14T14:20:00+08:00",
+          "contentHash": "847b94a1476795945953baf522daf329c53acb877b1e8dc5686ead30057106c2"
+        },
+        {
+          "messageId": "T02-L0-03-M009",
+          "role": "user",
+          "content": "这次只批准线性模型，不扩展到高阶趋势。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-14T14:20:00+08:00",
+          "contentHash": "fce736be99bf74effdc1ba22b5ccef6f52dbbbde70f3002c61f8b0633f83646b"
+        },
+        {
+          "messageId": "T02-L0-03-M010",
+          "role": "assistant",
+          "content": "收到，当前内部决定只覆盖 separate linear detrending，其他模型另开讨论。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-14T14:20:00+08:00",
+          "contentHash": "55f7e4606a07d06e2aa5470e4de290a91cf0c7b1174446a5b1662d5d3c74922d"
+        },
+        {
+          "messageId": "T02-L0-03-M011",
+          "role": "user",
+          "content": "我会保留原序列、拟合项和残差，保证结果可以回溯。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-14T14:20:00+08:00",
+          "contentHash": "6f739562baaa245b9dfbaee4e61734db228b925ebb2b4e5ae3d6f7bc9743e6a8"
+        },
+        {
+          "messageId": "T02-L0-03-M012",
+          "role": "assistant",
+          "content": "很好，这样既能复核边界，也不会把团队选择误写成上游项目的结论。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-14T14:20:00+08:00",
+          "contentHash": "8473c64bd6b2a37ca075ca82ee0279e2d36f901acb7a8f5dea90cb54ae46fda7"
+        }
+      ],
+      "contentHash": "de2f9bc2f7fd65392200314e46934415128d7461c0f55028222c2060d6dc2152"
+    },
+    {
+      "assetId": "T02-L0-04",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l0"
+      ],
+      "observedAt": "2026-07-15T09:40:00+08:00",
+      "sessionId": "T02-L0-04",
+      "messages": [
+        {
+          "messageId": "T02-L0-04-M001",
+          "role": "user",
+          "content": "我翻到六月底的旧笔记，里面写的是先做 differencing。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-15T09:40:00+08:00",
+          "contentHash": "793405a74c8e3e6de018eedfba66064c9d7ac740f74027b9588886e305f05b96"
+        },
+        {
+          "messageId": "T02-L0-04-M002",
+          "role": "assistant",
+          "content": "那是早期探索记录，先不要让它覆盖昨天已经批准的线性去趋势方案。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-15T09:40:00+08:00",
+          "contentHash": "fd9ba8053d0e3f0d62cc232b4152675e9095971e0fef6447588e399e9ed18821"
+        },
+        {
+          "messageId": "T02-L0-04-M003",
+          "role": "user",
+          "content": "旧笔记的日期是 2026-06-28，新决策日期是 2026-07-14。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-15T09:40:00+08:00",
+          "contentHash": "835040b2ba34b14b123c2b0147066fe375945ad92a3a2b542035c02d7a4f8ad5"
+        },
+        {
+          "messageId": "T02-L0-04-M004",
+          "role": "assistant",
+          "content": "对，旧 note proposed differencing first；它已被 2026-07-14 的 linear-detrend decision supersede。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-15T09:40:00+08:00",
+          "contentHash": "310e7f60e942b776e7ebfae14e36bf731f4f8797bfa99be12c22cc90a06febff"
+        },
+        {
+          "messageId": "T02-L0-04-M005",
+          "role": "user",
+          "content": "我会给旧记录标记 superseded，并把新记录作为当前有效边界。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-15T09:40:00+08:00",
+          "contentHash": "b44e616882f13009ee6cda1ffdc0ed8c911e718f3edf7ed7fbd61ef341a3b00f"
+        },
+        {
+          "messageId": "T02-L0-04-M006",
+          "role": "assistant",
+          "content": "还请在变更说明里保留原因：季度相关性复核要求每条序列单独去线性趋势。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-15T09:40:00+08:00",
+          "contentHash": "912be6b7a0a081c811f86f40623489ac9222a947d220cd8d2c9d9ace11f64724"
+        },
+        {
+          "messageId": "T02-L0-04-M007",
+          "role": "user",
+          "content": "这样读到旧记录的人不会误以为两种预处理都同时生效。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-15T09:40:00+08:00",
+          "contentHash": "1e525e93377a9083f48b9faccf4331a18b7d0aeecfcfc8d2d10106478eb574ad"
+        },
+        {
+          "messageId": "T02-L0-04-M008",
+          "role": "assistant",
+          "content": "没错，历史记录仍可追溯，但执行清单只能引用当前有效决策。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-15T09:40:00+08:00",
+          "contentHash": "838160ba0c7e77c3af2d319073d599dc225e127c7735e1c941989fbce7b0666b"
+        },
+        {
+          "messageId": "T02-L0-04-M009",
+          "role": "user",
+          "content": "我也会注明季节调整不属于这次边界，避免从旧方案推导额外步骤。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-15T09:40:00+08:00",
+          "contentHash": "c5b7bec2bf5e09928925945f6ef4130ebf5e7662e822615f6f739004064a5359"
+        },
+        {
+          "messageId": "T02-L0-04-M010",
+          "role": "assistant",
+          "content": "很好，旧差分建议只作为被替换的事件，不再作为操作指引。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-15T09:40:00+08:00",
+          "contentHash": "5d53e0fb42b8b677f5b862bc501ef082fca8c89ae2a60d750ea19cd930cc06c7"
+        },
+        {
+          "messageId": "T02-L0-04-M011",
+          "role": "user",
+          "content": "复核时先看日期和状态，再决定采用哪条记录。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-15T09:40:00+08:00",
+          "contentHash": "4303b7e66569cd364a5346c75178845d45aa7e6b75cc6f9ae91d4082c8edd9e9"
+        },
+        {
+          "messageId": "T02-L0-04-M012",
+          "role": "assistant",
+          "content": "确认，这是团队内部的版本演进，不声称任何外部仓库采用了这套选择。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-15T09:40:00+08:00",
+          "contentHash": "934d97561c82365f4ca4c2fb162ab137306076c73fed6afb9c6abcb895613f63"
+        }
+      ],
+      "contentHash": "aadcb99f7788520170d9995da0e55d021fd24cf1955fb163b5b60f4a2b57b51a"
+    },
+    {
+      "assetId": "T02-L0-05",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l0"
+      ],
+      "observedAt": "2026-08-03T11:10:00+08:00",
+      "sessionId": "T02-L0-05",
+      "messages": [
+        {
+          "messageId": "T02-L0-05-M001",
+          "role": "user",
+          "content": "这次 skew review 的重点是找出月份和地区组合带来的长尾。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-03T11:10:00+08:00",
+          "contentHash": "f6d942eb76549ccdfcc58a20f8219d48e97b4ec195cbbe486021ceb154a04196"
+        },
+        {
+          "messageId": "T02-L0-05-M002",
+          "role": "assistant",
+          "content": "先按 month and region 分组，再基于组合做 repartition，比较容易保留业务边界。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-03T11:10:00+08:00",
+          "contentHash": "6eaa34966e8601ad8d63816eda1bf8db32bb455cd07c386cc2200f432b57341c"
+        },
+        {
+          "messageId": "T02-L0-05-M003",
+          "role": "user",
+          "content": "只按 customer_id 切分看起来简单，但热点客户会把一个分区撑大。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-03T11:10:00+08:00",
+          "contentHash": "dea2c5d5c4d66b76f09ffcff3dc5ba28267d0da3d28f42d5189de3c27f2898e8"
+        },
+        {
+          "messageId": "T02-L0-05-M004",
+          "role": "assistant",
+          "content": "对，customer_id-only partitioning 保留为 documented rejected option，不作为当前布局。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-03T11:10:00+08:00",
+          "contentHash": "c11d42ff94d262c7ce74ba1e37da977f3477231b7955835066f1d62492843d4e"
+        },
+        {
+          "messageId": "T02-L0-05-M005",
+          "role": "user",
+          "content": "我会先统计每个组合的行数，再决定分区目标大小。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-03T11:10:00+08:00",
+          "contentHash": "3c781c26498186f171f02d2b1fee741069418c6c02779d3357b35c81b3c9740f"
+        },
+        {
+          "messageId": "T02-L0-05-M006",
+          "role": "assistant",
+          "content": "顺序正确；先识别组合的分布，再做分区，不要用平均值掩盖长尾。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-03T11:10:00+08:00",
+          "contentHash": "d6f83f91849adabafa5b371fe8816a8e8cdafcef2fbe2926de9b4e2bf4859bdf"
+        },
+        {
+          "messageId": "T02-L0-05-M007",
+          "role": "user",
+          "content": "地区字段有少量空值，我会把空值作为显式类别参与统计。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-03T11:10:00+08:00",
+          "contentHash": "7e5edc513911632007c465eb6e0d07e0aa1b55d08fb7730356e363a7ac1be71f"
+        },
+        {
+          "messageId": "T02-L0-05-M008",
+          "role": "assistant",
+          "content": "可以，只要在记录里说明空值类别的处理，避免它悄悄进入默认分区。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-03T11:10:00+08:00",
+          "contentHash": "61b3b048750e82d865107f311e1813b82a8b7d671f9777e0858987704f8d9317"
+        },
+        {
+          "messageId": "T02-L0-05-M009",
+          "role": "user",
+          "content": "这条结论是团队对当前特征工作负载的决定，不是某个外部代码库的承诺。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-03T11:10:00+08:00",
+          "contentHash": "6323f85402b3b764ff0a3d613cbcd771305ddb4f18b33ba7c66e80828da6cff6"
+        },
+        {
+          "messageId": "T02-L0-05-M010",
+          "role": "assistant",
+          "content": "对，文档写成内部 review 结论，并附上分布摘要供下次复核。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-03T11:10:00+08:00",
+          "contentHash": "0a1b77a9cf924e9b42fa0addd7f12e7cfc2c1363dc59354a4709e8c8c6b328de"
+        },
+        {
+          "messageId": "T02-L0-05-M011",
+          "role": "user",
+          "content": "我会把 rejected option 和采用的 month-region 方案放在同一段，方便查历史。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-03T11:10:00+08:00",
+          "contentHash": "b5bb94fd7c5c26610457b40a1b34b9a8db68d930da94edd82d2d176c60aa1f00"
+        },
+        {
+          "messageId": "T02-L0-05-M012",
+          "role": "assistant",
+          "content": "确认，先按月和地区，再 repartition 是本轮的固定诊断顺序。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-03T11:10:00+08:00",
+          "contentHash": "a724a2eb8b9f9f454ae8e6e84ec3876c93f2d6bd36b1f26b16b283dc1ad9f5d9"
+        }
+      ],
+      "contentHash": "387e3870a8e579746b0fe32337727f76a9f4153e0ccc6cd290ef215997f5b3e7"
+    },
+    {
+      "assetId": "T02-L0-06",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l0"
+      ],
+      "observedAt": "2026-08-04T15:30:00+08:00",
+      "sessionId": "T02-L0-06",
+      "messages": [
+        {
+          "messageId": "T02-L0-06-M001",
+          "role": "user",
+          "content": "worker memory 的边界需要写得足够具体，否则 persist 时很容易爆峰值。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-04T15:30:00+08:00",
+          "contentHash": "c5a947e2e4697a04e32d83d9dbb866cf6690b5f0a5cf0153eb11e0e41b377974"
+        },
+        {
+          "messageId": "T02-L0-06-M002",
+          "role": "assistant",
+          "content": "团队当前把每个 worker 限制在 6 GiB，并要求在 persist 前裁剪必需列。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-04T15:30:00+08:00",
+          "contentHash": "16c730531926e419808219821bc1e53eff55e0508260473497e3f35413907301"
+        },
+        {
+          "messageId": "T02-L0-06-M003",
+          "role": "user",
+          "content": "诊断阶段是不是也不能对完整 frame 做 compute？",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-04T15:30:00+08:00",
+          "contentHash": "f5306e9f159533e11ae91f092469ac5f7ef15eaccc78761de2ee0dcdd3baf40f"
+        },
+        {
+          "messageId": "T02-L0-06-M004",
+          "role": "assistant",
+          "content": "对，guidance avoids a full-frame compute during diagnostics；只取必要的摘要和列。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-04T15:30:00+08:00",
+          "contentHash": "4fd7d03b935c67434fb1f82bdb3fe0d49f84084de21d3a2d4a17a46842c862c3"
+        },
+        {
+          "messageId": "T02-L0-06-M005",
+          "role": "user",
+          "content": "我会把列裁剪放在分区处理之前，减少中间对象。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-04T15:30:00+08:00",
+          "contentHash": "c7640d8d145707cbb106936be74c7c6dd267bfd36003b1bc8b64447b4978b222"
+        },
+        {
+          "messageId": "T02-L0-06-M006",
+          "role": "assistant",
+          "content": "这样符合 data flow 约束，另外要记录每个分区的峰值观察。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-04T15:30:00+08:00",
+          "contentHash": "928b3dab6910c634c0ebbeb2df2ef4bb6f92f64308a6bc379a805b0c6b08a267"
+        },
+        {
+          "messageId": "T02-L0-06-M007",
+          "role": "user",
+          "content": "6 GiB 是硬边界还是可以临时突破？",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-04T15:30:00+08:00",
+          "contentHash": "02327b4e93022e30986ee566c6c0a51b15828f91bd2cc234b591d2ab2a8b1f00"
+        },
+        {
+          "messageId": "T02-L0-06-M008",
+          "role": "assistant",
+          "content": "在本轮项目指导中是硬边界，不能用临时突破来掩盖中间结果过大。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-04T15:30:00+08:00",
+          "contentHash": "fffbe75b64480d90a15eae49ab7d672f4ed4eb9119204246fadc7657e1935189"
+        },
+        {
+          "messageId": "T02-L0-06-M009",
+          "role": "user",
+          "content": "那就把完整计算留到明确的汇总阶段，诊断只做抽样和计数。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-04T15:30:00+08:00",
+          "contentHash": "502521b1f0b403ce106e9a36f3b4645ae6c83d53c2d650e88f78786559c29c84"
+        },
+        {
+          "messageId": "T02-L0-06-M010",
+          "role": "assistant",
+          "content": "对，并且汇总前再次确认只保留 required columns，避免列裁剪被后续步骤绕开。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-04T15:30:00+08:00",
+          "contentHash": "98705ef231949b0dff0d3e68e17813b1c7ec6a92ab3bdbae81d747c8f670fa68"
+        },
+        {
+          "messageId": "T02-L0-06-M011",
+          "role": "user",
+          "content": "我会在记录中注明这只是团队内部运行约束。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-04T15:30:00+08:00",
+          "contentHash": "a974e99becd9de31b211724adf7e78db2a3265b97cee07adb96303eaca9d4d29"
+        },
+        {
+          "messageId": "T02-L0-06-M012",
+          "role": "assistant",
+          "content": "收到，6 GiB、先裁列、诊断不做 full-frame compute 三条一起保留。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-04T15:30:00+08:00",
+          "contentHash": "4d0229083aa3e6507f16fb92574f11a25373781f9f1c94f007e21664f9cffd3f"
+        }
+      ],
+      "contentHash": "82f029e03a10d118e793f12513d7c8409363c82e8a657c2e0d97fdc069f4ee6d"
+    },
+    {
+      "assetId": "T02-L0-07",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l0"
+      ],
+      "observedAt": "2026-08-05T10:25:00+08:00",
+      "sessionId": "T02-L0-07",
+      "messages": [
+        {
+          "messageId": "T02-L0-07-M001",
+          "role": "user",
+          "content": "worker 利用率的图已经有人想先解读了，但分区大小还没核对。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-05T10:25:00+08:00",
+          "contentHash": "36abd521f20dc0b0b2b2f5fdf68f99602972bc2e6399b70d4107aa6bcc587a72"
+        },
+        {
+          "messageId": "T02-L0-07-M002",
+          "role": "assistant",
+          "content": "本轮先比较 partition row-count spread，再讨论 worker utilization，不能倒过来。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-05T10:25:00+08:00",
+          "contentHash": "60d715fee90340e387506db76626d0e41ad12950b8a76e1bb12e832cd6660588"
+        },
+        {
+          "messageId": "T02-L0-07-M003",
+          "role": "user",
+          "content": "我会给每个分区算行数、最小值、最大值和分位数。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-05T10:25:00+08:00",
+          "contentHash": "f2d66e5462bd0d9fb193ab5bc90ce1d2fa693ef163b96e3168e2e024cd0faf81"
+        },
+        {
+          "messageId": "T02-L0-07-M004",
+          "role": "assistant",
+          "content": "可以，先看 spread 是否解释了利用率差异，再决定是否需要重新布局。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-05T10:25:00+08:00",
+          "contentHash": "f3bf9ea706380b8ba6bc5dc87246e3082343af46d589fadb4c73ad3e2da08b30"
+        },
+        {
+          "messageId": "T02-L0-07-M005",
+          "role": "user",
+          "content": "记录里不要写成未经测量的加速，当前没有测过完整运行。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-05T10:25:00+08:00",
+          "contentHash": "c44d889ef405164161d967e1ac493fca24dcc7953adb150af7bf4ba2b1c6576f"
+        },
+        {
+          "messageId": "T02-L0-07-M006",
+          "role": "assistant",
+          "content": "同意，当前复核不声称未经测量的加速；只报告分布和解释边界。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-05T10:25:00+08:00",
+          "contentHash": "e60a8be6345addeb82540d31d343abc36980feb8a1e147979da95b055abe5f39"
+        },
+        {
+          "messageId": "T02-L0-07-M007",
+          "role": "user",
+          "content": "如果利用率均匀但行数很不均匀，仍然先保留这项观察。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-05T10:25:00+08:00",
+          "contentHash": "aa2a63ab1848b379ca3c36b771d256c37495885f551b0f26828618555d9cbf8e"
+        },
+        {
+          "messageId": "T02-L0-07-M008",
+          "role": "assistant",
+          "content": "对，先如实记录两组指标，再判断调度和数据量是否存在脱钩。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-05T10:25:00+08:00",
+          "contentHash": "3c69552a805b6036cfeeb6397c3f5dedbdc2f1e8e756d488d4a6424016455431"
+        },
+        {
+          "messageId": "T02-L0-07-M009",
+          "role": "user",
+          "content": "这能避免从一张利用率截图推导性能结论。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-05T10:25:00+08:00",
+          "contentHash": "3a36416139b33913ebd48b679c9ab9b81a9b9e29facee9d739a32ac4c33b9d94"
+        },
+        {
+          "messageId": "T02-L0-07-M010",
+          "role": "assistant",
+          "content": "正是，结论必须停留在当前观测覆盖的范围内。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-05T10:25:00+08:00",
+          "contentHash": "7636949ac4bd10dcb37f92c260fa5281b1e74acd9cecace00a543154960e2a50"
+        },
+        {
+          "messageId": "T02-L0-07-M011",
+          "role": "user",
+          "content": "我会把行数 spread 的摘要放在利用率图之前。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-05T10:25:00+08:00",
+          "contentHash": "29d23abacbcadd3cdd82d01ef7426c0f275ba42bab9fe64bf99a812571041fa3"
+        },
+        {
+          "messageId": "T02-L0-07-M012",
+          "role": "assistant",
+          "content": "确认，团队顺序是 row-count spread first，且不宣称未经测量的加速。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-05T10:25:00+08:00",
+          "contentHash": "606d0c122315a4708a230e705a15fdf15e00502d1075939829c3f78da6730476"
+        }
+      ],
+      "contentHash": "063e4499430f43ccca12ea642a3adfa1166ee21819075b278bf356e2afe2a6f1"
+    },
+    {
+      "assetId": "T02-L0-08",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l0"
+      ],
+      "observedAt": "2026-08-11T13:00:00+08:00",
+      "sessionId": "T02-L0-08",
+      "messages": [
+        {
+          "messageId": "T02-L0-08-M001",
+          "role": "user",
+          "content": "交接笔记本最怕只在当前内核里顺着跑过一次，别人从头执行就断。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-11T13:00:00+08:00",
+          "contentHash": "15600e803dd92a81e86e457704b2c75519589512434dfcc1db28504a6cd2777a"
+        },
+        {
+          "messageId": "T02-L0-08-M002",
+          "role": "assistant",
+          "content": "团队要求 notebook must run top-to-bottom，并把执行顺序当成交付条件。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-11T13:00:00+08:00",
+          "contentHash": "b80c4b1a6a6460c49749a61c7344fb8537a752aaca8ef86d75c5eae226ea9eec"
+        },
+        {
+          "messageId": "T02-L0-08-M003",
+          "role": "user",
+          "content": "第一段诊断要先验证 timezone 和 frequency，对吧？",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-11T13:00:00+08:00",
+          "contentHash": "5d5b63fbd3fd43662e274423e50a4a6702e6c5ba1e5795d260dd6d109ee8e372"
+        },
+        {
+          "messageId": "T02-L0-08-M004",
+          "role": "assistant",
+          "content": "对，first diagnostic section validates timezone and frequency，先确认输入语义。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-11T13:00:00+08:00",
+          "contentHash": "099b2764b9fe8c188b6b55796e80b76ccad6748d555cf8a773af41a15dcafc62"
+        },
+        {
+          "messageId": "T02-L0-08-M005",
+          "role": "user",
+          "content": "趋势处理完成之前不要放图表，图表只在 detrending step 之后出现。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-11T13:00:00+08:00",
+          "contentHash": "13323c29f737e75d7dbcc852f026712ebc90df035857d23ed940c5ab7d592505"
+        },
+        {
+          "messageId": "T02-L0-08-M006",
+          "role": "assistant",
+          "content": "确认，charts appear only after the detrending step，避免读者误读未处理的序列。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-11T13:00:00+08:00",
+          "contentHash": "3324c853d1771b9732924efb3ae3a59a9d728cb83e54a318f6d5b3b554e552c6"
+        },
+        {
+          "messageId": "T02-L0-08-M007",
+          "role": "user",
+          "content": "我会清掉依赖隐藏状态的单元格，并在开头写明输入范围。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-11T13:00:00+08:00",
+          "contentHash": "342f7428f7b843a0a12c6a6469f470baa03710cee3b36717c6cfba82a4ecbce6"
+        },
+        {
+          "messageId": "T02-L0-08-M008",
+          "role": "assistant",
+          "content": "还需要让每个中间结果由前面单元格生成，不能依赖手工粘贴。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-11T13:00:00+08:00",
+          "contentHash": "64f70fa4ae058251ab575277534e94dd6043ac4f77bf5c546b5aae7578cf3297"
+        },
+        {
+          "messageId": "T02-L0-08-M009",
+          "role": "user",
+          "content": "这样交接方按顺序运行时，可以定位到底是哪一段失败。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-11T13:00:00+08:00",
+          "contentHash": "f4847d172519c4bb6dd1588e1246ab8ff9aea35d011f8d5ddbcc9d07333ad377"
+        },
+        {
+          "messageId": "T02-L0-08-M010",
+          "role": "assistant",
+          "content": "对，顺序化输出也便于审阅者复现每个检查点。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-11T13:00:00+08:00",
+          "contentHash": "e9237f4738e693122f49c11ab131d97bc0fd0c49611278216626d8add23f671e"
+        },
+        {
+          "messageId": "T02-L0-08-M011",
+          "role": "user",
+          "content": "我会在交接说明中把这三条作为长期结构约定。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-11T13:00:00+08:00",
+          "contentHash": "accdc1d84790887f1f12a145a6dca79753723cdd64aad7000660c0ff5ffe612e"
+        },
+        {
+          "messageId": "T02-L0-08-M012",
+          "role": "assistant",
+          "content": "很好，记录成团队内部 notebook handoff 规则，不把它归因给外部项目。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-11T13:00:00+08:00",
+          "contentHash": "d682d36eb7385e4ad94774705f0a9f04c8e615bbcb75bc4f0e3cd48b1161b479"
+        }
+      ],
+      "contentHash": "17ed9ce8a9c73c4142f6a5f92de4a40829e637fdbeb2b4a478c72a002617e0d8"
+    },
+    {
+      "assetId": "T02-L0-09",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l0"
+      ],
+      "observedAt": "2026-08-12T16:45:00+08:00",
+      "sessionId": "T02-L0-09",
+      "messages": [
+        {
+          "messageId": "T02-L0-09-M001",
+          "role": "user",
+          "content": "交接包里有一份看似完整的 cell output，但输入已经换过哈希了。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-12T16:45:00+08:00",
+          "contentHash": "f71a6dc41555938ee69b1059deb2af7e8bf82517e3a49af0a27abf30d75525da"
+        },
+        {
+          "messageId": "T02-L0-09-M002",
+          "role": "assistant",
+          "content": "不能把 stored cell output 当作执行证据，先核对输入哈希和执行顺序是否仍然有效。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-12T16:45:00+08:00",
+          "contentHash": "9f0ea07e775a3766007057b154409d5ad881ff48696b25a6db5416f1939d49d7"
+        },
+        {
+          "messageId": "T02-L0-09-M003",
+          "role": "user",
+          "content": "如果只改了一个前置单元格，后面的旧输出也全部失效吗？",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-12T16:45:00+08:00",
+          "contentHash": "6958acd29fea30ade40b69796187122b2e865a6dfe795e96c695ba5622766434"
+        },
+        {
+          "messageId": "T02-L0-09-M004",
+          "role": "assistant",
+          "content": "在当前交接规则下，只要输入 hash 或 execution order stale，旧输出就不被接受。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-12T16:45:00+08:00",
+          "contentHash": "237d8764d943e5e68d06bf6dcc51460edccf53c42948aa5f0be7000656b5f253"
+        },
+        {
+          "messageId": "T02-L0-09-M005",
+          "role": "user",
+          "content": "我会在笔记本头部记录输入指纹和最后一次顺序执行时间。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-12T16:45:00+08:00",
+          "contentHash": "cda040cc3da94f640281ff0077c48c2340dceb7901129a3ac9be33232bfebda1"
+        },
+        {
+          "messageId": "T02-L0-09-M006",
+          "role": "assistant",
+          "content": "可以，但时间戳只能辅助，最终仍要确认本次运行实际覆盖了所有单元格。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-12T16:45:00+08:00",
+          "contentHash": "5a2b2524a0b9d64061bb62e01228d5024255afe9dde3ae6c21dc4e55b92f6b21"
+        },
+        {
+          "messageId": "T02-L0-09-M007",
+          "role": "user",
+          "content": "那份旧输出保留作历史对照，不放进交付证据目录。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-12T16:45:00+08:00",
+          "contentHash": "e9d76f7f6e97cf90ed847f06543009319fe5ebdabd4c886c6f37cc7fd724f64c"
+        },
+        {
+          "messageId": "T02-L0-09-M008",
+          "role": "assistant",
+          "content": "对，标为 stale reference，不能和当前有效结果混在一起。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-12T16:45:00+08:00",
+          "contentHash": "8838228ed69f4db98f8bd091a8a7a1e4611f44149bcb2caa81b0241755837b22"
+        },
+        {
+          "messageId": "T02-L0-09-M009",
+          "role": "user",
+          "content": "如果无法重新执行，就应该明确说明缺少证据，而不是默认为通过。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-12T16:45:00+08:00",
+          "contentHash": "84273752045d469553309e2be6239dc812d01f93dfb2ea53b751659a3441b337"
+        },
+        {
+          "messageId": "T02-L0-09-M010",
+          "role": "assistant",
+          "content": "完全同意，缺少 fresh run 时只报告不可验证，不补造结论。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-12T16:45:00+08:00",
+          "contentHash": "7a111543d40cf899851016b0336a122ac49b95735902363b979b720625bd3c2d"
+        },
+        {
+          "messageId": "T02-L0-09-M011",
+          "role": "user",
+          "content": "我会让交接清单同时检查 hash 和顺序两个条件。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-12T16:45:00+08:00",
+          "contentHash": "eb4465ed432216d67eb1b8bbcb3480798af2d22f37bc3bd600e685d1b7dd4159"
+        },
+        {
+          "messageId": "T02-L0-09-M012",
+          "role": "assistant",
+          "content": "确认，这是团队内部的 stale-output rejection 规则，适用于本次交接。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-08-12T16:45:00+08:00",
+          "contentHash": "54bbe01d8262a7d259f1a34cd7e7ecf4cdae3850993209e3d45d0f84e233b823"
+        }
+      ],
+      "contentHash": "08bb3a8e48b6f91c02ce951ec037bbeccfdc5ccbdbda3445b64a5c6ea2872893"
+    },
+    {
+      "assetId": "T02-L0-10",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l0"
+      ],
+      "observedAt": "2026-07-18T11:35:00+08:00",
+      "sessionId": "T02-L0-10",
+      "messages": [
+        {
+          "messageId": "T02-L0-10-M001",
+          "role": "user",
+          "content": "今天先做一个旁支检查，看看重采样前 dtype 和 index 是否符合预期。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-18T11:35:00+08:00",
+          "contentHash": "0396c2cbda878b7a802291b400a1f4715c1171f4698c5ed753624fc1290d30d5"
+        },
+        {
+          "messageId": "T02-L0-10-M002",
+          "role": "assistant",
+          "content": "可以，先列出时间列 dtype、索引类型以及重复索引的数量。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-18T11:35:00+08:00",
+          "contentHash": "f365ead3701f616fc26818014c6418f885d6564106967220c988af92d6674fa0"
+        },
+        {
+          "messageId": "T02-L0-10-M003",
+          "role": "user",
+          "content": "这不是在改变时区规范，只是确认输入形状足够清楚。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-18T11:35:00+08:00",
+          "contentHash": "779c01f4b3dc6462b0ac006cb7615acc37d691a2a46711c63177f7a1bcaa03dc"
+        },
+        {
+          "messageId": "T02-L0-10-M004",
+          "role": "assistant",
+          "content": "明白，dtype 和 index review 作为辅助记录，不替代主要的时间边界决定。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-18T11:35:00+08:00",
+          "contentHash": "621ac6b8254d5f2232f334a4c78d8ff885814fa46a30233abe2fd48f30a9d098"
+        },
+        {
+          "messageId": "T02-L0-10-M005",
+          "role": "user",
+          "content": "如果索引没有排序，我会先报告问题，不直接在摘要里掩盖。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-18T11:35:00+08:00",
+          "contentHash": "1848232f718cd9ff0c31fb5b30f6b20e5b03ba47216911b4f989a9de0be5f54d"
+        },
+        {
+          "messageId": "T02-L0-10-M006",
+          "role": "assistant",
+          "content": "对，排序、重复和空值都分开记，方便后续判断影响。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-18T11:35:00+08:00",
+          "contentHash": "a37ca2939836ea57d5720f336a465573e981f6533ca61c00bc14758cfaa9f982"
+        },
+        {
+          "messageId": "T02-L0-10-M007",
+          "role": "user",
+          "content": "这轮不引入新的填桶规则，避免把旁支检查变成流程变更。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-18T11:35:00+08:00",
+          "contentHash": "d8ff75a39f7a0245bff8af29ba42696f628585a2b2ca8ee6578022a23559ec48"
+        },
+        {
+          "messageId": "T02-L0-10-M008",
+          "role": "assistant",
+          "content": "同意，只确认输入状态，既有聚合和补桶约定保持不变。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-18T11:35:00+08:00",
+          "contentHash": "bb50a471a40a00cb62d6461e82c863c8e41f1271d3aff77eea3f1497bd4741f8"
+        },
+        {
+          "messageId": "T02-L0-10-M009",
+          "role": "user",
+          "content": "我会给检查结果加上采样范围，让人知道它不是全量证明。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-18T11:35:00+08:00",
+          "contentHash": "10b0290f78d5a018a1be2a677f3aaefbc06db02dbbe5716b7cdcd44020bc9e29"
+        },
+        {
+          "messageId": "T02-L0-10-M010",
+          "role": "assistant",
+          "content": "很好，旁支结果要标明观察范围和未覆盖的风险。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-18T11:35:00+08:00",
+          "contentHash": "67f80f64937e6e8bf4e8182dbd40eb330f134b9249e92600f74455b5731a72e3"
+        },
+        {
+          "messageId": "T02-L0-10-M011",
+          "role": "user",
+          "content": "最后把它放到复核附件里，不放在主流程的决策标题下。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-18T11:35:00+08:00",
+          "contentHash": "34f6e423dd74bc99c53dc8a89b85d36188303c0591deeb73468245d2442f40b8"
+        },
+        {
+          "messageId": "T02-L0-10-M012",
+          "role": "assistant",
+          "content": "确认，这是一条保守的输入质量观察，和主 resampling 顺序分开。",
+          "sourceEvidenceIds": [
+            "source-t02-luna-asset-world-l0"
+          ],
+          "observedAt": "2026-07-18T11:35:00+08:00",
+          "contentHash": "bd25381ef6edf1611c0161914394da2e554fc99f6152857a8577c7423419dcdb"
+        }
+      ],
+      "contentHash": "09d52668f2e3d98f73560c7e9315bc29b37a50fef9f1fd1c18571ab0a8248207"
+    }
+  ],
+  "l1Memories": [
+    {
+      "assetId": "T02-L1-PANDAS-RESAMPLE-TIMEZONE",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l1"
+      ],
+      "observedAt": "2026-07-09T12:00:00+08:00",
+      "type": "decision",
+      "runtimeType": "instruction",
+      "content": "Normalize event timestamps to UTC, convert to Asia/Shanghai for reporting boundaries, then perform the daily resample; do not resample naive mixed-zone timestamps.",
+      "status": "active",
+      "validFrom": "2026-07-09T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T02-L0-01-M012",
+        "T02-L0-02-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "540e15e22737b1b4f3bd7e05b5b1de2168e8cdc5891d48e120fdff5a9e166b5f"
+    },
+    {
+      "assetId": "T02-L1-PANDAS-MISSING-BUCKETS",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l1"
+      ],
+      "observedAt": "2026-07-10T12:00:00+08:00",
+      "type": "fact",
+      "runtimeType": "fact",
+      "content": "The Team's approved order fills missing hourly buckets after aggregation, not before, so absent raw events are not invented.",
+      "status": "active",
+      "validFrom": "2026-07-10T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T02-L0-02-M012",
+        "T02-L0-01-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "c09631e3c0f151194635be56de8f66d0830c060d7792c6a2a08a929ab5818ef8"
+    },
+    {
+      "assetId": "T02-L1-TIMESERIES-DETREND-LINEAR",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l1"
+      ],
+      "observedAt": "2026-07-14T12:00:00+08:00",
+      "type": "decision",
+      "runtimeType": "instruction",
+      "content": "For the quarterly correlation review, remove the linear trend from each series separately and keep seasonal adjustment outside this step.",
+      "status": "active",
+      "validFrom": "2026-07-14T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T02-L0-03-M012",
+        "T02-L0-04-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "c148e46405a417e34342feae608bcdf553f8c559b48d7c53c9dde09454e44771"
+    },
+    {
+      "assetId": "T02-L1-TIMESERIES-DIFFERENCE-OLD",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l1"
+      ],
+      "observedAt": "2026-06-28T12:00:00+08:00",
+      "type": "event",
+      "runtimeType": "fact",
+      "content": "An older note proposed differencing first; it is superseded by the 2026-07-14 linear-detrend decision for this project.",
+      "status": "superseded",
+      "supersededBy": "T02-L1-TIMESERIES-DETREND-LINEAR",
+      "validUntil": "2026-07-14T00:00:00+08:00",
+      "validFrom": "2026-06-28T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T02-L0-04-M012",
+        "T02-L0-03-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "f30b910bd14b1bae160281e51394b75a1bf0384903e7d05ec95345e27bead61f"
+    },
+    {
+      "assetId": "T02-L1-DASK-PARTITION-SKEW",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l1"
+      ],
+      "observedAt": "2026-08-03T12:00:00+08:00",
+      "type": "decision",
+      "runtimeType": "instruction",
+      "content": "The skew review groups the feature workload by month and region before repartitioning; customer_id-only partitioning is retained as a documented rejected option.",
+      "status": "active",
+      "validFrom": "2026-08-03T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T02-L0-05-M012",
+        "T02-L0-07-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "55171c15dba682e7e81f6cd63c4974f04b8d00a5524c95e54a150ab7534a1bca"
+    },
+    {
+      "assetId": "T02-L1-DASK-MEMORY-BOUNDARY",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l1"
+      ],
+      "observedAt": "2026-08-04T12:00:00+08:00",
+      "type": "decision",
+      "runtimeType": "instruction",
+      "content": "Project guidance limits each worker to 6 GiB, projects required columns before persist, and avoids a full-frame compute during diagnostics.",
+      "status": "active",
+      "validFrom": "2026-08-04T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T02-L0-06-M012",
+        "T02-L0-05-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "f171178b75b28d8e3e7e804b37199b90bc7e1e93e163c0e356127025239b31df"
+    },
+    {
+      "assetId": "T02-L1-DASK-ROW-SPREAD-FIRST",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l1"
+      ],
+      "observedAt": "2026-08-05T12:00:00+08:00",
+      "type": "fact",
+      "runtimeType": "fact",
+      "content": "The approved review compares partition row-count spread before interpreting worker utilization; it does not claim a benchmark speedup.",
+      "status": "active",
+      "validFrom": "2026-08-05T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T02-L0-07-M012",
+        "T02-L0-06-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "84c3d94a29f00d744dfcbed1832c877be7e5d2c64831ad71fae3011ed51f9859"
+    },
+    {
+      "assetId": "T02-L1-NOTEBOOK-EXECUTION-ORDER",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l1"
+      ],
+      "observedAt": "2026-08-11T12:00:00+08:00",
+      "type": "decision",
+      "runtimeType": "instruction",
+      "content": "The handoff notebook must run top-to-bottom; its first diagnostic section validates timezone and frequency, and charts appear only after the detrending step.",
+      "status": "active",
+      "validFrom": "2026-08-11T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T02-L0-08-M012",
+        "T02-L0-03-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "edc22489434f123e23792b342ce9f6f4cd6f11f772ec1c8553e2242eae146940"
+    },
+    {
+      "assetId": "T02-L1-NOTEBOOK-STALE-OUTPUT",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l1"
+      ],
+      "observedAt": "2026-08-12T12:00:00+08:00",
+      "type": "fact",
+      "runtimeType": "fact",
+      "content": "Stored cell output is not accepted as execution evidence when the input hash or execution order is stale.",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T02-L0-09-M012",
+        "T02-L0-08-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "e3211e732b85008b1b599954985fb837090065e0c80b03f07358c8aa67820b9b"
+    },
+    {
+      "assetId": "T02-L1-PANDAS-DTYPE-CHECK",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l1"
+      ],
+      "observedAt": "2026-07-18T12:00:00+08:00",
+      "type": "preference",
+      "runtimeType": "preference",
+      "content": "团队复核重采样输入时偏好先记录时间列 dtype、索引类型、排序和重复情况，再进入主流程。",
+      "status": "active",
+      "validFrom": "2026-07-18T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T02-L0-10-M012",
+        "T02-L0-01-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "505d206e969c32b9da99083e2bc9718759992fcd3c5310a09867b07d40488f67"
+    },
+    {
+      "assetId": "T02-L1-DASK-NULL-CATEGORY",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l1"
+      ],
+      "observedAt": "2026-08-03T12:00:00+08:00",
+      "type": "decision",
+      "runtimeType": "instruction",
+      "content": "团队在偏斜统计中将地区空值保留为显式类别，并单独说明其行数影响。",
+      "status": "active",
+      "validFrom": "2026-08-03T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T02-L0-05-M012",
+        "T02-L0-07-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "2ae510564a60d1570a96d5bf440632626207639dcbc8be869cbc2a5f22757b89"
+    },
+    {
+      "assetId": "T02-L1-DASK-SUMMARY-ONLY",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l1"
+      ],
+      "observedAt": "2026-08-04T12:00:00+08:00",
+      "type": "preference",
+      "runtimeType": "preference",
+      "content": "诊断阶段优先输出分位数、行数和峰值摘要，避免把大对象物化到内存中。",
+      "status": "active",
+      "validFrom": "2026-08-04T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T02-L0-06-M012",
+        "T02-L0-07-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "b9a361fb389c2688da10459dcec4ff2c54abda1310e1785c56d06f6a34ed435b"
+    },
+    {
+      "assetId": "T02-L1-NOTEBOOK-INPUT-FINGERPRINT",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l1"
+      ],
+      "observedAt": "2026-08-12T12:00:00+08:00",
+      "type": "fact",
+      "runtimeType": "fact",
+      "content": "交接笔记本在开头记录输入指纹和最近一次顺序执行时间，供复核者核对新鲜度。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T02-L0-09-M012",
+        "T02-L0-08-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "70cbca1c58d8880c81133b2f606b6e7e4c1ebe5238eb6ece3bc89b224a698b51"
+    },
+    {
+      "assetId": "T02-L1-PANDAS-SAMPLE-SCOPE",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l1"
+      ],
+      "observedAt": "2026-07-18T12:00:00+08:00",
+      "type": "preference",
+      "runtimeType": "preference",
+      "content": "输入质量旁支检查应标出采样范围和未覆盖风险，不把局部观察表述为全量证明。",
+      "status": "active",
+      "validFrom": "2026-07-18T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T02-L0-10-M012",
+        "T02-L0-02-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "cbc09af3c580ba69f5bd86db2508e88a91c41f8557c32ca11db150a3ed43342a"
+    },
+    {
+      "assetId": "T02-L1-TIMESERIES-RESIDUAL-AUDIT",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l1"
+      ],
+      "observedAt": "2026-07-14T12:00:00+08:00",
+      "type": "preference",
+      "runtimeType": "preference",
+      "content": "趋势复核偏好保留原序列、拟合项和残差摘要，以便逐条检查预处理影响。",
+      "status": "active",
+      "validFrom": "2026-07-14T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T02-L0-03-M012",
+        "T02-L0-04-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "cdeb8747e14d291852942ce84ce135c724ae8716204bbe688f391523711fa787"
+    }
+  ],
+  "l2Scenes": [
+    {
+      "assetId": "T02-L2-PANDAS-RESAMPLE-REVIEW",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l2"
+      ],
+      "observedAt": "2026-08-29T21:10:00+08:00",
+      "path": "/t02/pandas/resample-review",
+      "summary": "汇总时间归一化、报告边界与聚合后补齐桶的评审背景。",
+      "content": "该场景串联事件时间的统一表示、报告时区边界、每日重采样以及缺失小时桶的处理顺序，并保留输入 dtype 与索引检查作为旁支背景。内容来自团队内部的 Pandas 复核记录，强调空桶不等同于虚构原始事件。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T02-L0-01",
+        "T02-L0-02",
+        "T02-L0-10"
+      ],
+      "contentHash": "29e02906ee9e741404ddeb1ca0a26b79cf20a8450f46aed38e0bbcf2b950a09a"
+    },
+    {
+      "assetId": "T02-L2-DASK-PARTITION-OPERATIONS",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l2"
+      ],
+      "observedAt": "2026-08-29T21:10:00+08:00",
+      "path": "/t02/dask/partition-operations",
+      "summary": "汇总分区偏斜、内存边界与行数分布检查的项目背景。",
+      "content": "该场景整理月度与地区组合的分区讨论、被拒绝的单字段方案、每个 worker 的内存边界、持久化前的列裁剪，以及先看分区行数 spread 再解读利用率的诊断顺序。所有表述均是团队内部运行记录。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T02-L0-05",
+        "T02-L0-06",
+        "T02-L0-07"
+      ],
+      "contentHash": "9f362e4c9f9f517e4c6e40939fc5ea648d627d1e9dc0bb3f5549334507928daf"
+    },
+    {
+      "assetId": "T02-L2-TIMESERIES-VALIDATION",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l2"
+      ],
+      "observedAt": "2026-08-29T21:10:00+08:00",
+      "path": "/t02/timeseries/validation",
+      "summary": "汇总季度序列预处理和历史记录复核的背景。",
+      "content": "该场景描述季度相关性复核中的序列检查、分别处理趋势、将季节性留在独立步骤，以及旧差分笔记的状态核对。它帮助理解记录之间的时间关系和审阅边界，不替代任何新的项目结论。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T02-L0-03",
+        "T02-L0-04",
+        "T02-L0-08"
+      ],
+      "contentHash": "338b57f235ce1a8dc657d2f19fb9b26035034624bdf18a6d230812de87202fc5"
+    },
+    {
+      "assetId": "T02-L2-NOTEBOOK-HANDOFF",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l2"
+      ],
+      "observedAt": "2026-08-29T21:10:00+08:00",
+      "path": "/t02/notebook/handoff",
+      "summary": "汇总可复现交接笔记本的结构与输出新鲜度背景。",
+      "content": "该场景整理从上到下执行、首段时区和频率诊断、趋势处理后的图表安排，以及输入指纹、执行顺序和旧输出的核对方式。它呈现交接时的团队工作脉络，不引入外部仓库事实。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T02-L0-08",
+        "T02-L0-09",
+        "T02-L0-03"
+      ],
+      "contentHash": "56994aaba71db4709fa8169fbb3cbccc63a48b728c2e9d5beaf9fe0a1c8dcb70"
+    }
+  ],
+  "l3Profiles": [
+    {
+      "assetId": "T02-L3-DATA-COMPUTING-PROFILE",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-asset-world-l3"
+      ],
+      "observedAt": "2026-08-29T21:20:00+08:00",
+      "content": "团队长期偏好先明确时间语义和数据边界，再进行聚合、分区或趋势处理；重视小而可复核的中间摘要，避免无必要的大对象物化。交付时倾向于保留输入指纹、执行顺序、原始序列与残差等审计线索，并把历史建议与当前决定清楚分层。对局部样本保持谨慎，不把观察扩大为全量结论。",
+      "stability": "team",
+      "contentHash": "f660a79a0d0dad7a58608f7950b0ddb5e903e7ac44b3aab1cc934630a09f8f75"
+    }
+  ],
+  "runtimeTypeMappings": {
+    "T02-L1-PANDAS-RESAMPLE-TIMEZONE": "instruction",
+    "T02-L1-PANDAS-MISSING-BUCKETS": "fact",
+    "T02-L1-TIMESERIES-DETREND-LINEAR": "instruction",
+    "T02-L1-TIMESERIES-DIFFERENCE-OLD": "fact",
+    "T02-L1-DASK-PARTITION-SKEW": "instruction",
+    "T02-L1-DASK-MEMORY-BOUNDARY": "instruction",
+    "T02-L1-DASK-ROW-SPREAD-FIRST": "fact",
+    "T02-L1-NOTEBOOK-EXECUTION-ORDER": "instruction",
+    "T02-L1-NOTEBOOK-STALE-OUTPUT": "fact",
+    "T02-L1-PANDAS-DTYPE-CHECK": "preference",
+    "T02-L1-DASK-NULL-CATEGORY": "instruction",
+    "T02-L1-DASK-SUMMARY-ONLY": "preference",
+    "T02-L1-NOTEBOOK-INPUT-FINGERPRINT": "fact",
+    "T02-L1-PANDAS-SAMPLE-SCOPE": "preference",
+    "T02-L1-TIMESERIES-RESIDUAL-AUDIT": "preference"
+  }
+}

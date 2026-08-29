@@ -1,0 +1,33 @@
+{
+  "schema_version": "task1.github_skill_source.v1",
+  "team_id": "T02",
+  "name": "qdrant-clients-sdk",
+  "repository_url": "https://github.com/github/awesome-copilot",
+  "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+  "source_path": "skills/qdrant-clients-sdk/SKILL.md",
+  "license_spdx": "MIT",
+  "license_file": "../../licenses/MIT.txt",
+  "visibility": "search",
+  "description": "Use the Qdrant client for collections, payload filters, and idempotent vector operations.",
+  "use_when": "The project requires Qdrant client integration.",
+  "do_not_use_when": "The task is local Pandas or Dask computation.",
+  "main_raw_sha256": "eac9386970303787ccff5ce65f77e2bc51286a07b27977a8fba1f256f4c95426",
+  "raw_files": [
+    {
+      "path": "SKILL.md",
+      "source_path": "skills/qdrant-clients-sdk/SKILL.md",
+      "url": "https://raw.githubusercontent.com/github/awesome-copilot/f11a4e441c5ff061b4f8ae37952be8c602e4034e/skills/qdrant-clients-sdk/SKILL.md",
+      "sha256": "eac9386970303787ccff5ce65f77e2bc51286a07b27977a8fba1f256f4c95426",
+      "byte_length": 3015
+    }
+  ],
+  "adapted_files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "d7b38e979bfdc5cb621862e8a91a6e10cf101ae53980fdc3181a9dc219fa56f1",
+      "byte_length": 3089
+    }
+  ],
+  "adaptation_diff": "adaptation.diff",
+  "frozen": true
+}

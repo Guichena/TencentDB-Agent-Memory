@@ -1,0 +1,99 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t02-knowledge-expansion-batch-01",
+  "stage": "DS03",
+  "team_id": "T02",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T02-EXPANSION-KNOWLEDGE-K2",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我在整理 Dask 分区可靠性复核，想把公开 API 的调用和内部表达式的实现定位分开记录，后面还要把这份定位交给代码评审。"},
+        {"role": "assistant", "content": "可以。先把 repartition 的用户入口、表达式节点和依赖关系分成三层，避免从 API 文档或调用示例直接推断内部类的源码位置。"},
+        {"role": "user", "content": "当前样例会按月和地区调整特征数据的分区，讨论中提到过 Repartition 这个抽象表达式；我只想核对它在固定版本代码里的定义位置。"},
+        {"role": "assistant", "content": "明白，本次只核对 Repartition 类定义，不把 DataFrame 的 repartition 方法、量化重分区或数组实现当作同一个符号。"},
+        {"role": "user", "content": "冻结的 Dask 包里能看到 dataframe 的 collection 文件、一个 repartition 实现文件和 array/core.py。文件名能帮助缩小范围，但不能代替类定义的行号。"},
+        {"role": "assistant", "content": "对，collection 更像调用和包装入口，array/core.py 属于另一套数据结构；最终仍要以固定代码中 Repartition 的类声明为准，不能按文件名猜行号。"},
+        {"role": "user", "content": "这次交付只需要一个可复核的 file/line，暂时不要展开调用链、分区策略或内存建议；相邻类和公共方法只作为排除项。"},
+        {"role": "assistant", "content": "收到。项目、符号和候选文件范围已经清楚，但准确的源文件行号仍没有出现在当前记录里。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请给出当前固定 Dask 代码中 Repartition 类定义的准确源文件和行号，供我核对分区复核记录；不要延伸到调用链、分区策略或修复建议。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "补充记录仍然只有 Repartition 符号及其抽象表达式用途，没有提供固定代码中的源文件行号；请保留这个定位缺口。"},
+        "private_proposal": {
+          "unique_information_gap": "固定 Dask 代码证据中 Repartition 类定义的准确源文件和行号尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": ["cg-t02dsk01"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "从固定 Dask 代码图节点查询返回 Repartition 位于 dask/dataframe/dask_expr/_repartition.py:29 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充摘要已经补齐唯一缺口：固定 Dask 代码显示 Repartition 类定义位于 dask/dataframe/dask_expr/_repartition.py:29；其他项目背景、相邻符号排除项和查询保持不变。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "当前上下文已经给出 Repartition 的固定源文件和行号，并保留了公共入口、量化重分区、数组实现等边界；无需再次查询资源。"}
+      },
+      "visible_distractor_ids_author_only": ["cg-t02pnd01", "wiki-t02ops01"],
+      "controlled_delta_note": "Positive 仅保留 Repartition 类定义的固定 file/line 缺口；Negative 仅补齐 dask/dataframe/dask_expr/_repartition.py:29，其他 Dask 项目背景、相邻符号排除项和 query 完全不变。",
+      "source_fact_map": [
+        {"claim": "当前项目复核围绕 Dask 的分区与 worker 内存可靠性，项目材料包含 dataframe collection、repartition 实现和 array/core.py。", "source_id": "T02-TASK-DASK-PARALLEL", "locator": "input-pack.json#project_streams[1]"},
+        {"claim": "冻结 Dask 项目包固定在提交 9dc535daa30d7d36d63d4a003b54342fbc7032db，且 repartition 实现文件属于该包。", "source_id": "T02-TASK-DASK-PARALLEL", "locator": "formal-dataset/source-material/T02/workspaces/dask__dask/metadata.json#revision,files"},
+        {"claim": "固定代码图中 Repartition 类节点的目标结果为 dask/dataframe/dask_expr/_repartition.py:29。", "source_id": "cg-t02dsk01", "locator": "asset-world/asset-world-batch-01/draft.json#knowledge_fixtures[1].target_result; source-material/T02/workspaces/dask__dask/raw/dask/dataframe/dask_expr/_repartition.py#L29"}
+      ],
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为 Repartition 类定义的固定 file/line，没有暗示方法体、调用边或分区修复结论？",
+        "Negative 是否只补入 dask/dataframe/dask_expr/_repartition.py:29，并保持公共入口、量化重分区、数组实现排除项及 query 不变？",
+        "Dask 项目线索与相邻符号排除项，是否足以在可用知识资源中唯一选择 Repartition 的代码定位，而不会误选 Pandas 代码图或证据政策页面？"
+      ]
+    },
+    {
+      "draft_pair_id": "T02-EXPANSION-KNOWLEDGE-K3",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我在给 Dask 偏斜复核写交接说明。现在仪表盘能看到 worker utilization，但我担心大家把一个利用率截图误读成分区方案已经有效。"},
+        {"role": "assistant", "content": "这个风险确实存在。需要把分区大小分布、实际采用的分区决策和 worker 指标分开记录，先确认负载是否均衡，再讨论运行表现。"},
+        {"role": "user", "content": "当前数据按月和地区看起来更适合做组合键，customer_id 单列方案在讨论里也被认为不理想；不过这些只是复核背景，不是我要引用的证据条文。"},
+        {"role": "assistant", "content": "了解。背景可以说明为什么要检查偏斜，但不能把倾向性的方案讨论写成已批准的最低证据要求；还要保留测量范围和结论边界。"},
+        {"role": "user", "content": "我准备在诊断中只汇总每个 partition 的行数和 worker 指标，不做全表物化。性能部分也没有一轮可比较的基准运行。"},
+        {"role": "assistant", "content": "那就把摘要和性能结论分开：行数统计可以支持偏斜检查，利用率只能作为后续观察；没有对照运行时，不应把变化写成速度提升。"},
+        {"role": "user", "content": "固定资料里应该有一条关于偏斜复核最低证据的操作政策。我需要原文结论来定稿，暂时不要根据上面的背景自行拼接规则。"},
+        {"role": "assistant", "content": "目前记录只有数据场景、指标和没有基准运行的限制，政策页面的精确表述仍然缺失；我会把它与项目方案讨论保持区分。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请给出固定资料中关于 partition skew 最低证据的完整操作结论，供我写复核交接说明；不要额外推断性能提升。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "补充笔记仍只有分区行数、worker 指标和缺少基准运行的背景，没有保留固定资料中的完整政策结论；请保留这个证据缺口。"},
+        "private_proposal": {
+          "unique_information_gap": "固定操作政策中关于先比较分区行数 spread、记录分区决策、再解读 worker utilization，以及无 measured run 不声称 speedup 的完整结论尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": ["wiki-t02ops01"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "从固定操作政策页面查询返回完整的 partition row-count spread、partitioning decision、worker utilization 与 measured-run speedup 限制后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充摘要已经补齐唯一缺口：Compare partition row-count spread and record the partitioning decision before interpreting worker utilization; do not claim speedup without a measured run. 其余数据背景、指标边界和查询保持不变。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "当前上下文已经给出先比较 partition row-count spread、记录 partitioning decision、再解读 worker utilization，并禁止在没有 measured run 时声称 speedup 的完整规则；无需再次查询资源。"}
+      },
+      "visible_distractor_ids_author_only": ["cg-t02dsk01", "cg-t02pnd01"],
+      "controlled_delta_note": "Positive 仅保留固定操作政策的完整结论缺口；Negative 仅补齐 row-count spread、partitioning decision、worker utilization 及无 measured run 不声称 speedup 的规则，其他 Dask 场景、指标边界和 query 完全不变。",
+      "source_fact_map": [
+        {"claim": "Dask 项目的已批准复核事实要求先比较分区行数 spread，再解释 worker utilization，且不宣称基准 speedup。", "source_id": "T02-F07", "locator": "input-pack.json#synthetic_world_facts[T02-F07]"},
+        {"claim": "固定操作政策页面的摘要要求记录 partitioning decision，并在 measured run 缺失时禁止 claim speedup。", "source_id": "wiki-t02ops01", "locator": "asset-world/asset-world-batch-01/draft.json#knowledge_fixtures[2].target_result"},
+        {"claim": "Dask 分区操作场景汇总偏斜、内存边界与行数分布检查的项目背景，但不替代政策页面原文。", "source_id": "T02-L2-DASK-PARTITION-OPERATIONS", "locator": "asset-world/asset-world-batch-01/draft.json#l2_scenes[T02-L2-DASK-PARTITION-OPERATIONS]"}
+      ],
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为固定操作政策的完整结论，而没有把已有的行数指标、worker 指标或无基准背景误当成政策原文？",
+        "Negative 是否只补齐先比较 partition row-count spread、记录 partitioning decision、再解读 worker utilization，以及没有 measured run 不 claim speedup 的四段规则？",
+        "Dask 场景背景与代码图排除项，是否足以在可用知识资源中唯一选择 operations policy 页面，而不会误选 Repartition 代码定位？"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "schema_version": "task1.team_skill_sources.v1",
+  "team_id": "T02",
+  "frozen": true,
+  "sources": [
+    {
+      "name": "analyze-ci",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/fix-build-agentops/environment/skills/analyze-ci/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "f59a07dcffe019f17cfa6ec211cbfb070e6292257be7119ed55ffa0b9bce7197",
+      "package_path": "skills/analyze-ci",
+      "metadata_sha256": "7ea656186fc67ccfe9748b1ee215ef04e4a6268feccfc15ee81d99dedcf54f11"
+    },
+    {
+      "name": "grpo",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/debug-trl-grpo/environment/skills/grpo/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "90ef5f123f4b6107d85c69d53d6878aec29e5c08950dc52b9bd6fd872187804c",
+      "package_path": "skills/grpo",
+      "metadata_sha256": "153b1555e514efda1f308c054ec98847d528d0d0d4d27f4045b6ab9322d35e57"
+    },
+    {
+      "name": "jupyter-notebook",
+      "repository_url": "https://github.com/openai/skills",
+      "revision": "49f948faa9258a0c61caceaf225e179651397431",
+      "source_path": "skills/.curated/jupyter-notebook/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "62f102e8554b25716dccef0ffab4572d4e3eaf05ccc76562d33a065bc9c521fb",
+      "package_path": "skills/jupyter-notebook",
+      "metadata_sha256": "1e17ee2e88119acff278932908c6ef1003594707b9afd86529816a3b03e11cd4"
+    },
+    {
+      "name": "memory-optimization",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/parallel-tfidf-search/environment/skills/memory-optimization/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "cc56c4b8119265a50ae48506c20f6e495bcb7972dfb7e78adc5405b840fb2ba8",
+      "package_path": "skills/memory-optimization",
+      "metadata_sha256": "146c73b46594780d96fc0de4c5d53e98315aa99bf9d3a3b92ef10727818739a0"
+    },
+    {
+      "name": "pytest-coverage",
+      "repository_url": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "source_path": "skills/pytest-coverage/SKILL.md",
+      "license_spdx": "MIT",
+      "main_raw_sha256": "3778add8809c5aac585ab764090f46e7cfdb009ae3fc9fb308710538627970f9",
+      "package_path": "skills/pytest-coverage",
+      "metadata_sha256": "849df1784744d0f3779d3434024bc0ae3fd557fc588048cdc28dfc51e55d48a2"
+    },
+    {
+      "name": "python-parallelization",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/parallel-tfidf-search/environment/skills/python-parallelization/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "cade40ed1ab5ae28c52ef8ebeaaf0d72b0323d73aa1886f54f5a995685a48a79",
+      "package_path": "skills/python-parallelization",
+      "metadata_sha256": "a8651568b0089c07d5c225d56b5d933adefaf0ebbec44df94bad5bd75eb03aee"
+    },
+    {
+      "name": "qdrant-clients-sdk",
+      "repository_url": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "source_path": "skills/qdrant-clients-sdk/SKILL.md",
+      "license_spdx": "MIT",
+      "main_raw_sha256": "eac9386970303787ccff5ce65f77e2bc51286a07b27977a8fba1f256f4c95426",
+      "package_path": "skills/qdrant-clients-sdk",
+      "metadata_sha256": "3064a6e5b88c1bf42e4b9c1d462ae4c6a3c3c52b8917838120753e15a270b442"
+    },
+    {
+      "name": "qdrant-performance-optimization",
+      "repository_url": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "source_path": "skills/qdrant-performance-optimization/SKILL.md",
+      "license_spdx": "MIT",
+      "main_raw_sha256": "5323301ea670baa98623e53f8c363845f6edde59a2f0f88e0c6e948d61438a3f",
+      "package_path": "skills/qdrant-performance-optimization",
+      "metadata_sha256": "c96ebe4640c26f08bf0793f8e409bdcb80ac0be51dd3e74f55f4eefc316b611a"
+    },
+    {
+      "name": "qdrant-search-quality",
+      "repository_url": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "source_path": "skills/qdrant-search-quality/SKILL.md",
+      "license_spdx": "MIT",
+      "main_raw_sha256": "3af84e9019065cd90cc79210c5833153fc62acdcf55bda359ab7876809be0803",
+      "package_path": "skills/qdrant-search-quality",
+      "metadata_sha256": "990f417eb1801bd56c42abfb1dff67674c5530ef2725ac64d23cad9ad3e2b177"
+    },
+    {
+      "name": "setup-env",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/setup-fuzzing-py/environment/skills/setup-env/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "7b95dc92985ab21b131c5f1d14ec05cf27d145c5384e28bbf3022c7ea89f4202",
+      "package_path": "skills/setup-env",
+      "metadata_sha256": "2376bb9e033f85be9a7cfc930b2b191c30a1fec066b01a73388809078facb6f5"
+    },
+    {
+      "name": "temporal-python-testing",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/fix-build-agentops/environment/skills/temporal-python-testing/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "21e5d2382d474553eadb2771c764f4aa2b55a12bd75bc40894e68630c02db7bb",
+      "package_path": "skills/temporal-python-testing",
+      "metadata_sha256": "a880212633524adf077563e57b118a07ca657d9fd41dcf2ed8bef958d66f3e32"
+    },
+    {
+      "name": "testing-python",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/fix-build-agentops/environment/skills/testing-python/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "2741f4b02a7021658993213ce85095871e30ebfc1eba2bbef9d56f0bb71dea32",
+      "package_path": "skills/testing-python",
+      "metadata_sha256": "3c4489ed9bf4e8c04911ddd2b990548fbccc29c50298631b6033a1b95f4006fd"
+    },
+    {
+      "name": "timeseries-detrending",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/econ-detrending-correlation/environment/skills/timeseries-detrending/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "1169a82443b6b4571dbc37017c41e1b2b1e05e86e9d0b304af726c711111d4cd",
+      "package_path": "skills/timeseries-detrending",
+      "metadata_sha256": "990280eb7446a97342e29e90dfb1230a60ea675f93fcbe31bb790b63521e1556"
+    },
+    {
+      "name": "uv-package-manager",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/fix-build-agentops/environment/skills/uv-package-manager/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "85c71e75e63966eb06a72dc0a7ed2046c45c38bb5574d748603917c4a3801878",
+      "package_path": "skills/uv-package-manager",
+      "metadata_sha256": "4a03a3399ea9082dd83d270edae04d27a2bd3df668f8191296b403033b422c58"
+    },
+    {
+      "name": "workload-balancing",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/parallel-tfidf-search/environment/skills/workload-balancing/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "28260b9d369855ee36fab41bc2c084bb08e0473787888a3d20ca67d25d62ad5c",
+      "package_path": "skills/workload-balancing",
+      "metadata_sha256": "795d97c3a9248ba98f2024ba5f64bd83e866df73a45d4f83dc1326733fd3f296"
+    }
+  ]
+}

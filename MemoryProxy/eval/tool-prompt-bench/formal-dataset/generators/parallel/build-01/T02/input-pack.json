@@ -1,0 +1,186 @@
+{
+  "schema_version": "task1.team_input_pack.v1",
+  "frozen": true,
+  "stage": "DS03",
+  "team_id": "T02",
+  "split": "dev",
+  "theme": "Data computing: Pandas, time series, and Dask parallelism",
+  "launch_tag": "task1-data-parallel-launch-v2",
+  "launch_commit": "ef2ca4bd84e529c6c7d8a8df661520cbc3bf4bb0",
+  "schema_baseline_commit": "1048681880b51e7a52a6b8b0b731eadeec44e118",
+  "content_baseline_commit": "960021e472456515a89d3c2c4f2962fbf6cc51a1",
+  "generator": {
+    "model": "gpt-5.6-luna",
+    "reasoning_effort": "high",
+    "fork_turns": "none",
+    "prompt_version": "task1.t02-ds03.v1"
+  },
+  "final_quota": {
+    "paired_positive_negative_pairs": 15,
+    "natural_negative_cases": 10,
+    "total_cases": 40,
+    "positive_target_families": {"memory": 6, "skill": 6, "knowledge": 3},
+    "search_or_discovery_starts": {"memory": 4, "skill": 3, "knowledge": 3},
+    "direct_starts": {"memory": 2, "skill": 3, "knowledge": 0},
+    "memory_assets": {"L0": 10, "L1": 15, "L2": 4, "L3": 1},
+    "skills": {"total": 15, "listed": 5, "search_only": 10},
+    "knowledge": 3
+  },
+  "project_streams": [
+    {
+      "task_id": "T02-TASK-PANDAS-RESAMPLING",
+      "title": "Pandas timezone-aware resampling review",
+      "repo_slug": "pandas-dev/pandas",
+      "repo_url": "https://github.com/pandas-dev/pandas",
+      "commit": "4f86f278709810f97841f8e130f888146cc0a998",
+      "commit_time": "2026-08-29T12:07:55Z",
+      "license": "BSD-3-Clause",
+      "files": [
+        {"path":"LICENSE","sha256":"9850f6b5bdef7346503065807b878deb8058b976c5c329f4c4d23bf4796ce9ae"},
+        {"path":"README.md","sha256":"5c63b18d017b2200be7474166621177a311f461a9a5cf15813b865bacb4f2b9b"},
+        {"path":"pandas/core/resample.py","sha256":"5242219939e9f30a78eaeb4ada605fbd2bf323ce2a53a9fcb4284559607e011f"},
+        {"path":"pandas/core/frame.py","sha256":"083c0dfeecb1d79d3b8624dae33fbba115d1e3b57d1a51a10bd285f2b78e270d"},
+        {"path":"pandas/tests/resample/test_datetime_index.py","sha256":"cbd4c70f084f86ae7f74536ab2936c57ba297f94d7a39d86c0d44c3315a54e27"}
+      ]
+    },
+    {
+      "task_id": "T02-TASK-DASK-PARALLEL",
+      "title": "Dask partition and worker-memory reliability",
+      "repo_slug": "dask/dask",
+      "repo_url": "https://github.com/dask/dask",
+      "commit": "9dc535daa30d7d36d63d4a003b54342fbc7032db",
+      "commit_time": "2026-08-24T18:45:44Z",
+      "license": "BSD-3-Clause",
+      "files": [
+        {"path":"LICENSE.txt","sha256":"121b79f2afb8b6a68f30067f98a035ab083780bd343205a072d76924383b63cf"},
+        {"path":"README.rst","sha256":"3f78e7b7da7417a2f880927f157951f187fb88154baedfaa1cde52ecded10f44"},
+        {"path":"dask/dataframe/dask_expr/_collection.py","sha256":"145c4474864a12c50c72568082269e98bc50b917750cd50ab5fd6c748fe75420"},
+        {"path":"dask/dataframe/dask_expr/_repartition.py","sha256":"7af2b632c1157a26c2ba88337be6a1e7c389c332c6a4af14ed9bb01641e2d941"},
+        {"path":"dask/array/core.py","sha256":"77ae57ea569569633d3ff87ee53ea7b52fb00ad1ddb4488f49f34f0789616386"}
+      ]
+    },
+    {
+      "task_id": "T02-TASK-TIMESERIES-DETREND",
+      "title": "Time-series detrending correlation review",
+      "repo_slug": "statsmodels/statsmodels",
+      "repo_url": "https://github.com/statsmodels/statsmodels",
+      "commit": "159fe37c3ecd973b208d37fae5b55c0cb735e2a7",
+      "commit_time": "2026-08-29T13:22:50Z",
+      "license": "BSD-3-Clause",
+      "files": [
+        {"path":"LICENSE.txt","sha256":"1ca78e1dec9dcebc55f3b96a862317f23e76422c5fc943568d955aad1f6b5fad"},
+        {"path":"README.md","sha256":"d430fa04083d240c9f0e75aa90bc73c13cb1a874f4c7b4ce29bddbb6366c4a42"},
+        {"path":"statsmodels/tsa/filters/filtertools.py","sha256":"15cdd47b03ef0d1d02e82c3fa5a7bd49bf341a3e32351482552f1b9b1596d3a2"},
+        {"path":"statsmodels/tsa/tsatools.py","sha256":"786ec958264edd6e4569cf8ebd7fe9014a767377feff7ac11e0c4eb5b5c86c64"}
+      ]
+    },
+    {
+      "task_id": "T02-TASK-NOTEBOOK-HANDOFF",
+      "title": "Reproducible data-computing notebook handoff",
+      "repo_slug": "jupyter/notebook",
+      "repo_url": "https://github.com/jupyter/notebook",
+      "commit": "062a2e41d3d2170ee144deff7b8e0fd252de96e2",
+      "commit_time": "2026-08-17T16:43:34Z",
+      "license": "BSD-3-Clause",
+      "files": [
+        {"path":"LICENSE","sha256":"5ca74e4d2eeb9330b0d129c25f874d3544a13413bc62ae8d367819100d095072"},
+        {"path":"README.md","sha256":"c915d71b0f3feab040d4268dc21e429c75fd6705cdf1ad9517b04ca214e2e8d7"}
+      ]
+    }
+  ],
+  "synthetic_world_facts": [
+    {"fact_id":"T02-F01","project":"Pandas resampling","date":"2026-07-09","runtime_type":"instruction","fact":"Normalize event timestamps to UTC, convert to Asia/Shanghai for reporting boundaries, then perform the daily resample; do not resample naive mixed-zone timestamps."},
+    {"fact_id":"T02-F02","project":"Pandas resampling","date":"2026-07-10","runtime_type":"fact","fact":"The Team's approved order fills missing hourly buckets after aggregation, not before, so absent raw events are not invented."},
+    {"fact_id":"T02-F03","project":"Time-series detrending","date":"2026-07-14","runtime_type":"instruction","fact":"For the quarterly correlation review, remove the linear trend from each series separately and keep seasonal adjustment outside this step."},
+    {"fact_id":"T02-F04","project":"Time-series detrending","date":"2026-06-28","runtime_type":"fact","fact":"An older note proposed differencing first; it is superseded by the 2026-07-14 linear-detrend decision for this project."},
+    {"fact_id":"T02-F05","project":"Dask parallelism","date":"2026-08-03","runtime_type":"instruction","fact":"The skew review groups the feature workload by month and region before repartitioning; customer_id-only partitioning is retained as a documented rejected option."},
+    {"fact_id":"T02-F06","project":"Dask parallelism","date":"2026-08-04","runtime_type":"instruction","fact":"Project guidance limits each worker to 6 GiB, projects required columns before persist, and avoids a full-frame compute during diagnostics."},
+    {"fact_id":"T02-F07","project":"Dask parallelism","date":"2026-08-05","runtime_type":"fact","fact":"The approved review compares partition row-count spread before interpreting worker utilization; it does not claim a benchmark speedup."},
+    {"fact_id":"T02-F08","project":"Notebook handoff","date":"2026-08-11","runtime_type":"instruction","fact":"The handoff notebook must run top-to-bottom; its first diagnostic section validates timezone and frequency, and charts appear only after the detrending step."},
+    {"fact_id":"T02-F09","project":"Notebook handoff","date":"2026-08-12","runtime_type":"fact","fact":"Stored cell output is not accepted as execution evidence when the input hash or execution order is stale."}
+  ],
+  "required_memory_assets": {
+    "l0_sessions": [
+      {"asset_id":"T02-L0-01","project":"Pandas resampling","topic":"timezone normalization decision","messages":12},
+      {"asset_id":"T02-L0-02","project":"Pandas resampling","topic":"post-aggregation missing buckets","messages":12},
+      {"asset_id":"T02-L0-03","project":"Time-series detrending","topic":"linear trend approval","messages":12},
+      {"asset_id":"T02-L0-04","project":"Time-series detrending","topic":"superseded differencing note","messages":12},
+      {"asset_id":"T02-L0-05","project":"Dask parallelism","topic":"month-region partition skew","messages":12},
+      {"asset_id":"T02-L0-06","project":"Dask parallelism","topic":"6 GiB worker memory boundary","messages":12},
+      {"asset_id":"T02-L0-07","project":"Dask parallelism","topic":"row-count spread before utilization","messages":12},
+      {"asset_id":"T02-L0-08","project":"Notebook handoff","topic":"top-to-bottom execution order","messages":12},
+      {"asset_id":"T02-L0-09","project":"Notebook handoff","topic":"stale output rejection","messages":12},
+      {"asset_id":"T02-L0-10","project":"Pandas resampling","topic":"dtype and index review distractor","messages":12}
+    ],
+    "l1_required_targets": [
+      {"asset_id":"T02-L1-PANDAS-RESAMPLE-TIMEZONE","fact_id":"T02-F01","formal_type":"decision","runtime_type":"instruction"},
+      {"asset_id":"T02-L1-PANDAS-MISSING-BUCKETS","fact_id":"T02-F02","formal_type":"fact","runtime_type":"fact"},
+      {"asset_id":"T02-L1-TIMESERIES-DETREND-LINEAR","fact_id":"T02-F03","formal_type":"decision","runtime_type":"instruction"},
+      {"asset_id":"T02-L1-TIMESERIES-DIFFERENCE-OLD","fact_id":"T02-F04","formal_type":"event","runtime_type":"fact","status":"superseded","superseded_by":"T02-L1-TIMESERIES-DETREND-LINEAR"},
+      {"asset_id":"T02-L1-DASK-PARTITION-SKEW","fact_id":"T02-F05","formal_type":"decision","runtime_type":"instruction"},
+      {"asset_id":"T02-L1-DASK-MEMORY-BOUNDARY","fact_id":"T02-F06","formal_type":"decision","runtime_type":"instruction"},
+      {"asset_id":"T02-L1-DASK-ROW-SPREAD-FIRST","fact_id":"T02-F07","formal_type":"fact","runtime_type":"fact"},
+      {"asset_id":"T02-L1-NOTEBOOK-EXECUTION-ORDER","fact_id":"T02-F08","formal_type":"decision","runtime_type":"instruction"},
+      {"asset_id":"T02-L1-NOTEBOOK-STALE-OUTPUT","fact_id":"T02-F09","formal_type":"fact","runtime_type":"fact"}
+    ],
+    "l1_total": 15,
+    "l2": [
+      {"asset_id":"T02-L2-PANDAS-RESAMPLE-REVIEW","path":"/t02/pandas/resample-review"},
+      {"asset_id":"T02-L2-DASK-PARTITION-OPERATIONS","path":"/t02/dask/partition-operations"},
+      {"asset_id":"T02-L2-TIMESERIES-VALIDATION","path":"/t02/timeseries/validation"},
+      {"asset_id":"T02-L2-NOTEBOOK-HANDOFF","path":"/t02/notebook/handoff"}
+    ],
+    "l3": {"asset_id":"T02-L3-DATA-COMPUTING-PROFILE","length_chinese_characters_min":80,"length_chinese_characters_max":220}
+  },
+  "memory_pair_plan": [
+    {"slot":"M1","start":"tdai_memory_search","target":"T02-L1-PANDAS-RESAMPLE-TIMEZONE","gap":"approved timezone/resample order"},
+    {"slot":"M2","start":"tdai_conversation_search","target":"T02-L0-05","gap":"exact prior Dask partition-skew diagnostic conclusion"},
+    {"slot":"M3","start":"tdai_memory_search","target":"T02-L1-NOTEBOOK-EXECUTION-ORDER","gap":"notebook execution-order handoff rule"},
+    {"slot":"M4","start":"tdai_conversation_search","target":"T02-L0-03","gap":"exact wording of the approved detrending boundary"},
+    {"slot":"M5","start":"tdai_atomic_query","target":"T02-L1-TIMESERIES-DETREND-LINEAR","filters":{"date":"2026-07-14","type":"instruction"}},
+    {"slot":"M6","start":"tdai_read_scene","target":"T02-L2-DASK-PARTITION-OPERATIONS","path":"/t02/dask/partition-operations"}
+  ],
+  "knowledge_fixtures": [
+    {"asset_id":"cg-t02pnd01","type":"code_graph","name":"pandas pinned resampling graph","repo_url":"https://github.com/pandas-dev/pandas","repo_commit":"4f86f278709810f97841f8e130f888146cc0a998","target_tool":"node","target_params":{"symbol":"Resampler"},"target_result":{"file":"pandas/core/resample.py","line":119}},
+    {"asset_id":"cg-t02dsk01","type":"code_graph","name":"Dask pinned repartition graph","repo_url":"https://github.com/dask/dask","repo_commit":"9dc535daa30d7d36d63d4a003b54342fbc7032db","target_tool":"node","target_params":{"symbol":"Repartition"},"target_result":{"file":"dask/dataframe/dask_expr/_repartition.py","line":29}},
+    {"asset_id":"wiki-t02ops01","type":"wiki","name":"T02 data-computing evidence policy","target_tool":"search","target_params":{"query":"partition skew minimum evidence"},"target_result":{"summary":"Compare partition row-count spread and record the partitioning decision before interpreting worker utilization; do not claim speedup without a measured run."}}
+  ],
+  "skill_pair_plan": [
+    {"slot":"S1","sequence":["skill_view"],"target":"timeseries-detrending"},
+    {"slot":"S2","sequence":["skill_view"],"target":"workload-balancing"},
+    {"slot":"S3","sequence":["skill_search","skill_view_by_id"],"target":"python-parallelization"},
+    {"slot":"S4","sequence":["skill_search","skill_view_by_id"],"target":"memory-optimization"},
+    {"slot":"S5","sequence":["skill_search","skill_view_by_id"],"target":"testing-python"},
+    {"slot":"S6","sequence":["skill_view","skill_files_read"],"target":"jupyter-notebook","resource":"references/notebook-structure.md"}
+  ],
+  "skill_source_pins": [
+    {"name":"timeseries-detrending","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/econ-detrending-correlation/environment/skills/timeseries-detrending/SKILL.md","license":"Apache-2.0","raw_sha256":"1169a82443b6b4571dbc37017c41e1b2b1e05e86e9d0b304af726c711111d4cd","visibility":"listed","description":"Detrend two time series before correlation analysis while preserving the chosen trend model and validation steps.","use_when":"The task asks for time-series detrending before a correlation or comparison.","do_not_use_when":"The task is ordinary resampling, worker scheduling, or Notebook structure."},
+    {"name":"jupyter-notebook","repo":"https://github.com/openai/skills","revision":"49f948faa9258a0c61caceaf225e179651397431","path":"skills/.curated/jupyter-notebook/SKILL.md","license":"Apache-2.0","raw_sha256":"62f102e8554b25716dccef0ffab4572d4e3eaf05ccc76562d33a065bc9c521fb","visibility":"listed","description":"Create and maintain reproducible Jupyter notebooks with clear structure, runnable cells, and reviewable outputs.","use_when":"A data-computing result must be delivered or audited as a reproducible Notebook.","do_not_use_when":"The main gap is a Dask partition plan or a time-series detrending method.","package_files":["LICENSE.txt","SKILL.md","agents/openai.yaml","assets/experiment-template.ipynb","assets/jupyter-small.svg","assets/jupyter.png","assets/tutorial-template.ipynb","references/experiment-patterns.md","references/notebook-structure.md","references/quality-checklist.md","references/tutorial-patterns.md","scripts/new_notebook.py"]},
+    {"name":"python-parallelization","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/parallel-tfidf-search/environment/skills/python-parallelization/SKILL.md","license":"Apache-2.0","raw_sha256":"cade40ed1ab5ae28c52ef8ebeaaf0d72b0323d73aa1886f54f5a995685a48a79","visibility":"search","description":"Organize CPU-bound Python work into bounded process-level parallel execution.","use_when":"The computation needs an explicit Python parallel execution plan.","do_not_use_when":"The bottleneck is worker memory, uneven work distribution, or detrending."},
+    {"name":"memory-optimization","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/parallel-tfidf-search/environment/skills/memory-optimization/SKILL.md","license":"Apache-2.0","raw_sha256":"cc56c4b8119265a50ae48506c20f6e495bcb7972dfb7e78adc5405b840fb2ba8","visibility":"search","description":"Reduce peak memory in Python batch processing through bounded intermediates and data-flow choices.","use_when":"Peak memory or intermediate materialization is the primary constraint.","do_not_use_when":"The main issue is load distribution or choosing a detrending method."},
+    {"name":"workload-balancing","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/parallel-tfidf-search/environment/skills/workload-balancing/SKILL.md","license":"Apache-2.0","raw_sha256":"28260b9d369855ee36fab41bc2c084bb08e0473787888a3d20ca67d25d62ad5c","visibility":"listed","description":"Balance uneven parallel workloads after the worker model is already selected.","use_when":"Workers exist but partition or task sizes are uneven.","do_not_use_when":"The task has not selected a parallel model or is only about Notebook structure."},
+    {"name":"testing-python","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/fix-build-agentops/environment/skills/testing-python/SKILL.md","license":"Apache-2.0","raw_sha256":"2741f4b02a7021658993213ce85095871e30ebfc1eba2bbef9d56f0bb71dea32","visibility":"search","description":"Audit and repair Python test or build failures with explicit evidence and rerun outputs.","use_when":"A Python data-computing change needs a failure-triage and test workflow.","do_not_use_when":"The missing method is specifically detrending, parallel scheduling, or Notebook construction."},
+    {"name":"pytest-coverage","repo":"https://github.com/github/awesome-copilot","revision":"f11a4e441c5ff061b4f8ae37952be8c602e4034e","path":"skills/pytest-coverage/SKILL.md","license":"MIT","raw_sha256":"3778add8809c5aac585ab764090f46e7cfdb009ae3fc9fb308710538627970f9","visibility":"search","description":"Use pytest coverage reports to locate untested Python branches and add focused tests.","use_when":"Coverage gaps are the explicit target.","do_not_use_when":"The task is performance, memory, or time-series methodology."},
+    {"name":"analyze-ci","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/fix-build-agentops/environment/skills/analyze-ci/SKILL.md","license":"Apache-2.0","raw_sha256":"f59a07dcffe019f17cfa6ec211cbfb070e6292257be7119ed55ffa0b9bce7197","visibility":"listed","description":"Separate CI log symptoms from root causes and preserve the evidence for a build decision.","use_when":"The data project is blocked on a CI failure snapshot.","do_not_use_when":"The request is an analysis method or worker-layout plan."},
+    {"name":"setup-env","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/setup-fuzzing-py/environment/skills/setup-env/SKILL.md","license":"Apache-2.0","raw_sha256":"7b95dc92985ab21b131c5f1d14ec05cf27d145c5384e28bbf3022c7ea89f4202","visibility":"search","description":"Create a Python environment from frozen dependency inputs.","use_when":"Environment construction is the unresolved step.","do_not_use_when":"The environment already works and the gap is data logic."},
+    {"name":"uv-package-manager","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/fix-build-agentops/environment/skills/uv-package-manager/SKILL.md","license":"Apache-2.0","raw_sha256":"85c71e75e63966eb06a72dc0a7ed2046c45c38bb5574d748603917c4a3801878","visibility":"listed","description":"Manage Python dependencies and virtual environments with uv.","use_when":"Dependency or environment management is the primary task.","do_not_use_when":"The request is data-frame logic, partitioning, or detrending."},
+    {"name":"qdrant-clients-sdk","repo":"https://github.com/github/awesome-copilot","revision":"f11a4e441c5ff061b4f8ae37952be8c602e4034e","path":"skills/qdrant-clients-sdk/SKILL.md","license":"MIT","raw_sha256":"eac9386970303787ccff5ce65f77e2bc51286a07b27977a8fba1f256f4c95426","visibility":"search","description":"Use the Qdrant client for collections, payload filters, and idempotent vector operations.","use_when":"The project requires Qdrant client integration.","do_not_use_when":"The task is local Pandas or Dask computation."},
+    {"name":"qdrant-performance-optimization","repo":"https://github.com/github/awesome-copilot","revision":"f11a4e441c5ff061b4f8ae37952be8c602e4034e","path":"skills/qdrant-performance-optimization/SKILL.md","license":"MIT","raw_sha256":"5323301ea670baa98623e53f8c363845f6edde59a2f0f88e0c6e948d61438a3f","visibility":"search","description":"Tune Qdrant indexing and search performance.","use_when":"Vector-search latency or throughput is the explicit bottleneck.","do_not_use_when":"The system is a Pandas/Dask batch pipeline."},
+    {"name":"qdrant-search-quality","repo":"https://github.com/github/awesome-copilot","revision":"f11a4e441c5ff061b4f8ae37952be8c602e4034e","path":"skills/qdrant-search-quality/SKILL.md","license":"MIT","raw_sha256":"3af84e9019065cd90cc79210c5833153fc62acdcf55bda359ab7876809be0803","visibility":"search","description":"Evaluate Qdrant search quality, filtering, and ranking behavior.","use_when":"Retrieval quality is the target.","do_not_use_when":"The task concerns data-frame resampling or parallel partitions."},
+    {"name":"temporal-python-testing","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/fix-build-agentops/environment/skills/temporal-python-testing/SKILL.md","license":"Apache-2.0","raw_sha256":"21e5d2382d474553eadb2771c764f4aa2b55a12bd75bc40894e68630c02db7bb","visibility":"search","description":"Choose local integration, replay, and unit-test boundaries for Temporal Python workflows.","use_when":"Temporal workflow testing is the explicit project.","do_not_use_when":"The target is a data analysis Notebook or Dask partition plan."},
+    {"name":"grpo","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/debug-trl-grpo/environment/skills/grpo/SKILL.md","license":"Apache-2.0","raw_sha256":"90ef5f123f4b6107d85c69d53d6878aec29e5c08950dc52b9bd6fd872187804c","visibility":"search","description":"Reason about GRPO trainer internals and algorithm-specific diagnostics.","use_when":"The task is specifically a GRPO trainer or algorithm issue.","do_not_use_when":"The task is Pandas, time-series detrending, Dask, or Notebook structure."}
+  ],
+  "production_routes": {
+    "memory": ["/memory-bridge/v3/atomic/search", "/memory-bridge/v3/atomic/query", "/memory-bridge/v3/conversation/search", "/memory-bridge/v3/conversation/query", "/memory-bridge/v3/scenario/ls", "/memory-bridge/v3/scenario/read"],
+    "skill": ["/skill-bridge/v3/skill/search", "/skill-bridge/v3/skill/get-by-name", "/skill-bridge/v3/skill/get", "/skill-bridge/v3/skill/files/read"],
+    "knowledge": ["/tools/list", "/tools/call"]
+  },
+  "generation_rules": {
+    "language":"zh",
+    "do_not_copy_t01":true,
+    "controlled_pair":"Positive and Negative share every field except one context message; Positive lacks one necessary fact/procedure/resource and Negative supplies exactly it.",
+    "visible_text_forbidden":["provider names","model names","Gold labels","asset IDs","tool-route answers","benchmark/scoring language"],
+    "external_claim_rule":"Project histories, Memory, internal Knowledge, and natural negatives are synthetic Team content. Do not claim that the synthetic project decisions are upstream repository facts.",
+    "no_upstream_actions":["clone","install","run upstream tests","extract official patches","run formal model evaluation"]
+  }
+}
