@@ -1,0 +1,594 @@
+{
+  "schema_version": "task1.luna_input_pack.v1",
+  "build_id": "build-03",
+  "stage": "DS05",
+  "team_id": "T06",
+  "split": "hidden_test",
+  "world_as_of": "2026-08-29T23:59:59+08:00",
+  "generator_contract": {
+    "model": "gpt-5.6-luna",
+    "reasoning_effort": "high",
+    "fork_turns": "none",
+    "verbosity": "concise",
+    "prompt_version": "task1.parallel.v2",
+    "draft_only": true,
+    "may_not_write_staging": true,
+    "may_not_decide_final_gold": true
+  },
+  "team": {
+    "name": "客户端与 CLI",
+    "mission": "维护 .NET CLI、VS Code 扩展、DVC 数据流水线以及跨平台命令行体验。",
+    "project_streams": [
+      {
+        "id": "harbor-admin-cli",
+        "summary": "基于 System.CommandLine 的 .NET 管理 CLI，关注命令组、全局选项、ParseResult 与退出码。"
+      },
+      {
+        "id": "orbit-vscode-extension",
+        "summary": "VS Code 客户端扩展，关注命令贡献、菜单可见性、侧栏入口与本地化。"
+      },
+      {
+        "id": "lineage-ml-pipeline",
+        "summary": "使用 DVC 管理数据、流水线、实验与远端缓存的机器学习项目。"
+      },
+      {
+        "id": "relay-terminal-client",
+        "summary": "跨平台终端客户端，关注参数解析、输出合同、错误边界与回归测试。"
+      },
+      {
+        "id": "compass-client-docs",
+        "summary": "客户端与 CLI 文档流，关注命令参考、示例、变更说明和普通文档干扰。"
+      }
+    ],
+    "agents": [
+      {
+        "agent_id": "agent-task1-t06-general",
+        "role": "当前通用业务 Agent"
+      },
+      {
+        "agent_id": "agent-task1-t06-assets-a",
+        "role": "团队 Skill 与 Memory 资产来源 A"
+      },
+      {
+        "agent_id": "agent-task1-t06-assets-b",
+        "role": "团队 Skill 与 Memory 资产来源 B"
+      }
+    ]
+  },
+  "counts": {
+    "l0_sessions": 10,
+    "l0_messages_each": [
+      12,
+      12
+    ],
+    "l1_memories": 16,
+    "l2_scenes": 4,
+    "l3_profiles": 1,
+    "skills": 16,
+    "knowledge": 3,
+    "memory_pairs": 6,
+    "skill_pairs": 6,
+    "knowledge_pairs": 3,
+    "natural_negatives": 10,
+    "total_pairs": 15,
+    "total_cases": 40
+  },
+  "source_lock": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T06/source-lock.json",
+  "skill_pool": [
+    {
+      "asset_id": "T06-SKILL-SYSTEM-COMMANDLINE",
+      "source_id": "T06-SRC-SYSTEM-COMMANDLINE",
+      "name": "system-commandline-cli",
+      "description": "System.CommandLine command architecture",
+      "use_when": "Use when adding .NET CLI commands, options, arguments, handlers, groups or recursive global options.",
+      "do_not_use_when": "Do not use for ordinary C# APIs, editor extensions, DVC workflows or generic documentation.",
+      "owner_agent_id": "agent-task1-t06-general",
+      "visibility": "private",
+      "bound_to_active_agent": true,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T06/raw/system-commandline-cli/SKILL.md",
+      "technical_invariant": "Preserve the frozen file's ordered technical workflow, recommendations, examples and safety boundaries; only adapt routing front matter.",
+      "resources": []
+    },
+    {
+      "asset_id": "T06-SKILL-VSCODE-COMMANDS",
+      "source_id": "T06-SRC-VSCODE-COMMANDS",
+      "name": "vscode-extension-commands",
+      "description": "VS Code extension command contributions",
+      "use_when": "Use when adding or updating contributed commands, Command Palette entries, side-bar commands, enablement or menu placement.",
+      "do_not_use_when": "Do not use for generic CLI parsing, extension localization-only work or ordinary documentation.",
+      "owner_agent_id": "agent-task1-t06-general",
+      "visibility": "private",
+      "bound_to_active_agent": true,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T06/raw/vscode-ext-commands/SKILL.md",
+      "technical_invariant": "Preserve the frozen file's ordered technical workflow, recommendations, examples and safety boundaries; only adapt routing front matter.",
+      "resources": []
+    },
+    {
+      "asset_id": "T06-SKILL-VSCODE-LOCALIZATION",
+      "source_id": "T06-SRC-VSCODE-L10N",
+      "name": "vscode-extension-localization",
+      "description": "VS Code extension localization",
+      "use_when": "Use when localizing extension commands, settings, menus, walkthroughs or runtime strings across supported languages.",
+      "do_not_use_when": "Do not use for command registration without localization, .NET CLI design or DVC.",
+      "owner_agent_id": "agent-task1-t06-assets-a",
+      "visibility": "team",
+      "bound_to_active_agent": false,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T06/raw/vscode-ext-localization/SKILL.md",
+      "technical_invariant": "Preserve the frozen file's ordered technical workflow, recommendations, examples and safety boundaries; only adapt routing front matter.",
+      "resources": []
+    },
+    {
+      "asset_id": "T06-SKILL-DOCUMENTATION-WRITER",
+      "source_id": "T06-SRC-DOC-WRITER",
+      "name": "documentation-writer",
+      "description": "Diátaxis documentation workflow",
+      "use_when": "Use when choosing and writing tutorials, how-to guides, references or explanations for a defined audience and goal.",
+      "do_not_use_when": "Do not use for implementing CLI parsers, extension commands or DVC pipelines.",
+      "owner_agent_id": "agent-task1-t06-general",
+      "visibility": "private",
+      "bound_to_active_agent": true,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T06/raw/documentation-writer/SKILL.md",
+      "technical_invariant": "Preserve the frozen file's ordered technical workflow, recommendations, examples and safety boundaries; only adapt routing front matter.",
+      "resources": []
+    },
+    {
+      "asset_id": "T06-SKILL-MICROSOFT-DOCS",
+      "source_id": "T06-SRC-MICROSOFT-DOCS",
+      "name": "microsoft-docs",
+      "description": "Microsoft documentation lookup",
+      "use_when": "Use when the task needs current Microsoft, .NET, Azure or VS Code documentation and examples from the documented source routes.",
+      "do_not_use_when": "Do not use when the required implementation procedure is already in a specific local Skill.",
+      "owner_agent_id": "agent-task1-t06-assets-a",
+      "visibility": "team",
+      "bound_to_active_agent": false,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T06/raw/microsoft-docs/SKILL.md",
+      "technical_invariant": "Preserve the frozen file's ordered technical workflow, recommendations, examples and safety boundaries; only adapt routing front matter.",
+      "resources": []
+    },
+    {
+      "asset_id": "T06-SKILL-CSHARP-DOCS",
+      "source_id": "T06-SRC-CSHARP-DOCS",
+      "name": "csharp-docs",
+      "description": "C# XML documentation",
+      "use_when": "Use when documenting C# types and members with XML comments, parameter, return, exception and example tags.",
+      "do_not_use_when": "Do not use for System.CommandLine architecture or non-documentation changes.",
+      "owner_agent_id": "agent-task1-t06-assets-b",
+      "visibility": "team",
+      "bound_to_active_agent": false,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T06/raw/csharp-docs/SKILL.md",
+      "technical_invariant": "Preserve the frozen file's ordered technical workflow, recommendations, examples and safety boundaries; only adapt routing front matter.",
+      "resources": []
+    },
+    {
+      "asset_id": "T06-SKILL-MCP-CLI",
+      "source_id": "T06-SRC-MCP-CLI",
+      "name": "mcp-cli",
+      "description": "MCP command-line client",
+      "use_when": "Use when discovering MCP servers and tools or calling an MCP tool from a command line with structured arguments.",
+      "do_not_use_when": "Do not use for building an application CLI, parsing its arguments or editing VS Code extensions.",
+      "owner_agent_id": "agent-task1-t06-assets-b",
+      "visibility": "team",
+      "bound_to_active_agent": false,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T06/raw/mcp-cli/SKILL.md",
+      "technical_invariant": "Preserve the frozen file's ordered technical workflow, recommendations, examples and safety boundaries; only adapt routing front matter.",
+      "resources": []
+    },
+    {
+      "asset_id": "T06-SKILL-CLI-MASTERY",
+      "source_id": "T06-SRC-CLI-MASTERY",
+      "name": "cli-mastery",
+      "description": "Copilot CLI training",
+      "use_when": "Use for interactive GitHub Copilot CLI lessons, quizzes, scenarios and reference questions.",
+      "do_not_use_when": "Do not use for application CLI implementation, System.CommandLine, VS Code extensions or DVC.",
+      "owner_agent_id": "agent-task1-t06-assets-a",
+      "visibility": "team",
+      "bound_to_active_agent": false,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T06/raw/cli-mastery/SKILL.md",
+      "technical_invariant": "Preserve the frozen file's ordered technical workflow, recommendations, examples and safety boundaries; only adapt routing front matter.",
+      "resources": []
+    },
+    {
+      "asset_id": "T06-SKILL-DVC",
+      "source_id": "T06-SRC-DVC",
+      "name": "dvc-cli",
+      "description": "DVC CLI task router",
+      "use_when": "Use when a task names DVC, dvc CLI commands, data pipelines, experiments, remotes, cache, metrics or parameters.",
+      "do_not_use_when": "Do not use for generic CLI creation, editor command contributions or ordinary docs.",
+      "owner_agent_id": "agent-task1-t06-general",
+      "visibility": "private",
+      "bound_to_active_agent": true,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T06/raw/dvc/SKILL.md",
+      "technical_invariant": "Preserve the frozen file's ordered technical workflow, recommendations, examples and safety boundaries; only adapt routing front matter.",
+      "resources": [
+        {
+          "source_id": "T06-SRC-DVC-REMOTES",
+          "path": "sub-skills/remotes-and-cache/SKILL.md",
+          "raw_file_sha256": "8b3b00e0ca498fde66d698f4ef0b4a25c41b49cc278cfe2dcb272182b72d348f",
+          "local_raw_path": "raw/dvc-remotes-and-cache/SKILL.md"
+        }
+      ]
+    },
+    {
+      "asset_id": "T06-SKILL-DVC-DATA-PIPELINES",
+      "source_id": "T06-SRC-DVC-DATA",
+      "name": "dvc-data-and-pipelines",
+      "description": "DVC data and pipelines",
+      "use_when": "Use for dvc init/add, .dvc files, dvc.yaml stages, lock files, repro, status, diff and DAG planning.",
+      "do_not_use_when": "Do not use for experiment queues, remote credentials, generic CLIs or editor extensions.",
+      "owner_agent_id": "agent-task1-t06-assets-a",
+      "visibility": "team",
+      "bound_to_active_agent": false,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T06/raw/dvc-data-and-pipelines/SKILL.md",
+      "technical_invariant": "Preserve the frozen file's ordered technical workflow, recommendations, examples and safety boundaries; only adapt routing front matter.",
+      "resources": []
+    },
+    {
+      "asset_id": "T06-SKILL-DVC-EXPERIMENTS",
+      "source_id": "T06-SRC-DVC-EXPERIMENTS",
+      "name": "dvc-experiments",
+      "description": "DVC experiments",
+      "use_when": "Use for dvc exp run, queue, show, diff, apply, branch, share, rename and cleanup workflows.",
+      "do_not_use_when": "Do not use for ordinary dvc repro pipeline design, remote setup or generic argument parsing.",
+      "owner_agent_id": "agent-task1-t06-assets-b",
+      "visibility": "team",
+      "bound_to_active_agent": false,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T06/raw/dvc-experiments/SKILL.md",
+      "technical_invariant": "Preserve the frozen file's ordered technical workflow, recommendations, examples and safety boundaries; only adapt routing front matter.",
+      "resources": []
+    },
+    {
+      "asset_id": "T06-SKILL-DVC-REMOTES-CACHE",
+      "source_id": "T06-SRC-DVC-REMOTES",
+      "name": "dvc-remotes-and-cache",
+      "description": "DVC remotes and cache",
+      "use_when": "Use for DVC remote configuration, push/pull/fetch, cache behavior, optional backends and safe garbage collection.",
+      "do_not_use_when": "Do not use for stage construction, experiment comparison, editor commands or generic docs.",
+      "owner_agent_id": "agent-task1-t06-assets-a",
+      "visibility": "team",
+      "bound_to_active_agent": false,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T06/raw/dvc-remotes-and-cache/SKILL.md",
+      "technical_invariant": "Preserve the frozen file's ordered technical workflow, recommendations, examples and safety boundaries; only adapt routing front matter.",
+      "resources": []
+    },
+    {
+      "asset_id": "T06-SKILL-DVC-METRICS-PARAMS-PLOTS",
+      "source_id": "T06-SRC-DVC-METRICS",
+      "name": "dvc-metrics-params-plots",
+      "description": "DVC metrics params and plots",
+      "use_when": "Use for declaring, showing, diffing or troubleshooting DVC metrics, parameters and plots.",
+      "do_not_use_when": "Do not use for remote configuration, generic CLI creation or extension command registration.",
+      "owner_agent_id": "agent-task1-t06-assets-b",
+      "visibility": "team",
+      "bound_to_active_agent": false,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T06/raw/dvc-metrics-params-plots/SKILL.md",
+      "technical_invariant": "Preserve the frozen file's ordered technical workflow, recommendations, examples and safety boundaries; only adapt routing front matter.",
+      "resources": []
+    },
+    {
+      "asset_id": "T06-SKILL-DART-CLI",
+      "source_id": "T06-SRC-DART-CLI",
+      "name": "dart-build-cli-app",
+      "description": "Dart CLI application construction",
+      "use_when": "Use when building Dart command-line apps with args, CommandRunner, exit codes, testing and compilation.",
+      "do_not_use_when": "Do not use for .NET System.CommandLine, VS Code extensions or DVC workflows.",
+      "owner_agent_id": "agent-task1-t06-assets-b",
+      "visibility": "team",
+      "bound_to_active_agent": false,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T06/raw/dart-build-cli-app/SKILL.md",
+      "technical_invariant": "Preserve the frozen file's ordered technical workflow, recommendations, examples and safety boundaries; only adapt routing front matter.",
+      "resources": []
+    },
+    {
+      "asset_id": "T06-SKILL-CREATE-CLI",
+      "source_id": "T06-SRC-CREATE-CLI",
+      "name": "create-typescript-cli",
+      "description": "TypeScript CLI construction",
+      "use_when": "Use when creating or expanding a TypeScript CLI and selecting manual parsing, Commander.js or oclif complexity.",
+      "do_not_use_when": "Do not use for .NET System.CommandLine, DVC operations, VS Code extension commands or plain docs.",
+      "owner_agent_id": "agent-task1-t06-general",
+      "visibility": "private",
+      "bound_to_active_agent": true,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T06/raw/create-cli/SKILL.md",
+      "technical_invariant": "Preserve the frozen file's ordered technical workflow, recommendations, examples and safety boundaries; only adapt routing front matter.",
+      "resources": []
+    },
+    {
+      "asset_id": "T06-SKILL-LOGSEQ-CLI-MAINTENANCE",
+      "source_id": "T06-SRC-LOGSEQ-CLI",
+      "name": "cli-argument-maintenance",
+      "description": "CLI argument and output maintenance",
+      "use_when": "Use when refactoring CLI parsing, validation, execution, presentation, exit codes and command tests without changing behavior.",
+      "do_not_use_when": "Do not use for new feature delivery unless maintenance is explicitly requested.",
+      "owner_agent_id": "agent-task1-t06-general",
+      "visibility": "private",
+      "bound_to_active_agent": true,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T06/raw/logseq-cli-maintenance/SKILL.md",
+      "technical_invariant": "Preserve the frozen file's ordered technical workflow, recommendations, examples and safety boundaries; only adapt routing front matter.",
+      "resources": []
+    }
+  ],
+  "skill_positive_blueprints": [
+    {
+      "id": "T06-SKILL-BP-01",
+      "target_asset_id": "T06-SKILL-SYSTEM-COMMANDLINE",
+      "listing_state": "listed",
+      "route_candidate": [
+        "skill_view"
+      ],
+      "intent": "为 .NET 管理 CLI 设计 System.CommandLine 命令组、选项与 handler。"
+    },
+    {
+      "id": "T06-SKILL-BP-02",
+      "target_asset_id": "T06-SKILL-VSCODE-COMMANDS",
+      "listing_state": "listed",
+      "route_candidate": [
+        "skill_view"
+      ],
+      "intent": "为 VS Code 扩展增加命令贡献、侧栏入口和可见性条件。"
+    },
+    {
+      "id": "T06-SKILL-BP-03",
+      "target_asset_id": "T06-SKILL-DVC-DATA-PIPELINES",
+      "listing_state": "not_listed_same_team_searchable",
+      "route_candidate": [
+        "skill_search",
+        "skill_view_by_id"
+      ],
+      "intent": "为 DVC 项目规划 dvc.yaml stage 与 dry-run repro。"
+    },
+    {
+      "id": "T06-SKILL-BP-04",
+      "target_asset_id": "T06-SKILL-DVC-EXPERIMENTS",
+      "listing_state": "not_listed_same_team_searchable",
+      "route_candidate": [
+        "skill_search",
+        "skill_view_by_id"
+      ],
+      "intent": "规划 DVC 实验队列、比较和提升流程。"
+    },
+    {
+      "id": "T06-SKILL-BP-05",
+      "target_asset_id": "T06-SKILL-VSCODE-LOCALIZATION",
+      "listing_state": "not_listed_same_team_searchable",
+      "route_candidate": [
+        "skill_search",
+        "skill_view_by_id"
+      ],
+      "intent": "补齐 VS Code 扩展命令、walkthrough 与运行时字符串本地化。"
+    },
+    {
+      "id": "T06-SKILL-BP-06",
+      "target_asset_id": "T06-SKILL-DVC",
+      "listing_state": "listed",
+      "route_candidate": [
+        "skill_view",
+        "skill_files_read"
+      ],
+      "resource_path": "sub-skills/remotes-and-cache/SKILL.md",
+      "intent": "读取 DVC 路由 Skill 及远端缓存子流程，安全规划 push/pull。"
+    }
+  ],
+  "memory_asset_ids": {
+    "l0": [
+      "T06-L0-01",
+      "T06-L0-02",
+      "T06-L0-03",
+      "T06-L0-04",
+      "T06-L0-05",
+      "T06-L0-06",
+      "T06-L0-07",
+      "T06-L0-08",
+      "T06-L0-09",
+      "T06-L0-10"
+    ],
+    "l1": [
+      "T06-L1-01",
+      "T06-L1-02",
+      "T06-L1-03",
+      "T06-L1-04",
+      "T06-L1-05",
+      "T06-L1-06",
+      "T06-L1-07",
+      "T06-L1-08",
+      "T06-L1-09",
+      "T06-L1-10",
+      "T06-L1-11",
+      "T06-L1-12",
+      "T06-L1-13",
+      "T06-L1-14",
+      "T06-L1-15",
+      "T06-L1-16"
+    ],
+    "l2": [
+      "T06-L2-01",
+      "T06-L2-02",
+      "T06-L2-03",
+      "T06-L2-04"
+    ],
+    "l3": [
+      "T06-L3-01"
+    ]
+  },
+  "memory_positive_blueprints": [
+    {
+      "id": "T06-MEM-BP-01",
+      "project": "harbor-admin-cli",
+      "route_candidate": [
+        "tdai_conversation_search"
+      ],
+      "target": "T06-L0-01",
+      "gap_kind": "上次确认的递归全局选项注册与校验结论"
+    },
+    {
+      "id": "T06-MEM-BP-02",
+      "project": "orbit-vscode-extension",
+      "route_candidate": [
+        "tdai_conversation_search",
+        "tdai_conversation_query"
+      ],
+      "target": "T06-L0-03",
+      "gap_kind": "需要完整复盘扩展命令 rollout 的顺序与排除项"
+    },
+    {
+      "id": "T06-MEM-BP-03",
+      "project": "relay-terminal-client",
+      "route_candidate": [
+        "tdai_memory_search"
+      ],
+      "target": "T06-L1-05",
+      "gap_kind": "历史确认的参数解析与退出码归因"
+    },
+    {
+      "id": "T06-MEM-BP-04",
+      "project": "lineage-ml-pipeline",
+      "route_candidate": [
+        "tdai_memory_search"
+      ],
+      "target": "T06-L1-09",
+      "gap_kind": "团队已定的 DVC remote 命名与本地凭据约定"
+    },
+    {
+      "id": "T06-MEM-BP-05",
+      "project": "harbor-admin-cli",
+      "route_candidate": [
+        "tdai_atomic_query"
+      ],
+      "target": "T06-L1-13",
+      "gap_kind": "按 decision 类型与 2026-08-11 日期过滤旧的短选项别名决策"
+    },
+    {
+      "id": "T06-MEM-BP-06",
+      "project": "relay-terminal-client",
+      "route_candidate": [
+        "tdai_read_scene"
+      ],
+      "target": "T06-L2-04",
+      "injected_path": "client/relay-terminal/cli-release-incident.md",
+      "gap_kind": "已注入索引对应的 CLI 发布事故场景正文"
+    }
+  ],
+  "knowledge_assets": [
+    {
+      "asset_id": "T06-KNOWLEDGE-HARBOR-CG",
+      "type": "code_graph",
+      "name": "Harbor CLI 代码索引",
+      "workspace_match": "harbor-admin-cli",
+      "tool_list": [
+        {
+          "name": "find_symbol",
+          "required_params": [
+            "symbol"
+          ]
+        }
+      ]
+    },
+    {
+      "asset_id": "T06-KNOWLEDGE-ORBIT-WIKI",
+      "type": "wiki",
+      "name": "Orbit 扩展决策库",
+      "workspace_match": "orbit-vscode-extension",
+      "tool_list": [
+        {
+          "name": "search_pages",
+          "required_params": [
+            "query"
+          ]
+        }
+      ]
+    },
+    {
+      "asset_id": "T06-KNOWLEDGE-LINEAGE-CG",
+      "type": "code_graph",
+      "name": "Lineage DVC 流水线索引",
+      "workspace_match": "lineage-ml-pipeline",
+      "tool_list": [
+        {
+          "name": "inspect_stage",
+          "required_params": [
+            "stage"
+          ]
+        }
+      ]
+    }
+  ],
+  "knowledge_positive_blueprints": [
+    {
+      "id": "T06-KNOW-BP-01",
+      "target_asset_id": "T06-KNOWLEDGE-HARBOR-CG",
+      "route_candidate": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "intent": "查找 ExportCommand 的定义和注册位置，当前输入没有代码索引结果。"
+    },
+    {
+      "id": "T06-KNOW-BP-02",
+      "target_asset_id": "T06-KNOWLEDGE-ORBIT-WIKI",
+      "route_candidate": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "intent": "查询扩展命令标题与本地化决策，当前输入没有内部页面内容。"
+    },
+    {
+      "id": "T06-KNOW-BP-03",
+      "target_asset_id": "T06-KNOWLEDGE-LINEAGE-CG",
+      "route_candidate": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "intent": "查询 train stage 的依赖、输出与下游，当前输入没有流水线索引结果。"
+    }
+  ],
+  "provider_visible_constraints": {
+    "languages": [
+      "zh"
+    ],
+    "forbidden_tokens": [
+      "tdai_",
+      "skill_search",
+      "skill_view",
+      "skill_files_read",
+      "knowledge_id",
+      "tools/list",
+      "tools/call",
+      "target_asset",
+      "informationGap",
+      "pairId",
+      "/memory-bridge/",
+      "/skill-bridge/"
+    ],
+    "do_not_name_asset_ids": true,
+    "final_query_same_within_pair": true,
+    "only_changed_message_index_may_differ": true
+  },
+  "natural_negative_constraints": {
+    "count": 10,
+    "self_contained": true,
+    "full_distractor_pool_loaded": true,
+    "topics": [
+      "C# 参数列表的纯转换",
+      "VS Code package.json 的局部 JSON 编辑",
+      "DVC 命令输出的给定表格整理",
+      "退出码映射计算",
+      "命令帮助文本改写",
+      "路径归一化函数",
+      "参数默认值推导",
+      "扩展命令标识排序",
+      "YAML stage 片段格式化",
+      "普通文档标题层级修正"
+    ],
+    "must_not_depend_on_history_or_skill_or_knowledge": true
+  },
+  "sol_review_required": [
+    "unique_information_gap",
+    "unique_first_action",
+    "complete_minimal_chain",
+    "pair_single_delta",
+    "asset_visibility",
+    "realistic_same_domain_distractors",
+    "provider_leakage",
+    "negative_full_chain_sufficiency",
+    "skill_technical_body_invariance"
+  ]
+}

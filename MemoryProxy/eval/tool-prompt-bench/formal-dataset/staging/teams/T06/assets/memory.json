@@ -1,0 +1,1699 @@
+{
+  "schema_version": "task1.team_memory_assets.v1",
+  "team_id": "T06",
+  "l0Conversations": [
+    {
+      "assetId": "T06-L0-01",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "source-t06-history-l0"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "sessionId": "T06-L0-01",
+      "messages": [
+        {
+          "messageId": "T06-L0-01-M01",
+          "role": "user",
+          "content": "我们继续处理 harbor-admin-cli 的全局选项注册与校验，需要保留现有用户可见行为。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "99e023db51b1213d5b08181376c191a35dae35223779e0210bc929b1fdad9517"
+        },
+        {
+          "messageId": "T06-L0-01-M02",
+          "role": "assistant",
+          "content": "我先核对当前命令、配置和回归范围，相关改动与其他客户端流相邻但边界不同。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "6e0fab52140871eef13eff70d7b0788c9e6ea95203b2510da7a574447094de54"
+        },
+        {
+          "messageId": "T06-L0-01-M03",
+          "role": "user",
+          "content": "请把历史讨论中的落点整理成可执行决定，避免混入临近项目做法。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "f444953b57983a0717743881d8716fad143e871f57f1d83d49e8750119c21128"
+        },
+        {
+          "messageId": "T06-L0-01-M04",
+          "role": "assistant",
+          "content": "新增内容应集中在入口层和验证层，已有业务处理保持不变。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "a06fef406638be67c34c90efdad9ff1cb4f3343917abffc66a6518f72f2ebd22"
+        },
+        {
+          "messageId": "T06-L0-01-M05",
+          "role": "user",
+          "content": "还要明确排除项及检查边界。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "fcf7f7264373edcc09a15399f6391b2e04e673cb361be73d528eb882961ae8a2"
+        },
+        {
+          "messageId": "T06-L0-01-M06",
+          "role": "assistant",
+          "content": "正常路径、缺参路径和跨平台差异都已记录，下面只缺最终边界。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "9881d05e7e3f8e71a48af144851edf3e0e95cebcc8d0d107f44a5cedd8e4fd1c"
+        },
+        {
+          "messageId": "T06-L0-01-M07",
+          "role": "user",
+          "content": "并行任务只能作为同域背景，不能替代本项目结论。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "7baf9edc5ee5879f44ec7b1d29a6335ae66b5a51647e406d4f67216783429fb1"
+        },
+        {
+          "messageId": "T06-L0-01-M08",
+          "role": "assistant",
+          "content": "已确认目标文件和测试范围，请按历史决定给出最小修改面。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "c5822dddcc2b694063e36b4ebbcf301e6d0830de98751b0283ac5ff44dac6823"
+        },
+        {
+          "messageId": "T06-L0-01-M09",
+          "role": "user",
+          "content": "若涉及顺序、时机或退出行为，请分开写清楚。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "fa6149f0250f8d417197d114111083c202db7255341b163579d7e4bb4a36937f"
+        },
+        {
+          "messageId": "T06-L0-01-M10",
+          "role": "assistant",
+          "content": "我会将决定、排除项和验证顺序分别记录。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "3240d89519305c62dddd7f0c792eff6525a602ba9384057cabcda7c11c6b697e"
+        },
+        {
+          "messageId": "T06-L0-01-M11",
+          "role": "user",
+          "content": "这是一项延续性维护，不是重新设计整套架构。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "09b3299f3af2bccbf69953c246c17a992b932c8162dd100d88f949645d50720b"
+        },
+        {
+          "messageId": "T06-L0-01-M12",
+          "role": "assistant",
+          "content": "历史确认的核心结论是：根命令持有共享配置选项，子命令通过解析结果读取同一实例；注册和默认值只维护一处。 排除项：排除在每个子命令复制选项、在 handler 重建配置、为了兼容而改变帮助文本。 选项说明、默认值和退出码属于兼容面；新增选项追加到合适分组，不改既有文字的语义。 排除项：排除为了重排代码重写帮助、隐藏默认值、让错误分支产生不同的退出码。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "35b72f17bd4c44a31a5d8f93b4e422883d3a52398d948a43d79dce844590135d"
+        }
+      ],
+      "contentHash": "5afd3e4ea4b147297434b6c18d41a4e85a31e3ed044e0000321ca3fe6f7aedaf"
+    },
+    {
+      "assetId": "T06-L0-02",
+      "ownerAgentId": "agent-task1-t06-assets-b",
+      "sourceEvidenceIds": [
+        "source-t06-history-l0"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "sessionId": "T06-L0-02",
+      "messages": [
+        {
+          "messageId": "T06-L0-02-M01",
+          "role": "user",
+          "content": "我们继续处理 lineage-ml-pipeline 的DVC stage 设计，需要保留现有用户可见行为。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "bf2bb8dc90da2df022ccdc1b5cfd40c02498a5662335a4bdb302150a55fd12a5"
+        },
+        {
+          "messageId": "T06-L0-02-M02",
+          "role": "assistant",
+          "content": "我先核对当前命令、配置和回归范围，相关改动与其他客户端流相邻但边界不同。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "35645c0ccf683c934c707fb2a509efe22fe9834cf9526edf7b9ac02c6417230b"
+        },
+        {
+          "messageId": "T06-L0-02-M03",
+          "role": "user",
+          "content": "请把历史讨论中的落点整理成可执行决定，避免混入临近项目做法。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "09bb1272b4a58a6952788529fc9dda13db98b66d2b37e0cb93a380617219c9cf"
+        },
+        {
+          "messageId": "T06-L0-02-M04",
+          "role": "assistant",
+          "content": "新增内容应集中在入口层和验证层，已有业务处理保持不变。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "9f530e56de073586d1ca98f5ed23ad5df38e6df835b9f01c0732cb3b67010cd9"
+        },
+        {
+          "messageId": "T06-L0-02-M05",
+          "role": "user",
+          "content": "还要明确排除项及检查边界。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "f14a9f14952f671e6923ad74272d23ac24efce8afed9b01d5d11b0bf1dd20153"
+        },
+        {
+          "messageId": "T06-L0-02-M06",
+          "role": "assistant",
+          "content": "正常路径、缺参路径和跨平台差异都已记录，下面只缺最终边界。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "17029fb7d42d1fab1f7798277123c407226f5e0858afc92edfa0249ab6c49c39"
+        },
+        {
+          "messageId": "T06-L0-02-M07",
+          "role": "user",
+          "content": "并行任务只能作为同域背景，不能替代本项目结论。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "051f4e05fe33c795b770771f083952116f542895cf1a4e3eae316f626b06e48d"
+        },
+        {
+          "messageId": "T06-L0-02-M08",
+          "role": "assistant",
+          "content": "已确认目标文件和测试范围，请按历史决定给出最小修改面。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "3edeb948490a5599a345a526dcffe1628fcde97984166a769da57c2aa3702075"
+        },
+        {
+          "messageId": "T06-L0-02-M09",
+          "role": "user",
+          "content": "若涉及顺序、时机或退出行为，请分开写清楚。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "8aa3e1be8ddf837e05ec85b4b0042636dda90dc84006adb9ab7ad5c56490f2cf"
+        },
+        {
+          "messageId": "T06-L0-02-M10",
+          "role": "assistant",
+          "content": "我会将决定、排除项和验证顺序分别记录。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "718fcc6c34ce546b373bff3a5114722fc93f316c08bfcf526a8aff3a379afe83"
+        },
+        {
+          "messageId": "T06-L0-02-M11",
+          "role": "user",
+          "content": "这是一项延续性维护，不是重新设计整套架构。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "67241b8b25e54662128aeb4c4d5ce62450a0e63855bbc6735e58361e2b1a05ec"
+        },
+        {
+          "messageId": "T06-L0-02-M12",
+          "role": "assistant",
+          "content": "历史确认的核心结论是：新增 stage 先声明 deps、outs、params，再执行 dry-run 检查 DAG 和锁文件变化，确认后才运行训练。 排除项：排除跳过 dry-run 直接跑全量训练、把缓存目录写进 outs、手改锁文件掩盖依赖变化。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "236268ab9714a19ad23a2989ae2c6c57ce0cc126356234bee0cbe001f4f5cfab"
+        }
+      ],
+      "contentHash": "475bd49238ded679af581e4a9e8f63615d15e31f21962ee4293f7a431724483d"
+    },
+    {
+      "assetId": "T06-L0-03",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "source-t06-history-l0"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "sessionId": "T06-L0-03",
+      "messages": [
+        {
+          "messageId": "T06-L0-03-M01",
+          "role": "user",
+          "content": "我们继续处理 orbit-vscode-extension 的扩展命令 rollout，需要保留现有用户可见行为。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "284e0c5b5ca55f5cfb2eb89eb661155914fc87bf85c07baf12cfb7e84a566d05"
+        },
+        {
+          "messageId": "T06-L0-03-M02",
+          "role": "assistant",
+          "content": "我先核对当前命令、配置和回归范围，相关改动与其他客户端流相邻但边界不同。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "806e40da61cfe3683a4a876f5aa0a27dd2fed574a5c6c255797cc30a651d0fc2"
+        },
+        {
+          "messageId": "T06-L0-03-M03",
+          "role": "user",
+          "content": "请把历史讨论中的落点整理成可执行决定，避免混入临近项目做法。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "8ebbae1f7bbf49473821944fe20fe7f51acea8b3d39fcc7e8dbc6507b5483fd9"
+        },
+        {
+          "messageId": "T06-L0-03-M04",
+          "role": "assistant",
+          "content": "新增内容应集中在入口层和验证层，已有业务处理保持不变。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "ac8e0e6e5df01bc804b0e5adc1726afa1cd6a2b26b9178c46149e4afd4293717"
+        },
+        {
+          "messageId": "T06-L0-03-M05",
+          "role": "user",
+          "content": "还要明确排除项及检查边界。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "63ef45887709094f9fd8a57a3415d667d3fc2f753025129124cd5af6633f3de0"
+        },
+        {
+          "messageId": "T06-L0-03-M06",
+          "role": "assistant",
+          "content": "正常路径、缺参路径和跨平台差异都已记录，下面只缺最终边界。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "a6198aded2fd96ecc94e1d87a1c09ca2d9b75708f63c72e57c8f73582514ee38"
+        },
+        {
+          "messageId": "T06-L0-03-M07",
+          "role": "user",
+          "content": "并行任务只能作为同域背景，不能替代本项目结论。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "5cb55d1fa167cce76ff91eb632eba163e2e5240a78a4ea5fa22f0645adff5145"
+        },
+        {
+          "messageId": "T06-L0-03-M08",
+          "role": "assistant",
+          "content": "已确认目标文件和测试范围，请按历史决定给出最小修改面。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "46f2ab3fdc9937fbdd45e2fdb90fe36465053f7706b6847fb0aa6fb6a4e3aa3a"
+        },
+        {
+          "messageId": "T06-L0-03-M09",
+          "role": "user",
+          "content": "若涉及顺序、时机或退出行为，请分开写清楚。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "82e5840085f361e91bc4b02470e1a0f3386bc93814c4e203b24b398ab53d756f"
+        },
+        {
+          "messageId": "T06-L0-03-M10",
+          "role": "assistant",
+          "content": "我会将决定、排除项和验证顺序分别记录。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "606b45c9389cb2a2d3f1ce0056f84ec46bb6d0d825a72316c11446d1c747f207"
+        },
+        {
+          "messageId": "T06-L0-03-M11",
+          "role": "user",
+          "content": "这是一项延续性维护，不是重新设计整套架构。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "cc20a8e672e45dd064204f73422ddef2a6a8ca8c29009a5621eec06d22e23939"
+        },
+        {
+          "messageId": "T06-L0-03-M12",
+          "role": "assistant",
+          "content": "历史确认的核心结论是：新增命令先在贡献清单声明稳定标识，再绑定 handler；菜单入口单独配置并用 enablement 控制可见状态。 排除项：排除把内部诊断命令加入命令面板、用 handler 内判断替代菜单条件、重命名已有标识。 侧栏入口只在目标视图已注册且当前资源类型匹配时显示；命令本身仍可由已授权菜单触发。 排除项：排除用 activation event 代替 enablement、把入口条件硬编码进 handler、影响其他视图的菜单。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "125607cd1a39edc54fd9e68c093be0124c5d49e16218d83d4d166b1e8d896b54"
+        }
+      ],
+      "contentHash": "8ecd15d8aec3f9f4aa9dd1942a1f8039fd000037aca772386460ef368fe04171"
+    },
+    {
+      "assetId": "T06-L0-04",
+      "ownerAgentId": "agent-task1-t06-assets-b",
+      "sourceEvidenceIds": [
+        "source-t06-history-l0"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "sessionId": "T06-L0-04",
+      "messages": [
+        {
+          "messageId": "T06-L0-04-M01",
+          "role": "user",
+          "content": "我们继续处理 relay-terminal-client 的参数解析与退出码，需要保留现有用户可见行为。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "22b1c9ec3a811b3aadae01704857aeafa6dc875a0e685c148dcb581411f79ef1"
+        },
+        {
+          "messageId": "T06-L0-04-M02",
+          "role": "assistant",
+          "content": "我先核对当前命令、配置和回归范围，相关改动与其他客户端流相邻但边界不同。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "1d600e3d9aa79c68c5a75c7470f46f47526495ebd081439b71226888b208d95b"
+        },
+        {
+          "messageId": "T06-L0-04-M03",
+          "role": "user",
+          "content": "请把历史讨论中的落点整理成可执行决定，避免混入临近项目做法。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "02da7f9909ced97fb5ec619f81ad30e03b2f38d5645296ec91b7fb048ce07ac1"
+        },
+        {
+          "messageId": "T06-L0-04-M04",
+          "role": "assistant",
+          "content": "新增内容应集中在入口层和验证层，已有业务处理保持不变。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "62aabac63e846ee5e67dce511621321558be9e127ae162e45761e369011b5c30"
+        },
+        {
+          "messageId": "T06-L0-04-M05",
+          "role": "user",
+          "content": "还要明确排除项及检查边界。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "6cd41fa3331fc0924926ba8f872df0d6b3a46030f6265a6d273c119dca8a3839"
+        },
+        {
+          "messageId": "T06-L0-04-M06",
+          "role": "assistant",
+          "content": "正常路径、缺参路径和跨平台差异都已记录，下面只缺最终边界。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "29a4032ba48ddd83c051e53c6f502b2ffa9b6a791c3b4591a0625cc5f8678377"
+        },
+        {
+          "messageId": "T06-L0-04-M07",
+          "role": "user",
+          "content": "并行任务只能作为同域背景，不能替代本项目结论。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "6b0a81e2e89e1c20a4c1d47582e9a6bef62ba54756dd8af4ad4c876ea4623f96"
+        },
+        {
+          "messageId": "T06-L0-04-M08",
+          "role": "assistant",
+          "content": "已确认目标文件和测试范围，请按历史决定给出最小修改面。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "98e832ad9a0b4182cb3e307025683220b671452a1359f40fc3447d2f8a18c453"
+        },
+        {
+          "messageId": "T06-L0-04-M09",
+          "role": "user",
+          "content": "若涉及顺序、时机或退出行为，请分开写清楚。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "ba6e406b23662acfccfa96ea63bfce6e0c70870023ad4ac8c2ccfd750f8a77de"
+        },
+        {
+          "messageId": "T06-L0-04-M10",
+          "role": "assistant",
+          "content": "我会将决定、排除项和验证顺序分别记录。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "ee750c26eb2f3227cd1ffa496d1cdf82ff4b48a270f52e0f2e16e5ec02ed8658"
+        },
+        {
+          "messageId": "T06-L0-04-M11",
+          "role": "user",
+          "content": "这是一项延续性维护，不是重新设计整套架构。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "554be446ed949db0eb74a11c4289eaef2c08a3267c53431bef5b42f36589099f"
+        },
+        {
+          "messageId": "T06-L0-04-M12",
+          "role": "assistant",
+          "content": "历史确认的核心结论是：参数缺失或格式错误在解析层结束并返回退出码 2；远端或服务失败返回 1；成功返回 0，并在错误输出中区分用法与运行失败。 排除项：排除在业务 handler 再次解析同一参数、将所有错误压成 1、把远端失败写成用法错误。 机器可读输出保持字段名和行序稳定，人类输出可增加说明但不能改变错误边界；失败必须写到 stderr。 排除项：排除把诊断日志混入 stdout、按平台改变字段名、为了美化删除错误码信息。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "ef68c2327014ce57536d8f46ebad2c2c1c50368a2f776e9c59e6772808692dff"
+        }
+      ],
+      "contentHash": "2e801d4a6284387584de7b131b7e003b5f9404f69a0d0ce33c9035d97ff2e50b"
+    },
+    {
+      "assetId": "T06-L0-05",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "source-t06-history-l0"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "sessionId": "T06-L0-05",
+      "messages": [
+        {
+          "messageId": "T06-L0-05-M01",
+          "role": "user",
+          "content": "我们继续处理 orbit-vscode-extension 的命令与菜单本地化，需要保留现有用户可见行为。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "fce6118565d5929c459c255c8eab4ea3a5c584da91118bbc514fdcf26bf5b7e2"
+        },
+        {
+          "messageId": "T06-L0-05-M02",
+          "role": "assistant",
+          "content": "我先核对当前命令、配置和回归范围，相关改动与其他客户端流相邻但边界不同。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "0f0899e337c840878064d4f23208f735c2e84cd19ace3b84a6274acfee3aa262"
+        },
+        {
+          "messageId": "T06-L0-05-M03",
+          "role": "user",
+          "content": "请把历史讨论中的落点整理成可执行决定，避免混入临近项目做法。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "5db33dad09753d2ca0653598db2e7ed24db6f0f321e31bf181717060a03da50b"
+        },
+        {
+          "messageId": "T06-L0-05-M04",
+          "role": "assistant",
+          "content": "新增内容应集中在入口层和验证层，已有业务处理保持不变。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "dc8107f690f7c002296d12538995c78c55fa31a11c3318ae5b212b6bb7100270"
+        },
+        {
+          "messageId": "T06-L0-05-M05",
+          "role": "user",
+          "content": "还要明确排除项及检查边界。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "e125ba2bf6951acffdaaa4294d0d928dc24fda8a81572a0d894305da5f9b7a8e"
+        },
+        {
+          "messageId": "T06-L0-05-M06",
+          "role": "assistant",
+          "content": "正常路径、缺参路径和跨平台差异都已记录，下面只缺最终边界。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "624496d8f320f0b50c454cf30b2fd8340e5af55aeb490442f3558ade7573151d"
+        },
+        {
+          "messageId": "T06-L0-05-M07",
+          "role": "user",
+          "content": "并行任务只能作为同域背景，不能替代本项目结论。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "7936e34516065f91ef567eb273ad9fa3a9a0b9ca520bab1a89e6fc9fc7323c2f"
+        },
+        {
+          "messageId": "T06-L0-05-M08",
+          "role": "assistant",
+          "content": "已确认目标文件和测试范围，请按历史决定给出最小修改面。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "17a44148cdf46375905b11cd77bb674a15e596f4f5166d26d8eaef77d34f6b7a"
+        },
+        {
+          "messageId": "T06-L0-05-M09",
+          "role": "user",
+          "content": "若涉及顺序、时机或退出行为，请分开写清楚。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "cc4b3973e9adbbe654d3240c33d6c2701066810e596596873244703d753ce8ee"
+        },
+        {
+          "messageId": "T06-L0-05-M10",
+          "role": "assistant",
+          "content": "我会将决定、排除项和验证顺序分别记录。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "50a11f65237947d0428d534adc8dcce288ca1fd0770a7d89dc1d19b8934fa59e"
+        },
+        {
+          "messageId": "T06-L0-05-M11",
+          "role": "user",
+          "content": "这是一项延续性维护，不是重新设计整套架构。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "d753527189bc8398801cb15d68298c6e7c88e236b21fb3e22a454be1f9ec205d"
+        },
+        {
+          "messageId": "T06-L0-05-M12",
+          "role": "assistant",
+          "content": "历史确认的核心结论是：命令、菜单和 walkthrough 共用稳定的本地化键；语言包提供显示文本，运行时只引用键。 排除项：排除拼接用户可见字符串、用显示文本作为命令标识、只翻译标题而遗漏菜单提示。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "87dbe5020c5c95d66eaef731b5be277feab732bb44ee111ab5e6932d505a4111"
+        }
+      ],
+      "contentHash": "090c472e694856a451f0e77f9a0aa3150678d65504b07e9024bf45191d1daf1d"
+    },
+    {
+      "assetId": "T06-L0-06",
+      "ownerAgentId": "agent-task1-t06-assets-b",
+      "sourceEvidenceIds": [
+        "source-t06-history-l0"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "sessionId": "T06-L0-06",
+      "messages": [
+        {
+          "messageId": "T06-L0-06-M01",
+          "role": "user",
+          "content": "我们继续处理 harbor-admin-cli 的TypeScript CLI 迁移，需要保留现有用户可见行为。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "46b03b2ff0a2afec0ad0b1d58c6e6cb6505ef6093c5ed43a6d6cf83ff00eb8a2"
+        },
+        {
+          "messageId": "T06-L0-06-M02",
+          "role": "assistant",
+          "content": "我先核对当前命令、配置和回归范围，相关改动与其他客户端流相邻但边界不同。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "032e4fc358f940f60bfc30138f0b36dde1fa1a6b0c98e4876f729cd6118b36a6"
+        },
+        {
+          "messageId": "T06-L0-06-M03",
+          "role": "user",
+          "content": "请把历史讨论中的落点整理成可执行决定，避免混入临近项目做法。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "501c4858d5124efd33c425524bbbe4172a3571f971529a858d4c8f4272b7fc55"
+        },
+        {
+          "messageId": "T06-L0-06-M04",
+          "role": "assistant",
+          "content": "新增内容应集中在入口层和验证层，已有业务处理保持不变。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "13045f0ef4a930b84ae634f0c994a17336c11ff1db526ff7601f3715adc0d37b"
+        },
+        {
+          "messageId": "T06-L0-06-M05",
+          "role": "user",
+          "content": "还要明确排除项及检查边界。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "c70fe1164d3274136b1e067319619af9c3102e31f192a2ca3a7dd1b4001e1bad"
+        },
+        {
+          "messageId": "T06-L0-06-M06",
+          "role": "assistant",
+          "content": "正常路径、缺参路径和跨平台差异都已记录，下面只缺最终边界。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "2672863c437ea2347f58f6e4fe5b8d7a2f788ce9d707b2249917eccaf11b3a24"
+        },
+        {
+          "messageId": "T06-L0-06-M07",
+          "role": "user",
+          "content": "并行任务只能作为同域背景，不能替代本项目结论。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "687c1cb767aff01e2e2d311da0752ce10e7b0cf288f6bd3f3884571c1dbae197"
+        },
+        {
+          "messageId": "T06-L0-06-M08",
+          "role": "assistant",
+          "content": "已确认目标文件和测试范围，请按历史决定给出最小修改面。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "8a41a1006c715858cf6ef309ab92e3c6273989344b2f4bac28af795a743da2de"
+        },
+        {
+          "messageId": "T06-L0-06-M09",
+          "role": "user",
+          "content": "若涉及顺序、时机或退出行为，请分开写清楚。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "331484c4e1d93fcadfa0fee8ac582d062ed658147b6dae3c883c7647ee5a508f"
+        },
+        {
+          "messageId": "T06-L0-06-M10",
+          "role": "assistant",
+          "content": "我会将决定、排除项和验证顺序分别记录。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "f322294ac335bbe74de435c6166ddc457ff7aebb69ad641afb4515256f752cb7"
+        },
+        {
+          "messageId": "T06-L0-06-M11",
+          "role": "user",
+          "content": "这是一项延续性维护，不是重新设计整套架构。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "55b1702866ba6bd0c7914db84ac23ff3215c7f1f65655b4f97ddbddd0ecba649"
+        },
+        {
+          "messageId": "T06-L0-06-M12",
+          "role": "assistant",
+          "content": "历史确认的核心结论是：迁移期间保留已发布的短别名，解析后归一化到唯一内部名称，并为冲突和弃用提示增加测试。 排除项：排除无公告删除别名、让别名进入业务分支、用字符串替换绕过解析器。 decision 类型事件日期为 2026-08-11；保留 -o 作为输出别名，-q 继续表示安静模式；新别名必须避开已有短选项并在帮助中说明。 排除项：排除当天之前的草案、在 handler 中二次解释别名、以长选项替换而不保留兼容短别名。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "b41bc1a466b5e39a4392d458d38189b46a915b1d58ffdda6d077ef8eab9182d0"
+        }
+      ],
+      "contentHash": "e88d3ee680576f2e42b88e938854e03f92c70375ec6143730c4cc5f3206383e2"
+    },
+    {
+      "assetId": "T06-L0-07",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "source-t06-history-l0"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "sessionId": "T06-L0-07",
+      "messages": [
+        {
+          "messageId": "T06-L0-07-M01",
+          "role": "user",
+          "content": "我们继续处理 compass-client-docs 的命令参考文档，需要保留现有用户可见行为。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "5e65a27bffab75d0bb5e62fc88a62214e45301a8f6263a44256b627429b73ef4"
+        },
+        {
+          "messageId": "T06-L0-07-M02",
+          "role": "assistant",
+          "content": "我先核对当前命令、配置和回归范围，相关改动与其他客户端流相邻但边界不同。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "aeb150996c1d214b4976d47f3435f7906b0ec0c6b3a45eb3b6bbc26aced3b5e2"
+        },
+        {
+          "messageId": "T06-L0-07-M03",
+          "role": "user",
+          "content": "请把历史讨论中的落点整理成可执行决定，避免混入临近项目做法。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "87cd2ff2d79982e3e8aa2ceda8dcf07c83b3b385176bb24ac338baa5f803ed65"
+        },
+        {
+          "messageId": "T06-L0-07-M04",
+          "role": "assistant",
+          "content": "新增内容应集中在入口层和验证层，已有业务处理保持不变。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "5c2b6020fa8ee920176159c509a789228f4ce1b1654c760277647c75ade790b4"
+        },
+        {
+          "messageId": "T06-L0-07-M05",
+          "role": "user",
+          "content": "还要明确排除项及检查边界。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "3d813585edd121befc03236f392adc1527602a7a175dfbb970d898db9e22168b"
+        },
+        {
+          "messageId": "T06-L0-07-M06",
+          "role": "assistant",
+          "content": "正常路径、缺参路径和跨平台差异都已记录，下面只缺最终边界。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "4f4031502b736569f96c12d98be053841129091f504f5fd21858eee83257ea97"
+        },
+        {
+          "messageId": "T06-L0-07-M07",
+          "role": "user",
+          "content": "并行任务只能作为同域背景，不能替代本项目结论。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "49d7655336d840214aa19e17a34928c24828bd661a3a6eda8ebb900ab22a2edc"
+        },
+        {
+          "messageId": "T06-L0-07-M08",
+          "role": "assistant",
+          "content": "已确认目标文件和测试范围，请按历史决定给出最小修改面。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "29b3b54e429d375ad926e096e019c7c87da9d0c67fe3d4df8ec97c2b695581ff"
+        },
+        {
+          "messageId": "T06-L0-07-M09",
+          "role": "user",
+          "content": "若涉及顺序、时机或退出行为，请分开写清楚。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "c80e45351446b93c700a85f6a819cb00bbd67402ab3d15e27e6416700b1ab25b"
+        },
+        {
+          "messageId": "T06-L0-07-M10",
+          "role": "assistant",
+          "content": "我会将决定、排除项和验证顺序分别记录。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "8a7faff81397cf09d223525574c8302d81c9020b7d200d4bd1e50bf476dadc1f"
+        },
+        {
+          "messageId": "T06-L0-07-M11",
+          "role": "user",
+          "content": "这是一项延续性维护，不是重新设计整套架构。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "58de51cae05064cd2469c1f5a6f35f1711a10a2752ec30bd5a157e5884428ef4"
+        },
+        {
+          "messageId": "T06-L0-07-M12",
+          "role": "assistant",
+          "content": "历史确认的核心结论是：命令参考必须列出语法、参数、默认值、退出码和可复制示例；教程与解释页分别承载学习路径和背景。 排除项：排除把未验证行为写进参考、在示例中隐藏必需环境变量、用营销文案替代参数说明。 变更说明按用户影响记录新增、修复、弃用和迁移提示，并链接到对应参考页；内部重构只在开发记录说明。 排除项：排除把未发布实验写入公开说明、只写实现细节、不说明弃用迁移路径。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "2d36fc35c30a3e9cbf919e16cdb743d686adc1c8d79bcae8739da25eda5b7e4b"
+        }
+      ],
+      "contentHash": "5622fb6b5a41fcc7140404a0a793b1c753140aeacd7e52d7bb43fda9ff021b1b"
+    },
+    {
+      "assetId": "T06-L0-08",
+      "ownerAgentId": "agent-task1-t06-assets-b",
+      "sourceEvidenceIds": [
+        "source-t06-history-l0"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "sessionId": "T06-L0-08",
+      "messages": [
+        {
+          "messageId": "T06-L0-08-M01",
+          "role": "user",
+          "content": "我们继续处理 relay-terminal-client 的跨平台 Dart CLI，需要保留现有用户可见行为。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "26626e29f226dd788bede5214adef9cd9d55bfdbddf12e58b6d7550010fb4e75"
+        },
+        {
+          "messageId": "T06-L0-08-M02",
+          "role": "assistant",
+          "content": "我先核对当前命令、配置和回归范围，相关改动与其他客户端流相邻但边界不同。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "abc4caa01e3e18259d7f989b4b4db73505ccb1f2d47d4a372edd4bfd4c94420a"
+        },
+        {
+          "messageId": "T06-L0-08-M03",
+          "role": "user",
+          "content": "请把历史讨论中的落点整理成可执行决定，避免混入临近项目做法。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "21b9f15ce28a2bbbd926e98fc6db103971d360e0218fac11a02808b27e89bc7e"
+        },
+        {
+          "messageId": "T06-L0-08-M04",
+          "role": "assistant",
+          "content": "新增内容应集中在入口层和验证层，已有业务处理保持不变。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "cd259019576dd9e2e42ba2a7b9457ef6c7ac8e23e78358413ce4587dcd90d93d"
+        },
+        {
+          "messageId": "T06-L0-08-M05",
+          "role": "user",
+          "content": "还要明确排除项及检查边界。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "5167a847c46da9b65afd231724576fad4481bfd87d1a2c0121b8c62d1f47d522"
+        },
+        {
+          "messageId": "T06-L0-08-M06",
+          "role": "assistant",
+          "content": "正常路径、缺参路径和跨平台差异都已记录，下面只缺最终边界。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "0e604e0a77d7197d9f5161a04a949258dc89eaa33fa8ab9f0e6a097924e80299"
+        },
+        {
+          "messageId": "T06-L0-08-M07",
+          "role": "user",
+          "content": "并行任务只能作为同域背景，不能替代本项目结论。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "578f125c93b5013f683e64a6fec53a35020163a7eabb3b9f06ef9aaf4ba01ed0"
+        },
+        {
+          "messageId": "T06-L0-08-M08",
+          "role": "assistant",
+          "content": "已确认目标文件和测试范围，请按历史决定给出最小修改面。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "b36ca558058d1097c3b557dfe16f2470564a14abbec486c15b3f27fb3ce1920d"
+        },
+        {
+          "messageId": "T06-L0-08-M09",
+          "role": "user",
+          "content": "若涉及顺序、时机或退出行为，请分开写清楚。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "a7df7890cdc556ac2eeff7a208f69154972a37c190b497aa8fcefd35ba523dce"
+        },
+        {
+          "messageId": "T06-L0-08-M10",
+          "role": "assistant",
+          "content": "我会将决定、排除项和验证顺序分别记录。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "6a2929b5fb38fee33d45584f5202f75c8c5a19afc40980abac1021c94d630910"
+        },
+        {
+          "messageId": "T06-L0-08-M11",
+          "role": "user",
+          "content": "这是一项延续性维护，不是重新设计整套架构。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "060971ba35c1278d0da9163517a4a507246728c57e7e2398a796a5370fcb8f8c"
+        },
+        {
+          "messageId": "T06-L0-08-M12",
+          "role": "assistant",
+          "content": "历史确认的核心结论是：解析层统一把分隔符和相对基准归一化，业务层只接收规范路径；错误信息保留用户输入片段。 排除项：排除业务层重复拼接路径、按宿主系统删除用户输入、把路径错误改报成网络错误。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "cd999e596cade69d38e4e57a191e05371ce6a59b41d30b96b2bd6bfc686abbf8"
+        }
+      ],
+      "contentHash": "0a56428f4a5aedecc386614475af3811a0a99a6571b5cf20e97f7d9e9dc7497d"
+    },
+    {
+      "assetId": "T06-L0-09",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "source-t06-history-l0"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "sessionId": "T06-L0-09",
+      "messages": [
+        {
+          "messageId": "T06-L0-09-M01",
+          "role": "user",
+          "content": "我们继续处理 lineage-ml-pipeline 的DVC 远端缓存，需要保留现有用户可见行为。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "b5297a97ce97ba8833b9879f03786b8571f1a2fba319ca65c79461e3d6902133"
+        },
+        {
+          "messageId": "T06-L0-09-M02",
+          "role": "assistant",
+          "content": "我先核对当前命令、配置和回归范围，相关改动与其他客户端流相邻但边界不同。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "ce0aff3a9ced0d9b30b7f6d13f51b8974613321b62750f10dad3f230d8c7ec52"
+        },
+        {
+          "messageId": "T06-L0-09-M03",
+          "role": "user",
+          "content": "请把历史讨论中的落点整理成可执行决定，避免混入临近项目做法。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "8132b1a2d1c94892fdaac829169f10fd6c2f40a7347986f64e9b5081f4e08d44"
+        },
+        {
+          "messageId": "T06-L0-09-M04",
+          "role": "assistant",
+          "content": "新增内容应集中在入口层和验证层，已有业务处理保持不变。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "cde8e5fdb1d229faea9e26819eb212c2d612bade9e1c92fa39e8030ba0f9ee2d"
+        },
+        {
+          "messageId": "T06-L0-09-M05",
+          "role": "user",
+          "content": "还要明确排除项及检查边界。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "c986c32407b1f85c66e0a85abc417b02a269306b8fd375c9eacab19854781247"
+        },
+        {
+          "messageId": "T06-L0-09-M06",
+          "role": "assistant",
+          "content": "正常路径、缺参路径和跨平台差异都已记录，下面只缺最终边界。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "8a7b21f0017e4be22d9eb4c836bebb0fe3f0f4da1a522addca862c924ea95b48"
+        },
+        {
+          "messageId": "T06-L0-09-M07",
+          "role": "user",
+          "content": "并行任务只能作为同域背景，不能替代本项目结论。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "5f8704c813e08f4fb05171bef3f6bf0dbe7fe154aa063a618fb234bca1b3cce2"
+        },
+        {
+          "messageId": "T06-L0-09-M08",
+          "role": "assistant",
+          "content": "已确认目标文件和测试范围，请按历史决定给出最小修改面。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "56469de844d11fef01ab9cfc91164651a0c937689da6f588cebf255b6e6101e0"
+        },
+        {
+          "messageId": "T06-L0-09-M09",
+          "role": "user",
+          "content": "若涉及顺序、时机或退出行为，请分开写清楚。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "072429b32a32a9c5590c1e5aaf920a52b5c0442171c809d9a0bacd6b58413325"
+        },
+        {
+          "messageId": "T06-L0-09-M10",
+          "role": "assistant",
+          "content": "我会将决定、排除项和验证顺序分别记录。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "c4e2d8585faed07e21003a3eb3083921e920e34a26602ba81d5a9bb0ecf7e869"
+        },
+        {
+          "messageId": "T06-L0-09-M11",
+          "role": "user",
+          "content": "这是一项延续性维护，不是重新设计整套架构。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "7536a6daad238a2366e18e187039598d2d1def2181630b41d7462503b91924e6"
+        },
+        {
+          "messageId": "T06-L0-09-M12",
+          "role": "assistant",
+          "content": "历史确认的核心结论是：团队约定的默认 remote 名为 team-cache；凭据仅从本地配置或环境注入，仓库只记录不含秘密的 URL 和配置键。 排除项：排除把令牌写入 dvc 配置提交、每个 stage 自定义 remote 名、将本地绝对路径提交为共享配置。 先确认远端同步和工作区状态，再执行定向清理；清理前保留仍被当前或实验引用的对象。 排除项：排除未同步就全量清理、删除仍被锁文件引用的对象、把清理当作解决 pipeline 错误的第一步。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "2be969274744e21d9e28ec39c155b609b8f6e4bfe4655022d33103ed39ac3a03"
+        }
+      ],
+      "contentHash": "10a6faaff51796b25ffc2753cc78f51023cf413943e0101b924263d48aea9cf8"
+    },
+    {
+      "assetId": "T06-L0-10",
+      "ownerAgentId": "agent-task1-t06-assets-b",
+      "sourceEvidenceIds": [
+        "source-t06-history-l0"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "sessionId": "T06-L0-10",
+      "messages": [
+        {
+          "messageId": "T06-L0-10-M01",
+          "role": "user",
+          "content": "我们继续处理 lineage-ml-pipeline 的DVC metrics 与 plots，需要保留现有用户可见行为。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "08260561415dc811a6a3829ce155ede610e79af68eb9b7c71d4d3f947000e772"
+        },
+        {
+          "messageId": "T06-L0-10-M02",
+          "role": "assistant",
+          "content": "我先核对当前命令、配置和回归范围，相关改动与其他客户端流相邻但边界不同。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "e9a2d44faaec4d8935c5181e52cb8a5be533d6f4e45900da9bd9e76e0f3410f4"
+        },
+        {
+          "messageId": "T06-L0-10-M03",
+          "role": "user",
+          "content": "请把历史讨论中的落点整理成可执行决定，避免混入临近项目做法。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "dc81d6a1053810fec828cae1cac7bb39fee82b3a14df8e3f5bb1e4d972e61581"
+        },
+        {
+          "messageId": "T06-L0-10-M04",
+          "role": "assistant",
+          "content": "新增内容应集中在入口层和验证层，已有业务处理保持不变。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "f6332ba9689e1bd723ddf21fb9362c7fe48df0fc65c253eab4003ed1e34930be"
+        },
+        {
+          "messageId": "T06-L0-10-M05",
+          "role": "user",
+          "content": "还要明确排除项及检查边界。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "c86ea5b142c9791c772628c37ad18fe44b8bc0ddd86eaed7149f33be60abd3cd"
+        },
+        {
+          "messageId": "T06-L0-10-M06",
+          "role": "assistant",
+          "content": "正常路径、缺参路径和跨平台差异都已记录，下面只缺最终边界。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "b9f0676a3e2df0e9baa8db0ba0dfaa0e75ab7380e242d25242114bea877ba995"
+        },
+        {
+          "messageId": "T06-L0-10-M07",
+          "role": "user",
+          "content": "并行任务只能作为同域背景，不能替代本项目结论。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "94994b40399f0a0bc6d6f46f24d71f31cf57ff0a87bfc7d6fde2af1bc1eef2e5"
+        },
+        {
+          "messageId": "T06-L0-10-M08",
+          "role": "assistant",
+          "content": "已确认目标文件和测试范围，请按历史决定给出最小修改面。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "98a12c30e6753f807df790cea85eabfef06c3d8ad32cf3d9b509e6bf089eab4b"
+        },
+        {
+          "messageId": "T06-L0-10-M09",
+          "role": "user",
+          "content": "若涉及顺序、时机或退出行为，请分开写清楚。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "c4ee85f396389400ac8758d349dfd4e7b7fc3873039f123e4a0bfc6327e32de0"
+        },
+        {
+          "messageId": "T06-L0-10-M10",
+          "role": "assistant",
+          "content": "我会将决定、排除项和验证顺序分别记录。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "b25145f323e7f683d48d22b67f79b98855aa9eba3e3afcc45f9a42eebc8acfff"
+        },
+        {
+          "messageId": "T06-L0-10-M11",
+          "role": "user",
+          "content": "这是一项延续性维护，不是重新设计整套架构。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "22fa4a54ade3e00c81a53767ac43e53327cdfb026f2464162c9628a1107e4c5a"
+        },
+        {
+          "messageId": "T06-L0-10-M12",
+          "role": "assistant",
+          "content": "历史确认的核心结论是：实验队列先固定参数变体，再批量运行并用 show/diff 比较指标；采用结果前要记录可复现实验名。 排除项：排除直接覆盖主工作区、只看单一指标就提升实验、把未完成实验写成结论。",
+          "sourceEvidenceIds": [
+            "source-t06-history-l0"
+          ],
+          "observedAt": "2026-08-29T18:00:00+08:00",
+          "contentHash": "c5857590d1162c110d954a03ec409e4c39a28a6aaf4caa533932e9606e1694f3"
+        }
+      ],
+      "contentHash": "ff291a43fd669086dd4669531f78b0118c3039eaa2c925b7328e7e8349bbcf1c"
+    }
+  ],
+  "l1Memories": [
+    {
+      "assetId": "T06-L1-01",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "source-t06-history-l1"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "type": "fact",
+      "content": "根命令持有共享配置选项，子命令通过解析结果读取同一实例；注册和默认值只维护一处。 排除项：排除在每个子命令复制选项、在 handler 重建配置、为了兼容而改变帮助文本。",
+      "status": "active",
+      "validFrom": "2026-08-29T18:00:00+08:00",
+      "supportingMessageIds": [
+        "T06-L0-01-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "dd745853842ea11f4c9016bb3f4ab6dc642d2364c6c5b173a54036e318999e76"
+    },
+    {
+      "assetId": "T06-L1-02",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "source-t06-history-l1"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "type": "decision",
+      "content": "新增命令先在贡献清单声明稳定标识，再绑定 handler；菜单入口单独配置并用 enablement 控制可见状态。 排除项：排除把内部诊断命令加入命令面板、用 handler 内判断替代菜单条件、重命名已有标识。",
+      "status": "active",
+      "validFrom": "2026-08-29T18:00:00+08:00",
+      "supportingMessageIds": [
+        "T06-L0-03-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "305b08c1689868624f59af4616b83dd770e401f35e27cea5886920cda2ee5329"
+    },
+    {
+      "assetId": "T06-L1-03",
+      "ownerAgentId": "agent-task1-t06-assets-b",
+      "sourceEvidenceIds": [
+        "source-t06-history-l1"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "type": "event",
+      "content": "新增 stage 先声明 deps、outs、params，再执行 dry-run 检查 DAG 和锁文件变化，确认后才运行训练。 排除项：排除跳过 dry-run 直接跑全量训练、把缓存目录写进 outs、手改锁文件掩盖依赖变化。",
+      "status": "active",
+      "validFrom": "2026-08-29T18:00:00+08:00",
+      "supportingMessageIds": [
+        "T06-L0-02-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "917424e5048459283bf829ee171b19a941177cd12fd54cfe4e21b67c84b44b11"
+    },
+    {
+      "assetId": "T06-L1-04",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "source-t06-history-l1"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "type": "fact",
+      "content": "命令、菜单和 walkthrough 共用稳定的本地化键；语言包提供显示文本，运行时只引用键。 排除项：排除拼接用户可见字符串、用显示文本作为命令标识、只翻译标题而遗漏菜单提示。",
+      "status": "active",
+      "validFrom": "2026-08-29T18:00:00+08:00",
+      "supportingMessageIds": [
+        "T06-L0-05-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "fff1704d360eff2012ebc47ac638ba5ddcceccbe3931fd83d90b756ec1b1e15c"
+    },
+    {
+      "assetId": "T06-L1-05",
+      "ownerAgentId": "agent-task1-t06-assets-b",
+      "sourceEvidenceIds": [
+        "source-t06-history-l1"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "type": "decision",
+      "content": "参数缺失或格式错误在解析层结束并返回退出码 2；远端或服务失败返回 1；成功返回 0，并在错误输出中区分用法与运行失败。 排除项：排除在业务 handler 再次解析同一参数、将所有错误压成 1、把远端失败写成用法错误。",
+      "status": "active",
+      "validFrom": "2026-08-29T18:00:00+08:00",
+      "supportingMessageIds": [
+        "T06-L0-04-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "4594e2c127dcec29d36cefa0ce4bb4758b609de6621bb6856a597bd8a2efdee0"
+    },
+    {
+      "assetId": "T06-L1-06",
+      "ownerAgentId": "agent-task1-t06-assets-b",
+      "sourceEvidenceIds": [
+        "source-t06-history-l1"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "type": "decision",
+      "content": "迁移期间保留已发布的短别名，解析后归一化到唯一内部名称，并为冲突和弃用提示增加测试。 排除项：排除无公告删除别名、让别名进入业务分支、用字符串替换绕过解析器。",
+      "status": "active",
+      "validFrom": "2026-08-29T18:00:00+08:00",
+      "supportingMessageIds": [
+        "T06-L0-06-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "ec03d71882aba71b6c536e9cd5c4e8ebe65f7f893097f21ef197beb0473e9c2b"
+    },
+    {
+      "assetId": "T06-L1-07",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "source-t06-history-l1"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "type": "decision",
+      "content": "命令参考必须列出语法、参数、默认值、退出码和可复制示例；教程与解释页分别承载学习路径和背景。 排除项：排除把未验证行为写进参考、在示例中隐藏必需环境变量、用营销文案替代参数说明。",
+      "status": "active",
+      "validFrom": "2026-08-29T18:00:00+08:00",
+      "supportingMessageIds": [
+        "T06-L0-07-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "b42bfdadb391405b081b7d06d626739723474643e2b892ce8e40089a7ef76f87"
+    },
+    {
+      "assetId": "T06-L1-08",
+      "ownerAgentId": "agent-task1-t06-assets-b",
+      "sourceEvidenceIds": [
+        "source-t06-history-l1"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "type": "event",
+      "content": "机器可读输出保持字段名和行序稳定，人类输出可增加说明但不能改变错误边界；失败必须写到 stderr。 排除项：排除把诊断日志混入 stdout、按平台改变字段名、为了美化删除错误码信息。",
+      "status": "active",
+      "validFrom": "2026-08-29T18:00:00+08:00",
+      "supportingMessageIds": [
+        "T06-L0-04-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "de52ada3a1aac0be5dcc62912bdd0e5d2d5a5255065ab77c58174aa2913f8591"
+    },
+    {
+      "assetId": "T06-L1-09",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "source-t06-history-l1"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "type": "decision",
+      "content": "团队约定的默认 remote 名为 team-cache；凭据仅从本地配置或环境注入，仓库只记录不含秘密的 URL 和配置键。 排除项：排除把令牌写入 dvc 配置提交、每个 stage 自定义 remote 名、将本地绝对路径提交为共享配置。",
+      "status": "active",
+      "validFrom": "2026-08-29T18:00:00+08:00",
+      "supportingMessageIds": [
+        "T06-L0-09-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "51086f1e950111a9fdac509e3a0dde3747b785def69303b89db9723cd0d3c3c3"
+    },
+    {
+      "assetId": "T06-L1-10",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "source-t06-history-l1"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "type": "decision",
+      "content": "先确认远端同步和工作区状态，再执行定向清理；清理前保留仍被当前或实验引用的对象。 排除项：排除未同步就全量清理、删除仍被锁文件引用的对象、把清理当作解决 pipeline 错误的第一步。",
+      "status": "active",
+      "validFrom": "2026-08-29T18:00:00+08:00",
+      "supportingMessageIds": [
+        "T06-L0-09-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "fdf815675e00af20ba1f89a03d7d8db4b7e21895475957071e4fe4bdfc8dc10a"
+    },
+    {
+      "assetId": "T06-L1-11",
+      "ownerAgentId": "agent-task1-t06-assets-b",
+      "sourceEvidenceIds": [
+        "source-t06-history-l1"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "type": "decision",
+      "content": "实验队列先固定参数变体，再批量运行并用 show/diff 比较指标；采用结果前要记录可复现实验名。 排除项：排除直接覆盖主工作区、只看单一指标就提升实验、把未完成实验写成结论。",
+      "status": "active",
+      "validFrom": "2026-08-29T18:00:00+08:00",
+      "supportingMessageIds": [
+        "T06-L0-10-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "5a38fd0e0ec44ee4026d27c8cc6b975d0148f18fb09a253e22b78750e92feca9"
+    },
+    {
+      "assetId": "T06-L1-12",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "source-t06-history-l1"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "type": "event",
+      "content": "选项说明、默认值和退出码属于兼容面；新增选项追加到合适分组，不改既有文字的语义。 排除项：排除为了重排代码重写帮助、隐藏默认值、让错误分支产生不同的退出码。",
+      "status": "active",
+      "validFrom": "2026-08-29T18:00:00+08:00",
+      "supportingMessageIds": [
+        "T06-L0-01-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "9cc9a64f3eae2a97e8d5627b5bfe2619dff22459ac11d6e6e6a15fa87f410ed9"
+    },
+    {
+      "assetId": "T06-L1-13",
+      "ownerAgentId": "agent-task1-t06-assets-b",
+      "sourceEvidenceIds": [
+        "source-t06-history-l1"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "type": "decision",
+      "content": "decision 类型事件日期为 2026-08-11；保留 -o 作为输出别名，-q 继续表示安静模式；新别名必须避开已有短选项并在帮助中说明。 排除项：排除当天之前的草案、在 handler 中二次解释别名、以长选项替换而不保留兼容短别名。",
+      "status": "active",
+      "validFrom": "2026-08-11T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T06-L0-06-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "13a6ac706dce275b3eab719c539149edc1fd8e0c951b003b6964a6f9e3298a3f"
+    },
+    {
+      "assetId": "T06-L1-14",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "source-t06-history-l1"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "type": "fact",
+      "content": "侧栏入口只在目标视图已注册且当前资源类型匹配时显示；命令本身仍可由已授权菜单触发。 排除项：排除用 activation event 代替 enablement、把入口条件硬编码进 handler、影响其他视图的菜单。",
+      "status": "active",
+      "validFrom": "2026-08-29T18:00:00+08:00",
+      "supportingMessageIds": [
+        "T06-L0-03-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "12c030b7478ea33189be93d1f588f2ff934fbb35d1efdee2088d6ea2a7a9dc0f"
+    },
+    {
+      "assetId": "T06-L1-15",
+      "ownerAgentId": "agent-task1-t06-assets-b",
+      "sourceEvidenceIds": [
+        "source-t06-history-l1"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "type": "decision",
+      "content": "解析层统一把分隔符和相对基准归一化，业务层只接收规范路径；错误信息保留用户输入片段。 排除项：排除业务层重复拼接路径、按宿主系统删除用户输入、把路径错误改报成网络错误。",
+      "status": "active",
+      "validFrom": "2026-08-29T18:00:00+08:00",
+      "supportingMessageIds": [
+        "T06-L0-08-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "dd6240c3787bb9f85af444cc534d138e41fb5fc0da252d17b5556cd75901bb81"
+    },
+    {
+      "assetId": "T06-L1-16",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "source-t06-history-l1"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "type": "decision",
+      "content": "变更说明按用户影响记录新增、修复、弃用和迁移提示，并链接到对应参考页；内部重构只在开发记录说明。 排除项：排除把未发布实验写入公开说明、只写实现细节、不说明弃用迁移路径。",
+      "status": "active",
+      "validFrom": "2026-08-29T18:00:00+08:00",
+      "supportingMessageIds": [
+        "T06-L0-07-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "96b4a2efc26dbd5de5824d53958da851dcd78a3bdb2be63589f21102ae217e6b"
+    }
+  ],
+  "l2Scenes": [
+    {
+      "assetId": "T06-L2-01",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "source-t06-history-l2"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "path": "client/harbor/command-tree-review.md",
+      "summary": "复盘命令树入口：根命令集中注册共享选项，解析阶段统一校验；导出和检查子命令只消费解析结果。回归检查覆盖帮助、缺参和退出码。",
+      "content": "命令树复盘综合两段历史：根命令集中注册共享选项并在解析阶段统一校验，导出和检查子命令只消费解析结果；迁移期间保留已发布短别名，解析后归一化到唯一内部名称，并为冲突与弃用提示增加测试。排除复制选项、handler 重建配置、无公告删除别名和改写帮助语义。",
+      "injected": false,
+      "supportingSessionIds": [
+        "T06-L0-01",
+        "T06-L0-06"
+      ],
+      "contentHash": "d689a06fb273bedc916655d7cb7c6abec2069be754739eba5f90a45bf0290a54"
+    },
+    {
+      "assetId": "T06-L2-02",
+      "ownerAgentId": "agent-task1-t06-assets-b",
+      "sourceEvidenceIds": [
+        "source-t06-history-l2"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "path": "client/orbit/command-rollout.md",
+      "summary": "扩展命令发布场景：先贡献稳定标识，再绑定 handler，再接侧栏入口和可见性条件，最后补齐语言包并验证命令面板与侧栏两条入口。",
+      "content": "扩展入口复盘综合两段历史：先贡献稳定命令标识，再绑定 handler，再接侧栏入口和资源可见性条件，最后补齐本地化；命令、菜单和 walkthrough 共用稳定本地化键，运行时只引用键。排除修改 CLI 参数解析、暴露内部诊断命令、用显示文本作标识或运行时拼接语言字符串。",
+      "injected": false,
+      "supportingSessionIds": [
+        "T06-L0-03",
+        "T06-L0-05"
+      ],
+      "contentHash": "84868bb929ac3f75373ae64c104ae06f46c58ba6fa332eb17838acca9499ad03"
+    },
+    {
+      "assetId": "T06-L2-03",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "source-t06-history-l2"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "path": "ml/lineage/dvc-remote-runbook.md",
+      "summary": "DVC 运行手册：确认 team-cache 配置与本地凭据来源，检查 status 后执行 fetch/pull，再做 dry-run 和定向清理；不提交秘密",
+      "content": "DVC 场景综合两段历史：默认 remote 名为 team-cache，凭据仅从本地配置或环境注入，先确认同步和工作区状态再 fetch/pull；新增 stage 先声明 deps、outs、params，再 dry-run 检查 DAG 和锁文件后运行训练，清理只保留仍被引用对象。排除提交令牌、跳过 dry-run 和未同步全量清理。",
+      "injected": false,
+      "supportingSessionIds": [
+        "T06-L0-09",
+        "T06-L0-02"
+      ],
+      "contentHash": "7b4059deef584e80293280f62e0cf134849e2fc73c473b6a67dacd97c2a1ec36"
+    },
+    {
+      "assetId": "T06-L2-04",
+      "ownerAgentId": "agent-task1-t06-assets-b",
+      "sourceEvidenceIds": [
+        "source-t06-history-l2"
+      ],
+      "observedAt": "2026-08-29T18:00:00+08:00",
+      "path": "client/relay-terminal/cli-release-incident.md",
+      "summary": "发布事故复盘：解析层区分缺参/格式错误（stderr、返回 2）、远端失败（返回 1）与成功（返回 0），并覆盖跨平台路径归一化和稳定输出字段。",
+      "content": "发布事故场景综合两段历史：跨平台发布曾把缺少参数误报为远端失败；解析层应在缺参或格式错误时写 stderr 并返回 2，远端失败返回 1，成功返回 0，机器可读字段保持稳定；跨平台解析还要统一分隔符和相对基准，业务层只接收规范路径并保留用户输入片段。回归覆盖 Windows/Unix、缺参、非法值、远端超时和机器可读输出。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T06-L0-04",
+        "T06-L0-08"
+      ],
+      "contentHash": "80c4b42ff754a2d7ef8a9b05514db2cb75b68569ad52455ab5e5818ab9289ec8"
+    }
+  ],
+  "l3Profiles": [
+    {
+      "assetId": "T06-L3-01",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "source-t06-history-l3"
+      ],
+      "observedAt": "2026-08-22T12:00:00+08:00",
+      "content": "维护 .NET CLI、VS Code 扩展、DVC 数据流水线以及跨平台命令行体验。 项目范围：harbor-admin-cli、orbit-vscode-extension、lineage-ml-pipeline、relay-terminal-client、compass-client-docs。协作偏好：优先复用已确认的历史决定；保持命令与输出合同兼容；把凭据和内部诊断留在本地；为跨平台边界保留回归测试。",
+      "stability": "team",
+      "contentHash": "de24a0fb445b90e9289d1075ea3e5593d8603457acc42e5891b77130f2d2a6de"
+    }
+  ]
+}

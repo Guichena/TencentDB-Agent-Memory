@@ -1,0 +1,289 @@
+{
+  "schema_version": "task1.luna_natural_negative_draft.v1",
+  "batch_id": "t06-natural-negatives-01",
+  "stage": "DS05",
+  "team_id": "T06",
+  "family": "natural-negative",
+  "cases": [
+    {
+      "draft_case_id": "T06-DS05-NN-001",
+      "difficulty": "easy",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "下面是一个 C# 方法的参数列表：`int count, string? label = null, CancellationToken cancellationToken = default`。只做文字转换，不判断类型是否合理，也不补充未给出的参数。"
+        },
+        {
+          "role": "assistant",
+          "content": "转换规则已经确定：保持参数原顺序，拆出名称、类型和默认值；没有默认值的单元格写 `—`。"
+        },
+        {
+          "role": "user",
+          "content": "输出只需要一个 Markdown 表格，表头依次为‘序号’、‘名称’、‘类型’、‘默认值’，不要解释。"
+        }
+      ],
+      "query": "把给定的 C# 参数列表转换成指定的 Markdown 表格。",
+      "why_current_context_is_sufficient": "参数的完整文本、拆分字段、顺序、缺省值表示和唯一输出格式都已在当前消息中给出；这是对现有字符串的局部转换，不需要任何外部事实。",
+      "visible_distractor_ids_author_only": [
+        "csharp-api-signature-review",
+        "dotnet-cli-command-design"
+      ],
+      "sol_review_questions": [
+        "是否只拆分并重排已给参数，没有引入 C# 语义判断或额外参数？",
+        "是否严格使用指定列顺序和缺省值标记？"
+      ]
+    },
+    {
+      "draft_case_id": "T06-DS05-NN-002",
+      "difficulty": "easy",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "这是当前 `package.json` 的完整局部对象：\n```json\n{\n  \"contributes\": {\n    \"commands\": [\n      {\"command\": \"orbit.open\", \"title\": \"Open Orbit\"},\n      {\"command\": \"orbit.sync\", \"title\": \"Sync\"}\n    ]\n  },\n  \"activationEvents\": [\"onStartupFinished\"]\n}\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "局部编辑要求已明确：只把 `orbit.sync` 对象的 `title` 改成 `Sync Workspace`，保留其他键、数组顺序和字符串不变。"
+        },
+        {
+          "role": "user",
+          "content": "请返回编辑后的完整 JSON 对象，使用两个空格缩进且保持有效 JSON；不要添加说明、注释或其他命令。"
+        }
+      ],
+      "query": "按上下文的单字段要求完成 `package.json` 局部 JSON 编辑，并只输出 JSON。",
+      "why_current_context_is_sufficient": "待编辑对象、唯一目标命令、目标新值、不可变内容和缩进格式均已完整给出；任务仅是确定性 JSON 局部修改，不依赖扩展历史或文档。",
+      "visible_distractor_ids_author_only": [
+        "vscode-menu-visibility",
+        "extension-localization-review"
+      ],
+      "sol_review_questions": [
+        "是否只修改指定命令的标题并保留其余 JSON 结构与顺序？",
+        "输出是否为无注释、两个空格缩进的有效 JSON？"
+      ]
+    },
+    {
+      "draft_case_id": "T06-DS05-NN-003",
+      "difficulty": "easy",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "这里已经给出命令输出的全部数据：\n```text\nstage    status   duration\ntrain    changed  00:02:14\nprepare  ok       00:00:08\nevaluate changed  00:00:31\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "整理规则只有两条：表格列依次为 `stage`、`status`、`duration`；数据行按 `stage` 的字母序排列，并且原样保留每个状态和时长。"
+        },
+        {
+          "role": "user",
+          "content": "请输出一个 Markdown 表格，不要重新运行命令，不要解释字段含义，也不要添加汇总行。"
+        }
+      ],
+      "query": "把给定的命令输出整理成按 stage 字母序排列的 Markdown 表格。",
+      "why_current_context_is_sufficient": "所有表头、三条数据、排序规则、保真要求和输出形式均已直接提供；这是对给定文本表格的重排，不需要查询项目或解释 DVC 行为。",
+      "visible_distractor_ids_author_only": [
+        "dvc-pipeline-stage-planning",
+        "dvc-metrics-interpretation"
+      ],
+      "sol_review_questions": [
+        "是否只按 stage 排序并保留原始状态与时长，没有计算或新增数据？",
+        "是否输出恰好三条数据行和指定的三列？"
+      ]
+    },
+    {
+      "draft_case_id": "T06-DS05-NN-004",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "退出码映射固定为：`success = 0`、`parse_error = 2`、`validation_error = 4`、`execution_error = 8`、`io_error = 16`。一次运行依次记录了 `success`、`execution_error`、`success`。"
+        },
+        {
+          "role": "assistant",
+          "content": "计算规则已给定：忽略 0；从记录中取非零退出码的最大值作为最终退出码，并同时列出命中的错误标签。"
+        },
+        {
+          "role": "user",
+          "content": "请用两行纯文本输出：第一行写 `final_code=<数字>`，第二行写 `errors=<按首次出现顺序、逗号分隔的标签>`。"
+        }
+      ],
+      "query": "根据给定映射和记录计算最终退出码，并按指定两行格式输出。",
+      "why_current_context_is_sufficient": "映射表、完整事件序列、忽略零值规则、聚合规则和精确输出模板都在上下文中；只需执行有限的数值计算，不需要了解任何 CLI 实现。",
+      "visible_distractor_ids_author_only": [
+        "cli-error-boundary-design",
+        "command-handler-exit-policy"
+      ],
+      "sol_review_questions": [
+        "是否忽略 success=0、选择非零码最大值，并保持错误标签的首次出现顺序？",
+        "是否严格输出两行而未改变映射或增加解释？"
+      ]
+    },
+    {
+      "draft_case_id": "T06-DS05-NN-005",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "请改写下面的命令帮助文本：\n```text\nexport: Exports records. Usage: tool export [--format <fmt>] [--out <path>]. --format: output format, defaults to json. --out: output file; if omitted, stdout. Use --force to overwrite existing file.\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "改写约束已固定：使用简洁中文；保留 `export`、用法、`--format <fmt>`、`--out <path>` 和 `--force` 的语义；不能增加选项或行为。"
+        },
+        {
+          "role": "user",
+          "content": "输出三行纯文本：第一行是命令名和一句用途，第二行是 Usage 行，第三行列出三个选项及其说明；不要 Markdown 标记或前言。"
+        }
+      ],
+      "query": "在不改变语义的前提下，把给定帮助文本改写成指定的三行中文帮助。",
+      "why_current_context_is_sufficient": "原文的命令、用法、选项和全部语义，以及中文风格、行数和禁止扩展的要求均已给出；这是局部文案改写，不需查阅命令规范。",
+      "visible_distractor_ids_author_only": [
+        "cli-reference-structure",
+        "documentation-diataxis-workflow"
+      ],
+      "sol_review_questions": [
+        "是否保留三个选项的原始语义、默认值、stdout 行为和覆盖行为？",
+        "是否恰好输出三行中文纯文本，没有新增选项或说明？"
+      ]
+    },
+    {
+      "draft_case_id": "T06-DS05-NN-006",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "路径归一化只针对下面三个字符串进行：`./src\\main.cs`、`a//b/./c`、`/var/log/../tmp/`。规则是把反斜杠换成正斜杠、折叠连续斜杠、移除 `.` 段、按通常路径规则消解 `..`，并保留绝对路径的开头斜杠；不访问文件系统。"
+        },
+        {
+          "role": "assistant",
+          "content": "输出规则也已确定：按输入顺序逐行给出 `原字符串 -> 归一化字符串`；相对路径不额外添加开头或结尾斜杠。"
+        },
+        {
+          "role": "user",
+          "content": "只执行上述字符串变换，保留原字符串的显示形式，不解释路径是否存在。"
+        }
+      ],
+      "query": "按照给定规则归一化这三个路径字符串，并逐行输出映射。",
+      "why_current_context_is_sufficient": "三个输入、每一步归一化规则、绝对与相对路径边界、文件系统禁用条件和输出模板都完整可见；任务是纯字符串计算，不需要读取磁盘或操作系统状态。",
+      "visible_distractor_ids_author_only": [
+        "cross-platform-file-layout",
+        "cli-path-validation"
+      ],
+      "sol_review_questions": [
+        "是否只执行给定的分隔符、重复斜杠、点段和双点段变换？",
+        "是否保留绝对路径前导斜杠、按原顺序逐行输出且未声称访问文件系统？"
+      ]
+    },
+    {
+      "draft_case_id": "T06-DS05-NN-007",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "请推导三个配置项的最终值。优先级从高到低是命令行、环境变量、配置文件、字面默认值；显式的 `0` 或 `false` 也算已提供。数据为：`retries`：命令行缺省，环境变量 `3`，配置文件 `5`，默认 `2`；`timeout`：命令行 `0`，环境变量 `10`，配置文件 `30`，默认 `60`；`verbose`：命令行缺省，环境变量缺省，配置文件 `false`，默认 `true`。"
+        },
+        {
+          "role": "assistant",
+          "content": "只需对每项沿优先级取第一个已提供值；缺省表示没有值，不能把数字零或布尔 false 当成缺省。"
+        },
+        {
+          "role": "user",
+          "content": "请输出一个 JSON 对象，键按 `retries`、`timeout`、`verbose` 顺序排列，值保持数字或布尔类型，不要附加解释。"
+        }
+      ],
+      "query": "根据给定优先级和输入值推导最终配置，并只输出指定 JSON。",
+      "why_current_context_is_sufficient": "优先级、每个配置项在四层的值、缺省定义、零和 false 的特殊判定以及输出类型和顺序都已明确；这是有限的优先级选择，不需要环境或项目配置查询。",
+      "visible_distractor_ids_author_only": [
+        "cli-config-precedence",
+        "environment-variable-conventions"
+      ],
+      "sol_review_questions": [
+        "是否正确将显式 0 和 false 视为已提供，并按优先级选择值？",
+        "输出是否保持数字/布尔类型、键顺序和纯 JSON 要求？"
+      ]
+    },
+    {
+      "draft_case_id": "T06-DS05-NN-008",
+      "difficulty": "easy",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "下面是待排序的扩展命令标识：`orbit.sync`, `orbit.open`, `orbit.configure`, `orbit.about`, `orbit.openWorkspace`。"
+        },
+        {
+          "role": "assistant",
+          "content": "排序规则固定为逐字符的 ASCII/ordinal 升序比较，比较时区分大小写；本组标识都使用小写字母，因此不需要其他规则。"
+        },
+        {
+          "role": "user",
+          "content": "请按排序后的顺序每行输出一个标识，不要编号、解释或改变拼写。"
+        }
+      ],
+      "query": "按给定的 ordinal 升序规则排列这些扩展命令标识。",
+      "why_current_context_is_sufficient": "完整标识列表、字符比较规则、大小写约束和逐行输出格式都在当前上下文中；这只是确定性的字符串排序，不需要了解命令注册或菜单配置。",
+      "visible_distractor_ids_author_only": [
+        "vscode-command-contributions",
+        "extension-command-palette"
+      ],
+      "sol_review_questions": [
+        "是否使用逐字符 ordinal 升序且不按语义或长度排序？",
+        "是否保留每个标识的原始拼写并恰好输出五行？"
+      ]
+    },
+    {
+      "draft_case_id": "T06-DS05-NN-009",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "这是一个需要格式化的 YAML stage 片段：\n```yaml\nstage:\n  train:\n    cmd: python train.py --epochs 3\n    deps:\n    - data/train.csv\n    outs:\n    - model.bin\n    params:\n      - epochs=3\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "格式化约束完整如下：使用两个空格的层级缩进；列表项相对所属键再缩进两个空格；保持所有键、标量值、列表顺序和层级不变；只修正空白。"
+        },
+        {
+          "role": "user",
+          "content": "请只输出格式化后的 YAML fenced block，不添加解释，不重命名 stage，也不改命令或参数值。"
+        }
+      ],
+      "query": "按指定空白规则格式化给定的 YAML stage 片段。",
+      "why_current_context_is_sufficient": "待处理 YAML、缩进宽度、列表缩进、保真边界和唯一输出包装方式均已给出；任务只改空白，不需要解析流水线含义或查找其他 stage。",
+      "visible_distractor_ids_author_only": [
+        "dvc-stage-dependency-planning",
+        "yaml-pipeline-validation"
+      ],
+      "sol_review_questions": [
+        "是否仅修正层级空白，完整保留键、值、顺序和 YAML 层级？",
+        "列表项是否比所属键多缩进两个空格，并按要求使用 fenced block？"
+      ]
+    },
+    {
+      "draft_case_id": "T06-DS05-NN-010",
+      "difficulty": "easy",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "下面是一段普通 Markdown 文档的标题序列：\n```markdown\n# Deploy\n### Prerequisites\n## Steps\n#### Verify\n### Cleanup\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "标题修正规则已确定：文档标题保留为一级；其直接章节统一为二级；章节下的子节统一为三级；只调整井号数量，保留标题文字和顺序。"
+        },
+        {
+          "role": "user",
+          "content": "请只输出修正后的 Markdown 标题序列，不加列表、说明或正文。"
+        }
+      ],
+      "query": "按给定层级规则修正普通文档的 Markdown 标题。",
+      "why_current_context_is_sufficient": "完整标题序列、目标层级映射、保留文字顺序的要求和纯 Markdown 输出限制均已明确；这是局部文档结构修正，不需要项目背景或写作规范查询。",
+      "visible_distractor_ids_author_only": [
+        "cli-reference-heading-style",
+        "documentation-information-architecture"
+      ],
+      "sol_review_questions": [
+        "是否只调整标题层级而保留五个标题的文字和顺序？",
+        "是否将文档标题、章节和子节分别规范为一、二、三级？"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": "task1.luna_knowledge_assets_draft.v1",
+  "batch_id": "t06-expand-knowledge-01",
+  "stage": "DS05",
+  "team_id": "T06",
+  "resources": [
+    {
+      "asset_id": "T06-KNOWLEDGE-HARBOR-CG",
+      "type": "code_graph",
+      "name": "Harbor CLI 代码索引",
+      "workspace_match": "harbor-admin-cli",
+      "tool_list": [{"name": "find_symbol", "required_params": ["symbol"]}],
+      "tool_fixtures": [{
+        "fixture_id": "T06-KNOWLEDGE-HARBOR-CG-FX-01",
+        "tool_name": "find_symbol",
+        "expected_invocation": {"tool_name": "find_symbol", "arguments": {"symbol": "ExportCommand"}},
+        "expected_result": {"symbol": "ExportCommand", "definition": {"path": "src/Harbor.Admin.Cli/Commands/ExportCommand.cs", "line": 12}, "registration": {"owner": "HarborRootCommand.Build()", "path": "src/Harbor.Admin.Cli/HarborRootCommand.cs", "line": 48, "command": "export"}, "verification_scope": ["ExportCommand", "HarborRootCommand.Build()", "tests/Integration/ExportCommandTests.cs"]},
+        "request": {"symbol": "ExportCommand"},
+        "response": {"symbol": "ExportCommand", "definition": {"path": "src/Harbor.Admin.Cli/Commands/ExportCommand.cs", "line": 12}, "registration": {"owner": "HarborRootCommand.Build()", "path": "src/Harbor.Admin.Cli/HarborRootCommand.cs", "line": 48, "command": "export"}, "verification_scope": ["ExportCommand", "HarborRootCommand.Build()", "tests/Integration/ExportCommandTests.cs"]}
+      }]
+    },
+    {
+      "asset_id": "T06-KNOWLEDGE-ORBIT-WIKI",
+      "type": "wiki",
+      "name": "Orbit 扩展决策库",
+      "workspace_match": "orbit-vscode-extension",
+      "tool_list": [{"name": "search_pages", "required_params": ["query"]}],
+      "tool_fixtures": [{
+        "fixture_id": "T06-KNOWLEDGE-ORBIT-WIKI-FX-01",
+        "tool_name": "search_pages",
+        "expected_invocation": {"tool_name": "search_pages", "arguments": {"query": "命令标题 本地化"}},
+        "expected_result": {"matches": [{"ref": "wiki/orbit-command-title-localization", "title": "命令标题 本地化", "summary": "命令 ID 保持不变；commands、menus.commandPalette 与 views/title 引用 orbit.command.openPanel.title；英文和简体中文分别位于 package.nls.json 与 package.nls.zh-cn.json；校验中文缺失时的英文回退。"}]},
+        "request": {"query": "命令标题 本地化"},
+        "response": {"matches": [{"ref": "wiki/orbit-command-title-localization", "title": "命令标题 本地化", "summary": "命令 ID 保持不变；commands、menus.commandPalette 与 views/title 引用 orbit.command.openPanel.title；英文和简体中文分别位于 package.nls.json 与 package.nls.zh-cn.json；校验中文缺失时的英文回退。"}]}
+      }]
+    },
+    {
+      "asset_id": "T06-KNOWLEDGE-LINEAGE-CG",
+      "type": "code_graph",
+      "name": "Lineage DVC 流水线索引",
+      "workspace_match": "lineage-ml-pipeline",
+      "tool_list": [{"name": "inspect_stage", "required_params": ["stage"]}],
+      "tool_fixtures": [{
+        "fixture_id": "T06-KNOWLEDGE-LINEAGE-CG-FX-01",
+        "tool_name": "inspect_stage",
+        "expected_invocation": {"tool_name": "inspect_stage", "arguments": {"stage": "train"}},
+        "expected_result": {"stage": "train", "path": "dvc.yaml", "deps": ["data/features.parquet", "data/labels.parquet", "params.yaml"], "cmd": "python src/train.py --config params.yaml", "outs": ["model/model.pkl"], "metrics": ["metrics/train.json"], "downstream": [{"stage": "evaluate", "uses": ["model/model.pkl"]}], "not_directly_used_by": ["publish"]},
+        "request": {"stage": "train"},
+        "response": {"stage": "train", "path": "dvc.yaml", "deps": ["data/features.parquet", "data/labels.parquet", "params.yaml"], "cmd": "python src/train.py --config params.yaml", "outs": ["model/model.pkl"], "metrics": ["metrics/train.json"], "downstream": [{"stage": "evaluate", "uses": ["model/model.pkl"]}], "not_directly_used_by": ["publish"]}
+      }]
+    }
+  ]
+}

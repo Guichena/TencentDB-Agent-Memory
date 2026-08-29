@@ -1,0 +1,14 @@
+diff --git a/raw/cli-mastery/SKILL.md b/adapted/T06-SKILL-CLI-MASTERY/SKILL.md
+index 5a6efc7..ea7c8a8 100644
+--- a/raw/cli-mastery/SKILL.md
++++ b/adapted/T06-SKILL-CLI-MASTERY/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+ name: cli-mastery
+-description: 'Interactive training for the GitHub Copilot CLI. Guided lessons, quizzes, scenario challenges, and a full reference covering slash commands, shortcuts, modes, agents, skills, MCP, and configuration. Say "cliexpert" to start.'
++description: 'Interactive training for GitHub Copilot CLI lessons, quizzes, scenarios, and reference questions.'
++use_when: 'Use for interactive Copilot CLI lessons, quizzes, scenarios, and reference questions.'
++do_not_use_when: 'Do not use for application CLI implementation, System.CommandLine, VS Code extensions, DVC workflows, or ordinary documentation.'
+ metadata:
+   version: 1.2.0
+ license: MIT

@@ -1,0 +1,13 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "t06-expand-memory-01",
+  "external_source_ids": [],
+  "generated_at": "2026-08-29T23:59:30+08:00",
+  "actual_count": 5,
+  "raw_output_file": "draft.json",
+  "raw_output_sha256": "9deeff39aa2a7ba2f3a5a66bcfc6fcc5b582b4ddbce023b47b301d2f98dd87ce",
+  "memory_assets_sha256": "064748dfcd3bc2d01c5170ebc2786556d708d68d9ce87a3bc9f68421941a77be"
+}

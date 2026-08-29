@@ -1,0 +1,17 @@
+diff --git a/raw/dvc-remotes-and-cache/SKILL.md b/adapted/T06-SKILL-DVC-REMOTES-CACHE/SKILL.md
+index 11076e4..81bd67c 100644
+--- a/raw/dvc-remotes-and-cache/SKILL.md
++++ b/adapted/T06-SKILL-DVC-REMOTES-CACHE/SKILL.md
+@@ -1,8 +1,8 @@
+ ---
+-name: remotes-and-cache
+-description: "Configure DVC remotes and cache behavior, move data with
+-  push/pull/fetch/gc, and diagnose remote backend dependency or configuration
+-  failures safely."
++name: dvc-remotes-and-cache
++description: "Configure DVC remotes and cache behavior, transfer data safely, and diagnose backend or credential failures."
++use_when: "Use for DVC remote configuration, push/pull/fetch, cache behavior, optional backends, and safe garbage collection."
++do_not_use_when: "Do not use for stage construction, experiment comparison, editor commands, or generic documentation."
+ disable-model-invocation: true
+ metadata:
+   disco-role: operating

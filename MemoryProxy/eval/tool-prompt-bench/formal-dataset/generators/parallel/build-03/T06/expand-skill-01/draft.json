@@ -1,0 +1,179 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t06-expand-skill-01",
+  "stage": "DS05",
+  "team_id": "T06",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T06-SKILL-BP-02",
+      "external_source_ids": ["T06-SRC-VSCODE-COMMANDS"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"orbit-vscode-extension 要新增一个刷新侧栏数据的命令，既要能从命令面板触发，也要放到视图标题按钮中。"},
+        {"role":"assistant","content":"我会先对照现有 package.json 的 commands、menus 和视图贡献点，再确定命令标识与入口位置。"},
+        {"role":"user","content":"扩展已有一个普通命令和一个 view/item/context 菜单，新的刷新操作需要在数据可用时显示，禁用时不应出现。"},
+        {"role":"assistant","content":"现有贡献点把命令注册和菜单条件分开维护，运行时代码只负责注册 handler；我会延续这个边界。"},
+        {"role":"user","content":"产品希望普通入口保留在 Command Palette，侧栏按钮只在特定视图标题出现，并且按钮需要图标。"},
+        {"role":"assistant","content":"我已确认这是同一个行为的两个可见入口，关键是区分普通命令与侧栏专用命令的标识、可见性和排序。"},
+        {"role":"user","content":"命令标题要能被本地化，菜单位置要和现有按钮保持一致，不能因为加了按钮而改变其他命令的可见性。"},
+        {"role":"assistant","content":"目前只完成了贡献点盘点，尚缺一套从命令标题、类别和标识到图标、when 条件、菜单分组及命令面板可见性的完整实施依据。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请给出新增该 VS Code 扩展命令的实施方案，并列出 package.json 贡献点和可见性需要验证的边界。",
+      "positive": {
+        "delta_message": {"role":"user","content":"当前资料只有入口位置和本地化方向，没有覆盖普通命令与侧栏命令在 title、category、标识命名、icon、when、group、Command Palette 可见性及 view 标题位置上的完整规则；请补齐实施依据。"},
+        "private_proposal": {
+          "unique_information_gap": "会话缺少 VS Code 命令贡献的完整规则，尤其是普通命令与侧栏专用命令在 title、category、标识、icon、when、group 及 Command Palette 可见性上的差异；项目盘点不足以可靠重建全部安全边界，相邻本地化资产只覆盖字符串资源。读取列出的目标资产正文后即可停止。",
+          "route": "skill",
+          "target_asset_ids": ["T06-SKILL-VSCODE-COMMANDS"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "skill_view 返回 listed 目标资产正文后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"user","content":"补充完整实施约束：1）所有命令贡献都必须定义 title，且标题不能因 category、可见性或位置而省略；2）普通命令默认应可从 Command Palette 访问，必须定义 category，除非要放侧栏否则不需要 icon；3）侧栏专用命令标识以 `_` 开头并以 `#sideBar` 结尾，例如 `_extensionId.someCommand#sideBar`，必须定义 icon，可按需定义 enablement；4）侧栏专用命令不得显示在 Command Palette；5）贡献到 view/title 或 view/item/context 时，必须说明相对现有按钮的 order/position，并用 group 表达位置；6）新命令应设置 when 条件，使它只在适用状态可见；7）命令定义、菜单贡献和本地化键分别保持现有 package.json 结构，运行时代码只注册 handler，不把可见性判断移入业务逻辑；8）测试普通命令的 title/category/Palette 入口、侧栏命令的标识/icon/when、view 标题或 item 上下文的 group 和相对顺序，并验证禁用条件下其他命令仍保持原可见性。"},
+        "private_proposal": {"route":"none","why_current_context_is_sufficient":"负例已给出从 title 到普通/侧栏分类、标识、icon、when、group、排序、Palette 可见性和测试边界的完整最小规则，继续读取外部资产不会增加完成请求所需的事实。"}
+      },
+      "visible_distractor_ids_author_only": ["T06-SKILL-VSCODE-LOCALIZATION","T06-SKILL-MICROSOFT-DOCS","T06-SKILL-DOCUMENTATION-WRITER"],
+      "controlled_delta_note": "两条 case 共用完全相同的 8 条上下文与 query，仅第 8 条追加消息改变信息充分性。Positive 保留命令贡献规则缺口，Negative 补入完整最小规则。目标为 listed 资产，首动作唯一且只需一次 view。",
+      "source_fact_map": [
+        {"claim":"所有命令必须有 title，普通命令的 Command Palette、category 与 icon 规则","source_id":"T06-SRC-VSCODE-COMMANDS","locator":"Instructions; Regular commands"},
+        {"claim":"侧栏命令标识、icon、enablement 与 Command Palette 排除规则","source_id":"T06-SRC-VSCODE-COMMANDS","locator":"Instructions; Side Bar commands"},
+        {"claim":"view/title 与 view/item/context 的 order/position、group 和 when 要求","source_id":"T06-SRC-VSCODE-COMMANDS","locator":"Instructions; Side Bar commands"}
+      ],
+      "sol_review_questions": ["Positive 是否缺少普通与侧栏命令的完整规则而不是局部事实？","listed 目标是否应以唯一 skill_view 为首动作？","Negative 是否完整覆盖 title、category、标识、icon、when、group、排序和 Palette 可见性？","两条 case 是否只有第 8 条追加消息不同且 query 完全相同？","三个同域干扰是否真实且未泄漏内部信息？"]
+    },
+    {
+      "draft_pair_id": "T06-SKILL-BP-03",
+      "external_source_ids": ["T06-SRC-DVC-DATA"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"lineage-ml-pipeline 想把 train 阶段写入 DVC，输入是 data/train.csv，输出是 models/model.bin，命令还要能在执行前预览。"},
+        {"role":"assistant","content":"我会先确认仓库是否已经初始化 DVC，再盘点现有数据元文件、流水线文件和阶段命名。"},
+        {"role":"user","content":"仓库里有 Git 和 Python 项目，但还不确定当前目录是不是 DVC 根目录；有人建议直接运行 repro。"},
+        {"role":"assistant","content":"在不清楚项目状态时直接执行会掩盖依赖或输出问题，我会先做根目录和状态检查。"},
+        {"role":"user","content":"团队希望阶段依赖、输出、参数和指标都能留在可审查的配置里，第一次执行必须是 dry-run。"},
+        {"role":"assistant","content":"阶段定义要可复现，执行范围也要明确；我会把元数据检查、阶段声明和预演拆开。"},
+        {"role":"user","content":"还需要知道如何看阶段 DAG、差异和未跟踪数据，避免把缓存或工作区文件误当成流水线定义。"},
+        {"role":"assistant","content":"当前只有目标文件和安全诉求，尚缺从项目检查、数据跟踪、stage 声明、DAG 检查到 dry-run repro 的完整顺序及边界。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请为 train 阶段给出安全的 DVC 实施与预演方案，并说明要检查的文件、依赖、输出和范围。",
+      "positive": {
+        "delta_message": {"role":"user","content":"当前资料没有给出 DVC 核心数据与流水线流程的完整顺序，尤其缺少 dvc root/status、dvc add、stage add、dvc.yaml/dvc.lock、DAG 检查和 dvc repro --dry 的具体边界；请补齐实施依据。"},
+        "private_proposal": {
+          "unique_information_gap":"会话缺少 DVC 数据跟踪与流水线生命周期的完整、安全顺序；本地上下文不能可靠重建根目录检查、元数据生成、阶段依赖/输出声明、状态/DAG 诊断和 dry-run repro 的全部边界。目标资产未列出但同团队可检索，搜索命中后按 id 查看正文即可停止。",
+          "route":"skill",
+          "target_asset_ids":["T06-SKILL-DVC-DATA-PIPELINES"],
+          "allowed_sequence_candidates":[["skill_search","skill_view_by_id"]],
+          "stop_after_candidate":"skill_view_by_id 返回目标资产正文后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"user","content":"补充完整最小流程：1）先确认在 DVC 项目内，运行 `dvc root`，再运行 `dvc status`；setup 场景除外，不要把空项目误判为已就绪；2）要跟踪的数据先用 `dvc add <path>`，并审查生成的 `.dvc` 元数据及 Git 变更；3）阶段用 `dvc stage add -n train -d data/train.csv -o models/model.bin` 加上实际命令写入 `dvc.yaml`，需要时声明参数和指标；4）用 `dvc stage list`、`dvc dag` 检查阶段图与目标，使用 `dvc status`、`dvc data status`、`dvc diff` 诊断变化；5）先运行 `dvc repro --dry train` 或规划器，确认依赖、输出和范围后才运行真实 repro；6）根据任务范围再选择 `--pipeline`、`--downstream`、`--single-item` 或 `--all-pipelines`，不要无意扩大重现范围；7）dvc checkout/commit/remove/move/update/freeze/unfreeze 等缓存或工作区变更必须在状态和目标范围清楚后执行；8）远端、实验队列、指标报告和 Python API 分别转到各自专门流程，不要混入阶段设计。"},
+        "private_proposal":{"route":"none","why_current_context_is_sufficient":"负例已给出从项目检查、数据跟踪、阶段声明、图与状态诊断、dry-run 到范围控制和安全边界的完整最小流程，继续读取外部资产不会增加完成请求所需的事实。"}
+      },
+      "visible_distractor_ids_author_only":["T06-SKILL-DVC-EXPERIMENTS","T06-SKILL-DVC-REMOTES-CACHE","T06-SKILL-DVC-METRICS-PARAMS-PLOTS"],
+      "controlled_delta_note":"目标未列出但同团队可搜索；Positive 唯一缺口是核心数据与流水线顺序，Negative 只补最小完整流程。",
+      "source_fact_map":[
+        {"claim":"先确认 DVC 根目录和状态","source_id":"T06-SRC-DVC-DATA","locator":"Start Here; item 1"},
+        {"claim":"dvc add、阶段声明和 dvc.yaml/dvc.lock 生命周期","source_id":"T06-SRC-DVC-DATA","locator":"Start Here; items 2-3; Core Commands"},
+        {"claim":"状态、数据状态、diff、DAG 与 dry-run repro 的顺序和范围选项","source_id":"T06-SRC-DVC-DATA","locator":"Start Here; item 4; Core Commands"},
+        {"claim":"远端、实验、指标和 Python API 的路由边界","source_id":"T06-SRC-DVC-DATA","locator":"When To Route Elsewhere"}
+      ],
+      "sol_review_questions":["Positive 是否保留了完整 DVC 数据与流水线流程的信息缺口？","目标为同团队可搜索资产时首动作是否唯一为搜索？","Negative 是否覆盖 root/status、add、stage、诊断、dry-run、范围和路由边界？","是否至少有三个可见同域干扰且未泄漏内部标识？","query 和 8 条共享消息是否与负例逐字一致？"]
+    },
+    {
+      "draft_pair_id":"T06-SKILL-BP-04",
+      "external_source_ids":["T06-SRC-DVC-EXPERIMENTS"],
+      "synthetic_scope":["team","project","conversation","history"],
+      "difficulty":"hard",
+      "context_bucket":"medium_6_to_10",
+      "shared_context_messages":[
+        {"role":"user","content":"lineage-ml-pipeline 要比较几组训练参数，先排队运行，再挑出结果提升到可复用分支。"},
+        {"role":"assistant","content":"我会先确认已有 DVC pipeline 和工作区状态，再区分立即运行、队列运行和结果提升。"},
+        {"role":"user","content":"项目已有 dvc.yaml 和 params.yaml，当前没有实验队列；有人想把所有候选一次性提交。"},
+        {"role":"assistant","content":"实验操作不应和普通 repro 混淆，我会先确定候选参数、并发范围和工作区是否干净。"},
+        {"role":"user","content":"结果需要机器可读地比较指标和参数，最佳结果要先检查再应用，必要时创建长期分支。"},
+        {"role":"assistant","content":"比较、应用和分支是不同阶段，我会让每一步都有可回退的检查点。"},
+        {"role":"user","content":"实验还可能需要分享、重命名或清理，远端配置和缓存问题要另行处理。"},
+        {"role":"assistant","content":"目前只有目标动作，没有一套覆盖 run、queue、show/diff、apply/branch、share/rename/clean 的完整决策顺序。"}
+      ],
+      "changed_message_index":8,
+      "query":"请规划这次 DVC 实验的运行、比较、提升和清理流程，并说明哪些动作需要先检查。",
+      "positive":{
+        "delta_message":{"role":"user","content":"当前资料只说明要比较参数，没有覆盖 dvc exp run 的即时/队列模式、批量执行、机器可读比较、apply 与 branch 的区别，以及 share、rename、remove、clean 的完整边界；请补齐实施依据。"},
+        "private_proposal":{"unique_information_gap":"会话缺少 DVC 实验工作流的完整决策链，尤其是运行与排队、结果比较、应用或建分支、分享和清理的顺序；相邻流水线与远端资产不能可靠替代实验专用规则。目标未列出但同团队可检索，搜索并按 id 查看目标正文后即可停止。","route":"skill","target_asset_ids":["T06-SKILL-DVC-EXPERIMENTS"],"allowed_sequence_candidates":[["skill_search","skill_view_by_id"]],"stop_after_candidate":"skill_view_by_id 返回目标资产正文后停止。"}
+      },
+      "negative":{
+        "delta_message":{"role":"user","content":"补充完整最小决策链：1）先确认已有 DVC 项目和 pipeline；没有 pipeline 时先转到数据与流水线流程；2）一次实验立即执行用 `dvc exp run`，参数 sweep 或延后执行用 `dvc exp run --queue`，队列准备好后用 `dvc exp run --run-all -j <n>` 执行；可按需使用 `--name`、`--set-param`、`--jobs`、`--temp` 等范围参数；3）用 `dvc exp show --json` 或只读检查器取得机器可读结果，用 `dvc exp diff` 做成对指标/参数比较；4）先检查候选工作区和结果，再用 `dvc exp apply` 恢复到工作区，需持久化 Git 审查时用 `dvc exp branch`，只保存实验结果时用 `dvc exp save`；5）需要共享引用时用 `dvc exp push/pull`，并先确认远端与缓存边界；6）用 `dvc exp rename` 维护名称，用 `dvc exp remove`/`rm` 或 `dvc exp clean` 清理不再需要的实验，清理前核对目标；7）实验比较、远端缓存和指标报告分别遵循专门流程，不把普通 `dvc repro` 当实验管理；8）遇到隐藏、过期、排队失败或工作区冲突，先读故障排查并保留可复现的检查输出。"},
+        "private_proposal":{"route":"none","why_current_context_is_sufficient":"负例已给出实验项目确认、即时/队列运行、批量执行、比较、应用/分支/保存、分享和清理的完整最小链条及路由边界，继续读取外部资产不会增加完成请求所需的事实。"}
+      },
+      "visible_distractor_ids_author_only":["T06-SKILL-DVC-DATA-PIPELINES","T06-SKILL-DVC-REMOTES-CACHE","T06-SKILL-DVC-METRICS-PARAMS-PLOTS"],
+      "controlled_delta_note":"目标未列出但同团队可搜索；Positive 保留实验全链路缺口，Negative 仅补与 query 对应的最小步骤。",
+      "source_fact_map":[
+        {"claim":"实验先确认 pipeline，缺失时转数据流水线流程","source_id":"T06-SRC-DVC-EXPERIMENTS","locator":"Default Decision Pattern; item 1"},
+        {"claim":"exp run、queue、run-all 与参数范围选择","source_id":"T06-SRC-DVC-EXPERIMENTS","locator":"Route Here For; Default Decision Pattern; item 2"},
+        {"claim":"show/diff 机器可读比较及 apply/branch/save 区别","source_id":"T06-SRC-DVC-EXPERIMENTS","locator":"Route Here For; Default Decision Pattern; items 3-4"},
+        {"claim":"push/pull、rename、remove/clean 与故障排查边界","source_id":"T06-SRC-DVC-EXPERIMENTS","locator":"Route Here For; Read Next; Default Decision Pattern"}
+      ],
+      "sol_review_questions":["Positive 是否确实缺少实验完整决策链？","搜索是否为未列出同团队资产的唯一首动作？","Negative 是否区分 run/queue/show-diff/apply-branch-save/share-clean？","是否有三个真实 DVC 同域干扰？","负例是否无需外部资产即可回答 query？"]
+    },
+    {
+      "draft_pair_id":"T06-SKILL-BP-05",
+      "external_source_ids":["T06-SRC-VSCODE-L10N"],
+      "synthetic_scope":["team","project","conversation","history"],
+      "difficulty":"hard",
+      "context_bucket":"medium_6_to_10",
+      "shared_context_messages":[
+        {"role":"user","content":"orbit-vscode-extension 要把新命令、设置页、视图欢迎文案和 walkthrough 做多语言支持，还要覆盖运行时提示。"},
+        {"role":"assistant","content":"我会先列出资源出现的位置和当前支持的语言，再确认每类资源的加载方式。"},
+        {"role":"user","content":"package.json 里有 commands、menus、configuration 和 walkthrough，源码里还有 TypeScript 消息，现有英文资源已能工作。"},
+        {"role":"assistant","content":"配置贡献点、独立 walkthrough 文件和源码消息的生命周期不同，不能只复制一个翻译文件。"},
+        {"role":"user","content":"本次要新增中文和日文，缺失翻译不能让扩展激活失败，资源命名要和现有约定一致。"},
+        {"role":"assistant","content":"我会把声明式资源、walkthrough 内容和运行时消息分别核对，并保留默认语言回退。"},
+        {"role":"user","content":"命令标题和菜单标签也必须随语言切换，设置和欢迎页不能漏掉，测试要覆盖打包后的资源。"},
+        {"role":"assistant","content":"目前只盘点了资源位置，尚缺按资源类型选择文件、覆盖语言和校验回退行为的完整本地化流程。"}
+      ],
+      "changed_message_index":8,
+      "query":"请给出 VS Code 扩展本地化的完整落地方案，并列出命令、设置、菜单、walkthrough 和运行时消息的验证点。",
+      "positive":{"delta_message":{"role":"user","content":"当前资料只覆盖资源清单，没有说明 package.json 声明资源、walkthrough Markdown 和源码运行时字符串分别应采用什么语言文件、如何保持所有支持语言同步以及如何验证回退；请补齐实施依据。"},"private_proposal":{"unique_information_gap":"会话缺少 VS Code 扩展本地化按资源类型分流的完整规则，无法可靠决定 package.json、walkthrough Markdown 与源码消息对应的语言资源文件及同步边界。目标未列出但同团队可检索，搜索并按 id 查看正文后即可停止。","route":"skill","target_asset_ids":["T06-SKILL-VSCODE-LOCALIZATION"],"allowed_sequence_candidates":[["skill_search","skill_view_by_id"]],"stop_after_candidate":"skill_view_by_id 返回目标资产正文后停止。"}},
+      "negative":{"delta_message":{"role":"user","content":"补充完整最小规则：1）先枚举当前支持的语言，并要求每个新资源在所有支持语言中都有对应更新；2）package.json 中的 configurations、commands、menus、views、viewsWelcome、walkthrough 标题和描述等声明式资源，使用独立的 `package.nls.LANGID.json` 文件；3）walkthrough 自有 Markdown 内容，使用对应语言后缀的 Markdown 文件，例如 `walkthrough/someStep.pt-br.md`；4）扩展源码 JavaScript/TypeScript 中展示给用户的消息，使用独立的 `bundle.l10n.LANGID.json` 文件；5）命令标题、菜单标签、设置描述和欢迎页都必须引用声明式本地化键，运行时消息引用运行时资源键，不把翻译硬编码到业务逻辑；6）新增中文和日文文件时保持键集合、文件命名和默认语言回退与现有约定一致；7）打包前检查三类文件均被包含，逐语言验证激活、命令/菜单/设置/walkthrough 显示和运行时消息，缺失翻译应按宿主回退而不阻断扩展激活。"},"private_proposal":{"route":"none","why_current_context_is_sufficient":"负例已给出声明式资源、walkthrough Markdown、源码消息的文件映射，以及同步、键、打包、回退和测试边界，继续读取外部资产不会增加完成请求所需的事实。"}},
+      "visible_distractor_ids_author_only":["T06-SKILL-VSCODE-COMMANDS","T06-SKILL-DOCUMENTATION-WRITER","T06-SKILL-MICROSOFT-DOCS"],
+      "controlled_delta_note":"目标未列出但同团队可搜索；Positive 仅保留本地化资源分流缺口，Negative 完整闭合三类文件与验证链。",
+      "source_fact_map":[{"claim":"配置、命令、菜单、视图和 walkthrough 声明资源使用 package.nls.LANGID.json","source_id":"T06-SRC-VSCODE-L10N","locator":"Instructions; item 1"},{"claim":"walkthrough Markdown 的语言文件命名","source_id":"T06-SRC-VSCODE-L10N","locator":"Instructions; item 2"},{"claim":"JavaScript/TypeScript 运行时消息使用 bundle.l10n.LANGID.json","source_id":"T06-SRC-VSCODE-L10N","locator":"Instructions; item 3"}],
+      "sol_review_questions":["Positive 是否缺少三类资源的完整映射而非只缺一个文件名？","未列出目标是否只需搜索后查看？","Negative 是否覆盖所有支持语言、三类文件、键同步、回退和打包验证？","三个同域干扰是否合理？","provider-visible 文本是否没有内部协议或资产标识？"]
+    },
+    {
+      "draft_pair_id":"T06-SKILL-BP-06",
+      "external_source_ids":["T06-SRC-DVC","T06-SRC-DVC-REMOTES"],
+      "synthetic_scope":["team","project","conversation","history"],
+      "difficulty":"hard",
+      "context_bucket":"medium_6_to_10",
+      "shared_context_messages":[
+        {"role":"user","content":"lineage-ml-pipeline 要把训练数据安全推到团队远端，并让新机器能拉取缓存；同时希望先规划，不要马上触发云端传输。"},
+        {"role":"assistant","content":"我会先确认这是 DVC 使用任务还是仓库维护任务，再把总路由和远端缓存细节分开。"},
+        {"role":"user","content":"项目已有 dvc.yaml 和本地缓存，但远端类型、凭据位置、默认远端和可选后端依赖还没有统一约定。"},
+        {"role":"assistant","content":"远端配置、缓存链接和数据传输都可能影响工作区或凭据，我会先采用只读检查和本地示例。"},
+        {"role":"user","content":"方案要覆盖 remote add/modify/list、push/pull/fetch、status -c、cache 配置、unprotect 和 gc 的安全边界。"},
+        {"role":"assistant","content":"这些动作需要按配置、支持性检查、传输预览和清理风险分层，不能只给一条 push 命令。"},
+        {"role":"user","content":"DVC 主路由里已经有各专题入口，远端缓存专题还需要作为可单独查看的资源保留。"},
+        {"role":"assistant","content":"目前缺少从总路由到远端缓存子流程的完整阅读顺序，以及可选 backend、凭据和 gc 的安全约束。"}
+      ],
+      "changed_message_index":8,
+      "query":"请给出 DVC 远端与缓存任务的安全规划，说明应先读哪些路由内容、如何检查配置和支持性，以及哪些传输或清理动作需要特别谨慎。",
+      "positive":{"delta_message":{"role":"user","content":"当前资料只有项目已有配置和动作清单，没有覆盖 DVC 总路由如何分流到远端缓存子流程，也没有给出 remote 配置层级、可选后端检查、凭据隔离、push/pull/fetch 预检、cache 链接行为和 gc 风险的完整顺序；请补齐实施依据。"},"private_proposal":{"unique_information_gap":"会话缺少 DVC 总 Skill 与远端缓存资源之间的完整路由及安全流程，尤其是配置检查、可选依赖、凭据隔离、传输前诊断、缓存行为和垃圾回收边界；目标为 listed 主资产且需要读取其资源文件，唯一首动作是查看主资产，随后按其资源链路读取子流程。","route":"skill","target_asset_ids":["T06-SKILL-DVC"],"allowed_sequence_candidates":[["skill_view","skill_files_read"]],"stop_after_candidate":"读取 listed 主资产正文及其 remotes-and-cache 资源后停止。"}},
+      "negative":{"delta_message":{"role":"user","content":"补充完整最小流程：1）先确认任务属于 DVC end-user 使用、Python API 还是 DVC 源码维护，再按最具体专题路由；本题远端/缓存动作进入 remotes-and-cache 子流程；2）先做 `dvc remote list`、配置层级和 `dvc cache dir` 等只读检查，项目共享的远端名和非秘密 URL 放项目配置，凭据与机器路径用 `--local` 写入 `.dvc/config.local`；3）按 URL scheme 判断本地 filesystem、HTTP(S)、对象存储、SSH/WebDAV/HDFS 或 `remote://name/path`，可选 backend 不明确时只运行本地支持性检查并安装窄范围 extra，不默认安装全量；4）传输前先用 `dvc status -c`、帮助输出和本地 dry-run/诊断确认默认远端、缓存对象和凭据边界；`dvc push`、`pull`、`fetch` 以及云端 import/get/list 属于可能触发网络或凭据的动作，得到明确授权和检查结果后再执行；5）缓存链接或保护行为变化前检查 `cache.type`、`cache.shared`、`cache.dir`，需要修改工作区保护时才考虑 `dvc unprotect`；6）垃圾回收先用 `dvc gc --dry`，明确 `dvc gc -c` 可能同时删除远端对象，再按目标范围执行；7）不要运行真实云端传输、凭据提示或原仓库远端测试作为默认步骤，优先使用帮助、配置检查、本地 filesystem remote 和无网络诊断；8）主路由还应把数据流水线、实验、指标/参数/plots、Python API 与仓库维护转到各自专题；远端独立资源仍可单独查看，但主路由的安全边界必须保持一致。"},"private_proposal":{"route":"none","why_current_context_is_sufficient":"负例已给出总路由、子流程、配置层级、凭据隔离、scheme/依赖检查、传输预检、缓存保护、gc dry-run 和跨专题边界的完整最小链条，继续读取外部资产不会增加完成请求所需的事实。"}},
+      "resource_path":"sub-skills/remotes-and-cache/SKILL.md",
+      "visible_distractor_ids_author_only":["T06-SKILL-DVC-DATA-PIPELINES","T06-SKILL-DVC-EXPERIMENTS","T06-SKILL-DVC-METRICS-PARAMS-PLOTS"],
+      "controlled_delta_note":"目标为 listed DVC 主资产且显式要求读取其资源文件；Positive 首动作唯一为主资产查看并继续 files 链路，Negative 完整闭合总路由与远端缓存安全流程。",
+      "source_fact_map":[{"claim":"DVC 总 Skill 按 end-user、Python API、源码维护和专题子技能路由","source_id":"T06-SRC-DVC","locator":"Route By Task; Decision Pattern"},{"claim":"远端缓存资源的 remote、cache、push/pull/fetch、依赖和配置故障范围","source_id":"T06-SRC-DVC-REMOTES","locator":"Route Here When; Core Workflow"},{"claim":"凭据 --local、可选 backend 窄 extra、传输和云操作安全边界","source_id":"T06-SRC-DVC-REMOTES","locator":"Safe Defaults"},{"claim":"cache 配置、unprotect 和 gc --dry/gc -c 风险","source_id":"T06-SRC-DVC-REMOTES","locator":"Safe Defaults; Core Workflow"}],
+      "sol_review_questions":["Positive 是否确实缺少主路由到远端资源的完整链路？","listed 主资产的首动作是否唯一为 skill_view，随后只读取指定资源？","Negative 是否覆盖配置、scheme、依赖、凭据、传输、缓存和 gc 的安全边界？","独立 remotes 资产和主资产资源是否都被保留？","三个同域干扰和 provider-visible 内容是否合规？"]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+diff --git a/raw/vscode-ext-localization/SKILL.md b/adapted/T06-SKILL-VSCODE-LOCALIZATION/SKILL.md
+index b92def2..26bf5c5 100644
+--- a/raw/vscode-ext-localization/SKILL.md
++++ b/adapted/T06-SKILL-VSCODE-LOCALIZATION/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+ name: vscode-ext-localization
+-description: 'Guidelines for proper localization of VS Code extensions, following VS Code extension development guidelines, libraries and good practices'
++description: 'Localize VS Code extension configurations, commands, menus, walkthroughs, and runtime messages across supported languages.'
++use_when: 'Use when localizing extension commands, settings, menus, walkthroughs, or runtime strings across supported languages.'
++do_not_use_when: 'Do not use for command registration without localization, .NET CLI design, or DVC workflows.'
+ ---
+ 
+ # VS Code extension localization

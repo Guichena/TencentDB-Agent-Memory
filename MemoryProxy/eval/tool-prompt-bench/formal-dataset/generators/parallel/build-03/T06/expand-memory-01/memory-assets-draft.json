@@ -1,0 +1,923 @@
+{
+  "schema_version": "task1.memory_assets_draft.v1",
+  "team_id": "T06",
+  "l0_sessions": [
+    {
+      "asset_id": "T06-L0-01",
+      "session_id": "T06-L0-01",
+      "observed_at": "2026-08-29T18:00:00+08:00",
+      "messages": [
+        {
+          "role": "user",
+          "content": "我们继续处理 harbor-admin-cli 的全局选项注册与校验，需要保留现有用户可见行为。",
+          "message_id": "T06-L0-01-M01"
+        },
+        {
+          "role": "assistant",
+          "content": "我先核对当前命令、配置和回归范围，相关改动与其他客户端流相邻但边界不同。",
+          "message_id": "T06-L0-01-M02"
+        },
+        {
+          "role": "user",
+          "content": "请把历史讨论中的落点整理成可执行决定，避免混入临近项目做法。",
+          "message_id": "T06-L0-01-M03"
+        },
+        {
+          "role": "assistant",
+          "content": "新增内容应集中在入口层和验证层，已有业务处理保持不变。",
+          "message_id": "T06-L0-01-M04"
+        },
+        {
+          "role": "user",
+          "content": "还要明确排除项及检查边界。",
+          "message_id": "T06-L0-01-M05"
+        },
+        {
+          "role": "assistant",
+          "content": "正常路径、缺参路径和跨平台差异都已记录，下面只缺最终边界。",
+          "message_id": "T06-L0-01-M06"
+        },
+        {
+          "role": "user",
+          "content": "并行任务只能作为同域背景，不能替代本项目结论。",
+          "message_id": "T06-L0-01-M07"
+        },
+        {
+          "role": "assistant",
+          "content": "已确认目标文件和测试范围，请按历史决定给出最小修改面。",
+          "message_id": "T06-L0-01-M08"
+        },
+        {
+          "role": "user",
+          "content": "若涉及顺序、时机或退出行为，请分开写清楚。",
+          "message_id": "T06-L0-01-M09"
+        },
+        {
+          "role": "assistant",
+          "content": "我会将决定、排除项和验证顺序分别记录。",
+          "message_id": "T06-L0-01-M10"
+        },
+        {
+          "role": "user",
+          "content": "这是一项延续性维护，不是重新设计整套架构。",
+          "message_id": "T06-L0-01-M11"
+        },
+        {
+          "role": "assistant",
+          "content": "历史确认的核心结论是：根命令持有共享配置选项，子命令通过解析结果读取同一实例；注册和默认值只维护一处。 排除项：排除在每个子命令复制选项、在 handler 重建配置、为了兼容而改变帮助文本。 选项说明、默认值和退出码属于兼容面；新增选项追加到合适分组，不改既有文字的语义。 排除项：排除为了重排代码重写帮助、隐藏默认值、让错误分支产生不同的退出码。",
+          "message_id": "T06-L0-01-M12"
+        }
+      ]
+    },
+    {
+      "asset_id": "T06-L0-02",
+      "session_id": "T06-L0-02",
+      "observed_at": "2026-08-29T18:00:00+08:00",
+      "messages": [
+        {
+          "role": "user",
+          "content": "我们继续处理 lineage-ml-pipeline 的DVC stage 设计，需要保留现有用户可见行为。",
+          "message_id": "T06-L0-02-M01"
+        },
+        {
+          "role": "assistant",
+          "content": "我先核对当前命令、配置和回归范围，相关改动与其他客户端流相邻但边界不同。",
+          "message_id": "T06-L0-02-M02"
+        },
+        {
+          "role": "user",
+          "content": "请把历史讨论中的落点整理成可执行决定，避免混入临近项目做法。",
+          "message_id": "T06-L0-02-M03"
+        },
+        {
+          "role": "assistant",
+          "content": "新增内容应集中在入口层和验证层，已有业务处理保持不变。",
+          "message_id": "T06-L0-02-M04"
+        },
+        {
+          "role": "user",
+          "content": "还要明确排除项及检查边界。",
+          "message_id": "T06-L0-02-M05"
+        },
+        {
+          "role": "assistant",
+          "content": "正常路径、缺参路径和跨平台差异都已记录，下面只缺最终边界。",
+          "message_id": "T06-L0-02-M06"
+        },
+        {
+          "role": "user",
+          "content": "并行任务只能作为同域背景，不能替代本项目结论。",
+          "message_id": "T06-L0-02-M07"
+        },
+        {
+          "role": "assistant",
+          "content": "已确认目标文件和测试范围，请按历史决定给出最小修改面。",
+          "message_id": "T06-L0-02-M08"
+        },
+        {
+          "role": "user",
+          "content": "若涉及顺序、时机或退出行为，请分开写清楚。",
+          "message_id": "T06-L0-02-M09"
+        },
+        {
+          "role": "assistant",
+          "content": "我会将决定、排除项和验证顺序分别记录。",
+          "message_id": "T06-L0-02-M10"
+        },
+        {
+          "role": "user",
+          "content": "这是一项延续性维护，不是重新设计整套架构。",
+          "message_id": "T06-L0-02-M11"
+        },
+        {
+          "role": "assistant",
+          "content": "历史确认的核心结论是：新增 stage 先声明 deps、outs、params，再执行 dry-run 检查 DAG 和锁文件变化，确认后才运行训练。 排除项：排除跳过 dry-run 直接跑全量训练、把缓存目录写进 outs、手改锁文件掩盖依赖变化。",
+          "message_id": "T06-L0-02-M12"
+        }
+      ]
+    },
+    {
+      "asset_id": "T06-L0-03",
+      "session_id": "T06-L0-03",
+      "observed_at": "2026-08-29T18:00:00+08:00",
+      "messages": [
+        {
+          "role": "user",
+          "content": "我们继续处理 orbit-vscode-extension 的扩展命令 rollout，需要保留现有用户可见行为。",
+          "message_id": "T06-L0-03-M01"
+        },
+        {
+          "role": "assistant",
+          "content": "我先核对当前命令、配置和回归范围，相关改动与其他客户端流相邻但边界不同。",
+          "message_id": "T06-L0-03-M02"
+        },
+        {
+          "role": "user",
+          "content": "请把历史讨论中的落点整理成可执行决定，避免混入临近项目做法。",
+          "message_id": "T06-L0-03-M03"
+        },
+        {
+          "role": "assistant",
+          "content": "新增内容应集中在入口层和验证层，已有业务处理保持不变。",
+          "message_id": "T06-L0-03-M04"
+        },
+        {
+          "role": "user",
+          "content": "还要明确排除项及检查边界。",
+          "message_id": "T06-L0-03-M05"
+        },
+        {
+          "role": "assistant",
+          "content": "正常路径、缺参路径和跨平台差异都已记录，下面只缺最终边界。",
+          "message_id": "T06-L0-03-M06"
+        },
+        {
+          "role": "user",
+          "content": "并行任务只能作为同域背景，不能替代本项目结论。",
+          "message_id": "T06-L0-03-M07"
+        },
+        {
+          "role": "assistant",
+          "content": "已确认目标文件和测试范围，请按历史决定给出最小修改面。",
+          "message_id": "T06-L0-03-M08"
+        },
+        {
+          "role": "user",
+          "content": "若涉及顺序、时机或退出行为，请分开写清楚。",
+          "message_id": "T06-L0-03-M09"
+        },
+        {
+          "role": "assistant",
+          "content": "我会将决定、排除项和验证顺序分别记录。",
+          "message_id": "T06-L0-03-M10"
+        },
+        {
+          "role": "user",
+          "content": "这是一项延续性维护，不是重新设计整套架构。",
+          "message_id": "T06-L0-03-M11"
+        },
+        {
+          "role": "assistant",
+          "content": "历史确认的核心结论是：新增命令先在贡献清单声明稳定标识，再绑定 handler；菜单入口单独配置并用 enablement 控制可见状态。 排除项：排除把内部诊断命令加入命令面板、用 handler 内判断替代菜单条件、重命名已有标识。 侧栏入口只在目标视图已注册且当前资源类型匹配时显示；命令本身仍可由已授权菜单触发。 排除项：排除用 activation event 代替 enablement、把入口条件硬编码进 handler、影响其他视图的菜单。",
+          "message_id": "T06-L0-03-M12"
+        }
+      ]
+    },
+    {
+      "asset_id": "T06-L0-04",
+      "session_id": "T06-L0-04",
+      "observed_at": "2026-08-29T18:00:00+08:00",
+      "messages": [
+        {
+          "role": "user",
+          "content": "我们继续处理 relay-terminal-client 的参数解析与退出码，需要保留现有用户可见行为。",
+          "message_id": "T06-L0-04-M01"
+        },
+        {
+          "role": "assistant",
+          "content": "我先核对当前命令、配置和回归范围，相关改动与其他客户端流相邻但边界不同。",
+          "message_id": "T06-L0-04-M02"
+        },
+        {
+          "role": "user",
+          "content": "请把历史讨论中的落点整理成可执行决定，避免混入临近项目做法。",
+          "message_id": "T06-L0-04-M03"
+        },
+        {
+          "role": "assistant",
+          "content": "新增内容应集中在入口层和验证层，已有业务处理保持不变。",
+          "message_id": "T06-L0-04-M04"
+        },
+        {
+          "role": "user",
+          "content": "还要明确排除项及检查边界。",
+          "message_id": "T06-L0-04-M05"
+        },
+        {
+          "role": "assistant",
+          "content": "正常路径、缺参路径和跨平台差异都已记录，下面只缺最终边界。",
+          "message_id": "T06-L0-04-M06"
+        },
+        {
+          "role": "user",
+          "content": "并行任务只能作为同域背景，不能替代本项目结论。",
+          "message_id": "T06-L0-04-M07"
+        },
+        {
+          "role": "assistant",
+          "content": "已确认目标文件和测试范围，请按历史决定给出最小修改面。",
+          "message_id": "T06-L0-04-M08"
+        },
+        {
+          "role": "user",
+          "content": "若涉及顺序、时机或退出行为，请分开写清楚。",
+          "message_id": "T06-L0-04-M09"
+        },
+        {
+          "role": "assistant",
+          "content": "我会将决定、排除项和验证顺序分别记录。",
+          "message_id": "T06-L0-04-M10"
+        },
+        {
+          "role": "user",
+          "content": "这是一项延续性维护，不是重新设计整套架构。",
+          "message_id": "T06-L0-04-M11"
+        },
+        {
+          "role": "assistant",
+          "content": "历史确认的核心结论是：参数缺失或格式错误在解析层结束并返回退出码 2；远端或服务失败返回 1；成功返回 0，并在错误输出中区分用法与运行失败。 排除项：排除在业务 handler 再次解析同一参数、将所有错误压成 1、把远端失败写成用法错误。 机器可读输出保持字段名和行序稳定，人类输出可增加说明但不能改变错误边界；失败必须写到 stderr。 排除项：排除把诊断日志混入 stdout、按平台改变字段名、为了美化删除错误码信息。",
+          "message_id": "T06-L0-04-M12"
+        }
+      ]
+    },
+    {
+      "asset_id": "T06-L0-05",
+      "session_id": "T06-L0-05",
+      "observed_at": "2026-08-29T18:00:00+08:00",
+      "messages": [
+        {
+          "role": "user",
+          "content": "我们继续处理 orbit-vscode-extension 的命令与菜单本地化，需要保留现有用户可见行为。",
+          "message_id": "T06-L0-05-M01"
+        },
+        {
+          "role": "assistant",
+          "content": "我先核对当前命令、配置和回归范围，相关改动与其他客户端流相邻但边界不同。",
+          "message_id": "T06-L0-05-M02"
+        },
+        {
+          "role": "user",
+          "content": "请把历史讨论中的落点整理成可执行决定，避免混入临近项目做法。",
+          "message_id": "T06-L0-05-M03"
+        },
+        {
+          "role": "assistant",
+          "content": "新增内容应集中在入口层和验证层，已有业务处理保持不变。",
+          "message_id": "T06-L0-05-M04"
+        },
+        {
+          "role": "user",
+          "content": "还要明确排除项及检查边界。",
+          "message_id": "T06-L0-05-M05"
+        },
+        {
+          "role": "assistant",
+          "content": "正常路径、缺参路径和跨平台差异都已记录，下面只缺最终边界。",
+          "message_id": "T06-L0-05-M06"
+        },
+        {
+          "role": "user",
+          "content": "并行任务只能作为同域背景，不能替代本项目结论。",
+          "message_id": "T06-L0-05-M07"
+        },
+        {
+          "role": "assistant",
+          "content": "已确认目标文件和测试范围，请按历史决定给出最小修改面。",
+          "message_id": "T06-L0-05-M08"
+        },
+        {
+          "role": "user",
+          "content": "若涉及顺序、时机或退出行为，请分开写清楚。",
+          "message_id": "T06-L0-05-M09"
+        },
+        {
+          "role": "assistant",
+          "content": "我会将决定、排除项和验证顺序分别记录。",
+          "message_id": "T06-L0-05-M10"
+        },
+        {
+          "role": "user",
+          "content": "这是一项延续性维护，不是重新设计整套架构。",
+          "message_id": "T06-L0-05-M11"
+        },
+        {
+          "role": "assistant",
+          "content": "历史确认的核心结论是：命令、菜单和 walkthrough 共用稳定的本地化键；语言包提供显示文本，运行时只引用键。 排除项：排除拼接用户可见字符串、用显示文本作为命令标识、只翻译标题而遗漏菜单提示。",
+          "message_id": "T06-L0-05-M12"
+        }
+      ]
+    },
+    {
+      "asset_id": "T06-L0-06",
+      "session_id": "T06-L0-06",
+      "observed_at": "2026-08-29T18:00:00+08:00",
+      "messages": [
+        {
+          "role": "user",
+          "content": "我们继续处理 harbor-admin-cli 的TypeScript CLI 迁移，需要保留现有用户可见行为。",
+          "message_id": "T06-L0-06-M01"
+        },
+        {
+          "role": "assistant",
+          "content": "我先核对当前命令、配置和回归范围，相关改动与其他客户端流相邻但边界不同。",
+          "message_id": "T06-L0-06-M02"
+        },
+        {
+          "role": "user",
+          "content": "请把历史讨论中的落点整理成可执行决定，避免混入临近项目做法。",
+          "message_id": "T06-L0-06-M03"
+        },
+        {
+          "role": "assistant",
+          "content": "新增内容应集中在入口层和验证层，已有业务处理保持不变。",
+          "message_id": "T06-L0-06-M04"
+        },
+        {
+          "role": "user",
+          "content": "还要明确排除项及检查边界。",
+          "message_id": "T06-L0-06-M05"
+        },
+        {
+          "role": "assistant",
+          "content": "正常路径、缺参路径和跨平台差异都已记录，下面只缺最终边界。",
+          "message_id": "T06-L0-06-M06"
+        },
+        {
+          "role": "user",
+          "content": "并行任务只能作为同域背景，不能替代本项目结论。",
+          "message_id": "T06-L0-06-M07"
+        },
+        {
+          "role": "assistant",
+          "content": "已确认目标文件和测试范围，请按历史决定给出最小修改面。",
+          "message_id": "T06-L0-06-M08"
+        },
+        {
+          "role": "user",
+          "content": "若涉及顺序、时机或退出行为，请分开写清楚。",
+          "message_id": "T06-L0-06-M09"
+        },
+        {
+          "role": "assistant",
+          "content": "我会将决定、排除项和验证顺序分别记录。",
+          "message_id": "T06-L0-06-M10"
+        },
+        {
+          "role": "user",
+          "content": "这是一项延续性维护，不是重新设计整套架构。",
+          "message_id": "T06-L0-06-M11"
+        },
+        {
+          "role": "assistant",
+          "content": "历史确认的核心结论是：迁移期间保留已发布的短别名，解析后归一化到唯一内部名称，并为冲突和弃用提示增加测试。 排除项：排除无公告删除别名、让别名进入业务分支、用字符串替换绕过解析器。 decision 类型事件日期为 2026-08-11；保留 -o 作为输出别名，-q 继续表示安静模式；新别名必须避开已有短选项并在帮助中说明。 排除项：排除当天之前的草案、在 handler 中二次解释别名、以长选项替换而不保留兼容短别名。",
+          "message_id": "T06-L0-06-M12"
+        }
+      ]
+    },
+    {
+      "asset_id": "T06-L0-07",
+      "session_id": "T06-L0-07",
+      "observed_at": "2026-08-29T18:00:00+08:00",
+      "messages": [
+        {
+          "role": "user",
+          "content": "我们继续处理 compass-client-docs 的命令参考文档，需要保留现有用户可见行为。",
+          "message_id": "T06-L0-07-M01"
+        },
+        {
+          "role": "assistant",
+          "content": "我先核对当前命令、配置和回归范围，相关改动与其他客户端流相邻但边界不同。",
+          "message_id": "T06-L0-07-M02"
+        },
+        {
+          "role": "user",
+          "content": "请把历史讨论中的落点整理成可执行决定，避免混入临近项目做法。",
+          "message_id": "T06-L0-07-M03"
+        },
+        {
+          "role": "assistant",
+          "content": "新增内容应集中在入口层和验证层，已有业务处理保持不变。",
+          "message_id": "T06-L0-07-M04"
+        },
+        {
+          "role": "user",
+          "content": "还要明确排除项及检查边界。",
+          "message_id": "T06-L0-07-M05"
+        },
+        {
+          "role": "assistant",
+          "content": "正常路径、缺参路径和跨平台差异都已记录，下面只缺最终边界。",
+          "message_id": "T06-L0-07-M06"
+        },
+        {
+          "role": "user",
+          "content": "并行任务只能作为同域背景，不能替代本项目结论。",
+          "message_id": "T06-L0-07-M07"
+        },
+        {
+          "role": "assistant",
+          "content": "已确认目标文件和测试范围，请按历史决定给出最小修改面。",
+          "message_id": "T06-L0-07-M08"
+        },
+        {
+          "role": "user",
+          "content": "若涉及顺序、时机或退出行为，请分开写清楚。",
+          "message_id": "T06-L0-07-M09"
+        },
+        {
+          "role": "assistant",
+          "content": "我会将决定、排除项和验证顺序分别记录。",
+          "message_id": "T06-L0-07-M10"
+        },
+        {
+          "role": "user",
+          "content": "这是一项延续性维护，不是重新设计整套架构。",
+          "message_id": "T06-L0-07-M11"
+        },
+        {
+          "role": "assistant",
+          "content": "历史确认的核心结论是：命令参考必须列出语法、参数、默认值、退出码和可复制示例；教程与解释页分别承载学习路径和背景。 排除项：排除把未验证行为写进参考、在示例中隐藏必需环境变量、用营销文案替代参数说明。 变更说明按用户影响记录新增、修复、弃用和迁移提示，并链接到对应参考页；内部重构只在开发记录说明。 排除项：排除把未发布实验写入公开说明、只写实现细节、不说明弃用迁移路径。",
+          "message_id": "T06-L0-07-M12"
+        }
+      ]
+    },
+    {
+      "asset_id": "T06-L0-08",
+      "session_id": "T06-L0-08",
+      "observed_at": "2026-08-29T18:00:00+08:00",
+      "messages": [
+        {
+          "role": "user",
+          "content": "我们继续处理 relay-terminal-client 的跨平台 Dart CLI，需要保留现有用户可见行为。",
+          "message_id": "T06-L0-08-M01"
+        },
+        {
+          "role": "assistant",
+          "content": "我先核对当前命令、配置和回归范围，相关改动与其他客户端流相邻但边界不同。",
+          "message_id": "T06-L0-08-M02"
+        },
+        {
+          "role": "user",
+          "content": "请把历史讨论中的落点整理成可执行决定，避免混入临近项目做法。",
+          "message_id": "T06-L0-08-M03"
+        },
+        {
+          "role": "assistant",
+          "content": "新增内容应集中在入口层和验证层，已有业务处理保持不变。",
+          "message_id": "T06-L0-08-M04"
+        },
+        {
+          "role": "user",
+          "content": "还要明确排除项及检查边界。",
+          "message_id": "T06-L0-08-M05"
+        },
+        {
+          "role": "assistant",
+          "content": "正常路径、缺参路径和跨平台差异都已记录，下面只缺最终边界。",
+          "message_id": "T06-L0-08-M06"
+        },
+        {
+          "role": "user",
+          "content": "并行任务只能作为同域背景，不能替代本项目结论。",
+          "message_id": "T06-L0-08-M07"
+        },
+        {
+          "role": "assistant",
+          "content": "已确认目标文件和测试范围，请按历史决定给出最小修改面。",
+          "message_id": "T06-L0-08-M08"
+        },
+        {
+          "role": "user",
+          "content": "若涉及顺序、时机或退出行为，请分开写清楚。",
+          "message_id": "T06-L0-08-M09"
+        },
+        {
+          "role": "assistant",
+          "content": "我会将决定、排除项和验证顺序分别记录。",
+          "message_id": "T06-L0-08-M10"
+        },
+        {
+          "role": "user",
+          "content": "这是一项延续性维护，不是重新设计整套架构。",
+          "message_id": "T06-L0-08-M11"
+        },
+        {
+          "role": "assistant",
+          "content": "历史确认的核心结论是：解析层统一把分隔符和相对基准归一化，业务层只接收规范路径；错误信息保留用户输入片段。 排除项：排除业务层重复拼接路径、按宿主系统删除用户输入、把路径错误改报成网络错误。",
+          "message_id": "T06-L0-08-M12"
+        }
+      ]
+    },
+    {
+      "asset_id": "T06-L0-09",
+      "session_id": "T06-L0-09",
+      "observed_at": "2026-08-29T18:00:00+08:00",
+      "messages": [
+        {
+          "role": "user",
+          "content": "我们继续处理 lineage-ml-pipeline 的DVC 远端缓存，需要保留现有用户可见行为。",
+          "message_id": "T06-L0-09-M01"
+        },
+        {
+          "role": "assistant",
+          "content": "我先核对当前命令、配置和回归范围，相关改动与其他客户端流相邻但边界不同。",
+          "message_id": "T06-L0-09-M02"
+        },
+        {
+          "role": "user",
+          "content": "请把历史讨论中的落点整理成可执行决定，避免混入临近项目做法。",
+          "message_id": "T06-L0-09-M03"
+        },
+        {
+          "role": "assistant",
+          "content": "新增内容应集中在入口层和验证层，已有业务处理保持不变。",
+          "message_id": "T06-L0-09-M04"
+        },
+        {
+          "role": "user",
+          "content": "还要明确排除项及检查边界。",
+          "message_id": "T06-L0-09-M05"
+        },
+        {
+          "role": "assistant",
+          "content": "正常路径、缺参路径和跨平台差异都已记录，下面只缺最终边界。",
+          "message_id": "T06-L0-09-M06"
+        },
+        {
+          "role": "user",
+          "content": "并行任务只能作为同域背景，不能替代本项目结论。",
+          "message_id": "T06-L0-09-M07"
+        },
+        {
+          "role": "assistant",
+          "content": "已确认目标文件和测试范围，请按历史决定给出最小修改面。",
+          "message_id": "T06-L0-09-M08"
+        },
+        {
+          "role": "user",
+          "content": "若涉及顺序、时机或退出行为，请分开写清楚。",
+          "message_id": "T06-L0-09-M09"
+        },
+        {
+          "role": "assistant",
+          "content": "我会将决定、排除项和验证顺序分别记录。",
+          "message_id": "T06-L0-09-M10"
+        },
+        {
+          "role": "user",
+          "content": "这是一项延续性维护，不是重新设计整套架构。",
+          "message_id": "T06-L0-09-M11"
+        },
+        {
+          "role": "assistant",
+          "content": "历史确认的核心结论是：团队约定的默认 remote 名为 team-cache；凭据仅从本地配置或环境注入，仓库只记录不含秘密的 URL 和配置键。 排除项：排除把令牌写入 dvc 配置提交、每个 stage 自定义 remote 名、将本地绝对路径提交为共享配置。 先确认远端同步和工作区状态，再执行定向清理；清理前保留仍被当前或实验引用的对象。 排除项：排除未同步就全量清理、删除仍被锁文件引用的对象、把清理当作解决 pipeline 错误的第一步。",
+          "message_id": "T06-L0-09-M12"
+        }
+      ]
+    },
+    {
+      "asset_id": "T06-L0-10",
+      "session_id": "T06-L0-10",
+      "observed_at": "2026-08-29T18:00:00+08:00",
+      "messages": [
+        {
+          "role": "user",
+          "content": "我们继续处理 lineage-ml-pipeline 的DVC metrics 与 plots，需要保留现有用户可见行为。",
+          "message_id": "T06-L0-10-M01"
+        },
+        {
+          "role": "assistant",
+          "content": "我先核对当前命令、配置和回归范围，相关改动与其他客户端流相邻但边界不同。",
+          "message_id": "T06-L0-10-M02"
+        },
+        {
+          "role": "user",
+          "content": "请把历史讨论中的落点整理成可执行决定，避免混入临近项目做法。",
+          "message_id": "T06-L0-10-M03"
+        },
+        {
+          "role": "assistant",
+          "content": "新增内容应集中在入口层和验证层，已有业务处理保持不变。",
+          "message_id": "T06-L0-10-M04"
+        },
+        {
+          "role": "user",
+          "content": "还要明确排除项及检查边界。",
+          "message_id": "T06-L0-10-M05"
+        },
+        {
+          "role": "assistant",
+          "content": "正常路径、缺参路径和跨平台差异都已记录，下面只缺最终边界。",
+          "message_id": "T06-L0-10-M06"
+        },
+        {
+          "role": "user",
+          "content": "并行任务只能作为同域背景，不能替代本项目结论。",
+          "message_id": "T06-L0-10-M07"
+        },
+        {
+          "role": "assistant",
+          "content": "已确认目标文件和测试范围，请按历史决定给出最小修改面。",
+          "message_id": "T06-L0-10-M08"
+        },
+        {
+          "role": "user",
+          "content": "若涉及顺序、时机或退出行为，请分开写清楚。",
+          "message_id": "T06-L0-10-M09"
+        },
+        {
+          "role": "assistant",
+          "content": "我会将决定、排除项和验证顺序分别记录。",
+          "message_id": "T06-L0-10-M10"
+        },
+        {
+          "role": "user",
+          "content": "这是一项延续性维护，不是重新设计整套架构。",
+          "message_id": "T06-L0-10-M11"
+        },
+        {
+          "role": "assistant",
+          "content": "历史确认的核心结论是：实验队列先固定参数变体，再批量运行并用 show/diff 比较指标；采用结果前要记录可复现实验名。 排除项：排除直接覆盖主工作区、只看单一指标就提升实验、把未完成实验写成结论。",
+          "message_id": "T06-L0-10-M12"
+        }
+      ]
+    }
+  ],
+  "l1_memories": [
+    {
+      "asset_id": "T06-L1-01",
+      "type": "fact",
+      "content": "根命令持有共享配置选项，子命令通过解析结果读取同一实例；注册和默认值只维护一处。 排除项：排除在每个子命令复制选项、在 handler 重建配置、为了兼容而改变帮助文本。",
+      "status": "active",
+      "source_message_ids": [
+        "T06-L0-01-M12"
+      ],
+      "project": "harbor-admin-cli",
+      "answer": "根命令持有共享配置选项，子命令通过解析结果读取同一实例；注册和默认值只维护一处。",
+      "exclusions": "排除在每个子命令复制选项、在 handler 重建配置、为了兼容而改变帮助文本。"
+    },
+    {
+      "asset_id": "T06-L1-02",
+      "type": "decision",
+      "content": "新增命令先在贡献清单声明稳定标识，再绑定 handler；菜单入口单独配置并用 enablement 控制可见状态。 排除项：排除把内部诊断命令加入命令面板、用 handler 内判断替代菜单条件、重命名已有标识。",
+      "status": "active",
+      "source_message_ids": [
+        "T06-L0-03-M12"
+      ],
+      "project": "orbit-vscode-extension",
+      "answer": "新增命令先在贡献清单声明稳定标识，再绑定 handler；菜单入口单独配置并用 enablement 控制可见状态。",
+      "exclusions": "排除把内部诊断命令加入命令面板、用 handler 内判断替代菜单条件、重命名已有标识。"
+    },
+    {
+      "asset_id": "T06-L1-03",
+      "type": "event",
+      "content": "新增 stage 先声明 deps、outs、params，再执行 dry-run 检查 DAG 和锁文件变化，确认后才运行训练。 排除项：排除跳过 dry-run 直接跑全量训练、把缓存目录写进 outs、手改锁文件掩盖依赖变化。",
+      "status": "active",
+      "source_message_ids": [
+        "T06-L0-02-M12"
+      ],
+      "project": "lineage-ml-pipeline",
+      "answer": "新增 stage 先声明 deps、outs、params，再执行 dry-run 检查 DAG 和锁文件变化，确认后才运行训练。",
+      "exclusions": "排除跳过 dry-run 直接跑全量训练、把缓存目录写进 outs、手改锁文件掩盖依赖变化。"
+    },
+    {
+      "asset_id": "T06-L1-04",
+      "type": "fact",
+      "content": "命令、菜单和 walkthrough 共用稳定的本地化键；语言包提供显示文本，运行时只引用键。 排除项：排除拼接用户可见字符串、用显示文本作为命令标识、只翻译标题而遗漏菜单提示。",
+      "status": "active",
+      "source_message_ids": [
+        "T06-L0-05-M12"
+      ],
+      "project": "orbit-vscode-extension",
+      "answer": "命令、菜单和 walkthrough 共用稳定的本地化键；语言包提供显示文本，运行时只引用键。",
+      "exclusions": "排除拼接用户可见字符串、用显示文本作为命令标识、只翻译标题而遗漏菜单提示。"
+    },
+    {
+      "asset_id": "T06-L1-05",
+      "type": "decision",
+      "content": "参数缺失或格式错误在解析层结束并返回退出码 2；远端或服务失败返回 1；成功返回 0，并在错误输出中区分用法与运行失败。 排除项：排除在业务 handler 再次解析同一参数、将所有错误压成 1、把远端失败写成用法错误。",
+      "status": "active",
+      "source_message_ids": [
+        "T06-L0-04-M12"
+      ],
+      "project": "relay-terminal-client",
+      "answer": "参数缺失或格式错误在解析层结束并返回退出码 2；远端或服务失败返回 1；成功返回 0，并在错误输出中区分用法与运行失败。",
+      "exclusions": "排除在业务 handler 再次解析同一参数、将所有错误压成 1、把远端失败写成用法错误。"
+    },
+    {
+      "asset_id": "T06-L1-06",
+      "type": "decision",
+      "content": "迁移期间保留已发布的短别名，解析后归一化到唯一内部名称，并为冲突和弃用提示增加测试。 排除项：排除无公告删除别名、让别名进入业务分支、用字符串替换绕过解析器。",
+      "status": "active",
+      "source_message_ids": [
+        "T06-L0-06-M12"
+      ],
+      "project": "harbor-admin-cli",
+      "answer": "迁移期间保留已发布的短别名，解析后归一化到唯一内部名称，并为冲突和弃用提示增加测试。",
+      "exclusions": "排除无公告删除别名、让别名进入业务分支、用字符串替换绕过解析器。"
+    },
+    {
+      "asset_id": "T06-L1-07",
+      "type": "decision",
+      "content": "命令参考必须列出语法、参数、默认值、退出码和可复制示例；教程与解释页分别承载学习路径和背景。 排除项：排除把未验证行为写进参考、在示例中隐藏必需环境变量、用营销文案替代参数说明。",
+      "status": "active",
+      "source_message_ids": [
+        "T06-L0-07-M12"
+      ],
+      "project": "compass-client-docs",
+      "answer": "命令参考必须列出语法、参数、默认值、退出码和可复制示例；教程与解释页分别承载学习路径和背景。",
+      "exclusions": "排除把未验证行为写进参考、在示例中隐藏必需环境变量、用营销文案替代参数说明。"
+    },
+    {
+      "asset_id": "T06-L1-08",
+      "type": "event",
+      "content": "机器可读输出保持字段名和行序稳定，人类输出可增加说明但不能改变错误边界；失败必须写到 stderr。 排除项：排除把诊断日志混入 stdout、按平台改变字段名、为了美化删除错误码信息。",
+      "status": "active",
+      "source_message_ids": [
+        "T06-L0-04-M12"
+      ],
+      "project": "relay-terminal-client",
+      "answer": "机器可读输出保持字段名和行序稳定，人类输出可增加说明但不能改变错误边界；失败必须写到 stderr。",
+      "exclusions": "排除把诊断日志混入 stdout、按平台改变字段名、为了美化删除错误码信息。"
+    },
+    {
+      "asset_id": "T06-L1-09",
+      "type": "decision",
+      "content": "团队约定的默认 remote 名为 team-cache；凭据仅从本地配置或环境注入，仓库只记录不含秘密的 URL 和配置键。 排除项：排除把令牌写入 dvc 配置提交、每个 stage 自定义 remote 名、将本地绝对路径提交为共享配置。",
+      "status": "active",
+      "source_message_ids": [
+        "T06-L0-09-M12"
+      ],
+      "project": "lineage-ml-pipeline",
+      "answer": "团队约定的默认 remote 名为 team-cache；凭据仅从本地配置或环境注入，仓库只记录不含秘密的 URL 和配置键。",
+      "exclusions": "排除把令牌写入 dvc 配置提交、每个 stage 自定义 remote 名、将本地绝对路径提交为共享配置。"
+    },
+    {
+      "asset_id": "T06-L1-10",
+      "type": "decision",
+      "content": "先确认远端同步和工作区状态，再执行定向清理；清理前保留仍被当前或实验引用的对象。 排除项：排除未同步就全量清理、删除仍被锁文件引用的对象、把清理当作解决 pipeline 错误的第一步。",
+      "status": "active",
+      "source_message_ids": [
+        "T06-L0-09-M12"
+      ],
+      "project": "lineage-ml-pipeline",
+      "answer": "先确认远端同步和工作区状态，再执行定向清理；清理前保留仍被当前或实验引用的对象。",
+      "exclusions": "排除未同步就全量清理、删除仍被锁文件引用的对象、把清理当作解决 pipeline 错误的第一步。"
+    },
+    {
+      "asset_id": "T06-L1-11",
+      "type": "decision",
+      "content": "实验队列先固定参数变体，再批量运行并用 show/diff 比较指标；采用结果前要记录可复现实验名。 排除项：排除直接覆盖主工作区、只看单一指标就提升实验、把未完成实验写成结论。",
+      "status": "active",
+      "source_message_ids": [
+        "T06-L0-10-M12"
+      ],
+      "project": "lineage-ml-pipeline",
+      "answer": "实验队列先固定参数变体，再批量运行并用 show/diff 比较指标；采用结果前要记录可复现实验名。",
+      "exclusions": "排除直接覆盖主工作区、只看单一指标就提升实验、把未完成实验写成结论。"
+    },
+    {
+      "asset_id": "T06-L1-12",
+      "type": "event",
+      "content": "选项说明、默认值和退出码属于兼容面；新增选项追加到合适分组，不改既有文字的语义。 排除项：排除为了重排代码重写帮助、隐藏默认值、让错误分支产生不同的退出码。",
+      "status": "active",
+      "source_message_ids": [
+        "T06-L0-01-M12"
+      ],
+      "project": "harbor-admin-cli",
+      "answer": "选项说明、默认值和退出码属于兼容面；新增选项追加到合适分组，不改既有文字的语义。",
+      "exclusions": "排除为了重排代码重写帮助、隐藏默认值、让错误分支产生不同的退出码。"
+    },
+    {
+      "asset_id": "T06-L1-13",
+      "type": "decision",
+      "content": "decision 类型事件日期为 2026-08-11；保留 -o 作为输出别名，-q 继续表示安静模式；新别名必须避开已有短选项并在帮助中说明。 排除项：排除当天之前的草案、在 handler 中二次解释别名、以长选项替换而不保留兼容短别名。",
+      "status": "active",
+      "source_message_ids": [
+        "T06-L0-06-M12"
+      ],
+      "project": "harbor-admin-cli",
+      "answer": "decision 类型事件日期为 2026-08-11；保留 -o 作为输出别名，-q 继续表示安静模式；新别名必须避开已有短选项并在帮助中说明。",
+      "exclusions": "排除当天之前的草案、在 handler 中二次解释别名、以长选项替换而不保留兼容短别名。"
+    },
+    {
+      "asset_id": "T06-L1-14",
+      "type": "fact",
+      "content": "侧栏入口只在目标视图已注册且当前资源类型匹配时显示；命令本身仍可由已授权菜单触发。 排除项：排除用 activation event 代替 enablement、把入口条件硬编码进 handler、影响其他视图的菜单。",
+      "status": "active",
+      "source_message_ids": [
+        "T06-L0-03-M12"
+      ],
+      "project": "orbit-vscode-extension",
+      "answer": "侧栏入口只在目标视图已注册且当前资源类型匹配时显示；命令本身仍可由已授权菜单触发。",
+      "exclusions": "排除用 activation event 代替 enablement、把入口条件硬编码进 handler、影响其他视图的菜单。"
+    },
+    {
+      "asset_id": "T06-L1-15",
+      "type": "decision",
+      "content": "解析层统一把分隔符和相对基准归一化，业务层只接收规范路径；错误信息保留用户输入片段。 排除项：排除业务层重复拼接路径、按宿主系统删除用户输入、把路径错误改报成网络错误。",
+      "status": "active",
+      "source_message_ids": [
+        "T06-L0-08-M12"
+      ],
+      "project": "relay-terminal-client",
+      "answer": "解析层统一把分隔符和相对基准归一化，业务层只接收规范路径；错误信息保留用户输入片段。",
+      "exclusions": "排除业务层重复拼接路径、按宿主系统删除用户输入、把路径错误改报成网络错误。"
+    },
+    {
+      "asset_id": "T06-L1-16",
+      "type": "decision",
+      "content": "变更说明按用户影响记录新增、修复、弃用和迁移提示，并链接到对应参考页；内部重构只在开发记录说明。 排除项：排除把未发布实验写入公开说明、只写实现细节、不说明弃用迁移路径。",
+      "status": "active",
+      "source_message_ids": [
+        "T06-L0-07-M12"
+      ],
+      "project": "compass-client-docs",
+      "answer": "变更说明按用户影响记录新增、修复、弃用和迁移提示，并链接到对应参考页；内部重构只在开发记录说明。",
+      "exclusions": "排除把未发布实验写入公开说明、只写实现细节、不说明弃用迁移路径。"
+    }
+  ],
+  "l2_scenes": [
+    {
+      "asset_id": "T06-L2-01",
+      "path": "client/harbor/command-tree-review.md",
+      "summary": "复盘命令树入口：根命令集中注册共享选项，解析阶段统一校验；导出和检查子命令只消费解析结果。回归检查覆盖帮助、缺参和退出码。",
+      "content": "命令树复盘综合两段历史：根命令集中注册共享选项并在解析阶段统一校验，导出和检查子命令只消费解析结果；迁移期间保留已发布短别名，解析后归一化到唯一内部名称，并为冲突与弃用提示增加测试。排除复制选项、handler 重建配置、无公告删除别名和改写帮助语义。",
+      "injected": false,
+      "source_session_ids": [
+        "T06-L0-01",
+        "T06-L0-06"
+      ]
+    },
+    {
+      "asset_id": "T06-L2-02",
+      "path": "client/orbit/command-rollout.md",
+      "summary": "扩展命令发布场景：先贡献稳定标识，再绑定 handler，再接侧栏入口和可见性条件，最后补齐语言包并验证命令面板与侧栏两条入口。",
+      "content": "扩展入口复盘综合两段历史：先贡献稳定命令标识，再绑定 handler，再接侧栏入口和资源可见性条件，最后补齐本地化；命令、菜单和 walkthrough 共用稳定本地化键，运行时只引用键。排除修改 CLI 参数解析、暴露内部诊断命令、用显示文本作标识或运行时拼接语言字符串。",
+      "injected": false,
+      "source_session_ids": [
+        "T06-L0-03",
+        "T06-L0-05"
+      ]
+    },
+    {
+      "asset_id": "T06-L2-03",
+      "path": "ml/lineage/dvc-remote-runbook.md",
+      "summary": "DVC 运行手册：确认 team-cache 配置与本地凭据来源，检查 status 后执行 fetch/pull，再做 dry-run 和定向清理；不提交秘密",
+      "content": "DVC 场景综合两段历史：默认 remote 名为 team-cache，凭据仅从本地配置或环境注入，先确认同步和工作区状态再 fetch/pull；新增 stage 先声明 deps、outs、params，再 dry-run 检查 DAG 和锁文件后运行训练，清理只保留仍被引用对象。排除提交令牌、跳过 dry-run 和未同步全量清理。",
+      "injected": false,
+      "source_session_ids": [
+        "T06-L0-09",
+        "T06-L0-02"
+      ]
+    },
+    {
+      "asset_id": "T06-L2-04",
+      "path": "client/relay-terminal/cli-release-incident.md",
+      "summary": "发布事故复盘：解析层区分缺参/格式错误（stderr、返回 2）、远端失败（返回 1）与成功（返回 0），并覆盖跨平台路径归一化和稳定输出字段。",
+      "content": "发布事故场景综合两段历史：跨平台发布曾把缺少参数误报为远端失败；解析层应在缺参或格式错误时写 stderr 并返回 2，远端失败返回 1，成功返回 0，机器可读字段保持稳定；跨平台解析还要统一分隔符和相对基准，业务层只接收规范路径并保留用户输入片段。回归覆盖 Windows/Unix、缺参、非法值、远端超时和机器可读输出。",
+      "injected": true,
+      "source_session_ids": [
+        "T06-L0-04",
+        "T06-L0-08"
+      ]
+    }
+  ],
+  "l3_profiles": [
+    {
+      "asset_id": "T06-L3-01",
+      "scope": "team",
+      "content": "维护 .NET CLI、VS Code 扩展、DVC 数据流水线以及跨平台命令行体验。 项目范围：harbor-admin-cli、orbit-vscode-extension、lineage-ml-pipeline、relay-terminal-client、compass-client-docs。协作偏好：优先复用已确认的历史决定；保持命令与输出合同兼容；把凭据和内部诊断留在本地；为跨平台边界保留回归测试。"
+    }
+  ]
+}
