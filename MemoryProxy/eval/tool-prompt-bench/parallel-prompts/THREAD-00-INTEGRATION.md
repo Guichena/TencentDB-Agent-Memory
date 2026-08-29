@@ -37,7 +37,7 @@ codex/task1-data-integration
 | 数据内容祖先 | commit | `960021e472456515a89d3c2c4f2962fbf6cc51a1` |
 | schema、compiler、validator 基线 | `task1-data-parallel-baseline-v2` | `1048681880b51e7a52a6b8b0b731eadeec44e118` |
 | build-01 至 build-05 启动 Tag | `task1-data-parallel-launch-v2` | `ef2ca4bd84e529c6c7d8a8df661520cbc3bf4bb0` |
-| build-06 至 build-08 启动 Tag | `task1-data-parallel-launch-16team-v1` | 启动时动态解析 |
+| build-06 至 build-08 启动 Tag | `task1-data-parallel-launch-16team-v1` | `8257782c23eaa5e31f05b0ea33aa2ac7f2b6bb84` |
 
 `task1-data-parallel-baseline-v2` 不是建设任务的启动 Tag，只冻结经过测试的 schema、compiler 和 validator。前五个建设分支必须包含 `task1-data-parallel-launch-v2`，新增三个建设分支必须包含 `task1-data-parallel-launch-16team-v1`。两个启动 Tag 共享同一 schema 和数据内容祖先，不代表两套数据集。
 
@@ -101,29 +101,39 @@ MemoryProxy/eval/tool-prompt-bench/evaluator.ts
 ```powershell
 Set-Location 'D:\projects\TencentDB-Agent-Memory-task1-data-integration'
 
+$integrationGitTrust = 'safe.directory=D:/projects/TencentDB-Agent-Memory-task1-data-integration'
 $expectedLaunchV2 = 'ef2ca4bd84e529c6c7d8a8df661520cbc3bf4bb0'
+$expectedLaunch16Team = '8257782c23eaa5e31f05b0ea33aa2ac7f2b6bb84'
 $expectedSchema = '1048681880b51e7a52a6b8b0b731eadeec44e118'
 $expectedContent = '960021e472456515a89d3c2c4f2962fbf6cc51a1'
 
-git status --short --branch -uall
-if (git status --porcelain) { throw 'integration worktree is not clean' }
-if ((git branch --show-current) -ne 'codex/task1-data-integration') { throw 'unexpected integration branch' }
+$integrationStatus = @(git -c $integrationGitTrust status --porcelain)
+if ($LASTEXITCODE -ne 0) { throw 'cannot inspect integration worktree' }
+if ($integrationStatus.Count -gt 0) { throw 'integration worktree is not clean' }
 
-$launchCommitV2 = git rev-parse 'task1-data-parallel-launch-v2^{commit}'
-$launchCommit16Team = git rev-parse 'task1-data-parallel-launch-16team-v1^{commit}'
-$schemaCommit = git rev-parse 'task1-data-parallel-baseline-v2^{commit}'
-$headCommit = git rev-parse HEAD
+$integrationBranch = git -c $integrationGitTrust branch --show-current
+if ($LASTEXITCODE -ne 0) { throw 'cannot read integration branch' }
+if ($integrationBranch -ne 'codex/task1-data-integration') { throw 'unexpected integration branch' }
+
+$launchCommitV2 = git -c $integrationGitTrust rev-parse 'task1-data-parallel-launch-v2^{commit}'
+if ($LASTEXITCODE -ne 0) { throw 'v2 launch tag cannot be resolved' }
+$launchCommit16Team = git -c $integrationGitTrust rev-parse 'task1-data-parallel-launch-16team-v1^{commit}'
+if ($LASTEXITCODE -ne 0) { throw '16-Team launch tag cannot be resolved' }
+$schemaCommit = git -c $integrationGitTrust rev-parse 'task1-data-parallel-baseline-v2^{commit}'
+if ($LASTEXITCODE -ne 0) { throw 'schema tag cannot be resolved' }
+$headCommit = git -c $integrationGitTrust rev-parse HEAD
+if ($LASTEXITCODE -ne 0) { throw 'integration HEAD cannot be resolved' }
 if ($launchCommitV2 -ne $expectedLaunchV2) { throw 'v2 launch tag moved or resolved incorrectly' }
-if (-not $launchCommit16Team) { throw '16-Team launch tag cannot be resolved' }
+if ($launchCommit16Team -ne $expectedLaunch16Team) { throw '16-Team launch tag moved or resolved incorrectly' }
 if ($schemaCommit -ne $expectedSchema) { throw 'schema tag moved or resolved incorrectly' }
 
-git merge-base --is-ancestor $expectedContent $headCommit
+git -c $integrationGitTrust merge-base --is-ancestor $expectedContent $headCommit
 if ($LASTEXITCODE -ne 0) { throw 'content baseline is not an ancestor of integration HEAD' }
-git merge-base --is-ancestor $schemaCommit $headCommit
+git -c $integrationGitTrust merge-base --is-ancestor $schemaCommit $headCommit
 if ($LASTEXITCODE -ne 0) { throw 'schema baseline is not an ancestor of integration HEAD' }
-git merge-base --is-ancestor $launchCommitV2 $headCommit
+git -c $integrationGitTrust merge-base --is-ancestor $launchCommitV2 $headCommit
 if ($LASTEXITCODE -ne 0) { throw 'v2 launch commit is not an ancestor of integration HEAD' }
-git merge-base --is-ancestor $launchCommit16Team $headCommit
+git -c $integrationGitTrust merge-base --is-ancestor $launchCommit16Team $headCommit
 if ($LASTEXITCODE -ne 0) { throw '16-Team launch commit is not an ancestor of integration HEAD' }
 ```
 
@@ -148,8 +158,11 @@ if ($LASTEXITCODE -ne 0) { throw '16-Team launch commit is not an ancestor of in
 可以使用下面的只读骨架。不要把检查结果写回建设分支：
 
 ```powershell
-$launchCommitV2 = git rev-parse 'task1-data-parallel-launch-v2^{commit}'
-$launchCommit16Team = git rev-parse 'task1-data-parallel-launch-16team-v1^{commit}'
+$integrationGitTrust = 'safe.directory=D:/projects/TencentDB-Agent-Memory-task1-data-integration'
+$launchCommitV2 = git -c $integrationGitTrust rev-parse 'task1-data-parallel-launch-v2^{commit}'
+if ($LASTEXITCODE -ne 0) { throw 'v2 launch tag cannot be resolved' }
+$launchCommit16Team = git -c $integrationGitTrust rev-parse 'task1-data-parallel-launch-16team-v1^{commit}'
+if ($LASTEXITCODE -ne 0) { throw '16-Team launch tag cannot be resolved' }
 $builds = @(
   [pscustomobject]@{ Id = 'build-01'; Branch = 'codex/task1-data-build-v2-t01-t02'; Worktree = 'D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02'; Teams = @('T01', 'T02'); LaunchCommit = $launchCommitV2 },
   [pscustomobject]@{ Id = 'build-02'; Branch = 'codex/task1-data-build-v2-t03-t04'; Worktree = 'D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t03-t04'; Teams = @('T03', 'T04'); LaunchCommit = $launchCommitV2 },
@@ -162,14 +175,27 @@ $builds = @(
 )
 
 foreach ($build in $builds) {
-  git show-ref --verify --quiet "refs/heads/$($build.Branch)"
+  git -c $integrationGitTrust show-ref --verify --quiet "refs/heads/$($build.Branch)"
   if ($LASTEXITCODE -ne 0) { throw "missing branch: $($build.Branch)" }
   if (-not (Test-Path -LiteralPath $build.Worktree)) { throw "missing worktree: $($build.Worktree)" }
-  if (git -C $build.Worktree status --porcelain) { throw "dirty build worktree: $($build.Worktree)" }
-  if ((git -C $build.Worktree branch --show-current) -ne $build.Branch) { throw "worktree branch mismatch: $($build.Worktree)" }
 
-  git merge-base --is-ancestor $build.LaunchCommit $build.Branch
+  $worktreeStatus = @(git -c "safe.directory=$($build.Worktree)" -C $build.Worktree status --porcelain)
+  if ($LASTEXITCODE -ne 0) { throw "cannot inspect build worktree: $($build.Worktree)" }
+  if ($worktreeStatus.Count -gt 0) { throw "dirty build worktree: $($build.Worktree)" }
+
+  $actualBranch = git -c "safe.directory=$($build.Worktree)" -C $build.Worktree branch --show-current
+  if ($LASTEXITCODE -ne 0) { throw "cannot read worktree branch: $($build.Worktree)" }
+  if ($actualBranch -ne $build.Branch) { throw "worktree branch mismatch: $($build.Worktree)" }
+
+  $auditedHead = git -c $integrationGitTrust rev-parse $build.Branch
+  if ($LASTEXITCODE -ne 0) { throw "cannot resolve branch HEAD: $($build.Branch)" }
+
+  git -c $integrationGitTrust merge-base --is-ancestor $build.LaunchCommit $auditedHead
   if ($LASTEXITCODE -ne 0) { throw "launch tag is not an ancestor: $($build.Branch)" }
+
+  [string[]]$auditedCommits = @(git -c $integrationGitTrust rev-list --reverse "$($build.LaunchCommit)..$auditedHead")
+  if ($LASTEXITCODE -ne 0) { throw "cannot list commits: $($build.Branch)" }
+  if ($auditedCommits.Count -eq 0) { throw "no builder commit after launch tag: $($build.Branch)" }
 
   $allowedPrefixes = @()
   foreach ($team in $build.Teams) {
@@ -178,8 +204,11 @@ foreach ($build in $builds) {
     $allowedPrefixes += "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/$team/"
   }
 
+  [string[]]$changedPaths = @(git -c $integrationGitTrust diff --name-only "$($build.LaunchCommit)..$auditedHead")
+  if ($LASTEXITCODE -ne 0) { throw "cannot inspect changed paths: $($build.Branch)" }
+
   $unexpected = @()
-  foreach ($path in @(git diff --name-only "$($build.LaunchCommit)..$($build.Branch)")) {
+  foreach ($path in $changedPaths) {
     $allowed = $false
     foreach ($prefix in $allowedPrefixes) {
       if ($path.StartsWith($prefix)) { $allowed = $true; break }
@@ -187,8 +216,15 @@ foreach ($build in $builds) {
     if (-not $allowed) { $unexpected += $path }
   }
   if ($unexpected.Count -gt 0) { throw "out-of-scope changes in $($build.Branch): $($unexpected -join ', ')" }
+
+  $build | Add-Member -NotePropertyName AuditedHead -NotePropertyValue $auditedHead -Force
+  $build | Add-Member -NotePropertyName AuditedCommits -NotePropertyValue $auditedCommits -Force
 }
+
+$builds | Select-Object Id, Branch, LaunchCommit, AuditedHead, AuditedCommits | ConvertTo-Json -Depth 5
 ```
+
+这里的 `safe.directory` 只对单次只读 Git 命令生效，不得修改全局 Git 配置。阶段 1 必须保存八个 `AuditedHead` 和有序 `AuditedCommits` 作为本轮审计结果。若命令状态不为 0，即使输出为空，也必须按失败处理，不能把 Git 错误当作“工作树干净”。
 
 ### Team 文件合同
 
@@ -220,7 +256,7 @@ T01 的正式 40 条分片替换基线里的 10 条 pilot。集成时不能把 p
 | 自然 Coding Negative | 10 |
 | 合计 | 40 |
 
-每个 Positive 恰好有一个配对 Negative。每个 Team 应有 15 个 pair。T01 至 T16 合计应为 640 个 case 和 240 个 pair。
+每个 Positive 恰好有一个配对 Negative。每个 Team 应有 15 个 pair，其中搜索或 discovery Positive 恰好 10 条，直接调用 Positive 恰好 5 条。T01 至 T16 合计应为 640 个 case 和 240 个 pair。
 
 ### 决策和完整链路
 
@@ -299,7 +335,9 @@ codex/task1-data-build-v2-t03-t04
 codex/task1-data-build-16team-t11-t12
 ```
 
-读取每个分支从它自己的 launch Tag 之后的提交列表，按原顺序 cherry-pick。不要直接 merge 整个未审计分支，不要 squash 掉建设任务的来源和 Gate 记录。发生冲突时，只能解决确定性路径或完全相同的来源文件冲突。Query、上下文、Gold、资产内容或来源记录冲突时，执行 `git cherry-pick --abort` 并报告，不能自行选择一侧。
+开始任何写操作前，重新解析八个建设分支的 HEAD，并逐一要求它等于阶段 1 保存的 `AuditedHead`。只要一个分支移动，就停止集成，重新对八个分支执行完整阶段 1，不能只补审新增提交。
+
+全部 HEAD 未移动后，把阶段 1 的分支、launch commit、`AuditedHead`、有序 `AuditedCommits`、允许路径和验收结论写入 `formal-dataset/reports/DS02-BUILD-AUDIT.json`。随后只按该报告中冻结的 commit SHA 和原顺序 cherry-pick，不能重新从可移动的分支名计算范围。不要直接 merge 整个分支，不要 squash 掉建设任务的来源和 Gate 记录。发生冲突时，只能解决确定性路径或完全相同的来源文件冲突。Query、上下文、Gold、资产内容或来源记录冲突时，执行 `git cherry-pick --abort` 并报告，不能自行选择一侧。
 
 导入后实现或补齐最小的确定性 Team fragment 集成入口。优先复用：
 
@@ -321,6 +359,8 @@ worlds/formal-snapshot.ts
 
 不要为此建立新的通用框架、任务队列、数据库或恢复系统。不要手工复制数组和 hash。相同输入连续运行两次必须得到相同文件内容。
 
+当前 `validate-formal-dataset.ts` 的默认模式只报告数量，不会因冻结数量偏差而失败。集成代码必须给这个现有脚本增加可选的 `--freeze-contract formal-v1` 严格模式，并为成功和数量偏差失败补直接测试；不传该参数时保持原行为。严格模式必须根据 `--split` 校验对应冻结合同，并在任一数量不符时输出非零状态。不要另建验证框架。
+
 T01 至 T04、T11、T12 集成后，应得到 Dev 240 条、90 个 pair。只运行 Dev validator 和编译，不要求此时 Hidden 已有 400 条，但 Dev 结果仍不是可发布的中间数据集。
 
 在 `MemoryProxy` 目录运行仓库现有命令：
@@ -329,6 +369,7 @@ T01 至 T04、T11、T12 集成后，应得到 Dev 240 条、90 个 pair。只运
 npm exec -- tsx eval/tool-prompt-bench/formal-dataset/scripts/validate-formal-dataset.ts `
   --contract eval/tool-prompt-bench/formal-dataset/registry/contracts/formal-v1.json `
   --split dev `
+  --freeze-contract formal-v1 `
   --report eval/tool-prompt-bench/formal-dataset/reports/DS03-DEV-VALIDATION.json
 
 npm exec -- tsx eval/tool-prompt-bench/formal-dataset/scripts/compile-formal-dataset.ts `
@@ -340,7 +381,7 @@ npm run eval:tool-prompt:d0:test
 npm run eval:tool-prompt:test
 ```
 
-另外把同一 Dev contract 编译到两个独立临时目录，逐文件比较 SHA-256。正式目录中的 provider、private Gold 和 snapshot hash 必须与临时编译一致。
+另外把同一 Dev contract 编译到两个独立临时目录，逐文件比较文件 SHA-256。正式目录中的 provider、private Gold 和 snapshot 文件 hash 必须与临时编译一致。编译器返回的 canonical SHA-256 与 `Get-FileHash -Algorithm SHA256` 得到的文件 SHA-256 是两类指标，必须分别保存为 `*_canonical_sha256` 和 `*_file_sha256`，不能混用。
 
 Dev Gate 必须确认：
 
@@ -365,7 +406,7 @@ codex/task1-data-build-16team-t13-t14
 codex/task1-data-build-16team-t15-t16
 ```
 
-沿用阶段 2 已验收的提交列表和同样的 cherry-pick 规则。不要在 Hidden 集成阶段查看 Prompt Variant 的评测结果，也不要根据 Dev 或任何模型得分改写 Hidden。
+沿用阶段 1 已冻结在 `DS02-BUILD-AUDIT.json` 的 `AuditedCommits` 和同样的 cherry-pick 规则。导入 Hidden 前再次要求八个分支 HEAD 都等于各自 `AuditedHead`。不要在 Hidden 集成阶段查看 Prompt Variant 的评测结果，也不要根据 Dev 或任何模型得分改写 Hidden。
 
 T05 至 T10、T13 至 T16 集成后，应得到 Hidden 400 条、150 个 pair。运行 Hidden validator 和编译：
 
@@ -373,6 +414,7 @@ T05 至 T10、T13 至 T16 集成后，应得到 Hidden 400 条、150 个 pair。
 npm exec -- tsx eval/tool-prompt-bench/formal-dataset/scripts/validate-formal-dataset.ts `
   --contract eval/tool-prompt-bench/formal-dataset/registry/contracts/formal-v1.json `
   --split hidden_test `
+  --freeze-contract formal-v1 `
   --report eval/tool-prompt-bench/formal-dataset/reports/DS05-HIDDEN-VALIDATION.json
 
 npm exec -- tsx eval/tool-prompt-bench/formal-dataset/scripts/compile-formal-dataset.ts `
@@ -381,7 +423,7 @@ npm exec -- tsx eval/tool-prompt-bench/formal-dataset/scripts/compile-formal-dat
   --out eval/tool-prompt-bench/formal-dataset
 ```
 
-把同一 Hidden contract 编译到两个独立临时目录并比较全部 SHA-256。Hidden provider 文件只能公开运行输入，private Gold 必须保存在 scorer private 路径，sealed manifest 只公开 Team、数量、来源类型计数、provider bytes/token 准备字段和 snapshot hash。
+把同一 Hidden contract 编译到两个独立临时目录并比较全部文件 SHA-256，同时分别记录 compiler canonical SHA-256。Hidden provider 文件只能公开运行输入，private Gold 必须保存在 scorer private 路径，sealed manifest 只公开 Team、数量、来源类型计数、provider bytes/token 准备字段和 snapshot hash。
 
 ## 阶段 4：运行 640 条全局 Gate
 
@@ -390,22 +432,26 @@ Hidden 编译通过后，对完整 `formal-v1` 运行无 split validator，并�
 ```powershell
 npm exec -- tsx eval/tool-prompt-bench/formal-dataset/scripts/validate-formal-dataset.ts `
   --contract eval/tool-prompt-bench/formal-dataset/registry/contracts/formal-v1.json `
+  --freeze-contract formal-v1 `
   --report eval/tool-prompt-bench/formal-dataset/reports/DS05-FULL-VALIDATION.json
 
 npm run eval:tool-prompt:d0:test
 npm run eval:tool-prompt:test
-git diff --check
+git -c safe.directory=D:/projects/TencentDB-Agent-Memory-task1-data-integration diff --check
 ```
 
-全局 Gate 至少检查：
+`--freeze-contract formal-v1` 必须让下面所有数量成为失败即退出的断言，而不是报告字段：
 
 - case id、pair id、asset id、source id 和 batch id 全局唯一。
-- T01 至 T16 每个 Team 严格为 40 条。
-- Dev 为 240 条，Hidden 为 400 条，总计 640 条。
-- 240 个 Positive 都有唯一配对 Negative。
+- 只有一个 Space；Team ID 恰好为 T01 至 T16。
+- Dev Team 恰好为 T01 至 T04、T11、T12；Hidden Team 恰好为 T05 至 T10、T13 至 T16。
+- 每个 Team 严格为 6 条 Memory Positive、6 条 Skill Positive、3 条 Knowledge Positive、15 条配对 Negative、10 条自然 Coding Negative、15 个 pair、40 条 case。
+- 每个 Team 恰好有 10 条搜索或 discovery Positive 和 5 条直接调用 Positive。
+- Dev 为 240 条和 90 个 pair；Hidden 为 400 条和 150 个 pair；全集为 640 条和 240 个 pair。
+- 240 个 Positive 都有唯一配对 Negative，且 240 个配对 Negative 都恰好覆盖一个 Positive。
 - Memory Positive 为 96 条，Skill Positive 为 96 条，Knowledge Positive 为 48 条。
 - 配对 Negative 为 240 条，自然 Coding Negative 为 160 条。
-- Search 或 discovery Positive 至少 160 条，直接调用 Positive 为 80 条。
+- 搜索或 discovery Positive 恰好 160 条，直接调用 Positive 恰好 80 条。
 - Dev 和 Hidden 的 query hash、完整句、上下文 hash、pair 模板和高阶 n-gram 没有重复。
 - Team 之间没有改名复制 case。
 - 所有外部导入文件的 hash、revision、path 和 license 完整。
@@ -433,17 +479,17 @@ formal-dataset/reports/**
 状态文件至少记录：
 
 - `dataset_revision = formal-v1`
-- 当前集成分支和最终 commit
-- T01 至 T16 的建设分支、各自启动 Tag 和最终 commit
+- 当前集成分支、`dataset_content_commit` 和 revision Tag 名称
+- T01 至 T16 的建设分支、各自启动 Tag、`AuditedHead` 和实际导入的 commit 列表
 - 每个 Team 的类别数量和 Gate
 - Dev、Hidden、全集数量
-- contract canonical SHA-256
-- Dev provider SHA-256
-- Hidden provider SHA-256
-- Dev private Gold SHA-256
-- Hidden private Gold SHA-256
-- Dev snapshot SHA-256
-- Hidden snapshot SHA-256
+- contract canonical SHA-256 和文件 SHA-256
+- Dev provider canonical SHA-256 和文件 SHA-256
+- Hidden provider canonical SHA-256 和文件 SHA-256
+- Dev private Gold canonical SHA-256 和文件 SHA-256
+- Hidden private Gold canonical SHA-256 和文件 SHA-256
+- Dev snapshot canonical SHA-256 和文件 SHA-256
+- Hidden snapshot canonical SHA-256 和文件 SHA-256
 - validator 和测试结果
 - token 字段准备情况
 - 已知限制
@@ -455,32 +501,40 @@ formal-dataset/reports/**
 
 ```text
 dataset_revision
-dataset_commit
+dataset_content_commit
+dataset_revision_tag
 source_launch_tag
 schema_baseline_tag
 team_branch_commits
 case_distribution
 source_distribution
 model_runs = 0
-provider_input_sha256
-private_gold_sha256
-snapshot_sha256
-contract_sha256
+provider_input_canonical_sha256
+provider_input_file_sha256
+private_gold_canonical_sha256
+private_gold_file_sha256
+snapshot_canonical_sha256
+snapshot_file_sha256
+contract_canonical_sha256
+contract_file_sha256
 deterministic_compile_result
 all_gate_results
 known_limitations
 append_policy
 ```
 
-`append_policy` 必须说明：`formal-v1` 冻结后不可改写；以后新增数据创建 `formal-v2` 或独立增量切片。评测结果必须带 `dataset_revision`、`dataset_commit`、`provider_input_sha256`、`private_gold_sha256`、`snapshot_sha256`、`variant_id`、`model_id` 和 `run_id`。不同 revision 的总分不能在不标注数据差异的情况下直接混为一组。
+`append_policy` 必须说明：`formal-v1` 冻结后不可改写；以后新增数据创建 `formal-v2` 或独立增量切片。评测结果必须带 `dataset_revision`、由 Tag 解引用得到的 `dataset_revision_commit`、provider/private Gold/snapshot 的 canonical 和 file SHA-256、`variant_id`、`model_id` 和 `run_id`。不同 revision 的总分不能在不标注数据差异的情况下直接混为一组。
 
-最终至少保留三个清楚的集成提交：
+最终至少标出四个清楚的集成里程碑提交；建设分支原有提交按审计顺序保留，不计入这四个里程碑：
 
 1. Dev 集成和 Dev Gate。
 2. Hidden 集成和 Hidden Gate。
-3. 全集 Gate、状态和 `formal-v1` 冻结。
+3. 全集数据、严格数量 Gate、确定性编译结果和冻结前报告。
+4. 冻结元数据，记录第 3 个里程碑的 `dataset_content_commit`，然后创建 `formal-v1` Tag。
 
 不要把文档整理、建设分支原始数据、集成代码和最终冻结压成一个无法审查的提交。提交正文写清输入分支、Team、数量、运行命令、hash 和限制。
+
+Git commit 不能在自身跟踪文件中记录自己的 SHA。第 3 个里程碑提交完成后，先解析它的 SHA，再在状态和冻结报告中保存为 `dataset_content_commit`；第 4 个里程碑只更新冻结元数据。跟踪文件不得伪造或占位填写第 4 个提交自身的 SHA。正式 revision commit 由 `task1-data-formal-v1^{commit}` 动态解析，保存在后续评测运行结果和最终汇报中。
 
 最后创建 annotated Tag：
 
@@ -497,16 +551,17 @@ task1-data-formal-v1
 - 集成 worktree 干净。
 - 当前分支仍为 `codex/task1-data-integration`。
 - `task1-data-formal-v1^{commit}` 等于最终 HEAD。
+- 状态和冻结报告中的 `dataset_content_commit` 等于第 3 个里程碑提交，且是最终 HEAD 的祖先。
 - launch Tag、schema Tag 和数据内容基线仍是最终 HEAD 的祖先。
 - 八个建设分支未被修改、删除、变基或接管。
-- provider、private Gold、snapshot 和 contract 的实际 hash 等于冻结报告。
-- 再运行一次正式 validator，结果不依赖未提交文件。
+- provider、private Gold、snapshot 和 contract 的实际 canonical SHA-256 与文件 SHA-256 分别等于冻结报告。
+- 再运行一次带 `--freeze-contract formal-v1` 的正式 validator，结果不依赖未提交文件。
 
 最终回复必须列出：
 
 - 状态是 `COMPLETE` 还是 `BLOCKED`。
 - 八个建设分支各自的启动 Tag、最终提交和验收结论。
-- 三个集成提交。
+- 全部实际导入提交和至少四个集成里程碑提交。
 - 最终 dataset revision、commit 和 Tag。
 - Dev、Hidden 和全集数量。
 - 各类型 case 数量。
