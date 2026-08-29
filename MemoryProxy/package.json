@@ -21,7 +21,7 @@
     "eval:tool-prompt:capture-freeze": "tsx eval/tool-prompt-bench/capture-code-freeze.ts",
     "eval:tool-prompt:validate": "tsx eval/tool-prompt-bench/validate.ts",
     "eval:tool-prompt:worlds:gate": "tsx eval/tool-prompt-bench/worlds/validate-worlds.ts && tsx eval/tool-prompt-bench/worlds/smoke-worlds.ts && tsx eval/tool-prompt-bench/worlds/audit-worlds.ts && tsx eval/tool-prompt-bench/worlds/audit-completeness.ts && python eval/tool-prompt-bench/worlds/check-quotes.py",
-    "eval:tool-prompt:d0:test": "vitest run src/__tests__/formal-world-schema.test.ts src/__tests__/formal-visibility.test.ts src/__tests__/formal-snapshot.test.ts src/__tests__/formal-provenance.test.ts src/__tests__/formal-evaluator-contract.test.ts src/__tests__/formal-dataset-registry.test.ts src/__tests__/formal-measurement-v2-overlay.test.ts && python -m unittest discover -s eval/tool-prompt-bench/source-tools/tests -q",
+    "eval:tool-prompt:d0:test": "vitest run src/__tests__/formal-world-schema.test.ts src/__tests__/formal-visibility.test.ts src/__tests__/formal-snapshot.test.ts src/__tests__/formal-provenance.test.ts src/__tests__/formal-evaluator-contract.test.ts src/__tests__/formal-dataset-registry.test.ts src/__tests__/formal-measurement-v2-overlay.test.ts src/__tests__/tool-prompt-canonical-json-shared.test.ts && python -m unittest discover -s eval/tool-prompt-bench/source-tools/tests -q",
     "eval:tool-prompt:test": "vitest run src/__tests__/tool-prompt-bench.test.ts",
     "eval:tool-prompt:real-chain:gate": "vitest run src/__tests__/real-chain-adapter.test.ts",
     "eval:tool-prompt:score": "tsx eval/tool-prompt-bench/score.ts",

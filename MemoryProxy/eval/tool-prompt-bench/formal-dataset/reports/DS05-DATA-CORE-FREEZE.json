@@ -3,7 +3,10 @@
   "stage": "DS05_data_core_freeze",
   "status": "passed",
   "data_core_status": "frozen",
-  "measurementV2Ready": false,
+  "dataContractReady": false,
+  "realChainR01R04Status": "pending",
+  "measurementIntegrationReady": false,
+  "formalCampaignReady": false,
   "formalMetricEligible": false,
   "counts": {
     "teams": 16,
@@ -42,11 +45,11 @@
     "source_tools_python": "19/19",
     "tool_prompt_contract": "30/30"
   },
-  "measurement_blockers": {
-    "R01": "blocked_until_private_gold_v2_overlay",
-    "R02": "blocked_until_pair_v2_overlay",
-    "R03": "blocked_until_overlay_validator_passes",
-    "R04": "blocked_until_provider_exclusion_and_m0_m1_compatibility_pass"
+  "data_overlay_gates_at_freeze": {
+    "DS06-G01_private_gold_v2": "pending",
+    "DS06-G02_pair_v2": "pending",
+    "DS06-G03_overlay_validator": "pending",
+    "DS06-G04_provider_exclusion_and_schema_shape": "pending"
   },
   "tag": "task1-data-core-formal-v1",
   "note": "The annotated core tag is created after this self-contained report is committed; its commit id is intentionally not embedded to avoid self-reference."

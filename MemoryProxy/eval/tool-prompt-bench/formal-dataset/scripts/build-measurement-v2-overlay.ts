@@ -9,11 +9,25 @@ import type {
   PrivateCaseAnnotation,
   PublicCaseInput,
 } from "../../worlds/formal-schema.js";
-import { canonicalJson, canonicalSha256 } from "../../worlds/formal-snapshot.js";
+import { canonicalSha256 as canonicalSha256V1 } from "../../worlds/formal-snapshot.js";
+import {
+  canonicalJsonClone,
+  canonicalSha256,
+} from "../../measurement-v2/canonical-json.js";
+import { scoreCaseChain } from "../../measurement-v2/scorer.js";
+import type {
+  JsonObjectV2,
+  PrivateChainGoldV2,
+  RawTdaiTraceAttemptV2,
+  RuntimeToolContractV2 as M0RuntimeToolContractV2,
+} from "../../measurement-v2/types.js";
 import {
   buildPairInvariantSha256,
   changedPairPointers,
+  validateOverlayBindingObservation,
+  validatePairApprovalCoverage,
   validatePairOverlay,
+  type PairApprovalLedger,
   type OverlayArgumentPredicate,
   type OverlayBindingPredicate,
   type OverlayGoldStep,
@@ -28,6 +42,45 @@ import {
 const CORE_TAG = "task1-data-core-formal-v1";
 const CORE_COMMIT = "418ecd102fa2019c139da9eebf88b163eca5a208";
 const OVERLAY_ROOT = "measurement-v2/private";
+const CANONICAL_CONTRACT_ID = "task1.measurement-v2.canonical-json.v2.1";
+const CANONICAL_SOURCE_PATH = "MemoryProxy/eval/tool-prompt-bench/measurement-v2/canonical-json.ts";
+const CANONICAL_SOURCE_BLOB = "a9fe41894fab2d5cb997a703ff11af5d99181655";
+const CANONICAL_TEST_PATH = "MemoryProxy/src/__tests__/tool-prompt-canonical-json-shared.test.ts";
+const CANONICAL_TEST_BLOB = "6d10c5476956a310b6e800c6f2549dac477d4a8e";
+const M1_CANONICAL_TAG = "task1-measure-m1-v2.1-pass";
+const M1_CANONICAL_COMMIT = "6bb57979d6a6c81b4d800995b36b4cd718be1ab5";
+const M2_CANONICAL_TAG = "task1-measure-m2-v2.1-pass";
+const M2_CANONICAL_COMMIT = "6dfb0756c864fc470f85575965304c35a5892eca";
+const M0_SCORER_TAG = "task1-measure-m0-v2-pass";
+const M0_SCORER_COMMIT = "a5f7e1a908b9104e8542506c9238bd3e6e5e0074";
+const M0_SOURCE_BLOBS = {
+  scorer: "d0c03836c2e46acbea02dbd509716ddc7bcfd1cf",
+  types: "4f9795d80a1f6b9a66272765ba3704412d8d252c",
+  jsonPath: "c18db95853ff866c85aba070cdcc6a8f50e1dee9",
+  normalizer: "ca9533cfb859da4a4ef594e68e01378c8ecd0c75",
+} as const;
+const PAIR_APPROVAL_LEDGER_PATH = `${OVERLAY_ROOT}/approvals/pair-minimality-approval-ledger.json`;
+const CONVERSATION_TERMINAL_DOWNGRADE_CASES = [
+  "T03-MEM-003-P",
+  "T04-MEM-003-P",
+  "T05-DS05-MEM-PAIR-02-POS",
+  "T06-MEM-BP-02-POS",
+  "T09-MEM-003-P",
+  "T10-MEM-001-P",
+  "T10-MEM-004-P",
+  "T13-MEM-003-P",
+  "T14-MEM-003-P",
+] as const;
+const SCENARIO_TYPED_BINDING_CASES = [
+  "T07-PAIR-M04-P",
+  "T08-PAIR-M03-P",
+  "T11-MEMORY-003-P",
+  "T11-MEMORY-004-P",
+  "T12-MEMORY-003-P",
+  "T12-MEMORY-005-P",
+] as const;
+const conversationDowngradeCaseIds = new Set<string>(CONVERSATION_TERMINAL_DOWNGRADE_CASES);
+const scenarioBindingCaseIds = new Set<string>(SCENARIO_TYPED_BINDING_CASES);
 const GIT_ROOT = execFileSync("git", ["rev-parse", "--show-toplevel"], {
   encoding: "utf8",
 }).trim();
@@ -98,6 +151,39 @@ function assertCoreIdentity(coreTag: string, coreCommit: string): void {
   git("merge-base", "--is-ancestor", coreCommit, "HEAD");
 }
 
+function assertOverlayCanonicalContract(): void {
+  const sourceBlob = git("hash-object", CANONICAL_SOURCE_PATH);
+  const testBlob = git("hash-object", CANONICAL_TEST_PATH);
+  if (sourceBlob !== CANONICAL_SOURCE_BLOB) {
+    fail(`shared canonical source blob ${sourceBlob} != ${CANONICAL_SOURCE_BLOB}`);
+  }
+  if (testBlob !== CANONICAL_TEST_BLOB) {
+    fail(`shared canonical test blob ${testBlob} != ${CANONICAL_TEST_BLOB}`);
+  }
+  const m1Commit = git("rev-parse", `${M1_CANONICAL_TAG}^{}`);
+  const m2Commit = git("rev-parse", `${M2_CANONICAL_TAG}^{}`);
+  if (m1Commit !== M1_CANONICAL_COMMIT) {
+    fail(`${M1_CANONICAL_TAG} resolves to ${m1Commit}, expected ${M1_CANONICAL_COMMIT}`);
+  }
+  if (m2Commit !== M2_CANONICAL_COMMIT) {
+    fail(`${M2_CANONICAL_TAG} resolves to ${m2Commit}, expected ${M2_CANONICAL_COMMIT}`);
+  }
+  const m0Commit = git("rev-parse", `${M0_SCORER_TAG}^{}`);
+  if (m0Commit !== M0_SCORER_COMMIT) {
+    fail(`${M0_SCORER_TAG} resolves to ${m0Commit}, expected ${M0_SCORER_COMMIT}`);
+  }
+  const m0Paths = {
+    scorer: "MemoryProxy/eval/tool-prompt-bench/measurement-v2/scorer.ts",
+    types: "MemoryProxy/eval/tool-prompt-bench/measurement-v2/types.ts",
+    jsonPath: "MemoryProxy/eval/tool-prompt-bench/measurement-v2/json-path.ts",
+    normalizer: "MemoryProxy/eval/tool-prompt-bench/measurement-v2/normalizer.ts",
+  } as const;
+  for (const [name, path] of Object.entries(m0Paths) as Array<[keyof typeof M0_SOURCE_BLOBS, string]>) {
+    const blob = git("hash-object", path);
+    if (blob !== M0_SOURCE_BLOBS[name]) fail(`M0 ${name} blob ${blob} != ${M0_SOURCE_BLOBS[name]}`);
+  }
+}
+
 async function assertWorkingCoreMatchesTag(
   datasetRoot: string,
   coreCommit: string,
@@ -129,7 +215,7 @@ async function assertWorkingCoreMatchesTag(
 }
 
 function jsonValue(value: unknown): OverlayJsonValue {
-  return JSON.parse(JSON.stringify(value)) as OverlayJsonValue;
+  return canonicalJsonClone(value) as OverlayJsonValue;
 }
 
 function argumentPredicate(rules?: ArgumentRules, prefix = ""): OverlayArgumentPredicate | undefined {
@@ -162,7 +248,16 @@ function mergePredicates(
     .flatMap((predicate) => (predicate?.[key] ?? []) as T[]);
   const required = collect<string>("required");
   const forbidden = collect<string>("forbidden");
-  const exact = collect<{ path: string; value: OverlayJsonValue }>("exact");
+  const exactCandidates = collect<{ path: string; value: OverlayJsonValue }>("exact");
+  const exactByPath = new Map<string, OverlayJsonValue>();
+  for (const candidate of exactCandidates) {
+    const existing = exactByPath.get(candidate.path);
+    if (existing !== undefined && canonicalSha256(existing) !== canonicalSha256(candidate.value)) {
+      fail(`conflicting exact argument predicates at ${candidate.path}`);
+    }
+    exactByPath.set(candidate.path, candidate.value);
+  }
+  const exact = [...exactByPath.entries()].map(([path, value]) => ({ path, value }));
   const stringContainsAny = collect<{ path: string; values: string[] }>("stringContainsAny");
   return required.length + forbidden.length + exact.length + stringContainsAny.length === 0 ? undefined : {
     ...(required.length > 0 ? { required: [...new Set(required)] } : {}),
@@ -209,9 +304,42 @@ function actionForStep(
   return { action };
 }
 
+function targetScenePath(
+  annotation: PrivateCaseAnnotation,
+  contract: FormalWorldContract,
+): string {
+  const targets = contract.assets.l2Scenes.filter((scene) => (
+    annotation.gold.targetAssetIds.includes(scene.assetId)
+  ));
+  if (targets.length !== 1) {
+    fail(`${annotation.caseId}: expected exactly one target L2 scene, found ${targets.length}`);
+  }
+  return targets[0].path;
+}
+
+function overlaySequences(annotation: PrivateCaseAnnotation): readonly (readonly string[])[] {
+  if (!conversationDowngradeCaseIds.has(annotation.caseId)) return annotation.gold.allowedSequences;
+  for (const sequence of annotation.gold.allowedSequences) {
+    if (sequence.length !== 2
+      || sequence[0] !== "tdai_conversation_search"
+      || sequence[1] !== "tdai_conversation_query") {
+      fail(`${annotation.caseId}: conversation downgrade no longer matches the frozen legacy chain`);
+    }
+  }
+  const followup = annotation.gold.expectedFollowupActions?.[0];
+  if (followup?.tool !== "tdai_conversation_query" || !followup.argumentRules?.valueFromPreviousStep) {
+    fail(`${annotation.caseId}: conversation downgrade lost its legacy valueFromPreviousStep evidence`);
+  }
+  // Production MemoryCore currently omits session_id from conversation/search
+  // response hits, so query cannot be safely bound. Search is the terminal.
+  return [["tdai_conversation_search"]];
+}
+
 function bindingsForStep(
+  annotation: PrivateCaseAnnotation,
   sequence: readonly string[],
   stepIndex: number,
+  contract: FormalWorldContract,
 ): OverlayBindingPredicate[] {
   if (stepIndex === 0) return [];
   const previousTool = sequence[stepIndex - 1];
@@ -233,9 +361,19 @@ function bindingsForStep(
       comparison: "exact",
     }];
   }
-  // conversation/search does not return session_id; scenario/ls and tools/list
-  // do not guarantee a target-specific array index. Those chains are frozen by
-  // exact terminal arguments instead of inventing a response binding.
+  if (previousTool === "tdai_scenario_ls" && tool === "tdai_read_scene") {
+    targetScenePath(annotation, contract);
+    return [{
+      argumentPath: "path",
+      priorStepId,
+      responsePath: "data.entries.0.path",
+      comparison: "exact",
+    }];
+  }
+  // conversation/search does not return session_id; those nine legacy chains
+  // are explicitly downgraded before step construction. Knowledge tools/list
+  // does not guarantee a target-specific array index and remains constrained by
+  // exact operation and argument predicates.
   return [];
 }
 
@@ -243,6 +381,7 @@ function buildGoldStep(
   annotation: PrivateCaseAnnotation,
   sequence: readonly string[],
   stepIndex: number,
+  contract: FormalWorldContract,
 ): OverlayGoldStep {
   const { action, knowledgeOperation } = actionForStep(annotation, sequence, stepIndex);
   const runtime = baseRuntime(action.tool);
@@ -265,6 +404,13 @@ function buildGoldStep(
       argumentPredicate(action.argumentRules, "params"),
     );
   }
+  if (stepIndex > 0
+    && sequence[stepIndex - 1] === "tdai_scenario_ls"
+    && action.tool === "tdai_read_scene") {
+    args = mergePredicates(args, {
+      exact: [{ path: "path", value: targetScenePath(annotation, contract) }],
+    });
+  }
   return {
     stepId: `step-${stepIndex + 1}`,
     family: runtime.family as OverlayToolFamily,
@@ -275,7 +421,7 @@ function buildGoldStep(
       ? { kind: "exact", value: knowledgeOperation }
       : { kind: "none" },
     ...(args ? { arguments: args } : {}),
-    bindings: bindingsForStep(sequence, stepIndex),
+    bindings: bindingsForStep(annotation, sequence, stepIndex, contract),
     runtimeContractId: knowledgeOperation
       ? `knowledge_tools_call:${knowledgeOperation}`
       : runtime.id,
@@ -283,7 +429,10 @@ function buildGoldStep(
   };
 }
 
-function buildGoldV2(annotation: PrivateCaseAnnotation): OverlayPrivateGoldV2 {
+function buildGoldV2(
+  annotation: PrivateCaseAnnotation,
+  contract: FormalWorldContract,
+): OverlayPrivateGoldV2 {
   const gold = annotation.gold;
   if (!gold.needTdaiTool) {
     if (gold.allowedSequences.length !== 0) fail(`${annotation.caseId}: no-tool legacy sequence is non-empty`);
@@ -296,14 +445,15 @@ function buildGoldV2(annotation: PrivateCaseAnnotation): OverlayPrivateGoldV2 {
     };
   }
   if (gold.allowedSequences.length === 0) fail(`${annotation.caseId}: positive Gold has no sequence`);
+  const sequences = overlaySequences(annotation);
   return {
     evaluationSchemaVersion: 2,
     caseId: annotation.caseId,
     expectation: "tool",
-    attemptBudget: gold.maxTdaiCalls,
-    allowedSequences: gold.allowedSequences.map((sequence, sequenceIndex) => ({
+    attemptBudget: conversationDowngradeCaseIds.has(annotation.caseId) ? 1 : gold.maxTdaiCalls,
+    allowedSequences: sequences.map((sequence, sequenceIndex) => ({
       sequenceId: `${annotation.caseId}:sequence-${sequenceIndex + 1}`,
-      steps: sequence.map((_tool, stepIndex) => buildGoldStep(annotation, sequence, stepIndex)),
+      steps: sequence.map((_tool, stepIndex) => buildGoldStep(annotation, sequence, stepIndex, contract)),
     })),
   };
 }
@@ -320,6 +470,7 @@ function pairProjection(caseInput: PublicCaseInput, split: OverlaySplit): Overla
   return {
     caseId: caseInput.caseId,
     split,
+    teamId: caseInput.identity.teamId,
     comparisonDocument: jsonValue({
       identity: stableIdentity,
       snapshotId: caseInput.snapshotId,
@@ -333,9 +484,88 @@ function pairProjection(caseInput: PublicCaseInput, split: OverlaySplit): Overla
   };
 }
 
+interface PairApprovalAudit {
+  ledgerPath: string;
+  ledgerFileSha256: string;
+  ledgerCanonicalSha256: string;
+  approvedTeamCount: number;
+  approvedPairCount: number;
+  evidenceFileCount: number;
+  errors: string[];
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+async function validatePairApprovalEvidence(
+  ledger: PairApprovalLedger,
+  contract: FormalWorldContract,
+  datasetRoot: string,
+  ledgerPath: string,
+): Promise<{ audit: PairApprovalAudit; approvalByPairId: Map<string, "approved"> }> {
+  const publicById = new Map(contract.publicCases.map((item) => [item.caseId, item]));
+  const expectedPairs = contract.pairs.map((pair) => ({
+    pairId: pair.pairId,
+    teamId: publicById.get(pair.positiveCaseId)?.identity.teamId ?? "",
+  }));
+  const errors = validatePairApprovalCoverage(ledger, expectedPairs);
+  const approvalByPairId = new Map<string, "approved">();
+  for (const team of ledger.teams) {
+    const expectedPath = `staging/teams/${team.teamId}/gate.json`;
+    if (team.evidencePath !== expectedPath) {
+      errors.push(`${team.teamId}: evidence path ${team.evidencePath} != ${expectedPath}`);
+      continue;
+    }
+    const evidencePath = resolve(datasetRoot, team.evidencePath);
+    const repositoryPath = `MemoryProxy/eval/tool-prompt-bench/formal-dataset/${team.evidencePath}`;
+    let frozenSha = "";
+    let frozenBlob = "";
+    try {
+      const frozen = execFileSync("git", ["show", `${team.evidenceSourceCommit}:${repositoryPath}`], {
+        cwd: GIT_ROOT,
+        maxBuffer: 16 * 1024 * 1024,
+      });
+      frozenSha = bytesSha256(frozen);
+      frozenBlob = git("rev-parse", `${team.evidenceSourceCommit}:${repositoryPath}`);
+    } catch {
+      errors.push(`${team.teamId}: approval evidence commit cannot resolve the Gate`);
+    }
+    if (frozenSha !== team.evidenceFileSha256) {
+      errors.push(`${team.teamId}: approval evidence commit/file SHA mismatch`);
+    }
+    if (frozenBlob.length > 0 && git("hash-object", repositoryPath) !== frozenBlob) {
+      errors.push(`${team.teamId}: working Gate does not match the frozen Git blob`);
+    }
+    const gate = await readJson<Record<string, unknown>>(evidencePath);
+    if (gate.team_id !== team.teamId) errors.push(`${team.teamId}: Gate team_id mismatch`);
+    const passed = gate.status === "pass" || gate.status === "passed" || gate.passed === true;
+    if (!passed) errors.push(`${team.teamId}: Gate is not passed`);
+    const counts = isRecord(gate.counts) ? gate.counts : {};
+    const pairCount = counts.pairs ?? counts.positive_pairs;
+    if (pairCount !== 15) errors.push(`${team.teamId}: Gate Pair count ${String(pairCount)} != 15`);
+    const gateErrors = Array.isArray(gate.errors) ? gate.errors : [];
+    if (gateErrors.length > 0) errors.push(`${team.teamId}: Gate contains errors`);
+    for (const pairId of team.pairIds) approvalByPairId.set(pairId, team.reviewStatus);
+  }
+  return {
+    audit: {
+      ledgerPath: PAIR_APPROVAL_LEDGER_PATH,
+      ledgerFileSha256: await fileSha256(ledgerPath),
+      ledgerCanonicalSha256: canonicalSha256(ledger),
+      approvedTeamCount: ledger.teams.length,
+      approvedPairCount: approvalByPairId.size,
+      evidenceFileCount: ledger.teams.length,
+      errors,
+    },
+    approvalByPairId,
+  };
+}
+
 function buildPairV2(
   pair: FormalWorldContract["pairs"][number],
   contract: FormalWorldContract,
+  minimalityReviewStatus: "approved",
 ): { pair: OverlayPairContractV2; positive: OverlayPairCaseProjection; negative: OverlayPairCaseProjection } {
   const publicById = new Map(contract.publicCases.map((item) => [item.caseId, item]));
   const positiveCase = publicById.get(pair.positiveCaseId) ?? fail(`${pair.pairId}: missing positive`);
@@ -364,13 +594,52 @@ function buildPairV2(
     invariantProjectionSchemaVersion: "pair-invariant-projection-v2",
     invariantFieldsSha256: invariant.sha256,
     changedPointerCount: changed.length,
-    minimalityReviewStatus: "approved",
-    independenceKey: `${split}:${pair.pairId}`,
+    minimalityReviewStatus,
+    independenceKey: `${split}:${positiveCase.identity.teamId}`,
     split,
   };
   const errors = validatePairOverlay(pairV2, positive, negative);
   if (errors.length > 0) fail(errors.join("\n"));
   return { pair: pairV2, positive, negative };
+}
+
+interface PairClusterAudit {
+  clusterUnit: "team";
+  devClusterCount: number;
+  hiddenClusterCount: number;
+  totalClusterCount: number;
+  pairsPerCluster: Record<string, number>;
+  errors: string[];
+}
+
+function validatePairClusters(
+  pairs: readonly OverlayPairContractV2[],
+  contract: FormalWorldContract,
+): PairClusterAudit {
+  const errors: string[] = [];
+  const counts = new Map<string, number>();
+  for (const pair of pairs) counts.set(pair.independenceKey, (counts.get(pair.independenceKey) ?? 0) + 1);
+  const expectedKeys = contract.teams.map((team) => (
+    `${team.split === "dev" ? "dev" : "hidden"}:${team.teamId}`
+  ));
+  for (const key of expectedKeys) {
+    if (counts.get(key) !== 15) errors.push(`${key}: expected 15 pairs, found ${counts.get(key) ?? 0}`);
+  }
+  for (const key of counts.keys()) {
+    if (!expectedKeys.includes(key)) errors.push(`${key}: unexpected Pair cluster`);
+  }
+  const devClusterCount = [...counts.keys()].filter((key) => key.startsWith("dev:")).length;
+  const hiddenClusterCount = [...counts.keys()].filter((key) => key.startsWith("hidden:")).length;
+  if (devClusterCount !== 6) errors.push(`Dev Pair clusters expected 6, found ${devClusterCount}`);
+  if (hiddenClusterCount !== 10) errors.push(`Hidden Pair clusters expected 10, found ${hiddenClusterCount}`);
+  return {
+    clusterUnit: "team",
+    devClusterCount,
+    hiddenClusterCount,
+    totalClusterCount: counts.size,
+    pairsPerCluster: Object.fromEntries([...counts.entries()].sort(([left], [right]) => left.localeCompare(right))),
+    errors,
+  };
 }
 
 function buildRuntimeContracts(gold: readonly OverlayPrivateGoldV2[]): RuntimeContractV2[] {
@@ -420,7 +689,10 @@ function validateGoldOverlay(
     const legacy = annotationById.get(item.caseId);
     if (!legacy) continue;
     if (item.evaluationSchemaVersion !== 2) errors.push(`${item.caseId}: wrong evaluationSchemaVersion`);
-    if (item.attemptBudget !== legacy.gold.maxTdaiCalls) errors.push(`${item.caseId}: attempt budget drift`);
+    const expectedAttemptBudget = conversationDowngradeCaseIds.has(item.caseId)
+      ? 1
+      : legacy.gold.maxTdaiCalls;
+    if (item.attemptBudget !== expectedAttemptBudget) errors.push(`${item.caseId}: attempt budget drift`);
     if (item.expectation === "no-tool") {
       if (legacy.gold.needTdaiTool || item.allowedSequences.length !== 0) {
         errors.push(`${item.caseId}: invalid no-tool Gold`);
@@ -453,6 +725,233 @@ function validateGoldOverlay(
   return errors;
 }
 
+interface M0GoldValidationAudit {
+  scorerTag: string;
+  scorerCommit: string;
+  scorerSourceBlob: string;
+  typesSourceBlob: string;
+  jsonPathSourceBlob: string;
+  normalizerSourceBlob: string;
+  validatedGoldCount: number;
+  negativeBindingTestCount: number;
+  errors: string[];
+}
+
+function setArgumentPath(target: Record<string, unknown>, path: string, value: OverlayJsonValue): void {
+  const segments = path.split(".").filter(Boolean);
+  let current = target;
+  segments.forEach((segment, index) => {
+    if (index === segments.length - 1) {
+      current[segment] = value;
+      return;
+    }
+    const next = current[segment];
+    if (!isRecord(next)) current[segment] = {};
+    current = current[segment] as Record<string, unknown>;
+  });
+}
+
+function argumentsForStep(step: OverlayGoldStep): JsonObjectV2 {
+  const result: Record<string, unknown> = {};
+  for (const exact of step.arguments?.exact ?? []) setArgumentPath(result, exact.path, exact.value);
+  for (const required of step.arguments?.required ?? []) {
+    const root = required.split(".")[0];
+    if (root !== undefined && result[root] === undefined) result[root] = "__M0_VALIDATION_REQUIRED__";
+  }
+  return result as JsonObjectV2;
+}
+
+function validateGoldWithFrozenM0(
+  gold: readonly OverlayPrivateGoldV2[],
+  runtimeContracts: readonly RuntimeContractV2[],
+): M0GoldValidationAudit {
+  const errors: string[] = [];
+  let validatedGoldCount = 0;
+  let negativeBindingTestCount = 0;
+  for (const item of gold) {
+    try {
+      scoreCaseChain({
+        gold: item as PrivateChainGoldV2,
+        runtimeContracts: runtimeContracts as readonly M0RuntimeToolContractV2[],
+        observation: {
+          evaluationSchemaVersion: 2,
+          caseId: item.caseId,
+          runId: `data-contract-validation:${item.caseId}`,
+          variantId: "task1-data-formal-v1.1",
+          rawTraceStatus: "complete",
+          attempts: [],
+        },
+      });
+      validatedGoldCount += 1;
+    } catch (error) {
+      errors.push(`${item.caseId}: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+
+  for (const caseId of SCENARIO_TYPED_BINDING_CASES) {
+    const item = gold.find((candidate) => candidate.caseId === caseId);
+    const steps = item?.allowedSequences[0]?.steps;
+    if (!item || !steps || steps.length !== 2) {
+      errors.push(`${caseId}: M0 negative binding fixture is unavailable`);
+      continue;
+    }
+    const targetPath = steps[1]?.arguments?.exact?.find((predicate) => predicate.path === "path")?.value;
+    if (typeof targetPath !== "string") {
+      errors.push(`${caseId}: M0 negative binding fixture has no exact path`);
+      continue;
+    }
+    const attempts: RawTdaiTraceAttemptV2[] = [
+      {
+        attemptId: `${caseId}:negative-binding:1`,
+        executorBound: true,
+        family: steps[0].family,
+        tool: steps[0].tool,
+        endpoint: steps[0].endpoint,
+        method: steps[0].method,
+        arguments: argumentsForStep(steps[0]),
+        status: 200,
+        response: { data: { entries: [{ path: "wrong/path" }], total: 1 } },
+      },
+      {
+        attemptId: `${caseId}:negative-binding:2`,
+        executorBound: true,
+        family: steps[1].family,
+        tool: steps[1].tool,
+        endpoint: steps[1].endpoint,
+        method: steps[1].method,
+        arguments: argumentsForStep(steps[1]),
+        status: 200,
+        response: { data: { path: targetPath } },
+      },
+    ];
+    try {
+      const score = scoreCaseChain({
+        gold: item as PrivateChainGoldV2,
+        runtimeContracts: runtimeContracts as readonly M0RuntimeToolContractV2[],
+        observation: {
+          evaluationSchemaVersion: 2,
+          caseId,
+          runId: `negative-binding:${caseId}`,
+          variantId: "task1-data-formal-v1.1",
+          rawTraceStatus: "complete",
+          attempts,
+        },
+      });
+      if (score.completeChainSuccess !== false || score.failureLayer !== "binding") {
+        errors.push(`${caseId}: frozen M0 did not reject the wrong prior-output path as binding failure`);
+      } else {
+        negativeBindingTestCount += 1;
+      }
+    } catch (error) {
+      errors.push(`${caseId}: M0 negative binding validation threw ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+  return {
+    scorerTag: M0_SCORER_TAG,
+    scorerCommit: M0_SCORER_COMMIT,
+    scorerSourceBlob: M0_SOURCE_BLOBS.scorer,
+    typesSourceBlob: M0_SOURCE_BLOBS.types,
+    jsonPathSourceBlob: M0_SOURCE_BLOBS.jsonPath,
+    normalizerSourceBlob: M0_SOURCE_BLOBS.normalizer,
+    validatedGoldCount,
+    negativeBindingTestCount,
+    errors,
+  };
+}
+
+interface MemoryFollowupAudit {
+  auditedCaseCount: number;
+  conversationTerminalDowngradeCount: number;
+  scenarioTypedBindingCount: number;
+  negativeBindingTestCount: number;
+  conversationTerminalDowngradeCases: readonly string[];
+  scenarioTypedBindingCases: readonly string[];
+  scenarioResponsePath: "data.entries.0.path";
+  conversationSearchSessionIdResponsePath: null;
+  errors: string[];
+}
+
+function validateMemoryFollowupAudit(
+  gold: readonly OverlayPrivateGoldV2[],
+  contract: FormalWorldContract,
+): MemoryFollowupAudit {
+  const errors: string[] = [];
+  let negativeBindingTestCount = 0;
+  const goldById = new Map(gold.map((item) => [item.caseId, item]));
+  const expectedCaseIds = new Set<string>([
+    ...CONVERSATION_TERMINAL_DOWNGRADE_CASES,
+    ...SCENARIO_TYPED_BINDING_CASES,
+  ]);
+  const legacyMemoryFollowups = contract.privateAnnotations.filter((annotation) => (
+    annotation.gold.expectedFollowupActions?.some((action) => (
+      action.argumentRules?.valueFromPreviousStep
+      && (action.tool === "tdai_conversation_query" || action.tool === "tdai_read_scene")
+    ))
+  ));
+  const legacyIds = new Set(legacyMemoryFollowups.map((item) => item.caseId));
+  for (const caseId of expectedCaseIds) {
+    if (!legacyIds.has(caseId)) errors.push(`${caseId}: expected legacy Memory follow-up is missing`);
+  }
+  for (const caseId of legacyIds) {
+    if (!expectedCaseIds.has(caseId)) errors.push(`${caseId}: unaudited legacy Memory follow-up`);
+  }
+
+  for (const caseId of CONVERSATION_TERMINAL_DOWNGRADE_CASES) {
+    const item = goldById.get(caseId);
+    const steps = item?.allowedSequences[0]?.steps ?? [];
+    if (item?.attemptBudget !== 1
+      || steps.length !== 1
+      || steps[0]?.tool !== "tdai_conversation_search"
+      || !steps[0]?.terminal) {
+      errors.push(`${caseId}: unsupported conversation/query terminal was not explicitly downgraded`);
+    }
+  }
+
+  for (const caseId of SCENARIO_TYPED_BINDING_CASES) {
+    const annotation = contract.privateAnnotations.find((item) => item.caseId === caseId);
+    const item = goldById.get(caseId);
+    if (!annotation || !item) {
+      errors.push(`${caseId}: missing scenario binding source`);
+      continue;
+    }
+    const targetPath = targetScenePath(annotation, contract);
+    const steps = item.allowedSequences[0]?.steps ?? [];
+    const terminal = steps[1];
+    const binding = terminal?.bindings.find((candidate) => candidate.argumentPath === "path");
+    if (!terminal?.terminal || terminal.tool !== "tdai_read_scene" || binding === undefined) {
+      errors.push(`${caseId}: typed scenario path binding is missing`);
+      continue;
+    }
+    if (binding.responsePath !== "data.entries.0.path") {
+      errors.push(`${caseId}: typed scenario path binding does not match the production response contract`);
+      continue;
+    }
+    const exactPath = terminal.arguments?.exact?.find((candidate) => candidate.path === "path")?.value;
+    if (exactPath !== targetPath) errors.push(`${caseId}: terminal exact path is not frozen to the target scene`);
+    const response = jsonValue({ data: { entries: [{ path: targetPath }], total: 1 } });
+    if (validateOverlayBindingObservation(binding, response, targetPath).length !== 0) {
+      errors.push(`${caseId}: valid production-shaped binding observation failed`);
+    }
+    if (validateOverlayBindingObservation(binding, response, "wrong/path").length === 0) {
+      errors.push(`${caseId}: wrong bound path was accepted`);
+    } else {
+      negativeBindingTestCount += 1;
+    }
+  }
+
+  return {
+    auditedCaseCount: legacyMemoryFollowups.length,
+    conversationTerminalDowngradeCount: CONVERSATION_TERMINAL_DOWNGRADE_CASES.length,
+    scenarioTypedBindingCount: SCENARIO_TYPED_BINDING_CASES.length,
+    negativeBindingTestCount,
+    conversationTerminalDowngradeCases: CONVERSATION_TERMINAL_DOWNGRADE_CASES,
+    scenarioTypedBindingCases: SCENARIO_TYPED_BINDING_CASES,
+    scenarioResponsePath: "data.entries.0.path",
+    conversationSearchSessionIdResponsePath: null,
+    errors,
+  };
+}
+
 async function identity(
   path: string,
   relativePath: string,
@@ -469,6 +968,7 @@ async function identity(
 async function main(): Promise<void> {
   const coreTag = option("--core-tag") ?? CORE_TAG;
   const coreCommit = option("--core-commit") ?? CORE_COMMIT;
+  assertOverlayCanonicalContract();
   assertCoreIdentity(coreTag, coreCommit);
 
   const datasetRoot = resolve(import.meta.dirname, "..");
@@ -485,16 +985,35 @@ async function main(): Promise<void> {
     const item = contract.publicCases.find((candidate) => candidate.caseId === caseId) ?? fail(`${caseId}: missing Case`);
     return teamSplit.get(item.identity.teamId) === "dev" ? "dev" : "hidden";
   };
-  const allGold = contract.privateAnnotations.map(buildGoldV2).sort((left, right) => left.caseId.localeCompare(right.caseId));
+  const allGold = contract.privateAnnotations
+    .map((annotation) => buildGoldV2(annotation, contract))
+    .sort((left, right) => left.caseId.localeCompare(right.caseId));
   const runtimeContracts = buildRuntimeContracts(allGold);
   const goldErrors = validateGoldOverlay(allGold, contract, runtimeContracts);
-  if (goldErrors.length > 0) fail(goldErrors.join("\n"));
+  const memoryFollowupAudit = validateMemoryFollowupAudit(allGold, contract);
+  const m0GoldValidation = validateGoldWithFrozenM0(allGold, runtimeContracts);
+  if (goldErrors.length + memoryFollowupAudit.errors.length + m0GoldValidation.errors.length > 0) {
+    fail([...goldErrors, ...memoryFollowupAudit.errors, ...m0GoldValidation.errors].join("\n"));
+  }
 
-  const pairs = contract.pairs.map((pair) => buildPairV2(pair, contract));
+  const pairApprovalLedgerPath = resolve(datasetRoot, PAIR_APPROVAL_LEDGER_PATH);
+  const pairApprovalLedger = await readJson<PairApprovalLedger>(pairApprovalLedgerPath);
+  const pairApproval = await validatePairApprovalEvidence(
+    pairApprovalLedger,
+    contract,
+    datasetRoot,
+    pairApprovalLedgerPath,
+  );
+  if (pairApproval.audit.errors.length > 0) fail(pairApproval.audit.errors.join("\n"));
+  const pairs = contract.pairs.map((pair) => buildPairV2(
+    pair,
+    contract,
+    pairApproval.approvalByPairId.get(pair.pairId) ?? fail(`${pair.pairId}: no approved ledger evidence`),
+  ));
   const pairErrors = pairs.flatMap((item) => validatePairOverlay(item.pair, item.positive, item.negative));
-  if (pairErrors.length > 0) fail(pairErrors.join("\n"));
-  if (new Set(pairs.map((item) => item.pair.independenceKey)).size !== 240) {
-    fail("Pair v2 independenceKey values are not globally unique");
+  const pairClusterAudit = validatePairClusters(pairs.map((item) => item.pair), contract);
+  if (pairErrors.length + pairClusterAudit.errors.length > 0) {
+    fail([...pairErrors, ...pairClusterAudit.errors].join("\n"));
   }
 
   const root = resolve(datasetRoot, OVERLAY_ROOT);
@@ -517,13 +1036,38 @@ async function main(): Promise<void> {
   const providerHiddenPath = resolve(datasetRoot, "provider/hidden.sealed.jsonl");
   const providerDev = await readJsonl<unknown>(providerDevPath);
   const providerHidden = await readJsonl<unknown>(providerHiddenPath);
-  const snapshots = Object.fromEntries(contract.snapshots.map((snapshot) => [snapshot.split, canonicalSha256(snapshot)]));
+  const snapshots = Object.fromEntries(contract.snapshots.map((snapshot) => [snapshot.split, canonicalSha256V1(snapshot)]));
   const privateDev = contract.privateAnnotations.filter((item) => caseSplit(item.caseId) === "dev");
   const privateHidden = contract.privateAnnotations.filter((item) => caseSplit(item.caseId) === "hidden");
   const runtimeSourcePath = resolve(datasetRoot, "../../../src/injection/tool-prompt/runtime-contract.ts");
   const runtimeSourceRelative = "MemoryProxy/src/injection/tool-prompt/runtime-contract.ts";
   const runtimeSourceCommit = git("log", "-1", "--format=%H", "--", runtimeSourceRelative);
   if (!/^[a-f0-9]{40}$/.test(runtimeSourceCommit)) fail("RuntimeToolContract source commit is not frozen");
+  const memoryRouterSourceRelative = "MemoryCore/src/gateway/v2-router.ts";
+  const memoryRouterSourcePath = resolve(GIT_ROOT, memoryRouterSourceRelative);
+  const memoryRouterSourceCommit = git("log", "-1", "--format=%H", "--", memoryRouterSourceRelative);
+  if (!/^[a-f0-9]{40}$/.test(memoryRouterSourceCommit)) fail("MemoryCore router source commit is not frozen");
+  const memoryFollowupAuditRecord = {
+    schemaVersion: "task1.memory-followup-audit.v1",
+    ...memoryFollowupAudit,
+    reasons: {
+      conversationTerminalDowngrade: "The production conversation_search response exposes id/role/content/timestamp/score but no session_id/session_key; Task 1 therefore treats the matching search result as the sufficient terminal.",
+      scenarioTypedBinding: "The production scenario_ls response exposes data.entries[].path, so read_scene.path is bound to data.entries.0.path.",
+    },
+    productionResponseEvidence: {
+      sourcePath: memoryRouterSourceRelative,
+      sourceCommit: memoryRouterSourceCommit,
+      sourceFileSha256: await fileSha256(memoryRouterSourcePath),
+      conversationSearch: "data.messages[] omits session_id/session_key; search is terminal for 9 cases",
+      scenarioList: "data.entries.0.path binds to read_scene.path for 6 prefix-filtered cases",
+    },
+  };
+  const memoryFollowupContract = {
+    ...memoryFollowupAuditRecord,
+    strictCanonicalSha256: canonicalSha256(memoryFollowupAuditRecord),
+  };
+  const { errors: _pairClusterErrors, ...pairClusterContract } = pairClusterAudit;
+  void _pairClusterErrors;
   const outputIdentities = {
     goldDev: await identity(goldDevPath, `${OVERLAY_ROOT}/gold/dev.private.jsonl`, goldDev),
     goldHidden: await identity(goldHiddenPath, `${OVERLAY_ROOT}/gold/hidden.private.jsonl`, goldHidden),
@@ -539,29 +1083,43 @@ async function main(): Promise<void> {
     schemaVersion: "task1.measurement-v2-overlay-manifest.v1",
     evaluationSchemaVersion: 2,
     visibility: "private_never_provider_visible",
+    canonicalContract: {
+      canonicalContractId: CANONICAL_CONTRACT_ID,
+      sourcePath: CANONICAL_SOURCE_PATH,
+      sourceBlob: CANONICAL_SOURCE_BLOB,
+      sharedTestPath: CANONICAL_TEST_PATH,
+      sharedTestBlob: CANONICAL_TEST_BLOB,
+      m1V2_1: { tag: M1_CANONICAL_TAG, commit: M1_CANONICAL_COMMIT },
+      m2V2_1: { tag: M2_CANONICAL_TAG, commit: M2_CANONICAL_COMMIT },
+    },
     dataCore: {
       tag: coreTag,
       commit: coreCommit,
+      canonicalContract: {
+        canonicalContractId: "task1.formal-snapshot.canonical-json.v1",
+        sourcePath: "MemoryProxy/eval/tool-prompt-bench/worlds/formal-snapshot.ts",
+        sourceBlob: git("rev-parse", `${coreCommit}:MemoryProxy/eval/tool-prompt-bench/worlds/formal-snapshot.ts`),
+      },
       contractPath: "registry/contracts/formal-v1.json",
       contractFileSha256: await fileSha256(contractPath),
-      contractCanonicalSha256: canonicalSha256(contract),
+      contractCanonicalSha256: canonicalSha256V1(contract),
       provider: {
-        devCanonicalSha256: canonicalSha256(providerDev),
-        hiddenCanonicalSha256: canonicalSha256(providerHidden),
-        fullCanonicalSha256: canonicalSha256([...providerDev, ...providerHidden]),
+        devCanonicalSha256: canonicalSha256V1(providerDev),
+        hiddenCanonicalSha256: canonicalSha256V1(providerHidden),
+        fullCanonicalSha256: canonicalSha256V1([...providerDev, ...providerHidden]),
       },
       privateAnnotations: {
-        devCanonicalSha256: canonicalSha256(privateDev),
-        hiddenCanonicalSha256: canonicalSha256(privateHidden),
-        fullCanonicalSha256: canonicalSha256(contract.privateAnnotations),
+        devCanonicalSha256: canonicalSha256V1(privateDev),
+        hiddenCanonicalSha256: canonicalSha256V1(privateHidden),
+        fullCanonicalSha256: canonicalSha256V1(contract.privateAnnotations),
       },
-      pairsCanonicalSha256: canonicalSha256(contract.pairs),
+      pairsCanonicalSha256: canonicalSha256V1(contract.pairs),
       snapshots: {
         devCanonicalSha256: snapshots.dev,
         hiddenCanonicalSha256: snapshots.hidden_test,
       },
-      caseIdsSha256: canonicalSha256(contract.publicCases.map((item) => item.caseId)),
-      pairIdsSha256: canonicalSha256(contract.pairs.map((item) => item.pairId)),
+      caseIdsSha256: canonicalSha256V1(contract.publicCases.map((item) => item.caseId)),
+      pairIdsSha256: canonicalSha256V1(contract.pairs.map((item) => item.pairId)),
     },
     runtimeContractEvidence: {
       sourcePath: runtimeSourceRelative,
@@ -573,6 +1131,10 @@ async function main(): Promise<void> {
         "MemoryProxy/src/injection/tool-prompt/runtime-contract.ts",
       ],
     },
+    memoryFollowupContract,
+    frozenM0GoldValidation: m0GoldValidation,
+    pairMinimalityApprovalContract: pairApproval.audit,
+    pairClusterContract,
     overlays: outputIdentities,
     counts: {
       goldV2: allGold.length,
@@ -590,7 +1152,11 @@ async function main(): Promise<void> {
       providerDevFileSha256: await fileSha256(providerDevPath),
       providerHiddenFileSha256: await fileSha256(providerHiddenPath),
     },
-    measurementV2Ready: true,
+    dataContractReady: true,
+    dataOverlayGateStatus: "passed",
+    realChainR01R04Status: "pending",
+    measurementIntegrationReady: false,
+    formalCampaignReady: false,
     formalMetricEligible: false,
   };
   const manifestPath = resolve(root, "manifest.private.json");
@@ -607,24 +1173,59 @@ async function main(): Promise<void> {
   ];
   const persistedManifest = await readJson<typeof manifest>(manifestPath);
   const persistedGoldErrors = validateGoldOverlay(persistedGold, contract, runtimeContracts);
+  const persistedMemoryFollowupAudit = validateMemoryFollowupAudit(persistedGold, contract);
+  const persistedM0GoldValidation = validateGoldWithFrozenM0(persistedGold, runtimeContracts);
+  const persistedPairApproval = await validatePairApprovalEvidence(
+    pairApprovalLedger,
+    contract,
+    datasetRoot,
+    pairApprovalLedgerPath,
+  );
   const persistedPairErrors = persistedPairs.flatMap((pair) => {
     const built = pairs.find((item) => item.pair.pairId === pair.pairId);
     return built ? validatePairOverlay(pair, built.positive, built.negative) : [`${pair.pairId}: no source pair`];
   });
+  const persistedPairClusterAudit = validatePairClusters(persistedPairs, contract);
   const providerText = `${await readFile(providerDevPath, "utf8")}\n${await readFile(providerHiddenPath, "utf8")}`;
   const privateLeakTokens = ["evaluationSchemaVersion", "invariantFieldsSha256", "minimalityReviewStatus"];
   const providerLeakage = privateLeakTokens.filter((token) => providerText.includes(token));
-  const errors = [...persistedGoldErrors, ...persistedPairErrors];
+  const errors = [
+    ...persistedGoldErrors,
+    ...persistedPairErrors,
+    ...persistedPairClusterAudit.errors,
+    ...persistedMemoryFollowupAudit.errors,
+    ...persistedM0GoldValidation.errors,
+    ...persistedPairApproval.audit.errors,
+  ];
   if (persistedGold.length !== 640) errors.push(`persisted Gold count ${persistedGold.length}`);
   if (persistedPairs.length !== 240) errors.push(`persisted Pair count ${persistedPairs.length}`);
   if (providerLeakage.length > 0) errors.push(`provider overlay leakage: ${providerLeakage.join(",")}`);
   if (persistedManifest.dataCore.commit !== coreCommit) errors.push("manifest core commit drift");
+  const {
+    strictCanonicalSha256: persistedMemoryAuditSha,
+    ...persistedMemoryAuditWithoutSha
+  } = persistedManifest.memoryFollowupContract;
+  if (canonicalSha256(persistedMemoryAuditWithoutSha) !== persistedMemoryAuditSha) {
+    errors.push("persisted Memory follow-up audit strict canonical SHA mismatch");
+  }
+  const knowledgeTerminalCount = persistedGold.filter((item) => item.allowedSequences.some((sequence) => (
+    sequence.steps.at(-1)?.family === "knowledge"
+  ))).length;
+  const pairChangedPointerCount = persistedPairs.filter((pair) => (
+    pair.changedPointerCount === 1 && pair.allowedChangedPointers.length === 1
+  )).length;
+  const pairCausalFactorCount = persistedPairs.filter((pair) => pair.causalFactorId.length > 0).length;
+  if (runtimeContracts.length !== 21) errors.push(`runtime contract count ${runtimeContracts.length} != 21`);
+  if (knowledgeTerminalCount !== 48) errors.push(`knowledge terminal count ${knowledgeTerminalCount} != 48`);
+  if (pairChangedPointerCount !== 240) errors.push(`single-pointer Pair count ${pairChangedPointerCount} != 240`);
+  if (pairCausalFactorCount !== 240) errors.push(`Pair causal factor count ${pairCausalFactorCount} != 240`);
   const report = {
     schemaVersion: "task1.measurement-v2-overlay-validation.v1",
     valid: errors.length === 0,
     errors,
     coreTag,
     coreCommit,
+    canonicalContract: persistedManifest.canonicalContract,
     counts: persistedManifest.counts,
     canonicalSha256: {
       goldV2Full: canonicalSha256(persistedGold),
@@ -634,14 +1235,27 @@ async function main(): Promise<void> {
     },
     providerLeakageCount: providerLeakage.length,
     pairValidationErrorCount: persistedPairErrors.length,
+    pairClusterAudit: persistedPairClusterAudit,
+    pairMinimalityApprovalAudit: persistedPairApproval.audit,
     goldValidationErrorCount: persistedGoldErrors.length,
-    r01_r04: {
-      R01_private_gold_v2: errors.length === 0 ? "cleared" : "blocked",
-      R02_pair_v2: errors.length === 0 ? "cleared" : "blocked",
-      R03_overlay_validator: errors.length === 0 ? "cleared" : "blocked",
-      R04_provider_exclusion_and_m0_m1_compatibility: errors.length === 0 ? "cleared" : "blocked",
+    frozenM0GoldValidation: persistedM0GoldValidation,
+    memoryFollowupAudit: persistedManifest.memoryFollowupContract,
+    contractCoverage: {
+      runtimeContracts: runtimeContracts.length,
+      knowledgeTerminalCases: knowledgeTerminalCount,
+      pairSingleChangedPointer: pairChangedPointerCount,
+      pairCausalFactor: pairCausalFactorCount,
     },
-    measurementV2Ready: errors.length === 0,
+    dataOverlayGates: {
+      "DS06-G01_private_gold_v2": errors.length === 0 ? "passed" : "failed",
+      "DS06-G02_pair_v2": errors.length === 0 ? "passed" : "failed",
+      "DS06-G03_overlay_validator": errors.length === 0 ? "passed" : "failed",
+      "DS06-G04_provider_exclusion_and_schema_shape": errors.length === 0 ? "passed" : "failed",
+    },
+    dataContractReady: errors.length === 0,
+    realChainR01R04Status: "pending",
+    measurementIntegrationReady: false,
+    formalCampaignReady: false,
     formalMetricEligible: false,
   };
   const reportPath = resolve(datasetRoot, "reports/DS06-MEASUREMENT-V2-OVERLAY-VALIDATION.json");
