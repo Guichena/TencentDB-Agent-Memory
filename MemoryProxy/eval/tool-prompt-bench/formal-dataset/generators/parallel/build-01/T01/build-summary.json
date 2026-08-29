@@ -1,0 +1,22 @@
+{
+  "schema_version": "task1.team_build_summary.v1",
+  "team_id": "T01",
+  "visible_asset_set_sha256": "bd8ba8c682730725241929ecf04412d8fa22d6a659637ff2197b10c548acf9c1",
+  "counts": {
+    "cases": 40,
+    "pairs": 15,
+    "natural_negatives": 10,
+    "positive_families": {
+      "memory": 6,
+      "skill": 6,
+      "knowledge": 3
+    },
+    "l0": 12,
+    "l1": 15,
+    "l2": 4,
+    "l3": 1,
+    "skills": 15,
+    "knowledge": 3,
+    "sources": 46
+  }
+}

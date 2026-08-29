@@ -1,0 +1,450 @@
+{
+  "skills": [
+    {
+      "assetId": "T01-SKILL-DISCOVER-IMPORTANT-FUNCTION",
+      "ownerAgentId": "agent-task1-t01-general",
+      "sourceEvidenceIds": [
+        "source-t01-skill-discover-important-function"
+      ],
+      "observedAt": "2026-06-14T23:16:00Z",
+      "name": "discover-important-function",
+      "version": "1.1.0",
+      "description": "Ranks fuzz-worthy Python files and public input boundaries before harness authoring.",
+      "useWhen": "A Python repository needs a small, evidence-backed shortlist of fuzz targets.",
+      "doNotUseWhen": "The target and rationale are already fixed, or the task is only to implement a known harness.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "4bab2b9f0b3012d50b954b8d13203dfa07f686011ca6c21ba0bb4801f5fa2ef2"
+        }
+      ],
+      "contentHash": "6ad19c4f8ca6673035216e6f9f004637d02c8591efc012a8031e5ac0810c0ada"
+    },
+    {
+      "assetId": "T01-SKILL-FUZZING-PYTHON",
+      "ownerAgentId": "agent-task1-t01-general",
+      "sourceEvidenceIds": [
+        "source-t01-skill-fuzzing-python"
+      ],
+      "observedAt": "2026-06-14T23:16:00Z",
+      "name": "fuzzing-python",
+      "version": "1.1.0",
+      "description": "Builds a minimal coverage-guided Atheris/LibFuzzer harness for a selected Python target.",
+      "useWhen": "The Python target is already selected and the coverage-guided harness structure is missing.",
+      "doNotUseWhen": "The task only selects targets, fixes a localized bug, or already supplies a complete runnable harness.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "ad65e531bd79b962d2cb9678099d92f865899b206dcbc308353444fc8cac4a1f"
+        }
+      ],
+      "contentHash": "e0e5d402990a40e257f38f8c109aa0f1f977792695188cd07d3cade6aa8f6c20"
+    },
+    {
+      "assetId": "T01-SKILL-TESTING-PYTHON",
+      "ownerAgentId": "agent-task1-t01-general",
+      "sourceEvidenceIds": [
+        "source-t01-skill-testing-python"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "testing-python",
+      "version": "1.0.0",
+      "description": "Python 构建/测试失败定位与修复流程。",
+      "useWhen": "需要设计或修复常规 Python 单元测试与失败定位流程。",
+      "doNotUseWhen": "核心是 fuzz 目标选择、覆盖引导 harness 或历史会话检索。",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "3a210279d297921c5c32c8be3e9938c711e5da80fe4a9625324b541e86d9333c"
+        }
+      ],
+      "contentHash": "16168f77e4f8d9755f73789634f78271a256006402bde028d973d337304a2b28"
+    },
+    {
+      "assetId": "T01-SKILL-PYTEST-COVERAGE",
+      "ownerAgentId": "agent-task1-t01-general",
+      "sourceEvidenceIds": [
+        "source-t01-skill-pytest-coverage"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "pytest-coverage",
+      "version": "1.0.0",
+      "description": "使用 pytest coverage 报告补齐指定模块覆盖率。",
+      "useWhen": "需要从覆盖率报告定位未覆盖分支并补原子测试。",
+      "doNotUseWhen": "任务尚未进入普通覆盖率补测，或关注的是 fuzzing engine 的 coverage signal。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "1057ea1dd6a32fceb0cf79d542b703427e7970e86e4ce85f051d76a0d5f94379"
+        }
+      ],
+      "contentHash": "78123b8c518359a29ae73c2da61fb69bfead47dc8d93eb5fa70848f8eb6b7916"
+    },
+    {
+      "assetId": "T01-SKILL-TEMPORAL-PYTHON-TESTING",
+      "ownerAgentId": "agent-task1-t01-general",
+      "sourceEvidenceIds": [
+        "source-t01-skill-temporal-python-testing"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "temporal-python-testing",
+      "version": "1.0.0",
+      "description": "Temporal Python 工作流测试流程。",
+      "useWhen": "需要本地集成、重放和单元测试边界的工作流验证。",
+      "doNotUseWhen": "只需普通 Python 单测或已给出完整测试步骤。",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "resources/integration-testing.md",
+          "sha256": "3942e67339a7fd2582653be5c1c09d7ed85f0f79c9ad5082ade4b78b774e5a7c"
+        },
+        {
+          "path": "resources/local-setup.md",
+          "sha256": "b253de4813b9a9dde36b91b26a03e17df1bf627fe87a3e7765f2cf7c8a5bab78"
+        },
+        {
+          "path": "resources/replay-testing.md",
+          "sha256": "95ee0b49c680e459d299fd8fae2dbd1a4e64e188e8020eecef8aa720db634d92"
+        },
+        {
+          "path": "resources/unit-testing.md",
+          "sha256": "0b57c54014aa115b040fda79d30a92b394ccb92cc95d0467a805a088db170604"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "3e232b7d6c4d30c80b09024e83e1c7f229f031b0e511cabed45958cd8928af2e"
+        }
+      ],
+      "contentHash": "6bc44b145968265fdcf2e601d180df7371ac733dcb9b7b658cb0d22a60a1014a"
+    },
+    {
+      "assetId": "T01-SKILL-ANALYZE-CI",
+      "ownerAgentId": "agent-task1-t01-general",
+      "sourceEvidenceIds": [
+        "source-t01-skill-analyze-ci"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "analyze-ci",
+      "version": "1.0.0",
+      "description": "分析 CI 构建失败日志并区分根因。",
+      "useWhen": "需要从 CI 日志和通过提交证据确定失败类别。",
+      "doNotUseWhen": "根因和唯一修复命令已在当前上下文明确。",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "ebf10c1c4f7e49efbb7112ac0b5160d0549596d1db7ee961b9ecd4c6182ae6c5"
+        }
+      ],
+      "contentHash": "a11f7be18152c04f7447b4c2cd0b880a73c8bd05439f765f6a0a61b6a5672a19"
+    },
+    {
+      "assetId": "T01-SKILL-UV-PACKAGE-MANAGER",
+      "ownerAgentId": "agent-task1-t01-general",
+      "sourceEvidenceIds": [
+        "source-t01-skill-uv-package-manager"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "uv-package-manager",
+      "version": "1.0.0",
+      "description": "使用 uv 管理 Python 环境和依赖。",
+      "useWhen": "需要建立或修复 Python 虚拟环境与依赖安装。",
+      "doNotUseWhen": "问题是测试失败根因而非环境搭建。",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "1f79787d9dd198563d52047056aaaea06f1ef19442a1c07abe0429e51bc7e2c6"
+        }
+      ],
+      "contentHash": "31a4c661315f9958e44bf5845772c607848fbbef6726ff79edd91342766c64b5"
+    },
+    {
+      "assetId": "T01-SKILL-PYTHON-PARALLELIZATION",
+      "ownerAgentId": "agent-task1-t01-general",
+      "sourceEvidenceIds": [
+        "source-t01-skill-python-parallelization"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "python-parallelization",
+      "version": "1.0.0",
+      "description": "CPU 密集型 Python 批处理的进程级并行流程。",
+      "useWhen": "需要把批处理改造成可控的进程级并行。",
+      "doNotUseWhen": "任务是单进程 fuzz harness、环境搭建或普通测试。",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "references/advanced_techniques.md",
+          "sha256": "17e11133f8618855d6248fb0f1a605fe1959c51797ddd827ab07e6b37dd3513b"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "71585d7d3c6691b2116b7ebfb90cf9133747b4fa08537f7a5657f03539f8fdc3"
+        }
+      ],
+      "contentHash": "d02b61c22b476899a12e328dee58b3fd9e18d5f411462723818887327897d88d"
+    },
+    {
+      "assetId": "T01-SKILL-MEMORY-OPTIMIZATION",
+      "ownerAgentId": "agent-task1-t01-general",
+      "sourceEvidenceIds": [
+        "source-t01-skill-memory-optimization"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "memory-optimization",
+      "version": "1.0.0",
+      "description": "Python 批处理内存占用优化流程。",
+      "useWhen": "主要约束是峰值内存和中间结果存储。",
+      "doNotUseWhen": "主要问题是进程级并行调度。",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "references/advanced_techniques.md",
+          "sha256": "87651f6e14412a75169312054759272d36237940524b96ca185601e141f45419"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "30daf5237b91ce4487f516fa623b624ac205f9a64a3b56978bdadaa76e5a50e5"
+        }
+      ],
+      "contentHash": "cc628a04780176b96f45b362b743d3e6c3f4027d2e2d877e4687f90414a116ff"
+    },
+    {
+      "assetId": "T01-SKILL-WORKLOAD-BALANCING",
+      "ownerAgentId": "agent-task1-t01-general",
+      "sourceEvidenceIds": [
+        "source-t01-skill-workload-balancing"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "workload-balancing",
+      "version": "1.0.0",
+      "description": "并行批处理的负载分配与均衡流程。",
+      "useWhen": "并行 worker 已确定但任务分配不均。",
+      "doNotUseWhen": "尚未选择并行模型或只需局部格式修复。",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "references/advanced_techniques.md",
+          "sha256": "3062fb49e3b83bdbcb0699715d9a393660038c9b8b507ed4bea08d2e080ef49f"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "a2b1f4653bd7939bd6c25f12051bed930f0e23dc2f2a269026fc39cb59cc5ef0"
+        }
+      ],
+      "contentHash": "f64b25bfa4291b57ce99c346fdf988d321fd2076a4520928907c3e486577dfb2"
+    },
+    {
+      "assetId": "T01-SKILL-SETUP-ENV",
+      "ownerAgentId": "agent-task1-t01-general",
+      "sourceEvidenceIds": [
+        "source-t01-skill-setup-env"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "setup-env",
+      "version": "1.0.0",
+      "description": "根据 Python 依赖文件建立 uv/.venv 环境。",
+      "useWhen": "需要建立环境并运行 Python 命令。",
+      "doNotUseWhen": "环境已可运行，或任务只涉及目标选择与 harness 结构。",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "8d2af56a04428681a3cab42a70ba889f8d03aab9ca32958739428617ac8230f9"
+        }
+      ],
+      "contentHash": "dc9c18b44067c10a5894229d4acc12107de72581a9fc9d6c033ffad4ad443e2d"
+    },
+    {
+      "assetId": "T01-SKILL-GRPO",
+      "ownerAgentId": "agent-task1-t01-general",
+      "sourceEvidenceIds": [
+        "source-t01-skill-grpo"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "grpo",
+      "version": "1.0.0",
+      "description": "GRPO 算法和 trainer internals 参考流程。",
+      "useWhen": "需要分析 GRPO trainer loop 与算法内部行为。",
+      "doNotUseWhen": "问题是普通 tensor shape bug 或只需修复已定位常量。",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "references/grpo-algorithm.md",
+          "sha256": "85c467949b9cae1fadbb1da6882125b64f5a8d475bac7ec97bebb6f4ad41ae70"
+        },
+        {
+          "path": "references/grpo-trainer-internals.md",
+          "sha256": "3365f4815e5789d1205bf3dbb738083141da4ecc45ce46f612bddc38148890a7"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "85ea906ed63ffc4dbe03ef21a9bfaede187cb8660d1e758e7ba7c39d1582f5c0"
+        }
+      ],
+      "contentHash": "643a4298aeed23f03545ef1fcc9ee4bedd41cf92ecc4cb03ea63d8b7e278c79c"
+    },
+    {
+      "assetId": "T01-SKILL-QDRANT-CLIENTS-SDK",
+      "ownerAgentId": "agent-task1-t01-general",
+      "sourceEvidenceIds": [
+        "source-t01-skill-qdrant-clients-sdk"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "qdrant-clients-sdk",
+      "version": "1.0.0",
+      "description": "Qdrant Python client 的本地向量检索流程。",
+      "useWhen": "需要 collection、payload filter、相似检索和幂等 upsert。",
+      "doNotUseWhen": "只做向量数学、FAISS/pgvector 或服务运维。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "d7b38e979bfdc5cb621862e8a91a6e10cf101ae53980fdc3181a9dc219fa56f1"
+        }
+      ],
+      "contentHash": "d070667caacf17ce93da5919581aea2a6ac0fffbc5c09a7d4f1bbbba54214af3"
+    },
+    {
+      "assetId": "T01-SKILL-QDRANT-PERFORMANCE-OPTIMIZATION",
+      "ownerAgentId": "agent-task1-t01-general",
+      "sourceEvidenceIds": [
+        "source-t01-skill-qdrant-performance-optimization"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "qdrant-performance-optimization",
+      "version": "1.0.0",
+      "description": "Qdrant 向量检索性能优化流程。",
+      "useWhen": "主要问题是向量检索延迟或吞吐。",
+      "doNotUseWhen": "尚未建立检索功能或主要问题是搜索质量。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "indexing-performance-optimization/SKILL.md",
+          "sha256": "2c274262f9c4e9351e24808abe028d7db91ca07fb2d1786baf90d51c1b04fa8d"
+        },
+        {
+          "path": "memory-usage-optimization/SKILL.md",
+          "sha256": "a36c4e2f257ffe93378c35886c4c27338d3e991ad9814e272aa34ad491e536cb"
+        },
+        {
+          "path": "search-speed-optimization/SKILL.md",
+          "sha256": "2e9e85246e8f7ddc4b37b8f846052e51894dad671c8d0ddf8b3fc9e5a0cecbac"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "f861884a0605993abfc81c082c6ed116f5f7ec07e3ef6b4e9b65b3a479ebfa80"
+        }
+      ],
+      "contentHash": "eda5eae55027135291efd5f9535935c730ad7bc48cccf1bb651014ae13253565"
+    },
+    {
+      "assetId": "T01-SKILL-QDRANT-SEARCH-QUALITY",
+      "ownerAgentId": "agent-task1-t01-general",
+      "sourceEvidenceIds": [
+        "source-t01-skill-qdrant-search-quality"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "qdrant-search-quality",
+      "version": "1.0.0",
+      "description": "Qdrant 搜索质量、过滤和排序评估流程。",
+      "useWhen": "主要问题是检索命中质量与排序。",
+      "doNotUseWhen": "问题是客户端接入或性能调优。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "diagnosis/SKILL.md",
+          "sha256": "41f144f5e022a5dc0e3d60b93bc868c91a181c6cd719a702362fca54083d29a4"
+        },
+        {
+          "path": "search-strategies/SKILL.md",
+          "sha256": "fcfeacf499615dbafe7cdbc22313b67a8492821f865944ff8520d2503745127f"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "21404b6887fe46e8acde2767cf6856de478240976f23111f6a8ffd010d362542"
+        }
+      ],
+      "contentHash": "7fb39ac63c9931bbdb1a4dcd55fe211be7f9844f09f936fb25b77e8329e58c91"
+    }
+  ]
+}

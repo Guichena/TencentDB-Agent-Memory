@@ -1,0 +1,627 @@
+{
+  "schema_version": "task1.luna_natural_negative_draft.v1",
+  "batch_id": "t01-natural-negative-batch-01",
+  "stage": "DS02",
+  "team_id": "T01",
+  "cases": [
+    {
+      "draft_case_id": "T01-DS02-NN-001",
+      "source_ids": [
+        "source-t01-current-ujson-impact",
+        "source-t01-knowledge-ujson-codegraph"
+      ],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "我在固定 ultrajson checkout 整理一页调用说明。摘要给出 JSONToObj 位于 src/ujson/python/JSONtoObj.c:163，JSON_DecodeObject 位于 src/ujson/lib/ultrajsondec.c:790。"
+        },
+        {
+          "role": "assistant",
+          "content": "这两个定义位置已经足够写局部说明；这里只记录符号、文件和行号，不延伸未给出的实现细节。"
+        },
+        {
+          "role": "user",
+          "content": "请把这两个已给位置整理成可直接贴进回归笔记的两行说明。"
+        }
+      ],
+      "query": "按‘符号 — 文件:行号’格式输出这两个位置。",
+      "why_current_context_is_sufficient": "所需的两个符号、完整相对路径和行号已直接出现在当前消息中，任务只是局部格式化，不依赖其他事实。",
+      "visible_distractor_ids_author_only": [
+        "cg-t01mypy1",
+        "wiki-t01rel01"
+      ],
+      "source_fact_map": [
+        {
+          "claim": "JSONToObj 节点位于 src/ujson/python/JSONtoObj.c:163，JSON_DecodeObject 节点位于 src/ujson/lib/ultrajsondec.c:790。",
+          "source_id": "source-t01-knowledge-ujson-codegraph",
+          "locator": "formal-dataset/fixtures/T01-retrieval-pressure.json#snapshots.cg-t01ujs01"
+        }
+      ],
+      "sol_review_questions": [
+        "是否属于纯粹的当前上下文格式化任务，且没有隐含额外工程事实？"
+      ]
+    },
+    {
+      "draft_case_id": "T01-DS02-NN-002",
+      "source_ids": [
+        "source-t01-current-ujson-impact",
+        "source-t01-knowledge-ujson-codegraph"
+      ],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "回归记录里有三个位置：JSONToObj 的定义在 src/ujson/python/JSONtoObj.c:163，JSON_DecodeObject 的定义在 src/ujson/lib/ultrajsondec.c:790，另外一条边记录在 src/ujson/python/JSONtoObj.c:247。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把定义位置和边的位置分栏，避免把调用点误写成被调用函数的定义点。"
+        },
+        {
+          "role": "user",
+          "content": "这页只需要解释位置类别，不需要补充代码行为或重新搜索仓库。"
+        },
+        {
+          "role": "assistant",
+          "content": "已知信息很完整：两个节点给出定义，边给出 JSONToObj 到 JSON_DecodeObject 的直接关系及其记录位置。"
+        },
+        {
+          "role": "user",
+          "content": "请给出一个三行的核对清单，分别标注两个定义和一个关系记录。"
+        },
+        {
+          "role": "assistant",
+          "content": "清单可以直接依据上面的三条记录生成，行号和文件名不需要从别处推断。"
+        }
+      ],
+      "query": "把这三个位置整理成‘定义’或‘关系记录’的核对清单。",
+      "why_current_context_is_sufficient": "当前上下文明确给出两个节点定义位置、一个直接关系及关系记录位置；只需重新编排为清单，无需外部资料。",
+      "visible_distractor_ids_author_only": [
+        "cg-t01mypy1",
+        "wiki-t01rel01"
+      ],
+      "source_fact_map": [
+        {
+          "claim": "JSONToObj 与 JSON_DecodeObject 的节点定义位置分别为 src/ujson/python/JSONtoObj.c:163 和 src/ujson/lib/ultrajsondec.c:790。",
+          "source_id": "source-t01-knowledge-ujson-codegraph",
+          "locator": "formal-dataset/fixtures/T01-retrieval-pressure.json#snapshots.cg-t01ujs01.nodes"
+        },
+        {
+          "claim": "JSONToObj 到 JSON_DecodeObject 的边记录在 src/ujson/python/JSONtoObj.c:247。",
+          "source_id": "source-t01-knowledge-ujson-codegraph",
+          "locator": "formal-dataset/fixtures/T01-retrieval-pressure.json#snapshots.cg-t01ujs01.edges"
+        }
+      ],
+      "sol_review_questions": [
+        "是否明确区分了节点定义和边记录，并且没有要求推断未提供的调用行为？"
+      ]
+    },
+    {
+      "draft_case_id": "T01-DS02-NN-003",
+      "source_ids": [
+        "source-t01-current-ujson-fuzzing",
+        "source-t01-current-ujson-impact",
+        "source-t01-knowledge-ujson-codegraph"
+      ],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "当前工作仍在 ultrajson 的固定 fuzzing checkout，提交为 8f23cce7929c49b9235d2f46ac9a403d051a9c95；我只准备一份局部变更说明。"
+        },
+        {
+          "role": "assistant",
+          "content": "范围保持在这个 checkout。不要把并行 Mypy 回归或 Python policy 讨论写进这份说明。"
+        },
+        {
+          "role": "user",
+          "content": "代码图摘要已经给出 ujsonMethods 在 src/ujson/python/ujson.c:63，JSONToObj 在 src/ujson/python/JSONtoObj.c:163，以及 JSON_DecodeObject 在 src/ujson/lib/ultrajsondec.c:790。"
+        },
+        {
+          "role": "assistant",
+          "content": "这些是当前可核对的三个节点位置；说明中保留原样即可，不需要为变量或函数添加未提供的职责描述。"
+        },
+        {
+          "role": "user",
+          "content": "另有一条关系记录在 src/ujson/python/JSONtoObj.c:247，方向是 JSONToObj 到 JSON_DecodeObject。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把四条记录按‘节点’和‘关系’分组，确保关系位置不会覆盖两个节点的定义位置。"
+        },
+        {
+          "role": "user",
+          "content": "请生成一段短的 Markdown 表格，供代码审查描述使用。"
+        },
+        {
+          "role": "assistant",
+          "content": "表格所需的名称、类型线索、路径和行号都已在上下文给出，可以直接完成。"
+        }
+      ],
+      "query": "生成只包含名称、类别、文件和行号的四行 Markdown 表格。",
+      "why_current_context_is_sufficient": "固定提交、三个节点、一个关系及其路径和行号均已明确给出；这是不改变内容的表格排版任务。",
+      "visible_distractor_ids_author_only": [
+        "cg-t01mypy1",
+        "wiki-t01rel01"
+      ],
+      "source_fact_map": [
+        {
+          "claim": "ultrajson 当前固定提交为 8f23cce7929c49b9235d2f46ac9a403d051a9c95。",
+          "source_id": "source-t01-current-ujson-fuzzing",
+          "locator": "SkillsBench tasks/setup-fuzzing-py/task.md + ultrajson pinned checkout"
+        },
+        {
+          "claim": "ujsonMethods、JSONToObj、JSON_DecodeObject 三个节点及其路径和行号见固定代码图。",
+          "source_id": "source-t01-knowledge-ujson-codegraph",
+          "locator": "formal-dataset/fixtures/T01-retrieval-pressure.json#snapshots.cg-t01ujs01.nodes"
+        },
+        {
+          "claim": "JSONToObj 到 JSON_DecodeObject 的关系记录位于 src/ujson/python/JSONtoObj.c:247。",
+          "source_id": "source-t01-knowledge-ujson-codegraph",
+          "locator": "formal-dataset/fixtures/T01-retrieval-pressure.json#snapshots.cg-t01ujs01.edges"
+        }
+      ],
+      "sol_review_questions": [
+        "表格任务是否只重排已给节点和关系事实，没有把表格请求变成代码图查询？"
+      ]
+    },
+    {
+      "draft_case_id": "T01-DS02-NN-004",
+      "source_ids": [
+        "source-t01-current-ujson-fuzzing",
+        "source-t01-knowledge-ujson-codegraph"
+      ],
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "我准备对 ultrajson 固定 checkout 做一次只读变更核对，仓库提交是 8f23cce7929c49b9235d2f46ac9a403d051a9c95。"
+        },
+        {
+          "role": "assistant",
+          "content": "只读核对的目标是确认当前工作树是否触及已审阅的解码相关文件，不修改文件内容。"
+        },
+        {
+          "role": "user",
+          "content": "冻结文件清单包含 src/ujson/python/JSONtoObj.c、src/ujson/python/ujson.c、tests/test_ujson.py、tests/fuzz.py、pyproject.toml 和 LICENSE.txt。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把检查范围限制在这六个相对路径，其他文件即使有变化也不纳入这次说明。"
+        },
+        {
+          "role": "user",
+          "content": "代码图还标出 JSONToObj 定义在 src/ujson/python/JSONtoObj.c:163，关系记录在同文件第 247 行。"
+        },
+        {
+          "role": "assistant",
+          "content": "这两行可以作为核对输出里的定位标签；它们不改变只读检查的范围。"
+        },
+        {
+          "role": "user",
+          "content": "我不需要重新判断哪个入口更重要，只想解释一条命令如何同时检查指定文件的工作树差异和空白错误。"
+        },
+        {
+          "role": "assistant",
+          "content": "这是命令语义说明：路径过滤负责限定文件，空白检查负责报告格式问题，两者都不会写入 checkout。"
+        },
+        {
+          "role": "user",
+          "content": "输出中不要混入 Mypy 并行工作区、策略说明或任何未列入冻结文件清单的路径。"
+        },
+        {
+          "role": "assistant",
+          "content": "约束已经明确，剩下只需给出一个适合这六个路径的检查命令和一句解释。"
+        },
+        {
+          "role": "user",
+          "content": "命令本身可以使用常见的 Git 检查选项，关键是保持路径列表原样。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前上下文包含 checkout 标识、完整路径清单和检查目标；不需要额外仓库事实。"
+        }
+      ],
+      "query": "给出一条只针对这六个文件的只读 Git 检查命令，并简要解释它如何同时覆盖差异和空白检查。",
+      "why_current_context_is_sufficient": "命令的工作区、固定提交、六个允许路径以及‘差异加空白检查’的目标都已明确；这是常规命令组合和语义解释，不依赖隐藏内容。",
+      "visible_distractor_ids_author_only": [
+        "cg-t01mypy1",
+        "wiki-t01rel01"
+      ],
+      "source_fact_map": [
+        {
+          "claim": "ultrajson 固定提交为 8f23cce7929c49b9235d2f46ac9a403d051a9c95。",
+          "source_id": "source-t01-current-ujson-fuzzing",
+          "locator": "SkillsBench tasks/setup-fuzzing-py/task.md + ultrajson pinned checkout"
+        },
+        {
+          "claim": "冻结审阅文件包括 src/ujson/python/JSONtoObj.c、src/ujson/python/ujson.c、tests/test_ujson.py、tests/fuzz.py、pyproject.toml 和 LICENSE.txt。",
+          "source_id": "source-t01-current-ujson-fuzzing",
+          "locator": "formal-dataset/provenance/T01.json#pinned_workspaces.ujson.reviewed_files"
+        },
+        {
+          "claim": "JSONToObj 定义和关系记录分别位于 src/ujson/python/JSONtoObj.c:163 与 :247。",
+          "source_id": "source-t01-knowledge-ujson-codegraph",
+          "locator": "formal-dataset/fixtures/T01-retrieval-pressure.json#snapshots.cg-t01ujs01"
+        }
+      ],
+      "sol_review_questions": [
+        "长上下文是否仍是只读命令解释，且没有暗含需要读取其他资源的理由？"
+      ]
+    },
+    {
+      "draft_case_id": "T01-DS02-NN-005",
+      "source_ids": [
+        "source-t01-current-ujson-impact",
+        "source-t01-knowledge-ujson-codegraph"
+      ],
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "我要给一个很小的回归检查写测试设计，当前摘要明确给出 JSONToObj 到 JSON_DecodeObject 的关系，记录位置是 src/ujson/python/JSONtoObj.c:247。"
+        },
+        {
+          "role": "assistant",
+          "content": "测试设计只验证摘要中的关系记录，不尝试从它推导更多运行时行为。"
+        },
+        {
+          "role": "user",
+          "content": "两个定义节点也已给出：JSONToObj 在 src/ujson/python/JSONtoObj.c:163，JSON_DecodeObject 在 src/ujson/lib/ultrajsondec.c:790。"
+        },
+        {
+          "role": "assistant",
+          "content": "因此测试笔记可以同时保留‘关系位置’和‘两端定义位置’，避免断言对象混淆。"
+        },
+        {
+          "role": "user",
+          "content": "我会把断言写成纯数据核对：关系的 from/to 名称和关系文件行号必须与摘要一致。"
+        },
+        {
+          "role": "assistant",
+          "content": "这条断言不需要执行编译或访问外部服务；它只检查已给的结构化记录。"
+        },
+        {
+          "role": "user",
+          "content": "测试用例名称要能看出它检查的是关系记录，而不是两个定义节点。"
+        },
+        {
+          "role": "assistant",
+          "content": "可以使用描述关系方向和记录位置的名称，断言内容仍保持最小。"
+        }
+      ],
+      "query": "给出这个纯数据核对测试的用例名称和三项断言内容，不要增加运行时假设。",
+      "why_current_context_is_sufficient": "关系方向、关系行号、两个端点名称及定义位置都在当前上下文中；请求只是据此设计最小断言。",
+      "visible_distractor_ids_author_only": [
+        "cg-t01mypy1",
+        "wiki-t01rel01"
+      ],
+      "source_fact_map": [
+        {
+          "claim": "固定图记录 JSONToObj 到 JSON_DecodeObject 的关系，位置为 src/ujson/python/JSONtoObj.c:247。",
+          "source_id": "source-t01-knowledge-ujson-codegraph",
+          "locator": "formal-dataset/fixtures/T01-retrieval-pressure.json#snapshots.cg-t01ujs01.edges"
+        },
+        {
+          "claim": "关系两端的定义节点分别在 src/ujson/python/JSONtoObj.c:163 与 src/ujson/lib/ultrajsondec.c:790。",
+          "source_id": "source-t01-knowledge-ujson-codegraph",
+          "locator": "formal-dataset/fixtures/T01-retrieval-pressure.json#snapshots.cg-t01ujs01.nodes"
+        }
+      ],
+      "sol_review_questions": [
+        "测试设计是否只验证当前已给的结构化关系，不要求额外代码、调用或历史事实？"
+      ]
+    },
+    {
+      "draft_case_id": "T01-DS02-NN-006",
+      "source_ids": [
+        "source-t01-history-python__mypy-16869",
+        "source-t01-knowledge-mypy-codegraph"
+      ],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Mypy 的 stub 生成问题已经定位到 AliasPrinter 处理带星号展开的别名；评审材料给出了对应的访问器名称 visit_star_expr。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前任务只是给这个局部处理分支补一条 TODO，提醒实现者保留星号表达式的专门处理。"
+        },
+        {
+          "role": "user",
+          "content": "固定代码图中 AliasPrinter 位于 mypy/stubgen.py:364，文件位置已经明确。"
+        },
+        {
+          "role": "assistant",
+          "content": "所需局部事实已在上下文里：类名、文件行号和访问器名都齐全，不需要扩大到其他 AST 节点。"
+        }
+      ],
+      "query": "给出应放在 `mypy/stubgen.py` 中的简短 TODO 文案，明确关联 `AliasPrinter.visit_star_expr`。",
+      "why_current_context_is_sufficient": "类、文件、行号和方法名均已提供，任务只生成局部注释文字，不需补充实现或查找其他位置。",
+      "visible_distractor_ids_author_only": [
+        "cg-t01ujs01",
+        "wiki-t01rel01"
+      ],
+      "source_fact_map": [
+        {
+          "claim": "AliasPrinter 位于 mypy/stubgen.py:364。",
+          "source_id": "source-t01-knowledge-mypy-codegraph",
+          "locator": "formal-dataset/fixtures/T01-retrieval-pressure.json#snapshots.cg-t01mypy1.nodes"
+        },
+        {
+          "claim": "评审把 AliasPrinter.visit_star_expr 作为星号表达式别名渲染的局部处理分支。",
+          "source_id": "source-t01-history-python__mypy-16869",
+          "locator": "formal-worlds/W01/reviews/L0-ASSET-CANDIDATE-REVIEW.md#evidence-backed-atomic-l1-candidates"
+        }
+      ],
+      "sol_review_questions": [
+        "是否保持为局部 TODO 文案生成，而没有暗示未给出的实现细节？"
+      ]
+    },
+    {
+      "draft_case_id": "T01-DS02-NN-007",
+      "source_ids": [
+        "source-t01-history-python__mypy-11567",
+        "source-t01-knowledge-mypy-codegraph"
+      ],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "增量 AST 快照的最小示例已经给出：snapshot_definition 处理 ParamSpecExpr，upper_bound 可能是 None。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前片段使用 `snapshot_optional_type(node.upper_bound)`，所以缺少 bound 时应保留可选值语义，而不是对 None 调用普通类型快照。"
+        },
+        {
+          "role": "user",
+          "content": "相关函数在固定图中是 mypy/server/astdiff.py:227；上下文也给出了这个局部替换的意图。"
+        },
+        {
+          "role": "assistant",
+          "content": "这已经足够解释报错：问题来自把 None 当成必须拥有 accept 方法的类型对象处理。"
+        },
+        {
+          "role": "user",
+          "content": "请只解释为什么这里需要 optional helper，不要提出新的序列化格式。"
+        },
+        {
+          "role": "assistant",
+          "content": "解释范围会限定在给出的 ParamSpecExpr 分支、upper_bound 的 None 情况和现有 helper 的职责。"
+        }
+      ],
+      "query": "用两三句话解释该报错的直接原因，以及 `snapshot_optional_type` 在这里解决什么问题。",
+      "why_current_context_is_sufficient": "报错条件、None 的字段、函数位置和使用的 helper 都已在上下文中明确；这是基于给定片段的局部解释。",
+      "visible_distractor_ids_author_only": [
+        "cg-t01ujs01",
+        "wiki-t01rel01"
+      ],
+      "source_fact_map": [
+        {
+          "claim": "snapshot_definition 位于 mypy/server/astdiff.py:227。",
+          "source_id": "source-t01-knowledge-mypy-codegraph",
+          "locator": "formal-dataset/fixtures/T01-retrieval-pressure.json#snapshots.cg-t01mypy1.nodes"
+        },
+        {
+          "claim": "ParamSpecExpr 的 upper_bound 可为 None，使用 snapshot_optional_type 后可生成包含 None 的快照结果。",
+          "source_id": "source-t01-history-python__mypy-11567",
+          "locator": "formal-worlds/W01/drafts/l0-sessions.json#session=W01-L0-12"
+        }
+      ],
+      "sol_review_questions": [
+        "解释是否严格停留在给定 None 报错和 optional helper 的局部语义？"
+      ]
+    },
+    {
+      "draft_case_id": "T01-DS02-NN-008",
+      "source_ids": [
+        "source-t01-history-python__mypy-16869",
+        "source-t01-knowledge-mypy-codegraph"
+      ],
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "我准备为 stub 生成的星号表达式别名增加一个局部回归测试。已知处理类是 AliasPrinter，具体分支是 visit_star_expr。"
+        },
+        {
+          "role": "assistant",
+          "content": "测试只覆盖这个 AST 形态的文本生成，不覆盖增量快照或诊断格式化。"
+        },
+        {
+          "role": "user",
+          "content": "固定审阅材料把实现位置关联到 mypy/stubgen.py，并把 focused fixtures 定位在 mypy/test/teststubgen.py 和 test-data/unit/stubgen.test。"
+        },
+        {
+          "role": "assistant",
+          "content": "测试文件和 fixture 文件都已经确定；用例应验证星号展开别名经过 AliasPrinter.visit_star_expr 后能生成预期的 stub 文本。"
+        },
+        {
+          "role": "user",
+          "content": "当前不需要重新实现 visitor，也不需要添加新的依赖；我只想要测试改动的最小分工建议。"
+        },
+        {
+          "role": "assistant",
+          "content": "可以把 Python 测试入口和 unit fixture 的职责分开列出，并让两者都围绕同一个星号表达式别名案例。"
+        },
+        {
+          "role": "user",
+          "content": "请给出三点测试设计：输入形态、断言关注点和建议放置的文件。"
+        },
+        {
+          "role": "assistant",
+          "content": "这些设计所需的符号、分支和两个测试定位都已在上下文里，不需要额外仓库信息。"
+        }
+      ],
+      "query": "给出三点最小测试设计，覆盖输入形态、断言关注点和文件分工。",
+      "why_current_context_is_sufficient": "星号表达式别名、AliasPrinter.visit_star_expr、实现文件和两个测试定位均已给出；请求只是据此拆分测试设计。",
+      "visible_distractor_ids_author_only": [
+        "cg-t01ujs01",
+        "wiki-t01rel01"
+      ],
+      "source_fact_map": [
+        {
+          "claim": "AliasPrinter 的星号表达式别名分支为 visit_star_expr，相关实现文件为 mypy/stubgen.py。",
+          "source_id": "source-t01-history-python__mypy-16869",
+          "locator": "formal-worlds/W01/reviews/L0-ASSET-CANDIDATE-REVIEW.md#evidence-backed-atomic-l1-candidates"
+        },
+        {
+          "claim": "固定 Mypy 代码图将 AliasPrinter 节点定位在 mypy/stubgen.py:364。",
+          "source_id": "source-t01-knowledge-mypy-codegraph",
+          "locator": "formal-dataset/fixtures/T01-retrieval-pressure.json#snapshots.cg-t01mypy1.nodes"
+        },
+        {
+          "claim": "对应 focused fixtures 位于 mypy/test/teststubgen.py 和 test-data/unit/stubgen.test。",
+          "source_id": "source-t01-history-python__mypy-16869",
+          "locator": "formal-worlds/W01/reviews/L0-ASSET-CANDIDATE-REVIEW.md#evidence-backed-atomic-l1-candidates"
+        }
+      ],
+      "sol_review_questions": [
+        "测试设计是否保持在给定 stubgen 分支和已给测试文件，不引入快照或诊断线索？"
+      ]
+    },
+    {
+      "draft_case_id": "T01-DS02-NN-009",
+      "source_ids": [
+        "source-t01-history-python__mypy-11567",
+        "source-t01-history-python__mypy-16869",
+        "source-t01-knowledge-mypy-codegraph"
+      ],
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Mypy 并行回归里有两条已经分开的局部线：stub 生成的 AliasPrinter.visit_star_expr，以及增量快照的 ParamSpecExpr 分支。"
+        },
+        {
+          "role": "assistant",
+          "content": "第一条面向别名文本生成，第二条面向 AST 快照表示；我会在变更说明中保持两个子系统的边界。"
+        },
+        {
+          "role": "user",
+          "content": "代码图给出 AliasPrinter 在 mypy/stubgen.py:364，snapshot_definition 在 mypy/server/astdiff.py:227。"
+        },
+        {
+          "role": "assistant",
+          "content": "两个文件和行号已经明确，可以直接写局部重构计划，不需要猜测其他 visitor 或 server 分派。"
+        },
+        {
+          "role": "user",
+          "content": "快照线的给定片段还说明 ParamSpecExpr 的 upper_bound 可能为 None，并应使用 snapshot_optional_type。"
+        },
+        {
+          "role": "assistant",
+          "content": "这条约束只属于 snapshot_definition 分支；不能把可选 bound 的处理搬到 AliasPrinter。"
+        },
+        {
+          "role": "user",
+          "content": "stub 线则只需要保留星号表达式别名的专门访问器和对应 focused fixture。"
+        },
+        {
+          "role": "assistant",
+          "content": "两条线的实现文件、失败边界和测试定位都足够写成两个独立的小节。"
+        },
+        {
+          "role": "user",
+          "content": "不要扩大成通用 AST 框架重构，也不要改变现有快照格式；只给出提交拆分建议。"
+        },
+        {
+          "role": "assistant",
+          "content": "提交可以按文本生成与快照表示分开，每个提交只触及上下文中已经明确的局部文件和行为。"
+        },
+        {
+          "role": "user",
+          "content": "建议里要包含每个提交的目标文件、局部断言和不应触及的另一条线。"
+        },
+        {
+          "role": "assistant",
+          "content": "目标文件、可选 bound 约束、visitor 分支和相互排除项都已经列在当前对话中。"
+        }
+      ],
+      "query": "给出两个独立小提交的局部重构建议：每个提交列目标文件、断言焦点和明确不触及的另一条线。",
+      "why_current_context_is_sufficient": "两条线的符号、文件、行号、局部约束、测试关注点和相互排除项都已完整给出；这是基于现有事实的提交拆分。",
+      "visible_distractor_ids_author_only": [
+        "cg-t01ujs01",
+        "wiki-t01rel01"
+      ],
+      "source_fact_map": [
+        {
+          "claim": "AliasPrinter 位于 mypy/stubgen.py:364，snapshot_definition 位于 mypy/server/astdiff.py:227。",
+          "source_id": "source-t01-knowledge-mypy-codegraph",
+          "locator": "formal-dataset/fixtures/T01-retrieval-pressure.json#snapshots.cg-t01mypy1.nodes"
+        },
+        {
+          "claim": "stubgen 候选是 AliasPrinter.visit_star_expr，snapshot 候选是 ParamSpecExpr 表示且 upper_bound 使用 snapshot_optional_type。",
+          "source_id": "source-t01-history-python__mypy-16869",
+          "locator": "formal-worlds/W01/reviews/L0-ASSET-CANDIDATE-REVIEW.md#evidence-backed-atomic-l1-candidates"
+        },
+        {
+          "claim": "ParamSpecExpr 的可选 upper_bound 处理片段来自 snapshot_definition 回放。",
+          "source_id": "source-t01-history-python__mypy-11567",
+          "locator": "formal-worlds/W01/drafts/l0-sessions.json#session=W01-L0-12"
+        }
+      ],
+      "sol_review_questions": [
+        "长案例是否只是基于上下文做局部提交拆分，没有暗含历史检索或未给出的重构范围？"
+      ]
+    },
+    {
+      "draft_case_id": "T01-DS02-NN-010",
+      "source_ids": [
+        "source-t01-history-python__mypy-15184",
+        "source-t01-knowledge-mypy-codegraph"
+      ],
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Mypy 诊断格式化这条线的 focused run 已经产生了一个预期的类型错误，但保留下来的输出没有显示歧义名称的具体渲染。"
+        },
+        {
+          "role": "assistant",
+          "content": "这个输出能证明测试路径运行到了类型错误，却不能证明名称歧义的格式是否符合目标。"
+        },
+        {
+          "role": "user",
+          "content": "评审把相关代码线索放在 mypy/messages.py，把固定测试定位在 test-data/unit/check-assert-type-fail.test。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前已有文件和测试定位；下一步应围绕歧义名称的期望文本设计一个更窄的断言，而不是把普通类型错误当成通过证据。"
+        },
+        {
+          "role": "user",
+          "content": "请解释现有输出为什么不足，并给出这个 focused test 应补充的断言关注点。"
+        },
+        {
+          "role": "assistant",
+          "content": "所需的失败边界、代码文件和测试文件都已经写在当前上下文中，可以直接做测试设计。"
+        }
+      ],
+      "query": "根据给定输出，说明为什么还不能确认歧义名称格式化，并提出一个最小的测试断言关注点。",
+      "why_current_context_is_sufficient": "当前上下文直接给出测试输出的局限、相关实现文件和固定测试定位；请求是解释该证据不足并设计一个局部断言。",
+      "visible_distractor_ids_author_only": [
+        "cg-t01ujs01",
+        "wiki-t01rel01"
+      ],
+      "source_fact_map": [
+        {
+          "claim": "该回放的最终运行输出了预期类型错误，但没有证明歧义名称的目标渲染。",
+          "source_id": "source-t01-history-python__mypy-15184",
+          "locator": "formal-worlds/W01/reviews/L0-ASSET-CANDIDATE-REVIEW.md#per-session-continuity-audit"
+        },
+        {
+          "claim": "相关实现线索为 mypy/messages.py，固定测试定位为 test-data/unit/check-assert-type-fail.test。",
+          "source_id": "source-t01-history-python__mypy-15184",
+          "locator": "formal-worlds/W01/reviews/L0-ASSET-CANDIDATE-REVIEW.md#evidence-backed-atomic-l1-candidates"
+        }
+      ],
+      "sol_review_questions": [
+        "是否明确区分‘出现预期类型错误’与‘歧义名称渲染正确’，并把测试建议限制在已给 fixture？"
+      ]
+    }
+  ]
+}

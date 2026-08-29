@@ -1,0 +1,225 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t01-knowledge-batch-01",
+  "stage": "DS02",
+  "team_id": "T01",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T01-DS02-KNOWLEDGE-006",
+      "source_ids": [
+        "source-t01-current-ujson-fuzzing",
+        "source-t01-current-mypy-regression",
+        "source-t01-knowledge-mypy-codegraph"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "今天的安全加固主线仍在 ultrajson 的 fuzzing workspace，固定提交不变；mypy 的回归排查是同组并行工作区，先不要把两条线的结论混在一起。"
+        },
+        {
+          "role": "assistant",
+          "content": "主线边界已记下。并行回归这边只处理 Mypy 的 AST 相关现象，当前不改 ultrajson 的解码路径。"
+        },
+        {
+          "role": "user",
+          "content": "Mypy 这条线现在聚焦 stub 生成里的别名处理：日志提到了 AliasPrinter 和带星号展开的表达式，但只显示了 visitor 分派失败的现象。"
+        },
+        {
+          "role": "assistant",
+          "content": "我把它和增量服务里的 snapshot_definition 线分开记录了；一个是生成文本阶段的节点处理，另一个是增量比较阶段的快照处理。"
+        },
+        {
+          "role": "user",
+          "content": "刚才我一度想直接按本地 checkout 的目录结构猜位置，后来发现整理提交让附近的 visitor 很容易混淆，猜测不适合写进回归记录。"
+        },
+        {
+          "role": "assistant",
+          "content": "方向调整为核对固定的 Mypy 符号图，只确认已给符号的真实节点位置；不从相似的 snapshot 或诊断输出问题推导额外结论。"
+        },
+        {
+          "role": "user",
+          "content": "已完成的是：确认问题属于并行 Mypy 回归、排除了 ultrajson 主线，也排除了 snapshot_definition 这个相邻符号。"
+        },
+        {
+          "role": "assistant",
+          "content": "现在仍缺 AliasPrinter 在固定符号图中的准确源文件和行号。当前上下文只有符号名和问题类型，不能据此可靠写出位置。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请先给出 AliasPrinter 在当前固定 Mypy 代码中的准确源文件和行号，供我核对回归记录；不要延伸到另一条 snapshot 线。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充的日志仍只有 AliasPrinter 这个符号名和通用的分派失败，没有提供固定代码图中的源文件或行号；请保留这个位置缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "固定 mypy code graph 中已给符号 AliasPrinter 的精确源文件和行号尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": [
+            "cg-t01mypy1"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "knowledge_tools_list",
+              "knowledge_tools_call"
+            ]
+          ],
+          "stop_after_candidate": "通过固定 mypy 代码图的节点查询返回 AliasPrinter 位于 mypy/stubgen.py:364 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已经补齐唯一缺口：固定代码图显示 AliasPrinter 位于 mypy/stubgen.py:364；snapshot_definition 属于另一条增量快照线。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已经补齐 AliasPrinter 的固定源文件和行号，并明确排除了 snapshot_definition；无需再查资源。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "cg-t01ujs01",
+        "wiki-t01rel01"
+      ],
+      "controlled_delta_note": "Positive 只保留 AliasPrinter 精确位置缺口；Negative 只补齐 mypy/stubgen.py:364，其他任务身份、并行工作区、符号排除项和 query 完全不变。",
+      "source_fact_map": [
+        {
+          "claim": "当前任务包含 ultrajson fuzzing 主线，且其固定仓库提交为 8f23cce7929c49b9235d2f46ac9a403d051a9c95。",
+          "source_id": "source-t01-current-ujson-fuzzing",
+          "locator": "SkillsBench tasks/setup-fuzzing-py/task.md + ultrajson pinned checkout"
+        },
+        {
+          "claim": "并行 Mypy 回归任务以 python/mypy 为当前锚点。",
+          "source_id": "source-t01-current-mypy-regression",
+          "locator": "formal-worlds/W01/drafts/w01-b-fuzzing-context-pairs.json#pairs=W01-B-PAIR-003,W01-B-PAIR-004"
+        },
+        {
+          "claim": "固定 Mypy 代码图包含 AliasPrinter 节点，文件为 mypy/stubgen.py，行号为 364。",
+          "source_id": "source-t01-knowledge-mypy-codegraph",
+          "locator": "formal-dataset/fixtures/T01-retrieval-pressure.json#snapshots.cg-t01mypy1"
+        },
+        {
+          "claim": "固定 Mypy 代码图另包含 snapshot_definition 节点，文件为 mypy/server/astdiff.py，行号为 227。",
+          "source_id": "source-t01-knowledge-mypy-codegraph",
+          "locator": "formal-dataset/fixtures/T01-retrieval-pressure.json#snapshots.cg-t01mypy1"
+        }
+      ],
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为 AliasPrinter 的固定 file/line，而没有隐含方法体、调用边或修复结论？",
+        "Negative 是否只增加 mypy/stubgen.py:364，并保持 snapshot_definition 的排除项、工作区和 query 不变？",
+        "mypy 工作区线索是否足以在三个 ready 资源中唯一选择固定 Mypy 代码图？"
+      ]
+    },
+    {
+      "draft_pair_id": "T01-DS02-KNOWLEDGE-007",
+      "source_ids": [
+        "source-t01-current-ujson-fuzzing",
+        "source-t01-current-mypy-regression",
+        "source-t01-knowledge-reliability-wiki"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "安全加固主线仍在 ultrajson 的 fuzzing workspace；同组的 Mypy 回归只是并行工作区。现在我要整理一条历史 replay 观察，决定它能否作为后续工程记录的依据。"
+        },
+        {
+          "role": "assistant",
+          "content": "我先保持两个工作区分离。当前材料能说明各自的任务背景，但不能把某次 replay 的成功标签直接当成已核实的工程事实。"
+        },
+        {
+          "role": "user",
+          "content": "我查到的评审材料只保留了三条目前有证据支撑的窄事实：一个事件模式的 presence 边界，以及两条 Mypy AST 表示相关候选；其余回放没有完成验证。"
+        },
+        {
+          "role": "assistant",
+          "content": "这让问题从‘这段回放看起来成功吗’改成‘这条事实的适用边界是什么，以及什么证据才足以支撑它’。不要把失败的临时尝试概括成通用规则。"
+        },
+        {
+          "role": "user",
+          "content": "一开始我想按任务数据集的成功标记收录更多结论，后来发现评审明确排除了未完成验证、临时脚本和无法复现的路径。"
+        },
+        {
+          "role": "assistant",
+          "content": "方向已调整：只讨论评审政策对 replay 事实的晋级边界，不写新的代码结论，也不把不同服务或不同 Mypy 子系统合并。"
+        },
+        {
+          "role": "user",
+          "content": "已完成的是区分当前工作区、历史回放和候选事实；还没有把这份 Python reliability review 中的适用条件抄入交接摘要。"
+        },
+        {
+          "role": "assistant",
+          "content": "仍缺的是政策对‘可作为原子证据的事实’所要求的最低佐证和边界限制。仅凭三条候选的名称，无法安全判断新的 replay 观察是否适用。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请先确认这份 Python reliability review 对 replay 事实的适用边界和最低佐证要求，再决定这条观察是否值得记录。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充材料仍只列出三条候选事实及其大致主题，没有给出原子事实所需的佐证组合或应避免扩大的边界；请保留这个政策缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "已冻结 Python reliability policy 页面中关于 replay 事实适用边界、原子 L1 最低佐证与范围限制的具体条款尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": [
+            "wiki-t01rel01"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "knowledge_tools_list",
+              "knowledge_tools_call"
+            ]
+          ],
+          "stop_after_candidate": "通过固定 Python reliability policy 页面读取适用边界与最低佐证条款后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已经补齐唯一缺口：可作为原子证据的事实必须由 replay 与源代码/基准提交及固定测试定位相互佐证，并保持在命名的具体事实边界内；两条独立清理会话且事实和失败边界相同，才可另行考虑更高层级归纳。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已给出政策所需的源代码/基准提交、固定测试定位、具体事实边界和两会话限制；无需再次读取页面。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "cg-t01ujs01",
+        "cg-t01mypy1"
+      ],
+      "controlled_delta_note": "Positive 只保留 Python reliability policy 的适用条件缺口；Negative 只补最低佐证、具体事实边界和两会话限制，其他工作区、候选概况和 query 完全不变。",
+      "source_fact_map": [
+        {
+          "claim": "当前安全加固任务的主线是 ultrajson fuzzing，另有独立的 Mypy 回归锚点。",
+          "source_id": "source-t01-current-ujson-fuzzing",
+          "locator": "SkillsBench tasks/setup-fuzzing-py/task.md + ultrajson pinned checkout"
+        },
+        {
+          "claim": "评审只把 W01-L0-01、W01-L0-11 和 W01-L0-12 视为目前有证据支撑的窄 L1 候选。",
+          "source_id": "source-t01-knowledge-reliability-wiki",
+          "locator": "formal-worlds/W01/reviews/L0-ASSET-CANDIDATE-REVIEW.md#evidence-backed-atomic-l1-candidates"
+        },
+        {
+          "claim": "评审要求原子事实与源代码/基准提交及固定测试定位结合，并限制在具体事实边界；更高层级归纳需要两条独立清理会话及相同事实和失败边界。",
+          "source_id": "source-t01-knowledge-reliability-wiki",
+          "locator": "formal-worlds/W01/reviews/L0-ASSET-CANDIDATE-REVIEW.md#evidence-backed-atomic-l1-candidates; #two-session-l2--skill-audit"
+        },
+        {
+          "claim": "冻结 policy 页面标题为 Python reliability evidence promotion policy，摘要涵盖 replay evidence 与 atomic memory、scene、profile、Skill 的晋级边界。",
+          "source_id": "source-t01-knowledge-reliability-wiki",
+          "locator": "formal-dataset/fixtures/T01-retrieval-pressure.json#snapshots.wiki-t01rel01"
+        }
+      ],
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否确实是 policy 页面中的适用条件，而没有把候选事实正文或最终晋级判断泄露到 provider-visible 文本？",
+        "Negative 是否只补入评审明确写出的最低佐证、具体事实边界和两独立会话限制？",
+        "‘policy/replay 适用条件’这一自然线索是否足以在三个 ready 资源中唯一选择 reliability wiki，而不误选两个代码图？"
+      ]
+    }
+  ]
+}

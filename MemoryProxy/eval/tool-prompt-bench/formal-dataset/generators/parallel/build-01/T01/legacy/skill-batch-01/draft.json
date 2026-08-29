@@ -1,0 +1,121 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t01-skill-batch-01",
+  "stage": "DS02",
+  "team_id": "T01",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T01-SKILL-B01-P001",
+      "source_ids": ["source-t01-current-mypy-regression", "source-t01-current-ujson-fuzzing", "source-lock-open-skills-target-candidates", "source-lock-license-manifest"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"我在 T01 的 Python 工程流里跟进 mypy regression，同时维护已固定版本的 ultrajson fuzzing 准备工作。现在有一份 Python 构建失败快照需要先判断怎么处理，不直接改代码。"},
+        {"role":"assistant","content":"我已确认工作区、仓库边界和当前回归背景；这次先处理失败定位与测试准备，后续才考虑实现变更。"},
+        {"role":"user","content":"一开始我想直接改最近失败的测试，但没有先把失败原因、测试范围和通过条件分开。"},
+        {"role":"assistant","content":"方向调整为先审计失败原因，再决定最小测试动作；这样不会把 mypy 回归和 ultrajson 的 fuzzing 准备混成一个修复。"},
+        {"role":"user","content":"已完成的是固定失败快照、相关 Python 模块和现有测试入口的整理；当前没有可靠的失败原因结论。"},
+        {"role":"assistant","content":"我还没有一份可复用的 Python 构建失败处理流程，尤其是不知道应该怎样记录原因、形成补丁并重新确认通过。"},
+        {"role":"user","content":"请先帮我确定处理这类失败快照时的工作顺序，暂时不要写修复代码。"},
+        {"role":"assistant","content":"在继续之前，需要补齐那份流程的实际步骤和输出清单。"}
+      ],
+      "changed_message_index": 8,
+      "query":"针对这份失败快照，请先给出可执行的下一步和应留下的输出，暂时不要修改代码。",
+      "positive": {"delta_message":{"role":"user","content":"我还缺这套失败处理流程的具体步骤和输出清单。请先找到适用的既有流程材料并概述它，停在可以开始审计的位置。"},"private_proposal":{"unique_information_gap":"缺少对 Python 构建/测试失败进行原因分析、记录 failed_reasons.txt、生成 unified diff、应用修复并重跑通过构建的完整流程内容。","route":"skill","target_asset_ids":["candidate-testing-python"],"allowed_sequence_candidates":[["skill_search","skill_view_by_id"]],"stop_after_candidate":"查看流程材料并概述其审计起点后停止。"}},
+      "negative": {"delta_message":{"role":"user","content":"我把缺失流程补全：先分析失败构建快照并把原因写入 failed_reasons.txt；再生成标准 unified diff，应用该修复，最后重跑构建并确认通过。请据此只给出下一步，不修改代码。"},"private_proposal":{"route":"none","why_current_context_is_sufficient":"当前消息已给出原因记录、unified diff、应用修复和重跑通过构建的完整顺序，足以回答 query。"}},
+      "visible_distractor_ids_author_only":["candidate-pytest-coverage","candidate-python-parallelization"],
+      "controlled_delta_note":"Positive 缺完整失败处理步骤；Negative 仅补齐四步流程及其输出，其他上下文和 query 不变。",
+      "source_fact_map":[
+        {"claim":"T01 当前工程背景包含 mypy regression。","source_id":"source-t01-current-mypy-regression","locator":"formal-worlds/W01/drafts/w01-b-fuzzing-context-pairs.json#pairs=W01-B-PAIR-003,W01-B-PAIR-004"},
+        {"claim":"testing-python 候选的任务与 Skill 路径和 Git blob 已锁定。","source_id":"source-lock-open-skills-target-candidates","locator":"source-locks/open-skills/target-candidates.json#targets[W01-A-testing-python]"},
+        {"claim":"候选任务给出的流程包含 failed_reasons.txt、unified diff、应用修复和 passing build。","source_id":"source-lock-open-skills-target-candidates","locator":"source-locks/open-skills/target-candidates.json#targets[W01-A-testing-python].paired_negative_delta"}
+      ],
+      "sol_review_questions":["确认真实同 Team search 首选 proposed testing-python，且不在 proposed listing。","确认 Negative 的四步内容足以使该 case 无需读取资产。"]
+    },
+    {
+      "draft_pair_id":"T01-SKILL-B01-P002",
+      "source_ids":["source-t01-current-mypy-regression","source-t01-current-ujson-fuzzing","source-lock-open-skills-target-candidates","source-lock-license-manifest"],
+      "difficulty":"hard",
+      "context_bucket":"medium_6_to_10",
+      "shared_context_messages":[
+        {"role":"user","content":"我在 T01 工程流中整理一个 Python 文本检索实验，同时保留 mypy regression 和 ultrajson fuzzing 的固定上下文作为同一工作区的背景。现在先处理性能准备，不开始重构。"},
+        {"role":"assistant","content":"已完成工作区与输入数据边界核对，也确认当前请求只涉及检索阶段的执行策略。"},
+        {"role":"user","content":"最初打算逐条处理所有文本，但预计数据量上来后会拖慢回归检查。"},
+        {"role":"assistant","content":"方向调整为先确定适合当前 Python 检索任务的并行执行组织，再决定代码改动范围。"},
+        {"role":"user","content":"候选输入和串行流程已经整理完；现在没有并行化步骤的可复用清单。"},
+        {"role":"assistant","content":"已完成任务拆分，但仍缺少从串行检索转到并行执行时应遵循的具体流程和边界。"},
+        {"role":"user","content":"请先说明应该怎样组织这一步，暂时不要写并行实现。"},
+        {"role":"assistant","content":"在写实现前，需要补齐并行化流程材料的实际步骤。"}
+      ],
+      "changed_message_index":8,
+      "query":"针对当前 Python 文本检索实验，请先说明并行执行的下一步组织方式，暂时不要修改代码。",
+      "positive":{"delta_message":{"role":"user","content":"我缺少并行化流程的实际步骤。请先找到适用的既有工程材料，概述如何组织这类 Python 检索任务，停在可以开始实现的位置。"},"private_proposal":{"unique_information_gap":"缺少针对 parallel TF-IDF search 的 Python 并行化流程正文。","route":"skill","target_asset_ids":["candidate-python-parallelization"],"allowed_sequence_candidates":[["skill_search","skill_view_by_id"]],"stop_after_candidate":"查看并行化流程材料并概述起点后停止。"}},
+      "negative":{"delta_message":{"role":"user","content":"我把缺失清单补上：先把输入切成独立检索工作单元；再用 multiprocessing 组织 worker，收集各 worker 的结果并合并为统一排序结果；最后只做本地格式检查，不改变检索语义。请据此说明下一步，仍不修改代码。"},"private_proposal":{"route":"none","why_current_context_is_sufficient":"新增消息已提供切分、worker、结果合并和收尾检查的完整并行化顺序，足以回答 query。"}},
+      "visible_distractor_ids_author_only":["candidate-testing-python","candidate-pytest-coverage"],
+      "controlled_delta_note":"Positive 缺并行化步骤；Negative 仅补切分、worker、合并和检查清单。",
+      "source_fact_map":[
+        {"claim":"T01 工作区背景包含 Python 工程回归与 fuzzing 流程。","source_id":"source-t01-current-ujson-fuzzing","locator":"SkillsBench tasks/setup-fuzzing-py/task.md + ultrajson pinned checkout"},
+        {"claim":"候选任务是 parallel-tfidf-search，目标流程路径和 Git blob 已锁定。","source_id":"source-lock-open-skills-target-candidates","locator":"source-locks/open-skills/target-candidates.json#targets[W02-B-python-parallelization]"},
+        {"claim":"候选说明将其用于 Python 并行化任务。","source_id":"source-lock-open-skills-target-candidates","locator":"source-locks/open-skills/target-candidates.json#targets[W02-B-python-parallelization].paired_negative_delta"}
+      ],
+      "sol_review_questions":["确认真实同 Team search 首选 proposed python-parallelization，且不在 proposed listing。","确认 Negative 的并行化清单没有超出候选材料支持的范围。"]
+    },
+    {
+      "draft_pair_id":"T01-SKILL-B01-P003",
+      "source_ids":["source-t01-current-ujson-fuzzing","source-t01-current-ujson-impact","source-lock-open-skills-target-candidates","source-lock-license-manifest"],
+      "difficulty":"medium",
+      "context_bucket":"medium_6_to_10",
+      "shared_context_messages":[
+        {"role":"user","content":"我在 T01 的 ultrajson fuzzing 流程里，已经固定了 Python 入口和解码器相关证据；这轮只想把覆盖率工作安排清楚。"},
+        {"role":"assistant","content":"已完成仓库版本、目标边界和现有测试入口整理，暂不触碰生产行为。"},
+        {"role":"user","content":"之前我想直接补几个看似合理的测试，但没有先看覆盖率报告中的具体缺口。"},
+        {"role":"assistant","content":"方向调整为先读取覆盖率结果，再只针对未覆盖分支安排原子测试。"},
+        {"role":"user","content":"模块和测试位置已确定，当前还没有覆盖率报告里的行号和分支清单。"},
+        {"role":"assistant","content":"已完成测试范围确认，但缺少一份可复用的覆盖率提升流程，不能凭空决定测试内容。"},
+        {"role":"user","content":"请先告诉我这一步应怎样从报告走到 100% 覆盖，暂时不改生产代码。"},
+        {"role":"assistant","content":"需要先补齐这类覆盖率任务的具体检查和补测顺序。"}
+      ],
+      "changed_message_index":8,
+      "query":"请说明从当前覆盖率状态到目标覆盖率的具体下一步和检查顺序，暂时不要修改生产代码。",
+      "positive":{"delta_message":{"role":"user","content":"我还缺完整的覆盖率提升清单。请直接查看适用的既有流程材料，概述从报告到补测的可执行步骤，停在可以开始补测试的位置。"},"private_proposal":{"unique_information_gap":"缺少读取 annotate 报告、只为未覆盖路径补原子测试且不修改生产行为的完整 pytest coverage 流程。","route":"skill","target_asset_ids":["candidate-pytest-coverage"],"allowed_sequence_candidates":[["skill_view"]],"stop_after_candidate":"查看 listed 覆盖率流程材料并概述步骤后停止。"}},
+      "negative":{"delta_message":{"role":"user","content":"我把清单补全：先运行指定模块的 pytest coverage 并读取 annotate 报告；逐项记录未覆盖的边界分支；只为这些路径补原子测试；保持生产代码不变；最后用 coverage-fail-under=100 的检查确认目标达成，并避免用删除分支或 pragma no cover 伪造覆盖率。请按此清单说明下一步。"},"private_proposal":{"route":"none","why_current_context_is_sufficient":"新增消息已经给出报告、未覆盖分支、原子测试、生产代码约束和最终检查的完整清单，足以回答 query。"}},
+      "visible_distractor_ids_author_only":["candidate-testing-python","candidate-d3-visualization"],
+      "controlled_delta_note":"Positive 缺覆盖率报告到 100% 的完整清单；Negative 仅补齐该清单。",
+      "source_fact_map":[
+        {"claim":"当前任务使用锁定的 ultrajson fuzzing 工程背景。","source_id":"source-t01-current-ujson-fuzzing","locator":"SkillsBench tasks/setup-fuzzing-py/task.md + ultrajson pinned checkout"},
+        {"claim":"pytest-coverage 候选路径、revision 来源和 Git blob 已锁定。","source_id":"source-lock-open-skills-target-candidates","locator":"source-locks/open-skills/target-candidates.json#targets[W01-A-pytest-coverage]"},
+        {"claim":"覆盖率候选的配对负例要求提供未覆盖行和完整本地测试模板。","source_id":"source-lock-open-skills-target-candidates","locator":"source-locks/open-skills/target-candidates.json#targets[W01-A-pytest-coverage].paired_negative_delta"}
+      ],
+      "sol_review_questions":["确认 proposed pytest-coverage 是新 listed target，且首动作仅为 listed skill_view。","确认 Negative 包含足以替代覆盖率流程资产的具体清单。"]
+    },
+    {
+      "draft_pair_id":"T01-SKILL-B01-P004",
+      "source_ids":["source-t01-current-ujson-fuzzing","source-t01-current-ujson-impact","source-lock-open-skills-target-candidates","source-lock-license-manifest"],
+      "difficulty":"hard",
+      "context_bucket":"medium_6_to_10",
+      "shared_context_messages":[
+        {"role":"user","content":"我在 T01 的 Python 可靠性流里维护 ultrajson fuzzing，同时有一个 Python 服务的 Temporal 集成测试需要整理。现在先核对可复用的测试流程，不开始改实现。"},
+        {"role":"assistant","content":"已确认当前服务涉及 Python 工作流集成测试；仓库、测试入口和 ultrajson 的固定背景已整理，但流程材料尚未展开。"},
+        {"role":"user","content":"一开始我只想补一个失败测试，后来发现工作流测试还涉及本地运行、集成边界和可重放验证。"},
+        {"role":"assistant","content":"方向调整为先查流程正文，再核对它随附的资源文件，确认测试层次和本地集成约束后才写测试。"},
+        {"role":"user","content":"已完成服务边界、测试目标和当前失败现象的整理，但还没有这套流程的正文及随附文件清单。"},
+        {"role":"assistant","content":"目前缺少两个相连的信息：适用的 Python 工作流测试流程，以及来源锁定的资源文件内容；不能自行编造文件名。"},
+        {"role":"user","content":"请先确认流程材料及其真实随附文件，再说明我可以从哪里开始。"},
+        {"role":"assistant","content":"这一步应停在资料核对，等正文和文件内容都明确后再继续。"}
+      ],
+      "changed_message_index":8,
+      "query":"请先核对这项 Python 工作流集成测试的流程材料和来源支持的资源文件，再给出开始实现前的起点。",
+      "positive":{"delta_message":{"role":"user","content":"我还不知道流程正文和随附资源的具体内容。请先查看适用流程，再读取其中真实存在且有来源依据的 integration-testing.md，停在资料核对完成的位置。"},"private_proposal":{"unique_information_gap":"缺少 temporal-python-testing 流程正文及其 manifest 中真实列出的 resources/integration-testing.md 文件内容。","route":"skill","target_asset_ids":["candidate-temporal-python-testing","candidate-temporal-python-testing:resources/integration-testing.md"],"allowed_sequence_candidates":[["skill_view","skill_files_read"]],"stop_after_candidate":"查看 listed 流程并读取其 manifest 中的 resources/integration-testing.md 后停止。"}},
+      "negative":{"delta_message":{"role":"user","content":"我把缺失内容完整补上：流程材料的资源清单包含 SKILL.md、resources/integration-testing.md、resources/local-setup.md、resources/replay-testing.md 和 resources/unit-testing.md；其中 integration-testing.md 负责本地集成边界与工作流测试核对，local-setup.md 负责环境准备，replay-testing.md 负责重放验证，unit-testing.md 负责单元测试边界。请据此给出开始实现前起点，不读取额外材料。"},"private_proposal":{"route":"none","why_current_context_is_sufficient":"新增消息同时提供流程资源清单及每个资源的职责，足以回答 query，无需读取资产。"}},
+      "visible_distractor_ids_author_only":["candidate-pytest-coverage","candidate-testing-python"],
+      "controlled_delta_note":"Positive 缺流程正文与 integration-testing.md 内容；Negative 仅补齐来源支持的五个资源路径及其职责。",
+      "source_fact_map":[
+        {"claim":"当前 T01 工作区包含 ultrajson fuzzing 背景。","source_id":"source-t01-current-ujson-fuzzing","locator":"SkillsBench tasks/setup-fuzzing-py/task.md + ultrajson pinned checkout"},
+        {"claim":"temporal-python-testing 候选固定在 SkillsBench b63b7b... 的 fix-build-agentops 环境路径。","source_id":"source-lock-open-skills-target-candidates","locator":"OPEN-SKILL-TARGET-MATRIX.md#Python 构建/测试失败定位"},
+        {"claim":"temporal-python-testing 的资源候选包括 integration-testing.md、local-setup.md、replay-testing.md 和 unit-testing.md。","source_id":"source-lock-open-skills-target-candidates","locator":"ENGINEERING-SKILL-CANDIDATE-RESEARCH.md#temporal-python-testing resources"}
+      ],
+      "sol_review_questions":["确认 proposed d3-visualization 是新 listed target，且第二步文件真实存在于该候选 manifest。","确认 task.md 的路径与 Git blob 来自锁定候选，Negative 已提供完整清单。"]
+    }
+  ]
+}

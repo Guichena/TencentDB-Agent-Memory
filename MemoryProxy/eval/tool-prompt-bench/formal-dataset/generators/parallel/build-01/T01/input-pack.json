@@ -1,0 +1,125 @@
+{
+  "schema_version": "task1.team_input_pack.v1",
+  "frozen": true,
+  "stage": "DS02",
+  "team_id": "T01",
+  "theme": "Python reliability",
+  "launch_tag": "task1-data-parallel-launch-v2",
+  "launch_commit": "ef2ca4bd84e529c6c7d8a8df661520cbc3bf4bb0",
+  "schema_baseline_commit": "1048681880b51e7a52a6b8b0b731eadeec44e118",
+  "content_baseline_commit": "960021e472456515a89d3c2c4f2962fbf6cc51a1",
+  "generator": {
+    "model": "gpt-5.6-luna",
+    "reasoning_effort": "high",
+    "fork_turns": "none",
+    "prompt_version": "task1.t01-memory-assets.v1"
+  },
+  "final_quota": {
+    "paired_positive_negative_pairs": 15,
+    "natural_negative_cases": 10,
+    "total_cases": 40,
+    "positive_target_families": {"memory": 6, "skill": 6, "knowledge": 3},
+    "memory_assets": {"L0_existing": 12, "L1": 15, "L2": 4, "L3": 1}
+  },
+  "retained_pilot": {
+    "pair_ids": ["T01-PAIR-001", "T01-PAIR-002", "T01-PAIR-003", "T01-PAIR-004", "T01-PAIR-005"],
+    "case_count": 10,
+    "memory_positive_count": 2,
+    "skill_positive_count": 2,
+    "knowledge_positive_count": 1,
+    "retrieval_pressure_fixture": "formal-dataset/fixtures/T01-retrieval-pressure.json"
+  },
+  "accepted_legacy_batches": [
+    {"batch_id": "t01-memory-batch-01", "family": "memory", "count": 4, "path": "legacy/memory-batch-01", "validation": "pass"},
+    {"batch_id": "t01-skill-batch-01", "family": "skill", "count": 4, "path": "legacy/skill-batch-01", "validation": "pass"},
+    {"batch_id": "t01-knowledge-batch-01", "family": "knowledge", "count": 2, "path": "legacy/knowledge-batch-01", "validation": "pass"},
+    {"batch_id": "t01-natural-negative-batch-01", "family": "natural-negative", "count": 10, "path": "legacy/natural-negative-batch-01", "validation": "pass"}
+  ],
+  "projects": [
+    {"project_id": "python__mypy", "stream": "mypy regression and stub generation", "task_ids": ["T01-TASK-MYPY-REGRESSION"]},
+    {"project_id": "ultrajson__ultrajson", "stream": "ujson fuzzing and call-graph reliability", "task_ids": ["T01-TASK-UJSON-FUZZING"]},
+    {"project_id": "getmoto__moto", "stream": "event-pattern null-versus-missing replay evidence", "task_ids": ["T01-TASK-MOTO-REPLAY"]},
+    {"project_id": "python-reliability-ci", "stream": "Python CI, coverage, Temporal tests, and parallel text search", "task_ids": ["T01-TASK-PYTHON-CI", "T01-TASK-PARALLEL-SEARCH"]}
+  ],
+  "authoritative_memory_facts": [
+    {
+      "target_id": "T01-L1-MYPY-PARAMSPEC-OPTIONAL-BOUND",
+      "level": "L1",
+      "source_ids": ["source-t01-history-python__mypy-11567", "source-t01-current-mypy-regression"],
+      "fact": "In mypy/server/astdiff.py snapshot_definition needs a ParamSpecExpr branch. ParamSpec upper_bound may be absent, so snapshot the optional value and preserve None instead of dereferencing it.",
+      "required_runtime_type": "instruction",
+      "required_time": "2023-02-17"
+    },
+    {
+      "target_id": "T01-L1-MYPY-STUBGEN-STAR-EXPANSION",
+      "level": "L1",
+      "source_ids": ["source-t01-history-python__mypy-16869", "source-t01-current-mypy-regression"],
+      "fact": "After AliasPrinter.visit_star_expr was added in stubgen, reviewed evidence covered single and multiple TypeVarTuple expansions plus mixed TypeVar and TypeVarTuple Generic parameters.",
+      "required_runtime_type": "fact",
+      "required_time": "2023-12-08"
+    },
+    {
+      "target_id": "T01-L1-MOTO-PRESENCE-PREDICATE",
+      "level": "L1",
+      "source_ids": ["source-t01-history-getmoto__moto-5134"],
+      "fact": "For EventPattern exists filters, a key present with null counts as exists=true; only a missing key counts as exists=false.",
+      "required_runtime_type": "instruction",
+      "required_time": "2022-05-13"
+    }
+  ],
+  "memory_asset_constraints": {
+    "output_count": 20,
+    "exact_levels": {"L1": 15, "L2": 4, "L3": 1},
+    "required_target_ids": [
+      "T01-L1-MYPY-PARAMSPEC-OPTIONAL-BOUND",
+      "T01-L1-MYPY-STUBGEN-STAR-EXPANSION",
+      "T01-L1-MOTO-PRESENCE-PREDICATE"
+    ],
+    "allowed_source_ids": [
+      "source-t01-history-python__mypy-11567",
+      "source-t01-history-python__mypy-15184",
+      "source-t01-history-python__mypy-16869",
+      "source-t01-history-getmoto__moto-5134",
+      "source-t01-current-mypy-regression",
+      "source-t01-current-ujson-fuzzing",
+      "source-t01-current-ujson-impact",
+      "source-t01-knowledge-mypy-codegraph",
+      "source-t01-knowledge-ujson-codegraph"
+    ],
+    "l1_rule": "Each L1 is one narrow reusable fact, decision, preference, event, or instruction grounded only in the supplied facts and streams. The three required targets must preserve their facts exactly; the other L1s may be conservative synthetic operational guidance within the stated streams and must not invent code locations, commit IDs, benchmark numbers, or outcomes.",
+    "l2_rule": "Each L2 is a short synthesis of at least two named L1 IDs. It must identify its member L1 IDs and must not add unsupported technical facts.",
+    "l3_rule": "The single L3 is a T01 Python-reliability project profile that names its member L2 IDs, captures project scope and retrieval boundaries, and adds no unsupported technical facts.",
+    "time_format": "YYYY-MM-DD",
+    "formal_type_enum": ["persona", "preference", "decision", "event", "fact"],
+    "runtime_type_note": "When an authoritative target says runtime type instruction, store formal type decision and also emit runtime_type instruction; staging will preserve that reviewed mapping.",
+    "forbidden": [
+      "provider names, provider model names, provider routing hints, or benchmark answers",
+      "new upstream facts not present in this input pack",
+      "repo URLs, revisions, licenses, source hashes, or fake provenance inside asset content",
+      "writes outside the assigned unique generator batch directory"
+    ]
+  },
+  "knowledge_fixture_ids": ["cg-t01ujs01", "cg-t01mypy1", "wiki-t01rel01"],
+  "skill_source_pins": [
+    {"name":"discover-important-function","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/setup-fuzzing-py/environment/skills/discover-important-function/SKILL.md","license":"Apache-2.0","raw_sha256":"d935cc481fe8700ecfec482810dbf7fb56d0ee7e5fec7221ca5a77519d29ce29","visibility":"listed"},
+    {"name":"fuzzing-python","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/setup-fuzzing-py/environment/skills/fuzzing-python/SKILL.md","license":"Apache-2.0","raw_sha256":"718882130de22873f00e422d1c8d4d67febd002d5ee0163f314fea8890c0b835","visibility":"same-team-search"},
+    {"name":"testing-python","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/fix-build-agentops/environment/skills/testing-python/SKILL.md","license":"Apache-2.0","raw_sha256":"2741f4b02a7021658993213ce85095871e30ebfc1eba2bbef9d56f0bb71dea32","visibility":"same-team-search"},
+    {"name":"pytest-coverage","repo":"https://github.com/github/awesome-copilot","revision":"f11a4e441c5ff061b4f8ae37952be8c602e4034e","path":"skills/pytest-coverage/SKILL.md","license":"MIT","raw_sha256":"3778add8809c5aac585ab764090f46e7cfdb009ae3fc9fb308710538627970f9","visibility":"listed"},
+    {"name":"temporal-python-testing","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/fix-build-agentops/environment/skills/temporal-python-testing/SKILL.md","license":"Apache-2.0","raw_sha256":"21e5d2382d474553eadb2771c764f4aa2b55a12bd75bc40894e68630c02db7bb","visibility":"listed"},
+    {"name":"analyze-ci","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/fix-build-agentops/environment/skills/analyze-ci/SKILL.md","license":"Apache-2.0","raw_sha256":"f59a07dcffe019f17cfa6ec211cbfb070e6292257be7119ed55ffa0b9bce7197","visibility":"listed"},
+    {"name":"uv-package-manager","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/fix-build-agentops/environment/skills/uv-package-manager/SKILL.md","license":"Apache-2.0","raw_sha256":"85c71e75e63966eb06a72dc0a7ed2046c45c38bb5574d748603917c4a3801878","visibility":"listed"},
+    {"name":"python-parallelization","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/parallel-tfidf-search/environment/skills/python-parallelization/SKILL.md","license":"Apache-2.0","raw_sha256":"cade40ed1ab5ae28c52ef8ebeaaf0d72b0323d73aa1886f54f5a995685a48a79","visibility":"same-team-search"},
+    {"name":"memory-optimization","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/parallel-tfidf-search/environment/skills/memory-optimization/SKILL.md","license":"Apache-2.0","raw_sha256":"cc56c4b8119265a50ae48506c20f6e495bcb7972dfb7e78adc5405b840fb2ba8","visibility":"same-team-search"},
+    {"name":"workload-balancing","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/parallel-tfidf-search/environment/skills/workload-balancing/SKILL.md","license":"Apache-2.0","raw_sha256":"28260b9d369855ee36fab41bc2c084bb08e0473787888a3d20ca67d25d62ad5c","visibility":"same-team-search"},
+    {"name":"setup-env","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/setup-fuzzing-py/environment/skills/setup-env/SKILL.md","license":"Apache-2.0","raw_sha256":"7b95dc92985ab21b131c5f1d14ec05cf27d145c5384e28bbf3022c7ea89f4202","visibility":"same-team-search"},
+    {"name":"grpo","repo":"https://github.com/benchflow-ai/skillsbench","revision":"b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af","path":"tasks/debug-trl-grpo/environment/skills/grpo/SKILL.md","license":"Apache-2.0","raw_sha256":"90ef5f123f4b6107d85c69d53d6878aec29e5c08950dc52b9bd6fd872187804c","visibility":"same-team-search"},
+    {"name":"qdrant-clients-sdk","repo":"https://github.com/github/awesome-copilot","revision":"f11a4e441c5ff061b4f8ae37952be8c602e4034e","path":"skills/qdrant-clients-sdk/SKILL.md","license":"MIT","raw_sha256":"eac9386970303787ccff5ce65f77e2bc51286a07b27977a8fba1f256f4c95426","visibility":"same-team-search"},
+    {"name":"qdrant-performance-optimization","repo":"https://github.com/github/awesome-copilot","revision":"f11a4e441c5ff061b4f8ae37952be8c602e4034e","path":"skills/qdrant-performance-optimization/SKILL.md","license":"MIT","raw_sha256":"5323301ea670baa98623e53f8c363845f6edde59a2f0f88e0c6e948d61438a3f","visibility":"same-team-search"},
+    {"name":"qdrant-search-quality","repo":"https://github.com/github/awesome-copilot","revision":"f11a4e441c5ff061b4f8ae37952be8c602e4034e","path":"skills/qdrant-search-quality/SKILL.md","license":"MIT","raw_sha256":"3af84e9019065cd90cc79210c5833153fc62acdcf55bda359ab7876809be0803","visibility":"same-team-search"}
+  ],
+  "production_routes": {
+    "memory": ["/memory-bridge/v3/atomic/search", "/memory-bridge/v3/atomic/query", "/memory-bridge/v3/conversation/search", "/memory-bridge/v3/conversation/query", "/memory-bridge/v3/scenario/ls", "/memory-bridge/v3/scenario/read"],
+    "skill": ["/skill-bridge/v3/skill/search", "/skill-bridge/v3/skill/get-by-name", "/skill-bridge/v3/skill/get", "/skill-bridge/v3/skill/files/read"],
+    "knowledge": ["/tools/list", "/tools/call"]
+  }
+}

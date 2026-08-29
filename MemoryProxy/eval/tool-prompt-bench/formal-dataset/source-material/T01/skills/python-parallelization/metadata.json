@@ -1,0 +1,42 @@
+{
+  "schema_version": "task1.github_skill_source.v1",
+  "team_id": "T01",
+  "name": "python-parallelization",
+  "repository_url": "https://github.com/benchflow-ai/skillsbench",
+  "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+  "source_path": "tasks/parallel-tfidf-search/environment/skills/python-parallelization/SKILL.md",
+  "license_spdx": "Apache-2.0",
+  "license_file": "../../licenses/Apache-2.0.txt",
+  "visibility": "same-team-search",
+  "main_raw_sha256": "cade40ed1ab5ae28c52ef8ebeaaf0d72b0323d73aa1886f54f5a995685a48a79",
+  "raw_files": [
+    {
+      "path": "references/advanced_techniques.md",
+      "source_path": "tasks/parallel-tfidf-search/environment/skills/python-parallelization/references/advanced_techniques.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/parallel-tfidf-search/environment/skills/python-parallelization/references/advanced_techniques.md",
+      "sha256": "17eb5b5031a3a38a22aa0d8a5d8b45ff2116598d483e82eaa8a58bc45a175024",
+      "byte_length": 5508
+    },
+    {
+      "path": "SKILL.md",
+      "source_path": "tasks/parallel-tfidf-search/environment/skills/python-parallelization/SKILL.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/parallel-tfidf-search/environment/skills/python-parallelization/SKILL.md",
+      "sha256": "cade40ed1ab5ae28c52ef8ebeaaf0d72b0323d73aa1886f54f5a995685a48a79",
+      "byte_length": 5491
+    }
+  ],
+  "adapted_files": [
+    {
+      "path": "references/advanced_techniques.md",
+      "sha256": "17e11133f8618855d6248fb0f1a605fe1959c51797ddd827ab07e6b37dd3513b",
+      "byte_length": 5707
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "71585d7d3c6691b2116b7ebfb90cf9133747b4fa08537f7a5657f03539f8fdc3",
+      "byte_length": 5653
+    }
+  ],
+  "adaptation_diff": "adaptation.diff",
+  "frozen": true
+}

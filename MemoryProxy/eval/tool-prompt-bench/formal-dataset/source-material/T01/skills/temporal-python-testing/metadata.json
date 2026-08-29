@@ -1,0 +1,78 @@
+{
+  "schema_version": "task1.github_skill_source.v1",
+  "team_id": "T01",
+  "name": "temporal-python-testing",
+  "repository_url": "https://github.com/benchflow-ai/skillsbench",
+  "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+  "source_path": "tasks/fix-build-agentops/environment/skills/temporal-python-testing/SKILL.md",
+  "license_spdx": "Apache-2.0",
+  "license_file": "../../licenses/Apache-2.0.txt",
+  "visibility": "listed",
+  "main_raw_sha256": "21e5d2382d474553eadb2771c764f4aa2b55a12bd75bc40894e68630c02db7bb",
+  "raw_files": [
+    {
+      "path": "resources/integration-testing.md",
+      "source_path": "tasks/fix-build-agentops/environment/skills/temporal-python-testing/resources/integration-testing.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/fix-build-agentops/environment/skills/temporal-python-testing/resources/integration-testing.md",
+      "sha256": "91e0253dfb2c815e8be03fdf864f9a3796079718949aa8edcf25218f14e33494",
+      "byte_length": 12988
+    },
+    {
+      "path": "resources/local-setup.md",
+      "source_path": "tasks/fix-build-agentops/environment/skills/temporal-python-testing/resources/local-setup.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/fix-build-agentops/environment/skills/temporal-python-testing/resources/local-setup.md",
+      "sha256": "d760b4557b4393a8427e2f566374315f86f1a7fa2a7e926612a594f62c1a0e30",
+      "byte_length": 12066
+    },
+    {
+      "path": "resources/replay-testing.md",
+      "source_path": "tasks/fix-build-agentops/environment/skills/temporal-python-testing/resources/replay-testing.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/fix-build-agentops/environment/skills/temporal-python-testing/resources/replay-testing.md",
+      "sha256": "9fc02f45c66324e15229047e28d5c77b3496299ca4fa83dbfaae6fb67af8bfc3",
+      "byte_length": 12374
+    },
+    {
+      "path": "resources/unit-testing.md",
+      "source_path": "tasks/fix-build-agentops/environment/skills/temporal-python-testing/resources/unit-testing.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/fix-build-agentops/environment/skills/temporal-python-testing/resources/unit-testing.md",
+      "sha256": "1836367b98c5ee84e9ea98d1b30726bf48ef5404aaf0426f88742bdcce5712cf",
+      "byte_length": 8702
+    },
+    {
+      "path": "SKILL.md",
+      "source_path": "tasks/fix-build-agentops/environment/skills/temporal-python-testing/SKILL.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/fix-build-agentops/environment/skills/temporal-python-testing/SKILL.md",
+      "sha256": "21e5d2382d474553eadb2771c764f4aa2b55a12bd75bc40894e68630c02db7bb",
+      "byte_length": 4937
+    }
+  ],
+  "adapted_files": [
+    {
+      "path": "resources/integration-testing.md",
+      "sha256": "3942e67339a7fd2582653be5c1c09d7ed85f0f79c9ad5082ade4b78b774e5a7c",
+      "byte_length": 13440
+    },
+    {
+      "path": "resources/local-setup.md",
+      "sha256": "b253de4813b9a9dde36b91b26a03e17df1bf627fe87a3e7765f2cf7c8a5bab78",
+      "byte_length": 12616
+    },
+    {
+      "path": "resources/replay-testing.md",
+      "sha256": "95ee0b49c680e459d299fd8fae2dbd1a4e64e188e8020eecef8aa720db634d92",
+      "byte_length": 12829
+    },
+    {
+      "path": "resources/unit-testing.md",
+      "sha256": "0b57c54014aa115b040fda79d30a92b394ccb92cc95d0467a805a088db170604",
+      "byte_length": 9022
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "3e232b7d6c4d30c80b09024e83e1c7f229f031b0e511cabed45958cd8928af2e",
+      "byte_length": 5083
+    }
+  ],
+  "adaptation_diff": "adaptation.diff",
+  "frozen": true
+}

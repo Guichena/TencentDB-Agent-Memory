@@ -1,0 +1,19 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "prompt_version": "task1.t01-memory-assets.v1",
+  "batch_id": "t01-memory-assets-batch-01",
+  "stage": "DS02",
+  "team_id": "T01",
+  "input_pack": "../../input-pack.json",
+  "input_pack_sha256": "01b386c73132f6e6d816cdaa26cb51c180cc0142653c1acacd5ba2b74b9b90d8",
+  "generated_at": "2026-08-29T14:03:36.8870247Z",
+  "actual_count": 20,
+  "level_counts": {
+    "L1": 15,
+    "L2": 4,
+    "L3": 1
+  }
+}
