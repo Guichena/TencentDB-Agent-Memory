@@ -1,4 +1,9 @@
-import { createHash } from "node:crypto";
+import {
+  CanonicalJsonError,
+  canonicalJsonClone,
+  canonicalSha256,
+  type CanonicalJsonValue,
+} from "./canonical-json.js";
 
 export const PROVIDER_USAGE_FIELDS = [
   "providerTotalInputTokens",
@@ -51,6 +56,7 @@ export interface ProviderUsageInfrastructureError {
     | "PROVIDER_SCHEMA_MISMATCH"
     | "REQUIRED_USAGE_MISSING"
     | "INVALID_USAGE_VALUE"
+    | "RAW_USAGE_NOT_CANONICAL_JSON"
     | "UNSUPPORTED_USAGE_FIELD_REPORTED"
     | "USAGE_IDENTITY_MISMATCH";
   field?: ProviderUsageField;
@@ -65,7 +71,9 @@ export interface ProviderUsageNormalizationResult {
   adapterVersion: string;
   requiredFields: ProviderUsageField[];
   unsupportedFields: ProviderUsageField[];
-  rawUsageSha256: string;
+  rawUsageCanonicalizationStatus: "ready" | "blocked";
+  rawUsageCanonicalClone: CanonicalJsonValue | null;
+  rawUsageSha256: string | null;
   canonicalSha256: string;
   fieldStates: Record<ProviderUsageField, ProviderUsageFieldState>;
   usage: NormalizedProviderUsage | null;
@@ -73,25 +81,6 @@ export interface ProviderUsageNormalizationResult {
 }
 
 type UsageValues = Record<ProviderUsageField, number | null>;
-
-function stableJson(value: unknown): string {
-  if (value === undefined) return '{"$type":"undefined"}';
-  if (typeof value === "number" && !Number.isFinite(value)) {
-    return `{"$number":${JSON.stringify(String(value))}}`;
-  }
-  if (typeof value === "bigint") return `{"$bigint":${JSON.stringify(value.toString())}}`;
-  if (typeof value === "symbol" || typeof value === "function") {
-    return `{"$type":${JSON.stringify(typeof value)},"$value":${JSON.stringify(String(value))}}`;
-  }
-  if (value === null || typeof value !== "object") return JSON.stringify(value);
-  if (Array.isArray(value)) return `[${value.map(stableJson).join(",")}]`;
-  const record = value as Record<string, unknown>;
-  return `{${Object.keys(record).sort().map((key) => `${JSON.stringify(key)}:${stableJson(record[key])}`).join(",")}}`;
-}
-
-function sha256(value: unknown): string {
-  return createHash("sha256").update(stableJson(value)).digest("hex");
-}
 
 function nestedRecord(record: Record<string, unknown>, key: string): Record<string, unknown> | null {
   const value = record[key];
@@ -144,6 +133,20 @@ export function normalizeProviderUsage(input: NormalizeProviderUsageInput): Prov
   const values = emptyValues();
   const fieldStates = emptyStates();
   const errors: ProviderUsageInfrastructureError[] = [];
+  let rawUsageCanonicalClone: CanonicalJsonValue | null = null;
+  let rawUsageSha256: string | null = null;
+  let rawUsageCanonicalizationStatus: "ready" | "blocked" = "ready";
+  try {
+    rawUsageCanonicalClone = canonicalJsonClone(input.rawUsage);
+    rawUsageSha256 = canonicalSha256(rawUsageCanonicalClone);
+  } catch (error) {
+    if (!(error instanceof CanonicalJsonError)) throw error;
+    rawUsageCanonicalizationStatus = "blocked";
+    errors.push({
+      code: "RAW_USAGE_NOT_CANONICAL_JSON",
+      message: error.message,
+    });
+  }
   const expectedProvider = input.schema.startsWith("openai.") ? "openai" : "anthropic";
 
   for (const field of input.unsupportedFields) {
@@ -301,13 +304,15 @@ export function normalizeProviderUsage(input: NormalizeProviderUsageInput): Prov
     adapterVersion: input.adapterVersion,
     requiredFields: [...input.requiredFields],
     unsupportedFields: [...input.unsupportedFields],
-    rawUsageSha256: sha256(input.rawUsage),
+    rawUsageCanonicalizationStatus,
+    rawUsageCanonicalClone,
+    rawUsageSha256,
     fieldStates,
     usage,
     errors,
   };
   return {
     ...withoutCanonicalSha,
-    canonicalSha256: sha256(withoutCanonicalSha),
+    canonicalSha256: canonicalSha256(withoutCanonicalSha),
   };
 }

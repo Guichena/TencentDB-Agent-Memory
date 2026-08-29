@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { canonicalSha256 } from "./canonical-json.js";
 import type {
   ProviderUsageFieldState,
   ProviderUsageNormalizationResult,
@@ -16,6 +16,8 @@ export type IsolationBlockerCode =
   | "STATIC_PROMPT_SHA256_INVALID"
   | "MODEL_ID_INVALID"
   | "REASONING_EFFORT_INVALID"
+  | "VERBOSITY_INVALID"
+  | "CODEX_CLI_VERSION_INVALID"
   | "USAGE_PROVIDER_INVALID"
   | "USAGE_SCHEMA_INVALID"
   | "USAGE_API_VERSION_INVALID"
@@ -52,6 +54,8 @@ export interface BuildRunIsolationEvidenceInput {
   execution: {
     modelId: string;
     reasoningEffort: string;
+    verbosity: string;
+    codexCliVersion: string;
   };
   counterfactualRole: "positive" | "negative" | null;
   session: { id: string; fresh: boolean };
@@ -74,6 +78,8 @@ export interface BuildRunIsolationEvidenceInput {
 export interface RunExecutionIdentityEvidence {
   modelId: string;
   reasoningEffort: string;
+  verbosity: string;
+  codexCliVersion: string;
   provider: ProviderUsageNormalizationResult["provider"];
   usageSchema: ProviderUsageNormalizationResult["schema"];
   apiVersion: string;
@@ -94,7 +100,7 @@ export interface ProviderCacheEvidence {
 
 export interface RunIsolationEvidence extends Omit<BuildRunIsolationEvidenceInput, "usage" | "execution"> {
   schemaVersion: 2;
-  executionIdentity: RunExecutionIdentityEvidence;
+  executionIdentity: RunExecutionIdentityEvidence | null;
   providerCache: ProviderCacheEvidence;
   isolationStatus: "ready" | "blocked";
   blockers: IsolationBlockerCode[];
@@ -111,6 +117,7 @@ export type PairedIsolationBlockerCode =
   | "PAIR_CASE_INPUT_CONTROL_MISMATCH"
   | "PAIR_CASE_INPUT_CONTROL_NOT_DISTINCT"
   | "PAIR_STATIC_PROMPT_MISMATCH"
+  | "PAIR_STATIC_PROMPT_NOT_DISTINCT"
   | "PAIR_EXECUTION_IDENTITY_MISMATCH"
   | "PAIR_COMPARISON_GROUP_MISMATCH"
   | "PAIR_COUNTERFACTUAL_ROLE_INVALID"
@@ -134,6 +141,7 @@ export interface PairedIsolationEvidence {
     sameCaseInputControl: boolean;
     sameProviderRequest: boolean;
     sameStaticPrompt: boolean;
+    distinctStaticPrompt: boolean;
     sameExecutionIdentity: boolean;
     sameComparisonGroup: boolean;
     distinctCounterfactualRole: boolean;
@@ -165,21 +173,14 @@ function providerCacheEvidence(usage: ProviderUsageNormalizationResult): Provide
   };
 }
 
-function canonicalJson(value: unknown): string {
-  if (value === null || typeof value !== "object") return JSON.stringify(value);
-  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(",")}]`;
-  const record = value as Record<string, unknown>;
-  return `{${Object.keys(record).sort().map((key) => (
-    `${JSON.stringify(key)}:${canonicalJson(record[key])}`
-  )).join(",")}}`;
-}
-
 function buildExecutionIdentity(
   input: BuildRunIsolationEvidenceInput,
 ): RunExecutionIdentityEvidence {
   const withoutSha = {
     modelId: input.execution.modelId,
     reasoningEffort: input.execution.reasoningEffort,
+    verbosity: input.execution.verbosity,
+    codexCliVersion: input.execution.codexCliVersion,
     provider: input.usage.provider,
     usageSchema: input.usage.schema,
     apiVersion: input.usage.apiVersion,
@@ -189,13 +190,15 @@ function buildExecutionIdentity(
   };
   return {
     ...withoutSha,
-    canonicalSha256: createHash("sha256").update(canonicalJson(withoutSha)).digest("hex"),
+    canonicalSha256: canonicalSha256(withoutSha),
   };
 }
 
 export function buildRunIsolationEvidence(input: BuildRunIsolationEvidenceInput): RunIsolationEvidence {
   const blockers: IsolationBlockerCode[] = [];
-  const isIdentity = (value: string): boolean => value.trim().length > 0;
+  const isIdentity = (value: unknown): value is string => (
+    typeof value === "string" && value.trim().length > 0
+  );
   const isSha256 = (value: string): boolean => /^[0-9a-f]{64}$/.test(value);
   if (!isIdentity(input.runId)) blockers.push("RUN_ID_INVALID");
   if (!isIdentity(input.runNamespace)) blockers.push("RUN_NAMESPACE_INVALID");
@@ -208,6 +211,8 @@ export function buildRunIsolationEvidence(input: BuildRunIsolationEvidenceInput)
   if (!isSha256(input.staticPromptSha256)) blockers.push("STATIC_PROMPT_SHA256_INVALID");
   if (!isIdentity(input.execution.modelId)) blockers.push("MODEL_ID_INVALID");
   if (!isIdentity(input.execution.reasoningEffort)) blockers.push("REASONING_EFFORT_INVALID");
+  if (!isIdentity(input.execution.verbosity)) blockers.push("VERBOSITY_INVALID");
+  if (!isIdentity(input.execution.codexCliVersion)) blockers.push("CODEX_CLI_VERSION_INVALID");
   if (input.usage.provider !== "openai" && input.usage.provider !== "anthropic") {
     blockers.push("USAGE_PROVIDER_INVALID");
   }
@@ -233,6 +238,17 @@ export function buildRunIsolationEvidence(input: BuildRunIsolationEvidenceInput)
   if (!input.localState.fresh) blockers.push("LOCAL_STATE_NOT_FRESH");
   if (input.localState.inheritedHistory) blockers.push("LOCAL_HISTORY_INHERITED");
 
+  const executionIdentityReady = (
+    isIdentity(input.execution.modelId)
+    && isIdentity(input.execution.reasoningEffort)
+    && isIdentity(input.execution.verbosity)
+    && isIdentity(input.execution.codexCliVersion)
+    && (input.usage.provider === "openai" || input.usage.provider === "anthropic")
+    && isIdentity(input.usage.schema)
+    && isIdentity(input.usage.apiVersion)
+    && isIdentity(input.usage.adapterVersion)
+  );
+
   return {
     schemaVersion: 2,
     runId: input.runId,
@@ -244,7 +260,7 @@ export function buildRunIsolationEvidence(input: BuildRunIsolationEvidenceInput)
     comparisonGroupSha256: input.comparisonGroupSha256,
     providerRequestSha256: input.providerRequestSha256,
     staticPromptSha256: input.staticPromptSha256,
-    executionIdentity: buildExecutionIdentity(input),
+    executionIdentity: executionIdentityReady ? buildExecutionIdentity(input) : null,
     counterfactualRole: input.counterfactualRole,
     session: { ...input.session },
     memoryProxyContext: { ...input.memoryProxyContext },
@@ -269,8 +285,11 @@ export function assessPairedIsolationEvidence(
     sameCaseInputControl: left.caseInputControlSha256 === right.caseInputControlSha256,
     sameProviderRequest: left.providerRequestSha256 === right.providerRequestSha256,
     sameStaticPrompt: left.staticPromptSha256 === right.staticPromptSha256,
+    distinctStaticPrompt: left.staticPromptSha256 !== right.staticPromptSha256,
     sameExecutionIdentity:
-      left.executionIdentity.canonicalSha256 === right.executionIdentity.canonicalSha256,
+      left.executionIdentity !== null
+      && right.executionIdentity !== null
+      && left.executionIdentity.canonicalSha256 === right.executionIdentity.canonicalSha256,
     sameComparisonGroup: left.comparisonGroupSha256 === right.comparisonGroupSha256,
     distinctCounterfactualRole:
       left.counterfactualRole !== null
@@ -297,6 +316,7 @@ export function assessPairedIsolationEvidence(
     if (!controls.sameRepeat) blockers.push("PAIR_REPEAT_MISMATCH");
     if (!controls.sameCaseInputControl) blockers.push("PAIR_CASE_INPUT_CONTROL_MISMATCH");
     if (controls.sameVariant) blockers.push("PAIR_VARIANT_NOT_DISTINCT");
+    if (!controls.distinctStaticPrompt) blockers.push("PAIR_STATIC_PROMPT_NOT_DISTINCT");
   } else if (options.purpose === "counterfactual") {
     if (!controls.sameRepeat) blockers.push("PAIR_REPEAT_MISMATCH");
     if (!controls.sameVariant) blockers.push("PAIR_VARIANT_MISMATCH");

@@ -1,4 +1,3 @@
-import { createHash } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -11,10 +10,16 @@ import { HookRegistryImpl } from "../../../src/injection/registry.js";
 import type { NormalizeProviderUsageInput } from "./provider-usage.js";
 import {
   assessPairedIsolationEvidence,
+  accumulateRequestUsageToM0Horizon,
   buildM2EligibilityEvidence,
+  buildRequestUsageLedger,
   buildRunIsolationEvidence,
   buildTokenLedger,
+  buildTrustedTokenSourceManifest,
+  canonicalSha256,
   normalizeProviderUsage,
+  TOKEN_CLASSIFICATION_CONTRACT,
+  utf8Sha256 as sha256,
 } from "./index.js";
 
 const ARTIFACT_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "artifacts");
@@ -27,10 +32,6 @@ const SHA = {
   visibleAssets: "5".repeat(64),
   staticPrompt: "6".repeat(64),
 } as const;
-
-function sha256(text: string): string {
-  return createHash("sha256").update(text, "utf8").digest("hex");
-}
 
 function json(value: unknown): string {
   return `${JSON.stringify(value, null, 2)}\n`;
@@ -301,18 +302,111 @@ async function main(): Promise<void> {
   }));
 
   const encoding = get_encoding("o200k_base");
+  const sourceSegment = (
+    order: number,
+    sourceId: string,
+    sourceKind:
+      | "legacy-body"
+      | "policy"
+      | "execution-grammar"
+      | "tool-card"
+      | "dynamic-assets"
+      | "runtime-binding",
+    text: string,
+  ) => ({ order, sourceId, sourceKind, sourceSha256: sha256(text), text });
   const segments = [
-    { component: "staticTemplate" as const, text: "<tool name=\"skill_search\">query</tool>" },
-    { component: "executionContract" as const, text: "\nCall only when a reusable team procedure is needed." },
-    { component: "runtimeBinding" as const, text: "\nsession_id=synthetic-session" },
-    { component: "dynamicAsset" as const, text: "\n<available_skills>typescript-testing</available_skills>" },
+    sourceSegment(0, "skill-tools.legacy-body#static-0", "legacy-body", "<tool name=\"skill_search\">query</tool>"),
+    sourceSegment(1, "shared.execution-grammar", "execution-grammar", "\nCall only when a reusable team procedure is needed."),
+    sourceSegment(2, "skill-tools.legacy-body#binding-0", "runtime-binding", "\nsession_id=synthetic-session"),
+    sourceSegment(3, "skill-listing.dynamic-assets", "dynamic-assets", "\n<available_skills>typescript-testing</available_skills>"),
   ];
+  const compiledBlockId = "synthetic-tool-prompt-block";
+  const captureBlockId = "synthetic-capture-block";
+  const compiledUnits = segments
+    .filter((segment) => (
+      segment.sourceKind !== "runtime-binding" && segment.sourceKind !== "dynamic-assets"
+    ))
+    .map((segment) => ({
+      id: segment.sourceId,
+      family: "skill" as const,
+      kind: segment.sourceKind as "legacy-body" | "policy" | "execution-grammar" | "tool-card",
+      content: segment.text,
+      sourceSpecIds: [] as const,
+    }));
+  const compiledContent = compiledUnits.map((unit) => unit.content).join("");
+  const sourceManifest = buildTrustedTokenSourceManifest({
+    compilerVersion: TOKEN_CLASSIFICATION_CONTRACT.compilerVersion,
+    segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
+    compiledPromptBundles: [{
+      injectionBlockId: compiledBlockId,
+      compiledPrompt: {
+        compilerVersion: TOKEN_CLASSIFICATION_CONTRACT.compilerVersion,
+        profile: "protocol-compact",
+        profileLineage: ["legacy", "contract-corrected", "protocol-compact"],
+        family: "skill",
+        surface: "skill-tools",
+        capabilitySignature: "synthetic",
+        content: compiledContent,
+        contentSha256: sha256(compiledContent),
+        units: compiledUnits,
+        contractIds: [],
+        specIds: [],
+      },
+    }],
+    captureDynamicAssets: segments
+      .filter((segment) => segment.sourceKind === "dynamic-assets")
+      .map((segment) => ({
+        injectionBlockId: captureBlockId,
+        sourceId: segment.sourceId,
+        sourceSha256: segment.sourceSha256,
+      })),
+    captureRuntimeBindings: segments
+      .filter((segment) => segment.sourceKind === "runtime-binding")
+      .map((segment) => ({
+        injectionBlockId: captureBlockId,
+        sourceId: segment.sourceId,
+        sourceSha256: segment.sourceSha256,
+      })),
+    providerOrder: segments.map((segment) => {
+      if (segment.sourceKind === "runtime-binding") {
+        return {
+          provenance: "frozen-capture-runtime-binding" as const,
+          injectionBlockId: captureBlockId,
+          sourceId: segment.sourceId,
+        };
+      }
+      if (segment.sourceKind === "dynamic-assets") {
+        return {
+          provenance: "frozen-capture-dynamic-asset" as const,
+          injectionBlockId: captureBlockId,
+          sourceId: segment.sourceId,
+        };
+      }
+      return {
+        provenance: "compiled-tool-prompt-unit" as const,
+        injectionBlockId: compiledBlockId,
+        unitId: segment.sourceId,
+      };
+    }),
+  });
   const providerVisibleInjection = segments.map((segment) => segment.text).join("");
   const tokenLedger = buildTokenLedger({
     variantId: "V0",
     runId: "synthetic-m2-evidence",
     providerVisibleInjection,
-    segments,
+    classification: {
+      contractVersion: TOKEN_CLASSIFICATION_CONTRACT.contractVersion,
+      contractSha256: TOKEN_CLASSIFICATION_CONTRACT.contractSha256,
+      compilerVersion: TOKEN_CLASSIFICATION_CONTRACT.compilerVersion,
+      segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
+    },
+    sourceManifest,
+    segments: segments.map((segment, index) => ({
+      order: segment.order,
+      sourceId: sourceManifest.orderedSources[index].sourceId,
+      sourceSha256: segment.sourceSha256,
+      text: segment.text,
+    })),
     tokenizer: {
       id: "o200k_base",
       version: "tiktoken-1.0.22",
@@ -326,6 +420,67 @@ async function main(): Promise<void> {
   }));
 
   const usage = providerFixtures[1].result;
+  const requestUsageLedger = buildRequestUsageLedger({
+    runId: tokenLedger.runId,
+    traceId: "synthetic-m2-trace",
+    requests: [0, 1].map((requestOrdinal) => ({
+      runId: tokenLedger.runId,
+      traceId: "synthetic-m2-trace",
+      requestId: `synthetic-request-${requestOrdinal}`,
+      observedAttemptIds: [`synthetic-attempt-${requestOrdinal}`],
+      requestOrdinal,
+      phaseId: requestOrdinal === 0 ? "initial" : "executor",
+      component: "task_model" as const,
+      phaseType: requestOrdinal === 0 ? "initial" as const : "executor" as const,
+      promptSha256: requestOrdinal === 0 ? SHA.providerRequest : SHA.providerRequestB,
+      candidateActionCount: requestOrdinal === 0 ? 3 : 1,
+      injectionTokensO200k: tokenLedger.totalInjectionTokens,
+      discoveryResultTokens: null,
+      toolResultContextTokens: null,
+      latencyMs: 25 + requestOrdinal,
+      usage,
+    })),
+  });
+  if (requestUsageLedger.status !== "ready") {
+    throw new Error(`synthetic request usage ledger blocked: ${requestUsageLedger.blockers.join(",")}`);
+  }
+  const evaluationAttemptPrefix = [0, 1].map((requestOrdinal) => ({
+    traceId: "synthetic-m2-trace",
+    requestId: `synthetic-request-${requestOrdinal}`,
+    attemptId: `synthetic-attempt-${requestOrdinal}`,
+    phaseId: requestOrdinal === 0 ? "initial" : "executor",
+  }));
+  const m0EvaluationBoundary = {
+    status: "observed" as const,
+    runId: tokenLedger.runId,
+    traceId: "synthetic-m2-trace",
+    evaluationPrefixSha256: canonicalSha256(evaluationAttemptPrefix),
+    evaluationAttemptPrefix,
+    evaluationHorizonRequestId: "synthetic-request-1",
+    evaluationHorizonPhaseId: "executor",
+    terminalBoundaryGivenSuccess: {
+      traceId: "synthetic-m2-trace",
+      requestId: "synthetic-request-1",
+      phaseId: "executor",
+      terminalAttemptId: "synthetic-attempt-1",
+    },
+    modelRoundsToTerminal: 2,
+    tdaiCallCount: 2,
+    timeToTerminalMs: 450,
+    terminalReached: true,
+  };
+  const usageHorizon = accumulateRequestUsageToM0Horizon(
+    requestUsageLedger.ledger,
+    m0EvaluationBoundary,
+  );
+  artifacts.push(writeArtifact("REQUEST-USAGE-LEDGER-SYNTHETIC.json", {
+    schemaVersion: 2,
+    measurementModuleId: "M2",
+    formalDataState: "blocked",
+    requestUsageLedger,
+    m0EvaluationBoundary,
+    usageHorizon,
+  }));
   const runIsolation = buildRunIsolationEvidence({
     runId: tokenLedger.runId,
     runNamespace: "task1/synthetic-m2-evidence",
@@ -336,7 +491,12 @@ async function main(): Promise<void> {
     comparisonGroupSha256: SHA.comparisonGroup,
     providerRequestSha256: SHA.providerRequest,
     staticPromptSha256: SHA.staticPrompt,
-    execution: { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
+    execution: {
+      modelId: "gpt-5.6-luna",
+      reasoningEffort: "high",
+      verbosity: "medium",
+      codexCliVersion: "synthetic-codex-cli-1",
+    },
     counterfactualRole: null,
     session: { id: "synthetic-session", fresh: true },
     memoryProxyContext: { id: "synthetic-proxy-context", fresh: true },
@@ -364,7 +524,12 @@ async function main(): Promise<void> {
     comparisonGroupSha256: SHA.comparisonGroup,
     providerRequestSha256: SHA.providerRequestB,
     staticPromptSha256: SHA.staticPrompt,
-    execution: { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
+    execution: {
+      modelId: "gpt-5.6-luna",
+      reasoningEffort: "high",
+      verbosity: "medium",
+      codexCliVersion: "synthetic-codex-cli-1",
+    },
     counterfactualRole: null,
     session: { id: "synthetic-session-repeat-1", fresh: true },
     memoryProxyContext: { id: "synthetic-proxy-context-repeat-1", fresh: true },
@@ -390,7 +555,8 @@ async function main(): Promise<void> {
   const eligibility = buildM2EligibilityEvidence({
     formalDataState: "blocked",
     evaluationLayer: "mock-contract",
-    usage,
+    requestUsageLedger,
+    usageHorizon,
     tokenLedger,
     runIsolation,
     comparison: { purpose: "none" },
@@ -402,7 +568,7 @@ async function main(): Promise<void> {
       authFilesRead: false,
       authFilesCopied: false,
     },
-    m0EvaluationPrefix: { status: "pending" },
+    m0EvaluationBoundary,
   });
   artifacts.push(writeArtifact("ISOLATION-ELIGIBILITY-SYNTHETIC.json", {
     formalDataState: "blocked",
@@ -507,7 +673,12 @@ async function main(): Promise<void> {
     schemaVersion: 2,
     measurementModuleId: "M2",
     formalDataState: "blocked",
-    formalMetricEligibleOwner: "Integration",
+    formalDataGate: {
+      status: "FORMAL_DATA_BLOCKED",
+      owner: "Integration",
+      reason: "formal Worlds, real-chain adapter, and frozen compiler/capture attestation are not integrated",
+    },
+    finalEligibilityOwner: "Integration",
     identitySeparation: {
       measurementModuleId: "M2",
       variantId: "per-run Prompt candidate such as V0, V0-C, V1, V2, or V3",
@@ -532,18 +703,33 @@ async function main(): Promise<void> {
       ],
       componentRule: "independently_encoded_non_additive",
       providerUsageRule: "never add local token estimates to provider totals",
+      classificationContract: {
+        contractId: TOKEN_CLASSIFICATION_CONTRACT.contractId,
+        contractVersion: TOKEN_CLASSIFICATION_CONTRACT.contractVersion,
+        contractSha256: TOKEN_CLASSIFICATION_CONTRACT.contractSha256,
+        compilerVersion: TOKEN_CLASSIFICATION_CONTRACT.compilerVersion,
+        segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
+        sourceKindToComponent: TOKEN_CLASSIFICATION_CONTRACT.sourceKindToComponent,
+      },
+      trustedSourceManifest: {
+        canonicalSha256: sourceManifest.canonicalSha256,
+        sourceInventorySha256: sourceManifest.sourceInventorySha256,
+        orderedSources: sourceManifest.orderedSources,
+      },
+      formalCompilerClosure: tokenLedger.classification.formalCompilerClosure,
     },
     hashSemantics: {
       caseInputControlSha256: "Frozen case/query/context control; excludes Variant prompt text.",
       comparisonGroupSha256: "Binds planned variant, counterfactual, or repeat comparison members.",
       providerRequestSha256: "Complete provider request for diagnostics; never an equality Gate because fresh runtime bindings may differ.",
       staticPromptSha256: "Frozen model-visible Variant/static Prompt before fresh runtime bindings.",
-      executionIdentitySha256: "Frozen model, reasoning effort, provider, usage schema, API/adapter versions, and usage-field contract.",
+      executionIdentitySha256: "Frozen model, reasoning effort, verbosity, Codex CLI version, provider, usage schema, API/adapter versions, and usage-field contract.",
+      requestUsageLedgerSha256: "M2-owned ordered request/attempt/trace/phase usage evidence plus deterministic cumulative totals.",
       snapshotSha256: "Expected and restored MemoryProxy asset snapshot identity.",
       visibleAssetsSha256: "Exact provider-visible asset-set identity.",
     },
     comparisonPurposes: {
-      variant: "Same case input, repeat, execution identity, snapshot, and assets; Variant/static Prompt and full provider request may differ.",
+      variant: "Same case input, repeat, execution identity, snapshot, and assets; Variant id and static Prompt hash must differ, while the full provider request is diagnostic.",
       counterfactual: "Same Variant/static Prompt, repeat, execution identity, snapshot, and assets; paired positive/negative case inputs and full requests differ.",
       repeat: "Same case input, Variant/static Prompt, execution identity, snapshot, and assets; repeat index and fresh run state differ, so full provider request equality is diagnostic only.",
       none: "Ordinary run; paired evidence is not required.",
@@ -564,8 +750,8 @@ async function main(): Promise<void> {
       ],
       variant: {
         equal: ["caseId", "repeatIndex", "caseInputControlSha256"],
-        distinct: ["variantId"],
-        diagnosticOnly: ["providerRequestSha256", "staticPromptSha256"],
+        distinct: ["variantId", "staticPromptSha256"],
+        diagnosticOnly: ["providerRequestSha256"],
       },
       counterfactual: {
         equal: ["repeatIndex", "variantId", "staticPromptSha256"],
@@ -578,15 +764,40 @@ async function main(): Promise<void> {
         diagnosticOnly: ["providerRequestSha256"],
       },
     },
-    m0Integration: {
-      requiredInterface: "M0_EVALUATION_PREFIX",
-      terminalCosts: [
+    requestUsageAccounting: {
+      owner: "M2",
+      granularity: "request_and_phase",
+      identity: ["runId", "traceId", "requestId", "observedAttemptIds", "phaseId"],
+      cumulativeFields: [
         "providerInputToEvaluationHorizon",
         "providerInputToTerminalGivenSuccess",
+        "providerTotalInputTokens",
+        "ordinaryInputTokens",
+        "cacheReadInputTokens",
+        "cacheWriteInputTokens",
+        "outputTokens",
+        "reasoningOrThinkingTokens",
+      ],
+      successfulTerminalRule: "providerInputToTerminalGivenSuccess equals providerInputToEvaluationHorizon exactly",
+      failedTerminalRule: "providerInputToTerminalGivenSuccess is null",
+    },
+    m0Integration: {
+      owner: "M0",
+      requiredInterface: "M0_EVALUATION_BOUNDARY",
+      boundaryFactsOnly: [
+        "traceId",
+        "evaluationPrefixSha256",
+        "evaluationAttemptPrefix.requestId",
+        "attemptId",
+        "evaluationAttemptPrefix.phaseId",
+        "evaluationHorizonRequestId",
+        "evaluationHorizonPhaseId",
+        "terminalBoundaryGivenSuccess.terminalAttemptId",
         "modelRoundsToTerminal",
         "tdaiCallCount",
         "timeToTerminalMs",
       ],
+      usageTotalsOwnedByM0: false,
     },
     metadataParityScope: metadataParity.supportedScope,
   }));
@@ -607,6 +818,8 @@ async function main(): Promise<void> {
     m2EvidenceStatus: eligibility.m2EvidenceStatus,
     blockers: eligibility.blockers,
     tokenLedgerCanonicalSha256: tokenLedger.canonicalSha256,
+    requestUsageLedgerCanonicalSha256: requestUsageLedger.ledger.canonicalSha256,
+    usageHorizonCanonicalSha256: usageHorizon.canonicalSha256,
     unsupportedMetadataForwardableRequestsProduced: metadataParity.cases.filter(
       (item) => item.outcome === "pipeline_infrastructure_failure"
         && item.forwardableProviderRequestProduced,

@@ -4,15 +4,19 @@
   "artifacts": [
     {
       "file": "PROVIDER-USAGE-SYNTHETIC.json",
-      "sha256": "6b2a8909a298d044f06145a7a4558d929dad20954a4375d0cf431b84b04ba528"
+      "sha256": "15558fa587f7255c139d370530103d93e58094025634fd9f2b16b3fd58abec58"
     },
     {
       "file": "TOKEN-LEDGER-SYNTHETIC.json",
-      "sha256": "2225c5d39397b2027f836dc50640a979d6398450359e98d02e8cf32171dce1eb"
+      "sha256": "56c2f859721a670a0403785c550c26d6efce0e34519cc352db7a62fe95bf8944"
+    },
+    {
+      "file": "REQUEST-USAGE-LEDGER-SYNTHETIC.json",
+      "sha256": "73abfe5b476fe3646cd058dbad4a1ffe0623d1126b262f33b18ee714461b1d90"
     },
     {
       "file": "ISOLATION-ELIGIBILITY-SYNTHETIC.json",
-      "sha256": "7618cfe926d25bf2608937d08100355ad4cb51787ad2c2e408f4f5445d93e059"
+      "sha256": "3f4bb95e209830dce7d7f31c25541c0b0217eca2146d9a152bedb6cd442ee4e7"
     },
     {
       "file": "METADATA-PARITY.json",
@@ -20,11 +24,11 @@
     },
     {
       "file": "INTERFACE-MANIFEST.json",
-      "sha256": "d3f4daf9b6e4ac02b553ff9236ccb6e4e0768904f8973dc0397a836b8bb3ec91"
+      "sha256": "26f486a7cac0d026cc6db542b1a32c2d424348013d1163686c8bdd34804141a5"
     },
     {
       "file": "NO-MODEL-GATE.json",
-      "sha256": "090c3c688151f907b53ec9b2a3c13cf7882f05be963484ac144c1a7800e4b556"
+      "sha256": "831e249cc46ea3cd9555536b01692d6a6e45d479793ecaf51ab0fe17b8bdf6d5"
     }
   ]
 }

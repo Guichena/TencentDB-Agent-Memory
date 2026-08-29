@@ -14,6 +14,8 @@
     "executionIdentity": {
       "modelId": "gpt-5.6-luna",
       "reasoningEffort": "high",
+      "verbosity": "medium",
+      "codexCliVersion": "synthetic-codex-cli-1",
       "provider": "openai",
       "usageSchema": "openai.responses",
       "apiVersion": "2026-08-01",
@@ -26,7 +28,7 @@
         "providerTotalInputTokens"
       ],
       "unsupportedUsageFields": [],
-      "canonicalSha256": "271e961818c2fb878908afc9601763f36f4d0d666996aca63d57e6268b6e645f"
+      "canonicalSha256": "be8a3be2c3dc014d2b7cca4130a4ece8ed180ea53c436b02b05ba0251457742c"
     },
     "counterfactualRole": null,
     "session": {
@@ -74,6 +76,8 @@
     "executionIdentity": {
       "modelId": "gpt-5.6-luna",
       "reasoningEffort": "high",
+      "verbosity": "medium",
+      "codexCliVersion": "synthetic-codex-cli-1",
       "provider": "openai",
       "usageSchema": "openai.responses",
       "apiVersion": "2026-08-01",
@@ -86,7 +90,7 @@
         "providerTotalInputTokens"
       ],
       "unsupportedUsageFields": [],
-      "canonicalSha256": "271e961818c2fb878908afc9601763f36f4d0d666996aca63d57e6268b6e645f"
+      "canonicalSha256": "be8a3be2c3dc014d2b7cca4130a4ece8ed180ea53c436b02b05ba0251457742c"
     },
     "counterfactualRole": null,
     "session": {
@@ -132,6 +136,7 @@
       "sameCaseInputControl": true,
       "sameProviderRequest": false,
       "sameStaticPrompt": true,
+      "distinctStaticPrompt": false,
       "sameExecutionIdentity": true,
       "sameComparisonGroup": true,
       "distinctCounterfactualRole": false,
@@ -156,7 +161,8 @@
     "m2EvidenceStatus": "blocked",
     "blockers": [
       "FORMAL_DATA_BLOCKED",
-      "MOCK_LAYER_NOT_FORMAL"
+      "MOCK_LAYER_NOT_FORMAL",
+      "TOKEN_CLASSIFICATION_INTEGRATION_BLOCKED"
     ],
     "noModelGate": {
       "status": "ready",
@@ -166,19 +172,51 @@
       "authFilesRead": false,
       "authFilesCopied": false
     },
-    "usageEvidenceSha256": "f516479af86d6add35230c904730339373ddd2d1735e3e14f5b6a286b65b0fab",
-    "tokenLedgerCanonicalSha256": "42c3d32d3a0d91972ddc082d29b1b28204a744fd1119adb14dba100736e9d371",
+    "requestUsageLedgerCanonicalSha256": "740cce532385734f97c9dfbbca5cfafead1bc1070b2522866997bad8291be592",
+    "usageHorizonCanonicalSha256": "e99815061d2721e04e63244799de47dd3b7da8f0a1b704f7595e4cdaa409cab6",
+    "tokenLedgerCanonicalSha256": "9e748172cc935d58e3617d5dc4ba6338ca3fa083b68110c389611269ba2cc976",
     "comparisonPurpose": "none",
-    "m0EvaluationPrefix": {
-      "status": "pending"
+    "m0EvaluationBoundary": {
+      "status": "observed",
+      "runId": "synthetic-m2-evidence",
+      "traceId": "synthetic-m2-trace",
+      "evaluationPrefixSha256": "182b2983f03733c2e5164229ebcd91cb996cc2cc68ab586a07f09c5d747d8f88",
+      "evaluationAttemptPrefix": [
+        {
+          "traceId": "synthetic-m2-trace",
+          "requestId": "synthetic-request-0",
+          "attemptId": "synthetic-attempt-0",
+          "phaseId": "initial"
+        },
+        {
+          "traceId": "synthetic-m2-trace",
+          "requestId": "synthetic-request-1",
+          "attemptId": "synthetic-attempt-1",
+          "phaseId": "executor"
+        }
+      ],
+      "evaluationHorizonRequestId": "synthetic-request-1",
+      "evaluationHorizonPhaseId": "executor",
+      "terminalBoundaryGivenSuccess": {
+        "traceId": "synthetic-m2-trace",
+        "requestId": "synthetic-request-1",
+        "phaseId": "executor",
+        "terminalAttemptId": "synthetic-attempt-1"
+      },
+      "modelRoundsToTerminal": 2,
+      "tdaiCallCount": 2,
+      "timeToTerminalMs": 450,
+      "terminalReached": true
     },
-    "m0EvaluationPrefixGate": {
-      "status": "pending",
+    "m0EvaluationBoundaryGate": {
+      "status": "ready",
       "blockers": []
     },
+    "finalEligibilityOwner": "Integration",
     "integrationRequirements": [
-      "M0_EVALUATION_PREFIX",
-      "INTEGRATION_OWNS_FORMAL_METRIC_ELIGIBLE"
+      "M0_EVALUATION_BOUNDARY",
+      "FORMAL_COMPILER_CAPTURE_CONTRACT",
+      "INTEGRATION_OWNS_FINAL_ELIGIBILITY"
     ]
   }
 }

@@ -1,5 +1,12 @@
 import type { PairedIsolationEvidence, RunIsolationEvidence } from "./isolation-evidence.js";
-import type { ProviderUsageNormalizationResult } from "./provider-usage.js";
+import {
+  assessM0EvaluationBoundaryFacts,
+  assessM2EvaluationHorizonUsageEvidence,
+  type BuildRequestUsageLedgerResult,
+  type M0EvaluationBoundaryFacts,
+  type M0EvaluationBoundaryGate,
+  type M2EvaluationHorizonUsageEvidence,
+} from "./request-usage-ledger.js";
 import type { TokenLedger } from "./token-ledger.js";
 
 export interface PrepareOnlyEvidence {
@@ -11,45 +18,22 @@ export interface PrepareOnlyEvidence {
   authFilesCopied: boolean;
 }
 
-export type M0EvaluationPrefixEvidence =
-  | { status: "pending" }
-  | {
-      status: "observed";
-      traceId: string;
-      evaluationPrefixSha256: string;
-      providerInputToEvaluationHorizon: number;
-      providerInputToTerminalGivenSuccess: number | null;
-      modelRoundsToTerminal: number | null;
-      tdaiCallCount: number;
-      timeToTerminalMs: number | null;
-      terminalReached: boolean;
-    };
-
-export type M0EvaluationPrefixBlockerCode =
-  | "M0_TRACE_ID_INVALID"
-  | "M0_EVALUATION_PREFIX_SHA256_INVALID"
-  | "M0_EVALUATION_HORIZON_COST_INVALID"
-  | "M0_TERMINAL_COST_IDENTITY_INVALID"
-  | "M0_MODEL_ROUNDS_INVALID"
-  | "M0_TDAI_CALL_COUNT_INVALID"
-  | "M0_TIME_TO_TERMINAL_INVALID";
-
-export interface M0EvaluationPrefixGate {
-  status: "pending" | "ready" | "blocked";
-  blockers: M0EvaluationPrefixBlockerCode[];
-}
-
 export type M2EligibilityBlockerCode =
   | "FORMAL_DATA_BLOCKED"
   | "MOCK_LAYER_NOT_FORMAL"
-  | "USAGE_NOT_COMPLETE"
+  | "REQUEST_USAGE_LEDGER_BLOCKED"
+  | "REQUEST_USAGE_LEDGER_RUN_MISMATCH"
+  | "USAGE_HORIZON_BLOCKED"
+  | "USAGE_HORIZON_RUN_MISMATCH"
   | "TOKEN_LEDGER_MODULE_MISMATCH"
   | "TOKEN_LEDGER_RUN_MISMATCH"
   | "TOKEN_LEDGER_VARIANT_MISMATCH"
+  | "TOKEN_CLASSIFICATION_INTEGRATION_BLOCKED"
   | "RUN_ISOLATION_BLOCKED"
   | "PAIRED_ISOLATION_BLOCKED"
   | "COMPARISON_PURPOSE_MISMATCH"
-  | "M0_EVALUATION_PREFIX_INVALID"
+  | "M0_EVALUATION_BOUNDARY_PENDING"
+  | "M0_EVALUATION_BOUNDARY_INVALID"
   | "PREPARE_ONLY_SIDE_EFFECT";
 
 export type M2ComparisonEvidence =
@@ -62,12 +46,13 @@ export type M2ComparisonEvidence =
 export interface BuildM2EligibilityEvidenceInput {
   formalDataState: "blocked" | "frozen";
   evaluationLayer: "mock-contract" | "real-chain";
-  usage: ProviderUsageNormalizationResult;
+  requestUsageLedger: BuildRequestUsageLedgerResult;
+  usageHorizon: M2EvaluationHorizonUsageEvidence | null;
   tokenLedger: TokenLedger;
   runIsolation: RunIsolationEvidence;
   comparison: M2ComparisonEvidence;
   prepareOnly: PrepareOnlyEvidence;
-  m0EvaluationPrefix: M0EvaluationPrefixEvidence;
+  m0EvaluationBoundary: M0EvaluationBoundaryFacts;
 }
 
 export interface M2EligibilityEvidence {
@@ -87,14 +72,17 @@ export interface M2EligibilityEvidence {
     authFilesRead: boolean;
     authFilesCopied: boolean;
   };
-  usageEvidenceSha256: string;
+  requestUsageLedgerCanonicalSha256: string | null;
+  usageHorizonCanonicalSha256: string | null;
   tokenLedgerCanonicalSha256: string;
   comparisonPurpose: M2ComparisonEvidence["purpose"];
-  m0EvaluationPrefix: M0EvaluationPrefixEvidence;
-  m0EvaluationPrefixGate: M0EvaluationPrefixGate;
+  m0EvaluationBoundary: M0EvaluationBoundaryFacts;
+  m0EvaluationBoundaryGate: M0EvaluationBoundaryGate;
+  finalEligibilityOwner: "Integration";
   integrationRequirements: [
-    "M0_EVALUATION_PREFIX",
-    "INTEGRATION_OWNS_FORMAL_METRIC_ELIGIBLE",
+    "M0_EVALUATION_BOUNDARY",
+    "FORMAL_COMPILER_CAPTURE_CONTRACT",
+    "INTEGRATION_OWNS_FINAL_ELIGIBILITY",
   ];
 }
 
@@ -104,12 +92,30 @@ export function buildM2EligibilityEvidence(
   const blockers: M2EligibilityBlockerCode[] = [];
   if (input.formalDataState !== "frozen") blockers.push("FORMAL_DATA_BLOCKED");
   if (input.evaluationLayer !== "real-chain") blockers.push("MOCK_LAYER_NOT_FORMAL");
-  if (!input.usage.ok || input.usage.usage?.usageCompleteForRequiredFields !== true) {
-    blockers.push("USAGE_NOT_COMPLETE");
+  if (input.requestUsageLedger.status !== "ready") {
+    blockers.push("REQUEST_USAGE_LEDGER_BLOCKED");
+  } else if (input.requestUsageLedger.ledger.runId !== input.runIsolation.runId) {
+    blockers.push("REQUEST_USAGE_LEDGER_RUN_MISMATCH");
+  }
+  if (input.usageHorizon === null
+    || assessM2EvaluationHorizonUsageEvidence(input.usageHorizon).status !== "ready") {
+    blockers.push("USAGE_HORIZON_BLOCKED");
+  } else {
+    if (input.usageHorizon.runId !== input.runIsolation.runId) {
+      blockers.push("USAGE_HORIZON_RUN_MISMATCH");
+    }
+    if (
+      input.requestUsageLedger.status === "ready"
+      && input.usageHorizon.requestUsageLedgerCanonicalSha256
+        !== input.requestUsageLedger.ledger.canonicalSha256
+    ) {
+      blockers.push("USAGE_HORIZON_BLOCKED");
+    }
   }
   if (input.tokenLedger.measurementModuleId !== "M2") blockers.push("TOKEN_LEDGER_MODULE_MISMATCH");
   if (input.tokenLedger.runId !== input.runIsolation.runId) blockers.push("TOKEN_LEDGER_RUN_MISMATCH");
   if (input.tokenLedger.variantId !== input.runIsolation.variantId) blockers.push("TOKEN_LEDGER_VARIANT_MISMATCH");
+  blockers.push("TOKEN_CLASSIFICATION_INTEGRATION_BLOCKED");
   if (input.runIsolation.isolationStatus !== "ready") blockers.push("RUN_ISOLATION_BLOCKED");
   if (input.comparison.purpose !== "none") {
     if (input.comparison.evidence.comparisonPurpose !== input.comparison.purpose) {
@@ -117,8 +123,12 @@ export function buildM2EligibilityEvidence(
     }
     if (input.comparison.evidence.pairStatus !== "ready") blockers.push("PAIRED_ISOLATION_BLOCKED");
   }
-  const m0EvaluationPrefixGate = assessM0EvaluationPrefixEvidence(input.m0EvaluationPrefix);
-  if (m0EvaluationPrefixGate.status === "blocked") blockers.push("M0_EVALUATION_PREFIX_INVALID");
+  const m0EvaluationBoundaryGate = assessM0EvaluationBoundaryFacts(input.m0EvaluationBoundary);
+  if (m0EvaluationBoundaryGate.status === "pending") {
+    blockers.push("M0_EVALUATION_BOUNDARY_PENDING");
+  } else if (m0EvaluationBoundaryGate.status === "blocked") {
+    blockers.push("M0_EVALUATION_BOUNDARY_INVALID");
+  }
 
   const prepareOnlySideEffect = input.prepareOnly.enabled && (
     input.prepareOnly.servicesStarted
@@ -148,59 +158,19 @@ export function buildM2EligibilityEvidence(
       authFilesRead: input.prepareOnly.authFilesRead,
       authFilesCopied: input.prepareOnly.authFilesCopied,
     },
-    usageEvidenceSha256: input.usage.canonicalSha256,
+    requestUsageLedgerCanonicalSha256: input.requestUsageLedger.status === "ready"
+      ? input.requestUsageLedger.ledger.canonicalSha256
+      : null,
+    usageHorizonCanonicalSha256: input.usageHorizon?.canonicalSha256 ?? null,
     tokenLedgerCanonicalSha256: input.tokenLedger.canonicalSha256,
     comparisonPurpose: input.comparison.purpose,
-    m0EvaluationPrefix: input.m0EvaluationPrefix,
-    m0EvaluationPrefixGate,
+    m0EvaluationBoundary: input.m0EvaluationBoundary,
+    m0EvaluationBoundaryGate,
+    finalEligibilityOwner: "Integration",
     integrationRequirements: [
-      "M0_EVALUATION_PREFIX",
-      "INTEGRATION_OWNS_FORMAL_METRIC_ELIGIBLE",
+      "M0_EVALUATION_BOUNDARY",
+      "FORMAL_COMPILER_CAPTURE_CONTRACT",
+      "INTEGRATION_OWNS_FINAL_ELIGIBILITY",
     ],
-  };
-}
-
-export function assessM0EvaluationPrefixEvidence(
-  evidence: M0EvaluationPrefixEvidence,
-): M0EvaluationPrefixGate {
-  if (evidence.status === "pending") return { status: "pending", blockers: [] };
-
-  const blockers: M0EvaluationPrefixBlockerCode[] = [];
-  const isNonNegativeInteger = (value: number): boolean => Number.isSafeInteger(value) && value >= 0;
-  const horizonValid = isNonNegativeInteger(evidence.providerInputToEvaluationHorizon);
-  if (evidence.traceId.trim().length === 0) blockers.push("M0_TRACE_ID_INVALID");
-  if (!/^[0-9a-f]{64}$/.test(evidence.evaluationPrefixSha256)) {
-    blockers.push("M0_EVALUATION_PREFIX_SHA256_INVALID");
-  }
-  if (!horizonValid) blockers.push("M0_EVALUATION_HORIZON_COST_INVALID");
-  if (!isNonNegativeInteger(evidence.tdaiCallCount)) blockers.push("M0_TDAI_CALL_COUNT_INVALID");
-
-  if (evidence.terminalReached) {
-    const terminalCostValid = evidence.providerInputToTerminalGivenSuccess !== null
-      && isNonNegativeInteger(evidence.providerInputToTerminalGivenSuccess)
-      && horizonValid
-      && evidence.providerInputToTerminalGivenSuccess >= evidence.providerInputToEvaluationHorizon;
-    if (!terminalCostValid) blockers.push("M0_TERMINAL_COST_IDENTITY_INVALID");
-    if (
-      evidence.modelRoundsToTerminal === null
-      || !Number.isSafeInteger(evidence.modelRoundsToTerminal)
-      || evidence.modelRoundsToTerminal <= 0
-    ) {
-      blockers.push("M0_MODEL_ROUNDS_INVALID");
-    }
-    if (evidence.timeToTerminalMs === null || !isNonNegativeInteger(evidence.timeToTerminalMs)) {
-      blockers.push("M0_TIME_TO_TERMINAL_INVALID");
-    }
-  } else {
-    if (evidence.providerInputToTerminalGivenSuccess !== null) {
-      blockers.push("M0_TERMINAL_COST_IDENTITY_INVALID");
-    }
-    if (evidence.modelRoundsToTerminal !== null) blockers.push("M0_MODEL_ROUNDS_INVALID");
-    if (evidence.timeToTerminalMs !== null) blockers.push("M0_TIME_TO_TERMINAL_INVALID");
-  }
-
-  return {
-    status: blockers.length === 0 ? "ready" : "blocked",
-    blockers,
   };
 }

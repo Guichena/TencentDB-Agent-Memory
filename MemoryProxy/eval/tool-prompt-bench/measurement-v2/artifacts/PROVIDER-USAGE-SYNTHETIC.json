@@ -46,6 +46,17 @@
         "unsupportedFields": [
           "cacheWriteInputTokens"
         ],
+        "rawUsageCanonicalizationStatus": "ready",
+        "rawUsageCanonicalClone": {
+          "input_tokens": 100,
+          "input_tokens_details": {
+            "cached_tokens": 40
+          },
+          "output_tokens": 12,
+          "output_tokens_details": {
+            "reasoning_tokens": 3
+          }
+        },
         "rawUsageSha256": "a0d2c27fe8d134c081ff0b6ff0d5183c2d85dff69be4a8a27eccdc87029d6f8f",
         "fieldStates": {
           "providerTotalInputTokens": "reported",
@@ -68,7 +79,7 @@
           ]
         },
         "errors": [],
-        "canonicalSha256": "58151f2ec44d2785b5fc05e3c80e088dd151d714c1e1dffa1c905c2b063032b6"
+        "canonicalSha256": "02f7320ad598271fa21f99f750345043582bd9bac4376044f827b2b23ec752ee"
       }
     },
     {
@@ -110,6 +121,15 @@
           "outputTokens"
         ],
         "unsupportedFields": [],
+        "rawUsageCanonicalizationStatus": "ready",
+        "rawUsageCanonicalClone": {
+          "input_tokens": 100,
+          "input_tokens_details": {
+            "cache_write_tokens": 10,
+            "cached_tokens": 40
+          },
+          "output_tokens": 12
+        },
         "rawUsageSha256": "03483bc40fbee3134dc1ad07a9431a7e7db890f2d3d08ff7dc055cd95b929f32",
         "fieldStates": {
           "providerTotalInputTokens": "reported",
@@ -130,7 +150,7 @@
           "unsupportedOptionalFields": []
         },
         "errors": [],
-        "canonicalSha256": "f516479af86d6add35230c904730339373ddd2d1735e3e14f5b6a286b65b0fab"
+        "canonicalSha256": "050f9b2746dea8a54b145f4f0a7c45888484d01bb7303301bba203d5cc49c48e"
       }
     },
     {
@@ -176,6 +196,17 @@
         "unsupportedFields": [
           "cacheWriteInputTokens"
         ],
+        "rawUsageCanonicalizationStatus": "ready",
+        "rawUsageCanonicalClone": {
+          "completion_tokens": 11,
+          "completion_tokens_details": {
+            "reasoning_tokens": 4
+          },
+          "prompt_tokens": 90,
+          "prompt_tokens_details": {
+            "cached_tokens": 20
+          }
+        },
         "rawUsageSha256": "8903e6a5f5e34c12bbd379447639dfba1727d854ee064c942a1393e2f82e2184",
         "fieldStates": {
           "providerTotalInputTokens": "reported",
@@ -198,7 +229,7 @@
           ]
         },
         "errors": [],
-        "canonicalSha256": "9e2c6ef74cf1fa852a728c5402f62dfae333920de4ab46231ea70016159f948a"
+        "canonicalSha256": "6f57c823e4d762233b227742db35e6f1e813484bc440419916f9de394337674a"
       }
     },
     {
@@ -241,6 +272,14 @@
           "reasoningOrThinkingTokens"
         ],
         "unsupportedFields": [],
+        "rawUsageCanonicalizationStatus": "ready",
+        "rawUsageCanonicalClone": {
+          "cache_write_input_tokens": 10,
+          "cached_input_tokens": 50,
+          "input_tokens": 120,
+          "output_tokens": 20,
+          "reasoning_output_tokens": 7
+        },
         "rawUsageSha256": "31ca96b33501342fd127cf3d588d55643c4a88b3c53d12d5095e939da9fe8b8a",
         "fieldStates": {
           "providerTotalInputTokens": "reported",
@@ -261,7 +300,7 @@
           "unsupportedOptionalFields": []
         },
         "errors": [],
-        "canonicalSha256": "fbee35f04f2bcd24412d1ca702834da4c45bdc3a608d2ccebeffa13950a7d058"
+        "canonicalSha256": "eadc3db3b5407457d41bb4490bbaad8c4264f11b3cd0c2ad85cc6a9eb37c0387"
       }
     },
     {
@@ -305,6 +344,13 @@
         "unsupportedFields": [
           "reasoningOrThinkingTokens"
         ],
+        "rawUsageCanonicalizationStatus": "ready",
+        "rawUsageCanonicalClone": {
+          "cache_creation_input_tokens": 10,
+          "cache_read_input_tokens": 30,
+          "input_tokens": 60,
+          "output_tokens": 8
+        },
         "rawUsageSha256": "21b566262b924cca8528bdee03cd70fd4bc0682542e43309c9e4501e2162ad61",
         "fieldStates": {
           "providerTotalInputTokens": "derived",
@@ -327,7 +373,7 @@
           ]
         },
         "errors": [],
-        "canonicalSha256": "b2e191baa329df292c861f48fd0037c65397e35205e08d4618d58fe3202d34dc"
+        "canonicalSha256": "3f001b20f7f5e87fd0699126fa71b7ac5a54facd2ce46f0c89afef5b6e7da589"
       }
     }
   ]

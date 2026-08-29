@@ -1,16 +1,135 @@
+import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import { AnthropicAdapter } from "../injection/adapters/anthropic.js";
 import { ClaudeCodeProfile } from "../injection/agents/claude-code/index.js";
 import { InjectionPipeline } from "../injection/pipeline.js";
 import { HookRegistryImpl } from "../injection/registry.js";
 import {
-  assessM0EvaluationPrefixEvidence,
+  assessM0EvaluationBoundaryFacts,
+  assessM2EvaluationHorizonUsageEvidence,
   assessPairedIsolationEvidence,
+  accumulateRequestUsageToM0Horizon,
   buildM2EligibilityEvidence,
+  buildRequestUsageLedger,
   buildRunIsolationEvidence,
   buildTokenLedger,
+  buildTrustedTokenSourceManifest,
+  canonicalSha256,
   normalizeProviderUsage,
+  TOKEN_CLASSIFICATION_CONTRACT,
 } from "../../eval/tool-prompt-bench/measurement-v2/index.js";
+
+const TOKEN_CLASSIFICATION_INPUT = {
+  contractVersion: TOKEN_CLASSIFICATION_CONTRACT.contractVersion,
+  contractSha256: TOKEN_CLASSIFICATION_CONTRACT.contractSha256,
+  compilerVersion: TOKEN_CLASSIFICATION_CONTRACT.compilerVersion,
+  segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
+};
+
+function tokenSourceSegment(
+  order: number,
+  sourceId: string,
+  sourceKind:
+    | "legacy-body"
+    | "policy"
+    | "execution-grammar"
+    | "tool-card"
+    | "dynamic-assets"
+    | "runtime-binding",
+  text: string,
+) {
+  return {
+    order,
+    sourceId,
+    sourceKind,
+    sourceSha256: createHash("sha256").update(text, "utf8").digest("hex"),
+    text,
+  };
+}
+
+function trustedTokenSources(
+  sources: readonly ReturnType<typeof tokenSourceSegment>[],
+) {
+  const compiledBlockId = "synthetic-compiled-block";
+  const captureBlockId = "synthetic-capture-block";
+  const compiledUnits = sources
+    .filter((source) => source.sourceKind !== "runtime-binding" && source.sourceKind !== "dynamic-assets")
+    .map((source) => ({
+      id: source.sourceId,
+      family: "memory" as const,
+      kind: source.sourceKind as "legacy-body" | "policy" | "execution-grammar" | "tool-card",
+      content: source.text,
+      sourceSpecIds: [] as const,
+    }));
+  const compiledContent = compiledUnits.map((unit) => unit.content).join("");
+  const captureDynamicAssets = sources
+    .filter((source) => source.sourceKind === "dynamic-assets")
+    .map((source) => ({
+      injectionBlockId: captureBlockId,
+      sourceId: source.sourceId,
+      sourceSha256: source.sourceSha256,
+    }));
+  const captureRuntimeBindings = sources
+    .filter((source) => source.sourceKind === "runtime-binding")
+    .map((source) => ({
+      injectionBlockId: captureBlockId,
+      sourceId: source.sourceId,
+      sourceSha256: source.sourceSha256,
+    }));
+  const providerOrder = sources.map((source) => {
+    if (source.sourceKind === "runtime-binding") {
+      return {
+        provenance: "frozen-capture-runtime-binding" as const,
+        injectionBlockId: captureBlockId,
+        sourceId: source.sourceId,
+      };
+    }
+    if (source.sourceKind === "dynamic-assets") {
+      return {
+        provenance: "frozen-capture-dynamic-asset" as const,
+        injectionBlockId: captureBlockId,
+        sourceId: source.sourceId,
+      };
+    }
+    return {
+      provenance: "compiled-tool-prompt-unit" as const,
+      injectionBlockId: compiledBlockId,
+      unitId: source.sourceId,
+    };
+  });
+  const sourceManifest = buildTrustedTokenSourceManifest({
+    compilerVersion: TOKEN_CLASSIFICATION_CONTRACT.compilerVersion,
+    segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
+    compiledPromptBundles: compiledUnits.length === 0 ? [] : [{
+      injectionBlockId: compiledBlockId,
+      compiledPrompt: {
+        compilerVersion: TOKEN_CLASSIFICATION_CONTRACT.compilerVersion,
+        profile: "protocol-compact",
+        profileLineage: ["legacy", "contract-corrected", "protocol-compact"],
+        family: "memory",
+        surface: "memory-tools",
+        capabilitySignature: "synthetic",
+        content: compiledContent,
+        contentSha256: createHash("sha256").update(compiledContent).digest("hex"),
+        units: compiledUnits,
+        contractIds: [],
+        specIds: [],
+      },
+    }],
+    captureDynamicAssets,
+    captureRuntimeBindings,
+    providerOrder,
+  });
+  return {
+    sourceManifest,
+    segments: sources.map((source, index) => ({
+      order: source.order,
+      sourceId: sourceManifest.orderedSources[index].sourceId,
+      sourceSha256: source.sourceSha256,
+      text: source.text,
+    })),
+  };
+}
 
 const EVIDENCE_SHA = {
   caseInput: "1".repeat(64),
@@ -23,6 +142,36 @@ const EVIDENCE_SHA = {
   staticPromptA: "7".repeat(64),
   staticPromptB: "9".repeat(64),
 } as const;
+
+describe("Task 1 measurement v2 canonical JSON", () => {
+  it("rejects non-JSON runtime shapes instead of hashing collisions", () => {
+    class RuntimeShape {
+      value = 1;
+    }
+    const invalidValues: unknown[] = [
+      Array(1),
+      new Date("2026-08-30T00:00:00.000Z"),
+      new Map([["value", 1]]),
+      new Set([1]),
+      new RuntimeShape(),
+      undefined,
+      () => 1,
+      Symbol("value"),
+      1n,
+      Number.NaN,
+      Number.POSITIVE_INFINITY,
+      Number.NEGATIVE_INFINITY,
+      -0,
+      { nested: undefined },
+    ];
+
+    for (const value of invalidValues) {
+      expect(() => canonicalSha256(value)).toThrowError(/canonical JSON/i);
+    }
+    expect(canonicalSha256([])).not.toBe(canonicalSha256([null]));
+    expect(canonicalSha256({})).not.toBe(canonicalSha256({ value: null }));
+  });
+});
 
 describe("Task 1 measurement v2 provider usage", () => {
   it("normalizes OpenAI Responses usage without adding cached input twice", () => {
@@ -165,6 +314,39 @@ describe("Task 1 measurement v2 provider usage", () => {
 
     expect(first.rawUsageSha256).toBe(second.rawUsageSha256);
     expect(first.canonicalSha256).not.toBe(second.canonicalSha256);
+  });
+
+  it("retains a detached canonical raw-usage clone without polluting normalized usage", () => {
+    const rawUsage = {
+      input_tokens: 10,
+      input_tokens_details: { cached_tokens: 4 },
+      output_tokens: 2,
+    };
+    const result = normalizeProviderUsage({
+      provider: "openai",
+      schema: "openai.responses",
+      apiVersion: "2026-08-01",
+      adapterVersion: "responses-v1",
+      requiredFields: ["providerTotalInputTokens", "cacheReadInputTokens"],
+      unsupportedFields: ["cacheWriteInputTokens"],
+      rawUsage,
+    });
+
+    rawUsage.input_tokens = 999;
+    rawUsage.input_tokens_details.cached_tokens = 999;
+
+    expect(result.rawUsageCanonicalClone).toEqual({
+      input_tokens: 10,
+      input_tokens_details: { cached_tokens: 4 },
+      output_tokens: 2,
+    });
+    expect(Object.isFrozen(result.rawUsageCanonicalClone)).toBe(true);
+    expect(Object.isFrozen(
+      (result.rawUsageCanonicalClone as Record<string, unknown>).input_tokens_details,
+    )).toBe(true);
+    expect(result.rawUsageSha256).toMatch(/^[0-9a-f]{64}$/);
+    expect(result.usage).not.toHaveProperty("input_tokens");
+    expect(result.usage).not.toHaveProperty("rawUsage");
   });
 
   it("normalizes Anthropic Messages usage where input_tokens excludes cache buckets", () => {
@@ -388,7 +570,14 @@ describe("Task 1 measurement v2 provider usage", () => {
       code: "REQUIRED_USAGE_MISSING",
       field: "providerTotalInputTokens",
     }));
-    expect(result.rawUsageSha256).toMatch(/^[0-9a-f]{64}$/);
+    expect(result).toMatchObject({
+      rawUsageCanonicalizationStatus: "blocked",
+      rawUsageCanonicalClone: null,
+      rawUsageSha256: null,
+      errors: expect.arrayContaining([
+        expect.objectContaining({ code: "RAW_USAGE_NOT_CANONICAL_JSON" }),
+      ]),
+    });
   });
 
   it("rejects invalid numeric values and provider/schema mismatches", () => {
@@ -424,6 +613,14 @@ describe("Task 1 measurement v2 provider usage", () => {
       providerTotalInputTokens: "invalid",
       outputTokens: "invalid",
     });
+    expect(invalid).toMatchObject({
+      rawUsageCanonicalizationStatus: "blocked",
+      rawUsageCanonicalClone: null,
+      rawUsageSha256: null,
+      errors: expect.arrayContaining([
+        expect.objectContaining({ code: "RAW_USAGE_NOT_CANONICAL_JSON" }),
+      ]),
+    });
     expect(mismatch).toMatchObject({
       ok: false,
       usage: null,
@@ -439,12 +636,13 @@ describe("Task 1 measurement v2 token ledger", () => {
       variantId: "V0",
       runId: "synthetic-run-1",
       providerVisibleInjection: text,
-      segments: [
-        { component: "staticTemplate", text: "STATIC\n" },
-        { component: "executionContract", text: "CONTRACT\n" },
-        { component: "runtimeBinding", text: "session-1\n" },
-        { component: "dynamicAsset", text: "ASSET" },
-      ],
+      classification: TOKEN_CLASSIFICATION_INPUT,
+      ...trustedTokenSources([
+        tokenSourceSegment(0, "memory-guide.policy", "policy", "STATIC\n"),
+        tokenSourceSegment(1, "shared.execution-grammar", "execution-grammar", "CONTRACT\n"),
+        tokenSourceSegment(2, "memory-tools.legacy-body#binding-0", "runtime-binding", "session-1\n"),
+        tokenSourceSegment(3, "skill-listing.dynamic-assets", "dynamic-assets", "ASSET"),
+      ]),
       tokenizer: {
         id: "synthetic-single-span",
         version: "1",
@@ -458,6 +656,28 @@ describe("Task 1 measurement v2 token ledger", () => {
       variantId: "V0",
       runId: "synthetic-run-1",
       tokenizer: { id: "synthetic-single-span", version: "1" },
+      classification: {
+        compilerVersion: "c05.1",
+        sourceKindToComponent: {
+          "legacy-body": "staticTemplate",
+          policy: "staticTemplate",
+          "execution-grammar": "executionContract",
+          "tool-card": "staticTemplate",
+          "dynamic-assets": "dynamicAsset",
+          "runtime-binding": "runtimeBinding",
+        },
+        orderedSources: [
+          { order: 0, sourceLocalId: "memory-guide.policy", sourceKind: "policy" },
+          { order: 1, sourceLocalId: "shared.execution-grammar", sourceKind: "execution-grammar" },
+          { order: 2, sourceLocalId: "memory-tools.legacy-body#binding-0", sourceKind: "runtime-binding" },
+          { order: 3, sourceLocalId: "skill-listing.dynamic-assets", sourceKind: "dynamic-assets" },
+        ],
+        formalCompilerClosure: {
+          status: "blocked",
+          blocker: "FORMAL_COMPILER_CAPTURE_CONTRACT_NOT_INTEGRATED",
+          owner: "Integration",
+        },
+      },
       componentTokenAccounting: "independently_encoded_non_additive",
       totalInjectionTokens: 1,
       toolDescriptionStaticTokens: 1,
@@ -481,17 +701,21 @@ describe("Task 1 measurement v2 token ledger", () => {
       version: "1",
       count: (value: string) => Buffer.byteLength(value, "utf8"),
     };
-    const build = (asset: string) => buildTokenLedger({
-      variantId: "V1",
-      runId: "synthetic-run-2",
-      providerVisibleInjection: `RULE\nsession-1\n${asset}`,
-      segments: [
-        { component: "staticTemplate", text: "RULE\n" },
-        { component: "runtimeBinding", text: "session-1\n" },
-        { component: "dynamicAsset", text: asset },
-      ],
-      tokenizer,
-    });
+    const build = (asset: string) => {
+      const sources = [
+        tokenSourceSegment(0, "skill-tools.legacy-body#static-0", "legacy-body", "RULE\n"),
+        tokenSourceSegment(1, "skill-tools.legacy-body#binding-0", "runtime-binding", "session-1\n"),
+        tokenSourceSegment(2, "skill-listing.dynamic-assets", "dynamic-assets", asset),
+      ];
+      return buildTokenLedger({
+        variantId: "V1",
+        runId: "synthetic-run-2",
+        providerVisibleInjection: `RULE\nsession-1\n${asset}`,
+        classification: TOKEN_CLASSIFICATION_INPUT,
+        ...trustedTokenSources(sources),
+        tokenizer,
+      });
+    };
 
     const first = build("ASSET-A");
     const repeated = build("ASSET-A");
@@ -506,11 +730,13 @@ describe("Task 1 measurement v2 token ledger", () => {
   });
 
   it("fails closed when segments do not cover the injection or the tokenizer is invalid", () => {
+    const sources = [tokenSourceSegment(0, "memory-tools.legacy-body", "legacy-body", "A")];
     const input = {
       variantId: "V2",
       runId: "synthetic-invalid",
       providerVisibleInjection: "AB",
-      segments: [{ component: "staticTemplate" as const, text: "A" }],
+      classification: TOKEN_CLASSIFICATION_INPUT,
+      ...trustedTokenSources(sources),
       tokenizer: { id: "synthetic", version: "1", count: () => 1 },
     };
 
@@ -522,6 +748,681 @@ describe("Task 1 measurement v2 token ledger", () => {
       providerVisibleInjection: "A",
       tokenizer: { id: "broken", version: "1", count: () => Number.NaN },
     })).toThrowError(expect.objectContaining({ code: "INVALID_TOKENIZER" }));
+  });
+
+  it("rejects untrusted, incomplete, duplicate, reordered, or rehashed classification sources", () => {
+    const tokenizer = { id: "synthetic", version: "1", count: (text: string) => text.length };
+    const sources = [
+      tokenSourceSegment(0, "memory-guide.policy", "policy", "A"),
+      tokenSourceSegment(1, "shared.execution-grammar", "execution-grammar", "B"),
+    ];
+    const trusted = trustedTokenSources(sources);
+    const build = (overrides: Record<string, unknown>) => buildTokenLedger({
+      variantId: "V2",
+      runId: "classification-invalid",
+      providerVisibleInjection: "AB",
+      classification: TOKEN_CLASSIFICATION_INPUT,
+      ...trusted,
+      tokenizer,
+      ...overrides,
+    });
+
+    expect(() => build({
+      classification: { ...TOKEN_CLASSIFICATION_INPUT, contractSha256: "0".repeat(64) },
+    })).toThrowError(expect.objectContaining({ code: "CLASSIFICATION_CONTRACT_MISMATCH" }));
+    expect(() => build({
+      segments: trusted.segments.slice(0, 1),
+    })).toThrowError(expect.objectContaining({ code: "CLASSIFICATION_SEGMENT_MISSING" }));
+    expect(() => build({
+      segments: [trusted.segments[1], trusted.segments[0]],
+    })).toThrowError(expect.objectContaining({ code: "CLASSIFICATION_SOURCE_REORDERED" }));
+    expect(() => build({
+      segments: [
+        trusted.segments[0],
+        { ...trusted.segments[1], text: "C" },
+      ],
+    })).toThrowError(expect.objectContaining({ code: "CLASSIFICATION_SOURCE_HASH_MISMATCH" }));
+    expect(() => build({ providerVisibleInjection: "ABC" })).toThrowError(expect.objectContaining({
+      code: "SEGMENT_COVERAGE_MISMATCH",
+    }));
+
+    const compiledPrompt = (units: Array<{
+      id: string;
+      family: "memory";
+      kind: "policy" | "tool-card";
+      content: string;
+      sourceSpecIds: never[];
+    }>) => {
+      const content = units.map((unit) => unit.content).join("");
+      return {
+        compilerVersion: TOKEN_CLASSIFICATION_CONTRACT.compilerVersion,
+        profile: "protocol-compact" as const,
+        profileLineage: ["legacy", "contract-corrected", "protocol-compact"] as const,
+        family: "memory" as const,
+        surface: "memory-tools" as const,
+        capabilitySignature: "synthetic",
+        content,
+        contentSha256: createHash("sha256").update(content).digest("hex"),
+        units,
+        contractIds: [] as const,
+        specIds: [] as const,
+      };
+    };
+    const unknownPrompt = compiledPrompt([{
+      id: "unknown",
+      family: "memory",
+      kind: "policy",
+      content: "A",
+      sourceSpecIds: [],
+    }]);
+    unknownPrompt.units[0].kind = "caller-component" as never;
+    expect(() => buildTrustedTokenSourceManifest({
+      compilerVersion: TOKEN_CLASSIFICATION_CONTRACT.compilerVersion,
+      segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
+      compiledPromptBundles: [{ injectionBlockId: "unknown-block", compiledPrompt: unknownPrompt }],
+      captureDynamicAssets: [],
+      captureRuntimeBindings: [],
+      providerOrder: [{
+        provenance: "compiled-tool-prompt-unit",
+        injectionBlockId: "unknown-block",
+        unitId: "unknown",
+      }],
+    })).toThrowError(expect.objectContaining({ code: "CLASSIFICATION_SOURCE_UNKNOWN" }));
+    const duplicatePrompt = compiledPrompt([
+      { id: "duplicate", family: "memory", kind: "policy", content: "A", sourceSpecIds: [] },
+      { id: "duplicate", family: "memory", kind: "tool-card", content: "B", sourceSpecIds: [] },
+    ]);
+    expect(() => buildTrustedTokenSourceManifest({
+      compilerVersion: TOKEN_CLASSIFICATION_CONTRACT.compilerVersion,
+      segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
+      compiledPromptBundles: [{ injectionBlockId: "duplicate-block", compiledPrompt: duplicatePrompt }],
+      captureDynamicAssets: [],
+      captureRuntimeBindings: [],
+      providerOrder: [
+        {
+          provenance: "compiled-tool-prompt-unit",
+          injectionBlockId: "duplicate-block",
+          unitId: "duplicate",
+        },
+        {
+          provenance: "compiled-tool-prompt-unit",
+          injectionBlockId: "duplicate-block",
+          unitId: "duplicate",
+        },
+      ],
+    })).toThrowError(expect.objectContaining({ code: "CLASSIFICATION_SOURCE_DUPLICATE" }));
+  });
+
+  it("binds kind and bytes to a trusted ordered source manifest", () => {
+    const shared = tokenSourceSegment(0, "memory-guide.policy", "policy", "STATIC");
+    const trusted = trustedTokenSources([shared]);
+    const build = (overrides: Record<string, unknown> = {}) => buildTokenLedger({
+      variantId: "V0",
+      runId: "classification-relabel",
+      providerVisibleInjection: "STATIC",
+      classification: TOKEN_CLASSIFICATION_INPUT,
+      ...trusted,
+      tokenizer: { id: "synthetic", version: "1", count: (text) => text.length },
+      ...overrides,
+    });
+
+    expect(build().staticTemplateTokens).toBe(6);
+    expect(() => build({
+      segments: [{ ...trusted.segments[0], sourceKind: "dynamic-assets" }],
+    })).toThrowError(expect.objectContaining({
+      code: "CLASSIFICATION_SOURCE_MANIFEST_MISMATCH",
+    }));
+    expect(() => build({
+      sourceManifest: {
+        ...trusted.sourceManifest,
+        orderedSources: [{
+          ...trusted.sourceManifest.orderedSources[0],
+          sourceKind: "dynamic-assets",
+        }],
+      },
+    })).toThrowError(expect.objectContaining({
+      code: "CLASSIFICATION_MANIFEST_HASH_MISMATCH",
+    }));
+    expect(() => build({
+      segments: [{ ...trusted.segments[0], text: "TAMPER" }],
+    })).toThrowError(expect.objectContaining({
+      code: "CLASSIFICATION_SOURCE_HASH_MISMATCH",
+    }));
+  });
+
+  it("qualifies repeated compiler unit ids across real prompt surfaces", () => {
+    const compiledPrompt = (
+      family: "memory" | "skill",
+      surface: "memory-tools" | "skill-tools",
+      content: string,
+    ) => ({
+      compilerVersion: TOKEN_CLASSIFICATION_CONTRACT.compilerVersion,
+      profile: "protocol-compact" as const,
+      profileLineage: ["legacy", "contract-corrected", "protocol-compact"] as const,
+      family,
+      surface,
+      capabilitySignature: "all-on",
+      content,
+      contentSha256: createHash("sha256").update(content).digest("hex"),
+      units: [{
+        id: "shared.execution-grammar",
+        family,
+        kind: "execution-grammar" as const,
+        content,
+        sourceSpecIds: [] as const,
+      }],
+      contractIds: [] as const,
+      specIds: [] as const,
+    });
+    const memory = compiledPrompt("memory", "memory-tools", "MEMORY");
+    const skill = compiledPrompt("skill", "skill-tools", "SKILL");
+
+    expect(() => buildTrustedTokenSourceManifest({
+      compilerVersion: TOKEN_CLASSIFICATION_CONTRACT.compilerVersion,
+      segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
+      compiledPromptBundles: [
+        { injectionBlockId: "memory-block", compiledPrompt: memory },
+        { injectionBlockId: "skill-block", compiledPrompt: skill },
+      ],
+      captureDynamicAssets: [],
+      captureRuntimeBindings: [],
+      providerOrder: [
+        {
+          provenance: "compiled-tool-prompt-unit",
+          injectionBlockId: "memory-block",
+          unitId: "shared.execution-grammar",
+        },
+        {
+          provenance: "compiled-tool-prompt-unit",
+          injectionBlockId: "skill-block",
+          unitId: "shared.execution-grammar",
+        },
+      ],
+    } as never)).not.toThrow();
+  });
+});
+
+describe("Task 1 measurement v2 request and phase usage ledger", () => {
+  const usage = (inputTokens: number, cachedTokens = 0) => normalizeProviderUsage({
+    provider: "openai",
+    schema: "openai.responses",
+    apiVersion: "2026-08-01",
+    adapterVersion: "responses-v1",
+    requiredFields: [
+      "providerTotalInputTokens",
+      "ordinaryInputTokens",
+      "cacheReadInputTokens",
+      "outputTokens",
+    ],
+    unsupportedFields: ["cacheWriteInputTokens"],
+    rawUsage: {
+      input_tokens: inputTokens,
+      input_tokens_details: { cached_tokens: cachedTokens },
+      output_tokens: 5,
+      output_tokens_details: { reasoning_tokens: 2 },
+    },
+  });
+  const request = (
+    ordinal: number,
+    requestId: string,
+    phaseId: string,
+    requestUsage = usage(10),
+  ) => ({
+    runId: "ledger-run",
+    traceId: "ledger-trace",
+    requestId,
+    observedAttemptIds: [`attempt-${ordinal}`],
+    requestOrdinal: ordinal,
+    phaseId,
+    component: "task_model" as const,
+    phaseType: ordinal === 0 ? "initial" as const : "followup" as const,
+    promptSha256: String(ordinal + 1).repeat(64),
+    candidateActionCount: 3,
+    injectionTokensO200k: 7,
+    discoveryResultTokens: null,
+    toolResultContextTokens: null,
+    latencyMs: 25,
+    usage: requestUsage,
+  });
+  const boundary = (
+    requestId: string,
+    attemptId: string,
+    phaseId: string,
+  ) => ({
+    traceId: "ledger-trace",
+    requestId,
+    attemptId,
+    phaseId,
+  });
+
+  it("accepts a real provider request with no observed TDAI attempts", () => {
+    const built = buildRequestUsageLedger({
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      requests: [{
+        ...request(0, "request-direct", "initial", usage(17)),
+        observedAttemptIds: [],
+      }],
+    });
+
+    expect(built.status).toBe("ready");
+    if (built.status !== "ready") throw new Error("expected zero-attempt provider request ledger");
+    const attemptPrefix: readonly never[] = [];
+    const m0 = {
+      status: "observed" as const,
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      evaluationPrefixSha256: canonicalSha256(attemptPrefix),
+      evaluationAttemptPrefix: attemptPrefix,
+      evaluationHorizonRequestId: "request-direct",
+      evaluationHorizonPhaseId: "initial",
+      terminalBoundaryGivenSuccess: null,
+      modelRoundsToTerminal: null,
+      tdaiCallCount: 0,
+      timeToTerminalMs: null,
+      terminalReached: false,
+    } as const;
+
+    expect(assessM0EvaluationBoundaryFacts(m0)).toEqual({ status: "ready", blockers: [] });
+    expect(accumulateRequestUsageToM0Horizon(built.ledger, m0)).toMatchObject({
+      status: "ready",
+      evaluationAttemptCount: 0,
+      accumulatedRequestCount: 1,
+      providerInputToEvaluationHorizon: 17,
+      providerInputToTerminalGivenSuccess: null,
+    });
+  });
+
+  it("records multiple ordered attempts on one provider request without charging it twice", () => {
+    const built = buildRequestUsageLedger({
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      requests: [{
+        ...request(0, "request-multi", "executor", usage(61)),
+        observedAttemptIds: ["attempt-a", "attempt-b"],
+      }],
+    });
+    expect(built.status).toBe("ready");
+    if (built.status !== "ready") throw new Error("expected multi-attempt provider request ledger");
+    const evaluationAttemptPrefix = [
+      boundary("request-multi", "attempt-a", "executor"),
+      boundary("request-multi", "attempt-b", "executor"),
+    ];
+    const m0 = {
+      status: "observed" as const,
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      evaluationPrefixSha256: canonicalSha256(evaluationAttemptPrefix),
+      evaluationAttemptPrefix,
+      evaluationHorizonRequestId: "request-multi",
+      evaluationHorizonPhaseId: "executor",
+      terminalBoundaryGivenSuccess: {
+        traceId: "ledger-trace",
+        requestId: "request-multi",
+        phaseId: "executor",
+        terminalAttemptId: "attempt-b",
+      },
+      modelRoundsToTerminal: 1,
+      tdaiCallCount: 2,
+      timeToTerminalMs: 80,
+      terminalReached: true,
+    } as const;
+
+    const accumulated = accumulateRequestUsageToM0Horizon(built.ledger, m0);
+    expect(accumulated).toMatchObject({
+      status: "ready",
+      evaluationAttemptCount: 2,
+      accumulatedRequestCount: 1,
+      providerInputToEvaluationHorizon: 61,
+      providerInputToTerminalGivenSuccess: 61,
+    });
+  });
+
+  it("uses the horizon request identity when non-task phases are interleaved", () => {
+    const requests = [
+      { ...request(0, "router-request", "router", usage(3)), component: "router" as const, observedAttemptIds: [] },
+      { ...request(1, "task-request", "executor", usage(10)), observedAttemptIds: ["attempt-a"] },
+      { ...request(2, "verifier-request", "verify", usage(5)), component: "verifier" as const, observedAttemptIds: [] },
+      { ...request(3, "terminal-request", "followup", usage(20)), observedAttemptIds: ["attempt-b"] },
+    ];
+    const built = buildRequestUsageLedger({
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      requests,
+    });
+    expect(built.status).toBe("ready");
+    if (built.status !== "ready") throw new Error("expected interleaved request ledger");
+    const evaluationAttemptPrefix = [
+      boundary("task-request", "attempt-a", "executor"),
+      boundary("terminal-request", "attempt-b", "followup"),
+    ];
+    const m0 = {
+      status: "observed" as const,
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      evaluationPrefixSha256: canonicalSha256(evaluationAttemptPrefix),
+      evaluationAttemptPrefix,
+      evaluationHorizonRequestId: "terminal-request",
+      evaluationHorizonPhaseId: "followup",
+      terminalBoundaryGivenSuccess: {
+        traceId: "ledger-trace",
+        requestId: "terminal-request",
+        phaseId: "followup",
+        terminalAttemptId: "attempt-b",
+      },
+      modelRoundsToTerminal: 2,
+      tdaiCallCount: 2,
+      timeToTerminalMs: 100,
+      terminalReached: true,
+    } as const;
+
+    expect(accumulateRequestUsageToM0Horizon(built.ledger, m0)).toMatchObject({
+      status: "ready",
+      accumulatedRequestCount: 4,
+      providerInputToEvaluationHorizon: 38,
+      providerInputToTerminalGivenSuccess: 38,
+    });
+  });
+
+  it("accumulates multi-round usage only through an early successful terminal", () => {
+    const built = buildRequestUsageLedger({
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      requests: [
+        request(0, "request-0", "initial", usage(100, 40)),
+        request(1, "request-1", "executor", usage(50, 0)),
+        request(2, "request-after-terminal", "post-terminal", usage(999, 0)),
+      ],
+    });
+    expect(built.status).toBe("ready");
+    if (built.status !== "ready") throw new Error("expected ready request ledger");
+
+    const evaluationAttemptPrefix = [
+      boundary("request-0", "attempt-0", "initial"),
+      boundary("request-1", "attempt-1", "executor"),
+    ];
+    const m0 = {
+      status: "observed" as const,
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      evaluationPrefixSha256: canonicalSha256(evaluationAttemptPrefix),
+      evaluationAttemptPrefix,
+      evaluationHorizonRequestId: "request-1",
+      evaluationHorizonPhaseId: "executor",
+      terminalBoundaryGivenSuccess: {
+        traceId: "ledger-trace",
+        requestId: "request-1",
+        phaseId: "executor",
+        terminalAttemptId: "attempt-1",
+      },
+      modelRoundsToTerminal: 2,
+      tdaiCallCount: 2,
+      timeToTerminalMs: 450,
+      terminalReached: true,
+    };
+    expect(assessM0EvaluationBoundaryFacts(m0)).toEqual({ status: "ready", blockers: [] });
+
+    const accumulated = accumulateRequestUsageToM0Horizon(built.ledger, m0);
+    expect(accumulated).toMatchObject({
+      status: "ready",
+      blockers: [],
+      evaluationAttemptCount: 2,
+      evaluationHorizonRequestOrdinal: 1,
+      accumulatedRequestCount: 2,
+      providerInputToEvaluationHorizon: 150,
+      providerInputToTerminalGivenSuccess: 150,
+      aggregatesToEvaluationHorizon: {
+        providerTotalInputTokens: 150,
+        ordinaryInputTokens: 110,
+        cacheReadInputTokens: 40,
+        cacheWriteInputTokens: null,
+        outputTokens: 10,
+        reasoningOrThinkingTokens: 4,
+      },
+    });
+    expect(accumulated.providerInputToEvaluationHorizon).not.toBe(1149);
+    expect(assessM2EvaluationHorizonUsageEvidence(accumulated)).toEqual({
+      status: "ready",
+      blockers: [],
+    });
+    expect(assessM2EvaluationHorizonUsageEvidence({
+      ...accumulated,
+      providerInputToEvaluationHorizon: 100,
+      providerInputToTerminalGivenSuccess: 999,
+    })).toEqual({
+      status: "blocked",
+      blockers: expect.arrayContaining([
+        "TERMINAL_COST_IDENTITY_INVALID",
+        "HORIZON_EVIDENCE_CANONICAL_SHA256_MISMATCH",
+      ]),
+    });
+  });
+
+  it("accumulates a failed chain to its horizon and keeps terminal cost null", () => {
+    const built = buildRequestUsageLedger({
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      requests: [
+        request(0, "request-0", "initial", usage(10)),
+        request(1, "request-1", "followup", usage(20)),
+      ],
+    });
+    if (built.status !== "ready") throw new Error("expected ready request ledger");
+    const evaluationAttemptPrefix = [
+      boundary("request-0", "attempt-0", "initial"),
+      boundary("request-1", "attempt-1", "followup"),
+    ];
+    const m0 = {
+      status: "observed" as const,
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      evaluationPrefixSha256: canonicalSha256(evaluationAttemptPrefix),
+      evaluationAttemptPrefix,
+      evaluationHorizonRequestId: "request-1",
+      evaluationHorizonPhaseId: "followup",
+      terminalBoundaryGivenSuccess: null,
+      modelRoundsToTerminal: null,
+      tdaiCallCount: 2,
+      timeToTerminalMs: null,
+      terminalReached: false,
+    };
+
+    expect(accumulateRequestUsageToM0Horizon(built.ledger, m0)).toMatchObject({
+      status: "ready",
+      providerInputToEvaluationHorizon: 30,
+      providerInputToTerminalGivenSuccess: null,
+    });
+  });
+
+  it("fails closed for missing, duplicate, wrong-run, wrong-trace, and wrong-phase records", () => {
+    const duplicate = buildRequestUsageLedger({
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      requests: [
+        request(0, "same-request", "initial"),
+        { ...request(1, "same-request", "followup"), observedAttemptIds: ["attempt-0"] },
+      ],
+    });
+    expect(duplicate).toMatchObject({
+      status: "blocked",
+      blockers: expect.arrayContaining(["REQUEST_ID_DUPLICATE", "ATTEMPT_ID_DUPLICATE"]),
+    });
+
+    const wrongIdentity = buildRequestUsageLedger({
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      requests: [{
+        ...request(0, "request-0", "initial"),
+        runId: "other-run",
+        traceId: "other-trace",
+      }],
+    });
+    expect(wrongIdentity).toMatchObject({
+      status: "blocked",
+      blockers: expect.arrayContaining(["REQUEST_RUN_MISMATCH", "REQUEST_TRACE_MISMATCH"]),
+    });
+
+    const built = buildRequestUsageLedger({
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      requests: [request(0, "request-0", "initial")],
+    });
+    if (built.status !== "ready") throw new Error("expected ready request ledger");
+    const evaluationAttemptPrefix = [boundary("missing-request", "attempt-0", "wrong-phase")];
+    const facts = {
+      status: "observed" as const,
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      evaluationPrefixSha256: canonicalSha256(evaluationAttemptPrefix),
+      evaluationAttemptPrefix,
+      evaluationHorizonRequestId: "missing-request",
+      evaluationHorizonPhaseId: "wrong-phase",
+      terminalBoundaryGivenSuccess: null,
+      modelRoundsToTerminal: null,
+      tdaiCallCount: 1,
+      timeToTerminalMs: null,
+      terminalReached: false,
+    };
+    const missing = accumulateRequestUsageToM0Horizon(built.ledger, facts);
+    expect(missing.status).toBe("blocked");
+    expect(missing.blockers).toContain("HORIZON_REQUEST_MISSING");
+
+    const wrongPhase = accumulateRequestUsageToM0Horizon(built.ledger, {
+      ...facts,
+      evaluationPrefixSha256: canonicalSha256([boundary("request-0", "attempt-0", "wrong-phase")]),
+      evaluationAttemptPrefix: [boundary("request-0", "attempt-0", "wrong-phase")],
+      evaluationHorizonRequestId: "request-0",
+    });
+    expect(wrongPhase.blockers).toContain("HORIZON_PHASE_MISMATCH");
+
+    const wrongRunTrace = accumulateRequestUsageToM0Horizon(built.ledger, {
+      ...facts,
+      runId: "other-run",
+      traceId: "other-trace",
+      evaluationPrefixSha256: canonicalSha256([{
+        ...boundary("request-0", "attempt-0", "initial"),
+        traceId: "other-trace",
+      }]),
+      evaluationAttemptPrefix: [{
+        ...boundary("request-0", "attempt-0", "initial"),
+        traceId: "other-trace",
+      }],
+      evaluationHorizonRequestId: "request-0",
+      evaluationHorizonPhaseId: "initial",
+    });
+    expect(wrongRunTrace.blockers).toEqual(expect.arrayContaining([
+      "HORIZON_RUN_MISMATCH",
+      "HORIZON_TRACE_MISMATCH",
+    ]));
+
+    const twoRequests = buildRequestUsageLedger({
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      requests: [
+        request(0, "request-0", "initial"),
+        request(1, "request-1", "followup"),
+      ],
+    });
+    if (twoRequests.status !== "ready") throw new Error("expected two-request ledger");
+    const reversedPrefix = [
+      boundary("request-1", "attempt-1", "followup"),
+      boundary("request-0", "attempt-0", "initial"),
+    ];
+    const reversed = accumulateRequestUsageToM0Horizon(twoRequests.ledger, {
+      status: "observed",
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      evaluationPrefixSha256: canonicalSha256(reversedPrefix),
+      evaluationAttemptPrefix: reversedPrefix,
+      evaluationHorizonRequestId: "request-1",
+      evaluationHorizonPhaseId: "followup",
+      terminalBoundaryGivenSuccess: null,
+      modelRoundsToTerminal: null,
+      tdaiCallCount: 2,
+      timeToTerminalMs: null,
+      terminalReached: false,
+    });
+    expect(reversed.blockers).toContain("HORIZON_ATTEMPT_ORDER_INVALID");
+
+    const remappedPrefix = [boundary("request-1", "attempt-0", "followup")];
+    const remapped = accumulateRequestUsageToM0Horizon(twoRequests.ledger, {
+      status: "observed",
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      evaluationPrefixSha256: canonicalSha256(remappedPrefix),
+      evaluationAttemptPrefix: remappedPrefix,
+      evaluationHorizonRequestId: "request-1",
+      evaluationHorizonPhaseId: "followup",
+      terminalBoundaryGivenSuccess: null,
+      modelRoundsToTerminal: null,
+      tdaiCallCount: 1,
+      timeToTerminalMs: null,
+      terminalReached: false,
+    });
+    expect(remapped.blockers).toEqual(expect.arrayContaining([
+      "HORIZON_ATTEMPT_MISMATCH",
+      "HORIZON_PHASE_MISMATCH",
+    ]));
+  });
+
+  it("detects persisted cumulative-total tampering independently of the artifact hash", () => {
+    const built = buildRequestUsageLedger({
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      requests: [request(0, "request-0", "initial", usage(100))],
+    });
+    if (built.status !== "ready") throw new Error("expected ready request ledger");
+    const tampered = {
+      ...built.ledger,
+      aggregateProviderUsage: {
+        ...built.ledger.aggregateProviderUsage,
+        providerTotalInputTokens: 999,
+      },
+    };
+    const evaluationAttemptPrefix = [boundary("request-0", "attempt-0", "initial")];
+    const facts = {
+      status: "observed" as const,
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      evaluationPrefixSha256: canonicalSha256(evaluationAttemptPrefix),
+      evaluationAttemptPrefix,
+      evaluationHorizonRequestId: "request-0",
+      evaluationHorizonPhaseId: "initial",
+      terminalBoundaryGivenSuccess: {
+        traceId: "ledger-trace",
+        requestId: "request-0",
+        phaseId: "initial",
+        terminalAttemptId: "attempt-0",
+      },
+      modelRoundsToTerminal: 1,
+      tdaiCallCount: 1,
+      timeToTerminalMs: 20,
+      terminalReached: true,
+    };
+
+    const result = accumulateRequestUsageToM0Horizon(tampered, facts);
+    expect(result.status).toBe("blocked");
+    expect(result.blockers).toEqual(expect.arrayContaining([
+      "LEDGER_AGGREGATE_USAGE_MISMATCH",
+      "LEDGER_CANONICAL_SHA256_MISMATCH",
+    ]));
+
+    const tamperedCumulative = {
+      ...built.ledger,
+      requests: [{
+        ...built.ledger.requests[0],
+        cumulativeProviderUsage: {
+          ...built.ledger.requests[0].cumulativeProviderUsage,
+          providerTotalInputTokens: 999,
+        },
+      }],
+    };
+    const cumulativeResult = accumulateRequestUsageToM0Horizon(tamperedCumulative, facts);
+    expect(cumulativeResult.status).toBe("blocked");
+    expect(cumulativeResult.blockers).toEqual(expect.arrayContaining([
+      "LEDGER_CUMULATIVE_USAGE_MISMATCH",
+      "LEDGER_CANONICAL_SHA256_MISMATCH",
+    ]));
   });
 });
 
@@ -550,7 +1451,12 @@ describe("Task 1 measurement v2 isolation evidence", () => {
       comparisonGroupSha256: EVIDENCE_SHA.comparisonGroup,
       providerRequestSha256: EVIDENCE_SHA.providerRequestA,
       staticPromptSha256: EVIDENCE_SHA.staticPromptA,
-      execution: { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
+      execution: {
+        modelId: "gpt-5.6-luna",
+        reasoningEffort: "high",
+        verbosity: "medium",
+        codexCliVersion: "codex-cli 1.2.3",
+      },
       counterfactualRole: null,
       session: { id: "session-a", fresh: true },
       memoryProxyContext: { id: "proxy-context-a", fresh: true },
@@ -608,7 +1514,12 @@ describe("Task 1 measurement v2 isolation evidence", () => {
       comparisonGroupSha256: "not-a-sha",
       providerRequestSha256: "",
       staticPromptSha256: EVIDENCE_SHA.staticPromptA,
-      execution: { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
+      execution: {
+        modelId: "gpt-5.6-luna",
+        reasoningEffort: "high",
+        verbosity: "medium",
+        codexCliVersion: "codex-cli 1.2.3",
+      },
       counterfactualRole: null,
       session: { id: "", fresh: true },
       memoryProxyContext: { id: "", fresh: true },
@@ -667,7 +1578,12 @@ describe("Task 1 measurement v2 isolation evidence", () => {
       comparisonGroupSha256: EVIDENCE_SHA.comparisonGroup,
       providerRequestSha256: EVIDENCE_SHA.providerRequestA,
       staticPromptSha256: EVIDENCE_SHA.staticPromptA,
-      execution: { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
+      execution: {
+        modelId: "gpt-5.6-luna",
+        reasoningEffort: "high",
+        verbosity: "medium",
+        codexCliVersion: "codex-cli 1.2.3",
+      },
       counterfactualRole: null,
       session: { id: "identity-session", fresh: true },
       memoryProxyContext: { id: "identity-context", fresh: true },
@@ -688,12 +1604,26 @@ describe("Task 1 measurement v2 isolation evidence", () => {
       runId: "invalid-identity-run",
       runNamespace: "task1/invalid-identity-run",
       staticPromptSha256: "",
-      execution: { modelId: "", reasoningEffort: "" },
+      execution: {
+        modelId: "",
+        reasoningEffort: "",
+        verbosity: "",
+        codexCliVersion: "",
+      },
       usage: {
         ...usage,
         apiVersion: "",
         adapterVersion: "",
       },
+    });
+    const missing = buildRunIsolationEvidence({
+      ...baseInput,
+      runId: "missing-identity-run",
+      runNamespace: "task1/missing-identity-run",
+      execution: {
+        modelId: "gpt-5.6-luna",
+        reasoningEffort: "high",
+      } as unknown as typeof baseInput.execution,
     });
     const missingRequiredUsage = normalizeProviderUsage({
       provider: "openai",
@@ -714,6 +1644,8 @@ describe("Task 1 measurement v2 isolation evidence", () => {
     expect(ready.executionIdentity).toMatchObject({
       modelId: "gpt-5.6-luna",
       reasoningEffort: "high",
+      verbosity: "medium",
+      codexCliVersion: "codex-cli 1.2.3",
       provider: "openai",
       usageSchema: "openai.responses",
       apiVersion: "2026-08-01",
@@ -721,14 +1653,23 @@ describe("Task 1 measurement v2 isolation evidence", () => {
       requiredUsageFields: ["cacheReadInputTokens"],
       unsupportedUsageFields: ["cacheWriteInputTokens"],
     });
+    if (ready.executionIdentity === null) throw new Error("expected ready execution identity");
     expect(ready.executionIdentity.canonicalSha256).toMatch(/^[0-9a-f]{64}$/);
+    expect(missing.executionIdentity).toBeNull();
     expect(invalid.isolationStatus).toBe("blocked");
     expect(invalid.blockers).toEqual(expect.arrayContaining([
       "STATIC_PROMPT_SHA256_INVALID",
       "MODEL_ID_INVALID",
       "REASONING_EFFORT_INVALID",
+      "VERBOSITY_INVALID",
+      "CODEX_CLI_VERSION_INVALID",
       "USAGE_API_VERSION_INVALID",
       "USAGE_ADAPTER_VERSION_INVALID",
+    ]));
+    expect(missing.isolationStatus).toBe("blocked");
+    expect(missing.blockers).toEqual(expect.arrayContaining([
+      "VERBOSITY_INVALID",
+      "CODEX_CLI_VERSION_INVALID",
     ]));
     expect(usageBlocked.isolationStatus).toBe("blocked");
     expect(usageBlocked.blockers).toContain("USAGE_NORMALIZATION_BLOCKED");
@@ -751,7 +1692,12 @@ describe("Task 1 measurement v2 isolation evidence", () => {
     const makeRun = (
       suffix: string,
       variantId: string,
-      execution = { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
+      execution = {
+        modelId: "gpt-5.6-luna",
+        reasoningEffort: "high",
+        verbosity: "medium",
+        codexCliVersion: "codex-cli 1.2.3",
+      },
       usageOverride = usage,
     ) => buildRunIsolationEvidence({
       runId: `run-${suffix}`,
@@ -837,24 +1783,61 @@ describe("Task 1 measurement v2 isolation evidence", () => {
       },
     });
     const mismatchedRuns = [
-      makeRun("model", "V1", { modelId: "gpt-5.6-sol", reasoningEffort: "high" }),
-      makeRun("reasoning", "V1", { modelId: "gpt-5.6-luna", reasoningEffort: "medium" }),
+      makeRun("model", "V1", {
+        modelId: "gpt-5.6-sol",
+        reasoningEffort: "high",
+        verbosity: "medium",
+        codexCliVersion: "codex-cli 1.2.3",
+      }),
+      makeRun("reasoning", "V1", {
+        modelId: "gpt-5.6-luna",
+        reasoningEffort: "medium",
+        verbosity: "medium",
+        codexCliVersion: "codex-cli 1.2.3",
+      }),
+      makeRun("verbosity", "V1", {
+        modelId: "gpt-5.6-luna",
+        reasoningEffort: "high",
+        verbosity: "low",
+        codexCliVersion: "codex-cli 1.2.3",
+      }),
+      makeRun("codex-version", "V1", {
+        modelId: "gpt-5.6-luna",
+        reasoningEffort: "high",
+        verbosity: "medium",
+        codexCliVersion: "codex-cli 1.2.4",
+      }),
       makeRun(
         "api-version",
         "V1",
-        { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
+        {
+          modelId: "gpt-5.6-luna",
+          reasoningEffort: "high",
+          verbosity: "medium",
+          codexCliVersion: "codex-cli 1.2.3",
+        },
         usageWithContract("2026-09-01", "responses-v1"),
       ),
       makeRun(
         "adapter-version",
         "V1",
-        { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
+        {
+          modelId: "gpt-5.6-luna",
+          reasoningEffort: "high",
+          verbosity: "medium",
+          codexCliVersion: "codex-cli 1.2.3",
+        },
         usageWithContract("2026-08-01", "responses-v2"),
       ),
       makeRun(
         "provider",
         "V1",
-        { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
+        {
+          modelId: "gpt-5.6-luna",
+          reasoningEffort: "high",
+          verbosity: "medium",
+          codexCliVersion: "codex-cli 1.2.3",
+        },
         anthropicUsage,
       ),
     ];
@@ -866,6 +1849,20 @@ describe("Task 1 measurement v2 isolation evidence", () => {
       expect(mismatched.blockers).toContain("PAIR_EXECUTION_IDENTITY_MISMATCH");
       expect(mismatched.controls.sameExecutionIdentity).toBe(false);
     }
+
+    const sameStaticPrompt = assessPairedIsolationEvidence(
+      makeRun("a", "V0"),
+      {
+        ...makeRun("same-static", "V1"),
+        staticPromptSha256: EVIDENCE_SHA.staticPromptA,
+      },
+      { purpose: "variant" },
+    );
+    expect(sameStaticPrompt).toMatchObject({
+      pairStatus: "blocked",
+      blockers: expect.arrayContaining(["PAIR_STATIC_PROMPT_NOT_DISTINCT"]),
+      controls: { distinctStaticPrompt: false },
+    });
   });
 
   it("allows counterfactual queries and full provider requests to differ under an explicit group control", () => {
@@ -900,7 +1897,12 @@ describe("Task 1 measurement v2 isolation evidence", () => {
         ? EVIDENCE_SHA.providerRequestA
         : EVIDENCE_SHA.providerRequestB,
       staticPromptSha256,
-      execution: { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
+      execution: {
+        modelId: "gpt-5.6-luna",
+        reasoningEffort: "high",
+        verbosity: "medium",
+        codexCliVersion: "codex-cli 1.2.3",
+      },
       counterfactualRole: role,
       session: { id: `session-${role}`, fresh: true },
       memoryProxyContext: { id: `context-${role}`, fresh: true },
@@ -979,7 +1981,12 @@ describe("Task 1 measurement v2 isolation evidence", () => {
         ? EVIDENCE_SHA.providerRequestA
         : EVIDENCE_SHA.providerRequestB,
       staticPromptSha256,
-      execution: { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
+      execution: {
+        modelId: "gpt-5.6-luna",
+        reasoningEffort: "high",
+        verbosity: "medium",
+        codexCliVersion: "codex-cli 1.2.3",
+      },
       counterfactualRole: null,
       session: { id: `repeat-session-${suffix}`, fresh: true },
       memoryProxyContext: { id: `repeat-context-${suffix}`, fresh: true },
@@ -1026,6 +2033,32 @@ describe("Task 1 measurement v2 isolation evidence", () => {
 });
 
 describe("Task 1 measurement v2 final-eligibility evidence", () => {
+  const oneRequestLedger = (
+    runId: string,
+    traceId: string,
+    usage: ReturnType<typeof normalizeProviderUsage>,
+  ) => buildRequestUsageLedger({
+    runId,
+    traceId,
+    requests: [{
+      runId,
+      traceId,
+      requestId: `${runId}-request-0`,
+      observedAttemptIds: [`${runId}-attempt-0`],
+      requestOrdinal: 0,
+      phaseId: "initial",
+      component: "task_model",
+      phaseType: "initial",
+      promptSha256: "a".repeat(64),
+      candidateActionCount: 3,
+      injectionTokensO200k: 7,
+      discoveryResultTokens: null,
+      toolResultContextTokens: null,
+      latencyMs: 25,
+      usage,
+    }],
+  });
+
   it("fails formal eligibility closed for synthetic mock data without emitting the final field", () => {
     const usage = normalizeProviderUsage({
       provider: "openai",
@@ -1040,11 +2073,13 @@ describe("Task 1 measurement v2 final-eligibility evidence", () => {
         output_tokens: 2,
       },
     });
+    const tokenSources = [tokenSourceSegment(0, "memory-tools.legacy-body", "legacy-body", "STATIC")];
     const ledger = buildTokenLedger({
       variantId: "V0",
       runId: "mock-a",
       providerVisibleInjection: "STATIC",
-      segments: [{ component: "staticTemplate", text: "STATIC" }],
+      classification: TOKEN_CLASSIFICATION_INPUT,
+      ...trustedTokenSources(tokenSources),
       tokenizer: { id: "synthetic", version: "1", count: (text) => text.length },
     });
     const makeRun = (suffix: string, variantId: string) => buildRunIsolationEvidence({
@@ -1061,7 +2096,12 @@ describe("Task 1 measurement v2 final-eligibility evidence", () => {
       staticPromptSha256: variantId === "V0"
         ? EVIDENCE_SHA.staticPromptA
         : EVIDENCE_SHA.staticPromptB,
-      execution: { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
+      execution: {
+        modelId: "gpt-5.6-luna",
+        reasoningEffort: "high",
+        verbosity: "medium",
+        codexCliVersion: "codex-cli 1.2.3",
+      },
       counterfactualRole: null,
       session: { id: `session-${suffix}`, fresh: true },
       memoryProxyContext: { id: `context-${suffix}`, fresh: true },
@@ -1077,10 +2117,18 @@ describe("Task 1 measurement v2 final-eligibility evidence", () => {
     });
     const left = makeRun("a", "V0");
     const right = makeRun("b", "V1");
+    const requestUsageLedger = oneRequestLedger("mock-a", "mock-trace", usage);
+    if (requestUsageLedger.status !== "ready") throw new Error("expected ready request ledger");
+    const m0EvaluationBoundary = { status: "pending" as const };
+    const usageHorizon = accumulateRequestUsageToM0Horizon(
+      requestUsageLedger.ledger,
+      m0EvaluationBoundary,
+    );
     const evidence = buildM2EligibilityEvidence({
       formalDataState: "blocked",
       evaluationLayer: "mock-contract",
-      usage,
+      requestUsageLedger,
+      usageHorizon,
       tokenLedger: ledger,
       runIsolation: left,
       comparison: {
@@ -1095,7 +2143,7 @@ describe("Task 1 measurement v2 final-eligibility evidence", () => {
         authFilesRead: false,
         authFilesCopied: false,
       },
-      m0EvaluationPrefix: { status: "pending" },
+      m0EvaluationBoundary,
     });
 
     expect(evidence).toMatchObject({
@@ -1104,52 +2152,91 @@ describe("Task 1 measurement v2 final-eligibility evidence", () => {
       runId: "mock-a",
       variantId: "V0",
       m2EvidenceStatus: "blocked",
-      blockers: expect.arrayContaining(["FORMAL_DATA_BLOCKED", "MOCK_LAYER_NOT_FORMAL"]),
+      blockers: expect.arrayContaining([
+        "FORMAL_DATA_BLOCKED",
+        "MOCK_LAYER_NOT_FORMAL",
+        "TOKEN_CLASSIFICATION_INTEGRATION_BLOCKED",
+        "M0_EVALUATION_BOUNDARY_PENDING",
+      ]),
       noModelGate: { status: "ready", modelRuns: 0 },
+      finalEligibilityOwner: "Integration",
       integrationRequirements: [
-        "M0_EVALUATION_PREFIX",
-        "INTEGRATION_OWNS_FORMAL_METRIC_ELIGIBLE",
+        "M0_EVALUATION_BOUNDARY",
+        "FORMAL_COMPILER_CAPTURE_CONTRACT",
+        "INTEGRATION_OWNS_FINAL_ELIGIBILITY",
       ],
     });
     expect(evidence).not.toHaveProperty("formalMetricEligible");
   });
 
-  it("validates the frozen M0 evaluation-prefix cost interface without deciding final eligibility", () => {
-    const observed = assessM0EvaluationPrefixEvidence({
-      status: "observed",
+  it("keeps M0 limited to trace and horizon boundary facts", () => {
+    const terminalAttempt = {
       traceId: "trace-terminal",
-      evaluationPrefixSha256: "7".repeat(64),
-      providerInputToEvaluationHorizon: 100,
-      providerInputToTerminalGivenSuccess: 120,
+      requestId: "request-1",
+      attemptId: "attempt-1",
+      phaseId: "executor",
+    };
+    const terminal = {
+      traceId: "trace-terminal",
+      requestId: "request-1",
+      phaseId: "executor",
+      terminalAttemptId: "attempt-1",
+    };
+    const evaluationAttemptPrefix = [terminalAttempt];
+    const observed = {
+      status: "observed",
+      runId: "run-terminal",
+      traceId: "trace-terminal",
+      evaluationPrefixSha256: canonicalSha256(evaluationAttemptPrefix),
+      evaluationAttemptPrefix,
+      evaluationHorizonRequestId: "request-1",
+      evaluationHorizonPhaseId: "executor",
+      terminalBoundaryGivenSuccess: terminal,
       modelRoundsToTerminal: 2,
-      tdaiCallCount: 2,
+      tdaiCallCount: 1,
       timeToTerminalMs: 450,
       terminalReached: true,
-    });
-    const invalid = assessM0EvaluationPrefixEvidence({
+    } as const;
+    const wrongTerminal = {
+      ...observed,
+      terminalBoundaryGivenSuccess: { ...terminal, terminalAttemptId: "attempt-999" },
+    };
+    const invalid = {
       status: "observed",
+      runId: "",
       traceId: "",
       evaluationPrefixSha256: "not-a-sha",
-      providerInputToEvaluationHorizon: -1,
-      providerInputToTerminalGivenSuccess: 1,
+      evaluationAttemptPrefix: [],
+      evaluationHorizonRequestId: "",
+      evaluationHorizonPhaseId: "",
+      terminalBoundaryGivenSuccess: null,
       modelRoundsToTerminal: 0,
       tdaiCallCount: -1,
       timeToTerminalMs: -1,
       terminalReached: true,
-    });
+    } as const;
 
-    expect(observed).toEqual({ status: "ready", blockers: [] });
-    expect(invalid.status).toBe("blocked");
-    expect(invalid.blockers).toEqual(expect.arrayContaining([
+    expect(assessM0EvaluationBoundaryFacts(observed)).toEqual({ status: "ready", blockers: [] });
+    expect(assessM0EvaluationBoundaryFacts(wrongTerminal)).toMatchObject({
+      status: "blocked",
+      blockers: ["M0_TERMINAL_BOUNDARY_IDENTITY_INVALID"],
+    });
+    const invalidGate = assessM0EvaluationBoundaryFacts(invalid);
+    expect(invalidGate.status).toBe("blocked");
+    expect(invalidGate.blockers).toEqual(expect.arrayContaining([
+      "M0_RUN_ID_INVALID",
       "M0_TRACE_ID_INVALID",
       "M0_EVALUATION_PREFIX_SHA256_INVALID",
-      "M0_EVALUATION_HORIZON_COST_INVALID",
-      "M0_TERMINAL_COST_IDENTITY_INVALID",
+      "M0_HORIZON_REQUEST_ID_INVALID",
+      "M0_HORIZON_PHASE_ID_INVALID",
+      "M0_TERMINAL_BOUNDARY_IDENTITY_INVALID",
       "M0_MODEL_ROUNDS_INVALID",
       "M0_TDAI_CALL_COUNT_INVALID",
       "M0_TIME_TO_TERMINAL_INVALID",
     ]));
     expect(observed).not.toHaveProperty("formalMetricEligible");
+    expect(observed).not.toHaveProperty("providerInputToEvaluationHorizon");
+    expect(observed).not.toHaveProperty("providerInputToTerminalGivenSuccess");
   });
 
   it("blocks incomplete usage and ledger identity mismatches without requiring an unrelated pair", () => {
@@ -1176,7 +2263,12 @@ describe("Task 1 measurement v2 final-eligibility evidence", () => {
       comparisonGroupSha256: EVIDENCE_SHA.comparisonGroup,
       providerRequestSha256: EVIDENCE_SHA.providerRequestA,
       staticPromptSha256: EVIDENCE_SHA.staticPromptA,
-      execution: { modelId: "gpt-5.6-luna", reasoningEffort: "high" },
+      execution: {
+        modelId: "gpt-5.6-luna",
+        reasoningEffort: "high",
+        verbosity: "medium",
+        codexCliVersion: "codex-cli 1.2.3",
+      },
       counterfactualRole: null,
       session: { id: "ordinary-session", fresh: true },
       memoryProxyContext: { id: "ordinary-context", fresh: true },
@@ -1190,17 +2282,21 @@ describe("Task 1 measurement v2 final-eligibility evidence", () => {
       localState: { pathId: "ordinary-local", fresh: true, inheritedHistory: false },
       usage,
     });
+    const tokenSources = [tokenSourceSegment(0, "memory-tools.legacy-body", "legacy-body", "STATIC")];
     const mismatchedLedger = buildTokenLedger({
       variantId: "V9",
       runId: "different-run",
       providerVisibleInjection: "STATIC",
-      segments: [{ component: "staticTemplate", text: "STATIC" }],
+      classification: TOKEN_CLASSIFICATION_INPUT,
+      ...trustedTokenSources(tokenSources),
       tokenizer: { id: "synthetic", version: "1", count: (text) => text.length },
     });
+    const requestUsageLedger = oneRequestLedger("ordinary-run", "ordinary-trace", usage);
     const evidence = buildM2EligibilityEvidence({
       formalDataState: "blocked",
       evaluationLayer: "mock-contract",
-      usage,
+      requestUsageLedger,
+      usageHorizon: null,
       tokenLedger: mismatchedLedger,
       runIsolation,
       comparison: { purpose: "none" },
@@ -1212,12 +2308,12 @@ describe("Task 1 measurement v2 final-eligibility evidence", () => {
         authFilesRead: false,
         authFilesCopied: false,
       },
-      m0EvaluationPrefix: { status: "pending" },
+      m0EvaluationBoundary: { status: "pending" },
     });
 
     expect(evidence.comparisonPurpose).toBe("none");
     expect(evidence.blockers).toEqual(expect.arrayContaining([
-      "USAGE_NOT_COMPLETE",
+      "REQUEST_USAGE_LEDGER_BLOCKED",
       "TOKEN_LEDGER_RUN_MISMATCH",
       "TOKEN_LEDGER_VARIANT_MISMATCH",
     ]));
