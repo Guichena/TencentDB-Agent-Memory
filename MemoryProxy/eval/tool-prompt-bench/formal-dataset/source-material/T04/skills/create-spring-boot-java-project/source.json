@@ -1,0 +1,27 @@
+{
+  "schema_version": "task1.skill_source_lock.v1",
+  "team_id": "T04",
+  "asset_id": "T04-SKILL-CREATE-SPRING",
+  "name": "create-spring-boot-java-project",
+  "repository": "https://github.com/github/awesome-copilot",
+  "commit_sha": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+  "path": "skills/create-spring-boot-java-project/SKILL.md",
+  "license": "MIT",
+  "license_path": "LICENSE",
+  "license_sha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+  "raw_file_sha256": "353f26c4ff608b0e9a00e6f0d75916cae2fb5680358285e06f6c1862c4b459e4",
+  "adapted_file_sha256": "353f26c4ff608b0e9a00e6f0d75916cae2fb5680358285e06f6c1862c4b459e4",
+  "package_sha256": "8d2332323451dbaee1a06f130003ffef0b70956c9a9f63adc590191f03455d44",
+  "resource_files": [],
+  "adaptation": {
+    "kind": "registry_metadata_only",
+    "technical_body_changed": false,
+    "allowed_changes": [
+      "listing description",
+      "use_when",
+      "do_not_use_when"
+    ],
+    "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "frozen_at": "2026-08-29T22:55:00+08:00"
+}

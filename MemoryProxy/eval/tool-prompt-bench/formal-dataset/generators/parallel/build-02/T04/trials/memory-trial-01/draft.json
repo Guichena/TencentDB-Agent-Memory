@@ -1,0 +1,96 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t04-memory-trial-01",
+  "stage": "DS03",
+  "team_id": "T04",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T04-MEMORY-TRIAL-01-PETCLINIC-JAKARTA-HISTORY",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "这轮继续整理 PetClinic 从 Spring Boot 2 到 Jakarta 线的迁移收尾，工作区和提交已经锁定。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把命名空间、验证、持久化和安全配置分开核对，RestClient 与 Maven 构建的旁支不混进来。"
+        },
+        {
+          "role": "user",
+          "content": "编译错误集中在少数旧导入，但当前日志没有说明哪些 javax 包应该迁移，哪些属于 JDK 自带类型。"
+        },
+        {
+          "role": "assistant",
+          "content": "控制器和校验注解的失败现象已经复现，安全过滤链也需要沿用同一次迁移中的边界判断。"
+        },
+        {
+          "role": "user",
+          "content": "我已经排除了数据库连接和测试容器问题；现在要恢复之前验证过的最小改动原则。"
+        },
+        {
+          "role": "assistant",
+          "content": "现有交接只记着迁移后来能构建，没有留下具体文件类别与保留规则的原话。"
+        },
+        {
+          "role": "user",
+          "content": "旁边还有一次关于安全放行路径的讨论，以及一次关于校验注解的讨论，术语很接近但结论不同。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会先区分命名空间替换、JDK 所有的类型和安全链行为，再对照历史记录中的最终判断。"
+        },
+        {
+          "role": "user",
+          "content": "下一步要补迁移回归说明，必须写出当时保留旧包的边界，不能从这次编译输出反推。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前上下文限定了项目、范围和排除项，但缺少历史会话里已经验证的精确分类。"
+        }
+      ],
+      "changed_message_index": 10,
+      "query": "请找回我们之前为 PetClinic 迁移验证过的旧包处理规则和最小修改结论，供这次回归说明对照。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "最新构建日志仍只有导入失败位置，没有保留上次会话确认的具体包分类和保留规则。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少历史会话中已验证的 PetClinic Jakarta 迁移包分类与最小改动结论；现有上下文只有现象、范围和排除项。",
+          "route": "memory",
+          "target_asset_ids": ["T04-L0-PETCLINIC-NAMESPACE"],
+          "allowed_sequence_candidates": [["tdai_conversation_search"]],
+          "stop_after_candidate": "tdai_conversation_search returns the reviewed PetClinic migration history containing the exact retained-package rule and minimal-change conclusion."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接记录已经补全：业务代码和校验相关的 Java EE 导入统一迁到 jakarta 命名空间；java.sql、javax.crypto 等 JDK 所有类型保持原包不动，安全过滤链只按同一原则做最小改动。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta supplies exactly the missing package classification and minimal-change rule while preserving the same project, scope, distractors, workspace assumptions, and final query."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T04-L0-PETCLINIC-SECURITY",
+        "T04-L0-PETCLINIC-VALIDATION",
+        "T04-L1-PETCLINIC-SECURITY-BOUNDARY"
+      ],
+      "controlled_delta_note": "Both variants share the same PetClinic migration scope, evidence, exclusions, near-meaning security and validation threads, identity assumptions, snapshot assumptions, and final query. Only appended message 10 changes: Positive leaves the previously verified package rule unresolved; Negative supplies that one rule. The asset pool and tool availability assumptions remain unchanged for the pair.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否接受 T04-L0-PETCLINIC-NAMESPACE 作为所需 PetClinic 历史会话检索候选，待 Sol 审阅后再决定是否冻结？",
+        "Negative delta 是否只补足 Java EE 与 JDK 所有包的分类及最小修改原则，没有混入安全放行或校验注解旁支？",
+        "shared context 是否保留了安全与校验两条近义干扰，同时使唯一信息缺口仍然是历史会话中的精确包规则？",
+        "provider-visible 文本是否不含内部资产标识、路由名、端点、Gold 或配对标签？"
+      ]
+    }
+  ]
+}

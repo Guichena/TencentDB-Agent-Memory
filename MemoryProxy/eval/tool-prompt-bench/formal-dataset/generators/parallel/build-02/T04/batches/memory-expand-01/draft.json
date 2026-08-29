@@ -1,0 +1,214 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t04-memory-expand-01",
+  "stage": "DS03",
+  "team_id": "T04",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T04-DS03-MEMORY-002",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮继续整理同步 REST 客户端迁移，工作区和提交保持不变，目标是恢复原有阻塞式调用的可观察行为。"},
+        {"role": "assistant", "content": "我会把请求构造、成功响应映射和失败响应处理分开核对，不扩展到响应式客户端或服务端改动。"},
+        {"role": "user", "content": "正常请求仍能返回业务对象，但集合响应的泛型读取和旧实现看起来不完全一致。"},
+        {"role": "assistant", "content": "先对照对象形状和读取时机，再检查是否保留同步调用的控制流，不用服务端 JSON 的稳定性替代客户端证据。"},
+        {"role": "user", "content": "非成功状态以前会转换成业务层能识别的异常，现在只看到通用错误，连接失败也要单独看。"},
+        {"role": "assistant", "content": "连接失败、非成功状态和错误正文解析失败应分别记录，成功列表与错误对象不能共用宽泛类型。"},
+        {"role": "user", "content": "现有交接只保留了一个成功样例和一个失败现象，没有留下上次迁移复盘确认的行为等价清单。"},
+        {"role": "assistant", "content": "当前范围、排除项和症状已经明确；相近的映射细节与错误测试记录先作为干扰，缺的是历史会话中的最终等价结论。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请找回我们之前确认的同步客户端行为等价结论，说明迁移后请求、响应映射和错误语义应如何保持。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "最新复盘仍只有成功列表和通用错误的现象，缺少上次会话确认的请求构造、集合映射、非成功状态异常和阻塞式控制流的完整等价关系。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少历史会话中已验证的同步客户端行为等价清单：请求构造保持不变，集合与错误对象使用各自映射，非成功状态保留业务异常语义，并继续采用阻塞式控制流。",
+          "route": "memory",
+          "target_asset_ids": ["T04-L1-RESTCLIENT-PARITY"],
+          "allowed_sequence_candidates": [["tdai_memory_search"]],
+          "stop_after_candidate": "tdai_memory_search returns the reviewed synchronous client parity memory and its request, mapping, error, and blocking-control-flow invariants."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接记录补回了那次迁移复盘的等价清单：请求构造保持原有语义；集合响应和错误对象分别使用对应类型；非成功状态继续映射为业务层可识别的异常；连接失败、状态失败与正文解析失败分开记录；调用仍保持阻塞式控制流，不改成响应式。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies exactly the missing historical behavior-equivalence checklist for the same synchronous client scope; no additional lookup is needed."}
+      },
+      "visible_distractor_ids_author_only": ["T04-L1-RESTCLIENT-MAPPING", "T04-L1-RESTCLIENT-ERRORS", "T04-L0-REST-ERROR-TEST"],
+      "controlled_delta_note": "Both variants share the synchronous client scope, stable server contract, collection/error symptoms, and mapping/error-test distractors. Only the appended message changes: Positive leaves the historical parity checklist unresolved; Negative supplies that checklist and nothing else.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否仅是历史会话确认的同步行为等价清单，没有把当前现象扩写成新的服务端事实？",
+        "Negative 是否只补足请求构造、集合/错误映射、异常分类和阻塞式控制流，并保留同一项目范围？",
+        "映射细节、错误分类和错误测试记录是否形成至少两个真实可见的近义干扰，同时不替代目标等价结论？"
+      ]
+    },
+    {
+      "draft_pair_id": "T04-DS03-MEMORY-003",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮回顾 Google Auto 多模块构建中的插件失败，范围只限插件执行与配置，不把依赖版本收敛当成同一根因。"},
+        {"role": "assistant", "content": "我会按模块、profile、生命周期阶段和插件参数拆开看，先确认实际生效配置，再解释生成步骤。"},
+        {"role": "user", "content": "默认构建通过，发布 profile 才多出一次生成步骤；另一个模块使用同一插件却没有失败。"},
+        {"role": "assistant", "content": "这提示需要比较 profile 激活条件、模块继承关系和 execution 绑定，不能从失败目录直接倒推出配置。"},
+        {"role": "user", "content": "日志只显示生成目录不同，没有说明哪个参数改变了目录，也没说明是否重复绑定了目标。"},
+        {"role": "assistant", "content": "参数来源、最终值、目标阶段和 goal 次数应并列记录；依赖树旁支先排除，避免把插件问题写成版本冲突。"},
+        {"role": "user", "content": "之前有人验证过最小插件配置，但当前交接只留下发布路径失败和日常路径通过。"},
+        {"role": "assistant", "content": "现有上下文足以锁定插件配置方向，却没有历史会话确认的具体 execution、参数继承和 profile 关系；这正是本次要找回的内容。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请找回我们之前对 Google Auto 插件失败做过的配置诊断结论，说明 execution、参数继承和 profile 条件之间的关系。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "最新交接仍只记录发布 profile 多出生成步骤和目录差异，缺少上次会话确认的 goal 绑定、参数继承覆盖及重复执行的最小判断。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少历史会话中确认的插件配置诊断值：发布 profile 才激活额外 execution，子模块继承的输出参数被 profile 覆盖，失败来自同一 goal 的重复绑定而非依赖收敛。",
+          "route": "memory",
+          "target_asset_ids": ["T04-L0-MAVEN-PLUGIN-DIAGNOSIS"],
+          "allowed_sequence_candidates": [["tdai_conversation_search", "tdai_conversation_query"]],
+          "stop_after_candidate": "tdai_conversation_search followed by tdai_conversation_query returns the reviewed plugin-diagnosis conversation with its execution, inheritance, profile, and duplicate-binding details."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "历史交接已补回具体结论：默认路径不激活额外生成 execution，发布 profile 才激活它；子模块继承的输出目录参数由该 profile 的值覆盖；同一 goal 被绑定两次才造成重复生成，先移除重复绑定并核对最终生效参数；这条判断与依赖树版本收敛无关。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies only the missing plugin execution/configuration relationship and explicitly keeps dependency convergence out of scope."}
+      },
+      "visible_distractor_ids_author_only": ["T04-L1-GA-PLUGIN", "T04-L1-GA-LIFECYCLE", "T04-L1-MAVEN-DEPENDENCY-CONVERGENCE"],
+      "controlled_delta_note": "Both variants share the profile-only failure, module comparison, generated-directory symptom, and lifecycle/dependency distractors. Positive leaves the historical plugin execution/configuration relation unresolved; Negative supplies only that relation.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 是否严格只缺历史插件 execution、参数继承与 profile 关系，没有借用依赖收敛证据？",
+        "Negative 是否清楚补足插件 goal 重复绑定与 profile 覆盖，并明确这不是 Maven dependency 问题？",
+        "插件配置、生命周期阶段和依赖收敛是否保持三种不同故障类型，而不是套用同一诊断模板？"
+      ]
+    },
+    {
+      "draft_pair_id": "T04-DS03-MEMORY-004",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮复核 Druid 后端的 Jackson 安全边界，既要拒绝对抗性类型输入，也要保留普通对象请求的兼容性。"},
+        {"role": "assistant", "content": "我会把输入形状、类型解析和模块入口分开核对，不把所有解析失败都归成一个全局配置问题。"},
+        {"role": "user", "content": "带有多态类型提示的恶意请求应被拒绝，普通对象请求目前仍能通过，但两个结果来自不同测试路径。"},
+        {"role": "assistant", "content": "先保存两类最小样例，再确认实际目标模块和入口，避免集成测试误投到旁边模块。"},
+        {"role": "user", "content": "目标模块已有白名单解析器，邻近模块仍使用普通数据绑定；当前日志没有留下最终作用域。"},
+        {"role": "assistant", "content": "安全策略应绑定真实入口和模块边界，不能为了一个入口把白名单扩成全局开关。"},
+        {"role": "user", "content": "交接只保留了恶意请求拒绝和正常请求通过两个结果，没有写清上次安全复盘确认的解析策略边界。"},
+        {"role": "assistant", "content": "当前现象和排除项已经足够定位到解析边界；缺少的是历史会话中的具体隔离与兼容性结论，Maven 旁支不参与。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请找回我们之前确认的 Druid Jackson 解析安全边界，说明未知类型拒绝、合法对象兼容和模块作用域应如何同时成立。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "最新回归仍只有一条对抗请求被拒和一条普通请求通过的结果，缺少上次会话确认的白名单作用域、入口隔离以及兼容性与拒绝行为的对应关系。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少历史会话中确认的 Druid 安全边界：目标模块和入口内使用白名单解析拒绝未知多态类型，普通对象保持兼容，旁边模块不受全局开关影响。",
+          "route": "memory",
+          "target_asset_ids": ["T04-L1-DRUID-SECURITY-BOUNDARY"],
+          "allowed_sequence_candidates": [["tdai_memory_search"]],
+          "stop_after_candidate": "tdai_memory_search returns the reviewed Druid security-boundary memory with module-local allowlisting and paired compatibility/rejection behavior."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "安全复盘摘要已补回唯一缺口：白名单解析只绑定目标模块的实际入口，未知多态类型被拒绝；普通对象请求继续使用兼容路径；旁边模块保留普通数据绑定；验证必须成对检查对抗请求拒绝与合法请求通过，不能打开全局白名单。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies only the missing module-local parser boundary and paired behavior checks for the same Druid security history."}
+      },
+      "visible_distractor_ids_author_only": ["T04-L1-DRUID-REQUEST-CLASSES", "T04-L1-DRUID-MODULE-ISOLATION", "T04-L0-DRUID-MODULE"],
+      "controlled_delta_note": "Both variants share the adversarial/legitimate request results, module-entry symptom, and request-class/module-isolation distractors. Positive leaves the historical Jackson boundary unresolved; Negative supplies only the scoped parser rule and paired checks.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 的缺口是否只有历史安全复盘中的解析器作用域与兼容性对应关系，没有把合成记忆写成外部源码事实？",
+        "Negative 是否只补足目标入口白名单、未知类型拒绝、普通对象兼容和旁边模块隔离？",
+        "对抗请求、合法请求和模块隔离是否构成清晰而不重复的故障边界？"
+      ]
+    },
+    {
+      "draft_pair_id": "T04-DS03-MEMORY-005",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮整理 Google Auto 的依赖收敛证据，目标是解释冲突版本从哪里进入，不讨论插件执行或生命周期绑定。"},
+        {"role": "assistant", "content": "我会把直接声明、父工程管理、传递路径和作用域分列，先追来源再讨论临时修补。"},
+        {"role": "user", "content": "冲突只在测试模块出现，依赖树里同时看到两个相近版本，主模块编译暂时没有异常。"},
+        {"role": "assistant", "content": "要比较模块边界、最近路径和管理位置，最终选中的版本不能单独证明收敛已经正确。"},
+        {"role": "user", "content": "一次临时排除让测试通过，但不知道是否改变了其他模块的传递关系或运行时作用域。"},
+        {"role": "assistant", "content": "临时排除只能作为实验记录；还要核对 dependencyManagement、直接依赖和 scope，不能把它等同于全局解决。"},
+        {"role": "user", "content": "交接只留下了两个版本和测试通过的结果，没有保留上次构建复盘确认的完整来源证据链。"},
+        {"role": "assistant", "content": "当前已明确是依赖解析方向，插件和 profile 话题属于相邻干扰；缺的是历史会话确认的收敛来源与作用域结论。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请找回我们之前确认的 Google Auto Maven 依赖收敛证据链，说明版本来源、管理位置、传递路径和临时排除的边界。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "最新依赖树仍只显示两个相近版本和测试通过结果，缺少上次会话确认的直接声明、父工程管理、最近传递路径及作用域之间的最终判断。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少历史会话中确认的依赖收敛证据链：区分直接声明、父工程 dependencyManagement、最近传递路径与作用域；临时排除不构成跨模块的最终结论。",
+          "route": "memory",
+          "target_asset_ids": ["T04-L1-MAVEN-DEPENDENCY-CONVERGENCE"],
+          "allowed_sequence_candidates": [["tdai_atomic_query"]],
+          "stop_after_candidate": "tdai_atomic_query returns the reviewed dependency-convergence memory with version provenance, management, path, scope, and exclusion boundaries."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "构建交接已补回证据链：分别记录直接声明、父工程 dependencyManagement、最近传递路径和模块作用域，再以此判断最终版本；临时 exclusion 只说明该模块的实验结果，不能据此声称所有模块已经收敛，也不改变插件执行诊断。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies exactly the missing dependency-source and scope evidence while preserving the separate plugin/lifecycle boundary."}
+      },
+      "visible_distractor_ids_author_only": ["T04-L1-GA-PLUGIN", "T04-L1-GA-LIFECYCLE", "T04-L0-GA-DEPENDENCY"],
+      "controlled_delta_note": "Both variants share the multi-version dependency symptom, test-module scope, temporary exclusion, and plugin/lifecycle distractors. Positive leaves the historical convergence evidence chain unresolved; Negative supplies only that chain and its scope boundary.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 是否只缺依赖来源与收敛证据链，没有把插件 execution 或 lifecycle profile 混入根因？",
+        "Negative 是否只补足直接声明、dependencyManagement、传递路径、scope 和临时 exclusion 的限定语义？",
+        "本组与插件配置组是否在 provider-visible 语义和私有故障类型上清楚区分？"
+      ]
+    },
+    {
+      "draft_pair_id": "T04-DS03-MEMORY-006",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "scene", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮要恢复 Spring 后端迁移的跨项目场景，工作区和已锁定的迁移时间线不变，只整理边界判断。"},
+        {"role": "assistant", "content": "我会把 PetClinic 的命名空间与安全链、同步客户端行为、Maven 根因和 JSON 解析入口分别放回同一条时间线。"},
+        {"role": "user", "content": "几条工作线都强调最小修改：业务 Java EE 导入与 JDK 类型不能混换，客户端不能顺手改成异步。"},
+        {"role": "assistant", "content": "构建失败还要先分生命周期、插件配置和依赖来源；解析安全则限定在实际模块入口，不能用全局开关覆盖。"},
+        {"role": "user", "content": "现有摘要分别记了迁移、构建和安全现象，但没有说明这些结论在场景中如何互相隔离、先后核验。"},
+        {"role": "assistant", "content": "我会保留每条证据的项目归属和验证边界，不把相近术语拼成一个根因，也不从当前日志补写历史结论。"},
+        {"role": "user", "content": "交接只留下若干局部结果，没有保留之前场景复盘中关于命名空间、同步语义、构建分层和解析器作用域的总关系。"},
+        {"role": "assistant", "content": "当前已限定为 Spring 迁移场景；缺的是历史场景里四类边界怎样并列和按顺序验证，单条局部记录不能替代它。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请找回我们之前整理的 Spring 后端迁移场景，说明命名空间、安全链、同步客户端、Maven 根因和解析器入口应如何分层验证。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "最新场景摘要仍是四段互不相连的局部结果，缺少上次复盘确认的项目归属、验证先后和不能跨边界归因的完整关系。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少历史场景对四条后端边界的整合关系：PetClinic 区分 Java EE 导入与安全链，客户端保持同步语义，Maven 按生命周期/插件/依赖分根因，Jackson 白名单限制在目标模块入口。",
+          "route": "memory",
+          "target_asset_ids": ["T04-L2-SPRING-MIGRATION-BOUNDARIES"],
+          "allowed_sequence_candidates": [["tdai_read_scene"]],
+          "stop_after_candidate": "tdai_read_scene returns the reviewed Spring migration scene with project ownership, ordered verification, and the four minimal-boundary relations."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "场景交接已补回总关系：先按项目归属拆开命名空间与安全链，再保持同步客户端的请求/响应语义；Maven 失败分成生命周期、插件配置和依赖来源三类；Jackson 白名单只在目标模块入口生效并同时验证合法兼容与未知类型拒绝。每条结论都只用于自己的边界，不能跨项目互相归因。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies only the missing scene-level ordering and boundary relations for the same Spring migration context; no scene read remains necessary."}
+      },
+      "visible_distractor_ids_author_only": ["T04-L2-SCENE-PETCLINIC-MIGRATION", "T04-L2-SCENE-RESTCLIENT-PARITY", "T04-L1-PETCLINIC-REGRESSION-ORDER"],
+      "controlled_delta_note": "Both variants share the cross-project migration timeline, minimal-change principle, local symptoms, and scene/regression distractors. Positive leaves the integrated boundary scene unresolved; Negative supplies only its ordering and separation relations.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 是否严格只缺历史场景的整合关系，没有把合成场景冒充任何外部仓库事实？",
+        "Negative 是否只补足四类项目边界、验证先后和不可跨边界归因的规则？",
+        "场景目标与 PetClinic 局部迁移记录、同步客户端场景是否保持层级不同而不重复？"
+      ]
+    }
+  ]
+}

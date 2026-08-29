@@ -1,0 +1,426 @@
+{
+  "schema_version": "task1.formal_skill_assets.v1",
+  "team_id": "T04",
+  "skills": [
+    {
+      "assetId": "T04-SKILL-JAKARTA",
+      "ownerAgentId": "agent-task1-t04-general",
+      "sourceEvidenceIds": [
+        "source-t04-skill-jakarta-namespace"
+      ],
+      "observedAt": "2026-08-29T22:55:00+08:00",
+      "name": "jakarta-namespace",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Migrates Java EE javax namespaces to Jakarta while retaining JDK-owned javax packages.",
+      "useWhen": "A Spring Boot 3 or Jakarta upgrade specifically requires namespace mapping and verification.",
+      "doNotUseWhen": "The issue is RestClient, Maven configuration, a retained JDK javax import, or an exact local replacement already supplied.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "6af9ccbf16fff0f7cb65ed15a2433256cb48ca2328ebd86f5e556570f86f93a1"
+        }
+      ],
+      "contentHash": "e27ed2adb3275e24bd54c077cf90fa4fcfe159dda5ab315f21c7b0b8f419f695"
+    },
+    {
+      "assetId": "T04-SKILL-RESTCLIENT",
+      "ownerAgentId": "agent-task1-t04-general",
+      "sourceEvidenceIds": [
+        "source-t04-skill-restclient-migration"
+      ],
+      "observedAt": "2026-08-29T22:55:00+08:00",
+      "name": "restclient-migration",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Migrates synchronous Spring RestTemplate calls to Spring 6.1 RestClient while preserving behavior.",
+      "useWhen": "A synchronous Spring HTTP client must move from RestTemplate to RestClient with method and error parity.",
+      "doNotUseWhen": "The target is WebClient/reactive, a controller route, a namespace migration, or a fully specified local edit.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "eb2568b08d96c567b2aaa15f7adfea49a1f71db5ef769a7245be92d2b8e9088e"
+        }
+      ],
+      "contentHash": "55de1d072d32c7bed8e5c8fff0e4dfe5725dbf1ec5e20f0f253d88ea7d680fd4"
+    },
+    {
+      "assetId": "T04-SKILL-SPRING-TESTING",
+      "ownerAgentId": "agent-task1-t04-general",
+      "sourceEvidenceIds": [
+        "source-t04-skill-spring-boot-testing"
+      ],
+      "observedAt": "2026-08-29T22:55:00+08:00",
+      "name": "spring-boot-testing",
+      "version": "0.0.0+f11a4e441c5f",
+      "description": "Selects focused Spring Boot test slices and resources for MVC, persistence, and REST clients.",
+      "useWhen": "A Spring Boot component needs a focused test slice or a RestClient-specific test procedure.",
+      "doNotUseWhen": "The task is a Maven root-cause diagnosis, namespace migration, or an already specified assertion edit.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "8161940340dc52766242ab30589369623b31089b41ebd7baa19a27f411648550"
+        },
+        {
+          "path": "references/restclienttest.md",
+          "sha256": "a15252889125344f8cf2caf0cfc873c944a80577f73ceac00060a9108b457e88"
+        }
+      ],
+      "contentHash": "6e98e816a08baec264753e7fec7ce5e3dabc0114955ddc97b090f41381e37232"
+    },
+    {
+      "assetId": "T04-SKILL-JAVA-JUNIT",
+      "ownerAgentId": "agent-task1-t04-general",
+      "sourceEvidenceIds": [
+        "source-t04-skill-java-junit"
+      ],
+      "observedAt": "2026-08-29T22:55:00+08:00",
+      "name": "java-junit",
+      "version": "0.0.0+f11a4e441c5f",
+      "description": "Designs focused Java unit tests with JUnit lifecycle, parameterization, and assertions.",
+      "useWhen": "The only missing procedure is a Java unit-test design or JUnit test structure.",
+      "doNotUseWhen": "The request is build diagnosis, HTTP client migration, or an exact assertion already given.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "beeae246a2b1a8debffb53b005eba0e025f70923fa26a11f3c4bfefd99388fa3"
+        }
+      ],
+      "contentHash": "cfb15088fc0812e1ab47c9b47ab848c6ba7ed44f76418f4694672802b2843f6f"
+    },
+    {
+      "assetId": "T04-SKILL-JAVA-SPRINGBOOT",
+      "ownerAgentId": "agent-task1-t04-general",
+      "sourceEvidenceIds": [
+        "source-t04-skill-java-springboot"
+      ],
+      "observedAt": "2026-08-29T22:55:00+08:00",
+      "name": "java-springboot",
+      "version": "0.0.0+f11a4e441c5f",
+      "description": "Provides broad Spring Boot implementation conventions across API, data, validation, and services.",
+      "useWhen": "A general Spring Boot implementation needs framework conventions rather than a narrow migration.",
+      "doNotUseWhen": "A narrow Jakarta, RestClient, Security, Hibernate, or Maven procedure is the unique gap.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "574898202ce298557226c49d35036a6e9e66a1cb205ea15c44db298e6d74e3bd"
+        }
+      ],
+      "contentHash": "6d027979b4719a56a1958b8e7da244dd62e9d02e3d18a90f8379400c7519e6c8"
+    },
+    {
+      "assetId": "T04-SKILL-CREATE-SPRING",
+      "ownerAgentId": "agent-task1-t04-general",
+      "sourceEvidenceIds": [
+        "source-t04-skill-create-spring-boot-java-project"
+      ],
+      "observedAt": "2026-08-29T22:55:00+08:00",
+      "name": "create-spring-boot-java-project",
+      "version": "0.0.0+f11a4e441c5f",
+      "description": "Scaffolds a new Spring Boot Java project with a deliberate dependency and package layout.",
+      "useWhen": "The deliverable is a new Spring Boot project rather than a change to an existing repository.",
+      "doNotUseWhen": "An existing project only needs migration, testing, or build repair.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "353f26c4ff608b0e9a00e6f0d75916cae2fb5680358285e06f6c1862c4b459e4"
+        }
+      ],
+      "contentHash": "3755a7a56843de2b760e6019cad3fffbbb3c179fa2d4db45d2a776ad7ed7180a"
+    },
+    {
+      "assetId": "T04-SKILL-MAVEN-LIFECYCLE",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-skill-maven-build-lifecycle"
+      ],
+      "observedAt": "2026-08-29T22:55:00+08:00",
+      "name": "maven-build-lifecycle",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Diagnoses Maven phase, goal, profile, module-order, and lifecycle execution problems.",
+      "useWhen": "The failure is uniquely about which Maven phase/profile/module is executed and in what order.",
+      "doNotUseWhen": "The evidence identifies a dependency conflict or a plugin configuration defect.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "8d65a5ace544deb6beafebe9275eaa9f0673ac1286899c7f7ddecd3dfce03974"
+        }
+      ],
+      "contentHash": "9130a8431b9b157b59e57e9deb167481d6d342d3930282ef586d3045ffd7885c"
+    },
+    {
+      "assetId": "T04-SKILL-MAVEN-DEPENDENCY",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "sourceEvidenceIds": [
+        "source-t04-skill-maven-dependency-management"
+      ],
+      "observedAt": "2026-08-29T22:55:00+08:00",
+      "name": "maven-dependency-management",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Diagnoses Maven version mediation, convergence, dependencyManagement, exclusions, and scopes.",
+      "useWhen": "The failing build evidence uniquely points to dependency resolution or version convergence.",
+      "doNotUseWhen": "The root cause is a lifecycle/profile choice, plugin execution, or ordinary Java compilation.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "d5a95c61cb189750beafbd7fea8e8ca8159ccf905d90974637b0a3e5495c7846"
+        }
+      ],
+      "contentHash": "ac3f579a9d5d62d943ac99be19dcf093a73ba8ae72eec33f5f77ef213ec77e2a"
+    },
+    {
+      "assetId": "T04-SKILL-MAVEN-PLUGIN",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-skill-maven-plugin-configuration"
+      ],
+      "observedAt": "2026-08-29T22:55:00+08:00",
+      "name": "maven-plugin-configuration",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Diagnoses Maven plugin versions, executions, goals, inherited configuration, and parameters.",
+      "useWhen": "The build evidence uniquely identifies a plugin execution or plugin parameter defect.",
+      "doNotUseWhen": "The root cause is dependency mediation, lifecycle phase selection, or source code semantics.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "ff8b766a8283c035d0fba5cf71f0dd194c14a21e136c2a2916bf7bff3fcdd01c"
+        }
+      ],
+      "contentHash": "e87edd3af0c9fae0f09962adf6ccf9fb507f9ab75c7df5118389326fdbf74d60"
+    },
+    {
+      "assetId": "T04-SKILL-SPRING-MIGRATION",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "sourceEvidenceIds": [
+        "source-t04-skill-spring-boot-migration"
+      ],
+      "observedAt": "2026-08-29T22:55:00+08:00",
+      "name": "spring-boot-migration",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Coordinates a broad Spring Boot 2-to-3 and Java baseline migration across several subsystems.",
+      "useWhen": "The task genuinely spans the complete Spring Boot platform upgrade and its ordered workstreams.",
+      "doNotUseWhen": "Only namespace, RestClient, Security, Hibernate, or one local edit is requested.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "0cc93cde9cc7cfd0d5af62edce6cedab6395f24b60de883cf5eb36a994e94b78"
+        }
+      ],
+      "contentHash": "0b7464cdc00c5a3591df8a7a6113e2851c92d37cee84f31a50d6a374660f6adc"
+    },
+    {
+      "assetId": "T04-SKILL-SPRING-SECURITY",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-skill-spring-security-6"
+      ],
+      "observedAt": "2026-08-29T22:55:00+08:00",
+      "name": "spring-security-6",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Migrates Spring Security configuration to the Spring Security 6 component-based model.",
+      "useWhen": "SecurityFilterChain, request authorization, password encoding, or method security is the unique migration gap.",
+      "doNotUseWhen": "The task concerns only namespace mapping, RestClient, or Maven build mechanics.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "d4522347dbc38ba3280929376b054066fa5b202ca845b6fead78c085debb622d"
+        }
+      ],
+      "contentHash": "ba1da4ce4b1427a2ffa40557233ca03fc7ce104ff120b46aedafdbdcb4327f3e"
+    },
+    {
+      "assetId": "T04-SKILL-HIBERNATE",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "sourceEvidenceIds": [
+        "source-t04-skill-hibernate-upgrade"
+      ],
+      "observedAt": "2026-08-29T22:55:00+08:00",
+      "name": "hibernate-upgrade",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Migrates Hibernate/JPA mapping and query behavior across a framework upgrade.",
+      "useWhen": "The missing procedure is specifically Hibernate mapping, dialect, query, or persistence behavior migration.",
+      "doNotUseWhen": "Only import namespaces, HTTP client code, or Maven configuration is in scope.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "b54208d472482e218ff9cd16e8e4bed12fa8df7f801af8aea22184df954f8bcd"
+        }
+      ],
+      "contentHash": "793d8889eb5fc2e04929dc3610a675ae4dec5f7ea8c642f0d0dbcf2c2a281bec"
+    },
+    {
+      "assetId": "T04-SKILL-JACKSON-SECURITY",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-skill-jackson-security"
+      ],
+      "observedAt": "2026-08-29T22:55:00+08:00",
+      "name": "jackson-security",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Diagnoses and repairs Jackson deserialization and parser-boundary security flaws.",
+      "useWhen": "The task is a Java JSON deserialization vulnerability with adversarial and legitimate behavior constraints.",
+      "doNotUseWhen": "The request is a normal DTO change, HTTP migration, namespace edit, or Maven failure.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "30227192653488b41c91c5824d0b4a62bf780e9e9040600172687ab563d21c57"
+        }
+      ],
+      "contentHash": "83771afe56344a612caafa44a7ec48f13652ea8a8afbcff0d20d5b5cd69d6593"
+    },
+    {
+      "assetId": "T04-SKILL-SENIOR-JAVA",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "sourceEvidenceIds": [
+        "source-t04-skill-senior-java"
+      ],
+      "observedAt": "2026-08-29T22:55:00+08:00",
+      "name": "senior-java",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Provides broad Java code-reading, implementation, testing, and maintainability guidance.",
+      "useWhen": "A general Java engineering workflow lacks a more specific framework or build procedure.",
+      "doNotUseWhen": "A narrow Skill uniquely covers Jakarta, RestClient, security, testing, or a Maven root cause.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "c22b277c5a72e4f3ae5e23daedee1b354b59c97cb9375e3874e29214e9e2c5e5"
+        }
+      ],
+      "contentHash": "5ecfc2d486eec6dbbab30e34b127d15b5c1127a012fea5f6071fa09ad6723085"
+    },
+    {
+      "assetId": "T04-SKILL-JAVAX-AWESOME",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "sourceEvidenceIds": [
+        "source-t04-skill-javax-to-jakarta-migration"
+      ],
+      "observedAt": "2026-08-29T22:55:00+08:00",
+      "name": "javax-to-jakarta-migration",
+      "version": "0.0.0+f11a4e441c5f",
+      "description": "Migrates broad javax usage to Jakarta with a scan, mapping, build, and verification workflow.",
+      "useWhen": "A general Jakarta namespace conversion needs a broad cross-project procedure.",
+      "doNotUseWhen": "The active agent already lists the narrower project-frozen Jakarta procedure or an exact edit is supplied.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "f93b85539e4f58f0254f935c053fb8a1923b1482ff17062046d884b6ed910c79"
+        }
+      ],
+      "contentHash": "c553a9451b21e0d89fcb5538ae1564b78a24d43fdd540321f90aaba9a97cf0c0"
+    },
+    {
+      "assetId": "T04-SKILL-JAVA-REFACTOR",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "sourceEvidenceIds": [
+        "source-t04-skill-java-refactoring-extract-method"
+      ],
+      "observedAt": "2026-08-29T22:55:00+08:00",
+      "name": "java-refactoring-extract-method",
+      "version": "0.0.0+f11a4e441c5f",
+      "description": "Extracts a focused Java method while preserving behavior and local tests.",
+      "useWhen": "The task is specifically an extract-method refactor in existing Java code.",
+      "doNotUseWhen": "The task is a framework migration, security fix, HTTP client change, or build diagnosis.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "4f23304d1c3ea81035cae02381e6f6bf70d4652a46990cfd71620f384ad78a2b"
+        }
+      ],
+      "contentHash": "e34a70431bcf2dd5139cb11b664339be7ef8b1c5a9267418c3ab68b6600b3eb4"
+    }
+  ]
+}

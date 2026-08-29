@@ -1,0 +1,147 @@
+{
+  "schema_version": "task1.team_gate.v1",
+  "team_id": "T04",
+  "build_id": "build-02",
+  "status": "passed",
+  "checked_at": "2026-08-29T23:59:00+08:00",
+  "counts": {
+    "cases": 40,
+    "pairs": 15,
+    "positives": {
+      "memory": 6,
+      "skill": 6,
+      "knowledge": 3
+    },
+    "paired_negatives": 15,
+    "natural_negatives": 10,
+    "assets": {
+      "l0": 10,
+      "l1": 16,
+      "l2": 5,
+      "l3": 1,
+      "skills": 16,
+      "knowledge": 3
+    }
+  },
+  "luna_batches": [
+    {
+      "batchId": "t04-memory-trial-01",
+      "path": "formal-dataset/generators/parallel/build-02/T04/trials/memory-trial-01",
+      "family": "memory",
+      "count": 1,
+      "generatorModel": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "forkTurns": "none",
+      "inputPackSha256": "2068931a10bfa2d0d39cf2d84c9634b3b4a92fd950aba2a90819ef9cfa2e67b9",
+      "rawOutputSha256": "a6406dcd950c06467a5459fc0eb60a9a8928abe733f635576a924cf4b91f4814",
+      "solReview": "approved"
+    },
+    {
+      "batchId": "t04-skill-trial-01",
+      "path": "formal-dataset/generators/parallel/build-02/T04/trials/skill-trial-01",
+      "family": "skill",
+      "count": 1,
+      "generatorModel": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "forkTurns": "none",
+      "inputPackSha256": "2068931a10bfa2d0d39cf2d84c9634b3b4a92fd950aba2a90819ef9cfa2e67b9",
+      "rawOutputSha256": "0c353a100b343cea84da6e99166eee68474bded41bcb167ae8cdc8ad97d9c6cd",
+      "solReview": "approved"
+    },
+    {
+      "batchId": "t04-knowledge-trial-01",
+      "path": "formal-dataset/generators/parallel/build-02/T04/trials/knowledge-trial-01",
+      "family": "knowledge",
+      "count": 1,
+      "generatorModel": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "forkTurns": "none",
+      "inputPackSha256": "2068931a10bfa2d0d39cf2d84c9634b3b4a92fd950aba2a90819ef9cfa2e67b9",
+      "rawOutputSha256": "666d4b4a8bc1c1325448c1490e33f646a444a8a5cf8aa2e06ddf50d5264e7446",
+      "solReview": "approved"
+    },
+    {
+      "batchId": "t04-memory-expand-01",
+      "path": "formal-dataset/generators/parallel/build-02/T04/batches/memory-expand-01",
+      "family": "memory",
+      "count": 5,
+      "generatorModel": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "forkTurns": "none",
+      "inputPackSha256": "2068931a10bfa2d0d39cf2d84c9634b3b4a92fd950aba2a90819ef9cfa2e67b9",
+      "rawOutputSha256": "d2908474133d04577346006ea03389d988f26709b1e2ab6ed57692ebcda16d26",
+      "solReview": "approved"
+    },
+    {
+      "batchId": "t04-skill-expand-01",
+      "path": "formal-dataset/generators/parallel/build-02/T04/batches/skill-expand-01",
+      "family": "skill",
+      "count": 5,
+      "generatorModel": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "forkTurns": "none",
+      "inputPackSha256": "2068931a10bfa2d0d39cf2d84c9634b3b4a92fd950aba2a90819ef9cfa2e67b9",
+      "rawOutputSha256": "892d83420eb06488e4e38e40907025c1eb1d9b6caee1265e63d4d2e6a16bb186",
+      "solReview": "approved"
+    },
+    {
+      "batchId": "t04-knowledge-expand-01",
+      "path": "formal-dataset/generators/parallel/build-02/T04/batches/knowledge-expand-01",
+      "family": "knowledge",
+      "count": 2,
+      "generatorModel": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "forkTurns": "none",
+      "inputPackSha256": "2068931a10bfa2d0d39cf2d84c9634b3b4a92fd950aba2a90819ef9cfa2e67b9",
+      "rawOutputSha256": "2ec8eb31ddf93ca3ae810a4c629ace410404672dae8be4cbb64c10038299d2bb",
+      "solReview": "approved"
+    },
+    {
+      "batchId": "t04-natural-negative-01",
+      "path": "formal-dataset/generators/parallel/build-02/T04/batches/natural-negative-01",
+      "family": "natural-negative",
+      "count": 10,
+      "generatorModel": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "forkTurns": "none",
+      "inputPackSha256": "2068931a10bfa2d0d39cf2d84c9634b3b4a92fd950aba2a90819ef9cfa2e67b9",
+      "rawOutputSha256": "8b89688c021c3b8dad9deda60b098ca717f6d7ef94587d56d507437971129a46",
+      "solReview": "approved"
+    }
+  ],
+  "external_imports": 16,
+  "gold_chains": {
+    "memory_search_first": 4,
+    "memory_direct_first": 2,
+    "skill_search_first": 3,
+    "skill_listed_first": 3,
+    "knowledge_list_then_call": 3,
+    "complete_chain_fixtures": 15
+  },
+  "gates": {
+    "batch_format": true,
+    "formal_schema_merge_simulation": true,
+    "pair_single_variable": true,
+    "visibility": true,
+    "external_skill_source_locks": true,
+    "provider_leak_count": 0,
+    "path_scope": true,
+    "minimal_call_chains": true
+  },
+  "outputs": [
+    "formal-dataset/staging/teams/T04/team-fragment.json",
+    "formal-dataset/staging/teams/T04/assets/memory.json",
+    "formal-dataset/staging/teams/T04/assets/skills.json",
+    "formal-dataset/staging/teams/T04/assets/knowledge.json",
+    "formal-dataset/staging/teams/T04/review.md"
+  ],
+  "pending_integration": [
+    "merge Team fragment into the global contract",
+    "rebuild dev snapshot and cross-Team hashes",
+    "publish provider/private exports",
+    "run cross-Team duplicate/leakage gates"
+  ],
+  "warnings": [],
+  "error_count": 0,
+  "errors": []
+}

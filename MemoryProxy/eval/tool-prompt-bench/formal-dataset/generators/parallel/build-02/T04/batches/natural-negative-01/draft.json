@@ -1,0 +1,318 @@
+{
+  "schema_version": "task1.luna_natural_negative_draft.v1",
+  "batch_id": "t04-natural-negative-01",
+  "stage": "DS03",
+  "team_id": "T04",
+  "cases": [
+    {
+      "draft_case_id": "T04-DS03-NN-001",
+      "external_source_ids": [],
+      "difficulty": "easy",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "PetClinic 的迁移报告只处理下面四条 import，分类规则也已写在本消息中：`javax.persistence.*`、`javax.validation.Valid` 属于需要改名的 Java EE 包；`javax.sql.DataSource`、`javax.crypto.Mac` 属于 JDK 包，必须原样保留。"
+        },
+        {
+          "role": "assistant",
+          "content": "这是一个局部 import 清单：前两条按给定规则分别改为 `jakarta.persistence.*` 和 `jakarta.validation.Valid`，后两条不做替换。"
+        },
+        {
+          "role": "user",
+          "content": "请把这四条写成迁移前后对照，只核对当前清单，不扫描其他源码，也不讨论安全配置。"
+        }
+      ],
+      "query": "列出四条 import 的精确迁移结果，并分别标明发生替换还是保持不变。",
+      "why_current_context_is_sufficient": "四条完整 import、Java EE 与 JDK 的分类规则、目标命名空间和不扫描其他文件的范围都在当前上下文中直接给出；答案只是对这份局部清单执行确定性替换，不需要历史记录或项目图。",
+      "visible_distractor_ids_author_only": [
+        "T04-L0-PETCLINIC-NAMESPACE",
+        "T04-SKILL-JAKARTA",
+        "T04-KNOW-PETCLINIC-CODEGRAPH"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否只改写 javax.persistence 和 javax.validation，并准确保留 javax.sql 与 javax.crypto？",
+        "是否输出了四条 import 的前后对照，而没有延伸到其他文件？"
+      ]
+    },
+    {
+      "draft_case_id": "T04-DS03-NN-002",
+      "external_source_ids": [],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "当前 `JdbcConfig.java` 的唯一编译错误是：`import jakarta.sql.DataSource;`，编译器报告 `package jakarta.sql does not exist`。项目目标是 JDK 17，文件其余内容只使用 `DataSource`，要求是修正这个 import，不新增依赖。"
+        },
+        {
+          "role": "assistant",
+          "content": "报错来自把 JDK 所有的 SQL 类型放进了 Jakarta 命名空间；当前证据已经足以判断应恢复 JDK 包名，而不是修改 Maven 依赖。"
+        },
+        {
+          "role": "user",
+          "content": "请给出这一处最小代码修订和一句原因，作为编译回归记录；不要提出全局替换。"
+        }
+      ],
+      "query": "应把错误的 import 改成什么？请说明为什么这次不应添加 Jakarta 依赖。",
+      "why_current_context_is_sufficient": "错误 import、完整编译器诊断、JDK 17 基线、使用类型以及不新增依赖的要求均已明确；`DataSource` 的包归属可以由当前给出的边界直接确定，无需查看仓库或外部迁移资料。",
+      "visible_distractor_ids_author_only": [
+        "T04-L1-PETCLINIC-NAMESPACE-RULE",
+        "T04-SKILL-JAVAX-AWESOME",
+        "T04-L0-PETCLINIC-VALIDATION"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否将 import 恢复为 javax.sql.DataSource？",
+        "是否把问题解释为 JDK-owned 包边界，而不是依赖缺失？"
+      ]
+    },
+    {
+      "draft_case_id": "T04-DS03-NN-003",
+      "external_source_ids": [],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "同步客户端的局部方法和响应规则如下：`String readName(String id) { return client.get().uri(uriTemplate, id).retrieve().body(String.class); }`；服务端在成功时返回纯文本，非成功状态由 `retrieve()` 抛出 `HttpStatusCodeException`。"
+        },
+        {
+          "role": "assistant",
+          "content": "成功分支读取 `String`，所以不会把纯文本当成对象；非成功状态不会进入返回语句，而是在 `retrieve()` 处走异常分支。"
+        },
+        {
+          "role": "user",
+          "content": "今天只记录这个方法对两种响应的控制流，不改成异步，也不引入新的错误策略。"
+        }
+      ],
+      "query": "分别说明成功响应和 404 响应在这段方法中的结果：成功返回什么，404 在哪一步结束并以什么形式表现？",
+      "why_current_context_is_sufficient": "方法体、请求方法、成功正文类型和非成功状态的既定异常行为都在当前消息中完整提供；问题是对两条已给控制流的直接解释，不需要客户端迁移指南或实际请求。",
+      "visible_distractor_ids_author_only": [
+        "T04-L1-RESTCLIENT-PARITY",
+        "T04-SKILL-RESTCLIENT",
+        "T04-L0-REST-MAPPING"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否指出成功分支的 body 类型是 String？",
+        "是否明确 404 在 retrieve() 处抛出异常，而不是返回空字符串？"
+      ]
+    },
+    {
+      "draft_case_id": "T04-DS03-NN-004",
+      "external_source_ids": [],
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "客户端回归测试的完整夹具已经给出：请求返回状态 422，正文为 `{\"code\":\"INVALID_CITY\"}`；约定是 4xx 映射为 `RemoteRequestException(status, body)`，5xx 映射为 `RemoteServiceException(status)`，连接失败才映射为 `RemoteConnectionException`。"
+        },
+        {
+          "role": "assistant",
+          "content": "422 属于有响应的客户端错误，应该保留状态和正文；它既不是 5xx，也没有连接失败，因此后两类异常都不适用。"
+        },
+        {
+          "role": "user",
+          "content": "只需写出这个测试用例应断言的异常类型、状态和正文，不运行服务，不补充重试。"
+        }
+      ],
+      "query": "为这个 422 夹具给出三项精确断言：异常类型、HTTP 状态和错误正文。并说明为什么不能断言为连接异常。",
+      "why_current_context_is_sufficient": "响应状态、正文及三类错误的互斥映射规则全部已提供；测试断言可直接从 422 和给定 JSON 求出，不需要读取客户端实现、服务端契约或运行日志。",
+      "visible_distractor_ids_author_only": [
+        "T04-L0-REST-ERROR-TEST",
+        "T04-L1-RESTCLIENT-ERRORS",
+        "T04-SKILL-SPRING-TESTING"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否选择 RemoteRequestException 并保留 422 与 INVALID_CITY？",
+        "是否基于已有响应区分 HTTP 错误和连接失败？"
+      ]
+    },
+    {
+      "draft_case_id": "T04-DS03-NN-005",
+      "external_source_ids": [],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "RestClient 的单元测试只使用这个成功夹具：服务方法声明返回 `List<Pet>`，mock 响应 JSON 是 `[{\"name\":\"Milo\"},{\"name\":\"Nori\"}]`；现有断言是 `assertEquals(2, pets.size())` 和 `assertEquals(\"Milo\", pets.get(0).name())`。"
+        },
+        {
+          "role": "assistant",
+          "content": "夹具明确是两元素列表，第一元素的 name 是 Milo；这两条断言分别覆盖集合数量和顺序中的第一项。"
+        },
+        {
+          "role": "user",
+          "content": "请补一条最小的合法请求兼容性断言，只针对现有响应，不测试错误状态或其他字段。"
+        }
+      ],
+      "query": "补充一条断言，确认第二个元素映射为 Nori，并列出该成功测试的三条最终断言。",
+      "why_current_context_is_sufficient": "返回类型、完整 JSON 数组、现有两条断言和新增断言的范围均在当前上下文中给出；无需推断序列化配置或启动 HTTP 服务即可写出精确断言。",
+      "visible_distractor_ids_author_only": [
+        "T04-L1-RESTCLIENT-TEST-BOUNDARY",
+        "T04-SKILL-JAVA-JUNIT",
+        "T04-SKILL-SPRING-TESTING"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否新增 pets.get(1).name() 等于 Nori 的断言？",
+        "是否保持测试只覆盖当前成功列表而没有加入错误场景？"
+      ]
+    },
+    {
+      "draft_case_id": "T04-DS03-NN-006",
+      "external_source_ids": [],
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Druid 解析器的局部保护逻辑已固定：请求 JSON 含 `@class` 字段时返回 400 `POLYMORPHIC_TYPE_REJECTED`；不含该字段且形状为 `{\"query\":\"select 1\"}` 时使用 `SafeQuery` 绑定并返回 200。"
+        },
+        {
+          "role": "assistant",
+          "content": "判断条件只看是否存在多态类型字段；普通 query 对象没有该字段，因此应保持合法请求兼容，而不是被安全规则一并拒绝。"
+        },
+        {
+          "role": "user",
+          "content": "安全回归表要覆盖一个对抗输入和一个普通输入。两种 JSON、状态码和错误码都按上面的夹具，不改解析器。"
+        }
+      ],
+      "query": "为 `{\"@class\":\"java.lang.Runtime\"}` 和 `{\"query\":\"select 1\"}` 各写出预期 HTTP 状态及结果；说明这组断言同时验证了什么边界。",
+      "why_current_context_is_sufficient": "两种输入的字段形状、分支条件、状态码、错误码和成功绑定类型都已明确；预期结果可以直接应用局部保护逻辑，不需要了解 Druid 其他模块或 Jackson 配置。",
+      "visible_distractor_ids_author_only": [
+        "T04-L0-DRUID-JACKSON",
+        "T04-SKILL-JACKSON-SECURITY",
+        "T04-L1-DRUID-REQUEST-CLASSES"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否将含 @class 的输入判为 400 且错误码为 POLYMORPHIC_TYPE_REJECTED？",
+        "是否将普通 query 判为 200，并说明拒绝对抗字段但保留合法对象？"
+      ]
+    },
+    {
+      "draft_case_id": "T04-DS03-NN-007",
+      "external_source_ids": [],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Druid 合法请求回归的输入和解析结果已给全：输入是 `{\"dimensions\":[\"country\"],\"limit\":10}`；白名单允许 `dimensions` 与 `limit`，解析器返回 `QuerySpec(dimensions=[country], limit=10)`。含未知字段的输入会被拒绝，但本题只检查这条合法输入。"
+        },
+        {
+          "role": "assistant",
+          "content": "这条请求的两个字段都在白名单中，结果应保留 country 和数值 10；未知字段分支不影响当前合法样例。"
+        },
+        {
+          "role": "user",
+          "content": "请写出测试需要核对的解析对象字段，证明安全限制没有破坏合法请求兼容性。"
+        }
+      ],
+      "query": "列出这条合法请求的最小三项断言：dimensions 的内容、limit 的数值，以及为什么不应断言抛出未知字段错误。",
+      "why_current_context_is_sufficient": "输入 JSON、白名单字段、确定的解析结果和未知字段分支均已直接给出；三项断言只需核对当前对象，不需要安全策略文档或其他请求样例。",
+      "visible_distractor_ids_author_only": [
+        "T04-L1-DRUID-COMPATIBILITY",
+        "T04-SKILL-JACKSON-SECURITY",
+        "T04-L0-DRUID-MODULE"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否断言 dimensions 只有 country 且 limit 等于 10？",
+        "是否根据两个字段都在白名单中，避免把合法请求误判为未知字段错误？"
+      ]
+    },
+    {
+      "draft_case_id": "T04-DS03-NN-008",
+      "external_source_ids": [],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Google Auto 的依赖树片段、直接声明和版本规则如下：`app -> lib-a:1.0 -> common:2.0`，`app -> lib-b:1.0 -> common:1.5`；app 没有直接声明 common，规则是同层冲突选择先出现的依赖。"
+        },
+        {
+          "role": "assistant",
+          "content": "两条路径到 common 的距离相同，依赖树中 lib-a 先出现，所以按给定规则选择 common:2.0；这不是直接声明覆盖。"
+        },
+        {
+          "role": "user",
+          "content": "只记录这段树的解析结果，不修改 POM，也不讨论统一版本的方案。"
+        }
+      ],
+      "query": "写出最终解析到的 common 版本、被舍弃的版本和选择理由，并说明 app 是否直接声明了 common。",
+      "why_current_context_is_sufficient": "完整的两条传递路径、出现顺序、冲突规则以及 app 的直接声明状态都已提供；答案是一次局部依赖树求值，不需要执行构建或查询项目配置。",
+      "visible_distractor_ids_author_only": [
+        "T04-L0-GA-DEPENDENCY",
+        "T04-SKILL-MAVEN-DEPENDENCY",
+        "T04-KNOW-GOOGLE-AUTO-CODEGRAPH"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否选择 common:2.0 并说明 lib-a 路径先出现？",
+        "是否明确 common 是传递依赖而非 app 的直接声明？"
+      ]
+    },
+    {
+      "draft_case_id": "T04-DS03-NN-009",
+      "external_source_ids": [],
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "生命周期回归的 POM 片段和命令都在当前消息中：`maven-surefire-plugin` 的 `test` goal 绑定 `test` phase，`maven-failsafe-plugin` 的 `integration-test` goal 绑定 `integration-test` phase；本次只执行 `mvn test`，日志显示只运行了 surefire。"
+        },
+        {
+          "role": "assistant",
+          "content": "`test` phase 会触发绑定到它的 surefire goal；integration-test 是后续阶段，不能因为插件存在就被 `mvn test` 自动执行。"
+        },
+        {
+          "role": "user",
+          "content": "请为 CLI 复盘列出这次命令应触发的 goal，以及若要到 integration-test 至少需要把命令改成什么；不改 POM。"
+        }
+      ],
+      "query": "给出 `mvn test` 的实际 goal、未运行的 goal，并写出能到达 integration-test 阶段的最短 Maven 命令。",
+      "why_current_context_is_sufficient": "两个插件的 goal-phase 绑定、本次命令和日志观察已完整给出；Maven 阶段顺序在题内由 test 位于 integration-test 之前这一事实明确，答案不需要读取 POM 或重跑 CLI。",
+      "visible_distractor_ids_author_only": [
+        "T04-L0-GA-LIFECYCLE",
+        "T04-SKILL-MAVEN-LIFECYCLE",
+        "T04-L1-GA-BUILD-EVIDENCE"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否只把 surefire:test 归入 mvn test，并指出 failsafe:integration-test 未运行？",
+        "是否给出 `mvn integration-test` 作为到达该阶段的最短命令？"
+      ]
+    },
+    {
+      "draft_case_id": "T04-DS03-NN-010",
+      "external_source_ids": [],
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "插件回归的有效配置和日志如下：execution `check-format` 绑定 `verify`，goal 是 `check`；这段 execution 位于 profile `release-checks` 内。运行 `mvn verify` 的日志没有该 goal，运行 `mvn -Prelease-checks verify` 才出现一次 `check-format`。"
+        },
+        {
+          "role": "assistant",
+          "content": "插件声明和 goal 都存在，差异只在 profile 是否激活；默认的 `mvn verify` 不会执行 profile 内的绑定，显式激活后才会执行一次。"
+        },
+        {
+          "role": "user",
+          "content": "请写出故障根因、两条命令各自的预期执行次数，以及不改 POM 的修复性 CLI 记录。"
+        }
+      ],
+      "query": "这不是插件版本或 goal 拼写问题时，准确根因是什么？分别说明两条命令执行 `check-format` 的次数，并给出应保留的命令。",
+      "why_current_context_is_sufficient": "execution、phase、goal、profile 归属以及两次 CLI 的实际日志结果均已提供；profile 激活造成的唯一差异可以直接解释执行次数，无需检查父子配置或重新构建。",
+      "visible_distractor_ids_author_only": [
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS",
+        "T04-SKILL-MAVEN-PLUGIN",
+        "T04-L1-GA-PLUGIN"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否将根因定位为 release-checks 未激活，而非插件版本或 goal 名称？",
+        "是否分别记录默认命令 0 次、显式 profile 命令 1 次，并保留后者？"
+      ]
+    }
+  ]
+}

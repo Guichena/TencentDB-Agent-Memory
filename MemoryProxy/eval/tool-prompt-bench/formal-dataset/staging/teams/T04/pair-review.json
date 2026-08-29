@@ -1,0 +1,400 @@
+{
+  "schema_version": "task1.sol_pair_review.v1",
+  "team_id": "T04",
+  "reviewedBy": "Sol/build-02-T04",
+  "status": "approved",
+  "pairs": [
+    {
+      "pairId": "T04-PAIR-MEM-001",
+      "draftPairId": "T04-MEMORY-TRIAL-01-PETCLINIC-JAKARTA-HISTORY",
+      "family": "memory",
+      "target": "T04-L0-PETCLINIC-NAMESPACE",
+      "sequence": [
+        "tdai_conversation_search"
+      ],
+      "informationGap": "缺少历史会话中已验证的 PetClinic Jakarta 迁移包分类与最小改动结论；现有上下文只有现象、范围和排除项。",
+      "query": "请找回我们之前为 PetClinic 迁移验证过的旧包处理规则和最小修改结论，供这次回归说明对照。",
+      "positiveDelta": "最新构建日志仍只有导入失败位置，没有保留上次会话确认的具体包分类和保留规则。",
+      "negativeDelta": "交接记录已经补全：业务代码和校验相关的 Java EE 导入统一迁到 jakarta 命名空间；java.sql、javax.crypto 等 JDK 所有类型保持原包不动，安全过滤链只按同一原则做最小改动。",
+      "distractors": [
+        "T04-L0-PETCLINIC-SECURITY",
+        "T04-L0-PETCLINIC-VALIDATION",
+        "T04-L1-PETCLINIC-SECURITY-BOUNDARY"
+      ],
+      "sourceBatch": "trials/memory-trial-01"
+    },
+    {
+      "pairId": "T04-PAIR-SKILL-001",
+      "draftPairId": "T04-SKILL-TRIAL-01-MAVEN-DEPENDENCY",
+      "family": "skill",
+      "target": "T04-SKILL-MAVEN-DEPENDENCY",
+      "sequence": [
+        "skill_search",
+        "skill_view_by_id"
+      ],
+      "informationGap": "缺少冻结依赖管理流程的顺序、依赖树与冲突判定方法、dependencyManagement/BOM 的集中版本规则、传递排除与 scope 边界，以及完成收敛核对前必须覆盖的检查项。",
+      "query": "请给出这次 Google Auto 依赖问题的可执行排查顺序：如何查看依赖树并识别冲突，何时集中管理或导入 BOM，如何处理传递排除与作用域，并说明收敛验证的完成边界；先不改代码。",
+      "positiveDelta": "我没有那套完整流程的实际步骤。请先从团队已有资料中找到适用流程并按上述范围概述，从依赖树证据开始，暂不改代码。",
+      "negativeDelta": "交接摘要已补齐唯一缺口：先用完整或按组件过滤的依赖树并查看冲突解析，再用依赖分析与作用域列表核对声明；对冲突采用 nearest definition 证据，必要时在父 POM 的 dependencyManagement 集中版本或导入 BOM；对不需要的传递边使用 exclusions，并按 compile、provided、runtime、test 的类路径边界核对；最后确认版本、收敛、传递边界和作用域检查均已覆盖，仍不改代码。",
+      "distractors": [
+        "T04-SKILL-MAVEN-LIFECYCLE",
+        "T04-SKILL-MAVEN-PLUGIN",
+        "T04-SKILL-JAVA-SPRINGBOOT"
+      ],
+      "sourceBatch": "trials/skill-trial-01"
+    },
+    {
+      "pairId": "T04-PAIR-KNOW-001",
+      "draftPairId": "T04-DS03-KNOWLEDGE-001",
+      "family": "knowledge",
+      "target": "T04-KNOW-GOOGLE-AUTO-CODEGRAPH",
+      "sequence": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "informationGap": "固定 Google Auto code graph 中聚合根、受影响模块、依赖管理节点、插件执行节点和 profile 作用范围的关系方向与文件位置尚未出现在当前上下文。",
+      "query": "请确认固定 Google Auto 构建图中聚合关系、依赖管理与插件执行的方向和节点文件位置，并说明 profile 的生效范围；只返回与这条多模块构建诊断直接相关的结构结果。",
+      "positiveDelta": "补充日志仍没有模块依赖方向、dependencyManagement 所在节点、插件执行绑定或 profile 的生效范围；请保留该结构缺口。",
+      "negativeDelta": "交接摘要已补齐唯一缺口。以下值均明确属于本题的 fixed synthetic fixture，不是未经冻结源码核对的外部实现事实：fixture/google-auto/pom.xml --aggregates--> fixture/google-auto/auto-processor/pom.xml；dependencyManagement 节点是 fixture/google-auto/pom.xml，管理目标 fixture/google-auto/auto-processor/pom.xml；plugin execution 节点是 fixture/google-auto/auto-processor/pom.xml，绑定 synthetic-compile execution；profile synthetic-jdk17 仅作用于 fixture/google-auto/auto-processor/pom.xml。该摘要不引入其他项目结论。",
+      "distractors": [
+        "T04-KNOW-PETCLINIC-CODEGRAPH",
+        "T04-KNOW-BACKEND-MIGRATION-WIKI"
+      ],
+      "sourceBatch": "trials/knowledge-trial-01"
+    },
+    {
+      "pairId": "T04-PAIR-MEM-002",
+      "draftPairId": "T04-DS03-MEMORY-002",
+      "family": "memory",
+      "target": "T04-L1-RESTCLIENT-PARITY",
+      "sequence": [
+        "tdai_memory_search"
+      ],
+      "informationGap": "缺少历史会话中已验证的同步客户端行为等价清单：请求构造保持不变，集合与错误对象使用各自映射，非成功状态保留业务异常语义，并继续采用阻塞式控制流。",
+      "query": "请找回我们之前确认的同步客户端行为等价结论，说明迁移后请求、响应映射和错误语义应如何保持。",
+      "positiveDelta": "最新复盘仍只有成功列表和通用错误的现象，缺少上次会话确认的请求构造、集合映射、非成功状态异常和阻塞式控制流的完整等价关系。",
+      "negativeDelta": "交接记录补回了那次迁移复盘的等价清单：请求构造保持原有语义；集合响应和错误对象分别使用对应类型；非成功状态继续映射为业务层可识别的异常；连接失败、状态失败与正文解析失败分开记录；调用仍保持阻塞式控制流，不改成响应式。",
+      "distractors": [
+        "T04-L1-RESTCLIENT-MAPPING",
+        "T04-L1-RESTCLIENT-ERRORS",
+        "T04-L0-REST-ERROR-TEST"
+      ],
+      "sourceBatch": "batches/memory-expand-01"
+    },
+    {
+      "pairId": "T04-PAIR-MEM-003",
+      "draftPairId": "T04-DS03-MEMORY-003",
+      "family": "memory",
+      "target": "T04-L0-MAVEN-PLUGIN-DIAGNOSIS",
+      "sequence": [
+        "tdai_conversation_search",
+        "tdai_conversation_query"
+      ],
+      "informationGap": "缺少历史会话中确认的插件配置诊断值：发布 profile 才激活额外 execution，子模块继承的输出参数被 profile 覆盖，失败来自同一 goal 的重复绑定而非依赖收敛。",
+      "query": "请找回我们之前对 Google Auto 插件失败做过的配置诊断结论，说明 execution、参数继承和 profile 条件之间的关系。",
+      "positiveDelta": "最新交接仍只记录发布 profile 多出生成步骤和目录差异，缺少上次会话确认的 goal 绑定、参数继承覆盖及重复执行的最小判断。",
+      "negativeDelta": "历史交接已补回具体结论：默认路径不激活额外生成 execution，发布 profile 才激活它；子模块继承的输出目录参数由该 profile 的值覆盖；同一 goal 被绑定两次才造成重复生成，先移除重复绑定并核对最终生效参数；这条判断与依赖树版本收敛无关。",
+      "distractors": [
+        "T04-L1-GA-PLUGIN",
+        "T04-L1-GA-LIFECYCLE",
+        "T04-L1-MAVEN-DEPENDENCY-CONVERGENCE"
+      ],
+      "sourceBatch": "batches/memory-expand-01"
+    },
+    {
+      "pairId": "T04-PAIR-MEM-004",
+      "draftPairId": "T04-DS03-MEMORY-004",
+      "family": "memory",
+      "target": "T04-L1-DRUID-SECURITY-BOUNDARY",
+      "sequence": [
+        "tdai_memory_search"
+      ],
+      "informationGap": "缺少历史会话中确认的 Druid 安全边界：目标模块和入口内使用白名单解析拒绝未知多态类型，普通对象保持兼容，旁边模块不受全局开关影响。",
+      "query": "请找回我们之前确认的 Druid Jackson 解析安全边界，说明未知类型拒绝、合法对象兼容和模块作用域应如何同时成立。",
+      "positiveDelta": "最新回归仍只有一条对抗请求被拒和一条普通请求通过的结果，缺少上次会话确认的白名单作用域、入口隔离以及兼容性与拒绝行为的对应关系。",
+      "negativeDelta": "安全复盘摘要已补回唯一缺口：白名单解析只绑定目标模块的实际入口，未知多态类型被拒绝；普通对象请求继续使用兼容路径；旁边模块保留普通数据绑定；验证必须成对检查对抗请求拒绝与合法请求通过，不能打开全局白名单。",
+      "distractors": [
+        "T04-L1-DRUID-REQUEST-CLASSES",
+        "T04-L1-DRUID-MODULE-ISOLATION",
+        "T04-L0-DRUID-MODULE"
+      ],
+      "sourceBatch": "batches/memory-expand-01"
+    },
+    {
+      "pairId": "T04-PAIR-MEM-005",
+      "draftPairId": "T04-DS03-MEMORY-005",
+      "family": "memory",
+      "target": "T04-L1-MAVEN-DEPENDENCY-CONVERGENCE",
+      "sequence": [
+        "tdai_atomic_query"
+      ],
+      "informationGap": "缺少历史会话中确认的依赖收敛证据链：区分直接声明、父工程 dependencyManagement、最近传递路径与作用域；临时排除不构成跨模块的最终结论。",
+      "query": "请找回我们之前确认的 Google Auto Maven 依赖收敛证据链，说明版本来源、管理位置、传递路径和临时排除的边界。",
+      "positiveDelta": "最新依赖树仍只显示两个相近版本和测试通过结果，缺少上次会话确认的直接声明、父工程管理、最近传递路径及作用域之间的最终判断。",
+      "negativeDelta": "构建交接已补回证据链：分别记录直接声明、父工程 dependencyManagement、最近传递路径和模块作用域，再以此判断最终版本；临时 exclusion 只说明该模块的实验结果，不能据此声称所有模块已经收敛，也不改变插件执行诊断。",
+      "distractors": [
+        "T04-L1-GA-PLUGIN",
+        "T04-L1-GA-LIFECYCLE",
+        "T04-L0-GA-DEPENDENCY"
+      ],
+      "sourceBatch": "batches/memory-expand-01"
+    },
+    {
+      "pairId": "T04-PAIR-MEM-006",
+      "draftPairId": "T04-DS03-MEMORY-006",
+      "family": "memory",
+      "target": "T04-L2-SPRING-MIGRATION-BOUNDARIES",
+      "sequence": [
+        "tdai_read_scene"
+      ],
+      "informationGap": "缺少历史场景对四条后端边界的整合关系：PetClinic 区分 Java EE 导入与安全链，客户端保持同步语义，Maven 按生命周期/插件/依赖分根因，Jackson 白名单限制在目标模块入口。",
+      "query": "请找回我们之前整理的 Spring 后端迁移场景，说明命名空间、安全链、同步客户端、Maven 根因和解析器入口应如何分层验证。",
+      "positiveDelta": "最新场景摘要仍是四段互不相连的局部结果，缺少上次复盘确认的项目归属、验证先后和不能跨边界归因的完整关系。",
+      "negativeDelta": "场景交接已补回总关系：先按项目归属拆开命名空间与安全链，再保持同步客户端的请求/响应语义；Maven 失败分成生命周期、插件配置和依赖来源三类；Jackson 白名单只在目标模块入口生效并同时验证合法兼容与未知类型拒绝。每条结论都只用于自己的边界，不能跨项目互相归因。",
+      "distractors": [
+        "T04-L2-SCENE-PETCLINIC-MIGRATION",
+        "T04-L2-SCENE-RESTCLIENT-PARITY",
+        "T04-L1-PETCLINIC-REGRESSION-ORDER"
+      ],
+      "sourceBatch": "batches/memory-expand-01"
+    },
+    {
+      "pairId": "T04-PAIR-SKILL-002",
+      "draftPairId": "T04-SKILL-EXPAND-01-JAKARTA",
+      "family": "skill",
+      "target": "T04-SKILL-JAKARTA",
+      "sequence": [
+        "skill_view"
+      ],
+      "informationGap": "缺少冻结 Jakarta 参考的 Java EE 包映射、javax.sql/javax.crypto JDK 保留边界、按导入扫描与批量替换的顺序，以及实体/测试/XML/依赖兼容和最终 grep 验证条件。",
+      "query": "请给出这次 PetClinic Jakarta 命名空间迁移的可执行排查顺序：哪些 javax 包应映射、哪些必须保留，如何覆盖测试/XML 并验证完成；先不改代码。",
+      "positiveDelta": "我没有这套迁移流程的完整步骤。请先从团队已列出的命名空间参考中找到适用说明并按范围概述，停在可以开始逐项扫描的位置，暂不改文件。",
+      "negativeDelta": "我把缺失流程补齐：先扫描 Java 文件中的 javax 导入，并排除 javax.sql、javax.crypto 与 javax.net；将 javax.persistence、javax.validation、javax.servlet、javax.annotation 的常用类型以及 javax.transaction 分别映射到对应 jakarta 包，通配导入也要处理。逐个确认 JPA 实体使用 jakarta.persistence，校验和 servlet 类型同样更新；测试源码、persistence.xml 等配置和第三方依赖的 Jakarta 兼容性一起复核。完成前搜索旧的 persistence/validation/servlet/transaction/指定 annotation 导入必须无结果，并确认实体确有 jakarta.persistence 和校验导入；本轮只给顺序，不改文件。",
+      "distractors": [
+        "T04-SKILL-JAVAX-AWESOME",
+        "T04-SKILL-HIBERNATE",
+        "T04-SKILL-JAVA-SPRINGBOOT"
+      ],
+      "sourceBatch": "batches/skill-expand-01"
+    },
+    {
+      "pairId": "T04-PAIR-SKILL-003",
+      "draftPairId": "T04-SKILL-EXPAND-02-RESTCLIENT",
+      "family": "skill",
+      "target": "T04-SKILL-RESTCLIENT",
+      "sequence": [
+        "skill_view"
+      ],
+      "informationGap": "缺少冻结 RestClient 参考中同步 RestTemplate→RestClient 的 GET/POST/DELETE 等价写法、URI 与媒体类型保留、ParameterizedTypeReference/直接类型映射、配置 bean、状态处理和完成验证边界。",
+      "query": "请给出这次同步 Spring HTTP 客户端迁移的可执行顺序：如何保持 RestTemplate 到 RestClient 的请求、响应和错误处理等价，并说明完成检查；先不改代码。",
+      "positiveDelta": "我还没有这套迁移的完整步骤。请先从团队已列出的同步客户端参考中找到适用说明并概述 GET/POST/DELETE、类型映射、配置和错误处理的核对起点，暂不修改代码。",
+      "negativeDelta": "我把缺失步骤补全：先把旧的 GET 改成 RestClient.get().uri(...).retrieve()，简单返回用 body(Class)，Map/List 等泛型用 ParameterizedTypeReference；POST 保留 JSON body、contentType、accept，并以 toBodilessEntity 对应空响应；带头请求把 accept 和 URI 占位符保留。DELETE 仍在同步调用外围保留 try/catch 和成功布尔结果。需要统一配置时用 builder 设置 baseUrl 和默认 CONTENT_TYPE/ACCEPT，再通过构造注入客户端。用 onStatus 分别处理 4xx 与 5xx，再按原异常/返回约定核对；最后逐种请求检查 URI、方法、头、body、响应类型和错误分支，本轮只给顺序，不改代码。",
+      "distractors": [
+        "T04-SKILL-JAKARTA",
+        "T04-SKILL-SPRING-TESTING",
+        "T04-SKILL-JAVA-SPRINGBOOT"
+      ],
+      "sourceBatch": "batches/skill-expand-01"
+    },
+    {
+      "pairId": "T04-PAIR-SKILL-004",
+      "draftPairId": "T04-SKILL-EXPAND-03-MAVEN-LIFECYCLE",
+      "family": "skill",
+      "target": "T04-SKILL-MAVEN-LIFECYCLE",
+      "sequence": [
+        "skill_search",
+        "skill_view_by_id"
+      ],
+      "informationGap": "缺少冻结 Maven lifecycle 参考的 phase 顺序与 phase/goal 区分、profile 激活与停用、effective profile 证据，以及多模块 -pl/-am/-amd/-rf 选择和完成边界。",
+      "query": "请给出这次 Google Auto 生命周期问题的可执行诊断顺序：如何核对阶段与 goal、profile 激活和多模块选择，并说明何时完成；先不改 POM。",
+      "positiveDelta": "我没有这套生命周期诊断的完整步骤。请先在团队资料中检索适用的 Maven 构建生命周期参考，再按检索结果查看目标内容，概述排查起点，暂不改 POM。",
+      "negativeDelta": "我把缺失流程补齐：先把 validate 到 verify/install 的默认阶段顺序列出，并区分执行 phase 会带上此前阶段、直接执行 goal 只调用该目标。分别用默认入口与明确的 -Pprofile（必要时 -P!profile）记录实际 profile；用 active-profiles/effective-settings 之类的只读证据确认激活条件。多模块时先确认 reactor 顺序，再用 -pl module -am 带上依赖、-amd 选依赖者，必要时 -rf :module 从指定模块恢复；只有阶段、profile 和模块集合与失败入口一致且重现证据完整，才算生命周期诊断完成，本轮不改 POM。",
+      "distractors": [
+        "T04-SKILL-MAVEN-DEPENDENCY",
+        "T04-SKILL-MAVEN-PLUGIN",
+        "T04-SKILL-JAVA-SPRINGBOOT"
+      ],
+      "sourceBatch": "batches/skill-expand-01"
+    },
+    {
+      "pairId": "T04-PAIR-SKILL-005",
+      "draftPairId": "T04-SKILL-EXPAND-04-MAVEN-PLUGIN",
+      "family": "skill",
+      "target": "T04-SKILL-MAVEN-PLUGIN",
+      "sequence": [
+        "skill_search",
+        "skill_view_by_id"
+      ],
+      "informationGap": "缺少冻结 Maven plugin 参考中插件版本锁定、pluginManagement 与实际使用继承、execution id/phase/goal、插件参数、重复执行和目标验证的顺序。",
+      "query": "请给出这次 Google Auto Maven 插件问题的可执行诊断顺序：如何核对插件版本、execution/goal、继承和参数，并说明完成边界；先不改 POM。",
+      "positiveDelta": "我还没有这套插件诊断的完整步骤。请先在团队资料中检索适用的 Maven 插件配置参考，再按检索结果查看目标内容，概述从声明到执行证据的起点，暂不改 POM。",
+      "negativeDelta": "我把缺失流程补齐：先在有效 POM 中定位 groupId/artifactId/version，确保插件版本被明确固定；再核对 pluginManagement 里共享的版本和配置是否被实际 plugins 声明继承。逐个 execution 检查唯一 id、绑定 phase 和 goals，确认目标没有重复绑定或遗漏。随后按插件专属 configuration 核对参数是否落到目标 execution，并检查父子模块继承造成的覆盖。对 compiler、surefire/failsafe、enforcer 等现有声明，只按其对应 goal 和参数验证，不拿 dependencyManagement 解释插件行为；最后用目标执行和一次受影响的构建确认版本、execution 次数、goal、继承和参数均符合预期，才算完成，本轮不改 POM。",
+      "distractors": [
+        "T04-SKILL-MAVEN-DEPENDENCY",
+        "T04-SKILL-MAVEN-LIFECYCLE",
+        "T04-SKILL-JAVA-SPRINGBOOT"
+      ],
+      "sourceBatch": "batches/skill-expand-01"
+    },
+    {
+      "pairId": "T04-PAIR-SKILL-006",
+      "draftPairId": "T04-SKILL-EXPAND-05-SPRING-TESTING",
+      "family": "skill",
+      "target": "T04-SKILL-SPRING-TESTING",
+      "sequence": [
+        "skill_view",
+        "skill_files_read"
+      ],
+      "informationGap": "缺少冻结 Spring testing 的 RestClient 测试资源中 @RestClientTest 切片、MockRestServiceServer 注入、请求匹配、成功/错误响应、服务调用、断言、verify 与 reset 的逐步 procedure。",
+      "query": "请给出这次同步 RestClient 服务的 Spring 隔离测试顺序：如何设置测试切片、mock server、请求/响应断言和错误场景，并说明完成边界；先不改代码。",
+      "positiveDelta": "我还没有 RestClient 测试的具体 procedure。请先查看团队已列出的 Spring testing 参考，再读取其中实际随附的客户端测试说明，概述可以开始写测试的起点，暂不执行测试。",
+      "negativeDelta": "我把客户端 procedure 补齐：测试类用 @RestClientTest(WeatherService.class) 聚焦服务，并注入服务与 MockRestServiceServer；先为精确 URL 或匹配模式设置期望，按需断言 GET/POST 方法、query 参数、JSON content type/body 和 headers。用 withSuccess 配置 JSON body 或资源响应，也覆盖 not found、server error、bad request 等错误响应；调用服务后断言映射结果，并在测试末尾 server.verify()，每个测试前可 server.reset()。必要时用 ExpectedCount 检查调用次数，最后补超时响应和主要错误分支；本轮只据此设计，不改代码。",
+      "distractors": [
+        "T04-SKILL-RESTCLIENT",
+        "T04-SKILL-JAVA-JUNIT",
+        "T04-SKILL-JAVA-SPRINGBOOT"
+      ],
+      "sourceBatch": "batches/skill-expand-01"
+    },
+    {
+      "pairId": "T04-PAIR-KNOW-002",
+      "draftPairId": "T04-DS03-KNOWLEDGE-002",
+      "family": "knowledge",
+      "target": "T04-KNOW-PETCLINIC-CODEGRAPH",
+      "sequence": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "informationGap": "固定 synthetic PetClinic code graph 中 Jakarta-owned 命名空间的关系与文件路径，以及 javax.sql/javax.crypto 的 JDK 保留边界尚未出现在当前上下文。",
+      "query": "请核对固定合成 PetClinic 代码图中 Jakarta 命名空间的 ownership 关系与节点路径，并明确 javax.sql、javax.crypto 的 JDK 保留边界；只返回与这条迁移诊断直接相关的结构和决定。",
+      "positiveDelta": "补充日志仍只有 jakarta、javax.sql、javax.crypto、校验和安全这些主题，没有提供固定合成图的 ownership 关系、节点路径或 JDK 包保留决定；请保留这个结构缺口。",
+      "negativeDelta": "交接摘要已补齐唯一缺口。以下值全部明确属于 fixed synthetic fixture，不是未经冻结源码核对的外部实现事实：fixture/petclinic/src/main/java/org/springframework/samples/petclinic/model/Owner.java --imports--> jakarta.persistence.Entity 与 jakarta.validation.constraints.NotEmpty，表示 Java EE-owned 命名空间由该节点负责；fixture/petclinic/src/main/java/org/springframework/samples/petclinic/config/JdbcConfig.java --imports--> javax.sql.DataSource，javax.sql 属于 JDK-owned、必须保留的边界；fixture/petclinic/src/main/java/org/springframework/samples/petclinic/security/KeyMaterialLoader.java --imports--> javax.crypto.SecretKey 和 javax.crypto.spec.SecretKeySpec，javax.crypto 同样属于 JDK-owned、必须保留的边界。迁移决定是仅把 Java EE-owned javax.persistence/javax.validation 映射到 jakarta.persistence/jakarta.validation，不改 javax.sql 或 javax.crypto。该摘要不引入 REST 客户端、Maven 或其他项目结论。",
+      "distractors": [
+        "T04-KNOW-GOOGLE-AUTO-CODEGRAPH",
+        "T04-KNOW-BACKEND-MIGRATION-WIKI"
+      ],
+      "sourceBatch": "batches/knowledge-expand-01"
+    },
+    {
+      "pairId": "T04-PAIR-KNOW-003",
+      "draftPairId": "T04-DS03-KNOWLEDGE-003",
+      "family": "knowledge",
+      "target": "T04-KNOW-BACKEND-MIGRATION-WIKI",
+      "sequence": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "informationGap": "固定 synthetic backend migration wiki 中同步 RestClient 选择、Jakarta namespace 映射、安全配置隔离及 Maven-only 处理边界的具体决策值尚未出现在当前上下文。",
+      "query": "请核对固定合成后端迁移 wiki 对同步 RestTemplate/RestClient、Jakarta 命名空间、安全配置和 Maven-only 症状的决策边界；只返回这份迁移决策矩阵的具体值，并标明其 synthetic 属性。",
+      "positiveDelta": "补充记录仍只有 RestTemplate、RestClient、Jakarta、Security、Maven 和症状分类词，没有给出固定合成迁移 wiki 的同步客户端选择、命名空间映射、安全隔离或 Maven-only 处理值；请保留这个决策缺口。",
+      "negativeDelta": "交接摘要已补齐唯一缺口。以下决策全部明确属于 fixed synthetic wiki，不是外部仓库事实：同步阻塞式 HTTP 调用从 RestTemplate 迁移时选择 RestClient，并保持同步响应映射与错误处理语义；Java EE-owned javax.persistence/javax.validation 统一迁移到 jakarta.persistence/jakarta.validation，而 JDK-owned javax.sql/javax.crypto 不在该映射范围；Spring Security 配置变化单独归入 Security migration，不由客户端或 namespace 症状推断；仅 Maven 依赖、插件或 profile 失败时归入 build-only diagnosis，不修改 HTTP 或命名空间业务代码。该摘要不引入 PetClinic 图或模块构建图结论。",
+      "distractors": [
+        "T04-KNOW-PETCLINIC-CODEGRAPH",
+        "T04-KNOW-GOOGLE-AUTO-CODEGRAPH"
+      ],
+      "sourceBatch": "batches/knowledge-expand-01"
+    }
+  ],
+  "naturalCases": [
+    {
+      "draftCaseId": "T04-DS03-NN-001",
+      "distractors": [
+        "T04-L0-PETCLINIC-NAMESPACE",
+        "T04-SKILL-JAKARTA",
+        "T04-KNOW-PETCLINIC-CODEGRAPH"
+      ],
+      "whyCurrentContextIsSufficient": "四条完整 import、Java EE 与 JDK 的分类规则、目标命名空间和不扫描其他文件的范围都在当前上下文中直接给出；答案只是对这份局部清单执行确定性替换，不需要历史记录或项目图。",
+      "sourceBatch": "batches/natural-negative-01"
+    },
+    {
+      "draftCaseId": "T04-DS03-NN-002",
+      "distractors": [
+        "T04-L1-PETCLINIC-NAMESPACE-RULE",
+        "T04-SKILL-JAVAX-AWESOME",
+        "T04-L0-PETCLINIC-VALIDATION"
+      ],
+      "whyCurrentContextIsSufficient": "错误 import、完整编译器诊断、JDK 17 基线、使用类型以及不新增依赖的要求均已明确；`DataSource` 的包归属可以由当前给出的边界直接确定，无需查看仓库或外部迁移资料。",
+      "sourceBatch": "batches/natural-negative-01"
+    },
+    {
+      "draftCaseId": "T04-DS03-NN-003",
+      "distractors": [
+        "T04-L1-RESTCLIENT-PARITY",
+        "T04-SKILL-RESTCLIENT",
+        "T04-L0-REST-MAPPING"
+      ],
+      "whyCurrentContextIsSufficient": "方法体、请求方法、成功正文类型和非成功状态的既定异常行为都在当前消息中完整提供；问题是对两条已给控制流的直接解释，不需要客户端迁移指南或实际请求。",
+      "sourceBatch": "batches/natural-negative-01"
+    },
+    {
+      "draftCaseId": "T04-DS03-NN-004",
+      "distractors": [
+        "T04-L0-REST-ERROR-TEST",
+        "T04-L1-RESTCLIENT-ERRORS",
+        "T04-SKILL-SPRING-TESTING"
+      ],
+      "whyCurrentContextIsSufficient": "响应状态、正文及三类错误的互斥映射规则全部已提供；测试断言可直接从 422 和给定 JSON 求出，不需要读取客户端实现、服务端契约或运行日志。",
+      "sourceBatch": "batches/natural-negative-01"
+    },
+    {
+      "draftCaseId": "T04-DS03-NN-005",
+      "distractors": [
+        "T04-L1-RESTCLIENT-TEST-BOUNDARY",
+        "T04-SKILL-JAVA-JUNIT",
+        "T04-SKILL-SPRING-TESTING"
+      ],
+      "whyCurrentContextIsSufficient": "返回类型、完整 JSON 数组、现有两条断言和新增断言的范围均在当前上下文中给出；无需推断序列化配置或启动 HTTP 服务即可写出精确断言。",
+      "sourceBatch": "batches/natural-negative-01"
+    },
+    {
+      "draftCaseId": "T04-DS03-NN-006",
+      "distractors": [
+        "T04-L0-DRUID-JACKSON",
+        "T04-SKILL-JACKSON-SECURITY",
+        "T04-L1-DRUID-REQUEST-CLASSES"
+      ],
+      "whyCurrentContextIsSufficient": "两种输入的字段形状、分支条件、状态码、错误码和成功绑定类型都已明确；预期结果可以直接应用局部保护逻辑，不需要了解 Druid 其他模块或 Jackson 配置。",
+      "sourceBatch": "batches/natural-negative-01"
+    },
+    {
+      "draftCaseId": "T04-DS03-NN-007",
+      "distractors": [
+        "T04-L1-DRUID-COMPATIBILITY",
+        "T04-SKILL-JACKSON-SECURITY",
+        "T04-L0-DRUID-MODULE"
+      ],
+      "whyCurrentContextIsSufficient": "输入 JSON、白名单字段、确定的解析结果和未知字段分支均已直接给出；三项断言只需核对当前对象，不需要安全策略文档或其他请求样例。",
+      "sourceBatch": "batches/natural-negative-01"
+    },
+    {
+      "draftCaseId": "T04-DS03-NN-008",
+      "distractors": [
+        "T04-L0-GA-DEPENDENCY",
+        "T04-SKILL-MAVEN-DEPENDENCY",
+        "T04-KNOW-GOOGLE-AUTO-CODEGRAPH"
+      ],
+      "whyCurrentContextIsSufficient": "完整的两条传递路径、出现顺序、冲突规则以及 app 的直接声明状态都已提供；答案是一次局部依赖树求值，不需要执行构建或查询项目配置。",
+      "sourceBatch": "batches/natural-negative-01"
+    },
+    {
+      "draftCaseId": "T04-DS03-NN-009",
+      "distractors": [
+        "T04-L0-GA-LIFECYCLE",
+        "T04-SKILL-MAVEN-LIFECYCLE",
+        "T04-L1-GA-BUILD-EVIDENCE"
+      ],
+      "whyCurrentContextIsSufficient": "两个插件的 goal-phase 绑定、本次命令和日志观察已完整给出；Maven 阶段顺序在题内由 test 位于 integration-test 之前这一事实明确，答案不需要读取 POM 或重跑 CLI。",
+      "sourceBatch": "batches/natural-negative-01"
+    },
+    {
+      "draftCaseId": "T04-DS03-NN-010",
+      "distractors": [
+        "T04-L0-MAVEN-PLUGIN-DIAGNOSIS",
+        "T04-SKILL-MAVEN-PLUGIN",
+        "T04-L1-GA-PLUGIN"
+      ],
+      "whyCurrentContextIsSufficient": "execution、phase、goal、profile 归属以及两次 CLI 的实际日志结果均已提供；profile 激活造成的唯一差异可以直接解释执行次数，无需检查父子配置或重新构建。",
+      "sourceBatch": "batches/natural-negative-01"
+    }
+  ]
+}

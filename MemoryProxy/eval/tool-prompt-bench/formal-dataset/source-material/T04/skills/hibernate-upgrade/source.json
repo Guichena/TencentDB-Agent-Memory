@@ -1,0 +1,27 @@
+{
+  "schema_version": "task1.skill_source_lock.v1",
+  "team_id": "T04",
+  "asset_id": "T04-SKILL-HIBERNATE",
+  "name": "hibernate-upgrade",
+  "repository": "https://github.com/benchflow-ai/skillsbench",
+  "commit_sha": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+  "path": "tasks/spring-boot-jakarta-migration/environment/skills/hibernate-upgrade/SKILL.md",
+  "license": "Apache-2.0",
+  "license_path": "LICENSE",
+  "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+  "raw_file_sha256": "b54208d472482e218ff9cd16e8e4bed12fa8df7f801af8aea22184df954f8bcd",
+  "adapted_file_sha256": "b54208d472482e218ff9cd16e8e4bed12fa8df7f801af8aea22184df954f8bcd",
+  "package_sha256": "1a22e09ebe1401df86fb560d2886aaea6951c0010bcad1a992956bad1255716f",
+  "resource_files": [],
+  "adaptation": {
+    "kind": "registry_metadata_only",
+    "technical_body_changed": false,
+    "allowed_changes": [
+      "listing description",
+      "use_when",
+      "do_not_use_when"
+    ],
+    "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "frozen_at": "2026-08-29T22:55:00+08:00"
+}
