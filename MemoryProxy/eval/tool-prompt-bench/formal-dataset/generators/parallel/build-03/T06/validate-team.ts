@@ -114,8 +114,13 @@ for (const pair of fragment.pairs) {
   }
   check(positive.identity.sessionId !== negative.identity.sessionId, `${pair.pairId}: paired cases must use fresh sessions`);
   check(positive.contextMessages.length === negative.contextMessages.length, `${pair.pairId}: context length differs`);
-  const changed = positive.contextMessages.map((item: any, index: number) => JSON.stringify(item) !== JSON.stringify(negative.contextMessages[index])).filter(Boolean).length;
-  check(changed === 1, `${pair.pairId}: controlled context delta count is ${changed}, expected 1`);
+  const changedIndexes = positive.contextMessages.flatMap((item: any, index: number) => JSON.stringify(item) === JSON.stringify(negative.contextMessages[index]) ? [] : [index]);
+  check(changedIndexes.length === 1, `${pair.pairId}: controlled context delta count is ${changedIndexes.length}, expected 1`);
+  if (changedIndexes.length === 1) {
+    const index = changedIndexes[0];
+    const expected = sha(JSON.stringify({ positive_delta_message: positive.contextMessages[index], negative_delta_message: negative.contextMessages[index], query: positive.query }));
+    check(pair.controlledDeltaSha256 === expected, `${pair.pairId}: controlled delta hash mismatch`);
+  }
   check(positiveAnnotation.gold.needTdaiTool === true && negativeAnnotation.gold.needTdaiTool === false, `${pair.pairId}: pair Gold polarity mismatch`);
 }
 
