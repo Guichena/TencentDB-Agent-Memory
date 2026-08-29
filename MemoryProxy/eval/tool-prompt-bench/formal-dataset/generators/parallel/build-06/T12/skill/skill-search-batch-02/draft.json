@@ -1,0 +1,306 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t12-skill-search-batch-02",
+  "stage": "DS02",
+  "team_id": "T12",
+  "family": "skill",
+  "external_source_ids": [
+    "t12-skill-pg-design"
+  ],
+  "pairs": [
+    {
+      "draft_pair_id": "T12-SKILL-SEARCH-B02-P001",
+      "external_source_ids": [
+        "t12-skill-pg-design"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Ledger 要新增客户、订单和审计记录几张 PostgreSQL 业务表，先把可维护的结构方案定下来。"
+        },
+        {
+          "role": "assistant",
+          "content": "已整理实体关系、写入频率和预期查询；本轮只确定表设计原则，不生成或执行 DDL。"
+        },
+        {
+          "role": "user",
+          "content": "团队在主键、外键动作、必填字段和默认值上意见不一，担心约束过松导致脏数据。"
+        },
+        {
+          "role": "assistant",
+          "content": "应先明确规范化与实体边界，再逐项决定约束和引用关系，避免让 ORM 默认值替代数据库设计。"
+        },
+        {
+          "role": "user",
+          "content": "现在只有业务草图，还缺少一份能指导新表和约束取舍的 PostgreSQL 设计依据。"
+        },
+        {
+          "role": "assistant",
+          "content": "需要补齐设计依据后再评估主键、必填性、默认值及外键引用，不提前落实现有草图。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "Ledger 新表开始设计前，如何依次确定规范化、主键、必填性、默认值和外键约束？",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我还缺少适用于 PostgreSQL 新表与约束设计的系统依据。请先找出最匹配的既有资料并查看其核心规则，说明规范化、主键、必填性、默认值和外键引用应如何衔接，先停在设计原则层。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少从 3NF 规范化到主键、NOT NULL/默认值以及带动作和显式引用列索引的外键约束的冻结设计规则。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T12-SKILL-PG-DESIGN"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_search",
+              "skill_view_by_id"
+            ]
+          ],
+          "stop_after_candidate": "查看冻结的 PostgreSQL 表设计指导并概述新表与约束的核心规则，不生成或执行 DDL。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把设计依据补齐：先规范化到 3NF 以消除冗余和更新异常，仅在测量证明连接确实有高收益时反规范化；参考表通常定义主键，优先使用 BIGINT GENERATED ALWAYS AS IDENTITY，只有需要全局唯一或不透明标识时才用 UUID；语义必填字段加 NOT NULL，常见值用 DEFAULT；外键明确 ON DELETE/UPDATE 动作，并为引用列显式建索引。请据此给出设计顺序。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已给出冻结设计中的规范化、反规范化条件、主键选择、必填性、默认值、外键动作和引用列索引规则，足以回答查询。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T12-SKILL-PG-MIGRATION",
+        "T12-SKILL-GHOST"
+      ],
+      "controlled_delta_note": "Positive 只缺冻结的新表与约束设计规则；Negative 仅补齐规范化、主键、必填性、默认值和外键动作/索引，其他上下文与 query 不变。",
+      "source_fact_map": [
+        {
+          "claim": "新表应先规范化到 3NF，仅在测量证明连接性能收益时反规范化。",
+          "source_id": "t12-skill-pg-design",
+          "locator": "design-postgres-tables/SKILL.md#Core Rules"
+        },
+        {
+          "claim": "参考表定义主键时优先使用 BIGINT GENERATED ALWAYS AS IDENTITY，UUID 仅用于全局唯一或不透明标识需求。",
+          "source_id": "t12-skill-pg-design",
+          "locator": "design-postgres-tables/SKILL.md#Core Rules; #Data Types"
+        },
+        {
+          "claim": "语义必填字段使用 NOT NULL，常见值使用 DEFAULT；外键明确更新/删除动作并为引用列显式建索引。",
+          "source_id": "t12-skill-pg-design",
+          "locator": "design-postgres-tables/SKILL.md#Core Rules; #Constraints"
+        }
+      ],
+      "sol_review_questions": [
+        "确认 Positive 的唯一目标是未列出的表设计资产，且检索后查看顺序只出现在私有提案。",
+        "确认 Negative 只补齐冻结来源中的表与约束原则，没有把 Ledger 的合成实体或实现细节冒充来源事实。"
+      ]
+    },
+    {
+      "draft_pair_id": "T12-SKILL-SEARCH-B02-P002",
+      "external_source_ids": [
+        "t12-skill-pg-design"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Beacon 的查询计划显示，事件表既有按租户和状态过滤，也有时间范围、排序和关联读取。"
+        },
+        {
+          "role": "assistant",
+          "content": "已收集过滤条件、排序方式、连接键和数据增长趋势；本轮只规划访问路径，不创建索引。"
+        },
+        {
+          "role": "user",
+          "content": "有人建议每个字段都建同一种索引，但写入成本和查询条件的组合方式都没有被考虑。"
+        },
+        {
+          "role": "assistant",
+          "content": "索引选择应从实际操作符、复合条件的列顺序以及数据在磁盘上的自然顺序出发。"
+        },
+        {
+          "role": "user",
+          "content": "我已经整理了主要访问路径，但还缺少把查询形态映射到 PostgreSQL 索引类型的统一设计依据。"
+        },
+        {
+          "role": "assistant",
+          "content": "需要先补齐索引设计依据，再按访问路径评估单列、复合和针对数据分布的选择，不直接改表。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "Beacon 的访问路径索引应如何根据过滤、范围、排序、连接和数据顺序来规划？",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我还缺少 PostgreSQL 访问路径索引设计的系统依据。请先找出最匹配的既有资料并查看其核心规则，概述 B-tree、复合索引、GIN、GiST 和 BRIN 应如何与实际查询及数据分布衔接，先不要改表。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少按相等/范围/排序操作、复合索引左前缀、JSONB/数组、范围/排除约束以及自然顺序数据选择索引类型的冻结规则。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T12-SKILL-PG-DESIGN"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_search",
+              "skill_view_by_id"
+            ]
+          ],
+          "stop_after_candidate": "查看冻结的 PostgreSQL 表设计指导并总结索引类型与访问路径的边界，不创建或删除索引。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把访问路径规则补齐：B-tree 适合相等、范围和 ORDER BY；复合索引要按左前缀使用，通常把选择性高且常过滤的列放前面；GIN 适合 JSONB、数组包含和全文检索，GiST 适合范围与排除约束；很大且磁盘行顺序与列值相关的数据可用 BRIN；只为实际查询、排序、连接和外键访问路径建索引。请据此说明规划方法。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已覆盖冻结指导中的主要索引类型、操作符边界、复合索引左前缀、数据顺序和实际访问路径原则，足以回答查询。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T12-SKILL-PG-MIGRATION",
+        "T12-SKILL-GHOST"
+      ],
+      "controlled_delta_note": "Positive 只缺冻结的访问路径索引规则；Negative 仅补齐 B-tree、复合、GIN、GiST、BRIN 和访问路径原则，其他上下文与 query 不变。",
+      "source_fact_map": [
+        {
+          "claim": "B-tree 适合相等、范围和排序查询，复合索引按左前缀使用且列顺序影响可用性。",
+          "source_id": "t12-skill-pg-design",
+          "locator": "design-postgres-tables/SKILL.md#Indexing"
+        },
+        {
+          "claim": "GIN 适合 JSONB、数组和全文检索，GiST 适合范围与排除约束。",
+          "source_id": "t12-skill-pg-design",
+          "locator": "design-postgres-tables/SKILL.md#Indexing"
+        },
+        {
+          "claim": "BRIN 适合很大且磁盘行顺序与被索引列相关的数据，索引应服务实际访问路径。",
+          "source_id": "t12-skill-pg-design",
+          "locator": "design-postgres-tables/SKILL.md#Indexing; #Core Rules"
+        }
+      ],
+      "sol_review_questions": [
+        "确认 Positive 的目标仍只有未列出的表设计资产，provider-visible 文本未暴露检索或查看动作。",
+        "确认 Negative 未加入 Beacon 的具体表名、阈值或冻结指导之外的索引承诺。"
+      ]
+    },
+    {
+      "draft_pair_id": "T12-SKILL-SEARCH-B02-P003",
+      "external_source_ids": [
+        "t12-skill-pg-design"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Quartz ORM 兼容性改造需要保存稳定字段，同时允许少量可变属性，并要支持按属性筛选。"
+        },
+        {
+          "role": "assistant",
+          "content": "已区分核心关系、可选属性和现有客户端读写方式；本轮只确定列类型与属性存储原则，不改 schema。"
+        },
+        {
+          "role": "user",
+          "content": "团队在 JSON 与 JSONB、字符串长度类型、时间类型以及属性索引上有分歧，担心换型破坏兼容性。"
+        },
+        {
+          "role": "assistant",
+          "content": "应先按语义和查询方式选择 PostgreSQL 类型，再判断可变属性是否适合半结构化存储及其索引。"
+        },
+        {
+          "role": "user",
+          "content": "现在有字段映射草案，但还缺少一份同时覆盖 JSONB 取舍、属性约束和兼容类型的设计依据。"
+        },
+        {
+          "role": "assistant",
+          "content": "需要先补齐类型与 JSONB 设计依据，再检查 ORM 映射和访问路径，不先执行迁移。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "Quartz 的可变属性与兼容类型设计，应如何选择 JSONB、约束、索引以及字符串和时间类型？",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我还缺少 PostgreSQL JSONB 与兼容类型设计的系统依据。请先找出最匹配的既有资料并查看其核心规则，说明核心关系、可变属性、JSONB 约束与索引，以及 TEXT、TIMESTAMPTZ 等类型选择如何衔接，先停在设计原则层。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少将核心关系留在表中、用 JSONB 承载可选半结构化属性、限制其对象形态并按查询选择 GIN 或标量 B-tree，以及 TEXT/TIMESTAMPTZ/NUMERIC 等兼容类型规则。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T12-SKILL-PG-DESIGN"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_search",
+              "skill_view_by_id"
+            ]
+          ],
+          "stop_after_candidate": "查看冻结的 PostgreSQL 表设计指导并概述 JSONB、约束、索引和兼容类型原则，不修改 schema。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把类型与属性规则补齐：核心关系保留为普通表列，JSONB 只用于可选或半结构化属性，优先 JSONB 而非 JSON；属性列可用 NOT NULL 与 jsonb_typeof(config) = 'object' 等约束限制形态；JSONB 的包含、键存在和数组查询用 GIN，若是具体标量的等值或范围查询则抽取为生成列或表达式并用 B-tree；字符串优先 TEXT，时间优先 TIMESTAMPTZ，金额用 NUMERIC，避免无时区 TIMESTAMP、VARCHAR(n) 和 MONEY。请据此说明兼容设计顺序。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已给出冻结 JSONB 指导、属性约束与索引分流，以及字符串、时间和金额的兼容类型选择，足以回答查询。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T12-SKILL-PG-MIGRATION",
+        "T12-SKILL-GHOST"
+      ],
+      "controlled_delta_note": "Positive 只缺冻结的 JSONB 与兼容类型规则；Negative 仅补齐关系/属性边界、JSONB 约束与索引分流及 TEXT/TIMESTAMPTZ/NUMERIC 选择，其他上下文与 query 不变。",
+      "source_fact_map": [
+        {
+          "claim": "核心关系应保留在表中，JSONB 适合可选或半结构化属性且优先于 JSON；可用类型检查约束限制 JSONB 值。",
+          "source_id": "t12-skill-pg-design",
+          "locator": "design-postgres-tables/SKILL.md#JSONB Guidance"
+        },
+        {
+          "claim": "JSONB 包含、键存在和数组查询适合 GIN，具体标量等值/范围查询可抽取为生成列或表达式并使用 B-tree。",
+          "source_id": "t12-skill-pg-design",
+          "locator": "design-postgres-tables/SKILL.md#JSONB Guidance"
+        },
+        {
+          "claim": "字符串优先 TEXT，时间优先 TIMESTAMPTZ，金额使用 NUMERIC，应避免无时区 TIMESTAMP、VARCHAR(n) 和 MONEY。",
+          "source_id": "t12-skill-pg-design",
+          "locator": "design-postgres-tables/SKILL.md#Core Rules; #Data Types; #Do not use the following data types"
+        }
+      ],
+      "sol_review_questions": [
+        "确认 Positive 只指向未列出的表设计资产，且 provider-visible 文本未暴露内部动作、端点或资产标识。",
+        "确认 Negative 仅复述冻结来源中的 JSONB 与类型建议，没有把 Quartz ORM 映射细节冒充来源事实。"
+      ]
+    }
+  ]
+}

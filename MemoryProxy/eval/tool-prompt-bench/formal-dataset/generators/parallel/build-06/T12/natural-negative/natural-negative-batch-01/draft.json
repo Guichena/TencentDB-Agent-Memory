@@ -1,0 +1,262 @@
+{
+  "schema_version": "task1.luna_natural_negative_draft.v1",
+  "batch_id": "t12-natural-negative-batch-01",
+  "stage": "DS02",
+  "team_id": "T12",
+  "cases": [
+    {
+      "draft_case_id": "T12-DS02-NN-001",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Ledger 服务的 `orders` 表已有 `id`、`status`、`total_cents` 和 `created_at`，线上版本仍在写入，表中约有 3200 万行。下一版本要增加可为空的 `approved_at timestamptz`；旧版本必须继续读写成功，新版本先双写该字段，但历史订单不需要立即补值。"
+        },
+        {
+          "role": "assistant",
+          "content": "这次变更可以把结构变更和应用发布拆开：先增加 nullable 列，再发布兼容的双写逻辑；不添加默认值、不改已有列，也不把历史数据回填混入这次发布。"
+        }
+      ],
+      "query": "请给出这次变更的最小 SQL migration、应用层双写示意和发布顺序，并说明为什么旧版本不会因新列而失败。",
+      "why_current_context_is_sufficient": "表结构、数据规模、可空性、旧新版本兼容要求、双写范围和不应回填的边界都已明确；输出只需组织标准 DDL 与局部写入逻辑，无需查项目或外部资料。",
+      "visible_distractor_ids_author_only": [
+        "T12-NN-DISTRACTOR-LEDGER-PLAN",
+        "T12-NN-DISTRACTOR-ARCHIVE-RESTORE"
+      ],
+      "sol_review_questions": [
+        "是否只新增 nullable 列并先部署结构、后部署双写，且没有把默认值或历史回填偷偷加入 migration？"
+      ]
+    },
+    {
+      "draft_case_id": "T12-DS02-NN-002",
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Beacon 的 `events` 表有 1.2 亿行，生产写入高峰每秒约 1800 次，单事务等待超过 100ms 就会触发告警。现在 `payload` 是 `jsonb`，需要新增 `payload_version integer NOT NULL`，旧行取 1，新写入取 2；数据库版本支持事务内设置默认值、单独校验约束和并发索引。"
+        },
+        {
+          "role": "assistant",
+          "content": "应把默认值、历史填充、约束校验和应用切换拆成可观察的小步骤；长时间持有表锁的操作不能放进一次发布事务，且任何一步失败都要能重试而不阻断写入。"
+        },
+        {
+          "role": "user",
+          "content": "请写一份可执行的分阶段 migration/发布伪代码，包含回滚边界、批量填充条件和最终 NOT NULL 的处理方式。"
+        }
+      ],
+      "query": "基于给定的写入 SLA 和版本规则，输出一套低锁在线变更步骤；不要引入新的表或停机窗口。",
+      "why_current_context_is_sufficient": "行数、写入负载、锁等待阈值、目标列语义、旧新值规则以及可用的约束/索引能力均已给出；可直接推导分阶段 DDL 和发布顺序，不依赖未提供的环境信息。",
+      "visible_distractor_ids_author_only": [
+        "T12-NN-DISTRACTOR-HARBOR-CHECKPOINT",
+        "T12-NN-DISTRACTOR-QUARTZ-MAPPING"
+      ],
+      "sol_review_questions": [
+        "是否避免了对 1.2 亿行执行长事务，并把默认、回填、校验、应用切换和最终约束放在可重试的独立步骤中？"
+      ]
+    },
+    {
+      "draft_case_id": "T12-DS02-NN-003",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Beacon 的列表接口固定执行：`WHERE tenant_id = ? AND state = 'open' AND created_at < ? ORDER BY created_at DESC LIMIT 50`。`tickets` 表有 900 万行，现有索引只有 `(tenant_id, created_at DESC)`；最近一次剖面显示每次请求扫描约 18000 个候选行，其中 92% 因 `state` 被过滤。"
+        },
+        {
+          "role": "assistant",
+          "content": "查询的过滤条件、排序和分页游标已经固定，主要浪费来自没有把状态选择性纳入访问路径；新索引需要覆盖租户、状态和排序，同时不改变返回顺序或游标语义。"
+        }
+      ],
+      "query": "请给出最小的索引 DDL、验证用的 EXPLAIN 查询以及判断改善是否达标的两个计划指标。",
+      "why_current_context_is_sufficient": "查询谓词、排序、限制、现有索引、扫描浪费比例和不可改变的接口语义都已说明；可以直接设计索引和验证指标，无需获取隐藏的表定义或线上计划。",
+      "visible_distractor_ids_author_only": [
+        "T12-NN-DISTRACTOR-LEDGER-DDL",
+        "T12-NN-DISTRACTOR-QUARTZ-ENUM"
+      ],
+      "sol_review_questions": [
+        "索引是否同时服务 tenant_id、state 过滤和 created_at 排序，并用计划中的扫描行数与实际耗时验证而不是只看索引是否存在？"
+      ]
+    },
+    {
+      "draft_case_id": "T12-DS02-NN-004",
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Archive 的 `documents` 表只保留 `deleted_at IS NULL` 的在线文档供搜索，软删除每天约占新增量的 8%。搜索条件是 `workspace_id = ? AND title ILIKE ?`，要求在线请求不等待索引构建；当前有一个旧的全表 `(workspace_id, title)` 索引，磁盘配额只允许同时保留两个同类索引。"
+        },
+        {
+          "role": "assistant",
+          "content": "可以先并发创建只覆盖未删除行的索引，在验证新索引被采用后再并发删除旧索引；构建失败时保留旧路径，删除前不能假定新索引已经生效。"
+        },
+        {
+          "role": "user",
+          "content": "请写出迁移脚本的关键 SQL 和检查顺序，处理重跑、构建失败以及删除旧索引前后的安全条件。"
+        }
+      ],
+      "query": "针对这个软删除搜索场景，给出可在线执行的部分索引生命周期代码，不改变查询接口。",
+      "why_current_context_is_sufficient": "软删除谓词、查询条件、在线构建约束、索引并存上限和失败/回滚要求已经完整给出；答案只需提供相应的并发 DDL 与可重跑检查逻辑。",
+      "visible_distractor_ids_author_only": [
+        "T12-NN-DISTRACTOR-BEACON-PLAN",
+        "T12-NN-DISTRACTOR-HARBOR-RETRY"
+      ],
+      "sol_review_questions": [
+        "是否先验证新的未删除部分索引再删除旧索引，并覆盖重复执行、构建失败和删除动作的保护条件？"
+      ]
+    },
+    {
+      "draft_case_id": "T12-DS02-NN-005",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Harbor 需要给 `customers` 表的 6400 万行补出 `search_key`，规则是把 `email` 去首尾空格后转小写；`email` 为 NULL 时 `search_key` 也必须是 NULL。主键 `id` 是递增 bigint，worker 每次处理 2000 行，已有 `last_id` 检查点，单批超过 300ms 就要让出数据库。"
+        },
+        {
+          "role": "assistant",
+          "content": "回填应按主键单调推进而不是用 offset，批次条件必须只更新尚未完成的行；检查点要在批次提交后推进，重启时从已提交的边界继续，并保留 NULL 语义。"
+        }
+      ],
+      "query": "请写出批量回填 worker 的伪代码（含查询、事务、检查点和节流），并列出可证明幂等的条件。",
+      "why_current_context_is_sufficient": "回填表达式、NULL 规则、行数、主键顺序、批大小、超时阈值和检查点语义均已提供；可直接写出局部 worker 逻辑，不需要访问数据或内部实现。",
+      "visible_distractor_ids_author_only": [
+        "T12-NN-DISTRACTOR-LEDGER-ROLLBACK",
+        "T12-NN-DISTRACTOR-ARCHIVE-INDEX"
+      ],
+      "sol_review_questions": [
+        "是否使用 `id > last_id` 的有序批次、在提交后更新检查点，并确保重试不会破坏 NULL 规则或重复处理已完成行？"
+      ]
+    },
+    {
+      "draft_case_id": "T12-DS02-NN-006",
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Harbor 的 `invoices` 表要把旧列 `amount_cents` 转成新列 `amount_decimal`。转换规则已经确定为 `amount_cents / 100.0`，负数合法；共有 1800 万行，后台回填可以并行运行，但同一 invoice 可能被在线更新。每次回填必须只在读取到的旧值仍未变化时写入，无法更新的行下轮再试。"
+        },
+        {
+          "role": "assistant",
+          "content": "这里需要用带版本或旧值条件的 compare-and-set 更新，避免回填覆盖在线写入；批处理完成后还要统计未成功的行，不能仅以 worker 没报错作为完成信号。"
+        },
+        {
+          "role": "user",
+          "content": "假设表中有递增主键 `id` 和 `updated_at`，请给出一条安全的批量 UPDATE、重试循环和完成度校验 SQL。"
+        }
+      ],
+      "query": "为这个可并行的数据迁移写出最小的 compare-and-set 回填实现，保留在线更新并能在中断后继续。",
+      "why_current_context_is_sufficient": "转换公式、并发写入风险、主键和更新时间字段、失败重试规则及完成度要求已全部明确；不需要额外业务知识即可生成 SQL 和控制循环。",
+      "visible_distractor_ids_author_only": [
+        "T12-NN-DISTRACTOR-BEACON-INDEX",
+        "T12-NN-DISTRACTOR-QUARTZ-ROLLBACK"
+      ],
+      "sol_review_questions": [
+        "回填 UPDATE 是否带有旧值或版本保护，且实现了中断可恢复与对未成功行的独立计数，而不是覆盖并发写入？"
+      ]
+    },
+    {
+      "draft_case_id": "T12-DS02-NN-007",
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Quartz 的 Java 服务分成两个发布波次：旧版使用 Hibernate 5，实体字段映射到 `users.display_name`；新版使用 Hibernate 6，目标列名是 `users.full_name`。数据库变更期间必须让两版同时运行，应用读路径先读 `full_name`，为空时回退 `display_name`；写入要同时更新两列。"
+        },
+        {
+          "role": "assistant",
+          "content": "兼容窗口可以保留两列并在实体或 SQL 层显式实现读回退、双写；只有确认旧版退出且回填完成后，才适合删除旧列，不能在第一步直接重命名并要求旧二进制理解新列。"
+        },
+        {
+          "role": "user",
+          "content": "请写出 Hibernate 映射/访问层的最小代码示意、两版发布顺序和验证双写的测试断言，不改实体对外 API。"
+        }
+      ],
+      "query": "输出一个支持 Hibernate 5/6 并行发布的列名迁移方案和局部代码，明确读回退与双写行为。",
+      "why_current_context_is_sufficient": "两版 ORM、旧新列名、并行运行窗口、读回退、双写以及不改外部 API 的约束都在当前上下文中；可直接编写兼容映射和测试，不需要查项目配置。",
+      "visible_distractor_ids_author_only": [
+        "T12-NN-DISTRACTOR-HARBOR-CAS",
+        "T12-NN-DISTRACTOR-LEDGER-COLUMN"
+      ],
+      "sol_review_questions": [
+        "是否让旧版继续可写、让读路径在新列为空时回退，并验证两列同步，而不是依赖旧版立即升级或破坏实体 API？"
+      ]
+    },
+    {
+      "draft_case_id": "T12-DS02-NN-008",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Quartz 的 Kotlin 数据类目前把 `profile.flags` 反序列化为 `Set<String>`，数据库历史上会出现缺失字段、JSON null、空数组和未知 flag。产品规则是缺失或 null 视为空集合，未知 flag 必须保留以便透传，写回时集合顺序固定为字典序；旧客户端仍只认识 `dark_mode` 和 `beta_ui`。"
+        },
+        {
+          "role": "assistant",
+          "content": "兼容层应先区分缺失/null 与实际数组，再把未知值作为普通字符串保留；序列化排序只影响持久化稳定性，不应过滤旧客户端不认识的值。"
+        }
+      ],
+      "query": "请给出 Kotlin 序列化适配器的最小伪代码和四组输入输出测试，覆盖缺失、null、空数组和未知 flag。",
+      "why_current_context_is_sufficient": "输入形态、默认语义、未知值策略、输出排序规则和旧客户端限制均已确定；任务是局部编解码实现与测试设计，不需要读取 schema 或依赖版本。",
+      "visible_distractor_ids_author_only": [
+        "T12-NN-DISTRACTOR-ARCHIVE-PRUNE",
+        "T12-NN-DISTRACTOR-BEACON-CURSOR"
+      ],
+      "sol_review_questions": [
+        "是否把缺失/null 规范为空集合、保留未知 flag，并只在写回时排序而没有错误地过滤兼容字段？"
+      ]
+    },
+    {
+      "draft_case_id": "T12-DS02-NN-009",
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Ledger 要把 `payments.reference` 从最多 32 个字符扩到 128 个字符。旧服务和新服务会同时运行：旧服务仍按 32 字符校验并写入，新服务允许 128；数据库不能在旧服务退出前强制截断或新增只允许长值的约束。发布期间旧值必须原样可读。"
+        },
+        {
+          "role": "assistant",
+          "content": "这是向后兼容的放宽：数据库先扩大容量，应用校验按版本共存；新服务接受长值时应知道旧服务可能无法编辑它，读路径不得截断。兼容窗口结束后再清理旧校验逻辑。"
+        },
+        {
+          "role": "user",
+          "content": "请写出 migration、两版应用校验伪代码和兼容测试矩阵，特别说明旧服务遇到长值时的行为。"
+        }
+      ],
+      "query": "围绕这个字段放宽，给出不截断数据的渐进式 schema/application 变更和最小测试矩阵。",
+      "why_current_context_is_sufficient": "旧新长度限制、并行发布、数据库变更边界、读写保真要求以及兼容窗口清理时机均已给出；可以直接生成 DDL、校验分支和测试，不需外部系统信息。",
+      "visible_distractor_ids_author_only": [
+        "T12-NN-DISTRACTOR-QUARTZ-JSON",
+        "T12-NN-DISTRACTOR-HARBOR-NULLS"
+      ],
+      "sol_review_questions": [
+        "是否先扩大数据库容量、保持旧服务拒绝长值且不截断读取，并覆盖短值与长值的双版本兼容断言？"
+      ]
+    },
+    {
+      "draft_case_id": "T12-DS02-NN-010",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Beacon 的报表查询按 `account_id` 过滤，并按 `occurred_at` 做一个月范围扫描；表最近从 300 万行增长到 1.1 亿行，查询从 120ms 变成 4.8s。现有 `(account_id, occurred_at)` 索引仍被使用，但计划中的估算行数是 400，实际约 2.4 万；数据分布在少数大账户和大量小账户，自动统计最近没有更新。"
+        },
+        {
+          "role": "assistant",
+          "content": "症状指向统计信息与数据倾斜导致的基数估算偏差，先更新目标列统计并比较实际计划，再决定是否调整统计目标或索引；不能仅凭总行数重建同一个索引。"
+        },
+        {
+          "role": "user",
+          "content": "请给出诊断 SQL、统计设置和前后对比检查清单，要求不改变报表结果，也不在高峰期锁表。"
+        }
+      ],
+      "query": "针对这个查询计划回归写一份最小排查与修复脚本，说明如何用实际行数验证估算改善。",
+      "why_current_context_is_sufficient": "查询形态、数据增长、当前索引、估算与实际行数偏差、倾斜特征、统计陈旧和无锁高峰约束已完整提供；答案可直接写统计与 EXPLAIN 验证步骤，不依赖隐藏监控或资产信息。",
+      "visible_distractor_ids_author_only": [
+        "T12-NN-DISTRACTOR-LEDGER-EXPAND",
+        "T12-NN-DISTRACTOR-ARCHIVE-CONCURRENT"
+      ],
+      "sol_review_questions": [
+        "是否先针对列统计和倾斜验证估算误差，再用 EXPLAIN 的 estimated/actual rows 及耗时对比确认改善，而没有无依据地重建索引或改变结果？"
+      ]
+    }
+  ]
+}

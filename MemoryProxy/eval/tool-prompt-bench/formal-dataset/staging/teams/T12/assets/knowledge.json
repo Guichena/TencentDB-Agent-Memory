@@ -1,0 +1,66 @@
+{
+  "schema_version": "task1.formal_knowledge_assets.v1",
+  "team_id": "T12",
+  "knowledge": [
+    {
+      "assetId": "knowledge-t12-ledger-schema",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-knowledge-build"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "code_graph",
+      "name": "Ledger migration and compatibility graph",
+      "repoUrl": "https://github.com/timescale/pg-aiguide",
+      "repoCommit": "b4f11a45907af3abda0f79e784aff9a6d5eef468",
+      "indexVersion": "task1-build06-fixture-v1",
+      "snapshotSha256": "0d50146558b9ecf6f1de1a6c56feb5d330e7fdfa59413fc6a9e6a5efaec662c4",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t12-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "fa8f13fa5a59c5c996dd4e15c4616c3818769795a99b9363734c10afc2fb0fe8"
+    },
+    {
+      "assetId": "knowledge-t12-query-plans",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-knowledge-wiki"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "wiki",
+      "name": "Beacon query-plan and index experiment notes",
+      "snapshotSha256": "2e7330c78c9ee41cfebbb1e1b262500d190b38bffeabd7091976169ea623a1da",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t12-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "52fa6e905a81d94c9684c28b6444a9198cbcefe0ccbd9274d3225548077d56b1"
+    },
+    {
+      "assetId": "knowledge-t12-backfill",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-knowledge-build"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "code_graph",
+      "name": "Harbor backfill worker and checkpoint graph",
+      "repoUrl": "https://github.com/timescale/pg-aiguide",
+      "repoCommit": "b4f11a45907af3abda0f79e784aff9a6d5eef468",
+      "indexVersion": "task1-build06-fixture-v1",
+      "snapshotSha256": "c12c5d0177fbb869dc602a58ae43dd7315f3fde8765a7797ee090d2116a36dd4",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t12-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "219adb9d70c608facf35ec76784bd351d477d35791edf9cf988ccb2c0c8d5ba8"
+    }
+  ]
+}

@@ -1,0 +1,307 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t12-skill-batch-01",
+  "stage": "DS02",
+  "team_id": "T12",
+  "family": "skill",
+  "external_source_ids": [
+    "t12-skill-pg-migration",
+    "t12-skill-pg-design",
+    "t12-skill-ghost-db"
+  ],
+  "pairs": [
+    {
+      "draft_pair_id": "T12-SKILL-B01-P001",
+      "external_source_ids": [
+        "t12-skill-pg-migration"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Ledger 项目准备对高流量订单表做一次零停机字段演进。"
+        },
+        {
+          "role": "assistant",
+          "content": "已记录变更目标、在线流量和回滚窗口；本轮只做执行前规划，不直接改库。"
+        },
+        {
+          "role": "user",
+          "content": "表规模和现有应用依赖已经整理，但我还不能判断哪些步骤会阻塞读写。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前缺的是面向真实数据的风险评估、分阶段变更和回退顺序，而不是新的业务字段。"
+        },
+        {
+          "role": "user",
+          "content": "我也不确定回填应怎样拆分，以及上线前后要检查什么。"
+        },
+        {
+          "role": "assistant",
+          "content": "在执行前需要补齐锁风险、批量回填、验证和回滚这条完整的安全路径。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "针对 Ledger 这次字段演进，请给出开始执行前应确认的安全步骤，暂时不要执行变更。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我还缺少适用于生产 PostgreSQL 迁移的完整安全流程。请先找出最匹配的既有指导并查看其核心步骤，说明锁风险、回填、验证和回滚应如何衔接，然后停在计划明确的位置。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少生产迁移的锁级别评估、分批回填、迁移前后验证与回滚规划的完整顺序。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T12-SKILL-PG-MIGRATION"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_search",
+              "skill_view_by_id"
+            ]
+          ],
+          "stop_after_candidate": "查看冻结的 PostgreSQL 迁移指导后，仅概述锁风险、分批回填、验证和回滚计划，不执行任何 DDL。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把缺失的流程补齐：先按变更类型评估锁和是否会重写或扫描整表；对大表使用分批回填；迁移前后运行 NULL、重复、约束和数据完整性检查；在执行前写好每一步的回滚方案。请据此说明起点。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已经给出锁风险评估、分批回填、前后验证和回滚规划的完整顺序，足以回答执行前起点。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T12-SKILL-PG-DESIGN",
+        "T12-SKILL-GHOST"
+      ],
+      "controlled_delta_note": "Positive 只缺生产迁移指导的核心安全路径；Negative 仅补齐冻结指导中已有的锁评估、批量回填、验证和回滚步骤。",
+      "source_fact_map": [
+        {
+          "claim": "不同 DDL 的锁级别、是否阻塞及是否重写表需要在迁移前评估。",
+          "source_id": "t12-skill-pg-migration",
+          "locator": "postgres-database-migration/SKILL.md#DDL Lock Reference"
+        },
+        {
+          "claim": "大表回填应始终拆成批次，而不是单次大 UPDATE。",
+          "source_id": "t12-skill-pg-migration",
+          "locator": "postgres-database-migration/SKILL.md#Backfill Strategies"
+        },
+        {
+          "claim": "每次迁移前后都应运行验证查询，并预先记录回滚计划。",
+          "source_id": "t12-skill-pg-migration",
+          "locator": "postgres-database-migration/SKILL.md#Migration Validation; #Rollback Planning"
+        }
+      ],
+      "sol_review_questions": [
+        "确认 Positive 的首动作为检索后查看，且可见文本未暴露资产标识或内部动作名称。",
+        "确认 Negative 只复述冻结迁移指导已有的锁、批量回填、验证和回滚要求。"
+      ]
+    },
+    {
+      "draft_pair_id": "T12-SKILL-B01-P002",
+      "external_source_ids": [
+        "t12-skill-pg-migration"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Beacon 项目在高峰期出现查询计划回退，我需要为一个大表补建索引并保持在线。"
+        },
+        {
+          "role": "assistant",
+          "content": "已确认问题集中在索引生命周期和迁移窗口；本轮先准备安全执行方案。"
+        },
+        {
+          "role": "user",
+          "content": "目标表仍有持续读写，我不希望一次普通建索引把写入挡住。"
+        },
+        {
+          "role": "assistant",
+          "content": "还需要处理锁等待、失败后遗留对象以及不能放在同一事务中的步骤。"
+        },
+        {
+          "role": "user",
+          "content": "工作流中已经准备好那份生产迁移指导，但我还没查看与这次索引变更相关的段落。"
+        },
+        {
+          "role": "assistant",
+          "content": "可以先阅读对应的在线建索引和超时控制要点，再决定执行窗口。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "Beacon 的在线索引变更开始前，应确认哪些锁、超时和失败清理条件？",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "请直接查看已经准备好的生产 PostgreSQL 迁移指导中与大表索引和锁等待相关的步骤，说明如何在线创建、设置超时并处理失败遗留，先停在执行前。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少在线索引创建、锁与语句超时、失败后无效索引检查及清理重试的具体流程。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T12-SKILL-PG-MIGRATION"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_view"
+            ]
+          ],
+          "stop_after_candidate": "查看冻结迁移指导的索引和锁超时部分，概述执行前检查与失败清理，不运行 SQL。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把执行前要点补齐：大表应采用允许读写并行的并发建索引；生产 DDL 设置 lock_timeout，并按需要设置 statement_timeout；并发建索引失败后检查无效索引，先并发删除再重试；并发建索引不能放进事务。请据此列出确认项。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已明确在线建索引、两类超时、失败清理重试和事务限制，无需再读取指导。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T12-SKILL-PG-DESIGN",
+        "T12-SKILL-GHOST"
+      ],
+      "controlled_delta_note": "Positive 只缺索引变更的冻结流程；Negative 仅补齐并发建索引、超时、无效索引清理和事务限制。",
+      "source_fact_map": [
+        {
+          "claim": "大表普通建索引会阻塞写入，应使用并发建索引以允许读写。",
+          "source_id": "t12-skill-pg-migration",
+          "locator": "postgres-database-migration/SKILL.md#Add an Index"
+        },
+        {
+          "claim": "生产 DDL 应设置 lock_timeout，并以 statement_timeout 作为运行时安全边界。",
+          "source_id": "t12-skill-pg-migration",
+          "locator": "postgres-database-migration/SKILL.md#Set Timeouts"
+        },
+        {
+          "claim": "并发建索引失败可能留下无效索引，应检查、并发删除后重试，且不能在事务中执行。",
+          "source_id": "t12-skill-pg-migration",
+          "locator": "postgres-database-migration/SKILL.md#Add an Index; #Transaction Strategy"
+        }
+      ],
+      "sol_review_questions": [
+        "确认该 pair 使用 direct view 路径，且可见请求没有写出内部动作名称。",
+        "确认 Negative 没有添加冻结指导之外的查询计划结论或具体超时数值。"
+      ]
+    },
+    {
+      "draft_pair_id": "T12-SKILL-B01-P003",
+      "external_source_ids": [
+        "t12-skill-ghost-db"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Harbor 的可恢复回填需要先在接近生产数据的副本上验证，避免直接触碰在线库。"
+        },
+        {
+          "role": "assistant",
+          "content": "已整理回填脚本、数据边界和验证指标；这轮只准备隔离实验。"
+        },
+        {
+          "role": "user",
+          "content": "我知道需要一份完整副本，但还不清楚如何创建、检查和在失败时收尾。"
+        },
+        {
+          "role": "assistant",
+          "content": "隔离实验应包含副本创建、结构确认、执行、验证以及成功应用或失败清理的分支。"
+        },
+        {
+          "role": "user",
+          "content": "当前没有把这些动作串起来的数据库生命周期流程，也不会马上执行回填。"
+        },
+        {
+          "role": "assistant",
+          "content": "下一步应先补齐副本实验的流程材料，并停在可以开始实验的位置。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "Harbor 回填实验开始前，怎样安全准备隔离副本并定义成功与失败的后续？",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我还缺少适用于 PostgreSQL 隔离实验的数据库生命周期流程。请先找出最匹配的既有指导并查看副本、结构检查、验证和失败收尾步骤，只说明计划，不执行回填。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少隔离副本的创建、结构检查、迁移验证、成功应用与失败删除分支。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T12-SKILL-GHOST"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_search",
+              "skill_view_by_id"
+            ]
+          ],
+          "stop_after_candidate": "查看冻结数据库生命周期指导后，概述副本实验的创建、检查、验证及成功/失败收尾，不操作数据库。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把隔离实验顺序补齐：先创建在线库的完整副本，确认副本结构与来源一致，再在副本执行回填并验证；验证成功才把同一变更应用到在线库，失败则删除副本后重新规划，原库保持不变。请据此说明执行前准备。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已给出副本创建、结构检查、验证、成功应用和失败清理的完整分支，不需要读取生命周期指导。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T12-SKILL-PG-MIGRATION",
+        "T12-SKILL-PG-DESIGN"
+      ],
+      "controlled_delta_note": "Positive 只缺隔离数据库实验的冻结生命周期；Negative 仅补齐副本、检查、验证及成功/失败收尾顺序。",
+      "source_fact_map": [
+        {
+          "claim": "隔离实验应创建数据库完整副本，并在副本检查结构、运行变更和验证。",
+          "source_id": "t12-skill-ghost-db",
+          "locator": "ghost-database/SKILL.md#Fork for Safe Experimentation"
+        },
+        {
+          "claim": "副本结构可以单独检查，确认表、列、索引和约束等数据库结构。",
+          "source_id": "t12-skill-ghost-db",
+          "locator": "ghost-database/SKILL.md#Inspect Schema"
+        },
+        {
+          "claim": "验证成功后可应用到原库，失败时删除副本而不影响原库。",
+          "source_id": "t12-skill-ghost-db",
+          "locator": "ghost-database/SKILL.md#Fork for Safe Experimentation"
+        }
+      ],
+      "sol_review_questions": [
+        "确认检索链先发现再查看，且 provider-visible 文本没有泄漏资产、端点或动作名。",
+        "确认 Negative 的成功/失败分支与冻结数据库副本工作流一致。"
+      ]
+    }
+  ]
+}

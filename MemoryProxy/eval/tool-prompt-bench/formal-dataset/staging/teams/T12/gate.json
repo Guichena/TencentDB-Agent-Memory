@@ -1,0 +1,35 @@
+{
+  "schema_version": "task1.team_gate.v1",
+  "team_id": "T12",
+  "build_id": "build-06",
+  "status": "passed",
+  "checked_at": "2026-08-29T17:03:58.186Z",
+  "counts": {
+    "cases": 40,
+    "pairs": 15,
+    "memoryPositive": 6,
+    "skillPositive": 6,
+    "knowledgePositive": 3,
+    "pairedNegative": 15,
+    "naturalNegative": 10
+  },
+  "discovery_positive_count": 10,
+  "schema_validation": {
+    "valid": true,
+    "errors": []
+  },
+  "provider_leakage_count": 0,
+  "duplicate_query_count_from_pairs": 15,
+  "external_skill_source_count": 3,
+  "checks": [
+    "formal schema",
+    "fixed counts",
+    "pair linkage",
+    "complete minimal chain",
+    "target visibility",
+    "provider leakage",
+    "discovery pressure",
+    "external skill provenance"
+  ],
+  "errors": []
+}

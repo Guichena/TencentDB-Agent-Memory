@@ -1,0 +1,84 @@
+{
+  "schema_version": "task1.formal_skill_assets.v1",
+  "team_id": "T12",
+  "skills": [
+    {
+      "assetId": "T12-SKILL-PG-MIGRATION",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-skill-pg-migration"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "postgres-safe-migration",
+      "version": "1.0.0",
+      "description": "planning or validating a production PostgreSQL schema change, lock, backfill, or rollback; sourced from skills/postgres-database-migration/SKILL.md.",
+      "useWhen": "planning or validating a production PostgreSQL schema change, lock, backfill, or rollback",
+      "doNotUseWhen": "designing a new schema from scratch or provisioning a disposable database",
+      "repoCommit": "b4f11a45907af3abda0f79e784aff9a6d5eef468",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "bbc48c4d34493618d3b40654d0a4c01a68b6b18b6febb2045a6c12970c984aed"
+        }
+      ],
+      "contentHash": "0ac3a0b9c35640dbd159a3170a1d1b23b602564cbbdfacc688bb51f7df38cdfc"
+    },
+    {
+      "assetId": "T12-SKILL-PG-DESIGN",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-skill-pg-design"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "postgres-table-design",
+      "version": "1.0.0",
+      "description": "choosing PostgreSQL tables, types, constraints, and indexes for new or modified schemas; sourced from skills/design-postgres-tables/SKILL.md.",
+      "useWhen": "choosing PostgreSQL tables, types, constraints, and indexes for new or modified schemas",
+      "doNotUseWhen": "executing a live rollout or provisioning a database service",
+      "repoCommit": "b4f11a45907af3abda0f79e784aff9a6d5eef468",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "a6ca6891018ab398310cc57ec8ac4be4b3e6414d7701584adbd2354e0016cd37"
+        }
+      ],
+      "contentHash": "6114019378caeae608f17501d0d02a8d6c3d5e23e597ac6ca5ed80c872088f2b"
+    },
+    {
+      "assetId": "T12-SKILL-GHOST",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-skill-ghost-db"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "ghost-database-fork",
+      "version": "1.0.0",
+      "description": "creating or forking a PostgreSQL database for isolated migration experiments; sourced from skills/ghost-database/SKILL.md.",
+      "useWhen": "creating or forking a PostgreSQL database for isolated migration experiments",
+      "doNotUseWhen": "the task only needs query-plan analysis or schema DDL guidance",
+      "repoCommit": "b4f11a45907af3abda0f79e784aff9a6d5eef468",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "688246f8709e2f0b3a4c29cc4dd3e565bb65b8dae2d5ac7348280b6638c9c930"
+        }
+      ],
+      "contentHash": "5ea71349db17d7a98b253d34bff3598839aa6048d4a82566f4ee11044a73382a"
+    }
+  ]
+}

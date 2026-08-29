@@ -1,0 +1,3 @@
+# T12 Sol review
+
+Reviewed all Luna drafts against production routing contracts. Final counts: 6 Memory positives, 6 Skill positives, 3 Knowledge positives, 15 paired no-tool negatives, and 10 natural coding negatives. Memory scene-discovery candidates were corrected to include read_scene. The first Skill draft was rejected because it mixed listed and searchable visibility for the same assets; the accepted replacement uses postgres-table-design only through search and the listed migration/Ghost assets only through direct view. External Skill workflows remain pinned to the three input-pack files.
