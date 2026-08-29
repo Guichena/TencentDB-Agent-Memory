@@ -20,6 +20,7 @@ import { createRateLimitHandlers } from "./routes/rate-limits.js";
 import { hasAnalyseMarker, hasCostGuardMarker } from "./routes/whitelist.js";
 import { tryActivateStorage, tryActivateRedis } from "./injection/index.js";
 import { getEffectiveBackend } from "./storage/factory.js";
+import { fingerprintProxyConfigForExperiment } from "./experiment-config-fingerprint.js";
 import type { BridgeEntryObserver } from "./bridge-entry-observer.js";
 import type { ProxyConfig } from "./types.js";
 
@@ -35,6 +36,7 @@ export function createApp(config: ProxyConfig, deps: CreateAppDeps = {}): Hono {
   const app = new Hono();
   const serverInstanceId = deps.serverInstanceId ?? randomUUID();
   const serverStartedAt = deps.serverStartedAt ?? new Date().toISOString();
+  const experimentConfigFingerprint = fingerprintProxyConfigForExperiment(config);
 
   // Eagerly activate storage/bindingRepo so bridge-only requests (no main
   // /v1/messages hits yet) can still recover session state via L2 fallthrough
@@ -114,6 +116,7 @@ export function createApp(config: ProxyConfig, deps: CreateAppDeps = {}): Hono {
       tdaiAuth: isAuthEnabled() ? "enabled" : "disabled",
       injectionEnabled: config.injection.enabled,
       toolPromptProfile: config.injection.toolPromptProfile,
+      experimentConfigFingerprint,
       opik: config.opik.enabled ? config.opik.url : "disabled",
       costGuard: config.costGuard.enabled ? "enabled" : "disabled",
       rateLimit: config.rateLimit.tpm > 0 || config.rateLimit.qpm > 0 ? "enabled" : "disabled",

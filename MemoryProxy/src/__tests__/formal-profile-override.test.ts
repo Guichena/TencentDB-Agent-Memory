@@ -5,6 +5,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { buildConfig, parseArgv } from "../config.js";
+import { fingerprintProxyConfigForExperiment } from "../experiment-config-fingerprint.js";
 import { createApp } from "../server.js";
 
 describe("Task 1 formal production profile selection", () => {
@@ -64,6 +65,42 @@ describe("Task 1 formal production profile selection", () => {
       toolPromptProfile: "selection-calibrated",
       serverInstanceId: "formal-profile-instance-01",
       serverStartedAt: "2026-08-30T00:00:00.000Z",
+      experimentConfigFingerprint: {
+        schemaVersion: "task1.proxy-config-fingerprint.v1",
+        baseSha256: expect.stringMatching(/^[a-f0-9]{64}$/),
+        effectiveSha256: expect.stringMatching(/^[a-f0-9]{64}$/),
+      },
     });
+  });
+
+  it("keeps the base fingerprint stable across profiles without exposing secret values", () => {
+    const directory = mkdtempSync(join(tmpdir(), "task1-profile-fingerprint-"));
+    const configFile = join(directory, "config.yaml");
+    writeFileSync(configFile, [
+      "upstream:",
+      "  apiKey: top-secret-one",
+      "injection:",
+      "  enabled: true",
+      "  toolPromptProfile: legacy",
+      "",
+    ].join("\n"), "utf8");
+
+    const legacy = buildConfig({ configFile, toolPromptProfile: "legacy" });
+    const compact = buildConfig({ configFile, toolPromptProfile: "compact" });
+    const legacyFingerprint = fingerprintProxyConfigForExperiment(legacy);
+    const compactFingerprint = fingerprintProxyConfigForExperiment(compact);
+
+    expect(compactFingerprint.baseSha256).toBe(legacyFingerprint.baseSha256);
+    expect(compactFingerprint.effectiveSha256).not.toBe(legacyFingerprint.effectiveSha256);
+    expect(JSON.stringify({ legacyFingerprint, compactFingerprint })).not.toContain("top-secret-one");
+
+    const changedSecretValue = structuredClone(legacy);
+    changedSecretValue.upstream.apiKey = "top-secret-two";
+    expect(fingerprintProxyConfigForExperiment(changedSecretValue)).toEqual(legacyFingerprint);
+
+    const missingSecret = structuredClone(legacy);
+    missingSecret.upstream.apiKey = "";
+    expect(fingerprintProxyConfigForExperiment(missingSecret).baseSha256)
+      .not.toBe(legacyFingerprint.baseSha256);
   });
 });
