@@ -79,6 +79,292 @@
         }
       ],
       "contentHash": "5ea71349db17d7a98b253d34bff3598839aa6048d4a82566f4ee11044a73382a"
+    },
+    {
+      "assetId": "T12-SKILL-QDRANT-CLIENTS",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-skill-qdrant-clients"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "qdrant-database-client",
+      "version": "1.0.0",
+      "description": "implementing a version-pinned vector database client, filtered search, or idempotent upsert; sourced from skills/qdrant-clients-sdk/SKILL.md.",
+      "useWhen": "implementing a version-pinned vector database client, filtered search, or idempotent upsert",
+      "doNotUseWhen": "planning relational schema changes or live PostgreSQL migrations",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "d7b38e979bfdc5cb621862e8a91a6e10cf101ae53980fdc3181a9dc219fa56f1"
+        }
+      ],
+      "contentHash": "444a88c809646c8987bb7d37fe64a1051aa89387a79b3bda985b25ca92fd2298"
+    },
+    {
+      "assetId": "T12-SKILL-QDRANT-PERFORMANCE",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-skill-qdrant-performance"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "qdrant-query-performance",
+      "version": "1.0.0",
+      "description": "diagnosing vector database latency, throughput, or query performance; sourced from skills/qdrant-performance-optimization/SKILL.md.",
+      "useWhen": "diagnosing vector database latency, throughput, or query performance",
+      "doNotUseWhen": "designing relational constraints or executing schema DDL",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "f861884a0605993abfc81c082c6ed116f5f7ec07e3ef6b4e9b65b3a479ebfa80"
+        }
+      ],
+      "contentHash": "9c9f68936e3d68ae331632c820d931e769efc204850fa2d326158bc35fff5453"
+    },
+    {
+      "assetId": "T12-SKILL-QDRANT-INDEXING",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-skill-qdrant-indexing"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "qdrant-indexing",
+      "version": "1.0.0",
+      "description": "tuning vector index configuration and recall/latency tradeoffs; sourced from skills/qdrant-performance-optimization/indexing-performance-optimization/SKILL.md.",
+      "useWhen": "tuning vector index configuration and recall/latency tradeoffs",
+      "doNotUseWhen": "running a relational migration or changing application compatibility columns",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "2c274262f9c4e9351e24808abe028d7db91ca07fb2d1786baf90d51c1b04fa8d"
+        }
+      ],
+      "contentHash": "ac055353f3032a64e03a18c7f563671464c0ed6e00c0839ddbdfc40cd45e684b"
+    },
+    {
+      "assetId": "T12-SKILL-QDRANT-MEMORY",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-skill-qdrant-memory"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "qdrant-memory-usage",
+      "version": "1.0.0",
+      "description": "reducing vector database memory use while preserving retrieval behavior; sourced from skills/qdrant-performance-optimization/memory-usage-optimization/SKILL.md.",
+      "useWhen": "reducing vector database memory use while preserving retrieval behavior",
+      "doNotUseWhen": "planning a schema rollout or validating relational locks",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "a36c4e2f257ffe93378c35886c4c27338d3e991ad9814e272aa34ad491e536cb"
+        }
+      ],
+      "contentHash": "03ab75a5ad7f82aa9ba55d0c776e84ad282c197b7994841e9947c851fd64c6c6"
+    },
+    {
+      "assetId": "T12-SKILL-QDRANT-SEARCH-SPEED",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-skill-qdrant-search-speed"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "qdrant-search-speed",
+      "version": "1.0.0",
+      "description": "optimizing vector search speed and measuring retrieval latency; sourced from skills/qdrant-performance-optimization/search-speed-optimization/SKILL.md.",
+      "useWhen": "optimizing vector search speed and measuring retrieval latency",
+      "doNotUseWhen": "performing table design or online relational DDL",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "2e9e85246e8f7ddc4b37b8f846052e51894dad671c8d0ddf8b3fc9e5a0cecbac"
+        }
+      ],
+      "contentHash": "898e1b3cafc291e4b3b4e1a7d9ea4d11528e67a7d19d5372bf5916dbc8015fbf"
+    },
+    {
+      "assetId": "T12-SKILL-QDRANT-QUALITY",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-skill-qdrant-quality"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "qdrant-search-quality",
+      "version": "1.0.0",
+      "description": "evaluating vector search quality and relevance against a fixed query set; sourced from skills/qdrant-search-quality/SKILL.md.",
+      "useWhen": "evaluating vector search quality and relevance against a fixed query set",
+      "doNotUseWhen": "executing schema changes or data backfills",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "21404b6887fe46e8acde2767cf6856de478240976f23111f6a8ffd010d362542"
+        }
+      ],
+      "contentHash": "82349bac3b588e5c370962c435be93a3f5696d3115e5ae2d3582f4cf84eadae3"
+    },
+    {
+      "assetId": "T12-SKILL-QDRANT-DIAGNOSIS",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-skill-qdrant-diagnosis"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "qdrant-search-diagnosis",
+      "version": "1.0.0",
+      "description": "diagnosing vector retrieval failures and separating indexing from query causes; sourced from skills/qdrant-search-quality/diagnosis/SKILL.md.",
+      "useWhen": "diagnosing vector retrieval failures and separating indexing from query causes",
+      "doNotUseWhen": "performing a production schema migration or ORM compatibility rollout",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "41f144f5e022a5dc0e3d60b93bc868c91a181c6cd719a702362fca54083d29a4"
+        }
+      ],
+      "contentHash": "8d8b1dc3526664acb1461b4e0293ab0c939347c8fd3b1aea724d33ded094f97d"
+    },
+    {
+      "assetId": "T12-SKILL-QDRANT-STRATEGIES",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-skill-qdrant-strategies"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "qdrant-search-strategies",
+      "version": "1.0.0",
+      "description": "selecting vector search strategies for a known collection and workload; sourced from skills/qdrant-search-quality/search-strategies/SKILL.md.",
+      "useWhen": "selecting vector search strategies for a known collection and workload",
+      "doNotUseWhen": "changing relational tables, constraints, or migration ordering",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "fcfeacf499615dbafe7cdbc22313b67a8492821f865944ff8520d2503745127f"
+        }
+      ],
+      "contentHash": "bef93f9d27e7588bd8e7a4d53cf73571603cf4592c6f8608087689a2b2bc8881"
+    },
+    {
+      "assetId": "T12-SKILL-WORKLOAD",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-skill-workload-balancing"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "database-workload-balancing",
+      "version": "1.0.0",
+      "description": "balancing parallel database backfill or batch workloads after worker topology is fixed; sourced from tasks/parallel-tfidf-search/environment/skills/workload-balancing/SKILL.md.",
+      "useWhen": "balancing parallel database backfill or batch workloads after worker topology is fixed",
+      "doNotUseWhen": "choosing migration order or diagnosing a single query plan",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "a2b1f4653bd7939bd6c25f12051bed930f0e23dc2f2a269026fc39cb59cc5ef0"
+        }
+      ],
+      "contentHash": "abc50bdbd8b627f5a77edc2e262f3471fae6a679fc28ac51284ba17a984fbe3e"
+    },
+    {
+      "assetId": "T12-SKILL-MEMORY",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-skill-memory-optimization"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "database-memory-optimization",
+      "version": "1.0.0",
+      "description": "reducing peak memory in database-adjacent batch processing with fixed correctness constraints; sourced from tasks/parallel-tfidf-search/environment/skills/memory-optimization/SKILL.md.",
+      "useWhen": "reducing peak memory in database-adjacent batch processing with fixed correctness constraints",
+      "doNotUseWhen": "planning locks, indexes, or compatibility DDL",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "30daf5237b91ce4487f516fa623b624ac205f9a64a3b56978bdadaa76e5a50e5"
+        }
+      ],
+      "contentHash": "ff4b193692b9d0b34039975ee793f645fb4da27f3b3cc4126466e4badfd8217a"
+    },
+    {
+      "assetId": "T12-SKILL-PARALLEL",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-skill-python-parallel"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "database-batch-parallelization",
+      "version": "1.0.0",
+      "description": "parallelizing an already-defined database batch operation with deterministic partitioning; sourced from tasks/parallel-tfidf-search/environment/skills/python-parallelization/SKILL.md.",
+      "useWhen": "parallelizing an already-defined database batch operation with deterministic partitioning",
+      "doNotUseWhen": "designing schemas or choosing a query index",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "71585d7d3c6691b2116b7ebfb90cf9133747b4fa08537f7a5657f03539f8fdc3"
+        }
+      ],
+      "contentHash": "6851fbd54e361cad8b9f3a3b58662fcf0607b1f0b8d9ba1d5410238f1b18572f"
     }
   ]
 }

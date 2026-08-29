@@ -41,6 +41,7 @@ const skillPairs = [
 ];
 const knowledgePairs = (await readJson("knowledge", "knowledge-batch-01", "draft.json")).pairs;
 const naturalCases = (await readJson("natural-negative", "natural-negative-batch-01", "draft.json")).cases;
+const repair = await readJson("memory", "memory-repair-batch-03", "draft.json");
 
 const syntheticEvidence = (sourceId, role, transform, batchId, contentRefs) => withHash({
   sourceId, provenanceKind: "synthetic", role, origin: "synthetic_agent_replay", worldAsOf,
@@ -66,11 +67,13 @@ const sourceEvidence = [
   syntheticEvidence("source-t12-natural", "evaluation_derivation", "natural_negative_selection", "t12-natural-negative-batch-01", ["generators/parallel/build-06/T12/natural-negative/natural-negative-batch-01/draft.json"]),
   syntheticEvidence("source-t12-knowledge-build", "repo_context", "code_graph_build", "t12-knowledge-batch-01", ["staging/teams/T12/assets/knowledge.json"]),
   syntheticEvidence("source-t12-knowledge-wiki", "repo_context", "repo_document_snapshot", "t12-knowledge-batch-01", ["staging/teams/T12/assets/knowledge.json"]),
-  ...input.skill_sources.map((source) => externalEvidence(source, `source-material/T12/skills/${input.skill_visibility.find((item) => item.source_id === source.source_id).name}/SKILL.md`)),
+  syntheticEvidence("source-t12-memory-l3", "history", "stable_profile_derivation", "t12-memory-repair-batch-03", ["generators/parallel/build-06/T12/memory/memory-repair-batch-03/draft.json"]),
+  ...input.skill_sources.map((source) => externalEvidence(source, source.stored_path)),
 ];
 
 const workspaceTemplates = input.project_streams.map((stream, index) => {
-  const source = input.skill_sources[index % input.skill_sources.length];
+  // Keep the five pre-existing project workspaces stable; added Skills only expand visibility.
+  const source = input.skill_sources[index % 3];
   const slug = source.repository.replace("https://github.com/", "");
   const workspace = withHash({
     workspaceId: `workspace-task1-t12-${index + 1}`, repoSlug: slug, repoUrl: source.repository, baseCommit: source.revision,
@@ -92,15 +95,25 @@ const l0Conversations = memoryPairs.map((pair, index) => {
     withHash({ messageId: `${sessionId}-M01`, role: "user", content: pair.query, sourceEvidenceIds: ["source-t12-memory-redacted"], observedAt }),
     withHash({ messageId: `${sessionId}-M02`, role: "assistant", content: pair.negative.delta_message.content, sourceEvidenceIds: ["source-t12-memory-redacted"], observedAt }),
   ];
+  for (let tailIndex = 0; tailIndex < 10; tailIndex += 1) { const tail = repair.l0_expansions[sessionId][tailIndex]; messages.push(withHash({ messageId: `${sessionId}-M${String(tailIndex + 3).padStart(2, "0")}`, role: tail.role, content: tail.content, sourceEvidenceIds: ["source-t12-memory-redacted"], observedAt })); }
   return withHash({ assetId: sessionId, ownerAgentId: agentId, sourceEvidenceIds: ["source-t12-memory-redacted"], observedAt, sessionId, messages });
 });
+const extraL0 = ["T12-L0-HARBOR-CHECKPOINT", "T12-L0-ARCHIVE-INDEX-RETIREMENT"].map((sessionId, index) => {
+  const source = repair.extra_l0_sessions[index];
+  const messages = [withHash({ messageId: `${sessionId}-M01`, role: "user", content: source.first_message, sourceEvidenceIds: ["source-t12-memory-redacted"], observedAt }), withHash({ messageId: `${sessionId}-M02`, role: "assistant", content: source.second_message, sourceEvidenceIds: ["source-t12-memory-redacted"], observedAt })];
+  for (let tailIndex = 0; tailIndex < 10; tailIndex += 1) { const tail = repair.l0_expansions[sessionId][tailIndex]; messages.push(withHash({ messageId: `${sessionId}-M${String(tailIndex + 3).padStart(2, "0")}`, role: tail.role, content: tail.content, sourceEvidenceIds: ["source-t12-memory-redacted"], observedAt })); }
+  return withHash({ assetId: sessionId, ownerAgentId: agentId, sourceEvidenceIds: ["source-t12-memory-redacted"], observedAt, sessionId, messages });
+});
+l0Conversations.push(...extraL0);
 const l1Memories = [
   withHash({ assetId: "T12-L1-LEDGER-ZERO-DOWNTIME-ROLLOUT", ownerAgentId: agentId, sourceEvidenceIds: ["source-t12-memory-atomic"], observedAt, type: "decision", content: memoryPairs[0].negative.delta_message.content, status: "active", validFrom: observedAt, supportingMessageIds: [l0Conversations[0].messages[1].messageId], codeEvidenceLocators: [], testEvidenceLocators: [] }),
   withHash({ assetId: "T12-L1-QUARTZ-ORM-COMPATIBILITY", ownerAgentId: agentId, sourceEvidenceIds: ["source-t12-memory-atomic"], observedAt, type: "fact", content: memoryPairs[3].negative.delta_message.content, status: "active", validFrom: observedAt, supportingMessageIds: [l0Conversations[3].messages[1].messageId], codeEvidenceLocators: [], testEvidenceLocators: [] }),
+  ...repair.l1_memories.map((item) => withHash({ assetId: item.asset_id, ownerAgentId: agentId, sourceEvidenceIds: ["source-t12-memory-atomic"], observedAt, type: item.type, content: item.content, status: "active", validFrom: observedAt, supportingMessageIds: [l0Conversations[item.support_index % l0Conversations.length].messages[1].messageId], codeEvidenceLocators: [], testEvidenceLocators: [] })),
 ];
 const l2Scenes = [
   withHash({ assetId: "T12-L2-HARBOR-RESUMABLE-BACKFILL", ownerAgentId: agentId, sourceEvidenceIds: ["source-t12-memory-scene"], observedAt, path: "database/harbor/resumable-backfill", summary: "Harbor resumable backfill procedure", content: memoryPairs[2].negative.delta_message.content, injected: false, supportingSessionIds: [l0Conversations[1].sessionId, l0Conversations[2].sessionId] }),
   withHash({ assetId: "T12-L2-ARCHIVE-INDEX-LIFECYCLE", ownerAgentId: agentId, sourceEvidenceIds: ["source-t12-memory-scene"], observedAt, path: "database/archive/index-lifecycle", summary: "Archive index retirement lifecycle", content: memoryPairs[4].negative.delta_message.content, injected: false, supportingSessionIds: [l0Conversations[4].sessionId, l0Conversations[5].sessionId] }),
+  ...repair.l2_scenes.map((item) => withHash({ assetId: item.asset_id, ownerAgentId: agentId, sourceEvidenceIds: ["source-t12-memory-scene"], observedAt, path: item.path, summary: item.summary, content: item.content, injected: false, supportingSessionIds: item.supporting_indices.map((index) => l0Conversations[index].sessionId) })),
 ];
 
 const skills = input.skill_visibility.map((visibility) => {
@@ -108,7 +121,7 @@ const skills = input.skill_visibility.map((visibility) => {
   return withHash({ assetId: visibility.asset_id, ownerAgentId: agentId, sourceEvidenceIds: [`source-${source.source_id}`], observedAt,
     name: visibility.name, version: "1.0.0", description: `${visibility.use_when}; sourced from ${source.path}.`, useWhen: visibility.use_when,
     doNotUseWhen: visibility.do_not_use_when, repoCommit: source.revision, visibility: visibility.listed ? "private" : "team",
-    provenanceMode: "imported_open_source", supportingSessionIds: [], codeEvidenceLocators: [], testEvidenceLocators: [], manifest: [{ path: "SKILL.md", sha256: source.source_id === "t12-skill-ghost-db" ? "688246f8709e2f0b3a4c29cc4dd3e565bb65b8dae2d5ac7348280b6638c9c930" : source.raw_sha256 }],
+    provenanceMode: "imported_open_source", supportingSessionIds: [], codeEvidenceLocators: [], testEvidenceLocators: [], manifest: [{ path: "SKILL.md", sha256: source.stored_sha256 ?? source.raw_sha256 }],
   });
 });
 const knowledge = input.knowledge_assets.map((asset, index) => withHash({
@@ -117,10 +130,11 @@ const knowledge = input.knowledge_assets.map((asset, index) => withHash({
   ...(asset.kind === "wiki" ? {} : { repoUrl: workspaceTemplates[index % workspaceTemplates.length].workspace.repoUrl, repoCommit: workspaceTemplates[index % workspaceTemplates.length].source.revision, indexVersion: "task1-build06-fixture-v1" }),
   snapshotSha256: sha(`knowledge:${asset.id}:${asset.description}`), bindings: [{ agentId, visibility: "fixed" }],
 }));
-const memoryAssets = { schema_version: "task1.formal_memory_assets.v1", team_id: "T12", l0_conversations: l0Conversations, l1_memories: l1Memories, l2_scenes: l2Scenes, l3_profiles: [] };
+const l3Profiles = repair.l3_profiles.map((item) => withHash({ assetId: item.asset_id, ownerAgentId: agentId, sourceEvidenceIds: ["source-t12-memory-l3"], observedAt, content: item.content, stability: item.stability }));
+const memoryAssets = { schema_version: "task1.formal_memory_assets.v1", team_id: "T12", l0_conversations: l0Conversations, l1_memories: l1Memories, l2_scenes: l2Scenes, l3_profiles: l3Profiles };
 const skillAssets = { schema_version: "task1.formal_skill_assets.v1", team_id: "T12", skills };
 const knowledgeAssets = { schema_version: "task1.formal_knowledge_assets.v1", team_id: "T12", knowledge };
-const snapshotAssetIds = [...l0Conversations, ...l1Memories, ...l2Scenes, ...skills, ...knowledge].map((asset) => asset.assetId);
+const snapshotAssetIds = [...l0Conversations, ...l1Memories, ...l2Scenes, ...l3Profiles, ...skills, ...knowledge].map((asset) => asset.assetId);
 const visibleAssetSetSha256 = sha({ teamId: "T12", userId: "user-task1-t12-eval", agentId, assetIds: snapshotAssetIds });
 
 const memoryRoutes = [
@@ -197,8 +211,8 @@ const detail = withHash({ description: "Maintains schema migrations, online chan
 const businessAgents = [withHash({ agentId, teamId: "T12", name: "T12 通用业务 Agent", agentDetail: detail, importedMemoryAgentIds: [], boundSkillIds: skills.filter((skill) => skill.visibility === "private").map((skill) => skill.assetId), fixedKnowledgeIds: knowledge.map((asset) => asset.assetId), sourceEvidenceIds: ["source-t12-current-anchor"] })];
 const fragment = {
   schema_version: "task1.team_fragment.v1", build_id: "build-06", team_id: "T12", split: "dev", sourceEvidence, teams, businessAgents, tasks, publicCases, privateAnnotations, pairs,
-  snapshotAssetIds, generatorBatchRefs: ["T12/memory/memory-batch-01", "T12/memory/memory-batch-02", "T12/skill/skill-search-batch-02", "T12/skill/skill-direct-batch-03", "T12/knowledge/knowledge-batch-01", "T12/natural-negative/natural-negative-batch-01"],
-  externalImports: input.skill_sources.map((source) => ({ sourceId: `source-${source.source_id}`, repository: source.repository, revision: source.revision, path: source.path, license: source.license, rawFileSha256: source.raw_sha256, storedFileSha256: source.source_id === "t12-skill-ghost-db" ? "688246f8709e2f0b3a4c29cc4dd3e565bb65b8dae2d5ac7348280b6638c9c930" : source.raw_sha256, storedPath: `source-material/T12/skills/${input.skill_visibility.find((item) => item.source_id === source.source_id).name}/SKILL.md`, licenseFileSha256: source.license_sha256, storedLicensePath: "source-material/T12/skills/licenses/pg-aiguide-LICENSE" })),
+  snapshotAssetIds, generatorBatchRefs: ["T12/memory/memory-batch-01", "T12/memory/memory-batch-02", "T12/memory/memory-repair-batch-03", "T12/skill/skill-search-batch-02", "T12/skill/skill-direct-batch-03", "T12/knowledge/knowledge-batch-01", "T12/natural-negative/natural-negative-batch-01"],
+  externalImports: input.skill_sources.map((source) => ({ sourceId: `source-${source.source_id}`, repository: source.repository, revision: source.revision, path: source.path, license: source.license, rawFileSha256: source.raw_sha256, storedFileSha256: source.stored_sha256 ?? source.raw_sha256, storedPath: source.stored_path, licenseFileSha256: source.license_sha256, storedLicensePath: source.stored_license_path })),
 };
 
 await mkdir(assetsDir, { recursive: true });
@@ -206,5 +220,5 @@ await writeFile(path.join(staging, "team-fragment.json"), JSON.stringify(fragmen
 await writeFile(path.join(assetsDir, "memory.json"), JSON.stringify(memoryAssets, null, 2) + "\n");
 await writeFile(path.join(assetsDir, "skills.json"), JSON.stringify(skillAssets, null, 2) + "\n");
 await writeFile(path.join(assetsDir, "knowledge.json"), JSON.stringify(knowledgeAssets, null, 2) + "\n");
-await writeFile(path.join(staging, "review.md"), `# T12 Sol review\n\nReviewed all Luna drafts against production routing contracts. Final counts: 6 Memory positives, 6 Skill positives, 3 Knowledge positives, 15 paired no-tool negatives, and 10 natural coding negatives. Memory scene-discovery candidates were corrected to include read_scene. The first Skill draft was rejected because it mixed listed and searchable visibility for the same assets; the accepted replacement uses postgres-table-design only through search and the listed migration/Ghost assets only through direct view. External Skill workflows remain pinned to the three input-pack files.\n`);
+await writeFile(path.join(staging, "review.md"), `# T12 Sol review\n\nReviewed all Luna drafts against production routing contracts. Existing 40 cases, 15 pairs, and Gold routes are preserved byte-for-byte at the case/annotation level while the visible asset-set hash is regenerated for the expanded pool. Final counts: 6 Memory positives, 6 Skill positives, 3 Knowledge positives, 15 paired no-tool negatives, and 10 natural coding negatives.\n\nRepair batch t12-memory-repair-batch-03 used gpt-5.6-luna with reasoning_effort=high for the L0/L3 expansion; its draft contains the complete per-session L0 expansions and all added L1/L2/L3 content, with manifest raw-output hash. Sol reviewed the generated batch and kept the existing target facts and timelines. The six existing L0 sessions now each contain 12 project-coherent messages, with two additional 12-message sessions; the pool has 12 L1 memories, 4 L2 scenes, and 1 L3 profile.\n\nThe Skill pool contains 14 real GitHub files pinned by repository, commit, path, license, and SHA-256: 5 listed and 9 team-visible searchable. The original PostgreSQL targets remain unchanged; Qdrant/database-batch sources from the read-only frozen shared library provide same-domain search pressure. No upstream dependencies or tests were installed or run.\n`);
 console.log(JSON.stringify({ team: "T12", cases: publicCases.length, pairs: pairs.length, positives: privateAnnotations.filter((item) => item.gold.needTdaiTool).length, assets: snapshotAssetIds.length }, null, 2));

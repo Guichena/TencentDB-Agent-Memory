@@ -1,0 +1,15 @@
+{
+  "schema_version": "task1.luna_batch_manifest.v1",
+  "batch_id": "t11-memory-repair-luna-high",
+  "team_id": "T11",
+  "family": "memory-asset-repair",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "prompt_version": "task1.t11.asset-repair.v1",
+  "actual_count": 5,
+  "draft_raw_sha256": "3b65ec78c07abc065766ab276a156c5ded47919d57f3951b2600cab31d03bbe4",
+  "external_source_ids": [],
+  "review_status": "reviewed-by-sol",
+  "review_notes": "Expanded six existing L0 sessions to twelve messages and synthesized two twelve-message sessions, ten L1 memories, two L2 scenes, and one L3 profile; existing case Gold was not regenerated from new queries."
+}

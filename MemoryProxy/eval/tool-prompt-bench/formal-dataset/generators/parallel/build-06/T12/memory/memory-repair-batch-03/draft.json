@@ -1,0 +1,40 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t12-memory-repair-batch-03",
+  "stage": "DS02",
+  "team_id": "T12",
+  "family": "memory",
+  "pairs": [{"draft_pair_id":"T12-MEMORY-REPAIR-001","external_source_ids":[],"synthetic_scope":["team","project","conversation","history"],"difficulty":"medium","context_bucket":"long_12_to_18","shared_context_messages":[{"role":"user","content":"Harbor 回填按主键范围推进。"},{"role":"assistant","content":"当前记录只保留了批次边界。"}],"changed_message_index":2,"query":"请找回 Harbor 回填暂停与恢复的历史约定。","positive":{"delta_message":{"role":"assistant","content":"补充回填暂停条件、检查点和恢复规则。"},"private_proposal":{"unique_information_gap":"需要历史会话中的暂停与恢复约定。","route":"memory","target_asset_ids":["T12-L0-HARBOR-CHECKPOINT"],"allowed_sequence_candidates":[["tdai_conversation_search"]],"stop_after_candidate":"tdai_conversation_search"}},"negative":{"delta_message":{"role":"assistant","content":"Harbor 回填在复制延迟超阈值时暂停，并从冻结检查点恢复。"},"private_proposal":{"route":"none","why_current_context_is_sufficient":"暂停与恢复规则已完整给出。"}},"visible_distractor_ids_author_only":["T12-L0-SUPPORT-3","T12-L0-SUPPORT-4","T12-L0-BEACON-QUERY-PLAN-EXPERIMENT"],"controlled_delta_note":"仅补充历史事实，不改变身份、项目或查询。","source_fact_map":[],"sol_review_questions":["Sol 复核扩充会话深度和事实时间线。"]}],
+  "repair_kind": "memory_asset_pool_expansion",
+  "l0_expansions": {
+    "T12-L0-SUPPORT-1": [{"role":"assistant","content":"Ledger 订单表的发布窗口已由值班负责人确认。"},{"role":"user","content":"旧客户端在兼容期仍会写入原字段。"},{"role":"assistant","content":"预发副本要先回放同一批次再进入租户分批发布。"},{"role":"user","content":"副本校验包含列定义、索引状态和双写一致性。"},{"role":"assistant","content":"复制延迟超过阈值时控制器会暂停下一批。"},{"role":"user","content":"暂停时必须保留可恢复的批次检查点。"},{"role":"assistant","content":"读切换前要比较旧列和新列的抽样结果。"},{"role":"user","content":"兼容窗口结束后才允许清理旧写入路径。"},{"role":"assistant","content":"发布记录需要关联回滚开关和负责人。"},{"role":"user","content":"请把这些约定留在 Ledger 迁移交接中。"}],
+    "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT": [{"role":"assistant","content":"Beacon 实验固定了查询谓词、排序和限制参数。"},{"role":"user","content":"旧索引结果作为同参数对照组保存。"},{"role":"assistant","content":"新索引计划需要记录 explain 节点摘要。"},{"role":"user","content":"缓存命中不能替代计划稳定性证据。"},{"role":"assistant","content":"每轮实验同时采集 p95 尾延迟。"},{"role":"user","content":"计划节点和延迟任一不达标就不接受方案。"},{"role":"assistant","content":"统计信息更新时间也写入实验记录。"},{"role":"user","content":"对照和实验必须使用相同参数与数据窗口。"},{"role":"assistant","content":"接受前由查询评审人复核两项门槛。"},{"role":"user","content":"请找回本次 Beacon 评审的完整步骤。"}],
+    "T12-L0-SUPPORT-3": [{"role":"assistant","content":"Harbor 回填按租户和主键范围拆成可重试批次。"},{"role":"user","content":"每个批次提交后才推进持久化检查点。"},{"role":"assistant","content":"失败重试从最近检查点继续，不重复确认已完成行。"},{"role":"user","content":"复制延迟和锁等待都纳入暂停阈值。"},{"role":"assistant","content":"暂停时保留当前租户、主键上界和重试次数。"},{"role":"user","content":"恢复前先检查上一个批次的一致性摘要。"},{"role":"assistant","content":"回填表达式必须对 NULL 和旧格式保持幂等。"},{"role":"user","content":"完成租户后再登记总进度，不跨租户猜测。"},{"role":"assistant","content":"运维交接记录每轮开始结束时间。"},{"role":"user","content":"这些规则用于 Harbor worker 的历史核对。"}],
+    "T12-L0-SUPPORT-4": [{"role":"assistant","content":"Quartz 兼容层在迁移窗口同时支持旧列和新列。"},{"role":"user","content":"外部 DTO 与 API 字段不能因为数据库改名而变化。"},{"role":"assistant","content":"写入阶段先双写，再按一致性结果切换读取。"},{"role":"user","content":"新列读取失败时允许回退旧列。"},{"role":"assistant","content":"回退分支也要记录原因和请求标识。"},{"role":"user","content":"旧 ORM 映射暂时保留到兼容窗口结束。"},{"role":"assistant","content":"清理旧列前必须确认没有旧版本客户端。"},{"role":"user","content":"读取切换和清理不能合并成一个发布。"},{"role":"assistant","content":"Quartz 发布单要列出双写和回退检查。"},{"role":"user","content":"请保持这份 ORM 兼容交接的时间线。"}],
+    "T12-L0-SUPPORT-5": [{"role":"assistant","content":"Archive 索引退役先观察并发读流量和命中率。"},{"role":"user","content":"观察窗口内不删除旧索引，也不改变查询接口。"},{"role":"assistant","content":"候选 DDL 要设置锁等待预算和可逆退出。"},{"role":"user","content":"超时退出时保留索引现状与审计记录。"},{"role":"assistant","content":"低峰验证完成后才进入删除审批。"},{"role":"user","content":"删除后仍需保留恢复步骤和检查点。"},{"role":"assistant","content":"计划摘要与尾延迟要按同一时间窗比较。"},{"role":"user","content":"读流量回升时立即暂停退役。"},{"role":"assistant","content":"Archive 负责人最后确认清理批次。"},{"role":"user","content":"请找回索引生命周期的历史约定。"}],
+    "T12-L0-LEDGER-ROLLBACK-CONTRACT": [{"role":"assistant","content":"Ledger 回滚合同要求先记录旧结构和恢复开关。"},{"role":"user","content":"新结构验证通过前不关闭旧写入路径。"},{"role":"assistant","content":"双写异常时按租户暂停而不是继续扩大批次。"},{"role":"user","content":"回滚信号包括复制延迟、校验差异和锁等待。"},{"role":"assistant","content":"恢复动作从最近一次一致性检查点启动。"},{"role":"user","content":"旧客户端仍活跃时只能读切换不能删列。"},{"role":"assistant","content":"每次回滚演练都保存负责人和时间窗。"},{"role":"user","content":"发布单必须能追溯到对应批次。"},{"role":"assistant","content":"成功稳定后再评估旧结构清理日期。"},{"role":"user","content":"请核对 Ledger 回滚合同的阶段顺序。"}],
+    "T12-L0-HARBOR-CHECKPOINT": [{"role":"assistant","content":"Harbor 回填暂停条件写入控制记录。"},{"role":"user","content":"最近一次暂停发生在复制延迟超过阈值之后。"},{"role":"assistant","content":"恢复从冻结的租户和主键检查点开始。"},{"role":"user","content":"已提交批次不会因重试再次计数。"},{"role":"assistant","content":"检查点与批次提交保持同一审计编号。"},{"role":"user","content":"恢复前要核对上一批的行数摘要。"},{"role":"assistant","content":"锁等待超预算时仍按相同规则暂停。"},{"role":"user","content":"每个租户的完成状态单独记录。"},{"role":"assistant","content":"回填负责人确认后才推进下一个范围。"},{"role":"user","content":"请保留这次 Harbor 暂停恢复的历史。"}],
+    "T12-L0-ARCHIVE-INDEX-RETIREMENT": [{"role":"assistant","content":"Archive 退役前先观察并发读取和索引命中变化。"},{"role":"user","content":"观察窗口内保留旧索引作为安全回退。"},{"role":"assistant","content":"DDL 执行受锁等待预算约束。"},{"role":"user","content":"超时后退出并保留现状，不自动重试删除。"},{"role":"assistant","content":"审批记录包含计划摘要和尾延迟对照。"},{"role":"user","content":"读流量反弹时取消当前退役批次。"},{"role":"assistant","content":"恢复步骤要能重新启用被标记的索引。"},{"role":"user","content":"清理动作必须关联审计负责人。"},{"role":"assistant","content":"低峰验证与删除不能合并成一个不可逆操作。"},{"role":"user","content":"请找回 Archive 退役前的并发读检查清单。"}]
+  },
+  "extra_l0_sessions": [
+    {"session_id":"T12-L0-HARBOR-CHECKPOINT","first_message":"请核对 Harbor 回填最近一次暂停原因。","second_message":"Harbor 回填按租户批次推进，检查点与批次提交保持一致。"},
+    {"session_id":"T12-L0-ARCHIVE-INDEX-RETIREMENT","first_message":"请找回 Archive 索引退役前的并发读检查清单。","second_message":"Archive 索引退役要先观察读流量，再执行可逆删除和回滚检查。"}
+  ],
+  "l1_memories": [
+    {"asset_id":"T12-L1-BEACON-PLAN-ACCEPTANCE","type":"decision","content":"Beacon 只有在尾延迟和计划节点同时通过时才接受新索引。","support_index":2},
+    {"asset_id":"T12-L1-HARBOR-CHECKPOINT","type":"fact","content":"Harbor 回填按主键范围推进，检查点写入与批次提交同一控制记录。","support_index":3},
+    {"asset_id":"T12-L1-ARCHIVE-INDEX-RETIREMENT","type":"decision","content":"Archive 索引退役先观察读流量，再执行可逆删除和回滚检查。","support_index":4},
+    {"asset_id":"T12-L1-LEDGER-ROLLBACK","type":"decision","content":"Ledger 发布先登记回滚开关，并在旧客户端活跃时保留旧列。","support_index":5},
+    {"asset_id":"T12-L1-QUARTZ-READ-FALLBACK","type":"fact","content":"Quartz 兼容窗口允许读取新列失败时回退旧列，但不改变外部 DTO。","support_index":6},
+    {"asset_id":"T12-L1-BEACON-STATS","type":"fact","content":"Beacon 计划比较使用同一谓词、排序、限制和统计更新时间。","support_index":7},
+    {"asset_id":"T12-L1-HARBOR-RETRY","type":"fact","content":"Harbor 批次失败从最近检查点重试，并避免重复写入已确认主键。","support_index":8},
+    {"asset_id":"T12-L1-ARCHIVE-LOCK-BUDGET","type":"fact","content":"Archive DDL 遵守锁等待预算，超时退出并保留现状。","support_index":9},
+    {"asset_id":"T12-L1-MIGRATION-AUDIT","type":"fact","content":"所有数据库演进动作记录批次、负责人、时间窗和回滚信号。","support_index":0},
+    {"asset_id":"T12-L1-REPLICATION-GUARD","type":"fact","content":"复制延迟超过阈值时暂停下一批变更，恢复后从冻结检查点继续。","support_index":1}
+  ],
+  "l2_scenes": [
+    {"asset_id":"T12-L2-LEDGER-COMPATIBILITY","path":"database/ledger/compatibility-window","summary":"Ledger compatibility window","content":"Ledger 兼容窗口依次完成扩列、双写校验、读切换和旧列清理，复制延迟超阈值时暂停。","supporting_indices":[0,5]},
+    {"asset_id":"T12-L2-BEACON-PLAN-REVIEW","path":"database/beacon/query-plan-review","summary":"Beacon query plan review","content":"Beacon 计划评审保存旧新索引 explain、尾延迟和节点摘要，两个门槛同时通过才接受。","supporting_indices":[1,2]}
+  ],
+  "l3_profiles": [{"asset_id":"T12-L3-DATABASE-EVOLUTION-PROFILE","content":"T12 数据库演进长期画像：优先无停机兼容发布，重视可回滚、批次检查点、锁与复制延迟预算；习惯先验证旧新结构并控制分批窗口，关注复制延迟、失败重试和审计记录；若当前请求已给出完整 DDL 与约束则无需读取历史资产。","stability":"team"}]
+}

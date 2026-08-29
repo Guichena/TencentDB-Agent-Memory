@@ -30,9 +30,109 @@
           ],
           "observedAt": "2026-08-30T12:00:00+08:00",
           "contentHash": "abdf87a8763f7e761fdf3c3bd9f1bcae83d02e9695bb12294fa236bcf94d3b6c"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-1-M03",
+          "role": "assistant",
+          "content": "Ledger 订单表的发布窗口已由值班负责人确认。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "3304ee9fd0c6f3251c6025d6f27223e3071f2e4bcdf96042bda090de278dfdd0"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-1-M04",
+          "role": "user",
+          "content": "旧客户端在兼容期仍会写入原字段。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "cafcdff1cb9acec10f3a5f04852075ce2525d8dff844666a260d7c1f63eb597f"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-1-M05",
+          "role": "assistant",
+          "content": "预发副本要先回放同一批次再进入租户分批发布。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "95c300c8e90157bf3b40b84004a5e7d47b78d67d91ce1241883285813d8da9e3"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-1-M06",
+          "role": "user",
+          "content": "副本校验包含列定义、索引状态和双写一致性。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "b9dad09d629c16fb5339ba3b0c4caee56bdcbd0cf2c2ff1b5952a4a07a4dae80"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-1-M07",
+          "role": "assistant",
+          "content": "复制延迟超过阈值时控制器会暂停下一批。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "9141058d3561582422f81bfdcfbed52717f276857445d99145e2773519ab45f0"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-1-M08",
+          "role": "user",
+          "content": "暂停时必须保留可恢复的批次检查点。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "141d71a65f565cffdf40ea19f8c436b7b5e7ee52d87f804546b85ad13999f751"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-1-M09",
+          "role": "assistant",
+          "content": "读切换前要比较旧列和新列的抽样结果。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "0221f6c5062456c5c44d175691412ca300b7a8d4fbf1f3fa6ba56760e88494a6"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-1-M10",
+          "role": "user",
+          "content": "兼容窗口结束后才允许清理旧写入路径。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "5e901a40d646d33ba77949812b1b95b61279bb6aca51bbea0311c458c824c379"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-1-M11",
+          "role": "assistant",
+          "content": "发布记录需要关联回滚开关和负责人。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "5fbd5ff381d671e53b41b1f516676caf99affa17985c1306529dc9329d245ce1"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-1-M12",
+          "role": "user",
+          "content": "请把这些约定留在 Ledger 迁移交接中。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "896e543f2890b5d4305265bfcda5b5cebe4fee7a24d1ebe4014c035aa733c3d8"
         }
       ],
-      "contentHash": "713d36dc3380b6007d61c8b5a88f0c53af68123e5e8c2f6471a4979e5638852a"
+      "contentHash": "cdba404f81d5e7064697bde0cb417041a0c7bff9fc7cc696942aba8a9418a6c4"
     },
     {
       "assetId": "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT",
@@ -62,9 +162,109 @@
           ],
           "observedAt": "2026-08-30T12:00:00+08:00",
           "contentHash": "207f29da3a1f095d691f2f9fd24993eca4aa66039d040e61b0c2870818d63492"
+        },
+        {
+          "messageId": "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT-M03",
+          "role": "assistant",
+          "content": "Beacon 实验固定了查询谓词、排序和限制参数。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "503569de0cb3d061c63355339b581e7ff3883e390a760b5afa42312772ca0e82"
+        },
+        {
+          "messageId": "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT-M04",
+          "role": "user",
+          "content": "旧索引结果作为同参数对照组保存。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "371bf8d5e13ce1d2aed24b480e897384c724c24c6122c37c83d8bbc432bcf07d"
+        },
+        {
+          "messageId": "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT-M05",
+          "role": "assistant",
+          "content": "新索引计划需要记录 explain 节点摘要。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "f1c28679fa468639e7270388ac261612e9f9167c0b4e11e1c2245eac0131f670"
+        },
+        {
+          "messageId": "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT-M06",
+          "role": "user",
+          "content": "缓存命中不能替代计划稳定性证据。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "d288c59ecb7a180d238fc355ef08549a8f3f5165934670f032eb96924e26ac58"
+        },
+        {
+          "messageId": "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT-M07",
+          "role": "assistant",
+          "content": "每轮实验同时采集 p95 尾延迟。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "fcee977225dbf9ec3cd94773f8130dc7027f5283d6448fd544069e37b33e351a"
+        },
+        {
+          "messageId": "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT-M08",
+          "role": "user",
+          "content": "计划节点和延迟任一不达标就不接受方案。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "201c76453928be624dc364c53978312a36ed6d30357f1f6bd22c11000d8cf6a7"
+        },
+        {
+          "messageId": "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT-M09",
+          "role": "assistant",
+          "content": "统计信息更新时间也写入实验记录。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "f5c6e4ab6f0aa8c8e1df2ad218787d80c6261c003f26918a254306910e1a03b3"
+        },
+        {
+          "messageId": "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT-M10",
+          "role": "user",
+          "content": "对照和实验必须使用相同参数与数据窗口。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "b3ade70750e8ae24b0f24bde273092c04fd7e6f2431e0a72182a421bd03a121d"
+        },
+        {
+          "messageId": "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT-M11",
+          "role": "assistant",
+          "content": "接受前由查询评审人复核两项门槛。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "6a9292795349807a5181fa8efc68b9e4ebb4fff19ae8f0067c294712bfda99b6"
+        },
+        {
+          "messageId": "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT-M12",
+          "role": "user",
+          "content": "请找回本次 Beacon 评审的完整步骤。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "0c00dc4782c01600dced8ad57dc54acbdd4a2dca156a348156176e16dffa28c7"
         }
       ],
-      "contentHash": "d5640a3d5fb123af4878c1ef7fa3704d4bb25c20b93f0e84e84bced58b716874"
+      "contentHash": "cc72d9c3e9c66eb6daa54c06e2ad26a4e9e88418a17c87be2d6713ac6d077375"
     },
     {
       "assetId": "T12-L0-SUPPORT-3",
@@ -94,9 +294,109 @@
           ],
           "observedAt": "2026-08-30T12:00:00+08:00",
           "contentHash": "662445737a434ed1ba9e535be98fc820335e52ebc798bc49d74418dd7ddf2b64"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-3-M03",
+          "role": "assistant",
+          "content": "Harbor 回填按租户和主键范围拆成可重试批次。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "998b6c988b5a0f3029c0f8ceae2ccde8d7ef9c78e1584b76c37a0319631f597b"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-3-M04",
+          "role": "user",
+          "content": "每个批次提交后才推进持久化检查点。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "b47f6bbeb8e977b5c55e7d5d4f833a16d9dae4118f465188211121178940a329"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-3-M05",
+          "role": "assistant",
+          "content": "失败重试从最近检查点继续，不重复确认已完成行。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "530a75fe7fccbae8ddafd38b2b070fbd6e00abd930f4e74cd7f16dc215b4f63f"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-3-M06",
+          "role": "user",
+          "content": "复制延迟和锁等待都纳入暂停阈值。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "d3292196312447a91de4c22a135533d8257d3276793bd94ca8847e65004838cd"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-3-M07",
+          "role": "assistant",
+          "content": "暂停时保留当前租户、主键上界和重试次数。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "9008c1a9b56e7430b2fc48fee2a4f5215f0353382c05d0c20ff7bf133a80084e"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-3-M08",
+          "role": "user",
+          "content": "恢复前先检查上一个批次的一致性摘要。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "ab8f8c81829867e06c1bc76e65864fbb54dddc80f73df266e04ed7c878f9ae7e"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-3-M09",
+          "role": "assistant",
+          "content": "回填表达式必须对 NULL 和旧格式保持幂等。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "054ca99529a12925c2f0ddc3fb94ab5812e6e1200ed2b16ed8773efb65b82ae6"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-3-M10",
+          "role": "user",
+          "content": "完成租户后再登记总进度，不跨租户猜测。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "903a1dfde4969fb237cace96611f65d60ddb0be795811493b2af415e4b827bda"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-3-M11",
+          "role": "assistant",
+          "content": "运维交接记录每轮开始结束时间。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "98999ce577bed111a00dadb9d989ec71f001e7ad820edf0778c24b289136f5d8"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-3-M12",
+          "role": "user",
+          "content": "这些规则用于 Harbor worker 的历史核对。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "c9fa512c2873030ee8b3524a31f2747792bef00436d59fd2d80805a3afce3b64"
         }
       ],
-      "contentHash": "a1fcab95574b27ee8b348be1cfa831e2aa146c23598dcb72a2c70b02410c4dc0"
+      "contentHash": "5375a183e41a7f57bc42069f269e8774339f4fd30b6fd14738bb61a980d7e828"
     },
     {
       "assetId": "T12-L0-SUPPORT-4",
@@ -126,9 +426,109 @@
           ],
           "observedAt": "2026-08-30T12:00:00+08:00",
           "contentHash": "daa3b088afae7309668f0f32ca69b3219a1d2a84a59f74e1502a43a6dd3e01e4"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-4-M03",
+          "role": "assistant",
+          "content": "Quartz 兼容层在迁移窗口同时支持旧列和新列。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "2387e7a6e8402557aee0adc8873230dd80f8d5bf2ed567027fdcb6bfd809022f"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-4-M04",
+          "role": "user",
+          "content": "外部 DTO 与 API 字段不能因为数据库改名而变化。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "1f57570c33e3b0b66dcadd4ccf3a60e4122cdc8b85a9bd4efbad12f33f04e875"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-4-M05",
+          "role": "assistant",
+          "content": "写入阶段先双写，再按一致性结果切换读取。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "41ea65be7d8685294d68f20cc31b30e507257a48b8c49c144549897aee69e66d"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-4-M06",
+          "role": "user",
+          "content": "新列读取失败时允许回退旧列。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "ca7294bd0ec3693e0b28907e9baa3e2a4e2063e0dd89664e985ebe95ca912bf3"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-4-M07",
+          "role": "assistant",
+          "content": "回退分支也要记录原因和请求标识。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "6abac021611c5cbc6726eb8c493c43c475219c8ec2f8e6ff48f98d186b594afd"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-4-M08",
+          "role": "user",
+          "content": "旧 ORM 映射暂时保留到兼容窗口结束。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "4af710f4187ab7aa773e57ef0a6b89d9887e11cb3c3b12074a2cfec7536aa12b"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-4-M09",
+          "role": "assistant",
+          "content": "清理旧列前必须确认没有旧版本客户端。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "5fa276fbe9cbc93e9bc777cd36d24510593dfff2a111a7d6b1bf246c47773cae"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-4-M10",
+          "role": "user",
+          "content": "读取切换和清理不能合并成一个发布。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "1ba7a84aff55cef8beb3d6a007ec127cd718067c3d32d52d6e6f7ac1ad8ca757"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-4-M11",
+          "role": "assistant",
+          "content": "Quartz 发布单要列出双写和回退检查。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "112d44064039dd205a09cb5e5c48297dd83c6d9d6525acf53f4c393fb406940a"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-4-M12",
+          "role": "user",
+          "content": "请保持这份 ORM 兼容交接的时间线。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "df4651011f7150b20a8a3a2543d053676f14b2cd98759a565baba48cdb861b2f"
         }
       ],
-      "contentHash": "5ac9a11e2ef380dd03230bf321caa1269b2fd8d0656c1289243564699437cda9"
+      "contentHash": "025952c1e87e0d2251c72e994900ee9c18263677cf36ffffbe4a9e8fd4ef8780"
     },
     {
       "assetId": "T12-L0-SUPPORT-5",
@@ -158,9 +558,109 @@
           ],
           "observedAt": "2026-08-30T12:00:00+08:00",
           "contentHash": "13146ad607c693d7b3659d56a9dbd31477b0e803196699e87448f4a626011dbc"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-5-M03",
+          "role": "assistant",
+          "content": "Archive 索引退役先观察并发读流量和命中率。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "e0bfffa898af100aaee16f69216acfea90faa14ff77dc0800fadf4a2efcacfd4"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-5-M04",
+          "role": "user",
+          "content": "观察窗口内不删除旧索引，也不改变查询接口。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "17c356c5f8cc841a7237a84497cebac2d507b1aad338e27bbec2953bbf7aaf9d"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-5-M05",
+          "role": "assistant",
+          "content": "候选 DDL 要设置锁等待预算和可逆退出。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "c9056e0e062a147baae1f34eb25a2540134a1ee00ccaf223e269fd62a3c87565"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-5-M06",
+          "role": "user",
+          "content": "超时退出时保留索引现状与审计记录。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "dcac413c5d82adc263a2b562648162c2494c2fb1cb059a55cec804b029ec12c4"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-5-M07",
+          "role": "assistant",
+          "content": "低峰验证完成后才进入删除审批。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "20afd181e85b924b6d15426c04fc56a0edc0b3286fc9dafd04a879c2bd0d2418"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-5-M08",
+          "role": "user",
+          "content": "删除后仍需保留恢复步骤和检查点。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "2bdc06387bb501b6d369177ebf873a789713596fb7b46346cbc30d8f794926c2"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-5-M09",
+          "role": "assistant",
+          "content": "计划摘要与尾延迟要按同一时间窗比较。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "00f23592af1f8082ec285391c845acba647ad4739948739071b314d32ce612d7"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-5-M10",
+          "role": "user",
+          "content": "读流量回升时立即暂停退役。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "d724408b7e549a641c62f40d6e7d64c8710c9173550e3b2fa1a08871e9a877b9"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-5-M11",
+          "role": "assistant",
+          "content": "Archive 负责人最后确认清理批次。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "582e9481c34b9546ce417f6231cf0804d4a9d889931d84b74d1f364b7f154989"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-5-M12",
+          "role": "user",
+          "content": "请找回索引生命周期的历史约定。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "afb0cc5c1cc80710780678f7a78a3448d4704f805dc7387307070f22c2111618"
         }
       ],
-      "contentHash": "86d9f1725585699019b9b59ee240c86be3a3c0a9fe37755c27ade2f1acba4f6a"
+      "contentHash": "1b772c850d5d6498ee4d93c5a1a84be7856ef7c6565137e5ef499e94406c438a"
     },
     {
       "assetId": "T12-L0-LEDGER-ROLLBACK-CONTRACT",
@@ -190,9 +690,373 @@
           ],
           "observedAt": "2026-08-30T12:00:00+08:00",
           "contentHash": "f0af277823ece94f0616e06d8600da9d634fab883d99e2e1a4b855babf3e4245"
+        },
+        {
+          "messageId": "T12-L0-LEDGER-ROLLBACK-CONTRACT-M03",
+          "role": "assistant",
+          "content": "Ledger 回滚合同要求先记录旧结构和恢复开关。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "d16d0cae3b5c9841e4be97d32c859d5731e5981e0892062cb56ce06f985d46a0"
+        },
+        {
+          "messageId": "T12-L0-LEDGER-ROLLBACK-CONTRACT-M04",
+          "role": "user",
+          "content": "新结构验证通过前不关闭旧写入路径。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "0f2852097c6ea882f3d4d0e872ca0611dd024c6ad48b3ad1ad7bce0f36020c8d"
+        },
+        {
+          "messageId": "T12-L0-LEDGER-ROLLBACK-CONTRACT-M05",
+          "role": "assistant",
+          "content": "双写异常时按租户暂停而不是继续扩大批次。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "1a820a5d13c39e7fb016505598a74cd39fc51225b26eab60275f84ae83efd383"
+        },
+        {
+          "messageId": "T12-L0-LEDGER-ROLLBACK-CONTRACT-M06",
+          "role": "user",
+          "content": "回滚信号包括复制延迟、校验差异和锁等待。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "a378bcc1db0c68e5e9aa62deeafbea3193f1d71fc58fc49988f349979d6a5151"
+        },
+        {
+          "messageId": "T12-L0-LEDGER-ROLLBACK-CONTRACT-M07",
+          "role": "assistant",
+          "content": "恢复动作从最近一次一致性检查点启动。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "a2ca585e002a66623db4061e2d9009e713f8c40e6ab50abe9d2b1d368bcb6ad3"
+        },
+        {
+          "messageId": "T12-L0-LEDGER-ROLLBACK-CONTRACT-M08",
+          "role": "user",
+          "content": "旧客户端仍活跃时只能读切换不能删列。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "8b6af2919aa8b4615873b0a8671582b0bc9caf62fbc0247a603abe5d4417f3b2"
+        },
+        {
+          "messageId": "T12-L0-LEDGER-ROLLBACK-CONTRACT-M09",
+          "role": "assistant",
+          "content": "每次回滚演练都保存负责人和时间窗。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "99c23c61c64308a6f2a11b78cfe966566dd0b5313d3861534eb95d51964b69e4"
+        },
+        {
+          "messageId": "T12-L0-LEDGER-ROLLBACK-CONTRACT-M10",
+          "role": "user",
+          "content": "发布单必须能追溯到对应批次。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "f0e59a1c23680827a72c69c04337ea94ec288b0353be033c523281ca67e5c38a"
+        },
+        {
+          "messageId": "T12-L0-LEDGER-ROLLBACK-CONTRACT-M11",
+          "role": "assistant",
+          "content": "成功稳定后再评估旧结构清理日期。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "cf05efd5a7dc8acf871152dac56f2cb84672365d2a97c3fa845301d22f4bce63"
+        },
+        {
+          "messageId": "T12-L0-LEDGER-ROLLBACK-CONTRACT-M12",
+          "role": "user",
+          "content": "请核对 Ledger 回滚合同的阶段顺序。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "6e011976fae1eb05d386959c04cf58a0c1424321d214ecb76c0c2aff3cb97871"
         }
       ],
-      "contentHash": "b3fc7d57ac8d4587da9741e25db851f1e6d848a71fc33e4ae8a605974f07203a"
+      "contentHash": "b386bb98e55bec86dafdb0fca9d887011e77c9db0c1e365578be4cf45a476e3e"
+    },
+    {
+      "assetId": "T12-L0-HARBOR-CHECKPOINT",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-redacted"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T12-L0-HARBOR-CHECKPOINT",
+      "messages": [
+        {
+          "messageId": "T12-L0-HARBOR-CHECKPOINT-M01",
+          "role": "user",
+          "content": "请核对 Harbor 回填最近一次暂停原因。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "3d919e14e99badf0e17b7bdd60653d843a808f8e48c341727018bafc58b230dd"
+        },
+        {
+          "messageId": "T12-L0-HARBOR-CHECKPOINT-M02",
+          "role": "assistant",
+          "content": "Harbor 回填按租户批次推进，检查点与批次提交保持一致。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "a9a9801d6932f334d896fc228656b320a36923afcf8310ed67edb57035a9e2ee"
+        },
+        {
+          "messageId": "T12-L0-HARBOR-CHECKPOINT-M03",
+          "role": "assistant",
+          "content": "Harbor 回填暂停条件写入控制记录。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "3ed2e6a6a7bc89a1bd1521770ceac86f81267022fd7e5335fa51e0339c3c380a"
+        },
+        {
+          "messageId": "T12-L0-HARBOR-CHECKPOINT-M04",
+          "role": "user",
+          "content": "最近一次暂停发生在复制延迟超过阈值之后。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "29ddf1554dad537c2d85ca42ce95ff7fe9b84c604c6fae39bde0bfc637abadf8"
+        },
+        {
+          "messageId": "T12-L0-HARBOR-CHECKPOINT-M05",
+          "role": "assistant",
+          "content": "恢复从冻结的租户和主键检查点开始。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "4342ddc40dbd1f6cb17b61644c96186fb71dcbe4987b3a5dad41c8c556db198e"
+        },
+        {
+          "messageId": "T12-L0-HARBOR-CHECKPOINT-M06",
+          "role": "user",
+          "content": "已提交批次不会因重试再次计数。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "0ed7466036821072dc6790a780990e2246d750dfb50a3e34ceea791b55e9d3b7"
+        },
+        {
+          "messageId": "T12-L0-HARBOR-CHECKPOINT-M07",
+          "role": "assistant",
+          "content": "检查点与批次提交保持同一审计编号。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "97221a763fce3f22ad67ec9d5e755d9f176558be258aebdb8eb9d8be5cc8c372"
+        },
+        {
+          "messageId": "T12-L0-HARBOR-CHECKPOINT-M08",
+          "role": "user",
+          "content": "恢复前要核对上一批的行数摘要。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "8675dff58dacc8ba773aec9f43a7ca3c341220f81412975efed50542c0a654cc"
+        },
+        {
+          "messageId": "T12-L0-HARBOR-CHECKPOINT-M09",
+          "role": "assistant",
+          "content": "锁等待超预算时仍按相同规则暂停。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "c774aaf6d5d403dc9e01ae0202e890573a013d37c89ff72cc9dcb1bb8b6796af"
+        },
+        {
+          "messageId": "T12-L0-HARBOR-CHECKPOINT-M10",
+          "role": "user",
+          "content": "每个租户的完成状态单独记录。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "95c9bc551a17d799274afd6f885c071b424ffbef2ec29caa8fd3bc590a5701de"
+        },
+        {
+          "messageId": "T12-L0-HARBOR-CHECKPOINT-M11",
+          "role": "assistant",
+          "content": "回填负责人确认后才推进下一个范围。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "69b89dcfbcdeb9c1277c2ebaaf6d020e283b4cd04d8e78063174bf4ba1c9d4a2"
+        },
+        {
+          "messageId": "T12-L0-HARBOR-CHECKPOINT-M12",
+          "role": "user",
+          "content": "请保留这次 Harbor 暂停恢复的历史。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "dcb6992f2f966ab71ec34e9809259fd46bf45b27ebc88be9c171598351da396b"
+        }
+      ],
+      "contentHash": "acca5ae74d80b62715cf5a23ddee0b70f570702d4dcd331f38925a668028340a"
+    },
+    {
+      "assetId": "T12-L0-ARCHIVE-INDEX-RETIREMENT",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-redacted"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T12-L0-ARCHIVE-INDEX-RETIREMENT",
+      "messages": [
+        {
+          "messageId": "T12-L0-ARCHIVE-INDEX-RETIREMENT-M01",
+          "role": "user",
+          "content": "请找回 Archive 索引退役前的并发读检查清单。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "923b5150f406eeb7453303430ebda3ac420c4729e6ee483e1a18d5b05d7c7310"
+        },
+        {
+          "messageId": "T12-L0-ARCHIVE-INDEX-RETIREMENT-M02",
+          "role": "assistant",
+          "content": "Archive 索引退役要先观察读流量，再执行可逆删除和回滚检查。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "ce234739003d38b57e31d2639e064d198e4be3e029a4bcc2a9a3f2208f085280"
+        },
+        {
+          "messageId": "T12-L0-ARCHIVE-INDEX-RETIREMENT-M03",
+          "role": "assistant",
+          "content": "Archive 退役前先观察并发读取和索引命中变化。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "1218e4eb8160d16daf864574254f6d93dfb63c45b0d42bcca1000ae529c5e5e0"
+        },
+        {
+          "messageId": "T12-L0-ARCHIVE-INDEX-RETIREMENT-M04",
+          "role": "user",
+          "content": "观察窗口内保留旧索引作为安全回退。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "377e878fe6e345290ba0c2dae8809dcbac4a3de1e98ddb58c72e360522d5f8da"
+        },
+        {
+          "messageId": "T12-L0-ARCHIVE-INDEX-RETIREMENT-M05",
+          "role": "assistant",
+          "content": "DDL 执行受锁等待预算约束。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "11c421c1d8282aa198ca2ba3a1132908b9c990af85de055334398fb02a7cd841"
+        },
+        {
+          "messageId": "T12-L0-ARCHIVE-INDEX-RETIREMENT-M06",
+          "role": "user",
+          "content": "超时后退出并保留现状，不自动重试删除。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "b839376672b9a7b5b493a67d1dd21b924216262581ae5f0b9d9495b8e9b58624"
+        },
+        {
+          "messageId": "T12-L0-ARCHIVE-INDEX-RETIREMENT-M07",
+          "role": "assistant",
+          "content": "审批记录包含计划摘要和尾延迟对照。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "5285ba670629fbd402735b5e293101ecc4c2f9d1f10c265c5ec51b7ca2e69a80"
+        },
+        {
+          "messageId": "T12-L0-ARCHIVE-INDEX-RETIREMENT-M08",
+          "role": "user",
+          "content": "读流量反弹时取消当前退役批次。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "9bb2f8a4d2507cc992149eb2f84337efad4d04ab7b4b390f790b22b2f9682f82"
+        },
+        {
+          "messageId": "T12-L0-ARCHIVE-INDEX-RETIREMENT-M09",
+          "role": "assistant",
+          "content": "恢复步骤要能重新启用被标记的索引。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "b0e55e494d551ea0b6139564ec9bec2e394ea1e6629f8c4f593c2f3cc8986d07"
+        },
+        {
+          "messageId": "T12-L0-ARCHIVE-INDEX-RETIREMENT-M10",
+          "role": "user",
+          "content": "清理动作必须关联审计负责人。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "257fe640d635647696b64c6b06dee77649d9b61337952ae14048e04817dc990a"
+        },
+        {
+          "messageId": "T12-L0-ARCHIVE-INDEX-RETIREMENT-M11",
+          "role": "assistant",
+          "content": "低峰验证与删除不能合并成一个不可逆操作。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "e836f12f9206ba6ba4523087227837c12c32379136d3d26c296db046d0742eef"
+        },
+        {
+          "messageId": "T12-L0-ARCHIVE-INDEX-RETIREMENT-M12",
+          "role": "user",
+          "content": "请找回 Archive 退役前的并发读检查清单。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "2d440d364fb45db80bab92ee54efa8f31146d51a2986c7e5641a9cca8eccd9fa"
+        }
+      ],
+      "contentHash": "cd6e4f7a2f1f770d88d636b51811bb21ac7572dfc4f8961a1995ca1efde2fe63"
     }
   ],
   "l1_memories": [
@@ -231,6 +1095,186 @@
       "codeEvidenceLocators": [],
       "testEvidenceLocators": [],
       "contentHash": "e281afbe1d90888d6e5f3358429d7b12fc812229aca6a570d6ca40f09002235f"
+    },
+    {
+      "assetId": "T12-L1-BEACON-PLAN-ACCEPTANCE",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "decision",
+      "content": "Beacon 只有在尾延迟和计划节点同时通过时才接受新索引。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T12-L0-SUPPORT-3-M02"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "1e8f115fa763f25af4c7fdcef381b28e2f7dece8427d2f76e1718bfcb4897106"
+    },
+    {
+      "assetId": "T12-L1-HARBOR-CHECKPOINT",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "fact",
+      "content": "Harbor 回填按主键范围推进，检查点写入与批次提交同一控制记录。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T12-L0-SUPPORT-4-M02"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "87c6f30a7e8b80244e7848200cd9d53bf0c81ee7f27a2f30eb7ec73bc98855da"
+    },
+    {
+      "assetId": "T12-L1-ARCHIVE-INDEX-RETIREMENT",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "decision",
+      "content": "Archive 索引退役先观察读流量，再执行可逆删除和回滚检查。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T12-L0-SUPPORT-5-M02"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "7bcd4efa0a4ce95790a7409bef299e5ecd11ecabe9195e33d84c9ca03c303842"
+    },
+    {
+      "assetId": "T12-L1-LEDGER-ROLLBACK",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "decision",
+      "content": "Ledger 发布先登记回滚开关，并在旧客户端活跃时保留旧列。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T12-L0-LEDGER-ROLLBACK-CONTRACT-M02"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "06ddbe09655ffd24faffc1dde8dfe70f99b41e054ba083625a7c570daeb44965"
+    },
+    {
+      "assetId": "T12-L1-QUARTZ-READ-FALLBACK",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "fact",
+      "content": "Quartz 兼容窗口允许读取新列失败时回退旧列，但不改变外部 DTO。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T12-L0-HARBOR-CHECKPOINT-M02"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "83d315c2b628f3a419f782f7ac6b0b55049de6bf31d57c8ef97cc01fbf21ff01"
+    },
+    {
+      "assetId": "T12-L1-BEACON-STATS",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "fact",
+      "content": "Beacon 计划比较使用同一谓词、排序、限制和统计更新时间。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T12-L0-ARCHIVE-INDEX-RETIREMENT-M02"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "daec25116538d0ae5620f9043d409235ee9d25901cb64f95d7616439af9f1229"
+    },
+    {
+      "assetId": "T12-L1-HARBOR-RETRY",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "fact",
+      "content": "Harbor 批次失败从最近检查点重试，并避免重复写入已确认主键。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T12-L0-SUPPORT-1-M02"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "feb508af1e8eb52c8a5c5b49845c79f3684afcd5477775bf2c85508ce0c9babe"
+    },
+    {
+      "assetId": "T12-L1-ARCHIVE-LOCK-BUDGET",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "fact",
+      "content": "Archive DDL 遵守锁等待预算，超时退出并保留现状。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT-M02"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "ddf6ec252a62c2dd14a1d58bb021175086281afdc9d0e7510e6f032a26feb5be"
+    },
+    {
+      "assetId": "T12-L1-MIGRATION-AUDIT",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "fact",
+      "content": "所有数据库演进动作记录批次、负责人、时间窗和回滚信号。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T12-L0-SUPPORT-1-M02"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "220b15a1bc4d1ec258b0369f90350a6a9891c9f50a904a8d9086dc3e3f210dbc"
+    },
+    {
+      "assetId": "T12-L1-REPLICATION-GUARD",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "fact",
+      "content": "复制延迟超过阈值时暂停下一批变更，恢复后从冻结检查点继续。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT-M02"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "25c63d86bff258f6b1eaa90307bb19531e58ebdf788cb6703942ed11403ad078"
     }
   ],
   "l2_scenes": [
@@ -267,7 +1311,53 @@
         "T12-L0-LEDGER-ROLLBACK-CONTRACT"
       ],
       "contentHash": "5d947d4912282aa77ac69eddc9f30e05370bbe1d54127b62bc03d78efb207222"
+    },
+    {
+      "assetId": "T12-L2-LEDGER-COMPATIBILITY",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-scene"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "path": "database/ledger/compatibility-window",
+      "summary": "Ledger compatibility window",
+      "content": "Ledger 兼容窗口依次完成扩列、双写校验、读切换和旧列清理，复制延迟超阈值时暂停。",
+      "injected": false,
+      "supportingSessionIds": [
+        "T12-L0-SUPPORT-1",
+        "T12-L0-LEDGER-ROLLBACK-CONTRACT"
+      ],
+      "contentHash": "3ec690270d1b5e87046569d7025800f5aa4d31589598b40adb96c8d50ba1620d"
+    },
+    {
+      "assetId": "T12-L2-BEACON-PLAN-REVIEW",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-scene"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "path": "database/beacon/query-plan-review",
+      "summary": "Beacon query plan review",
+      "content": "Beacon 计划评审保存旧新索引 explain、尾延迟和节点摘要，两个门槛同时通过才接受。",
+      "injected": false,
+      "supportingSessionIds": [
+        "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT",
+        "T12-L0-SUPPORT-3"
+      ],
+      "contentHash": "b7cbafccc7016d71656a7b10c65a7f4a41eb4523047e955bd78639907150acae"
     }
   ],
-  "l3_profiles": []
+  "l3_profiles": [
+    {
+      "assetId": "T12-L3-DATABASE-EVOLUTION-PROFILE",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-l3"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "content": "T12 数据库演进长期画像：优先无停机兼容发布，重视可回滚、批次检查点、锁与复制延迟预算；习惯先验证旧新结构并控制分批窗口，关注复制延迟、失败重试和审计记录；若当前请求已给出完整 DDL 与约束则无需读取历史资产。",
+      "stability": "team",
+      "contentHash": "6f5bb1b71e48205c69ce2630801358a03c32822a35d52d7a91af6af7f23dcc08"
+    }
+  ]
 }
