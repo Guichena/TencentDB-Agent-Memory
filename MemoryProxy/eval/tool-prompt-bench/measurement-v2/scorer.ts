@@ -1,36 +1,17 @@
 import { isDeepStrictEqual } from "node:util";
+import { readJsonPath } from "./json-path.js";
 import { normalizeTrace } from "./normalizer.js";
 import type {
   AllowedChainSequenceV2,
   CaseChainScoreV2,
   ForbiddenBeforeTerminalV2,
   GoldChainStepV2,
-  JsonValueV2,
+  GoldOperationPredicateV2,
   NormalizedTdaiAttemptV2,
   RawInfrastructureFailureV2,
   RawTraceObservationV2,
   ScoreCaseChainInputV2,
 } from "./types.js";
-
-function isJsonArray(value: JsonValueV2 | undefined): value is readonly JsonValueV2[] {
-  return Array.isArray(value);
-}
-
-function readJsonPath(root: JsonValueV2 | undefined, path: string): JsonValueV2 | undefined {
-  let current = root;
-  for (const segment of path.split(".")) {
-    if (isJsonArray(current)) {
-      const index = Number(segment);
-      if (!Number.isInteger(index)) return undefined;
-      current = current[index];
-    } else if (current && typeof current === "object") {
-      current = current[segment];
-    } else {
-      return undefined;
-    }
-  }
-  return current;
-}
 
 function collectRawInfrastructureFailures(
   observation: RawTraceObservationV2,
@@ -152,14 +133,22 @@ function validateScoreInput(input: ScoreCaseChainInputV2): void {
   }
 }
 
+function matchesOperation(
+  attempt: NormalizedTdaiAttemptV2,
+  operation: GoldOperationPredicateV2,
+): boolean {
+  return operation.kind === "none"
+    ? attempt.normalizedOperation.kind === "none"
+    : attempt.normalizedOperation.kind === "value"
+      && attempt.normalizedOperation.value === operation.value;
+}
+
 function matchesSelection(attempt: NormalizedTdaiAttemptV2, step: GoldChainStepV2): boolean {
   return attempt.family === step.family
     && attempt.tool === step.tool
     && attempt.endpoint === step.endpoint
     && attempt.method?.toUpperCase() === step.method.toUpperCase()
-    && (step.operation.kind === "none"
-      ? attempt.observedOperation === null
-      : attempt.observedOperation === step.operation.value);
+    && matchesOperation(attempt, step.operation);
 }
 
 type SelectionFailureLayer =
@@ -179,9 +168,7 @@ function classifyAttemptAgainstStep(
     attempt.endpoint !== step.endpoint
     || attempt.method?.toUpperCase() !== step.method.toUpperCase()
   ) return "wrong_endpoint";
-  const operationMatches = step.operation.kind === "none"
-    ? attempt.observedOperation === null
-    : attempt.observedOperation === step.operation.value;
+  const operationMatches = matchesOperation(attempt, step.operation);
   return operationMatches ? "selection" : "wrong_operation";
 }
 
@@ -238,9 +225,7 @@ function matchesForbiddenTerminal(
     && attempt.tool === forbidden.tool
     && attempt.endpoint === forbidden.endpoint
     && attempt.method?.toUpperCase() === forbidden.method.toUpperCase()
-    && (forbidden.operation.kind === "none"
-      ? attempt.observedOperation === null
-      : attempt.observedOperation === forbidden.operation.value)
+    && matchesOperation(attempt, forbidden.operation)
     && attempt.matchedRuntimeContractIds.includes(forbidden.runtimeContractId);
 }
 
@@ -278,6 +263,8 @@ interface SequenceMatch {
   positions: readonly number[];
 }
 
+type SequenceMatchMode = "selection" | "terminal_horizon" | "complete";
+
 function matchesBindingsAtPositions(
   attempt: NormalizedTdaiAttemptV2,
   stepIndex: number,
@@ -299,10 +286,32 @@ function matchesBindingsAtPositions(
   });
 }
 
+function firstCompleteFailureLayer(
+  attempts: readonly NormalizedTdaiAttemptV2[],
+  match: SequenceMatch,
+): "arguments" | "binding" | "runtime_acceptance" | null {
+  for (const [stepIndex, step] of match.sequence.steps.entries()) {
+    const attempt = attempts[match.positions[stepIndex]];
+    if (!matchesArguments(attempt, step)) return "arguments";
+    if (!matchesBindingsAtPositions(
+      attempt,
+      stepIndex,
+      attempts,
+      match.sequence,
+      match.positions,
+    )) return "binding";
+    if (
+      !attempt.matchedRuntimeContractIds.includes(step.runtimeContractId)
+      || !attempt.acceptedRuntimeContractIds.includes(step.runtimeContractId)
+    ) return "runtime_acceptance";
+  }
+  return null;
+}
+
 function findSequenceMatch(
   attempts: readonly NormalizedTdaiAttemptV2[],
   sequence: AllowedChainSequenceV2,
-  mode: "selection" | "complete",
+  mode: SequenceMatchMode,
 ): SequenceMatch | null {
   if (sequence.steps.length === 0) return null;
   const declaredTerminalIndex = sequence.steps.findIndex((step) => step.terminal);
@@ -331,7 +340,9 @@ function findSequenceMatch(
     for (let attemptIndex = startAttemptIndex; attemptIndex < attempts.length; attemptIndex += 1) {
       const attempt = attempts[attemptIndex];
       if (!matchesSelection(attempt, step)) continue;
-      if (mode === "complete" && (
+      const requiresCompleteStep = mode === "complete"
+        || (mode === "terminal_horizon" && stepIndex === declaredTerminalIndex);
+      if (requiresCompleteStep && (
         !matchesCompleteStep(attempt, step)
         || !matchesBindingsAtPositions(attempt, stepIndex, attempts, sequence, positions)
       )) continue;
@@ -362,7 +373,7 @@ function isExactSequenceMatch(match: SequenceMatch): boolean {
 function sequenceMatches(
   attempts: readonly NormalizedTdaiAttemptV2[],
   sequences: readonly AllowedChainSequenceV2[],
-  mode: "selection" | "complete",
+  mode: SequenceMatchMode,
 ): readonly SequenceMatch[] {
   return sequences.flatMap((sequence) => {
     const match = findSequenceMatch(attempts, sequence, mode);
@@ -381,7 +392,7 @@ function compareSequenceMatches(left: SequenceMatch, right: SequenceMatch): numb
 function earliestSequenceMatch(
   attempts: readonly NormalizedTdaiAttemptV2[],
   sequences: readonly AllowedChainSequenceV2[],
-  mode: "selection" | "complete",
+  mode: SequenceMatchMode,
   barrierIndices: readonly number[] = [],
 ): SequenceMatch | null {
   const match = sequenceMatches(attempts, sequences, mode)
@@ -510,17 +521,17 @@ export function scoreCaseChain(input: ScoreCaseChainInputV2): CaseChainScoreV2 {
     ...forbiddenWrongTerminalIndices,
     ...prematureTerminalIndices,
   ];
-  const acceptedCompleteMatch = earliestSequenceMatch(
+  const acceptedTerminalHorizonMatch = earliestSequenceMatch(
     attempts,
     gold.allowedSequences,
-    "complete",
+    "terminal_horizon",
     allBarrierIndices,
   );
-  const acceptedCompleteTerminalPosition = acceptedCompleteMatch === null
+  const acceptedTerminalHorizonPosition = acceptedTerminalHorizonMatch === null
     ? null
-    : terminalPosition(acceptedCompleteMatch);
-  const prefixLength = acceptedCompleteTerminalPosition !== null
-    ? acceptedCompleteTerminalPosition + 1
+    : terminalPosition(acceptedTerminalHorizonMatch);
+  const prefixLength = acceptedTerminalHorizonPosition !== null
+    ? acceptedTerminalHorizonPosition + 1
     : Math.min(attempts.length, gold.attemptBudget);
   const evaluationPrefix = attempts.slice(0, prefixLength);
   const rawInfrastructureFailure = collectRawInfrastructureFailures(observation);
@@ -550,13 +561,15 @@ export function scoreCaseChain(input: ScoreCaseChainInputV2): CaseChainScoreV2 {
     "complete",
     prefixBarrierIndices,
   );
-  const terminalAttemptIndex = completeMatch !== null
-    ? terminalPosition(completeMatch)
-    : selectionMatch !== null
-      ? terminalPosition(selectionMatch)
-      : rawFirstTerminalAttemptIndex >= 0 && rawFirstTerminalAttemptIndex < prefixLength
-        ? rawFirstTerminalAttemptIndex
-        : null;
+  const terminalAttemptIndex = acceptedTerminalHorizonPosition !== null
+    ? acceptedTerminalHorizonPosition
+    : completeMatch !== null
+      ? terminalPosition(completeMatch)
+      : selectionMatch !== null
+        ? terminalPosition(selectionMatch)
+        : rawFirstTerminalAttemptIndex >= 0 && rawFirstTerminalAttemptIndex < prefixLength
+          ? rawFirstTerminalAttemptIndex
+          : null;
   const prematureAcceptedTerminal = prematureTerminalIndices.some((index) => index < prefixLength);
   const unexpectedFailurePrefix = completeMatch === null
     && evaluationPrefix.length > 0
@@ -575,26 +588,10 @@ export function scoreCaseChain(input: ScoreCaseChainInputV2): CaseChainScoreV2 {
   const toolSplContribution = completeChainSuccess
     ? shortestAllowedLength / Math.max(shortestAllowedLength, evaluationPrefix.length)
     : 0;
-  const hasArgumentFailure = selectionMatch !== null
-    && selectionMatch.sequence.steps.some((step, index) => (
-      !matchesArguments(evaluationPrefix[selectionMatch.positions[index]], step)
-    ));
-  const hasRuntimeAcceptanceFailure = selectionMatch !== null
-    && selectionMatch.sequence.steps.some((step, index) => {
-      const attempt = evaluationPrefix[selectionMatch.positions[index]];
-      return !attempt.matchedRuntimeContractIds.includes(step.runtimeContractId)
-        || !attempt.acceptedRuntimeContractIds.includes(step.runtimeContractId);
-    });
-  const hasBindingFailure = selectionMatch !== null
-    && selectionMatch.sequence.steps.some((_step, index) => (
-      !matchesBindingsAtPositions(
-        evaluationPrefix[selectionMatch.positions[index]],
-        index,
-        evaluationPrefix,
-        selectionMatch.sequence,
-        selectionMatch.positions,
-      )
-    ));
+  const completeFailureMatch = acceptedTerminalHorizonMatch ?? selectionMatch;
+  const completeFailureLayer = completeFailureMatch === null
+    ? null
+    : firstCompleteFailureLayer(evaluationPrefix, completeFailureMatch);
 
   return {
     evaluationSchemaVersion: 2,
@@ -631,12 +628,8 @@ export function scoreCaseChain(input: ScoreCaseChainInputV2): CaseChainScoreV2 {
             ? "trigger"
             : hasForbiddenBarrier
               ? forbiddenBarrierLayer
-              : hasArgumentFailure
-                ? "arguments"
-                : hasBindingFailure
-                  ? "binding"
-                  : hasRuntimeAcceptanceFailure
-                    ? "runtime_acceptance"
-                    : selectionFailureLayer(evaluationPrefix, gold.allowedSequences),
+              : completeFailureLayer !== null
+                ? completeFailureLayer
+                : selectionFailureLayer(evaluationPrefix, gold.allowedSequences),
   };
 }

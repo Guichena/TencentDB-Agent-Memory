@@ -22,15 +22,15 @@ M0 does **not** emit or own `formalMetricEligible`. Measurement-v2 Integration m
 
 - Source: `synthetic-fixtures.ts`
 - Canonicalization: raw UTF-8 file bytes
-- Bytes: `11001`
-- SHA-256: `86853dd4bae261c0fe452ae23390cb41e2bd808c28a491055a76cd1a98c4c6ed`
+- Bytes: `14795`
+- SHA-256: `611985055db9421111ae38076ad5d1d73fbb2b1e60e8723afea957482a0f92dc`
 - Freeze assertion: `__tests__/artifacts.test.ts`
 
 ## No-model Gate results
 
 | Gate | Result |
 |---|---|
-| Focused M0 Vitest (`vitest .../measurement-v2/vitest.config.ts`) | 47/47 passed |
+| Focused M0 Vitest (`vitest .../measurement-v2/vitest.config.ts`) | 52/52 passed |
 | Measurement-v2 strict TypeScript check (`tsc -p .../measurement-v2/tsconfig.json`) | passed |
 | Existing Pilot v1 (`npm run eval:tool-prompt:test`) | 30/30 passed; files unchanged |
 | V0–V3 capture freeze (`npm run eval:tool-prompt:capture-freeze`) | command passed; prompt inventory unchanged |
@@ -47,13 +47,15 @@ The capture command rewrote only historical gate-document SHA values because of 
 - Positive no-call and single-step success.
 - Wrong family, endpoint, Knowledge operation, and Gold-relevant arguments.
 - Exact referenced RuntimeToolContract acceptance, contract 4xx, provider 5xx, and timeout.
-- Runtime operation-selector/body agreement, conflicting explicit operation rejection, and multiple selector-path resolution.
+- Runtime operation-selector/body agreement, distinct none/value/conflict/invalid normalization, conflicting explicit operation rejection, and multiple selector-path resolution.
 - Memory, Skill, and Knowledge multi-step chains with prior-output binding.
 - A second legal Knowledge sequence with branch-local operation, argument, and binding predicates.
 - Earliest binding-valid terminal and branch-order-independent matching, including overlapping exact legal sequences.
-- ECR/Strict separation for pre-terminal duplicate/unexpected/over-budget attempts; wrong args/binding can be repaired before the first jointly accepted terminal.
+- ECR/Strict separation for pre-terminal duplicate/unexpected/over-budget attempts.
+- A terminal call whose own args/binding are invalid can be repaired, but the first terminal with valid own args/binding and exact contract acceptance freezes the horizon; prerequisite args/binding failures and their earliest failure layer cannot be washed out by a later complete retry.
 - Forbidden wrong-family and typed wrong-terminal barriers; a genuinely premature accepted terminal cannot be repaired later, while a later barrier cannot erase an already-reached Qi terminal.
-- `terminalAttemptIndex` follows the scored complete/Qi terminal and never points beyond a failed evaluation horizon.
+- `terminalAttemptIndex` identifies the accepted terminal horizon (including when an earlier Qi terminal was contract-rejected), otherwise the scored complete/Qi terminal, and never points beyond a failed evaluation horizon.
+- Attempt indexes use executor-bound ordinals even when unbound raw facts precede a bound attempt; normalizer and scorer share one JSON-path implementation.
 - Terminal-post behavior is ignored by decision metrics while its raw infrastructure evidence is preserved.
 - No-tool clean, accepted false call, and recognizable unbound malformed intent with or without optional reason metadata.
 - Multi-step first-divergence failure attribution for wrong tool, endpoint, and operation.

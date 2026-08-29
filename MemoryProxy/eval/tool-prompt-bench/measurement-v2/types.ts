@@ -113,6 +113,21 @@ export interface RuntimeToolContractV2 {
   acceptedStatusCodes: readonly number[];
 }
 
+export type NormalizedOperationV2 =
+  | { kind: "none" }
+  | { kind: "value"; value: string }
+  | {
+    kind: "conflict";
+    explicitValue?: string;
+    selectorValues: readonly string[];
+  }
+  | {
+    kind: "invalid";
+    explicitValue?: string;
+    selectorValues: readonly string[];
+    reason: "missing_selector" | "unrecognized_selector";
+  };
+
 export type ChainFailureLayerV2 =
   | "trace"
   | "trigger"
@@ -200,8 +215,8 @@ export interface CaseChainAggregateV2 {
 }
 
 export interface NormalizedTdaiAttemptV2 extends RawTdaiTraceAttemptV2 {
-  observedAttemptIndex: number;
-  observedOperation: string | null;
+  executorBoundOrdinal: number;
+  normalizedOperation: NormalizedOperationV2;
   matchedRuntimeContractIds: readonly string[];
   acceptedRuntimeContractIds: readonly string[];
   runtimeAccepted: boolean;

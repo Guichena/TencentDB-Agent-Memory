@@ -1,31 +1,12 @@
+import { readJsonPath } from "./json-path.js";
 import type {
-  JsonValueV2,
+  NormalizedOperationV2,
   NormalizedTdaiAttemptV2,
   NormalizedTraceV2,
   RawTdaiTraceAttemptV2,
   RawTraceObservationV2,
   RuntimeToolContractV2,
 } from "./types.js";
-
-function isJsonArray(value: JsonValueV2 | undefined): value is readonly JsonValueV2[] {
-  return Array.isArray(value);
-}
-
-function readJsonPath(root: JsonValueV2 | undefined, path: string): JsonValueV2 | undefined {
-  let current = root;
-  for (const segment of path.split(".")) {
-    if (isJsonArray(current)) {
-      const index = Number(segment);
-      if (!Number.isInteger(index)) return undefined;
-      current = current[index];
-    } else if (current && typeof current === "object") {
-      current = current[segment];
-    } else {
-      return undefined;
-    }
-  }
-  return current;
-}
 
 function matchesBaseIdentity(
   attempt: RawTdaiTraceAttemptV2,
@@ -37,29 +18,60 @@ function matchesBaseIdentity(
     && attempt.method?.toUpperCase() === contract.method.toUpperCase();
 }
 
-function observedOperation(
+function normalizedOperation(
   attempt: RawTdaiTraceAttemptV2,
   runtimeContracts: readonly RuntimeToolContractV2[],
-): string | null {
-  const operationContracts = runtimeContracts.filter((contract) => (
-    matchesBaseIdentity(attempt, contract) && contract.operation.kind === "argument"
+): NormalizedOperationV2 {
+  const baseContracts = runtimeContracts.filter((contract) => (
+    matchesBaseIdentity(attempt, contract)
   ));
-  if (attempt.operation !== undefined) {
-    if (operationContracts.length === 0) return attempt.operation;
-    return operationContracts.some((contract) => (
-      contract.operation.kind === "argument"
-      && contract.operation.value === attempt.operation
-      && readJsonPath(attempt.arguments, contract.operation.path) === attempt.operation
-    )) ? attempt.operation : null;
-  }
-  const matchingValues = operationContracts.flatMap((contract) => (
+  const operationContracts = baseContracts.filter((contract) => (
+    contract.operation.kind === "argument"
+  ));
+  const selectorValues = [...new Set(operationContracts.flatMap((contract) => {
+    if (contract.operation.kind !== "argument") return [];
+    const value = readJsonPath(attempt.arguments, contract.operation.path);
+    return typeof value === "string" ? [value] : [];
+  }))];
+  const matchingValues = [...new Set(operationContracts.flatMap((contract) => (
     contract.operation.kind === "argument"
     && readJsonPath(attempt.arguments, contract.operation.path) === contract.operation.value
       ? [contract.operation.value]
       : []
-  ));
-  const distinctValues = [...new Set(matchingValues)];
-  return distinctValues.length === 1 ? distinctValues[0] : null;
+  )))];
+
+  if (attempt.operation !== undefined) {
+    if (operationContracts.length === 0) {
+      return { kind: "value", value: attempt.operation };
+    }
+    if (selectorValues.length === 0) {
+      return {
+        kind: "invalid",
+        explicitValue: attempt.operation,
+        selectorValues,
+        reason: "missing_selector",
+      };
+    }
+    if (
+      matchingValues.includes(attempt.operation)
+      && selectorValues.every((value) => value === attempt.operation)
+    ) return { kind: "value", value: attempt.operation };
+    return {
+      kind: "conflict",
+      explicitValue: attempt.operation,
+      selectorValues,
+    };
+  }
+  if (matchingValues.length === 1) return { kind: "value", value: matchingValues[0] };
+  if (matchingValues.length > 1) return { kind: "conflict", selectorValues };
+  if (selectorValues.length > 0) {
+    return { kind: "invalid", selectorValues, reason: "unrecognized_selector" };
+  }
+  if (
+    baseContracts.some((contract) => contract.operation.kind === "none")
+    || operationContracts.length === 0
+  ) return { kind: "none" };
+  return { kind: "invalid", selectorValues, reason: "missing_selector" };
 }
 
 function matchesRuntimeIdentity(
@@ -79,8 +91,8 @@ export function normalizeTrace(
 ): NormalizedTraceV2 {
   const executorBoundAttempts = observation.attempts
     .filter((attempt) => attempt.executorBound)
-    .map((attempt, observedAttemptIndex): NormalizedTdaiAttemptV2 => {
-      const operation = observedOperation(attempt, runtimeContracts);
+    .map((attempt, executorBoundOrdinal): NormalizedTdaiAttemptV2 => {
+      const operation = normalizedOperation(attempt, runtimeContracts);
       const matchingContracts = runtimeContracts.filter((contract) => (
         matchesRuntimeIdentity(attempt, contract)
       ));
@@ -89,8 +101,8 @@ export function normalizeTrace(
       ));
       return {
         ...attempt,
-        observedAttemptIndex,
-        observedOperation: operation,
+        executorBoundOrdinal,
+        normalizedOperation: operation,
         matchedRuntimeContractIds: matchingContracts.map((contract) => contract.contractId),
         acceptedRuntimeContractIds: acceptedContracts.map((contract) => contract.contractId),
         runtimeAccepted: acceptedContracts.length > 0,
