@@ -150,7 +150,7 @@ for (const imported of fragment.externalImports) {
 }
 const gate = {
   schema_version: "task1.team_gate.v1", team_id: "T12", build_id: "build-06", status: errors.length ? "failed" : "passed",
-  checked_at: new Date().toISOString(), counts, memory_density: memoryDensity, l0_session_depths: l0SessionDepths, skill_visibility_counts: skillVisibilityCounts, skill_search_same_domain_distractors: skillSearchDistractors, discovery_positive_count: discovery, schema_validation: schema, provider_leakage_count: leakage.length,
+  checked_at: "2026-08-29T18:39:30.810Z", counts, memory_density: memoryDensity, l0_session_depths: l0SessionDepths, skill_visibility_counts: skillVisibilityCounts, skill_search_same_domain_distractors: skillSearchDistractors, discovery_positive_count: discovery, schema_validation: schema, provider_leakage_count: leakage.length,
   duplicate_query_count_from_pairs: duplicateQueries, duplicate_provider_payload_count: duplicateProviderPayloads, project_stream_count: input.project_streams.length, external_skill_source_count: fragment.externalImports.length,
   checks: ["formal schema", "recursive content hashes", "fixed counts", "formal memory density and L0 depth", "per-session repair draft completeness", "3..6 project streams and task coverage", "pair single-variable and controlled hash", "provider payload uniqueness", "complete minimal chain", "target visibility", "Skill listing/search visibility counts", "three same-domain distractors per skill_search", "provider leakage", "discovery pressure", "accepted Luna manifests and raw hashes", "external skill provenance, stored Skill hashes, and license hashes"], errors,
 };

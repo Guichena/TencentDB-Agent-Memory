@@ -155,7 +155,7 @@ for (const imported of fragment.externalImports) {
 }
 const gate = {
   schema_version: "task1.team_gate.v1", team_id: "T11", build_id: "build-06", status: errors.length ? "failed" : "passed",
-  checked_at: new Date().toISOString(), counts, discovery_positive_count: discovery, schema_validation: schema, provider_leakage_count: leakage.length,
+  checked_at: "2026-08-29T18:39:30.289Z", counts, discovery_positive_count: discovery, schema_validation: schema, provider_leakage_count: leakage.length,
   asset_density: assetDensity, skill_search_interference: skillSearchInterference,
   duplicate_query_count_from_pairs: duplicateQueries, duplicate_provider_payload_count: duplicateProviderPayloads, project_stream_count: input.project_streams.length, external_skill_source_count: fragment.externalImports.length,
   checks: ["formal schema", "recursive content hashes", "fixed counts", "formal memory density and L0 depth", "L3 content length and stability", "Skill listing/search visibility counts", "three same-team searchable competitors per skill_search", "3..6 project streams and task coverage", "pair single-variable and controlled hash", "provider payload uniqueness", "complete minimal chain", "target visibility", "Skill listing visibility", "provider leakage", "discovery pressure", "accepted Luna manifests and draft raw SHA", "external skill provenance, stored Skill hashes, and license hashes"], errors,
