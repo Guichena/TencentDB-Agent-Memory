@@ -402,7 +402,7 @@ const businessAgents = [
 
 const team = withHash({
   teamId: "T13",
-  worldId: "task1-formal-v1",
+  worldId: "world-task1-engineering",
   split: "hidden_test",
   name: "可观测性与故障定位",
   businessAgentIds: businessAgents.map((item) => item.agentId),

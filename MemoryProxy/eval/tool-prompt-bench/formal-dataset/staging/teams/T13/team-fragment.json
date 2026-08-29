@@ -733,7 +733,7 @@
   "teams": [
     {
       "teamId": "T13",
-      "worldId": "task1-formal-v1",
+      "worldId": "world-task1-engineering",
       "split": "hidden_test",
       "name": "可观测性与故障定位",
       "businessAgentIds": [
@@ -781,7 +781,7 @@
         "T13-EVID-T13-SRC-K6-WEBSITE",
         "T13-EVID-T13-SRC-DPM-CLI"
       ],
-      "contentHash": "218e25d5193ced27f1797e401162e1a31940d64f1432618d75ef6962939aed66"
+      "contentHash": "fdc6329591500939b7c73652b8f4d9f207a1160286188cdf3728675b4803e348"
     }
   ],
   "businessAgents": [
