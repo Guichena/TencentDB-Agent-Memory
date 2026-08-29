@@ -1,0 +1,67 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T13-pilot-memory-01",
+  "stage": "DS05",
+  "team_id": "T13",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T13-MEM-001-pilot",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我在处理 Asteria Edge 的边缘网关可观测性问题，最近的延迟告警有时会在恢复前反复触发。"
+        },
+        {
+          "role": "assistant",
+          "content": "先把当前现象与过去已经确认的 SLO 告警策略分开核对，避免把临时排查结论当成长期规则。"
+        },
+        {
+          "role": "user",
+          "content": "我记得团队以前讨论过一套多窗口判断方式，但现在只看到当前面板上的现象，找不到那次讨论的完整结论。"
+        },
+        {
+          "role": "assistant",
+          "content": "可以按项目和讨论主题回看历史，再将找到的决定与这次告警现象逐项比对。"
+        }
+      ],
+      "changed_message_index": 4,
+      "query": "请确认之前为边缘网关延迟告警确定的多窗口阈值、升级条件和回滚条件。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充线索：那次结论是在本月中旬关于告警抖动的一次讨论里形成的；我需要找回具体数字和触发回退的条件。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "历史中的 L1-003 才保存了多窗口阈值、连续评估次数和采样丢失回滚条件；当前上下文只有主题线索。",
+          "route": "memory",
+          "target_asset_ids": ["T13-L1-003"],
+          "allowed_sequence_candidates": [["tdai_memory_search"]],
+          "stop_after_candidate": "找到能够同时给出两个窗口阈值、两轮升级条件和采样丢失回退条件的候选后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充完整记录：短窗口为 5 分钟 burn rate 超过 14，长窗口为 1 小时超过 2；两个窗口各连续评估两轮才升级，采样丢失率超过 3% 时回退到旧规则。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经直接提供阈值、升级次数和回滚条件，回答问题不再需要查找历史。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T13-L1-001", "T13-L1-002", "T13-L1-004"],
+      "controlled_delta_note": "两条追加消息均只在变更位置出现；正例保留唯一的历史细节缺口，负例仅补足这三个字段。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "正例候选是否确实只需一次项目历史发现即可定位到目标记忆？",
+        "负例追加内容是否完整覆盖阈值、升级条件和回滚条件，且没有额外信息？",
+        "L2 与 L3 摘要是否避免提前暴露这些具体数字？"
+      ]
+    }
+  ]
+}

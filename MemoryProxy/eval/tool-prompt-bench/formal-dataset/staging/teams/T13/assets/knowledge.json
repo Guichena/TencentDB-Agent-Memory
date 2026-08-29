@@ -1,0 +1,167 @@
+{
+  "schema_version": "task1.team_knowledge_assets.v1",
+  "team_id": "T13",
+  "knowledge": [
+    {
+      "assetId": "T13-KNOW-ASTERIA-CG",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-KNOW-CODE"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "code_graph",
+      "name": "Asteria Edge 代码索引",
+      "snapshotSha256": "98c1fbf605b2b071df89dde373044e616f6441d21f38c6865b7bf6b883c90f7b",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t13-general",
+          "visibility": "fixed"
+        }
+      ],
+      "repoUrl": "https://benchmark.invalid/t13/asteria-edge.git",
+      "repoCommit": "0be5e808f69bdd4acc5432824e2baf0040ca4186",
+      "indexVersion": "build-07.synthetic-code-graph.v1",
+      "contentHash": "3f1a0b485deb3c4aaed5df0a02b6558a53278406374d5687d027d95b1027f47b"
+    },
+    {
+      "assetId": "T13-KNOW-INCIDENT-WIKI",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-KNOW-WIKI"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "wiki",
+      "name": "SentryGrid 事故响应手册",
+      "snapshotSha256": "61a106d94d3c39cc1efbfb63b269ae0cbd5522ea96b66cc2da4c22565940c99e",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t13-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "c4f6ea6b577b7b8ae4845bf8010de7df6f91c93f8c094bfe265cb0c9761c15a4"
+    },
+    {
+      "assetId": "T13-KNOW-NIMBUS-CG",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-KNOW-CODE"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "code_graph",
+      "name": "Nimbus Batch 代码索引",
+      "snapshotSha256": "e6986ba7cbc9bc26c72b7074e20e175e0c6448e7b7e1047737b37fdc78cab6bb",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t13-general",
+          "visibility": "fixed"
+        }
+      ],
+      "repoUrl": "https://benchmark.invalid/t13/nimbus-batch.git",
+      "repoCommit": "5c42b730451bf67603350e6687bd04d69e0937e9",
+      "indexVersion": "build-07.synthetic-code-graph.v1",
+      "contentHash": "97dc12402f1a4a217151f1e38d93a051fe1d6757d6f551b57dec3e8bd13cb8ea"
+    }
+  ],
+  "toolLists": [
+    {
+      "assetId": "T13-KNOW-ASTERIA-CG",
+      "fixedTools": [
+        {
+          "name": "search",
+          "description": "按符号名、路径或自然语言片段检索索引节点。",
+          "input": {
+            "text": "string",
+            "project": "string"
+          }
+        },
+        {
+          "name": "impact",
+          "description": "返回索引节点的依赖和被依赖关系。",
+          "input": {
+            "symbol": "string",
+            "project": "string"
+          }
+        }
+      ],
+      "queryFixtures": [
+        {
+          "fixture_id": "T13-KNW-FIXTURE-001",
+          "tool_name": "search",
+          "query": {
+            "text": "MultiWindowBurnRateEvaluator",
+            "project": "t13-asteria-edge"
+          },
+          "result": {
+            "matches": [
+              {
+                "symbol": "MultiWindowBurnRateEvaluator",
+                "file": "internal/observability/burnrate_evaluator.go",
+                "line": 142
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "assetId": "T13-KNOW-INCIDENT-WIKI",
+      "fixedTools": [
+        {
+          "name": "search",
+          "description": "按手册主题和术语检索响应条目。",
+          "input": {
+            "text": "string",
+            "topic": "string"
+          }
+        }
+      ],
+      "queryFixtures": [
+        {
+          "fixture_id": "T13-KNW-FIXTURE-002",
+          "tool_name": "search",
+          "query": {
+            "text": "告警收敛后的指挥角色",
+            "topic": "incident response"
+          },
+          "result": {
+            "section": "incident-command",
+            "statement": "由当班事故指挥统一确认收敛动作并记录复盘入口。"
+          }
+        }
+      ]
+    },
+    {
+      "assetId": "T13-KNOW-NIMBUS-CG",
+      "fixedTools": [
+        {
+          "name": "impact",
+          "description": "分析指定批处理符号的下游影响节点。",
+          "input": {
+            "symbol": "string",
+            "project": "string",
+            "depth": "number"
+          }
+        }
+      ],
+      "queryFixtures": [
+        {
+          "fixture_id": "T13-KNW-FIXTURE-003",
+          "tool_name": "impact",
+          "query": {
+            "symbol": "BatchProfileCollector",
+            "project": "t13-nimbus-batch",
+            "depth": 2
+          },
+          "result": {
+            "nodes": [
+              "profile/collector.go:88",
+              "jobs/runner.go:211"
+            ],
+            "edge_count": 2
+          }
+        }
+      ]
+    }
+  ]
+}

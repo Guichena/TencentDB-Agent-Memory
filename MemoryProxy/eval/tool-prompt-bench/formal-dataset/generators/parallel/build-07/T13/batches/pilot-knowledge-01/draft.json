@@ -1,0 +1,83 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t13-pilot-knowledge-01",
+  "stage": "DS05",
+  "team_id": "T13",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T13-DS05-KNW-001",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "今天继续处理 Asteria Edge 的边缘网关可观测性排查，固定快照和工作区不变；不要把 Harborlane Payments 的支付链路讨论混进来。"
+        },
+        {
+          "role": "assistant",
+          "content": "边界已记下：当前只处理 Asteria Edge，保持既定快照和工作区，不合并支付链路的上下文。"
+        },
+        {
+          "role": "user",
+          "content": "这次只关注多窗口告警在网关请求路径中的触发来源。日志中出现了 burn-rate evaluator、route budget 和 metrics bridge 等词，但没有可靠的代码位置。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把这些词当作线索，不从相似组件名猜文件或行号；只核对固定代码索引中的节点关系。"
+        },
+        {
+          "role": "user",
+          "content": "我还看到一条关于 Nimbus Batch 的性能剖析记录，那是另一项目的独立工作区，暂不采用。"
+        },
+        {
+          "role": "assistant",
+          "content": "已将 Nimbus 的剖析线排除，当前问题仍限于 Asteria Edge 的告警触发路径。"
+        },
+        {
+          "role": "user",
+          "content": "目前已确认的是项目、告警主题和请求路径；尚未确认负责 burn-rate 计算的那个符号在固定代码里的准确源文件和行号。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前材料只有组件词和现象描述，不能安全写出确切位置；需要补齐这一处定位后再更新记录。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请确认负责多窗口 burn-rate 计算的符号在当前固定代码中的准确源文件和行号，并只返回该定位。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充记录仍只有告警现象、组件词和请求路径，没有提供固定代码中的源文件或行号；请保留这一处定位缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "Asteria Edge 固定代码索引中负责多窗口 burn-rate 计算的符号，其精确源文件和行号尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": ["T13-KNOW-ASTERIA-CG"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "用 Asteria Edge 代码索引的符号定位查询得到 internal/observability/burnrate_evaluator.go:142 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已补齐唯一缺口：固定代码索引将该符号定位为 `internal/observability/burnrate_evaluator.go:142`；其余相似项目线索仍不纳入本次记录。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已经补齐负责多窗口 burn-rate 计算符号的固定源文件和行号，并保持 Asteria Edge 范围及 Nimbus 排除项；无需再查资源。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T13-KNOW-INCIDENT-WIKI", "T13-KNOW-NIMBUS-CG"],
+      "controlled_delta_note": "Positive 只保留负责多窗口 burn-rate 计算符号的精确位置缺口；Negative 只补齐 internal/observability/burnrate_evaluator.go:142，项目范围、排除项和 query 完全不变。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为 Asteria Edge 固定代码索引中的符号文件和行号，没有隐含实现细节、调用边或修复结论？",
+        "Negative 是否只补入 internal/observability/burnrate_evaluator.go:142，并保持 Nimbus 排除项、工作区和 query 不变？",
+        "Asteria Edge、边缘网关和多窗口告警这些自然线索，是否足以在三个 ready 资源中唯一选择目标代码索引？"
+      ]
+    }
+  ]
+}
