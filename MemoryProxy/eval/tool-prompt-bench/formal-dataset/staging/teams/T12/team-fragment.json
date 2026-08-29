@@ -798,8 +798,8 @@
         }
       ],
       "query": "请找回 Ledger 零停机迁移中已验证的阶段顺序与兼容约定，用来核对当前发布计划。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "a5cd8c2ce6aedfebeacd709feb8bc21bbab22da46fff5aeb3cdd77bc1b716906"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "7977f85b7126cb0b2c720331975511266c19861578598085ba29e9c62dafca8a"
     },
     {
       "caseId": "T12-MEMORY-001-N",
@@ -857,8 +857,8 @@
         }
       ],
       "query": "请找回 Ledger 零停机迁移中已验证的阶段顺序与兼容约定，用来核对当前发布计划。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "7bc6806cde2166767731e66fbb9c3973a774d69be490f009363c9c8864525789"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "571feec4411717ed364d1fc9e1f0f4c920353504dc14126050b66048f270c223"
     },
     {
       "caseId": "T12-MEMORY-002-P",
@@ -916,8 +916,8 @@
         }
       ],
       "query": "请找回 Beacon 查询计划回归实验中比较索引方案与判定是否接受的历史步骤。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "f6c4dd0b76e8b1189861ba17bc397359fada83a1449b67f57136e8fe31f4095d"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "d526416022a042c6fe2878369a1ce4d2944c00b7ba6561b2c74ad4f3961b5b65"
     },
     {
       "caseId": "T12-MEMORY-002-N",
@@ -975,8 +975,8 @@
         }
       ],
       "query": "请找回 Beacon 查询计划回归实验中比较索引方案与判定是否接受的历史步骤。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "cc95b277367bef4da6512bb45b3b5f5f6ab1af6880d92ab01bbb80dcf7b0ff49"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "2339a746ad6f35eba970a6610723134b7db084e5d5f58c6bb5d398ae09e6b45d"
     },
     {
       "caseId": "T12-MEMORY-003-P",
@@ -1034,8 +1034,8 @@
         }
       ],
       "query": "请找回 Harbor 回填暂停后续跑时，检查点记录、幂等确认和游标推进的历史操作顺序。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "58045bd4e729acff7b99eb3dc6d00c6cf924c5e02aabb1de4243f3e9cbeebb4d"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "501f5d70049333275f44b4166dc81ed91465e8e546643dd9004868f6a557c750"
     },
     {
       "caseId": "T12-MEMORY-003-N",
@@ -1093,8 +1093,8 @@
         }
       ],
       "query": "请找回 Harbor 回填暂停后续跑时，检查点记录、幂等确认和游标推进的历史操作顺序。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "9174bb6e7fc9261522f6b3d5c83290a0761f091b402cfb2a270a6691c66ca129"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "4e11a2ffad6299dbb214d29a22a5631032c93c0a43f443b3b32c77a63e74620c"
     },
     {
       "caseId": "T12-MEMORY-004-P",
@@ -1140,8 +1140,8 @@
         }
       ],
       "query": "请直接确认 Quartz 字段演进要满足哪两个已验证的 ORM 兼容条件。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "872a7666c47333d46b6d8ba2c99797ad1402660cff34e354c3cb7cd81c951f0d"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "a4712dda035411140327f1e9c96e1016a34b9061d006abb3881bae9817ccc052"
     },
     {
       "caseId": "T12-MEMORY-004-N",
@@ -1187,8 +1187,8 @@
         }
       ],
       "query": "请直接确认 Quartz 字段演进要满足哪两个已验证的 ORM 兼容条件。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "eefc94d638c4793f3c9e827583431dcf13392cd4f1bc4195be00fbc4aa8bfbe1"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "a2b61b69e60c370bb8d46d27ed92f5dad89f96d1c1e62cdfd2bfd13556a8ca5f"
     },
     {
       "caseId": "T12-MEMORY-005-P",
@@ -1246,8 +1246,8 @@
         }
       ],
       "query": "请找回 Archive 索引退役前后，标记、读路径验证、元数据清理和回退窗口关闭的历史顺序。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "bb23751999bfb43fd7eda08f016ff6cb9a9970c549f0ca957c9d40a221ab2502"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "dc9b1c259a70f203084e4e301652d6aa4ba18a461bc5bc503139ca5b18f0c0ea"
     },
     {
       "caseId": "T12-MEMORY-005-N",
@@ -1305,8 +1305,8 @@
         }
       ],
       "query": "请找回 Archive 索引退役前后，标记、读路径验证、元数据清理和回退窗口关闭的历史顺序。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "91b8a6c6e3fccaf2450903488338df3e1e9de9c6aca7619f6ebf39e70cc42fe9"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "5a60f93b57be2e944c23294e134abd62828eb02a549203e8a2d95b6dd35ca81f"
     },
     {
       "caseId": "T12-MEMORY-006-P",
@@ -1364,8 +1364,8 @@
         }
       ],
       "query": "请直接确认 Ledger 切读前复核时，历史约定要求在什么两个信号下触发回滚。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "a389bdfba2e66b57ef6269f5e87e428ab3ac4108ddc93844065a4aead18c0157"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "c1939fa97d4f07af3e35d3049dd87756c46b830d3c4bd505484491e15939fc1b"
     },
     {
       "caseId": "T12-MEMORY-006-N",
@@ -1423,8 +1423,8 @@
         }
       ],
       "query": "请直接确认 Ledger 切读前复核时，历史约定要求在什么两个信号下触发回滚。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "b36c98b7f958b432b8f1a0b02140f33ca8751b7f7db1a1cd33fc5cee48ad14f5"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "b344d947ec2f4c8c3f25a4aa07886c7824db2d8f9e57b389548e4c9ce986f058"
     },
     {
       "caseId": "T12-SKILL-007-P",
@@ -1482,8 +1482,8 @@
         }
       ],
       "query": "Ledger 新表开始设计前，如何依次确定规范化、主键、必填性、默认值和外键约束？",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "4a86abf394a6f20e48dcc2060a0883447bdd95c01460a732128340b06f06bab1"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "3adb89f9d6c04f274072205ed49c4df9a7f1f86d17d1d4573709634070309b28"
     },
     {
       "caseId": "T12-SKILL-007-N",
@@ -1541,8 +1541,8 @@
         }
       ],
       "query": "Ledger 新表开始设计前，如何依次确定规范化、主键、必填性、默认值和外键约束？",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "8aadba189725af7b9ff9c827d0c89fb83a66dd0488030f71633fff484fcf19be"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "6fd86613fdfcdf5ce537d1e06aa24327e85a2eddce3d43cfe481f291cd8b728b"
     },
     {
       "caseId": "T12-SKILL-008-P",
@@ -1600,8 +1600,8 @@
         }
       ],
       "query": "Beacon 的访问路径索引应如何根据过滤、范围、排序、连接和数据顺序来规划？",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "f7ad61d05aae21abcc2f3b96a18a26b24d65e6bab4b9aaef2732edd9c4dc6f98"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "e8662ced63820c7e1006cdd3e2f394e075045662def0e55928f21dfe1d5e1a93"
     },
     {
       "caseId": "T12-SKILL-008-N",
@@ -1659,8 +1659,8 @@
         }
       ],
       "query": "Beacon 的访问路径索引应如何根据过滤、范围、排序、连接和数据顺序来规划？",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "4ccaf4ee935122578b97e6d7d63490af4cccdc4f68cee311395ef4f987ca68bc"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "5f386a735ab4c54d5d72d2532a9a6c2b5e892d8f2ac72676431091c5b2e2abc7"
     },
     {
       "caseId": "T12-SKILL-009-P",
@@ -1718,8 +1718,8 @@
         }
       ],
       "query": "Quartz 的可变属性与兼容类型设计，应如何选择 JSONB、约束、索引以及字符串和时间类型？",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "5cb946db9c69e264cefdacca080183a949fd096dfc0158273197ee174b420acd"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "1100bfe6a9ae86b6b261532a8497a2a0946d2713196feb43e806b0a8ef70e3df"
     },
     {
       "caseId": "T12-SKILL-009-N",
@@ -1777,8 +1777,8 @@
         }
       ],
       "query": "Quartz 的可变属性与兼容类型设计，应如何选择 JSONB、约束、索引以及字符串和时间类型？",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "253b89db24a6ef585080b6836c9c900f5a15c6356b38c9b97dc8abdfcd24ea8d"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "593cf2ed3f4735669f597afa9deca68e88caf0e3488f565026bfebbd319cc927"
     },
     {
       "caseId": "T12-SKILL-010-P",
@@ -1836,8 +1836,8 @@
         }
       ],
       "query": "Ledger 这次在线字段演进，开始执行前应怎样安排兼容切换、验证和清理？",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "b41fdaf0b85fcd6013dd207d3d2e9c67ce17af37f64ab2e5d69532bf5c299145"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "96485d0e531291dd9e851dd7fd7e5f4fd40bf57b0c1a4930c557a89ad1ea333c"
     },
     {
       "caseId": "T12-SKILL-010-N",
@@ -1895,8 +1895,8 @@
         }
       ],
       "query": "Ledger 这次在线字段演进，开始执行前应怎样安排兼容切换、验证和清理？",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "2440d7445cf8858e5279360f279bdb095a0f3543fa220df820f219bc308601c1"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "ae0cf768ad1a2c52f14ea3acf02b4b5b66dad67db3353142c09f9dc05238b6ea"
     },
     {
       "caseId": "T12-SKILL-011-P",
@@ -1954,8 +1954,8 @@
         }
       ],
       "query": "Harbor 的大表存量回填，怎样安排批次、进度、验证和运行监控？",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "005c8c6ecaa0496fe7d64b277572105b9f29991e8658308dca1fb3fe5f3770f4"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "b604ca6877fcfb5d55e8d318466ae0c65cffe9befc65f4eeb3360197152fe28f"
     },
     {
       "caseId": "T12-SKILL-011-N",
@@ -2013,8 +2013,8 @@
         }
       ],
       "query": "Harbor 的大表存量回填，怎样安排批次、进度、验证和运行监控？",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "260ae5c7a650436ea4748855d78c2fc36386a5ce17448fe392d642aa8f46c035"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "ea7f3cfa5d810a8d4e39107389a9f3f2a7c19f5b937bd5bf41e7d21673d74723"
     },
     {
       "caseId": "T12-SKILL-012-P",
@@ -2072,8 +2072,8 @@
         }
       ],
       "query": "Ledger 这次可能不可逆的变更，怎样用隔离副本验证并预先安排回退？",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "d3697ec8bd8d27885d97f119dafbfecb7c96650a0c1d97b2e7e10a25988a8c22"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "b2edbadbbb9d495552e99d02ca52a741fcaa7d57b0e80b79d0558dec7d81be81"
     },
     {
       "caseId": "T12-SKILL-012-N",
@@ -2131,8 +2131,8 @@
         }
       ],
       "query": "Ledger 这次可能不可逆的变更，怎样用隔离副本验证并预先安排回退？",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "67b502616d345d28a2d6244ab0501924cafd8a4ab9afabecda98f543f1b29e6b"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "d08cbad60a2d0fc360f418290734ed3f7fef2d16156595d9ab90b63d711bff84"
     },
     {
       "caseId": "T12-KNOWLEDGE-013-P",
@@ -2198,8 +2198,8 @@
         }
       ],
       "query": "请先确认 Ledger 零停机迁移记录中的 expand/contract rollout 顺序和兼容性门槛；只回答迁移约束，不延伸到 Beacon 或其他数据库演进线。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "2bfd8fa305f9fd20286e74275a88a665362801ab50688f036d49f343e50a5506"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "8ed9babf0ef49d08fe48d10db3b9ec01d3bc16a0a58a029203f30ccf522c1108"
     },
     {
       "caseId": "T12-KNOWLEDGE-013-N",
@@ -2265,8 +2265,8 @@
         }
       ],
       "query": "请先确认 Ledger 零停机迁移记录中的 expand/contract rollout 顺序和兼容性门槛；只回答迁移约束，不延伸到 Beacon 或其他数据库演进线。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "fdfe73faedc80aaa81bc207b0a42681f851e64c46db5d36e9ca4f04f2e347059"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "91b20b46b200e0009acd8c99d189d1799761179a9fa82daf19789595f0d39308"
     },
     {
       "caseId": "T12-KNOWLEDGE-014-P",
@@ -2332,8 +2332,8 @@
         }
       ],
       "query": "请先确认 Beacon 查询计划回归实验的根因、已验证的纠正动作和后续防护线；只回答实验结论，不延伸到 Ledger 迁移或其他索引线。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "79d051da863f58fbbad491bad693dde4bbe3789aea782c34a23a898a47428286"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "e5506945815f92e9cfbc2fac858b408ac1d9985e4a398edef0d77bd8d38da261"
     },
     {
       "caseId": "T12-KNOWLEDGE-014-N",
@@ -2399,8 +2399,8 @@
         }
       ],
       "query": "请先确认 Beacon 查询计划回归实验的根因、已验证的纠正动作和后续防护线；只回答实验结论，不延伸到 Ledger 迁移或其他索引线。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "18386c63129ecc8555622cd47e18dbbe409c343841288044e3a2f6f7bb4d434c"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "0ed212599b3a359fe2fdfc1935e3fba4ca177de1833149a9d8a12a6980e72feb"
     },
     {
       "caseId": "T12-KNOWLEDGE-015-P",
@@ -2466,8 +2466,8 @@
         }
       ],
       "query": "请先确认 Harbor resumable backfill 的 checkpoint 契约、恢复游标规则和幂等边界；只回答恢复设计，不延伸到 Beacon 或其他数据库演进线。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "238ed0b1f1aae993ccd8b28a76785e947aa7c364c0a7815f6ed153be789e16df"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "c1f2fd4c30db83eb47980232d75d3931cab99487fae86fb8554dd13b8986480d"
     },
     {
       "caseId": "T12-KNOWLEDGE-015-N",
@@ -2533,8 +2533,8 @@
         }
       ],
       "query": "请先确认 Harbor resumable backfill 的 checkpoint 契约、恢复游标规则和幂等边界；只回答恢复设计，不延伸到 Beacon 或其他数据库演进线。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "e445fc193dad8c5923c8c7899e01c21b21779b95e27e8e49803a0f8ffd24ecb1"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "8bc299fb6e7d9ad99346debe576318d9f8d0044fefaff52c5dae523ad60d492b"
     },
     {
       "caseId": "T12-NATURAL-001-N",
@@ -2572,8 +2572,8 @@
         }
       ],
       "query": "请给出这次变更的最小 SQL migration、应用层双写示意和发布顺序，并说明为什么旧版本不会因新列而失败。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "840c05fe1015eb112ce90ce22ab6c794768cf3f4ef81b0ea1a2f3628daf5415c"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "4f1c4c2f8acb68905020530c6a16962a31685a69c3e9a290496ff61ef39436f5"
     },
     {
       "caseId": "T12-NATURAL-002-N",
@@ -2615,8 +2615,8 @@
         }
       ],
       "query": "基于给定的写入 SLA 和版本规则，输出一套低锁在线变更步骤；不要引入新的表或停机窗口。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "08143bd81311b5d37e2c97dc46cc115945a76a37228a396f8b14e23dd663dc50"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "a7b45bdc40e56fb0b38fdaa9d2f9e27d490616834815c8e943779179f43c2189"
     },
     {
       "caseId": "T12-NATURAL-003-N",
@@ -2654,8 +2654,8 @@
         }
       ],
       "query": "请给出最小的索引 DDL、验证用的 EXPLAIN 查询以及判断改善是否达标的两个计划指标。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "7dd28fe1ee733eb388a66a1ebfe5e47e1d4be566278d37f013266bc8a5ebc3ad"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "6e7260a131e1f88955ad8d6d30302674a64d6f821df6b996385e79cfa1a6e43f"
     },
     {
       "caseId": "T12-NATURAL-004-N",
@@ -2697,8 +2697,8 @@
         }
       ],
       "query": "针对这个软删除搜索场景，给出可在线执行的部分索引生命周期代码，不改变查询接口。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "a8de180461e97520b7cc0b76779672e87fe98a1482b72555d47eb1e538d860ba"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "beccf0771ddc4c8ae99cff41232dbe672a59c340c4f5b5891d60077fecc54a86"
     },
     {
       "caseId": "T12-NATURAL-005-N",
@@ -2736,8 +2736,8 @@
         }
       ],
       "query": "请写出批量回填 worker 的伪代码（含查询、事务、检查点和节流），并列出可证明幂等的条件。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "4123c92d8ea582227a3b3e3c306fd73300416459833cb43af9210bfc7e204289"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "cc0467c523d16bf56596d51810615f99712a16ea33251fa624d2d673f0384578"
     },
     {
       "caseId": "T12-NATURAL-006-N",
@@ -2779,8 +2779,8 @@
         }
       ],
       "query": "为这个可并行的数据迁移写出最小的 compare-and-set 回填实现，保留在线更新并能在中断后继续。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "90e6611c0a86a786e56493e74bc48069782a70860fccd31df7a3fa313cffc101"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "3aa4ed9b077e31c903485080ccd22d035cd944903d73dffdad26e3a9bc7231e9"
     },
     {
       "caseId": "T12-NATURAL-007-N",
@@ -2822,8 +2822,8 @@
         }
       ],
       "query": "输出一个支持 Hibernate 5/6 并行发布的列名迁移方案和局部代码，明确读回退与双写行为。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "59855037ea4e55feed2dbdb250952722de6801f4c2c9ca5ad47d950f77f6019d"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "1ff40867c3b2dcdeedb8d1d0217fd3553550415a2f6bfe9f669c85757b36ce2c"
     },
     {
       "caseId": "T12-NATURAL-008-N",
@@ -2861,8 +2861,8 @@
         }
       ],
       "query": "请给出 Kotlin 序列化适配器的最小伪代码和四组输入输出测试，覆盖缺失、null、空数组和未知 flag。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "14bc63b4aba8ccf1672f465a8729ad374290471e20c3012fa5460f814e7fccf7"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "38e9219613d46d15f83e723eb32c377f1a1dd00dabf0f056150c7fb41eef8069"
     },
     {
       "caseId": "T12-NATURAL-009-N",
@@ -2904,8 +2904,8 @@
         }
       ],
       "query": "围绕这个字段放宽，给出不截断数据的渐进式 schema/application 变更和最小测试矩阵。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "1046d4bd6b490c32eb32012c0021d85d203111801e6b48c2796816f7075dcda3"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "f608d0662c5fb7f52c8d7c6078ea3df7ec727ab9349c28e7925a06a56d4ef1db"
     },
     {
       "caseId": "T12-NATURAL-010-N",
@@ -2947,8 +2947,8 @@
         }
       ],
       "query": "针对这个查询计划回归写一份最小排查与修复脚本，说明如何用实际行数验证估算改善。",
-      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
-      "contentHash": "e39d3ea647da6e87f44815e5b41fca370e1e2e56f917d3fdad15ff398fc48ccc"
+      "visibleAssetSetSha256": "7f435180e78e9f45a42ef551f63997cbc40f83a32be548c9a5bdd2f99e7af6fe",
+      "contentHash": "67c9095cba45195f2d0e2be4d81169df40cbf5088c17926172021735173233f3"
     }
   ],
   "privateAnnotations": [

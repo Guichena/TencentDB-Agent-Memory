@@ -195,7 +195,7 @@ const memoryAssets = { schema_version: "task1.formal_memory_assets.v1", team_id:
 const skillAssets = { schema_version: "task1.formal_skill_assets.v1", team_id: "T11", skills };
 const knowledgeAssets = { schema_version: "task1.formal_knowledge_assets.v1", team_id: "T11", knowledge };
 const snapshotAssetIds = [...l0Conversations, ...l1Memories, ...l2Scenes, ...l3Profiles, ...skills, ...knowledge].map((asset) => asset.assetId);
-const visibleAssetSetSha256 = sha({ teamId: "T11", userId: "user-task1-t11-eval", agentId, assetIds: snapshotAssetIds });
+const visibleAssetSetSha256 = sha({ teamId: "T11", userId: "user-task1-t11-eval", agentId, assetIds: [...snapshotAssetIds].sort((left, right) => left.localeCompare(right)) });
 
 const memoryRoutes = [
   { target: "T11-L1-ORCHID-AGP-MIGRATION-RULE", seq: ["tdai_memory_search"], first: { tool: "tdai_memory_search", endpoint: "/memory-bridge/v3/atomic/search", argumentRules: { requiredFields: ["query"], forbiddenFields: ["user_id", "team_id", "agent_id"], stringContainsAny: { query: ["Orchid", "AGP", "迁移"] } } }, follow: [] },

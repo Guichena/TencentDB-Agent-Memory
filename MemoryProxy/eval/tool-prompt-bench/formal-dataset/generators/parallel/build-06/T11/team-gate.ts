@@ -55,6 +55,15 @@ const providerPayloads = fragment.publicCases.map((item: any) => canonicalSha256
 const duplicateProviderPayloads = providerPayloads.length - new Set(providerPayloads).size;
 const expected = { cases: 40, pairs: 15, memoryPositive: 6, skillPositive: 6, knowledgePositive: 3, pairedNegative: 15, naturalNegative: 10 };
 const errors = [...schema.errors];
+const expectedVisibleSha = canonicalSha256({
+  teamId: "T11",
+  userId: "user-task1-t11-eval",
+  agentId: "agent-task1-t11-general",
+  assetIds: [...fragment.snapshotAssetIds].sort((left, right) => left.localeCompare(right)),
+});
+for (const item of fragment.publicCases) {
+  if (item.visibleAssetSetSha256 !== expectedVisibleSha) errors.push(`${item.caseId}: identity-aware visible asset hash mismatch`);
+}
 const assetDensity = {
   l0: memory.l0_conversations.length,
   l0MinMessages: Math.min(...memory.l0_conversations.map((item: any) => item.messages.length)),

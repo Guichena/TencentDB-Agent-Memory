@@ -855,8 +855,8 @@
         }
       ],
       "query": "请找回 Orchid 迁移中已经验证的插件声明与仓库配置约定，用来对照当前构建失败。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "c18271e9231e1e461e6f9550e83ba2067a654d6832635c9883b1fefd20c71cbe"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "7047f142efb1aa8301888ade6140c38ce077c1ed9b0ff2e7cb36caae27a587dc"
     },
     {
       "caseId": "T11-MEMORY-001-N",
@@ -914,8 +914,8 @@
         }
       ],
       "query": "请找回 Orchid 迁移中已经验证的插件声明与仓库配置约定，用来对照当前构建失败。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "396839ff77f4f35d331c0108dabf51c3044563fd5e6f8daa52df1b7b8443879e"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "f333aa0e2648f8677fb1cb2478ca6d7393ea09bb02bc4a606a6f7ba7ea7de3a9"
     },
     {
       "caseId": "T11-MEMORY-002-P",
@@ -973,8 +973,8 @@
         }
       ],
       "query": "请找回 Atlas 冲突合并评审中关于本地删除与远端更新同时到达时如何处理的原话。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "8a9451dabff7338f6ddae85a14150b861613a840fb3b9dfdbc0303c4e8a22190"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "0d41f74c2abc2f8add0db58452110cdaaf7388c34dae125f0ab0b673cf36cdfc"
     },
     {
       "caseId": "T11-MEMORY-002-N",
@@ -1032,8 +1032,8 @@
         }
       ],
       "query": "请找回 Atlas 冲突合并评审中关于本地删除与远端更新同时到达时如何处理的原话。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "951e783acfd243984c5584a4e00b16ac238ba815c109fa5f6a83722c0d389cda"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "b9ba52528a0e7e51c038b9bf65316d1b29c6d7e68231c25bb121f64018bf363a"
     },
     {
       "caseId": "T11-MEMORY-003-P",
@@ -1091,8 +1091,8 @@
         }
       ],
       "query": "请找回 Nimbus 状态恢复验证时的动作顺序：保存点检查、界面重建和状态断言分别先后如何安排？",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "110f2c03ec008063d030b7f11dc557f8971779cc239230f85dddc84d47acb9c4"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "9462a055570d3766fa086962fb0089d6ad48c7cd28f2a7041091cfe15db79e03"
     },
     {
       "caseId": "T11-MEMORY-003-N",
@@ -1150,8 +1150,8 @@
         }
       ],
       "query": "请找回 Nimbus 状态恢复验证时的动作顺序：保存点检查、界面重建和状态断言分别先后如何安排？",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "cf8f1d1a3ccc1b9368dc3fa0334f2908114c46fd3b90196ad22fcad6991ffbce"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "bcbc13a943adc1b40f15e1db8d718b2851f95f6d7f1f078cbbdcb500a6806111"
     },
     {
       "caseId": "T11-MEMORY-004-P",
@@ -1209,8 +1209,8 @@
         }
       ],
       "query": "请找回 Pulse 冷启动卡顿复核所用的历史排查流程，用于按同一顺序重新采样。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "c3d779dfdbf09435518e80c13c7ed6e1f151a3ca878c2f4494682ca8128ad686"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "84bf742f745d5d1fe566acd793056975b188a8761167c2ba9ce4a45baf2c697c"
     },
     {
       "caseId": "T11-MEMORY-004-N",
@@ -1268,8 +1268,8 @@
         }
       ],
       "query": "请找回 Pulse 冷启动卡顿复核所用的历史排查流程，用于按同一顺序重新采样。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "8ede3f5d68a9d826b511df15ccacde1499e415d1d5bd6b49b1a21c83bdf74e12"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "8632e47b90a9a8c437b541584b31bafe6169422e34340779e63596b29afc6654"
     },
     {
       "caseId": "T11-MEMORY-005-P",
@@ -1315,8 +1315,8 @@
         }
       ],
       "query": "请确认 Helio 的 Compose 状态恢复用例在重建后应断言什么，作为当前测试的对照。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "de8291b4700cd8bf2dabd13a5ef63f0418f6960b8e12cce66f66b81981867190"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "74c721bbe513bf40c906bd8c055a26949a4bdea3e483a3437dde15a7a533e807"
     },
     {
       "caseId": "T11-MEMORY-005-N",
@@ -1362,8 +1362,8 @@
         }
       ],
       "query": "请确认 Helio 的 Compose 状态恢复用例在重建后应断言什么，作为当前测试的对照。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "15810dd69ba20a0117aaec611c68ee5869d772d51000262a43da92690ffe560a"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "5587fc4a4ab9133dbe3d5c27aede94265a1c1240a0ffdc84e06ca1ed5736b233"
     },
     {
       "caseId": "T11-MEMORY-006-P",
@@ -1421,8 +1421,8 @@
         }
       ],
       "query": "请直接确认 Orchid 发布配置与 Atlas 客户端版本锁定时，历史交接约定要求满足哪两个条件。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "1b1bb13d2816813661686486a2babf96e4966bd4cd36cc3dcd1d53d1868c3ed3"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "afae3645ef08bfceae4ba7f15fdde89bccd8b1a0362c314c77469b25de5e78fe"
     },
     {
       "caseId": "T11-MEMORY-006-N",
@@ -1480,8 +1480,8 @@
         }
       ],
       "query": "请直接确认 Orchid 发布配置与 Atlas 客户端版本锁定时，历史交接约定要求满足哪两个条件。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "0f502d5fadc14dc2dbe9284e0847e16a0bf5db6a6b6c9462f43921edbc235aaa"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "32f9a566b7ec15af4daba4119f7f23da584857890232eceeb296e81477721637"
     },
     {
       "caseId": "T11-SKILL-007-P",
@@ -1547,8 +1547,8 @@
         }
       ],
       "query": "针对这次启动与卡顿排查，请给出开始执行前的下一步与应确认的前置条件。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "8ee308757377599734baf8265f64b6057558f51e2483baafe934c6e33e86bb34"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "9f21408e29797337f7585efca6f873eb91450263405e5632f0efcb18ba6c9b22"
     },
     {
       "caseId": "T11-SKILL-007-N",
@@ -1614,8 +1614,8 @@
         }
       ],
       "query": "针对这次启动与卡顿排查，请给出开始执行前的下一步与应确认的前置条件。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "5cf9d43fa8eedbb65386810d41684a9625ac52ee3d10bb63ef9f59c84658d542"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "a894de1b4887245ea0b05f917b27392323131448acb6c366e751410a7be380c9"
     },
     {
       "caseId": "T11-SKILL-008-P",
@@ -1681,8 +1681,8 @@
         }
       ],
       "query": "针对现有 Android 性能数据，请说明开始分析前的下一步和准备条件，暂时不要解释结果。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "0e290c668d21c4d884cd2063abf01d8ab103fee588d03fc2e372657a0ec81b30"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "9c7e962876eae9151d29f2e061fd8aefe2a868d20c5ac94f969860162a530bd1"
     },
     {
       "caseId": "T11-SKILL-008-N",
@@ -1748,8 +1748,8 @@
         }
       ],
       "query": "针对现有 Android 性能数据，请说明开始分析前的下一步和准备条件，暂时不要解释结果。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "2a82263582365a535b3a0d6b11e3d67d5719fa2695575b08faecc898d611d002"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "b1e86efc80fbe7b7db681f96af8b267140ede14bb5e720d23d01652c8543f127"
     },
     {
       "caseId": "T11-SKILL-009-P",
@@ -1815,8 +1815,8 @@
         }
       ],
       "query": "面对这个同时提到录制和分析的请求，请给出不执行动作前的分流顺序。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "21c9a3ebd742a6ba801a0a07809235e68fd8742e3096a236f0532f7eb67a2b60"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "695700998fdfb51d3d147addf85edcddadf1c031ce9cfb343af95a79377584a6"
     },
     {
       "caseId": "T11-SKILL-009-N",
@@ -1882,8 +1882,8 @@
         }
       ],
       "query": "面对这个同时提到录制和分析的请求，请给出不执行动作前的分流顺序。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "b4d9d650496963ecf6189942a37b0c8c902864a9619d043042fdbfb182405f40"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "1122791a18124e6478b963ce70053983c240e1f4cc6685c91f8f911c81368fca"
     },
     {
       "caseId": "T11-SKILL-010-P",
@@ -1949,8 +1949,8 @@
         }
       ],
       "query": "针对这个普通 Android 项目的构建插件迁移，请给出从检查到验证的下一步顺序，暂时不要修改文件。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "f06ec65c73920a3e4cd362f288f209ef35d3a1ac3c893d3747117b0c6377a324"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "a5e24bb9c54891211c3541784ae192cc584221653bfa950f6eddd3805140ee3f"
     },
     {
       "caseId": "T11-SKILL-010-N",
@@ -2016,8 +2016,8 @@
         }
       ],
       "query": "针对这个普通 Android 项目的构建插件迁移，请给出从检查到验证的下一步顺序，暂时不要修改文件。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "2f9df4636d0d5f95eff9d30431016ef8a3296b108fcc7acb516d0612c73b4cdd"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "910fb2c688aee76bc7a7b367400deab1aab36cb46d6f902a52dde2b3a1be1e0d"
     },
     {
       "caseId": "T11-SKILL-011-P",
@@ -2083,8 +2083,8 @@
         }
       ],
       "query": "针对这个 Compose 状态恢复回归，请给出从设置内容到断言的正确下一步，暂时不要写代码。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "d37b7044de8f51d0ac14768c9cf1edfdc021b4a44a28f097bff9e565d6a69727"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "1c116f57f1452467f0bad31dc4dbf8dc90a379995432c8b33ccb32fab63f121b"
     },
     {
       "caseId": "T11-SKILL-011-N",
@@ -2150,8 +2150,8 @@
         }
       ],
       "query": "针对这个 Compose 状态恢复回归，请给出从设置内容到断言的正确下一步，暂时不要写代码。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "01c4b0112d212e26c78598f30d4e1f9abf4b00b4d56c8e0afabf6ef4cc97b629"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "241476bc4a509621555c07a58016f2d5d74c472900d523a50441f401c90d8c1e"
     },
     {
       "caseId": "T11-SKILL-012-P",
@@ -2217,8 +2217,8 @@
         }
       ],
       "query": "针对恢复不生效的假象和保存数据过大的异常，请给出最小验证顺序及适用边界，暂时不要修改测试。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "d7ae3a3e4a95c312d0ddb04d304165acc92d8600b30db3efa2ea610689b663c0"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "af8017e8edf6baac9bdfb48643315091a7e42e91b78e5e8306757a6efac3ea22"
     },
     {
       "caseId": "T11-SKILL-012-N",
@@ -2284,8 +2284,8 @@
         }
       ],
       "query": "针对恢复不生效的假象和保存数据过大的异常，请给出最小验证顺序及适用边界，暂时不要修改测试。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "0897d4ac8afcc35ff6b31b931ec58307e45522fe46833aec294372dfa4b8d4c1"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "0e909b67761f4bb7149b2e38d3e143b9c4ce24db95a0e6cae687a550ee6aa52f"
     },
     {
       "caseId": "T11-KNOWLEDGE-013-P",
@@ -2351,8 +2351,8 @@
         }
       ],
       "query": "请先给出 Orchid 迁移记录中 androidComponents 配置块的准确源文件和行号，供我核对构建回归记录；不要延伸到 Pulse 性能线。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "eeff0787c6ee4d46fd982cd1c5a8535bd62f9007705d73763b7ba34310cfaeee"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "2db7c5626dd750bd68274ae17542af176e9d3a6016e146111921a4d69b643f43"
     },
     {
       "caseId": "T11-KNOWLEDGE-013-N",
@@ -2418,8 +2418,8 @@
         }
       ],
       "query": "请先给出 Orchid 迁移记录中 androidComponents 配置块的准确源文件和行号，供我核对构建回归记录；不要延伸到 Pulse 性能线。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "4e96c5bb233dcceba7f9f52456d980a8191255c2143f14150bd475342f35398f"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "9eb47f12cef469cad8cdb639fd8b30d72dc138dabc28b54a2b7dc651030252f9"
     },
     {
       "caseId": "T11-KNOWLEDGE-014-P",
@@ -2485,8 +2485,8 @@
         }
       ],
       "query": "请先确认 Atlas offline-first 设计中 outbox 的发送顺序、版本冲突后的处理和网络错误重试边界；只回答设计约束，不延伸到 Orchid 构建线。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "1a34f27947ce5e881bc305615724a35b9bbec1b0e005516624d2ad4182bca9d0"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "d7193c1ca7ed2a39ef91870433952d58f1098c950f8b4ee3cf27a59bea488de8"
     },
     {
       "caseId": "T11-KNOWLEDGE-014-N",
@@ -2552,8 +2552,8 @@
         }
       ],
       "query": "请先确认 Atlas offline-first 设计中 outbox 的发送顺序、版本冲突后的处理和网络错误重试边界；只回答设计约束，不延伸到 Orchid 构建线。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "5c3aae59035b986a01fa7b440def1feb13f31f72b3dbae7145914d8a451926e4"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "446037f51458af45079f7bdd9cc45d3b8f1cb5d6775c4b6b4e2e99ecfafc8a04"
     },
     {
       "caseId": "T11-KNOWLEDGE-015-P",
@@ -2619,8 +2619,8 @@
         }
       ],
       "query": "请先给出 Nimbus 中 stateRestorationActivity(for:) 的准确源文件和行号，供我核对生命周期恢复记录；不要延伸到 Helio UI 测试。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "f0b36a10c5a966048bc5652e7e26a6f15f81fde7cef34a2f31dc9c8692e114fe"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "64231455a340dafb91b3d5ddf3580ee5332d44b03bdf01bb736f576b33fae65a"
     },
     {
       "caseId": "T11-KNOWLEDGE-015-N",
@@ -2686,8 +2686,8 @@
         }
       ],
       "query": "请先给出 Nimbus 中 stateRestorationActivity(for:) 的准确源文件和行号，供我核对生命周期恢复记录；不要延伸到 Helio UI 测试。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "7363bb304d1b2756fa5b763e75c3321cb6693dd61a270b1ce5d1c888fd41b7ae"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "0e600140f181dedc912f85a8aa7a846e88e51432e31e2f126ff81f0776614b18"
     },
     {
       "caseId": "T11-NATURAL-001-N",
@@ -2729,8 +2729,8 @@
         }
       ],
       "query": "根据上述版本约束，输出最小的 wrapper、版本目录和 app 模块 DSL 修改清单；不要扩展到依赖升级。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "924e3113bafcb45563f718ef310cbf8f9dc156c3a10f1f5ec8ef7e666e340223"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "376030b873ff46def16edd31ed3b9d19f48449aa93e5ddc302437d45fc4cc789"
     },
     {
       "caseId": "T11-NATURAL-002-N",
@@ -2772,8 +2772,8 @@
         }
       ],
       "query": "给出满足这四种变体组合的最小 Kotlin DSL 片段，并用一句话说明每个覆盖的作用域。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "5a9ccee789fd68a301a6a118c54e11499f33686e6b221ee1ef043edb8a571b39"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "0e9b582900d185e93ce20a9ec9fd16d1feb7af7333c0e651364576bc3e930905"
     },
     {
       "caseId": "T11-NATURAL-003-N",
@@ -2815,8 +2815,8 @@
         }
       ],
       "query": "按 configuration 分组给出可直接粘贴的 xcconfig 片段，不添加其他发布设置。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "d58375bf0b16b0485745020ff43a7bf79b4ed0dcb111dcc428358e2c5eaf1564"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "dd649aad99f74f10970ac67a2735da33194f0205fcdcf791998a4bc9d2b22fc8"
     },
     {
       "caseId": "T11-NATURAL-004-N",
@@ -2858,8 +2858,8 @@
         }
       ],
       "query": "给出最小的保存/恢复伪代码和关键条件判断，不改变持久化层接口。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "0a2eb7c749cd01b5ae5feb621d7c3425455e6c19e53689d56a83fb67a628926a"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "526df0cd00432487c82af0e22a3f4f6ab04de4cee358e0c2ee19268240737064"
     },
     {
       "caseId": "T11-NATURAL-005-N",
@@ -2901,8 +2901,8 @@
         }
       ],
       "query": "按现有字段和规则写出生命周期代码骨架及最小断言，不引入新的状态容器。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "3e0b366954526499ffbeaa40aaffe150ec47734d7dde62ad09ac1cf208337deb"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "e911a3f2c4336fa6b33a1bb6ccb0337f5bebf59485d3ba98969bdf63649f1d51"
     },
     {
       "caseId": "T11-NATURAL-006-N",
@@ -2944,8 +2944,8 @@
         }
       ],
       "query": "给出这个离线队列状态转换函数的最小实现和分支表，确保重复响应不会让终态倒退。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "c3478dab6427e0a2cb0ac2c8aca4700f04e5dfa1554724f4ca5f22a497ff312a"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "63c0e187204436faf22c3613eb40edbabcac1a3dd9b4dbc013426e8b61f3e95d"
     },
     {
       "caseId": "T11-NATURAL-007-N",
@@ -2987,8 +2987,8 @@
         }
       ],
       "query": "根据既定时间优先规则输出最小冲突解析函数和三条边界断言。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "4c3714d8c3df54802aea6d26309742df2adf03ec129a5fd02f49c79d54f4b2e8"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "e6fe95bd7e6ad131b422a3c51f87a6de94d39a0bf157bcf64dcf2bb7335dcee1"
     },
     {
       "caseId": "T11-NATURAL-008-N",
@@ -3030,8 +3030,8 @@
         }
       ],
       "query": "基于这份启动剖面写一个三项优化清单，避免泛泛而谈或引入新的业务功能。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "ecc6dd53e9704334aee0f46c43d56f7a2b030e283567fd507ce91177bd0ec5a6"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "e3c11e871a96cdac2c9c9e1ac9ffb9ee37a47efc292b391a5aca20bc354dd849"
     },
     {
       "caseId": "T11-NATURAL-009-N",
@@ -3073,8 +3073,8 @@
         }
       ],
       "query": "围绕这三个已定位热点写出局部代码示意和一个验证指标，不改列表数据模型。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "b5a14908fe4f29096e6d9ad0cbd1909acda1543b02fabdedca3dae1d0ccde048"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "c479910bdeb67639f85f8a1fe558c1202460ad0b05845641144fe8cf0b4e735f"
     },
     {
       "caseId": "T11-NATURAL-010-N",
@@ -3116,8 +3116,8 @@
         }
       ],
       "query": "给出只依赖上述表单语义的 UI 测试代码骨架和断言清单，不增加导航或网络步骤。",
-      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
-      "contentHash": "b5f21d6a70af564bfeb05461920e557554db93bbb49fdffa141baafb1284686f"
+      "visibleAssetSetSha256": "213e2517b4ad6d5e32f75704bc71f04ac6236f6c08b7ccf9b681c4e849293be4",
+      "contentHash": "2a2a2edf6003b60efba2872628fadc776734c8945a082129cfbedad6ed3b3623"
     }
   ],
   "privateAnnotations": [
