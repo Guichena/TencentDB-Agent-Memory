@@ -1089,8 +1089,8 @@
         }
       ],
       "query": "请确认 Borealis Platform 之前为 Helm 渐进发布确定的失败率门槛、暂停升级的连续观测次数，以及触发回滚的健康检查条件。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "501a07f718289a991c901dc69da7689ef7ba4b70c25bd1a1ecb0d0d0fd275955"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "8312323feb945880cfbaad856c09573f687eed2099cb97e3528012aa6e201485"
     },
     {
       "caseId": "T14-MEM-001-N",
@@ -1140,8 +1140,8 @@
         }
       ],
       "query": "请确认 Borealis Platform 之前为 Helm 渐进发布确定的失败率门槛、暂停升级的连续观测次数，以及触发回滚的健康检查条件。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "6e1d8d25e5a52901ebc3d9f7f8e4831297029588ac23079036c544153747cd0f"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "f29d5e555bdb0c82f34e66df003212c90def00d509f6c5f548f2fae25b4c626b"
     },
     {
       "caseId": "T14-MEM-002-P",
@@ -1199,8 +1199,8 @@
         }
       ],
       "query": "请找回 Forge Build 对两种架构 provenance 证明、OCI index 发布和失败隔离的历史决定。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "73cbe0cff62eaa4a7db45e4ad471a0529aa84f279bdc185c674687eb226468c7"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "4e1d83577f8e0ff9da3930b59bee85bcf16af1ed7dd87096cd9c732bb14de3c9"
     },
     {
       "caseId": "T14-MEM-002-N",
@@ -1258,8 +1258,8 @@
         }
       ],
       "query": "请找回 Forge Build 对两种架构 provenance 证明、OCI index 发布和失败隔离的历史决定。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "f125adf20e95658c5fcd2517e2e894ba5926f8b805fbb35daeb104bda52df3d3"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "fede486b7a4dc9dda1613104d26c272dc9aa781e6412077015b88afd9592ce3b"
     },
     {
       "caseId": "T14-MEM-003-P",
@@ -1337,8 +1337,8 @@
         }
       ],
       "query": "请确认 Meridian Fleet 漂移例外的审批 label、允许字段、到期恢复方式，以及 image tag 或 Secret ref 变化时的处置。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "92c499fb8a2167623f438bcacda745ff47669f3bdc93307cf53cb0940dc809f0"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "010c303ec79a0c76fb55ac48b55e6b9726b7eb3f4445a7f7d202de48c60f4eab"
     },
     {
       "caseId": "T14-MEM-003-N",
@@ -1416,8 +1416,8 @@
         }
       ],
       "query": "请确认 Meridian Fleet 漂移例外的审批 label、允许字段、到期恢复方式，以及 image tag 或 Secret ref 变化时的处置。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "9aecc1f40d4cae386aa546847f02b701002421864aae1a195959599922887ae0"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "24d5f731d14102c498a577e05abaea5ebc218c9c8eb24705105eb02817e9f89b"
     },
     {
       "caseId": "T14-MEM-004-P",
@@ -1467,8 +1467,8 @@
         }
       ],
       "query": "请找回 Aurora Release canary profiling 对成功率、p95 延迟、连续分析和流量调整的完整决定。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "c825ee730ff5f0a9699f85333740acd36ac52e48a1163b7a2c4d916a0f5b7cdf"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "9a22e23a903cf298d0630dfdf8cefef77083114ae28233e6dfb463001f6aa968"
     },
     {
       "caseId": "T14-MEM-004-N",
@@ -1518,8 +1518,8 @@
         }
       ],
       "query": "请找回 Aurora Release canary profiling 对成功率、p95 延迟、连续分析和流量调整的完整决定。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "3e5462755dcc6bae6f3dd854599413f3b8c8dfe4ed73940db6b132be2de93403"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "4a1f24ee4492e896f3e059f9fa0599423f7d29f2c67e22c7097a94bb2fde21c3"
     },
     {
       "caseId": "T14-MEM-005-P",
@@ -1577,8 +1577,8 @@
         }
       ],
       "query": "请确认 Cedar Config rollout 护栏：触发变化类型、合并窗口、每个 workload 的最短间隔和额外变化处理。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "b0f266dfd21bc04f5552ca46a7b6db609ea4d910f04753f055a62ddaed314013"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "f4f17b32b93b949c9f70bfb779c576202a35e308156c1a0afb27a29a3e169a2e"
     },
     {
       "caseId": "T14-MEM-005-N",
@@ -1636,8 +1636,8 @@
         }
       ],
       "query": "请确认 Cedar Config rollout 护栏：触发变化类型、合并窗口、每个 workload 的最短间隔和额外变化处理。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "d4117d3a1903ff5453050cdcc248fff13c71c4df518f597eccc6c91fde88e983"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "c4b7fe1bcd4acf63c0621aee884deae0a0709f8e86fa9be41fb42660c110dd5e"
     },
     {
       "caseId": "T14-MEM-006-P",
@@ -1715,8 +1715,8 @@
         }
       ],
       "query": "请读取 Borealis Helm 回滚评审场景，确认流水线暂停、迁移状态、回滚等待参数、migration Job 和恢复条件。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "c783f45c3a2c6aa68f4e5b5944ee981f4e94a7bcaa28b4feefedfec4292c0223"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "59bd42c15f211273dc51480bec929f9654a8115d3b70d73de22a4bb766c11872"
     },
     {
       "caseId": "T14-MEM-006-N",
@@ -1794,8 +1794,8 @@
         }
       ],
       "query": "请读取 Borealis Helm 回滚评审场景，确认流水线暂停、迁移状态、回滚等待参数、migration Job 和恢复条件。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "930bb226a30600a7261ec69b1663ad158d9293a501b38b943cb76c5b1c376559"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "357aa3dba5c744aa91b2a51f610ce6c5a6d313fb8c70010bea0dfa1e9ee908fc"
     },
     {
       "caseId": "T14-SKL-001-P",
@@ -1841,8 +1841,8 @@
         }
       ],
       "query": "请把这个 Helm chart 的编写顺序、关键安全检查和本地渲染验证整理成可执行清单。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "6d709f03472f30cb438a88300052caf5bf6bf1fae6306a09f0cb4cbf715b0e79"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "c1d6c7eceaddef88deef3c98af7ce9c66591596b033ea74e9a44c576a05affd3"
     },
     {
       "caseId": "T14-SKL-001-N",
@@ -1888,8 +1888,8 @@
         }
       ],
       "query": "请把这个 Helm chart 的编写顺序、关键安全检查和本地渲染验证整理成可执行清单。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "8f3a770ecd6d3cf2fcacd75f3566fa37c9f8a4c7a958ea74104b4cf099fdea0c"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "f6b630135d5c143418fd21527950310535f584a3c602d556b1e56a2df3bf2c8f"
     },
     {
       "caseId": "T14-SKL-002-P",
@@ -1943,8 +1943,8 @@
         }
       ],
       "query": "针对这条 Tekton 构建流水线，应该怎样串起 resolver、私有仓库认证、调度条件和超时收尾？",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "975a3e646dc383b5f22a769607c410f56d3918551a6231d456c57a5a71ddde8b"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "a9f8d27414f70efb156ed842f42a5d893a07ce7dd989f00133fbdd263ab73972"
     },
     {
       "caseId": "T14-SKL-002-N",
@@ -1998,8 +1998,8 @@
         }
       ],
       "query": "针对这条 Tekton 构建流水线，应该怎样串起 resolver、私有仓库认证、调度条件和超时收尾？",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "67c325d0f10dfea3ec31edd322b3b0174b8b3a40849592a1a5fc54d8466118bc"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "191d0d56cf44ba829e5f3f6b982dfc36a6d7c53bd4ad96d5f9003c78ccc78ab8"
     },
     {
       "caseId": "T14-SKL-003-P",
@@ -2045,8 +2045,8 @@
         }
       ],
       "query": "Meridian Fleet 交付前的 Flux/Kubernetes 仓库审计，如何用最小闭环确认清单、API 兼容性与安全风险都已核验？",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "ce2f26205cef0a3c4401b305c04582d185121da614f8d05c4a5295fef4d073df"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "fa099f5b26e8e391ba0c676c1a6c8364a1dd65d4d7eac1274fe239ba94a5dff9"
     },
     {
       "caseId": "T14-SKL-003-N",
@@ -2092,8 +2092,8 @@
         }
       ],
       "query": "Meridian Fleet 交付前的 Flux/Kubernetes 仓库审计，如何用最小闭环确认清单、API 兼容性与安全风险都已核验？",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "6a73796beefc98a7a28a5d66588fc3de30b529ec32c873cc653ea8594a14bf98"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "7b35bbd4ffdb3282734cff700c990d554f9ad09c391c8f50482dd085fd5dfa6c"
     },
     {
       "caseId": "T14-SKL-004-P",
@@ -2139,8 +2139,8 @@
         }
       ],
       "query": "Aurora 的 Canary 发布在什么配置顺序下才可安全推进，并如何用指标决定晋级或回退？",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "833f0df00242038f6ad7904c76ca1e24d728a9c79f60e696181f9f3d95e18a65"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "e0a67c0093a7ed23f02d60cb38eb2b8f102a7a50b1508a7a8dc1f56c1ce5a866"
     },
     {
       "caseId": "T14-SKL-004-N",
@@ -2186,8 +2186,8 @@
         }
       ],
       "query": "Aurora 的 Canary 发布在什么配置顺序下才可安全推进，并如何用指标决定晋级或回退？",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "89305a47804a13df4f923006416d628479dced1c752c4ae85f61cd88ca655a7e"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "5504ecb9a989a5e074a55a330663a122822a77117be8992a9027f2724e726cec"
     },
     {
       "caseId": "T14-SKL-005-P",
@@ -2241,8 +2241,8 @@
         }
       ],
       "query": "配置资源变化后，如何确认 Reloader 的注解、触发规则和重载行为确实覆盖 Cedar 的工作负载？",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "2ddd781c1da6ade735a2c308fd10637a94364bc6e870c816a7e113df80d448ce"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "0cdaca7550509fdfa6cfdf13145736b7c85904230414a945981ddcaf69529f94"
     },
     {
       "caseId": "T14-SKL-005-N",
@@ -2296,8 +2296,8 @@
         }
       ],
       "query": "配置资源变化后，如何确认 Reloader 的注解、触发规则和重载行为确实覆盖 Cedar 的工作负载？",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "a091ca741d635815243e004d1a4850fa5836b19d9431c67ef0befa2a22f7f934"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "e77b849ecc7e5ef58641eb20e18bc0459e6fd1225a4e32851224acab527a625c"
     },
     {
       "caseId": "T14-SKL-006-P",
@@ -2359,8 +2359,8 @@
         }
       ],
       "query": "请为 Meridian Fleet 给出一条可审计的 Flux 设计路径，并说明镜像自动化从扫描到 Git 更新如何验收。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "163acd0800b945ed25f23a7fad8f65187118c5ae744fe1d7e1e0350b5ef2f3af"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "2eec41ee9b4daa93bd1ff6b369bde30be50092c85c1dfb7ca1447d134460399f"
     },
     {
       "caseId": "T14-SKL-006-N",
@@ -2422,8 +2422,8 @@
         }
       ],
       "query": "请为 Meridian Fleet 给出一条可审计的 Flux 设计路径，并说明镜像自动化从扫描到 Git 更新如何验收。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "e971781e1590d98232376d830157784030c9d3ae346529bf527e1b3494dfc327"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "9026288f8d5d0751591cb11cba184c10f20398c8bf036b83b549c6a535d8ecd3"
     },
     {
       "caseId": "T14-KNW-001-P",
@@ -2489,8 +2489,8 @@
         }
       ],
       "query": "请确认 Borealis Platform 固定代码中负责 Helm 回滚护栏校验的符号的准确源文件和行号，并只返回该定位。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "92a2a6d0b7b6e7d7b73a3439a14b6736f4678ee769b8bd194fb49b86f659ebd9"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "b0c27d73b1fc1543284252120e27ae276ed39937cc0de2d6cfcfd4994771829d"
     },
     {
       "caseId": "T14-KNW-001-N",
@@ -2556,8 +2556,8 @@
         }
       ],
       "query": "请确认 Borealis Platform 固定代码中负责 Helm 回滚护栏校验的符号的准确源文件和行号，并只返回该定位。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "b7e3619ce5a91e5391d304fbbc33ca3b7847b420e0e31ad3d64a2421de14de42"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "bf372e09549ab74088d5f6660278176e2ef1ec19ce807d24b9140f2e7a2147a6"
     },
     {
       "caseId": "T14-KNW-002-P",
@@ -2623,8 +2623,8 @@
         }
       ],
       "query": "请确认 Meridian Fleet 交付手册中关于漂移例外登记的准确条目，并只返回该条目。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "0357dc4c5496ce2d21738ba7cbb34744543a354958e19e7334e244a353133683"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "108ade75300744ddf1e54f5fecf99e8f687599f078be81f6343a8814bad73e8e"
     },
     {
       "caseId": "T14-KNW-002-N",
@@ -2690,8 +2690,8 @@
         }
       ],
       "query": "请确认 Meridian Fleet 交付手册中关于漂移例外登记的准确条目，并只返回该条目。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "375b7f03ccbac89087cce9bad357c5b4ce3dedfe98a526fb73d599d7630aeefe"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "90be976aebe32795b45c638ebdd31c4080f109eaff2368e82198b25ccab5fa82"
     },
     {
       "caseId": "T14-KNW-003-P",
@@ -2757,8 +2757,8 @@
         }
       ],
       "query": "请确认 Forge Build 中镜像证明步骤在影响分析深度 2 下的准确下游文件和边数量，并只返回该结果。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "e6428ed913fdd16bda673515c427ba272b899158acd837876e18bdc65c2337e8"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "9618145b0c80f20b0cad5893524f9d483cf31a747c15a4da496b143d447118f9"
     },
     {
       "caseId": "T14-KNW-003-N",
@@ -2824,8 +2824,8 @@
         }
       ],
       "query": "请确认 Forge Build 中镜像证明步骤在影响分析深度 2 下的准确下游文件和边数量，并只返回该结果。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "eb42560ce696e8451979a94816006b0fa3b08f9573b5cdd8ec2cf5139021eedb"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "b8dcbc192a0015ea1afd2468566999feef845b43258c80f96d56f7b0fecceaad"
     },
     {
       "caseId": "T14-COD-001",
@@ -2867,8 +2867,8 @@
         }
       ],
       "query": "请输出可直接提交的完整 YAML，并简要说明这些字段如何满足发布期间的可用性约束。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "e9d11f40bf507269d0fc64101e325e22ba1bd316f975b8a0fa2bc1e361174555"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "741caf978096c67736cc6ac9dde9a84827659736855c8e46ab2b70a165d2e5af"
     },
     {
       "caseId": "T14-COD-002",
@@ -2910,8 +2910,8 @@
         }
       ],
       "query": "请输出这四个文件的最小完整片段，并指出模板中哪些字段来自 values。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "3964b82353e2c0248d7ba61560fb8270bd830e1c2b0046ae8eb1a8f6d62fd24c"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "f7576549d7645a14701a5407e15ffb31871bead39effc7322a2d9316e3174f45"
     },
     {
       "caseId": "T14-COD-003",
@@ -2953,8 +2953,8 @@
         }
       ],
       "query": "请输出完整的 payments-prod Kustomization YAML，并说明依赖、等待和健康检查的执行顺序。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "48f24dd920b43b419db3696bd72cc8a9f90a29453e1af4ab545165b4fdfc359c"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "30a70b70675843bffa3063bb6988ff9bb9c1a109b75e341e1fc8dcf7b52759d2"
     },
     {
       "caseId": "T14-COD-004",
@@ -2996,8 +2996,8 @@
         }
       ],
       "query": "请输出需要加入 spec.patches 的 YAML，并说明为什么 Flux 会对这个精确 ConfigMap 完全跳过 SSA 而不影响其他资源。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "d4695abbff793df4704c05c1ff4828e57ccade615f5f0189bc97a131ca04917c"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "f6a15f5152c70d0bfeec823406cd5f371bb92de1abd8646a396d7932c0fc805e"
     },
     {
       "caseId": "T14-COD-005",
@@ -3039,8 +3039,8 @@
         }
       ],
       "query": "请给出修正后的 build-image Task 结果声明和 image-delivery Pipeline，并指出结果值的传递位置。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "04adfd1b373f1bc06805f19037b9670011071c0ed4d7ac64f97035475d04847d"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "dfb9f2bf934f8a27db664054305fcf5b13161dd952fba249399c47ab8ff020b4"
     },
     {
       "caseId": "T14-COD-006",
@@ -3082,8 +3082,8 @@
         }
       ],
       "query": "请输出满足这些约束的完整 Dockerfile，并说明多阶段构建如何避免把编译工具带入运行镜像。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "fcbb0d2e069a46e18802c8a7c2576b011f6b704222a69728413d18e09992b49e"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "c1039bea74ceb95990017ea0e312e30eb82b1819900f5cc457ecf9a1a2f1dff5"
     },
     {
       "caseId": "T14-COD-007",
@@ -3125,8 +3125,8 @@
         }
       ],
       "query": "请输出该 Canary 清单，并简述 10% 权重步进、累计失败达到 5 次时回滚以及达到 50% 后晋级的行为。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "a02875c0be44516d5ff79a38e4675d935bcec216f3aa4b63956e8692dd2b2b78"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "397bf7e74bc35a9cfe6320ca8614112f7f47e9c4e3a4b8492a7eb374cb447903"
     },
     {
       "caseId": "T14-COD-008",
@@ -3168,8 +3168,8 @@
         }
       ],
       "query": "请输出可合并到现有资源的 strategy 与 PDB 片段，并验证最坏情况下的可用副本和额外 Pod 数量。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "7a9a9ed751394f45b6afaacfb59b7452355adfe11e199931e26b9e3350c9ffaa"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "a1e62e31a0983306c052f460786c3ea8f9ab12cdafbf02baa2082551f8a3989c"
     },
     {
       "caseId": "T14-COD-009",
@@ -3211,8 +3211,8 @@
         }
       ],
       "query": "请输出可直接放入 spec.template.metadata.annotations 的片段，并解释两个哈希何时会改变。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "3f0e11d9f6b3963c3a06c20bc12df3b1b80c2f1b81f99e74603df1d749f4794d"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "9ab24abdde65dd7c2ff55a763c8d29103a2a7d6c6ee1de43d5430da254240221"
     },
     {
       "caseId": "T14-COD-010",
@@ -3254,8 +3254,8 @@
         }
       ],
       "query": "请输出 reporter Deployment metadata.annotations 的 YAML 片段，并说明为什么其他配置资源变化不会触发 reporter 重启。",
-      "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "8a778189f5894022046398e397872c77fab83f36e8f836af5d40dd6a2908dba5"
+      "visibleAssetSetSha256": "c13ddbc2be08fe600e24963ac88bad8803c17e36ca7e9a502dbc8e6b5a366003",
+      "contentHash": "e0ea4c79bc8bbf50b2a45608d17b091eaf604af70abb3bb10ddf9fb96ec44553"
     }
   ],
   "privateAnnotations": [
