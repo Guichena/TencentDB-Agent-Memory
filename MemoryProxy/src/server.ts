@@ -103,8 +103,16 @@ export function createApp(config: ProxyConfig, deps: CreateAppDeps = {}): Hono {
   app.get("/health", (c) => {
     const eff = getEffectiveBackend();
     const codexUpstream = resolveCodexUpstream(config);
+    const toolPromptDiagnosticEnabled = isToolPromptDiagnosticEnabled();
     const wantsShared = config.storage?.enabled && eff.requested === "cos";
     const degraded = wantsShared && eff.effective !== eff.requested;
+    const experimentReadOnly = {
+      extractionDisabled: !config.extraction.enabled && config.extraction.extractors.length === 0,
+      tdaiL0WriteDisabled: !config.tdai.memory.writeL0,
+      skillLlmWriteDisabled: !config.skillRuntime.allowLlmWrite,
+      analyseMarkerDisabled: !config.injection.assetReflection?.markerOptIn,
+      toolPromptDiagnosticDisabled: !toolPromptDiagnosticEnabled,
+    };
     const body = {
       status: degraded ? "degraded" : "ok",
       version: "0.2.0",
@@ -117,10 +125,14 @@ export function createApp(config: ProxyConfig, deps: CreateAppDeps = {}): Hono {
       injectionEnabled: config.injection.enabled,
       toolPromptProfile: config.injection.toolPromptProfile,
       experimentConfigFingerprint,
+      experimentReadOnly: {
+        ...experimentReadOnly,
+        ready: Object.values(experimentReadOnly).every(Boolean),
+      },
       opik: config.opik.enabled ? config.opik.url : "disabled",
       costGuard: config.costGuard.enabled ? "enabled" : "disabled",
       rateLimit: config.rateLimit.tpm > 0 || config.rateLimit.qpm > 0 ? "enabled" : "disabled",
-      toolPromptDiagnostic: isToolPromptDiagnosticEnabled() ? "mock-contract-enabled" : "disabled",
+      toolPromptDiagnostic: toolPromptDiagnosticEnabled ? "mock-contract-enabled" : "disabled",
       storage: {
         enabled: !!config.storage?.enabled,
         requested: eff.requested,

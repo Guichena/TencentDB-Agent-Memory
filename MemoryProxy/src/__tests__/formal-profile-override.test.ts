@@ -16,6 +16,16 @@ describe("Task 1 formal production profile selection", () => {
       "injection:",
       "  enabled: true",
       "  toolPromptProfile: legacy",
+      "  assetReflection:",
+      "    markerOptIn: true",
+      "extraction:",
+      "  enabled: true",
+      "  extractors: [skill, tdai-memory]",
+      "tdai:",
+      "  memory:",
+      "    writeL0: true",
+      "skillRuntime:",
+      "  allowLlmWrite: true",
       "",
     ].join("\n");
     writeFileSync(configFile, yaml, "utf8");
@@ -27,9 +37,19 @@ describe("Task 1 formal production profile selection", () => {
       configFile,
       "--tool-prompt-profile",
       "capability-pruned",
+      "--experiment-read-only",
     ]);
     expect(overrides.toolPromptProfile).toBe("capability-pruned");
-    expect(buildConfig(overrides).injection.toolPromptProfile).toBe("capability-pruned");
+    expect(overrides.experimentReadOnly).toBe(true);
+    expect(buildConfig(overrides)).toMatchObject({
+      injection: {
+        toolPromptProfile: "capability-pruned",
+        assetReflection: { markerOptIn: false },
+      },
+      extraction: { enabled: false, extractors: [] },
+      tdai: { memory: { writeL0: false } },
+      skillRuntime: { allowLlmWrite: false },
+    });
     expect(readFileSync(configFile, "utf8")).toBe(yaml);
 
     expect(() => parseArgv([
@@ -52,6 +72,7 @@ describe("Task 1 formal production profile selection", () => {
     const config = buildConfig({
       configFile,
       toolPromptProfile: "selection-calibrated",
+      experimentReadOnly: true,
     });
     const response = await createApp(config, {
       serverInstanceId: "formal-profile-instance-01",
@@ -69,6 +90,14 @@ describe("Task 1 formal production profile selection", () => {
         schemaVersion: "task1.proxy-config-fingerprint.v2",
         baseSha256: expect.stringMatching(/^[a-f0-9]{64}$/),
         effectiveSha256: expect.stringMatching(/^[a-f0-9]{64}$/),
+      },
+      experimentReadOnly: {
+        extractionDisabled: true,
+        tdaiL0WriteDisabled: true,
+        skillLlmWriteDisabled: true,
+        analyseMarkerDisabled: true,
+        toolPromptDiagnosticDisabled: true,
+        ready: true,
       },
     });
   });

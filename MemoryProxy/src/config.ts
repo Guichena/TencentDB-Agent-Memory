@@ -196,6 +196,8 @@ export interface CliOverrides {
   codexUpstreamUrl?: string;
   /** Invocation-only experiment selector; never rewrites the YAML file. */
   toolPromptProfile?: ToolPromptProfile;
+  /** Invocation-only write-side kill switch for formal prompt experiments. */
+  experimentReadOnly?: boolean;
   langfuseHost?: string;
   logFile?: string;
   opikEnabled?: boolean;
@@ -412,14 +414,20 @@ export function buildConfig(overrides: CliOverrides = {}): ProxyConfig {
       // 只接受 boolean；yaml 缺省或类型错走 default（关）。跟 costGuard.markerOptIn
       // 同姿势，保证线上未配 assetReflection: 段的 yaml 完全无感。
       assetReflection: {
-        markerOptIn: typeof yaml.injection?.assetReflection?.markerOptIn === "boolean"
-          ? yaml.injection.assetReflection.markerOptIn
-          : DEFAULT_CONFIG.injection.assetReflection!.markerOptIn,
+        markerOptIn: overrides.experimentReadOnly
+          ? false
+          : typeof yaml.injection?.assetReflection?.markerOptIn === "boolean"
+            ? yaml.injection.assetReflection.markerOptIn
+            : DEFAULT_CONFIG.injection.assetReflection!.markerOptIn,
       },
     },
     extraction: {
-      enabled: yaml.extraction?.enabled ?? DEFAULT_CONFIG.extraction.enabled,
-      extractors: yaml.extraction?.extractors ?? DEFAULT_CONFIG.extraction.extractors,
+      enabled: overrides.experimentReadOnly
+        ? false
+        : yaml.extraction?.enabled ?? DEFAULT_CONFIG.extraction.enabled,
+      extractors: overrides.experimentReadOnly
+        ? []
+        : yaml.extraction?.extractors ?? DEFAULT_CONFIG.extraction.extractors,
     },
   sessionInit: {
     enabled: yaml.sessionInit?.enabled ?? DEFAULT_CONFIG.sessionInit.enabled,
@@ -462,7 +470,9 @@ export function buildConfig(overrides: CliOverrides = {}): ProxyConfig {
       memory: {
         enabled: yaml.tdai?.memory?.enabled ?? DEFAULT_CONFIG.tdai.memory.enabled,
         inject: yaml.tdai?.memory?.inject ?? DEFAULT_CONFIG.tdai.memory.inject,
-        writeL0: yaml.tdai?.memory?.writeL0 ?? DEFAULT_CONFIG.tdai.memory.writeL0,
+        writeL0: overrides.experimentReadOnly
+          ? false
+          : yaml.tdai?.memory?.writeL0 ?? DEFAULT_CONFIG.tdai.memory.writeL0,
         recallL1: yaml.tdai?.memory?.recallL1 ?? DEFAULT_CONFIG.tdai.memory.recallL1,
         injectL2L3: yaml.tdai?.memory?.injectL2L3 ?? DEFAULT_CONFIG.tdai.memory.injectL2L3,
         l1Limit: yaml.tdai?.memory?.l1Limit ?? DEFAULT_CONFIG.tdai.memory.l1Limit,
@@ -488,8 +498,10 @@ export function buildConfig(overrides: CliOverrides = {}): ProxyConfig {
     },
     skillRuntime: {
       allowLlmWrite:
-        yaml.skillRuntime?.allowLlmWrite ??
-        DEFAULT_CONFIG.skillRuntime.allowLlmWrite,
+        overrides.experimentReadOnly
+          ? false
+          : yaml.skillRuntime?.allowLlmWrite ??
+            DEFAULT_CONFIG.skillRuntime.allowLlmWrite,
     },
     auth: {
       enabled: yaml.auth?.enabled ?? DEFAULT_CONFIG.auth.enabled,
@@ -608,6 +620,9 @@ export function parseArgv(argv: string[]): CliOverrides {
       case "--tool-prompt-profile":
         overrides.toolPromptProfile = parseToolPromptProfile(next);
         i++;
+        break;
+      case "--experiment-read-only":
+        overrides.experimentReadOnly = true;
         break;
       case "--langfuse-host":
         overrides.langfuseHost = next;

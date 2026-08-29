@@ -33,6 +33,7 @@ import { getProxyStorage } from "../storage/factory.js";
 import { getMetadataClient } from "../meta/client.js";
 import type { ProxyConfig } from "../types.js";
 import { observeBridgeEntry, type BridgeEntryObserver } from "../bridge-entry-observer.js";
+import { isExtractionAllowed } from "../extraction-gate.js";
 import { emitBridgeToolCallTelemetry, emitBridgeRejectTelemetry, agentSourceFromSessionKey } from "../memory/bridge-telemetry.js";
 import { getCoreSkillClient, type CoreSkillClient } from "./core-client.js";
 
@@ -547,6 +548,16 @@ export function createSkillBridgeHandler(
         agentId: ids.agent_id, agentSource: ids.agent_source,
       });
       return envelope(40302, `${TAG} LLM write access to skill is disabled (skillRuntime.allowLlmWrite=false)`, 403);
+    }
+    if (sub === "extract" && !isExtractionAllowed(config, "skill")) {
+      emitBridgeRejectTelemetry({
+        sessionKey, bridgeSource: "skill-bridge",
+        rejectReason: "extract_ops_disabled", httpStatus: 403,
+        executedEndpoint: sub,
+        spaceId: ids.space_id, userId: ids.user_id, teamId: ids.team_id,
+        agentId: ids.agent_id, agentSource: ids.agent_source,
+      });
+      return envelope(40303, `${TAG} skill extraction is disabled (extraction.enabled=false)`, 403);
     }
 
     // Parse body. Empty body → {}. Malformed → 400.
