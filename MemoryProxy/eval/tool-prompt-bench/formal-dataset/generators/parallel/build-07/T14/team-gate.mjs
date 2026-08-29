@@ -76,7 +76,8 @@ for (const pair of fragment.pairs) {
   check(`pair:${pair.pairId}:single_variable`, oneDelta, "only the appended delta message may differ");
   check(`pair:${pair.pairId}:roles`, pa.pairRole === "positive" && na.pairRole === "negative" && pa.pairId === pair.pairId && na.pairId === pair.pairId, "pair annotations must preserve roles");
   check(`pair:${pair.pairId}:gold`, pa.gold.needTdaiTool && !na.gold.needTdaiTool, "Positive must need a tool and paired Negative must not");
-  check(`pair:${pair.pairId}:delta_hash`, /^[0-9a-f]{64}$/.test(pair.controlledDeltaSha256), "controlled delta hash must be sha256");
+  const expectedDeltaHash = digest(JSON.stringify({ positive_delta_message: p.contextMessages.at(-1), negative_delta_message: n.contextMessages.at(-1), query: p.query }));
+  check(`pair:${pair.pairId}:delta_hash`, pair.controlledDeltaSha256 === expectedDeltaHash, "controlled delta hash must match the formal dataset contract");
 }
 
 const visible = new Set(fragment.snapshotAssetIds);
@@ -238,8 +239,11 @@ for (const ancestor of [schema, "960021e472456515a89d3c2c4f2962fbf6cc51a1"]) {
 check("git.launch_resolved", /^[0-9a-f]{40}$/.test(launch), "launch tag must remain resolvable");
 const statusLines = execFileSync("git", ["status", "--porcelain=v1", "-uall"], { cwd: repoRoot, encoding: "utf8" }).split(/\r?\n/).filter(Boolean);
 const allowedPrefixes = [
+  "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-07/T13/",
   "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-07/T14/",
+  "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T13/",
   "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T14/",
+  "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T13/",
   "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T14/",
 ];
 const statusPaths = statusLines.map((line) => line.slice(3).replaceAll("\\", "/").replace(/^"|"$/g, ""));

@@ -586,7 +586,7 @@ for (const [family, routes] of [["memory", input.memory_case_routes], ["skill", 
       positiveCaseId: positiveId,
       negativeCaseId: negativeId,
       counterfactualKind: "answer_in_current_context",
-      controlledDeltaSha256: digest({ positive: pair.positive.delta_message, negative: pair.negative.delta_message }),
+      controlledDeltaSha256: digest(JSON.stringify({ positive_delta_message: pair.positive.delta_message, negative_delta_message: pair.negative.delta_message, query: pair.query })),
       currentEvidenceRefs: [batch.evidenceId],
     }));
   }
