@@ -169,6 +169,7 @@ export type UsageHorizonBlockerCode =
   | "HORIZON_TRACE_MISMATCH"
   | "HORIZON_REQUEST_MISSING"
   | "HORIZON_ATTEMPT_MISMATCH"
+  | "HORIZON_ATTEMPT_PREFIX_MISMATCH"
   | "HORIZON_ATTEMPT_ORDER_INVALID"
   | "HORIZON_ATTEMPT_AFTER_REQUEST"
   | "HORIZON_PHASE_MISMATCH";
@@ -579,6 +580,45 @@ export function accumulateRequestUsageToM0Horizon(
         blockers.push("HORIZON_ATTEMPT_AFTER_REQUEST");
       }
       previousPosition = currentPosition;
+    }
+
+    const flattenedAttempts = ledger.requests.flatMap((request) => (
+      request.observedAttemptIds.map((attemptId) => ({
+        traceId: request.traceId,
+        requestId: request.requestId,
+        attemptId,
+        phaseId: request.phaseId,
+      }))
+    ));
+    if (facts.terminalReached && facts.terminalBoundaryGivenSuccess !== null) {
+      const terminal = facts.terminalBoundaryGivenSuccess;
+      const terminalIndex = flattenedAttempts.findIndex((attempt) => (
+        attempt.traceId === terminal.traceId
+        && attempt.requestId === terminal.requestId
+        && attempt.phaseId === terminal.phaseId
+        && attempt.attemptId === terminal.terminalAttemptId
+      ));
+      const expectedPrefix = terminalIndex < 0
+        ? null
+        : flattenedAttempts.slice(0, terminalIndex + 1);
+      if (
+        expectedPrefix === null
+        || !sameCanonical(expectedPrefix, facts.evaluationAttemptPrefix)
+      ) {
+        blockers.push("HORIZON_ATTEMPT_PREFIX_MISMATCH");
+      }
+    } else if (horizonIndex >= 0) {
+      const expectedPrefix = ledger.requests
+        .slice(0, horizonIndex + 1)
+        .flatMap((request) => request.observedAttemptIds.map((attemptId) => ({
+          traceId: request.traceId,
+          requestId: request.requestId,
+          attemptId,
+          phaseId: request.phaseId,
+        })));
+      if (!sameCanonical(expectedPrefix, facts.evaluationAttemptPrefix)) {
+        blockers.push("HORIZON_ATTEMPT_PREFIX_MISMATCH");
+      }
     }
 
     if (blockers.length === 0 && horizonIndex >= 0) {

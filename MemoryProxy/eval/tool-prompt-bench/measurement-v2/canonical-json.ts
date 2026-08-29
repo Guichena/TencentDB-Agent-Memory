@@ -64,7 +64,7 @@ function cloneCanonical(value: unknown, ancestors: Set<object>): CanonicalJsonVa
       throw new CanonicalJsonError("canonical JSON accepts only plain records");
     }
     const record = value as Record<string, unknown>;
-    const result: { [key: string]: CanonicalJsonValue } = {};
+    const result = Object.create(null) as { [key: string]: CanonicalJsonValue };
     const ownKeys = Reflect.ownKeys(record);
     if (ownKeys.some((key) => typeof key === "symbol")) {
       throw new CanonicalJsonError("canonical JSON rejects symbol record keys");
@@ -74,7 +74,12 @@ function cloneCanonical(value: unknown, ancestors: Set<object>): CanonicalJsonVa
       if (descriptor === undefined || !descriptor.enumerable || !("value" in descriptor)) {
         throw new CanonicalJsonError("canonical JSON accepts only enumerable record values");
       }
-      result[key] = cloneCanonical(descriptor.value, ancestors);
+      Object.defineProperty(result, key, {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: cloneCanonical(descriptor.value, ancestors),
+      });
     }
     return result;
   } finally {

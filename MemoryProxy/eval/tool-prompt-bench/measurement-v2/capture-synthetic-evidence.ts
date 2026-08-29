@@ -12,6 +12,7 @@ import {
   assessPairedIsolationEvidence,
   accumulateRequestUsageToM0Horizon,
   buildM2EligibilityEvidence,
+  buildFrozenCaptureSourceManifest,
   buildRequestUsageLedger,
   buildRunIsolationEvidence,
   buildTokenLedger,
@@ -353,20 +354,21 @@ async function main(): Promise<void> {
         specIds: [],
       },
     }],
-    captureDynamicAssets: segments
-      .filter((segment) => segment.sourceKind === "dynamic-assets")
-      .map((segment) => ({
+    captureManifest: buildFrozenCaptureSourceManifest({
+      segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
+      sources: segments
+        .filter((segment) => (
+          segment.sourceKind === "dynamic-assets" || segment.sourceKind === "runtime-binding"
+        ))
+        .map((segment) => ({
+          provenance: segment.sourceKind === "dynamic-assets"
+            ? "frozen-capture-dynamic-asset" as const
+            : "frozen-capture-runtime-binding" as const,
         injectionBlockId: captureBlockId,
         sourceId: segment.sourceId,
         sourceSha256: segment.sourceSha256,
-      })),
-    captureRuntimeBindings: segments
-      .filter((segment) => segment.sourceKind === "runtime-binding")
-      .map((segment) => ({
-        injectionBlockId: captureBlockId,
-        sourceId: segment.sourceId,
-        sourceSha256: segment.sourceSha256,
-      })),
+        })),
+    }),
     providerOrder: segments.map((segment) => {
       if (segment.sourceKind === "runtime-binding") {
         return {
@@ -401,6 +403,12 @@ async function main(): Promise<void> {
       segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
     },
     sourceManifest,
+    expectedSourceAttestation: {
+      authority: "synthetic-self-built",
+      sourceInventorySha256: sourceManifest.sourceInventorySha256,
+      orderedSourceManifestSha256: sourceManifest.orderedSourceManifestSha256,
+      sourceRootSha256: sourceManifest.sourceRootSha256,
+    },
     segments: segments.map((segment, index) => ({
       order: segment.order,
       sourceId: sourceManifest.orderedSources[index].sourceId,

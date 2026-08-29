@@ -70,10 +70,31 @@ export interface TokenLedgerSourceDescriptor {
     | "frozen-capture-runtime-binding";
 }
 
+export type FrozenCaptureSourceProvenance =
+  | "frozen-capture-dynamic-asset"
+  | "frozen-capture-runtime-binding";
+
 export interface FrozenCaptureSourceDescriptor {
+  provenance: FrozenCaptureSourceProvenance;
   injectionBlockId: string;
   sourceId: string;
   sourceSha256: string;
+}
+
+export interface FrozenCaptureManifestSourceDescriptor extends FrozenCaptureSourceDescriptor {
+  order: number;
+}
+
+export interface FrozenCaptureSourceManifest {
+  schemaVersion: 1;
+  segmenterVersion: string;
+  sources: readonly FrozenCaptureManifestSourceDescriptor[];
+  canonicalSha256: string;
+}
+
+export interface BuildFrozenCaptureSourceManifestInput {
+  segmenterVersion: string;
+  sources: readonly FrozenCaptureSourceDescriptor[];
 }
 
 export interface CompiledPromptBundle {
@@ -97,8 +118,7 @@ export interface BuildTrustedTokenSourceManifestInput {
   compilerVersion: string;
   segmenterVersion: string;
   compiledPromptBundles: readonly CompiledPromptBundle[];
-  captureDynamicAssets: readonly FrozenCaptureSourceDescriptor[];
-  captureRuntimeBindings: readonly FrozenCaptureSourceDescriptor[];
+  captureManifest: FrozenCaptureSourceManifest;
   providerOrder: readonly TokenSourceManifestReference[];
 }
 
@@ -109,9 +129,19 @@ export interface TrustedTokenSourceManifest {
   contractSha256: string;
   compilerVersion: string;
   segmenterVersion: string;
+  captureManifestSha256: string;
   sourceInventorySha256: string;
+  orderedSourceManifestSha256: string;
+  sourceRootSha256: string;
   orderedSources: readonly TokenLedgerSourceDescriptor[];
   canonicalSha256: string;
+}
+
+export interface ExpectedTokenSourceAttestation {
+  authority: "campaign-integration" | "synthetic-self-built";
+  sourceInventorySha256: string;
+  orderedSourceManifestSha256: string;
+  sourceRootSha256: string;
 }
 
 export interface TokenClassificationContractReference {
@@ -127,6 +157,7 @@ export interface BuildTokenLedgerInput {
   providerVisibleInjection: string;
   classification: TokenClassificationContractReference;
   sourceManifest: TrustedTokenSourceManifest;
+  expectedSourceAttestation: ExpectedTokenSourceAttestation;
   segments: readonly TokenLedgerSegment[];
   tokenizer: TokenizerSeam;
 }
@@ -150,13 +181,18 @@ export interface TokenLedger {
     compilerVersion: string;
     segmenterVersion: string;
     trustedSourceManifestSha256: string;
+    captureManifestSha256: string;
     sourceInventorySha256: string;
     orderedSourceManifestSha256: string;
+    sourceRootSha256: string;
+    expectedSourceAttestation: ExpectedTokenSourceAttestation;
     orderedSources: readonly TokenLedgerSourceDescriptor[];
     sourceKindToComponent: Readonly<Record<TokenLedgerSourceKind, TokenLedgerComponent>>;
     formalCompilerClosure: {
       status: "blocked";
-      blocker: "FORMAL_COMPILER_CAPTURE_CONTRACT_NOT_INTEGRATED";
+      blocker:
+        | "FORMAL_COMPILER_CAPTURE_CONTRACT_NOT_INTEGRATED"
+        | "SELF_BUILT_SOURCE_ATTESTATION_NOT_FORMAL";
       owner: "Integration";
     };
   };
@@ -188,6 +224,12 @@ export class TokenLedgerInfrastructureError extends Error {
       | "CLASSIFICATION_SOURCE_REORDERED"
       | "CLASSIFICATION_SOURCE_HASH_MISMATCH"
       | "CLASSIFICATION_SOURCE_MANIFEST_MISMATCH"
+      | "EXPECTED_SOURCE_ATTESTATION_MISSING"
+      | "EXPECTED_SOURCE_INVENTORY_MISMATCH"
+      | "EXPECTED_ORDERED_SOURCE_MANIFEST_MISMATCH"
+      | "EXPECTED_SOURCE_ROOT_MISMATCH"
+      | "CAPTURE_MANIFEST_MISSING"
+      | "CAPTURE_MANIFEST_HASH_MISMATCH"
       | "SEGMENT_COVERAGE_MISMATCH",
     message: string,
   ) {
@@ -226,6 +268,70 @@ function manifestWithoutSha(
   return withoutSha;
 }
 
+function captureManifestWithoutSha(
+  manifest: FrozenCaptureSourceManifest,
+): Omit<FrozenCaptureSourceManifest, "canonicalSha256"> {
+  const { canonicalSha256: _canonicalSha256, ...withoutSha } = manifest;
+  return withoutSha;
+}
+
+export function buildFrozenCaptureSourceManifest(
+  input: BuildFrozenCaptureSourceManifestInput,
+): FrozenCaptureSourceManifest {
+  if (input.segmenterVersion !== TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion) {
+    throw new TokenLedgerInfrastructureError(
+      "CLASSIFICATION_CONTRACT_MISMATCH",
+      "capture sources must use the frozen capture segmenter version",
+    );
+  }
+  if (!Array.isArray(input.sources)) {
+    throw new TokenLedgerInfrastructureError(
+      "CAPTURE_MANIFEST_MISSING",
+      "capture sources must be supplied by the capture-stage manifest builder",
+    );
+  }
+  const identities = new Set<string>();
+  const sources = input.sources.map((source, order) => {
+    if (
+      source === null
+      || typeof source !== "object"
+      || !isIdentity(source.injectionBlockId)
+      || !isIdentity(source.sourceId)
+      || !isSha256(source.sourceSha256)
+      || (
+        source.provenance !== "frozen-capture-dynamic-asset"
+        && source.provenance !== "frozen-capture-runtime-binding"
+      )
+    ) {
+      throw new TokenLedgerInfrastructureError(
+        "CLASSIFICATION_SOURCE_MANIFEST_MISMATCH",
+        `capture-stage source descriptor is invalid at order ${order}`,
+      );
+    }
+    const identity = canonicalSha256({
+      injectionBlockId: source.injectionBlockId,
+      sourceId: source.sourceId,
+    });
+    if (identities.has(identity)) {
+      throw new TokenLedgerInfrastructureError(
+        "CLASSIFICATION_SOURCE_MANIFEST_MISMATCH",
+        `capture-stage source descriptor is duplicated at order ${order}`,
+      );
+    }
+    identities.add(identity);
+    return { order, ...source };
+  });
+  const withoutSha = {
+    schemaVersion: 1 as const,
+    segmenterVersion: input.segmenterVersion,
+    sources,
+  };
+  return canonicalJsonClone({
+    ...withoutSha,
+    canonicalSha256: canonicalSha256(withoutSha),
+  }) as unknown as FrozenCaptureSourceManifest;
+}
+
 export function buildTrustedTokenSourceManifest(
   input: BuildTrustedTokenSourceManifestInput,
 ): TrustedTokenSourceManifest {
@@ -236,6 +342,32 @@ export function buildTrustedTokenSourceManifest(
     throw new TokenLedgerInfrastructureError(
       "CLASSIFICATION_CONTRACT_MISMATCH",
       "trusted sources must use the frozen compiler and capture segmenter versions",
+    );
+  }
+
+  const captureManifest = input.captureManifest;
+  if (
+    captureManifest === null
+    || typeof captureManifest !== "object"
+    || captureManifest.schemaVersion !== 1
+    || captureManifest.segmenterVersion !== input.segmenterVersion
+    || !Array.isArray(captureManifest.sources)
+  ) {
+    throw new TokenLedgerInfrastructureError(
+      "CAPTURE_MANIFEST_MISSING",
+      "trusted token sources require a unified frozen capture-stage manifest",
+    );
+  }
+  let observedCaptureManifestSha256: string | null = null;
+  try {
+    observedCaptureManifestSha256 = canonicalSha256(captureManifestWithoutSha(captureManifest));
+  } catch {
+    observedCaptureManifestSha256 = null;
+  }
+  if (observedCaptureManifestSha256 !== captureManifest.canonicalSha256) {
+    throw new TokenLedgerInfrastructureError(
+      "CAPTURE_MANIFEST_HASH_MISMATCH",
+      "frozen capture manifest canonical hash does not match its contents",
     );
   }
 
@@ -325,30 +457,37 @@ export function buildTrustedTokenSourceManifest(
       });
     }
   }
-  for (const source of input.captureDynamicAssets) {
-    const provenance = "frozen-capture-dynamic-asset" as const;
-    addSource(referenceKey(provenance, source.injectionBlockId, source.sourceId), {
-      sourceId: qualified(["capture", source.injectionBlockId, "dynamic-asset", source.sourceId]),
+  for (const [captureOrder, source] of captureManifest.sources.entries()) {
+    if (
+      source === null
+      || typeof source !== "object"
+      || source.order !== captureOrder
+      || !isIdentity(source.injectionBlockId)
+      || !isIdentity(source.sourceId)
+      || !isSha256(source.sourceSha256)
+      || (
+        source.provenance !== "frozen-capture-dynamic-asset"
+        && source.provenance !== "frozen-capture-runtime-binding"
+      )
+    ) {
+      throw new TokenLedgerInfrastructureError(
+        "CLASSIFICATION_SOURCE_MANIFEST_MISMATCH",
+        `frozen capture source order is invalid at order ${captureOrder}`,
+      );
+    }
+    const sourceKind = source.provenance === "frozen-capture-dynamic-asset"
+      ? "dynamic-assets" as const
+      : "runtime-binding" as const;
+    const sourceKindIdentity = sourceKind === "dynamic-assets" ? "dynamic-asset" : "runtime-binding";
+    addSource(referenceKey(source.provenance, source.injectionBlockId, source.sourceId), {
+      sourceId: qualified(["capture", source.injectionBlockId, sourceKindIdentity, source.sourceId]),
       sourceLocalId: source.sourceId,
-      sourceKind: "dynamic-assets",
+      sourceKind,
       sourceSha256: source.sourceSha256,
       injectionBlockId: source.injectionBlockId,
       compilerFamily: null,
       compilerSurface: null,
-      provenance,
-    });
-  }
-  for (const source of input.captureRuntimeBindings) {
-    const provenance = "frozen-capture-runtime-binding" as const;
-    addSource(referenceKey(provenance, source.injectionBlockId, source.sourceId), {
-      sourceId: qualified(["capture", source.injectionBlockId, "runtime-binding", source.sourceId]),
-      sourceLocalId: source.sourceId,
-      sourceKind: "runtime-binding",
-      sourceSha256: source.sourceSha256,
-      injectionBlockId: source.injectionBlockId,
-      compilerFamily: null,
-      compilerSurface: null,
-      provenance,
+      provenance: source.provenance,
     });
   }
 
@@ -393,6 +532,18 @@ export function buildTrustedTokenSourceManifest(
   const sourceInventory = [...inventory.values()].sort((left, right) => (
     left.sourceId.localeCompare(right.sourceId)
   ));
+  const sourceInventorySha256 = canonicalSha256(sourceInventory);
+  const orderedSourceManifestSha256 = canonicalSha256(orderedSources);
+  const sourceRootSha256 = canonicalSha256({
+    contractId: TOKEN_CLASSIFICATION_CONTRACT.contractId,
+    contractVersion: TOKEN_CLASSIFICATION_CONTRACT.contractVersion,
+    contractSha256: TOKEN_CLASSIFICATION_CONTRACT.contractSha256,
+    compilerVersion: input.compilerVersion,
+    segmenterVersion: input.segmenterVersion,
+    captureManifestSha256: captureManifest.canonicalSha256,
+    sourceInventorySha256,
+    orderedSourceManifestSha256,
+  });
   const withoutSha = {
     schemaVersion: 1 as const,
     contractId: TOKEN_CLASSIFICATION_CONTRACT.contractId,
@@ -400,7 +551,10 @@ export function buildTrustedTokenSourceManifest(
     contractSha256: TOKEN_CLASSIFICATION_CONTRACT.contractSha256,
     compilerVersion: input.compilerVersion,
     segmenterVersion: input.segmenterVersion,
-    sourceInventorySha256: canonicalSha256(sourceInventory),
+    captureManifestSha256: captureManifest.canonicalSha256,
+    sourceInventorySha256,
+    orderedSourceManifestSha256,
+    sourceRootSha256,
     orderedSources,
   };
   return canonicalJsonClone({
@@ -498,6 +652,60 @@ function validateClassification(input: BuildTokenLedgerInput): void {
     throw new TokenLedgerInfrastructureError(
       "CLASSIFICATION_MANIFEST_HASH_MISMATCH",
       "trusted source inventory hash does not match its ordered descriptors",
+    );
+  }
+  if (canonicalSha256(manifest.orderedSources) !== manifest.orderedSourceManifestSha256) {
+    throw new TokenLedgerInfrastructureError(
+      "CLASSIFICATION_MANIFEST_HASH_MISMATCH",
+      "trusted ordered source manifest hash does not match its descriptors",
+    );
+  }
+  const derivedSourceRootSha256 = canonicalSha256({
+    contractId: manifest.contractId,
+    contractVersion: manifest.contractVersion,
+    contractSha256: manifest.contractSha256,
+    compilerVersion: manifest.compilerVersion,
+    segmenterVersion: manifest.segmenterVersion,
+    captureManifestSha256: manifest.captureManifestSha256,
+    sourceInventorySha256: manifest.sourceInventorySha256,
+    orderedSourceManifestSha256: manifest.orderedSourceManifestSha256,
+  });
+  if (derivedSourceRootSha256 !== manifest.sourceRootSha256) {
+    throw new TokenLedgerInfrastructureError(
+      "CLASSIFICATION_MANIFEST_HASH_MISMATCH",
+      "trusted source root hash does not match its frozen source hashes",
+    );
+  }
+  const expected = input.expectedSourceAttestation;
+  if (
+    expected === null
+    || typeof expected !== "object"
+    || (expected.authority !== "campaign-integration" && expected.authority !== "synthetic-self-built")
+    || !isSha256(expected.sourceInventorySha256)
+    || !isSha256(expected.orderedSourceManifestSha256)
+    || !isSha256(expected.sourceRootSha256)
+  ) {
+    throw new TokenLedgerInfrastructureError(
+      "EXPECTED_SOURCE_ATTESTATION_MISSING",
+      "a typed campaign/Integration source attestation is required before token accounting",
+    );
+  }
+  if (expected.sourceInventorySha256 !== manifest.sourceInventorySha256) {
+    throw new TokenLedgerInfrastructureError(
+      "EXPECTED_SOURCE_INVENTORY_MISMATCH",
+      "trusted source inventory does not match the campaign/Integration expectation",
+    );
+  }
+  if (expected.orderedSourceManifestSha256 !== manifest.orderedSourceManifestSha256) {
+    throw new TokenLedgerInfrastructureError(
+      "EXPECTED_ORDERED_SOURCE_MANIFEST_MISMATCH",
+      "trusted source order does not match the campaign/Integration expectation",
+    );
+  }
+  if (expected.sourceRootSha256 !== manifest.sourceRootSha256) {
+    throw new TokenLedgerInfrastructureError(
+      "EXPECTED_SOURCE_ROOT_MISMATCH",
+      "trusted source root does not match the campaign/Integration expectation",
     );
   }
   if (!Array.isArray(input.segments) || input.segments.length === 0) {
@@ -627,13 +835,18 @@ export function buildTokenLedger(input: BuildTokenLedgerInput): TokenLedger {
       compilerVersion: TOKEN_CLASSIFICATION_CONTRACT.compilerVersion,
       segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
       trustedSourceManifestSha256: input.sourceManifest.canonicalSha256,
+      captureManifestSha256: input.sourceManifest.captureManifestSha256,
       sourceInventorySha256: input.sourceManifest.sourceInventorySha256,
-      orderedSourceManifestSha256: canonicalSha256(orderedSources),
+      orderedSourceManifestSha256: input.sourceManifest.orderedSourceManifestSha256,
+      sourceRootSha256: input.sourceManifest.sourceRootSha256,
+      expectedSourceAttestation: input.expectedSourceAttestation,
       orderedSources,
       sourceKindToComponent: SOURCE_KIND_TO_COMPONENT,
       formalCompilerClosure: {
         status: "blocked" as const,
-        blocker: "FORMAL_COMPILER_CAPTURE_CONTRACT_NOT_INTEGRATED" as const,
+        blocker: input.expectedSourceAttestation.authority === "synthetic-self-built"
+          ? "SELF_BUILT_SOURCE_ATTESTATION_NOT_FORMAL" as const
+          : "FORMAL_COMPILER_CAPTURE_CONTRACT_NOT_INTEGRATED" as const,
         owner: "Integration" as const,
       },
     },

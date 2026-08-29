@@ -4,6 +4,12 @@ import { AnthropicAdapter } from "../injection/adapters/anthropic.js";
 import { ClaudeCodeProfile } from "../injection/agents/claude-code/index.js";
 import { InjectionPipeline } from "../injection/pipeline.js";
 import { HookRegistryImpl } from "../injection/registry.js";
+import { renderSkillToolsBlock } from "../injection/injectors/skill-tools-injector.js";
+import { renderTdaiMemoryToolsBlock } from "../injection/injectors/tdai-tools-injector.js";
+import {
+  buildCapabilitySignature,
+  compileToolPrompt,
+} from "../injection/tool-prompt/index.js";
 import {
   assessM0EvaluationBoundaryFacts,
   assessM2EvaluationHorizonUsageEvidence,
@@ -11,9 +17,11 @@ import {
   accumulateRequestUsageToM0Horizon,
   buildM2EligibilityEvidence,
   buildRequestUsageLedger,
+  buildFrozenCaptureSourceManifest,
   buildRunIsolationEvidence,
   buildTokenLedger,
   buildTrustedTokenSourceManifest,
+  canonicalJsonClone,
   canonicalSha256,
   normalizeProviderUsage,
   TOKEN_CLASSIFICATION_CONTRACT,
@@ -62,20 +70,21 @@ function trustedTokenSources(
       sourceSpecIds: [] as const,
     }));
   const compiledContent = compiledUnits.map((unit) => unit.content).join("");
-  const captureDynamicAssets = sources
-    .filter((source) => source.sourceKind === "dynamic-assets")
-    .map((source) => ({
+  const captureManifest = buildFrozenCaptureSourceManifest({
+    segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
+    sources: sources
+      .filter((source) => (
+        source.sourceKind === "dynamic-assets" || source.sourceKind === "runtime-binding"
+      ))
+      .map((source) => ({
+        provenance: source.sourceKind === "dynamic-assets"
+          ? "frozen-capture-dynamic-asset" as const
+          : "frozen-capture-runtime-binding" as const,
       injectionBlockId: captureBlockId,
       sourceId: source.sourceId,
       sourceSha256: source.sourceSha256,
-    }));
-  const captureRuntimeBindings = sources
-    .filter((source) => source.sourceKind === "runtime-binding")
-    .map((source) => ({
-      injectionBlockId: captureBlockId,
-      sourceId: source.sourceId,
-      sourceSha256: source.sourceSha256,
-    }));
+      })),
+  });
   const providerOrder = sources.map((source) => {
     if (source.sourceKind === "runtime-binding") {
       return {
@@ -116,12 +125,17 @@ function trustedTokenSources(
         specIds: [],
       },
     }],
-    captureDynamicAssets,
-    captureRuntimeBindings,
+    captureManifest,
     providerOrder,
   });
   return {
     sourceManifest,
+    expectedSourceAttestation: {
+      authority: "synthetic-self-built" as const,
+      sourceInventorySha256: sourceManifest.sourceInventorySha256,
+      orderedSourceManifestSha256: sourceManifest.orderedSourceManifestSha256,
+      sourceRootSha256: sourceManifest.sourceRootSha256,
+    },
     segments: sources.map((source, index) => ({
       order: source.order,
       sourceId: sourceManifest.orderedSources[index].sourceId,
@@ -170,6 +184,33 @@ describe("Task 1 measurement v2 canonical JSON", () => {
     }
     expect(canonicalSha256([])).not.toBe(canonicalSha256([null]));
     expect(canonicalSha256({})).not.toBe(canonicalSha256({ value: null }));
+  });
+
+  it("preserves reserved own record keys without prototype setter collisions", () => {
+    const reserved = Object.create(null) as Record<string, unknown>;
+    for (const [key, value] of [
+      ["__proto__", { marker: "proto-value" }],
+      ["constructor", { marker: "constructor-value" }],
+      ["prototype", { marker: "prototype-value" }],
+    ] as const) {
+      Object.defineProperty(reserved, key, {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value,
+      });
+    }
+
+    const clone = canonicalJsonClone(reserved) as Record<string, unknown>;
+    expect(Object.getPrototypeOf(clone)).toBeNull();
+    expect(Object.keys(clone)).toEqual(["__proto__", "constructor", "prototype"]);
+    expect(clone.__proto__).toEqual({ marker: "proto-value" });
+    expect(clone.constructor).toEqual({ marker: "constructor-value" });
+    expect(clone.prototype).toEqual({ marker: "prototype-value" });
+    expect(canonicalSha256(reserved)).not.toBe(canonicalSha256({
+      constructor: { marker: "constructor-value" },
+      prototype: { marker: "prototype-value" },
+    }));
   });
 });
 
@@ -674,7 +715,7 @@ describe("Task 1 measurement v2 token ledger", () => {
         ],
         formalCompilerClosure: {
           status: "blocked",
-          blocker: "FORMAL_COMPILER_CAPTURE_CONTRACT_NOT_INTEGRATED",
+          blocker: "SELF_BUILT_SOURCE_ATTESTATION_NOT_FORMAL",
           owner: "Integration",
         },
       },
@@ -820,8 +861,10 @@ describe("Task 1 measurement v2 token ledger", () => {
       compilerVersion: TOKEN_CLASSIFICATION_CONTRACT.compilerVersion,
       segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
       compiledPromptBundles: [{ injectionBlockId: "unknown-block", compiledPrompt: unknownPrompt }],
-      captureDynamicAssets: [],
-      captureRuntimeBindings: [],
+      captureManifest: buildFrozenCaptureSourceManifest({
+        segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
+        sources: [],
+      }),
       providerOrder: [{
         provenance: "compiled-tool-prompt-unit",
         injectionBlockId: "unknown-block",
@@ -836,8 +879,10 @@ describe("Task 1 measurement v2 token ledger", () => {
       compilerVersion: TOKEN_CLASSIFICATION_CONTRACT.compilerVersion,
       segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
       compiledPromptBundles: [{ injectionBlockId: "duplicate-block", compiledPrompt: duplicatePrompt }],
-      captureDynamicAssets: [],
-      captureRuntimeBindings: [],
+      captureManifest: buildFrozenCaptureSourceManifest({
+        segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
+        sources: [],
+      }),
       providerOrder: [
         {
           provenance: "compiled-tool-prompt-unit",
@@ -862,7 +907,7 @@ describe("Task 1 measurement v2 token ledger", () => {
       providerVisibleInjection: "STATIC",
       classification: TOKEN_CLASSIFICATION_INPUT,
       ...trusted,
-      tokenizer: { id: "synthetic", version: "1", count: (text) => text.length },
+      tokenizer: { id: "synthetic", version: "1", count: (text: string) => text.length },
       ...overrides,
     });
 
@@ -890,55 +935,212 @@ describe("Task 1 measurement v2 token ledger", () => {
     }));
   });
 
-  it("qualifies repeated compiler unit ids across real prompt surfaces", () => {
-    const compiledPrompt = (
-      family: "memory" | "skill",
-      surface: "memory-tools" | "skill-tools",
-      content: string,
-    ) => ({
-      compilerVersion: TOKEN_CLASSIFICATION_CONTRACT.compilerVersion,
-      profile: "protocol-compact" as const,
-      profileLineage: ["legacy", "contract-corrected", "protocol-compact"] as const,
-      family,
-      surface,
-      capabilitySignature: "all-on",
-      content,
-      contentSha256: createHash("sha256").update(content).digest("hex"),
-      units: [{
-        id: "shared.execution-grammar",
-        family,
-        kind: "execution-grammar" as const,
-        content,
-        sourceSpecIds: [] as const,
-      }],
-      contractIds: [] as const,
-      specIds: [] as const,
-    });
-    const memory = compiledPrompt("memory", "memory-tools", "MEMORY");
-    const skill = compiledPrompt("skill", "skill-tools", "SKILL");
+  it("requires a campaign-owned expected source attestation", () => {
+    const trusted = trustedTokenSources([
+      tokenSourceSegment(0, "memory-guide.policy", "policy", "STATIC"),
+    ]);
+    expect(() => buildTokenLedger({
+      variantId: "V0",
+      runId: "missing-source-attestation",
+      providerVisibleInjection: "STATIC",
+      classification: TOKEN_CLASSIFICATION_INPUT,
+      ...trusted,
+      expectedSourceAttestation: undefined,
+      tokenizer: { id: "synthetic", version: "1", count: (text: string) => text.length },
+    } as never)).toThrowError(expect.objectContaining({
+      code: "EXPECTED_SOURCE_ATTESTATION_MISSING",
+    }));
+  });
 
-    expect(() => buildTrustedTokenSourceManifest({
+  it("binds capture provenance and source roots to the frozen campaign expectation", () => {
+    const text = "ASSET";
+    const sourceSha256 = createHash("sha256").update(text).digest("hex");
+    const captureManifest = buildFrozenCaptureSourceManifest({
+      segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
+      sources: [{
+        provenance: "frozen-capture-dynamic-asset",
+        injectionBlockId: "skill-listing-block",
+        sourceId: "skill-listing.dynamic-assets",
+        sourceSha256,
+      }],
+    });
+    const buildManifest = (
+      frozenCaptureManifest: typeof captureManifest,
+      provenance: "frozen-capture-dynamic-asset" | "frozen-capture-runtime-binding",
+    ) => buildTrustedTokenSourceManifest({
       compilerVersion: TOKEN_CLASSIFICATION_CONTRACT.compilerVersion,
       segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
-      compiledPromptBundles: [
-        { injectionBlockId: "memory-block", compiledPrompt: memory },
-        { injectionBlockId: "skill-block", compiledPrompt: skill },
-      ],
-      captureDynamicAssets: [],
-      captureRuntimeBindings: [],
-      providerOrder: [
-        {
-          provenance: "compiled-tool-prompt-unit",
-          injectionBlockId: "memory-block",
-          unitId: "shared.execution-grammar",
-        },
-        {
-          provenance: "compiled-tool-prompt-unit",
-          injectionBlockId: "skill-block",
-          unitId: "shared.execution-grammar",
-        },
-      ],
-    } as never)).not.toThrow();
+      compiledPromptBundles: [],
+      captureManifest: frozenCaptureManifest,
+      providerOrder: [{
+        provenance,
+        injectionBlockId: "skill-listing-block",
+        sourceId: "skill-listing.dynamic-assets",
+      }],
+    });
+    const sourceManifest = buildManifest(captureManifest, "frozen-capture-dynamic-asset");
+    const expectedSourceAttestation = {
+      authority: "campaign-integration" as const,
+      sourceInventorySha256: sourceManifest.sourceInventorySha256,
+      orderedSourceManifestSha256: sourceManifest.orderedSourceManifestSha256,
+      sourceRootSha256: sourceManifest.sourceRootSha256,
+    };
+    const buildLedger = (
+      manifest: typeof sourceManifest,
+      expected = expectedSourceAttestation,
+      segmentText = text,
+    ) => buildTokenLedger({
+      variantId: "V0",
+      runId: "capture-provenance-root",
+      providerVisibleInjection: segmentText,
+      classification: TOKEN_CLASSIFICATION_INPUT,
+      sourceManifest: manifest,
+      expectedSourceAttestation: expected,
+      segments: [{
+        order: 0,
+        sourceId: manifest.orderedSources[0].sourceId,
+        sourceSha256: createHash("sha256").update(segmentText).digest("hex"),
+        text: segmentText,
+      }],
+      tokenizer: { id: "synthetic", version: "1", count: (value) => value.length },
+    });
+
+    expect(buildLedger(sourceManifest).dynamicAssetTokens).toBe(text.length);
+    expect(() => buildLedger(sourceManifest, {
+      ...expectedSourceAttestation,
+      sourceInventorySha256: "f".repeat(64),
+    })).toThrowError(expect.objectContaining({ code: "EXPECTED_SOURCE_INVENTORY_MISMATCH" }));
+    expect(() => buildLedger(sourceManifest, {
+      ...expectedSourceAttestation,
+      orderedSourceManifestSha256: "f".repeat(64),
+    })).toThrowError(expect.objectContaining({
+      code: "EXPECTED_ORDERED_SOURCE_MANIFEST_MISMATCH",
+    }));
+    expect(() => buildLedger(sourceManifest, {
+      ...expectedSourceAttestation,
+      sourceRootSha256: "f".repeat(64),
+    })).toThrowError(expect.objectContaining({ code: "EXPECTED_SOURCE_ROOT_MISMATCH" }));
+
+    const relabeledCaptureManifest = buildFrozenCaptureSourceManifest({
+      segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
+      sources: [{
+        provenance: "frozen-capture-runtime-binding",
+        injectionBlockId: "skill-listing-block",
+        sourceId: "skill-listing.dynamic-assets",
+        sourceSha256,
+      }],
+    });
+    const relabeledSourceManifest = buildManifest(
+      relabeledCaptureManifest,
+      "frozen-capture-runtime-binding",
+    );
+    expect(() => buildLedger(relabeledSourceManifest)).toThrowError(expect.objectContaining({
+      code: "EXPECTED_SOURCE_INVENTORY_MISMATCH",
+    }));
+
+    const changedText = "ASSET-CHANGED";
+    const recomputedCaptureManifest = buildFrozenCaptureSourceManifest({
+      segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
+      sources: [{
+        provenance: "frozen-capture-dynamic-asset",
+        injectionBlockId: "skill-listing-block",
+        sourceId: "skill-listing.dynamic-assets",
+        sourceSha256: createHash("sha256").update(changedText).digest("hex"),
+      }],
+    });
+    const recomputedSourceManifest = buildManifest(
+      recomputedCaptureManifest,
+      "frozen-capture-dynamic-asset",
+    );
+    expect(() => buildLedger(
+      recomputedSourceManifest,
+      expectedSourceAttestation,
+      changedText,
+    )).toThrowError(expect.objectContaining({ code: "EXPECTED_SOURCE_INVENTORY_MISMATCH" }));
+  });
+
+  it("qualifies repeated compiler unit ids across real prompt surfaces", () => {
+    const signature = (memory: boolean, skill: boolean) => buildCapabilitySignature({
+      memory,
+      skill,
+      knowledge: false,
+      wiki: false,
+      codeGraph: false,
+      skillWrite: false,
+      skillExtract: false,
+    });
+    const memory = compileToolPrompt({
+      profile: "protocol-compact",
+      family: "memory",
+      surface: "memory-tools",
+      legacyUnits: [{
+        id: "memory-tools.legacy-body",
+        kind: "legacy-body",
+        content: renderTdaiMemoryToolsBlock(
+          "http://127.0.0.1:8096",
+          "session-parity",
+          "space-parity",
+        ),
+      }],
+      capabilitySignature: signature(true, false),
+    });
+    const skill = compileToolPrompt({
+      profile: "protocol-compact",
+      family: "skill",
+      surface: "skill-tools",
+      legacyUnits: [{
+        id: "skill-tools.legacy-body",
+        kind: "legacy-body",
+        content: renderSkillToolsBlock(
+          "http://127.0.0.1:8096",
+          false,
+          "session-parity",
+          "space-parity",
+        ),
+      }],
+      capabilitySignature: signature(false, true),
+    });
+    expect(memory.units.find((unit) => unit.id === "shared.execution-grammar"))
+      .toMatchObject({ family: "memory", kind: "execution-grammar" });
+    expect(skill.units.find((unit) => unit.id === "shared.execution-grammar"))
+      .toMatchObject({ family: "skill", kind: "execution-grammar" });
+    const compiledPromptBundles = [
+      { injectionBlockId: "memory-block", compiledPrompt: memory },
+      { injectionBlockId: "skill-block", compiledPrompt: skill },
+    ] as const;
+    const providerOrder = compiledPromptBundles.flatMap((bundle) => (
+      bundle.compiledPrompt.units.map((unit) => ({
+        provenance: "compiled-tool-prompt-unit" as const,
+        injectionBlockId: bundle.injectionBlockId,
+        unitId: unit.id,
+      }))
+    ));
+    const manifest = buildTrustedTokenSourceManifest({
+      compilerVersion: TOKEN_CLASSIFICATION_CONTRACT.compilerVersion,
+      segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
+      compiledPromptBundles,
+      captureManifest: buildFrozenCaptureSourceManifest({
+        segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
+        sources: [],
+      }),
+      providerOrder,
+    });
+    expect(manifest.orderedSources.filter((source) => (
+      source.sourceLocalId === "shared.execution-grammar"
+    ))).toMatchObject([
+      {
+        injectionBlockId: "memory-block",
+        compilerFamily: "memory",
+        compilerSurface: "memory-tools",
+        sourceKind: "execution-grammar",
+      },
+      {
+        injectionBlockId: "skill-block",
+        compilerFamily: "skill",
+        compilerSurface: "skill-tools",
+        sourceKind: "execution-grammar",
+      },
+    ]);
   });
 });
 
@@ -1078,6 +1280,97 @@ describe("Task 1 measurement v2 request and phase usage ledger", () => {
     });
   });
 
+  it("requires the successful M0 attempt prefix to be exact through the terminal attempt", () => {
+    const twoRequests = buildRequestUsageLedger({
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      requests: [
+        request(0, "request-0", "initial", usage(10)),
+        request(1, "request-1", "followup", usage(20)),
+      ],
+    });
+    const oneRequest = buildRequestUsageLedger({
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      requests: [{
+        ...request(0, "request-multi", "executor", usage(30)),
+        observedAttemptIds: ["attempt-a", "attempt-b"],
+      }],
+    });
+    if (twoRequests.status !== "ready" || oneRequest.status !== "ready") {
+      throw new Error("expected ready request ledgers");
+    }
+
+    const cases = [
+      {
+        name: "missing first request attempt",
+        ledger: twoRequests.ledger,
+        prefix: [boundary("request-1", "attempt-1", "followup")],
+        horizonRequestId: "request-1",
+        horizonPhaseId: "followup",
+        terminalAttemptId: "attempt-1",
+        terminalRequestId: "request-1",
+      },
+      {
+        name: "missing middle request attempt",
+        ledger: buildRequestUsageLedger({
+          runId: "ledger-run",
+          traceId: "ledger-trace",
+          requests: [
+            request(0, "request-0", "initial", usage(10)),
+            request(1, "request-1", "executor", usage(20)),
+            request(2, "request-2", "followup", usage(30)),
+          ],
+        }),
+        prefix: [
+          boundary("request-0", "attempt-0", "initial"),
+          boundary("request-2", "attempt-2", "followup"),
+        ],
+        horizonRequestId: "request-2",
+        horizonPhaseId: "followup",
+        terminalAttemptId: "attempt-2",
+        terminalRequestId: "request-2",
+      },
+      {
+        name: "missing earlier attempt from the terminal request",
+        ledger: oneRequest.ledger,
+        prefix: [boundary("request-multi", "attempt-b", "executor")],
+        horizonRequestId: "request-multi",
+        horizonPhaseId: "executor",
+        terminalAttemptId: "attempt-b",
+        terminalRequestId: "request-multi",
+      },
+    ] as const;
+
+    for (const testCase of cases) {
+      const ledger = "status" in testCase.ledger
+        ? testCase.ledger.status === "ready" ? testCase.ledger.ledger : null
+        : testCase.ledger;
+      if (ledger === null) throw new Error(`expected ready ledger for ${testCase.name}`);
+      const result = accumulateRequestUsageToM0Horizon(ledger, {
+        status: "observed",
+        runId: "ledger-run",
+        traceId: "ledger-trace",
+        evaluationPrefixSha256: canonicalSha256(testCase.prefix),
+        evaluationAttemptPrefix: testCase.prefix,
+        evaluationHorizonRequestId: testCase.horizonRequestId,
+        evaluationHorizonPhaseId: testCase.horizonPhaseId,
+        terminalBoundaryGivenSuccess: {
+          traceId: "ledger-trace",
+          requestId: testCase.terminalRequestId,
+          phaseId: testCase.horizonPhaseId,
+          terminalAttemptId: testCase.terminalAttemptId,
+        },
+        modelRoundsToTerminal: 2,
+        tdaiCallCount: testCase.prefix.length,
+        timeToTerminalMs: 50,
+        terminalReached: true,
+      });
+      expect(result.blockers, testCase.name).toContain("HORIZON_ATTEMPT_PREFIX_MISMATCH");
+      expect(result.status, testCase.name).toBe("blocked");
+    }
+  });
+
   it("uses the horizon request identity when non-task phases are interleaved", () => {
     const requests = [
       { ...request(0, "router-request", "router", usage(3)), component: "router" as const, observedAttemptIds: [] },
@@ -1181,6 +1474,9 @@ describe("Task 1 measurement v2 request and phase usage ledger", () => {
       },
     });
     expect(accumulated.providerInputToEvaluationHorizon).not.toBe(1149);
+    expect(built.ledger.requests).toHaveLength(3);
+    expect(built.ledger.aggregateProviderUsage.providerTotalInputTokens).toBe(1149);
+    expect(built.ledger.requests[2].requestId).toBe("request-after-terminal");
     expect(assessM2EvaluationHorizonUsageEvidence(accumulated)).toEqual({
       status: "ready",
       blockers: [],
@@ -1232,6 +1528,45 @@ describe("Task 1 measurement v2 request and phase usage ledger", () => {
       providerInputToEvaluationHorizon: 30,
       providerInputToTerminalGivenSuccess: null,
     });
+  });
+
+  it("requires a failed M0 attempt prefix to cover the complete horizon request", () => {
+    const built = buildRequestUsageLedger({
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      requests: [
+        {
+          ...request(0, "request-0", "initial", usage(10)),
+          observedAttemptIds: ["attempt-a", "attempt-b"],
+        },
+        {
+          ...request(1, "request-1", "followup", usage(20)),
+          observedAttemptIds: ["attempt-c"],
+        },
+      ],
+    });
+    if (built.status !== "ready") throw new Error("expected ready request ledger");
+    const incompletePrefix = [
+      boundary("request-0", "attempt-a", "initial"),
+      boundary("request-1", "attempt-c", "followup"),
+    ];
+    const result = accumulateRequestUsageToM0Horizon(built.ledger, {
+      status: "observed",
+      runId: "ledger-run",
+      traceId: "ledger-trace",
+      evaluationPrefixSha256: canonicalSha256(incompletePrefix),
+      evaluationAttemptPrefix: incompletePrefix,
+      evaluationHorizonRequestId: "request-1",
+      evaluationHorizonPhaseId: "followup",
+      terminalBoundaryGivenSuccess: null,
+      modelRoundsToTerminal: null,
+      tdaiCallCount: incompletePrefix.length,
+      timeToTerminalMs: null,
+      terminalReached: false,
+    });
+
+    expect(result.status).toBe("blocked");
+    expect(result.blockers).toContain("HORIZON_ATTEMPT_PREFIX_MISMATCH");
   });
 
   it("fails closed for missing, duplicate, wrong-run, wrong-trace, and wrong-phase records", () => {

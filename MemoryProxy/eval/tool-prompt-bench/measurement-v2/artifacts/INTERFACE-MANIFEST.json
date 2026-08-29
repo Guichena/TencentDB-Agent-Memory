@@ -124,7 +124,7 @@
       }
     },
     "trustedSourceManifest": {
-      "canonicalSha256": "e35feaae3f384ea058ba7de0290cb5ff4866bfb0512770a03f7476170ad4afec",
+      "canonicalSha256": "2e279c9edece75d24653b577c6bc112c5af722bba61bcd4fc88fd787f0c245dc",
       "sourceInventorySha256": "044e32b4eb9ca5d3e7b27080841bcb8ceb13f473c0e23ca9a5511ea6afaa5235",
       "orderedSources": [
         {
@@ -175,7 +175,7 @@
     },
     "formalCompilerClosure": {
       "status": "blocked",
-      "blocker": "FORMAL_COMPILER_CAPTURE_CONTRACT_NOT_INTEGRATED",
+      "blocker": "SELF_BUILT_SOURCE_ATTESTATION_NOT_FORMAL",
       "owner": "Integration"
     }
   },
