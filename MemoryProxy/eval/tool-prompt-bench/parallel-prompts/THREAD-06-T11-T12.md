@@ -4,18 +4,28 @@
 
 本任务与 build-01 至 build-05、build-07、build-08 并行建设。不得等待前五个任务先合并，也不得创建 400 条中间数据集。八个建设任务全部完成后，集成任务才一次性生成 16 个 Team、640 条 case 的 `formal-v1`。
 
-启动前置：建设任务只能从不可变启动 Tag `task1-data-parallel-launch-16team-v1` 创建 worktree。schema 基线 Tag `task1-data-parallel-baseline-v2` 必须解引用到 `1048681880b51e7a52a6b8b0b731eadeec44e118`，数据内容祖先固定为 `960021e472456515a89d3c2c4f2962fbf6cc51a1`，两者都必须是启动 HEAD 的祖先。launch Tag 的提交值不在同一提交中硬编码，创建 worktree 后动态解析。任一启动检查失败都停止并报告，不得绕过。
+## 启动方式：先绑定 worktree，再粘贴提示词
 
-开始任何写操作前，必须创建或进入本任务专用 worktree。若当前目录不是目标目录，先在当前仓库执行：
+Codex 任务的可写工作区在任务创建时固定。`Set-Location`、`cd` 和 `git -C` 只能改变命令执行目录，不能让当前任务获得另一个 worktree 的写权限。因此，本提示词不创建 worktree，也不尝试从其他工作区切换过来。
+
+必须新建一个 Codex 任务，并在创建任务时把工作区绑定到：
+
+```text
+D:\projects\TencentDB-Agent-Memory-task1-data-build-16team-t11-t12
+```
+
+再把本提示词完整粘贴到该新任务。不要把本提示词发给绑定原仓库、集成 worktree 或其他 Team worktree 的任务。如果任务启动时的工作区不是上述路径，立即返回 `WORKSPACE_NOT_BOUND`，要求用户新建一个绑定正确文件夹的任务。不要创建 worktree，不要执行 `Set-Location`，也不要让用户在同一个任务里发送“继续”，因为后续消息不能改变任务的可写根目录。
+
+目标 worktree 和分支由准备任务提前创建。本任务只运行以下只读启动 Gate：
 
 ```powershell
-$taskBranch = "codex/task1-data-build-16team-t11-t12"
-$taskWorktree = "D:\projects\TencentDB-Agent-Memory-task1-data-build-16team-t11-t12"
+$expectedBranch = "codex/task1-data-build-16team-t11-t12"
+$expectedRoot = "D:\projects\TencentDB-Agent-Memory-task1-data-build-16team-t11-t12"
 $launchTag = "task1-data-parallel-launch-16team-v1"
-if (Test-Path -LiteralPath $taskWorktree) { throw "target worktree path already exists; verify ownership instead of overwriting it" }
-if (git branch --list $taskBranch) { throw "target branch already exists; inspect git worktree list --porcelain before continuing" }
-git worktree add -b $taskBranch $taskWorktree $launchTag
-Set-Location -LiteralPath $taskWorktree
+$currentRoot = (Resolve-Path -LiteralPath (git rev-parse --show-toplevel)).Path
+$resolvedExpectedRoot = (Resolve-Path -LiteralPath $expectedRoot).Path
+if ($currentRoot -ne $resolvedExpectedRoot) { throw "WORKSPACE_NOT_BOUND: create a new Codex task rooted at $expectedRoot" }
+if ((git branch --show-current) -ne $expectedBranch) { throw "unexpected builder branch" }
 $launchCommit = git rev-parse "$($launchTag)^{commit}"
 if ($LASTEXITCODE -ne 0) { throw "launch tag cannot be resolved" }
 $headCommit = git rev-parse HEAD
@@ -29,7 +39,7 @@ if ($LASTEXITCODE -ne 0) { throw "data content baseline is not an ancestor of la
 if (git status --short) { throw "worktree is not clean at startup" }
 ```
 
-如果启动时已经位于目标目录，不重复创建，只运行 Tag、HEAD、祖先、分支和干净状态校验。创建后所有文件和命令都必须以 `$taskWorktree` 为工作目录；如果当前任务无法转到该路径，停止并让用户从该 worktree 重新打开任务。目标路径或分支已存在但不属于本任务时，禁止删除、移动、接管或切换它。
+任一检查失败都停止并报告，不得删除、移动、接管或切换任何 worktree。启动 Gate 全部通过后必须立即开始 T11，不要只汇报环境正常后停止。
 
 开始前完整阅读以下文件，并亲自核对生产 Memory、Skill、Knowledge 路由源码：
 
