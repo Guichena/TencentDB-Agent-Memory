@@ -1,0 +1,143 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "build-04-T08-knowledge-expansion-01",
+  "stage": "DS05",
+  "team_id": "T08",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T08-PAIR-K02",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "medium",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "This read-only pass is frozen at 2026-08-29 for the Jest runtime suite. The workspace is a Yarn monorepo with packages/jest-runtime, packages/expect, e2e fixtures, and snapshot tests."
+        },
+        {
+          "role": "assistant",
+          "content": "The pinned source is https://github.com/jestjs/jest at commit be425a0b0e3bd60a74e4a7e350aa38c63a2d25ef. That repository, revision, and workspace structure uniquely match the ready Jest resource; other ready resources in this engineering space belong to pytest, Playwright, and Spring."
+        },
+        {
+          "role": "user",
+          "content": "Current notes mention flaky failures, snapshot triage, serializer behavior, fake timers, and focused diffs, but they do not state the closure checks or when a snapshot update is acceptable."
+        },
+        {
+          "role": "assistant",
+          "content": "Those topics are search cues rather than the closure rule. Keep the Jest workspace and pinned revision fixed, and do not infer the missing snapshot decision from the adjacent projects."
+        }
+      ],
+      "changed_message_index": 4,
+      "query": "For the pinned Jest workspace, what is the exact snapshot triage closure rule for a flaky failure, including the required evidence and ownership gate? Answer only that rule.",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "The handoff still names flaky failures, snapshot triage, evidence, and ownership as topics without stating the serializer and fake-timer reruns, the focused diff, the drift classification, or the snapshot acceptance boundary; please preserve that unresolved rule."
+        },
+        "private_proposal": {
+          "unique_information_gap": "The fixed Jest snapshot-triage wiki's closure rule is absent: the context does not say which pre-acceptance reruns and focused diff are required, how to classify drift, or which classification permits a snapshot update.",
+          "route": "knowledge",
+          "target_asset_ids": ["wiki-t08js01"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "List the bound read-only capability, query the matching Jest snapshot-triage page, and stop after its closure rule is returned."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "Before accepting a snapshot update, rerun the isolated failure once with the original serializer and once after resetting fake timers; attach a focused received-vs-expected diff; classify the change as behavior, serializer, or fixture drift. Only an approved behavior change may update the snapshot; serializer or fixture drift must be fixed at the root cause."
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "The appended note states every snapshot-triage closure check and the sole acceptance boundary for the pinned Jest workspace, so another lookup is unnecessary."
+        }
+      },
+      "visible_distractor_ids_author_only": ["T08-SKILL-PYTEST-COVERAGE", "wiki-t08pw01"],
+      "controlled_delta_note": "Positive preserves only the Jest snapshot-triage closure rule as unresolved; Negative adds exactly the original-serializer rerun, fake-timer reset rerun, focused diff, drift classification, and snapshot acceptance/root-cause conditions while keeping the workspace, repository, revision, shared messages, and query unchanged.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Does Positive leave the snapshot-triage closure checks absent without naming the wiki in provider-visible text?",
+        "Does Negative add only the two required reruns, focused received-vs-expected diff, behavior/serializer/fixture drift classification, and snapshot acceptance boundary?",
+        "Do the Jest repository URL, pinned revision, Yarn structure, and ready-resource context uniquely identify the intended wiki resource?",
+        "Is the candidate synthetic with external_source_ids=[] and the knowledge sequence limited to listing the capability followed by one query?"
+      ]
+    },
+    {
+      "draft_pair_id": "T08-PAIR-K03",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "This read-only pass is frozen at 2026-08-29 for the Playwright browser journeys workspace. It is a Node workspace containing packages/playwright, packages/playwright-core, tests/playwright-test, and browser fixtures."
+        },
+        {
+          "role": "assistant",
+          "content": "The pinned source is https://github.com/microsoft/playwright at commit de214f440b7e34937fe4886f046b78b757136087. The repository, revision, and workspace structure uniquely match the ready Playwright resource."
+        },
+        {
+          "role": "user",
+          "content": "The engineering space also has ready pytest and Jest resources with their own repositories and revisions; keep those neighboring workspaces separate from this browser-journey review."
+        },
+        {
+          "role": "assistant",
+          "content": "I will use the Playwright repository and pinned revision as the identity boundary and will not transfer testing conclusions from the neighboring Python or Jest projects."
+        },
+        {
+          "role": "user",
+          "content": "Current notes cover browser exploration, observable steps, locator discovery, generated end-to-end tests, accessibility checks, cross-browser checks, retries, and traces, but they do not state who owns the exploratory observations versus durable assertions."
+        },
+        {
+          "role": "assistant",
+          "content": "Those terms identify the review topic, not its responsibility boundary. The missing statement concerns the explorer, the test author, and the evidence required when a browser journey fails or is retried."
+        },
+        {
+          "role": "user",
+          "content": "The pinned revision and read-only constraint remain unchanged. Please answer only the ownership boundary for this browser journey, without proposing a new locator or test design."
+        },
+        {
+          "role": "assistant",
+          "content": "The target workspace is fixed by its repository, revision, and Node structure, while the exact review ownership and trace-backed closure rule are still absent from the notes."
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "For the pinned Playwright browser journey, what is the exact ownership rule for observable steps, locator candidates, durable assertions, and trace-backed cross-browser closure? Answer only that boundary.",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "The handoff still lists exploration, locator candidates, assertions, retries, and traces as separate topics without saying which role owns each responsibility or what must accompany closure; please preserve that unresolved boundary."
+        },
+        "private_proposal": {
+          "unique_information_gap": "The pinned Playwright browser-journey review page's responsibility boundary is absent: the context does not assign observable steps and locator candidates, durable assertions, or trace-backed cross-browser validation.",
+          "route": "knowledge",
+          "target_asset_ids": ["wiki-t08pw01"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "List the bound read-only capability, query the matching Playwright journey-review page, and stop after the ownership boundary is returned."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "The review note supplies the sole missing boundary: the explorer owns observable steps and locator candidates; the test author owns durable assertions; on a failed retry, attach a trace and validate the selector across browsers before calling the journey closed."
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "The appended note assigns exploration and assertions and states the trace plus cross-browser validation condition, so the pinned Playwright review can be answered without another lookup."
+        }
+      },
+      "visible_distractor_ids_author_only": ["wiki-t08js01", "cg-t08py01"],
+      "controlled_delta_note": "Positive leaves only the Playwright journey-review responsibility and closure boundary unresolved; Negative adds exactly the explorer, test-author, trace, and cross-browser clauses while preserving all workspace, repository, revision, shared context, and query text.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Does Positive leave the four-part Playwright responsibility boundary absent without exposing a resource identifier or route?",
+        "Does Negative add only observable steps and locator candidates, durable assertions, failed-retry trace attachment, and cross-browser selector validation?",
+        "Do the Playwright repository URL, pinned revision, Node workspace structure, and neighboring ready resources uniquely select the intended wiki?",
+        "Is the candidate synthetic with external_source_ids=[] and the sequence limited to capability listing followed by one query?"
+      ]
+    }
+  ]
+}

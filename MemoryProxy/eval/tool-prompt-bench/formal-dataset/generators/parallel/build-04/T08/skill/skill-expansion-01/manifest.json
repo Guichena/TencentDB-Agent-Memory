@@ -1,0 +1,17 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "T08-DS05-SKILL-EXPANSION-01",
+  "external_source_ids": [
+    "T08-SKILL-JEST",
+    "T08-SKILL-TEMPORAL",
+    "T08-SKILL-PLAYWRIGHT-GEN",
+    "T08-SKILL-SCOUTQA",
+    "T08-SKILL-SPRING-TEST"
+  ],
+  "generated_at": "2026-08-29T23:59:59+08:00",
+  "actual_count": 5,
+  "raw_output_file": "draft.json"
+}

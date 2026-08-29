@@ -1,0 +1,268 @@
+{
+  "schema_version": "task1.luna_natural_negative_draft.v1",
+  "batch_id": "build-04-T08-natural-negative-01",
+  "stage": "DS05",
+  "team_id": "T08",
+  "cases": [
+    {
+      "draft_case_id": "T08-NAT-001",
+      "synthetic_scope": ["project", "conversation", "tests"],
+      "difficulty": "easy",
+      "language": "en",
+      "context_bucket": "short_2_to_4",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "In `tests/test_parser.py`, pytest is configured with a marker named `slow_integration` in `pytest.ini`, but the test currently uses a misspelled marker:\n```python\nimport pytest\n\n@pytest.mark.slow_integraton\ndef test_reads_large_fixture():\n    assert parse_fixture('large.json').ok\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "The configured spelling is exactly `slow_integration`. The test body, function name, and marker meaning must remain unchanged; this is only a spelling correction to the decorator."
+        },
+        {
+          "role": "user",
+          "content": "The project treats unknown-marker warnings as failures, and no other marker or configuration change is wanted."
+        }
+      ],
+      "query": "Provide the smallest patch that fixes the marker spelling in this test.",
+      "why_current_context_is_sufficient": "The complete decorator, the configured spelling, and the requirement to preserve the test body are visible, so the edit is a single local identifier correction with no repository or framework history needed.",
+      "visible_distractor_ids_author_only": ["T08-SKILL-GHA-EFFICIENCY", "T08-SKILL-BREAKDOWN"],
+      "source_fact_map": [],
+      "sol_review_questions": ["Is the decorator changed only from the misspelling to `slow_integration`?", "Are the test body and marker configuration left untouched?"]
+    },
+    {
+      "draft_case_id": "T08-NAT-002",
+      "synthetic_scope": ["project", "conversation", "tests"],
+      "difficulty": "medium",
+      "language": "zh",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "在 `src/formatUser.ts` 中，函数已经把用户昵称转成首字母大写：\n```ts\nexport function formatUser(name: string) {\n  return name.trim().replace(/\\b\\w/g, (letter) => letter.toUpperCase());\n}\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "现有 Jest 测试如下：\n```ts\nimport { formatUser } from '../src/formatUser';\n\ntest('formats a user name', () => {\n  expect(formatUser('ada lovelace')).toEqual('Ada Lovelace');\n});\n```"
+        },
+        {
+          "role": "user",
+          "content": "产品要求这条测试只断言字符串值相等，不需要快照、mock 或异步处理。实现已经正确，本次只把 Jest matcher 从对象语义改成适合原始字符串的 matcher，测试输入和期望值都不能变。"
+        }
+      ],
+      "query": "请给出这条 Jest 测试中 matcher 的最小修改，并保留原有的字符串断言含义。",
+      "why_current_context_is_sufficient": "函数返回值明确是字符串，测试代码和期望值也完整可见；只需选择用于原始值相等比较的 matcher，无需外部项目背景或测试框架资料。",
+      "visible_distractor_ids_author_only": ["T08-SKILL-REACT19", "T08-SKILL-VUE-PINIA"],
+      "source_fact_map": [],
+      "sol_review_questions": ["是否只将对象语义的 matcher 改为字符串值相等的 matcher？", "输入、期望字符串和测试结构是否保持不变？"]
+    },
+    {
+      "draft_case_id": "T08-NAT-003",
+      "synthetic_scope": ["project", "conversation", "tests"],
+      "difficulty": "easy",
+      "language": "en",
+      "context_bucket": "short_2_to_4",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "A Playwright test opens a settings page and clicks the save button. The current locator is:\n```ts\nawait page.locator('[data-testid=\"save-setings\"]').click();\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "The rendered button has the stable attribute `data-testid=\"save-settings\"`; there is no element with the misspelled value. Keep the locator strategy, click action, and surrounding test unchanged."
+        },
+        {
+          "role": "user",
+          "content": "This is a local selector correction only. Do not replace it with a text locator, add waits, or modify the page markup."
+        }
+      ],
+      "query": "What one-line locator edit makes this Playwright step target the supplied button?",
+      "why_current_context_is_sufficient": "Both the current selector and the exact rendered test id are supplied, along with strict scope limits; correcting one string fully resolves the request without browser exploration or hidden application behavior.",
+      "visible_distractor_ids_author_only": ["T08-SKILL-PLAYWRIGHT-EXPLORE", "T08-SKILL-WEBAPP-TEST"],
+      "source_fact_map": [],
+      "sol_review_questions": ["Does the selector use exactly `save-settings`?", "Are the locator method and click action unchanged?"]
+    },
+    {
+      "draft_case_id": "T08-NAT-004",
+      "synthetic_scope": ["project", "conversation", "tests"],
+      "difficulty": "easy",
+      "language": "zh",
+      "context_bucket": "short_2_to_4",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "`src/config/coverage.ts` 中的覆盖率常量命名不符合项目约定：\n```ts\nexport const COVERAGE_MIN = 85;\n\nexport function coverageGate(value: number) {\n  return value >= COVERAGE_MIN;\n}\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "团队约定百分比阈值常量必须使用后缀 `_PERCENT`，因此目标名称是 `COVERAGE_MIN_PERCENT`。数值 85、导出方式和判断逻辑必须保持不变。"
+        },
+        {
+          "role": "user",
+          "content": "代码库中只有这一个声明和一个引用；调用方不会导入旧名称。本次只做符号重命名，不要改变覆盖率算法或新增配置。"
+        }
+      ],
+      "query": "请完成这个覆盖率阈值常量的最小重命名，并展示修改后的代码。",
+      "why_current_context_is_sufficient": "旧名称、唯一引用、指定新名称、数值及不改变行为的约束都已直接给出；这是一个局部符号重命名，不需要查找历史配置或测试报告。",
+      "visible_distractor_ids_author_only": ["T08-SKILL-GHA-EFFICIENCY", "T08-SKILL-PYTEST-COVERAGE"],
+      "source_fact_map": [],
+      "sol_review_questions": ["声明和唯一引用是否都改为 `COVERAGE_MIN_PERCENT`？", "85、导出方式和比较逻辑是否保持不变？"]
+    },
+    {
+      "draft_case_id": "T08-NAT-005",
+      "synthetic_scope": ["project", "conversation", "tests", "ci"],
+      "difficulty": "medium",
+      "language": "en",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "The CI workflow `.github/workflows/tests.yml` should run the test command only after checking out the repository:\n```yaml\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - name: Checkout\n        uses: actions/checkout@v4\n      - name: Run tests\n      run: python -m pytest\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "Workflow step properties are indented beneath their step item. The `run` key must belong to the `Run tests` step at the same indentation level as `name`; keep the command and all other YAML unchanged."
+        },
+        {
+          "role": "user",
+          "content": "The workflow parser currently rejects this file because of the indentation. Do not add caching, matrices, permissions, or a second test command."
+        }
+      ],
+      "query": "Return the smallest YAML correction that makes the existing test step valid.",
+      "why_current_context_is_sufficient": "The entire relevant job is shown, the parser issue is explicitly limited to the nesting of `run`, and the desired command is visible; no CI platform investigation or repository context is required.",
+      "visible_distractor_ids_author_only": ["T08-SKILL-BREAKDOWN", "T08-SKILL-AZURE-PREFLIGHT"],
+      "source_fact_map": [],
+      "sol_review_questions": ["Is `run` nested under the `Run tests` step at the same level as `name`?", "Are checkout, command text, and all unrelated workflow fields unchanged?"]
+    },
+    {
+      "draft_case_id": "T08-NAT-006",
+      "synthetic_scope": ["project", "conversation", "tests"],
+      "difficulty": "medium",
+      "language": "en",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "In `src/coverage.py`, implement the pure helper below:\n```python\ndef coverage_percent(covered: int, total: int) -> float:\n    pass\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "Return `covered / total * 100` as a float when `total` is positive. Inputs are integers, `covered` is between zero and `total` inclusive, and the helper must not mutate anything or perform I/O."
+        },
+        {
+          "role": "user",
+          "content": "For `coverage_percent(3, 4)` the result must be `75.0`; for `(0, 5)` it must be `0.0`; and for `(5, 0)` return `0.0` instead of raising. Keep the function name and signature exactly as shown."
+        }
+      ],
+      "query": "Provide a minimal implementation of this pure coverage-percentage function, including the zero-total case.",
+      "why_current_context_is_sufficient": "The function signature, arithmetic rule, input bounds, exact examples, and zero-total behavior are all explicit; implementation is self-contained and does not depend on a coverage tool, project convention, or external service.",
+      "visible_distractor_ids_author_only": ["T08-SKILL-PYTEST-COVERAGE", "T08-SKILL-GHA-EFFICIENCY"],
+      "source_fact_map": [],
+      "sol_review_questions": ["Does a positive total produce a floating-point percentage using the stated formula?", "Does total zero return `0.0` without division or side effects?"]
+    },
+    {
+      "draft_case_id": "T08-NAT-007",
+      "synthetic_scope": ["project", "conversation", "tests"],
+      "difficulty": "medium",
+      "language": "zh",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "在 `src/retry.ts` 中，重试函数使用本地默认超时：\n```ts\nexport function runWithRetry(task: () => Promise<void>, timeoutMs = 3000) {\n  return run(task, { timeoutMs });\n}\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "新的本地约定是默认超时 5000 毫秒。调用方显式传入的 `timeoutMs` 必须继续优先，`run` 的调用形式和函数签名都要保留。"
+        },
+        {
+          "role": "user",
+          "content": "测试会验证不传第二个参数时使用 5000，传入 1000 时仍使用 1000。本次只修改默认值，不要引入环境变量、全局配置或重试次数变化。"
+        }
+      ],
+      "query": "请把这个 TypeScript 函数的本地默认 retry timeout 改成 5000，并保持显式参数行为不变。",
+      "why_current_context_is_sufficient": "现有签名、旧默认值、新默认值、显式参数优先规则和验收样例均已可见；只需改动一个默认参数字面量，不需要了解其他重试实现。",
+      "visible_distractor_ids_author_only": ["T08-SKILL-GHA-EFFICIENCY", "T08-SKILL-REACT19"],
+      "source_fact_map": [],
+      "sol_review_questions": ["默认参数是否准确改为 5000？", "显式传入 1000 时是否仍原样传给 `run`？"]
+    },
+    {
+      "draft_case_id": "T08-NAT-008",
+      "synthetic_scope": ["project", "conversation", "tests"],
+      "difficulty": "easy",
+      "language": "en",
+      "context_bucket": "short_2_to_4",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "In `src/test/java/example/AccountServiceTest.java`, a JUnit test has a misleading display name:\n```java\n@Test\n@DisplayName(\"rejects an expired account\")\nvoid acceptsAnActiveAccount() {\n    assertTrue(service.isActive(account));\n}\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "The assertion and Java method name describe an active account being accepted. The display name should be the exact copy `accepts an active account`. Change only the annotation string."
+        },
+        {
+          "role": "user",
+          "content": "Keep the test method, assertion, annotation type, capitalization of the Java code, and all behavior unchanged."
+        }
+      ],
+      "query": "What single text edit makes the JUnit display name match the visible test behavior?",
+      "why_current_context_is_sufficient": "The full annotation, method name, assertion, and exact required replacement text are provided; this is a local test-label copy edit with no dependency on build settings or framework history.",
+      "visible_distractor_ids_author_only": ["T08-SKILL-SPRING-TEST", "T08-SKILL-CSHARP-MSTEST"],
+      "source_fact_map": [],
+      "sol_review_questions": ["Is the display name exactly `accepts an active account`?", "Are the method and assertion left unchanged?"]
+    },
+    {
+      "draft_case_id": "T08-NAT-009",
+      "synthetic_scope": ["project", "conversation", "tests", "frontend"],
+      "difficulty": "easy",
+      "language": "zh",
+      "context_bucket": "short_2_to_4",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "页面模板 `templates/profile.html` 中的保存按钮和测试约定不一致：\n```html\n<button type=\"button\" data-testid=\"profile-savee\">Save profile</button>\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "端到端测试固定查找 `data-testid=\"profile-save\"`。请只修正属性值中的拼写错误，按钮文本、元素类型和其他属性均已正确。"
+        },
+        {
+          "role": "user",
+          "content": "不要改测试选择器，不要改成 class 或可见文本定位，也不要添加新的属性。"
+        }
+      ],
+      "query": "请给出这个 HTML `data-testid` 的最小拼写修正。",
+      "why_current_context_is_sufficient": "当前属性值、测试所需的精确属性值以及只改一个 HTML 字符串的范围都明确可见；不需要运行浏览器或查阅前端组件上下文。",
+      "visible_distractor_ids_author_only": ["T08-SKILL-PLAYWRIGHT-EXPLORE", "T08-SKILL-WEBAPP-TEST"],
+      "source_fact_map": [],
+      "sol_review_questions": ["属性值是否从 `profile-savee` 改为精确的 `profile-save`？", "按钮文本和其他 HTML 结构是否保持不变？"]
+    },
+    {
+      "draft_case_id": "T08-NAT-010",
+      "synthetic_scope": ["project", "conversation", "documentation", "tests"],
+      "difficulty": "easy",
+      "language": "en",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "A README section documents the local test command:\n```text\nRun the unit tests with:\npython -m pytest tests/unit -q\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "The repository's documented test layout has the unit tests under `tests/unit`, but the quiet flag is not supported by this project's test runner. The command should be exactly `python -m pytest tests/unit`."
+        },
+        {
+          "role": "user",
+          "content": "The request is limited to correcting this one README command. Keep the introductory sentence, path, code formatting, and meaning intact; do not add environment setup, options, or claims about other test suites."
+        }
+      ],
+      "query": "Rewrite only the README command block so it matches the fully specified local test command.",
+      "why_current_context_is_sufficient": "The existing snippet, exact replacement command, and all scope constraints are visible in the conversation; this is a one-line documentation correction and needs no repository lookup or test execution.",
+      "visible_distractor_ids_author_only": ["T08-SKILL-BREAKDOWN", "T08-SKILL-AZURE-PREFLIGHT"],
+      "source_fact_map": [],
+      "sol_review_questions": ["Does the command become exactly `python -m pytest tests/unit`?", "Are the sentence, path, code formatting, and README scope preserved?"]
+    }
+  ]
+}

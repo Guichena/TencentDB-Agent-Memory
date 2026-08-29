@@ -1,0 +1,74 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "build-04-T08-knowledge-trial-01",
+  "stage": "DS05",
+  "team_id": "T08",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T08-PAIR-K01",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们正在一个冻结于 2026-08-29 的合成测试工作区中核对测试质量资料。所有资料都只用于只读定位，不能修改仓库或生成新的项目内容。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前目标是 pytest coverage lab：仓库固定为 https://github.com/pytest-dev/pytest，提交固定为 fdba12e1708313f56e9cf713d260c029764ca2b7，采用 Python src-layout，包含 src/_pytest、testing、pyproject.toml 以及 coverage annotations。"
+        },
+        {
+          "role": "user",
+          "content": "同一工作区现在同时有四个状态为 ready 的项目资源；它们的固定版本和结构如下：pytest coverage lab 使用 Python src-layout；Jest runtime suite 使用含 packages/jest-runtime、packages/expect、e2e fixtures 和 snapshot tests 的 Yarn monorepo；Playwright browser journeys 使用含 packages/playwright、packages/playwright-core、tests/playwright-test 和 browser fixtures 的 Node workspace；Spring quality gate 使用含 spring-boot-project、test slices、integration tests 和 buildSrc 的 Gradle multi-module Java project。"
+        },
+        {
+          "role": "assistant",
+          "content": "另外三个 ready 资源分别固定为 https://github.com/jestjs/jest 的 be425a0b0e3bd60a74e4a7e350aa38c63a2d25ef、https://github.com/microsoft/playwright 的 de214f440b7e34937fe4886f046b78b757136087，以及 https://github.com/spring-projects/spring-boot 的 cf5f3b9ea64ab3a7de9ac137dac8989ad75ad2aa。pytest 资源也保持上述仓库、提交和结构不变。"
+        },
+        {
+          "role": "user",
+          "content": "请在这个固定上下文中核对 pytest 的命令行设置相关代码图记录。我们只需要一个符号的精确文件位置和行号；其他项目资源只是同时可用的背景，不要把它们混入答案。"
+        },
+        {
+          "role": "assistant",
+          "content": "已确认查询范围是 pytest 的固定提交与 src-layout 代码图，目标是命令行设置附近的 pytest_addoption 注册条目。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "请给出 pytest_addoption 在该冻结代码图中的精确注册文件位置和行号。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "请在保持当前固定版本和只读约束的前提下继续定位这一项。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "冻结 pytest 代码图中 pytest_addoption 注册条目的精确路径与行号尚未由上下文提供。",
+          "route": "knowledge",
+          "target_asset_ids": ["cg-t08py01"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "search_code 返回冻结合成夹具中的 pytest_addoption 位置后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "symbol pytest_addoption at src/_pytest/config/__init__.py line 1240 is the frozen fixture's registration entry for the coverage-adjacent command-line setup."
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经直接给出唯一缺失的符号、路径和行号；无需再定位资源。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T08-SKILL-JEST", "T08-SKILL-PLAYWRIGHT-GEN", "wiki-t08js01"],
+      "controlled_delta_note": "正负样本共享全部上下文与同一中文查询；正样本仅保留 pytest 代码图位置缺口，负样本只追加指定的单一合成固定夹具事实。",
+      "sol_review_questions": [
+        "是否确认四个项目资源的仓库、提交、结构和 ready 状态在共享上下文中均已明确？",
+        "是否确认目标资源只应是 cg-t08py01，且查询顺序保持 knowledge_tools_list 后 knowledge_tools_call？",
+        "是否确认负样本没有引入额外事实或任何提供方可见的资产、路由和知识标识？"
+      ]
+    }
+  ]
+}

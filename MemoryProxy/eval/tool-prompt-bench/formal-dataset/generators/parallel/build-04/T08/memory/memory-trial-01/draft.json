@@ -1,0 +1,52 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T08-memory-trial-01",
+  "stage": "DS05",
+  "team_id": "T08",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T08-PAIR-M01",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "We are maintaining a Python package and need to organize recent pytest quality notes. Please review discussions about coverage, fixture isolation, and parametrization."},
+        {"role": "assistant", "content": "Recent notes say to retain a report with locatable gaps, cover boundary combinations with parameters, and split or independently reproduce shared fixtures when they leak state."},
+        {"role": "user", "content": "One older coverage note used a uniformly very high threshold, but I am not sure whether it still applies."},
+        {"role": "assistant", "content": "Treat that note as historical context rather than current merge guidance. We need a dated later decision to know the rule now in force."},
+        {"role": "user", "content": "Keep missing lines, changed modules, and unstable fixtures distinct; do not mix investigation techniques with the gate."},
+        {"role": "assistant", "content": "Agreed: missing lines guide focused tests, changed modules identify new risk, and unstable fixtures are isolated and reproduced; the gate comes from the latest formal decision."},
+        {"role": "user", "content": "Limit the time range to late August 2026, and identify which decision replaced the old rule."},
+        {"role": "assistant", "content": "Understood. I will filter by effective date and mark the supersession relationship."}
+      ],
+      "changed_message_index": 8,
+      "query": "Find the pytest coverage merge-gate decision still effective as of 2026-08-29, and explain how it replaced the old rule.",
+      "positive": {
+        "delta_message": {"role": "user", "content": "The shared record still lacks the formal decision effective by the specified date. Please fill this one information gap."},
+        "private_proposal": {
+          "unique_information_gap": "Filter for the current pytest coverage-gate decision effective 2026-08-20 rather than returning the superseded older threshold.",
+          "route": "memory",
+          "target_asset_ids": ["T08-L1-11"],
+          "allowed_sequence_candidates": [["tdai_atomic_query"]],
+          "stop_after_candidate": "Stop after the atomic query returns the current decision."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "The current decision is: effective 2026-08-20, the merge gate requires overall line coverage of at least 85% plus no newly uncovered executable lines in changed modules; the older uniform 100% merge gate is no longer current, while annotated 100% remains a focused gap-closure technique rather than a universal threshold."},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "The appended message already gives the date, threshold, changed-module condition, supersession, and limited use of annotated coverage, so no retrieval is needed."
+        }
+      },
+      "visible_distractor_ids_author_only": ["T08-L1-02", "T08-L1-03", "T08-L1-06"],
+      "controlled_delta_note": "Positive and negative share the same eight-message context and query; only the appended ninth message differs. The positive leaves exactly the dated current coverage-gate decision absent, while the negative supplies that decision verbatim in compact form.",
+      "source_fact_map": [
+        {"claim": "The current pytest coverage gate is dated 2026-08-20 and supersedes the older uniform threshold.", "source_id": "T08-L1-11", "locator": "active memory content and valid_from"},
+        {"claim": "The older coverage gate is superseded by the current decision.", "source_id": "T08-L1-01", "locator": "superseded_by relation"}
+      ],
+      "sol_review_questions": ["Confirm that the positive appended message does not reveal the current threshold and only points to the gap.", "Confirm that the negative adds exactly this current decision without extra retrieval clues."]
+    }
+  ]
+}

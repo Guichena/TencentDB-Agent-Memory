@@ -1,0 +1,228 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T08-memory-expansion-01",
+  "stage": "DS05",
+  "team_id": "T08",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T08-PAIR-M02",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "medium",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role":"user","content":"我们正在维护 Jest runtime 测试，并整理一次 mock 稳定性事件的记录。"},
+        {"role":"assistant","content":"目前笔记提到 reset、共享设置、快照和清理，但还需要把责任边界说清楚。"},
+        {"role":"user","content":"reset 之后默认 mock 实现消失，测试开始失败；最初有人只建议更新快照。"},
+        {"role":"assistant","content":"快照可以记录表象，不能替代对 mock 安装责任和测试隔离方式的结论。"}
+      ],
+      "changed_message_index": 4,
+      "query":"请找回这次 Jest mock 事件的既有结论，并说明最终由哪一层负责实现以及清理如何处理。",
+      "positive": {
+        "delta_message":{"role":"user","content":"共享上下文仍缺少这次事件的最终归因和处置结论，请补齐这一处历史记录。"},
+        "private_proposal": {
+          "unique_information_gap":"Recover the prior mock-ownership incident conclusion from the conversation record.",
+          "route":"memory",
+          "target_asset_ids":["T08-L0-04"],
+          "allowed_sequence_candidates":[["tdai_conversation_search"]],
+          "stop_after_candidate":"Stop after the conversation search returns the prior mock ownership resolution."
+        }
+      },
+      "negative": {
+        "delta_message":{"role":"user","content":"既有结论是：共享 setup 文件曾为所有测试安装默认实现却没有记录责任；reset 正确移除了它并暴露了隐性依赖。修复是把所需实现移到各个测试或其 beforeEach，由测试自身拥有；清理统一清除调用并恢复被替换的行为。快照只作为更新后的证据，不能单独作为修复。"},
+        "private_proposal": {
+          "route":"none",
+          "why_current_context_is_sufficient":"The appended message supplies the incident cause, ownership boundary, cleanup behavior, and the limitation of snapshot-only evidence."
+        }
+      },
+      "visible_distractor_ids_author_only":["T08-L0-05","T08-L1-08","T08-L0-07"],
+      "controlled_delta_note":"Both counterfactuals keep the same four-message Chinese context and query; only the appended message changes. The positive asks for the absent incident conclusion, while the negative states the complete ownership and cleanup resolution.",
+      "source_fact_map":[
+        {"claim":"The shared setup file installed the default implementation without documented ownership, and reset exposed that hidden dependency.","source_id":"T08-L0-04","locator":"messages 1-4"},
+        {"claim":"The resolution moved required behavior into each test or beforeEach and made cleanup restore state.","source_id":"T08-L0-04","locator":"messages 7-12"}
+      ],
+      "sol_review_questions":["Confirm that the positive delta leaves the prior ownership conclusion absent.","Confirm that the negative delta adds only the existing incident resolution and does not introduce a new recommendation."]
+    },
+    {
+      "draft_pair_id":"T08-PAIR-M03",
+      "external_source_ids":[],
+      "synthetic_scope":["team","project","conversation","history"],
+      "difficulty":"hard",
+      "context_bucket":"long_12_to_18",
+      "shared_context_messages":[
+        {"role":"user","content":"We are reviewing a Playwright checkout journey whose submit control was located with a brittle CSS chain."},
+        {"role":"assistant","content":"Start by recording the visible role, label, and dedicated hook candidates from the page."},
+        {"role":"user","content":"The payment page exposes an accessible name, and the generated trace shows it is unique there."},
+        {"role":"assistant","content":"Keep the accessible candidate and trace as evidence before changing the locator."},
+        {"role":"user","content":"A second run finds a duplicate label coming from a hidden dialog in another browser."},
+        {"role":"assistant","content":"Scope the candidate to the visible checkout region and inspect the action at the failure point."},
+        {"role":"user","content":"The scoped role locator is unique in the two traces I have checked."},
+        {"role":"assistant","content":"Keep before-and-after traces and name the browser engines used for validation."},
+        {"role":"user","content":"The final journey also waits for the action to become enabled instead of using a fixed delay."},
+        {"role":"assistant","content":"That readiness assertion belongs with the locator evidence because it explains when the click is valid."},
+        {"role":"user","content":"I need the earlier-to-later chronology of this locator migration, not just the latest passing assertion."},
+        {"role":"assistant","content":"The review should distinguish discovery, cross-browser validation, and the durable evidence kept after the migration."}
+      ],
+      "changed_message_index":12,
+      "query":"Find and read the prior locator-migration chronology for this Playwright journey, including its phases and retained evidence.",
+      "positive": {
+        "delta_message":{"role":"user","content":"The chronology itself is not in the shared notes. Please recover the prior staged account so I can compare discovery, validation, and durability decisions."},
+        "private_proposal": {
+          "unique_information_gap":"Discover and read the non-injected locator-migration chronology scene.",
+          "route":"memory",
+          "target_asset_ids":["T08-L2-03"],
+          "allowed_sequence_candidates":[["tdai_scenario_ls","tdai_read_scene"]],
+          "stop_after_candidate":"Stop after listing the Playwright scene and reading the locator-migration chronology."
+        }
+      },
+      "negative": {
+        "delta_message":{"role":"user","content":"完整时间线是三阶段：第一阶段从脆弱 CSS 转向在可见页面上发现的 role、label 和 test-id 候选；第二阶段用轨迹验证选择的候选，并在出现隐藏或重复控件时限定作用域；第三阶段保留跨浏览器稳定断言、动作就绪状态和各引擎轨迹证据，使旅程保持耐久。"},
+        "private_proposal": {
+          "route":"none",
+          "why_current_context_is_sufficient":"The appended message gives the complete three-phase chronology and all requested evidence-retention details, so no scene retrieval is needed."
+        }
+      },
+      "visible_distractor_ids_author_only":["T08-L0-06","T08-L0-07","T08-L1-15"],
+      "controlled_delta_note":"Both counterfactuals share the same twelve-message English context and query. The positive leaves the staged chronology absent; the negative supplies exactly the three phases and their evidence requirements in one appended message.",
+      "source_fact_map":[
+        {"claim":"The locator migration proceeds from candidate discovery, through trace-backed scoping, to cross-browser durable evidence.","source_id":"T08-L2-03","locator":"scene content"},
+        {"claim":"The scene is supported by the checkout discovery, validation, and cross-browser sessions.","source_id":"T08-L2-03","locator":"supporting sessions"}
+      ],
+      "sol_review_questions":["Confirm that the positive asks for the absent chronology and requires both discovery and scene reading.","Confirm that the negative delta is self-contained and states only the frozen three-phase chronology."]
+    },
+    {
+      "draft_pair_id":"T08-PAIR-M04",
+      "external_source_ids":[],
+      "synthetic_scope":["team","project","conversation","history"],
+      "difficulty":"medium",
+      "context_bucket":"medium_6_to_10",
+      "shared_context_messages":[
+        {"role":"user","content":"我们在排查 Spring 项目的可重复 integration build 失败，现象是自定义测试类找不到资源。"},
+        {"role":"assistant","content":"先检查该 source set 是否仍在执行测试前处理测试资源，并保留任务图证据。"},
+        {"role":"user","content":"有人发现自定义任务不再依赖 processTestResources，但旧输出目录又被报告为 up to date。"},
+        {"role":"assistant","content":"这两个线索都指向构建任务配置和陈旧输出，不应先修改生产代码。"},
+        {"role":"user","content":"清理相关输出后，资源似乎可以被复制；我还需要记录一次干净重复运行。"},
+        {"role":"assistant","content":"把依赖边和清理前后的输出都放进 triage 记录，再确认失败是否稳定重现。"},
+        {"role":"user","content":"这个问题与选择更窄的 Spring test slice 是两件事。"},
+        {"role":"assistant","content":"对，构建资源处理的结论应独立于测试切片语义，避免用一个问题的结果解释另一个问题。"}
+      ],
+      "changed_message_index":8,
+      "query":"请找回这次确定性 Spring 构建失败的准确 triage 结论，并说明修复落在哪个边界。",
+      "positive": {
+        "delta_message":{"role":"user","content":"共享记录还没有写出最终的构建失败结论，请补齐资源处理、陈旧输出和验证结果。"},
+        "private_proposal": {
+          "unique_information_gap":"Recover the exact deterministic integration build-failure triage conclusion.",
+          "route":"memory",
+          "target_asset_ids":["T08-L0-09"],
+          "allowed_sequence_candidates":[["tdai_conversation_search"]],
+          "stop_after_candidate":"Stop after the conversation search returns the build triage conclusion."
+        }
+      },
+      "negative": {
+        "delta_message":{"role":"user","content":"准确结论是：自定义 integrationTest 任务移除了 processTestResources 依赖，导致执行时缺少资源；同时必须使该任务的陈旧输出失效。恢复任务依赖并清理失效输出后资源被复制，干净重复运行成功。修复应留在构建配置，不涉及生产代码，也要与 test-slice 选择分开记录。"},
+        "private_proposal": {
+          "route":"none",
+          "why_current_context_is_sufficient":"The appended message states the missing resource-processing dependency, stale-output invalidation, clean verification, and configuration-only scope."
+        }
+      },
+      "visible_distractor_ids_author_only":["T08-L1-13","T08-L0-10","T08-L1-12"],
+      "controlled_delta_note":"The eight-message Chinese context and query are identical. The positive leaves the exact triage outcome absent; the negative appends the dependency, stale-output, successful-rerun, and scope conclusion.",
+      "source_fact_map":[
+        {"claim":"The custom integration task lost its processTestResources dependency and therefore lacked a resource at execution.","source_id":"T08-L0-09","locator":"messages 1-4"},
+        {"claim":"Restoring the dependency and invalidating stale output made a clean repeat succeed without production changes.","source_id":"T08-L0-09","locator":"messages 5-12"}
+      ],
+      "sol_review_questions":["Confirm that the positive delta does not state whether resources were copied or whether the rerun succeeded.","Confirm that the negative adds the existing build-configuration conclusion without conflating test-slice selection."]
+    },
+    {
+      "draft_pair_id":"T08-PAIR-M05",
+      "external_source_ids":[],
+      "synthetic_scope":["team","project","conversation","history"],
+      "difficulty":"medium",
+      "context_bucket":"medium_6_to_10",
+      "shared_context_messages":[
+        {"role":"user","content":"We are triaging a current flaky failure in the Jest runtime package."},
+        {"role":"assistant","content":"Separate the smallest local reproduction from evidence about the CI worker and environment."},
+        {"role":"user","content":"The failure appears around a reset and a fake clock, but a snapshot update would make the symptom disappear."},
+        {"role":"assistant","content":"Do not accept that update alone; preserve the pending operation, timer configuration, and isolated failing command."},
+        {"role":"user","content":"The package team and the CI team are collecting different pieces of evidence."},
+        {"role":"assistant","content":"The record should say who owns each evidence type before a flaky result is accepted as explained."},
+        {"role":"user","content":"I need the current ownership decision rather than another generic debugging checklist."},
+        {"role":"assistant","content":"Use the dated decision that assigns the minimal reproduction to the package side and runtime evidence to the CI side."}
+      ],
+      "changed_message_index":8,
+      "query":"Retrieve the current evidence-ownership decision for this flaky Jest failure and state what each owner must provide.",
+      "positive": {
+        "delta_message":{"role":"user","content":"The current ownership decision is missing from these notes. Please recover the precise split of required evidence."},
+        "private_proposal": {
+          "unique_information_gap":"Retrieve the current evidence-ownership decision for flaky Jest failures.",
+          "route":"memory",
+          "target_asset_ids":["T08-L1-14"],
+          "allowed_sequence_candidates":[["tdai_memory_search"]],
+          "stop_after_candidate":"Stop after the memory search returns the current evidence-ownership decision."
+        }
+      },
+      "negative": {
+        "delta_message":{"role":"user","content":"当前决定是：包所有者必须提供最小复现或 seed、fake-timer 配置和隔离的失败命令；CI 所有者必须提供 worker 与环境证据。仅接受 snapshot 更新是被禁止的。"},
+        "private_proposal": {
+          "route":"none",
+          "why_current_context_is_sufficient":"The appended message supplies the dated decision's complete ownership split and explicitly rejects snapshot-only acceptance."
+        }
+      },
+      "visible_distractor_ids_author_only":["T08-L0-04","T08-L0-05","T08-L1-08"],
+      "controlled_delta_note":"Both variants retain the same eight-message English context and query. The positive leaves the current evidence split absent; the negative supplies each owner's required artifacts and the snapshot restriction.",
+      "source_fact_map":[
+        {"claim":"The package owner supplies a minimal reproduction or seed, fake-timer configuration, and an isolated failing command.","source_id":"T08-L1-14","locator":"active memory content"},
+        {"claim":"The CI owner supplies worker and environment evidence, and a snapshot update alone is forbidden.","source_id":"T08-L1-14","locator":"active memory content"}
+      ],
+      "sol_review_questions":["Confirm that the positive delta does not name any owner-specific artifact.","Confirm that the negative delta states the full current split and no retrieval hint is needed."]
+    },
+    {
+      "draft_pair_id":"T08-PAIR-M06",
+      "external_source_ids":[],
+      "synthetic_scope":["team","project","conversation","history"],
+      "difficulty":"hard",
+      "context_bucket":"long_12_to_18",
+      "shared_context_messages":[
+        {"role":"user","content":"我们正在维护 Python 包，并要把 coverage recovery 的过程整理成可重复的场景记录。"},
+        {"role":"assistant","content":"先生成带缺失可执行行号的注释报告，再按 changed module 规划有针对性的测试。"},
+        {"role":"user","content":"解析器的 malformed-header 分支可达，缓存适配器的分支还受 fixture 状态影响。"},
+        {"role":"assistant","content":"为可达分支补 focused case，同时记录 fixture 状态，避免把泄漏误当成覆盖率问题。"},
+        {"role":"user","content":"参数化用例要有明确 id 和预期结果，顺序相关失败要先用最小邻近集合复现。"},
+        {"role":"assistant","content":"把单独运行和完整套件运行都保留下来，并在解释覆盖率前先稳定 fixture。"},
+        {"role":"user","content":"我知道场景路径是 scenes/pytest/coverage-recovery，想查看其中的连续恢复流程。"},
+        {"role":"assistant","content":"读取场景时要核对报告、补测、隔离和最终质量门之间的先后关系。"},
+        {"role":"user","content":"最终门槛不能取代注释报告，也不能把旧的统一阈值当成当前规则。"},
+        {"role":"assistant","content":"将 focused gap closure 与当前 merge gate 分开记录，才能保留可审计的恢复证据。"},
+        {"role":"user","content":"请保持这条记录的连续循环语义，而不是只摘录某一个测试命令。"},
+        {"role":"assistant","content":"好的，场景摘要应覆盖 inspect、add focused cases、stabilize fixtures 和 recheck gate。"}
+      ],
+      "changed_message_index":12,
+      "query":"请读取已知路径 scenes/pytest/coverage-recovery 的 coverage recovery 场景，并总结完整的连续流程。",
+      "positive": {
+        "delta_message":{"role":"user","content":"共享上下文只描述了线索，还没有场景中的完整连续流程；请补上该场景的摘要。"},
+        "private_proposal": {
+          "unique_information_gap":"Read the injected pytest coverage-recovery scene at its known path.",
+          "route":"memory",
+          "target_asset_ids":["T08-L2-01"],
+          "allowed_sequence_candidates":[["tdai_read_scene"]],
+          "stop_after_candidate":"Stop after reading the known pytest coverage-recovery scene."
+        }
+      },
+      "negative": {
+        "delta_message":{"role":"user","content":"完整场景流程是：先建立带注释的覆盖率报告，再为未覆盖分支补测试、隔离有问题的 fixture，最后应用 changed module 必须没有新增未覆盖可执行行且整体行覆盖率至少 85% 的门槛。报告作为连续循环保留：inspect、添加 focused cases、稳定 fixtures、重新检查门槛。"},
+        "private_proposal": {
+          "route":"none",
+          "why_current_context_is_sufficient":"The appended message gives the scene's ordered recovery loop, the changed-module condition, and the overall threshold, so the requested summary is self-contained."
+        }
+      },
+      "visible_distractor_ids_author_only":["T08-L0-01","T08-L1-02","T08-L1-11"],
+      "controlled_delta_note":"The twelve-message Chinese context includes the known scene path but not its complete synthesized summary. Only the appended message differs: positive requests the absent scene content, negative supplies the full recovery loop and gate.",
+      "source_fact_map":[
+        {"claim":"The scene orders annotated reporting, focused branch tests, fixture isolation, and application of the current coverage gate.","source_id":"T08-L2-01","locator":"scene content"},
+        {"claim":"The recovery record is a continuous inspect, add, stabilize, and recheck loop with the 85% and no-new-uncovered-lines conditions.","source_id":"T08-L2-01","locator":"scene content"}
+      ],
+      "sol_review_questions":["Confirm that the positive delta leaves the synthesized scene summary absent despite the path being visible.","Confirm that the negative delta adds the ordered loop and current gate without mentioning any retrieval mechanism."]
+    }
+  ]
+}

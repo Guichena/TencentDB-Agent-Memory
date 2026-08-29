@@ -1,0 +1,228 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T08-DS05-SKILL-EXPANSION-01",
+  "stage": "DS05",
+  "team_id": "T08",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T08-PAIR-S02",
+      "external_source_ids": ["T08-SKILL-JEST"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "medium",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "我们正在维护 jest-runtime-suite，这是一个 TypeScript Yarn monorepo，相关实现位于 packages/jest-runtime 和 packages/expect。"},
+        {"role": "assistant", "content": "明白了，当前需要为现有 TypeScript 实现补充可维护的单元测试，并遵循仓库现有的测试组织方式。"},
+        {"role": "user", "content": "待测逻辑包含外部依赖、异步结果和少量稳定的复杂对象输出。"},
+        {"role": "assistant", "content": "我会把隔离依赖、异步断言、快照范围和断言表达分别纳入方案。"}
+      ],
+      "changed_message_index": 4,
+      "query": "请给出这项单元测试工作的执行流程，并说明如何判断测试既可靠又易维护。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "补充：实现已经存在，但测试约定和异步、依赖隔离及快照处理细节还没有确定。请给出可直接执行的测试流程。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结 Jest 测试程序：文件与 describe/it 结构、外部依赖 mock 及 afterEach 重置、promise/async 与 resolves/rejects 和超时、聚焦快照复核，以及保留完整 matcher 家族。",
+          "route": "skill",
+          "target_asset_ids": ["T08-SKILL-JEST"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "完成一次 skill_view 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充：请按既定约定执行：测试文件使用 `.test.ts` 或 `.test.js`，可与代码并置或放在 `__tests__`；用描述性名称、嵌套 `describe` 和 `describe/it` 结构；外部依赖用 `jest.mock()`、`jest.spyOn()`、`mockImplementation()` 或 `mockReturnValue()` 隔离，并在 `afterEach` 用 `jest.resetAllMocks()` 重置；异步测试返回 promise 或使用 async/await，用 `resolves`/`rejects`，慢测试设置 `jest.setTimeout()`；快照保持小而聚焦并仔细复核；保留等值、真假、数字、字符串、数组、对象、异常和 mock 调用等 matcher。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息完整给出了冻结来源中的 Jest 文件布局、测试结构、mock API、重置、异步断言、超时、快照及 matcher 要点，无需外部技能内容。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T08-SKILL-REACT19", "T08-SKILL-VUE-PINIA"],
+      "controlled_delta_note": "Positive and Negative share all four context messages and the final query; only the appended message at index 4 changes. Positive leaves the Jest procedure absent, while Negative supplies only frozen source facts.",
+      "source_fact_map": [
+        {"claim": "Jest files use .test.ts or .test.js, may be next to code or in __tests__, and use descriptive names, nested describe blocks, and describe/it.", "source_id": "T08-SKILL-JEST", "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/javascript-typescript-jest/raw/SKILL.md:6-11"},
+        {"claim": "External dependencies use jest.mock, jest.spyOn, mockImplementation or mockReturnValue and resetAllMocks in afterEach; async tests return promises or use async/await, resolves/rejects, and setTimeout.", "source_id": "T08-SKILL-JEST", "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/javascript-typescript-jest/raw/SKILL.md:13-23"},
+        {"claim": "Snapshots stay small and focused, changes are reviewed, and the source lists matcher families for equality, truthiness, numbers, strings, arrays, objects, exceptions, and mock calls.", "source_id": "T08-SKILL-JEST", "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/javascript-typescript-jest/raw/SKILL.md:25-28,36-44"}
+      ],
+      "sol_review_questions": ["确认负例仅包含冻结来源明确的 Jest 结构、隔离、异步、快照和 matcher 事实。"]
+    },
+    {
+      "draft_pair_id": "T08-PAIR-S03",
+      "external_source_ids": ["T08-SKILL-TEMPORAL"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "long_12_to_18",
+      "shared_context_messages": [
+        {"role": "user", "content": "我们正在维护 pytest-coverage-lab 的 Python 测试基础设施，另有一组需要验证历史兼容性的 workflow 测试。"},
+        {"role": "assistant", "content": "我会先区分普通单元覆盖与 workflow 历史回放，避免把两种测试目标混在一起。"},
+        {"role": "user", "content": "这次变更会调整 workflow 的决策逻辑，已有若干生产执行历史可供验证。"},
+        {"role": "assistant", "content": "重点应是确认新代码对既有历史仍作出相同决策，并把不确定性留在可复现的测试中。"},
+        {"role": "user", "content": "测试套件使用 pytest 的异步风格，CI 也需要能持续执行这项检查。"},
+        {"role": "assistant", "content": "可以将历史文件纳入回放测试，并在失败时保留能定位到具体历史的结果。"},
+        {"role": "user", "content": "请给出从选择测试资料到回放、兼容性判断和 CI 落地的完整流程。"},
+        {"role": "assistant", "content": "我会按准备代表性历史、使用当前 workflow 代码回放、分析确定性和接入自动检查的顺序组织。"},
+        {"role": "user", "content": "流程还要能覆盖多个执行路径，并避免把非确定性因素带进 workflow。"},
+        {"role": "assistant", "content": "因此需要保留多历史覆盖，并特别检查随机数、当前时间和直接外部调用等风险。"},
+        {"role": "user", "content": "请只给出维护者可以照做的技术步骤，不要泛泛而谈。"},
+        {"role": "assistant", "content": "收到，我会把回放资源加载、文件处理、版本兼容和失败报告写成可执行步骤。"}
+      ],
+      "changed_message_index": 12,
+      "query": "请给出这项 workflow 回放测试的执行流程，并说明什么时候可以安全发布。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "补充：已有历史和 workflow 代码，但回放测试的具体实现、版本兼容处理及 CI 组织仍未确定。请给出完整流程。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结 Temporal Python 测试技能及 replay-testing 资源：先加载技能再加载 replay-testing 资源，使用 Replayer 回放生产历史，覆盖多历史、导出文件、CI、get_version 兼容和确定性禁忌。",
+          "route": "skill",
+          "target_asset_ids": ["T08-SKILL-TEMPORAL"],
+          "allowed_sequence_candidates": [["skill_view", "skill_files_read"]],
+          "stop_after_candidate": "完成 skill_view 后读取 resources/replay-testing.md 一次，然后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充：请按既定流程执行：先加载 workflow 测试指南，再加载 `resources/replay-testing.md`；用 `Replayer` 对生产 Event History 重新执行，成功表示确定性、异常表示破坏性变更；覆盖多个代表性历史，并可从导出的 `.pb` 文件用 `History.FromString` 回放；在 CI 中导出历史并运行 `pytest tests/replay/ --verbose`，失败时上传 replay-failures；代码演进使用 `workflow.get_version()` 保持兼容；发布前回放，定期导出历史，绝不在 workflow 中使用 `random()`、`datetime.now()` 或直接外部调用，而应通过 activity。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已经给出冻结来源与 replay-testing 资源中的加载顺序、Replayer/History 流程、多历史、文件、CI、版本兼容和确定性约束，无需外部技能内容。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T08-SKILL-PYTEST-COVERAGE", "T08-SKILL-GHA-EFFICIENCY"],
+      "controlled_delta_note": "Positive and Negative share all twelve context messages and the final query; only the appended message at index 12 changes. Positive leaves the replay procedure absent, while Negative supplies the frozen guide facts and resource-specific details.",
+      "source_fact_map": [
+        {"claim": "The skill distinguishes unit, integration, and sparing end-to-end Temporal tests, uses pytest async fixtures, time-skipping, mocked activities, and replay determinism, and progressively loads resources.", "source_id": "T08-SKILL-TEMPORAL", "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/temporal-python-testing/raw/SKILL.md:10-17,19-45"},
+        {"claim": "Replay uses Replayer against recorded histories; replay from exported files uses History.FromString, and successful replay means safe/deterministic while an exception indicates a breaking change.", "source_id": "T08-SKILL-TEMPORAL", "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/temporal-python-testing/raw/resources/replay-testing.md:5-19,21-47,201-218"},
+        {"claim": "The replay resource specifies multiple histories, CI replay tests with failure artifacts, get_version for compatibility, regular history export, and avoiding random(), datetime.now(), and direct external calls.", "source_id": "T08-SKILL-TEMPORAL", "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/temporal-python-testing/raw/resources/replay-testing.md:49-74,220-264,346-429"}
+      ],
+      "sol_review_questions": ["确认负例的 replay-testing 资源路径、Replayer/History、CI 命令、版本兼容和确定性约束均来自冻结原文。"]
+    },
+    {
+      "draft_pair_id": "T08-PAIR-S04",
+      "external_source_ids": ["T08-SKILL-PLAYWRIGHT-GEN"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我们正在验证 playwright-browser-journeys，这是一个 TypeScript Node workspace，包含 packages/playwright、packages/playwright-core 和浏览器测试。"},
+        {"role": "assistant", "content": "明白了，目标是把给定浏览器旅程沉淀为可重复执行的端到端测试。"},
+        {"role": "user", "content": "我已经准备好一个登录后完成筛选并确认结果的场景，步骤顺序很重要。"},
+        {"role": "assistant", "content": "我会把场景中的每一步实际结果作为测试依据，而不是只根据文字猜测选择器。"},
+        {"role": "user", "content": "最终希望得到 tests 目录中的 TypeScript 测试，并在提交前确认它能通过。"},
+        {"role": "assistant", "content": "那需要把浏览器验证、测试文件生成、执行和必要的迭代连成一个闭环。"},
+        {"role": "user", "content": "请用中文给出这项工作的具体执行流程。"},
+        {"role": "assistant", "content": "我会保持流程聚焦于场景执行结果和可运行的测试产物。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请给出这项浏览器场景测试的执行流程，并说明何时可以提交测试文件。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "补充：场景文本已经提供，但还没有按顺序执行过，也没有确定最终测试文件的生成和验证步骤。请给出完整流程。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结场景优先的 Playwright 生成程序：无场景先索取；逐步使用浏览器自动化完成全部步骤；之后才生成 @playwright/test TypeScript 文件，保存到 tests，执行并迭代至通过。",
+          "route": "skill",
+          "target_asset_ids": ["T08-SKILL-PLAYWRIGHT-GEN"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "完成 skill_search 与一次 skill_view_by_id 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充：请按既定流程执行：若没有场景先索取场景；不要提前生成代码；使用浏览器自动化按顺序逐一步骤执行给定场景；全部步骤完成后，才生成使用 `@playwright/test` 的 Playwright TypeScript 测试；把文件保存到 `tests` 目录，执行该文件并迭代，直到测试通过。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息完整提供了冻结来源中的场景前置、逐步执行、延后生成、保存路径、执行和通过终点，无需外部技能内容。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T08-SKILL-PLAYWRIGHT-EXPLORE", "T08-SKILL-WEBAPP-TEST"],
+      "controlled_delta_note": "Positive and Negative share all eight context messages and the final query; only the appended message at index 8 changes. Positive leaves the scenario-first generation procedure absent, while Negative supplies the frozen source steps.",
+      "source_fact_map": [
+        {"claim": "The supplied scenario must be requested if absent, and code must not be generated before completing all prescribed steps.", "source_id": "T08-SKILL-PLAYWRIGHT-GEN", "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/playwright-generate-test/raw/SKILL.md:8-13"},
+        {"claim": "Run steps one by one with the provided browser automation, then emit an @playwright/test TypeScript test, save it in tests, execute it, and iterate until it passes.", "source_id": "T08-SKILL-PLAYWRIGHT-GEN", "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/playwright-generate-test/raw/SKILL.md:13-17"}
+      ],
+      "sol_review_questions": ["确认负例只重述场景执行、代码生成时机、@playwright/test、tests 路径和通过终点。"]
+    },
+    {
+      "draft_pair_id": "T08-PAIR-S05",
+      "external_source_ids": ["T08-SKILL-SCOUTQA"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我们正在验证 playwright-browser-journeys 的一个 Web 入口，希望检查关键用户流程、表单边界和可访问性。"},
+        {"role": "assistant", "content": "这更像目标导向的探索式 QA，而不是只执行一个固定的单元断言。"},
+        {"role": "user", "content": "被测地址可能是 localhost，也可能需要关联到已有项目；远程执行时我还想保留可追踪结果。"},
+        {"role": "assistant", "content": "我会把地址、目标范围、执行标识和结果定位纳入交付信息。"},
+        {"role": "user", "content": "如果发现问题，要能按严重性、类别、影响和位置汇总；执行卡住时也要有后续处理方式。"},
+        {"role": "assistant", "content": "收到，报告需要既能复核具体问题，也能说明整体探索结论和跟进路径。"},
+        {"role": "user", "content": "请给出可直接交给维护者执行的英文步骤。"},
+        {"role": "assistant", "content": "I will keep the workflow goal-oriented and include execution tracking, issue analysis, and cleanup."}
+      ],
+      "changed_message_index": 8,
+      "query": "Give the exploratory web QA execution flow and the required final report contents.",
+      "positive": {
+        "delta_message": {"role": "user", "content": "Additional context: the URL and QA goals are available, but the remote run, issue extraction, and reporting procedure are not fixed. Provide the complete actionable flow."},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结 ScoutQA 探索 QA 程序：写目标导向 prompt，以 5 秒命令超时后台启动，告知 execution/browser URLs，提取并分析结果，支持 issue listing/verification/follow-up，并按 execution id、severity、category、impact、location 报告。",
+          "route": "skill",
+          "target_asset_ids": ["T08-SKILL-SCOUTQA"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "完成 skill_search 与一次 skill_view_by_id 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "Additional context: follow this established flow: write a specific goal-oriented prompt rather than prescriptive steps; start `scoutqa --url ... --prompt ...` in the background with the command timeout set to 5000 ms; immediately report the execution ID and browser URL; extract and analyze results, using `list-issues --execution-id` to find issues, `issue-verify --issue-id` to verify a known issue, and `send-message --execution-id` when a run is stuck; support localhost/127.0.0.1, optional project association and verbose output; final results must include execution ID, every issue's severity, category, impact, location, and a concise summary, with cleanup and graceful timeout handling."},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "The appended message supplies the frozen source workflow, command timeout, URL support, result operations, stuck-run follow-up, and report fields in full, so no external skill content is needed."
+        }
+      },
+      "visible_distractor_ids_author_only": ["T08-SKILL-PLAYWRIGHT-GEN", "T08-SKILL-PLAYWRIGHT-EXPLORE"],
+      "controlled_delta_note": "Positive and Negative share all eight context messages and the final query; only the appended message at index 8 changes. Positive leaves the exploratory QA procedure absent, while Negative supplies only frozen source facts.",
+      "source_fact_map": [
+        {"claim": "The workflow writes a specific prompt, runs the command in background with a five-second timeout, reports execution and browser URLs, then extracts and analyzes results.", "source_id": "T08-SKILL-SCOUTQA", "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/scoutqa-test/raw/SKILL.md:28-80"},
+        {"claim": "The command supports localhost URLs, optional project association, verbose output, issue listing, issue verification, and follow-up messages for stuck runs.", "source_id": "T08-SKILL-SCOUTQA", "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/scoutqa-test/raw/SKILL.md:82-103,340-354"},
+        {"claim": "Final reports include execution ID, issue severity/category/impact/location, and a concise summary, with cleanup and graceful timeout guidance.", "source_id": "T08-SKILL-SCOUTQA", "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/scoutqa-test/raw/SKILL.md:291-338,356-365"}
+      ],
+      "sol_review_questions": ["确认负例仅包含冻结 ScoutQA 原文的目标 prompt、5000ms 后台运行、结果操作和报告字段。"]
+    },
+    {
+      "draft_pair_id": "T08-PAIR-S06",
+      "external_source_ids": ["T08-SKILL-SPRING-TEST"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我们正在维护 spring-quality-gate，这是一个 Gradle 多模块 Java 项目，包含 spring-boot-project、测试切片和集成测试。"},
+        {"role": "assistant", "content": "明白了，当前要为不同风险的生产行为选择合适的 Spring 测试边界。"},
+        {"role": "user", "content": "待测范围同时有 controller、repository、外部 REST client、JSON 映射和完整集成路径。"},
+        {"role": "assistant", "content": "我会先按行为选择最窄且有足够信心的测试方式，再安排断言、覆盖和依赖。"},
+        {"role": "user", "content": "团队使用 JUnit、AssertJ 和 Jacoco，希望测试按场景和风险组织。"},
+        {"role": "assistant", "content": "那还需要把现代 API、描述性名称、覆盖优先级和复杂度提示纳入约定。"},
+        {"role": "user", "content": "请用中文给出可直接执行的测试设计流程。"},
+        {"role": "assistant", "content": "我会把切片决策、实现顺序和质量门槛串成一套流程。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请给出这项 Spring 测试工作的执行流程，并说明如何选择测试边界和验收质量。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "补充：行为范围已明确，但不同测试边界、现代 API、覆盖优先级和复杂方法处理方式还没有统一。请给出完整流程。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结 Spring Boot 4 测试程序：遵循 unit > slice > integration 与最窄置信度，按场景选择五种注解，使用现代 API/AssertJ，按主路径/其他路径/错误组织，复杂度超过 5-7 案例建议重构，Jacoco 目标 80% 并优先关键路径。",
+          "route": "skill",
+          "target_asset_ids": ["T08-SKILL-SPRING-TEST"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "完成 skill_search 与一次 skill_view_by_id 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充：请按既定流程执行：遵循 unit > slice > integration 测试金字塔并选择最窄边界，使用 AssertJ、MockMvcTester 和 RestTestClient；controller 用 `@WebMvcTest`，repository/JPA 用 `@DataJpaTest`，REST client 用 `@RestClientTest`，JSON 用 `@JsonTest`，完整应用才用 `@SpringBootTest`；采用 RestTestClient、`@MockitoBean`、MockMvcTester、模块化 starter 和 context pausing；单个方法若需超过 5-7 个案例则建议拆分；测试按 happy path、其他路径/边界、异常错误排序并用描述性 `@DisplayName`；以 Jacoco 80% 为实用目标，优先业务关键、复杂算法、错误处理和集成点，断言必须有意义。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息完整给出冻结 Spring 来源的测试金字塔、切片映射、Boot 4 API、复杂度、组织顺序、覆盖目标与优先级，无需外部技能内容。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T08-SKILL-JEST", "T08-SKILL-TEMPORAL"],
+      "controlled_delta_note": "Positive and Negative share all eight context messages and the final query; only the appended message at index 8 changes. Positive leaves the Spring test-design procedure absent, while Negative supplies the frozen source facts.",
+      "source_fact_map": [
+        {"claim": "Spring testing follows unit > slice > integration, chooses the narrowest confident tool, prefers AssertJ, MockMvcTester, and RestTestClient, and maps five scenarios to the listed annotations.", "source_id": "T08-SKILL-SPRING-TEST", "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/spring-boot-testing/raw/SKILL.md:10-25"},
+        {"claim": "The quick decision tree maps controller, repository, business logic, external client, JSON, and full integration scenarios to the corresponding test styles and APIs; Boot 4 highlights include RestTestClient, @MockitoBean, MockMvcTester, modular starters, and context pausing.", "source_id": "T08-SKILL-SPRING-TEST", "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/spring-boot-testing/raw/SKILL.md:59-87"},
+        {"claim": "Complex methods needing more than 5-7 cases should prompt refactoring; organize happy path, alternatives/edge cases, and errors; aim for 80% Jacoco coverage and prioritize critical, complex, error, and integration paths with meaningful assertions.", "source_id": "T08-SKILL-SPRING-TEST", "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/spring-boot-testing/raw/SKILL.md:89-165"}
+      ],
+      "sol_review_questions": ["确认负例只包含冻结 Spring Boot 4 来源明确的切片映射、现代 API、复杂度、组织和覆盖事实。"]
+    }
+  ]
+}

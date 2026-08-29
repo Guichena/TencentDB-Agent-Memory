@@ -1,0 +1,1986 @@
+{
+  "schema_version": "task1.formal_memory_assets.v1",
+  "team_id": "T08",
+  "l0Conversations": [
+    {
+      "assetId": "T08-L0-01",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l0"
+      ],
+      "observedAt": "2026-08-16T10:00:00Z",
+      "sessionId": "T08-L0-01",
+      "messages": [
+        {
+          "messageId": "T08-L0-01-M01",
+          "role": "user",
+          "content": "The report shows uncovered branches in the parser and cache adapter.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:00:00Z",
+          "contentHash": "6f5997902c76d01083fbdf59804c767af4ffaea2f3fa5d5fc2ded14e3257777c"
+        },
+        {
+          "messageId": "T08-L0-01-M02",
+          "role": "assistant",
+          "content": "Keep the annotated line report and group the branches by changed module.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:01:00Z",
+          "contentHash": "8cccbafac9cbca8bc06e229574271c8932f65e82c8c8874db413a25cc76b072a"
+        },
+        {
+          "messageId": "T08-L0-01-M03",
+          "role": "user",
+          "content": "Should we raise the threshold immediately?",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:02:00Z",
+          "contentHash": "ccb4527a25f4a207340d6f2db0d7c5cc540644fe9accf7c7ab3afa9f35b369d9"
+        },
+        {
+          "messageId": "T08-L0-01-M04",
+          "role": "assistant",
+          "content": "First distinguish a missing test from an unreachable defensive branch.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:03:00Z",
+          "contentHash": "1aa974a0dbfc67e2fd2fcd66951761eb09f5564486db64aa5dc86b1bd808db14"
+        },
+        {
+          "messageId": "T08-L0-01-M05",
+          "role": "user",
+          "content": "The parser branch is reachable for malformed headers.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:04:00Z",
+          "contentHash": "d63e7734928a206f2bc2ee447175e36d3f66642a82aabb2f20edaecba1c521f5"
+        },
+        {
+          "messageId": "T08-L0-01-M06",
+          "role": "assistant",
+          "content": "Add a focused case for that header and retain the annotation as evidence.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:05:00Z",
+          "contentHash": "98e759b9393f8bb1d5aeaeff08fe092e926aae51c2dc8bdabf01119788d6604b"
+        },
+        {
+          "messageId": "T08-L0-01-M07",
+          "role": "user",
+          "content": "The cache adapter branch depends on a fixture state.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:06:00Z",
+          "contentHash": "e201eed10099183d9000340047843de97d8efe50fc469d02a0b3cbb0d95acb06"
+        },
+        {
+          "messageId": "T08-L0-01-M08",
+          "role": "assistant",
+          "content": "Record the fixture state in the report so a later run is reproducible.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:07:00Z",
+          "contentHash": "294219ffb7931e93aca62b80b3144d7eedca72ee8c6d8d6bb534466ce1a56231"
+        },
+        {
+          "messageId": "T08-L0-01-M09",
+          "role": "user",
+          "content": "I will attach the report to the review.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:08:00Z",
+          "contentHash": "d83a2559e1eb5a19439df048d29d5197ea6a7902dd4527664221ff8ca96b705e"
+        },
+        {
+          "messageId": "T08-L0-01-M10",
+          "role": "assistant",
+          "content": "Include the missing-line numbers and the test names that close them.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:09:00Z",
+          "contentHash": "31c72f072cf31dcc2824bed428fa28ecb46cf9913aabebeff6bb63bcfe5eb935"
+        },
+        {
+          "messageId": "T08-L0-01-M11",
+          "role": "user",
+          "content": "That gives us a useful recovery checklist.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:10:00Z",
+          "contentHash": "79d8786c43ad5f783b606eeec995f93f440eeef86170b31bff1e0da88fb6be4d"
+        },
+        {
+          "messageId": "T08-L0-01-M12",
+          "role": "assistant",
+          "content": "Yes, use it as evidence rather than as a substitute for a stable gate.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:11:00Z",
+          "contentHash": "cc554edfc7d60f7cc599addfccf50d420456a117a6aa398fb05d6a8ef0e91fff"
+        }
+      ],
+      "contentHash": "61b1871ab7db2b5485a1cf35e9387c024572ce2b532ebd52f76b568132f1819c"
+    },
+    {
+      "assetId": "T08-L0-02",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l0"
+      ],
+      "observedAt": "2026-08-17T10:00:00Z",
+      "sessionId": "T08-L0-02",
+      "messages": [
+        {
+          "messageId": "T08-L0-02-M01",
+          "role": "user",
+          "content": "The parametrized parser tests miss empty, unicode, and truncated inputs.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:00:00Z",
+          "contentHash": "8c75d22b636a4fea11cde5a09261d742881f68f6e292341aeb7d7b1a3b559a7b"
+        },
+        {
+          "messageId": "T08-L0-02-M02",
+          "role": "assistant",
+          "content": "List those as explicit parameters with expected outcomes.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:01:00Z",
+          "contentHash": "f0a54e89f57ce800850e265f22e86ac5d47b9c711a15be4d7ddb34326fb651b6"
+        },
+        {
+          "messageId": "T08-L0-02-M03",
+          "role": "user",
+          "content": "A single fixture currently hides which parameter failed.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:02:00Z",
+          "contentHash": "0218918a5ee6e85d39ac160ae9c9e274b77f745e0ce3f0f323a1c9af0fba85eb"
+        },
+        {
+          "messageId": "T08-L0-02-M04",
+          "role": "assistant",
+          "content": "Give each case an id and include it in the assertion output.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:03:00Z",
+          "contentHash": "e7feca1e5e81ce779b9cd67e8eb86832d484b43c07464020cc2b54e1d14f19e9"
+        },
+        {
+          "messageId": "T08-L0-02-M05",
+          "role": "user",
+          "content": "The invalid-header case also touches the fallback branch.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:04:00Z",
+          "contentHash": "f15e37dcda31a2ba642c3fe50bc70fd5fbc28d2ac8c04fb312fe713a48ec94dc"
+        },
+        {
+          "messageId": "T08-L0-02-M06",
+          "role": "assistant",
+          "content": "Keep that branch in the same matrix but explain its separate purpose.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:05:00Z",
+          "contentHash": "3aacfad44ab72e13be4f1f93bc17983e6f58d8ce14d5b00eff22ac76f4e83db4"
+        },
+        {
+          "messageId": "T08-L0-02-M07",
+          "role": "user",
+          "content": "One case passes locally and fails after the full suite.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:06:00Z",
+          "contentHash": "846d72c3991886a8c6746d3d11b1c298bd156fdf2a6ab8480380ba2e123f5828"
+        },
+        {
+          "messageId": "T08-L0-02-M08",
+          "role": "assistant",
+          "content": "Run it alone and after the neighboring cases to check state leakage.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:07:00Z",
+          "contentHash": "f7aa294a4688eb9afec10779c4bbbb08b02a7b5ba3947a6c2a7ba42ffdfa4240"
+        },
+        {
+          "messageId": "T08-L0-02-M09",
+          "role": "user",
+          "content": "The isolated run is stable.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:08:00Z",
+          "contentHash": "a6087c107a05212e90bfd505765956feef5612328955e23da4deacdc31355261"
+        },
+        {
+          "messageId": "T08-L0-02-M10",
+          "role": "assistant",
+          "content": "Then preserve the isolated command in the review notes.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:09:00Z",
+          "contentHash": "95cfbba50c662e188db0a37c0b02edd1ea57611e82779f02dbc5c5d908314d02"
+        },
+        {
+          "messageId": "T08-L0-02-M11",
+          "role": "user",
+          "content": "I have added the missing parameter ids.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:10:00Z",
+          "contentHash": "f05d3e01a9ae48049fee9f023c95d5b04114cd515ea9cefbecf6425990bb0b42"
+        },
+        {
+          "messageId": "T08-L0-02-M12",
+          "role": "assistant",
+          "content": "Good; the report can now connect each edge case to its branch.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:11:00Z",
+          "contentHash": "9c31a1b3e9cbf6ee2c0411a3579817c845f0530848d86a6f575e6254f00c8674"
+        }
+      ],
+      "contentHash": "9b4c24f0b92292ef5ed20d42bbeeec7a42a81b1c3919ed2772a445791ce1e368"
+    },
+    {
+      "assetId": "T08-L0-03",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l0"
+      ],
+      "observedAt": "2026-08-18T10:00:00Z",
+      "sessionId": "T08-L0-03",
+      "messages": [
+        {
+          "messageId": "T08-L0-03-M01",
+          "role": "user",
+          "content": "A database fixture leaves a temporary flag set for the next test.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:00:00Z",
+          "contentHash": "5cbac090d5c19fb5d7d02cb457c2a019e9362bbc4b05bc216a70ff38e50df8d8"
+        },
+        {
+          "messageId": "T08-L0-03-M02",
+          "role": "assistant",
+          "content": "Reproduce the order-sensitive failure with the smallest neighboring set.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:01:00Z",
+          "contentHash": "0d0bc736406eee3f7f0d534388870ff6a41baebdc5b27bc607fea8bbc154e80e"
+        },
+        {
+          "messageId": "T08-L0-03-M03",
+          "role": "user",
+          "content": "The failure disappears when the test is run alone.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:02:00Z",
+          "contentHash": "3e7465f43733154b55337292e7b0ba0891345cfdd5def91c70b264d5e06b622b"
+        },
+        {
+          "messageId": "T08-L0-03-M04",
+          "role": "assistant",
+          "content": "That points to shared state, not to a random assertion timeout.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:03:00Z",
+          "contentHash": "35764d7cfcd993a7989139c40fbca2c97da76299bf4859e121b5cfb1096b7d9b"
+        },
+        {
+          "messageId": "T08-L0-03-M05",
+          "role": "user",
+          "content": "The fixture uses module scope for speed.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:04:00Z",
+          "contentHash": "a1fc67fed50faddaaa77f2e30c9c2d9796ec8f5d333df34edce3066d03ba9195"
+        },
+        {
+          "messageId": "T08-L0-03-M06",
+          "role": "assistant",
+          "content": "Try function scope for the affected tests and reset the flag in teardown.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:05:00Z",
+          "contentHash": "f43220c8616180786905fdfbf90613198f5061942cf8519cea4928805d6132ce"
+        },
+        {
+          "messageId": "T08-L0-03-M07",
+          "role": "user",
+          "content": "Function scope removes the order dependence.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:06:00Z",
+          "contentHash": "e4dd0a09fc863d1c4d597ff51bfadffa2205367975ce1a2f2bade41196ac81f8"
+        },
+        {
+          "messageId": "T08-L0-03-M08",
+          "role": "assistant",
+          "content": "Keep the isolated reproduction and the full-suite confirmation.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:07:00Z",
+          "contentHash": "e9d5814d3abd7c35f6401b1ce58dda87bffb77eb1c48f0296be5949d121c8254"
+        },
+        {
+          "messageId": "T08-L0-03-M09",
+          "role": "user",
+          "content": "The annotated report now shows the intended branch.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:08:00Z",
+          "contentHash": "2583fe149a9e40aaa75d5e9a94ee8d1a7a34af6d7c1b91fa79bf1db7705209ad"
+        },
+        {
+          "messageId": "T08-L0-03-M10",
+          "role": "assistant",
+          "content": "Mention that fixture isolation was required before interpreting coverage.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:09:00Z",
+          "contentHash": "7aaef1990e364f211ed861ab321fe62b187036a3bfd53648f7d4bd9d90a3c8cb"
+        },
+        {
+          "messageId": "T08-L0-03-M11",
+          "role": "user",
+          "content": "I will separate the flaky issue from the missing-line issue.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:10:00Z",
+          "contentHash": "ab6173cf2d4867de72c3d9e6f7a3c9d7f4508dd507ca7e4eef8d5fd5adeb9f8e"
+        },
+        {
+          "messageId": "T08-L0-03-M12",
+          "role": "assistant",
+          "content": "That separation makes the recovery record much easier to audit.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:11:00Z",
+          "contentHash": "0fa8d0dd27cf5cef11bc4f2b10f95fc5d6d5be13d7b7a4e1bb0ba7f388a324c8"
+        }
+      ],
+      "contentHash": "2532c6413faf76ee95b4765d141b1ead13fda01a5a1a20e4a590f7f6441cedbd"
+    },
+    {
+      "assetId": "T08-L0-04",
+      "ownerAgentId": "agent-task1-t08-assets-a",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l0"
+      ],
+      "observedAt": "2026-08-19T10:00:00Z",
+      "sessionId": "T08-L0-04",
+      "messages": [
+        {
+          "messageId": "T08-L0-04-M01",
+          "role": "user",
+          "content": "After reset, a runtime test lost the default mock implementation and began failing.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:00:00Z",
+          "contentHash": "59fabfc8e9d7d10e09f582497da0b260fe63ce3d463611ccb5b71bceaf59f92a"
+        },
+        {
+          "messageId": "T08-L0-04-M02",
+          "role": "assistant",
+          "content": "Which layer had been responsible for installing that implementation?",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:01:00Z",
+          "contentHash": "2f960fdcaf2867a194a59b34ce70660259ff148f11fcdf0ea3762745bbcc2b58"
+        },
+        {
+          "messageId": "T08-L0-04-M03",
+          "role": "user",
+          "content": "A shared setup file had installed it for every test without documenting ownership.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:02:00Z",
+          "contentHash": "31bf27d5dd47283d0cfcf170d6161b34a7a496caa6288577e778c383f512b9cc"
+        },
+        {
+          "messageId": "T08-L0-04-M04",
+          "role": "assistant",
+          "content": "Reset correctly removed the implementation, exposing the hidden dependency.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:03:00Z",
+          "contentHash": "1af4e25696fc2d2ad90ab421ddd764bb8e4113ae26d9967000e461494d3e856a"
+        },
+        {
+          "messageId": "T08-L0-04-M05",
+          "role": "user",
+          "content": "The first proposed fix only updated snapshots.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:04:00Z",
+          "contentHash": "7415ea60f838e8fef27f209f07a51fe546d05252ec17f3612f9be5c4cddf5140"
+        },
+        {
+          "messageId": "T08-L0-04-M06",
+          "role": "assistant",
+          "content": "Snapshots can record the symptom; they cannot restore mock ownership.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:05:00Z",
+          "contentHash": "9e2d922a807661f4804c7705be048b56fc50a2bd271530bdecebf1a35634e77c"
+        },
+        {
+          "messageId": "T08-L0-04-M07",
+          "role": "user",
+          "content": "We moved the needed implementation into each test or its beforeEach.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:06:00Z",
+          "contentHash": "19f9d0a99506858a1c63a610e70d8f4c8d0cdfb663338c6f09e260a53b29f09a"
+        },
+        {
+          "messageId": "T08-L0-04-M08",
+          "role": "assistant",
+          "content": "That makes the test owner explicit and keeps the setup local.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:07:00Z",
+          "contentHash": "6ed0e6484f80e80f9a3e7c913537187ea0c28a2d1dc9e27337feab94f936b073"
+        },
+        {
+          "messageId": "T08-L0-04-M09",
+          "role": "user",
+          "content": "Cleanup now clears calls and restores replaced behavior consistently.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:08:00Z",
+          "contentHash": "cf53b200f069157e15cd51bc640bb3e6aee126b022631a484f68394a12faf905"
+        },
+        {
+          "messageId": "T08-L0-04-M10",
+          "role": "assistant",
+          "content": "Good; each test owns what it needs and cleanup removes cross-test state.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:09:00Z",
+          "contentHash": "1d1de347568d87345e73b88a899159f15853a4c325f3ca39cd33c160244cadf5"
+        },
+        {
+          "messageId": "T08-L0-04-M11",
+          "role": "user",
+          "content": "The suite is stable without broad snapshot churn.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:10:00Z",
+          "contentHash": "1e61398e38957e4e2e39bc04a4bced972ab0df20232d149a9f8f5fa27f24424e"
+        },
+        {
+          "messageId": "T08-L0-04-M12",
+          "role": "assistant",
+          "content": "Record the ownership change as the resolution, with snapshots only as updated evidence.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:11:00Z",
+          "contentHash": "964af2e37d4d865b019e28b89842929d7ed835121f664bb010417ab7a71c4fd4"
+        }
+      ],
+      "contentHash": "bcec836da3cc1204de613df8fa98e681c63cc9837d45fabec4ff7604babc446d"
+    },
+    {
+      "assetId": "T08-L0-05",
+      "ownerAgentId": "agent-task1-t08-assets-a",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l0"
+      ],
+      "observedAt": "2026-08-20T10:00:00Z",
+      "sessionId": "T08-L0-05",
+      "messages": [
+        {
+          "messageId": "T08-L0-05-M01",
+          "role": "user",
+          "content": "An async matcher test sometimes finishes before the promise settles.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:00:00Z",
+          "contentHash": "2d0a0b225d71ab5ca34ee00959b970ff52e2651bffe37084dd6b10d9cbdd642f"
+        },
+        {
+          "messageId": "T08-L0-05-M02",
+          "role": "assistant",
+          "content": "Await the assertion and make the rejection path explicit.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:01:00Z",
+          "contentHash": "b0d612d7625a35883c2eb5d12dd6f4a480eec37e5f1d2894ddda0b209554db1f"
+        },
+        {
+          "messageId": "T08-L0-05-M03",
+          "role": "user",
+          "content": "Another test uses a fake clock but never advances it.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:02:00Z",
+          "contentHash": "7de39098291657af3eb21862386985cdd3e67de023668b5b9a74197b5b8087af"
+        },
+        {
+          "messageId": "T08-L0-05-M04",
+          "role": "assistant",
+          "content": "Advance the clock at the point the scheduled callback is expected.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:03:00Z",
+          "contentHash": "eb8faebfcf91a243b3c276af6744af3551feacc37cf1eb32529c3bf02b0f60f3"
+        },
+        {
+          "messageId": "T08-L0-05-M05",
+          "role": "user",
+          "content": "The fake clock is configured in a package setup file.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:04:00Z",
+          "contentHash": "a1dd2b6e150ec699d12a82bdfc47a55cd8f16753391739c388377b893d421b76"
+        },
+        {
+          "messageId": "T08-L0-05-M06",
+          "role": "assistant",
+          "content": "Keep the configuration narrow so unrelated tests use real time.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:05:00Z",
+          "contentHash": "2d7b381306dc6d0f4b554352fe889adaf5e9ea5c53de447fe82f2158e0e9bbd0"
+        },
+        {
+          "messageId": "T08-L0-05-M07",
+          "role": "user",
+          "content": "A timeout made the failure look like a matcher regression.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:06:00Z",
+          "contentHash": "880d58001ad208c8057e11236c459633cb9a62b76f4f4e0eb025a07c4139d965"
+        },
+        {
+          "messageId": "T08-L0-05-M08",
+          "role": "assistant",
+          "content": "Capture the pending promise and clock state before changing the timeout.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:07:00Z",
+          "contentHash": "9113c4f5006416729d734ed60f817328b9b3ae6196335bdfce0aeed4e3a448a0"
+        },
+        {
+          "messageId": "T08-L0-05-M09",
+          "role": "user",
+          "content": "The explicit await removes the intermittent pass.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:08:00Z",
+          "contentHash": "60dbf5c8c7378a9326f2bb1bdaaaf8807149c1b8207b068c1e8e19542e9c396f"
+        },
+        {
+          "messageId": "T08-L0-05-M10",
+          "role": "assistant",
+          "content": "Add a focused failure message for the unresolved branch.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:09:00Z",
+          "contentHash": "65d3b4da03e9392444818bbaff44a50f2a20a2558fa652fb4e9b7412f76e9009"
+        },
+        {
+          "messageId": "T08-L0-05-M11",
+          "role": "user",
+          "content": "The package tests now finish deterministically.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:10:00Z",
+          "contentHash": "c55ea35fcb72fe6754c512896ceed3c3afed0fa08b721cb535b19385abce265d"
+        },
+        {
+          "messageId": "T08-L0-05-M12",
+          "role": "assistant",
+          "content": "Keep the clock setup and async assertion in the test's ownership boundary.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:11:00Z",
+          "contentHash": "f0358442472eb9d5b426e6c6a0dcf3cc99686615c6924fc4084e59cfb2f14296"
+        }
+      ],
+      "contentHash": "35164dbb6cd7344cfbef716ba6eb85055bd43f493a7643cea4596a22b3c78b1f"
+    },
+    {
+      "assetId": "T08-L0-06",
+      "ownerAgentId": "agent-task1-t08-assets-b",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l0"
+      ],
+      "observedAt": "2026-08-21T10:00:00Z",
+      "sessionId": "T08-L0-06",
+      "messages": [
+        {
+          "messageId": "T08-L0-06-M01",
+          "role": "user",
+          "content": "The checkout journey currently locates the submit control with a brittle CSS chain.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:00:00Z",
+          "contentHash": "9b78a335da62dfaf3653e132be3f5e15298659e39c849ad6d442acec25ecf866"
+        },
+        {
+          "messageId": "T08-L0-06-M02",
+          "role": "assistant",
+          "content": "Explore the visible name, label, and stable test hook before changing the test.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:01:00Z",
+          "contentHash": "de5a197ffee03af7c5bdc12c06f36182fb62ce9d9b83f91a21daaa0f890a5e7e"
+        },
+        {
+          "messageId": "T08-L0-06-M03",
+          "role": "user",
+          "content": "The control has an accessible name and a nearby form label.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:02:00Z",
+          "contentHash": "4a41e9523e4580d3f08a9658dea83e59037a6918cd0e32703cc214165a422a61"
+        },
+        {
+          "messageId": "T08-L0-06-M04",
+          "role": "assistant",
+          "content": "Capture both candidates and note which one survives the responsive layout.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:03:00Z",
+          "contentHash": "cfca36a9a9f61f87382e1bd05d344897318592ac358f44254fe8bf969da98f96"
+        },
+        {
+          "messageId": "T08-L0-06-M05",
+          "role": "user",
+          "content": "The generated trace shows the name is unique on the payment page.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:04:00Z",
+          "contentHash": "96c098b0603ebf9b1d1bd97150d6ca47a46731ab06bff91c877d34edb72f5d65"
+        },
+        {
+          "messageId": "T08-L0-06-M06",
+          "role": "assistant",
+          "content": "Keep the trace as evidence and avoid committing an arbitrary DOM path.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:05:00Z",
+          "contentHash": "136fc257f330882f326cda3b52ea56ba465138371b4d2b2bc46c492c61f93b9e"
+        },
+        {
+          "messageId": "T08-L0-06-M07",
+          "role": "user",
+          "content": "A test hook exists on the confirmation action.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:06:00Z",
+          "contentHash": "7d1878a84cab0b6ec9d3b56dbc6e9374fc6efc7da88f78467b2101aec9f07742"
+        },
+        {
+          "messageId": "T08-L0-06-M08",
+          "role": "assistant",
+          "content": "Compare its stability with the role-and-name candidate across the journey.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:07:00Z",
+          "contentHash": "91974691c52db31e818f9fe43b09d7a511937c3ede29eb6e193bfcead208c938"
+        },
+        {
+          "messageId": "T08-L0-06-M09",
+          "role": "user",
+          "content": "The role candidate reads more like the user action.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:08:00Z",
+          "contentHash": "3c0d3cb203ef7c24ebaea2f992169867a60e2538a86ba89acc0257cdbd45b0ec"
+        },
+        {
+          "messageId": "T08-L0-06-M10",
+          "role": "assistant",
+          "content": "Prefer it when the trace confirms uniqueness and actionable feedback.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:09:00Z",
+          "contentHash": "5526282806312f9f8b4adf943106e651aa1b0245394429e84f3253dd58a2fcf8"
+        },
+        {
+          "messageId": "T08-L0-06-M11",
+          "role": "user",
+          "content": "I will record the alternatives before migrating.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:10:00Z",
+          "contentHash": "1938dfdd986b5325c7e360d299bba70b0c7e43686320341736b404ad99266631"
+        },
+        {
+          "messageId": "T08-L0-06-M12",
+          "role": "assistant",
+          "content": "That discovery record will make later locator changes reviewable.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:11:00Z",
+          "contentHash": "7f3e6efa7158b3e36e3bf8ef8d24905dd4171ff4c44fef3bc9342eda83635796"
+        }
+      ],
+      "contentHash": "46eea0ca5fff4e279a6fce44f17116a500ee13b5a99641645322bae8e337f722"
+    },
+    {
+      "assetId": "T08-L0-07",
+      "ownerAgentId": "agent-task1-t08-assets-b",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l0"
+      ],
+      "observedAt": "2026-08-22T10:00:00Z",
+      "sessionId": "T08-L0-07",
+      "messages": [
+        {
+          "messageId": "T08-L0-07-M01",
+          "role": "user",
+          "content": "The migrated locator passes Chromium but fails in a WebKit journey.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:00:00Z",
+          "contentHash": "ad006a04e7862c254a4a6c055ef5d9a9be3b2db23a554f1e751249304fae855b"
+        },
+        {
+          "messageId": "T08-L0-07-M02",
+          "role": "assistant",
+          "content": "Open the trace at the action and inspect the accessible tree in both runs.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:01:00Z",
+          "contentHash": "0c0ba4402f861c9781214ded85ffd18c87531205d9b38234f82927a8ecc49d5c"
+        },
+        {
+          "messageId": "T08-L0-07-M03",
+          "role": "user",
+          "content": "WebKit exposes a duplicate label from a hidden dialog.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:02:00Z",
+          "contentHash": "fb6276d6ed7edb934995645df1dca1f58f987b76cd1980475efe337ff0043f88"
+        },
+        {
+          "messageId": "T08-L0-07-M04",
+          "role": "assistant",
+          "content": "Scope the locator to the visible checkout region and rerun the trace.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:03:00Z",
+          "contentHash": "bc54bde74426a75b208cddb205f90183c4620cfa46b4dd82772d9bc720a71aa7"
+        },
+        {
+          "messageId": "T08-L0-07-M05",
+          "role": "user",
+          "content": "The scoped role locator is unique in both traces.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:04:00Z",
+          "contentHash": "362c358f375e46fd62abdd9f693d69133dd934b46f35f49620e8f322ef6fd435"
+        },
+        {
+          "messageId": "T08-L0-07-M06",
+          "role": "assistant",
+          "content": "Retain the before-and-after trace links in the migration note.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:05:00Z",
+          "contentHash": "48b630178f0be3d02d6cbc59a8d38c9d6882f8d6ade3d28e72f4e2973e4eda91"
+        },
+        {
+          "messageId": "T08-L0-07-M07",
+          "role": "user",
+          "content": "A test hook would also avoid the duplicate.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:06:00Z",
+          "contentHash": "cff9a5974781f544af4b4b31f635ac759b3b1195cdf9c30f43603be59a025c40"
+        },
+        {
+          "messageId": "T08-L0-07-M08",
+          "role": "assistant",
+          "content": "Use the hook only if the user-facing contract cannot remain unique.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:07:00Z",
+          "contentHash": "d349257fce8ba63c6cabc9c8e4dcc624725fc7a1d1d9572ea621ce6d3439a724"
+        },
+        {
+          "messageId": "T08-L0-07-M09",
+          "role": "user",
+          "content": "The role locator still gives the clearer failure message.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:08:00Z",
+          "contentHash": "a8d0b97bffecd0ec34af2cbce6fcfa944758dd8443683e10747c041561c2fdc7"
+        },
+        {
+          "messageId": "T08-L0-07-M10",
+          "role": "assistant",
+          "content": "Then make cross-browser trace validation part of the acceptance evidence.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:09:00Z",
+          "contentHash": "9d0a2e5e098ca7f2d162f871258c5ced6d0fab680dcb2c7626a0304748ace2b9"
+        },
+        {
+          "messageId": "T08-L0-07-M11",
+          "role": "user",
+          "content": "The journey now passes on all selected engines.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:10:00Z",
+          "contentHash": "b187971af34f2032525c21675d96e2b171ccd6c02a0a2cde06616ff5083e0569"
+        },
+        {
+          "messageId": "T08-L0-07-M12",
+          "role": "assistant",
+          "content": "Document the hidden-dialog cause so the locator is not widened later.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:11:00Z",
+          "contentHash": "90281406ed1c314c7ced28d35f4e23c4b001767cf1158728e89f1fa4f6ec0cab"
+        }
+      ],
+      "contentHash": "7a2eea74c3c763638905e23bde82b9611e16ae74bf1119b262adb0c3169a573f"
+    },
+    {
+      "assetId": "T08-L0-08",
+      "ownerAgentId": "agent-task1-t08-assets-b",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l0"
+      ],
+      "observedAt": "2026-08-23T10:00:00Z",
+      "sessionId": "T08-L0-08",
+      "messages": [
+        {
+          "messageId": "T08-L0-08-M01",
+          "role": "user",
+          "content": "The account journey has three steps with different control markup by browser.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:00:00Z",
+          "contentHash": "4940dcc057a4536c472a22b505dc96fca235dc2a72ce4473c7afe704a9ec3c11"
+        },
+        {
+          "messageId": "T08-L0-08-M02",
+          "role": "assistant",
+          "content": "Assert the user-visible role or label at each step before considering a hook.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:01:00Z",
+          "contentHash": "a870a8aef2b682e96b99748176199f8d8b15fc4c6df891b5159ba35bc07f580c"
+        },
+        {
+          "messageId": "T08-L0-08-M03",
+          "role": "user",
+          "content": "The first step has a stable role and the second has a stable label.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:02:00Z",
+          "contentHash": "96c47b371aed3beb83855b759cb3735c448076d0ce3ec1f2ebce566011313138"
+        },
+        {
+          "messageId": "T08-L0-08-M04",
+          "role": "assistant",
+          "content": "Keep those semantic candidates and capture a trace for each browser.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:03:00Z",
+          "contentHash": "fcb9ad981cbf3f70433d47754230657e820315ed6e5f44a4f0ae47cadd4d44f6"
+        },
+        {
+          "messageId": "T08-L0-08-M05",
+          "role": "user",
+          "content": "The final action has a dedicated test hook.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:04:00Z",
+          "contentHash": "1bb3890d82793ec1a2828833cb6a73d2fae7889ccbca9e9b80386f2cc73a63eb"
+        },
+        {
+          "messageId": "T08-L0-08-M06",
+          "role": "assistant",
+          "content": "Use the hook there if the semantic name is localized or duplicated.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:05:00Z",
+          "contentHash": "1baf219edcb5d8e8753b19ec0b0e226af2741a4c086a03245e7d69432edce339"
+        },
+        {
+          "messageId": "T08-L0-08-M07",
+          "role": "user",
+          "content": "Firefox exposed a timing wait around the final action.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:06:00Z",
+          "contentHash": "62886985a34d1f6c37f467579073676d4bc6c6544053cd5fb4118b371a9a15ed"
+        },
+        {
+          "messageId": "T08-L0-08-M08",
+          "role": "assistant",
+          "content": "Wait on the action's enabled state rather than adding a fixed delay.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:07:00Z",
+          "contentHash": "325d87e56ab90b38b20542bb8081b68b4cd682e31d96b26db4e55a177a08418b"
+        },
+        {
+          "messageId": "T08-L0-08-M09",
+          "role": "user",
+          "content": "The trace confirms the action is enabled before the click.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:08:00Z",
+          "contentHash": "17b56f0ebfdc8862476592256ad77662334da51b42dec804e519dace2ae29449"
+        },
+        {
+          "messageId": "T08-L0-08-M10",
+          "role": "assistant",
+          "content": "Include that state transition in the journey evidence.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:09:00Z",
+          "contentHash": "88cc522bb9d985f2a0f15833adaf084c2271b1a39d7aa25d5dba606489031ffb"
+        },
+        {
+          "messageId": "T08-L0-08-M11",
+          "role": "user",
+          "content": "All three browser runs now agree on the assertions.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:10:00Z",
+          "contentHash": "baf7c3b345ae691441487d5f3423e51b904b2012e8c6130f8276db7413f2a1f4"
+        },
+        {
+          "messageId": "T08-L0-08-M12",
+          "role": "assistant",
+          "content": "The stable journey should preserve the discovery and trace notes.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:11:00Z",
+          "contentHash": "a955d4f374d067ff2376fbfa01b3fe23f228f0d8326feb15ab4577f7f0bc68bc"
+        }
+      ],
+      "contentHash": "514768905e60d405933d55527f3378efbddd87f334a3051639827cb3444f4cc8"
+    },
+    {
+      "assetId": "T08-L0-09",
+      "ownerAgentId": "agent-task1-t08-assets-b",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l0"
+      ],
+      "observedAt": "2026-08-24T10:00:00Z",
+      "sessionId": "T08-L0-09",
+      "messages": [
+        {
+          "messageId": "T08-L0-09-M01",
+          "role": "user",
+          "content": "The deterministic integration build fails because the custom integrationTest classes cannot find a resource.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:00:00Z",
+          "contentHash": "b6a87dfd65969bef47eaed4d8980407942b80352d9dd9110498ec88d6505c5bc"
+        },
+        {
+          "messageId": "T08-L0-09-M02",
+          "role": "assistant",
+          "content": "Check whether that source set still processes its test resources before changing application code.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:01:00Z",
+          "contentHash": "47db19478e9967582fc5ec9bbbbf32e24dee9bb8f5663967af7bea5f4924dcfb"
+        },
+        {
+          "messageId": "T08-L0-09-M03",
+          "role": "user",
+          "content": "The processTestResources dependency was removed from the custom task.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:02:00Z",
+          "contentHash": "500d9d865cf831884881845c574cd37392b627537c3e349f8e063c85320aec10"
+        },
+        {
+          "messageId": "T08-L0-09-M04",
+          "role": "assistant",
+          "content": "That explains why the resource is absent when the integration classes run.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:03:00Z",
+          "contentHash": "49b048c10c3fd5f6c13b748fe29dc191e4cfa1ba494ab1a7515d780821b79723"
+        },
+        {
+          "messageId": "T08-L0-09-M05",
+          "role": "user",
+          "content": "The task also reports an old output directory as up to date.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:04:00Z",
+          "contentHash": "20ea63d29e319982e2dde974e0af01f95db7ae8a45b1c75d4dc265f346f54432"
+        },
+        {
+          "messageId": "T08-L0-09-M06",
+          "role": "assistant",
+          "content": "Restore the task dependency and invalidate the stale output for that task.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:05:00Z",
+          "contentHash": "c8178fed28827052b45dfd5c28742cc532d6bfbcff087a666885e227b040c9b4"
+        },
+        {
+          "messageId": "T08-L0-09-M07",
+          "role": "user",
+          "content": "After invalidation, resources are copied and the build fails no longer.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:06:00Z",
+          "contentHash": "38810eaea6f99473f85884abcd6df78ebdec492f71b881f556742f9dd8ce04f8"
+        },
+        {
+          "messageId": "T08-L0-09-M08",
+          "role": "assistant",
+          "content": "Keep the fix in build configuration; production code is not implicated.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:07:00Z",
+          "contentHash": "3069fa403acd8083bf5933b0c363e8967189dfade62246ac09bca96fc49afe84"
+        },
+        {
+          "messageId": "T08-L0-09-M09",
+          "role": "user",
+          "content": "A clean repeat reproduces the successful result.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:08:00Z",
+          "contentHash": "e3ea0fa687c1f45e8c893848d7254b63cd820f62e54d6c7b22e0e96da946afc5"
+        },
+        {
+          "messageId": "T08-L0-09-M10",
+          "role": "assistant",
+          "content": "Record the dependency edge and stale-output invalidation as the conclusion.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:09:00Z",
+          "contentHash": "2e6e7668581ef55984fa9bcf25473cb33c262ed86fd8a8ca0fcb881eb6cb05bb"
+        },
+        {
+          "messageId": "T08-L0-09-M11",
+          "role": "user",
+          "content": "This is separate from test-slice selection.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:10:00Z",
+          "contentHash": "d4ca5d8472f46b3f94163ef238a304a31b5c77a0341e5961d94478e51415cc9e"
+        },
+        {
+          "messageId": "T08-L0-09-M12",
+          "role": "assistant",
+          "content": "Yes, triage the deterministic build failure independently from test semantics.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:11:00Z",
+          "contentHash": "40eae6d1aa83629092ef75eed01e4c5c19ee22ebc104f969e471bf944fc55b25"
+        }
+      ],
+      "contentHash": "ad63c262f2fe3e9b86c8674f43d52af95d9d5bfcf6dc3313a376ff2408613234"
+    },
+    {
+      "assetId": "T08-L0-10",
+      "ownerAgentId": "agent-task1-t08-assets-b",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l0"
+      ],
+      "observedAt": "2026-08-25T10:00:00Z",
+      "sessionId": "T08-L0-10",
+      "messages": [
+        {
+          "messageId": "T08-L0-10-M01",
+          "role": "user",
+          "content": "A controller test loads the whole application context for one serialization assertion.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:00:00Z",
+          "contentHash": "b58138d768eef22e159faa267832a4d4e5a5b0124ddb4855a05cd75973875f33"
+        },
+        {
+          "messageId": "T08-L0-10-M02",
+          "role": "assistant",
+          "content": "Compare a narrow web slice with the full context and list the required collaborators.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:01:00Z",
+          "contentHash": "d80f2b44373872318ecbc2ffef14cedc4f28738e99398d263e3b0b63b510db26"
+        },
+        {
+          "messageId": "T08-L0-10-M03",
+          "role": "user",
+          "content": "The narrow slice needs one explicit service stub.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:02:00Z",
+          "contentHash": "971342377a4918af5d72e1503c673312220b26d560950e43da285ad39647388e"
+        },
+        {
+          "messageId": "T08-L0-10-M04",
+          "role": "assistant",
+          "content": "Provide that stub and keep the assertion focused on the HTTP contract.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:03:00Z",
+          "contentHash": "6ca0800a28ae426f3355f7cae7853c94cec424b312f3d25af5a2a56610b0f276"
+        },
+        {
+          "messageId": "T08-L0-10-M05",
+          "role": "user",
+          "content": "A repository test currently includes unrelated web configuration.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:04:00Z",
+          "contentHash": "a44dcf571c089607faf8f3c83c39f2f4d175e42937113231ada6e741fbe3e947"
+        },
+        {
+          "messageId": "T08-L0-10-M06",
+          "role": "assistant",
+          "content": "Move it to the data-oriented slice and avoid loading web beans.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:05:00Z",
+          "contentHash": "e99e7ca3460960e7c9573365aa97bd554f56b87fe532d6d60443f0e523feae73"
+        },
+        {
+          "messageId": "T08-L0-10-M07",
+          "role": "user",
+          "content": "Startup time drops in both tests.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:06:00Z",
+          "contentHash": "b6188bda2ec0f617e404b0d5f3d78988fc03bf8d5033f523984411f7f5654c7b"
+        },
+        {
+          "messageId": "T08-L0-10-M08",
+          "role": "assistant",
+          "content": "Check that the narrower context still exercises the intended boundary.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:07:00Z",
+          "contentHash": "33fd74db5fcfb18755ad36309d490d35db494e2664f897b4942d47721df6693c"
+        },
+        {
+          "messageId": "T08-L0-10-M09",
+          "role": "user",
+          "content": "The assertions remain meaningful after the split.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:08:00Z",
+          "contentHash": "db36b26f27b37ba2de0b278d6cb580d033df07e75990b76ab660effc1274acc8"
+        },
+        {
+          "messageId": "T08-L0-10-M10",
+          "role": "assistant",
+          "content": "Keep a note of why each slice was chosen.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:09:00Z",
+          "contentHash": "902896a1feade89d522187594e0d54e9b7862a5169646e23072995c616301154"
+        },
+        {
+          "messageId": "T08-L0-10-M11",
+          "role": "user",
+          "content": "The build configuration issue is tracked elsewhere.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:10:00Z",
+          "contentHash": "4aa851180746dd7e80c96c0486e0d6b6ab071e12d03dc3e362d3e7f1eec63e1a"
+        },
+        {
+          "messageId": "T08-L0-10-M12",
+          "role": "assistant",
+          "content": "Good; keep scope selection and deterministic build triage as separate records.",
+          "sourceEvidenceIds": [
+            "source-t08-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:11:00Z",
+          "contentHash": "14b7f35a7e25b5c0d84ab953940b5c9b43c8bbd2494b246e7b8d1f36084f7594"
+        }
+      ],
+      "contentHash": "2ff60d628e7247acc0dc999f2c35d0a31b112df8cc76f4894ca0d0a1b65e25f9"
+    }
+  ],
+  "l1Memories": [
+    {
+      "assetId": "T08-L1-01",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l1"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "type": "decision",
+      "content": "An older pytest policy required a uniform 100% line-coverage merge gate for every change. It is retained as historical context only and is superseded by the dated current policy.",
+      "status": "superseded",
+      "supersededBy": "T08-L1-11",
+      "validFrom": "2026-02-01T00:00:00Z",
+      "supportingMessageIds": [
+        "T08-L0-01-M01",
+        "T08-L0-01-M02",
+        "T08-L0-01-M03",
+        "T08-L0-01-M04",
+        "T08-L0-01-M05",
+        "T08-L0-01-M06",
+        "T08-L0-01-M07",
+        "T08-L0-01-M08",
+        "T08-L0-01-M09",
+        "T08-L0-01-M10",
+        "T08-L0-01-M11",
+        "T08-L0-01-M12",
+        "T08-L0-02-M01",
+        "T08-L0-02-M02",
+        "T08-L0-02-M03",
+        "T08-L0-02-M04",
+        "T08-L0-02-M05",
+        "T08-L0-02-M06",
+        "T08-L0-02-M07",
+        "T08-L0-02-M08",
+        "T08-L0-02-M09",
+        "T08-L0-02-M10",
+        "T08-L0-02-M11",
+        "T08-L0-02-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "026ae2b8d51d8ad9137b02ae3275f64c7ee6c031b55329660c77b96d6cbe1e62"
+    },
+    {
+      "assetId": "T08-L1-02",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l1"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "type": "decision",
+      "content": "Keep an annotated report with missing executable line numbers and the responsible test module; use it to plan focused additions and review residual gaps.",
+      "status": "active",
+      "validFrom": "2026-05-12T00:00:00Z",
+      "supportingMessageIds": [
+        "T08-L0-01-M01",
+        "T08-L0-01-M02",
+        "T08-L0-01-M03",
+        "T08-L0-01-M04",
+        "T08-L0-01-M05",
+        "T08-L0-01-M06",
+        "T08-L0-01-M07",
+        "T08-L0-01-M08",
+        "T08-L0-01-M09",
+        "T08-L0-01-M10",
+        "T08-L0-01-M11",
+        "T08-L0-01-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "2b4c0329a591e3931c1bf72c87ed51bbb9565f4a4a09bd04a8ae8c0cb05d3261"
+    },
+    {
+      "assetId": "T08-L1-03",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l1"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "type": "decision",
+      "content": "Give boundary inputs explicit parameter ids and expected outcomes so a coverage review can connect each branch to a readable case.",
+      "status": "active",
+      "validFrom": "2026-05-20T00:00:00Z",
+      "supportingMessageIds": [
+        "T08-L0-02-M01",
+        "T08-L0-02-M02",
+        "T08-L0-02-M03",
+        "T08-L0-02-M04",
+        "T08-L0-02-M05",
+        "T08-L0-02-M06",
+        "T08-L0-02-M07",
+        "T08-L0-02-M08",
+        "T08-L0-02-M09",
+        "T08-L0-02-M10",
+        "T08-L0-02-M11",
+        "T08-L0-02-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "157dc9494e177630b61e88bf8f88abd7830c42f602137b7e4d209a1273e3ea0f"
+    },
+    {
+      "assetId": "T08-L1-04",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l1"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "type": "decision",
+      "content": "When a fixture can leak state, reproduce the smallest order-dependent set, narrow its scope, and verify the fix both alone and in the full suite.",
+      "status": "active",
+      "validFrom": "2026-05-25T00:00:00Z",
+      "supportingMessageIds": [
+        "T08-L0-03-M01",
+        "T08-L0-03-M02",
+        "T08-L0-03-M03",
+        "T08-L0-03-M04",
+        "T08-L0-03-M05",
+        "T08-L0-03-M06",
+        "T08-L0-03-M07",
+        "T08-L0-03-M08",
+        "T08-L0-03-M09",
+        "T08-L0-03-M10",
+        "T08-L0-03-M11",
+        "T08-L0-03-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "023d670f5a5f69bb7284d411bd33bd15d446bf526e95545e1b703d524b89b639"
+    },
+    {
+      "assetId": "T08-L1-05",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l1"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "type": "decision",
+      "content": "Coverage artifacts should use a date and commit label, preserve branch annotations, and identify whether a line belongs to a changed module.",
+      "status": "active",
+      "validFrom": "2026-06-02T00:00:00Z",
+      "supportingMessageIds": [
+        "T08-L0-01-M01",
+        "T08-L0-01-M02",
+        "T08-L0-01-M03",
+        "T08-L0-01-M04",
+        "T08-L0-01-M05",
+        "T08-L0-01-M06",
+        "T08-L0-01-M07",
+        "T08-L0-01-M08",
+        "T08-L0-01-M09",
+        "T08-L0-01-M10",
+        "T08-L0-01-M11",
+        "T08-L0-01-M12",
+        "T08-L0-03-M01",
+        "T08-L0-03-M02",
+        "T08-L0-03-M03",
+        "T08-L0-03-M04",
+        "T08-L0-03-M05",
+        "T08-L0-03-M06",
+        "T08-L0-03-M07",
+        "T08-L0-03-M08",
+        "T08-L0-03-M09",
+        "T08-L0-03-M10",
+        "T08-L0-03-M11",
+        "T08-L0-03-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "548e4a5fd59f6da11052d30793d2fa84008b949a9a921ee8d278beebceb54899"
+    },
+    {
+      "assetId": "T08-L1-06",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l1"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "type": "decision",
+      "content": "Start a parameter failure in isolation, then rerun adjacent cases to distinguish a bad expectation from shared fixture state.",
+      "status": "active",
+      "validFrom": "2026-06-08T00:00:00Z",
+      "supportingMessageIds": [
+        "T08-L0-02-M01",
+        "T08-L0-02-M02",
+        "T08-L0-02-M03",
+        "T08-L0-02-M04",
+        "T08-L0-02-M05",
+        "T08-L0-02-M06",
+        "T08-L0-02-M07",
+        "T08-L0-02-M08",
+        "T08-L0-02-M09",
+        "T08-L0-02-M10",
+        "T08-L0-02-M11",
+        "T08-L0-02-M12",
+        "T08-L0-03-M01",
+        "T08-L0-03-M02",
+        "T08-L0-03-M03",
+        "T08-L0-03-M04",
+        "T08-L0-03-M05",
+        "T08-L0-03-M06",
+        "T08-L0-03-M07",
+        "T08-L0-03-M08",
+        "T08-L0-03-M09",
+        "T08-L0-03-M10",
+        "T08-L0-03-M11",
+        "T08-L0-03-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "4ff63860e9fddff54e1c381e13d802776a9f7ff41716dd4e0ef35e089101f529"
+    },
+    {
+      "assetId": "T08-L1-07",
+      "ownerAgentId": "agent-task1-t08-assets-a",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l1"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "type": "decision",
+      "content": "A test that needs a special mock behavior should install it in the test or its beforeEach and leave cleanup to clear and restore state.",
+      "status": "active",
+      "validFrom": "2026-06-13T00:00:00Z",
+      "supportingMessageIds": [
+        "T08-L0-04-M01",
+        "T08-L0-04-M02",
+        "T08-L0-04-M03",
+        "T08-L0-04-M04",
+        "T08-L0-04-M05",
+        "T08-L0-04-M06",
+        "T08-L0-04-M07",
+        "T08-L0-04-M08",
+        "T08-L0-04-M09",
+        "T08-L0-04-M10",
+        "T08-L0-04-M11",
+        "T08-L0-04-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "14b9258dc239415581654ce44c96ec2d035a6c3c9aaca93c1fcd33aa2fa356f7"
+    },
+    {
+      "assetId": "T08-L1-08",
+      "ownerAgentId": "agent-task1-t08-assets-a",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l1"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "type": "decision",
+      "content": "Await asynchronous matchers, make rejection paths explicit, and preserve the pending operation in failure evidence.",
+      "status": "active",
+      "validFrom": "2026-06-15T00:00:00Z",
+      "supportingMessageIds": [
+        "T08-L0-05-M01",
+        "T08-L0-05-M02",
+        "T08-L0-05-M03",
+        "T08-L0-05-M04",
+        "T08-L0-05-M05",
+        "T08-L0-05-M06",
+        "T08-L0-05-M07",
+        "T08-L0-05-M08",
+        "T08-L0-05-M09",
+        "T08-L0-05-M10",
+        "T08-L0-05-M11",
+        "T08-L0-05-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "af27fb734650b925374e7a395a0d5e057d6ca5878cb36d9401138c6093106b37"
+    },
+    {
+      "assetId": "T08-L1-09",
+      "ownerAgentId": "agent-task1-t08-assets-b",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l1"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "type": "decision",
+      "content": "During locator discovery, record role and label candidates before a dedicated test hook; choose the narrowest candidate that expresses the user action.",
+      "status": "active",
+      "validFrom": "2026-06-21T00:00:00Z",
+      "supportingMessageIds": [
+        "T08-L0-06-M01",
+        "T08-L0-06-M02",
+        "T08-L0-06-M03",
+        "T08-L0-06-M04",
+        "T08-L0-06-M05",
+        "T08-L0-06-M06",
+        "T08-L0-06-M07",
+        "T08-L0-06-M08",
+        "T08-L0-06-M09",
+        "T08-L0-06-M10",
+        "T08-L0-06-M11",
+        "T08-L0-06-M12",
+        "T08-L0-08-M01",
+        "T08-L0-08-M02",
+        "T08-L0-08-M03",
+        "T08-L0-08-M04",
+        "T08-L0-08-M05",
+        "T08-L0-08-M06",
+        "T08-L0-08-M07",
+        "T08-L0-08-M08",
+        "T08-L0-08-M09",
+        "T08-L0-08-M10",
+        "T08-L0-08-M11",
+        "T08-L0-08-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "0c61656333163c52445bffb8c018fe1749e610bda3bcb7473bd03c60f79daeba"
+    },
+    {
+      "assetId": "T08-L1-10",
+      "ownerAgentId": "agent-task1-t08-assets-b",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l1"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "type": "decision",
+      "content": "A locator migration review keeps before-and-after traces, browser names, and the visible-region scope used to establish uniqueness.",
+      "status": "active",
+      "validFrom": "2026-06-24T00:00:00Z",
+      "supportingMessageIds": [
+        "T08-L0-06-M01",
+        "T08-L0-06-M02",
+        "T08-L0-06-M03",
+        "T08-L0-06-M04",
+        "T08-L0-06-M05",
+        "T08-L0-06-M06",
+        "T08-L0-06-M07",
+        "T08-L0-06-M08",
+        "T08-L0-06-M09",
+        "T08-L0-06-M10",
+        "T08-L0-06-M11",
+        "T08-L0-06-M12",
+        "T08-L0-07-M01",
+        "T08-L0-07-M02",
+        "T08-L0-07-M03",
+        "T08-L0-07-M04",
+        "T08-L0-07-M05",
+        "T08-L0-07-M06",
+        "T08-L0-07-M07",
+        "T08-L0-07-M08",
+        "T08-L0-07-M09",
+        "T08-L0-07-M10",
+        "T08-L0-07-M11",
+        "T08-L0-07-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "4f6503297d8b6e707e945f006feedc118a9b6d2da3f6f3e6f0db074871ac340b"
+    },
+    {
+      "assetId": "T08-L1-11",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l1"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "type": "decision",
+      "content": "As of 2026-08-20, the current merge gate requires overall line coverage >=85% plus no newly uncovered executable lines in changed modules. The older uniform 100% merge gate is no longer current; annotated 100% remains a focused gap-closure technique rather than the universal merge threshold.",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00Z",
+      "supportingMessageIds": [
+        "T08-L0-01-M01",
+        "T08-L0-01-M02",
+        "T08-L0-01-M03",
+        "T08-L0-01-M04",
+        "T08-L0-01-M05",
+        "T08-L0-01-M06",
+        "T08-L0-01-M07",
+        "T08-L0-01-M08",
+        "T08-L0-01-M09",
+        "T08-L0-01-M10",
+        "T08-L0-01-M11",
+        "T08-L0-01-M12",
+        "T08-L0-02-M01",
+        "T08-L0-02-M02",
+        "T08-L0-02-M03",
+        "T08-L0-02-M04",
+        "T08-L0-02-M05",
+        "T08-L0-02-M06",
+        "T08-L0-02-M07",
+        "T08-L0-02-M08",
+        "T08-L0-02-M09",
+        "T08-L0-02-M10",
+        "T08-L0-02-M11",
+        "T08-L0-02-M12",
+        "T08-L0-03-M01",
+        "T08-L0-03-M02",
+        "T08-L0-03-M03",
+        "T08-L0-03-M04",
+        "T08-L0-03-M05",
+        "T08-L0-03-M06",
+        "T08-L0-03-M07",
+        "T08-L0-03-M08",
+        "T08-L0-03-M09",
+        "T08-L0-03-M10",
+        "T08-L0-03-M11",
+        "T08-L0-03-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "4131b1e691d58ffbcb6152396361bb83060e81c5914e9ae623cbef541150a32d"
+    },
+    {
+      "assetId": "T08-L1-12",
+      "ownerAgentId": "agent-task1-t08-assets-b",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l1"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "type": "decision",
+      "content": "Select the narrowest Spring test slice that exercises the intended boundary, provide explicit collaborators, and keep assertions tied to that boundary.",
+      "status": "active",
+      "validFrom": "2026-07-02T00:00:00Z",
+      "supportingMessageIds": [
+        "T08-L0-10-M01",
+        "T08-L0-10-M02",
+        "T08-L0-10-M03",
+        "T08-L0-10-M04",
+        "T08-L0-10-M05",
+        "T08-L0-10-M06",
+        "T08-L0-10-M07",
+        "T08-L0-10-M08",
+        "T08-L0-10-M09",
+        "T08-L0-10-M10",
+        "T08-L0-10-M11",
+        "T08-L0-10-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "c0db579e714fb95edd728e5654240d86e540b371ab07318afdf145c00210993e"
+    },
+    {
+      "assetId": "T08-L1-13",
+      "ownerAgentId": "agent-task1-t08-assets-b",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l1"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "type": "decision",
+      "content": "For a repeatable build failure, capture the task graph, resource output, and a clean rerun before changing production sources.",
+      "status": "active",
+      "validFrom": "2026-07-05T00:00:00Z",
+      "supportingMessageIds": [
+        "T08-L0-09-M01",
+        "T08-L0-09-M02",
+        "T08-L0-09-M03",
+        "T08-L0-09-M04",
+        "T08-L0-09-M05",
+        "T08-L0-09-M06",
+        "T08-L0-09-M07",
+        "T08-L0-09-M08",
+        "T08-L0-09-M09",
+        "T08-L0-09-M10",
+        "T08-L0-09-M11",
+        "T08-L0-09-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "9a0eb901b90fb363a538f66074b57468b50816aa6aea953a5883e0c07180fff2"
+    },
+    {
+      "assetId": "T08-L1-14",
+      "ownerAgentId": "agent-task1-t08-assets-a",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l1"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "type": "decision",
+      "content": "For a current Jest flaky failure, the package owner supplies a minimal reproduction or seed, fake-timer configuration, and isolated failing command; the CI owner supplies worker and environment evidence. Accepting a snapshot update alone is forbidden.",
+      "status": "active",
+      "validFrom": "2026-08-15T00:00:00Z",
+      "supportingMessageIds": [
+        "T08-L0-04-M01",
+        "T08-L0-04-M02",
+        "T08-L0-04-M03",
+        "T08-L0-04-M04",
+        "T08-L0-04-M05",
+        "T08-L0-04-M06",
+        "T08-L0-04-M07",
+        "T08-L0-04-M08",
+        "T08-L0-04-M09",
+        "T08-L0-04-M10",
+        "T08-L0-04-M11",
+        "T08-L0-04-M12",
+        "T08-L0-05-M01",
+        "T08-L0-05-M02",
+        "T08-L0-05-M03",
+        "T08-L0-05-M04",
+        "T08-L0-05-M05",
+        "T08-L0-05-M06",
+        "T08-L0-05-M07",
+        "T08-L0-05-M08",
+        "T08-L0-05-M09",
+        "T08-L0-05-M10",
+        "T08-L0-05-M11",
+        "T08-L0-05-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "705efc83dd844227ac35aadc9285c85df4e7a45d6099e91d02e3df8035c91912"
+    },
+    {
+      "assetId": "T08-L1-15",
+      "ownerAgentId": "agent-task1-t08-assets-b",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l1"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "type": "decision",
+      "content": "For browser journeys, wait on the action's enabled or visible state and retain engine-specific traces instead of adding fixed delays.",
+      "status": "active",
+      "validFrom": "2026-07-18T00:00:00Z",
+      "supportingMessageIds": [
+        "T08-L0-07-M01",
+        "T08-L0-07-M02",
+        "T08-L0-07-M03",
+        "T08-L0-07-M04",
+        "T08-L0-07-M05",
+        "T08-L0-07-M06",
+        "T08-L0-07-M07",
+        "T08-L0-07-M08",
+        "T08-L0-07-M09",
+        "T08-L0-07-M10",
+        "T08-L0-07-M11",
+        "T08-L0-07-M12",
+        "T08-L0-08-M01",
+        "T08-L0-08-M02",
+        "T08-L0-08-M03",
+        "T08-L0-08-M04",
+        "T08-L0-08-M05",
+        "T08-L0-08-M06",
+        "T08-L0-08-M07",
+        "T08-L0-08-M08",
+        "T08-L0-08-M09",
+        "T08-L0-08-M10",
+        "T08-L0-08-M11",
+        "T08-L0-08-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "f2c2357ea723253979856311f3544e43dd4b57738f3a959e3f39b79bd4fceb12"
+    },
+    {
+      "assetId": "T08-L1-16",
+      "ownerAgentId": "agent-task1-t08-assets-b",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l1"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "type": "decision",
+      "content": "Custom integration source sets must process their resources before execution; stale task output should be invalidated when a missing dependency caused a deterministic failure.",
+      "status": "active",
+      "validFrom": "2026-07-22T00:00:00Z",
+      "supportingMessageIds": [
+        "T08-L0-09-M01",
+        "T08-L0-09-M02",
+        "T08-L0-09-M03",
+        "T08-L0-09-M04",
+        "T08-L0-09-M05",
+        "T08-L0-09-M06",
+        "T08-L0-09-M07",
+        "T08-L0-09-M08",
+        "T08-L0-09-M09",
+        "T08-L0-09-M10",
+        "T08-L0-09-M11",
+        "T08-L0-09-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "bcf0cc1b57553a6b1065847b875bfe3926afe706ee7bc14fff45de83c8d0284b"
+    }
+  ],
+  "l2Scenes": [
+    {
+      "assetId": "T08-L2-01",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l2"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "path": "scenes/pytest/coverage-recovery",
+      "summary": "Continuous coverage recovery",
+      "content": "Coverage recovery begins by establishing an annotated report, then adding tests for uncovered branches, isolating flaky fixtures, and finally applying the 85% overall line-coverage plus no-new-uncovered-lines gate for changed modules. The report is retained as a continuous loop: inspect, add focused cases, stabilize fixtures, and recheck the gate.",
+      "injected": true,
+      "supportingSessionIds": [
+        "T08-L0-01",
+        "T08-L0-02",
+        "T08-L0-03"
+      ],
+      "contentHash": "0a50bd24ba1cd805cc32417e6d0cd8a219c6b000b79958190fbea7aa986588db"
+    },
+    {
+      "assetId": "T08-L2-02",
+      "ownerAgentId": "agent-task1-t08-assets-a",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l2"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "path": "scenes/jest/mock-and-async-review",
+      "summary": "Jest isolation review",
+      "content": "The review traces a shared mock incident into local ownership, consistent cleanup, awaited async assertions, and narrowly configured fake clocks. Snapshot evidence is useful only after behavior and ownership are correct.",
+      "injected": true,
+      "supportingSessionIds": [
+        "T08-L0-04",
+        "T08-L0-05"
+      ],
+      "contentHash": "bd253e7e57df7f5fba0592ac8cde8b190b9c85b217448afda70e5027fbda8050"
+    },
+    {
+      "assetId": "T08-L2-03",
+      "ownerAgentId": "agent-task1-t08-assets-b",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l2"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "path": "scenes/playwright/locator-migration-chronology",
+      "summary": "Locator migration chronology",
+      "content": "Phase one moves from brittle CSS toward role, label, and test-id candidates discovered from the visible page. Phase two validates the chosen candidate with traces and scopes it when hidden or duplicate controls appear. Phase three keeps cross-browser stable assertions, action readiness, and engine-specific trace evidence so the journey remains durable.",
+      "injected": false,
+      "supportingSessionIds": [
+        "T08-L0-06",
+        "T08-L0-07",
+        "T08-L0-08"
+      ],
+      "contentHash": "8a04af64f8675d5716a6db23bf47161fbb7fb575c4c0e0e0846bcfbaf32f0498"
+    },
+    {
+      "assetId": "T08-L2-04",
+      "ownerAgentId": "agent-task1-t08-assets-b",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l2"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "path": "scenes/spring/deterministic-quality-triage",
+      "summary": "Spring quality triage",
+      "content": "The scene separates narrow test-slice choice from deterministic build triage: inspect the custom source-set task graph, restore missing resource processing, invalidate stale output, and verify with a clean repeat before considering production changes.",
+      "injected": true,
+      "supportingSessionIds": [
+        "T08-L0-09",
+        "T08-L0-10"
+      ],
+      "contentHash": "e65bf972ea72c7117fbfd8003e4b9b4cfb03362f9e5da96c06ce934349e19080"
+    }
+  ],
+  "l3Profiles": [
+    {
+      "assetId": "T08-L3-01",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-memory-l3"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "content": "偏好可复现、可定位的测试证据：先缩小失败范围，再保留报告、参数、轨迹或任务图；测试应拥有明确的夹具和模拟状态，异步操作要显式等待，浏览器断言优先表达用户可见语义。覆盖率、切片选择与构建排障分别记录，避免用表面结果掩盖根因。",
+      "stability": "team",
+      "contentHash": "10c5ec14c229e4adc87f5168bcb5e67f1d3990b25bf23b2c81e107ddd1ef4545"
+    }
+  ]
+}

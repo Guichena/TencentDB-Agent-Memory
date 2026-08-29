@@ -1,0 +1,170 @@
+{
+  "schema_version": "task1.team_input_pack.v1",
+  "build_id": "build-04",
+  "team_id": "T08",
+  "stage": "DS05",
+  "split": "hidden_test",
+  "frozen_at": "2026-08-29T23:59:59+08:00",
+  "world_as_of": "2026-08-29T23:59:59+08:00",
+  "theme": "测试质量：pytest coverage、Jest 与 Playwright",
+  "identity": {
+    "space_id": "space-task1-engineering",
+    "active_agent_id": "agent-task1-t08-general",
+    "asset_agent_ids": ["agent-task1-t08-assets-a", "agent-task1-t08-assets-b"],
+    "user_id": "user-task1-t08-eval",
+    "snapshot_id": "snapshot-task1-hidden-v1"
+  },
+  "project_flows": [
+    {
+      "project_id": "pytest-coverage-lab",
+      "task_id": "task-task1-t08-pytest",
+      "language": "python",
+      "structure": "src-layout Python package with src/_pytest, testing, pyproject.toml and coverage annotations",
+      "repository_url": "https://github.com/pytest-dev/pytest",
+      "commit_sha": "fdba12e1708313f56e9cf713d260c029764ca2b7",
+      "license": "MIT",
+      "focus": "pytest fixtures, missing-line coverage, parametrization, flaky failure isolation and quality gates"
+    },
+    {
+      "project_id": "jest-runtime-suite",
+      "task_id": "task-task1-t08-jest",
+      "language": "typescript",
+      "structure": "Yarn monorepo with packages/jest-runtime, packages/expect, e2e fixtures and snapshot tests",
+      "repository_url": "https://github.com/jestjs/jest",
+      "commit_sha": "be425a0b0e3bd60a74e4a7e350aa38c63a2d25ef",
+      "license": "MIT",
+      "focus": "unit isolation, mock ownership, async assertions, snapshots, build failures and coverage evidence"
+    },
+    {
+      "project_id": "playwright-browser-journeys",
+      "task_id": "task-task1-t08-playwright",
+      "language": "typescript",
+      "structure": "Node workspace with packages/playwright, packages/playwright-core, tests/playwright-test and browser fixtures",
+      "repository_url": "https://github.com/microsoft/playwright",
+      "commit_sha": "de214f440b7e34937fe4886f046b78b757136087",
+      "license": "Apache-2.0",
+      "focus": "browser exploration, locator discovery, generated E2E tests, accessibility checks and trace-backed failures"
+    },
+    {
+      "project_id": "spring-quality-gate",
+      "task_id": "task-task1-t08-spring",
+      "language": "java",
+      "structure": "Gradle multi-module Java project with spring-boot-project, test slices, integration tests and buildSrc",
+      "repository_url": "https://github.com/spring-projects/spring-boot",
+      "commit_sha": "cf5f3b9ea64ab3a7de9ac137dac8989ad75ad2aa",
+      "license": "Apache-2.0",
+      "focus": "test-slice choice, meaningful coverage, deterministic build-failure triage and CI evidence"
+    }
+  ],
+  "asset_namespaces": {
+    "l0_session_ids": ["T08-L0-01", "T08-L0-02", "T08-L0-03", "T08-L0-04", "T08-L0-05", "T08-L0-06", "T08-L0-07", "T08-L0-08", "T08-L0-09", "T08-L0-10"],
+    "l1_memory_ids": ["T08-L1-01", "T08-L1-02", "T08-L1-03", "T08-L1-04", "T08-L1-05", "T08-L1-06", "T08-L1-07", "T08-L1-08", "T08-L1-09", "T08-L1-10", "T08-L1-11", "T08-L1-12", "T08-L1-13", "T08-L1-14", "T08-L1-15", "T08-L1-16"],
+    "l2_scene_ids": ["T08-L2-01", "T08-L2-02", "T08-L2-03", "T08-L2-04"],
+    "l3_profile_id": "T08-L3-01",
+    "knowledge_ids": ["cg-t08py01", "wiki-t08js01", "wiki-t08pw01"]
+  },
+  "knowledge_fixture_overrides": {
+    "wiki-t08js01": {
+      "tool_name": "search_pages",
+      "request_fixture": {
+        "topic": "snapshot triage closure",
+        "repository_url": "https://github.com/jestjs/jest",
+        "commit_sha": "be425a0b0e3bd60a74e4a7e350aa38c63a2d25ef",
+        "read_only": true
+      },
+      "response_fixture": {
+        "page_title": "Jest snapshot-failure triage closure",
+        "body": "Before accepting a snapshot update, rerun the isolated failure with the original serializer and with fake timers reset, attach a focused received-versus-expected diff, and classify the change as behavior, serializer, or fixture drift. Only an approved behavior change may update the snapshot; serializer or fixture drift must be fixed at its source."
+      }
+    }
+  },
+  "knowledge_metadata": {
+    "cg-t08py01": {
+      "name": "pytest coverage code graph",
+      "summary": "Read-only code-graph metadata for the pinned pytest repository and coverage-lab workspace."
+    },
+    "wiki-t08js01": {
+      "name": "Jest runtime test-quality wiki",
+      "summary": "Read-only internal review notes for the pinned Jest runtime workspace and its test evidence."
+    },
+    "wiki-t08pw01": {
+      "name": "Playwright browser-journey wiki",
+      "summary": "Read-only internal review notes for the pinned Playwright browser-journey workspace."
+    }
+  },
+  "skill_source_policies": {
+    "awesome-copilot": {
+      "repository_url": "https://github.com/github/awesome-copilot",
+      "commit_sha": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "commit_time": "2026-08-28T05:41:12Z",
+      "license": "MIT",
+      "license_path": "LICENSE",
+      "license_local_path": "_licenses/awesome-copilot-MIT.txt",
+      "license_sha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823"
+    },
+    "skillsbench": {
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "commit_sha": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "commit_time": "2026-06-16T22:10:25Z",
+      "license": "Apache-2.0",
+      "license_path": "LICENSE",
+      "license_local_path": "_licenses/skillsbench-Apache-2.0.txt",
+      "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    }
+  },
+  "skill_adaptation_policy": {
+    "allowed_adaptations": ["host tool names", "listing description", "use_when", "do_not_use_when"],
+    "forbidden_adaptations": ["core technical steps", "invented APIs", "invented source files"]
+  },
+  "skills": [
+    {"asset_id":"T08-SKILL-PYTEST-COVERAGE","name":"pytest-coverage","owner":"agent-task1-t08-general","bound":true,"visibility":"team","role":"target","source_policy_id":"awesome-copilot","path":"skills/pytest-coverage/SKILL.md","raw_sha256":"3778add8809c5aac585ab764090f46e7cfdb009ae3fc9fb308710538627970f9","use_when":"A Python pytest suite needs an annotated coverage report and tests for specific missing lines.","do_not_use_when":"The task is JavaScript unit testing, browser E2E, or only a build configuration failure."},
+    {"asset_id":"T08-SKILL-JEST","name":"javascript-typescript-jest","owner":"agent-task1-t08-general","bound":true,"visibility":"team","role":"target","source_policy_id":"awesome-copilot","path":"skills/javascript-typescript-jest/SKILL.md","raw_sha256":"cb9a552dfe63cae4f310b27067ba28351b59ad17e83a9e1c5ff23c542ce6fdd8","use_when":"An existing JavaScript or TypeScript implementation needs Jest unit tests, mocks or async assertions.","do_not_use_when":"The request is browser E2E, Python coverage, or production logic is still undefined."},
+    {"asset_id":"T08-SKILL-TEMPORAL","name":"temporal-python-testing","owner":"agent-task1-t08-general","bound":true,"visibility":"team","role":"target","source_policy_id":"skillsbench","path":"tasks/fix-build-agentops/environment/skills/temporal-python-testing/SKILL.md","raw_sha256":"21e5d2382d474553eadb2771c764f4aa2b55a12bd75bc40894e68630c02db7bb","resource_paths":[{"path":"tasks/fix-build-agentops/environment/skills/temporal-python-testing/resources/unit-testing.md","local_path":"resources/unit-testing.md","sha256":"1836367b98c5ee84e9ea98d1b30726bf48ef5404aaf0426f88742bdcce5712cf"},{"path":"tasks/fix-build-agentops/environment/skills/temporal-python-testing/resources/replay-testing.md","local_path":"resources/replay-testing.md","sha256":"9fc02f45c66324e15229047e28d5c77b3496299ca4fa83dbfaae6fb67af8bfc3"}],"use_when":"Temporal Python workflows need pytest time-skipping, activity isolation or replay determinism testing.","do_not_use_when":"The application does not use Temporal, or the request is ordinary pytest coverage without workflow history."},
+    {"asset_id":"T08-SKILL-CSHARP-MSTEST","name":"csharp-mstest","owner":"agent-task1-t08-general","bound":true,"visibility":"team","role":"distractor","source_policy_id":"awesome-copilot","path":"skills/csharp-mstest/SKILL.md","raw_sha256":"325e70e82f3edecb7312a7e504a89e87c8fb684c8f2aa55df6f29905ef1bf859","use_when":"A C# project explicitly uses MSTest for unit or data-driven tests.","do_not_use_when":"The project uses pytest, Jest, Playwright or Spring/JUnit."},
+    {"asset_id":"T08-SKILL-GHA-EFFICIENCY","name":"github-actions-efficiency","owner":"agent-task1-t08-general","bound":true,"visibility":"team","role":"distractor","source_policy_id":"awesome-copilot","path":"skills/github-actions-efficiency/SKILL.md","raw_sha256":"9c41e860468e5c88d83ab6eec70c585b0f122facec2632ea65497b3389139e43","use_when":"GitHub Actions workflow duration, caching or redundant CI work needs optimization.","do_not_use_when":"The immediate gap is a test procedure, browser scenario or local assertion."},
+    {"asset_id":"T08-SKILL-BREAKDOWN","name":"breakdown-test","owner":"agent-task1-t08-general","bound":true,"visibility":"team","role":"distractor","source_policy_id":"awesome-copilot","path":"skills/breakdown-test/SKILL.md","raw_sha256":"83727ec30a986686f1bc8eaeeb42360379c11416a280c4e77d38d39e0e02555f","use_when":"An existing broad test must be decomposed into smaller focused test cases.","do_not_use_when":"The task is to discover missing coverage, explore a browser or choose a testing framework."},
+    {"asset_id":"T08-SKILL-PLAYWRIGHT-GEN","name":"playwright-generate-test","owner":"agent-task1-t08-assets-a","bound":false,"visibility":"team","role":"target","source_policy_id":"awesome-copilot","path":"skills/playwright-generate-test/SKILL.md","raw_sha256":"79dbb1a49fc5a6502788ccba1a4bd30769a017a1cc31d9db329d1326ea3d898f","use_when":"A supplied browser scenario must be explored step by step before emitting a passing Playwright TypeScript test.","do_not_use_when":"The request is unit testing, coverage-only work, or no browser scenario is provided."},
+    {"asset_id":"T08-SKILL-SCOUTQA","name":"scoutqa-test","owner":"agent-task1-t08-assets-a","bound":false,"visibility":"team","role":"target","source_policy_id":"awesome-copilot","path":"skills/scoutqa-test/SKILL.md","raw_sha256":"6c09a43984b05b6a108e79c2defb51d8f7fee7e230610a5e220f63dde8bcdee1","use_when":"A web application needs exploratory QA, accessibility auditing or user-flow verification.","do_not_use_when":"The request is a deterministic unit test, code coverage report or non-browser build failure."},
+    {"asset_id":"T08-SKILL-SPRING-TEST","name":"spring-boot-testing","owner":"agent-task1-t08-assets-a","bound":false,"visibility":"team","role":"target","source_policy_id":"awesome-copilot","path":"skills/spring-boot-testing/SKILL.md","raw_sha256":"8161940340dc52766242ab30589369623b31089b41ebd7baa19a27f411648550","use_when":"A Spring Boot application needs the narrowest appropriate JUnit test slice and meaningful assertions.","do_not_use_when":"The project is Python or TypeScript, or the failure is solely CI infrastructure."},
+    {"asset_id":"T08-SKILL-PLAYWRIGHT-EXPLORE","name":"playwright-explore-website","owner":"agent-task1-t08-assets-a","bound":false,"visibility":"team","role":"distractor","source_policy_id":"awesome-copilot","path":"skills/playwright-explore-website/SKILL.md","raw_sha256":"1496280e250b5b79c2c3081f093fa1fea22ac19a2fdc05074589875cdd9f55d3","use_when":"A site must be interactively explored and documented without yet generating a durable E2E test.","do_not_use_when":"The scenario and desired artifact are already a Playwright test file or a unit test."},
+    {"asset_id":"T08-SKILL-WEBAPP-TEST","name":"webapp-testing","owner":"agent-task1-t08-assets-a","bound":false,"visibility":"team","role":"distractor","source_policy_id":"awesome-copilot","path":"skills/webapp-testing/SKILL.md","raw_sha256":"c4629221463d79c84555721ae2a30a6c345dd4d16c38cf6dbe735126e2426044","use_when":"A general web application test plan or interaction smoke test is requested.","do_not_use_when":"The task requires a specific pytest, Jest, Spring or frozen Playwright procedure."},
+    {"asset_id":"T08-SKILL-REACT19","name":"react19-test-patterns","owner":"agent-task1-t08-assets-b","bound":false,"visibility":"team","role":"distractor","source_policy_id":"awesome-copilot","path":"skills/react19-test-patterns/SKILL.md","raw_sha256":"c3eac6a63114127eacc0562b98514e80d415e194bac9d59e0d72dded7824c94d","use_when":"React 19 component behavior needs framework-specific test patterns.","do_not_use_when":"The target is a non-React Jest library, Python package or browser journey."},
+    {"asset_id":"T08-SKILL-VUE-PINIA","name":"unit-test-vue-pinia","owner":"agent-task1-t08-assets-b","bound":false,"visibility":"team","role":"distractor","source_policy_id":"awesome-copilot","path":"skills/unit-test-vue-pinia/SKILL.md","raw_sha256":"4239e4c27c148bf4bbafd338bf8aeeb7993eda9e544eb80f0f15c68d5536e167","use_when":"Vue code with Pinia stores needs focused unit tests.","do_not_use_when":"The project uses Jest without Vue, Playwright E2E, pytest or Spring Boot."},
+    {"asset_id":"T08-SKILL-AZURE-PREFLIGHT","name":"azure-deployment-preflight","owner":"agent-task1-t08-assets-b","bound":false,"visibility":"team","role":"distractor","source_policy_id":"awesome-copilot","path":"skills/azure-deployment-preflight/SKILL.md","raw_sha256":"dab815a49ff9fda7d48631c40df7e2540bb3fa7ba1cce63ce219aaa0a830b6a1","use_when":"An Azure deployment needs subscription, resource and configuration preflight checks.","do_not_use_when":"The failure is a local test, coverage gap or browser flow."},
+    {"asset_id":"T08-SKILL-ORACLE-CREATE","name":"creating-oracle-to-postgres-migration-integration-tests","owner":"agent-task1-t08-assets-b","bound":false,"visibility":"team","role":"distractor","source_policy_id":"awesome-copilot","path":"skills/creating-oracle-to-postgres-migration-integration-tests/SKILL.md","raw_sha256":"4bb8ae9ca9d6742646f3bd51c81d2a47137762922bf800e965ba6540aadc6ec5","use_when":"Oracle-to-PostgreSQL migration integration tests must be implemented.","do_not_use_when":"No database migration exists, or the task is unit coverage or browser E2E."},
+    {"asset_id":"T08-SKILL-ORACLE-PLAN","name":"planning-oracle-to-postgres-migration-integration-testing","owner":"agent-task1-t08-assets-b","bound":false,"visibility":"team","role":"distractor","source_policy_id":"awesome-copilot","path":"skills/planning-oracle-to-postgres-migration-integration-testing/SKILL.md","raw_sha256":"9462c7d627ab958a8c55b7b972b3e187dea779c000350453b6ad04d2260c7696","use_when":"An Oracle-to-PostgreSQL integration testing migration plan is needed before implementation.","do_not_use_when":"The task is a current test failure, ordinary coverage work or browser exploration."}
+  ],
+  "pair_plan": [
+    {"pair_id":"T08-PAIR-M01","family":"memory","task_id":"task-task1-t08-pytest","language":"en","context_bucket":"medium_6_to_10","first_route":"tdai_atomic_query","sequence":["tdai_atomic_query"],"target_asset_ids":["T08-L1-11"],"gap":"filter the active dated pytest coverage-gate decision from its superseded threshold"},
+    {"pair_id":"T08-PAIR-M02","family":"memory","task_id":"task-task1-t08-jest","language":"zh","context_bucket":"short_2_to_4","first_route":"tdai_conversation_search","sequence":["tdai_conversation_search"],"target_asset_ids":["T08-L0-04"],"gap":"recover the prior mock-ownership incident conclusion"},
+    {"pair_id":"T08-PAIR-M03","family":"memory","task_id":"task-task1-t08-playwright","language":"en","context_bucket":"long_12_to_18","first_route":"tdai_scenario_ls","sequence":["tdai_scenario_ls","tdai_read_scene"],"target_asset_ids":["T08-L2-03"],"gap":"discover and read the non-injected locator-migration chronology"},
+    {"pair_id":"T08-PAIR-M04","family":"memory","task_id":"task-task1-t08-spring","language":"zh","context_bucket":"medium_6_to_10","first_route":"tdai_conversation_search","sequence":["tdai_conversation_search"],"target_asset_ids":["T08-L0-09"],"gap":"recover the exact build-failure triage conclusion"},
+    {"pair_id":"T08-PAIR-M05","family":"memory","task_id":"task-task1-t08-jest","language":"en","context_bucket":"medium_6_to_10","first_route":"tdai_memory_search","sequence":["tdai_memory_search"],"target_asset_ids":["T08-L1-14"],"gap":"retrieve the current evidence-ownership decision for flaky Jest failures"},
+    {"pair_id":"T08-PAIR-M06","family":"memory","task_id":"task-task1-t08-pytest","language":"zh","context_bucket":"long_12_to_18","first_route":"tdai_read_scene","sequence":["tdai_read_scene"],"target_asset_ids":["T08-L2-01"],"gap":"read the injected pytest coverage-recovery scene at its known path"},
+    {"pair_id":"T08-PAIR-S01","family":"skill","task_id":"task-task1-t08-pytest","language":"zh","context_bucket":"medium_6_to_10","first_route":"skill_view","sequence":["skill_view"],"target_asset_ids":["T08-SKILL-PYTEST-COVERAGE"],"gap":"load the listed annotated pytest coverage loop"},
+    {"pair_id":"T08-PAIR-S02","family":"skill","task_id":"task-task1-t08-jest","language":"en","context_bucket":"short_2_to_4","first_route":"skill_view","sequence":["skill_view"],"target_asset_ids":["T08-SKILL-JEST"],"gap":"load the listed Jest isolation and async-assertion procedure"},
+    {"pair_id":"T08-PAIR-S03","family":"skill","task_id":"task-task1-t08-pytest","language":"en","context_bucket":"long_12_to_18","first_route":"skill_view","sequence":["skill_view","skill_files_read"],"target_asset_ids":["T08-SKILL-TEMPORAL"],"resource_path":"resources/replay-testing.md","gap":"load the listed Temporal testing package and then its replay-determinism resource"},
+    {"pair_id":"T08-PAIR-S04","family":"skill","task_id":"task-task1-t08-playwright","language":"zh","context_bucket":"medium_6_to_10","first_route":"skill_search","sequence":["skill_search","skill_view_by_id"],"target_asset_ids":["T08-SKILL-PLAYWRIGHT-GEN"],"gap":"find the unlisted scenario-first Playwright test-generation procedure"},
+    {"pair_id":"T08-PAIR-S05","family":"skill","task_id":"task-task1-t08-playwright","language":"en","context_bucket":"medium_6_to_10","first_route":"skill_search","sequence":["skill_search","skill_view_by_id"],"target_asset_ids":["T08-SKILL-SCOUTQA"],"gap":"find the unlisted exploratory browser QA procedure"},
+    {"pair_id":"T08-PAIR-S06","family":"skill","task_id":"task-task1-t08-spring","language":"zh","context_bucket":"medium_6_to_10","first_route":"skill_search","sequence":["skill_search","skill_view_by_id"],"target_asset_ids":["T08-SKILL-SPRING-TEST"],"gap":"find the unlisted Spring Boot test-slice selection procedure"},
+    {"pair_id":"T08-PAIR-K01","family":"knowledge","task_id":"task-task1-t08-pytest","language":"zh","context_bucket":"medium_6_to_10","first_route":"knowledge_tools_list","sequence":["knowledge_tools_list","knowledge_tools_call"],"target_asset_ids":["cg-t08py01"],"knowledge_tool_name":"search_code","gap":"query the pytest code graph selected by repository and commit match"},
+    {"pair_id":"T08-PAIR-K02","family":"knowledge","task_id":"task-task1-t08-jest","language":"en","context_bucket":"short_2_to_4","first_route":"knowledge_tools_list","sequence":["knowledge_tools_list","knowledge_tools_call"],"target_asset_ids":["wiki-t08js01"],"knowledge_tool_name":"search_pages","gap":"query the Jest snapshot-triage closure wiki selected by workspace match"},
+    {"pair_id":"T08-PAIR-K03","family":"knowledge","task_id":"task-task1-t08-playwright","language":"en","context_bucket":"medium_6_to_10","first_route":"knowledge_tools_list","sequence":["knowledge_tools_list","knowledge_tools_call"],"target_asset_ids":["wiki-t08pw01"],"knowledge_tool_name":"search_pages","gap":"query the browser-journey review wiki selected by pinned revision"}
+  ],
+  "natural_negative_plan": [
+    "local pytest marker spelling correction", "self-contained Jest matcher edit", "Playwright locator string correction", "coverage threshold constant rename", "CI YAML indentation correction", "Python pure coverage-percentage function", "TypeScript local retry-timeout default edit", "Java test display-name copy edit", "HTML data-testid typo correction", "README test command correction with all facts visible"
+  ],
+  "generation_contract": {
+    "model": "gpt-5.6-luna",
+    "reasoning_effort": "high",
+    "fork_turns": "none",
+    "verbosity": "medium",
+    "trial_pairs_per_family": 1,
+    "final_pairs": {"memory":6,"skill":6,"knowledge":3},
+    "natural_negatives": 10,
+    "pair_languages": {"en":8,"zh":7},
+    "natural_negative_languages": {"en":6,"zh":4},
+    "provider_forbidden": ["TDAI tool names", "asset ids", "knowledge ids", "Gold", "pair ids", "information gap labels"],
+    "skill_rule": "Use only frozen GitHub files; preserve core technical steps; propose only neutral host/listing/use boundaries."
+  }
+}

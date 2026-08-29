@@ -1,0 +1,51 @@
+{
+  "schema_version": "task1.workspace_locks.v1",
+  "team_id": "T08",
+  "hash_recipe": "tree_sha256 = SHA-256 of UTF-8 sorted '<relative-path>\\0<byte-length>\\0<file-sha256>\\n'; file_manifest_sha256 omits per-file sha; archive_sha256 hashes the GitHub commit zip bytes",
+  "locks": [
+    {
+      "project_id": "pytest-coverage-lab",
+      "repository_url": "https://github.com/pytest-dev/pytest",
+      "commit_sha": "fdba12e1708313f56e9cf713d260c029764ca2b7",
+      "license": "MIT",
+      "archive_bytes": 2073121,
+      "archive_sha256": "c0654b9be3350e516e877441202c9d40836c68f748f4d04183741a381c58a24f",
+      "file_count": 688,
+      "tree_sha256": "5c98f579fa390f2bcb2cf4090df3aa27d443f7946a1abf955ce7114903c215ba",
+      "file_manifest_sha256": "0d07475cb5c2215dc6a7cb17be7c77e62bb9cda9663d4ae97a14ccc2383de10d"
+    },
+    {
+      "project_id": "jest-runtime-suite",
+      "repository_url": "https://github.com/jestjs/jest",
+      "commit_sha": "be425a0b0e3bd60a74e4a7e350aa38c63a2d25ef",
+      "license": "MIT",
+      "archive_bytes": 26567412,
+      "archive_sha256": "4f30dd632c1f1cefc068971631b3837711e4e0f12609e0e77a59e839b1cc6148",
+      "file_count": 3609,
+      "tree_sha256": "3e93526ac4c2ac27a58c5f8d64e5821e873c3fd10824b0dce97bf8a931b40031",
+      "file_manifest_sha256": "069ebe42e60862050d59c9d7393205de391e7d8c02838bfd2243eb8c309b49f1"
+    },
+    {
+      "project_id": "playwright-browser-journeys",
+      "repository_url": "https://github.com/microsoft/playwright",
+      "commit_sha": "de214f440b7e34937fe4886f046b78b757136087",
+      "license": "Apache-2.0",
+      "archive_bytes": 42832277,
+      "archive_sha256": "40c3e9977276b645c82f447ff67646d0d1f76deada31f29f856dab7ee0e3ac9c",
+      "file_count": 3090,
+      "tree_sha256": "0e7a13028e16b213773750a5ebb769803f561ca7aec80e01d489440f2a0e79e5",
+      "file_manifest_sha256": "e5c7d25542b83188753e3c48a6a936c661d41203ae253eab03d1c501dd66293b"
+    },
+    {
+      "project_id": "spring-quality-gate",
+      "repository_url": "https://github.com/spring-projects/spring-boot",
+      "commit_sha": "cf5f3b9ea64ab3a7de9ac137dac8989ad75ad2aa",
+      "license": "Apache-2.0",
+      "archive_bytes": 20824851,
+      "archive_sha256": "ab1f206447a13d710182358d7043cdfd772f4b28cc58d6891e8c0ab55fa8ed38",
+      "file_count": 11900,
+      "tree_sha256": "28425af6a4ed7fc421f9da6ccc03ffeef4e784608c916b87ef65dc876d8fd8a7",
+      "file_manifest_sha256": "d28fde7dba5f2ffe2dc4ee47747d9f1c643aa4bd5d94bdb73ae15d88a4d126ca"
+    }
+  ]
+}

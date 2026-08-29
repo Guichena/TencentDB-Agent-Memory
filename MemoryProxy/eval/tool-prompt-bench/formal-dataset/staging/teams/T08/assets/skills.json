@@ -1,0 +1,704 @@
+{
+  "schema_version": "task1.formal_skill_assets.v1",
+  "team_id": "T08",
+  "skills": [
+    {
+      "assetId": "T08-SKILL-PYTEST-COVERAGE",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-skill-pytest-coverage"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "name": "pytest-coverage",
+      "version": "1.0.0",
+      "description": "Annotated pytest coverage workflow for locating missing lines and iterating toward complete line coverage.",
+      "useWhen": "A Python pytest suite needs an annotated coverage report and tests for specific missing lines.",
+      "doNotUseWhen": "The task is JavaScript unit testing, browser E2E, or only a build configuration failure.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "3778add8809c5aac585ab764090f46e7cfdb009ae3fc9fb308710538627970f9"
+        }
+      ],
+      "contentHash": "b887da6e82596f0f9ebe80a70c973ad8b01487307b1b582f1789540deb668063"
+    },
+    {
+      "assetId": "T08-SKILL-JEST",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-skill-javascript-typescript-jest"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "name": "javascript-typescript-jest",
+      "version": "1.0.0",
+      "description": "Jest guidance for structured JavaScript and TypeScript unit tests, mocks, asynchronous assertions, snapshots, and common matchers.",
+      "useWhen": "An existing JavaScript or TypeScript implementation needs Jest unit tests, mocks or async assertions.",
+      "doNotUseWhen": "The request is browser E2E, Python coverage, or production logic is still undefined.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "cb9a552dfe63cae4f310b27067ba28351b59ad17e83a9e1c5ff23c542ce6fdd8"
+        }
+      ],
+      "contentHash": "6be8dfc305a10caef3688bae709fdd151bda0634a9446129dfa83fc6b12b9e9f"
+    },
+    {
+      "assetId": "T08-SKILL-TEMPORAL",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-skill-temporal-python-testing"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "name": "temporal-python-testing",
+      "version": "1.0.0",
+      "description": "Temporal Python testing guidance with pytest, time-skipping, activity isolation, integration coverage, and replay determinism.",
+      "useWhen": "Temporal Python workflows need pytest time-skipping, activity isolation or replay determinism testing.",
+      "doNotUseWhen": "The application does not use Temporal, or the request is ordinary pytest coverage without workflow history.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "21e5d2382d474553eadb2771c764f4aa2b55a12bd75bc40894e68630c02db7bb"
+        },
+        {
+          "path": "resources/unit-testing.md",
+          "sha256": "1836367b98c5ee84e9ea98d1b30726bf48ef5404aaf0426f88742bdcce5712cf"
+        },
+        {
+          "path": "resources/replay-testing.md",
+          "sha256": "9fc02f45c66324e15229047e28d5c77b3496299ca4fa83dbfaae6fb67af8bfc3"
+        }
+      ],
+      "contentHash": "ba5968cd5dfc52302c7533bac5c37fb6bbeffde6def9b116b5a3cd3fbdaca74b"
+    },
+    {
+      "assetId": "T08-SKILL-CSHARP-MSTEST",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-skill-csharp-mstest"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "name": "csharp-mstest",
+      "version": "1.0.0",
+      "description": "MSTest 3.x/4.x practices for unit-test structure, modern assertions, lifecycle, data-driven tests, and test context.",
+      "useWhen": "A C# project explicitly uses MSTest for unit or data-driven tests.",
+      "doNotUseWhen": "The project uses pytest, Jest, Playwright or Spring/JUnit.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "325e70e82f3edecb7312a7e504a89e87c8fb684c8f2aa55df6f29905ef1bf859"
+        }
+      ],
+      "contentHash": "ff44f57498d12ad62cfde70802f65ce1679e40f1c55c60fbd2ac44dd78ee6eda"
+    },
+    {
+      "assetId": "T08-SKILL-GHA-EFFICIENCY",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-skill-github-actions-efficiency"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "name": "github-actions-efficiency",
+      "version": "1.0.0",
+      "description": "Evidence-led GitHub Actions workflow efficiency audit covering runtime, caching, triggers, concurrency, matrices, and validation.",
+      "useWhen": "GitHub Actions workflow duration, caching or redundant CI work needs optimization.",
+      "doNotUseWhen": "The immediate gap is a test procedure, browser scenario or local assertion.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "9c41e860468e5c88d83ab6eec70c585b0f122facec2632ea65497b3389139e43"
+        }
+      ],
+      "contentHash": "87d2fd695b3dcc6c5ca658da8af2fcd9946844bbad752e1155a6cd55c96ca82d"
+    },
+    {
+      "assetId": "T08-SKILL-BREAKDOWN",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-skill-breakdown-test"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "name": "breakdown-test",
+      "version": "1.0.0",
+      "description": "Comprehensive QA planning prompt for test strategy, task breakdown, quality gates, issues, dependencies, and metrics.",
+      "useWhen": "An existing broad test must be decomposed into smaller focused test cases.",
+      "doNotUseWhen": "The task is to discover missing coverage, explore a browser or choose a testing framework.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "83727ec30a986686f1bc8eaeeb42360379c11416a280c4e77d38d39e0e02555f"
+        }
+      ],
+      "contentHash": "ca6601f290ebb91ec874fd870b966af16f09f9ea129e3daf76337f03b3ccbd81"
+    },
+    {
+      "assetId": "T08-SKILL-PLAYWRIGHT-GEN",
+      "ownerAgentId": "agent-task1-t08-assets-a",
+      "sourceEvidenceIds": [
+        "source-t08-skill-playwright-generate-test"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "name": "playwright-generate-test",
+      "version": "1.0.0",
+      "description": "Scenario-first Playwright test generation after completing each prescribed browser interaction.",
+      "useWhen": "A supplied browser scenario must be explored step by step before emitting a passing Playwright TypeScript test.",
+      "doNotUseWhen": "The request is unit testing, coverage-only work, or no browser scenario is provided.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "79dbb1a49fc5a6502788ccba1a4bd30769a017a1cc31d9db329d1326ea3d898f"
+        }
+      ],
+      "contentHash": "c69a9f8868e1294e074d73314641f0f593facfad00f0c61c8a5591ecce1ffa0a"
+    },
+    {
+      "assetId": "T08-SKILL-SCOUTQA",
+      "ownerAgentId": "agent-task1-t08-assets-a",
+      "sourceEvidenceIds": [
+        "source-t08-skill-scoutqa-test"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "name": "scoutqa-test",
+      "version": "1.0.0",
+      "description": "Exploratory web QA workflow for smoke tests, accessibility, user flows, issue extraction, and result reporting.",
+      "useWhen": "A web application needs exploratory QA, accessibility auditing or user-flow verification.",
+      "doNotUseWhen": "The request is a deterministic unit test, code coverage report or non-browser build failure.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "6c09a43984b05b6a108e79c2defb51d8f7fee7e230610a5e220f63dde8bcdee1"
+        }
+      ],
+      "contentHash": "338c266edb96b5c34daf49197e5a62fb874ecc496d6576f918864c6e826983ea"
+    },
+    {
+      "assetId": "T08-SKILL-SPRING-TEST",
+      "ownerAgentId": "agent-task1-t08-assets-a",
+      "sourceEvidenceIds": [
+        "source-t08-skill-spring-boot-testing"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "name": "spring-boot-testing",
+      "version": "1.0.0",
+      "description": "Spring Boot 4 testing guidance for narrow test slices, AssertJ assertions, modern APIs, coverage, and maintainable test organization.",
+      "useWhen": "A Spring Boot application needs the narrowest appropriate JUnit test slice and meaningful assertions.",
+      "doNotUseWhen": "The project is Python or TypeScript, or the failure is solely CI infrastructure.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "8161940340dc52766242ab30589369623b31089b41ebd7baa19a27f411648550"
+        }
+      ],
+      "contentHash": "c12b62fc8b7721428853d3331f03b4c22f026f9e4684706244228b96020fdff3"
+    },
+    {
+      "assetId": "T08-SKILL-PLAYWRIGHT-EXPLORE",
+      "ownerAgentId": "agent-task1-t08-assets-a",
+      "sourceEvidenceIds": [
+        "source-t08-skill-playwright-explore-website"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "name": "playwright-explore-website",
+      "version": "1.0.0",
+      "description": "Browser exploration workflow that identifies core flows, records locators and outcomes, and proposes tests.",
+      "useWhen": "A site must be interactively explored and documented without yet generating a durable E2E test.",
+      "doNotUseWhen": "The scenario and desired artifact are already a Playwright test file or a unit test.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "1496280e250b5b79c2c3081f093fa1fea22ac19a2fdc05074589875cdd9f55d3"
+        }
+      ],
+      "contentHash": "d49457bf4b8693422d53f0ceff93d38e7a27012c2a564099f7d420c2f550e712"
+    },
+    {
+      "assetId": "T08-SKILL-WEBAPP-TEST",
+      "ownerAgentId": "agent-task1-t08-assets-a",
+      "sourceEvidenceIds": [
+        "source-t08-skill-webapp-testing"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "name": "webapp-testing",
+      "version": "1.0.0",
+      "description": "Local web-application browser testing for functionality, debugging, screenshots, console logs, and responsive behavior.",
+      "useWhen": "A general web application test plan or interaction smoke test is requested.",
+      "doNotUseWhen": "The task requires a specific pytest, Jest, Spring or frozen Playwright procedure.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "c4629221463d79c84555721ae2a30a6c345dd4d16c38cf6dbe735126e2426044"
+        }
+      ],
+      "contentHash": "4fef138e91256b10caec44abafb96b55dd620c73ecd3993006632f3027e7b310"
+    },
+    {
+      "assetId": "T08-SKILL-REACT19",
+      "ownerAgentId": "agent-task1-t08-assets-b",
+      "sourceEvidenceIds": [
+        "source-t08-skill-react19-test-patterns"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "name": "react19-test-patterns",
+      "version": "1.0.0",
+      "description": "React 19 test migration patterns for act imports, event simulation, StrictMode counts, and async warnings.",
+      "useWhen": "React 19 component behavior needs framework-specific test patterns.",
+      "doNotUseWhen": "The target is a non-React Jest library, Python package or browser journey.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "c3eac6a63114127eacc0562b98514e80d415e194bac9d59e0d72dded7824c94d"
+        }
+      ],
+      "contentHash": "ab51a087e23ddfbd25c9a0a04039b0f836330cff43d6867e0eb1d000c2bc9095"
+    },
+    {
+      "assetId": "T08-SKILL-VUE-PINIA",
+      "ownerAgentId": "agent-task1-t08-assets-b",
+      "sourceEvidenceIds": [
+        "source-t08-skill-unit-test-vue-pinia"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "name": "unit-test-vue-pinia",
+      "version": "1.0.0",
+      "description": "Behavior-first Vue 3, TypeScript, Vitest, and Pinia unit-test guidance with focused stores, components, and composables.",
+      "useWhen": "Vue code with Pinia stores needs focused unit tests.",
+      "doNotUseWhen": "The project uses Jest without Vue, Playwright E2E, pytest or Spring Boot.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "4239e4c27c148bf4bbafd338bf8aeeb7993eda9e544eb80f0f15c68d5536e167"
+        }
+      ],
+      "contentHash": "35c52b089dc6eb9ba83ef354c118d592eaf292647c29ae8b15b9ebc2a1b29629"
+    },
+    {
+      "assetId": "T08-SKILL-AZURE-PREFLIGHT",
+      "ownerAgentId": "agent-task1-t08-assets-b",
+      "sourceEvidenceIds": [
+        "source-t08-skill-azure-deployment-preflight"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "name": "azure-deployment-preflight",
+      "version": "1.0.0",
+      "description": "Azure Bicep preflight validation for syntax, what-if changes, permissions, parameters, and a Markdown report.",
+      "useWhen": "An Azure deployment needs subscription, resource and configuration preflight checks.",
+      "doNotUseWhen": "The failure is a local test, coverage gap or browser flow.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "dab815a49ff9fda7d48631c40df7e2540bb3fa7ba1cce63ce219aaa0a830b6a1"
+        }
+      ],
+      "contentHash": "a72c108ae8d100b3b1b6d6ed6c9cbcc57697dc56b4b643529068a8536e5c8773"
+    },
+    {
+      "assetId": "T08-SKILL-ORACLE-CREATE",
+      "ownerAgentId": "agent-task1-t08-assets-b",
+      "sourceEvidenceIds": [
+        "source-t08-skill-creating-oracle-to-postgres-migration-integration-tests"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "name": "creating-oracle-to-postgres-migration-integration-tests",
+      "version": "1.0.0",
+      "description": "Phase-3 Oracle integration-test creation for portable data-access behavior, collision-safe seeds, deterministic assertions, and rollback.",
+      "useWhen": "Oracle-to-PostgreSQL migration integration tests must be implemented.",
+      "doNotUseWhen": "No database migration exists, or the task is unit coverage or browser E2E.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "4bb8ae9ca9d6742646f3bd51c81d2a47137762922bf800e965ba6540aadc6ec5"
+        }
+      ],
+      "contentHash": "af672322312462d1469a6938db457980ddf31375eb60d3a643533b2b4cb384e7"
+    },
+    {
+      "assetId": "T08-SKILL-ORACLE-PLAN",
+      "ownerAgentId": "agent-task1-t08-assets-b",
+      "sourceEvidenceIds": [
+        "source-t08-skill-planning-oracle-to-postgres-migration-integration-testing"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "name": "planning-oracle-to-postgres-migration-integration-testing",
+      "version": "1.0.0",
+      "description": "Single-project Oracle-to-PostgreSQL integration-test planning for data-access artifacts, migration risks, seeds, and coverage mapping.",
+      "useWhen": "An Oracle-to-PostgreSQL integration testing migration plan is needed before implementation.",
+      "doNotUseWhen": "The task is a current test failure, ordinary coverage work or browser exploration.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "9462c7d627ab958a8c55b7b972b3e187dea779c000350453b6ad04d2260c7696"
+        }
+      ],
+      "contentHash": "a135bba02d11b03ddbc465ab2bedd020af51f0c63c6f37586d28a98b783cc7b2"
+    }
+  ],
+  "externalImports": [
+    {
+      "sourceId": "source-t08-skill-pytest-coverage",
+      "assetId": "T08-SKILL-PYTEST-COVERAGE",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/pytest-coverage/SKILL.md",
+      "rawSha256": "3778add8809c5aac585ab764090f46e7cfdb009ae3fc9fb308710538627970f9",
+      "adaptedSha256": "3778add8809c5aac585ab764090f46e7cfdb009ae3fc9fb308710538627970f9",
+      "packageManifestSha256": "7c4e394de1d8267e34c00e828dba31257ba36718893326b152722547562e5725",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/pytest-coverage/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "pytest-coverage"
+    },
+    {
+      "sourceId": "source-t08-skill-javascript-typescript-jest",
+      "assetId": "T08-SKILL-JEST",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/javascript-typescript-jest/SKILL.md",
+      "rawSha256": "cb9a552dfe63cae4f310b27067ba28351b59ad17e83a9e1c5ff23c542ce6fdd8",
+      "adaptedSha256": "cb9a552dfe63cae4f310b27067ba28351b59ad17e83a9e1c5ff23c542ce6fdd8",
+      "packageManifestSha256": "24e4d8737b741291ff421ca53f1a874acc47f63ea2664e1b7634cb2f5e4feb79",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/javascript-typescript-jest/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "javascript-typescript-jest"
+    },
+    {
+      "sourceId": "source-t08-skill-temporal-python-testing",
+      "assetId": "T08-SKILL-TEMPORAL",
+      "repositoryUrl": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "license": "Apache-2.0",
+      "upstreamPath": "tasks/fix-build-agentops/environment/skills/temporal-python-testing/SKILL.md",
+      "rawSha256": "21e5d2382d474553eadb2771c764f4aa2b55a12bd75bc40894e68630c02db7bb",
+      "adaptedSha256": "21e5d2382d474553eadb2771c764f4aa2b55a12bd75bc40894e68630c02db7bb",
+      "packageManifestSha256": "2cb3813c5c420b04b8756d479a3fea35418071a4462f9d691daaa4ff8b6b1e04",
+      "licensePath": "_licenses/skillsbench-Apache-2.0.txt",
+      "licenseSha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "adaptationDiffPath": "skills/temporal-python-testing/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "fix-build-agentops-environment-skills-temporal-python-testing"
+    },
+    {
+      "sourceId": "source-t08-skill-csharp-mstest",
+      "assetId": "T08-SKILL-CSHARP-MSTEST",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/csharp-mstest/SKILL.md",
+      "rawSha256": "325e70e82f3edecb7312a7e504a89e87c8fb684c8f2aa55df6f29905ef1bf859",
+      "adaptedSha256": "325e70e82f3edecb7312a7e504a89e87c8fb684c8f2aa55df6f29905ef1bf859",
+      "packageManifestSha256": "9c437fcc4f00d905cfab4f03ba833ad00fb20f9c385e6ec1b8b375ec2b53afc5",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/csharp-mstest/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "csharp-mstest"
+    },
+    {
+      "sourceId": "source-t08-skill-github-actions-efficiency",
+      "assetId": "T08-SKILL-GHA-EFFICIENCY",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/github-actions-efficiency/SKILL.md",
+      "rawSha256": "9c41e860468e5c88d83ab6eec70c585b0f122facec2632ea65497b3389139e43",
+      "adaptedSha256": "9c41e860468e5c88d83ab6eec70c585b0f122facec2632ea65497b3389139e43",
+      "packageManifestSha256": "2aa7f22053db79ba3eb1eb7f7cbf13bd85a903e9da98dddd3b3622b49a0002b7",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/github-actions-efficiency/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "github-actions-efficiency"
+    },
+    {
+      "sourceId": "source-t08-skill-breakdown-test",
+      "assetId": "T08-SKILL-BREAKDOWN",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/breakdown-test/SKILL.md",
+      "rawSha256": "83727ec30a986686f1bc8eaeeb42360379c11416a280c4e77d38d39e0e02555f",
+      "adaptedSha256": "83727ec30a986686f1bc8eaeeb42360379c11416a280c4e77d38d39e0e02555f",
+      "packageManifestSha256": "63144a01bbedf6a0bebb6e305405c2ef66ac655ea3a1495e63d393904e0c56e3",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/breakdown-test/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "breakdown-test"
+    },
+    {
+      "sourceId": "source-t08-skill-playwright-generate-test",
+      "assetId": "T08-SKILL-PLAYWRIGHT-GEN",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/playwright-generate-test/SKILL.md",
+      "rawSha256": "79dbb1a49fc5a6502788ccba1a4bd30769a017a1cc31d9db329d1326ea3d898f",
+      "adaptedSha256": "79dbb1a49fc5a6502788ccba1a4bd30769a017a1cc31d9db329d1326ea3d898f",
+      "packageManifestSha256": "d58b003b292f8cfed24c2213f56da58a21869419269f6be6a4034e2066339273",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/playwright-generate-test/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "playwright-generate-test"
+    },
+    {
+      "sourceId": "source-t08-skill-scoutqa-test",
+      "assetId": "T08-SKILL-SCOUTQA",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/scoutqa-test/SKILL.md",
+      "rawSha256": "6c09a43984b05b6a108e79c2defb51d8f7fee7e230610a5e220f63dde8bcdee1",
+      "adaptedSha256": "6c09a43984b05b6a108e79c2defb51d8f7fee7e230610a5e220f63dde8bcdee1",
+      "packageManifestSha256": "fd7314c6cd5100f52b5469378f67e59514fd1980aae3115f8980d6d1e4eb6457",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/scoutqa-test/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "scoutqa-test"
+    },
+    {
+      "sourceId": "source-t08-skill-spring-boot-testing",
+      "assetId": "T08-SKILL-SPRING-TEST",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/spring-boot-testing/SKILL.md",
+      "rawSha256": "8161940340dc52766242ab30589369623b31089b41ebd7baa19a27f411648550",
+      "adaptedSha256": "8161940340dc52766242ab30589369623b31089b41ebd7baa19a27f411648550",
+      "packageManifestSha256": "f284b9fde81553901c002e01604d2b1161be1ee4e3415f8ed5fc2e70767544e0",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/spring-boot-testing/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "spring-boot-testing"
+    },
+    {
+      "sourceId": "source-t08-skill-playwright-explore-website",
+      "assetId": "T08-SKILL-PLAYWRIGHT-EXPLORE",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/playwright-explore-website/SKILL.md",
+      "rawSha256": "1496280e250b5b79c2c3081f093fa1fea22ac19a2fdc05074589875cdd9f55d3",
+      "adaptedSha256": "1496280e250b5b79c2c3081f093fa1fea22ac19a2fdc05074589875cdd9f55d3",
+      "packageManifestSha256": "8f9892c05183122fa1eec4d43861b268dfb10a7c757a828ab799c58b6d126be2",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/playwright-explore-website/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "playwright-explore-website"
+    },
+    {
+      "sourceId": "source-t08-skill-webapp-testing",
+      "assetId": "T08-SKILL-WEBAPP-TEST",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/webapp-testing/SKILL.md",
+      "rawSha256": "c4629221463d79c84555721ae2a30a6c345dd4d16c38cf6dbe735126e2426044",
+      "adaptedSha256": "c4629221463d79c84555721ae2a30a6c345dd4d16c38cf6dbe735126e2426044",
+      "packageManifestSha256": "ca5ddd1bb3919b134eec87aa8476c1973a7bc6d336b5773635ab0479c9f86587",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/webapp-testing/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "webapp-testing"
+    },
+    {
+      "sourceId": "source-t08-skill-react19-test-patterns",
+      "assetId": "T08-SKILL-REACT19",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/react19-test-patterns/SKILL.md",
+      "rawSha256": "c3eac6a63114127eacc0562b98514e80d415e194bac9d59e0d72dded7824c94d",
+      "adaptedSha256": "c3eac6a63114127eacc0562b98514e80d415e194bac9d59e0d72dded7824c94d",
+      "packageManifestSha256": "9b8785ac183cad0e8df3a501cbde2d207a6e185d6fbbfa1e221082fa518b5763",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/react19-test-patterns/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "react19-test-patterns"
+    },
+    {
+      "sourceId": "source-t08-skill-unit-test-vue-pinia",
+      "assetId": "T08-SKILL-VUE-PINIA",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/unit-test-vue-pinia/SKILL.md",
+      "rawSha256": "4239e4c27c148bf4bbafd338bf8aeeb7993eda9e544eb80f0f15c68d5536e167",
+      "adaptedSha256": "4239e4c27c148bf4bbafd338bf8aeeb7993eda9e544eb80f0f15c68d5536e167",
+      "packageManifestSha256": "de679771b9a56dfab8dfae2ca9b3d38fb70b22552c31bc447a952f5ee6b3d856",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/unit-test-vue-pinia/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "unit-test-vue-pinia"
+    },
+    {
+      "sourceId": "source-t08-skill-azure-deployment-preflight",
+      "assetId": "T08-SKILL-AZURE-PREFLIGHT",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/azure-deployment-preflight/SKILL.md",
+      "rawSha256": "dab815a49ff9fda7d48631c40df7e2540bb3fa7ba1cce63ce219aaa0a830b6a1",
+      "adaptedSha256": "dab815a49ff9fda7d48631c40df7e2540bb3fa7ba1cce63ce219aaa0a830b6a1",
+      "packageManifestSha256": "9979c6f12f5a3fb954fac5db04a6871324520872da39fc548bf9b8c8c6aa0918",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/azure-deployment-preflight/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "azure-deployment-preflight"
+    },
+    {
+      "sourceId": "source-t08-skill-creating-oracle-to-postgres-migration-integration-tests",
+      "assetId": "T08-SKILL-ORACLE-CREATE",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/creating-oracle-to-postgres-migration-integration-tests/SKILL.md",
+      "rawSha256": "4bb8ae9ca9d6742646f3bd51c81d2a47137762922bf800e965ba6540aadc6ec5",
+      "adaptedSha256": "4bb8ae9ca9d6742646f3bd51c81d2a47137762922bf800e965ba6540aadc6ec5",
+      "packageManifestSha256": "394c9f44efbfb701b5b057e69443f4d179ca0da6e353bef2ccad227defc9cc1b",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/creating-oracle-to-postgres-migration-integration-tests/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "creating-oracle-to-postgres-migration-integration-tests"
+    },
+    {
+      "sourceId": "source-t08-skill-planning-oracle-to-postgres-migration-integration-testing",
+      "assetId": "T08-SKILL-ORACLE-PLAN",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/planning-oracle-to-postgres-migration-integration-testing/SKILL.md",
+      "rawSha256": "9462c7d627ab958a8c55b7b972b3e187dea779c000350453b6ad04d2260c7696",
+      "adaptedSha256": "9462c7d627ab958a8c55b7b972b3e187dea779c000350453b6ad04d2260c7696",
+      "packageManifestSha256": "03479b0c0e4e8f6745dfd519f20ebf336edd595ab46c382f4352557dee4153e1",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/planning-oracle-to-postgres-migration-integration-testing/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "planning-oracle-to-postgres-migration-integration-testing"
+    }
+  ]
+}

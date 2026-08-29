@@ -1,0 +1,92 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T08-DS05-SKILL-TRIAL-01",
+  "stage": "DS05",
+  "team_id": "T08",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T08-PAIR-S01",
+      "external_source_ids": ["T08-SKILL-PYTEST-COVERAGE"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们正在维护 pytest 项目 pytest-coverage-lab，代码采用 src-layout，测试位于 testing 目录。"
+        },
+        {
+          "role": "assistant",
+          "content": "明白了，当前目标是提高 Python 测试的代码覆盖质量，同时保持现有测试组织方式。"
+        },
+        {
+          "role": "user",
+          "content": "最近一次测试运行通过了，但报告显示仍有一些源代码路径没有被测试执行。"
+        },
+        {
+          "role": "assistant",
+          "content": "那需要把报告中的缺口定位到源文件和具体代码行，再补充能验证这些路径的测试。"
+        },
+        {
+          "role": "user",
+          "content": "我希望流程能同时支持检查整个项目、单个模块或指定测试文件。"
+        },
+        {
+          "role": "assistant",
+          "content": "可以把范围选择和缺口定位分开记录，便于每轮补测后比较结果。"
+        },
+        {
+          "role": "user",
+          "content": "请用中文给出可直接交给维护者执行的简短步骤，重点放在发现并消除未覆盖行。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会保持步骤聚焦于 pytest 覆盖率报告、标注源码和迭代补测。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请给出这项覆盖率修复工作的执行流程，并说明如何判断已经完成。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充：当前模块确实存在覆盖率缺口。请给出从生成报告到补测试、再到确认完成的具体执行流程。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结 pytest 标注覆盖率循环：生成 annotate 报告、按覆盖率跳过完整文件、查看低于 100% 文件中的 ! 行、补测并重复至全部覆盖。",
+          "route": "skill",
+          "target_asset_ids": ["T08-SKILL-PYTEST-COVERAGE"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "完成一次 skill_view 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充：请按以下既定流程执行：运行 `pytest --cov --cov-report=annotate:cov_annotate` 生成覆盖率报告；需要时可用 `--cov=模块名` 或指定测试文件来限定范围，但仍使用该 annotate 输出；查看 `cov_annotate`，每个源文件都有对应标注文件；100% 覆盖的文件无需打开；对低于 100% 的文件查看对应标注文件，标记行以 `!` 开头表示未覆盖；为这些行添加测试；继续运行测试并提升覆盖率，直到所有行都被覆盖。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已完整给出原始 pytest 覆盖率循环、报告目录、可选模块或测试范围、100% 文件跳过规则、! 行含义、补测动作和重复终点，无需外部技能内容。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T08-SKILL-JEST", "T08-SKILL-PLAYWRIGHT-GEN"],
+      "controlled_delta_note": "Positive and Negative share all eight context messages and the final query; only the appended message at index 8 changes. Positive leaves the annotated-coverage loop absent, while Negative supplies only facts stated by the frozen pytest source.",
+      "source_fact_map": [
+        {
+          "claim": "The coverage command is pytest --cov --cov-report=annotate:cov_annotate, with optional module or test-file scoping while retaining the annotate report.",
+          "source_id": "T08-SKILL-PYTEST-COVERAGE",
+          "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/pytest-coverage/raw/SKILL.md:8-18"
+        },
+        {
+          "claim": "Inspect cov_annotate files only for sources below 100%; a leading ! marks an uncovered line, then add tests and repeat until all lines are covered.",
+          "source_id": "T08-SKILL-PYTEST-COVERAGE",
+          "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/pytest-coverage/raw/SKILL.md:20-28"
+        }
+      ],
+      "sol_review_questions": [
+        "确认负例是否只保留 pytest 原文明确的命令、标注目录、跳过规则、! 标记和迭代终点。"
+      ]
+    }
+  ]
+}
