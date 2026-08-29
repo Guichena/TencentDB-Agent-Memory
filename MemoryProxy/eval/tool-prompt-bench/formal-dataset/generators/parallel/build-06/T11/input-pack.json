@@ -1,0 +1,28 @@
+{
+  "schema_version": "task1.team_input_pack.v1",
+  "build_id": "build-06",
+  "team_id": "T11",
+  "split": "dev",
+  "topic": "移动端工程",
+  "active_agent": "agent-task1-t11-general",
+  "project_streams": ["Orchid Android AGP migration", "Atlas offline-first sync", "Nimbus lifecycle restoration", "Pulse Android performance", "Helio Compose UI tests"],
+  "counts": {"memory_positive": 6, "skill_positive": 6, "knowledge_positive": 3, "paired_negative": 15, "natural_negative": 10},
+  "positive_first_action_distribution": {"memory_search_or_discovery": 4, "memory_direct": 2, "skill_search": 3, "skill_direct": 3, "knowledge_discovery": 3},
+  "knowledge_assets": [
+    {"id":"knowledge-t11-android-build","kind":"codegraph","tool_name":"search_code","description":"Orchid Android build and Gradle configuration graph"},
+    {"id":"knowledge-t11-mobile-sync","kind":"wiki","tool_name":"search_pages","description":"Atlas offline synchronization design notes"},
+    {"id":"knowledge-t11-ios-client","kind":"codegraph","tool_name":"search_code","description":"Nimbus iOS lifecycle and state restoration graph"}
+  ],
+  "skill_sources": [
+    {"source_id":"t11-skill-agp9","repository":"https://github.com/android/skills","revision":"ea05a53683d1fb1fc701c3ad91f494d25d4fc7c6","path":"build-system/agp/agp-9-upgrade/SKILL.md","license":"Apache-2.0","raw_sha256":"58ef4a47c25d1ebe44f433be03c2dab672efecb4a641b6e025f93f5712d6f651","license_path":"LICENSE.txt","license_sha256":"49bbe9114e49214df2ccc324cb3ac8d1d1aa1c3a0947f94c286765e86647b32e"},
+    {"source_id":"t11-skill-profiler","repository":"https://github.com/android/skills","revision":"ea05a53683d1fb1fc701c3ad91f494d25d4fc7c6","path":"profilers/android-profiler/SKILL.md","license":"Apache-2.0","raw_sha256":"5728c27f7f5f19d8f18e7d0f4a1a3690a9bca06bd7d0989456ec52466aaf892a","license_path":"LICENSE.txt","license_sha256":"49bbe9114e49214df2ccc324cb3ac8d1d1aa1c3a0947f94c286765e86647b32e"},
+    {"source_id":"t11-skill-state-restoration","repository":"https://github.com/skydoves/android-testing-skills","revision":"8665ed59643c90eb1056a256a6ddec161aa1cfa1","path":"compose/patterns/testing-state-restoration/SKILL.md","license":"Apache-2.0","raw_sha256":"d60eb54dc82a08050c45aa4d74a4d4e3fe05d299058273a5c8902051ff13af63","license_path":"LICENSE","license_sha256":"fabd7028904f0fb3fb547523786ef3b288b03d0c4114feaa1c2256e79c652dae"}
+  ],
+  "skill_visibility": [
+    {"asset_id":"T11-SKILL-AGP9","source_id":"t11-skill-agp9","name":"android-agp9-upgrade","listed":true,"use_when":"migrating a non-KMP Android project to AGP 9","do_not_use_when":"profiling runtime jank or testing restored UI state"},
+    {"asset_id":"T11-SKILL-PROFILER","source_id":"t11-skill-profiler","name":"android-profiler","listed":false,"use_when":"recording or analyzing Android traces, heap dumps, jank, leaks, or startup","do_not_use_when":"changing Gradle DSL or writing Compose restoration tests"},
+    {"asset_id":"T11-SKILL-STATE-RESTORE","source_id":"t11-skill-state-restoration","name":"compose-state-restoration-test","listed":true,"use_when":"proving rememberSaveable state survives a save/restore round trip","do_not_use_when":"testing Activity callback recreation or runtime performance"}
+  ],
+  "provider_visible_forbidden": ["target asset id", "tool name", "endpoint", "gold route", "private proposal", "author-only distractor id"],
+  "authoring_rule": "Skills may only adapt the frozen source workflow to host naming, descriptions, use_when and do_not_use_when. Memory, sessions and internal Knowledge are synthetic."
+}

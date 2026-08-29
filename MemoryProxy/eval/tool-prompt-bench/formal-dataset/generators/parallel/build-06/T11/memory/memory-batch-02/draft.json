@@ -1,0 +1,237 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t11-memory-batch-02",
+  "stage": "DS02",
+  "team_id": "T11",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T11-MEMORY-B01-PULSE-JANK-RUNBOOK",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Pulse Android 性能流在冷启动后出现间歇性卡顿，当前要核对团队此前验证过的采样与归因步骤。"
+        },
+        {
+          "role": "assistant",
+          "content": "Pulse 会与 Orchid 的构建迁移、Atlas 的同步冲突、Nimbus 的恢复测试和 Helio 的 Compose UI 测试隔离，避免跨项目套用流程。"
+        },
+        {
+          "role": "user",
+          "content": "现有报告知道卡顿发生在首屏附近，却没有保留那次性能复核中先抓取帧时序、再对照主线程工作、最后确认回归范围的步骤。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前设备结果只能描述现象，不能替代上次已经验证过的排查顺序；我也不会把内存泄漏假设提前当成结论。"
+        },
+        {
+          "role": "user",
+          "content": "方向已经从立即改动渲染代码改为先恢复既有排查流程，确认证据链后再决定是否动实现。"
+        },
+        {
+          "role": "assistant",
+          "content": "项目归属、性能现象和相邻干扰项都已核对，实施前只差找到对应的历史性能场景。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "请找回 Pulse 冷启动卡顿复核所用的历史排查流程，用于按同一顺序重新采样。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要只留下卡顿现象和设备范围，没有给出此前验证过的采样、主线程对照和回归确认步骤。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少 Pulse 性能场景中已验证的排查流程，属于需要发现对应历史场景的记忆缺口。",
+          "route": "memory",
+          "target_asset_ids": [
+            "T11-L1-PULSE-COLD-START-JANK"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_read_scene"
+            ]
+          ],
+          "stop_after_candidate": "tdai_read_scene returns the reviewed Pulse performance scene and its validated sampling sequence."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接记录已补全流程：先记录首屏帧时序，再按同一时间窗核对主线程工作，最后用冷启动与热启动对照确认是否为回归；暂不先改渲染实现。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta supplies the complete sampling and comparison sequence, so the current context is sufficient."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T11-L0-PULSE-MEMORY",
+        "T11-L0-ORCHID-BUILD",
+        "T11-L0-NIMBUS-STATE"
+      ],
+      "controlled_delta_note": "Only message 6 changes. Positive requires discovery of the historical Pulse scene; Negative supplies exactly the three-step runbook without changing the device or symptom assumptions.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "该 pair 的首步是否属于历史场景发现，而非直接读取一条预先指定的记录？",
+        "Negative 是否只补足采样流程，未提前给出性能修复结论？"
+      ]
+    },
+    {
+      "draft_pair_id": "T11-MEMORY-B01-HELIO-COMPOSE-STATE",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "medium",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Helio Compose UI 测试需要确认一个输入草稿在重建后是否仍保留，当前只讨论保存状态的测试断言。"
+        },
+        {
+          "role": "assistant",
+          "content": "Helio 与 Nimbus 的生命周期回调测试、Pulse 性能分析、Orchid 构建迁移和 Atlas 同步逻辑保持独立。"
+        },
+        {
+          "role": "user",
+          "content": "当前用例已经固定了输入和重建动作，但没有保留此前验证过的状态断言写法。"
+        }
+      ],
+      "changed_message_index": 3,
+      "query": "请确认 Helio 的 Compose 状态恢复用例在重建后应断言什么，作为当前测试的对照。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "现有上下文没有留下之前验证过的恢复后断言内容，不能凭经验补写测试。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少 Helio 历史会话中已经验证的恢复后断言，筛选条件与测试输入已充分明确。",
+          "route": "memory",
+          "target_asset_ids": [
+            "T11-L1-HELIO-COMPOSE-RESTORE-ASSERTION"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_atomic_query"
+            ]
+          ],
+          "stop_after_candidate": "tdai_atomic_query returns the direct reviewed assertion for the Helio restoration case."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接笔记已补全断言：重建后应读取同一输入字段并断言其仍等于重建前提交的值，同时确认界面已完成恢复。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta gives the exact post-recreation assertion and its completion condition."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T11-L0-HELIO-NAV",
+        "T11-L0-NIMBUS-CALLBACK",
+        "T11-L0-ATLAS-QUEUE"
+      ],
+      "controlled_delta_note": "The short Helio context and query are identical. Only message 3 changes: Positive leaves the validated assertion missing; Negative supplies that assertion directly.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否接受按明确测试语境直接查询这条历史断言，而不是先做宽泛发现？",
+        "Negative 是否只补足断言内容，没有改变输入、重建动作或项目边界？"
+      ]
+    },
+    {
+      "draft_pair_id": "T11-MEMORY-B01-ORCHID-ATLAS-DIRECT-CHECK",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Orchid 的构建迁移已经通过初步编译，但与 Atlas 同步模块共享的发布分支需要核对一条历史交接约定；本轮只看发布前的版本锁定。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会将这条跨项目交接限定在 Orchid 发布配置与 Atlas 客户端版本边界，不把 Nimbus 恢复、Pulse 性能或 Helio 测试结论带进来。"
+        },
+        {
+          "role": "user",
+          "content": "当前分支、发布窗口和两个项目的负责人都已明确，只缺那条交接记录中规定的版本锁定条件。"
+        },
+        {
+          "role": "assistant",
+          "content": "这是一个范围很窄的历史核对：工作区和身份假设已经固定，不需要重新发现项目或重跑构建。"
+        },
+        {
+          "role": "user",
+          "content": "实施前只需确认交接约定，确认后再决定是否更新发布配置；不要把它扩展成新的同步设计。"
+        },
+        {
+          "role": "assistant",
+          "content": "相关流和查询边界都已准备好，剩余缺口就是版本锁定条件本身。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "请直接确认 Orchid 发布配置与 Atlas 客户端版本锁定时，历史交接约定要求满足哪两个条件。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "当前交接摘要只说需要锁定版本，没有保留那两个已经验证的具体条件。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少已明确范围的历史交接中两个版本锁定条件；项目、窗口和查询字段已足够精确。",
+          "route": "memory",
+          "target_asset_ids": [
+            "T11-L1-ORCHID-ATLAS-RELEASE-LOCK"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_conversation_query"
+            ]
+          ],
+          "stop_after_candidate": "tdai_conversation_query returns the two conditions from the directly identified release handoff."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接记录已补全两个条件：构建插件版本必须与发布分支锁定文件一致，且 Atlas 客户端只允许使用该分支已验证的同步协议版本；两项都满足后才可更新发布配置。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta supplies both requested locking conditions and the resulting gate, with no change to the existing scope."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T11-L0-ORCHID-DEPENDENCY",
+        "T11-L0-ATLAS-PROTOCOL",
+        "T11-L0-PULSE-BENCH"
+      ],
+      "controlled_delta_note": "Both variants retain the same narrow cross-project release scope and query. Only message 6 changes: Positive lacks the two conditions; Negative supplies exactly those conditions and the gate.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "范围已明确时，直接会话核对是否是合适的首步，而不需要场景发现？",
+        "Negative 是否仅补足两个版本锁定条件，没有改变 Orchid/Atlas 的身份或发布窗口？"
+      ]
+    }
+  ]
+}

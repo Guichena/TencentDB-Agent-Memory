@@ -1,0 +1,249 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t11-memory-batch-01",
+  "stage": "DS02",
+  "team_id": "T11",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T11-MEMORY-B01-ORCHID-AGP-RULE",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Orchid Android 正在从旧版构建插件迁移到新版，当前工作区是迁移分支；问题集中在模块级构建配置的兼容性。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把这件事和 Atlas 离线同步、Nimbus 状态恢复、Pulse 性能以及 Helio Compose 测试分开，避免把别的项目约定混进来。"
+        },
+        {
+          "role": "user",
+          "content": "现有日志只显示构建配置解析失败，尚未保留上一次迁移中对插件声明和仓库块的最终处理方式。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前 checkout 可以用来确认现状，但不能代替团队此前验证过的迁移结论；我也不会把运行时卡顿或测试重建当成同一问题。"
+        },
+        {
+          "role": "user",
+          "content": "方向已经收窄为复用已验证的迁移约定，不重新设计构建脚本，也不扩大到依赖升级清单。"
+        },
+        {
+          "role": "assistant",
+          "content": "项目归属、工作区和干扰流都已确认，实施前只差找回那条历史构建约定。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "请找回 Orchid 迁移中已经验证的插件声明与仓库配置约定，用来对照当前构建失败。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "当前交接摘要只有失败现象，没有留下上次验证通过时插件声明与仓库块应如何配合的具体规则。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少历史会话中已验证的 Orchid 构建迁移规则，当前上下文只有症状和范围。",
+          "route": "memory",
+          "target_asset_ids": [
+            "T11-L1-ORCHID-AGP-MIGRATION-RULE"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_memory_search"
+            ]
+          ],
+          "stop_after_candidate": "tdai_memory_search returns the distilled Orchid AGP migration convention."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接记录已补全规则：插件声明统一放在根级约定中，仓库块只保留迁移所需的官方源，并让各模块通过同一版本目录继承；这套配置已在最小构建上验证通过。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta supplies exactly the missing plugin and repository configuration convention, so retrieval is unnecessary."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T11-L0-ORCHID-BUILD-NOISE",
+        "T11-L0-PULSE-JANK",
+        "T11-L0-HELIO-TEST"
+      ],
+      "controlled_delta_note": "Both variants share the same Orchid workspace, project separation, failure scope, and query. Only message 6 changes: Positive leaves the historical configuration rule unresolved; Negative supplies that rule and no new task context.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否接受历史构建约定作为候选记忆目标，且首步只需按 Orchid 迁移语境检索？",
+        "Negative 是否仅补足插件声明与仓库块的约定，没有改变项目、工作区或查询目标？"
+      ]
+    },
+    {
+      "draft_pair_id": "T11-MEMORY-B01-ATLAS-SYNC-QUOTE",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Atlas offline-first sync 最近出现冲突合并回归，当前只处理移动端本地队列与服务端版本之间的合并行为。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会将 Atlas 与 Orchid 构建迁移、Nimbus 生命周期恢复、Pulse 性能分析和 Helio UI 测试隔离；它们的历史结论不能互相替代。"
+        },
+        {
+          "role": "user",
+          "content": "现有记录保留了冲突发生的输入和最终通过状态，但没有保存当时会话里对‘本地删除与远端更新同时到达’的原话。"
+        },
+        {
+          "role": "assistant",
+          "content": "现在可以复现现象，却不能据此编造原句；我也已经排除了网络重试和数据库迁移两条相邻工作流。"
+        },
+        {
+          "role": "user",
+          "content": "目标从重新实现合并器改成准确恢复上次评审时的总结措辞，便于放进回归说明。"
+        },
+        {
+          "role": "assistant",
+          "content": "流归属、复现输入和相邻问题都已整理好，下一步只需要定位那次讨论中的原始表达。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "请找回 Atlas 冲突合并评审中关于本地删除与远端更新同时到达时如何处理的原话。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "手头摘要只有输入形态和通过结果，没有保留那次评审对并发删除与更新的总结原句。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少历史会话中关于 Atlas 并发删除/更新处理的准确原话；用户明确要求恢复措辞。",
+          "route": "memory",
+          "target_asset_ids": [
+            "T11-L0-ATLAS-CONFLICT-REVIEW"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_conversation_search"
+            ]
+          ],
+          "stop_after_candidate": "tdai_conversation_search returns the requested wording from the reviewed Atlas sync conversation."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "评审原话已补回：并发到达时先保留删除意图，再按服务端版本确认是否可安全合并；若版本已越过删除基线，则把记录标为待人工解决，而不是静默复活本地对象。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta provides the exact requested policy wording and its exception, so a conversation lookup is no longer needed."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T11-L0-ATLAS-RETRY",
+        "T11-L0-NIMBUS-RESTORE",
+        "T11-L0-ORCHID-AGP"
+      ],
+      "controlled_delta_note": "Only message 6 changes. Positive lacks the prior review wording; Negative adds the deletion-preserving merge rule and its manual-resolution exception while keeping the same Atlas scope and query.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否把 Negative 中的内容视为已补足原话，而不是新增设计建议？",
+        "该 pair 是否保持 Atlas 合并语境与其他移动端项目流完全隔离？"
+      ]
+    },
+    {
+      "draft_pair_id": "T11-MEMORY-B01-NIMBUS-RESTORE-TIMELINE",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Nimbus 的移动端生命周期恢复测试在旋转和进程回收后出现状态丢失，当前只关心恢复链路的历史验证过程。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把 Nimbus 和 Helio Compose 测试、Pulse 性能、Orchid 构建以及 Atlas 同步分别处理，不借用其他流的测试结论。"
+        },
+        {
+          "role": "user",
+          "content": "当前测试日志能显示恢复失败，但没有按顺序保存上一次会话先检查保存点、再重建界面、最后断言状态的过程。"
+        },
+        {
+          "role": "assistant",
+          "content": "现状足以定位失败阶段，却不足以恢复历史时间线；我也排除了 Activity 回调顺序之外的启动性能问题。"
+        },
+        {
+          "role": "user",
+          "content": "方向已从重新编写测试改为核对已验证的恢复过程，以免把当前失败位置误写成历史上的首个步骤。"
+        },
+        {
+          "role": "assistant",
+          "content": "项目、测试边界和干扰项均已确认，剩下的是那次验证中几个动作的实际先后。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "请找回 Nimbus 状态恢复验证时的动作顺序：保存点检查、界面重建和状态断言分别先后如何安排？",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "目前只知道最终断言通过，没有保留保存点检查、界面重建和断言之间的历史先后顺序。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少 Nimbus 历史验证的三步动作顺序；当前上下文只有失败现象和范围。",
+          "route": "memory",
+          "target_asset_ids": [
+            "T11-L1-NIMBUS-RESTORE-TIMELINE"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_scenario_ls"
+            ]
+          ],
+          "stop_after_candidate": "tdai_scenario_ls identifies the reviewed Nimbus restoration scenario containing the validated action order."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "历史记录已补全顺序：先确认保存点包含目标字段，再触发界面重建，最后在重建后的界面读取并断言状态；三步均在同一恢复场景中验证。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta supplies the complete three-step order and leaves all other assumptions unchanged."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T11-L0-NIMBUS-CALLBACK",
+        "T11-L0-PULSE-STARTUP",
+        "T11-L0-HELIO-COMPOSE"
+      ],
+      "controlled_delta_note": "Both variants have the same Nimbus recovery scope and query. Message 6 alone differs: Positive omits the timeline, while Negative gives only the validated three-step order.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "首步按场景发现历史验证记录是否足够，不应直接读取某个未公开标识？",
+        "Negative 是否只补足动作顺序，没有引入新的恢复实现方案？"
+      ]
+    }
+  ]
+}
