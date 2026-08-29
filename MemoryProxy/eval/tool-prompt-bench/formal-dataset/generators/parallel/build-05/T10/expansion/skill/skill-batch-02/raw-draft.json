@@ -1,0 +1,244 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t10-skill-batch-02",
+  "stage": "DS05",
+  "team_id": "T10",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T10-DRAFT-SKILL-002",
+      "external_source_ids": ["source-t10-skill-maven-dependencies"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我在 atlas-parent 复核多模块项目的依赖收敛，当前只整理 POM 证据和治理方案，不改文件、不运行构建。"},
+        {"role": "assistant", "content": "父 POM、受影响模块、依赖树摘录和失败摘要都已在工作区；本轮只看声明、作用域和版本治理，生命周期与插件另有记录。"},
+        {"role": "user", "content": "我原本想在报错模块里直接替换一个版本，后来发现传递依赖和父子模块的集中约束可能让结果更不一致。"},
+        {"role": "assistant", "content": "方向已改为先核对依赖树、作用域和集中版本来源，再评估 BOM 或排除项；不凭单条错误先改版本。"},
+        {"role": "user", "content": "相关声明、父子 POM 片段和冲突摘要都已归档，也确认本轮不处理阶段顺序、插件参数或 CI 日志。"},
+        {"role": "assistant", "content": "证据已经齐备，但仍缺一套可复用的依赖治理顺序，尤其是版本集中、BOM、树分析和冲突收敛怎样衔接。"}
+      ],
+      "changed_message_index": 6,
+      "query": "针对当前 Maven 依赖冲突，请先给出分析依赖关系和版本治理的可执行下一步，暂时不要修改 POM 或运行构建。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请先定位适用的既有依赖治理流程，概述依赖树分析、作用域、BOM 或集中版本声明、冲突收敛和必要排除项，停在可以开始核对的位置。"},
+        "private_proposal": {
+          "unique_information_gap": "当前只缺 Maven 依赖声明、scope、BOM/dependencyManagement、依赖树和冲突仲裁的可复用流程；目标未列出，需要先搜索后打开同团队目标 Skill。",
+          "route": "skill",
+          "target_asset_ids": ["T10-SKILL-MAVEN-DEPENDENCIES"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "搜索结果返回 Maven 依赖管理 Skill id 并打开正文后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "我把缺失流程补全：先用 dependency:tree（必要时 verbose）查看传递关系，再核对 compile、provided、runtime、test 等 scope；在父 POM 的 dependencyManagement 中集中版本并按需导入 BOM，依赖声明可省略已管理版本；按 nearest definition wins 解释冲突，必要时用 dependencyConvergence 和显式 exclusions 收敛。请据此给出下一步，仍不要修改 POM 或运行构建。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已提供依赖树分析、scope 核对、父 POM 集中版本/BOM、冲突仲裁及收敛排除项的完整顺序，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T10-SKILL-MAVEN-LIFECYCLE", "T10-SKILL-MAVEN-PLUGINS", "T10-SKILL-UV-PACKAGE-MANAGER"],
+      "controlled_delta_note": "Positive 仅保留依赖关系分析与版本治理流程缺口；Negative 仅补齐树分析、scope、BOM/dependencyManagement、冲突仲裁和收敛边界，shared context 与 query 完全相同。",
+      "source_fact_map": [
+        {"claim": "依赖管理流程包括依赖树、scope、dependencyManagement 与 BOM 导入。", "source_id": "source-t10-skill-maven-dependencies", "locator": "raw/benchflow-skillsbench/maven-dependency-management/SKILL.md#Dependency Scopes; #Dependency Management Section; #Dependency Analysis"},
+        {"claim": "Maven 冲突默认采用 nearest definition wins，并可通过 dependencyManagement 强制版本及 Enforcer dependencyConvergence 控制收敛。", "source_id": "source-t10-skill-maven-dependencies", "locator": "raw/benchflow-skillsbench/maven-dependency-management/SKILL.md#Conflict Resolution"},
+        {"claim": "传递依赖可用 exclusions 排除并替换，父 POM 可集中管理多模块依赖版本。", "source_id": "source-t10-skill-maven-dependencies", "locator": "raw/benchflow-skillsbench/maven-dependency-management/SKILL.md#Exclusions; #Multi-Module Projects"}
+      ],
+      "sol_review_questions": [
+        "确认该组仅包含 T10-DRAFT-SKILL-002，Positive 首动作严格为冻结的 search 后 view_by_id。",
+        "确认 Positive 与 Negative 共享全部六条上下文消息和完全相同的 query，仅在 changed_message_index: 6 追加 delta。",
+        "确认 provider-visible 文本未出现工具名、Skill 名、私有资产 ID、Gold 或评测字样。",
+        "确认 Negative 只补齐冻结依赖管理正文支持的树分析、scope、BOM、版本收敛和 exclusions，没有引入生命周期或插件方案。"
+      ]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-SKILL-003",
+      "external_source_ids": ["source-t10-skill-maven-plugins"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我在 plugin-hub 复核一个构建插件的 execution 绑定，失败摘要指向阶段绑定异常；这次只整理配置证据，不改 XML、不运行构建。"},
+        {"role": "assistant", "content": "插件坐标、父子 POM 片段和预期阶段都已在工作区；依赖版本与通用生命周期选择不在本轮范围。"},
+        {"role": "user", "content": "我最初想把 execution 原样复制到子模块，后来意识到集中管理、继承来源、目标和参数都会影响实际执行。"},
+        {"role": "assistant", "content": "方向已改为先核对插件版本、execution 的 phase/goals、配置和继承来源，再判断配置放置位置；不先复制 XML。"},
+        {"role": "user", "content": "插件声明、execution id、失败阶段和相关父 POM 片段已经归档，也确认不需要分析 CI 链接。"},
+        {"role": "assistant", "content": "范围和证据已经明确，但还缺一套可复用的插件 execution 配置顺序，尤其是 phase、goal、参数和集中管理继承如何核对。"}
+      ],
+      "changed_message_index": 6,
+      "query": "针对当前 Maven 插件 execution 绑定问题，请先给出核对配置与继承关系的可执行下一步，暂时不要修改 XML 或运行构建。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请先定位适用的既有插件配置流程，概述插件版本、execution、phase、goal、参数和集中管理继承的核对顺序，停在可以开始检查的位置。"},
+        "private_proposal": {
+          "unique_information_gap": "当前只缺 Maven 插件声明、execution、phase/goal 绑定、参数和 pluginManagement 继承的可复用配置流程；目标未列出，需要先搜索后打开同团队目标 Skill。",
+          "route": "skill",
+          "target_asset_ids": ["T10-SKILL-MAVEN-PLUGINS"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "搜索结果返回 Maven 插件配置 Skill id 并打开正文后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "我把缺失流程补全：先固定插件版本；再确认 execution id、绑定 phase 和 goals，核对 configuration 参数；多模块项目先查看 parent 的 pluginManagement，再确认子模块在 plugins 中实际声明以继承配置；最后用有效 POM 或只读配置检查执行来源。请据此给出下一步，仍不要修改 XML 或运行构建。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已提供版本、execution、phase/goals、configuration、pluginManagement 与子模块继承核对顺序，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T10-SKILL-MAVEN-LIFECYCLE", "T10-SKILL-MAVEN-DEPENDENCIES", "T10-SKILL-ANALYZE-CI"],
+      "controlled_delta_note": "Positive 仅保留插件 execution 配置和继承关系流程缺口；Negative 仅补齐版本、execution、phase/goals、参数及 pluginManagement 核对，shared context 与 query 完全相同。",
+      "source_fact_map": [
+        {"claim": "插件配置由版本、configuration、executions、phase 和 goals 组成。", "source_id": "source-t10-skill-maven-plugins", "locator": "raw/benchflow-skillsbench/maven-plugin-configuration/SKILL.md#Plugin Basics"},
+        {"claim": "pluginManagement 可集中版本和共享配置，实际 plugins 声明后继承这些配置。", "source_id": "source-t10-skill-maven-plugins", "locator": "raw/benchflow-skillsbench/maven-plugin-configuration/SKILL.md#Plugin Management"},
+        {"claim": "插件实践要求锁定版本、绑定合适 phase、使用有意义的 execution id 并避免重复执行。", "source_id": "source-t10-skill-maven-plugins", "locator": "raw/benchflow-skillsbench/maven-plugin-configuration/SKILL.md#Best Practices; #Common Pitfalls"}
+      ],
+      "sol_review_questions": [
+        "确认该组仅包含 T10-DRAFT-SKILL-003，Positive 首动作严格为冻结的 search 后 view_by_id。",
+        "确认 Positive 与 Negative 共享全部六条上下文消息和完全相同的 query，仅在 changed_message_index: 6 追加 delta。",
+        "确认 provider-visible 文本未出现工具名、Skill 名、私有资产 ID、Gold 或评测字样。",
+        "确认 Negative 只补齐冻结插件配置正文支持的 execution/phase/goals/参数和继承关系，没有引入依赖或 CI 日志结论。"
+      ]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-SKILL-004",
+      "external_source_ids": ["source-t10-skill-deployment-pipeline"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我在 release-orchestrator 规划候选版本的多阶段交付流程，只做 dry-run 设计，不执行发布、不推送制品。"},
+        {"role": "assistant", "content": "应用类型、目标环境、回滚时限和监控信息都已整理；本轮只讨论阶段、质量门和晋级边界。"},
+        {"role": "user", "content": "我原本想让构建、部署和生产切换连续完成，后来发现环境之间需要保留审批和可观测性检查。"},
+        {"role": "assistant", "content": "方向已改为先划分阶段及依赖，再选择渐进式策略，并补上健康检查、质量门和回滚触发；所有动作保持演练性质。"},
+        {"role": "user", "content": "环境拓扑、验收指标、审批团队和候选制品边界已经明确，也确认不能重建制品或触发真实生产动作。"},
+        {"role": "assistant", "content": "输入和安全边界已经就绪，但还缺一套可复用的多阶段设计顺序，尤其是阶段晋级、健康检查、审批和回滚如何组合。"}
+      ],
+      "changed_message_index": 6,
+      "query": "针对候选版本的 dry-run 发布规划，请先给出阶段、质量门和回滚编排的可执行下一步，暂时不要执行发布。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "目标和环境都已确认，请先打开适用的既有交付编排流程，概述阶段依赖、渐进式策略、健康检查、质量/审批门和回滚计划，停在可以开始设计的位置。"},
+        "private_proposal": {
+          "unique_information_gap": "当前只缺多阶段 CI/CD 的阶段组织、环境晋级、部署策略、健康检查、质量/审批门和回滚编排流程；目标已列出，应直接打开 listed target Skill。",
+          "route": "skill",
+          "target_asset_ids": ["T10-SKILL-DEPLOYMENT-PIPELINE"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "返回已列出的部署流水线 Skill 正文和 manifest 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "我把缺失流程补全：先定义构建、测试、扫描、暂存和生产等阶段及依赖；再选择 canary、blue-green 或 rolling 策略；每次晋级前执行浅层和深层健康检查、自动指标门与人工审批；若指标退化或检查失败，触发自动或手动回滚，并为数据库迁移保留向后兼容窗口。整个方案只做 dry-run，不执行真实发布。请据此给出下一步。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已提供多阶段顺序、渐进式策略、健康检查、自动/人工门、回滚触发及迁移兼容边界，并明确 dry-run 约束，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T10-SKILL-GITHUB-ACTIONS", "T10-SKILL-ANALYZE-CI", "T10-SKILL-GIT-WORKFLOWS"],
+      "controlled_delta_note": "Positive 仅保留多阶段发布编排流程缺口；Negative 仅补齐阶段依赖、渐进式策略、健康检查、质量/审批门、回滚和 dry-run 边界，shared context 与 query 完全相同。",
+      "source_fact_map": [
+        {"claim": "多阶段发布设计输入包括应用、目标、环境拓扑、回滚 SLA、门槛和监控，输出包括阶段依赖、部署策略、健康检查、门定义和回滚计划。", "source_id": "source-t10-skill-deployment-pipeline", "locator": "raw/wshobson-agents/deployment-pipeline-design/SKILL.md#Input / Output"},
+        {"claim": "流程覆盖多环境质量/安全门、canary 或 blue-green 渐进式发布、健康检查和自动/人工回滚。", "source_id": "source-t10-skill-deployment-pipeline", "locator": "raw/wshobson-agents/deployment-pipeline-design/SKILL.md#When to Use; #What This Skill Produces"},
+        {"claim": "数据库迁移应保持向后兼容，并在旧版本退役前避免破坏性迁移。", "source_id": "source-t10-skill-deployment-pipeline", "locator": "raw/wshobson-agents/deployment-pipeline-design/SKILL.md#Rollback leaves database migrations applied to old code"}
+      ],
+      "sol_review_questions": [
+        "确认该组仅包含 T10-DRAFT-SKILL-004，Positive 首动作严格为冻结的 listed target skill_view。",
+        "确认 Positive 与 Negative 共享全部六条上下文消息和完全相同的 query，仅在 changed_message_index: 6 追加 delta。",
+        "确认 provider-visible 文本未出现工具名、Skill 名、私有资产 ID、Gold 或评测字样。",
+        "确认 Negative 只补齐冻结部署流水线正文支持的阶段、策略、检查、门和回滚，没有把真实发布动作带入。"
+      ]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-SKILL-005",
+      "external_source_ids": ["source-t10-skill-github-actions"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我在 release-orchestrator 准备 GitHub 上的构建与候选制品工作流，目前只整理 YAML 设计，不触发作业或发布。"},
+        {"role": "assistant", "content": "仓库事件、构建输入、候选制品和审批边界都已列出；这条线需要平台特定的工作流，平台无关架构另行处理。"},
+        {"role": "user", "content": "我原本想把测试、构建和部署塞进一个 job，后来发现需要缓存、权限、矩阵和可复用步骤控制复杂度。"},
+        {"role": "assistant", "content": "方向已改为先拆分触发器、job 和步骤，再核对版本固定、缓存、制品与环境保护；仍保持只设计不运行。"},
+        {"role": "user", "content": "事件、运行环境、构建命令和候选制品边界已经准备好，也确认本轮不分析既有失败日志。"},
+        {"role": "assistant", "content": "工作流输入已齐，但还缺一份可复用的平台模板顺序，尤其是测试、构建、矩阵、权限、复用和审批如何组织。"}
+      ],
+      "changed_message_index": 6,
+      "query": "针对候选制品的 GitHub 工作流规划，请先给出构建与验证 job 的可执行下一步，暂时不要触发作业或发布。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请先定位适用的既有 GitHub Actions 工作流模板，概述触发器、测试/构建步骤、缓存、矩阵、权限、可复用 workflow 和生产审批边界，停在可以开始编写的位置。"},
+        "private_proposal": {
+          "unique_information_gap": "当前只缺 GitHub Actions 的测试、构建、制品、矩阵、缓存、权限、复用和审批工作流模板；目标未列出，需要先搜索后打开同团队目标 Skill。",
+          "route": "skill",
+          "target_asset_ids": ["T10-SKILL-GITHUB-ACTIONS"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "搜索结果返回 GitHub Actions 模板 Skill id 并打开正文后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "我把缺失流程补全：先按 push、pull_request 或 tag 设计触发器；job 中固定 checkout 和运行环境版本，安装依赖后运行测试并缓存依赖；需要多版本时用 matrix；给 job 设置最小权限，复杂步骤抽成 workflow_call；生产 job 使用受保护 environment 和审批，不执行真实发布。请据此给出下一步，仍不要触发作业。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已提供 GitHub 触发器、固定 action/运行环境、依赖缓存、测试、矩阵、最小权限、可复用 workflow、受保护环境和不发布边界，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T10-SKILL-ANALYZE-CI", "T10-SKILL-GITLAB-CI", "T10-SKILL-DEPLOYMENT-PIPELINE"],
+      "controlled_delta_note": "Positive 仅保留 GitHub Actions 工作流模板缺口；Negative 仅补齐触发器、测试/构建、缓存、矩阵、权限、复用和审批边界，shared context 与 query 完全相同。",
+      "source_fact_map": [
+        {"claim": "GitHub Actions 模板覆盖测试、构建/推送、Kubernetes 部署和矩阵构建等工作流模式。", "source_id": "source-t10-skill-github-actions", "locator": "raw/wshobson-agents/github-actions-templates/SKILL.md#Common Workflow Patterns"},
+        {"claim": "工作流实践包括固定 action 版本、缓存依赖、最小权限、矩阵构建、可复用 workflow 和生产审批。", "source_id": "source-t10-skill-github-actions", "locator": "raw/wshobson-agents/github-actions-templates/SKILL.md#Workflow Best Practices; #Reusable Workflows; #Deployment with Approvals"},
+        {"claim": "生产部署可通过 protected environment 与成功后的通知步骤组织。", "source_id": "source-t10-skill-github-actions", "locator": "raw/wshobson-agents/github-actions-templates/SKILL.md#Deployment with Approvals"}
+      ],
+      "sol_review_questions": [
+        "确认该组仅包含 T10-DRAFT-SKILL-005，Positive 首动作严格为冻结的 search 后 view_by_id。",
+        "确认 Positive 与 Negative 共享全部六条上下文消息和完全相同的 query，仅在 changed_message_index: 6 追加 delta。",
+        "确认 provider-visible 文本未出现工具名、Skill 名、私有资产 ID、Gold 或评测字样。",
+        "确认 Negative 只补齐冻结 GitHub Actions 正文支持的触发器、job、缓存、矩阵、权限、复用和审批边界，没有把 GitLab 或通用部署架构混入。"
+      ]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-SKILL-006",
+      "external_source_ids": ["source-t10-skill-python-packaging"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我在 pyartifact 准备 Python 包的候选 wheel 发布前检查，构建配置和候选文件都已准备；本轮只整理验证，不上传、不打正式标签。"},
+        {"role": "assistant", "content": "pyproject 元数据、构建后端和候选分发物都已在工作区；环境搭建和普通测试不是当前缺口，发布动作保持 dry-run。"},
+        {"role": "user", "content": "我原本只想确认文件生成，后来发现还需要在隔离环境安装候选 wheel，确认包版本、导入和 CLI 入口确实可用。"},
+        {"role": "assistant", "content": "方向已改为先核对分发物，再做干净环境安装和最小导入/CLI 验证；本轮不上传索引、不改版本。"},
+        {"role": "user", "content": "候选 wheel 路径、版本、构建目录和测试入口都已整理，也确认可以创建临时隔离环境，但还没有高级验证步骤。"},
+        {"role": "assistant", "content": "当前只缺发布前的高级制品验证细节，尤其是隔离安装后如何确认导入和 CLI，而不是重新设计包布局。"}
+      ],
+      "changed_message_index": 6,
+      "query": "针对候选 Python wheel 的发布前检查，请先给出隔离安装和最小可用性验证的可执行下一步，暂时不要上传或发布。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "列出的打包指南概览已经知道，但我还缺其中指定的高级制品验证细节。请先打开适用资料，再读取 `references/advanced-patterns.md`，概述隔离安装、导入/版本检查、CLI 验证和清理，停在可以开始验证的位置。"},
+        "private_proposal": {
+          "unique_information_gap": "当前只缺列出的 Python packaging Skill 的高级发布前验证资源；必须先打开 listed target，再读取 references/advanced-patterns.md。",
+          "route": "skill",
+          "target_asset_ids": ["T10-SKILL-PYTHON-PACKAGING"],
+          "allowed_sequence_candidates": [["skill_view", "skill_files_read"]],
+          "stop_after_candidate": "打开列出的 Python packaging Skill 并读取 references/advanced-patterns.md 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "我把缺失细节补全：创建临时隔离环境后安装 `dist/my_package-1.0.0-py3-none-any.whl`，运行 Python 导入包并打印版本，再执行 CLI 的 `--help` 检查入口；验证完成后停用并删除临时环境。整个过程只验证构建产物，不上传到任何包索引。请据此给出下一步。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已提供隔离环境、候选 wheel 安装、导入和版本检查、CLI 检查、清理以及不上传边界，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T10-SKILL-UV-PACKAGE-MANAGER", "T10-SKILL-PYTHON-PROJECT-STRUCTURE", "T10-SKILL-TESTING-PYTHON"],
+      "controlled_delta_note": "Positive 仅保留 Python wheel 发布前高级验证资源缺口；Negative 仅补齐隔离安装、导入/版本、CLI 验证和清理，不上传发布，shared context 与 query 完全相同。",
+      "source_fact_map": [
+        {"claim": "高级 Python packaging 参考要求在隔离环境中安装构建出的 wheel，导入包并检查版本和 CLI。", "source_id": "source-t10-skill-python-packaging", "locator": "raw/wshobson-agents/python-packaging/references/advanced-patterns.md#Pattern 17: Testing in Isolated Environment"},
+        {"claim": "隔离安装验证完成后应停用并清理临时环境，验证对象是分发物而不是发布上传。", "source_id": "source-t10-skill-python-packaging", "locator": "raw/wshobson-agents/python-packaging/references/advanced-patterns.md#Pattern 17: Testing in Isolated Environment; #Checklist for Publishing"},
+        {"claim": "Python packaging Skill 覆盖 wheel/source distribution、版本和发布准备，但资源读取用于补充高级模式。", "source_id": "source-t10-skill-python-packaging", "locator": "raw/wshobson-agents/python-packaging/SKILL.md#When to Use This Skill; #Detailed patterns and worked examples"}
+      ],
+      "sol_review_questions": [
+        "确认该组仅包含 T10-DRAFT-SKILL-006，Positive 首动作严格为冻结的 listed resource skill_view 后 skill_files_read，并使用当前 input pack 指定的 references/advanced-patterns.md。",
+        "确认 Positive 与 Negative 共享全部六条上下文消息和完全相同的 query，仅在 changed_message_index: 6 追加 delta。",
+        "确认 provider-visible 文本未出现工具名、Skill 名、私有资产 ID、Gold 或评测字样。",
+        "确认 Negative 只补齐冻结 Python packaging 资源支持的隔离安装、导入/版本、CLI 检查和清理，没有引入上传或正式发布。"
+      ]
+    }
+  ]
+}

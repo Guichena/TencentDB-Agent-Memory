@@ -1,0 +1,588 @@
+{
+  "schema_version": "task1.sol_frozen_input_pack.v1",
+  "build_id": "build-05",
+  "stage": "DS05",
+  "team_id": "T10",
+  "split": "hidden_test",
+  "theme": "Maven、Python build 与 release workflow；区分生命周期、依赖、插件、CI 分析和环境搭建，且不运行真实发布。",
+  "frozen_by": "sol",
+  "frozen_at": "2026-08-29T23:30:00+08:00",
+  "source_lock": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T10/source-lock.json",
+  "identity": {
+    "space_id": "space-task1-engineering",
+    "team_id": "T10",
+    "active_agent_id": "agent-task1-t10-general",
+    "asset_agent_ids": [
+      "agent-task1-t10-assets-a",
+      "agent-task1-t10-assets-b"
+    ],
+    "user_id": "user-task1-t10-eval"
+  },
+  "project_streams": [
+    {
+      "project_id": "t10-atlas-parent",
+      "repo_slug": "forge/atlas-parent",
+      "purpose": "Maven 多模块生命周期、依赖与插件配置"
+    },
+    {
+      "project_id": "t10-pyartifact",
+      "repo_slug": "forge/pyartifact",
+      "purpose": "Python wheel/sdist 构建与动态版本元数据"
+    },
+    {
+      "project_id": "t10-release-orchestrator",
+      "repo_slug": "forge/release-orchestrator",
+      "purpose": "只规划 dry-run、制品晋级、质量门和回滚的 release workflow"
+    },
+    {
+      "project_id": "t10-ci-sheriff",
+      "repo_slug": "forge/ci-sheriff",
+      "purpose": "依据冻结日志分析 CI 构建失败而不触发真实作业"
+    },
+    {
+      "project_id": "t10-runtime-kit",
+      "repo_slug": "forge/runtime-kit",
+      "purpose": "区分 Python 环境搭建与包构建问题"
+    },
+    {
+      "project_id": "t10-plugin-hub",
+      "repo_slug": "forge/plugin-hub",
+      "purpose": "Maven plugin execution、phase 与继承关系"
+    }
+  ],
+  "provider_visible_rules": {
+    "language": "zh",
+    "never_name": [
+      "TDAI",
+      "Memory L0",
+      "Memory L1",
+      "Memory L2",
+      "Memory L3",
+      "skill_search",
+      "skill_view",
+      "skill_view_by_id",
+      "skill_files_read",
+      "knowledge_tools_list",
+      "knowledge_tools_call",
+      "knowledge_id",
+      "Gold",
+      "private proposal",
+      "T10-L0-",
+      "T10-L1-",
+      "T10-L2-",
+      "T10-SKILL-",
+      "wiki-t10",
+      "cg-t10"
+    ],
+    "conversation_expectation": "自然工程对话，包含背景、证据、一次方向调整、已完成工作、唯一剩余信息缺口和最终请求；不得真正执行构建或发布，也不得替用户完成最终工程任务。",
+    "pair_rule": "Positive 与 Negative 的 identity、snapshot、shared messages、workspace 和 query 完全一致，只追加一条不同 delta；Positive 保留唯一冻结缺口，Negative 只补齐该事实。"
+  },
+  "asset_plan": {
+    "memory": {
+      "l0_count": 10,
+      "l1_count": 14,
+      "l2_count": 4,
+      "l3_count": 1,
+      "l0_ids": [
+        "T10-L0-01",
+        "T10-L0-02",
+        "T10-L0-03",
+        "T10-L0-04",
+        "T10-L0-05",
+        "T10-L0-06",
+        "T10-L0-07",
+        "T10-L0-08",
+        "T10-L0-09",
+        "T10-L0-10"
+      ],
+      "l1_ids": [
+        "T10-L1-01",
+        "T10-L1-02",
+        "T10-L1-03",
+        "T10-L1-04",
+        "T10-L1-05",
+        "T10-L1-06",
+        "T10-L1-07",
+        "T10-L1-08",
+        "T10-L1-09",
+        "T10-L1-10",
+        "T10-L1-11",
+        "T10-L1-12",
+        "T10-L1-13",
+        "T10-L1-14"
+      ],
+      "l2_ids": [
+        "T10-L2-01",
+        "T10-L2-02",
+        "T10-L2-03",
+        "T10-L2-04"
+      ],
+      "l3_id": "T10-L3-01",
+      "l2_paths": [
+        "/build/maven/reactor-runbook",
+        "/build/python/artifact-policy",
+        "/build/release/dry-run-checklist",
+        "/build/ci/failure-triage"
+      ],
+      "world_facts": [
+        "T10-L0-01 是 atlas-parent 的完整 Maven 构建评审：接受先对目标模块执行 verify 再做聚合 install 的计划，且记录两个被否决的跳阶段方案；搜索定位后需读取完整会话。",
+        "T10-L1-02 记录 pyartifact 的可复现 wheel 决策：使用已锁定环境、隔离构建输出目录、先构建再检查制品元数据；不等同于重新搭建环境。",
+        "T10-L1-05 是 2026-08-08 的 decision：发布候选阶段只生成并核对候选制品与 dry-run 报告，不推送、不打生产标签。",
+        "T10-L0-06 是 CI 失败复盘完整会话：否决重建环境和升级依赖，最终定位为插件 execution 未绑定到预期 phase；需要完整排除链。",
+        "T10-L2-03 位于 /build/release/dry-run-checklist，正文给出候选制品、校验和、变更摘要和回滚说明四项证据包；摘要不得泄露具体四项。",
+        "T10-L1-09 记录诊断边界：解释器或锁文件不可用属于环境搭建，环境可用但 wheel 元数据或构建后端失败属于包构建。",
+        "T10-L3-01 只包含稳定原则：冻结输入、构建与发布分离、先 dry-run、不得在数据建设中运行真实发布。它不包含任何 case 的具体答案。"
+      ]
+    },
+    "skills": {
+      "pool_count": 14,
+      "bound_skill_ids": [
+        "T10-SKILL-MAVEN-LIFECYCLE",
+        "T10-SKILL-UV-PACKAGE-MANAGER",
+        "T10-SKILL-PYTHON-PACKAGING",
+        "T10-SKILL-PYTHON-TESTING-PATTERNS",
+        "T10-SKILL-DEPLOYMENT-PIPELINE",
+        "T10-SKILL-GIT-WORKFLOWS"
+      ],
+      "team_searchable_skill_ids": [
+        "T10-SKILL-MAVEN-DEPENDENCIES",
+        "T10-SKILL-MAVEN-PLUGINS",
+        "T10-SKILL-GITHUB-ACTIONS",
+        "T10-SKILL-ANALYZE-CI",
+        "T10-SKILL-TEMPORAL-PYTHON-TESTING",
+        "T10-SKILL-TESTING-PYTHON",
+        "T10-SKILL-PYTHON-PROJECT-STRUCTURE",
+        "T10-SKILL-GITLAB-CI"
+      ],
+      "adaptation_policy": "只读取冻结原文；保留 Skill 名称、主体步骤和资源。仅将 description、use_when、do_not_use_when 适配为中性路由边界，不发明流程，不执行其中命令。",
+      "routing_boundaries": [
+        "Maven 默认生命周期、阶段顺序与常用构建目标的可复用流程。 Use when: 需要判断 clean、compile、test、package、verify、install 等阶段如何组合或定位生命周期问题。 Do not use when: 缺口是依赖仲裁、插件专属参数、CI 日志根因或 Python 构建。",
+        "Maven 依赖声明、传递关系、冲突仲裁、dependencyManagement 与仓库配置的处理流程。 Use when: 需要分析依赖树、版本冲突、作用域、BOM 或父子 POM 的依赖版本治理。 Do not use when: 只需选择生命周期阶段、配置某个构建插件，或处理 Python 包依赖。",
+        "Maven 构建插件、goal、execution、phase 绑定与 pluginManagement 的配置指南。 Use when: 需要新增或修正插件 execution、阶段绑定、插件参数或父子 POM 继承。 Do not use when: 问题只是依赖版本仲裁、生命周期阶段选择或 CI 平台日志分析。",
+        "依据 CI 作业证据区分环境、构建、测试与基础设施失败的分析流程。 Use when: 已有 CI 作业或拉取请求链接，需要归类失败并找出证据支持的根因。 Do not use when: 失败原因和唯一修复点已在当前上下文明确，或任务只是编写构建配置。",
+        "为 Temporal Python 工作流与 Activity 设计单元、时间跳跃、重放和集成测试。 Use when: 任务明确涉及 Temporal Python SDK 的工作流测试、重放兼容性或测试环境。 Do not use when: 任务是一般 Python 包构建、Maven 构建或非 Temporal 的普通 pytest。",
+        "为 Python 项目配置 pytest、测试组织、fixtures、覆盖率与常见测试命令。 Use when: 需要新增或修复通用 Python 测试、pytest 配置或覆盖率工作流。 Do not use when: 当前缺口是打包元数据、wheel/sdist 构建、虚拟环境搭建或发布流程。",
+        "使用 uv 创建 Python 环境、同步依赖、管理锁文件和执行项目命令的流程。 Use when: 缺少可复现 Python 环境、依赖同步或 uv 锁文件维护步骤。 Do not use when: 环境和依赖已经就绪，当前缺口是 wheel/sdist 元数据、发布编排或测试失败根因。",
+        "设计 Python 包布局、pyproject 元数据、wheel/sdist 构建与发布准备的完整打包指南。 Use when: 需要建立或修正 Python 包构建、元数据、构建后端、制品检查或发布前准备。 Do not use when: 任务只是在现有项目中同步依赖、创建虚拟环境，或只需编写普通测试。",
+        "为 Python 应用或库规划 src 布局、模块边界、配置和测试目录结构。 Use when: 需要重组 Python 项目、确定模块职责或建立可维护的目录结构。 Do not use when: 目录结构已固定，当前只缺 wheel/sdist 构建、环境同步或发布工作流。",
+        "使用 pytest、fixtures、mock、参数化和测试分层构建 Python 测试套件。 Use when: 需要设计 Python 测试策略、隔离外部依赖或提高测试可维护性。 Do not use when: 当前只需打包、生成制品、配置 Maven 或准备发布而不改测试。",
+        "为 GitHub Actions 编写测试、构建、制品、矩阵和发布准备工作流模板。 Use when: 任务明确需要实现或修正 GitHub Actions 的构建与制品流水线。 Do not use when: 任务是分析既有 CI 失败、使用 GitLab CI，或与平台无关的发布架构。",
+        "设计包含质量门、制品晋级、审批、渐进式交付和回滚的多阶段发布流水线。 Use when: 需要规划跨环境发布、质量门、审批、制品晋级或回滚策略，但不执行真实发布。 Do not use when: 只需一个 Maven goal、Python 环境搭建或特定 CI 语法片段。",
+        "为 GitLab CI 配置阶段、缓存、制品、Runner 与部署准备的自动化模式。 Use when: 任务明确使用 GitLab CI/CD 并需要流水线实现或优化。 Do not use when: 任务使用 GitHub Actions、只需分析失败日志，或仅处理本地构建。",
+        "处理复杂 Git 分支、rebase、cherry-pick、bisect 与历史恢复的工作流。 Use when: 需要进行高级 Git 历史操作、分支整理或恢复丢失提交。 Do not use when: 任务只是构建、依赖、插件、CI 分析或发布计划，没有 Git 历史缺口。"
+      ]
+    },
+    "knowledge": {
+      "resources": [
+        {
+          "asset_id": "cg-t10maven01",
+          "knowledge_id": "cg-t10maven01",
+          "type": "code_graph",
+          "name": "Atlas Maven Symbol Graph",
+          "summary": "atlas-parent 当前冻结提交的只读 POM 与插件 execution 关系图。",
+          "repo_match": "forge/atlas-parent",
+          "tool_name": "search_symbols",
+          "required_param": "query",
+          "private_fact": "build-support/pom.xml 中 attachSources execution 绑定 verify phase。"
+        },
+        {
+          "asset_id": "wiki-t10release01",
+          "knowledge_id": "wiki-t10release01",
+          "type": "wiki",
+          "name": "Release Candidate Operations",
+          "summary": "release-orchestrator 的候选制品和审批门只读说明。",
+          "repo_match": "forge/release-orchestrator",
+          "tool_name": "search_pages",
+          "required_param": "query",
+          "private_fact": "当前候选证据包名为 rc-evidence-v3，批准门为 two-person-review。"
+        },
+        {
+          "asset_id": "cg-t10pybuild01",
+          "knowledge_id": "cg-t10pybuild01",
+          "type": "code_graph",
+          "name": "PyArtifact Build Graph",
+          "summary": "pyartifact 当前冻结提交的只读构建元数据符号图。",
+          "repo_match": "forge/pyartifact",
+          "tool_name": "search_symbols",
+          "required_param": "query",
+          "private_fact": "动态版本解析入口为 resolveBuildVersion，路径 src/pyartifact/build_meta.py。"
+        }
+      ]
+    }
+  },
+  "pair_specs": [
+    {
+      "draft_pair_id": "T10-DRAFT-MEM-001",
+      "family": "memory",
+      "batch": "trial/memory/memory-trial-01",
+      "target_asset_ids": [
+        "T10-L0-01"
+      ],
+      "allowed_sequence_candidates": [
+        [
+          "tdai_conversation_search",
+          "tdai_conversation_query"
+        ]
+      ],
+      "private_gap": "需要上一轮多模块 Maven 构建评审的完整阶段取舍；搜索只能定位会话，完整会话才包含被否决方案。",
+      "stop_after": "完整目标会话返回后停止。",
+      "visible_distractors": [
+        "T10-L0-02",
+        "T10-L1-03",
+        "T10-SKILL-MAVEN-LIFECYCLE"
+      ]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-MEM-002",
+      "family": "memory",
+      "batch": "expansion/memory/memory-batch-02",
+      "target_asset_ids": [
+        "T10-L1-02"
+      ],
+      "allowed_sequence_candidates": [
+        [
+          "tdai_memory_search"
+        ]
+      ],
+      "private_gap": "当前上下文缺少团队已接受的 Python wheel 可复现构建决策，需检索蒸馏决策而非重新搭环境。",
+      "stop_after": "语义检索返回目标决策后停止。",
+      "visible_distractors": [
+        "T10-L1-01",
+        "T10-L1-04",
+        "T10-SKILL-UV-PACKAGE-MANAGER"
+      ]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-MEM-003",
+      "family": "memory",
+      "batch": "expansion/memory/memory-batch-02",
+      "target_asset_ids": [
+        "T10-L1-05"
+      ],
+      "allowed_sequence_candidates": [
+        [
+          "tdai_atomic_query"
+        ]
+      ],
+      "private_gap": "用户明确要求 2026-08-01 之后最新的 decision 类型发布候选规则，必须使用结构化时间与类型过滤。",
+      "stop_after": "结构化查询返回目标决策后停止。",
+      "visible_distractors": [
+        "T10-L1-06",
+        "T10-L1-07",
+        "T10-SKILL-DEPLOYMENT-PIPELINE"
+      ]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-MEM-004",
+      "family": "memory",
+      "batch": "expansion/memory/memory-batch-02",
+      "target_asset_ids": [
+        "T10-L0-06"
+      ],
+      "allowed_sequence_candidates": [
+        [
+          "tdai_conversation_search",
+          "tdai_conversation_query"
+        ]
+      ],
+      "private_gap": "需要此前 CI 故障复盘的完整排除链，包含被否决的环境重建和依赖升级方案。",
+      "stop_after": "定位并读取完整目标会话后停止。",
+      "visible_distractors": [
+        "T10-L0-05",
+        "T10-L1-08",
+        "T10-SKILL-ANALYZE-CI"
+      ]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-MEM-005",
+      "family": "memory",
+      "batch": "expansion/memory/memory-batch-02",
+      "target_asset_ids": [
+        "T10-L2-03"
+      ],
+      "allowed_sequence_candidates": [
+        [
+          "tdai_read_scene"
+        ]
+      ],
+      "private_gap": "已知场景路径但注入摘要省略了发布 dry-run 证据包的精确清单；只需读取该场景，不执行发布。",
+      "stop_after": "读取已知场景路径后停止。",
+      "visible_distractors": [
+        "T10-L2-01",
+        "T10-L2-04",
+        "T10-SKILL-DEPLOYMENT-PIPELINE"
+      ]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-MEM-006",
+      "family": "memory",
+      "batch": "expansion/memory/memory-batch-02",
+      "target_asset_ids": [
+        "T10-L1-09"
+      ],
+      "allowed_sequence_candidates": [
+        [
+          "tdai_memory_search"
+        ]
+      ],
+      "private_gap": "缺少团队关于区分环境搭建失败与包构建失败的既有诊断边界。",
+      "stop_after": "语义检索返回目标记忆后停止。",
+      "visible_distractors": [
+        "T10-L1-10",
+        "T10-L3-01",
+        "T10-SKILL-UV-PACKAGE-MANAGER"
+      ]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-SKILL-001",
+      "family": "skill",
+      "batch": "trial/skill/skill-trial-01",
+      "target_asset_ids": [
+        "T10-SKILL-MAVEN-LIFECYCLE"
+      ],
+      "allowed_sequence_candidates": [
+        [
+          "skill_view"
+        ]
+      ],
+      "private_gap": "工作区已知但缺少 Maven 生命周期与阶段选择的可复用流程；目标 Skill 已列出。",
+      "stop_after": "打开列出的目标 Skill 后停止。",
+      "visible_distractors": [
+        "T10-SKILL-MAVEN-DEPENDENCIES",
+        "T10-SKILL-MAVEN-PLUGINS",
+        "T10-SKILL-ANALYZE-CI"
+      ]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-SKILL-002",
+      "family": "skill",
+      "batch": "expansion/skill/skill-batch-02",
+      "target_asset_ids": [
+        "T10-SKILL-MAVEN-DEPENDENCIES"
+      ],
+      "allowed_sequence_candidates": [
+        [
+          "skill_search",
+          "skill_view_by_id"
+        ]
+      ],
+      "private_gap": "缺口是 Maven 依赖仲裁与 dependencyManagement 流程；目标未列出但同 Team 可搜索。",
+      "stop_after": "搜索并按返回 id 打开目标 Skill 后停止。",
+      "visible_distractors": [
+        "T10-SKILL-MAVEN-LIFECYCLE",
+        "T10-SKILL-MAVEN-PLUGINS",
+        "T10-SKILL-UV-PACKAGE-MANAGER"
+      ]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-SKILL-003",
+      "family": "skill",
+      "batch": "expansion/skill/skill-batch-02",
+      "target_asset_ids": [
+        "T10-SKILL-MAVEN-PLUGINS"
+      ],
+      "allowed_sequence_candidates": [
+        [
+          "skill_search",
+          "skill_view_by_id"
+        ]
+      ],
+      "private_gap": "依赖与生命周期都已明确，唯一缺口是插件 execution 与 phase 绑定流程。",
+      "stop_after": "搜索并按返回 id 打开目标 Skill 后停止。",
+      "visible_distractors": [
+        "T10-SKILL-MAVEN-LIFECYCLE",
+        "T10-SKILL-MAVEN-DEPENDENCIES",
+        "T10-SKILL-ANALYZE-CI"
+      ]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-SKILL-004",
+      "family": "skill",
+      "batch": "expansion/skill/skill-batch-02",
+      "target_asset_ids": [
+        "T10-SKILL-DEPLOYMENT-PIPELINE"
+      ],
+      "allowed_sequence_candidates": [
+        [
+          "skill_view"
+        ]
+      ],
+      "private_gap": "需要设计不实际执行的多阶段发布、质量门和回滚流程；目标 Skill 已列出。",
+      "stop_after": "打开列出的目标 Skill 后停止。",
+      "visible_distractors": [
+        "T10-SKILL-GITHUB-ACTIONS",
+        "T10-SKILL-ANALYZE-CI",
+        "T10-SKILL-GIT-WORKFLOWS"
+      ]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-SKILL-005",
+      "family": "skill",
+      "batch": "expansion/skill/skill-batch-02",
+      "target_asset_ids": [
+        "T10-SKILL-GITHUB-ACTIONS"
+      ],
+      "allowed_sequence_candidates": [
+        [
+          "skill_search",
+          "skill_view_by_id"
+        ]
+      ],
+      "private_gap": "需要实现 GitHub Actions 的构建与制品工作流；现有 CI 分析结论已给出，目标 Skill 未列出。",
+      "stop_after": "搜索并按返回 id 打开目标 Skill 后停止。",
+      "visible_distractors": [
+        "T10-SKILL-ANALYZE-CI",
+        "T10-SKILL-GITLAB-CI",
+        "T10-SKILL-DEPLOYMENT-PIPELINE"
+      ]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-SKILL-006",
+      "family": "skill",
+      "batch": "expansion/skill/skill-batch-02",
+      "target_asset_ids": [
+        "T10-SKILL-PYTHON-PACKAGING"
+      ],
+      "allowed_sequence_candidates": [
+        [
+          "skill_view",
+          "skill_files_read"
+        ]
+      ],
+      "resource_path": "references/advanced-patterns.md",
+      "private_gap": "需要 Python 包发布前的高级制品验证细节；列出的概览不足，必须读取 references/advanced-patterns.md。",
+      "stop_after": "打开目标 Skill 并读取指定资源后停止。",
+      "visible_distractors": [
+        "T10-SKILL-UV-PACKAGE-MANAGER",
+        "T10-SKILL-PYTHON-PROJECT-STRUCTURE",
+        "T10-SKILL-TESTING-PYTHON"
+      ]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-KNOW-001",
+      "family": "knowledge",
+      "batch": "trial/knowledge/knowledge-trial-01",
+      "target_asset_ids": [
+        "cg-t10maven01"
+      ],
+      "allowed_sequence_candidates": [
+        [
+          "knowledge_tools_list",
+          "knowledge_tools_call"
+        ]
+      ],
+      "private_gap": "当前 POM 摘要没有构建支持模块中 source attachment execution 的精确 phase 绑定，需要查询匹配仓库的只读符号图。",
+      "stop_after": "发现资源工具并返回精确绑定后停止。",
+      "visible_distractors": [
+        "wiki-t10release01",
+        "cg-t10pybuild01",
+        "T10-SKILL-MAVEN-PLUGINS"
+      ]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-KNOW-002",
+      "family": "knowledge",
+      "batch": "expansion/knowledge/knowledge-batch-02",
+      "target_asset_ids": [
+        "wiki-t10release01"
+      ],
+      "allowed_sequence_candidates": [
+        [
+          "knowledge_tools_list",
+          "knowledge_tools_call"
+        ]
+      ],
+      "private_gap": "缺少当前内部 release candidate 证据包名称和批准门，属于匹配仓库的只读发布 wiki。",
+      "stop_after": "发现资源工具并返回当前证据包与门槛后停止。",
+      "visible_distractors": [
+        "cg-t10maven01",
+        "cg-t10pybuild01",
+        "T10-SKILL-DEPLOYMENT-PIPELINE"
+      ]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-KNOW-003",
+      "family": "knowledge",
+      "batch": "expansion/knowledge/knowledge-batch-02",
+      "target_asset_ids": [
+        "cg-t10pybuild01"
+      ],
+      "allowed_sequence_candidates": [
+        [
+          "knowledge_tools_list",
+          "knowledge_tools_call"
+        ]
+      ],
+      "private_gap": "当前分支的动态版本解析符号和路径不在工作区摘录中，需查询匹配仓库的只读符号图。",
+      "stop_after": "发现资源工具并返回符号与路径后停止。",
+      "visible_distractors": [
+        "wiki-t10release01",
+        "cg-t10maven01",
+        "T10-SKILL-PYTHON-PACKAGING"
+      ]
+    }
+  ],
+  "natural_negative_specs": [
+    "给出完整 pom.xml 片段和目标版本，只修改一个 property 并保持格式。",
+    "给出 pyproject.toml 片段和明确版本，只更新 project.version。",
+    "当前上下文完整列出 Maven phase 顺序，要求用两句话解释 package 与 verify 的差别。",
+    "修复可见 GitHub Actions YAML 中一个缩进错误，期望结构已给出。",
+    "为一个完全可见的 Python 制品名解析函数补单元测试，输入输出均已提供。",
+    "按当前上下文给出的唯一 uv 命令更新 README，不需要建立环境。",
+    "把已给出的变更条目整理成发布说明 Markdown，不生成或推送真实 release。",
+    "修复可见 Maven plugin execution 的 XML 闭合标签，目标 phase 已明确。",
+    "在已给出的依赖声明中把 scope 改为 test，原因和目标均已明确。",
+    "实现一个纯函数从给定 CI 日志行提取模块名，正则和样例均已提供。"
+  ],
+  "batch_plan": [
+    {
+      "batch": "trial/memory/memory-trial-01",
+      "family": "memory",
+      "count": 1
+    },
+    {
+      "batch": "trial/skill/skill-trial-01",
+      "family": "skill",
+      "count": 1
+    },
+    {
+      "batch": "trial/knowledge/knowledge-trial-01",
+      "family": "knowledge",
+      "count": 1
+    },
+    {
+      "batch": "expansion/memory/memory-batch-02",
+      "family": "memory",
+      "count": 5
+    },
+    {
+      "batch": "expansion/skill/skill-batch-02",
+      "family": "skill",
+      "count": 5
+    },
+    {
+      "batch": "expansion/knowledge/knowledge-batch-02",
+      "family": "knowledge",
+      "count": 2
+    },
+    {
+      "batch": "natural-negative/natural-negative-batch-01",
+      "family": "natural-negative",
+      "count": 10
+    }
+  ],
+  "sol_only": {
+    "final_gold_authority": true,
+    "visibility_authority": true,
+    "license_authority": true,
+    "staging_authority": true,
+    "required_final_counts": {
+      "memory_positive": 6,
+      "skill_positive": 6,
+      "knowledge_positive": 3,
+      "paired_negative": 15,
+      "natural_negative": 10,
+      "total_cases": 40
+    }
+  }
+}

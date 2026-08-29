@@ -1,0 +1,56 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t10-knowledge-trial-01",
+  "stage": "DS05",
+  "team_id": "T10",
+  "family": "knowledge",
+  "external_source_ids": [],
+  "pairs": [
+    {
+      "draft_pair_id": "T10-DRAFT-KNOW-001",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "今天继续核对 atlas-parent 的 Maven plugin execution 关系，这一轮只做只读证据整理，不修改 POM，也不运行构建或发布。"},
+        {"role": "assistant", "content": "范围已确认。当前工作区是 forge/atlas-parent，已有的 POM 摘录和插件名称可以用于定位问题，但本轮不把依赖仲裁或生命周期方案混入。"},
+        {"role": "user", "content": "现有摘录能看到 build-support/pom.xml 里有 attachSources execution，却没有显示它绑定在哪个 phase；这正是 CI 复盘里需要核对的一点。"},
+        {"role": "assistant", "content": "我原本想直接改 POM 试跑一次，后来发现那会把只读仓库事实和本地实验混在一起，也无法确认当前冻结提交中的真实绑定。"},
+        {"role": "user", "content": "方向改为先查匹配仓库的内部只读工程资料，只确认 execution 与 phase 的关系；不执行插件、不重建环境，也不改配置。"},
+        {"role": "assistant", "content": "已完成的是确认仓库、文件路径、execution 名称和只读范围；依赖版本、构建阶段选择与发布流程都已排除。"},
+        {"role": "user", "content": "现在只剩一个窄事实：需要把 attachSources 的准确 phase 补进复盘摘要，且只能引用匹配仓库的证据。"},
+        {"role": "assistant", "content": "当前上下文仍没有这个 phase 的值。先保留唯一信息缺口，找到证据后只返回绑定关系，不扩展成配置建议。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请先确认 build-support/pom.xml 中 attachSources execution 绑定的准确 phase；只返回证据中的 phase，不要修改 POM、运行构建或扩展到依赖方案。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "补充摘录仍只显示 execution 名称和文件路径，没有写出绑定 phase；请保留这个唯一缺口，先查匹配仓库的只读工程证据，不要按 Maven 惯例推断。"},
+        "private_proposal": {
+          "unique_information_gap": "匹配 forge/atlas-parent 的只读工程资源中，build-support/pom.xml 的 attachSources execution 所绑定的准确 phase 尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": ["cg-t10maven01"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "先发现匹配资源提供的检索能力，再查询 attachSources execution 的 phase，返回 verify 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接摘录已经补上唯一缺口：build-support/pom.xml 中的 attachSources execution 绑定在 verify phase。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已给出匹配仓库证据中的准确绑定事实 verify phase，并保留文件、execution、只读范围和 query 约束，无需再查询内部资源。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["wiki-t10release01", "cg-t10pybuild01", "T10-SKILL-MAVEN-PLUGINS"],
+      "controlled_delta_note": "Positive 只保留 attachSources execution 的 phase 缺口；Negative 只补入冻结只读证据中的 verify phase，保持仓库、路径、execution、只读边界和最终 query 完全不变。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "确认该 trial 只包含 T10-DRAFT-KNOW-001，Positive 仅使用 Sol 冻结的匹配代码图资源和 knowledge_tools_list → knowledge_tools_call 链路。",
+        "确认 Positive 与 Negative 共享全部八条上下文消息和完全相同的 query，仅在 changed_message_index: 8 追加受控 delta。",
+        "确认 Negative 只补齐 build-support/pom.xml 中 attachSources 绑定 verify phase 这一条冻结私有事实，没有扩展到 POM 修改、构建执行、依赖或发布建议。",
+        "确认 provider-visible 文本未出现资源标识、知识工具名、Skill 名、私有字段、Gold 或评测语言；目标、route、stop_after 仅在 author-only 字段中。",
+        "确认没有修改任何其他 batch、source、staging、registry、provider 或 snapshot 路径。"
+      ]
+    }
+  ]
+}

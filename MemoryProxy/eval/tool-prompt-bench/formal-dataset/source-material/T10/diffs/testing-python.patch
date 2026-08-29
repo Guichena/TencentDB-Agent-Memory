@@ -1,0 +1,10 @@
+--- a/raw/benchflow-skillsbench/testing-python/SKILL.md
++++ b/adapted/testing-python/SKILL.md
+@@ -1,4 +1,6 @@
+ ---
+ name: testing-python
+-description: Write and evaluate effective Python tests using pytest. Use when writing tests, reviewing test code, debugging test failures, or improving test coverage. Covers test design, fixtures, parameterization, mocking, and async testing.
++description: "用 pytest 设计和评审原子化 Python 测试，覆盖 fixtures、参数化、mock、异步测试和覆盖率。"
++use_when: "需要编写、评审或调试通用 Python 测试，或改进测试隔离、覆盖率和可读性。"
++do_not_use_when: "需要 Temporal 专用测试策略、Python 包构建发布，或仅需安排项目模块目录。"
+ ---

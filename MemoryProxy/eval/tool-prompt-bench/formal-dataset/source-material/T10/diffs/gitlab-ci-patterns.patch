@@ -1,0 +1,10 @@
+--- a/raw/wshobson-agents/gitlab-ci-patterns/SKILL.md
++++ b/adapted/gitlab-ci-patterns/SKILL.md
+@@ -1,4 +1,6 @@
+ ---
+ name: gitlab-ci-patterns
+-description: Build GitLab CI/CD pipelines with multi-stage workflows, caching, and distributed runners for scalable automation. Use when implementing GitLab CI/CD, optimizing pipeline performance, or setting up automated testing and deployment.
++description: "为 GitLab CI 组织阶段、缓存、制品、Runner、部署和安全检查模式。"
++use_when: "任务明确要求实现或优化 GitLab CI/CD 流程、Runner、缓存、制品或 GitOps 部署。"
++do_not_use_when: "任务是 GitHub Actions、平台无关的部署架构，或 Maven/Python 构建流程本身。"
+ ---

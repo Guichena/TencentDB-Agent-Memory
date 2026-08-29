@@ -1,0 +1,96 @@
+{
+  "schema_version": "task1.formal_dataset_validation.v2",
+  "valid": true,
+  "errors": [],
+  "splits": [
+    "hidden_test"
+  ],
+  "case_count": 40,
+  "team_case_counts": {
+    "T01": 0,
+    "T02": 0,
+    "T03": 0,
+    "T04": 0,
+    "T05": 0,
+    "T06": 0,
+    "T07": 0,
+    "T08": 0,
+    "T09": 0,
+    "T10": 40
+  },
+  "pair_count": 15,
+  "pairs_by_team": {
+    "T01": 0,
+    "T02": 0,
+    "T03": 0,
+    "T04": 0,
+    "T05": 0,
+    "T06": 0,
+    "T07": 0,
+    "T08": 0,
+    "T09": 0,
+    "T10": 15
+  },
+  "pair_integrity_error_count": 0,
+  "pair_integrity_errors": [],
+  "provider_leakage_count": 0,
+  "invalid_sequence_count": 0,
+  "missing_source_ref_count": 0,
+  "provenance": {
+    "synthetic": {
+      "count": 15,
+      "sourceIds": [
+        "source-t10-knowledge-batch-02",
+        "source-t10-knowledge-cg-t10maven01",
+        "source-t10-knowledge-cg-t10pybuild01",
+        "source-t10-knowledge-trial-01",
+        "source-t10-knowledge-wiki-t10release01",
+        "source-t10-luna-l0",
+        "source-t10-luna-l1",
+        "source-t10-luna-l2",
+        "source-t10-luna-l3",
+        "source-t10-memory-batch-02",
+        "source-t10-memory-trial-01",
+        "source-t10-natural-negative-batch-01",
+        "source-t10-skill-batch-02",
+        "source-t10-skill-trial-01",
+        "source-t10-sol-input-pack"
+      ],
+      "batchIds": [
+        "build-05-T10-input-pack",
+        "t10-knowledge-batch-02",
+        "t10-knowledge-trial-01",
+        "t10-memory-batch-02",
+        "t10-memory-trial-01",
+        "t10-natural-negative-batch-01",
+        "t10-skill-batch-02",
+        "t10-skill-trial-01"
+      ]
+    },
+    "externalImport": {
+      "count": 15,
+      "sourceIds": [
+        "source-t10-skill-analyze-ci",
+        "source-t10-skill-deployment-pipeline",
+        "source-t10-skill-git-workflows",
+        "source-t10-skill-github-actions",
+        "source-t10-skill-gitlab-ci",
+        "source-t10-skill-maven-dependencies",
+        "source-t10-skill-maven-lifecycle",
+        "source-t10-skill-maven-plugins",
+        "source-t10-skill-python-packaging",
+        "source-t10-skill-python-project-structure",
+        "source-t10-skill-python-testing-patterns",
+        "source-t10-skill-temporal-python-testing",
+        "source-t10-skill-testing-python",
+        "source-t10-skill-uv-package-manager",
+        "source-task1-registry-ds00"
+      ]
+    }
+  },
+  "provider_sha256": "4fadf3f151d5bba426fa92f2df2220f76a9de75a89a0e13a075d0ed66f61f2e5",
+  "snapshot_sha256": {
+    "dev": "a0a74fd13599b96304dca7fb03b8ace5e75627a1f659bbd542134dcd59a15e9d",
+    "hidden_test": "4e64b07c5468b3f76d71578837b524a57d9c75dc315a98c2fdd01339e134ed90"
+  }
+}

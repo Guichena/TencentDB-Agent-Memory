@@ -1,0 +1,10 @@
+--- a/raw/benchflow-skillsbench/temporal-python-testing/SKILL.md
++++ b/adapted/temporal-python-testing/SKILL.md
+@@ -1,4 +1,6 @@
+ ---
+ name: temporal-python-testing
+-description: Test Temporal workflows with pytest, time-skipping, and mocking strategies. Covers unit testing, integration testing, replay testing, and local development setup. Use when implementing Temporal workflow tests or debugging test failures.
++description: "使用 pytest、时间跳跃、活动模拟和 replay 测试 Temporal Python 工作流。"
++use_when: "需要为 Temporal 工作流或活动设计单元、集成、replay 测试，或设置其本地测试环境。"
++do_not_use_when: "任务不涉及 Temporal 工作流，且只是通用 Python 测试、项目结构或打包发布。"
+ ---
