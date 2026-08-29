@@ -39,32 +39,73 @@ export type SkillVisibility = "private" | "team";
 export type SkillProvenanceMode = "history_derived" | "imported_open_source" | "evidence_grounded_authored";
 export type KnowledgeVisibility = "fixed";
 
-export interface SourceEvidence {
+interface SourceEvidenceBase {
   sourceId: string;
+  provenanceKind: "synthetic" | "external_import";
+  /** How this evidence may be used in the reconstructed World; never inferred from a dataset field name. */
+  role: FormalSourceRole;
+  origin: FormalOrigin;
+  worldAsOf: string;
+  transform: FormalTransform;
+  transformVersion: string;
+  reviewStatus: "reviewed";
+  contentHash: string;
+}
+
+/** Provenance for content authored by a generation batch without an external source claim. */
+export interface SyntheticGenerationEvidence extends SourceEvidenceBase {
+  provenanceKind: "synthetic";
+  generatorModel: string;
+  reasoningEffort: string;
+  promptVersion: string;
+  batchId: string;
+  generatedAt: string;
+  contentRefs: string[];
+  dataset?: never;
+  datasetRevision?: never;
+  datasetArtifactSha256?: never;
+  sourceRepoUrl?: never;
+  sourceRepoCommit?: never;
+  sourceRepoLicense?: never;
+  sourceTaskId?: never;
+  trajectoryId?: never;
+  sourceTaskTime?: never;
+  trajectoryGeneratedAt?: never;
+  evidenceLocator?: never;
+  evidenceSha256?: never;
+  transformInputSha256?: never;
+  piiScan?: never;
+  reviewedBy?: never;
+}
+
+/** Provenance for material imported from a pinned repository or dataset artifact. */
+export interface ExternalImportEvidence extends SourceEvidenceBase {
+  provenanceKind: "external_import";
   dataset: string;
   datasetRevision: string;
   datasetArtifactSha256: string;
+  /** Repository, revision, license, path and hash remain mandatory for every external import. */
   sourceRepoUrl: string;
   sourceRepoCommit: string;
   sourceRepoLicense: string;
   sourceTaskId?: string;
   trajectoryId?: string;
-  /** How this evidence may be used in the reconstructed World; never inferred from a dataset field name. */
-  role: FormalSourceRole;
-  origin: FormalOrigin;
   sourceTaskTime: string;
   trajectoryGeneratedAt: string;
-  worldAsOf: string;
   evidenceLocator: string;
   evidenceSha256: string;
-  transform: FormalTransform;
-  transformVersion: string;
   transformInputSha256: string;
   piiScan: "passed";
-  reviewStatus: "reviewed";
   reviewedBy: string;
-  contentHash: string;
+  generatorModel?: never;
+  reasoningEffort?: never;
+  promptVersion?: never;
+  batchId?: never;
+  generatedAt?: never;
+  contentRefs?: never;
 }
+
+export type SourceEvidence = SyntheticGenerationEvidence | ExternalImportEvidence;
 
 export interface RuntimePolicy {
   allowLlmWrite: false;
@@ -393,6 +434,17 @@ const FORMAL_TRANSFORMS = new Set<FormalTransform>([
 const FORMAL_SOURCE_ROLES = new Set<FormalSourceRole>([
   "history", "skill_source", "current_anchor", "repo_context", "evaluation_derivation",
 ]);
+const REASONING_EFFORTS = new Set([
+  "none", "minimal", "low", "medium", "high", "xhigh", "max", "ultra",
+]);
+const EXTERNAL_PROVENANCE_KEYS = [
+  "dataset", "datasetRevision", "datasetArtifactSha256", "sourceRepoUrl", "sourceRepoCommit",
+  "sourceRepoLicense", "sourceTaskId", "trajectoryId", "sourceTaskTime", "trajectoryGeneratedAt",
+  "evidenceLocator", "evidenceSha256", "transformInputSha256", "piiScan", "reviewedBy",
+] as const;
+const SYNTHETIC_PROVENANCE_KEYS = [
+  "generatorModel", "reasoningEffort", "promptVersion", "batchId", "generatedAt", "contentRefs",
+] as const;
 const TRANSFORMS_BY_SOURCE_ROLE: Readonly<Record<FormalSourceRole, ReadonlySet<FormalTransform>>> = {
   history: new Set([
     "redacted_replay",
@@ -441,6 +493,21 @@ function requireCommit(errors: string[], path: string, value: unknown): void {
 
 function requireTimestamp(errors: string[], path: string, value: unknown): void {
   if (typeof value !== "string" || !validTimestamp(value)) errors.push(`${path} must be an ISO timestamp with timezone`);
+}
+
+function requireDistinctTextRefs(errors: string[], path: string, value: unknown): void {
+  if (!Array.isArray(value) || value.length === 0) {
+    errors.push(`${path} must be a non-empty array`);
+    return;
+  }
+  value.forEach((ref, index) => requireText(errors, `${path}[${index}]`, ref));
+  if (new Set(value).size !== value.length) errors.push(`${path} must be distinct`);
+}
+
+function forbidOwnKeys(errors: string[], prefix: string, value: object, keys: readonly string[]): void {
+  for (const key of keys) {
+    if (Object.prototype.hasOwnProperty.call(value, key)) errors.push(`${prefix}.${key} is not allowed`);
+  }
 }
 
 function ids<T>(items: T[], getId: (item: T) => string): Set<string> {
@@ -518,18 +585,10 @@ function assetTeamId(asset: AssetBase, agentById: Map<string, BusinessAgent>): s
 function validateEvidence(errors: string[], source: SourceEvidence, worldAsOf: string): void {
   const prefix = `source ${source.sourceId}`;
   [
-    ["dataset", source.dataset], ["datasetRevision", source.datasetRevision],
-    ["sourceRepoUrl", source.sourceRepoUrl], ["sourceRepoLicense", source.sourceRepoLicense],
-    ["evidenceLocator", source.evidenceLocator], ["transform", source.transform],
-    ["transformVersion", source.transformVersion], ["reviewedBy", source.reviewedBy],
+    ["sourceId", source.sourceId], ["transform", source.transform],
+    ["transformVersion", source.transformVersion],
   ].forEach(([key, value]) => requireText(errors, `${prefix}.${key}`, value));
-  requireHash(errors, `${prefix}.datasetArtifactSha256`, source.datasetArtifactSha256);
-  requireCommit(errors, `${prefix}.sourceRepoCommit`, source.sourceRepoCommit);
-  requireTimestamp(errors, `${prefix}.sourceTaskTime`, source.sourceTaskTime);
-  requireTimestamp(errors, `${prefix}.trajectoryGeneratedAt`, source.trajectoryGeneratedAt);
   requireTimestamp(errors, `${prefix}.worldAsOf`, source.worldAsOf);
-  requireHash(errors, `${prefix}.evidenceSha256`, source.evidenceSha256);
-  requireHash(errors, `${prefix}.transformInputSha256`, source.transformInputSha256);
   requireHash(errors, `${prefix}.contentHash`, source.contentHash);
   if (!FORMAL_TRANSFORMS.has(source.transform)) errors.push(`${prefix}.transform is not a formal TDAI transform`);
   if (!FORMAL_SOURCE_ROLES.has(source.role)) errors.push(`${prefix}.role is not a formal source role`);
@@ -537,14 +596,42 @@ function validateEvidence(errors: string[], source: SourceEvidence, worldAsOf: s
     && !TRANSFORMS_BY_SOURCE_ROLE[source.role].has(source.transform)) {
     errors.push(`${prefix}.transform ${source.transform} is incompatible with role ${source.role}`);
   }
-  if (source.origin === "synthetic_agent_replay" && !source.trajectoryId) {
-    errors.push(`${prefix}.trajectoryId is required for synthetic_agent_replay`);
-  }
-  if (validTimestamp(source.sourceTaskTime) && validTimestamp(worldAsOf) && !strictlyBefore(source.sourceTaskTime, worldAsOf)) {
-    errors.push(`${prefix}.sourceTaskTime must be before worldAsOf`);
+  if (source.provenanceKind === "synthetic") {
+    [
+      ["generatorModel", source.generatorModel], ["reasoningEffort", source.reasoningEffort],
+      ["promptVersion", source.promptVersion], ["batchId", source.batchId],
+    ].forEach(([key, value]) => requireText(errors, `${prefix}.${key}`, value));
+    requireTimestamp(errors, `${prefix}.generatedAt`, source.generatedAt);
+    requireDistinctTextRefs(errors, `${prefix}.contentRefs`, source.contentRefs);
+    if (!REASONING_EFFORTS.has(source.reasoningEffort)) errors.push(`${prefix}.reasoningEffort is invalid`);
+    if (source.origin !== "synthetic_agent_replay" && source.origin !== "evidence_grounded_synthesis") {
+      errors.push(`${prefix}.origin must describe synthetic generation`);
+    }
+    forbidOwnKeys(errors, prefix, source, EXTERNAL_PROVENANCE_KEYS);
+  } else if (source.provenanceKind === "external_import") {
+    [
+      ["dataset", source.dataset], ["datasetRevision", source.datasetRevision],
+      ["sourceRepoUrl", source.sourceRepoUrl], ["sourceRepoLicense", source.sourceRepoLicense],
+      ["evidenceLocator", source.evidenceLocator], ["reviewedBy", source.reviewedBy],
+    ].forEach(([key, value]) => requireText(errors, `${prefix}.${key}`, value));
+    requireHash(errors, `${prefix}.datasetArtifactSha256`, source.datasetArtifactSha256);
+    requireCommit(errors, `${prefix}.sourceRepoCommit`, source.sourceRepoCommit);
+    requireTimestamp(errors, `${prefix}.sourceTaskTime`, source.sourceTaskTime);
+    requireTimestamp(errors, `${prefix}.trajectoryGeneratedAt`, source.trajectoryGeneratedAt);
+    requireHash(errors, `${prefix}.evidenceSha256`, source.evidenceSha256);
+    requireHash(errors, `${prefix}.transformInputSha256`, source.transformInputSha256);
+    if (source.origin === "synthetic_agent_replay" && !source.trajectoryId) {
+      errors.push(`${prefix}.trajectoryId is required for imported synthetic_agent_replay`);
+    }
+    if (validTimestamp(source.sourceTaskTime) && validTimestamp(worldAsOf) && !strictlyBefore(source.sourceTaskTime, worldAsOf)) {
+      errors.push(`${prefix}.sourceTaskTime must be before worldAsOf`);
+    }
+    if (source.piiScan !== "passed") errors.push(`${prefix}.piiScan must be passed`);
+    forbidOwnKeys(errors, prefix, source, SYNTHETIC_PROVENANCE_KEYS);
+  } else {
+    errors.push(`${prefix}.provenanceKind must be synthetic or external_import`);
   }
   if (source.worldAsOf !== worldAsOf) errors.push(`${prefix}.worldAsOf must equal world.worldAsOf`);
-  if (source.piiScan !== "passed") errors.push(`${prefix}.piiScan must be passed`);
   if (source.reviewStatus !== "reviewed") errors.push(`${prefix}.reviewStatus must be reviewed`);
 }
 
@@ -679,16 +766,21 @@ export function validateFormalWorldContract(contract: FormalWorldContract): Form
       messageIds.add(message.messageId);
     }
   }
-  const distinctHistorySourceTasks = (supportingSessionIds: string[]): Set<string> => {
-    const taskIds = new Set<string>();
+  const externalHistorySources = (supportingSessionIds: string[]): ExternalImportEvidence[] => {
+    const sources = new Map<string, ExternalImportEvidence>();
     for (const sessionId of supportingSessionIds) {
       const session = assets.l0Conversations.find((candidate) => candidate.sessionId === sessionId);
       if (!session) continue;
       for (const sourceId of session.sourceEvidenceIds) {
         const source = sourceById.get(sourceId);
-        if (source?.role === "history" && source.sourceTaskId) taskIds.add(source.sourceTaskId);
+        if (source?.role === "history" && source.provenanceKind === "external_import") sources.set(source.sourceId, source);
       }
     }
+    return [...sources.values()];
+  };
+  const distinctHistorySourceTasks = (supportingSessionIds: string[]): Set<string> => {
+    const taskIds = new Set<string>();
+    for (const source of externalHistorySources(supportingSessionIds)) if (source.sourceTaskId) taskIds.add(source.sourceTaskId);
     return taskIds;
   };
   for (const memory of assets.l1Memories) {
@@ -700,8 +792,9 @@ export function validateFormalWorldContract(contract: FormalWorldContract): Form
     }
     if (memory.supportingMessageIds.length === 0) errors.push(`L1 memory ${memory.assetId} lacks supporting messages`);
     for (const messageId of memory.supportingMessageIds) if (!messageIds.has(messageId)) errors.push(`L1 memory ${memory.assetId} references unknown message ${messageId}`);
-    if (memory.codeEvidenceLocators.length === 0) errors.push(`L1 memory ${memory.assetId} lacks code evidence locator`);
-    if (memory.testEvidenceLocators.length === 0) errors.push(`L1 memory ${memory.assetId} lacks test evidence locator`);
+    const hasExternalEvidence = memory.sourceEvidenceIds.some((sourceId) => sourceById.get(sourceId)?.provenanceKind === "external_import");
+    if (hasExternalEvidence && memory.codeEvidenceLocators.length === 0) errors.push(`L1 memory ${memory.assetId} lacks code evidence locator for external evidence`);
+    if (hasExternalEvidence && memory.testEvidenceLocators.length === 0) errors.push(`L1 memory ${memory.assetId} lacks test evidence locator for external evidence`);
     memory.codeEvidenceLocators.forEach((locator, index) => requireText(errors, `L1 memory ${memory.assetId}.codeEvidenceLocators[${index}]`, locator));
     memory.testEvidenceLocators.forEach((locator, index) => requireText(errors, `L1 memory ${memory.assetId}.testEvidenceLocators[${index}]`, locator));
   }
@@ -716,7 +809,11 @@ export function validateFormalWorldContract(contract: FormalWorldContract): Form
     }
   }
   for (const scene of assets.l2Scenes) if (scene.supportingSessionIds.length < 2) errors.push(`L2 scene ${scene.assetId} needs at least two supporting sessions`);
-  for (const scene of assets.l2Scenes) if (distinctHistorySourceTasks(scene.supportingSessionIds).size < 2) errors.push(`L2 scene ${scene.assetId} needs two independent history source tasks`);
+  for (const scene of assets.l2Scenes) {
+    if (externalHistorySources(scene.supportingSessionIds).length > 0 && distinctHistorySourceTasks(scene.supportingSessionIds).size < 2) {
+      errors.push(`L2 scene ${scene.assetId} needs two independent external history source tasks`);
+    }
+  }
   for (const memory of assets.l1Memories) if (memory.status === "superseded" && !memory.supersededBy) errors.push(`superseded memory ${memory.assetId} lacks supersededBy`);
   for (const profile of assets.l3Profiles) {
     for (const sourceId of profile.sourceEvidenceIds) {
@@ -751,9 +848,14 @@ export function validateFormalWorldContract(contract: FormalWorldContract): Form
     if (skill.provenanceMode !== "history_derived" && skill.supportingSessionIds.length !== 0) errors.push(`skill ${skill.assetId} must not invent supporting sessions for ${skill.provenanceMode}`);
     if (new Set(skill.supportingSessionIds).size !== skill.supportingSessionIds.length) errors.push(`skill ${skill.assetId} repeats a supporting session`);
     for (const sessionId of skill.supportingSessionIds) if (!sessionIds.has(sessionId)) errors.push(`skill ${skill.assetId} references unknown session ${sessionId}`);
-    if (skill.provenanceMode === "history_derived" && distinctHistorySourceTasks(skill.supportingSessionIds).size < 2) errors.push(`skill ${skill.assetId} needs two independent history source tasks`);
-    if (skill.provenanceMode !== "imported_open_source" && skill.codeEvidenceLocators.length === 0) errors.push(`skill ${skill.assetId} lacks code evidence locator`);
-    if (skill.provenanceMode !== "imported_open_source" && skill.testEvidenceLocators.length === 0) errors.push(`skill ${skill.assetId} lacks test evidence locator`);
+    if (skill.provenanceMode === "history_derived"
+      && externalHistorySources(skill.supportingSessionIds).length > 0
+      && distinctHistorySourceTasks(skill.supportingSessionIds).size < 2) {
+      errors.push(`skill ${skill.assetId} needs two independent external history source tasks`);
+    }
+    const skillHasExternalEvidence = skill.sourceEvidenceIds.some((sourceId) => sourceById.get(sourceId)?.provenanceKind === "external_import");
+    if (skill.provenanceMode !== "imported_open_source" && skillHasExternalEvidence && skill.codeEvidenceLocators.length === 0) errors.push(`skill ${skill.assetId} lacks code evidence locator for external evidence`);
+    if (skill.provenanceMode !== "imported_open_source" && skillHasExternalEvidence && skill.testEvidenceLocators.length === 0) errors.push(`skill ${skill.assetId} lacks test evidence locator for external evidence`);
     skill.codeEvidenceLocators.forEach((locator, index) => requireText(errors, `skill ${skill.assetId}.codeEvidenceLocators[${index}]`, locator));
     skill.testEvidenceLocators.forEach((locator, index) => requireText(errors, `skill ${skill.assetId}.testEvidenceLocators[${index}]`, locator));
     if (skill.manifest.length === 0) errors.push(`skill ${skill.assetId} has an empty manifest`);

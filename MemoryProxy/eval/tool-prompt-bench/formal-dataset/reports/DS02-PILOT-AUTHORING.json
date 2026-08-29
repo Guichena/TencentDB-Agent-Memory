@@ -1,7 +1,7 @@
 {
   "schema_version": "task1.ds02_pilot_authoring.v1",
   "generated_at": "2026-08-29T18:10:00+08:00",
-  "contract_sha256": "da67389b9cebba62535b69ac6fe10807329b7c07237728ebfdf16b113926743b",
+  "contract_sha256": "8d90dbdc0146b2b4d5f25f5baae9f581d3c9eb8712f37a1d8a27270615ebb187",
   "fixture_sha256": "1aaf055129e473b8c64738bdbb74897b738e897d0c9b237ade640a558c33832f",
   "t01_l0_count": 12,
   "t01_skill_count": 2,

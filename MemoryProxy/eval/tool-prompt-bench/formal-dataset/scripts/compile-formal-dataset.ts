@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import {
+  compileFormalProvenanceSummary,
   compileFormalSplitInputs,
 } from "../../worlds/formal-compile.js";
 import {
@@ -35,6 +36,7 @@ async function main(): Promise<void> {
   const contract = JSON.parse(await readFile(resolve(contractPath), "utf8")) as FormalWorldContract;
   assertFormalWorldContract(contract);
   const compiled = compileFormalSplitInputs(contract, split);
+  const provenance = compileFormalProvenanceSummary(contract);
   const caseIds = new Set(compiled.map((item) => item.caseId));
   const annotations = contract.privateAnnotations
     .filter((annotation) => caseIds.has(annotation.caseId))
@@ -57,6 +59,7 @@ async function main(): Promise<void> {
     providerPath,
     privateGoldPath,
     snapshotInputPath,
+    provenance,
     providerSha256: canonicalSha256(compiled.map((item) => item.provider)),
     privateGoldSha256: canonicalSha256(annotations.map((annotation) => ({ caseId: annotation.caseId, gold: annotation.gold }))),
     snapshotSha256: canonicalSha256(snapshot),

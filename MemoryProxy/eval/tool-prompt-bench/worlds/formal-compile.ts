@@ -38,6 +38,43 @@ export interface CompiledFormalCaseInput {
   visibleAssetSetSha256: string;
 }
 
+/** Runner-private provenance inventory. It is never embedded in provider input. */
+export interface CompiledFormalProvenanceSummary {
+  synthetic: {
+    count: number;
+    sourceIds: string[];
+    batchIds: string[];
+  };
+  externalImport: {
+    count: number;
+    sourceIds: string[];
+  };
+}
+
+export function compileFormalProvenanceSummary(
+  contract: FormalWorldContract,
+): CompiledFormalProvenanceSummary {
+  assertFormalWorldContract(contract);
+  const synthetic = contract.sourceEvidence
+    .filter((source) => source.provenanceKind === "synthetic")
+    .sort((left, right) => left.sourceId.localeCompare(right.sourceId));
+  const externalImport = contract.sourceEvidence
+    .filter((source) => source.provenanceKind === "external_import")
+    .sort((left, right) => left.sourceId.localeCompare(right.sourceId));
+  return {
+    synthetic: {
+      count: synthetic.length,
+      sourceIds: synthetic.map((source) => source.sourceId),
+      batchIds: [...new Set(synthetic.map((source) => source.batchId))]
+        .sort((left, right) => left.localeCompare(right)),
+    },
+    externalImport: {
+      count: externalImport.length,
+      sourceIds: externalImport.map((source) => source.sourceId),
+    },
+  };
+}
+
 function visibleAssetIds(snapshot: ResolvedVisibleSnapshot): string[] {
   return [...new Set([
     ...snapshot.memories.map((asset) => asset.assetId),

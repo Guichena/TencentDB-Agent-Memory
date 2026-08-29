@@ -33,8 +33,17 @@ function withHash<T extends Record<string, unknown>>(value: T): T & { contentHas
   return { ...value, contentHash: canonicalSha256(value) };
 }
 
+function migrateExternalEvidence(source: SourceEvidence): SourceEvidence {
+  const { contentHash: _contentHash, ...rest } = source as SourceEvidence & { provenanceKind?: string };
+  void _contentHash;
+  return withHash({
+    ...rest,
+    provenanceKind: source.provenanceKind ?? "external_import",
+  }) as SourceEvidence;
+}
+
 function fileSha256(data: string): string {
-  return createHash("sha256").update(data, "utf8").digest("hex");
+  return createHash("sha256").update(data.replace(/\r\n/g, "\n"), "utf8").digest("hex");
 }
 
 function upsertById<T>(items: T[], key: (item: T) => string, additions: T[]): T[] {
@@ -74,6 +83,7 @@ function l0Evidence(session: DraftL0Session): SourceEvidence {
   if (!observedAt) throw new Error(`missing source time for ${session.source.instance_id}`);
   return withHash({
     sourceId: `source-t01-history-${session.source.instance_id}`,
+    provenanceKind: "external_import" as const,
     dataset: session.source.dataset_id,
     datasetRevision: session.source.dataset_revision,
     datasetArtifactSha256: OPENHANDS_ARTIFACT_SHA,
@@ -146,6 +156,7 @@ function repoSource(input: {
   transformInputSha256: string;
 }): SourceEvidence {
   return withHash({
+    provenanceKind: "external_import" as const,
     ...input,
     trajectoryGeneratedAt: GENERATED_AT,
     worldAsOf: WORLD_AS_OF,
@@ -159,6 +170,7 @@ function repoSource(input: {
 async function main(): Promise<void> {
   const contractPath = resolve(root, "registry/contracts/formal-v1.json");
   const contract = JSON.parse(await readFile(contractPath, "utf8")) as FormalWorldContract;
+  contract.sourceEvidence = contract.sourceEvidence.map(migrateExternalEvidence);
   const l0Draft = JSON.parse(await readFile(resolve(benchRoot, "formal-worlds/W01/drafts/l0-sessions.json"), "utf8")) as {
     sessions: DraftL0Session[];
   };

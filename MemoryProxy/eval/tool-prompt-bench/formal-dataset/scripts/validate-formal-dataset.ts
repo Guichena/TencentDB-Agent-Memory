@@ -1,7 +1,10 @@
 import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
-import { compileFormalSplitInputs } from "../../worlds/formal-compile.js";
+import {
+  compileFormalProvenanceSummary,
+  compileFormalSplitInputs,
+} from "../../worlds/formal-compile.js";
 import {
   validateFormalWorldContract,
   type FormalSplit,
@@ -97,6 +100,7 @@ async function main(): Promise<void> {
   const privateMarkers = [
     "allowedFirstActions", "expectedFollowupActions", "expectedKnowledgeCalls",
     "allowedSequences", "targetAssetIds", "informationGap", "annotationReason",
+    "provenanceKind", "generatorModel", "batchId", "contentRefs", "sourceRepoUrl",
   ];
   const leakedMarkers = privateMarkers.filter((marker) => providerText.includes(marker));
   const pairIntegrityErrors = validation.valid ? validatePairIntegrity(contract) : [];
@@ -117,7 +121,7 @@ async function main(): Promise<void> {
     }).length,
   ]));
   const report = {
-    schema_version: "task1.formal_dataset_validation.v1",
+    schema_version: "task1.formal_dataset_validation.v2",
     valid: errors.length === 0,
     errors,
     splits,
@@ -130,6 +134,7 @@ async function main(): Promise<void> {
     provider_leakage_count: leakedMarkers.length,
     invalid_sequence_count: invalidSequenceCount,
     missing_source_ref_count: missingSourceRefCount,
+    provenance: validation.valid ? compileFormalProvenanceSummary(contract) : null,
     provider_sha256: canonicalSha256(compiled.map((item) => item.provider)),
     snapshot_sha256: Object.fromEntries(contract.snapshots.map((snapshot) => [snapshot.split, canonicalSha256(snapshot)])),
   };

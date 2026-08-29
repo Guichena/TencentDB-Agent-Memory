@@ -84,7 +84,8 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS01",
-      "contentHash": "288810023a09850d0ad50055f44f2d5afe9e721d32dc84fa76631862470e253a"
+      "provenanceKind": "external_import",
+      "contentHash": "0565a5ed8ad00549c961e77eb8ac0aaf85a7495441214b03e3632158c9c616f2"
     },
     {
       "sourceId": "source-t01-current-ujson-fuzzing",
@@ -108,9 +109,11 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS01",
-      "contentHash": "583e436916ded209d227a54ba8afab47543447a78a363d232bafa06762cafa1f"
+      "provenanceKind": "external_import",
+      "contentHash": "acce48b173232df7352e4b6f5f68a3850ad4f9bee33ffd2e01f2afd3d05bb2f5"
     },
     {
+      "provenanceKind": "external_import",
       "sourceId": "source-t01-current-ujson-impact",
       "dataset": "Task1 evidence-grounded current task",
       "datasetRevision": "DS02@8c57ffc7210f11e44352cb7aa0716e610720a509",
@@ -132,10 +135,11 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS02-pilot",
-      "contentHash": "d883b02bb016142d897a46a6c3cee6ca6efe17ce24ade07d777aeb20b92a5ea0"
+      "contentHash": "fd6c79f9b1db8198b1308ca67376ce32ad30fe1f467e9208655f58d30c1d2b39"
     },
     {
       "sourceId": "source-t01-history-getmoto__moto-5134",
+      "provenanceKind": "external_import",
       "dataset": "SWE-Gym/OpenHands-SFT-Trajectories",
       "datasetRevision": "4aaa5a4a4b5861f4799d2336908760c190ac3b17",
       "datasetArtifactSha256": "ea4bf37de020e165c5210bedddeef523d8834a89a35a8c65fec24f76f0eae4f1",
@@ -157,10 +161,11 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS02-pilot",
-      "contentHash": "a727647f92d1024f9c1fb539a791b9ff1699f97f0207387a7f1ce2afa95cb5cc"
+      "contentHash": "99d21790a6cdf14e22f6c274f93bc9945537bcb415773ee957bb31972f0757ee"
     },
     {
       "sourceId": "source-t01-history-getmoto__moto-5587",
+      "provenanceKind": "external_import",
       "dataset": "SWE-Gym/OpenHands-SFT-Trajectories",
       "datasetRevision": "4aaa5a4a4b5861f4799d2336908760c190ac3b17",
       "datasetArtifactSha256": "ea4bf37de020e165c5210bedddeef523d8834a89a35a8c65fec24f76f0eae4f1",
@@ -182,10 +187,11 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS02-pilot",
-      "contentHash": "6f18655a90eecf44d691b18cc1a66ee601339b8c49c6f2975d4ed7dad0e69ec9"
+      "contentHash": "7a6b9025597ef257e6e950a62904d4945ee9dfdf0646e15c319d0c8737f91cde"
     },
     {
       "sourceId": "source-t01-history-getmoto__moto-6567",
+      "provenanceKind": "external_import",
       "dataset": "SWE-Gym/OpenHands-SFT-Trajectories",
       "datasetRevision": "4aaa5a4a4b5861f4799d2336908760c190ac3b17",
       "datasetArtifactSha256": "ea4bf37de020e165c5210bedddeef523d8834a89a35a8c65fec24f76f0eae4f1",
@@ -207,10 +213,11 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS02-pilot",
-      "contentHash": "dc9e40b9d3c1ed80d952352c8211b13359802faf8cb1f12e9535f744cc99ae1c"
+      "contentHash": "7187e16266d109ad0e59d8149163ef71bf23982090a6747bc67bf67a8f4fcd03"
     },
     {
       "sourceId": "source-t01-history-getmoto__moto-6585",
+      "provenanceKind": "external_import",
       "dataset": "SWE-Gym/OpenHands-SFT-Trajectories",
       "datasetRevision": "4aaa5a4a4b5861f4799d2336908760c190ac3b17",
       "datasetArtifactSha256": "ea4bf37de020e165c5210bedddeef523d8834a89a35a8c65fec24f76f0eae4f1",
@@ -232,10 +239,11 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS02-pilot",
-      "contentHash": "f43d8befcf72de27e43861ca51a7d3315e41462f1f05f2c55743e8d548b337b9"
+      "contentHash": "738ec3303609cd25199319e33af8635c0ef3ebd436bb356ab89a3e6f0d1488ad"
     },
     {
       "sourceId": "source-t01-history-getmoto__moto-6913",
+      "provenanceKind": "external_import",
       "dataset": "SWE-Gym/OpenHands-SFT-Trajectories",
       "datasetRevision": "4aaa5a4a4b5861f4799d2336908760c190ac3b17",
       "datasetArtifactSha256": "ea4bf37de020e165c5210bedddeef523d8834a89a35a8c65fec24f76f0eae4f1",
@@ -257,10 +265,11 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS02-pilot",
-      "contentHash": "b6ebccd4e93841f7e6fd708a51d9e547ddde66fd41f5ba08e8a4772c0674e137"
+      "contentHash": "e07e00214f77bb1c89267d73e9179352720784f76b956989335e4a8c3ba3624d"
     },
     {
       "sourceId": "source-t01-history-getmoto__moto-7365",
+      "provenanceKind": "external_import",
       "dataset": "SWE-Gym/OpenHands-SFT-Trajectories",
       "datasetRevision": "4aaa5a4a4b5861f4799d2336908760c190ac3b17",
       "datasetArtifactSha256": "ea4bf37de020e165c5210bedddeef523d8834a89a35a8c65fec24f76f0eae4f1",
@@ -282,7 +291,7 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS02-pilot",
-      "contentHash": "54cbdddca81f905c2e064612f9c643ef98e27c41187a013f162fb253d828dae7"
+      "contentHash": "b76f111c7611d004f2ae836e31fb6c5f5508f722680e9a2f3b44e889bd52cb10"
     },
     {
       "sourceId": "source-t01-history-python__mypy-10424",
@@ -307,7 +316,8 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS01",
-      "contentHash": "aa4821729bc3006ab9334dfe7014b82bedec4ef1ec56e6d8f63d2538da795500"
+      "provenanceKind": "external_import",
+      "contentHash": "badfac686a14af4aecb1c9adddf0e64e5f83d66a26e09b162944f676cc666be8"
     },
     {
       "sourceId": "source-t01-history-python__mypy-11567",
@@ -332,7 +342,8 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS01",
-      "contentHash": "6f289c78f4e19c20130083b10975c1ae6108c219a4706970821d6a2eb879137e"
+      "provenanceKind": "external_import",
+      "contentHash": "9640aee21cf5489b09494c77523007e3993dd759a65837c7851241f8f7914bc7"
     },
     {
       "sourceId": "source-t01-history-python__mypy-12943",
@@ -357,7 +368,8 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS01",
-      "contentHash": "6390a775c2b1299f78f8055d0da12f876c51a015191840eb924cae5fba52001b"
+      "provenanceKind": "external_import",
+      "contentHash": "029beeb51e2adfa79749ed79d1003f4d5554b76847a11fa5bf8ffe10c9b0bfcd"
     },
     {
       "sourceId": "source-t01-history-python__mypy-15184",
@@ -382,7 +394,8 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS01",
-      "contentHash": "cea5d32d20e3674b890f9e987c3e75d18764d4e07fb5116f29829a462e593d48"
+      "provenanceKind": "external_import",
+      "contentHash": "d71758d1761b81e2d348108214192ef367e9bbfe2e7098be3090e76724142118"
     },
     {
       "sourceId": "source-t01-history-python__mypy-16869",
@@ -407,7 +420,8 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS01",
-      "contentHash": "c9cae524ee433915c078897bbff9ca3bda90d25ee72a57f35fc8b67aef5728de"
+      "provenanceKind": "external_import",
+      "contentHash": "4aae0fd85315ad39183557b9d94e81b12e480a51d3cf37e657b6ad19ceb34dce"
     },
     {
       "sourceId": "source-t01-history-python__mypy-5617",
@@ -432,9 +446,11 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS01",
-      "contentHash": "c59f94c4b7a124f7b0ff6bda21e50581b173b55dfad58b8d55959b551b0398b2"
+      "provenanceKind": "external_import",
+      "contentHash": "5e36b17b68eda3ddd6da1563dd3a6139ca401de15fb282f531a76a168f8658a3"
     },
     {
+      "provenanceKind": "external_import",
       "sourceId": "source-t01-knowledge-mypy-codegraph",
       "dataset": "mypy pinned repository",
       "datasetRevision": "d7b24514d7301f86031b7d1e2215cf8c2476bec0",
@@ -456,9 +472,10 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS02-pilot",
-      "contentHash": "eccd9d791fd9c86a03626654ad61518134a464138b29e3a4566d889e4b981bc1"
+      "contentHash": "66e2bec29484ca6e267bee945aa9ef8ca955d018f2d926168e505bb7b1fd2996"
     },
     {
+      "provenanceKind": "external_import",
       "sourceId": "source-t01-knowledge-reliability-wiki",
       "dataset": "Task1 T01 evidence review",
       "datasetRevision": "8c57ffc7210f11e44352cb7aa0716e610720a509",
@@ -480,9 +497,10 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS02-pilot",
-      "contentHash": "252a89af46d7fcbdbbafd121a9fdf18a6d6394f383d763deddffbb04bdf6215b"
+      "contentHash": "0186556725556a4ec373ef9ed2e4e8414df3c3e559c09265ecb8910a7dbbf4e6"
     },
     {
+      "provenanceKind": "external_import",
       "sourceId": "source-t01-knowledge-ujson-codegraph",
       "dataset": "ultrajson pinned repository",
       "datasetRevision": "8f23cce7929c49b9235d2f46ac9a403d051a9c95",
@@ -504,7 +522,7 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS02-pilot",
-      "contentHash": "0fe6eb87622e7d22b785f03885a8e7dcbf994fb159f1889b6071d429a997eeb1"
+      "contentHash": "2efff5c6d30779de7377f41e436af95dd8736d89da553501166b554692659828"
     },
     {
       "sourceId": "source-t01-pair-001",
@@ -528,7 +546,8 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS01",
-      "contentHash": "da570e3e892bb83ba5e0ecdc7ce19e751eca3281d1c511afdbfe74abe83d4056"
+      "provenanceKind": "external_import",
+      "contentHash": "db0978be7fd9dddbc208273674cd60e734ddb2256343dc0b84994bda94043f4a"
     },
     {
       "sourceId": "source-t01-pair-002",
@@ -552,7 +571,8 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS01",
-      "contentHash": "9034e43145bbd3d6b6870702ad531bbab9a8e0c496caab50c4d3095416bee320"
+      "provenanceKind": "external_import",
+      "contentHash": "d846cd050fe8f2c426dce078ba3a8812b17ecc785d4d3ddf513c1131cd797a48"
     },
     {
       "sourceId": "source-t01-pair-003",
@@ -576,7 +596,8 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS01",
-      "contentHash": "31ea6a0eb7074da3f29fbdce6c2a6aa9cf5e1ddbff0e8f56117650059cdfd0e5"
+      "provenanceKind": "external_import",
+      "contentHash": "a9014204b234116616543a413960e7ec23a0aed1474f5e9455b5249259351bef"
     },
     {
       "sourceId": "source-t01-pair-004",
@@ -600,9 +621,11 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS01",
-      "contentHash": "6148504c716343174705ee34c54e9f8eab006e9ffed2b460adea2c14ba20da9a"
+      "provenanceKind": "external_import",
+      "contentHash": "d94774cc476bb0a4aac6d4512f7054b3962157b654beead0cf46f000871e68ae"
     },
     {
+      "provenanceKind": "external_import",
       "sourceId": "source-t01-pair-005",
       "dataset": "Task1 paired counterfactual authoring",
       "datasetRevision": "DS02@8c57ffc7210f11e44352cb7aa0716e610720a509",
@@ -624,7 +647,7 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS02-pilot",
-      "contentHash": "090e2932511f88058db2edebbd57683568eb6ab93f8c0da73be881fa40158447"
+      "contentHash": "e66a29a3807bd99c599c19f1f05f53cd9af1b41501643d7b0ec684c6a1eec926"
     },
     {
       "sourceId": "source-t01-skill-discover-important-function",
@@ -648,7 +671,8 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS01",
-      "contentHash": "7806611082a9537456e1788cd1170bbdbaea8120d5dacc7785979f6e07faaadc"
+      "provenanceKind": "external_import",
+      "contentHash": "725d491b9ea062b2b80c8ebcadbcd0451fdacbda775e48cccee2696b10ad5f81"
     },
     {
       "sourceId": "source-t01-skill-fuzzing-python",
@@ -672,7 +696,8 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS01",
-      "contentHash": "410cbdd99a8fbd431d08ae2df9183c5a34a638fc25bd5ad06f76b5735d6153ba"
+      "provenanceKind": "external_import",
+      "contentHash": "e60947e2ac526f80916387cabf477967babb427af267ef7e0fc73403a39b695c"
     },
     {
       "sourceId": "source-task1-registry-ds00",
@@ -696,7 +721,8 @@
       "piiScan": "passed",
       "reviewStatus": "reviewed",
       "reviewedBy": "Sol/DS01",
-      "contentHash": "cb4b801a7c9dc2acb446935ff7e9a5334aecd4be9d631a8e30462173435a8714"
+      "provenanceKind": "external_import",
+      "contentHash": "74d21f33991fdf8097aae208aaf5cbbc81192534306a30b69880d29308eb1b18"
     }
   ],
   "teams": [
@@ -7390,7 +7416,7 @@
       "snapshotId": "snapshot-task1-dev-v1",
       "worldId": "world-task1-engineering",
       "split": "dev",
-      "sourcePackSha256": "751438fa37b11214c3d54443c3f6ed442c0ca2106fcbd3adee72f90256854552",
+      "sourcePackSha256": "a45fd9d2b8af7934a00a1b333b4ab2c605c16f29b990be8441ded87615c6bcf1",
       "visibleAssetSets": [
         {
           "teamId": "T01",
@@ -7442,7 +7468,7 @@
       "workspaceManifestSha256": "ea1e587b331be85945815aa44c1cf341de2b8ba61b0193ccbfef5a82cb4383e0",
       "runtimePolicySha256": "216ab76b3cadccec5d476847920de153cba5d2a4c3e299d9619941ca50473dae",
       "cacheResetRecipeSha256": "49576325688b92403f9071b24232cd69c53c89392a50e713167b29ff0fd0df9e",
-      "contentHash": "5bbca1434b7307388855568b6dec745bf4e651e1f9c1d2d2cd202712439e33cf"
+      "contentHash": "a0880d4f51f7c03145d257b943315f6321ac4c0baca7f4f12b772151327ef7fb"
     },
     {
       "snapshotId": "snapshot-task1-hidden-v1",

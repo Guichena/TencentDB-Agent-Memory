@@ -3,11 +3,14 @@ import {
   assertFormalWorldContract,
   toProviderVisibleCase,
   validateFormalWorldContract,
+  type ExternalImportEvidence,
   type FormalWorldContract,
   type PublicCaseInput,
+  type SyntheticGenerationEvidence,
 } from "../../eval/tool-prompt-bench/worlds/formal-schema.js";
 import {
   compileFormalCaseInput,
+  compileFormalProvenanceSummary,
   compileFormalSplitInputs,
   hashVisibleAssetSet,
 } from "../../eval/tool-prompt-bench/worlds/formal-compile.js";
@@ -35,6 +38,66 @@ function publicCase(caseId: string, agentId = "agent-a", taskId = "task-a"): Pub
   };
 }
 
+function externalEvidence(
+  sourceId: string,
+  role: ExternalImportEvidence["role"],
+  transform: ExternalImportEvidence["transform"],
+  overrides: Partial<ExternalImportEvidence> = {},
+): ExternalImportEvidence {
+  return {
+    sourceId,
+    provenanceKind: "external_import",
+    dataset: "SWE-Gym",
+    datasetRevision: "rev-1",
+    datasetArtifactSha256: HASH,
+    sourceRepoUrl: "https://github.com/example/a",
+    sourceRepoCommit: COMMIT,
+    sourceRepoLicense: "MIT",
+    sourceTaskId: "task-source-1",
+    trajectoryId: "trajectory-1",
+    role,
+    origin: "synthetic_agent_replay",
+    sourceTaskTime: "2026-07-01T00:00:00.000Z",
+    trajectoryGeneratedAt: "2026-07-02T00:00:00.000Z",
+    worldAsOf: TIME,
+    evidenceLocator: `${sourceId}/content`,
+    evidenceSha256: HASH,
+    transform,
+    transformVersion: "v1",
+    transformInputSha256: HASH,
+    piiScan: "passed",
+    reviewStatus: "reviewed",
+    reviewedBy: "reviewer-1",
+    contentHash: HASH,
+    ...overrides,
+  };
+}
+
+function syntheticEvidence(
+  sourceId: string,
+  role: SyntheticGenerationEvidence["role"],
+  transform: SyntheticGenerationEvidence["transform"],
+  contentRefs: string[],
+): SyntheticGenerationEvidence {
+  return {
+    sourceId,
+    provenanceKind: "synthetic",
+    generatorModel: "gpt-5.6-luna",
+    reasoningEffort: "high",
+    promptVersion: "task1.luna-batch.v1",
+    batchId: "test-memory-batch-01",
+    generatedAt: "2026-08-29T12:00:00+08:00",
+    contentRefs,
+    role,
+    origin: "synthetic_agent_replay",
+    worldAsOf: TIME,
+    transform,
+    transformVersion: "v1",
+    reviewStatus: "reviewed",
+    contentHash: HASH,
+  };
+}
+
 function contract(): FormalWorldContract {
   const positive = publicCase("case-positive");
   const negative = publicCase("case-negative");
@@ -58,14 +121,24 @@ function contract(): FormalWorldContract {
       }, contentHash: HASH,
     },
     sourceEvidence: [
-      { sourceId: "source-1", dataset: "SWE-Gym", datasetRevision: "rev-1", datasetArtifactSha256: HASH, sourceRepoUrl: "https://github.com/example/a", sourceRepoCommit: COMMIT, sourceRepoLicense: "MIT", sourceTaskId: "task-source-1", trajectoryId: "trajectory-1", role: "history", origin: "synthetic_agent_replay", sourceTaskTime: "2026-07-01T00:00:00.000Z", trajectoryGeneratedAt: "2026-07-02T00:00:00.000Z", worldAsOf: TIME, evidenceLocator: "trajectory-1/messages", evidenceSha256: HASH, transform: "redacted_replay", transformVersion: "v1", transformInputSha256: HASH, piiScan: "passed", reviewStatus: "reviewed", reviewedBy: "reviewer-1", contentHash: HASH },
-      { sourceId: "source-2", dataset: "SWE-Gym", datasetRevision: "rev-1", datasetArtifactSha256: HASH, sourceRepoUrl: "https://github.com/example/a", sourceRepoCommit: COMMIT, sourceRepoLicense: "MIT", sourceTaskId: "task-source-2", trajectoryId: "trajectory-2", role: "history", origin: "synthetic_agent_replay", sourceTaskTime: "2026-07-02T00:00:00.000Z", trajectoryGeneratedAt: "2026-07-03T00:00:00.000Z", worldAsOf: TIME, evidenceLocator: "trajectory-2/messages", evidenceSha256: HASH, transform: "redacted_replay", transformVersion: "v1", transformInputSha256: HASH, piiScan: "passed", reviewStatus: "reviewed", reviewedBy: "reviewer-1", contentHash: HASH },
-      { sourceId: "source-l1", dataset: "SWE-Gym", datasetRevision: "rev-1", datasetArtifactSha256: HASH, sourceRepoUrl: "https://github.com/example/a", sourceRepoCommit: COMMIT, sourceRepoLicense: "MIT", sourceTaskId: "task-source-1", trajectoryId: "trajectory-1", role: "history", origin: "synthetic_agent_replay", sourceTaskTime: "2026-07-01T00:00:00.000Z", trajectoryGeneratedAt: "2026-07-02T00:00:00.000Z", worldAsOf: TIME, evidenceLocator: "trajectory-1/messages/message-a", evidenceSha256: HASH, transform: "atomic_fact_extraction", transformVersion: "v1", transformInputSha256: HASH, piiScan: "passed", reviewStatus: "reviewed", reviewedBy: "reviewer-1", contentHash: HASH },
-      { sourceId: "source-l2", dataset: "SWE-Gym", datasetRevision: "rev-1", datasetArtifactSha256: HASH, sourceRepoUrl: "https://github.com/example/a", sourceRepoCommit: COMMIT, sourceRepoLicense: "MIT", sourceTaskId: "task-source-1", trajectoryId: "trajectory-1", role: "history", origin: "synthetic_agent_replay", sourceTaskTime: "2026-07-01T00:00:00.000Z", trajectoryGeneratedAt: "2026-07-02T00:00:00.000Z", worldAsOf: TIME, evidenceLocator: "history-a+history-b", evidenceSha256: HASH, transform: "multi_session_scene_synthesis", transformVersion: "v1", transformInputSha256: HASH, piiScan: "passed", reviewStatus: "reviewed", reviewedBy: "reviewer-1", contentHash: HASH },
-      { sourceId: "source-profile", dataset: "SWE-Gym", datasetRevision: "rev-1", datasetArtifactSha256: HASH, sourceRepoUrl: "https://github.com/example/a", sourceRepoCommit: COMMIT, sourceRepoLicense: "MIT", sourceTaskId: "task-source-1", trajectoryId: "trajectory-1", role: "history", origin: "synthetic_agent_replay", sourceTaskTime: "2026-07-01T00:00:00.000Z", trajectoryGeneratedAt: "2026-07-02T00:00:00.000Z", worldAsOf: TIME, evidenceLocator: "history-a+history-b/profile", evidenceSha256: HASH, transform: "stable_profile_derivation", transformVersion: "v1", transformInputSha256: HASH, piiScan: "passed", reviewStatus: "reviewed", reviewedBy: "reviewer-1", contentHash: HASH },
-      { sourceId: "source-skill", dataset: "SWE-Gym", datasetRevision: "rev-1", datasetArtifactSha256: HASH, sourceRepoUrl: "https://github.com/example/a", sourceRepoCommit: COMMIT, sourceRepoLicense: "MIT", sourceTaskId: "task-source-1", trajectoryId: "trajectory-1", role: "history", origin: "synthetic_agent_replay", sourceTaskTime: "2026-07-01T00:00:00.000Z", trajectoryGeneratedAt: "2026-07-02T00:00:00.000Z", worldAsOf: TIME, evidenceLocator: "history-a+history-b/procedure", evidenceSha256: HASH, transform: "skill_procedure_derivation", transformVersion: "v1", transformInputSha256: HASH, piiScan: "passed", reviewStatus: "reviewed", reviewedBy: "reviewer-1", contentHash: HASH },
-      { sourceId: "source-anchor", dataset: "SWE-Gym", datasetRevision: "rev-1", datasetArtifactSha256: HASH, sourceRepoUrl: "https://github.com/example/a", sourceRepoCommit: COMMIT, sourceRepoLicense: "MIT", sourceTaskId: "task-current-1", role: "current_anchor", origin: "repo_code", sourceTaskTime: "2026-07-10T00:00:00.000Z", trajectoryGeneratedAt: "2026-07-10T00:00:00.000Z", worldAsOf: TIME, evidenceLocator: "task-current-1", evidenceSha256: HASH, transform: "current_task_anchor", transformVersion: "v1", transformInputSha256: HASH, piiScan: "passed", reviewStatus: "reviewed", reviewedBy: "reviewer-1", contentHash: HASH },
-      { sourceId: "source-knowledge", dataset: "repo", datasetRevision: COMMIT, datasetArtifactSha256: HASH, sourceRepoUrl: "https://github.com/example/a", sourceRepoCommit: COMMIT, sourceRepoLicense: "MIT", sourceTaskId: "task-current-1", role: "repo_context", origin: "repo_code", sourceTaskTime: "2026-07-10T00:00:00.000Z", trajectoryGeneratedAt: "2026-07-10T00:00:00.000Z", worldAsOf: TIME, evidenceLocator: "repo/code-graph", evidenceSha256: HASH, transform: "code_graph_build", transformVersion: "v1", transformInputSha256: HASH, piiScan: "passed", reviewStatus: "reviewed", reviewedBy: "reviewer-1", contentHash: HASH },
+      externalEvidence("source-1", "history", "redacted_replay"),
+      externalEvidence("source-2", "history", "redacted_replay", {
+        sourceTaskId: "task-source-2", trajectoryId: "trajectory-2",
+        sourceTaskTime: "2026-07-02T00:00:00.000Z", trajectoryGeneratedAt: "2026-07-03T00:00:00.000Z",
+      }),
+      externalEvidence("source-l1", "history", "atomic_fact_extraction"),
+      externalEvidence("source-l2", "history", "multi_session_scene_synthesis"),
+      externalEvidence("source-profile", "history", "stable_profile_derivation"),
+      externalEvidence("source-skill", "history", "skill_procedure_derivation"),
+      externalEvidence("source-anchor", "current_anchor", "current_task_anchor", {
+        origin: "repo_code", sourceTaskId: "task-current-1", trajectoryId: undefined,
+        sourceTaskTime: "2026-07-10T00:00:00.000Z", trajectoryGeneratedAt: "2026-07-10T00:00:00.000Z",
+      }),
+      externalEvidence("source-knowledge", "repo_context", "code_graph_build", {
+        dataset: "repo", datasetRevision: COMMIT, origin: "repo_code",
+        sourceTaskId: "task-current-1", trajectoryId: undefined,
+        sourceTaskTime: "2026-07-10T00:00:00.000Z", trajectoryGeneratedAt: "2026-07-10T00:00:00.000Z",
+      }),
     ],
     teams: [
       { teamId: "team-a", worldId: "world-1", split: "dev", name: "Team A", businessAgentIds: ["agent-a"], taskIds: ["task-a"], sourceEvidenceIds: ["source-1"], contentHash: HASH },
@@ -120,6 +193,49 @@ describe("Formal V2 world contract", () => {
     expect(() => assertFormalWorldContract(input)).not.toThrow();
   });
 
+  it("accepts synthetic generation provenance without fabricated repository or L1 locators", () => {
+    const input = contract();
+    const sourceIndex = input.sourceEvidence.findIndex((source) => source.sourceId === "source-l1");
+    input.sourceEvidence[sourceIndex] = syntheticEvidence(
+      "source-l1", "history", "atomic_fact_extraction", ["l1-a", "message-a"],
+    );
+    input.assets.l1Memories[0].codeEvidenceLocators = [];
+    input.assets.l1Memories[0].testEvidenceLocators = [];
+
+    expect(validateFormalWorldContract(input)).toEqual({ valid: true, errors: [] });
+    const summary = compileFormalProvenanceSummary(input);
+    expect(summary.synthetic).toEqual({
+      count: 1,
+      sourceIds: ["source-l1"],
+      batchIds: ["test-memory-batch-01"],
+    });
+    expect(summary.externalImport.count).toBe(7);
+    const frozenSet = input.snapshots[0].visibleAssetSets[0];
+    frozenSet.sha256 = hashVisibleAssetSet(frozenSet);
+    input.publicCases
+      .filter((item) => item.identity.agentId === frozenSet.agentId)
+      .forEach((item) => { item.visibleAssetSetSha256 = frozenSet.sha256; });
+    const compiled = compileFormalCaseInput(input, "case-positive");
+    expect(JSON.stringify(compiled.provider)).not.toMatch(/generatorModel|batchId|sourceRepoUrl/);
+  });
+
+  it("rejects incomplete synthetic provenance and external source claims on a synthetic record", () => {
+    const input = contract();
+    const source = syntheticEvidence(
+      "source-l1", "history", "atomic_fact_extraction", ["l1-a"],
+    ) as unknown as Record<string, unknown>;
+    delete source.generatorModel;
+    source.contentRefs = [];
+    source.sourceRepoUrl = "https://github.com/example/fabricated";
+    const sourceIndex = input.sourceEvidence.findIndex((item) => item.sourceId === "source-l1");
+    input.sourceEvidence[sourceIndex] = source as unknown as SyntheticGenerationEvidence;
+
+    const errors = validateFormalWorldContract(input).errors.join("\n");
+    expect(errors).toMatch(/source source-l1.generatorModel is required/);
+    expect(errors).toMatch(/source source-l1.contentRefs must be a non-empty array/);
+    expect(errors).toMatch(/source source-l1.sourceRepoUrl is not allowed/);
+  });
+
   it("expresses ten Teams in one Space and compiles Dev/Hidden independently", () => {
     const input = contract();
     for (let index = 3; index <= 10; index += 1) {
@@ -165,12 +281,19 @@ describe("Formal V2 world contract", () => {
 
   it("rejects source gaps, future evidence, and invalid hashes", () => {
     const input = contract();
-    input.sourceEvidence[0].sourceRepoCommit = "short";
-    input.sourceEvidence[0].sourceTaskTime = "2026-09-01T00:00:00.000Z";
-    input.sourceEvidence[0].evidenceSha256 = "not-a-hash";
-    input.sourceEvidence[0].transform = "verbatim_copy" as never;
+    const source = input.sourceEvidence[0] as ExternalImportEvidence;
+    source.sourceRepoCommit = "short";
+    source.sourceRepoUrl = "";
+    source.sourceRepoLicense = "";
+    source.evidenceLocator = "";
+    source.sourceTaskTime = "2026-09-01T00:00:00.000Z";
+    source.evidenceSha256 = "not-a-hash";
+    source.transform = "verbatim_copy" as never;
     const errors = validateFormalWorldContract(input).errors.join("\n");
     expect(errors).toMatch(/sourceRepoCommit/);
+    expect(errors).toMatch(/sourceRepoUrl/);
+    expect(errors).toMatch(/sourceRepoLicense/);
+    expect(errors).toMatch(/evidenceLocator/);
     expect(errors).toMatch(/sourceTaskTime must be before worldAsOf/);
     expect(errors).toMatch(/evidenceSha256/);
     expect(errors).toMatch(/not a formal TDAI transform/);
@@ -191,13 +314,13 @@ describe("Formal V2 world contract", () => {
     input.assets.l1Memories[0].sourceEvidenceIds = ["source-anchor"];
     input.assets.l1Memories[0].supportingMessageIds = ["missing-message"];
     input.assets.l1Memories[0].testEvidenceLocators = [];
-    input.sourceEvidence.find((source) => source.sourceId === "source-2")!.sourceTaskId = "task-source-1";
+    (input.sourceEvidence.find((source) => source.sourceId === "source-2") as ExternalImportEvidence).sourceTaskId = "task-source-1";
     const errors = validateFormalWorldContract(input).errors.join("\n");
     expect(errors).toMatch(/L1 memory l1-a must use history atomic_fact_extraction evidence/);
     expect(errors).toMatch(/references unknown message missing-message/);
     expect(errors).toMatch(/lacks test evidence locator/);
-    expect(errors).toMatch(/L2 scene l2-a needs two independent history source tasks/);
-    expect(errors).toMatch(/skill skill-a needs two independent history source tasks/);
+    expect(errors).toMatch(/L2 scene l2-a needs two independent external history source tasks/);
+    expect(errors).toMatch(/skill skill-a needs two independent external history source tasks/);
   });
 
   it("accepts a frozen open-source Skill without fabricated history sessions", () => {
@@ -243,7 +366,7 @@ describe("Formal V2 world contract", () => {
 
   it("requires strict source time and current-anchor task evidence", () => {
     const input = contract();
-    input.sourceEvidence[0].sourceTaskTime = TIME;
+    (input.sourceEvidence[0] as ExternalImportEvidence).sourceTaskTime = TIME;
     input.tasks[0].sourceEvidenceIds = ["source-1"];
     input.tasks[0].projectRef.sourceEvidenceIds = ["source-1"];
     const errors = validateFormalWorldContract(input).errors.join("\n");
@@ -254,7 +377,7 @@ describe("Formal V2 world contract", () => {
 
   it("rejects timestamps whose timezone is implicit", () => {
     const input = contract();
-    input.sourceEvidence[0].trajectoryGeneratedAt = "2026-07-02T00:00:00";
+    (input.sourceEvidence[0] as ExternalImportEvidence).trajectoryGeneratedAt = "2026-07-02T00:00:00";
     const errors = validateFormalWorldContract(input).errors.join("\n");
     expect(errors).toMatch(/source source-1.trajectoryGeneratedAt must be an ISO timestamp with timezone/);
   });
