@@ -31,6 +31,7 @@ const insertDelta = (pair, role) => {
 };
 
 const input = await readJson("input-pack.json");
+const repairDraft = await readJson("repair", "luna-repair-01", "draft.json");
 const memoryPairs = [
   ...(await readJson("memory", "memory-batch-01", "draft.json")).pairs,
   ...(await readJson("memory", "memory-batch-02", "draft.json")).pairs,
@@ -62,6 +63,10 @@ const sourceEvidence = [
   syntheticEvidence("source-t11-memory-redacted", "history", "redacted_replay", "t11-memory-batches", ["generators/parallel/build-06/T11/memory/memory-batch-01/draft.json", "generators/parallel/build-06/T11/memory/memory-batch-02/draft.json"]),
   syntheticEvidence("source-t11-memory-atomic", "history", "atomic_fact_extraction", "t11-memory-batches", ["staging/teams/T11/assets/memory.json"]),
   syntheticEvidence("source-t11-memory-scene", "history", "multi_session_scene_synthesis", "t11-memory-batches", ["staging/teams/T11/assets/memory.json"]),
+  syntheticEvidence("source-t11-memory-repair", "history", "redacted_replay", "t11-memory-repair-luna-high", ["generators/parallel/build-06/T11/repair/luna-repair-01/draft.json"]),
+  syntheticEvidence("source-t11-memory-repair-atomic", "history", "atomic_fact_extraction", "t11-memory-repair-luna-high", ["generators/parallel/build-06/T11/repair/luna-repair-01/draft.json"]),
+  syntheticEvidence("source-t11-memory-repair-scene", "history", "multi_session_scene_synthesis", "t11-memory-repair-luna-high", ["generators/parallel/build-06/T11/repair/luna-repair-01/draft.json"]),
+  syntheticEvidence("source-t11-memory-repair-profile", "history", "stable_profile_derivation", "t11-memory-repair-luna-high", ["generators/parallel/build-06/T11/repair/luna-repair-01/draft.json"]),
   syntheticEvidence("source-t11-pairs", "evaluation_derivation", "paired_counterfactual", "t11-pair-batches", ["staging/teams/T11/team-fragment.json"]),
   syntheticEvidence("source-t11-natural", "evaluation_derivation", "natural_negative_selection", "t11-natural-negative-batch-01", ["generators/parallel/build-06/T11/natural-negative/natural-negative-batch-01/draft.json"]),
   syntheticEvidence("source-t11-knowledge-build", "repo_context", "code_graph_build", "t11-knowledge-batch-01", ["staging/teams/T11/assets/knowledge.json"]),
@@ -70,7 +75,9 @@ const sourceEvidence = [
 ];
 
 const workspaceTemplates = input.project_streams.map((stream, index) => {
-  const source = input.skill_sources[index % input.skill_sources.length];
+  // Keep the existing 40-case workspace identities byte-stable while the
+  // expanded Skill pool is visible to discovery.
+  const source = input.skill_sources.slice(0, 3)[index % 3];
   const slug = source.repository.replace("https://github.com/", "");
   const workspace = withHash({
     workspaceId: `workspace-task1-t11-${index + 1}`, repoSlug: slug, repoUrl: source.repository, baseCommit: source.revision,
@@ -94,14 +101,81 @@ const l0Conversations = memoryPairs.map((pair, index) => {
   ];
   return withHash({ assetId: sessionId, ownerAgentId: agentId, sourceEvidenceIds: ["source-t11-memory-redacted"], observedAt, sessionId, messages });
 });
+// T11 repair batch: preserve the original two turns and append a coherent,
+// timestamped ten-turn continuation to every existing session.
+const fallbackRepairTurnSets = [
+  ["请补充当时检查插件声明时先看了哪一份仓库配置。", "先看根级插件声明，再核对仓库块与版本目录是否一致。", "当时是否把模块内重复声明一并清理？", "是，模块只保留继承关系，重复声明已移除。", "最小构建验证覆盖了哪些模块？", "覆盖 Orchid 的核心 app 与一个库模块，结果一致。", "版本目录是否由发布分支锁定？", "是，发布分支锁定文件是唯一版本来源。", "这条约定还适用于当前失败吗？", "适用；先按同一继承规则核对配置，再判断失败是否来自插件解析。"],
+  ["请补充冲突评审中服务端版本如何参与判断。", "先读取服务端版本并与删除基线比较，再决定是否可合并。", "如果更新版本只改变非删除字段呢？", "仍保留删除意图，只有确认未越过基线才允许合并。", "越过基线后是否自动恢复对象？", "不会自动恢复，记录进入待人工解决状态。", "本地重试会改变删除意图吗？", "不会，重试携带同一删除意图和客户端版本。", "审查结束前会写入同步队列吗？", "会保留待处理标记，但不把冲突静默转为成功。"],
+  ["请补充保存点检查的具体断言顺序。", "先检查保存点包含字段，再触发重建，最后读取重建后的界面。", "重建前是否先断言界面值？", "是，记录提交值作为重建后的比较基线。", "重建动作完成如何确认？", "等待界面恢复信号后再读取字段。", "如果字段缺失怎么办？", "立即让测试失败，不用默认值掩盖恢复缺陷。", "最后断言比较哪两个值？", "比较重建前提交值与重建后读取值，并确认恢复完成。"],
+  ["请补充冷启动采样的固定时间窗。", "先固定首屏帧时间窗，再在相同窗口核对主线程工作。", "热启动对照使用相同窗口吗？", "是，冷启动和热启动都按同一时间窗采样。", "采样时先改渲染实现吗？", "不先改实现，先保留证据判断是否为回归。", "还会记录线程调度吗？", "会记录主线程工作段与首屏帧对应关系。", "怎样确认问题可复现？", "至少重复冷启动采样并与热启动对照后再下结论。"],
+  ["请补充 Compose 恢复断言中的输入字段来源。", "使用重建前提交的同一输入字段作为比较基线。", "恢复后只看界面是否显示可以吗？", "不够，还要读取字段值并与提交值相等。", "是否检查恢复信号？", "是，字段相等与界面恢复完成都必须满足。", "如果输入字段为空呢？", "仍按提交的空值比较，不改用默认字符串。", "断言发生在重建的哪个阶段？", "恢复信号到达且字段可读之后执行断言。"],
+  ["请补充发布锁定时的两个前置条件如何核对。", "先核对插件版本与发布分支锁定文件，再核对客户端同步协议版本。", "两个条件是否都来自同一分支？", "是，都必须来自已验证的发布分支。", "协议版本不一致时能否只更新插件？", "不能，必须先解决协议版本差异。", "客户端版本锁定是否允许临时覆盖？", "不允许，临时覆盖会破坏发布可复现性。", "两个条件都通过后才做什么？", "只有都通过后才可更新发布配置。"],
+];
+const repairTurnSets = repairDraft.repair_payload.turnSets;
+for (const [sessionIndex, session] of l0Conversations.entries()) {
+  const turns = repairTurnSets[sessionIndex];
+  const repairMessages = turns.map((content, turnIndex) => withHash({
+    messageId: `${session.sessionId}-M${String(turnIndex + 3).padStart(2, "0")}`,
+    role: turnIndex % 2 === 0 ? "user" : "assistant", content,
+    sourceEvidenceIds: ["source-t11-memory-repair"],
+    observedAt: `2026-08-30T12:${String(turnIndex + 1).padStart(2, "0")}:00+08:00`,
+  }));
+  session.messages.push(...repairMessages);
+  const { contentHash: _ignored, ...sessionCore } = session;
+  session.contentHash = sha(sessionCore);
+}
+const makeRepairConversation = (assetId, topic, turns) => {
+  const messages = turns.map((content, turnIndex) => withHash({
+    messageId: `${assetId}-M${String(turnIndex + 1).padStart(2, "0")}`,
+    role: turnIndex % 2 === 0 ? "user" : "assistant", content,
+    sourceEvidenceIds: ["source-t11-memory-repair"],
+    observedAt: `2026-08-30T13:${String(turnIndex + 1).padStart(2, "0")}:00+08:00`,
+  }));
+  return withHash({ assetId, ownerAgentId: agentId, sourceEvidenceIds: ["source-t11-memory-repair"], observedAt, sessionId: assetId, messages });
+};
+l0Conversations.push(...repairDraft.repair_payload.newL0.map(({ assetId, turns }) => makeRepairConversation(assetId, assetId.includes("PULSE") ? "Pulse" : "Orchid", turns)));
 const l1Memories = [
   withHash({ assetId: "T11-L1-ORCHID-AGP-MIGRATION-RULE", ownerAgentId: agentId, sourceEvidenceIds: ["source-t11-memory-atomic"], observedAt, type: "decision", content: memoryPairs[0].negative.delta_message.content, status: "active", validFrom: observedAt, supportingMessageIds: [l0Conversations[0].messages[1].messageId], codeEvidenceLocators: [], testEvidenceLocators: [] }),
   withHash({ assetId: "T11-L1-HELIO-COMPOSE-RESTORE-ASSERTION", ownerAgentId: agentId, sourceEvidenceIds: ["source-t11-memory-atomic"], observedAt, type: "fact", content: memoryPairs[4].negative.delta_message.content, status: "active", validFrom: observedAt, supportingMessageIds: [l0Conversations[4].messages[1].messageId], codeEvidenceLocators: [], testEvidenceLocators: [] }),
+  withHash({ assetId: "T11-L1-ORCHID-PLUGIN-SOURCE", ownerAgentId: agentId, sourceEvidenceIds: ["source-t11-memory-repair-atomic"], observedAt, type: "decision", content: "Orchid 构建先核对根级插件声明与官方仓库源，再确认模块继承同一版本目录。", status: "active", validFrom: observedAt, supportingMessageIds: [l0Conversations[6].messages[1].messageId], codeEvidenceLocators: [], testEvidenceLocators: [] }),
+  withHash({ assetId: "T11-L1-ORCHID-MODULE-INHERITANCE", ownerAgentId: agentId, sourceEvidenceIds: ["source-t11-memory-repair-atomic"], observedAt, type: "fact", content: "Orchid 模块不重复声明插件，统一从根级版本目录继承。", status: "active", validFrom: observedAt, supportingMessageIds: [l0Conversations[6].messages[3].messageId], codeEvidenceLocators: [], testEvidenceLocators: [] }),
+  withHash({ assetId: "T11-L1-ATLAS-DELETE-INTENT", ownerAgentId: agentId, sourceEvidenceIds: ["source-t11-memory-repair-atomic"], observedAt, type: "decision", content: "Atlas 冲突重试必须携带原删除意图和客户端版本。", status: "active", validFrom: observedAt, supportingMessageIds: [l0Conversations[1].messages[3].messageId], codeEvidenceLocators: [], testEvidenceLocators: [] }),
+  withHash({ assetId: "T11-L1-ATLAS-MANUAL-CONFLICT", ownerAgentId: agentId, sourceEvidenceIds: ["source-t11-memory-repair-atomic"], observedAt, type: "fact", content: "服务端版本越过删除基线时，Atlas 记录待人工解决而不自动复活。", status: "active", validFrom: observedAt, supportingMessageIds: [l0Conversations[1].messages[5].messageId], codeEvidenceLocators: [], testEvidenceLocators: [] }),
+  withHash({ assetId: "T11-L1-NIMBUS-SAVEPOINT", ownerAgentId: agentId, sourceEvidenceIds: ["source-t11-memory-repair-atomic"], observedAt, type: "fact", content: "Nimbus 恢复测试先确认保存点包含目标字段，再触发界面重建。", status: "active", validFrom: observedAt, supportingMessageIds: [l0Conversations[2].messages[1].messageId], codeEvidenceLocators: [], testEvidenceLocators: [] }),
+  withHash({ assetId: "T11-L1-NIMBUS-FAIL-MISSING-FIELD", ownerAgentId: agentId, sourceEvidenceIds: ["source-t11-memory-repair-atomic"], observedAt, type: "decision", content: "Nimbus 保存点缺少目标字段时立即失败，不以默认值掩盖恢复缺陷。", status: "active", validFrom: observedAt, supportingMessageIds: [l0Conversations[2].messages[5].messageId], codeEvidenceLocators: [], testEvidenceLocators: [] }),
+  withHash({ assetId: "T11-L1-PULSE-SAME-WINDOW", ownerAgentId: agentId, sourceEvidenceIds: ["source-t11-memory-repair-atomic"], observedAt, type: "decision", content: "Pulse 冷启动和热启动必须使用同一首屏帧时间窗进行对照。", status: "active", validFrom: observedAt, supportingMessageIds: [l0Conversations[3].messages[3].messageId], codeEvidenceLocators: [], testEvidenceLocators: [] }),
+  withHash({ assetId: "T11-L1-PULSE-DEFER-RENDER-CHANGE", ownerAgentId: agentId, sourceEvidenceIds: ["source-t11-memory-repair-atomic"], observedAt, type: "preference", content: "Pulse 性能复核先保留采样证据，不在确认回归前修改渲染实现。", status: "active", validFrom: observedAt, supportingMessageIds: [l0Conversations[3].messages[5].messageId], codeEvidenceLocators: [], testEvidenceLocators: [] }),
+  withHash({ assetId: "T11-L1-HELIO-SAME-FIELD", ownerAgentId: agentId, sourceEvidenceIds: ["source-t11-memory-repair-atomic"], observedAt, type: "fact", content: "Helio 恢复后读取的字段必须与重建前提交的同一字段比较。", status: "active", validFrom: observedAt, supportingMessageIds: [l0Conversations[4].messages[3].messageId], codeEvidenceLocators: [], testEvidenceLocators: [] }),
+  withHash({ assetId: "T11-L1-RELEASE-NO-OVERRIDE", ownerAgentId: agentId, sourceEvidenceIds: ["source-t11-memory-repair-atomic"], observedAt, type: "decision", content: "发布配置的插件与同步协议版本不允许临时覆盖锁定值。", status: "active", validFrom: observedAt, supportingMessageIds: [l0Conversations[5].messages[5].messageId], codeEvidenceLocators: [], testEvidenceLocators: [] }),
 ];
+// The repair payload is the auditable source of truth for every new L1 item.
+for (const [assetId, type, content, sessionIndex, messageIndex] of repairDraft.repair_payload.newL1) {
+  const item = l1Memories.find((candidate) => candidate.assetId === assetId);
+  if (!item) continue;
+  item.type = type;
+  item.content = content;
+  item.supportingMessageIds = [l0Conversations[sessionIndex].messages[messageIndex].messageId];
+  const { contentHash: _ignored, ...itemCore } = item;
+  item.contentHash = sha(itemCore);
+}
 const l2Scenes = [
   withHash({ assetId: "T11-L2-NIMBUS-RESTORE-TIMELINE", ownerAgentId: agentId, sourceEvidenceIds: ["source-t11-memory-scene"], observedAt, path: "mobile/nimbus/restoration-timeline", summary: "Nimbus verified restoration timeline", content: memoryPairs[2].negative.delta_message.content, injected: false, supportingSessionIds: [l0Conversations[1].sessionId, l0Conversations[2].sessionId] }),
   withHash({ assetId: "T11-L2-PULSE-COLD-START-JANK", ownerAgentId: agentId, sourceEvidenceIds: ["source-t11-memory-scene"], observedAt, path: "mobile/pulse/cold-start-jank", summary: "Pulse cold-start jank investigation runbook", content: memoryPairs[3].negative.delta_message.content, injected: false, supportingSessionIds: [l0Conversations[3].sessionId, l0Conversations[4].sessionId] }),
+  withHash({ assetId: "T11-L2-ORCHID-BUILD-REVIEW", ownerAgentId: agentId, sourceEvidenceIds: ["source-t11-memory-repair-scene"], observedAt, path: "mobile/orchid/build-review", summary: "Orchid plugin and version catalog review", content: "Orchid 构建复核按根级插件声明、官方仓库源、模块继承和最小构建顺序进行。", injected: false, supportingSessionIds: [l0Conversations[0].sessionId, l0Conversations[6].sessionId] }),
+  withHash({ assetId: "T11-L2-PULSE-TRACE-COMPARISON", ownerAgentId: agentId, sourceEvidenceIds: ["source-t11-memory-repair-scene"], observedAt, path: "mobile/pulse/trace-comparison", summary: "Pulse cold-hot trace comparison", content: "Pulse 先固定首屏帧窗口并记录主线程工作，再用相同窗口比较冷启动与热启动。", injected: false, supportingSessionIds: [l0Conversations[3].sessionId, l0Conversations[7].sessionId] }),
 ];
+for (const [assetId, path, summary, content, firstSessionIndex, secondSessionIndex] of repairDraft.repair_payload.newL2) {
+  const item = l2Scenes.find((candidate) => candidate.assetId === assetId);
+  if (!item) continue;
+  item.path = path;
+  item.summary = summary;
+  item.content = content;
+  item.supportingSessionIds = [l0Conversations[firstSessionIndex].sessionId, l0Conversations[secondSessionIndex].sessionId];
+  const { contentHash: _ignored, ...itemCore } = item;
+  item.contentHash = sha(itemCore);
+}
+const l3Payload = repairDraft.repair_payload.newL3;
+const l3Profiles = [withHash({ assetId: l3Payload.assetId, ownerAgentId: agentId, sourceEvidenceIds: ["source-t11-memory-repair-profile"], observedAt, content: l3Payload.content, stability: l3Payload.stability })];
 
 const skills = input.skill_visibility.map((visibility) => {
   const source = input.skill_sources.find((item) => item.source_id === visibility.source_id);
@@ -117,10 +191,10 @@ const knowledge = input.knowledge_assets.map((asset, index) => withHash({
   ...(asset.kind === "wiki" ? {} : { repoUrl: workspaceTemplates[index % workspaceTemplates.length].workspace.repoUrl, repoCommit: workspaceTemplates[index % workspaceTemplates.length].source.revision, indexVersion: "task1-build06-fixture-v1" }),
   snapshotSha256: sha(`knowledge:${asset.id}:${asset.description}`), bindings: [{ agentId, visibility: "fixed" }],
 }));
-const memoryAssets = { schema_version: "task1.formal_memory_assets.v1", team_id: "T11", l0_conversations: l0Conversations, l1_memories: l1Memories, l2_scenes: l2Scenes, l3_profiles: [] };
+const memoryAssets = { schema_version: "task1.formal_memory_assets.v1", team_id: "T11", l0_conversations: l0Conversations, l1_memories: l1Memories, l2_scenes: l2Scenes, l3_profiles: l3Profiles };
 const skillAssets = { schema_version: "task1.formal_skill_assets.v1", team_id: "T11", skills };
 const knowledgeAssets = { schema_version: "task1.formal_knowledge_assets.v1", team_id: "T11", knowledge };
-const snapshotAssetIds = [...l0Conversations, ...l1Memories, ...l2Scenes, ...skills, ...knowledge].map((asset) => asset.assetId);
+const snapshotAssetIds = [...l0Conversations, ...l1Memories, ...l2Scenes, ...l3Profiles, ...skills, ...knowledge].map((asset) => asset.assetId);
 const visibleAssetSetSha256 = sha({ teamId: "T11", userId: "user-task1-t11-eval", agentId, assetIds: snapshotAssetIds });
 
 const memoryRoutes = [
@@ -197,8 +271,8 @@ const detail = withHash({ description: "Maintains Android/iOS builds, lifecycle,
 const businessAgents = [withHash({ agentId, teamId: "T11", name: "T11 通用业务 Agent", agentDetail: detail, importedMemoryAgentIds: [], boundSkillIds: skills.filter((skill) => skill.visibility === "private").map((skill) => skill.assetId), fixedKnowledgeIds: knowledge.map((asset) => asset.assetId), sourceEvidenceIds: ["source-t11-current-anchor"] })];
 const fragment = {
   schema_version: "task1.team_fragment.v1", build_id: "build-06", team_id: "T11", split: "dev", sourceEvidence, teams, businessAgents, tasks, publicCases, privateAnnotations, pairs,
-  snapshotAssetIds, generatorBatchRefs: ["T11/memory/memory-batch-01", "T11/memory/memory-batch-02", "T11/skill/skill-batch-01", "T11/skill/skill-batch-02", "T11/knowledge/knowledge-batch-01", "T11/natural-negative/natural-negative-batch-01"],
-  externalImports: input.skill_sources.map((source) => ({ sourceId: `source-${source.source_id}`, repository: source.repository, revision: source.revision, path: source.path, license: source.license, rawFileSha256: source.raw_sha256, storedFileSha256: source.raw_sha256, storedPath: `source-material/T11/skills/${input.skill_visibility.find((item) => item.source_id === source.source_id).name}/SKILL.md`, licenseFileSha256: source.license_sha256, storedLicensePath: source.repository === "https://github.com/android/skills" ? "source-material/T11/skills/licenses/android-skills-LICENSE.txt" : "source-material/T11/skills/licenses/android-testing-skills-LICENSE" })),
+  snapshotAssetIds, generatorBatchRefs: ["T11/memory/memory-batch-01", "T11/memory/memory-batch-02", "T11/skill/skill-batch-01", "T11/skill/skill-batch-02", "T11/knowledge/knowledge-batch-01", "T11/natural-negative/natural-negative-batch-01", "T11/repair/luna-repair-01"],
+  externalImports: input.skill_sources.map((source) => ({ sourceId: `source-${source.source_id}`, repository: source.repository, revision: source.revision, path: source.path, license: source.license, rawFileSha256: source.raw_sha256, storedFileSha256: source.raw_sha256, storedPath: source.stored_path ?? `source-material/T11/skills/${input.skill_visibility.find((item) => item.source_id === source.source_id).name}/SKILL.md`, licenseFileSha256: source.license_sha256, storedLicensePath: source.stored_license_path ?? (source.repository === "https://github.com/android/skills" ? "source-material/T11/skills/licenses/android-skills-LICENSE.txt" : "source-material/T11/skills/licenses/android-testing-skills-LICENSE") })),
 };
 
 await mkdir(assetsDir, { recursive: true });
@@ -206,5 +280,5 @@ await writeFile(path.join(staging, "team-fragment.json"), JSON.stringify(fragmen
 await writeFile(path.join(assetsDir, "memory.json"), JSON.stringify(memoryAssets, null, 2) + "\n");
 await writeFile(path.join(assetsDir, "skills.json"), JSON.stringify(skillAssets, null, 2) + "\n");
 await writeFile(path.join(assetsDir, "knowledge.json"), JSON.stringify(knowledgeAssets, null, 2) + "\n");
-await writeFile(path.join(staging, "review.md"), `# T11 Sol review\n\nReviewed all Luna drafts against production routing contracts. Final counts: 6 Memory positives, 6 Skill positives, 3 Knowledge positives, 15 paired no-tool negatives, and 10 natural coding negatives. Memory scene-discovery candidates were corrected to include read_scene. External Skill workflows remain pinned to the three input-pack files.\n`);
+await writeFile(path.join(staging, "review.md"), `# T11 Sol review\n\nReviewed all Luna drafts against production routing contracts. Existing 40 cases, 15 pairs, and Gold annotations are preserved. Final asset pool: L0=8 sessions (12 messages each), L1=12, L2=4, L3=1, Skill=14 (5 listed, 9 same-Team searchable), with at least three same-domain searchable competitors for every skill_search route. Existing 6 Memory positives, 6 Skill positives, 3 Knowledge positives, 15 paired no-tool negatives, and 10 natural coding negatives remain unchanged. Memory scene-discovery candidates retain read_scene. Repair batch t11-memory-repair-luna-high was generated with gpt-5.6-luna/high and reviewed by Sol. New Skills reuse frozen shared GitHub files with pinned commit, path, blob/SHA-256, and license records.\n`);
 console.log(JSON.stringify({ team: "T11", cases: publicCases.length, pairs: pairs.length, positives: privateAnnotations.filter((item) => item.gold.needTdaiTool).length, assets: snapshotAssetIds.length }, null, 2));

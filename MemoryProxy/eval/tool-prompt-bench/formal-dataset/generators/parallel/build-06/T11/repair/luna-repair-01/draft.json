@@ -1,0 +1,46 @@
+{
+  "schema_version": "task1.luna_batch_draft.v1",
+  "batch_id": "t11-memory-repair-luna-high",
+  "team_id": "T11",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "repair_payload": {
+    "turnSets": [
+      ["请补充当时检查插件声明时先看了哪一份仓库配置。", "先看根级插件声明，再核对仓库块与版本目录是否一致。", "当时是否把模块内重复声明一并清理？", "是，模块只保留继承关系，重复声明已移除。", "最小构建验证覆盖了哪些模块？", "覆盖 Orchid 的核心 app 与一个库模块，结果一致。", "版本目录是否由发布分支锁定？", "是，发布分支锁定文件是唯一版本来源。", "这条约定还适用于当前失败吗？", "适用；先按同一继承规则核对配置，再判断失败是否来自插件解析。"],
+      ["请补充冲突评审中服务端版本如何参与判断。", "先读取服务端版本并与删除基线比较，再决定是否可合并。", "如果更新版本只改变非删除字段呢？", "仍保留删除意图，只有确认未越过基线才允许合并。", "越过基线后是否自动恢复对象？", "不会自动恢复，记录进入待人工解决状态。", "本地重试会改变删除意图吗？", "不会，重试携带同一删除意图和客户端版本。", "审查结束前会写入同步队列吗？", "会保留待处理标记，但不把冲突静默转为成功。"],
+      ["请补充保存点检查的具体断言顺序。", "先检查保存点包含字段，再触发重建，最后读取重建后的界面。", "重建前是否先断言界面值？", "是，记录提交值作为重建后的比较基线。", "重建动作完成如何确认？", "等待界面恢复信号后再读取字段。", "如果字段缺失怎么办？", "立即让测试失败，不用默认值掩盖恢复缺陷。", "最后断言比较哪两个值？", "比较重建前提交值与重建后读取值，并确认恢复完成。"],
+      ["请补充冷启动采样的固定时间窗。", "先固定首屏帧时间窗，再在相同窗口核对主线程工作。", "热启动对照使用相同窗口吗？", "是，冷启动和热启动都按同一时间窗采样。", "采样时先改渲染实现吗？", "不先改实现，先保留证据判断是否为回归。", "还会记录线程调度吗？", "会记录主线程工作段与首屏帧对应关系。", "怎样确认问题可复现？", "至少重复冷启动采样并与热启动对照后再下结论。"],
+      ["请补充 Compose 恢复断言中的输入字段来源。", "使用重建前提交的同一输入字段作为比较基线。", "恢复后只看界面是否显示可以吗？", "不够，还要读取字段值并与提交值相等。", "是否检查恢复信号？", "是，字段相等与界面恢复完成都必须满足。", "如果输入字段为空呢？", "仍按提交的空值比较，不改用默认字符串。", "断言发生在重建的哪个阶段？", "恢复信号到达且字段可读之后执行断言。"],
+      ["请补充发布锁定时的两个前置条件如何核对。", "先核对插件版本与发布分支锁定文件，再核对客户端同步协议版本。", "两个条件是否都来自同一分支？", "是，都必须来自已验证的发布分支。", "协议版本不一致时能否只更新插件？", "不能，必须先解决协议版本差异。", "客户端版本锁定是否允许临时覆盖？", "不允许，临时覆盖会破坏发布可复现性。", "两个条件都通过后才做什么？", "只有都通过后才可更新发布配置。"]
+    ],
+    "newL0": [
+      {"assetId":"T11-L0-ORCHID-GRADLE-CATALOG","turns":["请补充 Orchid 版本目录评审的完整记录。","先确认根目录插件声明与版本目录来源。","随后如何核对模块继承？","逐个模块确认不重复声明并继承同一目录。","失败时先看什么？","先看插件解析错误，再核对仓库源。","是否记录最小构建？","记录 app 与库模块的最小构建结果。","版本漂移如何处理？","锁定发布分支版本，拒绝临时覆盖。","最后结论是什么？","配置规则在最小构建上验证通过。"]},
+      {"assetId":"T11-L0-PULSE-TRACE-COMPARE","turns":["请补充 Pulse 线程采样复核记录。","先固定首屏帧采样窗口。","接着记录什么？","记录相同窗口内的主线程工作段。","要不要先调整渲染？","不要，先完成冷启动证据采集。","热启动怎么使用？","使用相同窗口作为对照。","采样需要重复吗？","重复冷启动并核对帧时序是否稳定。","何时判断回归？","冷热点差异与主线程证据一致后再判断。"]}
+    ],
+    "newL1": [
+      ["T11-L1-ORCHID-PLUGIN-SOURCE","decision","Orchid 构建先核对根级插件声明与官方仓库源，再确认模块继承同一版本目录。",6,1],
+      ["T11-L1-ORCHID-MODULE-INHERITANCE","fact","Orchid 模块不重复声明插件，统一从根级版本目录继承。",6,3],
+      ["T11-L1-ATLAS-DELETE-INTENT","decision","Atlas 冲突重试必须携带原删除意图和客户端版本。",1,3],
+      ["T11-L1-ATLAS-MANUAL-CONFLICT","fact","服务端版本越过删除基线时，Atlas 记录待人工解决而不自动复活。",1,5],
+      ["T11-L1-NIMBUS-SAVEPOINT","fact","Nimbus 恢复测试先确认保存点包含目标字段，再触发界面重建。",2,1],
+      ["T11-L1-NIMBUS-FAIL-MISSING-FIELD","decision","Nimbus 保存点缺少目标字段时立即失败，不以默认值掩盖恢复缺陷。",2,5],
+      ["T11-L1-PULSE-SAME-WINDOW","decision","Pulse 冷启动和热启动必须使用同一首屏帧时间窗进行对照。",3,3],
+      ["T11-L1-PULSE-DEFER-RENDER-CHANGE","preference","Pulse 性能复核先保留采样证据，不在确认回归前修改渲染实现。",3,5],
+      ["T11-L1-HELIO-SAME-FIELD","fact","Helio 恢复后读取的字段必须与重建前提交的同一字段比较。",4,3],
+      ["T11-L1-RELEASE-NO-OVERRIDE","decision","发布配置的插件与同步协议版本不允许临时覆盖锁定值。",5,5]
+    ],
+    "newL2": [
+      ["T11-L2-ORCHID-BUILD-REVIEW","mobile/orchid/build-review","Orchid plugin and version catalog review","Orchid 构建复核按根级插件声明、官方仓库源、模块继承和最小构建顺序进行。",0,6],
+      ["T11-L2-PULSE-TRACE-COMPARISON","mobile/pulse/trace-comparison","Pulse cold-hot trace comparison","Pulse 先固定首屏帧窗口并记录主线程工作，再用相同窗口比较冷启动与热启动。",3,7]
+    ],
+    "newL3": {"assetId":"T11-L3-MOBILE-VERIFICATION-PREFERENCE","content":"T11 移动端工程偏好先固定可复现证据、稳定时间窗和明确验收信号，再进行构建、生命周期或性能结论判断；信息缺口明确时才检索历史资产，并保留可重复的审查轨迹，便于团队在不同设备与版本间复核。","stability":"team"}
+  },
+  "cases": [
+    {"asset_type":"l0_expansion","asset_ids":["T11-L0-SUPPORT-1","T11-L0-ATLAS-CONFLICT-REVIEW","T11-L0-SUPPORT-3","T11-L0-SUPPORT-4","T11-L0-SUPPORT-5","T11-L0-ORCHID-ATLAS-RELEASE-LOCK"]},
+    {"asset_type":"l0_new","asset_ids":["T11-L0-ORCHID-GRADLE-CATALOG","T11-L0-PULSE-TRACE-COMPARE"]},
+    {"asset_type":"l1_new","asset_ids":["T11-L1-ORCHID-PLUGIN-SOURCE","T11-L1-ORCHID-MODULE-INHERITANCE","T11-L1-ATLAS-DELETE-INTENT","T11-L1-ATLAS-MANUAL-CONFLICT","T11-L1-NIMBUS-SAVEPOINT","T11-L1-NIMBUS-FAIL-MISSING-FIELD","T11-L1-PULSE-SAME-WINDOW","T11-L1-PULSE-DEFER-RENDER-CHANGE","T11-L1-HELIO-SAME-FIELD","T11-L1-RELEASE-NO-OVERRIDE"]},
+    {"asset_type":"l2_new","asset_ids":["T11-L2-ORCHID-BUILD-REVIEW","T11-L2-PULSE-TRACE-COMPARISON"]},
+    {"asset_type":"l3_new","asset_ids":["T11-L3-MOBILE-VERIFICATION-PREFERENCE"]}
+  ]
+}

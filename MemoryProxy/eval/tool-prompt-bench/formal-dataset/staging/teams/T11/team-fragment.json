@@ -82,6 +82,82 @@
       "contentHash": "1832a9ff21606849d91dd7fd43cd2b637a845e72f2dbc0c0766bac3ae76f11a1"
     },
     {
+      "sourceId": "source-t11-memory-repair",
+      "provenanceKind": "synthetic",
+      "role": "history",
+      "origin": "synthetic_agent_replay",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "redacted_replay",
+      "transformVersion": "task1.build-06.t11.v1",
+      "reviewStatus": "reviewed",
+      "generatorModel": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "promptVersion": "task1.luna-batch.v1",
+      "batchId": "t11-memory-repair-luna-high",
+      "generatedAt": "2026-08-30T12:00:00+08:00",
+      "contentRefs": [
+        "generators/parallel/build-06/T11/repair/luna-repair-01/draft.json"
+      ],
+      "contentHash": "acf1f6ea2e3902b4dd4ac037ebb9860b3608af13377bc15286d560190f84e471"
+    },
+    {
+      "sourceId": "source-t11-memory-repair-atomic",
+      "provenanceKind": "synthetic",
+      "role": "history",
+      "origin": "synthetic_agent_replay",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "atomic_fact_extraction",
+      "transformVersion": "task1.build-06.t11.v1",
+      "reviewStatus": "reviewed",
+      "generatorModel": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "promptVersion": "task1.luna-batch.v1",
+      "batchId": "t11-memory-repair-luna-high",
+      "generatedAt": "2026-08-30T12:00:00+08:00",
+      "contentRefs": [
+        "generators/parallel/build-06/T11/repair/luna-repair-01/draft.json"
+      ],
+      "contentHash": "13fae3bb844cb6fa24541e41543681fdb6e7d522a53dffdda620416b50ec458c"
+    },
+    {
+      "sourceId": "source-t11-memory-repair-scene",
+      "provenanceKind": "synthetic",
+      "role": "history",
+      "origin": "synthetic_agent_replay",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "multi_session_scene_synthesis",
+      "transformVersion": "task1.build-06.t11.v1",
+      "reviewStatus": "reviewed",
+      "generatorModel": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "promptVersion": "task1.luna-batch.v1",
+      "batchId": "t11-memory-repair-luna-high",
+      "generatedAt": "2026-08-30T12:00:00+08:00",
+      "contentRefs": [
+        "generators/parallel/build-06/T11/repair/luna-repair-01/draft.json"
+      ],
+      "contentHash": "a683cea72f075ad022e3150952a06d5b3937c7edde004a90307a13073737b115"
+    },
+    {
+      "sourceId": "source-t11-memory-repair-profile",
+      "provenanceKind": "synthetic",
+      "role": "history",
+      "origin": "synthetic_agent_replay",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "stable_profile_derivation",
+      "transformVersion": "task1.build-06.t11.v1",
+      "reviewStatus": "reviewed",
+      "generatorModel": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "promptVersion": "task1.luna-batch.v1",
+      "batchId": "t11-memory-repair-luna-high",
+      "generatedAt": "2026-08-30T12:00:00+08:00",
+      "contentRefs": [
+        "generators/parallel/build-06/T11/repair/luna-repair-01/draft.json"
+      ],
+      "contentHash": "2bf6e1f9077e381324baf579fd646f025e233db04c8f460d8041e83997b87d6e"
+    },
+    {
       "sourceId": "source-t11-pairs",
       "provenanceKind": "synthetic",
       "role": "evaluation_derivation",
@@ -228,6 +304,270 @@
       "piiScan": "passed",
       "reviewedBy": "Sol/build-06",
       "contentHash": "5b2718c54aa5ff2657bfafc2b4ede09a02a972dca68bdbcbdd9233f52213fc3e"
+    },
+    {
+      "sourceId": "source-t11-skill-testing-python",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "datasetArtifactSha256": "3a210279d297921c5c32c8be3e9938c711e5da80fe4a9625324b541e86d9333c",
+      "sourceRepoUrl": "https://github.com/benchflow-ai/skillsbench",
+      "sourceRepoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "sourceRepoLicense": "Apache-2.0",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "tasks/fix-build-agentops/environment/skills/testing-python/SKILL.md",
+      "evidenceSha256": "3a210279d297921c5c32c8be3e9938c711e5da80fe4a9625324b541e86d9333c",
+      "transformInputSha256": "3a210279d297921c5c32c8be3e9938c711e5da80fe4a9625324b541e86d9333c",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "2db299b88694c458e50d0dd9bf5e4de856586ecb1efb557f99d900186faed176"
+    },
+    {
+      "sourceId": "source-t11-skill-temporal-testing",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "datasetArtifactSha256": "3e232b7d6c4d30c80b09024e83e1c7f229f031b0e511cabed45958cd8928af2e",
+      "sourceRepoUrl": "https://github.com/benchflow-ai/skillsbench",
+      "sourceRepoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "sourceRepoLicense": "Apache-2.0",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "tasks/temporal-python-testing/environment/skills/temporal-python-testing/SKILL.md",
+      "evidenceSha256": "3e232b7d6c4d30c80b09024e83e1c7f229f031b0e511cabed45958cd8928af2e",
+      "transformInputSha256": "3e232b7d6c4d30c80b09024e83e1c7f229f031b0e511cabed45958cd8928af2e",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "9ad25909593086590f36a2c4998941b5fd7391ef095729219bc7c56b097e8423"
+    },
+    {
+      "sourceId": "source-t11-skill-pytest-coverage",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "datasetArtifactSha256": "1057ea1dd6a32fceb0cf79d542b703427e7970e86e4ce85f051d76a0d5f94379",
+      "sourceRepoUrl": "https://github.com/github/awesome-copilot",
+      "sourceRepoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "sourceRepoLicense": "MIT",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "skills/pytest-coverage/SKILL.md",
+      "evidenceSha256": "1057ea1dd6a32fceb0cf79d542b703427e7970e86e4ce85f051d76a0d5f94379",
+      "transformInputSha256": "1057ea1dd6a32fceb0cf79d542b703427e7970e86e4ce85f051d76a0d5f94379",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "acd7bab4b0e7ae42cb75df1211caef8559a8d5d83d8a53ce71b923615db4517c"
+    },
+    {
+      "sourceId": "source-t11-skill-discover-function",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "datasetArtifactSha256": "4bab2b9f0b3012d50b954b8d13203dfa07f686011ca6c21ba0bb4801f5fa2ef2",
+      "sourceRepoUrl": "https://github.com/benchflow-ai/skillsbench",
+      "sourceRepoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "sourceRepoLicense": "Apache-2.0",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "tasks/setup-fuzzing-py/environment/skills/discover-important-function/SKILL.md",
+      "evidenceSha256": "4bab2b9f0b3012d50b954b8d13203dfa07f686011ca6c21ba0bb4801f5fa2ef2",
+      "transformInputSha256": "4bab2b9f0b3012d50b954b8d13203dfa07f686011ca6c21ba0bb4801f5fa2ef2",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "92f667c955295e7293f45bfe8890c920e7cc57e1dde2071288d16a0809d6471b"
+    },
+    {
+      "sourceId": "source-t11-skill-fuzzing-python",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "datasetArtifactSha256": "ad65e531bd79b962d2cb9678099d92f865899b206dcbc308353444fc8cac4a1f",
+      "sourceRepoUrl": "https://github.com/benchflow-ai/skillsbench",
+      "sourceRepoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "sourceRepoLicense": "Apache-2.0",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "tasks/setup-fuzzing-py/environment/skills/fuzzing-python/SKILL.md",
+      "evidenceSha256": "ad65e531bd79b962d2cb9678099d92f865899b206dcbc308353444fc8cac4a1f",
+      "transformInputSha256": "ad65e531bd79b962d2cb9678099d92f865899b206dcbc308353444fc8cac4a1f",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "740566d56f8326e40230d54cd666821d76105d80ce709dc0aca3f0369267203a"
+    },
+    {
+      "sourceId": "source-t11-skill-python-parallel",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "datasetArtifactSha256": "71585d7d3c6691b2116b7ebfb90cf9133747b4fa08537f7a5657f03539f8fdc3",
+      "sourceRepoUrl": "https://github.com/benchflow-ai/skillsbench",
+      "sourceRepoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "sourceRepoLicense": "Apache-2.0",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "tasks/parallel-tfidf-search/environment/skills/python-parallelization/SKILL.md",
+      "evidenceSha256": "71585d7d3c6691b2116b7ebfb90cf9133747b4fa08537f7a5657f03539f8fdc3",
+      "transformInputSha256": "71585d7d3c6691b2116b7ebfb90cf9133747b4fa08537f7a5657f03539f8fdc3",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "9f901d0f560c3c783b53ab79dd1005dcf999b489bf01c0d0f7027f047c8a0fad"
+    },
+    {
+      "sourceId": "source-t11-skill-uv",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "datasetArtifactSha256": "1f79787d9dd198563d52047056aaaea06f1ef19442a1c07abe0429e51bc7e2c6",
+      "sourceRepoUrl": "https://github.com/benchflow-ai/skillsbench",
+      "sourceRepoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "sourceRepoLicense": "Apache-2.0",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "tasks/fix-build-agentops/environment/skills/uv-package-manager/SKILL.md",
+      "evidenceSha256": "1f79787d9dd198563d52047056aaaea06f1ef19442a1c07abe0429e51bc7e2c6",
+      "transformInputSha256": "1f79787d9dd198563d52047056aaaea06f1ef19442a1c07abe0429e51bc7e2c6",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "7fcb84c1eba857245c6f89d8c3f9f725cd49aa5111be25f107afe567119f5dc9"
+    },
+    {
+      "sourceId": "source-t11-skill-workload",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "datasetArtifactSha256": "a2b1f4653bd7939bd6c25f12051bed930f0e23dc2f2a269026fc39cb59cc5ef0",
+      "sourceRepoUrl": "https://github.com/benchflow-ai/skillsbench",
+      "sourceRepoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "sourceRepoLicense": "Apache-2.0",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "tasks/parallel-tfidf-search/environment/skills/workload-balancing/SKILL.md",
+      "evidenceSha256": "a2b1f4653bd7939bd6c25f12051bed930f0e23dc2f2a269026fc39cb59cc5ef0",
+      "transformInputSha256": "a2b1f4653bd7939bd6c25f12051bed930f0e23dc2f2a269026fc39cb59cc5ef0",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "fbe5717fcc2fd98e1a314149998dd0c517081d8f6a008e5b7be8bb6f45d77981"
+    },
+    {
+      "sourceId": "source-t11-skill-memory-opt",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "datasetArtifactSha256": "30daf5237b91ce4487f516fa623b624ac205f9a64a3b56978bdadaa76e5a50e5",
+      "sourceRepoUrl": "https://github.com/benchflow-ai/skillsbench",
+      "sourceRepoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "sourceRepoLicense": "Apache-2.0",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "tasks/parallel-tfidf-search/environment/skills/memory-optimization/SKILL.md",
+      "evidenceSha256": "30daf5237b91ce4487f516fa623b624ac205f9a64a3b56978bdadaa76e5a50e5",
+      "transformInputSha256": "30daf5237b91ce4487f516fa623b624ac205f9a64a3b56978bdadaa76e5a50e5",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "2f61b5c1ef262efb261922d4c928bd4e0b9aa55152deb8a96913c2d5f352b5f5"
+    },
+    {
+      "sourceId": "source-t11-skill-qdrant",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "datasetArtifactSha256": "d7b38e979bfdc5cb621862e8a91a6e10cf101ae53980fdc3181a9dc219fa56f1",
+      "sourceRepoUrl": "https://github.com/github/awesome-copilot",
+      "sourceRepoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "sourceRepoLicense": "MIT",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "skills/qdrant-clients-sdk/SKILL.md",
+      "evidenceSha256": "d7b38e979bfdc5cb621862e8a91a6e10cf101ae53980fdc3181a9dc219fa56f1",
+      "transformInputSha256": "d7b38e979bfdc5cb621862e8a91a6e10cf101ae53980fdc3181a9dc219fa56f1",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "c807f75c63589d19b17998c1b02d999d2ccad28b2a588ce1f8508dd2d2db3072"
+    },
+    {
+      "sourceId": "source-t11-skill-analyze-ci",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "datasetArtifactSha256": "ebf10c1c4f7e49efbb7112ac0b5160d0549596d1db7ee961b9ecd4c6182ae6c5",
+      "sourceRepoUrl": "https://github.com/github/awesome-copilot",
+      "sourceRepoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "sourceRepoLicense": "MIT",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "skills/analyze-ci/SKILL.md",
+      "evidenceSha256": "ebf10c1c4f7e49efbb7112ac0b5160d0549596d1db7ee961b9ecd4c6182ae6c5",
+      "transformInputSha256": "ebf10c1c4f7e49efbb7112ac0b5160d0549596d1db7ee961b9ecd4c6182ae6c5",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "4d713227f880b6942cb1ca5b2f8fbc6d7b9338821a362212a9085cad167bd46e"
     }
   ],
   "teams": [
@@ -265,7 +605,10 @@
       "importedMemoryAgentIds": [],
       "boundSkillIds": [
         "T11-SKILL-AGP9",
-        "T11-SKILL-STATE-RESTORE"
+        "T11-SKILL-STATE-RESTORE",
+        "T11-SKILL-TESTING-PYTHON",
+        "T11-SKILL-TEMPORAL-TESTING",
+        "T11-SKILL-PYTEST-COVERAGE"
       ],
       "fixedKnowledgeIds": [
         "knowledge-t11-android-build",
@@ -275,7 +618,7 @@
       "sourceEvidenceIds": [
         "source-t11-current-anchor"
       ],
-      "contentHash": "2691586ecd0902200622d8939be36f74819d44946ce5fcdde279f3da0abb1fb5"
+      "contentHash": "3e7baa238647989b1c56fb99aba73ccb52ccf1be2ca03cf2af64def26717789b"
     }
   ],
   "tasks": [
@@ -512,8 +855,8 @@
         }
       ],
       "query": "请找回 Orchid 迁移中已经验证的插件声明与仓库配置约定，用来对照当前构建失败。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "d5b1c104460b34073ccd404f384ef64cafc949e3147f490b445ef45bd609d260"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "c18271e9231e1e461e6f9550e83ba2067a654d6832635c9883b1fefd20c71cbe"
     },
     {
       "caseId": "T11-MEMORY-001-N",
@@ -571,8 +914,8 @@
         }
       ],
       "query": "请找回 Orchid 迁移中已经验证的插件声明与仓库配置约定，用来对照当前构建失败。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "c7673c5cdbad341f2711d635e4b28475fff22aae76e58edc8a8cd4906f634312"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "396839ff77f4f35d331c0108dabf51c3044563fd5e6f8daa52df1b7b8443879e"
     },
     {
       "caseId": "T11-MEMORY-002-P",
@@ -630,8 +973,8 @@
         }
       ],
       "query": "请找回 Atlas 冲突合并评审中关于本地删除与远端更新同时到达时如何处理的原话。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "228cd2d5e9c4b3b45a28e28755f82c6d7a6addaa2cfc0d22e54df4c8a8ee6c6c"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "8a9451dabff7338f6ddae85a14150b861613a840fb3b9dfdbc0303c4e8a22190"
     },
     {
       "caseId": "T11-MEMORY-002-N",
@@ -689,8 +1032,8 @@
         }
       ],
       "query": "请找回 Atlas 冲突合并评审中关于本地删除与远端更新同时到达时如何处理的原话。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "9c1447d3fdab018c88a51bd9c2a226546960990af877ce8c6dc684b869e7ada0"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "951e783acfd243984c5584a4e00b16ac238ba815c109fa5f6a83722c0d389cda"
     },
     {
       "caseId": "T11-MEMORY-003-P",
@@ -748,8 +1091,8 @@
         }
       ],
       "query": "请找回 Nimbus 状态恢复验证时的动作顺序：保存点检查、界面重建和状态断言分别先后如何安排？",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "9285fe63103df93b1ba6c20252514f2bd47ed285b6a284ebfd482a5a0680acc5"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "110f2c03ec008063d030b7f11dc557f8971779cc239230f85dddc84d47acb9c4"
     },
     {
       "caseId": "T11-MEMORY-003-N",
@@ -807,8 +1150,8 @@
         }
       ],
       "query": "请找回 Nimbus 状态恢复验证时的动作顺序：保存点检查、界面重建和状态断言分别先后如何安排？",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "2aac05d2bfa49b7b600da7197983871969f5118b85b9add62f0d7f5dc295d00e"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "cf8f1d1a3ccc1b9368dc3fa0334f2908114c46fd3b90196ad22fcad6991ffbce"
     },
     {
       "caseId": "T11-MEMORY-004-P",
@@ -866,8 +1209,8 @@
         }
       ],
       "query": "请找回 Pulse 冷启动卡顿复核所用的历史排查流程，用于按同一顺序重新采样。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "8d5b95b7e854fb10158f3235e10368bb9081918039f551b1f5c64d5b2df7a705"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "c3d779dfdbf09435518e80c13c7ed6e1f151a3ca878c2f4494682ca8128ad686"
     },
     {
       "caseId": "T11-MEMORY-004-N",
@@ -925,8 +1268,8 @@
         }
       ],
       "query": "请找回 Pulse 冷启动卡顿复核所用的历史排查流程，用于按同一顺序重新采样。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "ff243f34b7979d370ce5631446d05254f65f9a6ded20a9bb1fd0c7c75b02e40a"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "8ede3f5d68a9d826b511df15ccacde1499e415d1d5bd6b49b1a21c83bdf74e12"
     },
     {
       "caseId": "T11-MEMORY-005-P",
@@ -972,8 +1315,8 @@
         }
       ],
       "query": "请确认 Helio 的 Compose 状态恢复用例在重建后应断言什么，作为当前测试的对照。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "bd95cc938d68cbc45adfcbafd5f9f8b17c536a9b2613b6a8591d137a538626b8"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "de8291b4700cd8bf2dabd13a5ef63f0418f6960b8e12cce66f66b81981867190"
     },
     {
       "caseId": "T11-MEMORY-005-N",
@@ -1019,8 +1362,8 @@
         }
       ],
       "query": "请确认 Helio 的 Compose 状态恢复用例在重建后应断言什么，作为当前测试的对照。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "8baa851621658d96f8d47d29e5befe372f5908de276e8532f3cd014d4f37046e"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "15810dd69ba20a0117aaec611c68ee5869d772d51000262a43da92690ffe560a"
     },
     {
       "caseId": "T11-MEMORY-006-P",
@@ -1078,8 +1421,8 @@
         }
       ],
       "query": "请直接确认 Orchid 发布配置与 Atlas 客户端版本锁定时，历史交接约定要求满足哪两个条件。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "09b88d2c837146a25817a5023fdbbb92e987bb3759c2986e502f2040ff5fbd1a"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "1b1bb13d2816813661686486a2babf96e4966bd4cd36cc3dcd1d53d1868c3ed3"
     },
     {
       "caseId": "T11-MEMORY-006-N",
@@ -1137,8 +1480,8 @@
         }
       ],
       "query": "请直接确认 Orchid 发布配置与 Atlas 客户端版本锁定时，历史交接约定要求满足哪两个条件。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "5be9e2a0b0a8b43a6b699b1d557ce163d4864474e7e934fead9c2f4e1077580f"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "0f502d5fadc14dc2dbe9284e0847e16a0bf5db6a6b6c9462f43921edbc235aaa"
     },
     {
       "caseId": "T11-SKILL-007-P",
@@ -1204,8 +1547,8 @@
         }
       ],
       "query": "针对这次启动与卡顿排查，请给出开始执行前的下一步与应确认的前置条件。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "521c67afb8ae75ebf4f470fba5ec94835c1cda275a86bf3b743b21498c80ab76"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "8ee308757377599734baf8265f64b6057558f51e2483baafe934c6e33e86bb34"
     },
     {
       "caseId": "T11-SKILL-007-N",
@@ -1271,8 +1614,8 @@
         }
       ],
       "query": "针对这次启动与卡顿排查，请给出开始执行前的下一步与应确认的前置条件。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "8ff3f46eccaa4754d29e5bbfcf0e8685b4f380c752fb329e8e630ae2ffc85ac0"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "5cf9d43fa8eedbb65386810d41684a9625ac52ee3d10bb63ef9f59c84658d542"
     },
     {
       "caseId": "T11-SKILL-008-P",
@@ -1338,8 +1681,8 @@
         }
       ],
       "query": "针对现有 Android 性能数据，请说明开始分析前的下一步和准备条件，暂时不要解释结果。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "81714fd280a9de8cad4bedd49f19fc60d3bf3cd85f122a4017462c102150c186"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "0e290c668d21c4d884cd2063abf01d8ab103fee588d03fc2e372657a0ec81b30"
     },
     {
       "caseId": "T11-SKILL-008-N",
@@ -1405,8 +1748,8 @@
         }
       ],
       "query": "针对现有 Android 性能数据，请说明开始分析前的下一步和准备条件，暂时不要解释结果。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "1d4a614bb4ffbacd74601e5d5497e397010275e3211a52e26450a073967ff3a7"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "2a82263582365a535b3a0d6b11e3d67d5719fa2695575b08faecc898d611d002"
     },
     {
       "caseId": "T11-SKILL-009-P",
@@ -1472,8 +1815,8 @@
         }
       ],
       "query": "面对这个同时提到录制和分析的请求，请给出不执行动作前的分流顺序。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "446d09b4a01a8d7a9539cdde81c955b15c5b666b05d05e2d4be3c03b5f28539d"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "21c9a3ebd742a6ba801a0a07809235e68fd8742e3096a236f0532f7eb67a2b60"
     },
     {
       "caseId": "T11-SKILL-009-N",
@@ -1539,8 +1882,8 @@
         }
       ],
       "query": "面对这个同时提到录制和分析的请求，请给出不执行动作前的分流顺序。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "fd72fd3a5b5a6478ab49194ab2ab7e25be6e39f6a94f567ccee6cef09e3d969d"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "b4d9d650496963ecf6189942a37b0c8c902864a9619d043042fdbfb182405f40"
     },
     {
       "caseId": "T11-SKILL-010-P",
@@ -1606,8 +1949,8 @@
         }
       ],
       "query": "针对这个普通 Android 项目的构建插件迁移，请给出从检查到验证的下一步顺序，暂时不要修改文件。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "3e412d37868e13a8794a17c38ceac6dd56685024dc9b73a91b5d7d6f5194e0bc"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "f06ec65c73920a3e4cd362f288f209ef35d3a1ac3c893d3747117b0c6377a324"
     },
     {
       "caseId": "T11-SKILL-010-N",
@@ -1673,8 +2016,8 @@
         }
       ],
       "query": "针对这个普通 Android 项目的构建插件迁移，请给出从检查到验证的下一步顺序，暂时不要修改文件。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "79552f75925502f26f7743863bf70e5d72d1953686b1f438c3f3f4685acedbea"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "2f9df4636d0d5f95eff9d30431016ef8a3296b108fcc7acb516d0612c73b4cdd"
     },
     {
       "caseId": "T11-SKILL-011-P",
@@ -1740,8 +2083,8 @@
         }
       ],
       "query": "针对这个 Compose 状态恢复回归，请给出从设置内容到断言的正确下一步，暂时不要写代码。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "44a544dabab632701cb8dede398b458edac02c8d61e8deeaf2799221ec5b8497"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "d37b7044de8f51d0ac14768c9cf1edfdc021b4a44a28f097bff9e565d6a69727"
     },
     {
       "caseId": "T11-SKILL-011-N",
@@ -1807,8 +2150,8 @@
         }
       ],
       "query": "针对这个 Compose 状态恢复回归，请给出从设置内容到断言的正确下一步，暂时不要写代码。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "46963caa4da244974973d452e098bfeb5cbf58fbd2ccf3d0455e76efa624935f"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "01c4b0112d212e26c78598f30d4e1f9abf4b00b4d56c8e0afabf6ef4cc97b629"
     },
     {
       "caseId": "T11-SKILL-012-P",
@@ -1874,8 +2217,8 @@
         }
       ],
       "query": "针对恢复不生效的假象和保存数据过大的异常，请给出最小验证顺序及适用边界，暂时不要修改测试。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "b2b925664879caf04791931c4922d1a1da4d4845463416a825f6856f9975468b"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "d7ae3a3e4a95c312d0ddb04d304165acc92d8600b30db3efa2ea610689b663c0"
     },
     {
       "caseId": "T11-SKILL-012-N",
@@ -1941,8 +2284,8 @@
         }
       ],
       "query": "针对恢复不生效的假象和保存数据过大的异常，请给出最小验证顺序及适用边界，暂时不要修改测试。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "dfbbf229f47a9e71b8f05bf13aa9a3010cdd1e9197d37ba55c77e004c1190b90"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "0897d4ac8afcc35ff6b31b931ec58307e45522fe46833aec294372dfa4b8d4c1"
     },
     {
       "caseId": "T11-KNOWLEDGE-013-P",
@@ -2008,8 +2351,8 @@
         }
       ],
       "query": "请先给出 Orchid 迁移记录中 androidComponents 配置块的准确源文件和行号，供我核对构建回归记录；不要延伸到 Pulse 性能线。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "9f76233f3236c98655d17490ad0329fc4318cb7e082b1bf3b1bb24e198999854"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "eeff0787c6ee4d46fd982cd1c5a8535bd62f9007705d73763b7ba34310cfaeee"
     },
     {
       "caseId": "T11-KNOWLEDGE-013-N",
@@ -2075,8 +2418,8 @@
         }
       ],
       "query": "请先给出 Orchid 迁移记录中 androidComponents 配置块的准确源文件和行号，供我核对构建回归记录；不要延伸到 Pulse 性能线。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "8adde96e2a3dae6f328a84e902243342500bade3ea0760ddd10038097fa89ba3"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "4e96c5bb233dcceba7f9f52456d980a8191255c2143f14150bd475342f35398f"
     },
     {
       "caseId": "T11-KNOWLEDGE-014-P",
@@ -2142,8 +2485,8 @@
         }
       ],
       "query": "请先确认 Atlas offline-first 设计中 outbox 的发送顺序、版本冲突后的处理和网络错误重试边界；只回答设计约束，不延伸到 Orchid 构建线。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "b6416076b3f8e675a501ef1eb076c63c513bb88dd5d7673f1dde4f3b14b628a5"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "1a34f27947ce5e881bc305615724a35b9bbec1b0e005516624d2ad4182bca9d0"
     },
     {
       "caseId": "T11-KNOWLEDGE-014-N",
@@ -2209,8 +2552,8 @@
         }
       ],
       "query": "请先确认 Atlas offline-first 设计中 outbox 的发送顺序、版本冲突后的处理和网络错误重试边界；只回答设计约束，不延伸到 Orchid 构建线。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "c968589feb35a917e8e594b9c815f2c20f6c3a2d77244c0e674dcc718d3973d3"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "5c3aae59035b986a01fa7b440def1feb13f31f72b3dbae7145914d8a451926e4"
     },
     {
       "caseId": "T11-KNOWLEDGE-015-P",
@@ -2276,8 +2619,8 @@
         }
       ],
       "query": "请先给出 Nimbus 中 stateRestorationActivity(for:) 的准确源文件和行号，供我核对生命周期恢复记录；不要延伸到 Helio UI 测试。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "3cd02ad0cbd19514bedb7889ca8e779e226e841d2c5c6ed616a1be2f56adc711"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "f0b36a10c5a966048bc5652e7e26a6f15f81fde7cef34a2f31dc9c8692e114fe"
     },
     {
       "caseId": "T11-KNOWLEDGE-015-N",
@@ -2343,8 +2686,8 @@
         }
       ],
       "query": "请先给出 Nimbus 中 stateRestorationActivity(for:) 的准确源文件和行号，供我核对生命周期恢复记录；不要延伸到 Helio UI 测试。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "e7bae875c13503d6012ce0014f60b18c10993afa2389d3edd61e0d01a9b73b0e"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "7363bb304d1b2756fa5b763e75c3321cb6693dd61a270b1ce5d1c888fd41b7ae"
     },
     {
       "caseId": "T11-NATURAL-001-N",
@@ -2386,8 +2729,8 @@
         }
       ],
       "query": "根据上述版本约束，输出最小的 wrapper、版本目录和 app 模块 DSL 修改清单；不要扩展到依赖升级。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "01443660d48ce1e442900900937f00c3895db16666cba0f44458a7b0a34c1364"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "924e3113bafcb45563f718ef310cbf8f9dc156c3a10f1f5ec8ef7e666e340223"
     },
     {
       "caseId": "T11-NATURAL-002-N",
@@ -2429,8 +2772,8 @@
         }
       ],
       "query": "给出满足这四种变体组合的最小 Kotlin DSL 片段，并用一句话说明每个覆盖的作用域。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "b151ae7bae314bb0034f1ab45a66db5ff1767820255fb598173eb64199f9d4d8"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "5a9ccee789fd68a301a6a118c54e11499f33686e6b221ee1ef043edb8a571b39"
     },
     {
       "caseId": "T11-NATURAL-003-N",
@@ -2472,8 +2815,8 @@
         }
       ],
       "query": "按 configuration 分组给出可直接粘贴的 xcconfig 片段，不添加其他发布设置。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "4835fad703fa52ae0a9e697569600319e3e6d1958f6efa7be16911b43684742d"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "d58375bf0b16b0485745020ff43a7bf79b4ed0dcb111dcc428358e2c5eaf1564"
     },
     {
       "caseId": "T11-NATURAL-004-N",
@@ -2515,8 +2858,8 @@
         }
       ],
       "query": "给出最小的保存/恢复伪代码和关键条件判断，不改变持久化层接口。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "eec8a9ff6bc6dd11621240bb0df15673c4f53b4ed58bfc79dafec641e7319bfe"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "0a2eb7c749cd01b5ae5feb621d7c3425455e6c19e53689d56a83fb67a628926a"
     },
     {
       "caseId": "T11-NATURAL-005-N",
@@ -2558,8 +2901,8 @@
         }
       ],
       "query": "按现有字段和规则写出生命周期代码骨架及最小断言，不引入新的状态容器。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "e5bc3bcb8c7555bfa10628164194cab452d0526348c4bcabf6cbddf8a4575ee9"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "3e0b366954526499ffbeaa40aaffe150ec47734d7dde62ad09ac1cf208337deb"
     },
     {
       "caseId": "T11-NATURAL-006-N",
@@ -2601,8 +2944,8 @@
         }
       ],
       "query": "给出这个离线队列状态转换函数的最小实现和分支表，确保重复响应不会让终态倒退。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "0c44a5a04cce2eb81dad606336ade1c0ff61a6a847e719608e1fe6185307c489"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "c3478dab6427e0a2cb0ac2c8aca4700f04e5dfa1554724f4ca5f22a497ff312a"
     },
     {
       "caseId": "T11-NATURAL-007-N",
@@ -2644,8 +2987,8 @@
         }
       ],
       "query": "根据既定时间优先规则输出最小冲突解析函数和三条边界断言。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "bc47dcd9f76255afe4bf11feb714d5255c428519d3cadb0683950ed1b3833fbe"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "4c3714d8c3df54802aea6d26309742df2adf03ec129a5fd02f49c79d54f4b2e8"
     },
     {
       "caseId": "T11-NATURAL-008-N",
@@ -2687,8 +3030,8 @@
         }
       ],
       "query": "基于这份启动剖面写一个三项优化清单，避免泛泛而谈或引入新的业务功能。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "14421397032e71140a4c65372117751de77de945ad0e9594ef972413eaf60340"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "ecc6dd53e9704334aee0f46c43d56f7a2b030e283567fd507ce91177bd0ec5a6"
     },
     {
       "caseId": "T11-NATURAL-009-N",
@@ -2730,8 +3073,8 @@
         }
       ],
       "query": "围绕这三个已定位热点写出局部代码示意和一个验证指标，不改列表数据模型。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "f3e9427f256cd832f6a18d15327c4059efdc9ad15b12a4cdef1c251e805d70b6"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "b5a14908fe4f29096e6d9ad0cbd1909acda1543b02fabdedca3dae1d0ccde048"
     },
     {
       "caseId": "T11-NATURAL-010-N",
@@ -2773,8 +3116,8 @@
         }
       ],
       "query": "给出只依赖上述表单语义的 UI 测试代码骨架和断言清单，不增加导航或网络步骤。",
-      "visibleAssetSetSha256": "d147562a4f4f5c03ae3695fde2311aa0a7aa88c56b01e30956623b771886e875",
-      "contentHash": "3d413bdded6f9e56ca66c6affaea89a282a170fae328cc2566f4df6e9499046b"
+      "visibleAssetSetSha256": "7c60bd0e1a1458850f726f3728d8f0d4e38c898ecb41a8ea1544cc90c351825d",
+      "contentHash": "b5f21d6a70af564bfeb05461920e557554db93bbb49fdffa141baafb1284686f"
     }
   ],
   "privateAnnotations": [
@@ -4724,13 +5067,39 @@
     "T11-L0-SUPPORT-4",
     "T11-L0-SUPPORT-5",
     "T11-L0-ORCHID-ATLAS-RELEASE-LOCK",
+    "T11-L0-ORCHID-GRADLE-CATALOG",
+    "T11-L0-PULSE-TRACE-COMPARE",
     "T11-L1-ORCHID-AGP-MIGRATION-RULE",
     "T11-L1-HELIO-COMPOSE-RESTORE-ASSERTION",
+    "T11-L1-ORCHID-PLUGIN-SOURCE",
+    "T11-L1-ORCHID-MODULE-INHERITANCE",
+    "T11-L1-ATLAS-DELETE-INTENT",
+    "T11-L1-ATLAS-MANUAL-CONFLICT",
+    "T11-L1-NIMBUS-SAVEPOINT",
+    "T11-L1-NIMBUS-FAIL-MISSING-FIELD",
+    "T11-L1-PULSE-SAME-WINDOW",
+    "T11-L1-PULSE-DEFER-RENDER-CHANGE",
+    "T11-L1-HELIO-SAME-FIELD",
+    "T11-L1-RELEASE-NO-OVERRIDE",
     "T11-L2-NIMBUS-RESTORE-TIMELINE",
     "T11-L2-PULSE-COLD-START-JANK",
+    "T11-L2-ORCHID-BUILD-REVIEW",
+    "T11-L2-PULSE-TRACE-COMPARISON",
+    "T11-L3-MOBILE-VERIFICATION-PREFERENCE",
     "T11-SKILL-AGP9",
     "T11-SKILL-PROFILER",
     "T11-SKILL-STATE-RESTORE",
+    "T11-SKILL-TESTING-PYTHON",
+    "T11-SKILL-TEMPORAL-TESTING",
+    "T11-SKILL-PYTEST-COVERAGE",
+    "T11-SKILL-DISCOVER-FUNCTION",
+    "T11-SKILL-FUZZING-PYTHON",
+    "T11-SKILL-PYTHON-PARALLEL",
+    "T11-SKILL-UV",
+    "T11-SKILL-WORKLOAD",
+    "T11-SKILL-MEMORY-OPT",
+    "T11-SKILL-QDRANT",
+    "T11-SKILL-ANALYZE-CI",
     "knowledge-t11-android-build",
     "knowledge-t11-mobile-sync",
     "knowledge-t11-ios-client"
@@ -4741,7 +5110,8 @@
     "T11/skill/skill-batch-01",
     "T11/skill/skill-batch-02",
     "T11/knowledge/knowledge-batch-01",
-    "T11/natural-negative/natural-negative-batch-01"
+    "T11/natural-negative/natural-negative-batch-01",
+    "T11/repair/luna-repair-01"
   ],
   "externalImports": [
     {
@@ -4779,6 +5149,138 @@
       "storedPath": "source-material/T11/skills/compose-state-restoration-test/SKILL.md",
       "licenseFileSha256": "fabd7028904f0fb3fb547523786ef3b288b03d0c4114feaa1c2256e79c652dae",
       "storedLicensePath": "source-material/T11/skills/licenses/android-testing-skills-LICENSE"
+    },
+    {
+      "sourceId": "source-t11-skill-testing-python",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "path": "tasks/fix-build-agentops/environment/skills/testing-python/SKILL.md",
+      "license": "Apache-2.0",
+      "rawFileSha256": "3a210279d297921c5c32c8be3e9938c711e5da80fe4a9625324b541e86d9333c",
+      "storedFileSha256": "3a210279d297921c5c32c8be3e9938c711e5da80fe4a9625324b541e86d9333c",
+      "storedPath": "source-material/shared/skills/testing-python/SKILL.md",
+      "licenseFileSha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6",
+      "storedLicensePath": "source-material/shared/skills/_licenses/skillsbench/LICENSE"
+    },
+    {
+      "sourceId": "source-t11-skill-temporal-testing",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "path": "tasks/temporal-python-testing/environment/skills/temporal-python-testing/SKILL.md",
+      "license": "Apache-2.0",
+      "rawFileSha256": "3e232b7d6c4d30c80b09024e83e1c7f229f031b0e511cabed45958cd8928af2e",
+      "storedFileSha256": "3e232b7d6c4d30c80b09024e83e1c7f229f031b0e511cabed45958cd8928af2e",
+      "storedPath": "source-material/shared/skills/temporal-python-testing/SKILL.md",
+      "licenseFileSha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6",
+      "storedLicensePath": "source-material/shared/skills/_licenses/skillsbench/LICENSE"
+    },
+    {
+      "sourceId": "source-t11-skill-pytest-coverage",
+      "repository": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "path": "skills/pytest-coverage/SKILL.md",
+      "license": "MIT",
+      "rawFileSha256": "1057ea1dd6a32fceb0cf79d542b703427e7970e86e4ce85f051d76a0d5f94379",
+      "storedFileSha256": "1057ea1dd6a32fceb0cf79d542b703427e7970e86e4ce85f051d76a0d5f94379",
+      "storedPath": "source-material/shared/skills/pytest-coverage/SKILL.md",
+      "licenseFileSha256": "ad5afb9c4d51fd20a606ecd24db7104565fe70fa722543cb625b02f45e14baf2",
+      "storedLicensePath": "source-material/shared/skills/_licenses/awesomeCopilot/LICENSE"
+    },
+    {
+      "sourceId": "source-t11-skill-discover-function",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "path": "tasks/setup-fuzzing-py/environment/skills/discover-important-function/SKILL.md",
+      "license": "Apache-2.0",
+      "rawFileSha256": "4bab2b9f0b3012d50b954b8d13203dfa07f686011ca6c21ba0bb4801f5fa2ef2",
+      "storedFileSha256": "4bab2b9f0b3012d50b954b8d13203dfa07f686011ca6c21ba0bb4801f5fa2ef2",
+      "storedPath": "source-material/shared/skills/discover-important-function/SKILL.md",
+      "licenseFileSha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6",
+      "storedLicensePath": "source-material/shared/skills/_licenses/skillsbench/LICENSE"
+    },
+    {
+      "sourceId": "source-t11-skill-fuzzing-python",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "path": "tasks/setup-fuzzing-py/environment/skills/fuzzing-python/SKILL.md",
+      "license": "Apache-2.0",
+      "rawFileSha256": "ad65e531bd79b962d2cb9678099d92f865899b206dcbc308353444fc8cac4a1f",
+      "storedFileSha256": "ad65e531bd79b962d2cb9678099d92f865899b206dcbc308353444fc8cac4a1f",
+      "storedPath": "source-material/shared/skills/fuzzing-python/SKILL.md",
+      "licenseFileSha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6",
+      "storedLicensePath": "source-material/shared/skills/_licenses/skillsbench/LICENSE"
+    },
+    {
+      "sourceId": "source-t11-skill-python-parallel",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "path": "tasks/parallel-tfidf-search/environment/skills/python-parallelization/SKILL.md",
+      "license": "Apache-2.0",
+      "rawFileSha256": "71585d7d3c6691b2116b7ebfb90cf9133747b4fa08537f7a5657f03539f8fdc3",
+      "storedFileSha256": "71585d7d3c6691b2116b7ebfb90cf9133747b4fa08537f7a5657f03539f8fdc3",
+      "storedPath": "source-material/shared/skills/python-parallelization/SKILL.md",
+      "licenseFileSha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6",
+      "storedLicensePath": "source-material/shared/skills/_licenses/skillsbench/LICENSE"
+    },
+    {
+      "sourceId": "source-t11-skill-uv",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "path": "tasks/fix-build-agentops/environment/skills/uv-package-manager/SKILL.md",
+      "license": "Apache-2.0",
+      "rawFileSha256": "1f79787d9dd198563d52047056aaaea06f1ef19442a1c07abe0429e51bc7e2c6",
+      "storedFileSha256": "1f79787d9dd198563d52047056aaaea06f1ef19442a1c07abe0429e51bc7e2c6",
+      "storedPath": "source-material/shared/skills/uv-package-manager/SKILL.md",
+      "licenseFileSha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6",
+      "storedLicensePath": "source-material/shared/skills/_licenses/skillsbench/LICENSE"
+    },
+    {
+      "sourceId": "source-t11-skill-workload",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "path": "tasks/parallel-tfidf-search/environment/skills/workload-balancing/SKILL.md",
+      "license": "Apache-2.0",
+      "rawFileSha256": "a2b1f4653bd7939bd6c25f12051bed930f0e23dc2f2a269026fc39cb59cc5ef0",
+      "storedFileSha256": "a2b1f4653bd7939bd6c25f12051bed930f0e23dc2f2a269026fc39cb59cc5ef0",
+      "storedPath": "source-material/shared/skills/workload-balancing/SKILL.md",
+      "licenseFileSha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6",
+      "storedLicensePath": "source-material/shared/skills/_licenses/skillsbench/LICENSE"
+    },
+    {
+      "sourceId": "source-t11-skill-memory-opt",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "path": "tasks/parallel-tfidf-search/environment/skills/memory-optimization/SKILL.md",
+      "license": "Apache-2.0",
+      "rawFileSha256": "30daf5237b91ce4487f516fa623b624ac205f9a64a3b56978bdadaa76e5a50e5",
+      "storedFileSha256": "30daf5237b91ce4487f516fa623b624ac205f9a64a3b56978bdadaa76e5a50e5",
+      "storedPath": "source-material/shared/skills/memory-optimization/SKILL.md",
+      "licenseFileSha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6",
+      "storedLicensePath": "source-material/shared/skills/_licenses/skillsbench/LICENSE"
+    },
+    {
+      "sourceId": "source-t11-skill-qdrant",
+      "repository": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "path": "skills/qdrant-clients-sdk/SKILL.md",
+      "license": "MIT",
+      "rawFileSha256": "d7b38e979bfdc5cb621862e8a91a6e10cf101ae53980fdc3181a9dc219fa56f1",
+      "storedFileSha256": "d7b38e979bfdc5cb621862e8a91a6e10cf101ae53980fdc3181a9dc219fa56f1",
+      "storedPath": "source-material/shared/skills/qdrant-clients-sdk/SKILL.md",
+      "licenseFileSha256": "ad5afb9c4d51fd20a606ecd24db7104565fe70fa722543cb625b02f45e14baf2",
+      "storedLicensePath": "source-material/shared/skills/_licenses/awesomeCopilot/LICENSE"
+    },
+    {
+      "sourceId": "source-t11-skill-analyze-ci",
+      "repository": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "path": "skills/analyze-ci/SKILL.md",
+      "license": "MIT",
+      "rawFileSha256": "ebf10c1c4f7e49efbb7112ac0b5160d0549596d1db7ee961b9ecd4c6182ae6c5",
+      "storedFileSha256": "ebf10c1c4f7e49efbb7112ac0b5160d0549596d1db7ee961b9ecd4c6182ae6c5",
+      "storedPath": "source-material/shared/skills/analyze-ci/SKILL.md",
+      "licenseFileSha256": "ad5afb9c4d51fd20a606ecd24db7104565fe70fa722543cb625b02f45e14baf2",
+      "storedLicensePath": "source-material/shared/skills/_licenses/awesomeCopilot/LICENSE"
     }
   ]
 }

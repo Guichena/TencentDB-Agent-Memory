@@ -55,6 +55,25 @@ const providerPayloads = fragment.publicCases.map((item: any) => canonicalSha256
 const duplicateProviderPayloads = providerPayloads.length - new Set(providerPayloads).size;
 const expected = { cases: 40, pairs: 15, memoryPositive: 6, skillPositive: 6, knowledgePositive: 3, pairedNegative: 15, naturalNegative: 10 };
 const errors = [...schema.errors];
+const assetDensity = {
+  l0: memory.l0_conversations.length,
+  l0MinMessages: Math.min(...memory.l0_conversations.map((item: any) => item.messages.length)),
+  l1: memory.l1_memories.length,
+  l2: memory.l2_scenes.length,
+  l3: memory.l3_profiles.length,
+  skills: skills.skills.length,
+  listedSkills: skills.skills.filter((item: any) => fragment.businessAgents[0].boundSkillIds.includes(item.assetId)).length,
+  searchableSkills: skills.skills.filter((item: any) => item.visibility === "team").length,
+};
+if (assetDensity.l0 < 8 || assetDensity.l0MinMessages < 12 || assetDensity.l1 < 12 || assetDensity.l2 < 4 || assetDensity.l3 < 1 || assetDensity.skills < 14) {
+  errors.push(`asset density below formal floor: ${JSON.stringify(assetDensity)}`);
+}
+for (const profile of memory.l3_profiles) {
+  const contentLength = [...profile.content].length;
+  if (contentLength < 80 || contentLength > 220) errors.push(`${profile.assetId}: L3 content length must be 80..220 Chinese characters, got ${contentLength}`);
+  if (!['agent', 'team'].includes(profile.stability)) errors.push(`${profile.assetId}: invalid L3 stability`);
+}
+if (assetDensity.listedSkills !== 5 || assetDensity.searchableSkills !== 9) errors.push(`Skill visibility: expected listed=5/searchable=9, got ${assetDensity.listedSkills}/${assetDensity.searchableSkills}`);
 function verifyContentHashes(value: any, location: string): void {
   if (Array.isArray(value)) return value.forEach((entry, index) => verifyContentHashes(entry, `${location}[${index}]`));
   if (!value || typeof value !== "object") return;
@@ -81,6 +100,10 @@ for (const item of positives) {
     const first = item.gold.allowedFirstActions[0]?.tool;
     if (first === "skill_search" && (target?.visibility !== "team" || fragment.businessAgents[0].boundSkillIds.includes(target.assetId))) errors.push(`${item.caseId}: search target is listed or not team-visible`);
     if (first === "skill_view" && !fragment.businessAgents[0].boundSkillIds.includes(target?.assetId)) errors.push(`${item.caseId}: direct target is not listed`);
+    if (first === "skill_search") {
+      const competing = skills.skills.filter((candidate: any) => candidate.visibility === "team" && candidate.assetId !== target?.assetId);
+      if (competing.length < 3) errors.push(`${item.caseId}: skill_search has fewer than three same-team searchable competitors`);
+    }
   }
 }
 const publicById = new Map(fragment.publicCases.map((item: any) => [item.caseId, item]));
@@ -102,10 +125,18 @@ for (const ref of fragment.generatorBatchRefs) {
   const batchDir = path.join(buildRoot, ...ref.split("/"));
   const manifest = JSON.parse(await readFile(path.join(batchDir, "manifest.json"), "utf8"));
   const draft = JSON.parse(await readFile(path.join(batchDir, "draft.json"), "utf8"));
+  const draftBytes = await readFile(path.join(batchDir, "draft.json"));
+  const draftSha = createHash("sha256").update(draftBytes).digest("hex");
   const count = Array.isArray(draft.pairs) ? draft.pairs.length : draft.cases.length;
   if (manifest.generator_model !== "gpt-5.6-luna" || manifest.reasoning_effort !== "high") errors.push(`${ref}: wrong generator model or effort`);
   if (manifest.actual_count !== count) errors.push(`${ref}: manifest count mismatch`);
+  if (manifest.draft_raw_sha256 && manifest.draft_raw_sha256 !== draftSha) errors.push(`${ref}: manifest draft raw SHA mismatch`);
 }
+const skillSearchInterference = positives.filter((item: any) => item.gold.family === "skill" && item.gold.allowedFirstActions[0]?.tool === "skill_search").map((item: any) => ({
+  caseId: item.caseId,
+  targetAssetId: item.gold.targetAssetIds[0],
+  searchableCompetitorCount: skills.skills.filter((candidate: any) => candidate.visibility === "team" && candidate.assetId !== item.gold.targetAssetIds[0]).length,
+}));
 const input = JSON.parse(await readFile(path.join(here, "input-pack.json"), "utf8"));
 if (input.project_streams.length < 3 || input.project_streams.length > 6 || fragment.tasks.length !== input.project_streams.length) errors.push("project stream count or task coverage is outside 3..6");
 const usedTaskIds = new Set(fragment.publicCases.map((item: any) => item.identity.taskId));
@@ -125,8 +156,9 @@ for (const imported of fragment.externalImports) {
 const gate = {
   schema_version: "task1.team_gate.v1", team_id: "T11", build_id: "build-06", status: errors.length ? "failed" : "passed",
   checked_at: new Date().toISOString(), counts, discovery_positive_count: discovery, schema_validation: schema, provider_leakage_count: leakage.length,
+  asset_density: assetDensity, skill_search_interference: skillSearchInterference,
   duplicate_query_count_from_pairs: duplicateQueries, duplicate_provider_payload_count: duplicateProviderPayloads, project_stream_count: input.project_streams.length, external_skill_source_count: fragment.externalImports.length,
-  checks: ["formal schema", "recursive content hashes", "fixed counts", "3..6 project streams and task coverage", "pair single-variable and controlled hash", "provider payload uniqueness", "complete minimal chain", "target visibility", "Skill listing visibility", "provider leakage", "discovery pressure", "accepted Luna manifests", "external skill provenance, stored Skill hashes, and license hashes"], errors,
+  checks: ["formal schema", "recursive content hashes", "fixed counts", "formal memory density and L0 depth", "L3 content length and stability", "Skill listing/search visibility counts", "three same-team searchable competitors per skill_search", "3..6 project streams and task coverage", "pair single-variable and controlled hash", "provider payload uniqueness", "complete minimal chain", "target visibility", "Skill listing visibility", "provider leakage", "discovery pressure", "accepted Luna manifests and draft raw SHA", "external skill provenance, stored Skill hashes, and license hashes"], errors,
 };
 await writeFile(path.join(staging, "gate.json"), JSON.stringify(gate, null, 2) + "\n");
 console.log(JSON.stringify(gate, null, 2));

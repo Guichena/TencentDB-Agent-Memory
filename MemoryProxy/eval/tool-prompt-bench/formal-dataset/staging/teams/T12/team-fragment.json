@@ -158,6 +158,25 @@
       "contentHash": "cb78b4e46d39a5f5daf1c9d3d7b73f603da681f4cd5cac359adfe440cce64b9d"
     },
     {
+      "sourceId": "source-t12-memory-l3",
+      "provenanceKind": "synthetic",
+      "role": "history",
+      "origin": "synthetic_agent_replay",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "stable_profile_derivation",
+      "transformVersion": "task1.build-06.t12.v1",
+      "reviewStatus": "reviewed",
+      "generatorModel": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "promptVersion": "task1.luna-batch.v1",
+      "batchId": "t12-memory-repair-batch-03",
+      "generatedAt": "2026-08-30T12:00:00+08:00",
+      "contentRefs": [
+        "generators/parallel/build-06/T12/memory/memory-repair-batch-03/draft.json"
+      ],
+      "contentHash": "dae6a8c413b369ea5bffdb7f74234983df4022a468e0d88e6d579531ac53f56d"
+    },
+    {
       "sourceId": "source-t12-skill-pg-migration",
       "provenanceKind": "external_import",
       "role": "skill_source",
@@ -228,6 +247,270 @@
       "piiScan": "passed",
       "reviewedBy": "Sol/build-06",
       "contentHash": "d90226bf4abecb27f12fd163c097ec3f8e566b1dbb82dfd50a32249ab6e927af"
+    },
+    {
+      "sourceId": "source-t12-skill-qdrant-clients",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "datasetArtifactSha256": "d7b38e979bfdc5cb621862e8a91a6e10cf101ae53980fdc3181a9dc219fa56f1",
+      "sourceRepoUrl": "https://github.com/github/awesome-copilot",
+      "sourceRepoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "sourceRepoLicense": "MIT",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "skills/qdrant-clients-sdk/SKILL.md",
+      "evidenceSha256": "d7b38e979bfdc5cb621862e8a91a6e10cf101ae53980fdc3181a9dc219fa56f1",
+      "transformInputSha256": "d7b38e979bfdc5cb621862e8a91a6e10cf101ae53980fdc3181a9dc219fa56f1",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "c2d5aa40885c11936a4117b0e37f2ba191c63c76be244cafd61663b5db5c6a42"
+    },
+    {
+      "sourceId": "source-t12-skill-qdrant-performance",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "datasetArtifactSha256": "f861884a0605993abfc81c082c6ed116f5f7ec07e3ef6b4e9b65b3a479ebfa80",
+      "sourceRepoUrl": "https://github.com/github/awesome-copilot",
+      "sourceRepoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "sourceRepoLicense": "MIT",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "skills/qdrant-performance-optimization/SKILL.md",
+      "evidenceSha256": "f861884a0605993abfc81c082c6ed116f5f7ec07e3ef6b4e9b65b3a479ebfa80",
+      "transformInputSha256": "f861884a0605993abfc81c082c6ed116f5f7ec07e3ef6b4e9b65b3a479ebfa80",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "0ae70fcb12e81d8e8151e24765353c6e8d701073bdf2d355e67b4b091884de5d"
+    },
+    {
+      "sourceId": "source-t12-skill-qdrant-indexing",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "datasetArtifactSha256": "2c274262f9c4e9351e24808abe028d7db91ca07fb2d1786baf90d51c1b04fa8d",
+      "sourceRepoUrl": "https://github.com/github/awesome-copilot",
+      "sourceRepoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "sourceRepoLicense": "MIT",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "skills/qdrant-performance-optimization/indexing-performance-optimization/SKILL.md",
+      "evidenceSha256": "2c274262f9c4e9351e24808abe028d7db91ca07fb2d1786baf90d51c1b04fa8d",
+      "transformInputSha256": "2c274262f9c4e9351e24808abe028d7db91ca07fb2d1786baf90d51c1b04fa8d",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "699a056deaa55364abd2d9b452a9432d0585f19b596bcca0dd5a765b7f37f6c9"
+    },
+    {
+      "sourceId": "source-t12-skill-qdrant-memory",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "datasetArtifactSha256": "a36c4e2f257ffe93378c35886c4c27338d3e991ad9814e272aa34ad491e536cb",
+      "sourceRepoUrl": "https://github.com/github/awesome-copilot",
+      "sourceRepoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "sourceRepoLicense": "MIT",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "skills/qdrant-performance-optimization/memory-usage-optimization/SKILL.md",
+      "evidenceSha256": "a36c4e2f257ffe93378c35886c4c27338d3e991ad9814e272aa34ad491e536cb",
+      "transformInputSha256": "a36c4e2f257ffe93378c35886c4c27338d3e991ad9814e272aa34ad491e536cb",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "3aea08d223d17be68872e615f3fdbb53aba8427171f153c96c023fa189925739"
+    },
+    {
+      "sourceId": "source-t12-skill-qdrant-search-speed",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "datasetArtifactSha256": "2e9e85246e8f7ddc4b37b8f846052e51894dad671c8d0ddf8b3fc9e5a0cecbac",
+      "sourceRepoUrl": "https://github.com/github/awesome-copilot",
+      "sourceRepoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "sourceRepoLicense": "MIT",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "skills/qdrant-performance-optimization/search-speed-optimization/SKILL.md",
+      "evidenceSha256": "2e9e85246e8f7ddc4b37b8f846052e51894dad671c8d0ddf8b3fc9e5a0cecbac",
+      "transformInputSha256": "2e9e85246e8f7ddc4b37b8f846052e51894dad671c8d0ddf8b3fc9e5a0cecbac",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "0ea5cefb01f2bdc15726e3e20bd3cd2f87c42516db1a0154862a454886b63d94"
+    },
+    {
+      "sourceId": "source-t12-skill-qdrant-quality",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "datasetArtifactSha256": "21404b6887fe46e8acde2767cf6856de478240976f23111f6a8ffd010d362542",
+      "sourceRepoUrl": "https://github.com/github/awesome-copilot",
+      "sourceRepoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "sourceRepoLicense": "MIT",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "skills/qdrant-search-quality/SKILL.md",
+      "evidenceSha256": "21404b6887fe46e8acde2767cf6856de478240976f23111f6a8ffd010d362542",
+      "transformInputSha256": "21404b6887fe46e8acde2767cf6856de478240976f23111f6a8ffd010d362542",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "de5a89006d8e43cf710a280ff0db095b0b9e1b59989534a216e587e421b11484"
+    },
+    {
+      "sourceId": "source-t12-skill-qdrant-diagnosis",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "datasetArtifactSha256": "41f144f5e022a5dc0e3d60b93bc868c91a181c6cd719a702362fca54083d29a4",
+      "sourceRepoUrl": "https://github.com/github/awesome-copilot",
+      "sourceRepoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "sourceRepoLicense": "MIT",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "skills/qdrant-search-quality/diagnosis/SKILL.md",
+      "evidenceSha256": "41f144f5e022a5dc0e3d60b93bc868c91a181c6cd719a702362fca54083d29a4",
+      "transformInputSha256": "41f144f5e022a5dc0e3d60b93bc868c91a181c6cd719a702362fca54083d29a4",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "ac1d017387553307168a97ac54f8e5d4bc5d55617adc3b1cf2cacc9776b06e82"
+    },
+    {
+      "sourceId": "source-t12-skill-qdrant-strategies",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "datasetArtifactSha256": "fcfeacf499615dbafe7cdbc22313b67a8492821f865944ff8520d2503745127f",
+      "sourceRepoUrl": "https://github.com/github/awesome-copilot",
+      "sourceRepoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "sourceRepoLicense": "MIT",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "skills/qdrant-search-quality/search-strategies/SKILL.md",
+      "evidenceSha256": "fcfeacf499615dbafe7cdbc22313b67a8492821f865944ff8520d2503745127f",
+      "transformInputSha256": "fcfeacf499615dbafe7cdbc22313b67a8492821f865944ff8520d2503745127f",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "a300daca555b9968dd4571210b7c3a271e36451d08181548602ff245d3a1a8be"
+    },
+    {
+      "sourceId": "source-t12-skill-workload-balancing",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "datasetArtifactSha256": "a2b1f4653bd7939bd6c25f12051bed930f0e23dc2f2a269026fc39cb59cc5ef0",
+      "sourceRepoUrl": "https://github.com/benchflow-ai/skillsbench",
+      "sourceRepoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "sourceRepoLicense": "Apache-2.0",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "tasks/parallel-tfidf-search/environment/skills/workload-balancing/SKILL.md",
+      "evidenceSha256": "a2b1f4653bd7939bd6c25f12051bed930f0e23dc2f2a269026fc39cb59cc5ef0",
+      "transformInputSha256": "a2b1f4653bd7939bd6c25f12051bed930f0e23dc2f2a269026fc39cb59cc5ef0",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "394a909256aceb3cb04a186e5a4cee84fe240c5d38a924774d4ddf35072ce9cf"
+    },
+    {
+      "sourceId": "source-t12-skill-memory-optimization",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "datasetArtifactSha256": "30daf5237b91ce4487f516fa623b624ac205f9a64a3b56978bdadaa76e5a50e5",
+      "sourceRepoUrl": "https://github.com/benchflow-ai/skillsbench",
+      "sourceRepoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "sourceRepoLicense": "Apache-2.0",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "tasks/parallel-tfidf-search/environment/skills/memory-optimization/SKILL.md",
+      "evidenceSha256": "30daf5237b91ce4487f516fa623b624ac205f9a64a3b56978bdadaa76e5a50e5",
+      "transformInputSha256": "30daf5237b91ce4487f516fa623b624ac205f9a64a3b56978bdadaa76e5a50e5",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "dde6757c97194d31b8cbcdf0b38266558ae739577b9c26d6532c752ace8e3058"
+    },
+    {
+      "sourceId": "source-t12-skill-python-parallel",
+      "provenanceKind": "external_import",
+      "role": "skill_source",
+      "origin": "repo_document",
+      "worldAsOf": "2026-08-30T23:59:59+08:00",
+      "transform": "skill_package_import",
+      "transformVersion": "task1.skill-host-adaptation.v1",
+      "reviewStatus": "reviewed",
+      "dataset": "GitHub repository file",
+      "datasetRevision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "datasetArtifactSha256": "71585d7d3c6691b2116b7ebfb90cf9133747b4fa08537f7a5657f03539f8fdc3",
+      "sourceRepoUrl": "https://github.com/benchflow-ai/skillsbench",
+      "sourceRepoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "sourceRepoLicense": "Apache-2.0",
+      "sourceTaskTime": "2026-08-30T12:00:00+08:00",
+      "trajectoryGeneratedAt": "2026-08-30T12:00:00+08:00",
+      "evidenceLocator": "tasks/parallel-tfidf-search/environment/skills/python-parallelization/SKILL.md",
+      "evidenceSha256": "71585d7d3c6691b2116b7ebfb90cf9133747b4fa08537f7a5657f03539f8fdc3",
+      "transformInputSha256": "71585d7d3c6691b2116b7ebfb90cf9133747b4fa08537f7a5657f03539f8fdc3",
+      "piiScan": "passed",
+      "reviewedBy": "Sol/build-06",
+      "contentHash": "975b5a01965d87977e63a217b6a617595e41685672dc1122be484748615fb837"
     }
   ],
   "teams": [
@@ -265,7 +548,10 @@
       "importedMemoryAgentIds": [],
       "boundSkillIds": [
         "T12-SKILL-PG-MIGRATION",
-        "T12-SKILL-GHOST"
+        "T12-SKILL-GHOST",
+        "T12-SKILL-QDRANT-CLIENTS",
+        "T12-SKILL-QDRANT-PERFORMANCE",
+        "T12-SKILL-QDRANT-INDEXING"
       ],
       "fixedKnowledgeIds": [
         "knowledge-t12-ledger-schema",
@@ -275,7 +561,7 @@
       "sourceEvidenceIds": [
         "source-t12-current-anchor"
       ],
-      "contentHash": "60c550e489b7ccf1441140c16f4425a61d3c6ba79e7dc32b5cce43450db01a3d"
+      "contentHash": "31d181c5c0a0402af927e31c5e46cbfde3031dbbfb0787d73845ee538bd49b3f"
     }
   ],
   "tasks": [
@@ -512,8 +798,8 @@
         }
       ],
       "query": "请找回 Ledger 零停机迁移中已验证的阶段顺序与兼容约定，用来核对当前发布计划。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "5722b42a8ada0f3bd86586ed76871ea16dc758be1566838cfdd11ffe4c53fedc"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "a5cd8c2ce6aedfebeacd709feb8bc21bbab22da46fff5aeb3cdd77bc1b716906"
     },
     {
       "caseId": "T12-MEMORY-001-N",
@@ -571,8 +857,8 @@
         }
       ],
       "query": "请找回 Ledger 零停机迁移中已验证的阶段顺序与兼容约定，用来核对当前发布计划。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "b56f319754ae918416ee25ceb31196f0e9b43df7a33c3e875a8077d5c6ef880e"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "7bc6806cde2166767731e66fbb9c3973a774d69be490f009363c9c8864525789"
     },
     {
       "caseId": "T12-MEMORY-002-P",
@@ -630,8 +916,8 @@
         }
       ],
       "query": "请找回 Beacon 查询计划回归实验中比较索引方案与判定是否接受的历史步骤。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "0c636a797727d0d4c41154a30b0491804ad4c1594e9bfb568e62d02544052b7f"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "f6c4dd0b76e8b1189861ba17bc397359fada83a1449b67f57136e8fe31f4095d"
     },
     {
       "caseId": "T12-MEMORY-002-N",
@@ -689,8 +975,8 @@
         }
       ],
       "query": "请找回 Beacon 查询计划回归实验中比较索引方案与判定是否接受的历史步骤。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "fa243b9469f49219b86b9341f5f136d998f7bce98d593413b9f615abb388e22a"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "cc95b277367bef4da6512bb45b3b5f5f6ab1af6880d92ab01bbb80dcf7b0ff49"
     },
     {
       "caseId": "T12-MEMORY-003-P",
@@ -748,8 +1034,8 @@
         }
       ],
       "query": "请找回 Harbor 回填暂停后续跑时，检查点记录、幂等确认和游标推进的历史操作顺序。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "cd2b1d4e8a10345d8360b86a0809b2349097329f36e68d22d8291ce47fa5141d"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "58045bd4e729acff7b99eb3dc6d00c6cf924c5e02aabb1de4243f3e9cbeebb4d"
     },
     {
       "caseId": "T12-MEMORY-003-N",
@@ -807,8 +1093,8 @@
         }
       ],
       "query": "请找回 Harbor 回填暂停后续跑时，检查点记录、幂等确认和游标推进的历史操作顺序。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "fba89fbb431316f3e911c9fe544bf655b7128e1f84abadeea9811e4e60cf0fce"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "9174bb6e7fc9261522f6b3d5c83290a0761f091b402cfb2a270a6691c66ca129"
     },
     {
       "caseId": "T12-MEMORY-004-P",
@@ -854,8 +1140,8 @@
         }
       ],
       "query": "请直接确认 Quartz 字段演进要满足哪两个已验证的 ORM 兼容条件。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "ff2218e912f7bc4f4e8613acbbe2987b635f60dca75b22940c57805e87186e32"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "872a7666c47333d46b6d8ba2c99797ad1402660cff34e354c3cb7cd81c951f0d"
     },
     {
       "caseId": "T12-MEMORY-004-N",
@@ -901,8 +1187,8 @@
         }
       ],
       "query": "请直接确认 Quartz 字段演进要满足哪两个已验证的 ORM 兼容条件。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "0b8b45d9be88fba500be8b02f8a7fa59c6bcf160831f28d8ec356421e36203e0"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "eefc94d638c4793f3c9e827583431dcf13392cd4f1bc4195be00fbc4aa8bfbe1"
     },
     {
       "caseId": "T12-MEMORY-005-P",
@@ -960,8 +1246,8 @@
         }
       ],
       "query": "请找回 Archive 索引退役前后，标记、读路径验证、元数据清理和回退窗口关闭的历史顺序。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "cde0bae3e0594d227bb6109a8f00a8c387237a333e8447f6981f7f91fcf71a08"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "bb23751999bfb43fd7eda08f016ff6cb9a9970c549f0ca957c9d40a221ab2502"
     },
     {
       "caseId": "T12-MEMORY-005-N",
@@ -1019,8 +1305,8 @@
         }
       ],
       "query": "请找回 Archive 索引退役前后，标记、读路径验证、元数据清理和回退窗口关闭的历史顺序。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "aaecbde60f3e4d71a6c4e3c14457fd3230f6d8776f7b22c2ac2916c40a58d209"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "91b8a6c6e3fccaf2450903488338df3e1e9de9c6aca7619f6ebf39e70cc42fe9"
     },
     {
       "caseId": "T12-MEMORY-006-P",
@@ -1078,8 +1364,8 @@
         }
       ],
       "query": "请直接确认 Ledger 切读前复核时，历史约定要求在什么两个信号下触发回滚。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "2f39b1798053fb8ec1d7cc0fce8ed372963ecf828f0c0d7f2137b3e4edf47c4d"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "a389bdfba2e66b57ef6269f5e87e428ab3ac4108ddc93844065a4aead18c0157"
     },
     {
       "caseId": "T12-MEMORY-006-N",
@@ -1137,8 +1423,8 @@
         }
       ],
       "query": "请直接确认 Ledger 切读前复核时，历史约定要求在什么两个信号下触发回滚。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "3912679908be783cfb25b517fb9c0d4857bc883c7562654708f04a0b7313a6c0"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "b36c98b7f958b432b8f1a0b02140f33ca8751b7f7db1a1cd33fc5cee48ad14f5"
     },
     {
       "caseId": "T12-SKILL-007-P",
@@ -1196,8 +1482,8 @@
         }
       ],
       "query": "Ledger 新表开始设计前，如何依次确定规范化、主键、必填性、默认值和外键约束？",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "41bfa02a77bd181c4fa6e20ef890bd7074ba70852f6c4900aee77fccb2e0474a"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "4a86abf394a6f20e48dcc2060a0883447bdd95c01460a732128340b06f06bab1"
     },
     {
       "caseId": "T12-SKILL-007-N",
@@ -1255,8 +1541,8 @@
         }
       ],
       "query": "Ledger 新表开始设计前，如何依次确定规范化、主键、必填性、默认值和外键约束？",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "6fdf8c44a22e89979a451ae7b6043a1ddc4b5ba31d86c76e86ef7253ddab708a"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "8aadba189725af7b9ff9c827d0c89fb83a66dd0488030f71633fff484fcf19be"
     },
     {
       "caseId": "T12-SKILL-008-P",
@@ -1314,8 +1600,8 @@
         }
       ],
       "query": "Beacon 的访问路径索引应如何根据过滤、范围、排序、连接和数据顺序来规划？",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "8975aec4458b7f152f3a8253d2b7715cd5b5f0444b4f90b914cdcc15a4fb8b4b"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "f7ad61d05aae21abcc2f3b96a18a26b24d65e6bab4b9aaef2732edd9c4dc6f98"
     },
     {
       "caseId": "T12-SKILL-008-N",
@@ -1373,8 +1659,8 @@
         }
       ],
       "query": "Beacon 的访问路径索引应如何根据过滤、范围、排序、连接和数据顺序来规划？",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "c8a15ab47b29d1bec601089e52215ab24b0ebfd047be9d9a2ed597b68191fe37"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "4ccaf4ee935122578b97e6d7d63490af4cccdc4f68cee311395ef4f987ca68bc"
     },
     {
       "caseId": "T12-SKILL-009-P",
@@ -1432,8 +1718,8 @@
         }
       ],
       "query": "Quartz 的可变属性与兼容类型设计，应如何选择 JSONB、约束、索引以及字符串和时间类型？",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "d881fa9cb7881bf130ce2dd27939c1b09e5d6d0892cdab9c83a5b6584cbbd274"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "5cb946db9c69e264cefdacca080183a949fd096dfc0158273197ee174b420acd"
     },
     {
       "caseId": "T12-SKILL-009-N",
@@ -1491,8 +1777,8 @@
         }
       ],
       "query": "Quartz 的可变属性与兼容类型设计，应如何选择 JSONB、约束、索引以及字符串和时间类型？",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "40fb2dbe4dc53bd33ca041da7c352ad65f5fa8899d2ecf2949f425cf32f821e5"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "253b89db24a6ef585080b6836c9c900f5a15c6356b38c9b97dc8abdfcd24ea8d"
     },
     {
       "caseId": "T12-SKILL-010-P",
@@ -1550,8 +1836,8 @@
         }
       ],
       "query": "Ledger 这次在线字段演进，开始执行前应怎样安排兼容切换、验证和清理？",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "fa28074d5b4a090194f5f6978bd3e5173e5b7534b06dda91c73560dc52dc8255"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "b41fdaf0b85fcd6013dd207d3d2e9c67ce17af37f64ab2e5d69532bf5c299145"
     },
     {
       "caseId": "T12-SKILL-010-N",
@@ -1609,8 +1895,8 @@
         }
       ],
       "query": "Ledger 这次在线字段演进，开始执行前应怎样安排兼容切换、验证和清理？",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "835e502c0b2695133c828edbcfcba3a5105de37e83a95ad906adbe350c03f060"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "2440d7445cf8858e5279360f279bdb095a0f3543fa220df820f219bc308601c1"
     },
     {
       "caseId": "T12-SKILL-011-P",
@@ -1668,8 +1954,8 @@
         }
       ],
       "query": "Harbor 的大表存量回填，怎样安排批次、进度、验证和运行监控？",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "ed84aaea2cad947a2865d8775b80440a0f2df688531aeb4505a5c0b0064c264b"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "005c8c6ecaa0496fe7d64b277572105b9f29991e8658308dca1fb3fe5f3770f4"
     },
     {
       "caseId": "T12-SKILL-011-N",
@@ -1727,8 +2013,8 @@
         }
       ],
       "query": "Harbor 的大表存量回填，怎样安排批次、进度、验证和运行监控？",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "14c79332e41e4c5441218409db5c12899d5869a26c97c884e2342fa34f2c3126"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "260ae5c7a650436ea4748855d78c2fc36386a5ce17448fe392d642aa8f46c035"
     },
     {
       "caseId": "T12-SKILL-012-P",
@@ -1786,8 +2072,8 @@
         }
       ],
       "query": "Ledger 这次可能不可逆的变更，怎样用隔离副本验证并预先安排回退？",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "e004b124568b43618dba6125c84269f0c3dbab9ae753490bffc96da5e2f61077"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "d3697ec8bd8d27885d97f119dafbfecb7c96650a0c1d97b2e7e10a25988a8c22"
     },
     {
       "caseId": "T12-SKILL-012-N",
@@ -1845,8 +2131,8 @@
         }
       ],
       "query": "Ledger 这次可能不可逆的变更，怎样用隔离副本验证并预先安排回退？",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "3059151499d9459a7ec2316b21b61e7b13156db54c86f8bd1d7e306ae00a89c9"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "67b502616d345d28a2d6244ab0501924cafd8a4ab9afabecda98f543f1b29e6b"
     },
     {
       "caseId": "T12-KNOWLEDGE-013-P",
@@ -1912,8 +2198,8 @@
         }
       ],
       "query": "请先确认 Ledger 零停机迁移记录中的 expand/contract rollout 顺序和兼容性门槛；只回答迁移约束，不延伸到 Beacon 或其他数据库演进线。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "b5f1208994edbf0c07dbba112c0f06c6910cbaf31c870300f803f39605122f1f"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "2bfd8fa305f9fd20286e74275a88a665362801ab50688f036d49f343e50a5506"
     },
     {
       "caseId": "T12-KNOWLEDGE-013-N",
@@ -1979,8 +2265,8 @@
         }
       ],
       "query": "请先确认 Ledger 零停机迁移记录中的 expand/contract rollout 顺序和兼容性门槛；只回答迁移约束，不延伸到 Beacon 或其他数据库演进线。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "bd75c1bda973dc411fce7d2311782c862dd7a6b9f3c122e35712ce0bd99ed54c"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "fdfe73faedc80aaa81bc207b0a42681f851e64c46db5d36e9ca4f04f2e347059"
     },
     {
       "caseId": "T12-KNOWLEDGE-014-P",
@@ -2046,8 +2332,8 @@
         }
       ],
       "query": "请先确认 Beacon 查询计划回归实验的根因、已验证的纠正动作和后续防护线；只回答实验结论，不延伸到 Ledger 迁移或其他索引线。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "a61d4d5a76ec3d6b37eb640640654e0cc31fca7d72bce56321c7feb9e3601069"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "79d051da863f58fbbad491bad693dde4bbe3789aea782c34a23a898a47428286"
     },
     {
       "caseId": "T12-KNOWLEDGE-014-N",
@@ -2113,8 +2399,8 @@
         }
       ],
       "query": "请先确认 Beacon 查询计划回归实验的根因、已验证的纠正动作和后续防护线；只回答实验结论，不延伸到 Ledger 迁移或其他索引线。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "305bd8f28f7a08f96c4b284361d34a184ad1e1cc3814cae9f0d560759582df56"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "18386c63129ecc8555622cd47e18dbbe409c343841288044e3a2f6f7bb4d434c"
     },
     {
       "caseId": "T12-KNOWLEDGE-015-P",
@@ -2180,8 +2466,8 @@
         }
       ],
       "query": "请先确认 Harbor resumable backfill 的 checkpoint 契约、恢复游标规则和幂等边界；只回答恢复设计，不延伸到 Beacon 或其他数据库演进线。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "d058d943381e06b2c8f2666d3093b1ab83a97314e7ea02d12ae70003b7c718fe"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "238ed0b1f1aae993ccd8b28a76785e947aa7c364c0a7815f6ed153be789e16df"
     },
     {
       "caseId": "T12-KNOWLEDGE-015-N",
@@ -2247,8 +2533,8 @@
         }
       ],
       "query": "请先确认 Harbor resumable backfill 的 checkpoint 契约、恢复游标规则和幂等边界；只回答恢复设计，不延伸到 Beacon 或其他数据库演进线。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "93006dfb07feb1f9c8e5efe2e39571329eab9c57cfbccc52f46c12f753194f9a"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "e445fc193dad8c5923c8c7899e01c21b21779b95e27e8e49803a0f8ffd24ecb1"
     },
     {
       "caseId": "T12-NATURAL-001-N",
@@ -2286,8 +2572,8 @@
         }
       ],
       "query": "请给出这次变更的最小 SQL migration、应用层双写示意和发布顺序，并说明为什么旧版本不会因新列而失败。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "26428c4a7339a009a56e38a27c48e4bfacb201534973ead6958815cf54a0c6f7"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "840c05fe1015eb112ce90ce22ab6c794768cf3f4ef81b0ea1a2f3628daf5415c"
     },
     {
       "caseId": "T12-NATURAL-002-N",
@@ -2329,8 +2615,8 @@
         }
       ],
       "query": "基于给定的写入 SLA 和版本规则，输出一套低锁在线变更步骤；不要引入新的表或停机窗口。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "354c7ab68b67f06a23d29f4d52a16b4bc75ec6a3ccd74761752a2ccb614dc9eb"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "08143bd81311b5d37e2c97dc46cc115945a76a37228a396f8b14e23dd663dc50"
     },
     {
       "caseId": "T12-NATURAL-003-N",
@@ -2368,8 +2654,8 @@
         }
       ],
       "query": "请给出最小的索引 DDL、验证用的 EXPLAIN 查询以及判断改善是否达标的两个计划指标。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "e63ac304dde376dfb83bebaa6b57c62dd1b61fd7b629a2bcb4f82df9aee599d7"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "7dd28fe1ee733eb388a66a1ebfe5e47e1d4be566278d37f013266bc8a5ebc3ad"
     },
     {
       "caseId": "T12-NATURAL-004-N",
@@ -2411,8 +2697,8 @@
         }
       ],
       "query": "针对这个软删除搜索场景，给出可在线执行的部分索引生命周期代码，不改变查询接口。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "56f5e34a5fe3b37f91750ee6a09e837332827823fc6bdae10ccd86db9387d19d"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "a8de180461e97520b7cc0b76779672e87fe98a1482b72555d47eb1e538d860ba"
     },
     {
       "caseId": "T12-NATURAL-005-N",
@@ -2450,8 +2736,8 @@
         }
       ],
       "query": "请写出批量回填 worker 的伪代码（含查询、事务、检查点和节流），并列出可证明幂等的条件。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "bbf4e59be9336a493cd593c69ba86cc4816ae5a56df2cf8467a19cb33001f1dc"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "4123c92d8ea582227a3b3e3c306fd73300416459833cb43af9210bfc7e204289"
     },
     {
       "caseId": "T12-NATURAL-006-N",
@@ -2493,8 +2779,8 @@
         }
       ],
       "query": "为这个可并行的数据迁移写出最小的 compare-and-set 回填实现，保留在线更新并能在中断后继续。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "b6e8641ff08b5c39f95f1c723d19d763026573f803324b5eb75f3a2564885bf6"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "90e6611c0a86a786e56493e74bc48069782a70860fccd31df7a3fa313cffc101"
     },
     {
       "caseId": "T12-NATURAL-007-N",
@@ -2536,8 +2822,8 @@
         }
       ],
       "query": "输出一个支持 Hibernate 5/6 并行发布的列名迁移方案和局部代码，明确读回退与双写行为。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "f865de188db89d1833f3a5e6af6eb9a9064f544d58429cf6c63a8f899b90ecbc"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "59855037ea4e55feed2dbdb250952722de6801f4c2c9ca5ad47d950f77f6019d"
     },
     {
       "caseId": "T12-NATURAL-008-N",
@@ -2575,8 +2861,8 @@
         }
       ],
       "query": "请给出 Kotlin 序列化适配器的最小伪代码和四组输入输出测试，覆盖缺失、null、空数组和未知 flag。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "ff0ef34e2af95b689fcbab105dec4edd6d884c7552b377d2d0fbc04dfdd5320a"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "14bc63b4aba8ccf1672f465a8729ad374290471e20c3012fa5460f814e7fccf7"
     },
     {
       "caseId": "T12-NATURAL-009-N",
@@ -2618,8 +2904,8 @@
         }
       ],
       "query": "围绕这个字段放宽，给出不截断数据的渐进式 schema/application 变更和最小测试矩阵。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "6797237f7da6b335f87a4f49e1441fb32cb263abf5f9e33a3eadbd9f5ab2bc85"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "1046d4bd6b490c32eb32012c0021d85d203111801e6b48c2796816f7075dcda3"
     },
     {
       "caseId": "T12-NATURAL-010-N",
@@ -2661,8 +2947,8 @@
         }
       ],
       "query": "针对这个查询计划回归写一份最小排查与修复脚本，说明如何用实际行数验证估算改善。",
-      "visibleAssetSetSha256": "c3966fa20ed6001282022e2859b497b39701ba82ded302b0cc38c18af585dfb5",
-      "contentHash": "813a037180083eb79d4c5ec51c25339215a223798e8a213775642a9c9f519605"
+      "visibleAssetSetSha256": "957a2d86f3db8357d80c0721e72fb4641baa2f8e6c0e76b113c0451223c7234b",
+      "contentHash": "e39d3ea647da6e87f44815e5b41fca370e1e2e56f917d3fdad15ff398fc48ccc"
     }
   ],
   "privateAnnotations": [
@@ -4612,13 +4898,39 @@
     "T12-L0-SUPPORT-4",
     "T12-L0-SUPPORT-5",
     "T12-L0-LEDGER-ROLLBACK-CONTRACT",
+    "T12-L0-HARBOR-CHECKPOINT",
+    "T12-L0-ARCHIVE-INDEX-RETIREMENT",
     "T12-L1-LEDGER-ZERO-DOWNTIME-ROLLOUT",
     "T12-L1-QUARTZ-ORM-COMPATIBILITY",
+    "T12-L1-BEACON-PLAN-ACCEPTANCE",
+    "T12-L1-HARBOR-CHECKPOINT",
+    "T12-L1-ARCHIVE-INDEX-RETIREMENT",
+    "T12-L1-LEDGER-ROLLBACK",
+    "T12-L1-QUARTZ-READ-FALLBACK",
+    "T12-L1-BEACON-STATS",
+    "T12-L1-HARBOR-RETRY",
+    "T12-L1-ARCHIVE-LOCK-BUDGET",
+    "T12-L1-MIGRATION-AUDIT",
+    "T12-L1-REPLICATION-GUARD",
     "T12-L2-HARBOR-RESUMABLE-BACKFILL",
     "T12-L2-ARCHIVE-INDEX-LIFECYCLE",
+    "T12-L2-LEDGER-COMPATIBILITY",
+    "T12-L2-BEACON-PLAN-REVIEW",
+    "T12-L3-DATABASE-EVOLUTION-PROFILE",
     "T12-SKILL-PG-MIGRATION",
     "T12-SKILL-PG-DESIGN",
     "T12-SKILL-GHOST",
+    "T12-SKILL-QDRANT-CLIENTS",
+    "T12-SKILL-QDRANT-PERFORMANCE",
+    "T12-SKILL-QDRANT-INDEXING",
+    "T12-SKILL-QDRANT-MEMORY",
+    "T12-SKILL-QDRANT-SEARCH-SPEED",
+    "T12-SKILL-QDRANT-QUALITY",
+    "T12-SKILL-QDRANT-DIAGNOSIS",
+    "T12-SKILL-QDRANT-STRATEGIES",
+    "T12-SKILL-WORKLOAD",
+    "T12-SKILL-MEMORY",
+    "T12-SKILL-PARALLEL",
     "knowledge-t12-ledger-schema",
     "knowledge-t12-query-plans",
     "knowledge-t12-backfill"
@@ -4626,6 +4938,7 @@
   "generatorBatchRefs": [
     "T12/memory/memory-batch-01",
     "T12/memory/memory-batch-02",
+    "T12/memory/memory-repair-batch-03",
     "T12/skill/skill-search-batch-02",
     "T12/skill/skill-direct-batch-03",
     "T12/knowledge/knowledge-batch-01",
@@ -4667,6 +4980,138 @@
       "storedPath": "source-material/T12/skills/ghost-database-fork/SKILL.md",
       "licenseFileSha256": "0f71fa3893437af5bc88d82dd99115b701e1a34f86bd5510be361791fe572ffb",
       "storedLicensePath": "source-material/T12/skills/licenses/pg-aiguide-LICENSE"
+    },
+    {
+      "sourceId": "source-t12-skill-qdrant-clients",
+      "repository": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "path": "skills/qdrant-clients-sdk/SKILL.md",
+      "license": "MIT",
+      "rawFileSha256": "d7b38e979bfdc5cb621862e8a91a6e10cf101ae53980fdc3181a9dc219fa56f1",
+      "storedFileSha256": "d7b38e979bfdc5cb621862e8a91a6e10cf101ae53980fdc3181a9dc219fa56f1",
+      "storedPath": "source-material/shared/skills/qdrant-clients-sdk/SKILL.md",
+      "licenseFileSha256": "ad5afb9c4d51fd20a606ecd24db7104565fe70fa722543cb625b02f45e14baf2",
+      "storedLicensePath": "source-material/shared/skills/_licenses/awesomeCopilot/LICENSE"
+    },
+    {
+      "sourceId": "source-t12-skill-qdrant-performance",
+      "repository": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "path": "skills/qdrant-performance-optimization/SKILL.md",
+      "license": "MIT",
+      "rawFileSha256": "f861884a0605993abfc81c082c6ed116f5f7ec07e3ef6b4e9b65b3a479ebfa80",
+      "storedFileSha256": "f861884a0605993abfc81c082c6ed116f5f7ec07e3ef6b4e9b65b3a479ebfa80",
+      "storedPath": "source-material/shared/skills/qdrant-performance-optimization/SKILL.md",
+      "licenseFileSha256": "ad5afb9c4d51fd20a606ecd24db7104565fe70fa722543cb625b02f45e14baf2",
+      "storedLicensePath": "source-material/shared/skills/_licenses/awesomeCopilot/LICENSE"
+    },
+    {
+      "sourceId": "source-t12-skill-qdrant-indexing",
+      "repository": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "path": "skills/qdrant-performance-optimization/indexing-performance-optimization/SKILL.md",
+      "license": "MIT",
+      "rawFileSha256": "2c274262f9c4e9351e24808abe028d7db91ca07fb2d1786baf90d51c1b04fa8d",
+      "storedFileSha256": "2c274262f9c4e9351e24808abe028d7db91ca07fb2d1786baf90d51c1b04fa8d",
+      "storedPath": "source-material/shared/skills/qdrant-performance-optimization/indexing-performance-optimization/SKILL.md",
+      "licenseFileSha256": "ad5afb9c4d51fd20a606ecd24db7104565fe70fa722543cb625b02f45e14baf2",
+      "storedLicensePath": "source-material/shared/skills/_licenses/awesomeCopilot/LICENSE"
+    },
+    {
+      "sourceId": "source-t12-skill-qdrant-memory",
+      "repository": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "path": "skills/qdrant-performance-optimization/memory-usage-optimization/SKILL.md",
+      "license": "MIT",
+      "rawFileSha256": "a36c4e2f257ffe93378c35886c4c27338d3e991ad9814e272aa34ad491e536cb",
+      "storedFileSha256": "a36c4e2f257ffe93378c35886c4c27338d3e991ad9814e272aa34ad491e536cb",
+      "storedPath": "source-material/shared/skills/qdrant-performance-optimization/memory-usage-optimization/SKILL.md",
+      "licenseFileSha256": "ad5afb9c4d51fd20a606ecd24db7104565fe70fa722543cb625b02f45e14baf2",
+      "storedLicensePath": "source-material/shared/skills/_licenses/awesomeCopilot/LICENSE"
+    },
+    {
+      "sourceId": "source-t12-skill-qdrant-search-speed",
+      "repository": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "path": "skills/qdrant-performance-optimization/search-speed-optimization/SKILL.md",
+      "license": "MIT",
+      "rawFileSha256": "2e9e85246e8f7ddc4b37b8f846052e51894dad671c8d0ddf8b3fc9e5a0cecbac",
+      "storedFileSha256": "2e9e85246e8f7ddc4b37b8f846052e51894dad671c8d0ddf8b3fc9e5a0cecbac",
+      "storedPath": "source-material/shared/skills/qdrant-performance-optimization/search-speed-optimization/SKILL.md",
+      "licenseFileSha256": "ad5afb9c4d51fd20a606ecd24db7104565fe70fa722543cb625b02f45e14baf2",
+      "storedLicensePath": "source-material/shared/skills/_licenses/awesomeCopilot/LICENSE"
+    },
+    {
+      "sourceId": "source-t12-skill-qdrant-quality",
+      "repository": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "path": "skills/qdrant-search-quality/SKILL.md",
+      "license": "MIT",
+      "rawFileSha256": "21404b6887fe46e8acde2767cf6856de478240976f23111f6a8ffd010d362542",
+      "storedFileSha256": "21404b6887fe46e8acde2767cf6856de478240976f23111f6a8ffd010d362542",
+      "storedPath": "source-material/shared/skills/qdrant-search-quality/SKILL.md",
+      "licenseFileSha256": "ad5afb9c4d51fd20a606ecd24db7104565fe70fa722543cb625b02f45e14baf2",
+      "storedLicensePath": "source-material/shared/skills/_licenses/awesomeCopilot/LICENSE"
+    },
+    {
+      "sourceId": "source-t12-skill-qdrant-diagnosis",
+      "repository": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "path": "skills/qdrant-search-quality/diagnosis/SKILL.md",
+      "license": "MIT",
+      "rawFileSha256": "41f144f5e022a5dc0e3d60b93bc868c91a181c6cd719a702362fca54083d29a4",
+      "storedFileSha256": "41f144f5e022a5dc0e3d60b93bc868c91a181c6cd719a702362fca54083d29a4",
+      "storedPath": "source-material/shared/skills/qdrant-search-quality/diagnosis/SKILL.md",
+      "licenseFileSha256": "ad5afb9c4d51fd20a606ecd24db7104565fe70fa722543cb625b02f45e14baf2",
+      "storedLicensePath": "source-material/shared/skills/_licenses/awesomeCopilot/LICENSE"
+    },
+    {
+      "sourceId": "source-t12-skill-qdrant-strategies",
+      "repository": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "path": "skills/qdrant-search-quality/search-strategies/SKILL.md",
+      "license": "MIT",
+      "rawFileSha256": "fcfeacf499615dbafe7cdbc22313b67a8492821f865944ff8520d2503745127f",
+      "storedFileSha256": "fcfeacf499615dbafe7cdbc22313b67a8492821f865944ff8520d2503745127f",
+      "storedPath": "source-material/shared/skills/qdrant-search-quality/search-strategies/SKILL.md",
+      "licenseFileSha256": "ad5afb9c4d51fd20a606ecd24db7104565fe70fa722543cb625b02f45e14baf2",
+      "storedLicensePath": "source-material/shared/skills/_licenses/awesomeCopilot/LICENSE"
+    },
+    {
+      "sourceId": "source-t12-skill-workload-balancing",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "path": "tasks/parallel-tfidf-search/environment/skills/workload-balancing/SKILL.md",
+      "license": "Apache-2.0",
+      "rawFileSha256": "a2b1f4653bd7939bd6c25f12051bed930f0e23dc2f2a269026fc39cb59cc5ef0",
+      "storedFileSha256": "a2b1f4653bd7939bd6c25f12051bed930f0e23dc2f2a269026fc39cb59cc5ef0",
+      "storedPath": "source-material/shared/skills/workload-balancing/SKILL.md",
+      "licenseFileSha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6",
+      "storedLicensePath": "source-material/shared/skills/_licenses/skillsbench/LICENSE"
+    },
+    {
+      "sourceId": "source-t12-skill-memory-optimization",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "path": "tasks/parallel-tfidf-search/environment/skills/memory-optimization/SKILL.md",
+      "license": "Apache-2.0",
+      "rawFileSha256": "30daf5237b91ce4487f516fa623b624ac205f9a64a3b56978bdadaa76e5a50e5",
+      "storedFileSha256": "30daf5237b91ce4487f516fa623b624ac205f9a64a3b56978bdadaa76e5a50e5",
+      "storedPath": "source-material/shared/skills/memory-optimization/SKILL.md",
+      "licenseFileSha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6",
+      "storedLicensePath": "source-material/shared/skills/_licenses/skillsbench/LICENSE"
+    },
+    {
+      "sourceId": "source-t12-skill-python-parallel",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "path": "tasks/parallel-tfidf-search/environment/skills/python-parallelization/SKILL.md",
+      "license": "Apache-2.0",
+      "rawFileSha256": "71585d7d3c6691b2116b7ebfb90cf9133747b4fa08537f7a5657f03539f8fdc3",
+      "storedFileSha256": "71585d7d3c6691b2116b7ebfb90cf9133747b4fa08537f7a5657f03539f8fdc3",
+      "storedPath": "source-material/shared/skills/python-parallelization/SKILL.md",
+      "licenseFileSha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6",
+      "storedLicensePath": "source-material/shared/skills/_licenses/skillsbench/LICENSE"
     }
   ]
 }

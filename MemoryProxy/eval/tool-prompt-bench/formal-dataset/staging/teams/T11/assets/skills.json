@@ -79,6 +79,292 @@
         }
       ],
       "contentHash": "d328915ba93e807a3518873c86d9bd775f4de5f29ee3e0d827132e591397ad54"
+    },
+    {
+      "assetId": "T11-SKILL-TESTING-PYTHON",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-skill-testing-python"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "testing-python",
+      "version": "1.0.0",
+      "description": "designing deterministic client and UI test fixtures; sourced from tasks/fix-build-agentops/environment/skills/testing-python/SKILL.md.",
+      "useWhen": "designing deterministic client and UI test fixtures",
+      "doNotUseWhen": "profiling runtime jank or changing Gradle DSL",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "3a210279d297921c5c32c8be3e9938c711e5da80fe4a9625324b541e86d9333c"
+        }
+      ],
+      "contentHash": "9d96c55c8d4dce0c0285d579cda3420f93cce5166f2f46fb3eb725eaa8c49d52"
+    },
+    {
+      "assetId": "T11-SKILL-TEMPORAL-TESTING",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-skill-temporal-testing"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "temporal-python-testing",
+      "version": "1.0.0",
+      "description": "testing retryable lifecycle and synchronization behavior; sourced from tasks/temporal-python-testing/environment/skills/temporal-python-testing/SKILL.md.",
+      "useWhen": "testing retryable lifecycle and synchronization behavior",
+      "doNotUseWhen": "changing build plugins or inspecting frame timing",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "3e232b7d6c4d30c80b09024e83e1c7f229f031b0e511cabed45958cd8928af2e"
+        }
+      ],
+      "contentHash": "89ac2ad1ba18171adf736df5ea6328ccb2fa65248c145d5877e8c95932c75d8a"
+    },
+    {
+      "assetId": "T11-SKILL-PYTEST-COVERAGE",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-skill-pytest-coverage"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "pytest-coverage",
+      "version": "1.0.0",
+      "description": "measuring test coverage gaps in client-side fixtures; sourced from skills/pytest-coverage/SKILL.md.",
+      "useWhen": "measuring test coverage gaps in client-side fixtures",
+      "doNotUseWhen": "diagnosing cold-start traces or migrating AGP",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "1057ea1dd6a32fceb0cf79d542b703427e7970e86e4ce85f051d76a0d5f94379"
+        }
+      ],
+      "contentHash": "ff130e8e47024ca389177b9172b8ebfcc8a89d855ce8feb23cf4beb9fefb0186"
+    },
+    {
+      "assetId": "T11-SKILL-DISCOVER-FUNCTION",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-skill-discover-function"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "discover-important-function",
+      "version": "1.0.0",
+      "description": "locating the important execution boundary before test harness work; sourced from tasks/setup-fuzzing-py/environment/skills/discover-important-function/SKILL.md.",
+      "useWhen": "locating the important execution boundary before test harness work",
+      "doNotUseWhen": "writing Compose restoration assertions",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "4bab2b9f0b3012d50b954b8d13203dfa07f686011ca6c21ba0bb4801f5fa2ef2"
+        }
+      ],
+      "contentHash": "9310b4a6651cb471d407417b844e811030fe12144a091eea1fbd2b72562dd66c"
+    },
+    {
+      "assetId": "T11-SKILL-FUZZING-PYTHON",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-skill-fuzzing-python"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "fuzzing-python",
+      "version": "1.0.0",
+      "description": "building a coverage-guided input harness for a parser; sourced from tasks/setup-fuzzing-py/environment/skills/fuzzing-python/SKILL.md.",
+      "useWhen": "building a coverage-guided input harness for a parser",
+      "doNotUseWhen": "profiling Android startup or editing Gradle",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "ad65e531bd79b962d2cb9678099d92f865899b206dcbc308353444fc8cac4a1f"
+        }
+      ],
+      "contentHash": "bf9d263dfa24112dc5269a2a31710a4f2115587841567c82cafaafef219b5309"
+    },
+    {
+      "assetId": "T11-SKILL-PYTHON-PARALLEL",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-skill-python-parallel"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "python-parallelization",
+      "version": "1.0.0",
+      "description": "parallelizing offline trace and fixture processing; sourced from tasks/parallel-tfidf-search/environment/skills/python-parallelization/SKILL.md.",
+      "useWhen": "parallelizing offline trace and fixture processing",
+      "doNotUseWhen": "testing restored UI state",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "71585d7d3c6691b2116b7ebfb90cf9133747b4fa08537f7a5657f03539f8fdc3"
+        }
+      ],
+      "contentHash": "1d5373f58afac002b63b30434c3e30b1fe388013ce8fa93beb2bef6f70d7879f"
+    },
+    {
+      "assetId": "T11-SKILL-UV",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-skill-uv"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "uv-package-manager",
+      "version": "1.0.0",
+      "description": "reproducing a pinned Python test environment; sourced from tasks/fix-build-agentops/environment/skills/uv-package-manager/SKILL.md.",
+      "useWhen": "reproducing a pinned Python test environment",
+      "doNotUseWhen": "analyzing Android frame traces",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "1f79787d9dd198563d52047056aaaea06f1ef19442a1c07abe0429e51bc7e2c6"
+        }
+      ],
+      "contentHash": "d25cfdd57dcad66cec3a5a410c3779ff166b2ac52ec01c08b7525885f0e36671"
+    },
+    {
+      "assetId": "T11-SKILL-WORKLOAD",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-skill-workload"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "workload-balancing",
+      "version": "1.0.0",
+      "description": "balancing parallel fixture workloads across workers; sourced from tasks/parallel-tfidf-search/environment/skills/workload-balancing/SKILL.md.",
+      "useWhen": "balancing parallel fixture workloads across workers",
+      "doNotUseWhen": "changing Compose state restoration",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "a2b1f4653bd7939bd6c25f12051bed930f0e23dc2f2a269026fc39cb59cc5ef0"
+        }
+      ],
+      "contentHash": "d8ea3b481ea2348a8e5262256d5aa3f6108297135e6b063e5c2fd6fe6b0611a2"
+    },
+    {
+      "assetId": "T11-SKILL-MEMORY-OPT",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-skill-memory-opt"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "memory-optimization",
+      "version": "1.0.0",
+      "description": "reducing memory pressure in offline test data processing; sourced from tasks/parallel-tfidf-search/environment/skills/memory-optimization/SKILL.md.",
+      "useWhen": "reducing memory pressure in offline test data processing",
+      "doNotUseWhen": "migrating AGP or asserting lifecycle restoration",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "30daf5237b91ce4487f516fa623b624ac205f9a64a3b56978bdadaa76e5a50e5"
+        }
+      ],
+      "contentHash": "278ac0949e2fb3df131b8509a484253505c26d7f3858c6422a2f6abf7c2c5fc6"
+    },
+    {
+      "assetId": "T11-SKILL-QDRANT",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-skill-qdrant"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "qdrant-clients-sdk",
+      "version": "1.0.0",
+      "description": "implementing a version-pinned local vector client adapter; sourced from skills/qdrant-clients-sdk/SKILL.md.",
+      "useWhen": "implementing a version-pinned local vector client adapter",
+      "doNotUseWhen": "profiling Android UI or restoring Compose state",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "d7b38e979bfdc5cb621862e8a91a6e10cf101ae53980fdc3181a9dc219fa56f1"
+        }
+      ],
+      "contentHash": "56c728e8bf8f781aefb1e5ecbbbb762f9fb68894d6b390293a87bffdd375df1b"
+    },
+    {
+      "assetId": "T11-SKILL-ANALYZE-CI",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-skill-analyze-ci"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "analyze-ci",
+      "version": "1.0.0",
+      "description": "analyzing failed CI jobs and their diagnostic logs; sourced from skills/analyze-ci/SKILL.md.",
+      "useWhen": "analyzing failed CI jobs and their diagnostic logs",
+      "doNotUseWhen": "writing UI state assertions or frame traces",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "ebf10c1c4f7e49efbb7112ac0b5160d0549596d1db7ee961b9ecd4c6182ae6c5"
+        }
+      ],
+      "contentHash": "3c1cb1b63ee4d516a8f05ff209ed12d475e123c460d08830f8bfbbf27ac63dfd"
     }
   ]
 }
