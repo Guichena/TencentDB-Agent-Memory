@@ -18,6 +18,11 @@ function canonical(value) {
 }
 const sha = (value) => createHash("sha256").update(typeof value === "string" ? value : canonical(value)).digest("hex");
 const withHash = (value) => ({ ...value, contentHash: sha(value) });
+const controlledDeltaSha256 = (pair) => createHash("sha256").update(JSON.stringify({
+  positive_delta_message: pair.positive.delta_message,
+  negative_delta_message: pair.negative.delta_message,
+  query: pair.query,
+}), "utf8").digest("hex");
 const readJson = async (...parts) => JSON.parse(await readFile(path.join(here, ...parts), "utf8"));
 const insertDelta = (pair, role) => {
   const messages = pair.shared_context_messages.map((message) => ({ ...message }));
@@ -155,7 +160,7 @@ function addPair(pair, family, ordinal, route) {
     const gold = withHash(goldBase);
     privateAnnotations.push(withHash({ caseId, sourceEvidenceIds: evidenceRefs, pairId, pairRole: role, gold, annotationReason: positive ? pair.positive.private_proposal.unique_information_gap : pair.negative.private_proposal.why_current_context_is_sufficient }));
   }
-  pairs.push(withHash({ pairId, positiveCaseId: `T11-${stem}-P`, negativeCaseId: `T11-${stem}-N`, counterfactualKind: "answer_in_current_context", controlledDeltaSha256: sha({ positive: pair.positive.delta_message, negative: pair.negative.delta_message }), currentEvidenceRefs: ["source-t11-current-anchor", "source-t11-pairs"] }));
+  pairs.push(withHash({ pairId, positiveCaseId: `T11-${stem}-P`, negativeCaseId: `T11-${stem}-N`, counterfactualKind: "answer_in_current_context", controlledDeltaSha256: controlledDeltaSha256(pair), currentEvidenceRefs: ["source-t11-current-anchor", "source-t11-pairs"] }));
 }
 
 memoryPairs.forEach((pair, index) => addPair(pair, "memory", index + 1, { ...memoryRoutes[index], stopAfter: memoryRoutes[index].seq.at(-1) === "tdai_read_scene" ? `tdai_read_scene returns ${memoryRoutes[index].target}.` : `${memoryRoutes[index].seq.at(-1)} returns ${memoryRoutes[index].target}.` }));
@@ -193,7 +198,7 @@ const businessAgents = [withHash({ agentId, teamId: "T11", name: "T11 通用业�
 const fragment = {
   schema_version: "task1.team_fragment.v1", build_id: "build-06", team_id: "T11", split: "dev", sourceEvidence, teams, businessAgents, tasks, publicCases, privateAnnotations, pairs,
   snapshotAssetIds, generatorBatchRefs: ["T11/memory/memory-batch-01", "T11/memory/memory-batch-02", "T11/skill/skill-batch-01", "T11/skill/skill-batch-02", "T11/knowledge/knowledge-batch-01", "T11/natural-negative/natural-negative-batch-01"],
-  externalImports: input.skill_sources.map((source) => ({ sourceId: `source-${source.source_id}`, repository: source.repository, revision: source.revision, path: source.path, license: source.license, rawFileSha256: source.raw_sha256, storedPath: `source-material/T11/skills/${input.skill_visibility.find((item) => item.source_id === source.source_id).name}/SKILL.md` })),
+  externalImports: input.skill_sources.map((source) => ({ sourceId: `source-${source.source_id}`, repository: source.repository, revision: source.revision, path: source.path, license: source.license, rawFileSha256: source.raw_sha256, storedFileSha256: source.raw_sha256, storedPath: `source-material/T11/skills/${input.skill_visibility.find((item) => item.source_id === source.source_id).name}/SKILL.md`, licenseFileSha256: source.license_sha256, storedLicensePath: source.repository === "https://github.com/android/skills" ? "source-material/T11/skills/licenses/android-skills-LICENSE.txt" : "source-material/T11/skills/licenses/android-testing-skills-LICENSE" })),
 };
 
 await mkdir(assetsDir, { recursive: true });
