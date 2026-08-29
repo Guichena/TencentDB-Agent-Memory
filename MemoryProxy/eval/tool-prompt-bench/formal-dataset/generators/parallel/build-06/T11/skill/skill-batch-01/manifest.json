@@ -1,0 +1,14 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "t11-skill-batch-01",
+  "external_source_ids": [
+    "t11-skill-agp9",
+    "t11-skill-profiler",
+    "t11-skill-state-restoration"
+  ],
+  "generated_at": "2026-08-30T10:00:00+08:00",
+  "actual_count": 3
+}

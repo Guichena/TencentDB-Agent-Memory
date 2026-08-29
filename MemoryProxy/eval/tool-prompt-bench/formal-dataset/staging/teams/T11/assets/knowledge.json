@@ -1,0 +1,66 @@
+{
+  "schema_version": "task1.formal_knowledge_assets.v1",
+  "team_id": "T11",
+  "knowledge": [
+    {
+      "assetId": "knowledge-t11-android-build",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-knowledge-build"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "code_graph",
+      "name": "Orchid Android build and Gradle configuration graph",
+      "repoUrl": "https://github.com/android/skills",
+      "repoCommit": "ea05a53683d1fb1fc701c3ad91f494d25d4fc7c6",
+      "indexVersion": "task1-build06-fixture-v1",
+      "snapshotSha256": "77ca7e0eb8502bf08a3da458aea309b43452b93fda8d42d4069f82039218a973",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t11-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "91a25760c80f95568ef8b53e1f2d5ecb638dec0af0036e204a4c4e07017eae37"
+    },
+    {
+      "assetId": "knowledge-t11-mobile-sync",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-knowledge-wiki"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "wiki",
+      "name": "Atlas offline synchronization design notes",
+      "snapshotSha256": "ba26219cc730dc3b1047c581d6a9c81b99bed32f4495802b4b2cf1f09bc9a7e5",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t11-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "367d75543565ca3bf8ee5967c1ced5694b7a511579f20e91292a21e8c26e5d32"
+    },
+    {
+      "assetId": "knowledge-t11-ios-client",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-knowledge-build"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "code_graph",
+      "name": "Nimbus iOS lifecycle and state restoration graph",
+      "repoUrl": "https://github.com/skydoves/android-testing-skills",
+      "repoCommit": "8665ed59643c90eb1056a256a6ddec161aa1cfa1",
+      "indexVersion": "task1-build06-fixture-v1",
+      "snapshotSha256": "36c59e089b6a373b18c4ff485fd83671e685500de523afa36df0d657acab2652",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t11-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "a311eae3f06a3614a07049368a607e5617d1f0aee14f6b663369c4c624112725"
+    }
+  ]
+}

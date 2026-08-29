@@ -1,0 +1,278 @@
+{
+  "schema_version": "task1.luna_natural_negative_draft.v1",
+  "batch_id": "t11-natural-negative-batch-01",
+  "stage": "DS02",
+  "team_id": "T11",
+  "cases": [
+    {
+      "draft_case_id": "T11-DS02-NN-001",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Orchid Android 应用准备把 Android Gradle 插件从 8.5.2 升到 9.0.0。当前 gradle-wrapper.properties 使用 Gradle 8.7，根目录的 libs.versions.toml 仍把 compileSdk 配成 35，app 模块的 android 块还显式写着 buildToolsVersion = \"35.0.0\"。"
+        },
+        {
+          "role": "assistant",
+          "content": "这次只调整构建迁移所必需的版本和 DSL，Kotlin、依赖坐标、namespace 以及源码保持不变。目标编译 SDK 已确定为 36，插件升级需要与之匹配的 Gradle wrapper。"
+        },
+        {
+          "role": "user",
+          "content": "请给出 settings 之外需要修改的最小 Gradle 配置 diff，并注明哪些旧配置应删除，方便我直接贴进变更说明。"
+        }
+      ],
+      "query": "根据上述版本约束，输出最小的 wrapper、版本目录和 app 模块 DSL 修改清单；不要扩展到依赖升级。",
+      "why_current_context_is_sufficient": "目标插件、wrapper 现状、compileSdk 现状、目标 SDK 和需要保留的范围均已明确；请求只是把这些已给定约束改写成局部配置清单。",
+      "visible_distractor_ids_author_only": [
+        "T11-NN-DISTRACTOR-ATLAS-RETRY",
+        "T11-NN-DISTRACTOR-HELIO-RESTORE"
+      ],
+      "sol_review_questions": [
+        "是否只依据上下文中的版本约束给出局部构建 diff，没有引入未提供的依赖或仓库事实？"
+      ]
+    },
+    {
+      "draft_case_id": "T11-DS02-NN-002",
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Android app 有 free 和 paid 两个 flavor，以及 debug、release 两个 build type。现有 defaultConfig 的 applicationId 是 com.example.orchid，paid 需要追加 .pro，只有 release 变体要把 manifest placeholder `apiHost` 设为 `releaseHostValue`；debug 的 placeholder 必须继续使用本地值 `debugHostValue`。"
+        },
+        {
+          "role": "assistant",
+          "content": "变体规则已经足够确定：applicationIdSuffix 只属于 paid，apiHost 的 release 覆盖不能污染 debug，也不能把 flavor 名称硬编码进 manifest。"
+        },
+        {
+          "role": "user",
+          "content": "当前 manifest 已通过 `${apiHost}` 读取值。请只写出 android.defaultConfig、productFlavors 和 buildTypes 中需要补齐或调整的 Kotlin DSL 片段。"
+        }
+      ],
+      "query": "给出满足这四种变体组合的最小 Kotlin DSL 片段，并用一句话说明每个覆盖的作用域。",
+      "why_current_context_is_sufficient": "flavor、build type、applicationId 后缀、两个环境值及 manifest 的读取方式都已在对话中给出；只需据此组合标准 DSL，不需要查找项目内容。",
+      "visible_distractor_ids_author_only": [
+        "T11-NN-DISTRACTOR-PULSE-TRACE",
+        "T11-NN-DISTRACTOR-NIMBUS-SCENE"
+      ],
+      "sol_review_questions": [
+        "是否正确区分 paid flavor 与 release build type 的作用域，并保持 debug 本地地址不变？"
+      ]
+    },
+    {
+      "draft_case_id": "T11-DS02-NN-003",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Nimbus iOS 工程已有 AppStore 和 Internal 两个 configuration。AppStore 的 xcconfig 目前缺少 SWIFT_OPTIMIZATION_LEVEL 和 SWIFT_COMPILATION_MODE，目标是开启优化并使用 wholemodule；Internal 必须保留调试信息和增量编译。两个 configuration 共用同一套签名设置。"
+        },
+        {
+          "role": "assistant",
+          "content": "这里不改签名、部署目标或源码，只在对应 xcconfig 中补齐编译设置。AppStore 使用 `-O` 与 `wholemodule`，Internal 继续使用 `-Onone` 与 `incremental`。"
+        },
+        {
+          "role": "user",
+          "content": "请输出两个 xcconfig 的最小键值片段，并标出只应出现在 AppStore 的两项。"
+        }
+      ],
+      "query": "按 configuration 分组给出可直接粘贴的 xcconfig 片段，不添加其他发布设置。",
+      "why_current_context_is_sufficient": "两个 configuration、每个 configuration 的优化模式和编译模式、以及不应修改的签名范围均已明确；任务仅是生成两组键值文本。",
+      "visible_distractor_ids_author_only": [
+        "T11-NN-DISTRACTOR-ORCHID-AGP",
+        "T11-NN-DISTRACTOR-ATLAS-CONFLICT"
+      ],
+      "sol_review_questions": [
+        "是否只输出给定的四个编译键，并避免把 AppStore 设置泄漏到 Internal？"
+      ]
+    },
+    {
+      "draft_case_id": "T11-DS02-NN-004",
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Nimbus 的编辑页由 EditorViewController 持有，用户输入放在 `draftText`。系统可能先调用 `sceneDidEnterBackground`，随后终止进程；重新进入时会先创建控制器，再调用 `sceneWillEnterForeground`。要求输入为空时显示占位提示，恢复出非空草稿时显示草稿且不触发一次自动保存。"
+        },
+        {
+          "role": "assistant",
+          "content": "恢复数据应在控制器可用后一次性注入，并通过一个仅用于恢复阶段的标记阻止自动保存副作用；正常编辑仍按原有事件保存。"
+        },
+        {
+          "role": "user",
+          "content": "持久化层已经提供 `saveDraft(_:)` 和 `loadDraft() -> String?`。请写出生命周期相关的 Swift 伪代码，覆盖保存、恢复、空值和避免重复保存四个条件。"
+        }
+      ],
+      "query": "给出最小的保存/恢复伪代码和关键条件判断，不改变持久化层接口。",
+      "why_current_context_is_sufficient": "生命周期顺序、草稿字段、持久化接口、空值显示规则及禁止恢复时自动保存的条件都已直接提供；输出只需组织这些条件。",
+      "visible_distractor_ids_author_only": [
+        "T11-NN-DISTRACTOR-PULSE-STARTUP",
+        "T11-NN-DISTRACTOR-HELIO-STATE"
+      ],
+      "sol_review_questions": [
+        "是否覆盖了进后台保存、重建后恢复、空值占位和恢复阶段抑制保存四个边界？"
+      ]
+    },
+    {
+      "draft_case_id": "T11-DS02-NN-005",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Android CheckoutActivity 当前把 `selectedAddressId` 和 `paymentStep` 直接放在 Activity 字段里。旋转屏幕会重建 Activity；进程被回收后系统只会回传 Bundle。需要保留地址 ID 和步骤编号，但不保留一次性支付令牌；首次创建且没有恢复值时步骤必须从 0 开始。"
+        },
+        {
+          "role": "assistant",
+          "content": "可恢复字段应有明确的 Bundle key 和默认值，一次性令牌不进入保存状态。恢复与首次创建需要分支处理，避免把缺失值误当成旧会话。"
+        },
+        {
+          "role": "user",
+          "content": "请给出 onCreate 与 onSaveInstanceState 的 Kotlin 代码骨架，并列出两个应覆盖的重建断言。"
+        }
+      ],
+      "query": "按现有字段和规则写出生命周期代码骨架及最小断言，不引入新的状态容器。",
+      "why_current_context_is_sufficient": "需要保存的字段、明确禁止保存的令牌、Bundle 来源、默认步骤和重建场景均已给出；任务是局部实现与测试断言设计。",
+      "visible_distractor_ids_author_only": [
+        "T11-NN-DISTRACTOR-NIMBUS-SCENE",
+        "T11-NN-DISTRACTOR-ATLAS-QUEUE"
+      ],
+      "sol_review_questions": [
+        "是否只保存地址和步骤，并验证首次创建默认值与重建后的值，而没有把一次性令牌写入状态？"
+      ]
+    },
+    {
+      "draft_case_id": "T11-DS02-NN-006",
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Atlas 离线队列表的每行有 `opId`、`state`、`attempts` 和 `nextRetryAt`。同步响应可能是 ack、temporary_failure 或 permanent_failure；ack 只允许 pending/inFlight 变为 acked，temporary_failure 回到 pending 并把 attempts 加一，permanent_failure 进入 failed 且不再重试。"
+        },
+        {
+          "role": "assistant",
+          "content": "处理响应前要按 opId 做幂等检查：已经 acked 或 failed 的行不再被旧响应改写。临时失败的下一次时间由调用方传入，状态机本身只负责字段更新。"
+        },
+        {
+          "role": "user",
+          "content": "请写一个纯函数式伪代码 `applySyncResult(row, result, retryAt)`，列出所有允许的状态转换和非法转换的处理。"
+        }
+      ],
+      "query": "给出这个离线队列状态转换函数的最小实现和分支表，确保重复响应不会让终态倒退。",
+      "why_current_context_is_sufficient": "字段、三种响应、每种响应的状态转换、幂等规则和 retryAt 的职责边界均已明确；无需读取同步协议或数据库结构即可完成函数。",
+      "visible_distractor_ids_author_only": [
+        "T11-NN-DISTRACTOR-ORCHID-VARIANT",
+        "T11-NN-DISTRACTOR-PULSE-ALLOC"
+      ],
+      "sol_review_questions": [
+        "是否显式阻止 acked/failed 终态被旧响应覆盖，并正确区分临时失败与永久失败？"
+      ]
+    },
+    {
+      "draft_case_id": "T11-DS02-NN-007",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Atlas 的 Note 同步采用服务器 revision。客户端离线编辑得到本地 revision 7，上传时服务器已是 revision 8；服务器返回冲突时同时给出 serverText、serverUpdatedAt 和 clientUpdatedAt。产品规则已经确定：时间较新的文本胜出；时间相同时服务器文本胜出；无论胜负都要把本地记录的 revision 更新为服务器 revision 8。"
+        },
+        {
+          "role": "assistant",
+          "content": "冲突解析可以是无副作用的比较函数，返回胜出的文本、是否产生本地覆盖以及新的 revision。时间比较必须在相等时明确走服务器分支。"
+        },
+        {
+          "role": "user",
+          "content": "请用 Kotlin 写出 `resolveConflict(localText, clientUpdatedAt, serverText, serverUpdatedAt, serverRevision)` 的返回类型和实现，并给出相等时间的断言。"
+        }
+      ],
+      "query": "根据既定时间优先规则输出最小冲突解析函数和三条边界断言。",
+      "why_current_context_is_sufficient": "冲突输入、胜负规则、相等时间的决策和 revision 更新要求均已在当前对话中完整给出；这是局部纯函数编码任务。",
+      "visible_distractor_ids_author_only": [
+        "T11-NN-DISTRACTOR-HELIO-NAV",
+        "T11-NN-DISTRACTOR-ORCHID-DSL"
+      ],
+      "sol_review_questions": [
+        "是否保证时间相等时选择服务器文本，并在两种胜负情况下都返回服务器 revision？"
+      ]
+    },
+    {
+      "draft_case_id": "T11-DS02-NN-008",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Pulse Android 冷启动记录显示总耗时 480ms：主线程上的 `Repository.load()` 占 240ms，其中 JSON 解析占 130ms；首屏只需要最近 20 条摘要。当前实现启动时同步读取全部 500 条记录，且首屏之前还会初始化未使用的分析模块。"
+        },
+        {
+          "role": "assistant",
+          "content": "优化目标是先缩短首屏关键路径：把全量读取和解析移出主线程，只取首屏需要的摘要，并延后未使用模块；不改变数据格式和结果语义。"
+        },
+        {
+          "role": "user",
+          "content": "请按优先级给出三个具体代码改动，每项注明它针对的耗时来源和不应改变的行为。"
+        }
+      ],
+      "query": "基于这份启动剖面写一个三项优化清单，避免泛泛而谈或引入新的业务功能。",
+      "why_current_context_is_sufficient": "总耗时、两个明确热点、数据规模、首屏需求和延后初始化的约束均已给出；任务只需把已知瓶颈映射到具体实现方向。",
+      "visible_distractor_ids_author_only": [
+        "T11-NN-DISTRACTOR-ATLAS-RETRY",
+        "T11-NN-DISTRACTOR-NIMBUS-RESTORE"
+      ],
+      "sol_review_questions": [
+        "优化建议是否逐项对应给定的主线程读取、解析和无关初始化耗时，并保持数据结果不变？"
+      ]
+    },
+    {
+      "draft_case_id": "T11-DS02-NN-009",
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Helio Compose 的消息列表有 600 个元素，滚动时每帧约 24ms。现有代码在 `items.forEach` 中为每行计算日期格式字符串，并把未稳定的 `onClick` lambda 传给 Row；列表数据本身是不可变的。剖面还显示每帧创建 600 个 formatter。"
+        },
+        {
+          "role": "assistant",
+          "content": "应把与行无关的 formatter 复用起来，把日期结果放入稳定的派生数据或缓存，并让点击回调保持稳定；列表的展示顺序和点击行为都必须保持不变。"
+        },
+        {
+          "role": "user",
+          "content": "请给出最小的 Compose 重构示意，分别展示 formatter 复用、日期计算位置和稳定回调三处改动，并说明如何验证帧耗时改善。"
+        }
+      ],
+      "query": "围绕这三个已定位热点写出局部代码示意和一个验证指标，不改列表数据模型。",
+      "why_current_context_is_sufficient": "帧耗时、列表规模、三个具体分配/重组热点、数据稳定性和行为约束都已明确；可以直接设计局部 Compose 重构与验证指标。",
+      "visible_distractor_ids_author_only": [
+        "T11-NN-DISTRACTOR-ORCHID-BUILD",
+        "T11-NN-DISTRACTOR-ATLAS-REVISION"
+      ],
+      "sol_review_questions": [
+        "是否针对每帧 formatter、派生值和回调稳定性分别给出改动，并保留原有顺序与点击语义？"
+      ]
+    },
+    {
+      "draft_case_id": "T11-DS02-NN-010",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Helio 的 Compose 编辑表单使用 `var title by rememberSaveable { mutableStateOf(\"\") }`，旁边有一个显示 `title.length` 的计数器。测试要求：输入 `abc` 后触发保存/恢复，恢复后文本仍是 `abc`，计数器为 3；普通重组不能把文本清空。"
+        },
+        {
+          "role": "assistant",
+          "content": "测试只需要证明保存状态跨过一次重建仍存在，并单独检查由状态派生的计数器；普通重组可以通过再次设置内容或触发无关状态变化来覆盖。"
+        },
+        {
+          "role": "user",
+          "content": "请写一个 Compose UI 测试骨架：找到输入框，输入 `abc`，执行一次重建，再断言输入框和计数器；最后补一个不会清空内容的重组断言。"
+        }
+      ],
+      "query": "给出只依赖上述表单语义的 UI 测试代码骨架和断言清单，不增加导航或网络步骤。",
+      "why_current_context_is_sufficient": "状态声明、输入值、计数器派生关系、重建后的预期和普通重组约束都已给出；这是可直接写出的局部 UI 测试，不依赖外部资产。",
+      "visible_distractor_ids_author_only": [
+        "T11-NN-DISTRACTOR-PULSE-JANK",
+        "T11-NN-DISTRACTOR-NIMBUS-CALLBACK"
+      ],
+      "sol_review_questions": [
+        "测试是否同时覆盖 saveable 状态恢复、计数器派生值和普通重组不清空，并避免引入无关交互？"
+      ]
+    }
+  ]
+}

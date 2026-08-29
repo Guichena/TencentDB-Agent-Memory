@@ -1,0 +1,273 @@
+{
+  "schema_version": "task1.formal_memory_assets.v1",
+  "team_id": "T11",
+  "l0_conversations": [
+    {
+      "assetId": "T11-L0-SUPPORT-1",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-redacted"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T11-L0-SUPPORT-1",
+      "messages": [
+        {
+          "messageId": "T11-L0-SUPPORT-1-M01",
+          "role": "user",
+          "content": "请找回 Orchid 迁移中已经验证的插件声明与仓库配置约定，用来对照当前构建失败。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "c425c324a51c905a923940523f850c8dffbbea33196c36a71267b389ef6cb384"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-1-M02",
+          "role": "assistant",
+          "content": "交接记录已补全规则：插件声明统一放在根级约定中，仓库块只保留迁移所需的官方源，并让各模块通过同一版本目录继承；这套配置已在最小构建上验证通过。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "aea0d0439a7a3f9563a2e78db53627e3d8d2984a25b52862ea6a0f53b7fea3f6"
+        }
+      ],
+      "contentHash": "3283dccef72de3d9f8ce48ddfc764c0221e6e415d312dbc737573104d70a630e"
+    },
+    {
+      "assetId": "T11-L0-ATLAS-CONFLICT-REVIEW",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-redacted"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T11-L0-ATLAS-CONFLICT-REVIEW",
+      "messages": [
+        {
+          "messageId": "T11-L0-ATLAS-CONFLICT-REVIEW-M01",
+          "role": "user",
+          "content": "请找回 Atlas 冲突合并评审中关于本地删除与远端更新同时到达时如何处理的原话。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "39190d2b9678e544fd0e2fc37b4b88785d966856e31c048e544d648e13b828ab"
+        },
+        {
+          "messageId": "T11-L0-ATLAS-CONFLICT-REVIEW-M02",
+          "role": "assistant",
+          "content": "评审原话已补回：并发到达时先保留删除意图，再按服务端版本确认是否可安全合并；若版本已越过删除基线，则把记录标为待人工解决，而不是静默复活本地对象。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "c135dd63199be68995ff5c3495912396b1b85c642fd572b519c8fff6f5f8042b"
+        }
+      ],
+      "contentHash": "e744d6af3bfaa92ec18488c3dcdd8416f5d4678ced84d42e613b7691df4f6024"
+    },
+    {
+      "assetId": "T11-L0-SUPPORT-3",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-redacted"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T11-L0-SUPPORT-3",
+      "messages": [
+        {
+          "messageId": "T11-L0-SUPPORT-3-M01",
+          "role": "user",
+          "content": "请找回 Nimbus 状态恢复验证时的动作顺序：保存点检查、界面重建和状态断言分别先后如何安排？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "76461f7aae44432714f2d227607a5056dc4846b26ee08666df9394127653cfd9"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-3-M02",
+          "role": "assistant",
+          "content": "历史记录已补全顺序：先确认保存点包含目标字段，再触发界面重建，最后在重建后的界面读取并断言状态；三步均在同一恢复场景中验证。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "2e464a950f6dd49f09b01bac16ac16888acc6950c00127150a7e42db190fbbda"
+        }
+      ],
+      "contentHash": "7caa1361a38de8cdceb1aa110fb97a7a257fe1e28850df4690ee2fe275de5aca"
+    },
+    {
+      "assetId": "T11-L0-SUPPORT-4",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-redacted"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T11-L0-SUPPORT-4",
+      "messages": [
+        {
+          "messageId": "T11-L0-SUPPORT-4-M01",
+          "role": "user",
+          "content": "请找回 Pulse 冷启动卡顿复核所用的历史排查流程，用于按同一顺序重新采样。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "3c90dca58a3dd1f403318088860e5cfdc83a5e6e54e0cb1be82aa0c533d83b84"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-4-M02",
+          "role": "assistant",
+          "content": "交接记录已补全流程：先记录首屏帧时序，再按同一时间窗核对主线程工作，最后用冷启动与热启动对照确认是否为回归；暂不先改渲染实现。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "192f017ed935063ef36c4cb2bb9e1f7e1887911be5e69a9667e98e0eeb5b9419"
+        }
+      ],
+      "contentHash": "cdf9199a706c7da15f996a7521436fe7097e864e0761e777440e0231def7cd08"
+    },
+    {
+      "assetId": "T11-L0-SUPPORT-5",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-redacted"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T11-L0-SUPPORT-5",
+      "messages": [
+        {
+          "messageId": "T11-L0-SUPPORT-5-M01",
+          "role": "user",
+          "content": "请确认 Helio 的 Compose 状态恢复用例在重建后应断言什么，作为当前测试的对照。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "c9314cc335a2bb48f865912908eca0911ece6a9dda40bbd4bcd4bf0458f11bc1"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-5-M02",
+          "role": "assistant",
+          "content": "交接笔记已补全断言：重建后应读取同一输入字段并断言其仍等于重建前提交的值，同时确认界面已完成恢复。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "a4dd888a050697f458f0e5e89295c7e502e3791543a1b4611068d4e3441d6730"
+        }
+      ],
+      "contentHash": "6b89f47ff6b01907133b7eb96b6a7cee23545c3ddbb11b0b75defdfff1b7b57a"
+    },
+    {
+      "assetId": "T11-L0-ORCHID-ATLAS-RELEASE-LOCK",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-redacted"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T11-L0-ORCHID-ATLAS-RELEASE-LOCK",
+      "messages": [
+        {
+          "messageId": "T11-L0-ORCHID-ATLAS-RELEASE-LOCK-M01",
+          "role": "user",
+          "content": "请直接确认 Orchid 发布配置与 Atlas 客户端版本锁定时，历史交接约定要求满足哪两个条件。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "88020479f8f105ae2dead5ad65c1f9d4150d3554c55baaace55a6a08cf8b3b83"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-ATLAS-RELEASE-LOCK-M02",
+          "role": "assistant",
+          "content": "交接记录已补全两个条件：构建插件版本必须与发布分支锁定文件一致，且 Atlas 客户端只允许使用该分支已验证的同步协议版本；两项都满足后才可更新发布配置。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "012e050a190a1a9ba3488f5019e4ce6c1fa1712263aca36d35d8733716fd435e"
+        }
+      ],
+      "contentHash": "39c5440375c7023bcdcc05aa2f938ce9a0ba47bdbcd97ee8d5cd6bc646a303bb"
+    }
+  ],
+  "l1_memories": [
+    {
+      "assetId": "T11-L1-ORCHID-AGP-MIGRATION-RULE",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "decision",
+      "content": "交接记录已补全规则：插件声明统一放在根级约定中，仓库块只保留迁移所需的官方源，并让各模块通过同一版本目录继承；这套配置已在最小构建上验证通过。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T11-L0-SUPPORT-1-M02"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "95e23bb53f1891b7088a4851abed7922c153e698a0a57e0124c3fa71b1972466"
+    },
+    {
+      "assetId": "T11-L1-HELIO-COMPOSE-RESTORE-ASSERTION",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "fact",
+      "content": "交接笔记已补全断言：重建后应读取同一输入字段并断言其仍等于重建前提交的值，同时确认界面已完成恢复。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T11-L0-SUPPORT-5-M02"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "f975c1deacc640a07401bef2bfb80ac9319c4113c5dccda9c9446e0d7b4c439c"
+    }
+  ],
+  "l2_scenes": [
+    {
+      "assetId": "T11-L2-NIMBUS-RESTORE-TIMELINE",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-scene"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "path": "mobile/nimbus/restoration-timeline",
+      "summary": "Nimbus verified restoration timeline",
+      "content": "历史记录已补全顺序：先确认保存点包含目标字段，再触发界面重建，最后在重建后的界面读取并断言状态；三步均在同一恢复场景中验证。",
+      "injected": false,
+      "supportingSessionIds": [
+        "T11-L0-ATLAS-CONFLICT-REVIEW",
+        "T11-L0-SUPPORT-3"
+      ],
+      "contentHash": "adface4e6c426bfea3e01305b5266faffd1a3c28df4a6c5881056475136a3652"
+    },
+    {
+      "assetId": "T11-L2-PULSE-COLD-START-JANK",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-scene"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "path": "mobile/pulse/cold-start-jank",
+      "summary": "Pulse cold-start jank investigation runbook",
+      "content": "交接记录已补全流程：先记录首屏帧时序，再按同一时间窗核对主线程工作，最后用冷启动与热启动对照确认是否为回归；暂不先改渲染实现。",
+      "injected": false,
+      "supportingSessionIds": [
+        "T11-L0-SUPPORT-4",
+        "T11-L0-SUPPORT-5"
+      ],
+      "contentHash": "d0092a57259e2194b2bcdb331fabb42fa1f1b0e37df53c861167179afbe35c84"
+    }
+  ],
+  "l3_profiles": []
+}

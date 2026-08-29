@@ -1,0 +1,332 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t11-skill-batch-01",
+  "stage": "DS02",
+  "team_id": "T11",
+  "family": "skill",
+  "external_source_ids": [
+    "t11-skill-agp9",
+    "t11-skill-profiler",
+    "t11-skill-state-restoration"
+  ],
+  "pairs": [
+    {
+      "draft_pair_id": "T11-SKILL-B01-P001",
+      "external_source_ids": [
+        "t11-skill-profiler"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我在 T11 的移动端工程里排查 Pulse 应用启动变慢和偶发卡顿。"
+        },
+        {
+          "role": "assistant",
+          "content": "已整理启动路径、受影响的设备范围和现有观测结果；这轮先建立证据采集计划，不改业务实现。"
+        },
+        {
+          "role": "user",
+          "content": "我原本想直接反复操作应用，但还没有确定应该采集哪类性能证据。"
+        },
+        {
+          "role": "assistant",
+          "content": "方向调整为先区分启动、卡顿和内存问题，再按目标选择合适的性能记录或分析流程。"
+        },
+        {
+          "role": "user",
+          "content": "当前已有复现步骤和时间窗口，但没有可靠的录制前检查清单或入口。"
+        },
+        {
+          "role": "assistant",
+          "content": "没有前置检查就开始采集，可能得到无法解释或不可复现的结果；需要先补齐适用流程。"
+        },
+        {
+          "role": "user",
+          "content": "请先告诉我从哪里开始，暂时不要执行采集。"
+        },
+        {
+          "role": "assistant",
+          "content": "在执行前，需要先明确流程材料和它要求的准备工作。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "针对这次启动与卡顿排查，请给出开始执行前的下一步与应确认的前置条件。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我还缺适用于 Android 性能录制的具体流程。请先帮我找出最匹配的既有资料，再查看其中的录制前检查与执行入口，先停在计划明确的位置。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少性能录制流程的意图澄清、环境准备、统一录制编排入口及前置依赖检查步骤。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T11-SKILL-PROFILER"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_search",
+              "skill_view_by_id"
+            ]
+          ],
+          "stop_after_candidate": "读取冻结的性能编排 Skill 后，概述录制前检查与 recording orchestrator 入口，停止执行。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把缺失内容补齐：先不要猜测用户要做什么，确认目标是录制哪类性能证据；执行任何流程前先完成环境准备并确定工作流根目录；所有录制请求都经过统一录制编排流程，完成通用前置和依赖检查，再按 system trace 或 heap dump 等目标选择具体录制路径。请据此给出执行前起点。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已给出意图澄清、环境准备、统一录制入口、前置依赖检查和目标分流的完整顺序，无需读取资料。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T11-SKILL-AGP9",
+        "T11-SKILL-STATE-RESTORE"
+      ],
+      "controlled_delta_note": "Positive 只缺性能录制流程正文；Negative 仅补齐该流程的核心前置、入口和分流步骤，其他上下文与 query 不变。",
+      "source_fact_map": [
+        {
+          "claim": "性能编排流程要求先做意图澄清，不明确时询问用户。",
+          "source_id": "t11-skill-profiler",
+          "locator": "profilers/android-profiler/SKILL.md#Intent Disambiguation"
+        },
+        {
+          "claim": "执行任何工作流前应读取环境准备说明并确定 Skill 根目录。",
+          "source_id": "t11-skill-profiler",
+          "locator": "profilers/android-profiler/SKILL.md#Prerequisites and Setup"
+        },
+        {
+          "claim": "录制请求统一经过 recording orchestrator，并执行通用前置与依赖检查。",
+          "source_id": "t11-skill-profiler",
+          "locator": "profilers/android-profiler/SKILL.md#Recording"
+        }
+      ],
+      "sol_review_questions": [
+        "确认检索起始仅用于发现未列出的性能编排资产，且私有序列为 search 后按结果查看。",
+        "确认 Negative 的录制清单只复述冻结 Skill 的核心入口与前置，不引入额外采集工具。"
+      ]
+    },
+    {
+      "draft_pair_id": "T11-SKILL-B01-P002",
+      "external_source_ids": [
+        "t11-skill-profiler"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我在 T11 的 Pulse Android 性能任务中已经拿到一份系统性能数据，但还不知道怎样开始分析。"
+        },
+        {
+          "role": "assistant",
+          "content": "已确认数据来自同一个可复现时间窗口，也整理了启动与卡顿的现象；本轮只做分析准备。"
+        },
+        {
+          "role": "user",
+          "content": "我差点直接从结论倒推原因，却没有先确认这份数据属于哪种分析请求。"
+        },
+        {
+          "role": "assistant",
+          "content": "应先澄清分析目标，再选择对应的分析工作流，避免把录制和分析混在一起。"
+        },
+        {
+          "role": "user",
+          "content": "当前有原始数据、设备范围和复现说明，但缺少分析入口及执行前的准备要求。"
+        },
+        {
+          "role": "assistant",
+          "content": "没有明确入口和准备要求时，不能可靠地判断下一步应读取或运行哪种分析流程。"
+        },
+        {
+          "role": "user",
+          "content": "请先给出分析准备阶段的下一步，不要先解释结果。"
+        },
+        {
+          "role": "assistant",
+          "content": "需要先补齐分析编排流程的实际路由和前置条件。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "针对现有 Android 性能数据，请说明开始分析前的下一步和准备条件，暂时不要解释结果。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我缺少适用于性能数据分析的流程正文。请先帮我找到并查看最匹配的资料，说明分析请求应从哪里进入，停在可以开始分析的位置。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少性能分析请求的意图澄清、环境准备及 analysis orchestrator 路由步骤。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T11-SKILL-PROFILER"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_search",
+              "skill_view_by_id"
+            ]
+          ],
+          "stop_after_candidate": "读取冻结的性能编排 Skill 并概述分析入口后停止，不执行分析。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把缺失步骤补上：先澄清用户要分析的性能问题，不要凭现象猜意图；执行流程前读取环境准备说明并设定工作流根目录；确认是分析请求后，统一交给分析编排流程，再按该流程准备输入和后续分析。请据此说明起点。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已给出意图确认、环境准备、分析入口和后续准备的完整顺序，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T11-SKILL-AGP9",
+        "T11-SKILL-STATE-RESTORE"
+      ],
+      "controlled_delta_note": "Positive 只缺性能分析路由正文；Negative 仅补齐意图确认、环境准备与分析编排入口。",
+      "source_fact_map": [
+        {
+          "claim": "性能编排 Skill 要求不猜测用户意图，意图不清时先询问。",
+          "source_id": "t11-skill-profiler",
+          "locator": "profilers/android-profiler/SKILL.md#Intent Disambiguation"
+        },
+        {
+          "claim": "分析请求应统一路由到 analysis orchestrator。",
+          "source_id": "t11-skill-profiler",
+          "locator": "profilers/android-profiler/SKILL.md#Analysis"
+        },
+        {
+          "claim": "环境准备是执行任何工作流前的共同前置。",
+          "source_id": "t11-skill-profiler",
+          "locator": "profilers/android-profiler/SKILL.md#Prerequisites and Setup"
+        }
+      ],
+      "sol_review_questions": [
+        "确认检索链在私有提案中以 search 开始，且目标为冻结性能编排资产。",
+        "确认 Negative 没有凭空增加分析算法、数据格式或执行命令。"
+      ]
+    },
+    {
+      "draft_pair_id": "T11-SKILL-B01-P003",
+      "external_source_ids": [
+        "t11-skill-profiler"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我在 T11 的移动端工程里收到一个含糊的性能请求：既提到录制，也提到分析启动卡顿。"
+        },
+        {
+          "role": "assistant",
+          "content": "已记录请求中的两类目标，但没有擅自决定先采集还是先解释已有数据。"
+        },
+        {
+          "role": "user",
+          "content": "我原本想按最熟悉的方式直接开始，后来发现请求没有说明要处理哪一种证据。"
+        },
+        {
+          "role": "assistant",
+          "content": "需要先把意图拆清楚，再选择录制或分析的专门流程。"
+        },
+        {
+          "role": "user",
+          "content": "工作区和问题现象已整理好，但还没有一份可复用的分流顺序。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前缺少的是流程级的分流规则和共同前置，而不是新的业务信息。"
+        },
+        {
+          "role": "user",
+          "content": "请告诉我下一步如何处理这个含糊请求，先不要录制或分析。"
+        },
+        {
+          "role": "assistant",
+          "content": "应先补齐意图澄清、共同准备和两条流程入口。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "面对这个同时提到录制和分析的请求，请给出不执行动作前的分流顺序。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我还没有这类性能请求的分流流程。请先找出并查看适用的既有资料，只概述如何在录制与分析之间分流以及共同前置，不执行任何动作。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少不猜测意图、先完成环境准备，再将录制与分析分别路由到各自编排流程的核心顺序。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T11-SKILL-PROFILER"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_search",
+              "skill_view_by_id"
+            ]
+          ],
+          "stop_after_candidate": "读取冻结性能编排 Skill 并概述分流顺序后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把分流规则补齐：不猜测含糊请求的意图，先向请求方确认目标；执行任一流程前都完成环境准备；若目标是录制，走统一录制编排流程，若目标是分析，走统一分析编排流程。请据此给出不执行动作前的顺序。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息完整给出意图澄清、共同准备及录制/分析两路由，已足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T11-SKILL-AGP9",
+        "T11-SKILL-STATE-RESTORE"
+      ],
+      "controlled_delta_note": "Positive 缺性能请求分流规则；Negative 仅补齐共同前置与录制/分析两路由。",
+      "source_fact_map": [
+        {
+          "claim": "不明确的性能请求必须先澄清意图。",
+          "source_id": "t11-skill-profiler",
+          "locator": "profilers/android-profiler/SKILL.md#Intent Disambiguation"
+        },
+        {
+          "claim": "录制和分析分别有独立的编排入口。",
+          "source_id": "t11-skill-profiler",
+          "locator": "profilers/android-profiler/SKILL.md#Recording; #Analysis"
+        },
+        {
+          "claim": "两个工作流都受环境准备前置约束。",
+          "source_id": "t11-skill-profiler",
+          "locator": "profilers/android-profiler/SKILL.md#Prerequisites and Setup"
+        }
+      ],
+      "sol_review_questions": [
+        "确认该 pair 的 Positive 首动作为 search，且 provider-visible 文本没有暴露资产名或动作名。",
+        "确认 Negative 只补充冻结正文已有的意图分流和两个 orchestrator 入口。"
+      ]
+    }
+  ]
+}

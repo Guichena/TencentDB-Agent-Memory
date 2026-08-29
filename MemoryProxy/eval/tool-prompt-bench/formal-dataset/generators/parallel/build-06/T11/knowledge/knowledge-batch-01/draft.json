@@ -1,0 +1,228 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t11-knowledge-batch-01",
+  "stage": "DS02",
+  "team_id": "T11",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T11-DS02-KNOWLEDGE-001",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Orchid Android 的 AGP 迁移仍在固定的构建工作区进行；Pulse 的运行时性能排查是同组另一条并行线，结论不要混在一起。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会保持两条工作区分离。当前只整理 Orchid 的构建迁移证据，不把性能采样或启动耗时结论带进来。"
+        },
+        {
+          "role": "user",
+          "content": "Orchid 已经切到 AGP 9 迁移准备阶段，日志只显示插件配置阶段出现兼容性提示，附近还有 convention plugin 和模块 DSL 两类配置。"
+        },
+        {
+          "role": "assistant",
+          "content": "这属于构建配置图的定位问题；我不会从提示文本推断具体文件，也不会把相邻模块 DSL 的位置当成 convention plugin 的位置。"
+        },
+        {
+          "role": "user",
+          "content": "我一度想按本地 checkout 的目录猜配置块位置，但整理提交后同名配置很多，猜出的路径不适合写进迁移记录。"
+        },
+        {
+          "role": "assistant",
+          "content": "方向改为核对固定 Android 工程图中已提到的配置符号，只确认它的真实源文件和行号，不扩展到修复方案。"
+        },
+        {
+          "role": "user",
+          "content": "已完成的是确认问题属于 Orchid 的 AGP 迁移、排除了 Pulse 性能线，也排除了模块 DSL 这条相邻线。"
+        },
+        {
+          "role": "assistant",
+          "content": "现在仍缺的是 androidComponents 配置块在固定工程中的准确位置；当前上下文只有符号和迁移症状，不能可靠写出文件与行号。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请先给出 Orchid 迁移记录中 androidComponents 配置块的准确源文件和行号，供我核对构建回归记录；不要延伸到 Pulse 性能线。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充日志仍只有插件配置阶段的通用兼容性提示，没有提供固定工程中的源文件或行号；请保留这个位置缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "固定 Orchid Android 构建代码图中已给符号 androidComponents 的精确源文件和行号尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": ["knowledge-t11-android-build"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "通过固定 Orchid Android 构建图的节点查询返回 androidComponents 位于 build-logic/convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt:118 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已经补齐唯一缺口：固定工程图显示 androidComponents 配置块位于 build-logic/convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt:118；Pulse 仍是另一条性能线。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已经补齐 androidComponents 的固定源文件和行号，并保留了 Orchid 与 Pulse、模块 DSL 的边界；无需再查资源。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["knowledge-t11-mobile-sync", "knowledge-t11-ios-client"],
+      "controlled_delta_note": "Positive 只保留 androidComponents 的精确位置缺口；Negative 只补齐 build-logic/convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt:118，其他工作区、相邻线和 query 完全不变。",
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为 androidComponents 的固定 file/line，没有隐含 DSL 内容或迁移修复结论？",
+        "Negative 是否只增加固定源文件和行号，并保持 Pulse 性能线及模块 DSL 排除项不变？",
+        "Orchid、AGP 迁移和构建配置图的线索是否足以在三个 ready 资源中唯一选择目标资源？"
+      ]
+    },
+    {
+      "draft_pair_id": "T11-DS02-KNOWLEDGE-002",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Atlas 移动端的 offline-first sync 仍在固定的同步工作区整理；Orchid 构建迁移是同组并行项目，先不要把两个项目的结论合并。"
+        },
+        {
+          "role": "assistant",
+          "content": "边界已记下。当前只处理 Atlas 的离线同步设计，不从 Orchid 的构建日志推导同步行为。"
+        },
+        {
+          "role": "user",
+          "content": "Atlas 最近遇到 outbox 重放和服务端版本冲突，日志能看出重复提交的现象，但没有显示设计上应该怎样排序、暂停或重试。"
+        },
+        {
+          "role": "assistant",
+          "content": "这是同步设计约束的核对问题；我不会把一次重复提交的运行时症状概括成通用冲突策略，也不会先假定网络错误和业务冲突等价。"
+        },
+        {
+          "role": "user",
+          "content": "我原本想按客户端实现里的函数名猜规则，后来发现重连、版本冲突和本地补丁在不同层处理，猜测不适合写进设计记录。"
+        },
+        {
+          "role": "assistant",
+          "content": "方向改为核对固定的 Atlas 同步设计说明，只提取 outbox 顺序、冲突处理和可重试边界，不延伸到 Orchid 或实现改动。"
+        },
+        {
+          "role": "user",
+          "content": "已完成的是区分 Atlas 的重复重放现象、Orchid 的构建工作区和本地实现猜测；还没有把设计说明中的处理边界抄入摘要。"
+        },
+        {
+          "role": "assistant",
+          "content": "仍缺的是 Atlas 设计对 outbox 发送顺序、版本冲突后的动作以及网络错误重试范围的明确约束；仅凭日志现象无法安全补全。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请先确认 Atlas offline-first 设计中 outbox 的发送顺序、版本冲突后的处理和网络错误重试边界；只回答设计约束，不延伸到 Orchid 构建线。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充材料仍只有重复提交和版本冲突的现象，没有写出 outbox 的顺序、暂停条件或可重试边界；请保留这个设计缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "固定 Atlas 离线同步设计页面中关于 outbox 顺序、版本冲突处理和网络错误重试范围的条款尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": ["knowledge-t11-mobile-sync"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "通过固定 Atlas 同步设计页面读取 outbox 顺序、冲突暂停/重建及网络错误退避条款后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已经补齐唯一缺口：outbox 按设备序列号升序发送；服务端发生版本冲突时暂停该实体后续事件、拉取最新快照并重建待发补丁；网络错误可指数退避重试，但业务冲突不自动覆盖远端。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已经给出 outbox 顺序、版本冲突动作和网络错误与业务冲突的边界，足以回答设计约束；无需再读取资源。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["knowledge-t11-android-build", "knowledge-t11-ios-client"],
+      "controlled_delta_note": "Positive 只保留 Atlas 同步设计条款缺口；Negative 只补齐顺序、冲突处理和重试边界，其他项目边界、症状和 query 完全不变。",
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否确实是同步设计约束，而没有暗示某个实现函数或最终修复？",
+        "Negative 是否只补入 outbox 顺序、版本冲突动作及网络错误/业务冲突边界？",
+        "Atlas、offline-first、outbox 和版本冲突线索是否足以在三个 ready 资源中唯一选择同步设计页面？"
+      ]
+    },
+    {
+      "draft_pair_id": "T11-DS02-KNOWLEDGE-003",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Nimbus iOS 的生命周期恢复仍在固定的客户端工作区核对；Helio Compose UI 测试是同组并行项目，两个项目的恢复语义不要混用。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会保持 Nimbus 和 Helio 的边界。当前只整理 Nimbus 的生命周期与状态恢复证据，不把 UI 测试结论带进来。"
+        },
+        {
+          "role": "user",
+          "content": "Nimbus 的问题出现在后台回前台后状态恢复，日志提到了 scene 生命周期回调和恢复活动，但没有显示具体实现节点。"
+        },
+        {
+          "role": "assistant",
+          "content": "这是固定客户端代码图的节点定位问题；我不会从回调名称猜文件，也不会把 Helio 的 Compose 保存状态机制当成 Nimbus 的 scene 机制。"
+        },
+        {
+          "role": "user",
+          "content": "我起初想按本地 checkout 的目录结构猜恢复方法位置，后来发现旧版 AppDelegate 和新版 SceneDelegate 都有相似命名，猜测不适合写进记录。"
+        },
+        {
+          "role": "assistant",
+          "content": "方向改为核对固定 Nimbus 生命周期图中已提到的恢复回调，只确认真实源文件和行号，不推断回调内部实现或修复方式。"
+        },
+        {
+          "role": "user",
+          "content": "已完成的是确认问题属于 Nimbus 的 scene 恢复、排除了 Helio UI 测试，也排除了旧版 AppDelegate 的相邻回调。"
+        },
+        {
+          "role": "assistant",
+          "content": "现在仍缺的是 stateRestorationActivity(for:) 在固定 Nimbus 工程中的准确位置；当前上下文只有回调名和生命周期症状，不能可靠写出文件与行号。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请先给出 Nimbus 中 stateRestorationActivity(for:) 的准确源文件和行号，供我核对生命周期恢复记录；不要延伸到 Helio UI 测试。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充日志仍只有 scene 恢复回调名和后台回前台症状，没有提供固定工程中的源文件或行号；请保留这个位置缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "固定 Nimbus iOS 生命周期代码图中已给回调 stateRestorationActivity(for:) 的精确源文件和行号尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": ["knowledge-t11-ios-client"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "通过固定 Nimbus iOS 生命周期图的节点查询返回 stateRestorationActivity(for:) 位于 Nimbus/Sources/Lifecycle/SceneDelegate.swift:87 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已经补齐唯一缺口：固定工程图显示 stateRestorationActivity(for:) 位于 Nimbus/Sources/Lifecycle/SceneDelegate.swift:87；Helio 仍是另一条 UI 测试线。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已经补齐恢复回调的固定源文件和行号，并保持了 Nimbus、Helio 与旧版 AppDelegate 的边界；无需再查资源。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["knowledge-t11-android-build", "knowledge-t11-mobile-sync"],
+      "controlled_delta_note": "Positive 只保留 stateRestorationActivity(for:) 的精确位置缺口；Negative 只补齐 Nimbus/Sources/Lifecycle/SceneDelegate.swift:87，其他项目边界、相邻回调和 query 完全不变。",
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为恢复回调的固定 file/line，没有隐含回调行为或修复结论？",
+        "Negative 是否只增加 Nimbus/Sources/Lifecycle/SceneDelegate.swift:87，并保持 Helio 和旧版 AppDelegate 排除项不变？",
+        "Nimbus、scene 生命周期和状态恢复线索是否足以在三个 ready 资源中唯一选择 iOS 客户端代码图？"
+      ]
+    }
+  ]
+}

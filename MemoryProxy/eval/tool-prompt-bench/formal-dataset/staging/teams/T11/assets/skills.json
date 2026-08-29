@@ -1,0 +1,84 @@
+{
+  "schema_version": "task1.formal_skill_assets.v1",
+  "team_id": "T11",
+  "skills": [
+    {
+      "assetId": "T11-SKILL-AGP9",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-skill-agp9"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "android-agp9-upgrade",
+      "version": "1.0.0",
+      "description": "migrating a non-KMP Android project to AGP 9; sourced from build-system/agp/agp-9-upgrade/SKILL.md.",
+      "useWhen": "migrating a non-KMP Android project to AGP 9",
+      "doNotUseWhen": "profiling runtime jank or testing restored UI state",
+      "repoCommit": "ea05a53683d1fb1fc701c3ad91f494d25d4fc7c6",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "58ef4a47c25d1ebe44f433be03c2dab672efecb4a641b6e025f93f5712d6f651"
+        }
+      ],
+      "contentHash": "afc5a6e812cc3d6aa387ea3067acf266b189be05c01884e9057bfe2b2cc805c7"
+    },
+    {
+      "assetId": "T11-SKILL-PROFILER",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-skill-profiler"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "android-profiler",
+      "version": "1.0.0",
+      "description": "recording or analyzing Android traces, heap dumps, jank, leaks, or startup; sourced from profilers/android-profiler/SKILL.md.",
+      "useWhen": "recording or analyzing Android traces, heap dumps, jank, leaks, or startup",
+      "doNotUseWhen": "changing Gradle DSL or writing Compose restoration tests",
+      "repoCommit": "ea05a53683d1fb1fc701c3ad91f494d25d4fc7c6",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "5728c27f7f5f19d8f18e7d0f4a1a3690a9bca06bd7d0989456ec52466aaf892a"
+        }
+      ],
+      "contentHash": "9f535cca4c6ec38d01b5c44cf44cd97cb104053939047c5f2fd42f2311549831"
+    },
+    {
+      "assetId": "T11-SKILL-STATE-RESTORE",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-skill-state-restoration"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "name": "compose-state-restoration-test",
+      "version": "1.0.0",
+      "description": "proving rememberSaveable state survives a save/restore round trip; sourced from compose/patterns/testing-state-restoration/SKILL.md.",
+      "useWhen": "proving rememberSaveable state survives a save/restore round trip",
+      "doNotUseWhen": "testing Activity callback recreation or runtime performance",
+      "repoCommit": "8665ed59643c90eb1056a256a6ddec161aa1cfa1",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "d60eb54dc82a08050c45aa4d74a4d4e3fe05d299058273a5c8902051ff13af63"
+        }
+      ],
+      "contentHash": "d328915ba93e807a3518873c86d9bd775f4de5f29ee3e0d827132e591397ad54"
+    }
+  ]
+}
