@@ -1,0 +1,50 @@
+{
+  "schema_version": "task1.hidden_integration_report.v1",
+  "dataset_revision": "formal-v1",
+  "stage": "DS04_hidden_integration",
+  "status": "passed",
+  "teams": ["T05", "T06", "T07", "T08", "T09", "T10", "T13", "T14", "T15", "T16"],
+  "counts": {
+    "teams": 10,
+    "cases": 400,
+    "pairs": 150,
+    "memory_positive": 60,
+    "skill_positive": 60,
+    "knowledge_positive": 30,
+    "paired_negative": 150,
+    "natural_coding_negative": 100,
+    "discovery_positive": 100,
+    "direct_positive": 50
+  },
+  "source_repairs": [
+    {
+      "teams": ["T13", "T14"],
+      "builder_commit": "304372f5a0ff4b44a8bb66eb13dc80a2a5909ab8",
+      "reason": "align formal World identity and provide two real supporting sessions for multi-session L2 scenes"
+    },
+    {
+      "teams": ["T15", "T16"],
+      "builder_commit": "b9aaec02160b65428e153c51581c9ce2f23d9730",
+      "reason": "align formal World identity"
+    }
+  ],
+  "strict_validation": {
+    "freeze_contract": "formal-v1",
+    "valid": true,
+    "errors": 0,
+    "pair_integrity_errors": 0,
+    "provider_leakage": 0,
+    "invalid_sequences": 0,
+    "missing_source_refs": 0,
+    "report": "DS04-HIDDEN-VALIDATION.json"
+  },
+  "deterministic_compile": {
+    "runs": 2,
+    "file_diff_count": 0,
+    "provider_canonical_sha256": "fc2d655011681cf63c38e5b71e92790ebeb601ec77ed5cf2ac42784aa73e212b",
+    "private_gold_canonical_sha256": "33b75389c53e146298178d9b7dfec05e2a4ace4d9a620817070ccc5b0e73f4a0",
+    "snapshot_canonical_sha256": "23fe7b47d13c950765fa9557da918e1d102b7ab4558171cb15a8444d1cbd9c9e"
+  },
+  "formal_model_evaluation_runs": 0,
+  "blocking_issues": []
+}

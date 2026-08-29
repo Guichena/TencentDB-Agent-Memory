@@ -1,9 +1,9 @@
 {
   "schema_version": "task1.dataset_build_status.v1",
   "dataset_revision": "formal-v1",
-  "active_stage": "DS03_dev_integration",
+  "active_stage": "DS04_hidden_integration",
   "stage_status": "passed",
-  "next_stage": "DS04_hidden_integration",
+  "next_stage": "DS05_full_freeze_gates",
   "branch": "codex/task1-data-integration",
   "baseline_commit": "960021e472456515a89d3c2c4f2962fbf6cc51a1",
   "parallel_baseline_ref": "task1-data-parallel-baseline-v2",
@@ -34,41 +34,49 @@
     "DS03_DEV_STRICT_FREEZE",
     "DS03_DEV_DETERMINISTIC_COMPILE",
     "DS03_D0_TESTS",
-    "DS03_TOOL_PROMPT_TESTS"
+    "DS03_TOOL_PROMPT_TESTS",
+    "DS04_HIDDEN_STRICT_FREEZE",
+    "DS04_HIDDEN_DETERMINISTIC_COMPILE"
   ],
   "team_progress": {
     "T01": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
     "T02": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
     "T03": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
     "T04": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
-    "T05": { "build": "audited", "integration": "pending_hidden", "cases": 40, "pairs": 15, "gate": "passed" },
-    "T06": { "build": "audited", "integration": "pending_hidden", "cases": 40, "pairs": 15, "gate": "passed" },
-    "T07": { "build": "audited", "integration": "pending_hidden", "cases": 40, "pairs": 15, "gate": "passed" },
-    "T08": { "build": "audited", "integration": "pending_hidden", "cases": 40, "pairs": 15, "gate": "passed" },
-    "T09": { "build": "audited", "integration": "pending_hidden", "cases": 40, "pairs": 15, "gate": "passed" },
-    "T10": { "build": "audited", "integration": "pending_hidden", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T05": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T06": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T07": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T08": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T09": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T10": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
     "T11": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
     "T12": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
-    "T13": { "build": "audited", "integration": "pending_hidden", "cases": 40, "pairs": 15, "gate": "passed" },
-    "T14": { "build": "audited", "integration": "pending_hidden", "cases": 40, "pairs": 15, "gate": "passed" },
-    "T15": { "build": "audited", "integration": "pending_hidden", "cases": 40, "pairs": 15, "gate": "passed" },
-    "T16": { "build": "audited", "integration": "pending_hidden", "cases": 40, "pairs": 15, "gate": "passed" }
+    "T13": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T14": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T15": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T16": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" }
   },
   "artifacts": {
     "contract": "registry/contracts/formal-v1.json",
-    "contract_file_sha256": "52e2917bd389ae61706ecabea05b05b7ba46545d049f6b62fd3f297be7ab263d",
-    "contract_canonical_sha256": "c69e5adaa2f552026d1e21c7c1706e039c07e7b03a1a4d8971c0331c2f1424d6",
+    "contract_file_sha256": "cb7c292bd1f326eeb0288e5afca14808b66e8870108849c32d6cb3a267754a34",
+    "contract_canonical_sha256": "e395311f1188b0f0be65356b11ae06d542a2934ef90c21e9bc0a55012f088a91",
     "provider_dev_file_sha256": "8018bb65160eb1cac13e489ae54f258f2369dc4af058f09a3e1dc432961bc1f3",
     "provider_dev_canonical_sha256": "ab1842aa1cc6d36a79bd8c232f2d66fd0d097c50eea4c2c09c4b4c8393e6308a",
     "private_gold_dev_file_sha256": "88b7fc08ac9011f55e82af782ef66df4969cd46840d23075023d1fccb7e86495",
     "private_gold_dev_canonical_sha256": "064f259bf42459639548173b6f03d9665d0431e25e10ae701209de097b4cee7f",
     "snapshot_dev_file_sha256": "a65226bf6ca0b32a22fd3ca97bffa83ad421a60a57d60a642a1b1130aaac1056",
-    "snapshot_dev_canonical_sha256": "3a82d0ad8241ff3e2173555efbdb65dfb367a0a38c9998203c5b4754611a4783"
+    "snapshot_dev_canonical_sha256": "3a82d0ad8241ff3e2173555efbdb65dfb367a0a38c9998203c5b4754611a4783",
+    "provider_hidden_file_sha256": "743b2ee051572c81aec8b4db6b581a77143ed283ee136448b095e8576e0d5799",
+    "provider_hidden_canonical_sha256": "fc2d655011681cf63c38e5b71e92790ebeb601ec77ed5cf2ac42784aa73e212b",
+    "private_gold_hidden_file_sha256": "b083f1f8436b99757cc7ee6ff8e62828cc3664f0ccbe7b7b80db84c461327944",
+    "private_gold_hidden_canonical_sha256": "33b75389c53e146298178d9b7dfec05e2a4ace4d9a620817070ccc5b0e73f4a0",
+    "snapshot_hidden_file_sha256": "04c19a44bdea3c2bbbab86c7c2014d760e9e956ce2070d758eca4efb247cd07e",
+    "snapshot_hidden_canonical_sha256": "23fe7b47d13c950765fa9557da918e1d102b7ab4558171cb15a8444d1cbd9c9e"
   },
   "blocking_issues": [],
   "known_limitations": [
-    "The formal-v1 contract currently contains the six frozen Dev Teams only; the ten audited Hidden Teams are integrated in DS04 before the final Full freeze."
+    "All 16 Teams are integrated, but world.status remains draft until the DS05 Full cross-split Gate and final deterministic rebuild pass."
   ],
-  "last_command": "strict formal-v1 Dev validation; compile Dev twice; D0 32/32 plus Python 19/19; tool-prompt 30/30",
-  "last_verified_source_commit": "7df6a3d978cfb7fa79bd47d053f69b9112d712b4"
+  "last_command": "strict formal-v1 Hidden validation; compile Hidden twice; preliminary Full cross-split validation",
+  "last_verified_source_commit": "19b7fa08793381918a322a6b08877c735d8b4745"
 }

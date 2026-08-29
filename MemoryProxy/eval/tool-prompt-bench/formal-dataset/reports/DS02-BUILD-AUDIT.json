@@ -190,13 +190,14 @@
       "branch": "codex/task1-data-build-16team-t13-t14",
       "launch_tag": "task1-data-parallel-launch-16team-v1",
       "launch_commit": "8257782c23eaa5e31f05b0ea33aa2ac7f2b6bb84",
-      "audited_head": "a7525bddd2e392db9a3117ad9947414fca0fd6ce",
+      "audited_head": "304372f5a0ff4b44a8bb66eb13dc80a2a5909ab8",
       "audited_commits": [
         "6505d0ce75e6794fa0ad1190e780064aee894f18",
         "4e48c1eb473006a929d329f4d46475fc8368bb01",
         "ca6f349cbc912af95b8943d59278e445038f4712",
         "6001aac8c2eb9811eabca24e91585139860a116b",
-        "a7525bddd2e392db9a3117ad9947414fca0fd6ce"
+        "a7525bddd2e392db9a3117ad9947414fca0fd6ce",
+        "304372f5a0ff4b44a8bb66eb13dc80a2a5909ab8"
       ],
       "allowed_prefixes": [
         "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-07/T13/",
@@ -219,12 +220,13 @@
       "branch": "codex/task1-data-build-16team-t15-t16",
       "launch_tag": "task1-data-parallel-launch-16team-v1",
       "launch_commit": "8257782c23eaa5e31f05b0ea33aa2ac7f2b6bb84",
-      "audited_head": "6686323097b7c15f6c4c301569596245d4f99e3e",
+      "audited_head": "b9aaec02160b65428e153c51581c9ce2f23d9730",
       "audited_commits": [
         "4293fdf254ffa2f963eda72b7a0a5f9e6cde9006",
         "ed5d83e07ff0b1810765e2a0b83ba9937878c54c",
         "6e1bb1bebceba71d081667c6c192b66b5dc4adb7",
-        "6686323097b7c15f6c4c301569596245d4f99e3e"
+        "6686323097b7c15f6c4c301569596245d4f99e3e",
+        "b9aaec02160b65428e153c51581c9ce2f23d9730"
       ],
       "allowed_prefixes": [
         "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-08/T15/",

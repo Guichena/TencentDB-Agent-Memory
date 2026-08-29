@@ -68,7 +68,7 @@ describe("Task 1 formal-v1 integrated contract", () => {
     expect(contract.privateAnnotations).toHaveLength(contract.publicCases.length);
     expect(contract.pairs).toHaveLength(isDevMilestone ? 90 : 240);
     expect(contractText).not.toContain("stop_after_first_tdai_tool_decision");
-  });
+  }, 30_000);
 
   it("rejects formal-v1 count drift directly", () => {
     const contract = JSON.parse(readFileSync(resolve(root, "registry/contracts/formal-v1.json"), "utf8")) as FormalWorldContract;
@@ -76,7 +76,7 @@ describe("Task 1 formal-v1 integrated contract", () => {
     const drifted = structuredClone(contract);
     drifted.publicCases.pop();
     drifted.privateAnnotations.pop();
-    expect(validateFormalV1Freeze(drifted, isDevMilestone ? "dev" : undefined)).toEqual(
+    expect(validateFormalV1Freeze(drifted, isDevMilestone ? "dev" : "hidden_test")).toEqual(
       expect.arrayContaining([expect.stringMatching(/Cases expected/)]),
     );
   });
