@@ -1,0 +1,205 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t03-knowledge-expand-01",
+  "stage": "DS03",
+  "team_id": "T03",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T03-DS03-KNOWLEDGE-002",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "这条工作线固定在 DVC pipeline and CLI evolution 项目，仓库提交已经锁定；当前只处理 pipeline reproduction、import-url 命令流和参数传播，不要混入其他项目的结论。"
+        },
+        {
+          "role": "assistant",
+          "content": "工作区边界已记下。我会只核对冻结 DVC 图里的结构事实和命令入口关系，不把相邻项目的经验当作 DVC 代码事实。"
+        },
+        {
+          "role": "user",
+          "content": "现在的症状是 import-url 运行后，复现实验拿到的参数与预期不一致；日志只有 import-url、pipeline 和参数传播这些词。"
+        },
+        {
+          "role": "assistant",
+          "content": "这些日志词能定位主题，但不能证明固定代码中的结构关系、命令入口位置或参数传播方向；我不会据此编造具体函数边。"
+        },
+        {
+          "role": "user",
+          "content": "我已经排除了 MONAI 变换缓存和 GRPO rollout 两条相邻工作线，也没有把本地 checkout 的目录印象当成冻结图结果。"
+        },
+        {
+          "role": "assistant",
+          "content": "排除范围保持不变。当前只需要确认 DVC 图对 import-url 命令流与 pipeline reproduction 之间结构关系的记录，以及参数传播的命令入口关联。"
+        },
+        {
+          "role": "user",
+          "content": "交接材料仍只有命令名、复现主题和参数不一致现象，没有给出冻结图中的结构搜索结果或命令入口关系。"
+        },
+        {
+          "role": "assistant",
+          "content": "因此唯一未决事实是冻结 DVC code graph 中与 import-url 参数传播相关的结构关系和命令入口关联；不需要推导具体代码边、文件位置或修复方案。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请核对冻结 DVC 代码图中 import-url 命令流、pipeline reproduction 与参数传播的结构搜索结果和命令入口关系；只返回图中已有的结构事实，不补写具体代码边或修复方案。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充日志仍只有 import-url、pipeline、参数传播和复现不一致现象，没有提供冻结图的结构结果或命令入口关联；请保留这个结构缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "冻结 DVC code graph 中 import-url 命令流、pipeline reproduction 与参数传播的结构搜索结果及命令入口关系尚未出现在当前上下文；不请求具体代码边或文件位置。",
+          "route": "knowledge",
+          "target_asset_ids": [
+            "T03-KNOW-DVC-CODEGRAPH"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "knowledge_tools_list",
+              "knowledge_tools_call"
+            ]
+          ],
+          "chain_kind": "self_discovery_two_step",
+          "tool_call_plan": {
+            "after_listed_tool": "search",
+            "params": {
+              "query": "import-url parameter propagation pipeline",
+              "limit": 8
+            },
+            "read_only": true
+          },
+          "stop_after_candidate": "先发现固定 DVC 图可用的只读检索能力，再调用 search；返回冻结图中与 import-url 命令入口和参数传播有关的结构搜索结果后停止，不扩展为具体代码边或修复建议。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已补齐唯一缺口：冻结图的结构搜索结果给出了 import-url 命令入口与参数传播在 pipeline reproduction 流程中的关联；没有新增具体函数、文件或代码边，也没有引出修复方案。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已经补齐冻结 DVC 图所需的结构搜索结果和命令入口关联，并明确不要求具体代码边、文件位置或修复方案；无需再查资源。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T03-KNOW-MONAI-CODEGRAPH",
+        "T03-KNOW-RL-RUNBOOK"
+      ],
+      "controlled_delta_note": "Positive 只保留冻结 DVC 图的结构搜索结果与命令入口关系缺口；Negative 只补齐这两个结构层事实并再次限定不涉及具体代码边，其他项目边界、症状、排除项和 query 完全不变。",
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为冻结 DVC 图的结构关系与命令入口关联，而没有暗示具体文件、函数边或修复方案？",
+        "Negative 是否只补齐结构搜索结果和命令入口关系，并保持 DVC 项目边界及不推断具体代码边的限制？",
+        "DVC、import-url、pipeline reproduction 和参数传播这些自然线索是否足以在三个 ready 资源中唯一选择 DVC code graph？",
+        "Positive 的私有序列是否明确先发现只读能力，再以已发现的 search 契约调用查询，并在得到候选结构结果后停止？"
+      ]
+    },
+    {
+      "draft_pair_id": "T03-DS03-KNOWLEDGE-003",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "这条工作线固定在 TRL GRPO post-training 项目；我要整理团队内部关于 rollout、reward diagnostics、sampling signals 和复现性的运行手册，不把它写成外部仓库事实。"
+        },
+        {
+          "role": "assistant",
+          "content": "范围已记下。我会只核对内部运行手册中的决策和适用条件，不把训练日志中的一次现象概括成外部 TRL 的实现结论。"
+        },
+        {
+          "role": "user",
+          "content": "最近两次 rollout 的复现实验结果不一致；现有记录提到 rollout 配置、reward 诊断、sampling 信号和 seed，但没有留下采用哪套基线的决策。"
+        },
+        {
+          "role": "assistant",
+          "content": "这些词只能说明需要查运行手册，不能单凭日志判断团队默认基线、允许的例外或调整前的证据要求。"
+        },
+        {
+          "role": "user",
+          "content": "我已经排除了 DVC 命令流和 MONAI 缓存两条相邻工作线；这次只处理内部 GRPO 复现约定，也不要求为外部项目补写行为。"
+        },
+        {
+          "role": "assistant",
+          "content": "排除范围保持不变。需要核对的是内部 runbook 对 rollout/reward 基线、sampling 记录和复现性判断的决策边界。"
+        },
+        {
+          "role": "user",
+          "content": "当前交接摘要只有两次结果不一致的现象和实验标签，没有给出哪些设置属于复现基线、哪些变化必须先记录对照证据。"
+        },
+        {
+          "role": "assistant",
+          "content": "因此唯一未决信息是内部运行手册中的基线与变更证据规则；不会从相邻项目或外部仓库臆测 GRPO 的实现细节。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请核对团队内部 GRPO 运行手册中关于 rollout/reward 复现基线、sampling 信号记录和调整前证据要求的决策；明确这是内部约定，不要冒充外部仓库事实。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充记录仍只有两次结果不一致、rollout/reward/sampling 这些主题和 seed 线索，没有给出内部手册的基线或变更证据规则；请保留这个运行手册缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "团队内部 GRPO runbook 关于 rollout/reward 复现基线、sampling 信号记录和调整前证据要求的决策尚未出现在当前上下文；不得将其表述为外部仓库事实。",
+          "route": "knowledge",
+          "target_asset_ids": [
+            "T03-KNOW-RL-RUNBOOK"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "knowledge_tools_list",
+              "knowledge_tools_call"
+            ]
+          ],
+          "chain_kind": "self_discovery_two_step",
+          "tool_call_plan": {
+            "after_listed_tool": "search",
+            "params": {
+              "query": "GRPO rollout reward reproducibility decision",
+              "limit": 6
+            },
+            "read_only": true
+          },
+          "stop_after_candidate": "先发现固定内部 wiki 可用的只读检索能力，再调用 search；返回 runbook 对复现基线、sampling 记录和变更证据的内部决策后停止，并保留其内部约定属性。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已补齐唯一缺口：内部 runbook 将固定 rollout 配置、可追溯的 reward 诊断与 sampling 信号记录作为复现基线；调整这些设置前要保留对照运行和原因记录。这是团队内部决策，不是外部仓库事实。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已经补齐内部 runbook 的复现基线、sampling/reward 记录要求和调整前的对照证据规则，并明确其内部决策边界；无需再次查询。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T03-KNOW-DVC-CODEGRAPH",
+        "T03-KNOW-MONAI-CODEGRAPH"
+      ],
+      "controlled_delta_note": "Positive 只保留内部 GRPO runbook 的基线与变更证据缺口；Negative 只补齐复现基线、记录要求和对照证据规则，并明确不代表外部仓库事实，其他项目边界、症状、排除项和 query 完全不变。",
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为内部 runbook 的复现基线与变更证据规则，没有泄露运行手册正文或外部实现结论？",
+        "Negative 是否只补齐内部决策所需的 rollout/reward/sampling 运行规则和对照证据要求？",
+        "TRL GRPO、rollout、reward、sampling 与复现性这些自然线索是否足以在三个 ready 资源中唯一选择内部 wiki？",
+        "Positive 的私有序列是否明确先发现只读能力，再以已发现的 search 契约调用查询，并在得到内部决策候选后停止？"
+      ]
+    }
+  ]
+}
