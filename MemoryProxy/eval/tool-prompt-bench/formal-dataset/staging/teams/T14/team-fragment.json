@@ -225,11 +225,11 @@
       "reasoningEffort": "high",
       "promptVersion": "task1.luna-batch.v1",
       "batchId": "build-07-T14-pilot-skill-01",
-      "generatedAt": "2026-08-30T00:20:00+08:00",
+      "generatedAt": "2026-08-30T02:20:00+08:00",
       "contentRefs": [
         "T14-SKL-003-pilot-01"
       ],
-      "contentHash": "da2026f31eb174ad1e20cfe7d4928634a1936dbf93e55e76e3db5100b4e7041b"
+      "contentHash": "37a4decc9b171dd45b994764ba8c8b60710da28b3a547265d93b62dbacb27372"
     },
     {
       "provenanceKind": "synthetic",
@@ -2044,9 +2044,9 @@
           "content": "先在当前项目可用的能力目录中搜索覆盖 Flux GitOps 仓库审计、Kubernetes 清单发现与校验、弃用 API 检查、最佳实践和安全审查的条目；根据返回结果中的条目标识打开最匹配的完整内容，再按其中的流程执行。"
         }
       ],
-      "query": "请告诉我下一步应该怎么做，并给出最小可行验证路径。",
+      "query": "Meridian Fleet 交付前的 Flux/Kubernetes 仓库审计，如何用最小闭环确认清单、API 兼容性与安全风险都已核验？",
       "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "5da69d8b281a4b930011100ea812bb3a3d977f37fd1f059d26e5b0155c0c5113"
+      "contentHash": "ce2f26205cef0a3c4401b305c04582d185121da614f8d05c4a5295fef4d073df"
     },
     {
       "caseId": "T14-SKL-003-N",
@@ -2091,9 +2091,9 @@
           "content": "操作手册的关键内容已补齐：先对本地仓库做资源盘点、目录模式和集群配置发现，并检查旧式同步文件；再用唯一临时路径渲染并校验所有清单和 Kustomize overlay，必要时用临时 dotenv 做变量替换后重跑；随后检查弃用 API 并按要求阅读迁移说明；按仓库模式评估最佳实践，修改 YAML 前到字段索引核对字段名、类型和嵌套；再逐项做 Secret、私有源、OCI、跨命名空间引用、RBAC、多租户、镜像自动化和渲染后安全检查；最后按摘要、目录、校验、API、最佳实践、安全和 Critical/Warning/Info 建议输出报告，第三方无 schema 或加密 Secret 的 skipped 可视为预期。"
         }
       ],
-      "query": "请告诉我下一步应该怎么做，并给出最小可行验证路径。",
+      "query": "Meridian Fleet 交付前的 Flux/Kubernetes 仓库审计，如何用最小闭环确认清单、API 兼容性与安全风险都已核验？",
       "visibleAssetSetSha256": "1cb64487b80885cf77893e9f073ec0c823cbcb247366f9e593de3577320a496b",
-      "contentHash": "dccc2a595f175a115849acaf6aa5961c6b1dbe4b935af3b704e0862aeec19549"
+      "contentHash": "6a73796beefc98a7a28a5d66588fc3de30b529ec32c873cc653ea8594a14bf98"
     },
     {
       "caseId": "T14-SKL-004-P",
@@ -5356,7 +5356,7 @@
       "family": "skill",
       "directory": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-07/T14/batches/pilot-skill-01",
       "evidenceId": "T14-EVID-BATCH-PILOT-SKILL",
-      "rawOutputSha256": "c064950218fabb0db0a2fef1a872c91bdc5dc9396887d5b66744ce08a04b6002",
+      "rawOutputSha256": "9301487aca95e882ed9bbf62c95b1556df2306eb95e4d851ba4ae058b56b57d9",
       "validatorPassed": true,
       "solReviewed": true
     },

@@ -17,7 +17,7 @@
         {"role": "user", "content": "保持在 Meridian Fleet 项目范围内，给出能落地执行的最小路径和判断依据。"}
       ],
       "changed_message_index": 3,
-      "query": "请告诉我下一步应该怎么做，并给出最小可行验证路径。",
+      "query": "Meridian Fleet 交付前的 Flux/Kubernetes 仓库审计，如何用最小闭环确认清单、API 兼容性与安全风险都已核验？",
       "positive": {
         "delta_message": {"role": "user", "content": "先在当前项目可用的能力目录中搜索覆盖 Flux GitOps 仓库审计、Kubernetes 清单发现与校验、弃用 API 检查、最佳实践和安全审查的条目；根据返回结果中的条目标识打开最匹配的完整内容，再按其中的流程执行。"},
         "private_proposal": {
