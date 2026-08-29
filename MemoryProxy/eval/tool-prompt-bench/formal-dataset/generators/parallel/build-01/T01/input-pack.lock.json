@@ -1,0 +1,8 @@
+{
+  "schema_version": "task1.input_pack_lock.v1",
+  "team_id": "T01",
+  "stage": "DS02",
+  "input_pack": "input-pack.json",
+  "sha256": "01b386c73132f6e6d816cdaa26cb51c180cc0142653c1acacd5ba2b74b9b90d8",
+  "frozen": true
+}

@@ -1,0 +1,600 @@
+{
+  "schema_version": "task1.team_gate.v1",
+  "team_id": "T01",
+  "split": "dev",
+  "status": "pass",
+  "launch_commit": "ef2ca4bd84e529c6c7d8a8df661520cbc3bf4bb0",
+  "branch": "codex/task1-data-build-v2-t01-t02",
+  "counts": {
+    "cases": 40,
+    "pairs": 15,
+    "natural_negatives": 10,
+    "positive_families": {
+      "memory": 6,
+      "skill": 6,
+      "knowledge": 3
+    },
+    "l0": 12,
+    "l1": 15,
+    "l2": 4,
+    "l3": 1,
+    "skills": 15,
+    "knowledge": 3,
+    "sources": 46
+  },
+  "formal_validation": {
+    "valid": true,
+    "case_count": 40,
+    "pair_count": 15,
+    "pair_integrity_error_count": 0,
+    "provider_leakage_count": 0,
+    "invalid_sequence_count": 0,
+    "missing_source_ref_count": 0,
+    "report": "../../../generators/parallel/build-01/T01/formal-validation-report.json"
+  },
+  "luna_batches": [
+    {
+      "batch_id": "t01-memory-batch-01",
+      "count": 4
+    },
+    {
+      "batch_id": "t01-skill-batch-01",
+      "count": 4
+    },
+    {
+      "batch_id": "t01-knowledge-batch-01",
+      "count": 2
+    },
+    {
+      "batch_id": "t01-natural-negative-batch-01",
+      "count": 10
+    },
+    {
+      "batch_id": "t01-memory-assets-batch-01",
+      "count": 20
+    }
+  ],
+  "github_skill_source_count": 15,
+  "checks": [
+    {
+      "name": "dedicated branch",
+      "passed": true,
+      "detail": "codex/task1-data-build-v2-t01-t02"
+    },
+    {
+      "name": "launch tag commit",
+      "passed": true,
+      "detail": "ef2ca4bd84e529c6c7d8a8df661520cbc3bf4bb0"
+    },
+    {
+      "name": "schema baseline ancestor",
+      "passed": true
+    },
+    {
+      "name": "content baseline ancestor",
+      "passed": true
+    },
+    {
+      "name": "write scope",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "team fragment keys",
+      "passed": true,
+      "detail": [
+        "businessAgents",
+        "pairs",
+        "privateAnnotations",
+        "publicCases",
+        "sourceEvidence",
+        "tasks",
+        "teams"
+      ]
+    },
+    {
+      "name": "formal schema preview",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "formal case count",
+      "passed": true,
+      "detail": {
+        "T02": 0,
+        "T03": 0,
+        "T04": 0,
+        "T05": 0,
+        "T06": 0,
+        "T07": 0,
+        "T08": 0,
+        "T09": 0,
+        "T10": 0,
+        "T01": 40
+      }
+    },
+    {
+      "name": "formal pair count",
+      "passed": true,
+      "detail": {
+        "T02": 0,
+        "T03": 0,
+        "T04": 0,
+        "T05": 0,
+        "T06": 0,
+        "T07": 0,
+        "T08": 0,
+        "T09": 0,
+        "T10": 0,
+        "T01": 15
+      }
+    },
+    {
+      "name": "formal pair integrity",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "formal provider leakage",
+      "passed": true,
+      "detail": 0
+    },
+    {
+      "name": "formal sequence validity",
+      "passed": true,
+      "detail": 0
+    },
+    {
+      "name": "formal source refs",
+      "passed": true,
+      "detail": 0
+    },
+    {
+      "name": "public cases",
+      "passed": true,
+      "detail": 40
+    },
+    {
+      "name": "private annotations",
+      "passed": true,
+      "detail": 40
+    },
+    {
+      "name": "pairs",
+      "passed": true,
+      "detail": 15
+    },
+    {
+      "name": "paired role counts",
+      "passed": true,
+      "detail": {
+        "positive": 15,
+        "negative": 15
+      }
+    },
+    {
+      "name": "natural negatives",
+      "passed": true,
+      "detail": 10
+    },
+    {
+      "name": "positive family quota",
+      "passed": true,
+      "detail": {
+        "knowledge": 3,
+        "memory": 6,
+        "skill": 6
+      }
+    },
+    {
+      "name": "all negatives no-tool",
+      "passed": true
+    },
+    {
+      "name": "T01-PAIR-001 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T01-PAIR-001 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "01e15fea27520662fe78ed2813aab3e85f1cba64649c89247110abac55d8aa7f",
+        "actual": "01e15fea27520662fe78ed2813aab3e85f1cba64649c89247110abac55d8aa7f"
+      }
+    },
+    {
+      "name": "T01-PAIR-001 annotation roles",
+      "passed": true
+    },
+    {
+      "name": "T01-PAIR-002 one message delta",
+      "passed": true,
+      "detail": [
+        12
+      ]
+    },
+    {
+      "name": "T01-PAIR-002 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "cc23a2d483931331c4867c0b5c751d9dd5f98d73eb2c72a4e58592b824e8a837",
+        "actual": "cc23a2d483931331c4867c0b5c751d9dd5f98d73eb2c72a4e58592b824e8a837"
+      }
+    },
+    {
+      "name": "T01-PAIR-002 annotation roles",
+      "passed": true
+    },
+    {
+      "name": "T01-PAIR-003 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T01-PAIR-003 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "1d8469068b93af1c7097290eec27406abf6f12346a2bf42b9e5c4e5e683d44e4",
+        "actual": "1d8469068b93af1c7097290eec27406abf6f12346a2bf42b9e5c4e5e683d44e4"
+      }
+    },
+    {
+      "name": "T01-PAIR-003 annotation roles",
+      "passed": true
+    },
+    {
+      "name": "T01-PAIR-004 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T01-PAIR-004 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "5e89173a564af602ba74144174ce4c93186feec8dabe2889fcaa85efc697b6de",
+        "actual": "5e89173a564af602ba74144174ce4c93186feec8dabe2889fcaa85efc697b6de"
+      }
+    },
+    {
+      "name": "T01-PAIR-004 annotation roles",
+      "passed": true
+    },
+    {
+      "name": "T01-PAIR-005 one message delta",
+      "passed": true,
+      "detail": [
+        7
+      ]
+    },
+    {
+      "name": "T01-PAIR-005 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "74f30722e36312ec962050efe80905987a96e6e6a7494984b3f962c4b0e3d016",
+        "actual": "74f30722e36312ec962050efe80905987a96e6e6a7494984b3f962c4b0e3d016"
+      }
+    },
+    {
+      "name": "T01-PAIR-005 annotation roles",
+      "passed": true
+    },
+    {
+      "name": "T01-PAIR-006 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T01-PAIR-006 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "ba86a205f690f5ba2a3f0ab13e99f62dd842ce0bad3375dbdc18a99e53eb6e22",
+        "actual": "ba86a205f690f5ba2a3f0ab13e99f62dd842ce0bad3375dbdc18a99e53eb6e22"
+      }
+    },
+    {
+      "name": "T01-PAIR-006 annotation roles",
+      "passed": true
+    },
+    {
+      "name": "T01-PAIR-007 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T01-PAIR-007 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "103719039b1c611544914d60a3027a0d1f2e65a7fb8ac316ba47976c4a150b80",
+        "actual": "103719039b1c611544914d60a3027a0d1f2e65a7fb8ac316ba47976c4a150b80"
+      }
+    },
+    {
+      "name": "T01-PAIR-007 annotation roles",
+      "passed": true
+    },
+    {
+      "name": "T01-PAIR-008 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T01-PAIR-008 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "c25bf79ba9c48259048500fc1ad843e63048118478470f96e01ae5f363b695ae",
+        "actual": "c25bf79ba9c48259048500fc1ad843e63048118478470f96e01ae5f363b695ae"
+      }
+    },
+    {
+      "name": "T01-PAIR-008 annotation roles",
+      "passed": true
+    },
+    {
+      "name": "T01-PAIR-009 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T01-PAIR-009 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "479955ed9d2d9ecdc889053896ae092c8985304a52edf66c537c78ad805a8d20",
+        "actual": "479955ed9d2d9ecdc889053896ae092c8985304a52edf66c537c78ad805a8d20"
+      }
+    },
+    {
+      "name": "T01-PAIR-009 annotation roles",
+      "passed": true
+    },
+    {
+      "name": "T01-PAIR-010 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T01-PAIR-010 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "9ae8f4e1f8ff7edbcb145e2a06825bd6926d3a56c4f288be8a770c59133dcd5d",
+        "actual": "9ae8f4e1f8ff7edbcb145e2a06825bd6926d3a56c4f288be8a770c59133dcd5d"
+      }
+    },
+    {
+      "name": "T01-PAIR-010 annotation roles",
+      "passed": true
+    },
+    {
+      "name": "T01-PAIR-011 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T01-PAIR-011 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "bd26bbe1a85d3eab94667115198c8dc4595aa19bc560a79909981ffd16ff6fe5",
+        "actual": "bd26bbe1a85d3eab94667115198c8dc4595aa19bc560a79909981ffd16ff6fe5"
+      }
+    },
+    {
+      "name": "T01-PAIR-011 annotation roles",
+      "passed": true
+    },
+    {
+      "name": "T01-PAIR-012 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T01-PAIR-012 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "3ea413f30f2c6dda93c2df759a3e37d81e42ab079ad8b11a72c856b3ca62e103",
+        "actual": "3ea413f30f2c6dda93c2df759a3e37d81e42ab079ad8b11a72c856b3ca62e103"
+      }
+    },
+    {
+      "name": "T01-PAIR-012 annotation roles",
+      "passed": true
+    },
+    {
+      "name": "T01-PAIR-013 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T01-PAIR-013 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "a1071ac0754bb04a19fa65a1ef5424c08a30b259e6cfb66407f4339601e2e623",
+        "actual": "a1071ac0754bb04a19fa65a1ef5424c08a30b259e6cfb66407f4339601e2e623"
+      }
+    },
+    {
+      "name": "T01-PAIR-013 annotation roles",
+      "passed": true
+    },
+    {
+      "name": "T01-PAIR-014 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T01-PAIR-014 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "fc9c474e8d746893206eed954580cd556e0009e48535a0a8955d59c04217e0e2",
+        "actual": "fc9c474e8d746893206eed954580cd556e0009e48535a0a8955d59c04217e0e2"
+      }
+    },
+    {
+      "name": "T01-PAIR-014 annotation roles",
+      "passed": true
+    },
+    {
+      "name": "T01-PAIR-015 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T01-PAIR-015 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "894f3c4b15d801135e1560d0313b907246640734ac5e798fef9be59fc3d77412",
+        "actual": "894f3c4b15d801135e1560d0313b907246640734ac5e798fef9be59fc3d77412"
+      }
+    },
+    {
+      "name": "T01-PAIR-015 annotation roles",
+      "passed": true
+    },
+    {
+      "name": "provider allowlist leakage scan",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "no duplicate provider case",
+      "passed": true
+    },
+    {
+      "name": "memory asset quota",
+      "passed": true,
+      "detail": {
+        "l0": 12,
+        "l1": 15,
+        "l2": 4,
+        "l3": 1
+      }
+    },
+    {
+      "name": "retrieval pressure pilot retained",
+      "passed": true
+    },
+    {
+      "name": "runtime instruction mappings",
+      "passed": true
+    },
+    {
+      "name": "formal decision mappings",
+      "passed": true
+    },
+    {
+      "name": "memory route distribution",
+      "passed": true,
+      "detail": {
+        "tdai_atomic_query": 2,
+        "tdai_conversation_search": 3,
+        "tdai_memory_search": 1
+      }
+    },
+    {
+      "name": "skill route distribution",
+      "passed": true,
+      "detail": {
+        "skill_search->skill_view_by_id": 3,
+        "skill_view": 2,
+        "skill_view->skill_files_read": 1
+      }
+    },
+    {
+      "name": "knowledge route distribution",
+      "passed": true,
+      "detail": [
+        "knowledge_tools_list->knowledge_tools_call",
+        "knowledge_tools_list->knowledge_tools_call",
+        "knowledge_tools_list->knowledge_tools_call"
+      ]
+    },
+    {
+      "name": "production endpoints",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "skill asset count",
+      "passed": true,
+      "detail": 15
+    },
+    {
+      "name": "listed Skill count",
+      "passed": true,
+      "detail": [
+        "T01-SKILL-DISCOVER-IMPORTANT-FUNCTION",
+        "T01-SKILL-PYTEST-COVERAGE",
+        "T01-SKILL-TEMPORAL-PYTHON-TESTING",
+        "T01-SKILL-ANALYZE-CI",
+        "T01-SKILL-UV-PACKAGE-MANAGER"
+      ]
+    },
+    {
+      "name": "search Skill count",
+      "passed": true
+    },
+    {
+      "name": "knowledge asset count",
+      "passed": true
+    },
+    {
+      "name": "source package count",
+      "passed": true,
+      "detail": 15
+    },
+    {
+      "name": "GitHub Skill source packages",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "source input pack lock",
+      "passed": true,
+      "detail": "01b386c73132f6e6d816cdaa26cb51c180cc0142653c1acacd5ba2b74b9b90d8"
+    },
+    {
+      "name": "Luna batches",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "review present",
+      "passed": true
+    },
+    {
+      "name": "build summary consistency",
+      "passed": true
+    }
+  ],
+  "error_count": 0,
+  "errors": [],
+  "integration_issues": [
+    "The global integrator must preserve the explicit formal decision -> runtime instruction mapping for the two direct atomic-query targets when materializing production Memory fixtures.",
+    "The global integrator must regenerate snapshots and cross-Team hashes; this Team fragment intentionally does not write global snapshot or contract files."
+  ]
+}

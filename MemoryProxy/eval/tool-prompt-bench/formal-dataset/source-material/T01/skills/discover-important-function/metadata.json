@@ -1,0 +1,30 @@
+{
+  "schema_version": "task1.github_skill_source.v1",
+  "team_id": "T01",
+  "name": "discover-important-function",
+  "repository_url": "https://github.com/benchflow-ai/skillsbench",
+  "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+  "source_path": "tasks/setup-fuzzing-py/environment/skills/discover-important-function/SKILL.md",
+  "license_spdx": "Apache-2.0",
+  "license_file": "../../licenses/Apache-2.0.txt",
+  "visibility": "listed",
+  "main_raw_sha256": "d935cc481fe8700ecfec482810dbf7fb56d0ee7e5fec7221ca5a77519d29ce29",
+  "raw_files": [
+    {
+      "path": "SKILL.md",
+      "source_path": "tasks/setup-fuzzing-py/environment/skills/discover-important-function/SKILL.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/setup-fuzzing-py/environment/skills/discover-important-function/SKILL.md",
+      "sha256": "d935cc481fe8700ecfec482810dbf7fb56d0ee7e5fec7221ca5a77519d29ce29",
+      "byte_length": 14358
+    }
+  ],
+  "adapted_files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "4bab2b9f0b3012d50b954b8d13203dfa07f686011ca6c21ba0bb4801f5fa2ef2",
+      "byte_length": 14760
+    }
+  ],
+  "adaptation_diff": "adaptation.diff",
+  "frozen": true
+}
