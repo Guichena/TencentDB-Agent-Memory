@@ -72,6 +72,20 @@
     ],
     "frozenPairSetRevision": "synthetic:m1-pair-v2-synthetic-v1",
     "frozenPairSetSha256": "0c509c532b4710b395567177fb63635ff2a117d1824bcdd357a667df814ddf44",
+    "frozenPairIdentityManifest": {
+      "schemaVersion": "frozen-pair-identity-manifest-v2",
+      "records": [
+        {
+          "pairId": "pair-skill-boundary-001",
+          "positiveCaseId": "pair-skill-positive",
+          "negativeCaseId": "pair-skill-negative",
+          "independenceKey": "team-payments-source-formatter",
+          "split": "dev",
+          "pairContractSha256": "b1102058cb4eb2d80198c2dd4f56c3531effb5028ef50bf612bdace1fe76d190"
+        }
+      ],
+      "canonicalSha256": "71be345187e25358025c3303d950d30287040a9db4f8abd1c073e25ebaadadec"
+    },
     "expectedPairIdsSha256": "3538dbdd3d97f0a19003d90f8eaac85d479dce5ce47c0268213a1bdc743b55be",
     "strictPairExactEnabled": false,
     "scoringPolicySha256": "abd2448c425839fcc812f2e335acd86b1bfc22515366f40b8ae16e8e94fb7153"

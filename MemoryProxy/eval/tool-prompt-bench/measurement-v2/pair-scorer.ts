@@ -1,5 +1,12 @@
-import { createHash } from "node:crypto";
-import type { PairSplitV2, ValidatedPairContractV2 } from "./pair-contract.js";
+import { canonicalJsonV2, sha256CanonicalJsonV2 } from "./canonical-json.js";
+import {
+  computePairContractCanonicalSha256V2,
+  validateFrozenPairIdentityManifestV2,
+  type FrozenPairIdentityManifestV2,
+  type FrozenPairIdentityRecordV2,
+  type PairSplitV2,
+  type ValidatedPairContractV2,
+} from "./pair-contract.js";
 
 /**
  * Integration-owned view: M0 supplies chain facts, while the integration
@@ -30,7 +37,11 @@ export interface IntegratedCaseOutcomeForPairV2 {
 }
 
 export interface PairCaseOutcomeValidationErrorV2 {
-  readonly code: "INVALID_OUTCOME_SHAPE" | "INVALID_REQUIRED_FIELD" | "INVALID_SHA256";
+  readonly code:
+    | "INVALID_OUTCOME_SHAPE"
+    | "INVALID_REQUIRED_FIELD"
+    | "INVALID_SHA256"
+    | "STRICT_CHAIN_INVARIANT_VIOLATION";
   readonly pointer: string;
   readonly message: string;
 }
@@ -83,6 +94,7 @@ export interface PairScoreV2 {
   readonly negativeCaseId: string;
   readonly independenceKey: string;
   readonly split: PairSplitV2;
+  readonly pairContractSha256: string;
   readonly cohort: PairScoreCohortV2 | null;
   readonly eligibility: "eligible" | "incomplete";
   readonly incompleteReasons: readonly string[];
@@ -112,6 +124,7 @@ interface PairScoreIdentityV2 {
   readonly negativeCaseId: string;
   readonly independenceKey: string;
   readonly split: PairSplitV2;
+  readonly pairContractSha256: string;
 }
 
 export interface PairMetricRatioV2 {
@@ -132,6 +145,7 @@ export interface PairScoreSummaryV2 {
   readonly cohort: PairScoreCohortV2;
   readonly frozenPairSetRevision: string;
   readonly frozenPairSetSha256: string;
+  readonly frozenPairIdentityManifestSha256: string;
   readonly expectedPairIdsSha256: string;
   readonly expectedPairIds: readonly string[];
   readonly observedPairIds: readonly string[];
@@ -161,6 +175,7 @@ export interface PairSummaryCampaignV2 extends PairScoreCohortV2 {
   readonly expectedRepeatIds: readonly string[];
   readonly frozenPairSetRevision: string;
   readonly frozenPairSetSha256: string;
+  readonly frozenPairIdentityManifest: FrozenPairIdentityManifestV2;
   readonly expectedPairIdsSha256: string;
   readonly strictPairExactEnabled: boolean;
   readonly scoringPolicySha256: string;
@@ -169,6 +184,16 @@ export interface PairSummaryCampaignV2 extends PairScoreCohortV2 {
 export interface SummarizePairScoresV2Options {
   readonly campaign: PairSummaryCampaignV2;
   readonly includeStrictPairExact?: boolean;
+}
+
+export class PairScoreSummaryBoundaryError extends Error {
+  readonly code: "INVALID_SCORES_CONTAINER";
+
+  constructor(message: string) {
+    super(message);
+    this.name = "PairScoreSummaryBoundaryError";
+    this.code = "INVALID_SCORES_CONTAINER";
+  }
 }
 
 function uniqueSorted(values: readonly string[]): string[] {
@@ -191,22 +216,8 @@ function isSha256(value: unknown): value is string {
   return typeof value === "string" && /^[a-f0-9]{64}$/.test(value);
 }
 
-function canonicalJson(value: unknown): string {
-  if (value === null || typeof value !== "object") return JSON.stringify(value);
-  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(",")}]`;
-  const record = value as Record<string, unknown>;
-  return `{${Object.keys(record)
-    .sort()
-    .map((key) => `${JSON.stringify(key)}:${canonicalJson(record[key])}`)
-    .join(",")}}`;
-}
-
-function sha256Canonical(value: unknown): string {
-  return createHash("sha256").update(canonicalJson(value)).digest("hex");
-}
-
 export function computePairScoringPolicySha256V2(strictPairExactEnabled: boolean): string {
-  return sha256Canonical({
+  return sha256CanonicalJsonV2({
     schemaVersion: "pair-scoring-policy-v2",
     repeatAggregationPolicyId: PAIR_REPEAT_AGGREGATION_POLICY_ID,
     strictPairExactEnabled,
@@ -219,7 +230,7 @@ type FrozenPairSetIdentityV2 = Omit<
 >;
 
 export function computeExpectedPairMembershipSha256V2(campaign: FrozenPairSetIdentityV2): string {
-  return sha256Canonical({
+  return sha256CanonicalJsonV2({
     schemaVersion: "expected-pair-membership-v2",
     split: campaign.split,
     expectedPairIds: uniqueSorted(campaign.expectedPairIds),
@@ -292,6 +303,13 @@ export function validatePairCaseOutcomeV2(input: unknown): PairCaseOutcomeValida
       message: "strictChainExact must be boolean when present",
     });
   }
+  if (outcome.strictChainExact === true && outcome.completeChainSuccess !== true) {
+    errors.push({
+      code: "STRICT_CHAIN_INVARIANT_VIOLATION",
+      pointer: "/strictChainExact",
+      message: "strictChainExact cannot be true unless completeChainSuccess is true",
+    });
+  }
   if (outcome.failureLayer !== undefined && !isNonBlankString(outcome.failureLayer)) {
     errors.push({
       code: "INVALID_REQUIRED_FIELD",
@@ -322,7 +340,7 @@ function cohortFromOutcome(
 }
 
 function sameCohort(left: PairScoreCohortV2, right: PairScoreCohortV2): boolean {
-  return canonicalJson(left) === canonicalJson(right);
+  return canonicalJsonV2(left) === canonicalJsonV2(right);
 }
 
 function isPairScoreRuntimeContainer(score: unknown): score is PairScoreV2 {
@@ -334,6 +352,7 @@ function isPairScoreRuntimeContainer(score: unknown): score is PairScoreV2 {
     && isNonBlankString(candidate.negativeCaseId)
     && isNonBlankString(candidate.independenceKey)
     && (candidate.split === "dev" || candidate.split === "hidden")
+    && isSha256(candidate.pairContractSha256)
     && typeof candidate.strictPairExactEnabled === "boolean"
     && Array.isArray(candidate.incompleteReasons)
     && Array.isArray(candidate.repeatIds)
@@ -347,21 +366,18 @@ function isPairScoreRuntimeContainer(score: unknown): score is PairScoreV2 {
     && Array.isArray((repeatInputs as Record<string, unknown>).negative);
 }
 
-function isPairScoreInternallyConsistent(score: unknown): boolean {
+function isPairScoreInternallyConsistent(
+  score: unknown,
+  trustedIdentity: FrozenPairIdentityRecordV2,
+): boolean {
   if (!isPairScoreRuntimeContainer(score)) return false;
   try {
     const derived = scorePairFromIdentityV2(
-      {
-        pairId: score.pairId,
-        positiveCaseId: score.positiveCaseId,
-        negativeCaseId: score.negativeCaseId,
-        independenceKey: score.independenceKey,
-        split: score.split,
-      },
+      trustedIdentity,
       score.repeatInputs,
       { includeStrictPairExact: score.strictPairExactEnabled },
     );
-    return canonicalJson(derived) === canonicalJson(score);
+    return canonicalJsonV2(derived) === canonicalJsonV2(score);
   } catch {
     return false;
   }
@@ -379,6 +395,7 @@ export function scorePairV2(
       negativeCaseId: validated.contract.negativeCaseId,
       independenceKey: validated.contract.independenceKey,
       split: validated.contract.split,
+      pairContractSha256: computePairContractCanonicalSha256V2(validated.contract),
     },
     outcomes,
     options,
@@ -501,6 +518,7 @@ function scorePairFromIdentityV2(
       negativeCaseId: identity.negativeCaseId,
       independenceKey: identity.independenceKey,
       split: identity.split,
+      pairContractSha256: identity.pairContractSha256,
       cohort,
       eligibility: "incomplete",
       incompleteReasons,
@@ -547,7 +565,7 @@ function scorePairFromIdentityV2(
       pairExact: positivePass && negativePass,
       boundarySwitchCorrect,
       strictPairExact: options.includeStrictPairExact === true
-        ? positive.strictChainExact === true && negativePass
+        ? positivePass && positive.strictChainExact === true && negativePass
         : null,
       negativeFalseIntentTypes,
       positiveFailureLayer: positivePass ? null : positive.failureLayer ?? null,
@@ -572,6 +590,7 @@ function scorePairFromIdentityV2(
     negativeCaseId: identity.negativeCaseId,
     independenceKey: identity.independenceKey,
     split: identity.split,
+    pairContractSha256: identity.pairContractSha256,
     cohort,
     eligibility: "eligible",
     incompleteReasons: [],
@@ -611,6 +630,10 @@ export function summarizePairScoresV2(
   scores: readonly PairScoreV2[],
   options: SummarizePairScoresV2Options,
 ): PairScoreSummaryV2 {
+  if (!Array.isArray(scores)) {
+    throw new PairScoreSummaryBoundaryError("PairScoreSummaryV2 scores must be an array");
+  }
+  const scoreInputs: readonly unknown[] = scores;
   const campaign = options?.campaign;
   if (campaign === null || typeof campaign !== "object") {
     throw new Error("PairScoreSummaryV2 requires a frozen pair-summary campaign contract");
@@ -655,6 +678,26 @@ export function summarizePairScoresV2(
     || hasDuplicate(campaign.expectedRepeatIds)) {
     throw new Error("pair-summary campaign expectedRepeatIds must be a non-empty unique string set");
   }
+  const identityManifestValidation = validateFrozenPairIdentityManifestV2(
+    campaign.frozenPairIdentityManifest,
+  );
+  if (!identityManifestValidation.ok) {
+    throw new Error(`invalid frozen pair identity manifest: ${identityManifestValidation.errors
+      .map((error) => error.code)
+      .join(",")}`);
+  }
+  const frozenPairIdentityManifest = identityManifestValidation.value;
+  const trustedIdentityRecords = [...frozenPairIdentityManifest.records];
+  const trustedIdentityPairIds = uniqueSorted(trustedIdentityRecords.map((record) => record.pairId));
+  if (canonicalJsonV2(trustedIdentityPairIds) !== canonicalJsonV2(uniqueSorted(campaign.expectedPairIds))) {
+    throw new Error("frozen pair identity manifest does not match expectedPairIds");
+  }
+  if (trustedIdentityRecords.some((record) => record.split !== campaign.split)) {
+    throw new Error("frozen pair identity manifest split does not match campaign split");
+  }
+  const trustedIdentityByPairId = new Map(
+    trustedIdentityRecords.map((record) => [record.pairId, record]),
+  );
   const expectedScoringPolicySha256 = computePairScoringPolicySha256V2(
     campaign.strictPairExactEnabled,
   );
@@ -669,12 +712,24 @@ export function summarizePairScoresV2(
     throw new Error("PairScoreSummaryV2 StrictPairExact option does not match frozen campaign policy");
   }
 
-  const pairIds = scores.map((score) => score.pairId);
+  interface ScoreInputRow {
+    readonly input: unknown;
+    readonly pairId: string | null;
+  }
+  const scoreRows: readonly ScoreInputRow[] = scoreInputs.map((input): ScoreInputRow => {
+    if (input === null || typeof input !== "object" || Array.isArray(input)) {
+      return { input, pairId: null };
+    }
+    const pairId = (input as Record<string, unknown>).pairId;
+    return { input, pairId: isNonBlankString(pairId) ? pairId : null };
+  });
+  const malformedScoreRowCount = scoreRows.filter((row) => row.pairId === null).length;
+  const identifiedScoreRows = scoreRows.filter(
+    (row): row is ScoreInputRow & { readonly pairId: string } => row.pairId !== null,
+  );
+  const pairIds = identifiedScoreRows.map((row) => row.pairId);
   if (hasDuplicate(pairIds)) {
     throw new Error("duplicate pairId in PairScoreSummaryV2 input");
-  }
-  if (scores.some((score) => score.repeatAggregationPolicyId !== PAIR_REPEAT_AGGREGATION_POLICY_ID)) {
-    throw new Error(`unsupported repeat aggregation policy; expected ${PAIR_REPEAT_AGGREGATION_POLICY_ID}`);
   }
   const expectedPairIds = uniqueSorted(campaign.expectedPairIds);
   const expectedPairSet = new Set(expectedPairIds);
@@ -694,37 +749,46 @@ export function summarizePairScoresV2(
     executionIdentitySha256: campaign.executionIdentitySha256,
     assetSnapshotSha256: campaign.assetSnapshotSha256,
   };
-  const expectedScores = scores.filter((score) => expectedPairSet.has(score.pairId));
-  const inconsistentScoreIds = expectedScores
-    .filter((score) => !isPairScoreInternallyConsistent(score))
-    .map((score) => score.pairId);
-  const consistentExpectedScores = expectedScores
-    .filter((score) => !inconsistentScoreIds.includes(score.pairId));
+  const expectedScoreRows = identifiedScoreRows.filter((row) => expectedPairSet.has(row.pairId));
+  const inconsistentScoreIds = expectedScoreRows
+    .filter(({ input, pairId }) => {
+      const trustedIdentity = trustedIdentityByPairId.get(pairId);
+      return trustedIdentity === undefined || !isPairScoreInternallyConsistent(input, trustedIdentity);
+    })
+    .map((row) => row.pairId);
+  const consistentExpectedScores = expectedScoreRows
+    .filter((row) => !inconsistentScoreIds.includes(row.pairId))
+    .map((row) => row.input as PairScoreV2);
   const cohortMismatchIds = consistentExpectedScores
     .filter((score) => score.cohort === null || !sameCohort(score.cohort, campaignCohort))
     .map((score) => score.pairId);
   const repeatMismatchIds = consistentExpectedScores
-    .filter((score) => canonicalJson(uniqueSorted(score.repeatIds)) !== canonicalJson(expectedRepeatIds))
+    .filter((score) => canonicalJsonV2(uniqueSorted(score.repeatIds)) !== canonicalJsonV2(expectedRepeatIds))
     .map((score) => score.pairId);
   const policyMismatchIds = consistentExpectedScores
     .filter((score) => score.scoringPolicySha256 !== campaign.scoringPolicySha256
       || score.strictPairExactEnabled !== campaign.strictPairExactEnabled)
     .map((score) => score.pairId);
+  const canonicalIncompleteScoreIds = consistentExpectedScores
+    .filter((score) => score.eligibility === "incomplete")
+    .map((score) => score.pairId);
   const campaignIncompleteReasons = uniqueSorted([
     ...(missingPairIds.length > 0 ? ["FROZEN_PAIR_SET_INCOMPLETE"] : []),
+    ...(malformedScoreRowCount > 0 ? ["MALFORMED_PAIR_SCORE_ROW"] : []),
     ...(unexpectedPairIds.length > 0 ? ["UNEXPECTED_PAIR_SET_MEMBER"] : []),
     ...(cohortMismatchIds.length > 0 ? ["SCORE_COHORT_MISMATCH"] : []),
     ...(repeatMismatchIds.length > 0 ? ["EXPECTED_REPEAT_SET_MISMATCH"] : []),
     ...(policyMismatchIds.length > 0 ? ["SCORING_POLICY_MISMATCH"] : []),
+    ...(canonicalIncompleteScoreIds.length > 0 ? ["FROZEN_PAIR_EVIDENCE_INCOMPLETE"] : []),
     ...(inconsistentScoreIds.length > 0 ? ["PAIR_SCORE_INCONSISTENT"] : []),
   ]);
-  const structurallyEligibleIds = new Set(expectedScores
+  const structurallyEligibleIds = new Set(consistentExpectedScores
     .filter((score) => !cohortMismatchIds.includes(score.pairId))
     .filter((score) => !repeatMismatchIds.includes(score.pairId))
     .filter((score) => !policyMismatchIds.includes(score.pairId))
     .filter((score) => !inconsistentScoreIds.includes(score.pairId))
     .map((score) => score.pairId));
-  const eligible = expectedScores.filter((score) => score.eligibility === "eligible"
+  const eligible = consistentExpectedScores.filter((score) => score.eligibility === "eligible"
     && structurallyEligibleIds.has(score.pairId));
   for (const score of eligible) {
     if (score.pairExact === null || score.boundarySwitchCorrect === null) {
@@ -757,6 +821,7 @@ export function summarizePairScoresV2(
     for (const reason of score.incompleteReasons) incrementReason(reason);
   }
   if (missingPairIds.length > 0) incrementReason("MISSING_FROZEN_PAIR", missingPairIds.length);
+  if (malformedScoreRowCount > 0) incrementReason("MALFORMED_PAIR_SCORE_ROW", malformedScoreRowCount);
   if (unexpectedPairIds.length > 0) incrementReason("UNEXPECTED_PAIR", unexpectedPairIds.length);
   if (cohortMismatchIds.length > 0) incrementReason("SCORE_COHORT_MISMATCH", cohortMismatchIds.length);
   if (repeatMismatchIds.length > 0) {
@@ -776,6 +841,7 @@ export function summarizePairScoresV2(
     cohort: campaignCohort,
     frozenPairSetRevision: campaign.frozenPairSetRevision,
     frozenPairSetSha256: campaign.frozenPairSetSha256,
+    frozenPairIdentityManifestSha256: frozenPairIdentityManifest.canonicalSha256,
     expectedPairIdsSha256: campaign.expectedPairIdsSha256,
     expectedPairIds,
     observedPairIds,
@@ -786,7 +852,7 @@ export function summarizePairScoresV2(
     scoringPolicySha256: campaign.scoringPolicySha256,
     strictPairExactEnabled: campaign.strictPairExactEnabled,
     jFrozen: expectedPairIds.length,
-    jObserved: expectedScores.length,
+    jObserved: expectedScoreRows.length,
     jEligible: eligible.length,
     jIncomplete: expectedPairIds.length - eligible.length,
     pairExact: ratio(eligible.map((score) => score.pairExact as boolean)),

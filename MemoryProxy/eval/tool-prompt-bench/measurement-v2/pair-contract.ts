@@ -1,5 +1,5 @@
-import { createHash } from "node:crypto";
 import { isDeepStrictEqual } from "node:util";
+import { sha256CanonicalJsonV2 } from "./canonical-json.js";
 
 export type PairSplitV2 = "dev" | "hidden";
 
@@ -40,6 +40,33 @@ export interface ValidatedPairContractV2 {
   readonly changedPointers: readonly string[];
   readonly computedInvariantFieldsSha256: string;
 }
+
+export const FROZEN_PAIR_IDENTITY_MANIFEST_SCHEMA_VERSION = "frozen-pair-identity-manifest-v2" as const;
+
+export interface FrozenPairIdentityRecordV2 {
+  readonly pairId: string;
+  readonly positiveCaseId: string;
+  readonly negativeCaseId: string;
+  readonly independenceKey: string;
+  readonly split: PairSplitV2;
+  readonly pairContractSha256: string;
+}
+
+export interface FrozenPairIdentityManifestV2 {
+  readonly schemaVersion: typeof FROZEN_PAIR_IDENTITY_MANIFEST_SCHEMA_VERSION;
+  readonly records: readonly FrozenPairIdentityRecordV2[];
+  readonly canonicalSha256: string;
+}
+
+export interface FrozenPairIdentityManifestValidationErrorV2 {
+  readonly code: string;
+  readonly message: string;
+  readonly pointer?: string;
+}
+
+export type FrozenPairIdentityManifestValidationResultV2 =
+  | { readonly ok: true; readonly value: FrozenPairIdentityManifestV2 }
+  | { readonly ok: false; readonly errors: readonly FrozenPairIdentityManifestValidationErrorV2[] };
 
 export interface PairContractValidationErrorV2 {
   readonly code: string;
@@ -217,19 +244,148 @@ function maskAllowed(
   return [positive, negative];
 }
 
-function canonicalJson(value: PairJsonValue): string {
-  if (value === null || typeof value !== "object") return JSON.stringify(value);
-  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(",")}]`;
-  return `{${Object.keys(value)
-    .sort()
-    .map((key) => `${JSON.stringify(key)}:${canonicalJson(value[key])}`)
-    .join(",")}}`;
+function invariantHash(schemaVersion: string, invariantFields: PairJsonValue): string {
+  return sha256CanonicalJsonV2({ invariantFields, invariantProjectionSchemaVersion: schemaVersion });
 }
 
-function invariantHash(schemaVersion: string, invariantFields: PairJsonValue): string {
-  return createHash("sha256")
-    .update(canonicalJson({ invariantFields, invariantProjectionSchemaVersion: schemaVersion }))
-    .digest("hex");
+export function computePairContractCanonicalSha256V2(contract: PairContractV2): string {
+  return sha256CanonicalJsonV2(contract);
+}
+
+export function computeFrozenPairIdentityManifestSha256V2(
+  records: readonly FrozenPairIdentityRecordV2[],
+): string {
+  return sha256CanonicalJsonV2({
+    schemaVersion: FROZEN_PAIR_IDENTITY_MANIFEST_SCHEMA_VERSION,
+    records: [...records].sort((left, right) => (
+      left.pairId < right.pairId ? -1 : left.pairId > right.pairId ? 1 : 0
+    )),
+  });
+}
+
+export function buildFrozenPairIdentityManifestV2(
+  validatedPairs: readonly ValidatedPairContractV2[],
+): FrozenPairIdentityManifestV2 {
+  if (validatedPairs.length === 0) {
+    throw new Error("frozen pair identity manifest requires at least one validated pair");
+  }
+  const records = validatedPairs
+    .map(({ contract }): FrozenPairIdentityRecordV2 => ({
+      pairId: contract.pairId,
+      positiveCaseId: contract.positiveCaseId,
+      negativeCaseId: contract.negativeCaseId,
+      independenceKey: contract.independenceKey,
+      split: contract.split,
+      pairContractSha256: computePairContractCanonicalSha256V2(contract),
+    }))
+    .sort((left, right) => (
+      left.pairId < right.pairId ? -1 : left.pairId > right.pairId ? 1 : 0
+    ));
+  if (new Set(records.map((record) => record.pairId)).size !== records.length) {
+    throw new Error("frozen pair identity manifest pairId values must be unique");
+  }
+  return {
+    schemaVersion: FROZEN_PAIR_IDENTITY_MANIFEST_SCHEMA_VERSION,
+    records,
+    canonicalSha256: computeFrozenPairIdentityManifestSha256V2(records),
+  };
+}
+
+export function validateFrozenPairIdentityManifestV2(
+  input: unknown,
+): FrozenPairIdentityManifestValidationResultV2 {
+  if (!isPlainRecord(input)) {
+    return {
+      ok: false,
+      errors: [{ code: "INVALID_IDENTITY_MANIFEST_SHAPE", message: "identity manifest must be an object" }],
+    };
+  }
+  const errors: FrozenPairIdentityManifestValidationErrorV2[] = [];
+  if (input.schemaVersion !== FROZEN_PAIR_IDENTITY_MANIFEST_SCHEMA_VERSION) {
+    errors.push({
+      code: "UNSUPPORTED_IDENTITY_MANIFEST_SCHEMA",
+      message: `schemaVersion must be ${FROZEN_PAIR_IDENTITY_MANIFEST_SCHEMA_VERSION}`,
+      pointer: "/schemaVersion",
+    });
+  }
+  if (!Array.isArray(input.records) || input.records.length === 0) {
+    errors.push({
+      code: "INVALID_IDENTITY_MANIFEST_RECORDS",
+      message: "identity manifest records must be a non-empty array",
+      pointer: "/records",
+    });
+  }
+  const records = Array.isArray(input.records) ? input.records : [];
+  for (const [index, record] of records.entries()) {
+    if (!isPlainRecord(record)) {
+      errors.push({
+        code: "INVALID_IDENTITY_RECORD_SHAPE",
+        message: "identity record must be an object",
+        pointer: `/records/${index}`,
+      });
+      continue;
+    }
+    for (const field of [
+      "pairId",
+      "positiveCaseId",
+      "negativeCaseId",
+      "independenceKey",
+    ] as const) {
+      if (typeof record[field] !== "string" || record[field].trim().length === 0) {
+        errors.push({
+          code: "INVALID_IDENTITY_RECORD_FIELD",
+          message: `${field} must be a non-blank string`,
+          pointer: `/records/${index}/${field}`,
+        });
+      }
+    }
+    if (!isPairSplit(record.split)) {
+      errors.push({
+        code: "INVALID_IDENTITY_RECORD_SPLIT",
+        message: "split must be dev or hidden",
+        pointer: `/records/${index}/split`,
+      });
+    }
+    if (typeof record.pairContractSha256 !== "string"
+      || !/^[a-f0-9]{64}$/.test(record.pairContractSha256)) {
+      errors.push({
+        code: "INVALID_IDENTITY_RECORD_SHA256",
+        message: "pairContractSha256 must be a lowercase SHA-256 digest",
+        pointer: `/records/${index}/pairContractSha256`,
+      });
+    }
+  }
+  const pairIds = records
+    .filter(isPlainRecord)
+    .map((record) => record.pairId)
+    .filter((pairId): pairId is string => typeof pairId === "string");
+  if (new Set(pairIds).size !== pairIds.length) {
+    errors.push({
+      code: "DUPLICATE_IDENTITY_RECORD",
+      message: "identity manifest pairId values must be unique",
+      pointer: "/records",
+    });
+  }
+  if (typeof input.canonicalSha256 !== "string" || !/^[a-f0-9]{64}$/.test(input.canonicalSha256)) {
+    errors.push({
+      code: "INVALID_IDENTITY_MANIFEST_SHA256",
+      message: "canonicalSha256 must be a lowercase SHA-256 digest",
+      pointer: "/canonicalSha256",
+    });
+  }
+  if (errors.length > 0) return { ok: false, errors };
+  const manifest = input as unknown as FrozenPairIdentityManifestV2;
+  if (manifest.canonicalSha256 !== computeFrozenPairIdentityManifestSha256V2(manifest.records)) {
+    return {
+      ok: false,
+      errors: [{
+        code: "IDENTITY_MANIFEST_SHA256_MISMATCH",
+        message: "canonicalSha256 does not match frozen identity records",
+        pointer: "/canonicalSha256",
+      }],
+    };
+  }
+  return { ok: true, value: manifest };
 }
 
 export function validatePairContractV2(

@@ -3,6 +3,10 @@
   "candidateId": "M1",
   "publicApis": [
     "validatePairContractV2",
+    "computePairContractCanonicalSha256V2",
+    "buildFrozenPairIdentityManifestV2",
+    "validateFrozenPairIdentityManifestV2",
+    "computeFrozenPairIdentityManifestSha256V2",
     "validatePairCaseOutcomeV2",
     "scorePairV2",
     "summarizePairScoresV2",
@@ -68,7 +72,7 @@
     "completeChainSource": "M0.completeChainSuccess",
     "strictChainSource": "M0.strictChainExact when preregistered",
     "eligibilitySource": "Integration-owned; M1 never derives final eligibility",
-    "runtimeValidation": "required strings are non-blank; required booleans are explicit booleans; identity hashes are lowercase SHA-256",
+    "runtimeValidation": "required strings are non-blank; required booleans are explicit booleans; identity hashes are lowercase SHA-256; strictChainExact=true requires completeChainSuccess=true",
     "fcrAttemptSemanticsChanged": false
   },
   "negativeBoundary": {
@@ -85,7 +89,8 @@
     "positiveCaseId",
     "negativeCaseId",
     "independenceKey",
-    "split"
+    "split",
+    "pairContractSha256"
   ],
   "repeatAggregation": {
     "policyId": "all-repeats-pass-v1",
@@ -112,14 +117,31 @@
       "expectedPairIds",
       "expectedPairIdsSha256",
       "frozenPairSetRevision",
-      "frozenPairSetSha256"
+      "frozenPairSetSha256",
+      "frozenPairIdentityManifest"
     ],
     "frozenPairSetShaSemantics": "external canonical content hash from the frozen data artifact; M1 validates shape and records it but does not pretend pair IDs reconstruct data content",
     "expectedPairIdsShaSemantics": "M1-computed membership hash over split and sorted expectedPairIds; invariant across Variant and execution cohort",
+    "frozenPairIdentityManifest": {
+      "schemaVersion": "frozen-pair-identity-manifest-v2",
+      "recordFields": [
+        "pairId",
+        "positiveCaseId",
+        "negativeCaseId",
+        "independenceKey",
+        "split",
+        "pairContractSha256"
+      ],
+      "source": "validated PairContractV2 records from the frozen pair artifact",
+      "canonicalShaRequired": true,
+      "trustedOracle": true
+    },
     "expectedRepeatIdsRequired": true,
     "mixedCohortPolicy": "campaign incomplete; mismatched scores excluded from metric denominator",
     "missingPairPolicy": "campaign incomplete; jFrozen remains the frozen expected-pair count",
-    "serializedScorePolicy": "every reloaded PairScore is byte-for-byte compared with the canonical score rederived by the same scorer from its frozen identity and repeat inputs; malformed, eligibility, trace, cohort, isolation, case-ID, result, or aggregate drift is excluded",
+    "incompleteEvidencePolicy": "any frozen pair whose canonical score eligibility is incomplete makes the campaign incomplete; behavior failures with complete evidence remain eligible behavior observations",
+    "runtimeContainerPolicy": "the score collection is checked before iteration; malformed rows fail closed without native TypeError and cannot enter any metric denominator",
+    "serializedScorePolicy": "every reloaded PairScore is canonical-JSON compared with the score rederived by the same scorer from the trusted frozen identity manifest and persisted repeat inputs; malformed, eligibility, trace, cohort, isolation, case-ID, result, aggregate, or persisted-policy drift is excluded as PAIR_SCORE_INCONSISTENT",
     "scoringPolicyBound": true
   },
   "metrics": {
@@ -129,7 +151,7 @@
     "jIncomplete": "jFrozen - jEligible, including entirely missing frozen members",
     "pairExact": "all-repeats(M0.completeChainSuccess_positive && negativePass)",
     "boundarySwitchAccuracy": "all-repeats(positive.executorBoundAttempt && !negative.executorBoundAttempt)",
-    "strictPairExact": "optional preregistered all-repeats(M0.strictChainExact_positive && negativePass)"
+    "strictPairExact": "optional preregistered all-repeats(M0.completeChainSuccess_positive && M0.strictChainExact_positive && negativePass)"
   },
   "independenceClusters": {
     "key": "PairContractV2.independenceKey",
@@ -140,14 +162,14 @@
   "syntheticFixture": {
     "path": "fixtures/m1-pair-v2.synthetic.json",
     "canonicalization": "recursive lexicographic object-key order; array order preserved; compact JSON scalars",
-    "canonicalSha256": "dc8de04273b6779819686333a2c4c1bd5f64e068d950ddbd7c4a60e0b23cc570"
+    "canonicalSha256": "8180e111212592fcca14acce5b071b82a72dace107df21af7e237d316cac0ca6"
   },
   "formalDataStatus": "FORMAL_DATA_BLOCKED",
   "formalDataBlockers": [
     "Formal pair rows are not present and frozen on this implementation branch.",
     "Formal allowedChangedPointers, invariantFieldsSha256, causalFactorId, minimalityReviewStatus, and independenceKey have not been validated by M1.",
     "M0 formal case facts and M2 eligibility/execution evidence are integrated later and are not duplicated by this candidate.",
-    "The formal frozen pair-set SHA, expected repeat set, and execution cohort have not been supplied."
+    "The formal frozen pair-set SHA, validated pair-identity manifest, expected repeat set, and execution cohort have not been supplied."
   ],
   "modelRuns": 0
 }
