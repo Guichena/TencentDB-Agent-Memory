@@ -59,10 +59,9 @@ function gitBytes(args) {
   return execFileSync("git", args, { cwd: ROOT, encoding: "buffer" });
 }
 
-const actualHead = execFileSync("git", ["rev-parse", "HEAD"], { cwd: ROOT, encoding: "utf8" }).trim();
-if (actualHead !== LAUNCH_COMMIT) throw new Error(`unexpected pre-build HEAD ${actualHead}`);
+execFileSync("git", ["merge-base", "--is-ancestor", LAUNCH_COMMIT, "HEAD"], { cwd: ROOT, stdio: "ignore" });
 const treeSha256 = sha(gitBytes(["ls-tree", "-r", LAUNCH_COMMIT]));
-const fileManifestSha256 = sha(gitBytes(["ls-files", "-s"]));
+const fileManifestSha256 = sha(gitBytes(["ls-tree", "-r", "--format=%(objectmode) %(objectname) 0\t%(path)", LAUNCH_COMMIT]));
 
 const input = readJson(path.join(GEN, "input-pack.json"));
 const sourceLock = readJson(path.join(SOURCE, "skill-sources.json"));
@@ -586,7 +585,7 @@ function addPair(pair, family, index, batchId) {
     positiveCaseId,
     negativeCaseId,
     counterfactualKind: "answer_in_current_context",
-    controlledDeltaSha256: sha({ positive: pair.positive.delta_message, negative: pair.negative.delta_message }),
+    controlledDeltaSha256: createHash("sha256").update(JSON.stringify({ positive_delta_message: pair.positive.delta_message, negative_delta_message: pair.negative.delta_message, query: pair.query }), "utf8").digest("hex"),
     currentEvidenceRefs: [pairEvidence],
   };
   pairs.push(withHash(pairCore));

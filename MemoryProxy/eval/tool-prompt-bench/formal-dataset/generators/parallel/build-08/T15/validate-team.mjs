@@ -149,6 +149,8 @@ for (const pair of fragment.pairs) {
   check(positive.contextMessages.length === negative.contextMessages.length, `${pair.pairId} context lengths differ`);
   check(same(positive.contextMessages.slice(0, -1), negative.contextMessages.slice(0, -1)), `${pair.pairId} differs before delta`);
   check(!same(positive.contextMessages.at(-1), negative.contextMessages.at(-1)), `${pair.pairId} delta must differ`);
+  const expectedDeltaHash = createHash("sha256").update(JSON.stringify({ positive_delta_message: positive.contextMessages.at(-1), negative_delta_message: negative.contextMessages.at(-1), query: positive.query }), "utf8").digest("hex");
+  check(pair.controlledDeltaSha256 === expectedDeltaHash, `${pair.pairId} controlled delta hash mismatch`);
   check(pa.gold.allowedSequences.length === 1, `${pair.pairId} must have one minimal chain`);
   check(pa.gold.maxTdaiCalls === pa.gold.allowedSequences[0].length, `${pair.pairId} max calls mismatch`);
   check(pa.gold.allowedFirstActions[0].tool === pa.gold.allowedSequences[0][0], `${pair.pairId} first action mismatch`);
