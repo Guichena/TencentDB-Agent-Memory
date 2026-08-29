@@ -523,7 +523,7 @@ for (const draft of allPairDrafts) {
     positiveCaseId,
     negativeCaseId,
     counterfactualKind: "answer_in_current_context",
-    controlledDeltaSha256: canonicalSha({ index: draft.changed_message_index, positive: draft.positive.delta_message, negative: draft.negative.delta_message }),
+    controlledDeltaSha256: sha256(JSON.stringify({ positive_delta_message: draft.positive.delta_message, negative_delta_message: draft.negative.delta_message, query: draft.query })),
     currentEvidenceRefs: [pairSource.sourceId],
   }));
 }
