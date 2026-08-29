@@ -66,14 +66,14 @@ describe("Task 1 formal production profile selection", () => {
       serverInstanceId: "formal-profile-instance-01",
       serverStartedAt: "2026-08-30T00:00:00.000Z",
       experimentConfigFingerprint: {
-        schemaVersion: "task1.proxy-config-fingerprint.v1",
+        schemaVersion: "task1.proxy-config-fingerprint.v2",
         baseSha256: expect.stringMatching(/^[a-f0-9]{64}$/),
         effectiveSha256: expect.stringMatching(/^[a-f0-9]{64}$/),
       },
     });
   });
 
-  it("keeps the base fingerprint stable across profiles without exposing secret values", () => {
+  it("keeps the base fingerprint stable across profiles and binds secret values", () => {
     const directory = mkdtempSync(join(tmpdir(), "task1-profile-fingerprint-"));
     const configFile = join(directory, "config.yaml");
     writeFileSync(configFile, [
@@ -96,7 +96,8 @@ describe("Task 1 formal production profile selection", () => {
 
     const changedSecretValue = structuredClone(legacy);
     changedSecretValue.upstream.apiKey = "top-secret-two";
-    expect(fingerprintProxyConfigForExperiment(changedSecretValue)).toEqual(legacyFingerprint);
+    expect(fingerprintProxyConfigForExperiment(changedSecretValue).baseSha256)
+      .not.toBe(legacyFingerprint.baseSha256);
 
     const missingSecret = structuredClone(legacy);
     missingSecret.upstream.apiKey = "";

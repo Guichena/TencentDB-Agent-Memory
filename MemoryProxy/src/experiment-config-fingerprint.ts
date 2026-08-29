@@ -3,29 +3,21 @@ import { createHash } from "node:crypto";
 import type { ProxyConfig } from "./types.js";
 
 export const EXPERIMENT_CONFIG_FINGERPRINT_SCHEMA =
-  "task1.proxy-config-fingerprint.v1" as const;
+  "task1.proxy-config-fingerprint.v2" as const;
 
 export interface ExperimentConfigFingerprint {
   readonly schemaVersion: typeof EXPERIMENT_CONFIG_FINGERPRINT_SCHEMA;
-  /** Effective config with toolPromptProfile removed and secrets reduced to presence. */
+  /** Value-bound effective config with toolPromptProfile removed. */
   readonly baseSha256: string;
-  /** The same projection plus the effective production toolPromptProfile. */
+  /** The same value-bound projection plus the effective production toolPromptProfile. */
   readonly effectiveSha256: string;
 }
-
-const SECRET_KEY = /(?:api[_-]?key|password|secret|service[_-]?token|access[_-]?token|refresh[_-]?token|authorization)/iu;
 
 type JsonProjection = null | boolean | number | string | JsonProjection[] | {
   readonly [key: string]: JsonProjection;
 };
 
-function secretPresence(value: unknown): "present" | "absent" {
-  if (typeof value === "string") return value.trim().length > 0 ? "present" : "absent";
-  return value === undefined || value === null || value === false ? "absent" : "present";
-}
-
-function projectConfig(value: unknown, key?: string): JsonProjection | undefined {
-  if (key !== undefined && SECRET_KEY.test(key)) return secretPresence(value);
+function projectConfig(value: unknown): JsonProjection | undefined {
   if (value === undefined || typeof value === "function" || typeof value === "symbol") return undefined;
   if (value === null || typeof value === "boolean" || typeof value === "string") return value;
   if (typeof value === "number") {
@@ -39,7 +31,7 @@ function projectConfig(value: unknown, key?: string): JsonProjection | undefined
 
   const output: Record<string, JsonProjection> = {};
   for (const childKey of Object.keys(value as Record<string, unknown>).sort()) {
-    const projected = projectConfig((value as Record<string, unknown>)[childKey], childKey);
+    const projected = projectConfig((value as Record<string, unknown>)[childKey]);
     if (projected !== undefined) output[childKey] = projected;
   }
   return output;
@@ -51,7 +43,10 @@ function digest(value: JsonProjection): string {
 
 /**
  * Produce comparison-only fingerprints for the formal Task 1 runner.
- * Secret values never enter either projection; only present/absent survives.
+ * Secret values participate in the aggregate digest so credentials that select
+ * different tenants/assets cannot be mistaken for the same experiment config.
+ * Only the final SHA-256 values leave this function; config values are never
+ * returned or logged by this module.
  */
 export function fingerprintProxyConfigForExperiment(
   config: ProxyConfig,
