@@ -198,7 +198,7 @@
     {
       "name": "pair:T14-MEM-001:delta_hash",
       "passed": true,
-      "detail": "controlled delta hash must be sha256"
+      "detail": "controlled delta hash must match the formal dataset contract"
     },
     {
       "name": "pair:T14-MEM-002:exists",
@@ -233,7 +233,7 @@
     {
       "name": "pair:T14-MEM-002:delta_hash",
       "passed": true,
-      "detail": "controlled delta hash must be sha256"
+      "detail": "controlled delta hash must match the formal dataset contract"
     },
     {
       "name": "pair:T14-MEM-003:exists",
@@ -268,7 +268,7 @@
     {
       "name": "pair:T14-MEM-003:delta_hash",
       "passed": true,
-      "detail": "controlled delta hash must be sha256"
+      "detail": "controlled delta hash must match the formal dataset contract"
     },
     {
       "name": "pair:T14-MEM-004:exists",
@@ -303,7 +303,7 @@
     {
       "name": "pair:T14-MEM-004:delta_hash",
       "passed": true,
-      "detail": "controlled delta hash must be sha256"
+      "detail": "controlled delta hash must match the formal dataset contract"
     },
     {
       "name": "pair:T14-MEM-005:exists",
@@ -338,7 +338,7 @@
     {
       "name": "pair:T14-MEM-005:delta_hash",
       "passed": true,
-      "detail": "controlled delta hash must be sha256"
+      "detail": "controlled delta hash must match the formal dataset contract"
     },
     {
       "name": "pair:T14-MEM-006:exists",
@@ -373,7 +373,7 @@
     {
       "name": "pair:T14-MEM-006:delta_hash",
       "passed": true,
-      "detail": "controlled delta hash must be sha256"
+      "detail": "controlled delta hash must match the formal dataset contract"
     },
     {
       "name": "pair:T14-SKL-001:exists",
@@ -408,7 +408,7 @@
     {
       "name": "pair:T14-SKL-001:delta_hash",
       "passed": true,
-      "detail": "controlled delta hash must be sha256"
+      "detail": "controlled delta hash must match the formal dataset contract"
     },
     {
       "name": "pair:T14-SKL-002:exists",
@@ -443,7 +443,7 @@
     {
       "name": "pair:T14-SKL-002:delta_hash",
       "passed": true,
-      "detail": "controlled delta hash must be sha256"
+      "detail": "controlled delta hash must match the formal dataset contract"
     },
     {
       "name": "pair:T14-SKL-003:exists",
@@ -478,7 +478,7 @@
     {
       "name": "pair:T14-SKL-003:delta_hash",
       "passed": true,
-      "detail": "controlled delta hash must be sha256"
+      "detail": "controlled delta hash must match the formal dataset contract"
     },
     {
       "name": "pair:T14-SKL-004:exists",
@@ -513,7 +513,7 @@
     {
       "name": "pair:T14-SKL-004:delta_hash",
       "passed": true,
-      "detail": "controlled delta hash must be sha256"
+      "detail": "controlled delta hash must match the formal dataset contract"
     },
     {
       "name": "pair:T14-SKL-005:exists",
@@ -548,7 +548,7 @@
     {
       "name": "pair:T14-SKL-005:delta_hash",
       "passed": true,
-      "detail": "controlled delta hash must be sha256"
+      "detail": "controlled delta hash must match the formal dataset contract"
     },
     {
       "name": "pair:T14-SKL-006:exists",
@@ -583,7 +583,7 @@
     {
       "name": "pair:T14-SKL-006:delta_hash",
       "passed": true,
-      "detail": "controlled delta hash must be sha256"
+      "detail": "controlled delta hash must match the formal dataset contract"
     },
     {
       "name": "pair:T14-KNW-001:exists",
@@ -618,7 +618,7 @@
     {
       "name": "pair:T14-KNW-001:delta_hash",
       "passed": true,
-      "detail": "controlled delta hash must be sha256"
+      "detail": "controlled delta hash must match the formal dataset contract"
     },
     {
       "name": "pair:T14-KNW-002:exists",
@@ -653,7 +653,7 @@
     {
       "name": "pair:T14-KNW-002:delta_hash",
       "passed": true,
-      "detail": "controlled delta hash must be sha256"
+      "detail": "controlled delta hash must match the formal dataset contract"
     },
     {
       "name": "pair:T14-KNW-003:exists",
@@ -688,7 +688,7 @@
     {
       "name": "pair:T14-KNW-003:delta_hash",
       "passed": true,
-      "detail": "controlled delta hash must be sha256"
+      "detail": "controlled delta hash must match the formal dataset contract"
     },
     {
       "name": "snapshot.asset_ids_unique",

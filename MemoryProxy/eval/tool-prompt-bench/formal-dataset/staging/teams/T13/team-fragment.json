@@ -5315,165 +5315,165 @@
       "positiveCaseId": "T13-MEM-001-P",
       "negativeCaseId": "T13-MEM-001-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "b383f80990fcdbb5054fb3e88bec29dbe20225875dca50616800c162918ebb5c",
+      "controlledDeltaSha256": "0fad1781312d74967c49afb471bd49eedcfdbed0fd06634dd28c0e6ab567ebff",
       "currentEvidenceRefs": [
         "T13-EVID-BATCH-PILOT-MEMORY"
       ],
-      "contentHash": "f054dad50fc04c9127dabb630299eed345657b9b62e14e1fd66fc9eaf201785e"
+      "contentHash": "96254bc8592bb1f901e7dc960b60728d670a847362c6360fdff11748b4f15f19"
     },
     {
       "pairId": "T13-MEM-002",
       "positiveCaseId": "T13-MEM-002-P",
       "negativeCaseId": "T13-MEM-002-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "74c92079fdeae92932a7038aff0d05bf9d9dc0a9c143c34b1891c7a888448a8b",
+      "controlledDeltaSha256": "5a3750d226a41bb5cc256e8a35fd8a5d7b0693e036660fb570c1c7b96589e032",
       "currentEvidenceRefs": [
         "T13-EVID-BATCH-EXPAND-MEMORY"
       ],
-      "contentHash": "912992e9dfecd62fdccae80138c15146972bccf672c172346161aa476fdfee5a"
+      "contentHash": "599ac6534809da6c1feebb6fce4499c252f57dd71f379d306b27702f4603481a"
     },
     {
       "pairId": "T13-MEM-003",
       "positiveCaseId": "T13-MEM-003-P",
       "negativeCaseId": "T13-MEM-003-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "0199153268d4bad3a3e740cb9fdef7243f49b0cf4477582ca9e6ea7f546ee0bd",
+      "controlledDeltaSha256": "7d56e2e68e33b6e6ab5b9750b1a4b895a6a130957b19b141a58fd1a97c6eac20",
       "currentEvidenceRefs": [
         "T13-EVID-BATCH-EXPAND-MEMORY"
       ],
-      "contentHash": "81796724a8f02c1fe9e906fdefc537cc11f78948ae1b81b32bb62d62f2d0970e"
+      "contentHash": "11c1be83f2e6c11a0ee315dd03f28b2b50ea7128f7bc460220a2fee8e6567954"
     },
     {
       "pairId": "T13-MEM-004",
       "positiveCaseId": "T13-MEM-004-P",
       "negativeCaseId": "T13-MEM-004-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "bb81e16561e0a8b850d5c8e7c90cf8860d6aa0709a602d07749b3cbbab7c3ac6",
+      "controlledDeltaSha256": "6d949ac00b2c0815f2d6cdb620f82684b1d00985c437574a4f727df7f2b0ccba",
       "currentEvidenceRefs": [
         "T13-EVID-BATCH-EXPAND-MEMORY"
       ],
-      "contentHash": "cdd487d5a3fb32153f4419a7cde1bed19416168b1af2680a606dea25ec12f2f3"
+      "contentHash": "97d4316903f4f80ee8662852597e9848c9927e06fde00f6751dfd05f35abacc4"
     },
     {
       "pairId": "T13-MEM-005",
       "positiveCaseId": "T13-MEM-005-P",
       "negativeCaseId": "T13-MEM-005-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "ccd577fe95d14eb453f3d7753e53092ac2a8af482927c5ad1ca2b1d5bc99a064",
+      "controlledDeltaSha256": "7954110699950e4452088458db211036b96075277bc5cd69f2b22430a5172029",
       "currentEvidenceRefs": [
         "T13-EVID-BATCH-EXPAND-MEMORY"
       ],
-      "contentHash": "472970464b185ee92127e960de0ac1e81e676332b3631f3b299abe5665818144"
+      "contentHash": "26ed0f660a4549cfaf4bd5575a2f225b9b855a61286497330426e317da5330f5"
     },
     {
       "pairId": "T13-MEM-006",
       "positiveCaseId": "T13-MEM-006-P",
       "negativeCaseId": "T13-MEM-006-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "505add8dfc17318c66a350f7e02fa03b3977798abdf2ff24bcf9652743e9fd5c",
+      "controlledDeltaSha256": "f8de6aa84f6a4cb2bbc2fbb95765ac1e969ab8140bb51709352be7c730b5f3ca",
       "currentEvidenceRefs": [
         "T13-EVID-BATCH-EXPAND-MEMORY"
       ],
-      "contentHash": "60b14673e8d96d32425e09bfa2bb09f995e6060b34ae692f6a0e2ae252798698"
+      "contentHash": "1f2c878daf421ebba25a152b05b12655069fdc36a0b32779863227df8d442ae4"
     },
     {
       "pairId": "T13-SKL-001",
       "positiveCaseId": "T13-SKL-001-P",
       "negativeCaseId": "T13-SKL-001-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "8e946548800957783e5877bc19c19bd4977e6b03c3450b20e3b4a98dd612a98c",
+      "controlledDeltaSha256": "9c1bd72e0bfa3ae3275c6848993c5d9c36b9c0e9cb720db95ac7ced438fc9a7b",
       "currentEvidenceRefs": [
         "T13-EVID-BATCH-EXPAND-SKILL"
       ],
-      "contentHash": "76b6427d3b06fe221fa3a3d58ccd1b0bcb857c9a22e32d230f08d5fed0f4786d"
+      "contentHash": "4190798683506959837017bd10c3c9560e24a62fa5aa9118a6e1022a0ae8c7a3"
     },
     {
       "pairId": "T13-SKL-002",
       "positiveCaseId": "T13-SKL-002-P",
       "negativeCaseId": "T13-SKL-002-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "265fc18d461aec13d2a46f6d69f6c2ecc5e6d251d724f4019f5b2c5ce3044551",
+      "controlledDeltaSha256": "f4d3089e96f25f9330a5ea249ad279d93f0867f46ad5187b8118d28b1fce46ed",
       "currentEvidenceRefs": [
         "T13-EVID-BATCH-EXPAND-SKILL"
       ],
-      "contentHash": "fcacd699f86e8499be147a455332e030f87f5b26785cf1293d6fef04217c11c1"
+      "contentHash": "abd49d64c13714fdce95c795cf9d83136022a926cd955b771c6f75f9a00c4dcf"
     },
     {
       "pairId": "T13-SKL-003",
       "positiveCaseId": "T13-SKL-003-P",
       "negativeCaseId": "T13-SKL-003-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "825c661ab368e7cb71535a6ffd7080de0f895f926427bd0fb6ffac74ca4192b2",
+      "controlledDeltaSha256": "5e472d6c8e0c98008934ea06a313f52f8fdcbbc4e7e38e0db20552645c1ec0f0",
       "currentEvidenceRefs": [
         "T13-EVID-BATCH-PILOT-SKILL"
       ],
-      "contentHash": "bac88483c02d78f2843e1d54ea48fcde2a9afbb13cf2f9b866f93d49a0829cbe"
+      "contentHash": "34adc9c350ae3560ff0408fd4ab45eba5da75b21677be8673dc996ae79f096a1"
     },
     {
       "pairId": "T13-SKL-004",
       "positiveCaseId": "T13-SKL-004-P",
       "negativeCaseId": "T13-SKL-004-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "28a7b9c7baae01aba9248cf53ce81e54169553b4b6707caf23adc83bc7327919",
+      "controlledDeltaSha256": "d2813f24f6dd19c555376213def2c4b42f25019e42ee15a71f0e9cdf44a6bacd",
       "currentEvidenceRefs": [
         "T13-EVID-BATCH-EXPAND-SKILL"
       ],
-      "contentHash": "ed3e84cfa7e8afa46204d4425d5e36ac3ab08981dd0ecd27e7648ac9e360298b"
+      "contentHash": "136c796925e9e5ba0d7824a20d1b773ca8cb6dbd47cfc3d8c534a9fb8aaad7c4"
     },
     {
       "pairId": "T13-SKL-005",
       "positiveCaseId": "T13-SKL-005-P",
       "negativeCaseId": "T13-SKL-005-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "f926e2ecbdd2f724c958b8f2e5edb941c3305ce59f8668d56d9d071808435a54",
+      "controlledDeltaSha256": "29d9dd7e30d05c9f3bd35bced7a6479085a816f39e76e54852f8ec51eab05e5a",
       "currentEvidenceRefs": [
         "T13-EVID-BATCH-EXPAND-SKILL"
       ],
-      "contentHash": "cc3e55a257ea7ac2ee499a6a9709075e63f8a5317ab3040a18997951041b31cb"
+      "contentHash": "6c46d6adc493ea52026f0e78a9f251ac482c96a7e1a3bbe6e6e935ddee54bad0"
     },
     {
       "pairId": "T13-SKL-006",
       "positiveCaseId": "T13-SKL-006-P",
       "negativeCaseId": "T13-SKL-006-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "75e4d582e8afaf56c120e280656017d19c600fd9cb7c17b48aabc36e1f36cf5e",
+      "controlledDeltaSha256": "3a9be9bc41f917292e91f9e0d7cc8fc4e2a257185f8a46673d75e60c944df0f0",
       "currentEvidenceRefs": [
         "T13-EVID-BATCH-EXPAND-SKILL"
       ],
-      "contentHash": "b80430d35673f4b428e995ba51ac656819ef25e7e3a2bb630d47dc8dc273fecd"
+      "contentHash": "56badeb78417131d60091b3210637d79017ea93d8c9d72738d26ebc950a2b05f"
     },
     {
       "pairId": "T13-KNW-001",
       "positiveCaseId": "T13-KNW-001-P",
       "negativeCaseId": "T13-KNW-001-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "53e172ce007efaf347dc8dad09aedb6a39ed126a9636be0d77083f00201e7bac",
+      "controlledDeltaSha256": "c5826fa5fee3d50988231e03dbdc4faa7eb92755557527117a8982e42e0bd34a",
       "currentEvidenceRefs": [
         "T13-EVID-BATCH-PILOT-KNOWLEDGE"
       ],
-      "contentHash": "4fca874203a0b86c6955ade981c2b082b0a5a2edd5abef01d8b51efe4e9d9eb9"
+      "contentHash": "84264219b355f6044c394b45a1177d201f0e9ab07a325d0d80a693dc1a22e5c4"
     },
     {
       "pairId": "T13-KNW-002",
       "positiveCaseId": "T13-KNW-002-P",
       "negativeCaseId": "T13-KNW-002-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "c5b5315ddf4395e1ac75677c5cd1057810be31aaf0540e41b74ba4743a04502b",
+      "controlledDeltaSha256": "ab7e301f48051e68c6fa5101b7216ea13ccad6806b9fbdedf1beb2111c1c1b7f",
       "currentEvidenceRefs": [
         "T13-EVID-BATCH-EXPAND-KNOWLEDGE"
       ],
-      "contentHash": "a578dc8455bf93c4acb9c88337ae0493dacde115c9df676df57b3c94518e8aa7"
+      "contentHash": "b07dc19bfc35a54f5553ced3bbff926a2f8026b9d4f985b60aeed03a5852251a"
     },
     {
       "pairId": "T13-KNW-003",
       "positiveCaseId": "T13-KNW-003-P",
       "negativeCaseId": "T13-KNW-003-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "3d6e385f3aaf405de398d1fddb016c4598abda01f7bf9a1924c7c86dd2569798",
+      "controlledDeltaSha256": "4646744032223d4d97e74df4ce49bd776cf98294334032c5c26408c1b98c2f3a",
       "currentEvidenceRefs": [
         "T13-EVID-BATCH-EXPAND-KNOWLEDGE"
       ],
-      "contentHash": "ea7159ed7a59572c50a9d97b2eb328f1ba12286c5d8511b6b38a03f6a2464340"
+      "contentHash": "21a432407289c14d305f41ea5667ac84a2b570b8b5f6f3906ea7e00c3fe0ee94"
     }
   ],
   "snapshotAssetIds": [
