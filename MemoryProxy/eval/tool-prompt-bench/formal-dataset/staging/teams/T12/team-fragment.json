@@ -4429,180 +4429,180 @@
       "positiveCaseId": "T12-MEMORY-001-P",
       "negativeCaseId": "T12-MEMORY-001-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "1eb7cca29df43ef29e54cfffcbe0ac603c003cc933383ab482f0d7846b9d522c",
+      "controlledDeltaSha256": "d1df4892e4ae6c2f56a40466cd862ff35d8a6e529d296d0ab9db15136f307e4e",
       "currentEvidenceRefs": [
         "source-t12-current-anchor",
         "source-t12-pairs"
       ],
-      "contentHash": "87cb857d79d5213a559bcf7d01c973ef2f8c1686ead5727830a51e8de8617446"
+      "contentHash": "5ce61334eb32494b7826e8722e4438e468c8dda86dcb8d4c610ad150c4a9736f"
     },
     {
       "pairId": "T12-PAIR-002",
       "positiveCaseId": "T12-MEMORY-002-P",
       "negativeCaseId": "T12-MEMORY-002-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "7ba22817b5df0519bc3cc00c8aa5519fced43d019acaca62185dc305e3f36c55",
+      "controlledDeltaSha256": "2731e244a8c85a64665c4ce4505c1b01dbe4f852485e64cdabbd802ecef8b54a",
       "currentEvidenceRefs": [
         "source-t12-current-anchor",
         "source-t12-pairs"
       ],
-      "contentHash": "ec3c2339a953f71bca92f6b21eb824ad28d742dd1eba6fb1786123ed120346c3"
+      "contentHash": "470878e6f4bc8b3f7a53a04f68724a2ae11017a084144c28f3feb97c6c6b0fbb"
     },
     {
       "pairId": "T12-PAIR-003",
       "positiveCaseId": "T12-MEMORY-003-P",
       "negativeCaseId": "T12-MEMORY-003-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "87d9970a67ae54f71d8bdcc7bced4955207415d8ad3ad8e997db969f7f42d35d",
+      "controlledDeltaSha256": "d4510bff7a4a867662d228ff55e5c0bc35e446fabd77f78ecab680b53f7f362d",
       "currentEvidenceRefs": [
         "source-t12-current-anchor",
         "source-t12-pairs"
       ],
-      "contentHash": "50157068b325342a155289ae8a95b8e982f6a3a9d47de994aa624ebbd46af1b1"
+      "contentHash": "ad45a115fffb3bafb026337e2824138648c75132bc0fe4e5ff1d53fc3334b5f5"
     },
     {
       "pairId": "T12-PAIR-004",
       "positiveCaseId": "T12-MEMORY-004-P",
       "negativeCaseId": "T12-MEMORY-004-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "dce497140a5a87f54840491b59f2b8fc63426ec692ef09305b05cbbf4430533f",
+      "controlledDeltaSha256": "23c75c0a91bf5d6eb4cf795a61eabbaa410fbf9b9a5b683f423f23df8e4a9c36",
       "currentEvidenceRefs": [
         "source-t12-current-anchor",
         "source-t12-pairs"
       ],
-      "contentHash": "ae3985c72d361ec19011a91e515e37e03df41fda50179fa6c248f575c744feb2"
+      "contentHash": "f432e35e34e861cb6780287f912760f8d574eebe37620292dd66931963686ed6"
     },
     {
       "pairId": "T12-PAIR-005",
       "positiveCaseId": "T12-MEMORY-005-P",
       "negativeCaseId": "T12-MEMORY-005-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "135eaef215a3c33d96f54174230a46e12009d75ec81fe1408cd9251952415de2",
+      "controlledDeltaSha256": "ea93a1909d0363677bd54aa551fc2b5b1fb52806ec02635e2d3a5012200d5df3",
       "currentEvidenceRefs": [
         "source-t12-current-anchor",
         "source-t12-pairs"
       ],
-      "contentHash": "20c540db740bdd8df09cc08b7bb443deaf7c20eeda0570db707163f8832e15b5"
+      "contentHash": "05194a6926e265dd701b8f7a9636814b02dccc5a7d2e94e2ac3a19b6d1897dbb"
     },
     {
       "pairId": "T12-PAIR-006",
       "positiveCaseId": "T12-MEMORY-006-P",
       "negativeCaseId": "T12-MEMORY-006-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "8e8b9a7a54dc6cb32d280d14acad2d06b53d2cd725efb0f61b9666c78de905aa",
+      "controlledDeltaSha256": "c710017a481dda6d26f56e42ba017c8e37c7350ab2098e0bce50d5c20928280e",
       "currentEvidenceRefs": [
         "source-t12-current-anchor",
         "source-t12-pairs"
       ],
-      "contentHash": "627aca4a9eeb40cfe28ce99df52f758dabe7d0d9f786d19ff565392863579024"
+      "contentHash": "6ff9c019644b68e527299ae4988215c6939cf2f91d66ead96771c2a4f89fddb9"
     },
     {
       "pairId": "T12-PAIR-007",
       "positiveCaseId": "T12-SKILL-007-P",
       "negativeCaseId": "T12-SKILL-007-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "1f7e920263122aaec371f5f0fcde16489ef4e56951509850fd3f7daae6f8c500",
+      "controlledDeltaSha256": "b848339e1dee8a1587007067045dd99f989b5ecdcd2b13f87434fb1e3cc8aabf",
       "currentEvidenceRefs": [
         "source-t12-current-anchor",
         "source-t12-pairs"
       ],
-      "contentHash": "7a384367e6217e9737a083bee1283d41823b3463dc7999c3aa6145335dda56c8"
+      "contentHash": "47a09501bf7c195459cbe3758f80faf1a58935ebd538cadfb273f959b2224b04"
     },
     {
       "pairId": "T12-PAIR-008",
       "positiveCaseId": "T12-SKILL-008-P",
       "negativeCaseId": "T12-SKILL-008-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "ce33e94ea75f37860b196c1cf4a0d78f5f87079380abc2656fc9f36de4a1f20d",
+      "controlledDeltaSha256": "6a903a0a209d9ab8e2e751b904cfa68def086003c05a8a6f1250fabab3633ac8",
       "currentEvidenceRefs": [
         "source-t12-current-anchor",
         "source-t12-pairs"
       ],
-      "contentHash": "e108690cca803969ee7bc750f79c6895b930c634eee8968a15f7c21d6056770c"
+      "contentHash": "ea25348123d902a6ee426646ce7c369203921ba3a9e1c5a29c1d82804d4c9748"
     },
     {
       "pairId": "T12-PAIR-009",
       "positiveCaseId": "T12-SKILL-009-P",
       "negativeCaseId": "T12-SKILL-009-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "f19fd4b5f83dee053fd9955af0fc5fcb09e27c915763723a9b166129da388863",
+      "controlledDeltaSha256": "3dcdc1417ba227230904f0808c0b5a2c77203f147127fcf272a1c94c56c20331",
       "currentEvidenceRefs": [
         "source-t12-current-anchor",
         "source-t12-pairs"
       ],
-      "contentHash": "0c65f5e85bd32f967997a70f210d890a7837352e3bae9c2a1a4fb22cb44f2648"
+      "contentHash": "39c64db866af8f6a15a40947a6dbd8eb8477f69a1ef0270d9425857c2cd8ca05"
     },
     {
       "pairId": "T12-PAIR-010",
       "positiveCaseId": "T12-SKILL-010-P",
       "negativeCaseId": "T12-SKILL-010-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "e9074fd804714c40197e4ac41b255dcefb12f5c3d5a0e4f020995e153e5652d0",
+      "controlledDeltaSha256": "083f250f690e031c96aad9c4578f0012098cc7f49fe22bcf940908179cb7af47",
       "currentEvidenceRefs": [
         "source-t12-current-anchor",
         "source-t12-pairs"
       ],
-      "contentHash": "8da52852fdd9d5d1e659c5e5240b1a781e13f72aeaf9f65ba45b1e6ddb146f4f"
+      "contentHash": "fc3610f0b798a710cf1ffdbcd481580758bd207f9da385792132bd06b09aa3ee"
     },
     {
       "pairId": "T12-PAIR-011",
       "positiveCaseId": "T12-SKILL-011-P",
       "negativeCaseId": "T12-SKILL-011-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "5432d1ecc34419791cd4020bd758df1a627a8f62dc27d57e113aadc11d517ff6",
+      "controlledDeltaSha256": "6caf7acbe7612d2e80bf4862590088b3ef444df6d7c40a0bc8c5c10c56e42cc8",
       "currentEvidenceRefs": [
         "source-t12-current-anchor",
         "source-t12-pairs"
       ],
-      "contentHash": "10cfcd897939f8cc2b426fa49b422c2ffe22365c6bf095e2181c555a64f5e73d"
+      "contentHash": "d1d5d00851e01125816c951a6e7ec27d34ba5b432281da9033d35c7fb349889b"
     },
     {
       "pairId": "T12-PAIR-012",
       "positiveCaseId": "T12-SKILL-012-P",
       "negativeCaseId": "T12-SKILL-012-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "69b4483bbbf6fe58a08c5a26ddc8846b561c6314ffb6fdafae06b10d7b088784",
+      "controlledDeltaSha256": "f65fe80f25652d6404ab8cc04664d39385271dd1908f534d4cebecee2262efe3",
       "currentEvidenceRefs": [
         "source-t12-current-anchor",
         "source-t12-pairs"
       ],
-      "contentHash": "b6805ea76c047df98908c847a377513ab5178f2b3502cd656022e7c5c38388e9"
+      "contentHash": "28462fbcb6eda9f6bc60dc587d7a57f4689a87962be783172907e21dcac8d61b"
     },
     {
       "pairId": "T12-PAIR-013",
       "positiveCaseId": "T12-KNOWLEDGE-013-P",
       "negativeCaseId": "T12-KNOWLEDGE-013-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "b1438bfc7d3092a3abc0e015f458338015bce96852b3ccce276787d255f4cce7",
+      "controlledDeltaSha256": "b1517f5fbfde399801f66e26ca42e30a163893967679a04865bee45daf677039",
       "currentEvidenceRefs": [
         "source-t12-current-anchor",
         "source-t12-pairs"
       ],
-      "contentHash": "ed543e4e93ddbfe70867f9a4f1b22422d9d56b1a5b475c66b9b9da20126bbadf"
+      "contentHash": "fbf7d0fb90a37896973e24a756ad73196815b6710e3822394a77ad8688c28d51"
     },
     {
       "pairId": "T12-PAIR-014",
       "positiveCaseId": "T12-KNOWLEDGE-014-P",
       "negativeCaseId": "T12-KNOWLEDGE-014-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "b3f701586292eee4bde3e5a2e162b4d0748eb6a42fadf9b571a6a3afb6f98562",
+      "controlledDeltaSha256": "68cd93e6c8c104b735fa01a5c04729d427925e2e82c4bb35cb3c67a71ccf84d2",
       "currentEvidenceRefs": [
         "source-t12-current-anchor",
         "source-t12-pairs"
       ],
-      "contentHash": "6add62231b88d7b50d30e25e40b44d948dc4f2ec3ef2ba9c622dfd359af47aa8"
+      "contentHash": "a5d53426f4c0e2aa1a35a5f44b5dec966c559b9a2b06004aabfa7cc1fb9df3c1"
     },
     {
       "pairId": "T12-PAIR-015",
       "positiveCaseId": "T12-KNOWLEDGE-015-P",
       "negativeCaseId": "T12-KNOWLEDGE-015-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "c6fb22ea1b110dbd0e505deca9de13c511310f475d88eb247e7dad6808d25306",
+      "controlledDeltaSha256": "33839f6ac919184d5597624225741f6730ed9c3072402b029662b0968ae2f0b6",
       "currentEvidenceRefs": [
         "source-t12-current-anchor",
         "source-t12-pairs"
       ],
-      "contentHash": "c75f2c2d0310489fe4f4af183696ad42e86ad9019b32d91759076b8025bc15e3"
+      "contentHash": "179184806eb1971dc13edf1bb37259cb1d17aea3390caeec02e17bb62290a740"
     }
   ],
   "snapshotAssetIds": [
@@ -4639,7 +4639,10 @@
       "path": "skills/postgres-database-migration/SKILL.md",
       "license": "Apache-2.0",
       "rawFileSha256": "bbc48c4d34493618d3b40654d0a4c01a68b6b18b6febb2045a6c12970c984aed",
-      "storedPath": "source-material/T12/skills/postgres-safe-migration/SKILL.md"
+      "storedFileSha256": "bbc48c4d34493618d3b40654d0a4c01a68b6b18b6febb2045a6c12970c984aed",
+      "storedPath": "source-material/T12/skills/postgres-safe-migration/SKILL.md",
+      "licenseFileSha256": "0f71fa3893437af5bc88d82dd99115b701e1a34f86bd5510be361791fe572ffb",
+      "storedLicensePath": "source-material/T12/skills/licenses/pg-aiguide-LICENSE"
     },
     {
       "sourceId": "source-t12-skill-pg-design",
@@ -4648,7 +4651,10 @@
       "path": "skills/design-postgres-tables/SKILL.md",
       "license": "Apache-2.0",
       "rawFileSha256": "a6ca6891018ab398310cc57ec8ac4be4b3e6414d7701584adbd2354e0016cd37",
-      "storedPath": "source-material/T12/skills/postgres-table-design/SKILL.md"
+      "storedFileSha256": "a6ca6891018ab398310cc57ec8ac4be4b3e6414d7701584adbd2354e0016cd37",
+      "storedPath": "source-material/T12/skills/postgres-table-design/SKILL.md",
+      "licenseFileSha256": "0f71fa3893437af5bc88d82dd99115b701e1a34f86bd5510be361791fe572ffb",
+      "storedLicensePath": "source-material/T12/skills/licenses/pg-aiguide-LICENSE"
     },
     {
       "sourceId": "source-t12-skill-ghost-db",
@@ -4657,7 +4663,10 @@
       "path": "skills/ghost-database/SKILL.md",
       "license": "Apache-2.0",
       "rawFileSha256": "66c29ba068090fa660efc107c0dcc8e50ecb7899a0c131b5f5fa4718ac24e97b",
-      "storedPath": "source-material/T12/skills/ghost-database-fork/SKILL.md"
+      "storedFileSha256": "688246f8709e2f0b3a4c29cc4dd3e565bb65b8dae2d5ac7348280b6638c9c930",
+      "storedPath": "source-material/T12/skills/ghost-database-fork/SKILL.md",
+      "licenseFileSha256": "0f71fa3893437af5bc88d82dd99115b701e1a34f86bd5510be361791fe572ffb",
+      "storedLicensePath": "source-material/T12/skills/licenses/pg-aiguide-LICENSE"
     }
   ]
 }

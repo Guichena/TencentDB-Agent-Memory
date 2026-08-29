@@ -3,7 +3,7 @@
   "team_id": "T12",
   "build_id": "build-06",
   "status": "passed",
-  "checked_at": "2026-08-29T17:03:58.186Z",
+  "checked_at": "2026-08-29T17:08:18.813Z",
   "counts": {
     "cases": 40,
     "pairs": 15,
@@ -20,16 +20,23 @@
   },
   "provider_leakage_count": 0,
   "duplicate_query_count_from_pairs": 15,
+  "duplicate_provider_payload_count": 0,
+  "project_stream_count": 5,
   "external_skill_source_count": 3,
   "checks": [
     "formal schema",
+    "recursive content hashes",
     "fixed counts",
-    "pair linkage",
+    "3..6 project streams and task coverage",
+    "pair single-variable and controlled hash",
+    "provider payload uniqueness",
     "complete minimal chain",
     "target visibility",
+    "Skill listing visibility",
     "provider leakage",
     "discovery pressure",
-    "external skill provenance"
+    "accepted Luna manifests",
+    "external skill provenance, stored Skill hashes, and license hashes"
   ],
   "errors": []
 }
