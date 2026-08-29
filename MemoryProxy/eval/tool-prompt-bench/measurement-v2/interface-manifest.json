@@ -85,10 +85,10 @@
   "semanticInvariants": [
     "Only executor-bound attempts contribute to triggeredAttempt, observedAttemptCount, and FCR_attempt facts.",
     "A complete chain is an ordered allowed-sequence match with per-step identity, operation, arguments, prior-output binding, exact referenced-contract acceptance, and terminal semantics.",
-    "Operation normalization distinguishes none, value, conflict, and invalid results; conflict or invalid operations never match a Gold none/exact operation.",
+    "Operation normalization distinguishes none, value, conflict, and invalid results; a present non-string argument selector is invalid, and conflict or invalid operations never match a Gold none/exact operation.",
     "Unexpected, duplicate, or over-budget attempts can preserve completeChainSuccess but make strictChainExact false, positiveOvercall true, and ToolSPL smaller.",
     "A forbidden wrong-family, typed wrong-terminal, or genuinely premature accepted terminal before a correct terminal prevents later repair from creating terminalSelectionCorrect or completeChainSuccess.",
-    "The evaluation prefix stops at the earliest Gold terminal whose own arguments, binding, and exact referenced RuntimeToolContract acceptance are valid; prerequisite failures at that horizon cannot be washed out by a later retry.",
+    "The evaluation prefix stops at the earliest Gold terminal whose own arguments, binding, and exact referenced RuntimeToolContract acceptance are valid; prerequisite argument or binding failures at that horizon cannot be washed out by a later retry before or after that terminal.",
     "Without a terminal horizon, failed positives stop at budget or turn completion.",
     "terminalAttemptIndex is an executor-bound ordinal identifying the horizon/complete terminal, otherwise the Qi match, otherwise an in-prefix raw terminal candidate.",
     "Post-terminal behavior does not change decision metrics, but raw trace and infrastructure facts remain preserved for Integration.",
@@ -104,8 +104,8 @@
   "syntheticFixture": {
     "path": "synthetic-fixtures.ts",
     "canonicalization": "raw UTF-8 file bytes",
-    "bytes": 14795,
-    "sha256": "611985055db9421111ae38076ad5d1d73fbb2b1e60e8723afea957482a0f92dc"
+    "bytes": 15720,
+    "sha256": "aab4f994b9fb8aaacbd840977fc651823223aace44c0f3de7a1a219fe2b2bd53"
   },
   "modelRuns": 0
 }
