@@ -24,7 +24,7 @@
 
 1. 一个 Space、十个 Team 和四百个 case 的冻结定义。
 2. Dev 160 case 与 Hidden 240 case 两份互斥快照。
-3. Memory、Skill 和最小 Knowledge 路由资产的来源清单、内容 hash、导入记录与恢复脚本。
+3. Memory、Skill 和最小 Knowledge 路由资产的定义、导入记录与恢复脚本。只有实际导入的外部 Skill 或原文片段需要来源和许可证记录。
 4. 每个 case 的公开输入、私有 Gold、允许序列和配对关系。
 5. 数据验证报告、真实链路无模型 Gate 报告和最终冻结 manifest。
 6. 后续实验所需的 token、Prompt hash、快照 hash 和 Provider usage 字段合同。
@@ -42,7 +42,7 @@
 - Team ACL 和跨 Team 隔离能力。
 - Wiki 页面质量、CodeGraph 完整度或索引召回率。
 
-workspace、开源任务和 verifier 只用于证明题目是真实的、Gold 唯一。正式运行不继续执行 coding，不跑完整 verifier。
+workspace 和开源任务可以用来提供自然的工程题材，但不是正式数据的必要来源。Gold 是否唯一只根据当前上下文、冻结资产池、生产可见性和工具协议判断。不要提取或应用开源任务的官方 patch，不安装其依赖，不运行其测试或 verifier。正式运行也不继续执行 coding。
 
 模型一旦完成目标资产所需的最短合法 TDAI 链路，runner 就结束本 case。No-tool case 在模型给出第一个非 TDAI 实质响应，或出现任意 TDAI Attempt 后结束。
 
@@ -262,14 +262,14 @@ Dev 运行时只恢复 T01 至 T04 的资产，Hidden 运行时只恢复 T05 至
 
 | 资产 | 数量 | 要求 |
 |---|---:|---|
-| L0 session | 8 至 12 | 每条包含 12 至 40 条清洗后的真实对话消息，至少分布在三个并行项目流 |
-| L1 atomic memory | 12 至 20 | 偏好、约定、结论、旧版本和近义干扰，必须能追溯到来源证据 |
+| L0 session | 8 至 12 | 每条包含 12 至 40 条自然、内部一致的工程对话消息，至少分布在三个并行项目流 |
+| L1 atomic memory | 12 至 20 | 偏好、约定、结论、旧版本和近义干扰，与同 Team 的合成世界保持一致 |
 | L2 scene | 4 至 6 | path 与 summary 会注入，summary 不得直接泄露正文答案 |
 | L3 | 1 | 80 至 220 中文字，放稳定偏好和长期原则，不放 case 答案 |
 
 同一份资产池可以服务同 Team 的多条 case。无需为每个 case 新建一套 Memory。干扰资产必须真的会被生产注入或检索到，私有字段中写了但运行时不可见的资产不算干扰。
 
-L1 不是从 L0 批量自动抽取的实验对象。可以由 Luna 从已冻结 L0 中生成候选，再由人或审查 Agent 核对原文和边界后，通过现有写入接口上传。所有 L1 保存 `source_session_ids` 和证据片段 hash。
+L1 不是从 L0 自动抽取出来的评测对象。Luna 可以根据 Team 项目流直接生成 L0 和 L1，只要同一世界内的项目、时间线、结论和旧版本互相一致。若 L1 明确改写自某条 L0，可以保存 `source_session_ids` 方便内部检查；纯合成 L1 只需标记生成批次，不要求证据片段 hash。
 
 ### Skill 资产密度
 
@@ -461,18 +461,18 @@ Gold 审查只回答工具决策，不回答工程任务。审查人需要检查
 
 ## 来源与生成规则
 
-### 公开来源
+### 开源材料只作可选题材
 
-来源只承担三个作用：提供真实任务结构、真实工程历史或可导入 Skill。所有来源必须冻结：
+正式数据可以完全由 Luna 按冻结规则生成。开源任务、历史轨迹和仓库材料只用于改善工程表达或直接导入现成 Skill，不承担 Gold 正确性的证明责任。
 
-- repository 或 dataset 名称。
-- revision、commit 或 dataset revision。
-- path、row id、task id。
-- license。
-- 原始文件 SHA-256。
-- 本项目的使用方式和改写说明。
+只有两类外部内容需要来源记录：
 
-不复制 benchmark 的最终答案、reference patch 或 verifier 结论到模型可见上下文。它们只供 Gold 审查。
+- 实际导入的开源 Skill 包，记录 repository、revision、path、license 和包级 SHA-256。
+- 直接保留的外部原文片段，记录 dataset、row 或 path、license 和片段 SHA-256。
+
+由 Luna 新写的 Team 名、项目名、会话、错误现象、历史结论、L0、L1、L2、L3 和自然负例不要求逐句 `source_id`、文件位置或 hash，只需记录生成批次和审查状态。不能把合成内容声称为真实仓库事实。
+
+不要提取、应用或复现 benchmark 的 reference patch、test patch、最终答案和 verifier 结论，也不要为数据构造安装开源项目依赖或运行其测试。它们与 Task 1 的工具调用指标无关。
 
 ### Luna 生成协议
 
@@ -480,11 +480,11 @@ Gold 审查只回答工具决策，不回答工程任务。审查人需要检查
 
 生成 Agent 可以完成：
 
-- 把冻结任务材料改写成自然的当前会话。
-- 根据证据生成 L1、L2 或系统专属 Skill 候选。
+- 根据 Team 规则生成自然的当前会话。
+- 生成内部一致的 L0、L1、L2、L3 或系统专属 Skill 候选。
 - 生成 Positive 与单变量 Negative 草稿。
 - 生成同域干扰项候选。
-- 补全来源引用和生成记录。
+- 记录生成批次；只有使用外部内容时才补来源引用。
 
 生成 Agent 不能决定：
 
@@ -502,19 +502,20 @@ Gold 审查只回答工具决策，不回答工程任务。审查人需要检查
   "reasoning_effort": "high",
   "verbosity": "medium",
   "prompt_version": "dataset-author-v1",
-  "input_source_ids": [],
+  "external_source_ids": [],
   "generated_at": "ISO-8601",
-  "raw_output_sha256": "...",
   "review_status": "draft"
 }
 ```
+
+`external_source_ids` 可以为空。生成记录按批次保存，不要求每条事实单独绑定来源，也不要求保存每次模型原始输出的 hash。
 
 ### 生成 Team 背景的模板
 
 ```text
 你正在为 Task 1 构造一个真实工程 Team 的数据草稿。
 
-输入是已冻结的项目、任务、Skill 和历史来源。只用输入中存在的事实，不补写版本、接口、文件名或错误原因。
+输入是已冻结的工程主题、资产规模和路由边界。可以生成 Team 名、项目名、时间线、错误现象和历史结论，但它们必须在同一 Team 内保持一致。生产接口、工具参数、资产可见性和 Gold 由 Sol 提供，不能自行编造。
 
 请输出：
 1. Team 的职责和 3 至 6 个并行项目流。
@@ -523,7 +524,7 @@ Gold 审查只回答工具决策，不回答工程任务。审查人需要检查
 4. 哪些项目容易形成近义 Skill 干扰。
 5. 哪些事实适合进入 L0、L1、L2、L3，哪些不应进入任何 Memory。
 
-不要写工具名、Gold、评测指标或答案。输出 JSON，所有事实带 source_id。
+不要在模型可见内容中写工具名、Gold、评测指标或答案。输出 JSON，并标明哪些字段是合成内容；只有直接使用外部材料时才带 `external_source_ids`。
 ```
 
 ### 生成上下文正负对的模板
@@ -538,9 +539,9 @@ Gold 审查只回答工具决策，不回答工程任务。审查人需要检查
 - negative_delta 只补充解决该信息缺口所需的事实，其他文本尽量相同。
 - 两条 case 的 final_query 完全一致。
 - 不要求模型完成整个工程任务。
-- 不复制来源中的 reference patch 或最终答案。
+- 不写最终补丁或最终 coding 答案。
 
-输出 shared_messages、positive_delta、negative_delta、final_query 和使用的 source_ids。
+输出 shared_messages、positive_delta、negative_delta、final_query、生成批次信息，以及可选的 `external_source_ids`。
 ```
 
 ### 生成自然 coding Negative 的模板
@@ -594,11 +595,11 @@ eval/tool-prompt-bench/formal-dataset/
 | 脚本 | 作用 | 必须复用 |
 |---|---|---|
 | `scripts/compile-formal-dataset.ts` | 从 registry 编译 provider、private Gold 和快照输入 | `formal-compile.ts`、`formal-provenance.ts` |
-| `scripts/validate-formal-dataset.ts` | schema、数量、pair、泄漏、序列和来源校验 | `formal-schema.ts`、`evaluator.ts` 的合同类型 |
+| `scripts/validate-formal-dataset.ts` | schema、数量、pair、泄漏、序列和外部导入项校验 | `formal-schema.ts`、`evaluator.ts` 的合同类型 |
 | `scripts/restore-formal-snapshot.ts` | 通过现有接口恢复一个 split 的真实资产 | `formal-snapshot.ts`、生产 client |
 | `scripts/inspect-formal-snapshot.ts` | 读取真实入口并核对资产 id、可见性、hash 和工具清单 | `formal-visibility.ts`、生产 read API |
 
-现有 Python 来源工具继续处理 source lock、source pack、license 和 W01 L0。不要复制一套来源管理代码。
+现有 Python 来源工具只在复用外部数据或导入开源 Skill 时使用。纯合成数据不需要经过 source lock、source pack 或开源项目测试，不要复制一套来源管理代码。
 
 ## 分阶段执行
 
@@ -611,8 +612,9 @@ eval/tool-prompt-bench/formal-dataset/
 1. 修改正式 schema，使一个 Space 可以包含十个 Team，并允许 Team 或 case 持有 split。
 2. 给 `ToolPromptEvalCase` 保留 `allowedFirstActions`、`expectedFollowupActions`、`expectedKnowledgeCalls` 和 `allowedSequences`。
 3. 明确 `EffectiveCallRate` 使用完整最小链路，`FirstRouteAt1` 只作诊断。
-4. 修改旧文档索引，标记本文件替代十 Space 和第一步即停假设。
-5. 为 T01 至 T10 写空 Team registry，只放 id、主题、Agent 和 split。
+4. 正式 provenance 区分 `synthetic` 和 `external_import`。纯合成资产只关联生成批次，不能为了满足旧 schema 伪造 repository、revision、license 或文件 hash。
+5. 修改旧文档索引，标记本文件替代十 Space、第一步即停和逐条外部来源闭环假设。
+6. 为 T01 至 T10 写空 Team registry，只放 id、主题、Agent 和 split。
 
 需要运行：
 
@@ -701,9 +703,9 @@ Gate：
 
 ### DS03：扩展 Dev 的 T02 至 T04
 
-前置条件：T01 完整 Gate 通过，构造模板没有再修改 schema。
+前置条件：DS00 合同和 T01 检索压力试点已通过，构造模板不再修改 schema。T02 至 T04 的分片施工不必等待 T01 扩充到 40 条；Dev 全局冻结仍必须等待 T01 至 T04 全部通过。
 
-T02 至 T04 各自按 DS02 的四十条结构建设。顺序固定为 T02、T03、T04，一个 Team 通过后再开始下一个 Team。每个 Team 单独提交，不能把一百二十条混成一个无法审查的提交。
+T02 至 T04 各自按 DS02 的四十条结构建设。Team 之间可以由不同 Codex 任务并行施工；同一个 Codex 任务负责的两个 Team 仍按顺序完成，一个 Team 通过本地 Gate 后再开始该任务内的下一个 Team。施工任务只能写各自的 Team 分片，不能并发修改全局合同、总状态文件、编译产物或冻结快照。
 
 每个 Team 的执行循环：
 
@@ -719,7 +721,7 @@ Dev Gate：
 
 - T01 至 T04 共 160 条。
 - 四个 Team 的类别总数符合 manifest。
-- 所有 source、license 和 adapted Skill diff 完整。
+- 所有实际导入的外部 Skill 或原文片段有必要的来源、license 和 adapted Skill diff；纯合成内容不要求外部来源。
 - Dev provider input、private Gold 和 snapshot hash 冻结。
 - Dev 数据可交给 Prompt 代码分支开始 V0 至 V3 迭代。
 
@@ -738,9 +740,11 @@ Dev 冻结后只允许修复以下客观错误：
 
 ### DS05：建设 Hidden 的 T05 至 T10
 
-前置条件：Dev 已冻结，Prompt 代码开发会话不能读取 Hidden 内容。
+前置条件：正式 schema、数量合同和 Hidden 写入边界已冻结。Hidden 分片施工可以与 Dev 分片施工并行，但 Hidden 的全局集成、sealed manifest 和交给实验运行必须等待 Dev 冻结；Prompt 代码开发会话不能读取 Hidden 内容。
 
 Hidden 每个 Team 同样建设四十条。数据 Agent 可以复用 schema、validator 和生成 prompt，但不能复制 Dev 的具体句子。Hidden 中至少一半 Skill 靶子来自前端、客户端、SDK、测试、安全和构建轨道，避免 Hidden 只是 Python 词汇替换。
+
+T05 至 T10 可以由三个独立 Codex 任务并行建设。每个任务只读取 Dev 的结构合同和公开计数，不读取或改写其他 Hidden 任务的 Query、上下文、Gold 和资产摘要。所有 Hidden 任务先输出 Team 分片，最后由单独的集成任务统一做去重、泄漏检查、编译和 sealed manifest。
 
 每个 Team 完成后生成 sealed manifest，只公开：
 
@@ -756,7 +760,7 @@ Hidden Gate：
 
 - 240 条全部通过与 Dev 相同的 validator。
 - 与 Dev 的 n-gram、完整句、query hash 和上下文 hash 无重复。
-- 同一来源任务不得同时进入 Dev 与 Hidden。
+- Dev 与 Hidden 可以采用相同工程领域，但不能复制具体 query、上下文、信息缺口或 pair 模板。
 - Hidden 快照能独立恢复，不依赖 Dev 资产。
 
 ### DS06：恢复真实资产并核对
@@ -833,7 +837,7 @@ DS07 不调用 Luna，也不产生正式模型指标。
 - 400 条分布表。
 - provider input manifest。
 - private Gold manifest。
-- source 与 license manifest。
+- 外部导入项的 source 与 license manifest，若没有外部导入则明确记录为空。
 - real-chain Gate 报告。
 - token 记录 schema。
 - 已知限制。
@@ -949,10 +953,11 @@ Prompt cache 不要求每个 case 的完整 system prompt 相同，因为 L3、L
 
 ### 来源
 
-- 每个引用文件存在并匹配 SHA-256。
-- license 与允许用途已登记。
+- 纯合成内容有批次级生成记录和审查状态，不要求逐条来源。
+- 实际引用的外部文件存在，并匹配登记的包级或片段级 SHA-256。
+- 实际导入的外部内容登记 license 与允许用途。
 - adapted Skill 有 raw、adapted 和 diff。
-- Luna 生成内容有生成记录和输入 source ids。
+- 不存在为了满足 schema 而虚构的 repository、revision、license、source id 或 hash。
 
 ### 快照
 
@@ -1001,23 +1006,80 @@ Agent 完成一个阶段时：
 4. 只提交当前阶段涉及的文件。
 5. 在下一阶段开始前再次核对当前分支和基线提交。
 
-## 分支与提交
+## 外层并行施工合同
 
-当前数据工作基线保留在现有分支。后续每个可独立验收的 Team 或基础设施改造使用独立分支：
+正式数据建设使用五个互相独立的 Codex 任务。这里的“任务”指用户在 Codex 中单独打开的任务，不是 Team 内部的 Luna 批次：
+
+| 建设任务 | 负责 Team | Split | 建议分支 |
+|---|---|---|---|
+| build-01 | T01、T02 | Dev | `codex/task1-data-build-t01-t02` |
+| build-02 | T03、T04 | Dev | `codex/task1-data-build-t03-t04` |
+| build-03 | T05、T06 | Hidden | `codex/task1-data-build-t05-t06` |
+| build-04 | T07、T08 | Hidden | `codex/task1-data-build-t07-t08` |
+| build-05 | T09、T10 | Hidden | `codex/task1-data-build-t09-t10` |
+
+五个任务必须从同一个已冻结基线提交建立独立 worktree。不能让多个任务共享一个可写工作目录，也不能让它们直接修改以下全局文件：
 
 ```text
-codex/task1-data-contract-one-space
-codex/task1-data-t01-python
-codex/task1-data-t02-compute
-codex/task1-data-t03-ml
-codex/task1-data-t04-backend
-codex/task1-data-hidden-t05-t10
+formal-dataset/registry/contracts/formal-v1.json
+formal-dataset/DATASET-BUILD-STATUS.json
+formal-dataset/provider/**
+formal-dataset/snapshots/**
+formal-dataset/reports/*GLOBAL*
+```
+
+每个建设任务只允许写自己负责的 Team 范围：
+
+```text
+formal-dataset/generators/parallel/<build-id>/<team-id>/**
+formal-dataset/staging/teams/<team-id>/**
+formal-dataset/source-material/<team-id>/**
+```
+
+每个 Team 的 staging 目录至少包含：
+
+```text
+team-fragment.json
+assets/memory.json
+assets/skills.json
+assets/knowledge.json
+review.md
+gate.json
+```
+
+`team-fragment.json` 只保存该 Team 对应的 `sourceEvidence`、`teams`、`businessAgents`、`tasks`、`publicCases`、`privateAnnotations` 和 `pairs` 数组片段。`world`、`snapshots`、跨 Team hash 和最终状态由集成任务生成，建设任务不得手写。
+
+每个建设任务内部由 Sol 负责源码核对、输入冻结、Gold 决策和验收，批量草稿必须委派给 `gpt-5.6-luna`、`reasoning_effort=high` 的子智能体。一个 Luna 子智能体只写一个唯一批次目录。任务内可以并发 Memory、Skill、Knowledge/自然负例批次，但合并前必须由该任务的 Sol 逐份复核。
+
+外层并行结束后，当前集成任务按 T01 至 T10 的顺序合并 Team 分片，统一执行 schema、数量、pair、泄漏、可见性、重复度、检索压力、快照和 hash Gate。任何建设任务都不能自行宣布 Dev 或 Hidden 已冻结。
+
+每个独立任务使用一份专属提示词，文件位于：
+
+```text
+parallel-prompts/THREAD-01-T01-T02.md
+parallel-prompts/THREAD-02-T03-T04.md
+parallel-prompts/THREAD-03-T05-T06.md
+parallel-prompts/THREAD-04-T07-T08.md
+parallel-prompts/THREAD-05-T09-T10.md
+```
+
+## 分支与提交
+
+当前数据工作基线保留在现有分支。五个建设任务从同一个冻结提交建立独立 worktree 和分支，集成工作保留在单独分支：
+
+```text
+codex/task1-data-build-t01-t02
+codex/task1-data-build-t03-t04
+codex/task1-data-build-t05-t06
+codex/task1-data-build-t07-t08
+codex/task1-data-build-t09-t10
+codex/task1-data-integration
 codex/task1-data-real-snapshot
 ```
 
 实际创建分支前先确认集成基线。一个提交只做一种改造，提交正文写清：
 
-- 输入来源。
+- 生成批次，以及实际使用的外部来源。没有外部来源时明确写 `synthetic`。
 - 新增或修改的资产与 case 数。
 - 允许的调用链。
 - 运行了哪些 Gate。
@@ -1035,8 +1097,8 @@ codex/task1-data-real-snapshot
 - 后续参数只能由模型猜测，不能从前一步响应取得。
 - Knowledge 资源不 ready 或工具清单会漂移。
 - 开源 Skill 触发描述带强制调用偏置，无法通过中性适配消除。
-- 来源许可证、revision 或 hash 不完整。
-- Dev 和 Hidden 出现任务、句子或来源重叠。
+- 实际导入的外部内容缺少许可证、revision 或必要 hash。
+- Dev 和 Hidden 出现 query、上下文、信息缺口或 pair 模板重叠。
 - 快照恢复后资产 hash 漂移。
 
 优先修改 case 或替换靶子，不增加复杂兜底。一个 case 连续两轮审查仍无法获得唯一 Gold，就移出正式主集，放入 exploratory 集合，不参与指标。
@@ -1057,7 +1119,7 @@ codex/task1-data-real-snapshot
 - Memory、Skill 和最小 Knowledge 资产都能通过真实接口恢复和读取。
 - 连续两次恢复得到相同 snapshot hash。
 - Provider input 与私有 Gold 完全分离，泄漏为 0。
-- source、license、adapted diff 和 Luna 生成记录完整。
+- Luna 批次级生成记录完整；实际导入外部内容时，source、license 和 adapted diff 完整。
 - Dev 与 Hidden 无重复，Hidden 在 Prompt 冻结前保持密封。
 - token、usage、Prompt hash 和快照 hash 字段在 runner 产物中都有固定位置。
 - 真实链路无模型 Gate 通过。

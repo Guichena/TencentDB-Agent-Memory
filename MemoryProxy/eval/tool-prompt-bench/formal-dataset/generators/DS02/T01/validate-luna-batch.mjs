@@ -2,9 +2,17 @@ import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-const [batchArg, expectedFamily, expectedCountArg] = process.argv.slice(2);
+const [
+  batchArg,
+  expectedFamily,
+  expectedCountArg,
+  expectedTeam = "T01",
+  expectedStage = "DS02",
+] = process.argv.slice(2);
 if (!batchArg || !expectedFamily || !expectedCountArg) {
-  throw new Error("usage: node validate-luna-batch.mjs <batch-dir> <family> <expected-count>");
+  throw new Error(
+    "usage: node validate-luna-batch.mjs <batch-dir> <family> <expected-count> [expected-team] [expected-stage]",
+  );
 }
 
 const expectedCount = Number(expectedCountArg);
@@ -56,10 +64,58 @@ const allowedActions = {
   knowledge: new Set(["knowledge_tools_list", "knowledge_tools_call"]),
 };
 
-if (draft.schema_version !== "task1.luna_pair_draft.v1") errors.push("unexpected draft schema_version");
-if (draft.stage !== "DS02" || draft.team_id !== "T01") errors.push("draft stage/team mismatch");
-if (draft.family !== expectedFamily) errors.push(`draft family mismatch: ${String(draft.family)}`);
-if (!Array.isArray(draft.pairs)) {
+const isNaturalNegative = expectedFamily === "natural-negative";
+const records = isNaturalNegative ? draft.cases : draft.pairs;
+
+if (draft.schema_version !== (isNaturalNegative
+  ? "task1.luna_natural_negative_draft.v1"
+  : "task1.luna_pair_draft.v1")) {
+  errors.push("unexpected draft schema_version");
+}
+if (draft.stage !== expectedStage || draft.team_id !== expectedTeam) {
+  errors.push(
+    `draft stage/team mismatch; expected ${expectedStage}/${expectedTeam}, got ${String(draft.stage)}/${String(draft.team_id)}`,
+  );
+}
+if (!isNaturalNegative && draft.family !== expectedFamily) errors.push(`draft family mismatch: ${String(draft.family)}`);
+
+if (isNaturalNegative && !Array.isArray(draft.cases)) {
+  errors.push("draft cases must be an array");
+} else if (isNaturalNegative) {
+  if (draft.cases.length !== expectedCount) errors.push(`expected ${expectedCount} cases, got ${draft.cases.length}`);
+  const ids = new Set();
+  for (const [index, item] of draft.cases.entries()) {
+    const label = `cases[${index}]`;
+    if (!item || typeof item !== "object") {
+      errors.push(`${label} must be an object`);
+      continue;
+    }
+    if (typeof item.draft_case_id !== "string" || !item.draft_case_id) errors.push(`${label} lacks draft_case_id`);
+    if (ids.has(item.draft_case_id)) errors.push(`${label} duplicates draft_case_id ${item.draft_case_id}`);
+    ids.add(item.draft_case_id);
+    if (item.external_source_ids !== undefined && !Array.isArray(item.external_source_ids)) {
+      errors.push(`${label} external_source_ids must be an array when present`);
+    }
+    if (!Array.isArray(item.context_messages) || item.context_messages.length < 2) errors.push(`${label} needs at least two context messages`);
+    if (typeof item.query !== "string" || !item.query.trim()) errors.push(`${label} lacks query`);
+    if (typeof item.why_current_context_is_sufficient !== "string" || !item.why_current_context_is_sufficient.trim()) {
+      errors.push(`${label} lacks why_current_context_is_sufficient`);
+    }
+    if (!Array.isArray(item.visible_distractor_ids_author_only)) errors.push(`${label} lacks visible_distractor_ids_author_only`);
+    if (item.source_fact_map !== undefined && !Array.isArray(item.source_fact_map)) {
+      errors.push(`${label} source_fact_map must be an array when present`);
+    }
+    if (!Array.isArray(item.sol_review_questions)) errors.push(`${label} lacks sol_review_questions`);
+
+    const providerText = [
+      ...(item.context_messages ?? []).map((message) => message?.content ?? ""),
+      item.query ?? "",
+    ].join("\n");
+    for (const pattern of leakagePatterns) {
+      if (pattern.test(providerText)) errors.push(`${label} provider-visible leakage matches ${String(pattern)}`);
+    }
+  }
+} else if (!Array.isArray(draft.pairs)) {
   errors.push("draft pairs must be an array");
 } else {
   if (draft.pairs.length !== expectedCount) errors.push(`expected ${expectedCount} pairs, got ${draft.pairs.length}`);
@@ -74,7 +130,12 @@ if (!Array.isArray(draft.pairs)) {
     if (typeof pair.draft_pair_id !== "string" || !pair.draft_pair_id) errors.push(`${label} lacks draft_pair_id`);
     if (ids.has(pair.draft_pair_id)) errors.push(`${label} duplicates draft_pair_id ${pair.draft_pair_id}`);
     ids.add(pair.draft_pair_id);
-    if (!Array.isArray(pair.source_ids) || pair.source_ids.length === 0) errors.push(`${label} lacks source_ids`);
+    if (pair.external_source_ids !== undefined && !Array.isArray(pair.external_source_ids)) {
+      errors.push(`${label} external_source_ids must be an array when present`);
+    }
+    if (pair.source_ids !== undefined && !Array.isArray(pair.source_ids)) {
+      errors.push(`${label} legacy source_ids must be an array when present`);
+    }
     if (!Array.isArray(pair.shared_context_messages) || pair.shared_context_messages.length < 2) {
       errors.push(`${label} needs at least two shared context messages`);
       continue;
@@ -107,7 +168,9 @@ if (!Array.isArray(draft.pairs)) {
         }
       }
     }
-    if (!Array.isArray(pair.source_fact_map) || pair.source_fact_map.length === 0) errors.push(`${label} lacks source_fact_map`);
+    if (pair.source_fact_map !== undefined && !Array.isArray(pair.source_fact_map)) {
+      errors.push(`${label} source_fact_map must be an array when present`);
+    }
 
     const providerText = [
       ...pair.shared_context_messages.map((message) => message?.content ?? ""),
@@ -126,22 +189,30 @@ if (manifest.schema_version !== "task1.luna_generation_manifest.v1") errors.push
 if (manifest.generator_model !== "gpt-5.6-luna") errors.push("manifest generator_model mismatch");
 if (manifest.reasoning_effort !== "high") errors.push("manifest reasoning_effort mismatch");
 if (manifest.prompt_version !== "task1.luna-batch.v1") errors.push("manifest prompt_version mismatch");
-if (manifest.raw_output_file !== "draft.json") errors.push("manifest raw_output_file mismatch");
-if (manifest.raw_output_sha256 !== actualSha) errors.push(`manifest raw_output_sha256 mismatch; expected ${actualSha}`);
+if (manifest.raw_output_file !== undefined && manifest.raw_output_file !== "draft.json") {
+  errors.push("manifest raw_output_file must be draft.json when present");
+}
+if (manifest.raw_output_sha256 !== undefined && manifest.raw_output_sha256 !== actualSha) {
+  errors.push(`manifest raw_output_sha256 mismatch; expected ${actualSha}`);
+}
 if (manifest.actual_count !== expectedCount) errors.push("manifest actual_count mismatch");
-if (!Array.isArray(manifest.input_source_ids) || manifest.input_source_ids.length === 0) errors.push("manifest lacks input_source_ids");
+if (manifest.external_source_ids !== undefined && !Array.isArray(manifest.external_source_ids)) {
+  errors.push("manifest external_source_ids must be an array when present");
+}
 if (Number.isNaN(Date.parse(manifest.generated_at))) errors.push("manifest generated_at is not ISO-8601 parseable");
 
 const report = {
   schema_version: "task1.luna_batch_validation.v1",
   valid: errors.length === 0,
   batch_dir: batchDir,
+  expected_stage: expectedStage,
+  expected_team: expectedTeam,
   family: expectedFamily,
   expected_count: expectedCount,
-  actual_count: Array.isArray(draft.pairs) ? draft.pairs.length : 0,
+  actual_count: Array.isArray(records) ? records.length : 0,
   raw_output_sha256: actualSha,
   error_count: errors.length,
   errors,
 };
 console.log(JSON.stringify(report, null, 2));
-if (errors.length > 0) process.exitCode = 1;
+process.exit(errors.length > 0 ? 1 : 0);

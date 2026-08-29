@@ -1,0 +1,17 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "t01-memory-batch-01",
+  "input_source_ids": [
+    "source-t01-current-mypy-regression",
+    "source-t01-history-python__mypy-11567",
+    "source-t01-history-python__mypy-16869",
+    "source-t01-history-getmoto__moto-5134"
+  ],
+  "generated_at": "2026-08-29T18:44:31+08:00",
+  "raw_output_file": "draft.json",
+  "raw_output_sha256": "724b8ab9b33c674340e59ae7517d797727b35b8084eb2a18472bb73c7e89d2c8",
+  "actual_count": 4
+}

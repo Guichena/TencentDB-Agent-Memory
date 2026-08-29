@@ -1,4 +1,4 @@
-# DS02 T01 Luna draft schema
+# Task 1 Luna draft schema
 
 This schema is an authoring interchange only. It is not the formal registry
 schema and grants no authority to set production visibility or final Gold.
@@ -11,13 +11,14 @@ Write `draft.json` as UTF-8 JSON:
 {
   "schema_version": "task1.luna_pair_draft.v1",
   "batch_id": "string",
-  "stage": "DS02",
-  "team_id": "T01",
+  "stage": "DS02 | DS03 | DS05",
+  "team_id": "T01 | T02 | ... | T10",
   "family": "memory | skill | knowledge",
   "pairs": [
     {
       "draft_pair_id": "string",
-      "source_ids": ["string"],
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
       "difficulty": "medium | hard",
       "context_bucket": "short_2_to_4 | medium_6_to_10 | long_12_to_18",
       "shared_context_messages": [
@@ -70,9 +71,10 @@ Negative supplies exactly that information.
 
 Write `draft.json` with schema version
 `task1.luna_natural_negative_draft.v1` and a `cases` array. Each case contains
-`draft_case_id`, `source_ids`, `difficulty`, `context_messages`, `query`,
+`draft_case_id`, `difficulty`, `context_messages`, `query`,
 `why_current_context_is_sufficient`, `visible_distractor_ids_author_only`,
-`source_fact_map`, and `sol_review_questions`. It contains no tool suggestion.
+`sol_review_questions`, optional `external_source_ids`, and optional
+`source_fact_map`. It contains no tool suggestion.
 
 ## Generation manifest
 
@@ -85,13 +87,28 @@ Write `manifest.json` after `draft.json`:
   "reasoning_effort": "high",
   "prompt_version": "task1.luna-batch.v1",
   "batch_id": "string",
-  "input_source_ids": ["string"],
+  "external_source_ids": [],
   "generated_at": "ISO-8601 timestamp with offset",
-  "raw_output_file": "draft.json",
-  "raw_output_sha256": "lowercase SHA-256 of the exact draft.json bytes",
   "actual_count": 0
 }
 ```
 
 Also write `questions.md`, even if it only says that no open Sol decisions
-remain. Do not compute a hash over a file that contains its own hash.
+remain. A generation-output hash is optional; the final dataset snapshot and
+formal run inputs are hashed later by the compiler and runner.
+
+`external_source_ids` may be empty. Team names, projects, conversations,
+failure symptoms, timelines, L0/L1/L2/L3 and natural negatives may be
+synthetic. Do not create fake source ids or claim synthetic details are facts
+from an upstream repository. Source mapping is required only for directly
+imported external Skill files or quoted source fragments.
+
+Validate a batch with:
+
+```text
+node validate-luna-batch.mjs <batch-dir> <family> <expected-count> <team-id> <stage>
+```
+
+The final two arguments default to `T01` and `DS02` for compatibility with the
+existing T01 drafts. A manifest may omit `raw_output_file` and
+`raw_output_sha256`; when either field is present, the validator checks it.

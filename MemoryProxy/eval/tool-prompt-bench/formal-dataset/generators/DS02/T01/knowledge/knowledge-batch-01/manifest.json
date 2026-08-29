@@ -1,0 +1,17 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "t01-knowledge-batch-01",
+  "input_source_ids": [
+    "source-t01-current-ujson-fuzzing",
+    "source-t01-current-mypy-regression",
+    "source-t01-knowledge-mypy-codegraph",
+    "source-t01-knowledge-reliability-wiki"
+  ],
+  "generated_at": "2026-08-29T18:28:33+08:00",
+  "raw_output_file": "draft.json",
+  "raw_output_sha256": "259912a8305fdc3846b25b6df2afb4838983388f374f6c441e91d8c8566b284f",
+  "actual_count": 2
+}

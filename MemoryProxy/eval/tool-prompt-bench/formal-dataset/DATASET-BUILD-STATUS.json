@@ -1,14 +1,14 @@
 {
   "schema_version": "task1.dataset_build_status.v1",
   "dataset_revision": "formal-v1",
-  "active_stage": "DS01",
-  "stage_status": "passed",
-  "next_stage": "DS02",
-  "branch": "codex/task1-data-t01-python",
+  "active_stage": "DS02",
+  "stage_status": "in_progress",
+  "next_stage": "DS02_T01_completion",
+  "branch": "codex/task1-data-t01-complete",
   "baseline_commit": "5b7f2734cff5b93840b5622c2b344058882ddf9c",
-  "completed_gates": ["DS00", "DS01"],
+  "completed_gates": ["DS00", "DS01", "DS02_PILOT"],
   "team_progress": {
-    "T01": { "identity": "frozen", "assets": "ds01_partial_frozen", "l0_sessions": 6, "skills": 2, "knowledge": 0, "cases": 8, "pairs": 4, "gate": "ds01_passed" },
+    "T01": { "identity": "frozen", "assets": "ds02_pilot_frozen", "l0_sessions": 12, "skills": 2, "knowledge": 3, "cases": 10, "pairs": 5, "gate": "ds02_pilot_passed" },
     "T02": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
     "T03": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
     "T04": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
@@ -21,11 +21,11 @@
   },
   "artifacts": {
     "contract": "registry/contracts/formal-v1.json",
-    "contract_canonical_sha256": "8b7fde1c44940938eae56b4ec24b16ea7e53b994d39a032d908eeef9ac622a10",
-    "provider_dev_sha256": "2db4dfd90cc921b191f7dee14712dd1935d4e738a168dbd03eea0a670d2d3b6c",
-    "snapshot_dev_sha256": "75c99ca3506759d9530b3a843578b6b7c271e29d84973a0f558aed83a8e06a26"
+    "contract_canonical_sha256": "da67389b9cebba62535b69ac6fe10807329b7c07237728ebfdf16b113926743b",
+    "provider_dev_sha256": "03f9aca397313fbdf296af121b3802326b6d55d47215d7687ef7ea334cc26cd2",
+    "snapshot_dev_sha256": "84cf53372c436cbce8bd493c1d0e4c4391b9f8a76ac303b5f1e53dae2537e1f4"
   },
   "blocking_issues": [],
-  "last_command": "validate W01 draft; validate/compile formal Dev twice; npm run eval:tool-prompt:d0:test; npm run eval:tool-prompt:test; npm run typecheck (54 unrelated baseline errors, 0 Task 1 errors)",
-  "last_verified_commit": "3faad186c8b5caad9a39a00a1f64f08fec09c6c5"
+  "last_command": "validate DS02 pilot; run retrieval-pressure test; compile formal Dev twice; npm run eval:tool-prompt:d0:test; npm run eval:tool-prompt:test",
+  "last_verified_commit": "33c35e53f071c959db63854811784219cde6bf92"
 }
