@@ -9,8 +9,8 @@ import {
   SYNTHETIC_RUNTIME_CONTRACTS,
 } from "../synthetic-fixtures.js";
 
-const FROZEN_FIXTURE_BYTES = 11001;
-const FROZEN_FIXTURE_SHA256 = "86853dd4bae261c0fe452ae23390cb41e2bd808c28a491055a76cd1a98c4c6ed";
+const FROZEN_FIXTURE_BYTES = 14795;
+const FROZEN_FIXTURE_SHA256 = "611985055db9421111ae38076ad5d1d73fbb2b1e60e8723afea957482a0f92dc";
 const SCORE_OUTPUT_FIELDS = [
   "evaluationSchemaVersion",
   "caseId",

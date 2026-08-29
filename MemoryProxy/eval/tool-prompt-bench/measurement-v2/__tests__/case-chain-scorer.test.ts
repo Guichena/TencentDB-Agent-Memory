@@ -7,6 +7,8 @@ import {
   MEMORY_MULTI_STEP_CONTRACTS,
   MEMORY_MULTI_STEP_GOLD,
   MEMORY_MULTI_STEP_SUCCESS_TRACE,
+  MEMORY_PREREQUISITE_CHAIN_GOLD,
+  MEMORY_PREREQUISITE_CHAIN_SUCCESS_TRACE,
   MEMORY_SEARCH_GOLD,
   MEMORY_SEARCH_SUCCESS_TRACE,
   NO_TOOL_GOLD,
@@ -169,6 +171,32 @@ describe("Measurement v2 public case-chain scorer", () => {
       toolSplContribution: 1,
       shortestExact: true,
       failureLayer: null,
+    });
+  });
+
+  it("uses executor-bound ordinals for attempt indexes when an unbound fact comes first", () => {
+    const score = scoreCaseChain({
+      observation: {
+        ...MEMORY_SEARCH_SUCCESS_TRACE,
+        runId: "run-memory-unbound-before-bound",
+        attempts: [{
+          attemptId: "intent-before-bound-attempt",
+          executorBound: false,
+          recognizableTdaiIntent: true,
+          malformedReason: "unbound trace fact",
+        }, MEMORY_SEARCH_SUCCESS_TRACE.attempts[0]],
+      },
+      gold: MEMORY_SEARCH_GOLD,
+      runtimeContracts: SYNTHETIC_RUNTIME_CONTRACTS,
+    });
+
+    expect(score).toMatchObject({
+      triggeredAttempt: true,
+      observedAttemptCount: 1,
+      evaluationPrefixAttemptCount: 1,
+      terminalAttemptIndex: 0,
+      completeChainSuccess: true,
+      strictChainExact: true,
     });
   });
 
@@ -344,6 +372,68 @@ describe("Measurement v2 public case-chain scorer", () => {
       terminalSelectionCorrect: false,
       completeChainSuccess: false,
       matchedSequenceId: null,
+      failureLayer: "wrong_operation",
+    });
+  });
+
+  it("does not fold an explicit-operation selector conflict into a none operation", () => {
+    const score = scoreCaseChain({
+      observation: {
+        evaluationSchemaVersion: 2,
+        caseId: "knowledge-explicit-operation-conflict-none",
+        runId: "run-knowledge-explicit-operation-conflict-none",
+        variantId: "synthetic",
+        rawTraceStatus: "complete",
+        attempts: [{
+          attemptId: "attempt-knowledge-explicit-operation-conflict-none",
+          executorBound: true,
+          family: "knowledge",
+          tool: "knowledge_tools_call",
+          endpoint: "/tools/call",
+          method: "POST",
+          operation: "invented_operation",
+          arguments: { tool_name: "lookup_symbols" },
+          status: 200,
+          response: { symbols: [] },
+        }],
+      },
+      gold: {
+        evaluationSchemaVersion: 2,
+        caseId: "knowledge-explicit-operation-conflict-none",
+        expectation: "tool",
+        attemptBudget: 1,
+        allowedSequences: [{
+          sequenceId: "knowledge-none-operation",
+          steps: [{
+            stepId: "call",
+            family: "knowledge",
+            tool: "knowledge_tools_call",
+            endpoint: "/tools/call",
+            method: "POST",
+            operation: { kind: "none" },
+            arguments: { required: ["tool_name"] },
+            bindings: [],
+            runtimeContractId: "knowledge-none-operation-contract",
+            terminal: true,
+          }],
+        }],
+      },
+      runtimeContracts: [{
+        contractId: "knowledge-none-operation-contract",
+        family: "knowledge",
+        tool: "knowledge_tools_call",
+        endpoint: "/tools/call",
+        method: "POST",
+        operation: { kind: "none" },
+        acceptedStatusCodes: [200],
+      }, KNOWLEDGE_BRANCH_CONTRACTS[2]],
+    });
+
+    expect(score).toMatchObject({
+      firstActionSelectionCorrect: false,
+      terminalSelectionCorrect: false,
+      completeChainSuccess: false,
+      terminalAttemptIndex: null,
       failureLayer: "wrong_operation",
     });
   });
@@ -731,6 +821,126 @@ describe("Measurement v2 public case-chain scorer", () => {
       toolSplContribution: 2 / 3,
       shortestExact: false,
       failureLayer: null,
+    });
+  });
+
+  it("stops at the first accepted Gold terminal when a prerequisite has invalid arguments", () => {
+    const score = scoreCaseChain({
+      observation: {
+        ...MEMORY_MULTI_STEP_SUCCESS_TRACE,
+        runId: "run-memory-bad-prerequisite-args-before-terminal",
+        attempts: [{
+          ...MEMORY_MULTI_STEP_SUCCESS_TRACE.attempts[0],
+          attemptId: "attempt-scenario-list-bad-args",
+          arguments: {},
+        }, MEMORY_MULTI_STEP_SUCCESS_TRACE.attempts[1], {
+          ...MEMORY_MULTI_STEP_SUCCESS_TRACE.attempts[0],
+          attemptId: "attempt-scenario-list-later-valid",
+        }, {
+          ...MEMORY_MULTI_STEP_SUCCESS_TRACE.attempts[1],
+          attemptId: "attempt-scene-read-later-valid",
+        }],
+      },
+      gold: MEMORY_MULTI_STEP_GOLD,
+      runtimeContracts: MEMORY_MULTI_STEP_CONTRACTS,
+    });
+
+    expect(score).toMatchObject({
+      observedAttemptCount: 4,
+      evaluationPrefixAttemptCount: 2,
+      terminalAttemptIndex: 1,
+      terminalSelectionCorrect: true,
+      completeChainSuccess: false,
+      strictChainExact: false,
+      positiveOvercall: false,
+      matchedSequenceId: null,
+      toolSplContribution: 0,
+      failureLayer: "arguments",
+    });
+  });
+
+  it("reports the accepted horizon terminal instead of an earlier contract-rejected Qi terminal", () => {
+    const score = scoreCaseChain({
+      observation: {
+        ...MEMORY_MULTI_STEP_SUCCESS_TRACE,
+        runId: "run-memory-rejected-terminal-before-accepted-horizon",
+        attempts: [{
+          ...MEMORY_MULTI_STEP_SUCCESS_TRACE.attempts[0],
+          attemptId: "attempt-scenario-list-bad-args-before-rejected-terminal",
+          arguments: {},
+        }, {
+          ...MEMORY_MULTI_STEP_SUCCESS_TRACE.attempts[1],
+          attemptId: "attempt-scene-read-contract-rejected",
+          status: 400,
+          response: { error: "contract rejection" },
+        }, {
+          ...MEMORY_MULTI_STEP_SUCCESS_TRACE.attempts[1],
+          attemptId: "attempt-scene-read-accepted-horizon",
+        }, {
+          ...MEMORY_MULTI_STEP_SUCCESS_TRACE.attempts[0],
+          attemptId: "attempt-scenario-list-post-horizon-valid",
+        }, {
+          ...MEMORY_MULTI_STEP_SUCCESS_TRACE.attempts[1],
+          attemptId: "attempt-scene-read-post-horizon-valid",
+        }],
+      },
+      gold: MEMORY_MULTI_STEP_GOLD,
+      runtimeContracts: MEMORY_MULTI_STEP_CONTRACTS,
+    });
+
+    expect(score).toMatchObject({
+      observedAttemptCount: 5,
+      evaluationPrefixAttemptCount: 3,
+      terminalAttemptIndex: 2,
+      terminalSelectionCorrect: true,
+      completeChainSuccess: false,
+      strictChainExact: false,
+      positiveOvercall: true,
+      toolSplContribution: 0,
+      failureLayer: "arguments",
+    });
+  });
+
+  it("reports the earliest prerequisite binding failure at the accepted terminal horizon", () => {
+    const [list, readBridge, readPrerequisite, terminal] = (
+      MEMORY_PREREQUISITE_CHAIN_SUCCESS_TRACE.attempts
+    );
+    const laterValidChain = MEMORY_PREREQUISITE_CHAIN_SUCCESS_TRACE.attempts.map((attempt) => ({
+      ...attempt,
+      attemptId: `${attempt.attemptId}-later-valid`,
+    }));
+    const score = scoreCaseChain({
+      observation: {
+        ...MEMORY_PREREQUISITE_CHAIN_SUCCESS_TRACE,
+        runId: "run-memory-bad-prerequisite-binding-before-terminal",
+        attempts: [list, {
+          ...readBridge,
+          attemptId: "attempt-prerequisite-read-bridge-bad-binding",
+          arguments: { path: "deployment/invented.md" },
+        }, {
+          ...readPrerequisite,
+          attemptId: "attempt-prerequisite-read-validate-bad-args",
+          arguments: { path: "deployment/details.md" },
+        }, terminal, ...laterValidChain],
+      },
+      gold: MEMORY_PREREQUISITE_CHAIN_GOLD,
+      runtimeContracts: [
+        ...MEMORY_MULTI_STEP_CONTRACTS,
+        ...SYNTHETIC_RUNTIME_CONTRACTS,
+      ],
+    });
+
+    expect(score).toMatchObject({
+      observedAttemptCount: 8,
+      evaluationPrefixAttemptCount: 4,
+      terminalAttemptIndex: 3,
+      terminalSelectionCorrect: true,
+      completeChainSuccess: false,
+      strictChainExact: false,
+      positiveOvercall: false,
+      matchedSequenceId: null,
+      toolSplContribution: 0,
+      failureLayer: "binding",
     });
   });
 

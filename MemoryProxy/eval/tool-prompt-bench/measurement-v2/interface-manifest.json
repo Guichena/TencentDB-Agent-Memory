@@ -85,10 +85,12 @@
   "semanticInvariants": [
     "Only executor-bound attempts contribute to triggeredAttempt, observedAttemptCount, and FCR_attempt facts.",
     "A complete chain is an ordered allowed-sequence match with per-step identity, operation, arguments, prior-output binding, exact referenced-contract acceptance, and terminal semantics.",
+    "Operation normalization distinguishes none, value, conflict, and invalid results; conflict or invalid operations never match a Gold none/exact operation.",
     "Unexpected, duplicate, or over-budget attempts can preserve completeChainSuccess but make strictChainExact false, positiveOvercall true, and ToolSPL smaller.",
     "A forbidden wrong-family, typed wrong-terminal, or genuinely premature accepted terminal before a correct terminal prevents later repair from creating terminalSelectionCorrect or completeChainSuccess.",
-    "The evaluation prefix stops at the earliest complete private-Gold-plus-exact-contract terminal; failed positives stop at budget or turn completion.",
-    "terminalAttemptIndex identifies the terminal used by the complete match, otherwise the Qi match, otherwise an in-prefix raw terminal candidate.",
+    "The evaluation prefix stops at the earliest Gold terminal whose own arguments, binding, and exact referenced RuntimeToolContract acceptance are valid; prerequisite failures at that horizon cannot be washed out by a later retry.",
+    "Without a terminal horizon, failed positives stop at budget or turn completion.",
+    "terminalAttemptIndex is an executor-bound ordinal identifying the horizon/complete terminal, otherwise the Qi match, otherwise an in-prefix raw terminal candidate.",
     "Post-terminal behavior does not change decision metrics, but raw trace and infrastructure facts remain preserved for Integration.",
     "M0 never produces final formal metric eligibility."
   ],
@@ -102,8 +104,8 @@
   "syntheticFixture": {
     "path": "synthetic-fixtures.ts",
     "canonicalization": "raw UTF-8 file bytes",
-    "bytes": 11001,
-    "sha256": "86853dd4bae261c0fe452ae23390cb41e2bd808c28a491055a76cd1a98c4c6ed"
+    "bytes": 14795,
+    "sha256": "611985055db9421111ae38076ad5d1d73fbb2b1e60e8723afea957482a0f92dc"
   },
   "modelRuns": 0
 }
