@@ -1,0 +1,185 @@
+{
+  "schema_version": "task1.team_knowledge_assets.v1",
+  "team_id": "T14",
+  "knowledge": [
+    {
+      "assetId": "T14-KNOW-BOREALIS-CG",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-KNOW-CODE"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "code_graph",
+      "name": "Borealis Platform 代码索引",
+      "snapshotSha256": "465109e07915165732de21836cdd7477f4106d6c30d91e1e40ff60948f4ab812",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t14-general",
+          "visibility": "fixed"
+        }
+      ],
+      "repoUrl": "https://benchmark.invalid/t14/borealis-platform.git",
+      "repoCommit": "205b04b0ab90efaf4f679aa61761f214dfc3e5d4",
+      "indexVersion": "build-07.synthetic-code-graph.v1",
+      "contentHash": "668d3341eb9ff1c20aa58e83ed85cc73251542726e9c7c9c1ab5a7b92122a54d"
+    },
+    {
+      "assetId": "T14-KNOW-MERIDIAN-WIKI",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-KNOW-WIKI"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "wiki",
+      "name": "Meridian Fleet 交付手册",
+      "snapshotSha256": "6ed12e3c712932974545fd3d9ab38149c435d97e3331899441ced078e63b1385",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t14-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "a0f0b060b2c76881b608c545b58a90486505b116e85c680707ad79f2e070083d"
+    },
+    {
+      "assetId": "T14-KNOW-FORGE-CG",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-KNOW-CODE"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "code_graph",
+      "name": "Forge Build 代码索引",
+      "snapshotSha256": "425b5d68446efd2bac3fab7fcc05f69a915491094ac5bea3c1998cf210a16057",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t14-general",
+          "visibility": "fixed"
+        }
+      ],
+      "repoUrl": "https://benchmark.invalid/t14/forge-build.git",
+      "repoCommit": "546b52cbfe1d36dd5a135519f42a06b421f0c5d5",
+      "indexVersion": "build-07.synthetic-code-graph.v1",
+      "contentHash": "cf6bc817d28a6ca975610c1f209e10a90f34efed11902d0c9db93ae447560339"
+    }
+  ],
+  "toolLists": [
+    {
+      "assetId": "T14-KNOW-BOREALIS-CG",
+      "fixedTools": [
+        {
+          "name": "search",
+          "description": "按符号名、路径或自然语言片段检索代码索引节点。",
+          "input": {
+            "text": "string",
+            "project": "string"
+          }
+        }
+      ],
+      "queryFixtures": [
+        {
+          "fixture_id": "T14-KNW-FIXTURE-001",
+          "tool_name": "search",
+          "query": {
+            "text": "RollbackGuardEvaluator",
+            "project": "t14-borealis-platform"
+          },
+          "result": {
+            "matches": [
+              {
+                "symbol": "RollbackGuardEvaluator",
+                "file": "internal/helm/rollback_guard.go",
+                "line": 117
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "assetId": "T14-KNOW-MERIDIAN-WIKI",
+      "fixedTools": [
+        {
+          "name": "search",
+          "description": "按手册主题和术语检索 GitOps 交付条目。",
+          "input": {
+            "text": "string",
+            "topic": "string"
+          }
+        }
+      ],
+      "queryFixtures": [
+        {
+          "fixture_id": "T14-KNW-FIXTURE-002",
+          "tool_name": "search",
+          "query": {
+            "text": "漂移例外的发布协调",
+            "topic": "GitOps"
+          },
+          "result": {
+            "section": "drift-exceptions",
+            "statement": "漂移例外须在发布协调记录中登记影响集群与解除条件。"
+          }
+        }
+      ]
+    },
+    {
+      "assetId": "T14-KNOW-FORGE-CG",
+      "fixedTools": [
+        {
+          "name": "impact",
+          "description": "分析指定构建符号的下游影响节点。",
+          "input": {
+            "symbol": "string",
+            "project": "string",
+            "depth": "number"
+          }
+        }
+      ],
+      "queryFixtures": [
+        {
+          "fixture_id": "T14-KNW-FIXTURE-003",
+          "tool_name": "impact",
+          "query": {
+            "symbol": "ImageAttestationStep",
+            "project": "t14-forge-build",
+            "depth": 2
+          },
+          "result": {
+            "nodes": [
+              "pipelines/attestation.yaml:64",
+              "tasks/publish-oci.yaml:91"
+            ],
+            "edge_count": 2
+          }
+        }
+      ]
+    }
+  ],
+  "discoveryEvidence": [
+    {
+      "caseKey": "KNW-001",
+      "targetAssetId": "T14-KNOW-BOREALIS-CG",
+      "visibleDistractorIds": [
+        "T14-KNOW-MERIDIAN-WIKI",
+        "T14-KNOW-FORGE-CG"
+      ]
+    },
+    {
+      "caseKey": "KNW-002",
+      "targetAssetId": "T14-KNOW-MERIDIAN-WIKI",
+      "visibleDistractorIds": [
+        "T14-KNOW-BOREALIS-CG",
+        "T14-KNOW-FORGE-CG"
+      ]
+    },
+    {
+      "caseKey": "KNW-003",
+      "targetAssetId": "T14-KNOW-FORGE-CG",
+      "visibleDistractorIds": [
+        "T14-KNOW-BOREALIS-CG",
+        "T14-KNOW-MERIDIAN-WIKI"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1753 @@
+{
+  "schema_version": "task1.team_memory_assets.v1",
+  "team_id": "T14",
+  "l0Conversations": [
+    {
+      "assetId": "T14-L0-001",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "sessionId": "session-t14-history-001",
+      "messages": [
+        {
+          "messageId": "T14-L0-001-M01",
+          "role": "user",
+          "content": "Borealis Platform 最近在 Kubernetes 集群上推进 Helm chart 升级。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "e916ad8591b7de19e2deaa10393a7491c29c02e17701c5b6301f154e5012cb33"
+        },
+        {
+          "messageId": "T14-L0-001-M02",
+          "role": "assistant",
+          "content": "先记录升级批次、工作负载健康状态和当前 chart 版本，方便和历史发布对照。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "2d20c9931932fdf036b583c84d9450708c3509e90da7c798240da6a5ad389537"
+        },
+        {
+          "messageId": "T14-L0-001-M03",
+          "role": "user",
+          "content": "这次有几个 pod 进入半健康状态，发布没有完全失败但也没有稳定下来。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "3bb1be8a8213f1df1b0c28c4904da0786ceb49d8c4f44970369c8222f313422d"
+        },
+        {
+          "messageId": "T14-L0-001-M04",
+          "role": "assistant",
+          "content": "这种状态需要区分发布失败的比例与单个探针抖动，不能只看最终退出码。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "37f5b44a539804f6e17474be6d8206b82516144a1bc718db28f37cb5289162b0"
+        },
+        {
+          "messageId": "T14-L0-001-M05",
+          "role": "user",
+          "content": "我们希望升级能逐步推进，发现风险时先暂停，而不是马上把所有集群都切过去。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "851967fbb5ec054c055d35e9f70bf6dc463a0b2ffa34bd6bd566997462330695"
+        },
+        {
+          "messageId": "T14-L0-001-M06",
+          "role": "assistant",
+          "content": "可以把暂停和回滚分别记录，前者阻止扩大变更，后者恢复到已知稳定版本。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "7fd424a4730c0080a5e05c37d4756ad4bbf1e975d97e3b7ce55c92eaf34750c9"
+        },
+        {
+          "messageId": "T14-L0-001-M07",
+          "role": "user",
+          "content": "平台团队以前似乎讨论过一套 Helm 发布护栏。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "93189396fe022394129ca2e7e52d0bb11b68618961aa3334c6c8412fd617e946"
+        },
+        {
+          "messageId": "T14-L0-001-M08",
+          "role": "assistant",
+          "content": "那次讨论的决定应与这次观测分开保存，以免临时阈值覆盖长期约定。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "2d3ecf67e87dab3c36713c34642cfbd466a3b0e42c02366e1a2b3a5065938198"
+        },
+        {
+          "messageId": "T14-L0-001-M09",
+          "role": "user",
+          "content": "我只记得里面有失败率、连续观测，还有 readiness 一类的健康检查。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "7381ab5f25a874a04b2a93e2ff1d3c7407ef71fa5e90e215df5c3d0a4c1584a6"
+        },
+        {
+          "messageId": "T14-L0-001-M10",
+          "role": "assistant",
+          "content": "这些线索足以定位主题，但具体门槛和连续次数仍需要从历史决定中核对。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "e072407754c4196dcf6efbc10be2350cfc3c8cc12acc9f9b8a496f86ef997577"
+        },
+        {
+          "messageId": "T14-L0-001-M11",
+          "role": "user",
+          "content": "另外，数据库迁移钩子不能因为应用回滚就重复执行。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "8a35d7b8078d79a769371e25170e8d648737ec4714fb217bf28db332a3940a91"
+        },
+        {
+          "messageId": "T14-L0-001-M12",
+          "role": "assistant",
+          "content": "把迁移钩子的保持方式和发布回滚条件一起复核，能降低恢复时的副作用。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "784a3ba29a5f99907dfd37957351dd7274624591c24da050b44cb59dca18ea8c"
+        }
+      ],
+      "contentHash": "a74e550021bbc778c489e9b624f847f4175b55c177cb6aa6dbc72925a3a2c730"
+    },
+    {
+      "assetId": "T14-L0-002",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "sessionId": "session-t14-history-002",
+      "messages": [
+        {
+          "messageId": "T14-L0-002-M01",
+          "role": "user",
+          "content": "我们复查了 Borealis Platform 的 Helm 渐进发布流程。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "a7e594d843857ec25c2bbdc2f91c468f50b5e2bec52b8d8d3abf23e6d12f45e8"
+        },
+        {
+          "messageId": "T14-L0-002-M02",
+          "role": "assistant",
+          "content": "先确认暂停升级的信号来自发布结果还是来自工作负载健康检查。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "a1a7b1efc1450db8ab95a06759c719d09a46616f2a4a0a17b850ffed616e2232"
+        },
+        {
+          "messageId": "T14-L0-002-M03",
+          "role": "user",
+          "content": "发布结果要看一段时间，不能因为单个短暂错误就立刻回滚。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "f18d31a5fc17566afe4625f51949ba51d6edd0aaa113876ebca3b4dd49a987af"
+        },
+        {
+          "messageId": "T14-L0-002-M04",
+          "role": "assistant",
+          "content": "连续观测可以过滤瞬时噪声，但暂停与回滚都应有可复核的记录。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "75e896d2330743e026d61c8db7053b9eb41c40d82aefa53ea1ce4e5bdda10038"
+        },
+        {
+          "messageId": "T14-L0-002-M05",
+          "role": "user",
+          "content": "评审还强调关键依赖不健康时，不能继续扩大新版本的范围。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "4d14cedf8db2bea181f1040380918dc2c846ecb9fc843fc6827a3bb0b64d34f7"
+        },
+        {
+          "messageId": "T14-L0-002-M06",
+          "role": "assistant",
+          "content": "应将 readiness 和关键依赖检查作为回滚决策的一部分，而非只看应用错误率。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "c5a9c863f5356b26c381295abdce8fc4c859400814024ed9541eae72fafdf0e9"
+        },
+        {
+          "messageId": "T14-L0-002-M07",
+          "role": "user",
+          "content": "当时有人提到失败率门槛和连续窗口。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "d2545f4bedf2f7ab11d856956e2a980dcd0eb7cae980107eda251473980e58a8"
+        },
+        {
+          "messageId": "T14-L0-002-M08",
+          "role": "assistant",
+          "content": "这两个维度要放在同一条历史决定里核对，避免把试运行参数当成最终约定。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "3cf680db6b110337e2f2a2f13171e655f2fadc3b1efc9e10e5bce6b2d9d52434"
+        },
+        {
+          "messageId": "T14-L0-002-M09",
+          "role": "user",
+          "content": "上一稳定 chart 版本需要能快速恢复。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "e075cefd032b2ebbc9bca0408798fb7141999d956537e89b028209210bd387f1"
+        },
+        {
+          "messageId": "T14-L0-002-M10",
+          "role": "assistant",
+          "content": "回滚目标应保持明确，同时记录哪些迁移动作不应再次运行。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "1aac6049796b74aa3184110b1a046152a4d3fb2614dbac752c644bd340de590d"
+        },
+        {
+          "messageId": "T14-L0-002-M11",
+          "role": "user",
+          "content": "我现在只有发布日志，没有找到那次回滚评审的完整结论。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "9ea1bb9b024864b38ebd17f96cd0458ffbcd0cf66e43819e89cccbbf637b728f"
+        },
+        {
+          "messageId": "T14-L0-002-M12",
+          "role": "assistant",
+          "content": "可以沿 Borealis Platform 项目的历史回看评审主题，再把完整决定和日志逐项比对。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "fec36aece5e7d755f349692c976da3d478867a3d5ef4aeb30cc0f4e6e396d3b5"
+        }
+      ],
+      "contentHash": "9114c2d33c4ece7a88e68aea09fd34dee688877dc12bb9e1936563ad62e15bca"
+    },
+    {
+      "assetId": "T14-L0-003",
+      "ownerAgentId": "agent-task1-t14-assets-b",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "sessionId": "session-t14-history-003",
+      "messages": [
+        {
+          "messageId": "T14-L0-003-M01",
+          "role": "user",
+          "content": "Forge Build 正在把多架构镜像交付到内部 registry。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "d6c5b15ae33d030db34c776ceb1d02a39d346e0d5fab342892790714bc48861f"
+        },
+        {
+          "messageId": "T14-L0-003-M02",
+          "role": "assistant",
+          "content": "先把构建产物、索引和 provenance 证明分开核对。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "70180631ba983524e9a177c12ae8bdec297130e1d341f2f9935aede22d9ea5db"
+        },
+        {
+          "messageId": "T14-L0-003-M03",
+          "role": "user",
+          "content": "linux/amd64 与 linux/arm64 都会生成各自的 provenance attestation。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "ee784506d2e84358b70b71356dee12fc8b141cbfbad4f3074f8a9e0670fa2bd9"
+        },
+        {
+          "messageId": "T14-L0-003-M04",
+          "role": "assistant",
+          "content": "两种架构的证明都必须进入发布门禁，而不是只验证默认架构。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "a4a7e7699e7e5872cd122d3dc658d5004fa8c92e430c7316eb3aa8fbdfd27433"
+        },
+        {
+          "messageId": "T14-L0-003-M05",
+          "role": "user",
+          "content": "我找到了评审里关于 verified 状态的记录。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "ef440257cf302c64ea61ee7c1d53b2568a5509405970b52ac9b7dd23113163e8"
+        },
+        {
+          "messageId": "T14-L0-003-M06",
+          "role": "assistant",
+          "content": "需要把两个 provenance attestation 都确认成 verified 后再组装 OCI index。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "19bf75cb3683e840a13ed6c8f1f193840dd7d4151ac2a19f816ce25214e842a1"
+        },
+        {
+          "messageId": "T14-L0-003-M07",
+          "role": "user",
+          "content": "如果其中一份验证失败，是否还能先发通过验证的那一份？",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "b56eb2e1fc9458aea32ff18f75267e7c2a2a5a2483c598151559379cc3e5b483"
+        },
+        {
+          "messageId": "T14-L0-003-M08",
+          "role": "assistant",
+          "content": "不能部分发布；任一 attestation 失败时，整个 index 必须进入 quarantine。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "fd70eaf4e505aa8e05fcffb3971018b0d4184f021aec034af33eefee5df8d85c"
+        },
+        {
+          "messageId": "T14-L0-003-M09",
+          "role": "user",
+          "content": "这样可以避免同一 tag 下不同架构的完整性不一致。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "39fc203dc25dacf8001e485848d26c340cfb7ea9bcd07bdbbbf873239dff720a"
+        },
+        {
+          "messageId": "T14-L0-003-M10",
+          "role": "assistant",
+          "content": "对，禁止让部分架构沿同一 tag 发布，待隔离问题修复后再重建 index。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "6cb1befa84d856c35341595677bc6c3dd12dc80d787451fc71429597a7d93f8b"
+        },
+        {
+          "messageId": "T14-L0-003-M11",
+          "role": "user",
+          "content": "registry 推送日志只显示了索引创建动作。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "bd99b08cab093eae22059443c18960d714701423af1f9601c744055a055e28f9"
+        },
+        {
+          "messageId": "T14-L0-003-M12",
+          "role": "assistant",
+          "content": "完整发布护栏仍以 Forge 多架构 provenance 评审记录为准。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "a00815323bbe52acf62d6620623af4ae472a53706c0f3b482f5642b3aa8c76cd"
+        }
+      ],
+      "contentHash": "e57cee47d2bccd210a8be0fc413474cd0c5e4d24f838f8ac8d45f0f575bc3203"
+    },
+    {
+      "assetId": "T14-L0-004",
+      "ownerAgentId": "agent-task1-t14-assets-a",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "sessionId": "session-t14-history-004",
+      "messages": [
+        {
+          "messageId": "T14-L0-004-M01",
+          "role": "user",
+          "content": "Meridian Fleet 的多集群 reconcile 偶尔会遇到短暂 API 冲突。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "1171e936424ecedc5e0f58371f092b5c5204e93274d7bdb389e7a3cd19b2cac9"
+        },
+        {
+          "messageId": "T14-L0-004-M02",
+          "role": "assistant",
+          "content": "先区分控制器重试、配置漂移和已批准例外，避免把三类事件混为一谈。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "7e038d6a7520f22dba0bddc6ca6b5de26b1a7c81baca135768131fa31c6c6af7"
+        },
+        {
+          "messageId": "T14-L0-004-M03",
+          "role": "user",
+          "content": "漂移例外需要有明确的审批凭据。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "b0d699e82a753cb77b302a9402b78ecccf9aba1e56c75387175bbb9a7c17207d"
+        },
+        {
+          "messageId": "T14-L0-004-M04",
+          "role": "assistant",
+          "content": "例外必须带 label delivery.tencent.io/drift-approved=<ticket>，没有凭据就不能放行。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "88c45614b9a60f56ad078609f6859b63a498eefbe262b333c380634625c012e9"
+        },
+        {
+          "messageId": "T14-L0-004-M05",
+          "role": "user",
+          "content": "例外对象是否可以修改任意字段？",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "b1fa4936de1f4eee218d729e7c6dbba95b6b11b26f2cc337263488498a558e0e"
+        },
+        {
+          "messageId": "T14-L0-004-M06",
+          "role": "assistant",
+          "content": "只允许修改 /spec/replicas，其他字段变化仍视为未批准漂移。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "9ded28fd7f02b82a1c4e04de7e187bf0bb1d098c0e104730ff08ed832f1d1699"
+        },
+        {
+          "messageId": "T14-L0-004-M07",
+          "role": "user",
+          "content": "审批不是永久的，过期后要恢复正常协调。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "cbe1c9b7459f691974dbf1ccb7a4f66489d5e9abb7b7b06816f08700406fdfab"
+        },
+        {
+          "messageId": "T14-L0-004-M08",
+          "role": "assistant",
+          "content": "例外 45 分钟到期后由 Flux 自动恢复 reconcile。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "cac64fa772f2f1a4f22dd20053ada2bb75fa0cc00dbe3843a3355c1f767b3de7"
+        },
+        {
+          "messageId": "T14-L0-004-M09",
+          "role": "user",
+          "content": "如果期间有人改了镜像 tag 呢？",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "5c0644e31e10258f1d5c6c7262dce760f2ad7618fc52b121a239aafb1cd4a288"
+        },
+        {
+          "messageId": "T14-L0-004-M10",
+          "role": "assistant",
+          "content": "image tag 或 Secret ref 变化必须阻断自动流程并升级人工处理。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "79f1d8853c06a9720154b406bdfabd3a48f52cb82aa4b558a80806c7ac175a63"
+        },
+        {
+          "messageId": "T14-L0-004-M11",
+          "role": "user",
+          "content": "我需要把这些约束和当前 reconcile 事件对应起来。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "bd251fc8b307946f825f1113d518a92b5318213e285c0df101e018156a413b12"
+        },
+        {
+          "messageId": "T14-L0-004-M12",
+          "role": "assistant",
+          "content": "完整边界在 Meridian Fleet 的历史决定中，当前事件只能提供定位线索。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "b147e7f0e25a71d5126af03de5103d99e53a5a181484834182997e2a6e271d85"
+        }
+      ],
+      "contentHash": "46464adb9eeeb69c78d92a89d16ca099a564b58660d119921fa7c47787a74bf2"
+    },
+    {
+      "assetId": "T14-L0-005",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "sessionId": "session-t14-history-005",
+      "messages": [
+        {
+          "messageId": "T14-L0-005-M01",
+          "role": "user",
+          "content": "Aurora Release 正在调整 Flagger canary 的分析策略。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "edaa59b857e1e8e13f375ff1472da00197d6d0af0b503318c39b65863a5a8494"
+        },
+        {
+          "messageId": "T14-L0-005-M02",
+          "role": "assistant",
+          "content": "先把 success rate、延迟变化和流量阶段分开记录。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "f78b11fe54a30bb30f8d3cd340530966bcfae29355571ef5255cfb9d0a854ed1"
+        },
+        {
+          "messageId": "T14-L0-005-M03",
+          "role": "user",
+          "content": "突发流量会让新旧版本的 p95 差异变得明显。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "446d11b94bb2f64dd2336a26ee43439172520c18a54cc722ac3242e4a1d31e93"
+        },
+        {
+          "messageId": "T14-L0-005-M04",
+          "role": "assistant",
+          "content": "需要观察连续分析间隔，避免单点波动直接改变流量。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "b6a82a94a3959eca3f8d82ab2ead38d7f2c89b15929f6bde2a2d2ebd1f7598ef"
+        },
+        {
+          "messageId": "T14-L0-005-M05",
+          "role": "user",
+          "content": "团队还关心何时回退，以及回退后由谁复核。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "eb0adc5a342c5ba6faea7b663df97b7ea31858bf6381cd1a3b0e285f801432f1"
+        },
+        {
+          "messageId": "T14-L0-005-M06",
+          "role": "assistant",
+          "content": "暂停加流和回滚应有清楚的动作记录。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "83d55bef04c837b160ed169363cb937fe875898a1a6c936beca682a493adb960"
+        },
+        {
+          "messageId": "T14-L0-005-M07",
+          "role": "user",
+          "content": "我只找到几份发布摘要，没看到最终 profiling 决定。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "45e3f61c9bf9d7d1b11b2b27137702ef44417245ac89d8a65b385ee85f3745a2"
+        },
+        {
+          "messageId": "T14-L0-005-M08",
+          "role": "assistant",
+          "content": "可以沿 Aurora Release 的 canary 评审主题查找历史记忆。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "a1c6ae2ac1e53f2f9a942bb7f53278d9dd56ec9e3bebf199f2febe118d517587"
+        },
+        {
+          "messageId": "T14-L0-005-M09",
+          "role": "user",
+          "content": "另一个项目也在使用 Flagger，但业务容量不同。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "555cfe39991568cd763e424e8882d40ff1cf2383205ad95df09590adcdb3c48b"
+        },
+        {
+          "messageId": "T14-L0-005-M10",
+          "role": "assistant",
+          "content": "相似项目只能作为干扰，不能直接套用它的分析口径。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "71c6b6e5e86a6614d1adafe415fab95aa04ddd253a41cff541b8dc148e5d06f7"
+        },
+        {
+          "messageId": "T14-L0-005-M11",
+          "role": "user",
+          "content": "这次要保护容量又避免过早回退。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "297ee87d23eace21441b25e02a0ec3952ad9f7e76c9f87cd0dba2b395a3b1f39"
+        },
+        {
+          "messageId": "T14-L0-005-M12",
+          "role": "assistant",
+          "content": "先找回 Aurora 自己的 profiling 约定再核对当前发布。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "06416922254438aab55a3e1aa2729e03ee76622975e7c10aaede736985a0e40c"
+        }
+      ],
+      "contentHash": "18d5aa70830853457c89d8bbc21e6272927589afe9267846dfeb661f75508393"
+    },
+    {
+      "assetId": "T14-L0-006",
+      "ownerAgentId": "agent-task1-t14-assets-a",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "sessionId": "session-t14-history-006",
+      "messages": [
+        {
+          "messageId": "T14-L0-006-M01",
+          "role": "user",
+          "content": "Cedar Config 在整理 Secret 和 ConfigMap 的同步策略。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "4e8b3f43b38d233a210c5498bb3c7763aa1285564490a5814953bf7ef805d698"
+        },
+        {
+          "messageId": "T14-L0-006-M02",
+          "role": "assistant",
+          "content": "先区分 data 内容、metadata 和工作负载重载。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "e3812c54d089146c15851a2792327a11fb570a9d31be958a229a8e47b55aa9eb"
+        },
+        {
+          "messageId": "T14-L0-006-M03",
+          "role": "user",
+          "content": "有些服务可以热重载，有些服务需要短暂重启。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "0f64a07f2de53af6866f0219268e46f0a8ac5cfb03c576043c810d0831e57b8c"
+        },
+        {
+          "messageId": "T14-L0-006-M04",
+          "role": "assistant",
+          "content": "应记录哪些变更会触发 rollout，以及如何合并相近变更。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "8228e72777e42a9086b340abe589f713ef7d687420070cbe7b139f8ef79edd39"
+        },
+        {
+          "messageId": "T14-L0-006-M05",
+          "role": "user",
+          "content": "这次主要担心频繁配置更新造成重复 rollout。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "2f4d2d9ac14847e2e0f05ff1b27925ed2d4d6e064c0973e706ad530dba733822"
+        },
+        {
+          "messageId": "T14-L0-006-M06",
+          "role": "assistant",
+          "content": "可以为每个 workload 设定合并窗口和最小间隔。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "6bda97f157241d86f0e090426678f1d7429af543a781e89ec7576cdce0686879"
+        },
+        {
+          "messageId": "T14-L0-006-M07",
+          "role": "user",
+          "content": "团队以前做过一次配置迁移评审。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "85018f331deb589e927e655f7c0628ce50fd54eb37b0ca5dd7bf50b59bc0e09b"
+        },
+        {
+          "messageId": "T14-L0-006-M08",
+          "role": "assistant",
+          "content": "按 Cedar 的决定类型和日期范围回看完整记录。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "b6e4248695a9d11ae3bb09b813623c88c073c580cbe46e7294a4026d312b5d79"
+        },
+        {
+          "messageId": "T14-L0-006-M09",
+          "role": "user",
+          "content": "审计事件里既有 data 变化也有标签变化。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "a45839ca772727755c12b96bb505d6aef3d7b9a726d789595e2237bcbe91af5d"
+        },
+        {
+          "messageId": "T14-L0-006-M10",
+          "role": "assistant",
+          "content": "metadata-only 变化是否触发动作，要以迁移决定为准。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "84981d062e56e9a6b8dd5cd0e8f10d2919a3b5fc01bcb5cb31ea13e56683f447"
+        },
+        {
+          "messageId": "T14-L0-006-M11",
+          "role": "user",
+          "content": "证书轮换项目也出现过类似字段。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "b5772bfca5bb9c1633cd1163b69aab205120a9c84cc29bfcd2a3a79b5ae516d9"
+        },
+        {
+          "messageId": "T14-L0-006-M12",
+          "role": "assistant",
+          "content": "证书轮换只是同域干扰，不能替代 Cedar Config 的护栏。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "277fe6a2e4f16313c7fdc4a22a49cf2c9fe5c4eedb3828b12becd6c92320c3d5"
+        }
+      ],
+      "contentHash": "682d297b058faf813072be3bb9aa8a768936306919937d6d5be68740556c2fc5"
+    },
+    {
+      "assetId": "T14-L0-007",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "sessionId": "session-t14-history-007",
+      "messages": [
+        {
+          "messageId": "T14-L0-007-M01",
+          "role": "user",
+          "content": "Borealis 的 chart lint 和模板渲染检查已接入发布前流水线。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "9c2311eb6b35dc60078b462746d4b8e11bb60711a761c353bfb9056ae7652a55"
+        },
+        {
+          "messageId": "T14-L0-007-M02",
+          "role": "assistant",
+          "content": "把静态检查结果与运行时探针结果分开。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "185432370864a60d112f18dbdc3b7df7e6e934a5cdf7426f1613fdcb12e42e79"
+        },
+        {
+          "messageId": "T14-L0-007-M03",
+          "role": "user",
+          "content": "镜像摘要校验可以提前发现一部分错误。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "2fa85b1938211313baf844acb509696ab28f3b0828b7b47352ce6b77657df0dd"
+        },
+        {
+          "messageId": "T14-L0-007-M04",
+          "role": "assistant",
+          "content": "但它不能替代健康检查和回滚护栏的历史约定。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "3c0377c57c213b7af33fbce583d4683f1482cf6b95f1f27aa5e763965fd97bd1"
+        },
+        {
+          "messageId": "T14-L0-007-M05",
+          "role": "user",
+          "content": "我们还在确认迁移钩子是否幂等。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "4d13969eb5087f1eb63f5820f982ee89df183ac47f5679192d694433d32e3bbc"
+        },
+        {
+          "messageId": "T14-L0-007-M06",
+          "role": "assistant",
+          "content": "应将钩子行为与 chart 版本绑定。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "37fa5635aca5ee49aeaef2e2d5a30ce7614d9bf562d2080498945687453b410b"
+        },
+        {
+          "messageId": "T14-L0-007-M07",
+          "role": "user",
+          "content": "这个会话主要关注发布前检查清单。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "ccaaf8fc53d0f453ae5fbd638342df9c160636ec1f200ef4e1666bc1e62af9af"
+        },
+        {
+          "messageId": "T14-L0-007-M08",
+          "role": "assistant",
+          "content": "它与渐进发布有关联，但不是回滚场景正文。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "22b5e96b8c17a38fe3722bb7ddf9b055d137f45d86f05d3f5f79deae8c1fcfcb"
+        },
+        {
+          "messageId": "T14-L0-007-M09",
+          "role": "user",
+          "content": "当前没有新增回滚参数。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "11c53b2d3ef77a347b3e5668535eb11262b2ab13ca968df0e467778d20787bbf"
+        },
+        {
+          "messageId": "T14-L0-007-M10",
+          "role": "assistant",
+          "content": "保持检查项边界清晰，避免把验证结果当作回滚门槛。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "16dae90240c4107711fe32dd23dc4f5d8ea352a500fb4457b3c18ee56fc6f741"
+        },
+        {
+          "messageId": "T14-L0-007-M11",
+          "role": "user",
+          "content": "后续会补充一份审计记录。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "6230bbbabc838dc60b13c27a99bedd89253a37adc375646b4f244912f61e54d2"
+        },
+        {
+          "messageId": "T14-L0-007-M12",
+          "role": "assistant",
+          "content": "补充时保留检查时间、chart 版本和执行结果即可。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "e30361b59f4bee1625c826ee5014a2a0facd562aa02b5bd942aa89b4fb3a625a"
+        }
+      ],
+      "contentHash": "9e12fee83e62a8f306927b1683aa7c30a594c2a1c34bba50af8119d90b831e2b"
+    },
+    {
+      "assetId": "T14-L0-008",
+      "ownerAgentId": "agent-task1-t14-assets-b",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "sessionId": "session-t14-history-008",
+      "messages": [
+        {
+          "messageId": "T14-L0-008-M01",
+          "role": "user",
+          "content": "Forge Build 的 registry 清理任务正在评估保留周期。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "163dfdfc79f391740e2e331e42b705672dc928d366a9b92d68fe6d215bcf9199"
+        },
+        {
+          "messageId": "T14-L0-008-M02",
+          "role": "assistant",
+          "content": "先核对标签、清单和子镜像引用关系。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "183d9d90224f42d732c1c876ee5e48c3825ffab1eae3cbaf6369fa79bd444ad5"
+        },
+        {
+          "messageId": "T14-L0-008-M03",
+          "role": "user",
+          "content": "多架构清单的子镜像不能被单独清理。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "733c1f2bbf7f7156f5ef639660123e5bdb53cdfa4d5b8b6f5e8cf55fcd2cf8e7"
+        },
+        {
+          "messageId": "T14-L0-008-M04",
+          "role": "assistant",
+          "content": "清理规则需要识别父子关系并先模拟影响范围。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "94a23695f45d00f36fb9af84468d653d147afaef4ff47b992988f77e91b5a291"
+        },
+        {
+          "messageId": "T14-L0-008-M05",
+          "role": "user",
+          "content": "另一个讨论涉及镜像签名，不是本次 provenance 评审。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "928339782049e051c3000c695b3bbfdf1a200ede45109c183c5e19dc045e13d3"
+        },
+        {
+          "messageId": "T14-L0-008-M06",
+          "role": "assistant",
+          "content": "签名主题可作为相近干扰，不能覆盖发布门禁。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "5f722b5213d03ba17190790920496482aaad12c850c00e4f4d69c7c66eec608b"
+        },
+        {
+          "messageId": "T14-L0-008-M07",
+          "role": "user",
+          "content": "我们准备在测试 registry 上做演练。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "f0c68dbf9810e20391d0eda7010927fdbc3e56e5bb549eb48ce64e36b5e40a99"
+        },
+        {
+          "messageId": "T14-L0-008-M08",
+          "role": "assistant",
+          "content": "记录演练前后的清单差异，避免影响生产引用。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "9b438271516ab67fcb8ee2d936ca64c64838b730bf67cb17e208a5c20369e9a3"
+        },
+        {
+          "messageId": "T14-L0-008-M09",
+          "role": "user",
+          "content": "目前只需要清理建议，不涉及架构证明。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "1eec8fb7dfd393abaf5fbf6ec579358932caf502ae7ea133aa269b9656fad27b"
+        },
+        {
+          "messageId": "T14-L0-008-M10",
+          "role": "assistant",
+          "content": "把范围限定在保留周期和引用安全上即可。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "ddf894b4b303d6f15dcbaf642ca4efd2576007c3befdffd86826e082630f65a5"
+        },
+        {
+          "messageId": "T14-L0-008-M11",
+          "role": "user",
+          "content": "后面会让构建值班同学复核。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "55c323ffd679500d7b04bffe26fd2c3d8dcc31a989e8d31cd1939b7105f5651d"
+        },
+        {
+          "messageId": "T14-L0-008-M12",
+          "role": "assistant",
+          "content": "复核时附上清单关系和模拟输出。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "e0c70f4a3741b616e86ddc9b7c05788d140da069759b93382127fdac897a81d4"
+        }
+      ],
+      "contentHash": "5fc0f3e0bf733417ed5d051767a126378de771fdf00aa844dd70576ea80fe891"
+    },
+    {
+      "assetId": "T14-L0-009",
+      "ownerAgentId": "agent-task1-t14-assets-a",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "sessionId": "session-t14-history-009",
+      "messages": [
+        {
+          "messageId": "T14-L0-009-M01",
+          "role": "user",
+          "content": "Meridian Fleet 在做集群标签与仓库目录的对齐。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "916f232f11b29266f72112b36b6c686d583204a251bd0d952ed9d7173504e6cc"
+        },
+        {
+          "messageId": "T14-L0-009-M02",
+          "role": "assistant",
+          "content": "先列出标签来源、目录映射和例外对象。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "057454604bf41cb32b3fe1677b5c1c9d65769d02a754479c4edaf1f587586e67"
+        },
+        {
+          "messageId": "T14-L0-009-M03",
+          "role": "user",
+          "content": "有一个历史目录仍被两个集群引用。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "a044cfc8a08e218df6e2845f03ee3901172be4b32667bf9c2ae247c3ac12df77"
+        },
+        {
+          "messageId": "T14-L0-009-M04",
+          "role": "assistant",
+          "content": "迁移前要确认所有引用者，不能只更新默认集群。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "653ddc5fcaf9ba79b2eb20bef4069ffab1bfa5fe17a440930d969f6168b9f68e"
+        },
+        {
+          "messageId": "T14-L0-009-M05",
+          "role": "user",
+          "content": "这次重点是目录治理，不是漂移例外。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "1c665bfc9ce764f2d44eada940bd02b204cb375123de9152d44c4f4d1af92eb6"
+        },
+        {
+          "messageId": "T14-L0-009-M06",
+          "role": "assistant",
+          "content": "把治理决策与 reconcile 历史分开记录。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "58edfe935d8e9312dc15128f39464e8924db17b714bd9abf15a1a8d0860f8996"
+        },
+        {
+          "messageId": "T14-L0-009-M07",
+          "role": "user",
+          "content": "旧目录将在维护窗口下线。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "756f7da377f1f2595438edd81c28570cdd24691544211785dcac6400fe92a913"
+        },
+        {
+          "messageId": "T14-L0-009-M08",
+          "role": "assistant",
+          "content": "下线前保留回退映射和通知对象。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "f0b212c8923f840fba87e4ff638be4eef3789e2aa5802f432f89206f27389fae"
+        },
+        {
+          "messageId": "T14-L0-009-M09",
+          "role": "user",
+          "content": "目前还没有确定具体窗口。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "9250f72d4d60dac1fc8aadae0a8d9a18e95c364e99edb611201adc6b71350941"
+        },
+        {
+          "messageId": "T14-L0-009-M10",
+          "role": "assistant",
+          "content": "先记录依赖关系和验证步骤，窗口确定后再补日期。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "b2f1e71ceaa6fc0c326519828622e53293d02d5a76822f474b67407ab2544f6a"
+        },
+        {
+          "messageId": "T14-L0-009-M11",
+          "role": "user",
+          "content": "另一个团队的目录迁移记录很相似。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "7fc000718d408408180f6542db802bc4909775522601c6a436e732996cf827ad"
+        },
+        {
+          "messageId": "T14-L0-009-M12",
+          "role": "assistant",
+          "content": "相似记录仅作参考，不能当作 Meridian 的漂移决定。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "37a76e661e15e575546684c1259a51f0906a8c7368732526ac0a4b81cda1b92f"
+        }
+      ],
+      "contentHash": "7a82f5c9bdc143b34032bc58f18b26fac80f1983cfe01dfbca2ea5ebd8668be0"
+    },
+    {
+      "assetId": "T14-L0-010",
+      "ownerAgentId": "agent-task1-t14-assets-a",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "sessionId": "session-t14-history-010",
+      "messages": [
+        {
+          "messageId": "T14-L0-010-M01",
+          "role": "user",
+          "content": "Cedar Config 正在为配置变更增加审计事件。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "9b20d73d67e69b1b76371ccb3893474e83c98de6bdf86f78982192dfd9c3ef44"
+        },
+        {
+          "messageId": "T14-L0-010-M02",
+          "role": "assistant",
+          "content": "审计事件应包含来源、对象和生效结果，但不要记录敏感值。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "0d009514bcf303b054a5d23904a35cb6c26dbd00d6dfeaf0db4a7c372dc2a33c"
+        },
+        {
+          "messageId": "T14-L0-010-M03",
+          "role": "user",
+          "content": "我们计划把变更和服务重载关联起来。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "152b37e164c36def7f5d395d9f497ec1659c95b592d741dd2ec2d7081a88270c"
+        },
+        {
+          "messageId": "T14-L0-010-M04",
+          "role": "assistant",
+          "content": "关联时使用版本或摘要，不要把 Secret 内容写进日志。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "999b2fcf71a74fa0d0eaae5a8d75252385da2d30ca4b0cca94b3845b6596c274"
+        },
+        {
+          "messageId": "T14-L0-010-M05",
+          "role": "user",
+          "content": "这个工作流主要服务于日常追踪。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "bd0e4e1e5657b9d756b34d1c86387c67789a1774cbeab10a929f85c3c5b2ede6"
+        },
+        {
+          "messageId": "T14-L0-010-M06",
+          "role": "assistant",
+          "content": "它能帮助定位变更，但不代表迁移评审的触发条件。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "e7ed4eb9f9609cacd04b9b013987f35a38f10fe209b0cb54217c36aad72851de"
+        },
+        {
+          "messageId": "T14-L0-010-M07",
+          "role": "user",
+          "content": "审计事件字段已经在测试环境验证。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "59155fb4c6d4027624caeab607517cce0d554f558c040d920511a7828db0af68"
+        },
+        {
+          "messageId": "T14-L0-010-M08",
+          "role": "assistant",
+          "content": "继续检查脱敏、重放和跨集群查询能力。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "330c913ce8a6cdd01dba4c1c166bd2822a342904f1b99794545fb69601ab1db9"
+        },
+        {
+          "messageId": "T14-L0-010-M09",
+          "role": "user",
+          "content": "相邻项目也在做配置审计。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "28e71b4921e85c0560353b5b8fa625f51fc257dfb3b2c62ef1757ac0088eb31b"
+        },
+        {
+          "messageId": "T14-L0-010-M10",
+          "role": "assistant",
+          "content": "保留项目边界，避免混用两个项目的事件格式。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "b3de2bc175073d72403e2b289356cfcff52f50c35e70438933a62fbe73723078"
+        },
+        {
+          "messageId": "T14-L0-010-M11",
+          "role": "user",
+          "content": "本次没有迁移护栏变更。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "c2b29882e36114c81f9ba0ad7ddfa8bebfe4ffb9016c7d72fb489066e09aca61"
+        },
+        {
+          "messageId": "T14-L0-010-M12",
+          "role": "assistant",
+          "content": "把这条记录标记为审计实现，而非迁移决定。",
+          "sourceEvidenceIds": [
+            "T14-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "afcb78e8f33c2549345d75b1c2f56d36231c96642b8746249ca48c71d88f45f3"
+        }
+      ],
+      "contentHash": "eb94b4bc04914c412350766ddb7a7595314c4a52038ed73f7b6102f3ca28777b"
+    }
+  ],
+  "l1Memories": [
+    {
+      "assetId": "T14-L1-001",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "Borealis Platform 在 Kubernetes 上以 Helm chart 推进工作负载升级，团队关注渐进发布、可观测性和回滚安全，避免半健康状态扩大到整个集群。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T14-L0-001-M11",
+        "T14-L0-001-M12",
+        "T14-L0-002-M11",
+        "T14-L0-002-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "932631ffb14c39089db980ae1534c946229adabb5b5488ac71b866492e45eaf5"
+    },
+    {
+      "assetId": "T14-L1-002",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "一次关于发布风险的回滚评审把失败率、连续观测和工作负载健康检查放在一起讨论，目的是在风险扩大前暂停，并为恢复到稳定版本保留清晰路径；完整门槛留在相关历史决定中。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T14-L0-001-M11",
+        "T14-L0-001-M12",
+        "T14-L0-002-M11",
+        "T14-L0-002-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "4265b1b71ff2663c0e11dd3176a199be1d37b6ead5b9e2da0ac893ab8679f890"
+    },
+    {
+      "assetId": "T14-L1-003",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "decision",
+      "content": "历史决定为：发布失败率超过 5% 且连续 3 个观测窗口时暂停继续升级；若 readiness 与关键依赖健康检查连续 2 个窗口不通过，则回滚到上一稳定 chart 版本，并保持迁移钩子状态不变。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T14-L0-001-M11",
+        "T14-L0-001-M12",
+        "T14-L0-002-M11",
+        "T14-L0-002-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "6e52f79e7c5f14625ca0e05739d2501071458e9d9667301c4d12a087bab0aec4"
+    },
+    {
+      "assetId": "T14-L1-004",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "event",
+      "content": "发布前核对包括 chart 模板渲染、镜像摘要、探针配置和迁移钩子幂等性；这些检查帮助发现配置问题，但不替代历史评审中的暂停与回滚决定。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T14-L0-001-M11",
+        "T14-L0-001-M12",
+        "T14-L0-002-M11",
+        "T14-L0-002-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "2ffb9fce4a7c61d4198a9b7955fe31160a96447fe9cbedb03b1e2ae3cb857bca"
+    },
+    {
+      "assetId": "T14-L1-005",
+      "ownerAgentId": "agent-task1-t14-assets-b",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "Forge Build 负责多架构镜像构建与内部 registry 交付，团队把架构证明、索引组装和隔离失败产物视为不同阶段。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T14-L0-003-M11",
+        "T14-L0-003-M12",
+        "T14-L0-008-M11",
+        "T14-L0-008-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "7256ea1537a77aaa6010fbc1fa5ad592c47b703d7d934546375d2b84752190b5"
+    },
+    {
+      "assetId": "T14-L1-006",
+      "ownerAgentId": "agent-task1-t14-assets-b",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "Forge 的交付评审围绕两种架构的 provenance attestation、OCI index 发布门禁和失败隔离展开；完整判定保存在构建历史会话中。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T14-L0-003-M11",
+        "T14-L0-003-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "1f6165f5e4422709ee04d1b0ef235827ea6d1a0d6d1d65f763fffe843defc20d"
+    },
+    {
+      "assetId": "T14-L1-007",
+      "ownerAgentId": "agent-task1-t14-assets-b",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "多架构清单的父子引用必须在清理前核对，签名与保留周期是相邻流程，不替代 provenance 发布护栏。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T14-L0-008-M11",
+        "T14-L0-008-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "bc72fb2bd1453db2624aa7f575c99454fed7392fdd51dd448f37e2f67c9abbf7"
+    },
+    {
+      "assetId": "T14-L1-008",
+      "ownerAgentId": "agent-task1-t14-assets-a",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "Meridian Fleet 通过 GitOps 控制多集群配置，需区分暂态 API 冲突、漂移例外和需要人工升级的敏感变更。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T14-L0-004-M11",
+        "T14-L0-004-M12",
+        "T14-L0-009-M11",
+        "T14-L0-009-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "4405e867f3c54ae14bbca4c3a177c842785e367cbbe74621f3930073849e2d21"
+    },
+    {
+      "assetId": "T14-L1-009",
+      "ownerAgentId": "agent-task1-t14-assets-a",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "Meridian 的历史评审讨论漂移例外的审批标签、允许的最小字段范围、到期恢复和敏感引用变化的升级路径，完整边界留在原会话。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T14-L0-004-M11",
+        "T14-L0-004-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "cb7d84c2d35f5767a1545e5e651e1aa64fb751b82ff9ee606f2c0f0e27fec078"
+    },
+    {
+      "assetId": "T14-L1-010",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "decision",
+      "content": "Aurora 的历史 profiling 决定为：success rate >=99.5% 且 p95 latency delta <=40ms 连续 6 个分析间隔后才增加 20% 流量；error rate >2% 或 p95 delta >120ms 连续 2 个间隔则回滚。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T14-L0-005-M11",
+        "T14-L0-005-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "5e87eb647d602382d188cdded07aa20196b5e32025dd6e746ef84ec79d29fbe7"
+    },
+    {
+      "assetId": "T14-L1-011",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "Aurora Release 使用 Flagger 做渐进流量与分析，关注成功率、延迟变化、容量保护和回退后的复核。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T14-L0-005-M11",
+        "T14-L0-005-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "b9d65ab6df57bb6301cdf61888ec7a9bd4d43378b5eb0782cd369d8d33d74d51"
+    },
+    {
+      "assetId": "T14-L1-012",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "其他项目也使用 Flagger 和相似的分析词汇，但它们的指标口径与容量背景不能直接套用到 Aurora。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T14-L0-005-M11",
+        "T14-L0-005-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "87cedaea21ff940d8c1f47bc7a5ba57c57e2eac0d6b2a5ba6eda556fbda6b85a"
+    },
+    {
+      "assetId": "T14-L1-013",
+      "ownerAgentId": "agent-task1-t14-assets-a",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "decision",
+      "content": "Cedar 的历史决定为：仅 Secret/ConfigMap data checksum 变化触发；metadata-only 变化忽略；90 秒内变更合并；每个 workload 每 10 分钟最多一次 rollout；额外变化合并进下一次 rollout。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T14-L0-006-M11",
+        "T14-L0-006-M12",
+        "T14-L0-010-M11",
+        "T14-L0-010-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "4cc603d8c58ae2563dbe23b93bf2331aa37750ac715182e283f5462e85c856dd"
+    },
+    {
+      "assetId": "T14-L1-014",
+      "ownerAgentId": "agent-task1-t14-assets-a",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "Cedar Config 管理 Secret/ConfigMap 同步和工作负载重载，需要同时考虑内容摘要、metadata 变化和频繁 rollout 的合并。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T14-L0-006-M11",
+        "T14-L0-006-M12",
+        "T14-L0-010-M11",
+        "T14-L0-010-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "b2358766afb16fa147030d36ec2014dfe292763acea99568dc01356155ed63da"
+    },
+    {
+      "assetId": "T14-L1-015",
+      "ownerAgentId": "agent-task1-t14-assets-a",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "Cedar 已为配置变更增加来源、对象和生效摘要审计字段，审计实现本身不改变迁移评审的触发范围与 rollout 合并规则。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T14-L0-010-M11",
+        "T14-L0-010-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "88d7d13355f8f7eb881a1ea90928cdda900def3de64b02eab7cf0903ecd1dfd9"
+    },
+    {
+      "assetId": "T14-L1-016",
+      "ownerAgentId": "agent-task1-t14-assets-a",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "Meridian 的目录治理记录涉及标签映射、旧目录下线和回退映射，属于资源治理背景，不是漂移例外边界决定。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T14-L0-009-M11",
+        "T14-L0-009-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "15dcd4f55abe18be3adebe7e76b4e6d79432bcef60bb6ae19cdf9d200c0f5bd5"
+    }
+  ],
+  "l2Scenes": [
+    {
+      "assetId": "T14-L2-001",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "path": "delivery/borealis/helm-progressive-review.md",
+      "summary": "团队围绕 Kubernetes 工作负载的渐进升级、发布失败信号、连续观测和健康检查做过一次回滚策略评审，形成了可供历史核对的决定记录。具体门槛保留在相关历史条目中。",
+      "content": "场景记录：Borealis Platform 在 Helm 渐进发布评审中分别讨论发布失败率、连续观察、readiness 与关键依赖健康检查。评审要求暂停扩大变更与恢复到稳定 chart 版本分开记录，并保持迁移钩子状态不被重复改变。该场景用于核对历史决定的上下文，具体阈值以对应记忆条目为准。",
+      "injected": true,
+      "supportingSessionIds": [
+        "session-t14-history-001",
+        "session-t14-history-002"
+      ],
+      "contentHash": "09f5e0b359343b3ecb4da946dca7890d64a4c83a14349fd182ffa84db67a0949"
+    },
+    {
+      "assetId": "T14-L2-002",
+      "ownerAgentId": "agent-task1-t14-assets-b",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "path": "delivery/forge/provenance-index-review.md",
+      "summary": "Forge 团队复盘多架构构建证明、索引组装和失败隔离的发布边界，保留完整评审上下文供历史核对。",
+      "content": "完整记录：Forge Build 将不同架构的 provenance attestation 作为 OCI index 发布前的独立证据，并把验证失败的产物与可发布索引隔离。registry 清理、签名和索引父子关系是相邻主题，不能改变该发布门禁的适用范围。",
+      "injected": true,
+      "supportingSessionIds": [
+        "session-t14-history-003",
+        "session-t14-history-008"
+      ],
+      "contentHash": "1704f0b1ae54df8af0aeef2d1ee5d540539f62fea366fd7a45dd59106a265f72"
+    },
+    {
+      "assetId": "T14-L2-003",
+      "ownerAgentId": "agent-task1-t14-assets-a",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "path": "delivery/meridian/drift-exception-review.md",
+      "summary": "Meridian 团队复盘 GitOps 漂移例外的审批凭据、字段范围、到期恢复与人工升级边界，完整判定保留在历史记忆中。",
+      "content": "完整记录：Meridian Fleet 对漂移例外采用带审批凭据的最小授权，并在例外失效后恢复正常协调；涉及镜像或敏感引用的变化需脱离自动处理并升级人工。目录治理与普通暂态冲突只是相似背景。",
+      "injected": true,
+      "supportingSessionIds": [
+        "session-t14-history-004",
+        "session-t14-history-009"
+      ],
+      "contentHash": "722065324cc3912773b90434d97eccba80db2716d6595f841f01fe5b41172b0a"
+    },
+    {
+      "assetId": "T14-L2-004",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "path": "delivery/aurora/canary-analysis-review.md",
+      "summary": "Aurora 团队围绕 canary 成功率、延迟变化、连续分析和回退动作进行复盘，保留完整决定的上下文而不在摘要中展开阈值。",
+      "content": "完整记录：Aurora Release 的 Flagger canary 评审同时看成功率、p95 延迟变化、连续分析间隔与流量调整动作；异常时执行回退并保留复核路径。其他 Flagger 项目的口径只能作为干扰，具体门槛以历史记忆为准。",
+      "injected": true,
+      "supportingSessionIds": [
+        "session-t14-history-005"
+      ],
+      "contentHash": "8981b53a9a35df966e35f2c0166ea13b0237c8334f69d31915a5ceee2cdbc107"
+    },
+    {
+      "assetId": "T14-L2-005",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "path": "delivery/borealis/helm-rollback-review.md",
+      "summary": "该场景记录 Borealis Helm 发布异常后的暂停、修订回退、迁移状态保护与恢复判定关系，供发布值班核对完整历史。",
+      "content": "完整记录：发布异常时暂停 borealis-release 流水线；保留 annotation borealis.io/migration-state=completed；回滚上一 revision 时使用 --wait --timeout 7m，且不得重跑 pre-upgrade migration Job。只有 release status=deployed 且 readiness 与关键依赖连续 3 个窗口通过后，才恢复流水线。发布日志和模板检查是辅助证据，不改变这条回滚护栏。",
+      "injected": true,
+      "supportingSessionIds": [
+        "session-t14-history-001",
+        "session-t14-history-002"
+      ],
+      "contentHash": "96fcc86b68f606fd6a3802498b9b0c7c11f2d478c7c30a43f80b1dbd83709bda"
+    }
+  ],
+  "l3Profiles": [
+    {
+      "assetId": "T14-L3-001",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-HISTORY-L3"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "content": "用户长期负责云原生交付，偏好先核对项目历史决定，再进行小范围、可暂停且可回退的变更。",
+      "stability": "team",
+      "contentHash": "83cc51f8e27c517bf237ba12c2c5a36b8dc1e38249d9477c5b66def9fb3d318f"
+    }
+  ],
+  "injectionContract": {
+    "l0Injected": false,
+    "l1Injected": false,
+    "l2PathAndSummaryInjected": true,
+    "l3ContentInjected": true
+  }
+}

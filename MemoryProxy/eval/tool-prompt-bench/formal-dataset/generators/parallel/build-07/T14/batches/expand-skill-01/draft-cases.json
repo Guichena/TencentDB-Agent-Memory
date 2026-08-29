@@ -1,0 +1,222 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "build-07-T14-expand-skill-01",
+  "stage": "DS05",
+  "team_id": "T14",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T14-SKL-001-expand-01",
+      "external_source_ids": ["T14-SRC-HELM-CHART"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Borealis Platform 要把一个新服务纳入 Helm chart 交付，请先根据当前项目上下文明确准备方向。"},
+        {"role": "assistant", "content": "这项工作会涉及 chart 目录与命名、Chart.yaml、values 契约、模板安全默认值、渲染校验和版本管理；当前上下文还没有可直接照做的完整编写流程。"},
+        {"role": "user", "content": "保持在 Borealis Platform 项目范围内，给出能落地执行的最小路径和判断依据。"}
+      ],
+      "changed_message_index": 3,
+      "query": "请把这个 Helm chart 的编写顺序、关键安全检查和本地渲染验证整理成可执行清单。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "先打开当前项目已列出的、用于编写和维护 Kubernetes Helm chart 的完整指南，再按其中的流程完成 chart 结构、值契约、模板安全默认值、渲染测试和版本检查。"},
+        "private_proposal": {
+          "unique_information_gap": "当前上下文只列出 Helm chart 交付的工作范围，没有提供冻结的 chart anatomy、Chart.yaml 版本区分、values/schema 契约、模板编写、安全默认值、验证和版本递增流程。",
+          "route": "skill",
+          "target_asset_ids": ["T14-SKILL-HELM-CHART"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "打开最匹配的 Helm chart 编写指南后，按其完整流程完成 Borealis Platform chart 的结构、契约、模板、验证与版本管理。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "完整操作要点已经补齐：按约定组织 chart 目录、文件名和资源粒度；在 Chart.yaml 使用 apiVersion v2，并独立维护 DNS-1123 name、chart version、appVersion 与可选 kubeVersion；把 values.yaml 作为 API 契约并用 values.schema.json 校验；模板中使用前缀 helper、include、required、tpl 和安全上下文，避免 latest、明文 Secret 与硬编码 namespace；依次运行 helm lint、helm template 后用 kubeconform 或 kubectl dry-run 校验，再做单元测试和 chart-testing；最后按 breaking change、新功能和修复分别递增 major、minor 或 patch，并保留迁移说明。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "追加消息已给出 chart 结构、Chart.yaml 版本语义、值契约与 schema、模板与安全模式、渲染校验测试及版本递增的完整最小流程，无需再定位内部能力。"}
+      },
+      "visible_distractor_ids_author_only": ["T14-SKILL-HELM-OPS", "T14-SKILL-HARBOR-HELM", "T14-SKILL-CILIUM-GATEWAY"],
+      "controlled_delta_note": "Positive 只保留 Helm chart 编写流程这一技术缺口并请求打开已列出的完整指南；Negative 仅补齐相同 chart 编写、验证与版本管理步骤，共享历史和 query 完全相同。",
+      "source_fact_map": [
+        {"claim": "chart 目录按 Chart.yaml、values、schema、templates、tests 和 CI 文件组织，文件名使用约定的 YAML/模板规则。", "source_id": "T14-SRC-HELM-CHART", "locator": "Chart Anatomy; File rules"},
+        {"claim": "Chart.yaml 使用 apiVersion v2，独立区分 chart version、appVersion 与 kubeVersion，并遵守 DNS-1123 名称规则。", "source_id": "T14-SRC-HELM-CHART", "locator": "Chart.yaml; Rules"},
+        {"claim": "values.yaml 是 API 契约并由 values.schema.json 校验；模板使用 include、required、tpl、helpers 与安全上下文，默认值避免 latest 和明文 Secret。", "source_id": "T14-SRC-HELM-CHART", "locator": "Values Schema; Writing Templates; Design Principles"},
+        {"claim": "验证链为 helm lint、helm template、kubeconform 或 kubectl dry-run、单元测试和 chart-testing，版本按 major/minor/patch 语义递增。", "source_id": "T14-SRC-HELM-CHART", "locator": "Testing; Chart Versioning"}
+      ],
+      "sol_review_questions": [
+        "Positive 的 Helm chart 线索是否足以命中编写指南，同时没有暴露内部工具名或资产标识？",
+        "Negative 是否只补足 chart 结构、值契约、模板安全、验证和版本管理这一唯一信息缺口？",
+        "是否接受 Kubernetes chart、values schema、kubeconform 和安全默认值作为宿主可见的领域线索？"
+      ]
+    },
+    {
+      "draft_pair_id": "T14-SKL-002-expand-01",
+      "external_source_ids": ["T14-SRC-TEKTON-PIPELINES"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_5_to_8",
+      "shared_context_messages": [
+        {"role": "user", "content": "Forge Build 正在整理 Tekton 容器构建流水线，目标是让私有仓库认证、任务调度和失败收尾都可重复。"},
+        {"role": "assistant", "content": "需要覆盖 Pipeline/PipelineRun 资源版本、任务解析、私有 Git、节点放置、动态参数、条件、finally 和超时；当前对这些约束只有目标描述，没有可执行的组合方式。"},
+        {"role": "user", "content": "请先把本次流水线改造的最小可验证路径说清楚。"},
+        {"role": "assistant", "content": "应先确认资源契约与认证边界，再验证调度和条件，最后检查超时、收尾任务与解析器缓存；但每一步的精确写法仍需依据项目可用指南。"},
+        {"role": "user", "content": "只处理 Forge Build 的流水线编排，不扩展到事件触发或普通 Job。"}
+      ],
+      "changed_message_index": 5,
+      "query": "针对这条 Tekton 构建流水线，应该怎样串起 resolver、私有仓库认证、调度条件和超时收尾？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "先打开当前项目已列出的、用于编写 Tekton Pipeline 与 PipelineRun 的完整指南，再按其中的解析器、认证、调度、条件、finally 和超时流程实施并验证。"},
+        "private_proposal": {
+          "unique_information_gap": "当前上下文只有 Tekton 流水线编排目标，没有提供冻结的 v1 资源、resolver 引用、私有 Git 认证、podTemplate/taskRunSpecs、matrix/when、finally、超时层级和 resolver cache 配置步骤。",
+          "route": "skill",
+          "target_asset_ids": ["T14-SKILL-TEKTON-PIPELINES"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "打开最匹配的 Tekton Pipeline 指南后，按其核心模式完成 Forge Build 流水线编排和最小验证。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "操作手册已经补齐：使用 tekton.dev/v1 资源，并优先通过 git、cluster 或 hub resolver 引用任务；私有 Git 认证要创建带主机注解的 Secret，并挂到 PipelineRun 的 ServiceAccount；统一节点放置使用 pipeline-wide podTemplate，逐任务放置使用 taskRunSpecs；用数组参数和 matrix 做动态调度，用 when/CEL 表达条件；配置 finally 任务以及 Pipeline、Task、Step 的超时层级；按需调整 resolver cache 的 TTL 与大小。避免 v1beta1、内联 TaskSpec 和标量 matrix 参数，最后验证认证、调度、条件、收尾与超时行为。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "追加消息已给出 Tekton 资源版本、resolver、认证、节点放置、matrix/条件、finally、超时和缓存的完整最小实现与避坑边界，无需再定位内部能力。"}
+      },
+      "visible_distractor_ids_author_only": ["T14-SKILL-TEKTON-PAC", "T14-SKILL-GITEA-REGISTRY", "T14-SKILL-HELM-CHART"],
+      "controlled_delta_note": "Positive 只保留 Tekton Pipeline 编排步骤这一技术缺口并请求打开已列出的完整指南；Negative 仅补齐同一编排流程，共享历史和 query 完全相同。",
+      "source_fact_map": [
+        {"claim": "资源使用 tekton.dev/v1，并优先用 git、cluster 或 hub resolver 引用任务。", "source_id": "T14-SRC-TEKTON-PIPELINES", "locator": "Core Patterns: Resolver-Based Task Refs"},
+        {"claim": "私有 Git Secret 需要主机注解并挂到 PipelineRun ServiceAccount。", "source_id": "T14-SRC-TEKTON-PIPELINES", "locator": "Core Patterns: Git Authentication (Private Repos)"},
+        {"claim": "podTemplate 与 taskRunSpecs 分别负责全局和逐任务节点放置，数组参数、matrix、when/CEL、finally 和超时层级组合完成调度控制。", "source_id": "T14-SRC-TEKTON-PIPELINES", "locator": "Core Patterns: Node Targeting; Matrix + Param Dynamic Scheduling; When / CEL; Finally Tasks; Timeout Hierarchy"},
+        {"claim": "resolver cache 可按需调节 TTL 与大小，并避免 v1beta1、内联 TaskSpec 和标量 matrix 参数。", "source_id": "T14-SRC-TEKTON-PIPELINES", "locator": "Core Patterns: Resolver Cache TTL; Common Mistakes"}
+      ],
+      "sol_review_questions": [
+        "Positive 的 Pipeline、resolver 和私有仓库线索是否足以命中编排指南且不泄漏内部标识？",
+        "Negative 是否只补足资源、认证、调度、条件、finally、超时和缓存这一唯一信息缺口？",
+        "是否接受 Tekton、PipelineRun、matrix 和 CEL 作为宿主可见的领域线索？"
+      ]
+    },
+    {
+      "draft_pair_id": "T14-SKL-004-expand-01",
+      "external_source_ids": ["T14-SRC-FLAGGER"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Aurora Release 要为一个 Kubernetes 服务设计渐进式发布，既要观察指标，也要在异常时安全回退。"},
+        {"role": "assistant", "content": "发布会涉及 Canary 目标、流量提供方、分析指标、告警和 webhook，还需要确认没有服务网格时的行为；当前上下文没有给出完整配置与判断顺序。"},
+        {"role": "user", "content": "请给出 Aurora Release 能马上执行的最小检查路径。"}
+      ],
+      "changed_message_index": 3,
+      "query": "Aurora 的 Canary 发布在什么配置顺序下才可安全推进，并如何用指标决定晋级或回退？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "先在当前项目可用的能力目录中搜索覆盖 Kubernetes 渐进式发布、Canary 分析指标、webhook、告警和流量提供方选择的条目；根据返回结果中的条目标识打开最匹配的完整内容，再按其中流程设计并验证发布。"},
+        "private_proposal": {
+          "unique_information_gap": "当前上下文只说明渐进发布的目标和检查维度，没有提供冻结的 Canary targetRef/service/provider、analysis 阈值与迭代、指标模板、webhook、AlertProvider、部署及 promote/rollback 验证流程。",
+          "route": "skill",
+          "target_asset_ids": ["T14-SKILL-FLAGGER"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "搜索并打开最匹配的渐进发布指南后，依其配置与验证流程完成 Aurora Release Canary 设计。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "完整流程已经补齐：以 Canary 的 targetRef、service、provider 和 analysis 为发布目标；按 Kubernetes CNI、服务网格、A/B 或 blue/green 选择流量策略；配置 stepWeight、threshold、iterations、指标模板和 webhook 阶段；配置 AlertProvider，并部署 chart/CRD 与 metricsServer；验证 Prometheus、webhook 可达，service.port 和 targetRef 类型正确；依据成功率、延迟和阈值决定 promote 或 rollback，并记住无 mesh 时不会产生加权流量。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "追加消息已给出 Canary 目标、流量策略、分析与 webhook、告警部署、可达性校验及 promote/rollback 判断的完整最小路径，无需再定位内部能力。"}
+      },
+      "visible_distractor_ids_author_only": ["T14-SKILL-HELM-OPS", "T14-SKILL-RELOADER", "T14-SKILL-FLUX-KNOWLEDGE"],
+      "controlled_delta_note": "Positive 只增加渐进发布配置与判断流程的缺口并要求先搜索再按返回标识打开；Negative 仅补齐同一 Canary 流程，共享历史和 query 完全相同。",
+      "source_fact_map": [
+        {"claim": "Canary 以 targetRef、service、provider 和 analysis 定义发布目标。", "source_id": "T14-SRC-FLAGGER", "locator": "CRD: Canary; CanarySpec Fields"},
+        {"claim": "根据 CNI、服务网格、A/B 或 blue/green 选择策略，并配置 stepWeight、threshold、iterations。", "source_id": "T14-SRC-FLAGGER", "locator": "Analysis Strategies; AnalysisSpec Fields"},
+        {"claim": "指标模板、webhook、AlertProvider、chart/CRD 与 metricsServer 构成分析和告警链。", "source_id": "T14-SRC-FLAGGER", "locator": "Metrics; Webhooks; Alerts; Deployment"},
+        {"claim": "需验证 Prometheus/webhook 可达、service.port 与 targetRef 类型，并按成功率、延迟和阈值 promote 或 rollback；无 mesh 时没有加权流量。", "source_id": "T14-SRC-FLAGGER", "locator": "Common Mistakes; Minimal Example"}
+      ],
+      "sol_review_questions": [
+        "Positive 的渐进发布检索线索是否足以命中正确条目，同时避免暴露正式名称、工具或资产标识？",
+        "Negative 是否只补足 Canary 配置、分析、告警、验证和回退这一唯一信息缺口？",
+        "是否接受 Canary、Prometheus、webhook 和服务网格作为宿主可见的领域线索？"
+      ]
+    },
+    {
+      "draft_pair_id": "T14-SKL-005-expand-01",
+      "external_source_ids": ["T14-SRC-RELOADER"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_5_to_8",
+      "shared_context_messages": [
+        {"role": "user", "content": "Cedar Config 中的 ConfigMap 和 Secret 会由多个交付控制器更新，业务工作负载需要在配置真正变化时可靠重载。"},
+        {"role": "assistant", "content": "需要判断 workload 注解、资源排除、触发策略、部署参数和 GitOps 协作关系；当前上下文没有明确哪些变更触发重载以及如何验证。"},
+        {"role": "user", "content": "先给我一个只覆盖 Cedar Config 的最小排查和配置方向。"},
+        {"role": "assistant", "content": "应从 workload 与配置资源的关联方式入手，再检查重载策略和控制器部署，最后观察 GitOps 漂移及指标；具体规则仍未给出。"},
+        {"role": "user", "content": "不要把问题扩展成外部 Secret 同步或普通发布编排。"}
+      ],
+      "changed_message_index": 5,
+      "query": "配置资源变化后，如何确认 Reloader 的注解、触发规则和重载行为确实覆盖 Cedar 的工作负载？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "先在当前项目可用的能力目录中搜索覆盖 ConfigMap/Secret 变更触发工作负载重载、annotation 模式、排除规则、重载策略、GitOps 协作和指标的条目；根据返回结果中的条目标识打开最匹配的完整内容，再按其中流程配置和验证。"},
+        "private_proposal": {
+          "unique_information_gap": "当前上下文只描述配置变更后的重载目标，没有提供冻结的 auto/named/search-match 注解模式、exclude/ignore 规则、data 与 metadata 触发差异、部署参数、reload strategy 和各控制器组合约束。",
+          "route": "skill",
+          "target_asset_ids": ["T14-SKILL-RELOADER"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "搜索并打开最匹配的配置重载指南后，依其注解、策略、部署和集成检查流程完成 Cedar Config 验证。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "完整规则已经补齐：在 workload 上选择 auto、named 或 search/match annotation 模式；用 exclude 和 ignore 控制资源范围，并理解 auto 优先级及自定义 annotation 替换规则；data 变更会触发而 metadata 变更不会触发，按 rollout、restart 或 annotations 策略选择行为；部署时配置 Helm、HA、reloadOnCreate、pause 和指标；与 ESO、CSI、Vault、Flux/Helm/Kustomize 或 Argo CD 组合时核对各方触发语义；排查资源是否先存在、排除 annotation 是否位于 workload、Argo 漂移和 syncAfterRestart 前置条件。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "追加消息已给出注解模式、排除优先级、触发差异、重载策略、部署参数和 GitOps/外部系统集成检查的完整最小流程，无需再定位内部能力。"}
+      },
+      "visible_distractor_ids_author_only": ["T14-SKILL-EXTERNAL-SECRETS", "T14-SKILL-FLUX-KNOWLEDGE", "T14-SKILL-FLAGGER"],
+      "controlled_delta_note": "Positive 只增加配置重载规则这一技术缺口并要求先搜索再按返回标识打开；Negative 仅补齐同一 annotation、触发、部署和集成流程，共享历史和 query 完全相同。",
+      "source_fact_map": [
+        {"claim": "workload 支持 auto、named、search/match annotation 模式，exclude 和 ignore 控制资源范围并受 auto 优先级与替换规则影响。", "source_id": "T14-SRC-RELOADER", "locator": "Workload Annotations; Exclude Annotations"},
+        {"claim": "data 变更触发重载而 metadata 变更不触发，行为可选 rollout、restart 或 annotations 策略。", "source_id": "T14-SRC-RELOADER", "locator": "Reload Strategy; Behaviours & Rules"},
+        {"claim": "部署需核对 Helm、HA、reloadOnCreate、pause 和指标配置。", "source_id": "T14-SRC-RELOADER", "locator": "Deployment; Helm Values; Metrics"},
+        {"claim": "与 ESO、CSI、Vault、Flux/Helm/Kustomize 或 Argo CD 组合时要检查触发语义、资源存在性、annotation 位置、Argo 漂移和 syncAfterRestart。", "source_id": "T14-SRC-RELOADER", "locator": "Tools Integration; Common Mistakes"}
+      ],
+      "sol_review_questions": [
+        "Positive 的配置重载与 annotation 线索是否足以命中正确条目，同时没有泄漏内部工具或资产标识？",
+        "Negative 是否只补足触发规则、排除、策略、部署和 GitOps 集成这一唯一信息缺口？",
+        "是否接受 ConfigMap、Secret、workload annotation 和 GitOps 作为宿主可见的领域线索？"
+      ]
+    },
+    {
+      "draft_pair_id": "T14-SKL-006-expand-01",
+      "external_source_ids": ["T14-SRC-FLUX-KNOWLEDGE", "T14-SRC-FLUX-IMAGE-AUTOMATION"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "long_9_plus",
+      "shared_context_messages": [
+        {"role": "user", "content": "Meridian Fleet 正在设计多集群 Flux GitOps 交付拓扑，既要处理 CRD 依赖和应用顺序，也要把镜像更新纳入可审计的交付链。"},
+        {"role": "assistant", "content": "这项设计会涉及 source 与应用器选择、FluxInstance、ResourceSet、多租户约束、镜像自动化和仓库内清单校验；目前上下文只有目标，没有冻结字段和决策规则。"},
+        {"role": "user", "content": "请先列出一个能在 Meridian Fleet 仓库落地的最小实施方向。"},
+        {"role": "assistant", "content": "应先确认 CRD 字段和仓库布局，再选择源与应用编排，安排依赖与租户边界，最后接入镜像更新并验证控制器状态；但不能凭空补出字段细节。"},
+        {"role": "user", "content": "需要同时覆盖 Flux YAML 的字段核对和镜像自动化的端到端检查，结果要能用于评审。"},
+        {"role": "assistant", "content": "评审需要能追溯每个选择的依据，并区分 Git 记录式更新和不改 Git 的更新方式；当前对这两类流程的具体约束仍不完整。"},
+        {"role": "user", "content": "保持在 Meridian Fleet 的 GitOps 设计范围内，不延伸到单集群故障排查。"}
+      ],
+      "changed_message_index": 7,
+      "query": "请为 Meridian Fleet 给出一条可审计的 Flux 设计路径，并说明镜像自动化从扫描到 Git 更新如何验收。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "先打开当前项目已列出的 Flux GitOps 设计与配置完整指南，再继续读取其中关于镜像自动化的参考内容；按这两部分的决策树、CRD 字段约束、依赖顺序、ResourceSet 和镜像更新流程完成 Meridian Fleet 方案。"},
+        "private_proposal": {
+          "unique_information_gap": "当前上下文只有 Flux GitOps 和镜像更新的设计目标，没有提供冻结的 CRD 字段索引与 schema validate、仓库 inventory、source/apply 决策树、FluxInstance/ResourceSet 顺序和多租户约束，也没有提供 ImageRepository→ImagePolicy→ImageUpdateAutomation 的控制器、策略、标记、提交分支与验证细节。",
+          "route": "skill",
+          "target_asset_ids": ["T14-SKILL-FLUX-KNOWLEDGE"],
+          "allowed_sequence_candidates": [["skill_view", "skill_files_read"]],
+          "stop_after_candidate": "打开 Flux GitOps 指南并读取其镜像自动化参考后，按冻结的字段、决策、依赖、ResourceSet 和端到端镜像流程完成 Meridian Fleet 设计。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "完整操作手册已经补齐：先严格按 CRD 表和 assets/schemas 字段索引核对 apiVersion、kind、字段、类型、枚举和必填项，在 GitOps 仓库做 layout inventory 后再用 schema validate；按 Git、OCI、Helm、Bucket 或 ArtifactGenerator 选择 source，按 Kustomization、HelmRelease 或 ResourceSet 选择应用器；用 FluxInstance 设置集群，并维护 source、应用器和依赖的正确顺序，ResourceSet 多租户场景为每租户配置 ServiceAccount、RoleBinding、impersonation 与依赖；遵循 GitRepository/Kustomization、OCI Helm、ResourceSet、通知和镜像自动化模式，并使用 RetryOnFailure、Job force/no-TTL、wait、同命名空间 substituteFrom 和正确镜像引用等约束。镜像自动化参考的端到端链是 ImageRepository 扫描 registry、ImagePolicy 按 semver/alphabetical/numerical 选 tag、ImageUpdateAutomation 更新 Git YAML；三者使用 image.toolkit.fluxcd.io/v1，需要 image-reflector-controller 和 image-automation-controller，Git 流程用 $imagepolicy 标记并可推送独立更新分支，最后验证源、策略、提交和 Flux 重新协调。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "追加消息已给出 Flux 字段核对、仓库校验、source/apply 决策、FluxInstance、ResourceSet、多租户、依赖约束以及镜像自动化三资源链、控制器、策略、标记和验证的完整最小流程，无需再定位内部能力。"}
+      },
+      "visible_distractor_ids_author_only": ["T14-SKILL-FLUX-AUDIT", "T14-SKILL-FLUX-DEBUG", "T14-SKILL-TEKTON-PAC"],
+      "controlled_delta_note": "Positive 只增加 Flux GitOps 与镜像自动化的冻结流程缺口，并要求直接打开指南后读取参考；Negative 仅补齐同一字段、决策、依赖、多租户和镜像自动化流程，共享历史和 query 完全相同。",
+      "source_fact_map": [
+        {"claim": "Flux CRD 必须按字段表和 assets/schemas 索引核对 apiVersion/kind、类型、枚举和必填项，仓库先做 layout inventory 再 schema validate。", "source_id": "T14-SRC-FLUX-KNOWLEDGE", "locator": "CRD Reference; GitOps workflow"},
+        {"claim": "source 选择覆盖 Git、OCI、Helm、Bucket、ArtifactGenerator，应用编排覆盖 Kustomization、HelmRelease、ResourceSet；FluxInstance、依赖和 ResourceSet 多租户需按正确顺序与身份边界配置。", "source_id": "T14-SRC-FLUX-KNOWLEDGE", "locator": "Decision Trees; Ordering and Reactivity; ResourceSet patterns"},
+        {"claim": "RetryOnFailure、Job force/no-TTL、wait、同命名空间 substituteFrom 和正确镜像引用是关键约束。", "source_id": "T14-SRC-FLUX-KNOWLEDGE", "locator": "Common Mistakes; Drift and substitution constraints"},
+        {"claim": "镜像自动化链为 ImageRepository→ImagePolicy→ImageUpdateAutomation，三者使用 image.toolkit.fluxcd.io/v1，需要两个 image controller；支持策略选择、$imagepolicy 标记与独立 push 分支。", "source_id": "T14-SRC-FLUX-IMAGE-AUTOMATION", "locator": "Pipeline; ImageRepository; ImagePolicy; ImageUpdateAutomation; Image Policy Markers"}
+      ],
+      "sol_review_questions": [
+        "Positive 是否明确需要先打开 Flux 指南再读取镜像自动化参考，同时没有暴露内部工具名、正式资产标识或 Gold？",
+        "Negative 是否只补足 Flux 字段/决策/依赖与镜像自动化参考中的唯一信息缺口？",
+        "是否接受 CRD、ResourceSet、GitOps、镜像策略和 Git 提交作为宿主可见的领域线索？"
+      ]
+    }
+  ]
+}

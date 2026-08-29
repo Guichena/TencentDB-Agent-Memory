@@ -1,0 +1,33 @@
+{
+  "schema_version": "task1.sol_pilot_review.v1",
+  "team_id": "T14",
+  "reviewer": "sol-build-07",
+  "stage": "DS05",
+  "decision": "approved_for_expansion",
+  "reviewed_batches": [
+    {"batch_id":"T14-pilot-memory-01","family":"memory","pair_count":1,"decision":"pass"},
+    {"batch_id":"build-07-T14-pilot-skill-01","family":"skill","pair_count":1,"decision":"pass"},
+    {"batch_id":"t14-pilot-knowledge-01","family":"knowledge","pair_count":1,"decision":"pass"}
+  ],
+  "checks": {
+    "validator_passed": true,
+    "pair_single_variable": true,
+    "changed_message_index_exact": true,
+    "positive_unique_information_gap": true,
+    "negative_context_sufficient": true,
+    "visible_distractors_present": true,
+    "route_matches_frozen_input": true,
+    "pilot_gold_is_proposal_only": true,
+    "provider_leakage_absent": true,
+    "skill_source_hashes_match_freeze": true,
+    "skill_core_steps_preserved": true
+  },
+  "sol_notes": [
+    "Memory pilot keeps the Helm rollback decision absent only on the Positive side and leaves numerical details out of L2/L3 injection.",
+    "The full expansion asset pack must add complete L2 content and retain the pilot decision as T14-L1-003.",
+    "Skill pilot uses team-visible discovery before id-based view and preserves the six-phase Flux repository audit from the frozen source.",
+    "Knowledge pilot leaves one Borealis code-location gap and uniquely selects the bound code graph among three ready resources.",
+    "All sixteen Skill adaptation records match frozen raw SHA-256 values; adapted packages and the image automation resource are byte-identical.",
+    "Luna proposals remain generator-only inputs. Final Gold is reserved for Sol assembly."
+  ]
+}

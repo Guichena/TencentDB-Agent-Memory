@@ -1,0 +1,12 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "T14-pilot-memory-01",
+  "external_source_ids": [],
+  "raw_output_file": "draft.json",
+  "raw_output_sha256": "4974440ed1159b9402635de83fe8121706c8f77b2cca1256a06a8f1f3dbfe4fe",
+  "generated_at": "2026-08-30T12:00:00+08:00",
+  "actual_count": 1
+}
