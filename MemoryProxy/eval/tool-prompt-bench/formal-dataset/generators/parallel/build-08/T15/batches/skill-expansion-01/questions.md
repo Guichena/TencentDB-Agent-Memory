@@ -1,0 +1,1 @@
+本扩批无待决的 Sol 决策。5 个新 pair 已覆盖：团队搜索后按返回标识打开 2 组，首屏直接查看 2 组，首屏查看后读取 references/versioning-strategy.md 1 组；与已通过 trial 合计 search-first=3、direct-first=3。全量 18 个候选均保留 source lock 的仓库、revision、路径、许可和 raw SHA，并记录 owner、visibility、manifest/resource 与允许的宿主适配。

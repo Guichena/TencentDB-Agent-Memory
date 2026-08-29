@@ -1,0 +1,102 @@
+{
+  "schema_version": "task1.team_input_pack.v1",
+  "build_id": "build-08",
+  "stage": "DS05",
+  "team_id": "T15",
+  "split": "hidden_test",
+  "topic": "API 契约与兼容性",
+  "world_as_of": "2026-08-29T23:59:59+08:00",
+  "identity": {
+    "space_id": "space-task1-engineering",
+    "active_agent_id": "agent-task1-t15-general",
+    "asset_agent_ids": ["agent-task1-t15-assets-a", "agent-task1-t15-assets-b"],
+    "user_id": "user-task1-hidden-t15"
+  },
+  "project_streams": [
+    {"id":"harbor-contract","name":"Harbor 合作方 API","focus":"OpenAPI 3.1 schema 演进、兼容性审查、网关发布","task_id":"task-t15-harbor-contract"},
+    {"id":"meridian-sdk","name":"Meridian SDK Forge","focus":"从冻结 OpenAPI 生成 TypeScript/Python SDK、版本与发布","task_id":"task-t15-meridian-sdk"},
+    {"id":"pactline-tests","name":"Pactline 契约验证","focus":"consumer-driven contract、provider verification、破坏性变更","task_id":"task-t15-pactline-tests"},
+    {"id":"atlas-versioning","name":"Atlas Partner API","focus":"版本协商、弃用窗口、迁移指南与双版本运行","task_id":"task-t15-atlas-versioning"},
+    {"id":"prism-schema","name":"Prism Schema Registry","focus":"JSON Schema 兼容级别、枚举与 required 字段演进","task_id":"task-t15-prism-schema"}
+  ],
+  "memory_plan": {
+    "l0_sessions": 12,
+    "messages_per_session": "12-24",
+    "l1_memories": 16,
+    "l2_scenes": 5,
+    "l3_profiles": 1,
+    "l0_ids": ["T15-L0-001","T15-L0-002","T15-L0-003","T15-L0-004","T15-L0-005","T15-L0-006","T15-L0-007","T15-L0-008","T15-L0-009","T15-L0-010","T15-L0-011","T15-L0-012"],
+    "l1_ids": ["T15-L1-001","T15-L1-002","T15-L1-003","T15-L1-004","T15-L1-005","T15-L1-006","T15-L1-007","T15-L1-008","T15-L1-009","T15-L1-010","T15-L1-011","T15-L1-012","T15-L1-013","T15-L1-014","T15-L1-015","T15-L1-016"],
+    "l2": [
+      {"asset_id":"T15-L2-001","path":"api/harbor/breaking-change-review.md","injected":true,"summary_rule":"说明审查对象与入口，不泄露具体兼容结论"},
+      {"asset_id":"T15-L2-002","path":"sdk/meridian/generation-release.md","injected":true,"summary_rule":"说明生成与发布流程，不泄露当前版本钉住值"},
+      {"asset_id":"T15-L2-003","path":"contracts/pactline/provider-verification.md","injected":true,"summary_rule":"说明验证场景，不泄露失败原因"},
+      {"asset_id":"T15-L2-004","path":"versioning/atlas/deprecation-window.md","injected":true,"summary_rule":"说明弃用场景，不泄露批准的日期"},
+      {"asset_id":"T15-L2-005","path":"schema/prism/compatibility-modes.md","injected":true,"summary_rule":"说明兼容模式，不泄露项目采用值"}
+    ],
+    "l3_id": "T15-L3-001",
+    "l3_rule": "80-220 中文字，只写稳定审查偏好、先契约后实现、证据优先；不得含任一 case 答案"
+  },
+  "skill_pool": {
+    "source_lock": "formal-dataset/source-material/T15/skill-sources.json",
+    "repository_url": "https://github.com/github/awesome-copilot",
+    "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+    "license": "MIT",
+    "adaptation_policy": "只允许改宿主工具名、listing description、use_when、do_not_use_when；核心技术步骤与资源引用保持不变",
+    "bound": [
+      {"asset_id":"T15-SKL-001","source_name":"aspnet-minimal-api-openapi","owner":"agent-task1-t15-general"},
+      {"asset_id":"T15-SKL-002","source_name":"msgraph-sdk","owner":"agent-task1-t15-general"},
+      {"asset_id":"T15-SKL-003","source_name":"python-pypi-package-builder","owner":"agent-task1-t15-general","resource":"references/versioning-strategy.md"},
+      {"asset_id":"T15-SKL-004","source_name":"typespec-api-operations","owner":"agent-task1-t15-general"},
+      {"asset_id":"T15-SKL-005","source_name":"update-specification","owner":"agent-task1-t15-general"},
+      {"asset_id":"T15-SKL-006","source_name":"gdpr-compliant","owner":"agent-task1-t15-general"}
+    ],
+    "team_searchable": [
+      {"asset_id":"T15-SKL-007","source_name":"openapi-to-application-code","owner":"agent-task1-t15-assets-a"},
+      {"asset_id":"T15-SKL-008","source_name":"typespec-create-api-plugin","owner":"agent-task1-t15-assets-a"},
+      {"asset_id":"T15-SKL-009","source_name":"integrate-context-matic","owner":"agent-task1-t15-assets-a"},
+      {"asset_id":"T15-SKL-010","source_name":"copilot-sdk","owner":"agent-task1-t15-assets-a"},
+      {"asset_id":"T15-SKL-011","source_name":"qdrant-clients-sdk","owner":"agent-task1-t15-assets-a"},
+      {"asset_id":"T15-SKL-012","source_name":"generate-custom-instructions-from-codebase","owner":"agent-task1-t15-assets-a"},
+      {"asset_id":"T15-SKL-013","source_name":"create-github-action-workflow-specification","owner":"agent-task1-t15-assets-b"},
+      {"asset_id":"T15-SKL-014","source_name":"build-evidence-map","owner":"agent-task1-t15-assets-b"},
+      {"asset_id":"T15-SKL-015","source_name":"project-workflow-analysis-blueprint-generator","owner":"agent-task1-t15-assets-b"},
+      {"asset_id":"T15-SKL-016","source_name":"declarative-agents","owner":"agent-task1-t15-assets-b"},
+      {"asset_id":"T15-SKL-017","source_name":"power-platform-mcp-connector-suite","owner":"agent-task1-t15-assets-b"},
+      {"asset_id":"T15-SKL-018","source_name":"aspire","owner":"agent-task1-t15-assets-b"}
+    ],
+    "listing_contract": "6 bound skills are eligible for prewarm listing; 12 team skills must remain outside listing and searchable by skill_search",
+    "positive_quota": {"listed_view":2,"team_search_then_view_by_id":3,"view_then_files_read":1}
+  },
+  "knowledge_plan": [
+    {"asset_id":"T15-KNW-001","type":"code_graph","name":"Harbor API contract graph","workspace_match":"internal/harbor-contract","tools":[{"name":"search","params":{"query":"string"}},{"name":"callers","params":{"symbol":"string"}}]},
+    {"asset_id":"T15-KNW-002","type":"wiki","name":"Atlas API version governance","about":"内部版本协商、弃用窗口和兼容例外的设计记录","tools":[{"name":"search","params":{"query":"string"}},{"name":"read_page","params":{"page_id":"string"}}]},
+    {"asset_id":"T15-KNW-003","type":"wiki","name":"Meridian SDK release handbook","about":"SDK 生成、语言矩阵、版本钉住与发布交接","tools":[{"name":"search","params":{"query":"string"}},{"name":"read_page","params":{"page_id":"string"}}]}
+  ],
+  "positive_distribution": {
+    "memory": {"count":6,"search_first":4,"direct_first":2},
+    "skill": {"count":6,"search_first":3,"direct_first":3},
+    "knowledge": {"count":3,"discovery_first":3,"direct_first":0}
+  },
+  "trial_pairs": [
+    {"draft_pair_id":"T15-TRIAL-MEM-001","family":"memory","project":"pactline-tests","target_asset_ids":["T15-L0-004"],"gap":"需要找出上次 provider verification 失败后团队对请求头大小写归一化的精确原话，当前只知道曾经有结论","route_hint":"conversation search；目标消息返回即停","distractors":["T15-L0-003","T15-L1-006","T15-L2-003"]},
+    {"draft_pair_id":"T15-TRIAL-SKL-001","family":"skill","project":"harbor-contract","target_asset_ids":["T15-SKL-007"],"gap":"需要团队现成的从 OpenAPI 生成完整应用流程，但该流程不在首屏 listing","route_hint":"team skill search 后按返回 skill_id 打开","distractors":["T15-SKL-001","T15-SKL-004","T15-SKL-005"]},
+    {"draft_pair_id":"T15-TRIAL-KNW-001","family":"knowledge","project":"atlas-versioning","target_asset_ids":["T15-KNW-002"],"gap":"需要内部批准的弃用窗口例外规则，代码和当前上下文均未给出","route_hint":"对匹配 wiki 先发现工具，再用返回的 search 工具查询；首个成功查询响应即停","distractors":["T15-KNW-001","T15-KNW-003","T15-L2-004"]}
+  ],
+  "authoring_rules": {
+    "provider_visible_forbidden": ["TDAI","tdai_","skill_search","skill_view","knowledge_id","tools/list","tools/call","allowedSequences","targetAssetIds","informationGap","Gold"],
+    "pair_rule": "shared messages、query、identity、workspace、snapshot 完全相同；只在 changed_message_index 的 delta_message 改变信息是否充分",
+    "context_buckets": {"short":"4-6","medium":"8-12","long":"14-20"},
+    "natural_negative_rule": "自包含 coding 请求，加载完整干扰池，不依赖历史、流程包或知识索引",
+    "no_official_patch": true,
+    "no_upstream_install_or_tests": true,
+    "luna_may_not_write_staging_or_final_gold": true
+  },
+  "batch_contract": {
+    "model": "gpt-5.6-luna",
+    "reasoning_effort": "high",
+    "fork_turns": "none",
+    "prompt_version": "task1.luna-batch.v1",
+    "unique_batch_directory_required": true
+  }
+}

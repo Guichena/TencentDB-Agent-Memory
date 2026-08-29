@@ -1,0 +1,137 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T15-DS05-knowledge-expansion-01",
+  "stage": "DS05",
+  "team_id": "T15",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T15-EXP-KNW-001",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Harbor 合作方 API 正在做 OpenAPI 契约演进，团队要把兼容性审查和网关发布前检查接起来。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前方案覆盖 schema 变更评估、发布门禁和审查记录，但还没有展开代码关系与实际入口。"
+        },
+        {
+          "role": "user",
+          "content": "我需要确认审查从哪里进入、有哪些调用方，以及发布前采用哪种兼容性检查。"
+        },
+        {
+          "role": "assistant",
+          "content": "可以先整理审查责任和发布顺序；具体代码关系需要以内部工程资料为准。"
+        }
+      ],
+      "changed_message_index": 4,
+      "query": "请查询内部契约图谱，给出兼容性审查入口、全部调用方和发布前使用的检查方式。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "当前对话没有这些代码关系的确切记录；请先定位匹配的内部契约资料，再查询并回答。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "上下文缺少 Harbor 契约图谱中的审查入口、完整调用方集合和发布前检查方式，需要读取 T15-KNW-001。",
+          "route": "knowledge",
+          "target_asset_ids": ["T15-KNW-001"],
+          "allowed_sequence_candidates": [
+            ["knowledge_tools_list", "knowledge_tools_call"]
+          ],
+          "stop_after_candidate": "首次发现目标资源后，按 listing 返回的精确 search tool_name 与 params 完成一次成功查询即停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充可直接采用的图谱结论：Harbor 契约兼容审查入口是 ContractReviewController.review；调用方只有 GatewayPublishPipeline 和 PartnerCompatibilityJob；发布前使用 schema-diff --mode backward，结果写入 compatibility-report。这就是本次要查的代码关系。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已给出入口、完整调用方集合、检查方式和结果位置，足以直接回答查询。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T15-KNW-002",
+        "T15-KNW-003",
+        "T15-L2-001"
+      ],
+      "controlled_delta_note": "Positive 保留代码关系信息空缺；Negative 直接提供完整图谱事实，其他共享消息和查询保持不变。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "确认正例可见文字只说明缺少内部图谱事实，没有泄露入口、调用方或检查方式。",
+        "确认资源工具列表后只调用一次 listing 返回的 search，并在成功响应后停止。",
+        "确认负例 delta 与 search 成功结果中的 rule_text 逐字一致。"
+      ]
+    },
+    {
+      "draft_pair_id": "T15-EXP-KNW-002",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Meridian SDK Forge 要从冻结的 OpenAPI 生成 TypeScript 与 Python SDK，并安排一次正式发布交接。"
+        },
+        {
+          "role": "assistant",
+          "content": "目前只确定要覆盖两种语言、保持生成输入一致并经过兼容性检查，具体版本和交接细节尚未在会话中展开。"
+        },
+        {
+          "role": "user",
+          "content": "请把本轮冻结基线、语言生成顺序和发布交接所需材料一次说清楚。"
+        },
+        {
+          "role": "assistant",
+          "content": "生成与发布可以拆成连续步骤，但基线数值、顺序和交接材料应以内部手册为准。"
+        }
+      ],
+      "changed_message_index": 4,
+      "query": "请查询内部 SDK 发布手册，给出本轮冻结版本、语言生成顺序以及发布交接要求。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "会话里没有本轮手册的具体版本或交接规定；请先定位匹配的内部发布资料，再查询并回答。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "上下文没有 Meridian SDK 手册中的冻结版本、语言顺序和发布交接要求，需要读取 T15-KNW-003。",
+          "route": "knowledge",
+          "target_asset_ids": ["T15-KNW-003"],
+          "allowed_sequence_candidates": [
+            ["knowledge_tools_list", "knowledge_tools_call"]
+          ],
+          "stop_after_candidate": "首次发现目标资源后，按 listing 返回的精确 search tool_name 与 params 完成一次成功查询即停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充可直接采用的发布决定：本轮冻结版本为 3.8.0；先生成 TypeScript，再生成 Python；两种包通过兼容性检查后由 Release Engineering 统一发布，交接单需附生成日志与版本清单。这就是本次要查的手册事实。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已给出冻结版本、生成顺序、统一发布责任和交接附件，足以直接回答查询。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T15-KNW-001",
+        "T15-KNW-002",
+        "T15-L2-002"
+      ],
+      "controlled_delta_note": "Positive 保留手册事实信息空缺；Negative 直接提供完整发布事实，其他共享消息和查询保持不变。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "确认正例可见文字只说明缺少手册事实，没有泄露版本、顺序或交接要求。",
+        "确认资源工具列表后只调用一次 listing 返回的 search，并在成功响应后停止。",
+        "确认负例 delta 与 search 成功结果中的 rule_text 逐字一致。"
+      ]
+    }
+  ]
+}

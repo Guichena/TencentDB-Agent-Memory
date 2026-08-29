@@ -1,0 +1,243 @@
+{
+  "schema_version":"task1.memory_asset_candidates.v1",
+  "batch_id":"build-08-T15-memory-expansion-01",
+  "stage":"DS05",
+  "team_id":"T15",
+  "family":"memory",
+  "synthetic_team_background":{
+    "team_name":"T15 API 契约与兼容性小组",
+    "workspace":"space-task1-engineering",
+    "project_streams":["harbor-contract","meridian-sdk","pactline-tests","atlas-versioning","prism-schema"],
+    "background":"团队维护合作方 API 的 OpenAPI 3.1 演进、SDK 生成发布、契约验证、版本治理和 JSON Schema 兼容审查。以下历史、摘要和消息均为本扩批合成材料，按项目流保留证据链。"
+  },
+  "candidates":[
+    {
+      "asset_id":"T15-L0-001","asset_type":"l0_session","project_stream":"harbor-contract","role":"target",
+      "messages":[
+        {"message_id":"T15-L0-001-M01","role":"user","content":"Harbor response schema 要加 trace_context，先看哪类兼容风险？"},
+        {"message_id":"T15-L0-001-M02","role":"assistant","content":"先确认它是可选属性，旧 consumer 不会因缺少它而失败。"},
+        {"message_id":"T15-L0-001-M03","role":"user","content":"旧 consumer 仍只读取原有字段，新字段不会出现在必填列表。"},
+        {"message_id":"T15-L0-001-M04","role":"assistant","content":"那要把新增可选属性与收紧 required、删除字段分开审查。"},
+        {"message_id":"T15-L0-001-M05","role":"user","content":"审查表里还出现了一个可能的主版本升级建议。"},
+        {"message_id":"T15-L0-001-M06","role":"assistant","content":"主版本是否升级要以这次属性的兼容性分类为准，不能沿用破坏性变更模板。"},
+        {"message_id":"T15-L0-001-M07","role":"user","content":"我只记得最后说可以继续兼容，但具体版本决定忘了。"},
+        {"message_id":"T15-L0-001-M08","role":"assistant","content":"团队的决定是：将可选的 trace_context 属性加入 response schema，按兼容扩展处理，沿用当前主版本，不触发 major；旧 consumer 缺省时继续正常工作。"},
+        {"message_id":"T15-L0-001-M09","role":"user","content":"那网关发布说明需要提醒什么？"},
+        {"message_id":"T15-L0-001-M10","role":"assistant","content":"说明新增属性可选，并标注旧 consumer 的缺省行为；不要把它写成强制迁移。"},
+        {"message_id":"T15-L0-001-M11","role":"user","content":"删字段的审查仍然另开一项。"},
+        {"message_id":"T15-L0-001-M12","role":"assistant","content":"对，删除字段和收紧 required 继续按破坏性风险单独处理。"}
+      ]
+    },
+    {
+      "asset_id":"T15-L0-002","asset_type":"l0_session","project_stream":"harbor-contract","role":"distractor",
+      "messages":[
+        {"message_id":"T15-L0-002-M01","role":"user","content":"Harbor 另一个变更准备移除 deprecated 字段，兼容性怎么标？"},
+        {"message_id":"T15-L0-002-M02","role":"assistant","content":"先查仍在使用该字段的 consumer，再评估主版本影响。"},
+        {"message_id":"T15-L0-002-M03","role":"user","content":"这里还会把一个 required 字段改成更严格的格式。"},
+        {"message_id":"T15-L0-002-M04","role":"assistant","content":"删除和收紧约束都可能阻断旧 consumer，不能与可选扩展混看。"},
+        {"message_id":"T15-L0-002-M05","role":"user","content":"发布说明里有人写了 minor，但审查人要求重新确认。"},
+        {"message_id":"T15-L0-002-M06","role":"assistant","content":"先以破坏性检查和 consumer 证据为准，不直接接受版本标签。"},
+        {"message_id":"T15-L0-002-M07","role":"user","content":"这轮没有新增 trace_context 的讨论。"},
+        {"message_id":"T15-L0-002-M08","role":"assistant","content":"收到，这条记录只覆盖删除字段与约束收紧。"},
+        {"message_id":"T15-L0-002-M09","role":"user","content":"网关回滚点也需要留档吗？"},
+        {"message_id":"T15-L0-002-M10","role":"assistant","content":"需要，尤其是旧 schema 与新 schema 的并行窗口。"},
+        {"message_id":"T15-L0-002-M11","role":"user","content":"我会把它从可选属性审查中分离。"},
+        {"message_id":"T15-L0-002-M12","role":"assistant","content":"这样可以避免把不同风险的版本结论相互引用。"}
+      ]
+    },
+    {
+      "asset_id":"T15-L0-003","asset_type":"l0_session","project_stream":"pactline-tests","role":"distractor",
+      "messages":[
+        {"message_id":"T15-L0-003-M01","role":"user","content":"另一轮契约演练也提到 header 大小写，是否同一个问题？"},
+        {"message_id":"T15-L0-003-M02","role":"assistant","content":"不是同一条失败；那轮只讨论日志展示和字段标签的统一。"},
+        {"message_id":"T15-L0-003-M03","role":"user","content":"当时有人说把 header key 做 canonicalize。"},
+        {"message_id":"T15-L0-003-M04","role":"assistant","content":"那是报告显示层的建议，不是 provider 匹配入口的行为决定。"},
+        {"message_id":"T15-L0-003-M05","role":"user","content":"请求值需要一起变换吗？"},
+        {"message_id":"T15-L0-003-M06","role":"assistant","content":"那次讨论没有改值，也没有形成适配层实施结论。"},
+        {"message_id":"T15-L0-003-M07","role":"user","content":"这会不会和合作方 API 的版本协商混淆？"},
+        {"message_id":"T15-L0-003-M08","role":"assistant","content":"会，所以记录里把版本协商和契约失败分开。"},
+        {"message_id":"T15-L0-003-M09","role":"user","content":"我只记得‘大小写无关’几个字。"},
+        {"message_id":"T15-L0-003-M10","role":"assistant","content":"这是概括，不是可直接引用的最终句子。"},
+        {"message_id":"T15-L0-003-M11","role":"user","content":"那轮没有具体的 X-Trace-Id 重放吗？"},
+        {"message_id":"T15-L0-003-M12","role":"assistant","content":"没有，使用的是普通标签样例，未进入真实请求头匹配。"}
+      ]
+    },
+    {
+      "asset_id":"T15-L0-004","asset_type":"l0_session","project_stream":"pactline-tests","role":"target_trial_reference",
+      "messages":[
+        {"message_id":"T15-L0-004-M01","role":"user","content":"provider verification 的失败重放先从哪条契约看？"},
+        {"message_id":"T15-L0-004-M02","role":"assistant","content":"先看带自定义请求头的 consumer 契约，失败只出现在名称大小写写法不一致时。"},
+        {"message_id":"T15-L0-004-M03","role":"user","content":"consumer 发的是 X-Trace-Id，fixture 中是 x-trace-id，值完全相同。"},
+        {"message_id":"T15-L0-004-M04","role":"assistant","content":"那就先排除 value 转换，比较入口对名称的处理。"},
+        {"message_id":"T15-L0-004-M05","role":"user","content":"HTTP 层对请求头名称本来就不应区分大小写。"},
+        {"message_id":"T15-L0-004-M06","role":"assistant","content":"对，但当前匹配入口没有在所有路径保持这个语义。"},
+        {"message_id":"T15-L0-004-M07","role":"user","content":"有人建议把名称和值一起转小写。"},
+        {"message_id":"T15-L0-004-M08","role":"assistant","content":"值不能动，否则会改变 token 和追踪标识的语义。"},
+        {"message_id":"T15-L0-004-M09","role":"user","content":"那我们要把决定写成可以落到适配层的句子。"},
+        {"message_id":"T15-L0-004-M10","role":"assistant","content":"我会把归一化放在进入匹配前，并保留原值。"},
+        {"message_id":"T15-L0-004-M11","role":"user","content":"复盘里最后采用的精确说法是什么？"},
+        {"message_id":"T15-L0-004-M12","role":"assistant","content":"决定是：在进入匹配前把请求头名称统一转换为小写，仅归一化名称、不改动 header value；因此 X-Trace-Id 与 x-trace-id 应按同一名称处理。"},
+        {"message_id":"T15-L0-004-M13","role":"user","content":"把它和失败报告的范围一起留在 Pactline 讨论里。"},
+        {"message_id":"T15-L0-004-M14","role":"assistant","content":"已记录；后续只核对这条 provider verification 复盘，不把 SDK 参数命名带进来。"}
+      ]
+    },
+    {
+      "asset_id":"T15-L0-005","asset_type":"l0_session","project_stream":"meridian-sdk","role":"distractor",
+      "messages":[
+        {"message_id":"T15-L0-005-M01","role":"user","content":"Meridian 的候选 SDK 构建出现了版本号，能当正式号吗？"},
+        {"message_id":"T15-L0-005-M02","role":"assistant","content":"不能，候选构建号要等交接确认后才可能成为正式包版本。"},
+        {"message_id":"T15-L0-005-M03","role":"user","content":"这次只有 TypeScript 生成完成，Python 还在排队。"},
+        {"message_id":"T15-L0-005-M04","role":"assistant","content":"那更不能把单语言候选号当成双语言交接决定。"},
+        {"message_id":"T15-L0-005-M05","role":"user","content":"输入 schema 的冻结状态已经通过检查。"},
+        {"message_id":"T15-L0-005-M06","role":"assistant","content":"冻结输入是前置条件，但不等于正式包版本已钉住。"},
+        {"message_id":"T15-L0-005-M07","role":"user","content":"发布说明只写了‘待确认’。"},
+        {"message_id":"T15-L0-005-M08","role":"assistant","content":"保留待确认状态，等待两个语言包一起完成交接。"},
+        {"message_id":"T15-L0-005-M09","role":"user","content":"不要把这里的构建编号复制到 release handbook。"},
+        {"message_id":"T15-L0-005-M10","role":"assistant","content":"明白，这条只作为候选发布的干扰记录。"},
+        {"message_id":"T15-L0-005-M11","role":"user","content":"另一个项目的版本也出现在日志里。"},
+        {"message_id":"T15-L0-005-M12","role":"assistant","content":"跨项目版本一律不作为 Meridian 正式交接证据。"}
+      ]
+    },
+    {
+      "asset_id":"T15-L0-006","asset_type":"l0_session","project_stream":"meridian-sdk","role":"target",
+      "messages":[
+        {"message_id":"T15-L0-006-M01","role":"user","content":"Meridian 这次从冻结 schema 生成的两个 SDK，发布交接要核对什么？"},
+        {"message_id":"T15-L0-006-M02","role":"assistant","content":"核对 TypeScript 和 Python 都来自同一份冻结输入，并分别记录正式包版本。"},
+        {"message_id":"T15-L0-006-M03","role":"user","content":"候选构建先后完成，但不能用候选号替代正式版本。"},
+        {"message_id":"T15-L0-006-M04","role":"assistant","content":"对，交接记录要把候选构建和正式发布分开。"},
+        {"message_id":"T15-L0-006-M05","role":"user","content":"两种语言的版本数字我在摘要里没看到。"},
+        {"message_id":"T15-L0-006-M06","role":"assistant","content":"那就找交接时同时确认两种包的原始消息。"},
+        {"message_id":"T15-L0-006-M07","role":"user","content":"生成器提交号和包版本也要分开留档。"},
+        {"message_id":"T15-L0-006-M08","role":"assistant","content":"是，提交号只说明生成输入，不能回答正式包版本。"},
+        {"message_id":"T15-L0-006-M09","role":"user","content":"最后交接时两种包都通过 smoke check。"},
+        {"message_id":"T15-L0-006-M10","role":"assistant","content":"正式交接钉住的是 TypeScript SDK 3.1.0 与 Python SDK 2.4.1；两者都由同一份冻结 schema 生成，候选构建号不算正式版本。"},
+        {"message_id":"T15-L0-006-M11","role":"user","content":"我会把两个版本写入发布交接单。"},
+        {"message_id":"T15-L0-006-M12","role":"assistant","content":"同时保留冻结输入与 smoke check 的证据，避免与候选发布混淆。"}
+      ]
+    },
+    {
+      "asset_id":"T15-L0-007","asset_type":"l0_session","project_stream":"prism-schema","role":"target_support",
+      "messages":[
+        {"message_id":"T15-L0-007-M01","role":"user","content":"Prism 要给 request 的 state enum 增加一个值，先定什么范围？"},
+        {"message_id":"T15-L0-007-M02","role":"assistant","content":"先看 consumer 对未知枚举值的处理，再区分 request 与 response。"},
+        {"message_id":"T15-L0-007-M03","role":"user","content":"这是 request schema，当前客户端会严格校验允许值。"},
+        {"message_id":"T15-L0-007-M04","role":"assistant","content":"那新增 request 值可能要求先完成 consumer 迁移。"},
+        {"message_id":"T15-L0-007-M05","role":"user","content":"response enum 的规则在另一份记录里更宽松。"},
+        {"message_id":"T15-L0-007-M06","role":"assistant","content":"不能把 response 的惯例直接套到 request。"},
+        {"message_id":"T15-L0-007-M07","role":"user","content":"近期 decision 记录的时间窗是八月一日到八月二十九日。"},
+        {"message_id":"T15-L0-007-M08","role":"assistant","content":"该时间窗内的最终决定是：request 的 state 枚举新增值按严格兼容模式处理，必须先提升请求契约版本并完成 consumer 迁移；不能作为同一版本的无破坏扩展。"},
+        {"message_id":"T15-L0-007-M09","role":"user","content":"这条决定只适用于 request，不改变 response 的审查规则。"},
+        {"message_id":"T15-L0-007-M10","role":"assistant","content":"对，记录中明确把两个方向拆开。"},
+        {"message_id":"T15-L0-007-M11","role":"user","content":"草案里的推测不要当最终结论。"},
+        {"message_id":"T15-L0-007-M12","role":"assistant","content":"最终只引用指定时间窗内的 decision 记录。"}
+      ]
+    },
+    {
+      "asset_id":"T15-L0-008","asset_type":"l0_session","project_stream":"prism-schema","role":"distractor",
+      "messages":[
+        {"message_id":"T15-L0-008-M01","role":"user","content":"Prism 的 response state enum 新增值也要审查吗？"},
+        {"message_id":"T15-L0-008-M02","role":"assistant","content":"要审查，但 response 和 request 对未知值的兼容假设不同。"},
+        {"message_id":"T15-L0-008-M03","role":"user","content":"这条记录讨论的是 response 消费端容忍未知值。"},
+        {"message_id":"T15-L0-008-M04","role":"assistant","content":"因此不能用它回答 request enum 的最终模式。"},
+        {"message_id":"T15-L0-008-M05","role":"user","content":"时间是在七月末，不在最近的 decision 窗口。"},
+        {"message_id":"T15-L0-008-M06","role":"assistant","content":"时间范围不同，也要避免混入当前审查。"},
+        {"message_id":"T15-L0-008-M07","role":"user","content":"有人把 request 和 response 的规则合并写在草案里。"},
+        {"message_id":"T15-L0-008-M08","role":"assistant","content":"草案尚未批准，只能作为需要复核的线索。"},
+        {"message_id":"T15-L0-008-M09","role":"user","content":"这轮没有要求升级请求契约版本。"},
+        {"message_id":"T15-L0-008-M10","role":"assistant","content":"那更说明它不是 request 的目标决定。"},
+        {"message_id":"T15-L0-008-M11","role":"user","content":"我会把它标为 response 方向干扰。"},
+        {"message_id":"T15-L0-008-M12","role":"assistant","content":"可以，并保留日期不同这一筛选条件。"}
+      ]
+    },
+    {
+      "asset_id":"T15-L0-009","asset_type":"l0_session","project_stream":"pactline-tests","role":"target",
+      "messages":[
+        {"message_id":"T15-L0-009-M01","role":"user","content":"Pactline provider verification 有一条超时失败重放，先排查什么？"},
+        {"message_id":"T15-L0-009-M02","role":"assistant","content":"先确认 provider 是否在等待窗口内没有返回，再看 consumer 的 timeout 记录。"},
+        {"message_id":"T15-L0-009-M03","role":"user","content":"这次不是契约断言不匹配，而是等待窗口耗尽。"},
+        {"message_id":"T15-L0-009-M04","role":"assistant","content":"那就单独复盘失败后的自动重试策略。"},
+        {"message_id":"T15-L0-009-M05","role":"user","content":"相邻健康检查用了指数退避，别把它带到这里。"},
+        {"message_id":"T15-L0-009-M06","role":"assistant","content":"收到，目标只限 provider verification 的失败重放。"},
+        {"message_id":"T15-L0-009-M07","role":"user","content":"摘要只写‘重试策略已确定’，具体次数和间隔不见了。"},
+        {"message_id":"T15-L0-009-M08","role":"assistant","content":"失败重放的决定是：超时后最多重试 2 次，每次间隔 30 秒；仍未返回就标记本轮验证失败，不再继续自动重试。"},
+        {"message_id":"T15-L0-009-M09","role":"user","content":"那不应把人工重跑算作自动重试。"},
+        {"message_id":"T15-L0-009-M10","role":"assistant","content":"对，人工重跑另有审计记录，不改变自动策略上限。"},
+        {"message_id":"T15-L0-009-M11","role":"user","content":"我会把失败重放和健康检查分开归档。"},
+        {"message_id":"T15-L0-009-M12","role":"assistant","content":"这样后续查原话时不会被相似的退避术语干扰。"}
+      ]
+    },
+    {
+      "asset_id":"T15-L0-010","asset_type":"l0_session","project_stream":"atlas-versioning","role":"target",
+      "messages":[
+        {"message_id":"T15-L0-010-M01","role":"user","content":"Atlas 合作方申请旧版本继续运行的弃用例外，审批要核对什么？"},
+        {"message_id":"T15-L0-010-M02","role":"assistant","content":"核对例外原因、迁移负责人和旧版本退出条件，并与默认通知周期分开。"},
+        {"message_id":"T15-L0-010-M03","role":"user","content":"这次只需要批准窗口的起止日期，不问一般通知周期。"},
+        {"message_id":"T15-L0-010-M04","role":"assistant","content":"明白，草案日期和最终批准日期也要分开记录。"},
+        {"message_id":"T15-L0-010-M05","role":"user","content":"合作方已经承诺在窗口后完成迁移。"},
+        {"message_id":"T15-L0-010-M06","role":"assistant","content":"那就把窗口边界和迁移承诺放在同一条批准证据里。"},
+        {"message_id":"T15-L0-010-M07","role":"user","content":"文档摘要目前没有显示具体日期。"},
+        {"message_id":"T15-L0-010-M08","role":"assistant","content":"批准的例外窗口是 2026-10-15 至 2026-11-30；这段时间允许旧版本继续运行，之后按迁移指南切换。"},
+        {"message_id":"T15-L0-010-M09","role":"user","content":"超过窗口就不能继续沿用例外。"},
+        {"message_id":"T15-L0-010-M10","role":"assistant","content":"对，窗口结束后回到标准弃用流程。"},
+        {"message_id":"T15-L0-010-M11","role":"user","content":"我会把批准记录和迁移指南互相链接。"},
+        {"message_id":"T15-L0-010-M12","role":"assistant","content":"同时保留默认通知周期作为不同治理规则。"}
+      ]
+    },
+    {
+      "asset_id":"T15-L0-011","asset_type":"l0_session","project_stream":"atlas-versioning","role":"distractor",
+      "messages":[
+        {"message_id":"T15-L0-011-M01","role":"user","content":"Atlas 默认弃用通知一般提前多久发？"},
+        {"message_id":"T15-L0-011-M02","role":"assistant","content":"默认周期由版本治理规则规定，不等于某个合作方的例外窗口。"},
+        {"message_id":"T15-L0-011-M03","role":"user","content":"这条记录只讨论通知模板和公告渠道。"},
+        {"message_id":"T15-L0-011-M04","role":"assistant","content":"没有合作方批准日期，也没有旧版本继续运行的例外。"},
+        {"message_id":"T15-L0-011-M05","role":"user","content":"另一个草案写了一个暂定月份。"},
+        {"message_id":"T15-L0-011-M06","role":"assistant","content":"暂定月份不能当最终批准窗口。"},
+        {"message_id":"T15-L0-011-M07","role":"user","content":"这和 Atlas 迁移负责人名单一起更新。"},
+        {"message_id":"T15-L0-011-M08","role":"assistant","content":"负责人名单属于迁移流程，不会替代例外审批证据。"},
+        {"message_id":"T15-L0-011-M09","role":"user","content":"我会把默认周期标成治理背景。"},
+        {"message_id":"T15-L0-011-M10","role":"assistant","content":"这样查具体窗口时可以排除这条通知讨论。"},
+        {"message_id":"T15-L0-011-M11","role":"user","content":"当前没有具体合作方名称。"},
+        {"message_id":"T15-L0-011-M12","role":"assistant","content":"对，它不是目标例外批准记录。"}
+      ]
+    },
+    {
+      "asset_id":"T15-L0-012","asset_type":"l0_session","project_stream":"atlas-versioning","role":"supporting_history",
+      "messages":[
+        {"message_id":"T15-L0-012-M01","role":"user","content":"Atlas 双版本运行的迁移指南要和哪些证据互链？"},
+        {"message_id":"T15-L0-012-M02","role":"assistant","content":"互链版本协商记录、弃用治理场景和合作方迁移承诺。"},
+        {"message_id":"T15-L0-012-M03","role":"user","content":"草案和批准记录的状态必须分开。"},
+        {"message_id":"T15-L0-012-M04","role":"assistant","content":"对，草案只能说明待审事项，批准记录才是窗口依据。"},
+        {"message_id":"T15-L0-012-M05","role":"user","content":"Meridian 的发布交接链接也出现在索引里。"},
+        {"message_id":"T15-L0-012-M06","role":"assistant","content":"那是跨项目导航，不是 Atlas 的窗口结论。"},
+        {"message_id":"T15-L0-012-M07","role":"user","content":"迁移指南需要写旧版本何时退出。"},
+        {"message_id":"T15-L0-012-M08","role":"assistant","content":"需要，但日期应从批准场景引用，不能从默认通知周期推算。"},
+        {"message_id":"T15-L0-012-M09","role":"user","content":"索引摘要目前只讲双版本运行的流程。"},
+        {"message_id":"T15-L0-012-M10","role":"assistant","content":"摘要不替代批准证据，具体窗口仍需回到对应场景。"},
+        {"message_id":"T15-L0-012-M11","role":"user","content":"我会保留版本切换后的回滚说明。"},
+        {"message_id":"T15-L0-012-M12","role":"assistant","content":"很好，这能帮助审查人区分治理流程和具体例外事实。"}
+      ]
+    },
+    {"asset_id":"T15-L1-001","asset_type":"l1_memory","project_stream":"harbor-contract","supporting_message_ids":["T15-L0-001-M02","T15-L0-001-M04"],"summary":"Harbor 响应 schema 的可选属性演进需要与删除字段及 required 收紧分开审查；摘要保留风险边界，不替代版本决定原文。"},
+    {"asset_id":"T15-L1-002","asset_type":"l1_memory","project_stream":"harbor-contract","supporting_message_ids":["T15-L0-001-M08","T15-L0-001-M10"],"summary":"团队要求发布说明标出新增响应属性的缺省行为，并避免把可选扩展写成强制迁移。","content":"将可选的 trace_context 属性加入 response schema，按兼容扩展处理，沿用当前主版本，不触发 major；旧 consumer 缺省时继续正常工作。发布说明标出新增属性可选，避免写成强制迁移。"},
+    {"asset_id":"T15-L1-003","asset_type":"l1_memory","project_stream":"harbor-contract","supporting_message_ids":["T15-L0-002-M03","T15-L0-002-M07"],"summary":"Harbor 的另一轮审查涉及删除字段和约束收紧，属于独立的破坏性变更线索。"},
+    {"asset_id":"T15-L1-004","asset_type":"l1_memory","project_stream":"meridian-sdk","supporting_message_ids":["T15-L0-006-M02","T15-L0-006-M04"],"summary":"Meridian 交接要求两种语言包来自同一份冻结输入，并将候选构建与正式发布分开。","content":"正式交接钉住的是 TypeScript SDK 3.1.0 与 Python SDK 2.4.1；两者都由同一份冻结 schema 生成，候选构建号不算正式版本。"},
+    {"asset_id":"T15-L1-005","asset_type":"l1_memory","project_stream":"meridian-sdk","supporting_message_ids":["T15-L0-005-M03","T15-L0-005-M08"],"summary":"Meridian 候选发布尚未完成双语言交接，候选构建信息不能代替正式包版本。"},
+    {"asset_id":"T15-L1-006","asset_type":"l1_memory","project_stream":"pactline-tests","supporting_message_ids":["T15-L0-004-M11","T15-L0-004-M12"],"summary":"Pactline 请求头复盘摘要指出名称比较需遵守 HTTP 语义、值保持原样，但概括不保存复盘决定的逐字内容。"},
+    {"asset_id":"T15-L1-007","asset_type":"l1_memory","project_stream":"pactline-tests","supporting_message_ids":["T15-L0-009-M02","T15-L0-009-M05"],"summary":"Pactline 超时复盘需区分 provider 等待窗口与相邻健康检查的退避策略。"},
+    {"asset_id":"T15-L1-008","asset_type":"l1_memory","project_stream":"pactline-tests","supporting_message_ids":["T15-L0-003-M03","T15-L0-003-M10"],"summary":"另一轮 Pactline 记录只涉及日志显示层的 header 标签概括，没有形成 provider 匹配入口的实施结论。"},
+    {"asset_id":"T15-L1-009","asset_type":"l1_memory","project_stream":"pactline-tests","supporting_message_ids":["T15-L0-009-M08","T15-L0-009-M10"],"summary":"Pactline 失败重放摘要区分自动处理与人工重跑，并要求保留上限与审计边界。"},
+    {"asset_id":"T15-L1-010","asset_type":"l1_memory","project_stream":"prism-schema","supporting_message_ids":["T15-L0-007-M02","T15-L0-007-M06"],"summary":"Prism 审查明确区分 request 与 response 枚举，不能从 response 的未知值惯例推断 request 规则。"},
+    {"asset_id":"T15-L1-011","asset_type":"l1_memory","project_stream":"prism-schema","supporting_message_ids":["T15-L0-007-M07","T15-L0-007-M08"],"summary":"Prism 指定时间窗内的 request state 枚举决定已记录为正式审查结论，需按其项目、类型与时间条件定位。","content":"在 2026-08-01 至 2026-08-29 的 decision 窗口内，request 的 state 枚举新增值按严格兼容模式处理，必须先提升请求契约版本并完成 consumer 迁移，不能作为同一版本的无破坏扩展。"},
+    {"asset_id":"T15-L1-012","asset_type":"l1_memory","project_stream":"prism-schema","supporting_message_ids":["T15-L0-008-M03","T15-L0-008-M08"],"summary":"Prism 另一条记录属于 response 方向且仍是草案，不能作为 request 的最终兼容证据。"},
+    {"asset_id":"T15-L1-013","asset_type":"l1_memory","project_stream":"atlas-versioning","supporting_message_ids":["T15-L0-010-M02","T15-L0-010-M05"],"summary":"Atlas 例外审批需要同时考虑原因、迁移责任和退出条件，并与默认通知周期区分。"},
+    {"asset_id":"T15-L1-014","asset_type":"l1_memory","project_stream":"atlas-versioning","supporting_message_ids":["T15-L0-011-M03","T15-L0-011-M06"],"summary":"Atlas 默认通知记录不包含合作方例外批准日期，暂定月份也不能替代最终审批证据。"},
+    {"asset_id":"T15-L1-015","asset_type":"l1_memory","project_stream":"atlas-versioning","supporting_message_ids":["T15-L0-010-M08","T15-L0-010-M10"],"summary":"Atlas 迁移摘要强调例外结束后回到标准弃用流程，具体批准窗口应以场景记录为准。"},
+    {"asset_id":"T15-L1-016","asset_type":"l1_memory","project_stream":"atlas-versioning","supporting_message_ids":["T15-L0-012-M04","T15-L0-012-M09"],"summary":"Atlas 索引摘要描述双版本运行与证据互链流程，提醒摘要不替代具体批准场景。"},
+    {"asset_id":"T15-L2-001","asset_type":"l2_scene","path":"api/harbor/breaking-change-review.md","project_stream":"harbor-contract","injected":true,"supporting_session_ids":["T15-L0-001","T15-L0-002","T15-L0-012"],"summary":"说明 Harbor OpenAPI 破坏性变更审查对象、入口和证据分层，不泄露本次 response 扩展的兼容结论。","content":"该场景汇总 Harbor 的 schema 变更审查入口、consumer 影响核对、版本标签复核和发布证据分层；可选响应属性、删除字段与 required 收紧分别进入不同审查分支。"},
+    {"asset_id":"T15-L2-002","asset_type":"l2_scene","path":"sdk/meridian/generation-release.md","project_stream":"meridian-sdk","injected":true,"supporting_session_ids":["T15-L0-005","T15-L0-006","T15-L0-012"],"summary":"说明 Meridian 从冻结 schema 生成多语言 SDK、候选构建和发布交接流程，不泄露当前正式版本钉住值。","content":"该场景描述 Meridian 的冻结输入校验、TypeScript/Python 生成、候选构建隔离、smoke check 与正式交接步骤；版本、提交号和候选号在交接中分别留档。"},
+    {"asset_id":"T15-L2-003","asset_type":"l2_scene","path":"contracts/pactline/provider-verification.md","project_stream":"pactline-tests","injected":true,"supporting_session_ids":["T15-L0-003","T15-L0-004","T15-L0-009"],"summary":"说明 Pactline provider verification 的验证场景、失败重放入口和审计边界，不泄露失败原因或具体重试决定。","content":"该场景汇总 Pactline 的 consumer 契约验证、provider 等待窗口、失败重放与人工重跑审计入口，并将请求头显示层讨论与自动重试策略分开。"},
+    {"asset_id":"T15-L2-004","asset_type":"l2_scene","path":"versioning/atlas/deprecation-window.md","project_stream":"atlas-versioning","injected":true,"supporting_session_ids":["T15-L0-010","T15-L0-011","T15-L0-012"],"summary":"说明 Atlas 弃用窗口例外的审批对象、迁移流程和双版本运行入口，不泄露批准的具体日期。","content":"Atlas 批准的例外窗口是 2026-10-15 至 2026-11-30；窗口期间允许旧版本继续运行，2026-11-30 之后按迁移指南切换并回到标准弃用流程。该内容综合批准记录、迁移承诺与双版本运行边界。"},
+    {"asset_id":"T15-L2-005","asset_type":"l2_scene","path":"schema/prism/compatibility-modes.md","project_stream":"prism-schema","injected":true,"supporting_session_ids":["T15-L0-007","T15-L0-008","T15-L0-012"],"summary":"说明 Prism JSON Schema request/response 兼容模式的审查入口与区分方式，不泄露项目当前采用值。","content":"该场景说明 Prism 兼容审查需先区分 request 与 response，再核对未知枚举值处理、consumer 影响、草案状态和 decision 时间条件。"},
+    {"asset_id":"T15-L3-001","asset_type":"l3_profile","project_stream":"team-wide","supports_trial":true,"summary":"该团队长期偏好先看契约边界，再决定实现与发布动作；审查时优先核对可追溯的原始消息、明确项目范围和时间条件。对于相邻项目或相似术语，要求保留证据链并标出不确定性，避免用摘要推断具体结论。记录应简洁、可复核，先处理当前问题，再扩展到其他版本治理背景。此偏好只描述稳定工作方式，不包含任何具体项目答案。"}
+  ]
+}

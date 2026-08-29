@@ -1,0 +1,128 @@
+{
+  "schema_version": "task1.skill_asset_candidates.v1",
+  "team_id": "T15",
+  "batch_id": "build-08-T15-DS05-skill-expansion-01",
+  "source_lock": {
+    "repository_url": "https://github.com/github/awesome-copilot",
+    "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+    "license": "MIT",
+    "license_path": "LICENSE",
+    "license_sha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823"
+  },
+  "allowed_host_adaptations": [
+    "替换宿主工具名称或宿主引用",
+    "调整中性 listing description",
+    "调整 useWhen 与 doNotUseWhen",
+    "保留冻结文件的核心技术步骤、示例和资源引用"
+  ],
+  "candidates": [
+    {
+      "candidate_id": "T15-SKL-001", "name": "aspnet-minimal-api-openapi", "owner": "agent-task1-t15-general", "visibility": "listed", "proposed_visibility": "listed",
+      "source_id": "T15-EXT-SKL-001", "source_path": "skills/aspnet-minimal-api-openapi/SKILL.md", "repository_url": "https://github.com/github/awesome-copilot", "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e", "license": "MIT", "raw_sha256": "16e632ce8cb514d413e968811a2e07b8e0f1e97c6e2e93174efd6cec2e49e86f", "sha256": "16e632ce8cb514d413e968811a2e07b8e0f1e97c6e2e93174efd6cec2e49e86f",
+      "manifest_files": [{"path": "skills/aspnet-minimal-api-openapi/SKILL.md", "sha256": "16e632ce8cb514d413e968811a2e07b8e0f1e97c6e2e93174efd6cec2e49e86f"}],
+      "resources": [], "description": "为 ASP.NET Minimal API 端点组织类型、安全校验和 OpenAPI 文档。", "useWhen": "任务聚焦端点分组、请求响应类型、强类型结果或接口文档设置。", "doNotUseWhen": "需要生成完整跨层应用、编辑独立规格，或增加 TypeSpec 操作。", "allowed_host_adaptations": ["可替换宿主引用和中性 listing 文案", "保留端点分组、DTO、验证、强类型结果和文档变换步骤"], "use_in_draft_pairs": ["T15-EXP-SKL-003"], "role": "distractor"
+    },
+    {
+      "candidate_id": "T15-SKL-002", "name": "msgraph-sdk", "owner": "agent-task1-t15-general", "visibility": "listed", "proposed_visibility": "listed",
+      "source_id": "T15-EXT-SKL-006", "source_path": "skills/msgraph-sdk/SKILL.md", "repository_url": "https://github.com/github/awesome-copilot", "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e", "license": "MIT", "raw_sha256": "cafac367eb3fdc99e05aedc76d46ad77f49e6c3fbc549e3cc6ec86d657638d8b", "sha256": "cafac367eb3fdc99e05aedc76d46ad77f49e6c3fbc549e3cc6ec86d657638d8b",
+      "manifest_files": [{"path": "skills/msgraph-sdk/SKILL.md", "sha256": "cafac367eb3fdc99e05aedc76d46ad77f49e6c3fbc549e3cc6ec86d657638d8b"}],
+      "resources": [], "description": "在应用中集成 Microsoft Graph SDK，覆盖认证、调用、分页、增量查询和节流处理。", "useWhen": "需要访问 Microsoft 365 数据或设计 Graph SDK 的认证、分页、批处理与增量同步。", "doNotUseWhen": "目标是通用 Python 包发布、TypeSpec 插件建模或 ASP.NET 单端点文档。", "allowed_host_adaptations": ["可替换宿主引用和中性 listing 文案", "保留语言选择、认证决策、分页、delta、重试和最小权限步骤"], "use_in_draft_pairs": ["T15-EXP-SKL-004"], "role": "target"
+    },
+    {
+      "candidate_id": "T15-SKL-003", "name": "python-pypi-package-builder", "owner": "agent-task1-t15-general", "visibility": "listed", "proposed_visibility": "listed",
+      "source_id": "T15-EXT-SKL-009", "source_path": "skills/python-pypi-package-builder/SKILL.md", "repository_url": "https://github.com/github/awesome-copilot", "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e", "license": "MIT", "raw_sha256": "a936499b350cc292fead873345f54893c2e91c46ce0bae8620bd2f1734376f3e", "sha256": "a936499b350cc292fead873345f54893c2e91c46ce0bae8620bd2f1734376f3e",
+      "manifest_files": [{"path": "skills/python-pypi-package-builder/SKILL.md", "sha256": "a936499b350cc292fead873345f54893c2e91c46ce0bae8620bd2f1734376f3e"}, {"path": "skills/python-pypi-package-builder/references/versioning-strategy.md", "sha256": "cfb0d997b8cadc265beece2d727e5f31e07065729e65d38b1af1e5ce7a60abfa"}],
+      "resources": [{"path": "references/versioning-strategy.md", "source_id": "T15-EXT-RES-001", "sha256": "cfb0d997b8cadc265beece2d727e5f31e07065729e65d38b1af1e5ce7a60abfa"}], "description": "规划 Python 包的结构、构建后端、版本策略、质量检查和 PyPI 发布流程。", "useWhen": "需要创建可安装 Python 包、配置构建与版本、准备 CI 发布或治理依赖范围。", "doNotUseWhen": "只需外部服务客户端调用、代理运行时，或不涉及 Python 包交付。", "allowed_host_adaptations": ["可替换宿主引用和中性 listing 文案", "保留包类型决策、目录结构、构建校验、版本策略及发布顺序", "保留 references/versioning-strategy.md 资源引用"], "use_in_draft_pairs": ["T15-EXP-SKL-005"], "role": "target"
+    },
+    {
+      "candidate_id": "T15-SKL-004", "name": "typespec-api-operations", "owner": "agent-task1-t15-general", "visibility": "listed", "proposed_visibility": "listed",
+      "source_id": "T15-EXT-SKL-003", "source_path": "skills/typespec-api-operations/SKILL.md", "repository_url": "https://github.com/github/awesome-copilot", "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e", "license": "MIT", "raw_sha256": "882751e73fb23048fcffd739345cabec0b3176a922b528f271c3dc7ce78ddd8a", "sha256": "882751e73fb23048fcffd739345cabec0b3176a922b528f271c3dc7ce78ddd8a",
+      "manifest_files": [{"path": "skills/typespec-api-operations/SKILL.md", "sha256": "882751e73fb23048fcffd739345cabec0b3176a922b528f271c3dc7ce78ddd8a"}],
+      "resources": [], "description": "在既有 TypeSpec API 插件中添加 REST 操作、参数、响应模型、确认和自适应卡片。", "useWhen": "已有 TypeSpec API 插件，需要补充 GET、POST、PATCH 或 DELETE 操作及其路由参数。", "doNotUseWhen": "需要从零建立完整插件文件，或需要生成跨层应用和 Python 包。", "allowed_host_adaptations": ["可替换宿主引用和中性 listing 文案", "保留 REST 路由、参数装饰、响应模型、确认和卡片步骤"], "use_in_draft_pairs": ["T15-EXP-SKL-001", "T15-EXP-SKL-003"], "role": "distractor"
+    },
+    {
+      "candidate_id": "T15-SKL-005", "name": "update-specification", "owner": "agent-task1-t15-general", "visibility": "listed", "proposed_visibility": "listed",
+      "source_id": "T15-EXT-SKL-012", "source_path": "skills/update-specification/SKILL.md", "repository_url": "https://github.com/github/awesome-copilot", "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e", "license": "MIT", "raw_sha256": "2d6df53ebd1d50e5a69a4425bc579d5c8a15e0102c6bff685c3fa3ac70e920a6", "sha256": "2d6df53ebd1d50e5a69a4425bc579d5c8a15e0102c6bff685c3fa3ac70e920a6",
+      "manifest_files": [{"path": "skills/update-specification/SKILL.md", "sha256": "2d6df53ebd1d50e5a69a4425bc579d5c8a15e0102c6bff685c3fa3ac70e920a6"}],
+      "resources": [], "description": "按新需求更新结构化、机器可读且自包含的解决方案规格文件。", "useWhen": "已有规格需要补充需求、约束、接口、验收、测试策略或边界示例。", "doNotUseWhen": "需要生成可运行应用、端点实现、服务层或应用测试，而非更新规格。", "allowed_host_adaptations": ["可替换宿主引用和中性 listing 文案", "保留规范章节模板、命名约束、验收和验证要求"], "use_in_draft_pairs": [], "role": "distractor"
+    },
+    {
+      "candidate_id": "T15-SKL-006", "name": "gdpr-compliant", "owner": "agent-task1-t15-general", "visibility": "listed", "proposed_visibility": "listed",
+      "source_id": "T15-EXT-SKL-015", "source_path": "skills/gdpr-compliant/SKILL.md", "repository_url": "https://github.com/github/awesome-copilot", "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e", "license": "MIT", "raw_sha256": "e1f33a817a1d0f7165f4f6652cfeb52632ba124067c3f46c37f867cde730242e", "sha256": "e1f33a817a1d0f7165f4f6652cfeb52632ba124067c3f46c37f867cde730242e",
+      "manifest_files": [{"path": "skills/gdpr-compliant/SKILL.md", "sha256": "e1f33a817a1d0f7165f4f6652cfeb52632ba124067c3f46c37f867cde730242e"}],
+      "resources": [], "description": "在软件设计和实现中检查 GDPR 相关的隐私、数据处理和合规要求。", "useWhen": "任务需要识别个人数据、隐私控制、保留删除或合规审查。", "doNotUseWhen": "问题是 API 操作建模、SDK 发布或一般规格文件结构。", "allowed_host_adaptations": ["可替换宿主引用和中性 listing 文案", "保留原有隐私与合规检查步骤"], "use_in_draft_pairs": [], "role": "unassigned"
+    },
+    {
+      "candidate_id": "T15-SKL-007", "name": "openapi-to-application-code", "owner": "agent-task1-t15-assets-a", "visibility": "same-team-search", "proposed_visibility": "same-team-search",
+      "source_id": "T15-EXT-SKL-002", "source_path": "skills/openapi-to-application-code/SKILL.md", "repository_url": "https://github.com/github/awesome-copilot", "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e", "license": "MIT", "raw_sha256": "4ac9c35e14140129df922091b62288258887e5d0efc0760ab390b3b248a35c16", "sha256": "4ac9c35e14140129df922091b62288258887e5d0efc0760ab390b3b248a35c16",
+      "manifest_files": [{"path": "skills/openapi-to-application-code/SKILL.md", "sha256": "4ac9c35e14140129df922091b62288258887e5d0efc0760ab390b3b248a35c16"}],
+      "resources": [], "description": "从 OpenAPI 规范规划并生成完整、可运行的应用骨架、业务层、配置、测试和交付文档。", "useWhen": "需要把已有 OpenAPI 规范端到端落成应用，并覆盖分析、架构、代码、辅助文件与验证。", "doNotUseWhen": "只需单个 API 操作、TypeSpec 插件文件或 SDK 客户端集成。", "allowed_host_adaptations": ["可替换宿主引用和中性 listing 文案", "保留规范分析、架构设计、应用生成、辅助文件与验证顺序"], "use_in_draft_pairs": ["T15-EXP-SKL-001", "T15-EXP-SKL-003"], "role": "distractor"
+    },
+    {
+      "candidate_id": "T15-SKL-008", "name": "typespec-create-api-plugin", "owner": "agent-task1-t15-assets-a", "visibility": "same-team-search", "proposed_visibility": "same-team-search",
+      "source_id": "T15-EXT-SKL-004", "source_path": "skills/typespec-create-api-plugin/SKILL.md", "repository_url": "https://github.com/github/awesome-copilot", "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e", "license": "MIT", "raw_sha256": "b48f961f80c931a0a31f43adf2954d60c8b9006170e45b85c01f5824d3427002", "sha256": "b48f961f80c931a0a31f43adf2954d60c8b9006170e45b85c01f5824d3427002",
+      "manifest_files": [{"path": "skills/typespec-create-api-plugin/SKILL.md", "sha256": "b48f961f80c931a0a31f43adf2954d60c8b9006170e45b85c01f5824d3427002"}],
+      "resources": [], "description": "为 Microsoft 365 Copilot 生成连接外部 REST API 的完整 TypeSpec 插件及可选卡片。", "useWhen": "需要从零建立代理定义、API 操作、认证和结果展示组成的 TypeSpec 插件。", "doNotUseWhen": "已有插件只需添加单个操作，或任务是通用 OpenAPI 应用生成。", "allowed_host_adaptations": ["可替换宿主引用和中性 listing 文案", "保留 main.tsp、actions.tsp、认证、能力与可选卡片的生成步骤"], "use_in_draft_pairs": ["T15-EXP-SKL-001"], "role": "target"
+    },
+    {
+      "candidate_id": "T15-SKL-009", "name": "integrate-context-matic", "owner": "agent-task1-t15-assets-a", "visibility": "same-team-search", "proposed_visibility": "same-team-search",
+      "source_id": "T15-EXT-SKL-008", "source_path": "skills/integrate-context-matic/SKILL.md", "repository_url": "https://github.com/github/awesome-copilot", "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e", "license": "MIT", "raw_sha256": "1251b1a1afebe0c881241dd7b87ed7688b01696866fada8f3071e0336f39ba43", "sha256": "1251b1a1afebe0c881241dd7b87ed7688b01696866fada8f3071e0336f39ba43",
+      "manifest_files": [{"path": "skills/integrate-context-matic/SKILL.md", "sha256": "1251b1a1afebe0c881241dd7b87ed7688b01696866fada8f3071e0336f39ba43"}],
+      "resources": [], "description": "按项目语言发现并集成第三方 API，获取集成指导以及模型和端点定义。", "useWhen": "需要接入外部 API、增加第三方客户端或基于外部 SDK 实现功能。", "doNotUseWhen": "目标是只调用已知本地接口、创建 Python 发布包，或不涉及外部服务。", "allowed_host_adaptations": ["可替换宿主引用和中性 listing 文案", "保留语言检测、API 发现、指导查询和模型/端点查找顺序"], "use_in_draft_pairs": ["T15-EXP-SKL-002"], "role": "target"
+    },
+    {
+      "candidate_id": "T15-SKL-010", "name": "copilot-sdk", "owner": "agent-task1-t15-assets-a", "visibility": "same-team-search", "proposed_visibility": "same-team-search",
+      "source_id": "T15-EXT-SKL-005", "source_path": "skills/copilot-sdk/SKILL.md", "repository_url": "https://github.com/github/awesome-copilot", "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e", "license": "MIT", "raw_sha256": "5b432db55670223935a19215850f0e1e094db2026f1aa880f7d7b978fc48a42f", "sha256": "5b432db55670223935a19215850f0e1e094db2026f1aa880f7d7b978fc48a42f",
+      "manifest_files": [{"path": "skills/copilot-sdk/SKILL.md", "sha256": "5b432db55670223935a19215850f0e1e094db2026f1aa880f7d7b978fc48a42f"}],
+      "resources": [], "description": "在 Python、TypeScript、Go 或 .NET 应用中嵌入代理运行时、会话、流式响应和自定义工具。", "useWhen": "需要把代理能力嵌入应用，或创建会话、流式输出、自定义工具和 MCP 连接。", "doNotUseWhen": "主要任务是发现第三方 API、同步 Microsoft 365 数据或构建 Python 包。", "allowed_host_adaptations": ["可替换宿主引用和中性 listing 文案", "保留运行时前提、安装、会话、流式响应和工具定义步骤"], "use_in_draft_pairs": ["T15-EXP-SKL-002", "T15-EXP-SKL-004", "T15-EXP-SKL-005"], "role": "distractor"
+    },
+    {
+      "candidate_id": "T15-SKL-011", "name": "qdrant-clients-sdk", "owner": "agent-task1-t15-assets-a", "visibility": "same-team-search", "proposed_visibility": "same-team-search",
+      "source_id": "T15-EXT-SKL-007", "source_path": "skills/qdrant-clients-sdk/SKILL.md", "repository_url": "https://github.com/github/awesome-copilot", "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e", "license": "MIT", "raw_sha256": "eac9386970303787ccff5ce65f77e2bc51286a07b27977a8fba1f256f4c95426", "sha256": "eac9386970303787ccff5ce65f77e2bc51286a07b27977a8fba1f256f4c95426",
+      "manifest_files": [{"path": "skills/qdrant-clients-sdk/SKILL.md", "sha256": "eac9386970303787ccff5ce65f77e2bc51286a07b27977a8fba1f256f4c95426"}],
+      "resources": [], "description": "使用多语言 Qdrant 客户端和 REST/gRPC 参考完成向量服务接入。", "useWhen": "需要选择 Qdrant 客户端、查询服务 API 或获取具体语言的调用示例。", "doNotUseWhen": "需要通用第三方 API 发现、代理运行时或 Python 包版本发布流程。", "allowed_host_adaptations": ["可替换宿主引用和中性 listing 文案", "保留客户端选择、API 参考和示例检索步骤"], "use_in_draft_pairs": ["T15-EXP-SKL-002", "T15-EXP-SKL-005"], "role": "distractor"
+    },
+    {
+      "candidate_id": "T15-SKL-012", "name": "generate-custom-instructions-from-codebase", "owner": "agent-task1-t15-assets-a", "visibility": "same-team-search", "proposed_visibility": "same-team-search",
+      "source_id": "T15-EXT-SKL-010", "source_path": "skills/generate-custom-instructions-from-codebase/SKILL.md", "repository_url": "https://github.com/github/awesome-copilot", "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e", "license": "MIT", "raw_sha256": "b0be02c9acdbffae5a1e39509c3e24567696cba666d666cece24ded66afa885b", "sha256": "b0be02c9acdbffae5a1e39509c3e24567696cba666d666cece24ded66afa885b",
+      "manifest_files": [{"path": "skills/generate-custom-instructions-from-codebase/SKILL.md", "sha256": "b0be02c9acdbffae5a1e39509c3e24567696cba666d666cece24ded66afa885b"}],
+      "resources": [], "description": "从现有代码库结构和约定生成可复用的项目自定义指令。", "useWhen": "需要把代码库惯例、目录结构和工具约束整理成项目指令。", "doNotUseWhen": "问题是外部 API 接入、端点建模或发布版本策略。", "allowed_host_adaptations": ["可替换宿主引用和中性 listing 文案", "保留代码库分析、惯例提取和指令生成步骤"], "use_in_draft_pairs": [], "role": "unassigned"
+    },
+    {
+      "candidate_id": "T15-SKL-013", "name": "create-github-action-workflow-specification", "owner": "agent-task1-t15-assets-b", "visibility": "same-team-search", "proposed_visibility": "same-team-search",
+      "source_id": "T15-EXT-SKL-011", "source_path": "skills/create-github-action-workflow-specification/SKILL.md", "repository_url": "https://github.com/github/awesome-copilot", "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e", "license": "MIT", "raw_sha256": "25b57a8e4ed35e2e640dc9f6f255dc6c8f86574b98d2abc5153b5a8c9b22491c", "sha256": "25b57a8e4ed35e2e640dc9f6f255dc6c8f86574b98d2abc5153b5a8c9b22491c",
+      "manifest_files": [{"path": "skills/create-github-action-workflow-specification/SKILL.md", "sha256": "25b57a8e4ed35e2e640dc9f6f255dc6c8f86574b98d2abc5153b5a8c9b22491c"}],
+      "resources": [], "description": "为 GitHub Actions 工作流编写结构化、可验证的流程规格。", "useWhen": "需要定义 CI/CD 触发器、作业、步骤、权限和验收要求。", "doNotUseWhen": "任务主要是 API/SDK 实现或 Python 包内部版本决策。", "allowed_host_adaptations": ["可替换宿主引用和中性 listing 文案", "保留工作流规格字段、约束和验证步骤"], "use_in_draft_pairs": [], "role": "unassigned"
+    },
+    {
+      "candidate_id": "T15-SKL-014", "name": "build-evidence-map", "owner": "agent-task1-t15-assets-b", "visibility": "same-team-search", "proposed_visibility": "same-team-search",
+      "source_id": "T15-EXT-SKL-013", "source_path": "skills/build-evidence-map/SKILL.md", "repository_url": "https://github.com/github/awesome-copilot", "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e", "license": "MIT", "raw_sha256": "fb104196d94a0530eb5b86c56edfdaac0954a842f7cc71dfd4dcf87b20675fc9", "sha256": "fb104196d94a0530eb5b86c56edfdaac0954a842f7cc71dfd4dcf87b20675fc9",
+      "manifest_files": [{"path": "skills/build-evidence-map/SKILL.md", "sha256": "fb104196d94a0530eb5b86c56edfdaac0954a842f7cc71dfd4dcf87b20675fc9"}],
+      "resources": [], "description": "将需求、实现和验证证据整理为可追溯的证据映射。", "useWhen": "需要把声明与代码、测试或文档证据建立对应关系。", "doNotUseWhen": "需要生成 API、SDK 或发布配置本身。", "allowed_host_adaptations": ["可替换宿主引用和中性 listing 文案", "保留证据收集、关联和覆盖检查步骤"], "use_in_draft_pairs": [], "role": "unassigned"
+    },
+    {
+      "candidate_id": "T15-SKL-015", "name": "project-workflow-analysis-blueprint-generator", "owner": "agent-task1-t15-assets-b", "visibility": "same-team-search", "proposed_visibility": "same-team-search",
+      "source_id": "T15-EXT-SKL-014", "source_path": "skills/project-workflow-analysis-blueprint-generator/SKILL.md", "repository_url": "https://github.com/github/awesome-copilot", "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e", "license": "MIT", "raw_sha256": "1563be31e5dd0568317b196dc92e10282a41d628db7bc04a990ad9019d35c37b", "sha256": "1563be31e5dd0568317b196dc92e10282a41d628db7bc04a990ad9019d35c37b",
+      "manifest_files": [{"path": "skills/project-workflow-analysis-blueprint-generator/SKILL.md", "sha256": "1563be31e5dd0568317b196dc92e10282a41d628db7bc04a990ad9019d35c37b"}],
+      "resources": [], "description": "分析项目工作流并生成阶段、角色、输入输出和依赖关系蓝图。", "useWhen": "需要梳理复杂项目流程、责任边界和交付依赖。", "doNotUseWhen": "只需实现单个 API 操作、SDK 调用或版本文件更新。", "allowed_host_adaptations": ["可替换宿主引用和中性 listing 文案", "保留工作流分析、阶段建模和蓝图输出步骤"], "use_in_draft_pairs": [], "role": "unassigned"
+    },
+    {
+      "candidate_id": "T15-SKL-016", "name": "declarative-agents", "owner": "agent-task1-t15-assets-b", "visibility": "same-team-search", "proposed_visibility": "same-team-search",
+      "source_id": "T15-EXT-SKL-016", "source_path": "skills/declarative-agents/SKILL.md", "repository_url": "https://github.com/github/awesome-copilot", "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e", "license": "MIT", "raw_sha256": "7a0913860f4478f8db00963c70d2fbdf32118ff8802a62175a9d5c0c77adb37f", "sha256": "7a0913860f4478f8db00963c70d2fbdf32118ff8802a62175a9d5c0c77adb37f",
+      "manifest_files": [{"path": "skills/declarative-agents/SKILL.md", "sha256": "7a0913860f4478f8db00963c70d2fbdf32118ff8802a62175a9d5c0c77adb37f"}],
+      "resources": [], "description": "以声明式配置定义代理的行为、能力、工具和交互边界。", "useWhen": "需要用声明式文件描述代理配置和可用能力。", "doNotUseWhen": "任务是外部 API 目录发现、服务端点实现或 Python 发布。", "allowed_host_adaptations": ["可替换宿主引用和中性 listing 文案", "保留声明式代理字段、能力绑定和验证步骤"], "use_in_draft_pairs": [], "role": "unassigned"
+    },
+    {
+      "candidate_id": "T15-SKL-017", "name": "power-platform-mcp-connector-suite", "owner": "agent-task1-t15-assets-b", "visibility": "same-team-search", "proposed_visibility": "same-team-search",
+      "source_id": "T15-EXT-SKL-017", "source_path": "skills/power-platform-mcp-connector-suite/SKILL.md", "repository_url": "https://github.com/github/awesome-copilot", "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e", "license": "MIT", "raw_sha256": "0b7764050e18c8257335da89594192c462aa33e2fcd2cef8c1f066ba1fe496d3", "sha256": "0b7764050e18c8257335da89594192c462aa33e2fcd2cef8c1f066ba1fe496d3",
+      "manifest_files": [{"path": "skills/power-platform-mcp-connector-suite/SKILL.md", "sha256": "0b7764050e18c8257335da89594192c462aa33e2fcd2cef8c1f066ba1fe496d3"}],
+      "resources": [], "description": "生成并校验带 MCP 集成的 Power Platform 自定义连接器及其 schema、转换脚本和文档。", "useWhen": "需要生成连接器定义、MCP 端点、schema、认证和平台校验流程。", "doNotUseWhen": "需要通用 Graph 增量查询、TypeSpec 插件或 Python 包版本策略。", "allowed_host_adaptations": ["可替换宿主引用和中性 listing 文案", "保留连接器文件、schema 约束、资源输出和校验步骤"], "use_in_draft_pairs": ["T15-EXP-SKL-004"], "role": "distractor"
+    },
+    {
+      "candidate_id": "T15-SKL-018", "name": "aspire", "owner": "agent-task1-t15-assets-b", "visibility": "same-team-search", "proposed_visibility": "same-team-search",
+      "source_id": "T15-EXT-SKL-018", "source_path": "skills/aspire/SKILL.md", "repository_url": "https://github.com/github/awesome-copilot", "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e", "license": "MIT", "raw_sha256": "f4cb7a6c3d437edd447a097d984ed43e519c8c53433ddf131a3061c477753542", "sha256": "f4cb7a6c3d437edd447a097d984ed43e519c8c53433ddf131a3061c477753542",
+      "manifest_files": [{"path": "skills/aspire/SKILL.md", "sha256": "f4cb7a6c3d437edd447a097d984ed43e519c8c53433ddf131a3061c477753542"}],
+      "resources": [], "description": "使用 .NET Aspire 组织云原生应用的服务编排、开发环境和可观测性。", "useWhen": "需要设计 .NET 分布式应用的本地编排、服务依赖或遥测配置。", "doNotUseWhen": "任务只涉及 API 契约、SDK 调用、Python 包发布或代理配置。", "allowed_host_adaptations": ["可替换宿主引用和中性 listing 文案", "保留服务编排、依赖声明、开发环境和可观测性步骤"], "use_in_draft_pairs": [], "role": "unassigned"
+    }
+  ]
+}
