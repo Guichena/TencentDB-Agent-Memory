@@ -1,0 +1,20 @@
+{
+  "schema_version": "task1.ds01_migration_report.v1",
+  "stage": "DS01",
+  "contract_path": "registry/contracts/formal-v1.json",
+  "contract_sha256": "8b7fde1c44940938eae56b4ec24b16ea7e53b994d39a032d908eeef9ac622a10",
+  "t01_pairs": 4,
+  "t01_cases": 8,
+  "t01_l0_assets": 6,
+  "t01_skill_assets": 2,
+  "listed_skill_ids": [
+    "T01-SKILL-DISCOVER-IMPORTANT-FUNCTION"
+  ],
+  "searchable_unlisted_skill_ids": [
+    "T01-SKILL-FUZZING-PYTHON"
+  ],
+  "source_hashes_preserved": true,
+  "runtime_stop_removed": true,
+  "model_runs": 0,
+  "luna_batches": 0
+}

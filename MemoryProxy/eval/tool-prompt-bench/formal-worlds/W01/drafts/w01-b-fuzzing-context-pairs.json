@@ -1,0 +1,692 @@
+{
+  "schema_version": "task1.context_pair_draft.v1",
+  "status": "draft_for_human_review",
+  "metric_eligible": false,
+  "world_id": "W01",
+  "space_id": "space-w01",
+  "team": {
+    "team_id": "team-w01-mypy",
+    "team_slot": "W01-B",
+    "name": "Python 可靠性与供应链保障组",
+    "agent_id": "agent-w01-mypy-maintainer",
+    "agent_role": "承接 Python 类型系统、测试基础设施、模糊测试与依赖风险任务的通用工程 Agent",
+    "active_project_streams": [
+      {
+        "project_id": "stream-fuzzing-rollout",
+        "name": "Python 核心库持续模糊测试",
+        "state": "active",
+        "scope": "为 arrow、black、ipython、mini-sglang、ujson 选择高价值入口并建立覆盖引导的 fuzz harness"
+      },
+      {
+        "project_id": "stream-mypy-stubgen",
+        "name": "Mypy stubgen 稳定性",
+        "state": "active",
+        "scope": "处理别名、TypeVarTuple 与生成文本相关的 AST visitor 边界"
+      },
+      {
+        "project_id": "stream-mypy-incremental",
+        "name": "Mypy 增量分析稳定性",
+        "state": "active",
+        "scope": "处理 AST snapshot、ParamSpec 与增量服务差异比较；不得与 stubgen 结论混用"
+      },
+      {
+        "project_id": "stream-python-ci",
+        "name": "Python CI 与覆盖率治理",
+        "state": "active",
+        "scope": "维护 pytest 分层、失败归因与覆盖率缺口修复流程"
+      },
+      {
+        "project_id": "stream-dependency-audit",
+        "name": "离线依赖风险审计",
+        "state": "queued",
+        "scope": "对锁定依赖做离线高危漏洞筛查，与运行时 fuzzing 分开评审"
+      }
+    ]
+  },
+  "authoring_contract": {
+    "provider_visible_fields": [
+      "context_messages",
+      "query"
+    ],
+    "private_fields": [
+      "gold",
+      "target_asset_id",
+      "target_history_session_ids",
+      "positive_reason",
+      "negative_reason",
+      "visible_distractor_ids"
+    ],
+    "runtime_stop": "stop_after_first_tdai_tool_decision",
+    "pair_rule": "The two cases use the same identity, asset snapshot, shared messages, query, and style. Only delta_message changes.",
+    "hash_rule": "SHA-256 of UTF-8 JSON.stringify(value), with object property order preserved as authored."
+  },
+  "measurement_contract": {
+    "dataset_content_stats": [
+      "context_message_count",
+      "context_utf8_bytes",
+      "query_utf8_bytes"
+    ],
+    "persist_per_variant_per_attempt": [
+      "injected_tool_description_tokens",
+      "full_system_prompt_tokens",
+      "context_tokens",
+      "query_tokens",
+      "total_input_tokens",
+      "cached_input_tokens",
+      "first_decision_output_tokens"
+    ],
+    "tokenizer_rule": "Do not estimate model tokens in the authoring draft. Compute with the tested model/tokenizer or record provider usage at run time, and save the tokenizer/model identifier.",
+    "comparison_rule": "All variants use byte-identical provider-visible case content; only the injected prompt variant may differ."
+  },
+  "source_refs": {
+    "skillsbench": {
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "license": "Apache-2.0",
+      "task_path": "tasks/setup-fuzzing-py/task.md",
+      "task_git_blob": "57b0312b7267906c085f2ce73e713ad8c6bcad29",
+      "use": "task shape and imported Skill candidates only; query and dialogue are newly authored"
+    },
+    "w01_history": {
+      "dataset": "SWE-Gym",
+      "dataset_revision": "bb94ed9e39bbeb96a7fcbfb533b80f25a7fd59cb",
+      "local_draft": "l0-sessions.json",
+      "review": "../reviews/L0-ASSET-CANDIDATE-REVIEW.md",
+      "use": "same-Team historical-session pool and exact-message retrieval target"
+    }
+  },
+  "history_session_refs": [
+    {
+      "session_id": "W01-L0-07",
+      "source_task_id": "python__mypy-10424",
+      "topic": "type meet and metaclass narrowing",
+      "message_count": 100,
+      "asset_state": "ambient_review_required"
+    },
+    {
+      "session_id": "W01-L0-08",
+      "source_task_id": "python__mypy-5617",
+      "topic": "semantic-analysis assignment handling",
+      "message_count": 86,
+      "asset_state": "ambient_review_required"
+    },
+    {
+      "session_id": "W01-L0-09",
+      "source_task_id": "python__mypy-15184",
+      "topic": "ambiguous diagnostic rendering",
+      "message_count": 70,
+      "asset_state": "ambient_review_required"
+    },
+    {
+      "session_id": "W01-L0-10",
+      "source_task_id": "python__mypy-12943",
+      "topic": "checker crash investigation",
+      "message_count": 44,
+      "asset_state": "ambient_review_required"
+    },
+    {
+      "session_id": "W01-L0-11",
+      "source_task_id": "python__mypy-16869",
+      "topic": "stub generation for starred-expression aliases",
+      "message_count": 44,
+      "asset_state": "reviewed_l1_candidate",
+      "source_repo_commit": "8c2ef9dde8aa803e04038427ad84f09664d9d93f"
+    },
+    {
+      "session_id": "W01-L0-12",
+      "source_task_id": "python__mypy-11567",
+      "topic": "incremental AST snapshot for parameter specifications",
+      "message_count": 88,
+      "asset_state": "reviewed_l1_candidate",
+      "source_repo_commit": "7f0ad943e4b189224f2fedf43aa7b38f53ec561e"
+    }
+  ],
+  "visible_skill_pool": [
+    {
+      "skill_id": "skill-w01-b-discover-important-function",
+      "name": "discover-important-function",
+      "listed": true,
+      "provenance_mode": "imported_open_source_candidate",
+      "source_path": "tasks/setup-fuzzing-py/environment/skills/discover-important-function/SKILL.md",
+      "git_blob": "e944affc5e8e140c0268b04e99bda62b9a3a5a7c",
+      "use_when": "需要从 Python 仓库的公开 API、解析边界、测试与可达性中筛选并排序少量 fuzz 目标",
+      "do_not_use_when": "目标函数和理由已经确定，或当前任务是修复一个具体 bug、重构代码、直接写 harness"
+    },
+    {
+      "skill_id": "skill-w01-b-fuzzing-python",
+      "name": "fuzzing-python",
+      "listed": true,
+      "provenance_mode": "imported_open_source_candidate",
+      "source_path": "tasks/setup-fuzzing-py/environment/skills/fuzzing-python/SKILL.md",
+      "git_blob": "5d5f1d661a9de4004304ef0083c810254ab6daf2",
+      "use_when": "目标函数已经选定，需要为 Python 或 CPython 扩展设计 Atheris/LibFuzzer 的覆盖引导 harness、插桩和异常边界",
+      "do_not_use_when": "只需选择目标、解释一个已定位异常，或完整可运行的 harness 已经在当前上下文给出"
+    },
+    {
+      "skill_id": "skill-w01-b-setup-env",
+      "name": "setup-env",
+      "listed": true,
+      "provenance_mode": "imported_open_source_candidate",
+      "source_path": "tasks/setup-fuzzing-py/environment/skills/setup-env/SKILL.md",
+      "git_blob": "2ec95a364291bbbaa0a3de9bd0d9fd416f58d908",
+      "use_when": "需要根据 pyproject.toml 或 requirements.txt 建立 uv/.venv 环境并运行 Python 命令",
+      "do_not_use_when": "环境已经可运行，或任务只涉及目标选择、harness 结构、历史结论召回"
+    },
+    {
+      "skill_id": "skill-w01-a-testing-python",
+      "name": "testing-python",
+      "listed": true,
+      "provenance_mode": "imported_open_source_candidate",
+      "source_path": "tasks/fix-build-agentops/environment/skills/testing-python/SKILL.md",
+      "git_blob": "4193f6144922e22665e9e4b03defdb0f44ee5fe8",
+      "use_when": "需要设计或修复常规 Python 单元测试与失败定位流程",
+      "do_not_use_when": "任务核心是 fuzz 目标选择、覆盖引导 harness 或历史会话检索"
+    },
+    {
+      "skill_id": "skill-w01-a-pytest-coverage",
+      "name": "pytest-coverage",
+      "listed": true,
+      "provenance_mode": "imported_open_source_candidate",
+      "source_path": "skills/pytest-coverage/SKILL.md",
+      "git_blob": "38a8ed6f46942e861341e16b396e110d024d243c",
+      "use_when": "已有可运行测试，需要定位未覆盖分支并补充 pytest 覆盖率",
+      "do_not_use_when": "任务尚未进入普通覆盖率补测，或关注的是 fuzzing engine 的 coverage signal"
+    },
+    {
+      "skill_id": "skill-w02-b-python-parallelization",
+      "name": "python-parallelization",
+      "listed": true,
+      "provenance_mode": "imported_open_source_candidate",
+      "source_path": "tasks/parallel-tfidf-search/environment/skills/python-parallelization/SKILL.md",
+      "git_blob": "23f8a507e7ebcaf3b33dc97bca92d1fb1e5d760e",
+      "use_when": "需要把 CPU 密集型 Python 批处理改造成可控的进程级并行",
+      "do_not_use_when": "单进程 fuzz harness、环境搭建、普通测试或历史召回"
+    },
+    {
+      "skill_id": "skill-eng-be-offline-dependency-audit",
+      "name": "trivy-offline-vulnerability-scanning",
+      "listed": true,
+      "provenance_mode": "imported_open_source_candidate",
+      "source_path": "tasks/software-dependency-audit/environment/skills/trivy-offline-vulnerability-scanning/SKILL.md",
+      "git_blob": "f1200a1adc9624f004330845efd486d50377b8aa",
+      "use_when": "需要对固定依赖清单做离线 HIGH/CRITICAL 漏洞筛查",
+      "do_not_use_when": "动态输入 fuzzing、常规测试、Mypy 历史问题"
+    },
+    {
+      "skill_id": "skill-w03-a-jupyter-notebook",
+      "name": "jupyter-notebook",
+      "listed": true,
+      "provenance_mode": "imported_open_source_candidate",
+      "source_path": "skills/.curated/jupyter-notebook/SKILL.md",
+      "git_blob": "e1d1748cac9e9313c8229763751714628d1f6853",
+      "use_when": "需要创建或重构可复现的实验 Notebook",
+      "do_not_use_when": "纯仓库 fuzzing、CI、依赖扫描或历史会话检索"
+    }
+  ],
+  "fixed_knowledge_pool": [
+    {
+      "asset_id": "knowledge-w01-b-mypy-wiki",
+      "type": "wiki",
+      "name": "Mypy 模块与测试目录说明",
+      "visibility": "fixed",
+      "state": "candidate_not_yet_built"
+    },
+    {
+      "asset_id": "knowledge-w01-b-mypy-code-graph",
+      "type": "code_graph",
+      "name": "Mypy 固定源码图",
+      "visibility": "fixed",
+      "state": "candidate_not_yet_built"
+    },
+    {
+      "asset_id": "knowledge-w01-b-fuzzing-runbook",
+      "type": "wiki",
+      "name": "团队持续模糊测试接入规范",
+      "visibility": "fixed",
+      "state": "candidate_not_yet_built"
+    }
+  ],
+  "asset_snapshot_sha256": "ef3e8766c118888b22188b7d3841f6fb452b9be3e6826eaba198f2295ad41702",
+  "pairs": [
+    {
+      "pair_id": "W01-B-PAIR-001",
+      "family": "skill",
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "review_state": "requires_pinned_ujson_target_selection_source_review",
+      "target_asset_id": "skill-w01-b-discover-important-function",
+      "visible_distractor_ids": [
+        "skill-w01-b-fuzzing-python",
+        "skill-w01-b-setup-env",
+        "skill-w01-a-testing-python",
+        "skill-w01-a-pytest-coverage"
+      ],
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "安全加固冲刺要给五个 Python 库接持续模糊测试，这一轮先只收口 ujson。仓库固定在 8f23cce7929c49b9235d2f46ac9a403d051a9c95，暂时不要碰另外四个库。"
+        },
+        {
+          "role": "assistant",
+          "content": "目前能确认扩展可以在 Python 3.11 下导入，现有单测也能运行；但我们还没有决定首先覆盖哪个公开入口，也没有开始写驱动。"
+        },
+        {
+          "role": "user",
+          "content": "这不是修一个已知崩溃。我想先找最有价值的外部输入边界，尤其是会把不可信文本或字节送进原生实现的地方。"
+        },
+        {
+          "role": "assistant",
+          "content": "我粗看了包级 API 和 tests，读取、写出以及文件对象相关入口都有覆盖，名称相近但风险面和断言方式不一样，现在不能只按调用次数排序。"
+        },
+        {
+          "role": "user",
+          "content": "上次有人直接从命令行启动路径做随机循环，绝大多数输入在初始化阶段就被拒绝，十分钟几乎没有新路径；不要重复那个方案。"
+        },
+        {
+          "role": "assistant",
+          "content": "明白。应该先结合公开可达性、解析或解码边界、原生调用、现有测试断言和可构造 oracle，缩成一到三个候选，再决定驱动形态。"
+        },
+        {
+          "role": "user",
+          "content": "旁边的 Mypy 增量快照问题只是同组并行任务，不属于这个库，也不要因为都涉及异常处理就混在一起。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前缺口仍然是一个可复核的目标排序：需要明确候选入口、各自输入边界、现有测试能提供的 oracle，以及为什么首选项比其余入口更值得先 fuzz。"
+        }
+      ],
+      "changed_message_index": 8,
+      "shared_context_sha256": "ac4e1efc24dd284df52b4a3829c097de92a78e4de72e820d702a26cba70f5914",
+      "query": "先把 ujson 这一库的目标选择收口：给出下一步应该落到哪些入口和理由，暂时不要写 fuzz.py。",
+      "positive": {
+        "case_id": "W01-B-SKILL-TARGET-001-P",
+        "provider_visible_stats": {
+          "context_message_count": 9,
+          "context_utf8_bytes": 1824,
+          "query_utf8_bytes": 123
+        },
+        "delta_message": {
+          "role": "user",
+          "content": "补充的运行检查只证明最小示例能完成一次编码和解码，过程中没有崩溃；它没有比较候选入口，也没有说明哪些异常可作为有效 oracle。"
+        },
+        "gold": {
+          "route": "skill",
+          "first_action": {
+            "tool": "skill_view",
+            "arguments": {
+              "skill_name": "discover-important-function"
+            }
+          },
+          "max_tdai_calls": 1
+        },
+        "positive_reason": "当前上下文只有任务边界和初步观察，缺少目标定位与排序方法；目标 Skill 已在 listing 中，首步应直接读取。"
+      },
+      "negative": {
+        "case_id": "W01-B-SKILL-TARGET-001-N",
+        "provider_visible_stats": {
+          "context_message_count": 9,
+          "context_utf8_bytes": 1875,
+          "query_utf8_bytes": 123
+        },
+        "delta_message": {
+          "role": "user",
+          "content": "补充的评审已经把 ujson.loads 定为首选、ujson.load 定为次选：前者直接接收不可信文本或字节并进入原生解码器，现有解析失败可作 oracle；后者保留文件对象边界但可达性更窄。"
+        },
+        "gold": {
+          "route": "none",
+          "first_action": null,
+          "max_tdai_calls": 0
+        },
+        "negative_reason": "当前上下文已经给出目标、顺序和足够理由；继续加载目标定位流程只会重复已有结论。"
+      },
+      "delta_sha256": "01e15fea27520662fe78ed2813aab3e85f1cba64649c89247110abac55d8aa7f"
+    },
+    {
+      "pair_id": "W01-B-PAIR-002",
+      "family": "skill",
+      "difficulty": "hard",
+      "context_bucket": "long_12_to_18",
+      "review_state": "requires_pinned_ujson_exception_boundary_source_review",
+      "target_asset_id": "skill-w01-b-fuzzing-python",
+      "visible_distractor_ids": [
+        "skill-w01-b-discover-important-function",
+        "skill-w01-b-setup-env",
+        "skill-w01-a-testing-python",
+        "skill-w01-a-pytest-coverage",
+        "skill-w02-b-python-parallelization"
+      ],
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "ujson 的首个目标已经评审完了：主入口就是 loads，本轮不再做目标发现。现在只需要把覆盖引导的驱动结构收口。"
+        },
+        {
+          "role": "assistant",
+          "content": "收到，工作阶段已经从选目标切到 harness 设计；不会再重新排序 dumps、load 或其他 API。"
+        },
+        {
+          "role": "user",
+          "content": "运行环境是 Linux、Python 3.11，ujson 这个固定提交已经编译，Atheris 也能 import。不要把精力花在建虚拟环境。"
+        },
+        {
+          "role": "assistant",
+          "content": "环境不是阻塞项。要确定的是被测模块何时插桩、单输入回调如何接收数据、哪些异常属于正常拒绝，以及如何进入持续循环。"
+        },
+        {
+          "role": "user",
+          "content": "旧草稿只是 for 循环配合 os.urandom，然后捕获 Exception 继续跑。它既没有 coverage feedback，也可能把真实缺陷一起吞掉。"
+        },
+        {
+          "role": "assistant",
+          "content": "这个旧草稿不能沿用。解析器对坏输入的预期失败需要窄化处理，但不能用宽泛异常兜底；同时必须让引擎看到被测路径的覆盖。"
+        },
+        {
+          "role": "user",
+          "content": "我们只做最小 fuzz.py，不生成覆盖率 HTML，不接 CI，也不做十秒 smoke run；那些留给后续阶段。"
+        },
+        {
+          "role": "assistant",
+          "content": "范围清楚：交付物只包括可执行入口的结构和异常边界，不包括环境、CI、报表或目标分析。"
+        },
+        {
+          "role": "user",
+          "content": "同组还有 pytest 覆盖率治理任务，但这里的 coverage 指引擎反馈，不是补普通单测；不要因为词面一样就转去写 pytest。"
+        },
+        {
+          "role": "assistant",
+          "content": "会区分两者。当前需要的是专用 fuzzing engine 的初始化和输入回调，而不是统计现有测试覆盖率。"
+        },
+        {
+          "role": "user",
+          "content": "输入先直接使用引擎给出的 bytes，不做 JSON grammar mutator。我们先让最小路径正确，再讨论结构化变异。"
+        },
+        {
+          "role": "assistant",
+          "content": "这样可以减少变量；但目前对插桩 import、回调、解析失败处理以及引擎启动之间的准确组合还没有形成可直接落地的结构。"
+        }
+      ],
+      "changed_message_index": 12,
+      "shared_context_sha256": "68dd9c1184d0168a4c39b260e6e35a66270cbc5fc50bfed0f1f39bd297fc9359",
+      "query": "按这些约束把 fuzz.py 的最小结构定下来，说明插桩、单输入回调、异常边界和启动顺序。",
+      "positive": {
+        "case_id": "W01-B-SKILL-HARNESS-002-P",
+        "provider_visible_stats": {
+          "context_message_count": 13,
+          "context_utf8_bytes": 2299,
+          "query_utf8_bytes": 117
+        },
+        "delta_message": {
+          "role": "user",
+          "content": "我又确认了一次依赖状态：当前解释器能同时导入 ujson 和 fuzzing engine，普通示例输入也能返回；没有留下之前那份随机循环脚本。"
+        },
+        "gold": {
+          "route": "skill",
+          "first_action": {
+            "tool": "skill_view",
+            "arguments": {
+              "skill_name": "fuzzing-python"
+            }
+          },
+          "max_tdai_calls": 1
+        },
+        "positive_reason": "环境和目标均已确定，但专用 harness 的准确工作流仍缺失；目标 Skill 已在 listing 中。"
+      },
+      "negative": {
+        "case_id": "W01-B-SKILL-HARNESS-002-N",
+        "provider_visible_stats": {
+          "context_message_count": 13,
+          "context_utf8_bytes": 2345,
+          "query_utf8_bytes": 117
+        },
+        "delta_message": {
+          "role": "user",
+          "content": "评审已经给出完整结构：在 instrument_imports 块内导入 ujson；TestOneInput(data) 调用 ujson.loads(data)，只忽略预期解析失败；随后用 Setup(sys.argv, TestOneInput) 注册并调用 Fuzz()。"
+        },
+        "gold": {
+          "route": "none",
+          "first_action": null,
+          "max_tdai_calls": 0
+        },
+        "negative_reason": "当前上下文已给出足以回答该 Query 的完整 harness 结构，加载流程资产会造成误调用。"
+      },
+      "delta_sha256": "cc23a2d483931331c4867c0b5c751d9dd5f98d73eb2c72a4e58592b824e8a837"
+    },
+    {
+      "pair_id": "W01-B-PAIR-003",
+      "family": "memory",
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "review_state": "grounded_in_reviewed_l1_candidate",
+      "target_asset_id": "history-session-W01-L0-11",
+      "target_history_session_ids": [
+        "W01-L0-11"
+      ],
+      "visible_distractor_ids": [
+        "history-session-W01-L0-09",
+        "history-session-W01-L0-12",
+        "knowledge-w01-b-mypy-wiki",
+        "knowledge-w01-b-mypy-code-graph",
+        "skill-w01-a-testing-python"
+      ],
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "今天的新回归出现在 stub 生成：一个带星号展开的类型别名让 visitor 中断。这个现象看起来和我们前一轮处理过的那次很像。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前日志只能看出节点经 accept 分派后没有对应处理路径，尚未从这段会话确认上次修改落在哪个 printer 或方法。"
+        },
+        {
+          "role": "user",
+          "content": "工作树里同时有增量服务的 ParamSpec 修复，那个改的是 snapshot；本次不要把两条 AST 问题合并成一个结论。"
+        },
+        {
+          "role": "assistant",
+          "content": "已分开：一条是生成文本时的 visitor 覆盖，另一条是增量比较时的节点序列化。词面相近不能说明代码位置相同。"
+        },
+        {
+          "role": "user",
+          "content": "git blame 跨过几次整理提交，当前只能看到附近有多个 visit_* 方法；我需要先核对团队上次会话中的准确落点，再决定是否沿用。"
+        },
+        {
+          "role": "assistant",
+          "content": "本地源码可以给出现在有哪些方法，却不能单独证明团队上次实际选择的是哪一个；这个问题要求的是历史会话里的具体事实。"
+        },
+        {
+          "role": "user",
+          "content": "另外一条旧记录讨论的是 assert_type 的歧义名称格式化，也属于输出问题，但不是星号表达式别名；它也只是干扰项。"
+        },
+        {
+          "role": "assistant",
+          "content": "目前已经排除增量 snapshot 和诊断格式化两条线，唯一缺口是找回上次 stubgen 修复中记录的类名、方法名以及它和当前症状的对应关系。"
+        }
+      ],
+      "changed_message_index": 8,
+      "shared_context_sha256": "fa3b6fd948788e4ee5aed0c673b38a46c89f8df1b58b41e67601bb1bddf5fafd",
+      "query": "结合上面的新问题，先确认我们上次处理星号表达式别名渲染时到底落在哪个文件、类和方法，别把增量快照那条线混进来。",
+      "positive": {
+        "case_id": "W01-B-MEMORY-STUBGEN-003-P",
+        "provider_visible_stats": {
+          "context_message_count": 9,
+          "context_utf8_bytes": 1738,
+          "query_utf8_bytes": 165
+        },
+        "delta_message": {
+          "role": "user",
+          "content": "新日志的最后一段仍只显示通用的节点分派和未实现访问器，没有包含上次会话的文件、类或方法名；当前 checkout 的候选方法也不止一个。"
+        },
+        "gold": {
+          "route": "memory",
+          "first_action": {
+            "tool": "tdai_conversation_search",
+            "arguments": {
+              "query_must_include_any": [
+                "stubgen",
+                "星号表达式",
+                "别名",
+                "上次"
+              ]
+            }
+          },
+          "max_tdai_calls": 1,
+          "gold_asset_ids": [
+            "history-session-W01-L0-11"
+          ]
+        },
+        "positive_reason": "用户要求的是上次会话的具体代码落点，答案只存在于同 Team 的 L0 历史；应查原始会话而不是加载通用 Skill 或 Knowledge。"
+      },
+      "negative": {
+        "case_id": "W01-B-MEMORY-STUBGEN-003-N",
+        "provider_visible_stats": {
+          "context_message_count": 9,
+          "context_utf8_bytes": 1754,
+          "query_utf8_bytes": 165
+        },
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已经写明上次落点：文件是 mypy/stubgen.py，类是 AliasPrinter，方法是 visit_star_expr；mypy/server/astdiff.py 的 snapshot_definition 属于另一条增量快照问题。"
+        },
+        "gold": {
+          "route": "none",
+          "first_action": null,
+          "max_tdai_calls": 0
+        },
+        "negative_reason": "当前上下文已经包含所问的历史事实和排除项；即使历史资产仍可见，也不应重复检索。"
+      },
+      "delta_sha256": "1d8469068b93af1c7097290eec27406abf6f12346a2bf42b9e5c4e5e683d44e4"
+    },
+    {
+      "pair_id": "W01-B-PAIR-004",
+      "family": "memory",
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "review_state": "grounded_in_reviewed_l1_candidate",
+      "target_asset_id": "history-session-W01-L0-12",
+      "target_history_session_ids": [
+        "W01-L0-12"
+      ],
+      "visible_distractor_ids": [
+        "history-session-W01-L0-08",
+        "history-session-W01-L0-10",
+        "history-session-W01-L0-11",
+        "knowledge-w01-b-mypy-wiki",
+        "knowledge-w01-b-mypy-code-graph",
+        "skill-w01-a-testing-python"
+      ],
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "增量 daemon 今天在比较新旧 AST 时又崩了，触发输入里有一个没有 bound 的参数规格节点。我们以前处理过几乎一样的 snapshot 问题。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前栈能把范围缩到 server 侧的 AST 差异构造，但同一模块里有多层分派和标准化逻辑，仅凭这段日志还不能确认上次改动的准确函数。"
+        },
+        {
+          "role": "user",
+          "content": "这次要沿用的是旧修复的表示方式，不是重新设计序列化格式。我想先核对当时在哪个分支补节点、又怎么处理可选 bound。"
+        },
+        {
+          "role": "assistant",
+          "content": "需要找回两个具体事实：参数规格节点加入哪一个 snapshot 分派，以及 bound 缺失时旧结论要求保留空值、跳过字段还是做其他归一化。"
+        },
+        {
+          "role": "user",
+          "content": "同组的 stubgen 星号别名 visitor 已经单独处理，那个发生在生成文本阶段，不能拿它的类或方法来回答增量服务问题。"
+        },
+        {
+          "role": "assistant",
+          "content": "已排除 stubgen。普通 checker 和 semantic analyzer 的旧记录也只作为同 Team 干扰，不足以回答 snapshot 的具体历史实现。"
+        },
+        {
+          "role": "user",
+          "content": "当前 checkout 里相关代码经过重排，git blame 指到整理提交；我更关心团队那次会话最终验证通过的落点，而不是现在猜一个看起来合理的位置。"
+        },
+        {
+          "role": "assistant",
+          "content": "因此当前缺口是历史会话的精确落点和可选字段处理结论；源码知识只能辅助理解，不能替代“上次最终验证的是哪一种做法”。"
+        }
+      ],
+      "changed_message_index": 8,
+      "shared_context_sha256": "792c0c9d0cc684ed1ad6e7040b6665009d3aa0af54a76670b12b8237e765c566",
+      "query": "先确认上次修这个 ParamSpec snapshot 崩溃时落在哪个文件和函数，以及缺少 bound 时具体怎么处理。",
+      "positive": {
+        "case_id": "W01-B-MEMORY-PARAMSPEC-004-P",
+        "provider_visible_stats": {
+          "context_message_count": 9,
+          "context_utf8_bytes": 1792,
+          "query_utf8_bytes": 126
+        },
+        "delta_message": {
+          "role": "user",
+          "content": "补充日志只显示失败发生在对可选 bound 继续取属性时，仍没有上次会话的文件名、函数名或最终通过验证的空值处理方式。"
+        },
+        "gold": {
+          "route": "memory",
+          "first_action": {
+            "tool": "tdai_conversation_search",
+            "arguments": {
+              "query_must_include_any": [
+                "ParamSpec",
+                "snapshot",
+                "bound",
+                "上次"
+              ]
+            }
+          },
+          "max_tdai_calls": 1,
+          "gold_asset_ids": [
+            "history-session-W01-L0-12"
+          ]
+        },
+        "positive_reason": "用户明确要求复用上次通过验证的具体实现结论，答案位于目标 L0 会话；当前上下文和固定 Knowledge 都没有给出。"
+      },
+      "negative": {
+        "case_id": "W01-B-MEMORY-PARAMSPEC-004-N",
+        "provider_visible_stats": {
+          "context_message_count": 9,
+          "context_utf8_bytes": 1823,
+          "query_utf8_bytes": 126
+        },
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已经保留最终结论：改动在 mypy/server/astdiff.py 的 snapshot_definition；补 ParamSpecExpr 分支，并把 upper_bound 从 snapshot_type 改用 snapshot_optional_type。"
+        },
+        "gold": {
+          "route": "none",
+          "first_action": null,
+          "max_tdai_calls": 0
+        },
+        "negative_reason": "所问的历史文件、函数、节点分支和可选字段处理都已在当前上下文中给出，不应再次检索。"
+      },
+      "delta_sha256": "5e89173a564af602ba74144174ce4c93186feec8dabe2889fcaa85efc697b6de"
+    }
+  ],
+  "draft_summary": {
+    "pair_count": 4,
+    "case_count": 8,
+    "positive_routes": {
+      "skill": 2,
+      "memory": 2,
+      "knowledge": 0,
+      "none": 0
+    },
+    "negative_routes": {
+      "none": 4
+    },
+    "context_buckets": {
+      "short_2_to_4": 0,
+      "medium_6_to_10": 3,
+      "long_12_to_18": 1
+    },
+    "next_review": [
+      "Confirm each positive has exactly one reasonable first TDAI action.",
+      "Confirm negative delta fully answers the same query without relying on a hidden asset.",
+      "Review ujson at the pinned source revision before promoting target-selection or expected-exception claims.",
+      "Import and freeze the three target Skill packages before metric eligibility.",
+      "Build fixed Knowledge assets before adding Knowledge-positive pairs."
+    ],
+    "token_accounting_state": "pending_runtime_model_tokenizer_and_provider_usage"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "snapshotId": "snapshot-task1-dev-v1",
+  "worldId": "world-task1-engineering",
+  "split": "dev",
+  "sourcePackSha256": "c0c976502ec181c802a16720c72fe30049075fcfc30f273f0c92ba83852db4ba",
+  "visibleAssetSets": [
+    {
+      "teamId": "T01",
+      "userId": "user-task1-t01-eval",
+      "agentId": "agent-task1-t01-general",
+      "assetIds": [
+        "T01-L0-07",
+        "T01-L0-08",
+        "T01-L0-09",
+        "T01-L0-10",
+        "T01-L0-11",
+        "T01-L0-12",
+        "T01-SKILL-DISCOVER-IMPORTANT-FUNCTION",
+        "T01-SKILL-FUZZING-PYTHON"
+      ],
+      "sha256": "f3ef17725eed5ce2086d5748970d2a6520ee9ae68dc35f30de7385c284d9c294"
+    },
+    {
+      "teamId": "T02",
+      "userId": "user-task1-t02-eval",
+      "agentId": "agent-task1-t02-general",
+      "assetIds": [],
+      "sha256": "9d3966ab754a8d3f60215fd24f658bda87dbe5edb67c5fea5da51cc28e150a2b"
+    },
+    {
+      "teamId": "T03",
+      "userId": "user-task1-t03-eval",
+      "agentId": "agent-task1-t03-general",
+      "assetIds": [],
+      "sha256": "abdbcad3ed8d83d6df2bd443bb836185d33491bc40b9bc21f0d3ca9c81d17927"
+    },
+    {
+      "teamId": "T04",
+      "userId": "user-task1-t04-eval",
+      "agentId": "agent-task1-t04-general",
+      "assetIds": [],
+      "sha256": "7884b6e80252d94d91940d783a9a000918fd794f719d3cacaf81477387396925"
+    }
+  ],
+  "workspaceManifestSha256": "ea1e587b331be85945815aa44c1cf341de2b8ba61b0193ccbfef5a82cb4383e0",
+  "runtimePolicySha256": "216ab76b3cadccec5d476847920de153cba5d2a4c3e299d9619941ca50473dae",
+  "cacheResetRecipeSha256": "49576325688b92403f9071b24232cd69c53c89392a50e713167b29ff0fd0df9e",
+  "contentHash": "b4e2ba1b9496599617fb1f16e5e40fe21d6edbda162b2bfe801553c6b8678227"
+}

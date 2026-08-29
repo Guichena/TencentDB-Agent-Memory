@@ -1,0 +1,491 @@
+{
+  "schema_version": "task1.open_skill_target_candidates.v1",
+  "status": "candidate_inventory",
+  "metric_eligible": false,
+  "generated_at": "2026-08-29",
+  "notes": [
+    "This file records reviewed candidates, not a completed source lock.",
+    "D1 must fetch each file from its frozen revision, compute SHA-256, preserve the applicable license, and verify the imported MemoryProxy package before any case becomes metric eligible.",
+    "Queries must be rewritten as natural requests for the target Team; benchmark task text and Skill names must not be exposed to the model.",
+    "Broad or mandatory upstream trigger descriptions must be audited. Preserve the raw package and an explicit adapted diff; downgrade candidates that cannot support a stable Positive and No-tool boundary."
+  ],
+  "context_policy": {
+    "contract": "../../CONVERSATION-CONTEXT-CONTRACT.md",
+    "visible_context_message_buckets": {
+      "short_2_to_4": 0.2,
+      "medium_6_to_10": 0.55,
+      "long_12_to_18": 0.25
+    },
+    "team_history_sessions": "12-20",
+    "team_history_turns": "80-160",
+    "paired_case_rule": "same identity, asset snapshot, message style, and task; change one registered information condition",
+    "runtime_rule": "all prompt variants receive byte-identical context messages and query; stop after the first TDAI decision"
+  },
+  "sources": {
+    "skillsbench_v1_1": {
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "license": "Apache-2.0",
+      "license_scope": "repository",
+      "allowed_task_root": "tasks/",
+      "excluded_task_root": "tasks-extra/"
+    },
+    "github_awesome_copilot": {
+      "repository": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "license_scope": "repository_with_per_skill_overrides"
+    },
+    "openai_skills": {
+      "repository": "https://github.com/openai/skills",
+      "revision": "49f948faa9258a0c61caceaf225e179651397431",
+      "license": "per_skill",
+      "license_scope": "skill_directory"
+    },
+    "w01_w03_source_pack": {
+      "repository": "https://huggingface.co/datasets/SWE-Gym/SWE-Gym",
+      "revision": "bb94ed9e39bbeb96a7fcbfb533b80f25a7fd59cb",
+      "local_inventory": "source-locks/w01-w03/candidate-inventory.json",
+      "license": "MIT",
+      "license_scope": "dataset_with_per_repository_license_review"
+    }
+  },
+  "targets": [
+    {
+      "id": "W01-A-testing-python",
+      "world_id": "W01",
+      "team_id": "W01-A",
+      "priority": "root_cause_audit_required",
+      "task": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/fix-build-agentops/task.md",
+        "git_blob": "bf36946a0e2411ee4aeecd74e94539f010a457e8"
+      },
+      "target_skill": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/fix-build-agentops/environment/skills/testing-python/SKILL.md",
+        "git_blob": "4193f6144922e22665e9e4b03defdb0f44ee5fe8"
+      },
+      "paired_negative_delta": "Provide the exact failure cause and the only required test command in current context; keep identity and visible assets unchanged."
+    },
+    {
+      "id": "W01-A-pytest-coverage",
+      "world_id": "W01",
+      "team_id": "W01-A",
+      "priority": "candidate",
+      "task": {
+        "source": "project_current_anchor",
+        "path": "pending: select a fixed uncovered branch from an eligible W01-W03 checkout"
+      },
+      "target_skill": {
+        "source": "github_awesome_copilot",
+        "path": "skills/pytest-coverage/SKILL.md",
+        "git_blob": "38a8ed6f46942e861341e16b396e110d024d243c"
+      },
+      "paired_negative_delta": "Provide uncovered lines and a complete local test template, or ask only to repair an existing failing test rather than improve coverage."
+    },
+    {
+      "id": "W01-B-fuzzing-python",
+      "world_id": "W01",
+      "team_id": "W01-B",
+      "priority": "representative",
+      "task": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/setup-fuzzing-py/task.md",
+        "git_blob": "57b0312b7267906c085f2ce73e713ad8c6bcad29"
+      },
+      "target_skill": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/setup-fuzzing-py/environment/skills/fuzzing-python/SKILL.md",
+        "git_blob": "5d5f1d661a9de4004304ef0083c810254ab6daf2"
+      },
+      "paired_negative_delta": "Keep the fuzzing Skills visible but provide an already runnable fuzz.py and ask only for a local exception explanation."
+    },
+    {
+      "id": "W02-A-timeseries-detrending",
+      "world_id": "W02",
+      "team_id": "W02-A",
+      "priority": "candidate",
+      "task": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/econ-detrending-correlation/task.md",
+        "git_blob": "9e58616d24456d275c1b336eec59961ded4f9796"
+      },
+      "target_skill": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/econ-detrending-correlation/environment/skills/timeseries-detrending/SKILL.md",
+        "git_blob": "e88134203467a6598b90a3e65d26babf5a149813"
+      },
+      "paired_negative_delta": "Provide the exact detrending algorithm and parameters and ask only to connect them to a given local function signature."
+    },
+    {
+      "id": "W02-B-python-parallelization",
+      "world_id": "W02",
+      "team_id": "W02-B",
+      "priority": "representative",
+      "task": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/parallel-tfidf-search/task.md",
+        "git_blob": "2ce4f95a5f0f6e81f5207252dddfd7e6930a8621"
+      },
+      "target_skill": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/parallel-tfidf-search/environment/skills/python-parallelization/SKILL.md",
+        "git_blob": "23f8a507e7ebcaf3b33dc97bca92d1fb1e5d760e"
+      },
+      "paired_negative_delta": "Keep the performance Skills visible but provide a correct multiprocessing implementation and ask only for a local formatting repair."
+    },
+    {
+      "id": "W03-A-nlp-environment-reproduction",
+      "world_id": "W03",
+      "team_id": "W03-A",
+      "priority": "candidate",
+      "task": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/simpo-code-reproduction/task.md",
+        "git_blob": "0540d178b550dab9f57758a68e42321358efb050"
+      },
+      "target_skill": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/simpo-code-reproduction/environment/skills/nlp-research-repo-package-installment/SKILL.md",
+        "git_blob": "086d7d977c21d97f14f3e45aa6a3a8b61cb19bf3"
+      },
+      "paired_negative_delta": "Use an already locked and working environment and ask only for a localized loss-function edit."
+    },
+    {
+      "id": "W03-A-jupyter-notebook",
+      "world_id": "W03",
+      "team_id": "W03-A",
+      "priority": "candidate",
+      "task": {
+        "source": "project_current_anchor",
+        "path": "pending: build a reproducible notebook task from a fixed DVC, Pandas, Dask, or MONAI checkout"
+      },
+      "target_skill": {
+        "source": "openai_skills",
+        "path": "skills/.curated/jupyter-notebook/SKILL.md",
+        "git_blob": "e1d1748cac9e9313c8229763751714628d1f6853",
+        "license": "Apache-2.0"
+      },
+      "paired_negative_delta": "Provide a complete notebook and ask only to change one identified code cell."
+    },
+    {
+      "id": "W03-B-rl-post-training",
+      "world_id": "W03",
+      "team_id": "W03-B",
+      "priority": "representative",
+      "task": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/debug-trl-grpo/task.md",
+        "git_blob": "e16730f013923daff6dcc1c130126ecc8c86beab"
+      },
+      "target_skill": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/debug-trl-grpo/environment/skills/rl-post-training/SKILL.md",
+        "git_blob": "1c367604915518b49f46397457651c9f25af83f2"
+      },
+      "paired_negative_delta": "Provide the exact bad constant, function, and replacement value, or make the issue an ordinary tensor-shape bug unrelated to GRPO."
+    },
+    {
+      "id": "ENG-BE-spring-boot-migration",
+      "track_id": "backend",
+      "world_assignment": "pending",
+      "priority": "engineering_stress_split_required",
+      "task": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/spring-boot-jakarta-migration/task.md",
+        "git_blob": "c268f6a25d7ad9768da09430feed4d930537add1"
+      },
+      "target_skill": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/spring-boot-jakarta-migration/environment/skills/spring-boot-migration/SKILL.md",
+        "git_blob": "9607bf373acef03faf73f909206c8d5e0d1ab43f"
+      },
+      "work_content": "Migrate Java 8 and Spring Boot 2.7 to Java 21 and Spring Boot 3.2 across dependencies, Jakarta namespaces, Hibernate, Security, and REST client APIs.",
+      "paired_negative_delta": "Provide the exact file and one deprecated import or method replacement; keep the migration Skill pool visible but ask only for that local edit."
+    },
+    {
+      "id": "ENG-BE-jakarta-namespace",
+      "track_id": "backend",
+      "world_assignment": "pending",
+      "priority": "engineering_a_tier",
+      "task": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/spring-boot-jakarta-migration/task.md",
+        "git_blob": "c268f6a25d7ad9768da09430feed4d930537add1",
+        "variant": "migrate Java EE namespaces only; retain JDK javax packages"
+      },
+      "target_skill": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/spring-boot-jakarta-migration/environment/skills/jakarta-namespace/SKILL.md",
+        "git_blob": "fdaf6ddb687eec9ad63b8319a474ca202cf372e9"
+      },
+      "work_content": "Replace Java EE persistence, validation, and servlet namespaces while retaining javax.sql and javax.crypto and keeping the service compiling and tested.",
+      "paired_negative_delta": "Provide the exact files and import replacements for one localized namespace edit."
+    },
+    {
+      "id": "ENG-BE-restclient-migration",
+      "track_id": "backend",
+      "world_assignment": "pending",
+      "priority": "engineering_a_tier",
+      "task": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/spring-boot-jakarta-migration/task.md",
+        "git_blob": "c268f6a25d7ad9768da09430feed4d930537add1",
+        "variant": "migrate only ExternalApiService from RestTemplate to synchronous RestClient"
+      },
+      "target_skill": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/spring-boot-jakarta-migration/environment/skills/restclient-migration/SKILL.md",
+        "git_blob": "cef5aaea2dc3abe3e7617bca2404a7fde5da8df3"
+      },
+      "work_content": "Replace synchronous RestTemplate calls with Spring RestClient while preserving request, response, and error behavior.",
+      "paired_negative_delta": "Provide the exact service method and complete version-compatible replacement implementation."
+    },
+    {
+      "id": "ENG-BE-offline-dependency-audit",
+      "track_id": "backend",
+      "world_assignment": "pending",
+      "priority": "engineering_a_tier",
+      "task": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/software-dependency-audit/task.md",
+        "git_blob": "e5680fbe1db77235ed5965d9ff79c0a963e24563"
+      },
+      "target_skill": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/software-dependency-audit/environment/skills/trivy-offline-vulnerability-scanning/SKILL.md",
+        "git_blob": "f1200a1adc9624f004330845efd486d50377b8aa"
+      },
+      "work_content": "Scan a fixed Node dependency lock offline and report only HIGH or CRITICAL vulnerabilities with CVSS and fixed versions.",
+      "paired_negative_delta": "Provide the complete scanner JSON and ask only to format the already known records as CSV."
+    },
+    {
+      "id": "ENG-FE-react-performance-diagnosis",
+      "track_id": "frontend",
+      "world_assignment": "pending",
+      "priority": "engineering_a_tier",
+      "task": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/react-performance-debugging/task.md",
+        "git_blob": "9ebfca36e0fea564fdf3e1567000b1026c98b303",
+        "variant": "no baseline measurements; diagnose before editing"
+      },
+      "target_skill": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/react-performance-debugging/environment/skills/browser-testing/SKILL.md",
+        "git_blob": "a0fdf73736acb70bad4e7bc817220894ced6763b"
+      },
+      "work_content": "Measure slow API routes, page waterfalls, bundle size, and render counts in a fixed Next.js storefront before choosing a fix.",
+      "paired_negative_delta": "Provide reproducible measurements, the slow route, bundle source, and render culprit; ask only to implement an already selected optimization."
+    },
+    {
+      "id": "ENG-FE-react-performance-optimization",
+      "track_id": "frontend",
+      "world_assignment": "pending",
+      "priority": "engineering_adaptation_required",
+      "task": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/react-performance-debugging/task.md",
+        "git_blob": "9ebfca36e0fea564fdf3e1567000b1026c98b303",
+        "variant": "baseline measurements supplied; choose React or Next.js optimization patterns"
+      },
+      "target_skill": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/react-performance-debugging/environment/skills/react-best-practices/SKILL.md",
+        "git_blob": "6cc8dcea7a82fcad98036942f261f84c9f7ca73d",
+        "license": "MIT"
+      },
+      "work_content": "Fix API waterfalls, bundle loading, and excessive ProductCard renders while preserving user interactions.",
+      "paired_negative_delta": "Provide the exact code diff or a single localized memoization edit and ask only to apply it."
+    },
+    {
+      "id": "ENG-FE-visual-stability",
+      "track_id": "frontend",
+      "world_assignment": "pending",
+      "priority": "engineering_adaptation_required",
+      "task": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/fix-visual-stability/task.md",
+        "git_blob": "624a9ff5d642c5fe2a17e25809720e2a14b4db51",
+        "variant": "CLS and DOM evidence supplied; select applicable interface rules"
+      },
+      "target_skill": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/fix-visual-stability/environment/skills/web-interface-guidelines/SKILL.md",
+        "git_blob": "63284ed522a1aea3571fbd67ec0bd981e622d58f"
+      },
+      "work_content": "Repair layout shifts, theme flicker, font loading, and image dimensions in a Next.js storefront without changing test selectors.",
+      "paired_negative_delta": "Identify the exact image or theme script and the required attribute change in current context."
+    },
+    {
+      "id": "ENG-FE-visual-stability-diagnosis",
+      "track_id": "frontend",
+      "world_assignment": "pending",
+      "priority": "engineering_a_tier",
+      "task": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/fix-visual-stability/task.md",
+        "git_blob": "624a9ff5d642c5fe2a17e25809720e2a14b4db51",
+        "variant": "no CLS baseline or culprit supplied; measure before editing"
+      },
+      "target_skill": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/fix-visual-stability/environment/skills/browser-testing/SKILL.md",
+        "git_blob": "b9a8082d75fc4a2e7d638421ed48cbcb5e58ded1"
+      },
+      "work_content": "Measure CLS, theme flicker, font loading, and image dimensions in a fixed Next.js storefront before choosing a repair.",
+      "paired_negative_delta": "Provide reproducible CLS evidence, the exact unstable nodes, and the root cause and ask only for a local repair."
+    },
+    {
+      "id": "ENG-FE-d3-stock-visualization",
+      "track_id": "frontend",
+      "world_assignment": "pending",
+      "priority": "engineering_version_pin_required",
+      "task": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/data-to-d3/task.md",
+        "git_blob": "e872f2ced075516aa2a1b1eb3d1c0c6294004013"
+      },
+      "target_skill": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/data-to-d3/environment/skills/d3-visualization/SKILL.md",
+        "git_blob": "af888dbaff85491cb33c4ac6b3eb20daa7ed425f",
+        "adaptation": "pin the imported body to the task's D3 v6 requirement; preserve raw package and diff"
+      },
+      "work_content": "Build an offline D3 stock bubble chart with market-cap sizing, industry clustering, legend, tooltip, and bidirectional table linking.",
+      "paired_negative_delta": "Provide the complete chart implementation and ask only for a localized label or number-format change."
+    },
+    {
+      "id": "ENG-QA-maven-build-repair",
+      "track_id": "testing_quality",
+      "world_assignment": "pending",
+      "priority": "engineering_root_cause_audit_required",
+      "task": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/fix-build-google-auto/task.md",
+        "git_blob": "3ab45a957c82a388b3ccb40fd9434d62a5f8acf6"
+      },
+      "target_skill": {
+        "source": "skillsbench_v1_1",
+        "path": "tasks/fix-build-google-auto/environment/skills/maven-build-lifecycle/SKILL.md",
+        "git_blob": "8c5f6715f443c9979cf107b292ac063ec18b1454"
+      },
+      "work_content": "Diagnose a real Java build failure, record the cause, produce a valid patch, and pass the fixed Maven build.",
+      "paired_negative_delta": "Provide the exact broken POM entry and replacement and ask only for the local configuration edit."
+    },
+    {
+      "id": "ENG-CLIENT-dvc-cli-option-contract",
+      "track_id": "client_cli",
+      "world_assignment": "pending",
+      "priority": "engineering_task_context_required",
+      "task": {
+        "source": "w01_w03_source_pack",
+        "instance_id": "iterative__dvc-4075",
+        "base_commit": "a2f1367a9a75849ef6ad7ee23a5bacc18580f102",
+        "problem_statement_sha256": "bc83a2690a839ee1a92e42462683ae9793d3fc9fcd9226db3dee6e016ca8eb13"
+      },
+      "target_skill": {
+        "source": "evidence_grounded_authored",
+        "path": "pending: dvc-cli-option-contract/SKILL.md"
+      },
+      "work_content": "Add --no-exec to dvc import-url, propagate it through command and repository layers, and cover it with unit and functional tests.",
+      "paired_negative_delta": "Provide the exact parser, handler, repository argument, and test locations with the required propagation behavior."
+    },
+    {
+      "id": "ENG-CLIENT-qdrant-sdk-adapter",
+      "track_id": "client_sdk",
+      "world_assignment": "pending",
+      "priority": "engineering_task_context_required",
+      "task": {
+        "source": "evidence_grounded_authored",
+        "path": "pending: fixed Qdrant client version, method signatures, and natural project context"
+      },
+      "target_skill": {
+        "source": "github_awesome_copilot",
+        "path": "skills/qdrant-clients-sdk/SKILL.md",
+        "git_blob": "7530f87bb97f3dce4b6e095c7bf1762aef3ca11c"
+      },
+      "work_content": "Implement a version-pinned Qdrant client adapter for collection creation, batch upsert, filtered search, and retryable failures without live network dependencies.",
+      "paired_negative_delta": "Provide a complete adapter template and exact version-specific method signatures and ask only to fill one local mapping."
+    },
+    {
+      "id": "ENG-CLIENT-system-commandline-subcommand",
+      "track_id": "client_cli",
+      "world_assignment": "pending",
+      "priority": "engineering_task_context_required",
+      "task": {
+        "source": "evidence_grounded_authored",
+        "path": "pending: .NET 8 fixture for projects export command, parser, handler, help, and output schema"
+      },
+      "target_skill": {
+        "source": "github_awesome_copilot",
+        "path": "skills/system-commandline-cli/SKILL.md",
+        "git_blob": "643af46beba3b37635f3f5e3768a93c71e2930ac"
+      },
+      "work_content": "Add a projects export subcommand to a .NET 8 System.CommandLine app with required and optional arguments, cancellation, help text, and stable JSON or CSV output.",
+      "paired_negative_delta": "Provide the complete command registration and handler and ask only to update one help string."
+    },
+    {
+      "id": "ENG-QA-jest-async-regression",
+      "track_id": "testing_quality",
+      "world_assignment": "pending",
+      "priority": "engineering_task_context_required",
+      "task": {
+        "source": "evidence_grounded_authored",
+        "path": "pending: fixed TypeScript function context and a query that only asks for tests"
+      },
+      "target_skill": {
+        "source": "github_awesome_copilot",
+        "path": "skills/javascript-typescript-jest/SKILL.md",
+        "git_blob": "9552d7cb7b741148db4639124329fe3eb061354f"
+      },
+      "work_content": "Add async success, failure, retry, and mock-reset regression tests for a fixed TypeScript API client or state function.",
+      "paired_negative_delta": "Provide the full test structure, mocks, and assertions and ask only to rename or relocate the test file."
+    },
+    {
+      "id": "ENG-QA-browser-e2e",
+      "track_id": "testing_quality",
+      "world_assignment": "pending",
+      "priority": "engineering_task_context_required",
+      "task": {
+        "source": "evidence_grounded_authored",
+        "path": "pending: fixed local web app, browser version, scenario, and deterministic assertions"
+      },
+      "target_skill": {
+        "source": "github_awesome_copilot",
+        "path": "skills/webapp-testing/SKILL.md",
+        "git_blob": "281fff4e9d0b10cccb695f283ea6d8136a75ba56"
+      },
+      "work_content": "Run a local browser flow covering navigation, form input, error states, responsive layout, network requests, and console evidence.",
+      "paired_negative_delta": "Provide a passing Playwright test and ask only to update one stable expected label."
+    }
+  ],
+  "next_gate": {
+    "stage": "D1-A",
+    "required_initial_targets": [
+      "W01-A-testing-python",
+      "W01-B-fuzzing-python",
+      "W02-B-python-parallelization",
+      "W03-B-rl-post-training"
+    ],
+    "engineering_a_tier_targets": [
+      "ENG-BE-jakarta-namespace",
+      "ENG-BE-restclient-migration",
+      "ENG-BE-offline-dependency-audit",
+      "ENG-FE-react-performance-diagnosis",
+      "ENG-FE-visual-stability-diagnosis"
+    ],
+    "engineering_near_a_tier_targets": [
+      "ENG-FE-d3-stock-visualization"
+    ],
+    "requirements": [
+      "materialize the task reference, Skill, used resources, and license from the frozen revision; workspace or verifier is optional and only retained when used for disambiguation",
+      "compute SHA-256 for all materialized inputs and the imported package",
+      "record any MemoryProxy compatibility edit as an explicit transform",
+      "verify create, listing or search, view, and resource read through the production Skill path; do not execute the downstream coding task",
+      "author one natural Positive and one single-variable paired Negative",
+      "keep all records draft and metric_eligible=false until deterministic and human review pass"
+    ]
+  }
+}
