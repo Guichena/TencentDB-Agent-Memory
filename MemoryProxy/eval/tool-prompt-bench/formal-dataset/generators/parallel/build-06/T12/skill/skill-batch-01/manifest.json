@@ -1,0 +1,14 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "t12-skill-batch-01",
+  "external_source_ids": [
+    "t12-skill-pg-migration",
+    "t12-skill-pg-design",
+    "t12-skill-ghost-db"
+  ],
+  "generated_at": "2026-08-30T12:00:00+08:00",
+  "actual_count": 3
+}

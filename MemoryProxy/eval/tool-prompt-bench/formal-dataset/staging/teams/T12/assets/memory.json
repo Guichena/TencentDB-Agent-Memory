@@ -1,0 +1,273 @@
+{
+  "schema_version": "task1.formal_memory_assets.v1",
+  "team_id": "T12",
+  "l0_conversations": [
+    {
+      "assetId": "T12-L0-SUPPORT-1",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-redacted"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T12-L0-SUPPORT-1",
+      "messages": [
+        {
+          "messageId": "T12-L0-SUPPORT-1-M01",
+          "role": "user",
+          "content": "请找回 Ledger 零停机迁移中已验证的阶段顺序与兼容约定，用来核对当前发布计划。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "66c8b2e5fad470dc7c8464243337c6e16b3d3ba8bbe0abcd0733e8b1d2a9672e"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-1-M02",
+          "role": "assistant",
+          "content": "交接笔记已补全约定：先增加可回滚的新结构并保持旧写入可用，再在同一事务边界双写并校验一致性，最后切换读取；确认旧客户端仍可写后才关闭旧路径。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "abdf87a8763f7e761fdf3c3bd9f1bcae83d02e9695bb12294fa236bcf94d3b6c"
+        }
+      ],
+      "contentHash": "713d36dc3380b6007d61c8b5a88f0c53af68123e5e8c2f6471a4979e5638852a"
+    },
+    {
+      "assetId": "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-redacted"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT",
+      "messages": [
+        {
+          "messageId": "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT-M01",
+          "role": "user",
+          "content": "请找回 Beacon 查询计划回归实验中比较索引方案与判定是否接受的历史步骤。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "a2ef08b860ac5483225166c573ba99270828230e6016ea9a475148a535be1303"
+        },
+        {
+          "messageId": "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT-M02",
+          "role": "assistant",
+          "content": "实验记录已补全：先用旧索引建立同参数对照，再观察新索引下计划是否稳定，最后同时检查尾延迟与计划节点是否符合预期；两项都通过才接受方案。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "207f29da3a1f095d691f2f9fd24993eca4aa66039d040e61b0c2870818d63492"
+        }
+      ],
+      "contentHash": "d5640a3d5fb123af4878c1ef7fa3704d4bb25c20b93f0e84e84bced58b716874"
+    },
+    {
+      "assetId": "T12-L0-SUPPORT-3",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-redacted"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T12-L0-SUPPORT-3",
+      "messages": [
+        {
+          "messageId": "T12-L0-SUPPORT-3-M01",
+          "role": "user",
+          "content": "请找回 Harbor 回填暂停后续跑时，检查点记录、幂等确认和游标推进的历史操作顺序。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "2bbe0a3d633ff8be1235415b25d732bd1342326103518e700adb881de77e269f"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-3-M02",
+          "role": "assistant",
+          "content": "续跑记录已补全顺序：先持久化并读取最后完成批次的检查点，再用该检查点重放一小批确认重复执行不产生重复结果，最后仅在校验通过后推进游标。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "662445737a434ed1ba9e535be98fc820335e52ebc798bc49d74418dd7ddf2b64"
+        }
+      ],
+      "contentHash": "a1fcab95574b27ee8b348be1cfa831e2aa146c23598dcb72a2c70b02410c4dc0"
+    },
+    {
+      "assetId": "T12-L0-SUPPORT-4",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-redacted"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T12-L0-SUPPORT-4",
+      "messages": [
+        {
+          "messageId": "T12-L0-SUPPORT-4-M01",
+          "role": "user",
+          "content": "请直接确认 Quartz 字段演进要满足哪两个已验证的 ORM 兼容条件。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "8f0dbe8676eeb3ef0a6d960759f979aa77473a98b3d3fa968eedfb7fe395a6eb"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-4-M02",
+          "role": "assistant",
+          "content": "交接记录已补全条件：数据库字段先保留可空并提供旧列读取兼容，映射层必须显式处理缺失值且新旧客户端都通过同一组读写测试后才可收紧约束。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "daa3b088afae7309668f0f32ca69b3219a1d2a84a59f74e1502a43a6dd3e01e4"
+        }
+      ],
+      "contentHash": "5ac9a11e2ef380dd03230bf321caa1269b2fd8d0656c1289243564699437cda9"
+    },
+    {
+      "assetId": "T12-L0-SUPPORT-5",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-redacted"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T12-L0-SUPPORT-5",
+      "messages": [
+        {
+          "messageId": "T12-L0-SUPPORT-5-M01",
+          "role": "user",
+          "content": "请找回 Archive 索引退役前后，标记、读路径验证、元数据清理和回退窗口关闭的历史顺序。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "f3b06baead336137071d7addea353b4d79d173b3ff1d7454dd8da72fb87e03c6"
+        },
+        {
+          "messageId": "T12-L0-SUPPORT-5-M02",
+          "role": "assistant",
+          "content": "历史流程已补全：先标记旧索引并保持可回退，再验证主要读路径已转移且稳定，随后清理索引元数据，最后等观察窗口结束才关闭回退开关。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "13146ad607c693d7b3659d56a9dbd31477b0e803196699e87448f4a626011dbc"
+        }
+      ],
+      "contentHash": "86d9f1725585699019b9b59ee240c86be3a3c0a9fe37755c27ade2f1acba4f6a"
+    },
+    {
+      "assetId": "T12-L0-LEDGER-ROLLBACK-CONTRACT",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-redacted"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T12-L0-LEDGER-ROLLBACK-CONTRACT",
+      "messages": [
+        {
+          "messageId": "T12-L0-LEDGER-ROLLBACK-CONTRACT-M01",
+          "role": "user",
+          "content": "请直接确认 Ledger 切读前复核时，历史约定要求在什么两个信号下触发回滚。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "0f764166c0091ff350ca5b194573c6af0fdcffa4ceda4e387c8e333fe1fa7937"
+        },
+        {
+          "messageId": "T12-L0-LEDGER-ROLLBACK-CONTRACT-M02",
+          "role": "assistant",
+          "content": "交接记录已补全：若切读后的关键写入出现新旧结构不一致，或兼容读路径的尾延迟连续越过已验证上限，就暂停切读并恢复旧路径；单次尖峰不单独触发回滚。",
+          "sourceEvidenceIds": [
+            "source-t12-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "f0af277823ece94f0616e06d8600da9d634fab883d99e2e1a4b855babf3e4245"
+        }
+      ],
+      "contentHash": "b3fc7d57ac8d4587da9741e25db851f1e6d848a71fc33e4ae8a605974f07203a"
+    }
+  ],
+  "l1_memories": [
+    {
+      "assetId": "T12-L1-LEDGER-ZERO-DOWNTIME-ROLLOUT",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "decision",
+      "content": "交接笔记已补全约定：先增加可回滚的新结构并保持旧写入可用，再在同一事务边界双写并校验一致性，最后切换读取；确认旧客户端仍可写后才关闭旧路径。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T12-L0-SUPPORT-1-M02"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "1a0f6b10f5c31e9675667c424fd060639d32f2a48ad944f0e1a89cd0778e15f7"
+    },
+    {
+      "assetId": "T12-L1-QUARTZ-ORM-COMPATIBILITY",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "fact",
+      "content": "交接记录已补全条件：数据库字段先保留可空并提供旧列读取兼容，映射层必须显式处理缺失值且新旧客户端都通过同一组读写测试后才可收紧约束。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T12-L0-SUPPORT-4-M02"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "e281afbe1d90888d6e5f3358429d7b12fc812229aca6a570d6ca40f09002235f"
+    }
+  ],
+  "l2_scenes": [
+    {
+      "assetId": "T12-L2-HARBOR-RESUMABLE-BACKFILL",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-scene"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "path": "database/harbor/resumable-backfill",
+      "summary": "Harbor resumable backfill procedure",
+      "content": "续跑记录已补全顺序：先持久化并读取最后完成批次的检查点，再用该检查点重放一小批确认重复执行不产生重复结果，最后仅在校验通过后推进游标。",
+      "injected": false,
+      "supportingSessionIds": [
+        "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT",
+        "T12-L0-SUPPORT-3"
+      ],
+      "contentHash": "147c1267bedd0b3dc26d88c2a43ead873389da73b25913c93c92bdc98c707c49"
+    },
+    {
+      "assetId": "T12-L2-ARCHIVE-INDEX-LIFECYCLE",
+      "ownerAgentId": "agent-task1-t12-general",
+      "sourceEvidenceIds": [
+        "source-t12-memory-scene"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "path": "database/archive/index-lifecycle",
+      "summary": "Archive index retirement lifecycle",
+      "content": "历史流程已补全：先标记旧索引并保持可回退，再验证主要读路径已转移且稳定，随后清理索引元数据，最后等观察窗口结束才关闭回退开关。",
+      "injected": false,
+      "supportingSessionIds": [
+        "T12-L0-SUPPORT-5",
+        "T12-L0-LEDGER-ROLLBACK-CONTRACT"
+      ],
+      "contentHash": "5d947d4912282aa77ac69eddc9f30e05370bbe1d54127b62bc03d78efb207222"
+    }
+  ],
+  "l3_profiles": []
+}

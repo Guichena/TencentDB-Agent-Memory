@@ -1,0 +1,237 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t12-memory-batch-02",
+  "stage": "DS02",
+  "team_id": "T12",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T12-MEMORY-B01-QUARTZ-ORM-COMPATIBILITY",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "medium",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Quartz 正在把订单表的一个可空字段改成兼容新 ORM 映射的形式，当前只需确认历史上验证过的兼容条件。"
+        },
+        {
+          "role": "assistant",
+          "content": "Quartz 与 Ledger 发布顺序、Beacon 索引实验、Harbor 回填续跑和 Archive 索引生命周期是独立的数据库演进流。"
+        },
+        {
+          "role": "user",
+          "content": "当前分支和 ORM 版本已固定，但交接摘要没有留下这次改动必须同时满足的两个映射条件。"
+        }
+      ],
+      "changed_message_index": 3,
+      "query": "请直接确认 Quartz 字段演进要满足哪两个已验证的 ORM 兼容条件。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "已有上下文没有保留那两个具体条件，不能凭当前 ORM 默认行为补写结论。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "Quartz 项目和字段改动已精确定位，仅缺历史交接中两个已验证的兼容条件。",
+          "route": "memory",
+          "target_asset_ids": [
+            "T12-L1-QUARTZ-ORM-COMPATIBILITY"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_atomic_query"
+            ]
+          ],
+          "stop_after_candidate": "tdai_atomic_query returns the two directly reviewed Quartz ORM compatibility conditions."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接记录已补全条件：数据库字段先保留可空并提供旧列读取兼容，映射层必须显式处理缺失值且新旧客户端都通过同一组读写测试后才可收紧约束。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta provides the requested compatibility conditions and validation gate directly."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T12-L0-QUARTZ-CACHE",
+        "T12-L0-BEACON-PLAN",
+        "T12-L0-HARBOR-CHECKPOINT"
+      ],
+      "controlled_delta_note": "The short Quartz context and query are fixed. Only appended message 3 changes: Positive leaves the two compatibility conditions missing; Negative supplies them and the associated validation gate.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "范围已明确时，直接核对历史条件是否比重新发现项目更合适？",
+        "Negative 是否只补足 ORM 兼容条件和验证门槛，没有改变字段演进目标？"
+      ]
+    },
+    {
+      "draft_pair_id": "T12-MEMORY-B01-ARCHIVE-INDEX-LIFECYCLE",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Archive 正在清理历史索引并保留可回退窗口，当前遇到的是索引退役前后读路径观察的交接问题。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把 Archive 与 Ledger 的零停机发布、Beacon 的计划回归、Harbor 的回填恢复和 Quartz 的 ORM 兼容分别处理。"
+        },
+        {
+          "role": "user",
+          "content": "现有记录知道旧索引已标记待退役，也知道有观察期，但没有按顺序保留标记、验证读路径、删除元数据和关闭回退窗口的历史流程。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前状态只能说明清理进行到哪一步，不能替代此前验证过的生命周期流程；本轮不直接删除索引。"
+        },
+        {
+          "role": "user",
+          "content": "目标是找回 Archive 索引生命周期的已验证流程，用来核对本次退役计划。"
+        },
+        {
+          "role": "assistant",
+          "content": "索引范围、回退意图与其他数据库演进流已隔离，实施前只差定位对应的历史生命周期场景。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "请找回 Archive 索引退役前后，标记、读路径验证、元数据清理和回退窗口关闭的历史顺序。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要只有当前处于观察期，没有保留历史验证中四个生命周期动作的实际先后。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少 Archive 索引退役场景的已验证生命周期顺序，需要发现对应的历史场景记录。",
+          "route": "memory",
+          "target_asset_ids": [
+            "T12-L0-ARCHIVE-INDEX-LIFECYCLE"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_read_scene"
+            ]
+          ],
+          "stop_after_candidate": "tdai_read_scene returns the reviewed Archive index-lifecycle scene and its validated order."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "历史流程已补全：先标记旧索引并保持可回退，再验证主要读路径已转移且稳定，随后清理索引元数据，最后等观察窗口结束才关闭回退开关。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta supplies the complete lifecycle order and rollback condition."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T12-L0-ARCHIVE-COLD-STORAGE",
+        "T12-L0-LEDGER-LOCK",
+        "T12-L0-QUARTZ-ORM"
+      ],
+      "controlled_delta_note": "Both variants keep the Archive observation window, rollback scope, project separation, and query unchanged. Only message 6 changes: Positive requires locating the historical lifecycle scene; Negative supplies exactly its four ordered actions.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "该缺口是否应先发现 Archive 生命周期场景，再恢复流程，而不是直接推断删除顺序？",
+        "Negative 是否只补足退役顺序与回退窗口条件，没有发出执行删除的指令？"
+      ]
+    },
+    {
+      "draft_pair_id": "T12-MEMORY-B01-LEDGER-ROLLBACK-CONTRACT",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Ledger 的零停机迁移已进入切读前复核，当前只需确认历史交接中规定的回滚触发条件。"
+        },
+        {
+          "role": "assistant",
+          "content": "这条 Ledger 回滚核对与 Beacon 计划回归、Harbor 回填续跑、Quartz ORM 兼容和 Archive 索引退役保持独立。"
+        },
+        {
+          "role": "user",
+          "content": "发布窗口、旧客户端范围和监控指标都已固定，但摘要没有保留应在什么信号下暂停切读并恢复旧路径。"
+        },
+        {
+          "role": "assistant",
+          "content": "本轮是窄范围的历史条件核对，不需要重新发现迁移项目，也不会依据当前单次指标自行制定新阈值。"
+        },
+        {
+          "role": "user",
+          "content": "确认这条回滚约定后，团队才会决定是否继续切读。"
+        },
+        {
+          "role": "assistant",
+          "content": "身份假设、发布阶段和查询字段均已明确，剩余缺口就是交接记录里的回滚条件本身。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "请直接确认 Ledger 切读前复核时，历史约定要求在什么两个信号下触发回滚。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "当前摘要只说需要监控回滚，没有留下那两个已经验证过的具体触发信号。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "Ledger 迁移阶段和查询目标已明确，仅缺历史交接中两个具体回滚触发信号。",
+          "route": "memory",
+          "target_asset_ids": [
+            "T12-L1-LEDGER-ROLLBACK-CONTRACT"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_conversation_query"
+            ]
+          ],
+          "stop_after_candidate": "tdai_conversation_query returns the two conditions from the directly identified Ledger handoff."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接记录已补全：若切读后的关键写入出现新旧结构不一致，或兼容读路径的尾延迟连续越过已验证上限，就暂停切读并恢复旧路径；单次尖峰不单独触发回滚。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta supplies both historical rollback triggers and the single-spike exception directly."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T12-L0-LEDGER-LOCK-NOISE",
+        "T12-L0-BEACON-LATENCY",
+        "T12-L0-ARCHIVE-ROLLBACK"
+      ],
+      "controlled_delta_note": "Both variants share the same Ledger cutover stage, fixed monitoring scope, workspace, and query. Only message 6 changes: Positive lacks the two triggers; Negative supplies exactly those triggers and the one-spike exception.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "范围已精确到 Ledger 切读交接时，直接会话核对是否是合适的首步？",
+        "Negative 是否只补足两个回滚信号及例外，没有引入新的阈值设计？"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,228 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t12-knowledge-batch-01",
+  "stage": "DS02",
+  "team_id": "T12",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T12-DS02-KNOWLEDGE-001",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Ledger 零停机 schema rollout 仍在固定的迁移工作区整理；Beacon 查询计划回归、Harbor 可恢复回填、Quartz ORM 兼容性和 Archive 索引生命周期是同组并行线，结论不要混用。"
+        },
+        {
+          "role": "assistant",
+          "content": "边界已记下。当前只处理 Ledger 的在线迁移与兼容性，不把其他四条数据库演进线的结论带进来。"
+        },
+        {
+          "role": "user",
+          "content": "Ledger 已进入 expand/contract 迁移准备阶段；旧客户端仍在访问旧列，日志能看到兼容窗口和分批变更的迹象，但没有给出完整的 rollout 顺序。"
+        },
+        {
+          "role": "assistant",
+          "content": "这是迁移兼容性图的核对问题；我不会从锁等待或列名变化推断先后步骤，也不会把 Beacon 的计划回归当成 Ledger 的门槛。"
+        },
+        {
+          "role": "user",
+          "content": "我原本想按本地 checkout 中同名 migration 文件的时间顺序猜流程，但整理提交后路径和命名都不稳定，猜测不适合写入零停机记录。"
+        },
+        {
+          "role": "assistant",
+          "content": "方向改为核对固定 Ledger 迁移图里已经记录的 expand/contract 步骤和兼容门槛，只提取 rollout 约束，不扩展到具体代码改动。"
+        },
+        {
+          "role": "user",
+          "content": "已完成的是确认问题属于 Ledger 的零停机 schema rollout、排除了 Beacon 查询计划线，也排除了回填和 ORM 兼容性两条相邻线。"
+        },
+        {
+          "role": "assistant",
+          "content": "现在仍缺的是 Ledger 的准确迁移顺序及每个切换阶段的兼容性门槛；当前上下文只有现象和阶段名，不能可靠补全 rollout 记录。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请先确认 Ledger 零停机迁移记录中的 expand/contract rollout 顺序和兼容性门槛；只回答迁移约束，不延伸到 Beacon 或其他数据库演进线。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充日志仍只有锁等待、旧列访问和分批变更的现象，没有提供固定迁移图中的权威顺序或切换门槛；请保留这个信息缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "固定 Ledger 迁移与兼容性图中 expand/contract 的准确 rollout 顺序及各阶段兼容性门槛尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": ["knowledge-t12-ledger-schema"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "通过固定 Ledger 迁移兼容性图返回 add nullable column、dual-write、分批回填、切读、约束收紧及旧列移除的顺序与兼容门槛后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已经补齐唯一缺口：先增加可空的新列并保持旧客户端可写，随后双写并按批次回填；确认回填追平后切换读取，再在旧客户端退出兼容窗口后收紧约束，最后才移除旧列。每次切换前都必须验证双写一致性、回填追平和旧客户端访问已归零。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已经给出 expand/contract 的完整顺序以及双写一致性、回填追平、旧客户端访问归零三项切换门槛，足以回答 Ledger rollout 约束；无需再查资源。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["knowledge-t12-query-plans", "knowledge-t12-backfill"],
+      "controlled_delta_note": "Positive 只保留 Ledger rollout 顺序和兼容门槛的缺口；Negative 只补齐 expand/contract 顺序及三项切换验证，其他项目边界、现象和 query 完全不变。",
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为 Ledger 的 rollout 顺序与兼容性门槛，没有暗示代码路径或实施方案？",
+        "Negative 是否只补入新增列、双写、回填、切读、约束收紧、旧列移除及对应切换验证？",
+        "Ledger、零停机 schema rollout 和 expand/contract 线索是否足以在三个 ready 资源中唯一选择迁移兼容性图？"
+      ]
+    },
+    {
+      "draft_pair_id": "T12-DS02-KNOWLEDGE-002",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Beacon 查询计划回归仍在固定的实验记录工作区整理；Ledger 零停机迁移、Harbor 可恢复回填、Quartz ORM 兼容性和 Archive 索引生命周期是同组并行线，结论不要合并。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会保持五条数据库演进线分离。当前只整理 Beacon 的查询计划与索引实验，不从 Ledger 的迁移窗口推导计划行为。"
+        },
+        {
+          "role": "user",
+          "content": "Beacon 最近出现同一租户查询延迟抖动，观测到计划在索引扫描和大范围扫描之间切换；实验记录提到了统计信息、覆盖索引和回归阈值，但没有写出最终结论。"
+        },
+        {
+          "role": "assistant",
+          "content": "这是固定查询计划实验记录的结论核对问题；我不会把一次慢查询样本概括成根因，也不会先假定所有索引都应改成覆盖索引。"
+        },
+        {
+          "role": "user",
+          "content": "我原本想按本地数据库里的 explain 输出猜实验结论，但不同快照的统计信息不一致，猜出的修复方向不适合写进回归报告。"
+        },
+        {
+          "role": "assistant",
+          "content": "方向改为核对固定 Beacon 实验笔记，只提取回归根因、验证后的纠正动作和后续 guardrail，不延伸到 Ledger 或线上调参。"
+        },
+        {
+          "role": "user",
+          "content": "已完成的是确认问题属于 Beacon 的计划回归、排除了 Ledger 迁移线，也排除了 Harbor 回填和 Archive 索引生命周期的相邻实验。"
+        },
+        {
+          "role": "assistant",
+          "content": "现在仍缺的是 Beacon 实验对根因、纠正动作和回归防护线的明确结论；仅凭计划切换现象无法安全补全。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请先确认 Beacon 查询计划回归实验的根因、已验证的纠正动作和后续防护线；只回答实验结论，不延伸到 Ledger 迁移或其他索引线。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充样本仍只有计划切换和延迟抖动，未写出统计信息、覆盖索引实验的最终判断或回归防护线；请保留这个结论缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "固定 Beacon 查询计划与索引实验笔记中关于回归根因、纠正动作和防护线的最终结论尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": ["knowledge-t12-query-plans"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "通过固定 Beacon 查询计划实验笔记返回统计信息失配导致的计划回归、刷新统计并保留合适覆盖索引的验证结果及回归阈值 guardrail 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已经补齐唯一缺口：根因是部分索引变更后统计信息陈旧，导致优化器在选择性判断上失真；刷新统计并回退未经验证的覆盖索引变体后，计划稳定回到按租户与时间条件的索引扫描。后续以计划估算行数偏差和延迟阈值做回归门槛，只有覆盖所需列且实验验证通过的索引才可保留。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已经给出统计信息陈旧这一根因、刷新统计并回退未验证变体的纠正动作，以及估算偏差和延迟阈值的防护线，足以回答 Beacon 实验结论；无需再查资源。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["knowledge-t12-ledger-schema", "knowledge-t12-backfill"],
+      "controlled_delta_note": "Positive 只保留 Beacon 实验结论缺口；Negative 只补齐统计信息根因、验证后的纠正动作和回归门槛，其他项目边界、计划现象和 query 完全不变。",
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为 Beacon 实验的根因、纠正动作与防护线，没有暗示本地快照或线上调参？",
+        "Negative 是否只增加统计信息失配、刷新统计、回退未验证索引变体和计划/延迟回归阈值？",
+        "Beacon、查询计划回归和索引实验线索是否足以在三个 ready 资源中唯一选择查询计划实验笔记？"
+      ]
+    },
+    {
+      "draft_pair_id": "T12-DS02-KNOWLEDGE-003",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Harbor 可恢复 backfill 仍在固定的回填工作区核对；Ledger 零停机迁移、Beacon 查询计划回归、Quartz ORM 兼容性和 Archive 索引生命周期是同组并行线，恢复语义不要混用。"
+        },
+        {
+          "role": "assistant",
+          "content": "边界已记下。当前只处理 Harbor 的 resumable backfill 与 checkpoint 设计，不把 Ledger 的迁移阶段或 Beacon 的计划结论带进来。"
+        },
+        {
+          "role": "user",
+          "content": "Harbor 回填 worker 最近经历重启和分片重试，日志显示部分分片从中途继续、少数记录重复尝试；但没有显示 checkpoint 应保存什么以及怎样保证重复执行安全。"
+        },
+        {
+          "role": "assistant",
+          "content": "这是固定回填代码图的 checkpoint 契约核对问题；我不会从重试日志猜持久化字段，也不会把一次重复尝试直接当成数据重复写入。"
+        },
+        {
+          "role": "user",
+          "content": "我原本想按本地 worker 的函数名猜 resume token 和提交边界，后来发现不同分片有相似命名，猜测不适合写进恢复运行手册。"
+        },
+        {
+          "role": "assistant",
+          "content": "方向改为核对固定 Harbor 回填图中已记录的 checkpoint 内容、恢复游标和幂等边界，只提取恢复契约，不延伸到性能调优。"
+        },
+        {
+          "role": "user",
+          "content": "已完成的是确认问题属于 Harbor 的可恢复回填、排除了 Beacon 查询计划线，也排除了 Ledger schema rollout 和 Quartz ORM 兼容性线。"
+        },
+        {
+          "role": "assistant",
+          "content": "现在仍缺的是 checkpoint 的持久化内容、恢复时的游标规则和重复执行的安全边界；当前上下文只有重启现象，不能可靠补全。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请先确认 Harbor resumable backfill 的 checkpoint 契约、恢复游标规则和幂等边界；只回答恢复设计，不延伸到 Beacon 或其他数据库演进线。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充日志仍只有 worker 重启、分片续跑和重复尝试的现象，没有提供固定回填图中的 checkpoint 字段、恢复游标或幂等规则；请保留这个设计缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "固定 Harbor 回填 worker 代码图中 checkpoint 的持久化内容、恢复游标规则和重复执行安全边界尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": ["knowledge-t12-backfill"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "通过固定 Harbor 回填 worker 图返回分片键、最后确认批次和版本标记的 checkpoint 约束，以及按确认边界恢复和幂等提交规则后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已经补齐唯一缺口：checkpoint 持久化分片键、最后确认的批次游标和源数据版本标记；恢复时从最后确认批次重新取数，不把正在处理但未确认的批次当作已完成。写入按目标主键与源版本做幂等判断，重复重试只能重放未确认批次，遇到版本不匹配则暂停并记录冲突。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已经给出 checkpoint 字段、从最后确认批次恢复的游标规则、未确认批次可重放以及版本不匹配暂停的幂等边界，足以回答 Harbor 恢复设计；无需再查资源。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["knowledge-t12-ledger-schema", "knowledge-t12-query-plans"],
+      "controlled_delta_note": "Positive 只保留 Harbor checkpoint 契约缺口；Negative 只补齐持久化字段、确认边界恢复和幂等/冲突处理规则，其他项目边界、重启现象和 query 完全不变。",
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为 Harbor 的 checkpoint、游标与幂等契约，没有暗示函数路径或性能方案？",
+        "Negative 是否只补入分片键、确认批次、版本标记、重放边界和版本冲突暂停规则？",
+        "Harbor、resumable backfill 和 checkpoint 线索是否足以在三个 ready 资源中唯一选择回填 worker 代码图？"
+      ]
+    }
+  ]
+}

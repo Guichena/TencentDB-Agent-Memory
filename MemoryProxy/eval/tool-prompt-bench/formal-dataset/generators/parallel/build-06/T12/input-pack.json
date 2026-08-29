@@ -1,0 +1,28 @@
+{
+  "schema_version": "task1.team_input_pack.v1",
+  "build_id": "build-06",
+  "team_id": "T12",
+  "split": "dev",
+  "topic": "数据库演进",
+  "active_agent": "agent-task1-t12-general",
+  "project_streams": ["Ledger zero-downtime schema rollout", "Beacon query-plan regression", "Harbor resumable backfill", "Quartz ORM compatibility", "Archive index lifecycle"],
+  "counts": {"memory_positive": 6, "skill_positive": 6, "knowledge_positive": 3, "paired_negative": 15, "natural_negative": 10},
+  "positive_first_action_distribution": {"memory_search_or_discovery": 4, "memory_direct": 2, "skill_search": 3, "skill_direct": 3, "knowledge_discovery": 3},
+  "knowledge_assets": [
+    {"id":"knowledge-t12-ledger-schema","kind":"codegraph","tool_name":"search_code","description":"Ledger migration and compatibility graph"},
+    {"id":"knowledge-t12-query-plans","kind":"wiki","tool_name":"search_pages","description":"Beacon query-plan and index experiment notes"},
+    {"id":"knowledge-t12-backfill","kind":"codegraph","tool_name":"search_code","description":"Harbor backfill worker and checkpoint graph"}
+  ],
+  "skill_sources": [
+    {"source_id":"t12-skill-pg-migration","repository":"https://github.com/timescale/pg-aiguide","revision":"b4f11a45907af3abda0f79e784aff9a6d5eef468","path":"skills/postgres-database-migration/SKILL.md","license":"Apache-2.0","raw_sha256":"bbc48c4d34493618d3b40654d0a4c01a68b6b18b6febb2045a6c12970c984aed","license_path":"LICENSE","license_sha256":"0f71fa3893437af5bc88d82dd99115b701e1a34f86bd5510be361791fe572ffb"},
+    {"source_id":"t12-skill-pg-design","repository":"https://github.com/timescale/pg-aiguide","revision":"b4f11a45907af3abda0f79e784aff9a6d5eef468","path":"skills/design-postgres-tables/SKILL.md","license":"Apache-2.0","raw_sha256":"a6ca6891018ab398310cc57ec8ac4be4b3e6414d7701584adbd2354e0016cd37","license_path":"LICENSE","license_sha256":"0f71fa3893437af5bc88d82dd99115b701e1a34f86bd5510be361791fe572ffb"},
+    {"source_id":"t12-skill-ghost-db","repository":"https://github.com/timescale/pg-aiguide","revision":"b4f11a45907af3abda0f79e784aff9a6d5eef468","path":"skills/ghost-database/SKILL.md","license":"Apache-2.0","raw_sha256":"66c29ba068090fa660efc107c0dcc8e50ecb7899a0c131b5f5fa4718ac24e97b","license_path":"LICENSE","license_sha256":"0f71fa3893437af5bc88d82dd99115b701e1a34f86bd5510be361791fe572ffb"}
+  ],
+  "skill_visibility": [
+    {"asset_id":"T12-SKILL-PG-MIGRATION","source_id":"t12-skill-pg-migration","name":"postgres-safe-migration","listed":true,"use_when":"planning or validating a production PostgreSQL schema change, lock, backfill, or rollback","do_not_use_when":"designing a new schema from scratch or provisioning a disposable database"},
+    {"asset_id":"T12-SKILL-PG-DESIGN","source_id":"t12-skill-pg-design","name":"postgres-table-design","listed":false,"use_when":"choosing PostgreSQL tables, types, constraints, and indexes for new or modified schemas","do_not_use_when":"executing a live rollout or provisioning a database service"},
+    {"asset_id":"T12-SKILL-GHOST","source_id":"t12-skill-ghost-db","name":"ghost-database-fork","listed":true,"use_when":"creating or forking a PostgreSQL database for isolated migration experiments","do_not_use_when":"the task only needs query-plan analysis or schema DDL guidance"}
+  ],
+  "provider_visible_forbidden": ["target asset id", "tool name", "endpoint", "gold route", "private proposal", "author-only distractor id"],
+  "authoring_rule": "Skills may only adapt the frozen source workflow to host naming, descriptions, use_when and do_not_use_when. Memory, sessions and internal Knowledge are synthetic."
+}
