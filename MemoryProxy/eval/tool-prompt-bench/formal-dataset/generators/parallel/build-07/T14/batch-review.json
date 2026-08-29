@@ -1,0 +1,63 @@
+{
+  "schema_version": "task1.sol_batch_review.v1",
+  "team_id": "T14",
+  "stage": "DS05",
+  "reviewed_by": "gpt-5.6-sol",
+  "decision": "approved",
+  "batches": [
+    {
+      "batch_id": "T14-pilot-memory-01",
+      "family": "memory",
+      "count": 1,
+      "raw_output_sha256": "4974440ed1159b9402635de83fe8121706c8f77b2cca1256a06a8f1f3dbfe4fe",
+      "review": "approved; target L1 closure, single-variable pair, injection boundary and minimal route verified"
+    },
+    {
+      "batch_id": "T14-expand-memory-01",
+      "family": "memory",
+      "count": 5,
+      "raw_output_sha256": "aa2cce5f2be7d197932a6c48233a7866cfb63c16c64523d27ca43fd6c088c0a3",
+      "review": "approved after rejection and full regeneration of cross-team residue; all L0/L1/L2 closures, distractors, context depth and injection boundaries verified"
+    },
+    {
+      "batch_id": "build-07-T14-pilot-skill-01",
+      "family": "skill",
+      "count": 1,
+      "raw_output_sha256": "c064950218fabb0db0a2fef1a872c91bdc5dc9396887d5b66744ce08a04b6002",
+      "review": "approved; discovery route, repository mapping, adaptation coverage and core-source fidelity verified"
+    },
+    {
+      "batch_id": "build-07-T14-expand-skill-01",
+      "family": "skill",
+      "count": 5,
+      "raw_output_sha256": "75326dc69d14e036f2335daceb1b9330a176532100db5f5fb7a65f91a7658cc7",
+      "review": "approved after removing cross-pair query duplication; direct/search/resource routes, real distractors and frozen-source claims verified"
+    },
+    {
+      "batch_id": "t14-pilot-knowledge-01",
+      "family": "knowledge",
+      "count": 1,
+      "raw_output_sha256": "35029aca8d98b0a12186a51406c82c19c8e2fdee8b8b996599639b18b579dd4a",
+      "review": "approved; fixed binding, tool fixture, unique gap and same-domain resource separation verified"
+    },
+    {
+      "batch_id": "t14-expand-knowledge-01",
+      "family": "knowledge",
+      "count": 2,
+      "raw_output_sha256": "bb5e05726fc71fa51d86896754e6ebcfaf3728b89be4f5fd9f4744560218bbf0",
+      "review": "approved; complete fixtures, single-variable pairs, visible distractors and list-to-call routes verified"
+    },
+    {
+      "batch_id": "build-07-T14-natural-negative-01",
+      "family": "natural-negative",
+      "count": 10,
+      "raw_output_sha256": "d6db221229cb616041a3982eb0a2c9cc43630567edfb108116502179f3ed4761",
+      "review": "approved after correcting Flagger threshold semantics, Flux resource-level SSA scope and Reloader annotation placement; self-containment verified"
+    }
+  ],
+  "team_gate": {
+    "passed": true,
+    "checks": 779,
+    "errors": 0
+  }
+}

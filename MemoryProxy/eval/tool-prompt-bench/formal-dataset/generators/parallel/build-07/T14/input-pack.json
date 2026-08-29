@@ -1,0 +1,132 @@
+{
+  "schema_version": "task1.team_input_pack.v1",
+  "build_id": "build-07",
+  "stage": "DS05",
+  "team_id": "T14",
+  "split": "hidden_test",
+  "topic": "云原生交付",
+  "frozen_by": "sol-build-07",
+  "world_as_of": "2026-08-29T12:00:00+08:00",
+  "identity": {
+    "space_id": "space-task1-engineering",
+    "active_agent_id": "agent-task1-t14-general",
+    "asset_agent_ids": ["agent-task1-t14-assets-a", "agent-task1-t14-assets-b"],
+    "user_id": "user-task1-hidden-t14",
+    "snapshot_id": "snapshot-task1-hidden-v1"
+  },
+  "projects": [
+    {
+      "project_id": "t14-borealis-platform",
+      "task_id": "task-t14-borealis-helm",
+      "name": "Borealis Platform",
+      "stream": "Kubernetes 工作负载、Helm chart 与回滚护栏",
+      "workspace_repo": "https://benchmark.invalid/t14/borealis-platform.git"
+    },
+    {
+      "project_id": "t14-meridian-fleet",
+      "task_id": "task-t14-meridian-gitops",
+      "name": "Meridian Fleet",
+      "stream": "Flux GitOps、配置漂移与多集群协调",
+      "workspace_repo": "https://benchmark.invalid/t14/meridian-fleet.git"
+    },
+    {
+      "project_id": "t14-forge-build",
+      "task_id": "task-t14-forge-build",
+      "name": "Forge Build",
+      "stream": "Tekton 容器构建、OCI registry 与供应链交付",
+      "workspace_repo": "https://benchmark.invalid/t14/forge-build.git"
+    },
+    {
+      "project_id": "t14-aurora-release",
+      "task_id": "task-t14-aurora-release",
+      "name": "Aurora Release",
+      "stream": "Flagger 渐进发布、canary 分析与回退",
+      "workspace_repo": "https://benchmark.invalid/t14/aurora-release.git"
+    },
+    {
+      "project_id": "t14-cedar-config",
+      "task_id": "task-t14-cedar-config",
+      "name": "Cedar Config",
+      "stream": "Secret/ConfigMap 同步、重载与配置漂移",
+      "workspace_repo": "https://benchmark.invalid/t14/cedar-config.git"
+    }
+  ],
+  "asset_targets": {
+    "l0_sessions": 10,
+    "l0_messages_per_session": "12_to_20",
+    "l1_memories": 16,
+    "l2_scenes": 5,
+    "l3_profiles": 1,
+    "skills": 16,
+    "knowledge": 3
+  },
+  "memory_namespaces": ["t14-borealis-platform", "t14-meridian-fleet", "t14-forge-build", "t14-aurora-release", "t14-cedar-config"],
+  "memory_case_routes": [
+    {"case_key":"MEM-001","project_id":"t14-borealis-platform","target_asset_id":"T14-L1-003","sequence":["tdai_memory_search"],"search_or_discovery":true},
+    {"case_key":"MEM-002","project_id":"t14-forge-build","target_asset_id":"T14-L0-003","sequence":["tdai_conversation_search"],"search_or_discovery":true},
+    {"case_key":"MEM-003","project_id":"t14-meridian-fleet","target_asset_id":"T14-L0-004","sequence":["tdai_conversation_search","tdai_conversation_query"],"search_or_discovery":true},
+    {"case_key":"MEM-004","project_id":"t14-aurora-release","target_asset_id":"T14-L1-010","sequence":["tdai_memory_search"],"search_or_discovery":true},
+    {"case_key":"MEM-005","project_id":"t14-cedar-config","target_asset_id":"T14-L1-013","sequence":["tdai_atomic_query"],"search_or_discovery":false,"required_filter":{"type":"decision","time_start":"2026-08-03T00:00:00+08:00","time_end":"2026-08-18T00:00:00+08:00"}},
+    {"case_key":"MEM-006","project_id":"t14-borealis-platform","target_asset_id":"T14-L2-005","sequence":["tdai_read_scene"],"search_or_discovery":false,"injected_path":"delivery/borealis/helm-rollback-review.md"}
+  ],
+  "skill_pool": [
+    {"asset_id":"T14-SKILL-HELM-CHART","source_id":"T14-SRC-HELM-CHART","raw_path":"source-material/T14/raw/helm-chart/SKILL.md","owner_agent_id":"agent-task1-t14-general","visibility":"private","bound":true},
+    {"asset_id":"T14-SKILL-TEKTON-PIPELINES","source_id":"T14-SRC-TEKTON-PIPELINES","raw_path":"source-material/T14/raw/tekton-pipelines/SKILL.md","owner_agent_id":"agent-task1-t14-general","visibility":"private","bound":true},
+    {"asset_id":"T14-SKILL-FLUX-KNOWLEDGE","source_id":"T14-SRC-FLUX-KNOWLEDGE","resource_source_id":"T14-SRC-FLUX-IMAGE-AUTOMATION","resource_path":"references/image-automation.md","raw_path":"source-material/T14/raw/gitops-knowledge/SKILL.md","owner_agent_id":"agent-task1-t14-general","visibility":"private","bound":true},
+    {"asset_id":"T14-SKILL-HARBOR-HELM","source_id":"T14-SRC-HARBOR-HELM","raw_path":"source-material/T14/raw/harbor-helm/SKILL.md","owner_agent_id":"agent-task1-t14-general","visibility":"private","bound":true},
+    {"asset_id":"T14-SKILL-EXTERNAL-SECRETS","source_id":"T14-SRC-EXTERNAL-SECRETS","raw_path":"source-material/T14/raw/external-secrets/SKILL.md","owner_agent_id":"agent-task1-t14-general","visibility":"private","bound":true},
+    {"asset_id":"T14-SKILL-CILIUM-GATEWAY","source_id":"T14-SRC-CILIUM-GATEWAY","raw_path":"source-material/T14/raw/cilium-gateway/SKILL.md","owner_agent_id":"agent-task1-t14-general","visibility":"private","bound":true},
+    {"asset_id":"T14-SKILL-HELM-OPS","source_id":"T14-SRC-HELM-OPS","raw_path":"source-material/T14/raw/helm-ops/SKILL.md","owner_agent_id":"agent-task1-t14-assets-a","visibility":"team","bound":false},
+    {"asset_id":"T14-SKILL-FLAGGER","source_id":"T14-SRC-FLAGGER","raw_path":"source-material/T14/raw/flagger/SKILL.md","owner_agent_id":"agent-task1-t14-assets-a","visibility":"team","bound":false},
+    {"asset_id":"T14-SKILL-SEALED-SECRETS","source_id":"T14-SRC-SEALED-SECRETS","raw_path":"source-material/T14/raw/sealed-secrets/SKILL.md","owner_agent_id":"agent-task1-t14-assets-a","visibility":"team","bound":false},
+    {"asset_id":"T14-SKILL-RELOADER","source_id":"T14-SRC-RELOADER","raw_path":"source-material/T14/raw/stakater-reloader/SKILL.md","owner_agent_id":"agent-task1-t14-assets-a","visibility":"team","bound":false},
+    {"asset_id":"T14-SKILL-TEKTON-PAC","source_id":"T14-SRC-TEKTON-PAC","raw_path":"source-material/T14/raw/tekton-pac/SKILL.md","owner_agent_id":"agent-task1-t14-assets-a","visibility":"team","bound":false},
+    {"asset_id":"T14-SKILL-GITEA-REGISTRY","source_id":"T14-SRC-GITEA-REGISTRY","raw_path":"source-material/T14/raw/gitea-registry/SKILL.md","owner_agent_id":"agent-task1-t14-assets-b","visibility":"team","bound":false},
+    {"asset_id":"T14-SKILL-HARBOR-API","source_id":"T14-SRC-HARBOR-API","raw_path":"source-material/T14/raw/harbor-api/SKILL.md","owner_agent_id":"agent-task1-t14-assets-b","visibility":"team","bound":false},
+    {"asset_id":"T14-SKILL-TUPPR","source_id":"T14-SRC-TUPPR","raw_path":"source-material/T14/raw/tuppr/SKILL.md","owner_agent_id":"agent-task1-t14-assets-b","visibility":"team","bound":false},
+    {"asset_id":"T14-SKILL-FLUX-AUDIT","source_id":"T14-SRC-FLUX-AUDIT","raw_path":"source-material/T14/raw/gitops-repo-audit/SKILL.md","owner_agent_id":"agent-task1-t14-assets-b","visibility":"team","bound":false},
+    {"asset_id":"T14-SKILL-FLUX-DEBUG","source_id":"T14-SRC-FLUX-DEBUG","raw_path":"source-material/T14/raw/gitops-cluster-debug/SKILL.md","owner_agent_id":"agent-task1-t14-assets-b","visibility":"team","bound":false}
+  ],
+  "skill_case_routes": [
+    {"case_key":"SKL-001","project_id":"t14-borealis-platform","target_asset_id":"T14-SKILL-HELM-CHART","sequence":["skill_view"],"listing_state":"listed"},
+    {"case_key":"SKL-002","project_id":"t14-forge-build","target_asset_id":"T14-SKILL-TEKTON-PIPELINES","sequence":["skill_view"],"listing_state":"listed"},
+    {"case_key":"SKL-003","project_id":"t14-meridian-fleet","target_asset_id":"T14-SKILL-FLUX-AUDIT","sequence":["skill_search","skill_view_by_id"],"listing_state":"searchable_not_listed"},
+    {"case_key":"SKL-004","project_id":"t14-aurora-release","target_asset_id":"T14-SKILL-FLAGGER","sequence":["skill_search","skill_view_by_id"],"listing_state":"searchable_not_listed"},
+    {"case_key":"SKL-005","project_id":"t14-cedar-config","target_asset_id":"T14-SKILL-RELOADER","sequence":["skill_search","skill_view_by_id"],"listing_state":"searchable_not_listed"},
+    {"case_key":"SKL-006","project_id":"t14-meridian-fleet","target_asset_id":"T14-SKILL-FLUX-KNOWLEDGE","sequence":["skill_view","skill_files_read"],"listing_state":"listed","required_resource_path":"references/image-automation.md"}
+  ],
+  "knowledge_pool": [
+    {"asset_id":"T14-KNOW-BOREALIS-CG","type":"code_graph","name":"Borealis Platform 代码索引","repo_match":"benchmark.invalid/t14/borealis-platform","tool_name":"search","target_case_key":"KNW-001"},
+    {"asset_id":"T14-KNOW-MERIDIAN-WIKI","type":"wiki","name":"Meridian Fleet 交付手册","summary":"多集群 GitOps、漂移例外和发布协调约定","tool_name":"search","target_case_key":"KNW-002"},
+    {"asset_id":"T14-KNOW-FORGE-CG","type":"code_graph","name":"Forge Build 代码索引","repo_match":"benchmark.invalid/t14/forge-build","tool_name":"impact","target_case_key":"KNW-003"}
+  ],
+  "knowledge_case_routes": [
+    {"case_key":"KNW-001","project_id":"t14-borealis-platform","target_asset_id":"T14-KNOW-BOREALIS-CG","sequence":["knowledge_tools_list","knowledge_tools_call"]},
+    {"case_key":"KNW-002","project_id":"t14-meridian-fleet","target_asset_id":"T14-KNOW-MERIDIAN-WIKI","sequence":["knowledge_tools_list","knowledge_tools_call"]},
+    {"case_key":"KNW-003","project_id":"t14-forge-build","target_asset_id":"T14-KNOW-FORGE-CG","sequence":["knowledge_tools_list","knowledge_tools_call"]}
+  ],
+  "fixed_counts": {
+    "memory_positive": 6,
+    "skill_positive": 6,
+    "knowledge_positive": 3,
+    "paired_no_tool_negative": 15,
+    "natural_coding_negative": 10,
+    "total_cases": 40,
+    "pairs": 15,
+    "search_or_discovery_positive": 10,
+    "direct_positive": 5
+  },
+  "provider_visible_rules": {
+    "allowed_fields": ["caseId", "language", "contextMessages", "query"],
+    "forbidden_content": ["tool names", "bridge endpoints", "asset IDs", "pair IDs", "Gold", "scoring fields"]
+  },
+  "generation_rules": {
+    "pair_single_variable": true,
+    "positive_unique_information_gap": true,
+    "negative_answer_in_current_context": true,
+    "visible_same_domain_distractors": true,
+    "no_answer_in_first_screen_injection": true,
+    "skill_core_steps_must_come_from_frozen_sources": true,
+    "luna_may_not_write_final_gold_or_staging": true
+  }
+}

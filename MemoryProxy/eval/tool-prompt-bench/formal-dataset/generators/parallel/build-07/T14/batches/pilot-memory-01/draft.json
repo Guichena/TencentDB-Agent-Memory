@@ -1,0 +1,67 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T14-pilot-memory-01",
+  "stage": "DS05",
+  "team_id": "T14",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T14-MEM-001-pilot",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Borealis Platform 最近在 Kubernetes 上做 Helm 发布，升级过程偶尔会卡在半健康状态。"
+        },
+        {
+          "role": "assistant",
+          "content": "先把这次发布的症状与团队过去确认过的回滚护栏分开记录，避免临时观察变成默认规则。"
+        },
+        {
+          "role": "user",
+          "content": "我记得团队以前专门评审过发布失败时何时暂停升级、何时回到上一版，但现在只找到零散的发布日志。"
+        },
+        {
+          "role": "assistant",
+          "content": "可以按项目和 Helm 回滚主题回看历史，再将找到的决定与这次发布的健康状态逐项核对。"
+        }
+      ],
+      "changed_message_index": 4,
+      "query": "请确认 Borealis Platform 之前为 Helm 渐进发布确定的失败率门槛、暂停升级的连续观测次数，以及触发回滚的健康检查条件。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充线索：那次决定是在 Borealis Platform 的 Helm 回滚评审里形成的；我需要找回发布失败后的门槛、暂停升级的连续次数，以及回滚所依赖的健康检查条件。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "历史中的 T14-L1-003 才保存失败率门槛、连续观测次数和健康检查回滚条件的完整决定；当前上下文只有项目与主题线索。",
+          "route": "memory",
+          "target_asset_ids": ["T14-L1-003"],
+          "allowed_sequence_candidates": [["tdai_memory_search"]],
+          "stop_after_candidate": "找到能够同时给出失败率门槛、暂停升级所需的连续观测次数和健康检查回滚条件的候选后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充完整记录：发布失败率超过 5% 且连续 3 个观测窗口时暂停继续升级；若 readiness 与关键依赖健康检查连续 2 个窗口不通过，则回滚到上一稳定 chart 版本，并保持迁移钩子状态不变。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经直接提供失败率门槛、暂停升级次数和健康检查回滚条件，回答问题不再需要查找历史。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T14-L1-001", "T14-L1-002", "T14-L1-004"],
+      "controlled_delta_note": "两条追加消息均只在变更位置出现；正例保留唯一的历史细节缺口，负例仅补足同一决定的三个字段。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "正例候选是否确实只需一次项目历史发现即可定位到目标记忆？",
+        "负例追加内容是否完整覆盖失败率门槛、连续观测次数和健康检查回滚条件，且没有额外决定？",
+        "L2 与 L3 摘要是否避免提前暴露这些具体数字和触发条件？"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "build-07-T14-pilot-skill-01",
+  "stage": "DS05",
+  "team_id": "T14",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T14-SKL-003-pilot-01",
+      "external_source_ids": ["T14-SRC-FLUX-AUDIT"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Meridian Fleet 计划在本周做一次交付前 GitOps 仓库审计，请先基于当前项目上下文帮我明确准备方向。"},
+        {"role": "assistant", "content": "审计对象是本地仓库文件而不是在线集群，范围需要覆盖资源发现、清单校验、API 兼容性、最佳实践和安全风险，并形成按优先级排列的报告；当前上下文没有给出可直接采用的审计流程。"},
+        {"role": "user", "content": "保持在 Meridian Fleet 项目范围内，给出能落地执行的最小路径和判断依据。"}
+      ],
+      "changed_message_index": 3,
+      "query": "请告诉我下一步应该怎么做，并给出最小可行验证路径。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "先在当前项目可用的能力目录中搜索覆盖 Flux GitOps 仓库审计、Kubernetes 清单发现与校验、弃用 API 检查、最佳实践和安全审查的条目；根据返回结果中的条目标识打开最匹配的完整内容，再按其中的流程执行。"},
+        "private_proposal": {
+          "unique_information_gap": "当前上下文只定义了本地 GitOps 仓库审计的范围，没有提供资源盘点、临时渲染包校验、弃用 API、最佳实践、安全审查和分级报告的冻结技术流程。",
+          "route": "skill",
+          "target_asset_ids": ["T14-SKILL-FLUX-AUDIT"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "打开最匹配的审计条目后，依其六阶段流程完成 Meridian Fleet 的本地仓库审计并输出分级报告。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "操作手册的关键内容已补齐：先对本地仓库做资源盘点、目录模式和集群配置发现，并检查旧式同步文件；再用唯一临时路径渲染并校验所有清单和 Kustomize overlay，必要时用临时 dotenv 做变量替换后重跑；随后检查弃用 API 并按要求阅读迁移说明；按仓库模式评估最佳实践，修改 YAML 前到字段索引核对字段名、类型和嵌套；再逐项做 Secret、私有源、OCI、跨命名空间引用、RBAC、多租户、镜像自动化和渲染后安全检查；最后按摘要、目录、校验、API、最佳实践、安全和 Critical/Warning/Info 建议输出报告，第三方无 schema 或加密 Secret 的 skipped 可视为预期。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "追加消息已经给出从本地发现、临时渲染校验、弃用 API、最佳实践、字段索引核对、安全审查到分级报告的完整最小流程及边界条件，无需再定位内部能力。"}
+      },
+      "visible_distractor_ids_author_only": ["T14-SKILL-FLUX-KNOWLEDGE", "T14-SKILL-FLUX-DEBUG", "T14-SKILL-HELM-CHART"],
+      "controlled_delta_note": "Positive 只增加定位冻结 GitOps 仓库审计技术流程的缺口，并要求先搜索再按返回标识打开；Negative 仅补齐同一审计流程所需的具体操作步骤，共享历史与 query 完全相同。",
+      "source_fact_map": [
+        {"claim": "审计流程先做资源库存、目录模式、集群配置和旧式同步文件发现，再按请求范围调整深度。", "source_id": "T14-SRC-FLUX-AUDIT", "locator": "Analysis Workflow, Phase 1 Discovery"},
+        {"claim": "清单验证使用唯一临时 bundle，支持 Kustomize 渲染、排除目录和 dotenv 变量替换；skipped 的加密 Secret 或无 schema 第三方 CRD 属于预期。", "source_id": "T14-SRC-FLUX-AUDIT", "locator": "Analysis Workflow, Phase 2 Manifest Validation; Edge Cases"},
+        {"claim": "审计还要检查弃用 API、适用的最佳实践和字段索引，并覆盖 Secret、RBAC、多租户、跨命名空间引用、OCI 与镜像自动化等安全项，最后生成分区和分级报告。", "source_id": "T14-SRC-FLUX-AUDIT", "locator": "Analysis Workflow, Phases 3–6; Flux CRD Reference"}
+      ],
+      "sol_review_questions": [
+        "Positive 的检索线索是否足以命中仓库审计条目，同时没有在 provider-visible 文本中暴露正式 Skill 名称、工具名或资产标识？",
+        "Negative 是否只补足了本地发现、校验、API、最佳实践、安全和报告这一唯一信息缺口？",
+        "是否接受以 Flux GitOps、Kubernetes 清单、Kustomize overlay、弃用 API 和多租户安全作为宿主可见的领域线索？"
+      ]
+    }
+  ]
+}

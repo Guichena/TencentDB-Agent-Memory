@@ -1,0 +1,159 @@
+{
+  "schema_version": "task1.luna_natural_negative_draft.v1",
+  "batch_id": "build-07-T14-natural-negative-01",
+  "stage": "DS05",
+  "team_id": "T14",
+  "family": "natural-negative",
+  "cases": [
+    {
+      "draft_case_id": "T14-NNEG-001",
+      "external_source_ids": [],
+      "language": "zh-CN",
+      "context_messages": [
+        {"role": "user", "content": "Borealis Platform 的 ledger-api 运行在 platform 命名空间，需要把生产 Deployment 的跨可用区调度和滚动更新护栏补齐。"},
+        {"role": "assistant", "content": "当前 Deployment 是 apps/v1、名称 ledger-api、replicas 为 6，Pod 标签为 app.kubernetes.io/name=ledger-api 和 app.kubernetes.io/instance=production；容器镜像为 registry.example.invalid/platform/ledger-api:2.4.1，容器端口 8080，现有 RollingUpdate 为 maxUnavailable=1、maxSurge=1。"},
+        {"role": "user", "content": "请直接给出需要提交的 Deployment 和 PodDisruptionBudget YAML：更新时不可减少可用副本，最多额外创建 2 个 Pod；6 个副本必须均衡到 topology.kubernetes.io/zone，maxSkew=1 且无法满足时禁止调度；PDB 使用 minAvailable=5；readinessProbe 用 HTTP GET /ready、端口 8080、initialDelaySeconds=5、periodSeconds=10，并保留现有名称、命名空间、镜像和标签。"}
+      ],
+      "query": "请输出可直接提交的完整 YAML，并简要说明这些字段如何满足发布期间的可用性约束。",
+      "why_current_context_is_sufficient": "上下文已经给出资源名称、命名空间、镜像、标签、副本数、滚动更新目标、拓扑键、PDB 数值和探针参数，编码所需信息完整，无需再查找项目资料。",
+      "visible_distractor_ids_author_only": [],
+      "source_fact_map": [],
+      "sol_review_questions": ["是否同时输出 Deployment 与 PDB，并准确保留既有身份字段？", "是否设置 maxUnavailable=0、maxSurge=2、zone 拓扑约束、minAvailable=5 和指定 readinessProbe？"]
+    },
+    {
+      "draft_case_id": "T14-NNEG-002",
+      "external_source_ids": [],
+      "language": "zh-CN",
+      "context_messages": [
+        {"role": "user", "content": "Borealis Platform 的 invoice-api chart 要让 Service 端口可以按环境配置，同时保证模板名称和 selector 在 release 重命名后仍稳定。"},
+        {"role": "assistant", "content": "当前 values.yaml 只有 service: {port: 8080, targetPort: 8080}；Chart.yaml 的 name 是 invoice-api。templates/_helpers.tpl 已有空的 invoice-api.fullname 定义，Deployment 使用 app.kubernetes.io/name 和 app.kubernetes.io/instance 两个标签。"},
+        {"role": "user", "content": "请给出 values.yaml、values.schema.json、templates/_helpers.tpl 和 templates/service.yaml 的修改内容。fullname 规则是 release 名加 chart 名，超过 63 个字符截断并去掉末尾连字符；Service 类型固定 ClusterIP，port 必须来自 .Values.service.port，targetPort 来自 .Values.service.targetPort；selector 必须使用与 Deployment 相同的 name/instance 标签；schema 要求两个端口均为 1 到 65535 的整数。"}
+      ],
+      "query": "请输出这四个文件的最小完整片段，并指出模板中哪些字段来自 values。",
+      "why_current_context_is_sufficient": "已有上下文明确了 chart 名、现有 values、helper 规则、Service 类型、端口来源、标签契约和 schema 范围，足以独立编写并检查这组 Helm 文件。",
+      "visible_distractor_ids_author_only": [],
+      "source_fact_map": [],
+      "sol_review_questions": ["fullname 是否实现 63 字符截断且去除尾部连字符？", "Service 的端口和 selector 是否严格遵守给定 values 与 Deployment 标签契约？", "schema 是否限制两个端口为整数 1-65535？"]
+    },
+    {
+      "draft_case_id": "T14-NNEG-003",
+      "external_source_ids": [],
+      "language": "zh-CN",
+      "context_messages": [
+        {"role": "user", "content": "Meridian Fleet 的 payments 生产集群使用 Flux 管理应用，当前 Kustomization 没有等待 CRD 就绪，健康状态也无法阻止后续发布。"},
+        {"role": "assistant", "content": "仓库中已有 GitRepository platform-config（source.toolkit.fluxcd.io/v1，ref 为 main，url 为 https://git.example.invalid/meridian/platform-config.git）和 Kustomization payments-crds，后者 path 是 ./clusters/prod/payments/crds、interval 是 5m、prune=true。"},
+        {"role": "user", "content": "请改写 payments Kustomization。它必须使用 kustomize.toolkit.fluxcd.io/v1、名称 payments-prod、同一 namespace gitops，引用 platform-config；path 为 ./clusters/prod/payments，interval=5m、retryInterval=1m、timeout=3m、prune=true、wait=true，并 dependsOn payments-crds。健康检查只允许 apps/v1 Deployment/payments-api 和 v1 Service/payments-api，targetNamespace=payments。"}
+      ],
+      "query": "请输出完整的 payments-prod Kustomization YAML，并说明依赖、等待和健康检查的执行顺序。",
+      "why_current_context_is_sufficient": "上下文已经提供了 Flux 资源版本、名称、命名空间、源引用、路径、所有时间参数、prune/wait、依赖、目标命名空间及两个健康检查对象，能够直接完成 YAML。",
+      "visible_distractor_ids_author_only": [],
+      "source_fact_map": [],
+      "sol_review_questions": ["是否正确引用 platform-config 并声明 dependsOn payments-crds？", "是否包含 wait、timeout、retryInterval、targetNamespace 与恰好两个 healthChecks？"]
+    },
+    {
+      "draft_case_id": "T14-NNEG-004",
+      "external_source_ids": [],
+      "language": "zh-CN",
+      "context_messages": [
+        {"role": "user", "content": "Meridian Fleet 的 edge-prod 清单由 GitOps 应用，但 edge-runtime ConfigMap 已由现场控制器预创建并完整维护，Flux 不应对这个对象执行 SSA。"},
+        {"role": "assistant", "content": "当前 Kustomization 为 kustomize.toolkit.fluxcd.io/v1、名称 edge-prod、namespace gitops，sourceRef 指向 GitRepository platform-config，path 是 ./clusters/prod/edge，interval=10m、prune=true、wait=true。edge-runtime 是 edge 命名空间中 app=edge 的 ConfigMap；现场控制器拥有整项资源，Git 仓库只保留该对象的清单占位和审阅线索，其他清单资源仍按正常方式协调。"},
+        {"role": "user", "content": "请在不改变源、路径、周期、prune 和 wait 的前提下，给出 Kustomization 的 patches 配置，使 edge-runtime 添加 kustomize.toolkit.fluxcd.io/ssa: Ignore 注解；只针对 edge 命名空间中名字完全匹配的 ConfigMap，不要给其他资源添加该注解。"}
+      ],
+      "query": "请输出需要加入 spec.patches 的 YAML，并说明为什么 Flux 会对这个精确 ConfigMap 完全跳过 SSA 而不影响其他资源。",
+      "why_current_context_is_sufficient": "当前消息给出了 Kustomization 的身份和不变字段、现场预创建且完整维护的目标 ConfigMap、仓库占位边界、kind/name/namespace 匹配范围及唯一要添加的 SSA 注解，补丁写法已经确定。",
+      "visible_distractor_ids_author_only": [],
+      "source_fact_map": [],
+      "sol_review_questions": ["patch target 是否同时限制 kind、name 和 namespace？", "是否明确 ssa=Ignore 是对该整项资源跳过 SSA，而不是只忽略某个字段，并且不改动源、路径及协调设置？"]
+    },
+    {
+      "draft_case_id": "T14-NNEG-005",
+      "external_source_ids": [],
+      "language": "zh-CN",
+      "context_messages": [
+        {"role": "user", "content": "Forge Build 要把一个 buildah 构建任务接入 Tekton：构建步骤产生镜像摘要，随后签名任务必须消费这个结果。"},
+        {"role": "assistant", "content": "现有 build-image Task 使用 tekton.dev/v1、workspace source，参数 IMAGE，唯一 step 用 quay.io/buildah/stable:v1.35 执行 buildah bud -t $(params.IMAGE) . 和 buildah push --digestfile /tekton/results/IMAGE_DIGEST $(params.IMAGE)，但 Task 没有声明结果。sign-image Task 接受参数 IMAGE_DIGEST 并运行 cosign sign --yes $(params.IMAGE_DIGEST)。"},
+        {"role": "user", "content": "请输出完整 Pipeline YAML：名称 image-delivery、namespace forge，声明 IMAGE 字符串参数默认 registry.example.invalid/forge/ledger:1.7，声明 source workspace；build Task 使用同名参数和 workspace，sign Task 通过 $(tasks.build.results.IMAGE_DIGEST) 传给 IMAGE_DIGEST，并用 runAfter 确保构建成功后才签名。请补上 build-image 的 results 声明，结果名必须是 IMAGE_DIGEST，类型 string。"}
+      ],
+      "query": "请给出修正后的 build-image Task 结果声明和 image-delivery Pipeline，并指出结果值的传递位置。",
+      "why_current_context_is_sufficient": "上下文提供了 Tekton API 版本、两个任务的参数与工作区、结果文件路径、Pipeline 名称空间、默认镜像及任务依赖，已足以写出资源和结果传递。",
+      "visible_distractor_ids_author_only": [],
+      "source_fact_map": [],
+      "sol_review_questions": ["Task 是否声明 string 类型的 IMAGE_DIGEST 并与结果文件路径一致？", "Pipeline 是否按 build 后 sign 的顺序传递 $(tasks.build.results.IMAGE_DIGEST)？"]
+    },
+    {
+      "draft_case_id": "T14-NNEG-006",
+      "external_source_ids": [],
+      "language": "zh-CN",
+      "context_messages": [
+        {"role": "user", "content": "Forge Build 的 falcon 服务需要一个可复现、无 shell 运行时和非 root 用户的 Go 容器镜像。"},
+        {"role": "assistant", "content": "仓库根目录有 go.mod（module example.com/falcon，go 1.22）和 go.sum，入口为 cmd/falcon/main.go；服务监听 8080。构建环境可以访问 Go module proxy，最终镜像只需携带静态二进制。"},
+        {"role": "user", "content": "请写完整 Dockerfile。构建阶段必须使用 golang:1.22.6-alpine3.20，设置 CGO_ENABLED=0、GOOS=linux、GOARCH=amd64，并执行 go build -trimpath -ldflags='-s -w' -o /out/falcon ./cmd/falcon；运行阶段使用 gcr.io/distroless/static-debian12:nonroot，只复制 /out/falcon，声明 EXPOSE 8080，入口为 /falcon，不能出现 apt/apk、latest 或 root 用户。"}
+      ],
+      "query": "请输出满足这些约束的完整 Dockerfile，并说明多阶段构建如何避免把编译工具带入运行镜像。",
+      "why_current_context_is_sufficient": "上下文包含模块路径、入口目录、Go 版本、构建参数、两个固定基础镜像、输出路径、端口和运行时安全限制，Dockerfile 不依赖外部项目知识即可完成。",
+      "visible_distractor_ids_author_only": [],
+      "source_fact_map": [],
+      "sol_review_questions": ["是否正确设置 CGO_ENABLED、GOOS、GOARCH、trimpath 和 ldflags？", "运行阶段是否只复制二进制并使用 distroless nonroot、8080 和非 root 入口？"]
+    },
+    {
+      "draft_case_id": "T14-NNEG-007",
+      "external_source_ids": [],
+      "language": "zh-CN",
+      "context_messages": [
+        {"role": "user", "content": "Aurora Release 要给 payments 做 NGINX 流量渐进发布，累计失败检查达到阈值时回退，且分析指标必须能反映成功率和尾延迟。"},
+        {"role": "assistant", "content": "集群中已有 apps/v1 Deployment payments，容器端口 8080；稳定 Service payments-stable 和金丝雀 Service payments-canary 均监听 80 并转发 8080。Prometheus 地址为 http://prometheus.monitoring:9090，指标查询可使用 Flagger 的 request-success-rate 和 request-duration 模板。"},
+        {"role": "user", "content": "请写完整 Flagger Canary YAML，名称 payments、namespace production，targetRef 指向 Deployment/payments，service.port=80、portName=http、provider=nginx；analysis interval=1m、threshold=5、stepWeight=10、maxWeight=50。request-success-rate 的 min=99，request-duration 的 p99 max=500；累计失败检查达到 5 次才回滚，成功时按 10% 步进增加权重，达到 50% 后晋级。"}
+      ],
+      "query": "请输出该 Canary 清单，并简述 10% 权重步进、累计失败达到 5 次时回滚以及达到 50% 后晋级的行为。",
+      "why_current_context_is_sufficient": "上下文已给出目标 Deployment、两个 Service、端口映射、流量提供方、分析周期、失败阈值、权重步进与上限，以及两条指标阈值，Canary 清单可以直接编写。",
+      "visible_distractor_ids_author_only": [],
+      "source_fact_map": [],
+      "sol_review_questions": ["Canary 是否正确配置 targetRef、NGINX 服务端口、10% 步进和 50% 权重上限？", "两条指标阈值、累计失败 5 次回滚和达到 50% 后晋级语义是否都被表达？"]
+    },
+    {
+      "draft_case_id": "T14-NNEG-008",
+      "external_source_ids": [],
+      "language": "zh-CN",
+      "context_messages": [
+        {"role": "user", "content": "Aurora Release 的 catalog-api 需要在高峰期滚动升级，既不能让可用副本低于 3，也不能因为 surge 超过节点预算。"},
+        {"role": "assistant", "content": "现有 Deployment 为 apps/v1、namespace production、name catalog-api、replicas=4；selector 和 Pod 标签均为 app=catalog-api。容器 image 为 registry.example.invalid/catalog-api:2026.08.30，containerPort=8080，readinessProbe 已存在且不能修改。"},
+        {"role": "user", "content": "请给出只修改 spec.strategy 和配套 PDB 的 YAML 片段。滚动更新必须 maxUnavailable=1、maxSurge=2；PDB 名称 catalog-api、namespace production、selector 仍匹配 app=catalog-api，minAvailable=3。不要改副本数、镜像、标签或探针。"}
+      ],
+      "query": "请输出可合并到现有资源的 strategy 与 PDB 片段，并验证最坏情况下的可用副本和额外 Pod 数量。",
+      "why_current_context_is_sufficient": "已有上下文明确了 Deployment 身份、标签契约、不可改字段、滚动更新两个数值和 PDB 的全部字段，计算和配置均可在当前信息内完成。",
+      "visible_distractor_ids_author_only": [],
+      "source_fact_map": [],
+      "sol_review_questions": ["strategy 是否只包含指定的 maxUnavailable=1 与 maxSurge=2？", "PDB selector、namespace 和 minAvailable 是否与现有 Deployment 完全匹配？"]
+    },
+    {
+      "draft_case_id": "T14-NNEG-009",
+      "external_source_ids": [],
+      "language": "zh-CN",
+      "context_messages": [
+        {"role": "user", "content": "Cedar Config 的 checkout Helm chart 通过 ConfigMap 和 Secret 注入运行参数，配置数据变化后必须触发 Deployment 滚动更新。"},
+        {"role": "assistant", "content": "templates/configmap.yaml 创建 checkout-config，templates/secret.yaml 创建 checkout-credentials；两者都使用模板的 fullname helper 和 .Release.Namespace。templates/deployment.yaml 的 Pod template 已有 annotations，且容器通过 envFrom 引用这两个资源，不能改成明文环境变量。"},
+        {"role": "user", "content": "请给出 deployment.yaml Pod template annotations 的 Helm 片段：分别对 configmap.yaml 和 secret.yaml 使用 sha256sum(include (print $.Template.BasePath ...) .)，键名为 checksum/config 和 checksum/secret；保留现有 Pod annotations，并确保 Secret 内容只进入哈希，不进入 labels、资源名或输出日志。"}
+      ],
+      "query": "请输出可直接放入 spec.template.metadata.annotations 的片段，并解释两个哈希何时会改变。",
+      "why_current_context_is_sufficient": "上下文已经指定两个模板文件、fullname/namespace 约定、envFrom 关系、哈希函数、准确键名和保留/保密要求，所需 Helm 表达式不需要外部信息。",
+      "visible_distractor_ids_author_only": [],
+      "source_fact_map": [],
+      "sol_review_questions": ["是否分别哈希 ConfigMap 和 Secret 模板，并使用 checksum/config 与 checksum/secret？", "是否保留已有 annotations 且没有把 Secret 明文放入 labels 或其他输出？"]
+    },
+    {
+      "draft_case_id": "T14-NNEG-010",
+      "external_source_ids": [],
+      "language": "zh-CN",
+      "context_messages": [
+        {"role": "user", "content": "Cedar Config 的 reporter 工作负载只应在指定配置资源的数据变化时重启，不能因为同命名空间的其他 ConfigMap 或 Secret 变化而滚动。"},
+        {"role": "assistant", "content": "Deployment reporter 位于 namespace observability，Pod 标签 app=reporter；它通过 envFrom 使用 ConfigMap reporter-settings 和 Secret reporter-token。重载控制器已在 observability 命名空间运行，默认不会自动监视所有资源。"},
+        {"role": "user", "content": "请给出应加到 reporter Deployment 的 metadata.annotations。ConfigMap 只监听 reporter-settings，使用键 configmap.reloader.stakater.com/reload；Secret 只监听 reporter-token，使用键 secret.reloader.stakater.com/reload。两个值均为单元素资源名字符串；不要添加全局自动监视注解，也不要改动容器或资源标签。"}
+      ],
+      "query": "请输出 reporter Deployment metadata.annotations 的 YAML 片段，并说明为什么其他配置资源变化不会触发 reporter 重启。",
+      "why_current_context_is_sufficient": "当前上下文已明确 Deployment 位置、两个资源名称、两个注解键、值格式及禁止项，能够直接生成最小配置并解释其精确监听范围。",
+      "visible_distractor_ids_author_only": [],
+      "source_fact_map": [],
+      "sol_review_questions": ["两个 named-resource 注解是否放在 Deployment workload 的 metadata.annotations，并分别只列出一个准确资源名？", "是否避免全局自动监视和对容器/标签的无关改动？"]
+    }
+  ]
+}
