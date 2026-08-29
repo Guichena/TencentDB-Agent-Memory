@@ -3,8 +3,15 @@ import { describe, expect, it } from "vitest";
 import interfaceManifest from "../../eval/tool-prompt-bench/measurement-v2/M1-SCHEMA-INTERFACE-MANIFEST.json";
 import syntheticFixture from "../../eval/tool-prompt-bench/measurement-v2/fixtures/m1-pair-v2.synthetic.json";
 import {
+  canonicalJsonV2,
+  sha256CanonicalJsonV2,
+} from "../../eval/tool-prompt-bench/measurement-v2/canonical-json.js";
+import {
   buildFrozenPairIdentityManifestV2,
+  buildFrozenPairSlotManifestV2,
+  computeFrozenPairSlotManifestSha256V2,
   computePairContractCanonicalSha256V2,
+  validateFrozenPairSlotManifestV2,
   validateFrozenPairIdentityManifestV2,
   validatePairContractV2,
   type PairCaseProjectionV2,
@@ -58,6 +65,19 @@ const CONTRACT: PairContractV2 = {
   split: "dev",
 };
 
+function evidenceForPair(
+  pairId: string,
+  repeatId: string,
+  side: "positive" | "negative",
+) {
+  const rawEvidenceArtifactRef = `artifact://${pairId}/${side}/${repeatId}`;
+  return {
+    rawEvidenceArtifactRef,
+    rawEvidenceArtifactSha256: createHash("sha256").update(rawEvidenceArtifactRef).digest("hex"),
+    runId: `${pairId}:${side}:${repeatId}:run`,
+  };
+}
+
 const POSITIVE_OUTCOME: IntegratedCaseOutcomeForPairV2 = {
   caseId: POSITIVE_CASE.caseId,
   repeatId: "repeat-01",
@@ -69,7 +89,7 @@ const POSITIVE_OUTCOME: IntegratedCaseOutcomeForPairV2 = {
   adapterVersion: "memory-proxy-openai-v1",
   executionIdentitySha256: "e".repeat(64),
   assetSnapshotSha256: "a".repeat(64),
-  runId: "positive-run-01",
+  ...evidenceForPair(CONTRACT.pairId, "repeat-01", "positive"),
   sessionId: "positive-session-01",
   localStateId: "positive-state-01",
   integrationEligible: true,
@@ -91,7 +111,7 @@ const NEGATIVE_OUTCOME: IntegratedCaseOutcomeForPairV2 = {
   adapterVersion: "memory-proxy-openai-v1",
   executionIdentitySha256: "e".repeat(64),
   assetSnapshotSha256: "a".repeat(64),
-  runId: "negative-run-01",
+  ...evidenceForPair(CONTRACT.pairId, "repeat-01", "negative"),
   sessionId: "negative-session-01",
   localStateId: "negative-state-01",
   integrationEligible: true,
@@ -100,6 +120,17 @@ const NEGATIVE_OUTCOME: IntegratedCaseOutcomeForPairV2 = {
   executorBoundAttempt: false,
   malformedTdaiDispatchIntent: false,
 };
+
+function withPairEvidence(
+  outcome: IntegratedCaseOutcomeForPairV2,
+  pairId: string,
+  side: "positive" | "negative",
+): IntegratedCaseOutcomeForPairV2 {
+  return {
+    ...outcome,
+    ...evidenceForPair(pairId, outcome.repeatId, side),
+  };
+}
 
 function validatedContract(
   contract: PairContractV2 = CONTRACT,
@@ -115,7 +146,21 @@ function summaryCampaign(
   expectedPairIds: readonly string[] = [CONTRACT.pairId],
   expectedRepeatIds: readonly string[] = [POSITIVE_OUTCOME.repeatId],
   strictPairExactEnabled = false,
+  validatedPairs = expectedPairIds.map((pairId) => validatedContract({ ...CONTRACT, pairId })),
 ): PairSummaryCampaignV2 {
+  const frozenPairSetRevision = "synthetic-pair-set-v2";
+  const frozenPairSetSha256 = "d".repeat(64);
+  const frozenPairSlotManifest = buildFrozenPairSlotManifestV2(
+    validatedPairs.map((validatedPair) => ({
+      validatedPair,
+      repeats: expectedRepeatIds.map((repeatId) => ({
+        repeatId,
+        positive: evidenceForPair(validatedPair.contract.pairId, repeatId, "positive"),
+        negative: evidenceForPair(validatedPair.contract.pairId, repeatId, "negative"),
+      })),
+    })),
+    { revision: frozenPairSetRevision, sha256: frozenPairSetSha256 },
+  );
   const campaign = {
     schemaVersion: "pair-summary-campaign-v2" as const,
     split: CONTRACT.split,
@@ -129,11 +174,10 @@ function summaryCampaign(
     assetSnapshotSha256: POSITIVE_OUTCOME.assetSnapshotSha256,
     expectedPairIds,
     expectedRepeatIds,
-    frozenPairSetRevision: "synthetic-pair-set-v2",
-    frozenPairSetSha256: "d".repeat(64),
-    frozenPairIdentityManifest: buildFrozenPairIdentityManifestV2(
-      expectedPairIds.map((pairId) => validatedContract({ ...CONTRACT, pairId })),
-    ),
+    frozenPairSetRevision,
+    frozenPairSetSha256,
+    frozenPairSlotManifest,
+    frozenPairSlotEvidenceRootSha256: frozenPairSlotManifest.canonicalSha256,
     strictPairExactEnabled,
     scoringPolicySha256: computePairScoringPolicySha256V2(strictPairExactEnabled),
   };
@@ -156,6 +200,69 @@ function canonicalJson(value: unknown): string {
 function clonePairScore(score: PairScoreV2): PairScoreV2 {
   return JSON.parse(JSON.stringify(score)) as PairScoreV2;
 }
+
+describe("Canonical JSON v2", () => {
+  it("accepts finite JSON scalars, dense arrays, and both plain-record prototypes", () => {
+    const nullPrototypeRecord = Object.create(null) as Record<string, unknown>;
+    Object.defineProperty(nullPrototypeRecord, "value", {
+      enumerable: true,
+      value: [null, true, 1, "text"],
+    });
+
+    expect(canonicalJsonV2({ nullPrototypeRecord })).toBe(
+      "{\"nullPrototypeRecord\":{\"value\":[null,true,1,\"text\"]}}",
+    );
+  });
+
+  const invalidValues: ReadonlyArray<readonly [string, () => unknown]> = [
+    ["sparse array", () => Array(1)],
+    ["decorated array", () => Object.assign([], { extra: true })],
+    ["non-plain array prototype", () => Object.setPrototypeOf([1], null)],
+    ["Date", () => new Date(0)],
+    ["Map", () => new Map([["key", "value"]])],
+    ["Set", () => new Set(["value"])],
+    ["class instance", () => new (class RuntimeRecord { readonly value = 1; })()],
+    ["accessor", () => Object.defineProperty({}, "value", { enumerable: true, get: () => 1 })],
+    ["symbol-keyed record", () => ({ [Symbol("value")]: 1 })],
+    ["undefined", () => undefined],
+    ["function", () => () => true],
+    ["symbol", () => Symbol("value")],
+    ["bigint", () => 1n],
+    ["NaN", () => Number.NaN],
+    ["positive infinity", () => Number.POSITIVE_INFINITY],
+    ["negative zero", () => -0],
+    ["cycle", () => {
+      const value: { self?: unknown } = {};
+      value.self = value;
+      return value;
+    }],
+  ];
+
+  it.each(invalidValues)("fails closed with a typed error for %s", (_label, makeValue) => {
+    let thrown: unknown;
+    try {
+      canonicalJsonV2(makeValue());
+    } catch (error) {
+      thrown = error;
+    }
+
+    expect(thrown).toMatchObject({
+      name: "CanonicalJsonValidationError",
+      code: "INVALID_CANONICAL_JSON_VALUE",
+    });
+  });
+
+  it("preserves own __proto__, constructor, and prototype keys without setter collisions", () => {
+    const reservedKeys = JSON.parse(
+      "{\"__proto__\":{\"x\":1},\"constructor\":\"ctor\",\"prototype\":\"proto\"}",
+    ) as Record<string, unknown>;
+
+    expect(canonicalJsonV2(reservedKeys)).toBe(
+      "{\"__proto__\":{\"x\":1},\"constructor\":\"ctor\",\"prototype\":\"proto\"}",
+    );
+    expect(sha256CanonicalJsonV2(reservedKeys)).not.toBe(sha256CanonicalJsonV2({}));
+  });
+});
 
 describe("Pair Contract v2", () => {
   it("accepts an approved minimal counterfactual pair with a frozen invariant hash", () => {
@@ -339,6 +446,42 @@ describe("Pair Contract v2", () => {
     if (!result.ok) expect(result.errors.map((error) => error.code)).toContain("INVALID_CONTRACT_SHAPE");
   });
 
+  it.each([
+    ["sparse array", () => Array(1)],
+    ["Date", () => new Date(0)],
+    ["Map", () => new Map([["key", "value"]])],
+    ["Set", () => new Set(["value"])],
+    ["class instance", () => new (class RuntimeDocument { readonly value = 1; })()],
+    ["accessor", () => Object.defineProperty({}, "value", {
+      enumerable: true,
+      get: () => { throw new Error("must not execute an untrusted getter"); },
+    })],
+  ] as const)("rejects a non-JSON %s comparison document without throwing", (_label, makeDocument) => {
+    let result: ReturnType<typeof validatePairContractV2> | undefined;
+    expect(() => {
+      result = validatePairContractV2(
+        CONTRACT,
+        { ...POSITIVE_CASE, comparisonDocument: makeDocument() } as unknown as PairCaseProjectionV2,
+        NEGATIVE_CASE,
+      );
+    }).not.toThrow();
+
+    expect(result?.ok).toBe(false);
+    if (result && !result.ok) {
+      expect(result.errors.map((error) => error.code)).toContain("INVALID_RUNTIME_JSON");
+    }
+  });
+
+  it.each([
+    ["Pair Contract", { ...CONTRACT, unexpected: "field" }, POSITIVE_CASE],
+    ["pair case", CONTRACT, { ...POSITIVE_CASE, unexpected: "field" }],
+  ] as const)("rejects unknown fields in the %s runtime shape", (_label, contract, positiveCase) => {
+    const result = validatePairContractV2(contract, positiveCase, NEGATIVE_CASE);
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.map((error) => error.code)).toContain("UNKNOWN_RUNTIME_FIELD");
+  });
+
   it("freezes canonical pair identity records from validated Pair Contract v2 inputs", () => {
     const validated = validatedContract();
     const pairContractSha256 = createHash("sha256")
@@ -384,6 +527,36 @@ describe("Pair Contract v2", () => {
         );
       }
     }
+  });
+
+  it("retains an own __proto__ field in the invariant projection hash", () => {
+    const positiveDocument = JSON.parse(
+      "{\"__proto__\":{\"frozen\":true},\"query\":\"positive\"}",
+    ) as PairCaseProjectionV2["comparisonDocument"];
+    const negativeDocument = JSON.parse(
+      "{\"__proto__\":{\"frozen\":true},\"query\":\"negative\"}",
+    ) as PairCaseProjectionV2["comparisonDocument"];
+    const maskedDocument = JSON.parse(
+      "{\"__proto__\":{\"frozen\":true},\"query\":\"__PAIR_ALLOWED_DELTA__\"}",
+    );
+    const invariantFieldsSha256 = createHash("sha256")
+      .update(canonicalJson({
+        invariantFields: maskedDocument,
+        invariantProjectionSchemaVersion: "pair-invariant-projection-v2",
+      }))
+      .digest("hex");
+    const contract = {
+      ...CONTRACT,
+      allowedChangedPointers: ["/query"],
+      changedPointerCount: 1,
+      invariantFieldsSha256,
+    };
+
+    expect(validatePairContractV2(
+      contract,
+      { ...POSITIVE_CASE, comparisonDocument: positiveDocument },
+      { ...NEGATIVE_CASE, comparisonDocument: negativeDocument },
+    )).toMatchObject({ ok: true });
   });
 });
 
@@ -892,20 +1065,24 @@ describe("Pair score summary v2", () => {
     const failed = scorePairV2(
         validatedContract({ ...CONTRACT, pairId: "pair-skill-boundary-002" }),
         {
-          positive: [{
+          positive: [withPairEvidence({
             ...POSITIVE_OUTCOME,
             completeChainSuccess: false,
             strictChainExact: false,
             failureLayer: "terminal_selection",
-          }],
-          negative: [NEGATIVE_OUTCOME],
+          }, "pair-skill-boundary-002", "positive")],
+          negative: [withPairEvidence(NEGATIVE_OUTCOME, "pair-skill-boundary-002", "negative")],
         },
       );
     const incomplete = scorePairV2(
         validatedContract({ ...CONTRACT, pairId: "pair-skill-boundary-003" }),
         {
-          positive: [POSITIVE_OUTCOME],
-          negative: [{ ...NEGATIVE_OUTCOME, traceComplete: false }],
+          positive: [withPairEvidence(POSITIVE_OUTCOME, "pair-skill-boundary-003", "positive")],
+          negative: [withPairEvidence(
+            { ...NEGATIVE_OUTCOME, traceComplete: false },
+            "pair-skill-boundary-003",
+            "negative",
+          )],
         },
       );
 
@@ -931,7 +1108,7 @@ describe("Pair score summary v2", () => {
       },
       frozenPairSetSha256: campaign.frozenPairSetSha256,
       frozenPairSetRevision: campaign.frozenPairSetRevision,
-      frozenPairIdentityManifestSha256: campaign.frozenPairIdentityManifest.canonicalSha256,
+      frozenPairSlotEvidenceRootSha256: campaign.frozenPairSlotManifest.canonicalSha256,
       expectedPairIdsSha256: campaign.expectedPairIdsSha256,
       expectedPairIds: campaign.expectedPairIds,
       observedPairIds: campaign.expectedPairIds,
@@ -1018,6 +1195,36 @@ describe("Pair score summary v2", () => {
     });
   });
 
+  it("fails closed without executing an accessor on a serialized score row", () => {
+    let accessorReads = 0;
+    const malformedRow = Object.defineProperty({}, "pairId", {
+      enumerable: true,
+      get: () => {
+        accessorReads += 1;
+        throw new Error("untrusted score accessor must not execute");
+      },
+    });
+
+    let summary: ReturnType<typeof summarizePairScoresV2> | undefined;
+    expect(() => {
+      summary = summarizePairScoresV2(
+        [malformedRow as unknown as PairScoreV2],
+        { campaign: summaryCampaign() },
+      );
+    }).not.toThrow();
+    expect(accessorReads).toBe(0);
+    expect(summary).toMatchObject({
+      campaignEligibility: "incomplete",
+      jFrozen: 1,
+      jObserved: 0,
+      jIncomplete: 1,
+      incompleteReasonCounts: {
+        MALFORMED_PAIR_SCORE_ROW: 1,
+        MISSING_FROZEN_PAIR: 1,
+      },
+    });
+  });
+
   it("reports cluster bootstrap readiness only with at least two independent blocks", () => {
     const exact = scorePairV2(
       validatedContract(),
@@ -1030,15 +1237,20 @@ describe("Pair score summary v2", () => {
     };
     const otherCluster = scorePairV2(
       validatedContract(otherClusterContract),
-      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+      {
+        positive: [withPairEvidence(POSITIVE_OUTCOME, otherClusterContract.pairId, "positive")],
+        negative: [withPairEvidence(NEGATIVE_OUTCOME, otherClusterContract.pairId, "negative")],
+      },
     );
-    const campaign = {
-      ...summaryCampaign([CONTRACT.pairId, otherClusterContract.pairId]),
-      frozenPairIdentityManifest: buildFrozenPairIdentityManifestV2([
+    const campaign = summaryCampaign(
+      [CONTRACT.pairId, otherClusterContract.pairId],
+      [POSITIVE_OUTCOME.repeatId],
+      false,
+      [
         validatedContract(),
         validatedContract(otherClusterContract),
-      ]),
-    };
+      ],
+    );
 
     const summary = summarizePairScoresV2(
       [exact, otherCluster],
@@ -1060,8 +1272,12 @@ describe("Pair score summary v2", () => {
     const strictFail = scorePairV2(
         validatedContract({ ...CONTRACT, pairId: "pair-skill-boundary-005" }),
         {
-          positive: [{ ...POSITIVE_OUTCOME, strictChainExact: false }],
-          negative: [NEGATIVE_OUTCOME],
+          positive: [withPairEvidence(
+            { ...POSITIVE_OUTCOME, strictChainExact: false },
+            "pair-skill-boundary-005",
+            "positive",
+          )],
+          negative: [withPairEvidence(NEGATIVE_OUTCOME, "pair-skill-boundary-005", "negative")],
         },
         { includeStrictPairExact: true },
       );
@@ -1085,12 +1301,12 @@ describe("Pair score summary v2", () => {
       validatedContract({ ...CONTRACT, pairId: otherPairId }),
       {
         positive: v3Dev.repeatInputs.positive.map((outcome) => ({
-          ...outcome,
+          ...withPairEvidence(outcome, otherPairId, "positive"),
           variantId: "V2",
           model: "another-model",
         })),
         negative: v3Dev.repeatInputs.negative.map((outcome) => ({
-          ...outcome,
+          ...withPairEvidence(outcome, otherPairId, "negative"),
           variantId: "V2",
           model: "another-model",
         })),
@@ -1205,7 +1421,7 @@ describe("Pair score summary v2", () => {
     });
   });
 
-  it("uses the frozen pair identity manifest instead of trusting a relabelled serialized score", () => {
+  it("uses the frozen pair slot instead of trusting a relabelled serialized score", () => {
     const exact = scorePairV2(
       validatedContract(),
       { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
@@ -1231,27 +1447,224 @@ describe("Pair score summary v2", () => {
     };
     repeatInputs.positive[0].caseId = "forged-positive";
     repeatInputs.negative[0].caseId = "forged-negative";
-    const campaign = {
-      ...summaryCampaign([CONTRACT.pairId, trustedContract.pairId]),
-      frozenPairIdentityManifest: buildFrozenPairIdentityManifestV2([
+    const campaign = summaryCampaign(
+      [CONTRACT.pairId, trustedContract.pairId],
+      [POSITIVE_OUTCOME.repeatId],
+      false,
+      [
         validatedContract(),
         trustedB,
-      ]),
-    };
+      ],
+    );
 
     expect(summarizePairScoresV2(
       [exact, forged as unknown as PairScoreV2],
       { campaign },
     )).toMatchObject({
       campaignEligibility: "incomplete",
-      campaignIncompleteReasons: ["PAIR_SCORE_INCONSISTENT"],
+      campaignIncompleteReasons: ["PAIR_SCORE_IDENTITY_BINDING_MISMATCH"],
       jFrozen: 2,
       jEligible: 1,
       jIncomplete: 1,
       pairExact: { numerator: 1, denominator: 1, value: 1 },
       incompletePairIds: [trustedContract.pairId],
-      incompleteReasonCounts: { PAIR_SCORE_INCONSISTENT: 1 },
+      incompleteReasonCounts: { PAIR_SCORE_IDENTITY_BINDING_MISMATCH: 1 },
     });
+  });
+
+  it("rejects a fully relabelled A score that retains A's raw evidence reference", () => {
+    const trustedPositiveCase = { ...POSITIVE_CASE, caseId: "trusted-b-positive" };
+    const trustedNegativeCase = { ...NEGATIVE_CASE, caseId: "trusted-b-negative" };
+    const trustedContract = {
+      ...CONTRACT,
+      pairId: "pair-skill-boundary-evidence-b",
+      positiveCaseId: trustedPositiveCase.caseId,
+      negativeCaseId: trustedNegativeCase.caseId,
+      independenceKey: "trusted-b-cluster",
+    };
+    const trustedB = validatedContract(trustedContract, trustedPositiveCase, trustedNegativeCase);
+    const relabelled = scorePairV2(
+      trustedB,
+      {
+        positive: [{
+          ...POSITIVE_OUTCOME,
+          caseId: trustedPositiveCase.caseId,
+          rawEvidenceArtifactRef: "artifact://pair-a/positive/repeat-01",
+          rawEvidenceArtifactSha256: "1".repeat(64),
+        } as IntegratedCaseOutcomeForPairV2],
+        negative: [{
+          ...NEGATIVE_OUTCOME,
+          caseId: trustedNegativeCase.caseId,
+          rawEvidenceArtifactRef: "artifact://pair-a/negative/repeat-01",
+          rawEvidenceArtifactSha256: "2".repeat(64),
+        } as IntegratedCaseOutcomeForPairV2],
+      },
+    );
+    const campaign = summaryCampaign(
+      [trustedContract.pairId],
+      [POSITIVE_OUTCOME.repeatId],
+      false,
+      [trustedB],
+    );
+    const summary = summarizePairScoresV2(
+      [relabelled],
+      { campaign },
+    );
+
+    expect(summary).toMatchObject({
+      campaignEligibility: "incomplete",
+      campaignIncompleteReasons: ["PAIR_SCORE_IDENTITY_BINDING_MISMATCH"],
+      jFrozen: 1,
+      jEligible: 0,
+      jIncomplete: 1,
+      incompletePairIds: [trustedContract.pairId],
+      incompleteReasonCounts: { PAIR_SCORE_IDENTITY_BINDING_MISMATCH: 1 },
+    });
+  });
+
+  it("keeps J_frozen fixed when two pair rows reuse A's evidence and run references", () => {
+    const pairBId = "pair-skill-boundary-evidence-reuse-b";
+    const scoreA = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const scoreBWithReusedEvidence = scorePairV2(
+      validatedContract({ ...CONTRACT, pairId: pairBId }),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const summary = summarizePairScoresV2(
+      [scoreA, scoreBWithReusedEvidence],
+      { campaign: summaryCampaign([CONTRACT.pairId, pairBId]) },
+    );
+
+    expect(summary).toMatchObject({
+      campaignEligibility: "incomplete",
+      campaignIncompleteReasons: ["PAIR_SCORE_IDENTITY_BINDING_MISMATCH"],
+      jFrozen: 2,
+      jObserved: 2,
+      jEligible: 1,
+      jIncomplete: 1,
+      incompletePairIds: [pairBId],
+      incompleteReasonCounts: { PAIR_SCORE_IDENTITY_BINDING_MISMATCH: 1 },
+    });
+  });
+
+  it("keeps independently bound A and B evidence eligible as the control", () => {
+    const pairBId = "pair-skill-boundary-evidence-control-b";
+    const scoreA = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const scoreB = scorePairV2(
+      validatedContract({ ...CONTRACT, pairId: pairBId }),
+      {
+        positive: [withPairEvidence(POSITIVE_OUTCOME, pairBId, "positive")],
+        negative: [withPairEvidence(NEGATIVE_OUTCOME, pairBId, "negative")],
+      },
+    );
+    const summary = summarizePairScoresV2(
+      [scoreA, scoreB],
+      { campaign: summaryCampaign([CONTRACT.pairId, pairBId]) },
+    );
+
+    expect(summary).toMatchObject({
+      campaignEligibility: "eligible",
+      jFrozen: 2,
+      jEligible: 2,
+      jIncomplete: 0,
+      pairExact: { numerator: 2, denominator: 2, value: 1 },
+    });
+  });
+
+  it("binds rows by trusted slot order instead of looking up slots from score pairId", () => {
+    const pairBId = "pair-skill-boundary-positional-b";
+    const scoreA = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const scoreB = scorePairV2(
+      validatedContract({ ...CONTRACT, pairId: pairBId }),
+      {
+        positive: [withPairEvidence(POSITIVE_OUTCOME, pairBId, "positive")],
+        negative: [withPairEvidence(NEGATIVE_OUTCOME, pairBId, "negative")],
+      },
+    );
+    const summary = summarizePairScoresV2(
+      [scoreB, scoreA],
+      { campaign: summaryCampaign([CONTRACT.pairId, pairBId]) },
+    );
+
+    expect(summary).toMatchObject({
+      campaignEligibility: "incomplete",
+      campaignIncompleteReasons: ["PAIR_SCORE_IDENTITY_BINDING_MISMATCH"],
+      jFrozen: 2,
+      jObserved: 2,
+      jEligible: 0,
+      jIncomplete: 2,
+      incompleteReasonCounts: { PAIR_SCORE_IDENTITY_BINDING_MISMATCH: 2 },
+    });
+  });
+
+  it("hard-fails a coordinated slot-manifest hash whose trusted frozen root no longer matches", () => {
+    const exact = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const campaign = summaryCampaign();
+    const { canonicalSha256: _oldSha, ...oldBody } = campaign.frozenPairSlotManifest;
+    const tamperedBody = { ...oldBody, frozenPairSetSha256: "f".repeat(64) };
+    const tamperedManifest = {
+      ...tamperedBody,
+      canonicalSha256: computeFrozenPairSlotManifestSha256V2(tamperedBody),
+    };
+
+    expect(() => summarizePairScoresV2([exact], {
+      campaign: { ...campaign, frozenPairSlotManifest: tamperedManifest },
+    })).toThrow(/trusted campaign root|trusted frozen-set root/i);
+  });
+
+  it("refuses to freeze duplicate evidence content or run references across pair slots", () => {
+    const pairBId = "pair-skill-boundary-duplicate-evidence-b";
+    const repeatedEvidence = [{
+      repeatId: POSITIVE_OUTCOME.repeatId,
+      positive: evidenceForPair(CONTRACT.pairId, POSITIVE_OUTCOME.repeatId, "positive"),
+      negative: evidenceForPair(CONTRACT.pairId, POSITIVE_OUTCOME.repeatId, "negative"),
+    }];
+
+    expect(() => buildFrozenPairSlotManifestV2([
+      { validatedPair: validatedContract(), repeats: repeatedEvidence },
+      {
+        validatedPair: validatedContract({ ...CONTRACT, pairId: pairBId }),
+        repeats: repeatedEvidence,
+      },
+    ], {
+      revision: "duplicate-evidence-test-v2",
+      sha256: "d".repeat(64),
+    })).toThrow(/must not reuse evidence refs, evidence SHA-256 values, or run IDs/i);
+  });
+
+  it("fails closed when a serialized frozen slot contains a malformed repeat", () => {
+    const manifest = buildFrozenPairSlotManifestV2([{
+      validatedPair: validatedContract(),
+      repeats: [{
+        repeatId: POSITIVE_OUTCOME.repeatId,
+        positive: evidenceForPair(CONTRACT.pairId, POSITIVE_OUTCOME.repeatId, "positive"),
+        negative: evidenceForPair(CONTRACT.pairId, POSITIVE_OUTCOME.repeatId, "negative"),
+      }],
+    }], {
+      revision: "malformed-repeat-test-v2",
+      sha256: "d".repeat(64),
+    });
+    const malformed = JSON.parse(JSON.stringify(manifest)) as Record<string, unknown>;
+    const slots = malformed.slots as Array<Record<string, unknown>>;
+    slots[0].repeats = [null];
+
+    let result: ReturnType<typeof validateFrozenPairSlotManifestV2> | undefined;
+    expect(() => { result = validateFrozenPairSlotManifestV2(malformed); }).not.toThrow();
+    expect(result?.ok).toBe(false);
+    if (result && !result.ok) {
+      expect(result.errors.map((error) => error.code)).toContain("INVALID_SLOT_EVIDENCE");
+    }
   });
 
   it.each([
@@ -1372,15 +1785,15 @@ describe("M1 frozen interface artifacts", () => {
     expect(interfaceManifest.formalDataStatus).toBe("FORMAL_DATA_BLOCKED");
     expect(interfaceManifest.repeatAggregation.policyId).toBe("all-repeats-pass-v1");
     expect(interfaceManifest.integratedOutcomeSeam.recomputesEcr).toBe(false);
-    const fixtureCampaign = syntheticFixture.summaryCampaign as PairSummaryCampaignV2;
-    expect(validateFrozenPairIdentityManifestV2(
-      fixtureCampaign.frozenPairIdentityManifest,
+    const fixtureCampaign = syntheticFixture.summaryCampaign as unknown as PairSummaryCampaignV2;
+    expect(validateFrozenPairSlotManifestV2(
+      fixtureCampaign.frozenPairSlotManifest,
     )).toEqual({
       ok: true,
-      value: fixtureCampaign.frozenPairIdentityManifest,
+      value: fixtureCampaign.frozenPairSlotManifest,
     });
-    expect(fixtureCampaign.frozenPairIdentityManifest).toEqual(
-      buildFrozenPairIdentityManifestV2([validatedContract()]),
+    expect(fixtureCampaign.frozenPairSlotEvidenceRootSha256).toBe(
+      fixtureCampaign.frozenPairSlotManifest.canonicalSha256,
     );
     expect(fixtureCampaign.expectedPairIdsSha256).toBe(
       computeExpectedPairMembershipSha256V2(fixtureCampaign),
@@ -1392,6 +1805,9 @@ describe("M1 frozen interface artifacts", () => {
       "buildFrozenPairIdentityManifestV2",
       "validateFrozenPairIdentityManifestV2",
       "computePairContractCanonicalSha256V2",
+      "buildFrozenPairSlotManifestV2",
+      "validateFrozenPairSlotManifestV2",
+      "computeFrozenPairSlotManifestSha256V2",
     ]));
     expect(interfaceManifest.pairScoreIdentityFields).toContain("pairContractSha256");
     expect(JSON.stringify(interfaceManifest)).not.toContain("formalMetricEligible");

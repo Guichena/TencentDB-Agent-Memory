@@ -1,5 +1,5 @@
 import { isDeepStrictEqual } from "node:util";
-import { sha256CanonicalJsonV2 } from "./canonical-json.js";
+import { canonicalJsonV2, sha256CanonicalJsonV2 } from "./canonical-json.js";
 
 export type PairSplitV2 = "dev" | "hidden";
 
@@ -68,6 +68,50 @@ export type FrozenPairIdentityManifestValidationResultV2 =
   | { readonly ok: true; readonly value: FrozenPairIdentityManifestV2 }
   | { readonly ok: false; readonly errors: readonly FrozenPairIdentityManifestValidationErrorV2[] };
 
+export const FROZEN_PAIR_SLOT_MANIFEST_SCHEMA_VERSION = "frozen-pair-slot-evidence-manifest-v2" as const;
+
+export interface FrozenEvidenceReferenceV2 {
+  readonly rawEvidenceArtifactRef: string;
+  readonly rawEvidenceArtifactSha256: string;
+  readonly runId: string;
+}
+
+export interface FrozenPairRepeatEvidenceBindingV2 {
+  readonly repeatId: string;
+  readonly positive: FrozenEvidenceReferenceV2;
+  readonly negative: FrozenEvidenceReferenceV2;
+}
+
+export interface FrozenPairSlotBuildInputV2 {
+  readonly validatedPair: ValidatedPairContractV2;
+  readonly repeats: readonly FrozenPairRepeatEvidenceBindingV2[];
+}
+
+export interface FrozenPairSlotV2 extends FrozenPairIdentityRecordV2 {
+  readonly slotOrdinal: number;
+  readonly repeats: readonly FrozenPairRepeatEvidenceBindingV2[];
+}
+
+export interface FrozenPairSlotManifestV2 {
+  readonly schemaVersion: typeof FROZEN_PAIR_SLOT_MANIFEST_SCHEMA_VERSION;
+  readonly frozenPairSetRevision: string;
+  readonly frozenPairSetSha256: string;
+  readonly split: PairSplitV2;
+  readonly expectedRepeatIds: readonly string[];
+  readonly slots: readonly FrozenPairSlotV2[];
+  readonly canonicalSha256: string;
+}
+
+export interface FrozenPairSlotManifestValidationErrorV2 {
+  readonly code: string;
+  readonly message: string;
+  readonly pointer?: string;
+}
+
+export type FrozenPairSlotManifestValidationResultV2 =
+  | { readonly ok: true; readonly value: FrozenPairSlotManifestV2 }
+  | { readonly ok: false; readonly errors: readonly FrozenPairSlotManifestValidationErrorV2[] };
+
 export interface PairContractValidationErrorV2 {
   readonly code: string;
   readonly message: string;
@@ -133,19 +177,17 @@ function pointerCovers(allowed: string, actual: string): boolean {
 }
 
 function isPlainRecord(value: unknown): value is Record<string, unknown> {
-  return value !== null && typeof value === "object" && !Array.isArray(value);
-}
-
-function isJsonValue(value: unknown): value is PairJsonValue {
-  if (value === null || typeof value === "string" || typeof value === "boolean") return true;
-  if (typeof value === "number") return Number.isFinite(value);
-  if (Array.isArray(value)) return value.every(isJsonValue);
-  if (!isPlainRecord(value)) return false;
-  return Object.values(value).every(isJsonValue);
+  if (value === null || typeof value !== "object" || Array.isArray(value)) return false;
+  const prototype = Object.getPrototypeOf(value);
+  return prototype === Object.prototype || prototype === null;
 }
 
 function isPairSplit(value: unknown): value is PairSplitV2 {
   return value === "dev" || value === "hidden";
+}
+
+function isSha256(value: unknown): value is string {
+  return typeof value === "string" && /^[a-f0-9]{64}$/.test(value);
 }
 
 function isJsonPointer(pointer: string): boolean {
@@ -158,31 +200,82 @@ function structuralErrors(
   negativeCase: unknown,
 ): PairContractValidationErrorV2[] {
   const errors: PairContractValidationErrorV2[] = [];
+  for (const [name, value] of [
+    ["contract", contract],
+    ["positiveCase", positiveCase],
+    ["negativeCase", negativeCase],
+  ] as const) {
+    try {
+      canonicalJsonV2(value);
+    } catch {
+      errors.push({
+        code: "INVALID_RUNTIME_JSON",
+        message: `${name} must contain only strict canonical JSON values`,
+        pointer: `/${name}`,
+      });
+    }
+  }
+  if (errors.length > 0) return errors;
+
+  const contractFields = new Set([
+    "schemaVersion",
+    "pairId",
+    "positiveCaseId",
+    "negativeCaseId",
+    "causalFactorId",
+    "allowedChangedPointers",
+    "invariantProjectionSchemaVersion",
+    "invariantFieldsSha256",
+    "changedPointerCount",
+    "minimalityReviewStatus",
+    "independenceKey",
+    "split",
+  ]);
+  const pairCaseFields = new Set(["caseId", "split", "comparisonDocument"]);
   if (!isPlainRecord(contract)) {
     errors.push({ code: "INVALID_CONTRACT_SHAPE", message: "contract must be an object" });
-  } else if (
-    !Array.isArray(contract.allowedChangedPointers)
-    || !contract.allowedChangedPointers.every((pointer) => typeof pointer === "string")
-  ) {
-    errors.push({
-      code: "INVALID_CONTRACT_SHAPE",
-      message: "allowedChangedPointers must be a string array",
-      pointer: "/allowedChangedPointers",
-    });
+  } else {
+    const unknownFields = Object.keys(contract).filter((field) => !contractFields.has(field));
+    for (const field of unknownFields) {
+      errors.push({
+        code: "UNKNOWN_RUNTIME_FIELD",
+        message: `unknown Pair Contract runtime field: ${field}`,
+        pointer: `/${field}`,
+      });
+    }
+    if (!Array.isArray(contract.allowedChangedPointers)
+      || !contract.allowedChangedPointers.every((pointer) => typeof pointer === "string")) {
+      errors.push({
+        code: "INVALID_CONTRACT_SHAPE",
+        message: "allowedChangedPointers must be a string array",
+        pointer: "/allowedChangedPointers",
+      });
+    }
   }
 
   for (const [side, pairCase] of [
     ["positive", positiveCase],
     ["negative", negativeCase],
   ] as const) {
-    if (
-      !isPlainRecord(pairCase)
-      || typeof pairCase.caseId !== "string"
+    if (!isPlainRecord(pairCase)) {
+      errors.push({
+        code: "INVALID_CONTRACT_SHAPE",
+        message: `${side} case must contain caseId, split, and a JSON comparisonDocument`,
+      });
+      continue;
+    }
+    const unknownFields = Object.keys(pairCase).filter((field) => !pairCaseFields.has(field));
+    for (const field of unknownFields) {
+      errors.push({
+        code: "UNKNOWN_RUNTIME_FIELD",
+        message: `unknown ${side} case runtime field: ${field}`,
+        pointer: `/${side}Case/${field}`,
+      });
+    }
+    if (typeof pairCase.caseId !== "string"
       || pairCase.caseId.trim().length === 0
       || !isPairSplit(pairCase.split)
-      || !Object.prototype.hasOwnProperty.call(pairCase, "comparisonDocument")
-      || !isJsonValue(pairCase.comparisonDocument)
-    ) {
+      || !Object.prototype.hasOwnProperty.call(pairCase, "comparisonDocument")) {
       errors.push({
         code: "INVALID_CONTRACT_SHAPE",
         message: `${side} case must contain caseId, split, and a JSON comparisonDocument`,
@@ -220,8 +313,10 @@ function maskAllowed(
   }
 
   if (isRecord(positive) && isRecord(negative)) {
-    const positiveMasked: Record<string, PairJsonValue> = {};
-    const negativeMasked: Record<string, PairJsonValue> = {};
+    // Null-prototype records preserve JSON keys such as "__proto__" as data
+    // instead of invoking Object.prototype's legacy setter during projection.
+    const positiveMasked = Object.create(null) as Record<string, PairJsonValue>;
+    const negativeMasked = Object.create(null) as Record<string, PairJsonValue>;
     const keys = [...new Set([...Object.keys(positive), ...Object.keys(negative)])].sort();
     for (const key of keys) {
       const [maskedPositive, maskedNegative] = maskAllowed(
@@ -383,6 +478,208 @@ export function validateFrozenPairIdentityManifestV2(
         message: "canonicalSha256 does not match frozen identity records",
         pointer: "/canonicalSha256",
       }],
+    };
+  }
+  return { ok: true, value: manifest };
+}
+
+type FrozenPairSlotManifestBodyV2 = Omit<FrozenPairSlotManifestV2, "canonicalSha256">;
+
+export function computeFrozenPairSlotManifestSha256V2(
+  body: FrozenPairSlotManifestBodyV2,
+): string {
+  return sha256CanonicalJsonV2(body);
+}
+
+export function buildFrozenPairSlotManifestV2(
+  inputs: readonly FrozenPairSlotBuildInputV2[],
+  frozenPairSet: {
+    readonly revision: string;
+    readonly sha256: string;
+  },
+): FrozenPairSlotManifestV2 {
+  if (inputs.length === 0) throw new Error("frozen pair slot manifest requires at least one slot");
+  if (frozenPairSet.revision.trim().length === 0 || !isSha256(frozenPairSet.sha256)) {
+    throw new Error("frozen pair slot manifest requires a revision and SHA-256 frozen-set root");
+  }
+  const sortedInputs = [...inputs].sort((left, right) => (
+    left.validatedPair.contract.pairId < right.validatedPair.contract.pairId
+      ? -1
+      : left.validatedPair.contract.pairId > right.validatedPair.contract.pairId ? 1 : 0
+  ));
+  const split = sortedInputs[0].validatedPair.contract.split;
+  if (sortedInputs.some(({ validatedPair }) => validatedPair.contract.split !== split)) {
+    throw new Error("frozen pair slot manifest cannot mix splits");
+  }
+  const expectedRepeatIds = [...new Set(
+    sortedInputs[0].repeats.map((repeat) => repeat.repeatId),
+  )].sort();
+  if (expectedRepeatIds.length === 0) throw new Error("frozen pair slots require evidence repeats");
+  const slots = sortedInputs.map(({ validatedPair, repeats }, slotOrdinal): FrozenPairSlotV2 => {
+    const contract = validatedPair.contract;
+    const sortedRepeats = [...repeats].sort((left, right) => (
+      left.repeatId < right.repeatId ? -1 : left.repeatId > right.repeatId ? 1 : 0
+    ));
+    if (canonicalJsonV2(sortedRepeats.map((repeat) => repeat.repeatId)) !== canonicalJsonV2(expectedRepeatIds)) {
+      throw new Error(`frozen pair slot ${contract.pairId} repeat set does not match the campaign`);
+    }
+    return {
+      slotOrdinal,
+      pairId: contract.pairId,
+      positiveCaseId: contract.positiveCaseId,
+      negativeCaseId: contract.negativeCaseId,
+      independenceKey: contract.independenceKey,
+      split: contract.split,
+      pairContractSha256: computePairContractCanonicalSha256V2(contract),
+      repeats: sortedRepeats,
+    };
+  });
+  if (new Set(slots.map((slot) => slot.pairId)).size !== slots.length) {
+    throw new Error("frozen pair slot pairId values must be unique");
+  }
+  const evidenceRefs: string[] = [];
+  const evidenceShas: string[] = [];
+  const runIds: string[] = [];
+  for (const slot of slots) {
+    for (const repeat of slot.repeats) {
+      if (repeat.repeatId.trim().length === 0) throw new Error("repeatId must be non-blank");
+      for (const side of [repeat.positive, repeat.negative]) {
+        if (side.rawEvidenceArtifactRef.trim().length === 0
+          || side.runId.trim().length === 0
+          || !isSha256(side.rawEvidenceArtifactSha256)) {
+          throw new Error("frozen evidence references require non-blank refs/run IDs and SHA-256 content IDs");
+        }
+        evidenceRefs.push(side.rawEvidenceArtifactRef);
+        evidenceShas.push(side.rawEvidenceArtifactSha256);
+        runIds.push(side.runId);
+      }
+    }
+  }
+  if (new Set(evidenceRefs).size !== evidenceRefs.length
+    || new Set(evidenceShas).size !== evidenceShas.length
+    || new Set(runIds).size !== runIds.length) {
+    throw new Error("frozen pair slots must not reuse evidence refs, evidence SHA-256 values, or run IDs");
+  }
+  const body: FrozenPairSlotManifestBodyV2 = {
+    schemaVersion: FROZEN_PAIR_SLOT_MANIFEST_SCHEMA_VERSION,
+    frozenPairSetRevision: frozenPairSet.revision,
+    frozenPairSetSha256: frozenPairSet.sha256,
+    split,
+    expectedRepeatIds,
+    slots,
+  };
+  return { ...body, canonicalSha256: computeFrozenPairSlotManifestSha256V2(body) };
+}
+
+export function validateFrozenPairSlotManifestV2(
+  input: unknown,
+): FrozenPairSlotManifestValidationResultV2 {
+  try {
+    canonicalJsonV2(input);
+  } catch {
+    return {
+      ok: false,
+      errors: [{ code: "INVALID_SLOT_MANIFEST_JSON", message: "slot manifest must be strict JSON" }],
+    };
+  }
+  if (!isPlainRecord(input)) {
+    return {
+      ok: false,
+      errors: [{ code: "INVALID_SLOT_MANIFEST_SHAPE", message: "slot manifest must be an object" }],
+    };
+  }
+  const errors: FrozenPairSlotManifestValidationErrorV2[] = [];
+  if (input.schemaVersion !== FROZEN_PAIR_SLOT_MANIFEST_SCHEMA_VERSION) {
+    errors.push({ code: "UNSUPPORTED_SLOT_MANIFEST_SCHEMA", message: "unsupported slot manifest schema" });
+  }
+  if (typeof input.frozenPairSetRevision !== "string" || input.frozenPairSetRevision.trim().length === 0) {
+    errors.push({ code: "INVALID_SLOT_MANIFEST_FREEZE", message: "frozenPairSetRevision must be non-blank" });
+  }
+  if (!isSha256(input.frozenPairSetSha256) || !isSha256(input.canonicalSha256)) {
+    errors.push({ code: "INVALID_SLOT_MANIFEST_SHA256", message: "slot manifest hashes must be SHA-256" });
+  }
+  if (!isPairSplit(input.split)) {
+    errors.push({ code: "INVALID_SLOT_MANIFEST_SPLIT", message: "slot manifest split must be dev or hidden" });
+  }
+  if (!Array.isArray(input.expectedRepeatIds)
+    || input.expectedRepeatIds.length === 0
+    || input.expectedRepeatIds.some((repeatId) => typeof repeatId !== "string" || repeatId.trim().length === 0)
+    || new Set(input.expectedRepeatIds).size !== input.expectedRepeatIds.length) {
+    errors.push({ code: "INVALID_SLOT_MANIFEST_REPEATS", message: "expectedRepeatIds must be non-empty and unique" });
+  }
+  if (!Array.isArray(input.slots) || input.slots.length === 0) {
+    errors.push({ code: "INVALID_SLOT_MANIFEST_SLOTS", message: "slots must be a non-empty array" });
+  }
+  if (errors.length > 0) return { ok: false, errors };
+
+  const manifest = input as unknown as FrozenPairSlotManifestV2;
+  const pairIds: string[] = [];
+  const evidenceRefs: string[] = [];
+  const evidenceShas: string[] = [];
+  const runIds: string[] = [];
+  for (const [slotIndex, slot] of manifest.slots.entries()) {
+    if (!isPlainRecord(slot)
+      || slot.slotOrdinal !== slotIndex
+      || typeof slot.pairId !== "string" || slot.pairId.trim().length === 0
+      || typeof slot.positiveCaseId !== "string" || slot.positiveCaseId.trim().length === 0
+      || typeof slot.negativeCaseId !== "string" || slot.negativeCaseId.trim().length === 0
+      || typeof slot.independenceKey !== "string" || slot.independenceKey.trim().length === 0
+      || slot.split !== manifest.split
+      || !isSha256(slot.pairContractSha256)
+      || !Array.isArray(slot.repeats)) {
+      errors.push({ code: "INVALID_PAIR_SLOT", message: `invalid frozen pair slot ${slotIndex}` });
+      continue;
+    }
+    pairIds.push(slot.pairId);
+    const repeatIds: string[] = [];
+    let repeatShapesValid = true;
+    for (const repeat of slot.repeats) {
+      if (!isPlainRecord(repeat)
+        || typeof repeat.repeatId !== "string"
+        || repeat.repeatId.trim().length === 0
+        || !isPlainRecord(repeat.positive)
+        || !isPlainRecord(repeat.negative)) {
+        errors.push({ code: "INVALID_SLOT_EVIDENCE", message: `invalid evidence in slot ${slotIndex}` });
+        repeatShapesValid = false;
+        continue;
+      }
+      repeatIds.push(repeat.repeatId);
+      for (const side of [repeat.positive, repeat.negative]) {
+        if (typeof side.rawEvidenceArtifactRef !== "string"
+          || side.rawEvidenceArtifactRef.trim().length === 0
+          || typeof side.runId !== "string" || side.runId.trim().length === 0
+          || !isSha256(side.rawEvidenceArtifactSha256)) {
+          errors.push({ code: "INVALID_SLOT_EVIDENCE", message: `invalid evidence in slot ${slotIndex}` });
+          continue;
+        }
+        evidenceRefs.push(side.rawEvidenceArtifactRef);
+        evidenceShas.push(side.rawEvidenceArtifactSha256);
+        runIds.push(side.runId);
+      }
+    }
+    if (repeatShapesValid
+      && canonicalJsonV2([...repeatIds].sort())
+        !== canonicalJsonV2([...manifest.expectedRepeatIds].sort())) {
+      errors.push({ code: "SLOT_REPEAT_SET_MISMATCH", message: `slot ${slotIndex} repeat set mismatch` });
+    }
+  }
+  if (new Set(pairIds).size !== pairIds.length) {
+    errors.push({ code: "DUPLICATE_PAIR_SLOT", message: "slot pairId values must be unique" });
+  }
+  if (pairIds.some((pairId, index) => index > 0 && pairIds[index - 1] >= pairId)) {
+    errors.push({ code: "NON_CANONICAL_SLOT_ORDER", message: "slots must be ordered by pairId" });
+  }
+  if (new Set(evidenceRefs).size !== evidenceRefs.length
+    || new Set(evidenceShas).size !== evidenceShas.length
+    || new Set(runIds).size !== runIds.length) {
+    errors.push({ code: "DUPLICATE_SLOT_EVIDENCE", message: "evidence and run references must be globally unique" });
+  }
+  if (errors.length > 0) return { ok: false, errors };
+  const { canonicalSha256, ...body } = manifest;
+  if (canonicalSha256 !== computeFrozenPairSlotManifestSha256V2(body)) {
+    return {
+      ok: false,
+      errors: [{ code: "SLOT_MANIFEST_SHA256_MISMATCH", message: "slot manifest canonical SHA mismatch" }],
     };
   }
   return { ok: true, value: manifest };
