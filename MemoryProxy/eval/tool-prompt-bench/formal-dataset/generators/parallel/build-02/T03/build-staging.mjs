@@ -500,7 +500,7 @@ async function main() {
     });
     privateAnnotations.push(withHash({ caseId: positiveCaseId, sourceEvidenceIds: evidenceRefs, pairId, pairRole: "positive", gold: positiveGold, annotationReason: `Sol review: the unique gap requires ${sequence.join(" -> ")} and target ${target}.` }));
     privateAnnotations.push(withHash({ caseId: negativeCaseId, sourceEvidenceIds: [sourceId], pairId, pairRole: "negative", gold: negativeGold, annotationReason: "Sol review: the appended delta supplies the sole missing information, so no TDAI tool is allowed." }));
-    const controlledDeltaSha256 = sha({ positive_delta_message: pair.positive.delta_message, negative_delta_message: pair.negative.delta_message, query: pair.query });
+    const controlledDeltaSha256 = createHash("sha256").update(JSON.stringify({ positive_delta_message: pair.positive.delta_message, negative_delta_message: pair.negative.delta_message, query: pair.query }), "utf8").digest("hex");
     pairs.push(withHash({ pairId, positiveCaseId, negativeCaseId, counterfactualKind: "answer_in_current_context", controlledDeltaSha256, currentEvidenceRefs: [sourceId] }));
     pairReview.push({ pairId, draftPairId: pair.draft_pair_id, family, target, sequence, distractors: pair.visible_distractor_ids_author_only.map(normalizeAssetId), sourceBatch: batch.relative });
   }
