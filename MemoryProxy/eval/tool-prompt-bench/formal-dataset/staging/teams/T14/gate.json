@@ -696,6 +696,11 @@
       "detail": "snapshot asset ids must be unique"
     },
     {
+      "name": "snapshot.identity_aware_hash",
+      "passed": true,
+      "detail": "all Cases must use the production identity-aware visible asset hash"
+    },
+    {
       "name": "visibility:T14-MEM-001-P",
       "passed": true,
       "detail": "every Gold target must be visible in the team snapshot"

@@ -1089,8 +1089,8 @@
         }
       ],
       "query": "请确认之前为边缘网关延迟告警确定的多窗口阈值、升级条件和回滚条件。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "35025dbe2132120515de9326d9a809401d9f1a9fc26cd8054ed7be0738a36c4a"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "9b07dd82a699479b1196ab388c39d3d7d3028a891881ca6e6b025511bbca4c0b"
     },
     {
       "caseId": "T13-MEM-001-N",
@@ -1140,8 +1140,8 @@
         }
       ],
       "query": "请确认之前为边缘网关延迟告警确定的多窗口阈值、升级条件和回滚条件。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "d279645d0f134e822ed9e130b1dad4fdb6d1e0d064a855dc8a8f6460147fb28c"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "cb6230b68f74d05322e7ec63afc6a700ba5b64e991e923d13c77122e1ce2c1db"
     },
     {
       "caseId": "T13-MEM-002-P",
@@ -1207,8 +1207,8 @@
         }
       ],
       "query": "请回忆区域切换复盘中，支付交易的日志与链路是靠哪些字段和采样约定关联起来的？",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "9e0aee2a035946c905b122cf0a323ebb926c1bada7734847b654d58d71683adf"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "5eb8196eb47105ea5bea13c832d5b2d955ea22315e93cc7239a3b15485c205f9"
     },
     {
       "caseId": "T13-MEM-002-N",
@@ -1274,8 +1274,8 @@
         }
       ],
       "query": "请回忆区域切换复盘中，支付交易的日志与链路是靠哪些字段和采样约定关联起来的？",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "e1b3ca1695fcd45d3123c4054982a6d2608109a207289f6e6cbda906e194fd0b"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "9188d23b0ad98971d803d9dedf691615bad2b912763692fdba25f8ec4d4da9fc"
     },
     {
       "caseId": "T13-MEM-003-P",
@@ -1349,8 +1349,8 @@
         }
       ],
       "query": "请找回批量补单场景下账单回调失败的退避与重试边界，并说明在哪个阶段停止继续重试。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "3e160afffe038775156c209890e4ba57ea82cabb18898474b319cb82396cc482"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "e9f3c3fd4d55251628b256d233bcb6b4ed8ed185bb7a20cccd881c7841031eaf"
     },
     {
       "caseId": "T13-MEM-003-N",
@@ -1424,8 +1424,8 @@
         }
       ],
       "query": "请找回批量补单场景下账单回调失败的退避与重试边界，并说明在哪个阶段停止继续重试。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "d368dd852f735ca1babd377905fe5cf4db51b34a3d8720da8326e58ea96db49b"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "5345e89585776f023af7b335af16ff8f5a2796a69ed98fc4deb9fa4f1efa49b8"
     },
     {
       "caseId": "T13-MEM-004-P",
@@ -1515,8 +1515,8 @@
         }
       ],
       "query": "请回忆 Nimbus 夜间画像回归时确定的采样比例、分片并发上限和停止画像条件。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "4870553df29143295b041a9a0a9e143836e768699f086307d06370647fcb6df8"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "a11e265ba637d859279ed07a8c39af2083141469721716955777b3d91b72dac2"
     },
     {
       "caseId": "T13-MEM-004-N",
@@ -1606,8 +1606,8 @@
         }
       ],
       "query": "请回忆 Nimbus 夜间画像回归时确定的采样比例、分片并发上限和停止画像条件。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "7ef6020678c0883751056e93345ae8cfa675a4861ce356ffbe587ac589a6ff32"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "8f025b1f3dcd853bf722398c9adb710276fcd2557a54df5ed6ac99993b3ea81d"
     },
     {
       "caseId": "T13-MEM-005-P",
@@ -1705,8 +1705,8 @@
         }
       ],
       "query": "请确认八月上旬至中旬 Atlas 采样迁移的批准决定：必须保留什么比例的数据，什么条件触发回退？",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "1cfa648a620e6e996abb238237da6feda81d0d132c9ac2368a9fdbea2647013a"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "952ed179d6bb5ec902a1fac63ec88bf512f4f0685d0a62ec3d19ff290da765ff"
     },
     {
       "caseId": "T13-MEM-005-N",
@@ -1804,8 +1804,8 @@
         }
       ],
       "query": "请确认八月上旬至中旬 Atlas 采样迁移的批准决定：必须保留什么比例的数据，什么条件触发回退？",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "8dba8ad0556a71a3810d4742d69ed2ecc3b46b5eb8e29d579eb4b6b9a27c7df5"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "c7f558ee26386c49b8a4b690d98c88902aed70ef07a9e09345eb659c8498b211"
     },
     {
       "caseId": "T13-MEM-006-P",
@@ -1903,8 +1903,8 @@
         }
       ],
       "query": "请回忆 SentryGrid 告警风暴复盘中定下的静默窗口、noise budget 上限和升级确认角色。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "361880f332e585a3170880c8768a30099e3dab4e2c8ac0b5b614acaf663c4b08"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "72ecb26bd730d019b57d1b7fd4ad9da2cd79f5444369f4f9251608a35ce21a15"
     },
     {
       "caseId": "T13-MEM-006-N",
@@ -2002,8 +2002,8 @@
         }
       ],
       "query": "请回忆 SentryGrid 告警风暴复盘中定下的静默窗口、noise budget 上限和升级确认角色。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "97af859eadbc8a13498d0b8777696cafdec829913ada64466519dfcd523d4c87"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "df3b177bfed8c20327c446357e6a818d283a7d6283055db6a72065b6a0d6e147"
     },
     {
       "caseId": "T13-SKL-001-P",
@@ -2049,8 +2049,8 @@
         }
       ],
       "query": "请给出这次指标侧排障的下一步和判断依据，暂时不要修改应用代码。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "230ea428698eaea2c1672721ec67b819e74e537d8145afcb29372d8f0bcae0f3"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "4d4a8d7758c41d9083ecefb90849adda4acba48bf2e8ae336b616fc1b8426968"
     },
     {
       "caseId": "T13-SKL-001-N",
@@ -2096,8 +2096,8 @@
         }
       ],
       "query": "请给出这次指标侧排障的下一步和判断依据，暂时不要修改应用代码。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "cf76fc5d413da7e44f51fab54fa6c2d5a10c5c74609c52c19d2327de65f52baa"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "88eeea3d75f3195932e343110367f1e9f2076e919de17802063491e02b6a4c84"
     },
     {
       "caseId": "T13-SKL-002-P",
@@ -2143,8 +2143,8 @@
         }
       ],
       "query": "请说明支付超时的日志侧下一步、查询写法和验证依据，暂时不要改服务实现。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "ef472047e0f6cb6bb62905cf52c06316843e7cd8cc38ff0b7043211aac228edb"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "20aa502289dd5389dbac91515c3c030431a19445f595b2b39247eaac50a4dd82"
     },
     {
       "caseId": "T13-SKL-002-N",
@@ -2190,8 +2190,8 @@
         }
       ],
       "query": "请说明支付超时的日志侧下一步、查询写法和验证依据，暂时不要改服务实现。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "c729a50e0740ffdf4cbb5d9de3305823d6e79240ac5d3a7c05bac3ed9962ce4e"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "d10857505bbf13414b059d228a23542ec6a673b1e8a66a899b1c171f03ba7e05"
     },
     {
       "caseId": "T13-SKL-003-P",
@@ -2237,8 +2237,8 @@
         }
       ],
       "query": "请告诉我下一步应该怎么做，并给出最小可行验证路径。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "e1fe10665215cac407baa11b6c7a7c250edf409dbd6f2a1f72f7c715bf229c9d"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "b00674a2be6bee894ecd2c8f76f2bc87f39c00665e2ad6d65e870ff07b5c8b41"
     },
     {
       "caseId": "T13-SKL-003-N",
@@ -2284,8 +2284,8 @@
         }
       ],
       "query": "请告诉我下一步应该怎么做，并给出最小可行验证路径。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "bc893f9959f22a4e800087269abc81add092812920b2e9efa271bd546cb8963f"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "1cbbb7a401f7aeea1354e925c3e74cfb224b62cc165e1c815342db84ac19c83a"
     },
     {
       "caseId": "T13-SKL-004-P",
@@ -2331,8 +2331,8 @@
         }
       ],
       "query": "请给出批处理性能剖析的下一步和最小验证路径，暂时不要修改代码。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "11dd78fbae0962c121c406f52d8874b60a4786a595773241ec5e031da7dfd21c"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "15f167c6906a1a1c683181d388ab497af0609af6651e03d4c0152ce15d753293"
     },
     {
       "caseId": "T13-SKL-004-N",
@@ -2378,8 +2378,8 @@
         }
       ],
       "query": "请给出批处理性能剖析的下一步和最小验证路径，暂时不要修改代码。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "5d31da62716a16f03dafe641561fbb7eb77271310f44f5bdf9b6b26cc7b843e3"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "18352aa004ac1b7bc92e0a58a1dccc5118a80934bf011ae7af0658a392e7c204"
     },
     {
       "caseId": "T13-SKL-005-P",
@@ -2425,8 +2425,8 @@
         }
       ],
       "query": "请给出告警到事故响应的下一步和验证依据，暂时不要改生产策略。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "c3a8dcd0850465703b5a653a7acbe3e58d8445f473425a7c3e3ac47adbf833e9"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "bd3cff4cb221de96fa38a21e118a9456d3c4e6ca576048da7fad2d638ff5ff17"
     },
     {
       "caseId": "T13-SKL-005-N",
@@ -2472,8 +2472,8 @@
         }
       ],
       "query": "请给出告警到事故响应的下一步和验证依据，暂时不要改生产策略。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "0ee476356d3c247f27240245b547c16f02688e43caff60366523a6f3032f18d7"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "d5a632ef50a9b206038319900f34d7f52dd97b9be647867f0296dc88e5a416f0"
     },
     {
       "caseId": "T13-SKL-006-P",
@@ -2519,8 +2519,8 @@
         }
       ],
       "query": "请给出指标成本核查的下一步、最小命令路径和输出判断依据，暂时不要改采集配置。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "c4651c53acbf1ad9a9e4bc8cd02346a04b14e07fdd79f6940817bf3eac0697ff"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "836a0593e4c5110364be116c483712c32ae49e6d8082d8844e1a494c2a93ca94"
     },
     {
       "caseId": "T13-SKL-006-N",
@@ -2566,8 +2566,8 @@
         }
       ],
       "query": "请给出指标成本核查的下一步、最小命令路径和输出判断依据，暂时不要改采集配置。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "cb0f7e291069055cfba5d6e040a4584bdb88a44e271b46cb12497afbc647acbb"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "c9b5e5f1a18abc174abe847726efd1088b291140ab0ed8b3f8a612a5ab0ee971"
     },
     {
       "caseId": "T13-KNW-001-P",
@@ -2633,8 +2633,8 @@
         }
       ],
       "query": "请确认负责多窗口 burn-rate 计算的符号在当前固定代码中的准确源文件和行号，并只返回该定位。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "d1e063aa07fd67a2b45a8cf949add54f7640c610cd10c5df2e06aadaa1cf25a2"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "2e48a0b687eceab6c38adc9c08c640c778365c674a0270046843a0d92217ce7b"
     },
     {
       "caseId": "T13-KNW-001-N",
@@ -2700,8 +2700,8 @@
         }
       ],
       "query": "请确认负责多窗口 burn-rate 计算的符号在当前固定代码中的准确源文件和行号，并只返回该定位。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "196c3cbf79f67c2a9b4e5feea987325e85f9cf286edf4e2a97cb19e465e140ba"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "cea24c729a9ec6fd5a70cb5840fd2d1bb2a9e7be68f64839adf097032ac5594a"
     },
     {
       "caseId": "T13-KNW-002-P",
@@ -2767,8 +2767,8 @@
         }
       ],
       "query": "请确认 SentryGrid 事故响应手册中，告警收敛动作由谁统一确认，并记录到什么入口；只返回这一条约定。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "3d093a41f0cf59a2679eeffe321c7d71ee003a983d0a208d767091c1fe44e560"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "96a0e056db62fceb1a0b23ebf351abb9f08ee44edb40f91880bd910d4f551ea3"
     },
     {
       "caseId": "T13-KNW-002-N",
@@ -2834,8 +2834,8 @@
         }
       ],
       "query": "请确认 SentryGrid 事故响应手册中，告警收敛动作由谁统一确认，并记录到什么入口；只返回这一条约定。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "69147b3cc94789977d55a2105ae55ab8afd373299ba32f77c4be171c9144512b"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "8ddea10232764837887f7c4cd2ba1730c4e724979c42cc63ceb69e91a18b717a"
     },
     {
       "caseId": "T13-KNW-003-P",
@@ -2901,8 +2901,8 @@
         }
       ],
       "query": "请确认 Nimbus Batch 固定代码索引中 BatchProfileCollector 的直接影响节点和边数量；只返回节点清单与边数。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "f638901054fadfc8ba3e8d6f4486585274a09033243d1a1fa2cf91c8106e59bc"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "5079fa8c587d35474996ed70ac6db9c0d134af5bb118067cfff1af327af0e407"
     },
     {
       "caseId": "T13-KNW-003-N",
@@ -2968,8 +2968,8 @@
         }
       ],
       "query": "请确认 Nimbus Batch 固定代码索引中 BatchProfileCollector 的直接影响节点和边数量；只返回节点清单与边数。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "eb19cdb3cee49da91def29adb61d32303f31a49b38c8076268a71a036174dce2"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "e8b204716994973270b0e50dcef3c6a9e3698501c560c3ba4058faacd3ee31d6"
     },
     {
       "caseId": "T13-COD-001",
@@ -3011,8 +3011,8 @@
         }
       ],
       "query": "给出 PromQL 和一句判定。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "e46c13ee4a7452892919f4681f01132db4e255dedb96f9b35f94aee193db39b7"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "69730a6acc5a25f7e4e2faeba19466f0b2e4803978d328eb708592ec038bc696"
     },
     {
       "caseId": "T13-COD-002",
@@ -3062,8 +3062,8 @@
         }
       ],
       "query": "修复这条告警规则的配置。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "24b22fe71741fdfd037eb31fcb4feceb51c193d52e07c3123af9a972e971e3cb"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "e219bbcfc48c0f03c459ba57d2f5747575f4717a8f6c659502e9265adaa2c560"
     },
     {
       "caseId": "T13-COD-003",
@@ -3105,8 +3105,8 @@
         }
       ],
       "query": "实现这个内存中的日志—trace 连接函数。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "ace0ec83b0b777c184ec14ce5e0af53a4c6697dc44d28549ca6adcc8bcb6de36"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "3dfcd86c29d37f6815ea4cfe43eb9938d6bca0fcec45987507453c6321fe897b"
     },
     {
       "caseId": "T13-COD-004",
@@ -3160,8 +3160,8 @@
         }
       ],
       "query": "给出可直接替换草稿的 TypeScript 聚合函数。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "fc9507b526691aaf665898187b04e12029a71825ecb69c3c6b4227b6fe6fb9e2"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "cad4da7da3a2db129f5d8d34d7dc4e7a2c6317540e911b5b259242ab6a1a5d69"
     },
     {
       "caseId": "T13-COD-005",
@@ -3203,8 +3203,8 @@
         }
       ],
       "query": "根据摘要写性能回归备注。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "51151b03fc5fa3a0828afaf7f3cfeae989323ff7e972cdddcb8c0ece38c2fcb8"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "cdf6639d323ab544ddca83cebde86a7c6a4cbaa4aa004f38a1cbd12a3da88a25"
     },
     {
       "caseId": "T13-COD-006",
@@ -3258,8 +3258,8 @@
         }
       ],
       "query": "写出最小基准测试伪代码，并说明当前能下的结论。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "39578bca622d84bd168023e458235e99d99bb6310b77ac713e39f78de9973189"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "db3b82c6ea53a99497b2389882c2d37f6f0a997d25abcf3eabac2c53a1e9f821"
     },
     {
       "caseId": "T13-COD-007",
@@ -3301,8 +3301,8 @@
         }
       ],
       "query": "修正 traces pipeline 的 exporter 引用。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "8653deaf20377802f50e5c071292ce7a3de875b06c9b942b21877c1978f1dc00"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "691cea9a350099450f1a4b8f1c5190b9117e92469a2bebcaf9aa202039fb52db"
     },
     {
       "caseId": "T13-COD-008",
@@ -3356,8 +3356,8 @@
         }
       ],
       "query": "设计满足这三条验收要求的采样决策伪代码。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "053ca0464e518c059bcf66ddc02a64594a0204f2347e5203283f50530edc95c1"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "47bc917355bb27dac504e1db09c081bd85b210bb9db0c26fbd1b3b9d976e042e"
     },
     {
       "caseId": "T13-COD-009",
@@ -3399,8 +3399,8 @@
         }
       ],
       "query": "按时间线和验收项给出四步事故诊断清单。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "80aec445626cdcb2310b71e70e216cdf190f23a9d0ec2d29cf5246d0b0bdbba5"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "c7b2f7edd19391196061833b8bd21500a1897971e83c17ef8173996de5811d0b"
     },
     {
       "caseId": "T13-COD-010",
@@ -3454,8 +3454,8 @@
         }
       ],
       "query": "给出告警收敛伪代码和两个边界测试断言。",
-      "visibleAssetSetSha256": "1d98aa7088dd6c10ec04fb92b97a8b492632faf83970b579d28c9f2567c97b2d",
-      "contentHash": "027bb3a6dbc850608251b55d865bf1383d69e2b1e1d3e4c42a351bcb3b815b80"
+      "visibleAssetSetSha256": "dc21720d2c22b9007188fc3e675d07e2ddfd038c7e6dc3f5d1672ea74b42530d",
+      "contentHash": "cf684aa7ff02cb9973e280de5d6458c201d66dd0b5cfa5f73100500b06cd7ad3"
     }
   ],
   "privateAnnotations": [

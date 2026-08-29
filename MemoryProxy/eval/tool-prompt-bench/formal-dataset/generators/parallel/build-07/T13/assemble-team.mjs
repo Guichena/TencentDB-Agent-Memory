@@ -412,7 +412,12 @@ const team = withHash({
 
 const allAssets = [...l0Conversations, ...l1Memories, ...l2Scenes, ...l3Profiles, ...skills, ...knowledge];
 const snapshotAssetIds = allAssets.map((item) => item.assetId);
-const visibleAssetSetSha256 = digest(snapshotAssetIds.slice().sort());
+const visibleAssetSetSha256 = digest({
+  teamId: "T13",
+  userId: input.identity.user_id,
+  agentId: input.identity.active_agent_id,
+  assetIds: snapshotAssetIds.slice().sort((left, right) => left.localeCompare(right)),
+});
 const taskForRoute = (route) => {
   const task = taskByProject.get(route.project_id);
   must(task, `Unknown project route ${route.project_id}`);

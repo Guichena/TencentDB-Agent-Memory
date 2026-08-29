@@ -82,6 +82,14 @@ for (const pair of fragment.pairs) {
 
 const visible = new Set(fragment.snapshotAssetIds);
 check("snapshot.asset_ids_unique", visible.size === fragment.snapshotAssetIds.length, "snapshot asset ids must be unique");
+const primaryIdentity = fragment.publicCases[0].identity;
+const expectedVisibleSha = digest({
+  teamId: primaryIdentity.teamId,
+  userId: primaryIdentity.userId,
+  agentId: primaryIdentity.agentId,
+  assetIds: [...fragment.snapshotAssetIds].sort((left, right) => left.localeCompare(right)),
+});
+check("snapshot.identity_aware_hash", fragment.publicCases.every((item) => item.visibleAssetSetSha256 === expectedVisibleSha), "all Cases must use the production identity-aware visible asset hash");
 for (const annotation of positive) {
   check(`visibility:${annotation.caseId}`, annotation.gold.targetAssetIds.length > 0 && annotation.gold.targetAssetIds.every((assetId) => visible.has(assetId)), "every Gold target must be visible in the team snapshot");
   const shortest = Math.min(...annotation.gold.allowedSequences.map((sequence) => sequence.length));
