@@ -1,8 +1,8 @@
 # Task 1 正式数据集构造与验收手册
 
-状态：执行版草案 1.0
+状态：执行版 1.2
 
-适用分支：`codex/task1-data-d1-w01`
+适用启动基线：阶段 A 已完成。schema 基线 Tag `task1-data-parallel-baseline-v2` 解引用到 `1048681880b51e7a52a6b8b0b731eadeec44e118`，数据内容祖先为 `960021e472456515a89d3c2c4f2962fbf6cc51a1`。五个 Team 建设任务从包含最终手册和提示词的不可变 Tag `task1-data-parallel-launch-v2` 建立独立 worktree。
 
 适用任务：Proxy 系统提示词注入优化
 
@@ -119,7 +119,7 @@ tools/list(knowledge_id)
 
 到第一个成功的查询或探索调用后停止。不继续读取完整页面，不评价查询结果是否足以完成用户任务。
 
-Task 1 仍然要求覆盖 Knowledge，所以不能只放空的 `<knowledge_tools>`。同时没有必要建设完整 Wiki 或 CodeGraph。每个 Team 最多准备一个稳定、ready、工具列表可重复的最小 Knowledge 资源。优先复用当前系统已有的 ready 资源；只有没有可复用资源时，才导入一个小型 benchmark-owned 资源。正式评分只检查资源选择、`tools/list`、`tools/call` 和参数，不检查知识资产质量。
+Task 1 仍然要求覆盖 Knowledge，所以不能只放空的 `<knowledge_tools>`。同时没有必要建设完整 Wiki 或 CodeGraph。每个当前 Agent 固定绑定三个稳定、ready、工具列表可重复的最小 Knowledge 资源，形成一个目标资源和两个同域或错仓库干扰资源。优先复用当前系统已有的 ready 资源；只有没有可复用资源时，才导入轻量的 benchmark-owned 资源。正式评分只检查资源选择、`tools/list`、`tools/call` 和参数，不检查知识资产质量。
 
 若真实环境最终无法提供任何稳定 Knowledge 资源，必须删除 Knowledge Positive，并在报告中明确说明只测到了 Knowledge 的误调用面。此时不能声称完成了原任务中的 Knowledge 有效调用率。
 
@@ -153,6 +153,8 @@ Task 1 仍然要求覆盖 Knowledge，所以不能只放空的 `<knowledge_tools
 - `MalformedAttemptRate`、`OvercallRate` 和基础设施错误数。
 
 首动作指标用于解释主指标，不参与“有效调用成功”的判定。这样可以分清没有触发、第一步选错、链路中断和执行失败。
+
+当前 `score.ts` 已直接聚合 `effectiveCallRate`、`falseCallRate` 和 `conditionalToolAt1`，但尚未直接输出完整链路口径的 `conditionalSequenceAccuracy`。数据构造必须保存完整 Attempt、序列、目标资源和参数，正式实验前由 scorer 按上述固定公式补齐派生指标。不得用只检查首动作的 `conditionalToolAt1` 代替“工具选择正确率”。
 
 ### 各类 Memory 链路
 
@@ -200,7 +202,7 @@ T01 继承当前 W01-B 的 Mypy 与 fuzzing 材料。其他 Team 从 `OPEN-SKILL
 
 ## 规模与分布
 
-四百个 case 是目标容量，质量 Gate 优先于机械凑数。每个 Team 目标四十个 case：
+正式主集合固定为四百个 case，每个 Team 四十个。质量 Gate 优先于机械凑数，但质量不合格的 case 必须替换，不能通过减少某个 Team、再从其他 Team 补量来改变冻结分布：
 
 | 类型 | 每 Team | 全集 | 作用 |
 |---|---:|---:|---|
@@ -213,7 +215,7 @@ T01 继承当前 W01-B 的 Mypy 与 fuzzing 材料。其他 Team 从 `OPEN-SKILL
 
 Knowledge 数量低于 Memory 和 Skill，因为 Task 1 不评价知识资产质量，也不建设大规模知识库。三十个样本足以检查触发、资源选择和两步协议，同时把更多预算留给误调用率。
 
-四百条不是通过同一句话替换名词得到。某个 Team 无法写出六个独立、首动作唯一的 Skill Positive 时，可以减少该 Team 数量并从其他已通过 Gate 的 Team 补充。最终 manifest 必须保留实际分布，不能只记录目标表。
+四百条不能通过同一句话替换名词得到。某个 Team 暂时无法写出六个独立、首动作唯一的 Skill Positive 时，应替换薄弱靶子或重写具体 case；该 Team 未达到四十条合同前，不能通过本地 Gate。若确有理由改变数量合同，必须在任何 Prompt 调优或正式运行前发布新的 dataset revision，重新冻结每个 Team 的数量、分母和 manifest。额外生成的合格 case 可进入 exploratory 集合，不进入主指标分母。
 
 ### 三分之二正样本从搜索或发现入口开始
 
@@ -279,7 +281,11 @@ L1 不是从 L0 自动抽取出来的评测对象。Luna 可以根据 Team 项�
 
 生产 listing 不是一份手写静态列表。`skill-injector.ts` 会用 Agent 与 Task 描述构造查询，MemoryCore 再按 `searchTopK` 和字符预算渲染 `<available_skills>`。因此每条 Skill 搜索 Positive 都必须保存实际 listing、listing mode、命中 Skill ids 和 listing SHA-256。目标意外进入 listing 时，这条 case 应改为 direct view，或调整真实 ownership 与 binding，不能仍把 `skill_search` 写进 Gold。
 
-开源 Skill 可以直接导入，也可以做有记录的宿主适配。允许修改：
+正式 Skill 池中的目标 Skill 和干扰 Skill 都必须来自真实的公开 GitHub 仓库文件，不能由 Luna 凭空编写。Sol 用普通 GitHub 关键词搜索即可，不设置 Star 数、热门度或来源数量门槛，也不建设自动爬虫和排名系统。同一个真实包可以按领域适配给多个 Team 使用，但不能靠复制改名制造不同 Skill。
+
+候选进入 input pack 前，Sol 冻结 repository URL、commit SHA、仓库内 path、license 和 raw file SHA-256。没有明确许可证的内容不进入正式 Skill 池。无需安装仓库依赖、运行上游测试或证明 Skill 能完成最终工程任务。
+
+真实 Skill 可以直接导入，也可以做有记录的宿主适配。允许修改：
 
 - listing description。
 - 当前 MemoryProxy 不支持的宿主工具名。
@@ -318,7 +324,7 @@ case 的 `contextMessages` 负责表达当前任务阶段，Memory 负责表达�
 
 ### 先写信息缺口
 
-每个 Positive 先写私有 `information_gap`，再写上下文和 Query。信息缺口必须说明：
+每个 Positive 先写私有 `informationGap`，再写上下文和 Query。信息缺口必须说明：
 
 1. 当前输入缺什么。
 2. 目标资产在哪里。
@@ -330,15 +336,16 @@ case 的 `contextMessages` 负责表达当前任务阶段，Memory 负责表达�
 
 ```json
 {
-  "information_gap": "需要找出上次 Mypy stubgen 修复中 AliasPrinter 对 StarExpr 的精确处理方式，当前上下文只有问题现象，没有历史补丁结论。",
-  "target_family": "memory",
-  "target_asset": "W01-L0-11",
-  "minimal_sequence": [
-    "tdai_conversation_search"
-  ],
-  "stop_after": "conversation_search 返回 W01-L0-11 中的目标消息"
+  "needTdaiTool": true,
+  "family": "memory",
+  "targetAssetIds": ["T01-L0-11"],
+  "allowedSequences": [["tdai_conversation_search"]],
+  "informationGap": "需要找出上次 Mypy stubgen 修复中 AliasPrinter 对 StarExpr 的精确处理方式，当前上下文只有问题现象，没有历史结论。",
+  "stopAfter": "tdai_conversation_search 返回 T01-L0-11 中的目标消息"
 }
 ```
+
+示例只展示关键字段。正式对象必须以 `worlds/formal-schema.ts` 中的 `FormalGold` 为准，并由正式 validator 校验。
 
 ### Positive 与配对 Negative
 
@@ -356,15 +363,17 @@ case 的 `contextMessages` 负责表达当前任务阶段，Memory 负责表达�
 
 ```json
 {
-  "pair_id": "T01-MEM-001",
-  "shared_messages_sha256": "...",
-  "positive_delta_sha256": "...",
-  "negative_delta_sha256": "...",
-  "query_sha256": "...",
-  "fixture_snapshot_sha256": "...",
-  "single_variable_review": "passed"
+  "pairId": "T01-MEM-001",
+  "positiveCaseId": "T01-MEM-001-P",
+  "negativeCaseId": "T01-MEM-001-N",
+  "counterfactualKind": "answer_in_current_context",
+  "controlledDeltaSha256": "...",
+  "currentEvidenceRefs": ["..."],
+  "contentHash": "..."
 }
 ```
+
+共享消息、Positive delta、Negative delta、Query 和 snapshot 的细分 hash 可写入 Team review 或编译报告，但不能伪装成 `FormalPair` 字段。`FormalPair` 的正式形状以 `worlds/formal-schema.ts` 为准。
 
 ### 自然 coding Negative
 
@@ -399,12 +408,12 @@ case 的 `contextMessages` 负责表达当前任务阶段，Memory 负责表达�
 - `expectedFollowupActions`
 - `expectedKnowledgeCalls`
 - `allowedSequences`
-- `target_asset_id`
+- `targetAssetIds`
 - `forbiddenTools`
 - `maxTdaiCalls`
-- `information_gap`
+- `informationGap`
 - `annotationReason`
-- `pair_id`
+- `pairId`
 - 全部来源和审查记录
 
 编译脚本必须从两个不同对象生成 provider input 和 scorer Gold。不得先生成一个大对象，再靠运行时删除若干字段，因为一次遗漏就会泄露答案。
@@ -461,16 +470,18 @@ Gold 审查只回答工具决策，不回答工程任务。审查人需要检查
 
 ## 来源与生成规则
 
-### 开源材料只作可选题材
+### Skill 使用真实 GitHub 来源
 
-正式数据可以完全由 Luna 按冻结规则生成。开源任务、历史轨迹和仓库材料只用于改善工程表达或直接导入现成 Skill，不承担 Gold 正确性的证明责任。
+正式 Skill 必须来自普通 GitHub 搜索找到的真实仓库文件，Star 数不影响是否可用。GitHub 来源只证明 Skill 内容真实，不承担 Gold 正确性的证明责任。Gold 仍由当前上下文、冻结资产池、生产可见性和工具协议决定。
+
+Team 名、项目名、时间线、错误现象、历史结论、会话和各层 Memory 可以由 Luna 按冻结规则生成。Knowledge 可以是合成的内部项目文档，也可以直接使用外部资料。Luna 不得凭空生成正式 Skill 的名称、正文或技术步骤，只能基于 Sol 已冻结的真实 Skill 做宿主适配、描述压缩和 case 草稿。
 
 只有两类外部内容需要来源记录：
 
 - 实际导入的开源 Skill 包，记录 repository、revision、path、license 和包级 SHA-256。
 - 直接保留的外部原文片段，记录 dataset、row 或 path、license 和片段 SHA-256。
 
-由 Luna 新写的 Team 名、项目名、会话、错误现象、历史结论、L0、L1、L2、L3 和自然负例不要求逐句 `source_id`、文件位置或 hash，只需记录生成批次和审查状态。不能把合成内容声称为真实仓库事实。
+由 Luna 新写的 Team 名、项目名、会话、错误现象、历史结论、L0、L1、L2、L3、内部 Knowledge 和自然负例不要求逐句 `source_id`、文件位置或 hash，只需记录生成批次和审查状态。不能把合成内容声称为真实仓库事实。
 
 不要提取、应用或复现 benchmark 的 reference patch、test patch、最终答案和 verifier 结论，也不要为数据构造安装开源项目依赖或运行其测试。它们与 Task 1 的工具调用指标无关。
 
@@ -481,7 +492,8 @@ Gold 审查只回答工具决策，不回答工程任务。审查人需要检查
 生成 Agent 可以完成：
 
 - 根据 Team 规则生成自然的当前会话。
-- 生成内部一致的 L0、L1、L2、L3 或系统专属 Skill 候选。
+- 生成内部一致的 L0、L1、L2、L3 和内部 Knowledge 候选。
+- 基于 Sol 冻结的真实 GitHub Skill 文件生成宿主适配和 case 草稿。
 - 生成 Positive 与单变量 Negative 草稿。
 - 生成同域干扰项候选。
 - 记录生成批次；只有使用外部内容时才补来源引用。
@@ -493,6 +505,7 @@ Gold 审查只回答工具决策，不回答工程任务。审查人需要检查
 - 目标资产在生产链路中是否可见。
 - Hidden 是否解封。
 - 某个失败运行是否应从指标分母删除。
+- 凭空编写正式 Skill 的名称、正文、文件或技术步骤。
 
 每批输出记录：
 
@@ -530,7 +543,7 @@ Gold 审查只回答工具决策，不回答工程任务。审查人需要检查
 ### 生成上下文正负对的模板
 
 ```text
-根据给定 Team、当前任务、可见资产池和私有 information_gap，生成一组中文工程会话。
+根据给定 Team、当前任务、可见资产池和私有 `informationGap`，生成一组中文工程会话。
 
 要求：
 - shared_messages 有 8 至 12 条，包含任务背景、已知证据、一次方向调整、已完成工作和仍缺的信息。
@@ -603,9 +616,24 @@ eval/tool-prompt-bench/formal-dataset/
 
 ## 分阶段执行
 
+### 当前阶段状态
+
+schema 基线 Tag `task1-data-parallel-baseline-v2` 已包含 DS00、DS01、DS02 的 T01 检索压力试点，以及 synthetic 与 external import provenance 分型。建设任务不得重复执行已完成阶段，也不得在各自分支修改全局合同。启动时先读取 `formal-dataset/DATASET-BUILD-STATUS.json`；其中的 `branch` 是最近一次集成元数据，不是当前建设任务应切换到的分支。
+
+`worlds/formal-schema.ts`、compiler、validator 和直接相关测试已经同步支持两类 provenance。`synthetic` 只记录生成批次与审查信息，禁止填写伪造的外部来源字段；`external_import` 继续严格校验 repository、revision、license、path、locator 和 hash。L1 code/test locator 只对外部导入强制。五个建设任务可以直接完成 staging 和本地 Gate。
+
+当前并行施工边界如下：
+
+- build-01 继续完成 DS02 的 T01，并建设 T02。
+- build-02 建设 DS03 的 T03、T04。
+- build-03 至 build-05 建设 DS05 的 T05 至 T10 分片。
+- DS04、DS06 及后续全局冻结、快照和状态更新只由集成任务完成。
+
 ### DS00：冻结一 Space 设计和多步评分合同
 
-前置条件：只使用当前分支，不生成模型数据，不导入资产。
+状态：一 Space、十 Team、split、完整链路评分和 provenance 分型均已在 v2 schema 基线完成。本节历史任务不应在建设分支重做。
+
+前置条件：在专用合同分支执行，不生成模型数据，不导入资产。
 
 执行任务：
 
@@ -621,8 +649,9 @@ eval/tool-prompt-bench/formal-dataset/
 ```powershell
 cd MemoryProxy
 npm run eval:tool-prompt:d0:test
-npm run typecheck
 ```
+
+全量 `npm run typecheck` 只作历史基线对比，不是数据阶段 Gate。若运行后仍只有与 Task 1 无关的既有错误，记录即可；不得为了清零全仓历史错误扩大本任务范围。相关 schema、编译器、validator 和测试必须通过，且本任务不得引入新的错误。
 
 Gate：
 
@@ -643,6 +672,8 @@ feat(tool-prompt-bench): revise formal dataset to one-space multi-team contract
 ```
 
 ### DS01：迁移 T01 已有材料
+
+状态：已在冻结基线完成。本节保留为历史验收合同，不应在建设分支重做。
 
 前置条件：DS00 Gate 通过。
 
@@ -675,6 +706,8 @@ missing source refs: 0
 Gate：八条 case 在新 schema 下通过，Positive 与 Negative 的共享字段 hash 相同，只有登记的 delta 不同。
 
 ### DS02：完成 T01 四十条
+
+状态：T01 检索压力试点已完成；build-01 从试点结果继续补齐 T01 四十条。
 
 前置条件：DS01 Gate 通过，T01 资产池已冻结。
 
@@ -946,7 +979,7 @@ Prompt cache 不要求每个 case 的完整 system prompt 相同，因为 L3、L
 
 ### 泄漏
 
-- provider input 不含 `gold`、`target`、`expected`、`pair_id`、`information_gap`。
+- provider input 不含 `gold`、`target`、`expected`、`pairId`、`informationGap`，也不含旧草稿字段 `pair_id`、`information_gap`。
 - Query 和 context 不出现 bridge endpoint、`knowledge_id` 或私有资产 id。
 - 开源 reference patch、verifier answer 和 Hidden 标签不进入 provider input。
 - 目标 Skill 名只在真实业务必须明确点名时出现，这类 case 单独标记 direct-name。
@@ -967,22 +1000,27 @@ Prompt cache 不要求每个 case 的完整 system prompt 相同，因为 L3、L
 
 ## `DATASET-BUILD-STATUS.json`
 
-执行 Agent 每次只推进一个阶段，并更新状态文件：
+`DATASET-BUILD-STATUS.json` 是全局集成状态，只能由集成任务更新。五个建设任务必须把进度、数量和 Gate 写入各自 Team 的 `gate.json`，不能并发修改总状态文件。状态文件中的 `branch` 记录最近一次全局状态写入来源，不代表其他任务应切换到该分支。
+
+当前冻结基线中的状态结构示意如下。实际值必须直接读取文件，不能从本段复制：
 
 ```json
 {
   "schema_version": "task1.dataset_build_status.v1",
   "dataset_revision": "formal-v1",
-  "active_stage": "DS01",
-  "stage_status": "in_progress",
-  "branch": "codex/task1-data-d1-w01",
-  "completed_gates": ["DS00"],
+  "active_stage": "DS02_parallel_v2",
+  "stage_status": "parallel_ready",
+  "branch": "<last-integration-branch>",
+  "parallel_baseline_ref": "task1-data-parallel-baseline-v2",
+  "parallel_baseline_commit": "1048681880b51e7a52a6b8b0b731eadeec44e118",
+  "content_baseline_commit": "960021e472456515a89d3c2c4f2962fbf6cc51a1",
+  "completed_gates": ["DS00", "DS01", "DS02_PILOT", "SYNTHETIC_PROVENANCE_V2"],
   "team_progress": {
     "T01": {
-      "assets": "draft",
-      "cases": 8,
-      "pairs": 4,
-      "gate": "pending"
+      "assets": "ds02_pilot_frozen",
+      "cases": 10,
+      "pairs": 5,
+      "gate": "ds02_pilot_passed"
     }
   },
   "blocking_issues": [],
@@ -998,11 +1036,11 @@ Agent 开始工作时按以下顺序读取：
 3. 当前阶段涉及的 Team registry、来源锁和上一次 Gate 报告。
 4. `git status`，确认用户已有修改不会被覆盖。
 
-Agent 完成一个阶段时：
+集成 Agent 完成一个全局阶段时：
 
 1. 运行该阶段全部命令。
 2. 保存完整输出和 Gate 报告。
-3. 更新状态文件。
+3. 更新状态文件。建设 Agent 改为更新自己 Team 的 `gate.json`。
 4. 只提交当前阶段涉及的文件。
 5. 在下一阶段开始前再次核对当前分支和基线提交。
 
@@ -1010,15 +1048,15 @@ Agent 完成一个阶段时：
 
 正式数据建设使用五个互相独立的 Codex 任务。这里的“任务”指用户在 Codex 中单独打开的任务，不是 Team 内部的 Luna 批次：
 
-| 建设任务 | 负责 Team | Split | 固定分支 | 固定 worktree |
-|---|---|---|---|---|
-| build-01 | T01、T02 | Dev | `codex/task1-data-build-v2-t01-t02` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02` |
-| build-02 | T03、T04 | Dev | `codex/task1-data-build-v2-t03-t04` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t03-t04` |
-| build-03 | T05、T06 | Hidden | `codex/task1-data-build-v2-t05-t06` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t05-t06` |
-| build-04 | T07、T08 | Hidden | `codex/task1-data-build-v2-t07-t08` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t07-t08` |
-| build-05 | T09、T10 | Hidden | `codex/task1-data-build-v2-t09-t10` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t09-t10` |
+| 建设任务 | 负责 Team | Split | 建议分支 |
+|---|---|---|---|
+| build-01 | T01、T02 | Dev | `codex/task1-data-build-v2-t01-t02` |
+| build-02 | T03、T04 | Dev | `codex/task1-data-build-v2-t03-t04` |
+| build-03 | T05、T06 | Hidden | `codex/task1-data-build-v2-t05-t06` |
+| build-04 | T07、T08 | Hidden | `codex/task1-data-build-v2-t07-t08` |
+| build-05 | T09、T10 | Hidden | `codex/task1-data-build-v2-t09-t10` |
 
-五个任务必须从 annotated Tag `task1-data-parallel-baseline-v2` 建立独立 worktree。该 Tag 解引用提交固定为 `1048681880b51e7a52a6b8b0b731eadeec44e118`，且数据内容提交 `960021e472456515a89d3c2c4f2962fbf6cc51a1` 必须是其祖先。旧 `task1-data-parallel-baseline-v1` 和无 `v2` 的建设分支已经被本轮冻结替代，不得继续用于正式 staging。不能让多个任务共享一个可写工作目录，也不能让它们直接修改以下全局文件：
+五个建设任务从不可变 Tag `task1-data-parallel-launch-v2` 建立专用 worktree。launch Tag 必须包含本手册、并行 README、五份提示词和 v2 schema 基线。`1048681880b51e7a52a6b8b0b731eadeec44e118` 与数据内容基线 `960021e472456515a89d3c2c4f2962fbf6cc51a1` 都必须是启动 HEAD 的祖先。任何阶段都不能让多个任务共享一个可写工作目录，也不能让建设任务直接修改以下全局文件：
 
 ```text
 formal-dataset/registry/contracts/formal-v1.json
@@ -1065,7 +1103,7 @@ parallel-prompts/THREAD-05-T09-T10.md
 
 ## 分支与提交
 
-当前数据工作基线保留在现有分支。五个建设任务从同一个冻结提交建立独立 worktree 和分支，集成工作保留在单独分支：
+五个建设任务从同一个冻结 Tag 建立独立 worktree 和分支，集成工作保留在单独分支：
 
 ```text
 codex/task1-data-build-v2-t01-t02
@@ -1077,7 +1115,32 @@ codex/task1-data-integration
 codex/task1-data-real-snapshot
 ```
 
-实际创建分支前先确认集成基线。一个提交只做一种改造，提交正文写清：
+在仓库任一只读管理工作树中，用明确路径创建专用 worktree。不要在共享集成目录中执行 `git switch`：
+
+```powershell
+git worktree add -b codex/task1-data-build-v2-t03-t04 `
+  D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t03-t04 `
+  task1-data-parallel-launch-v2
+```
+
+每个任务开始时必须运行：
+
+```powershell
+git status --short --branch -uall
+git branch --show-current
+git worktree list --porcelain
+$launchCommit = git rev-parse "task1-data-parallel-launch-v2^{commit}"
+$headCommit = git rev-parse HEAD
+$schemaCommit = git rev-parse "task1-data-parallel-baseline-v2^{commit}"
+if ($headCommit -ne $launchCommit) { throw "HEAD does not match launch tag" }
+if ($schemaCommit -ne "1048681880b51e7a52a6b8b0b731eadeec44e118") { throw "unexpected schema baseline" }
+git merge-base --is-ancestor $schemaCommit HEAD
+git merge-base --is-ancestor 960021e472456515a89d3c2c4f2962fbf6cc51a1 HEAD
+```
+
+第一条必须显示干净工作树，第二条必须等于该任务的预期分支，HEAD 必须等于 launch Tag 的解引用提交，schema Tag 必须解引用到固定提交，两个祖先检查必须以 0 退出。`git worktree list --porcelain` 必须证明当前路径与预期分支绑定。任一条件不满足时停止并报告，不切换共享工作树，不清理或覆盖其他任务的文件。
+
+一个提交只做一种改造，提交正文写清：
 
 - 生成批次，以及实际使用的外部来源。没有外部来源时明确写 `synthetic`。
 - 新增或修改的资产与 case 数。

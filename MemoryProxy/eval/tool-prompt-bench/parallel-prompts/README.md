@@ -10,7 +10,7 @@
 
 ## 固定任务划分
 
-| 提示词 | 主任务 | Split | 固定分支 | 固定 worktree |
+| 提示词 | 主任务 | Split | 分支 | 专用 worktree |
 |---|---|---|---|---|
 | `THREAD-01-T01-T02.md` | 完成 T01；完成 T02 | Dev | `codex/task1-data-build-v2-t01-t02` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02` |
 | `THREAD-02-T03-T04.md` | 完成 T03；完成 T04 | Dev | `codex/task1-data-build-v2-t03-t04` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t03-t04` |
@@ -18,47 +18,78 @@
 | `THREAD-04-T07-T08.md` | 完成 T07；完成 T08 | Hidden | `codex/task1-data-build-v2-t07-t08` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t07-t08` |
 | `THREAD-05-T09-T10.md` | 完成 T09；完成 T10 | Hidden | `codex/task1-data-build-v2-t09-t10` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t09-t10` |
 
-五个任务必须从同一个冻结 Tag 建立独立 worktree：
+每份 `THREAD-xx` 提示词都包含自己的 `git worktree add` 命令。推荐先把提示词交给新任务，让该任务创建并转入专用 worktree，再开始数据写入。若目标分支或目录已经存在，任务必须先用 `git worktree list --porcelain` 查明归属，不能在共享目录执行 `git switch`，也不能删除或接管已有 worktree。
+
+阶段 A 已完成。五个建设任务使用两个不可变引用：
 
 - 数据内容基线提交：`960021e472456515a89d3c2c4f2962fbf6cc51a1`
-- 唯一启动引用：`task1-data-parallel-baseline-v2`
-- Tag 解引用提交：`1048681880b51e7a52a6b8b0b731eadeec44e118`
+- schema 基线 Tag：`task1-data-parallel-baseline-v2`
+- schema 基线提交：`1048681880b51e7a52a6b8b0b731eadeec44e118`
+- 唯一启动引用：`task1-data-parallel-launch-v2`
 
-启动后必须运行 `git rev-parse "task1-data-parallel-baseline-v2^{commit}"`，结果必须严格等于 `1048681880b51e7a52a6b8b0b731eadeec44e118`；再用 `git merge-base --is-ancestor 960021e472456515a89d3c2c4f2962fbf6cc51a1 HEAD` 确认数据内容基线是当前分支祖先。Tag 冻结正式 schema、compiler、validator、T01 当前试点和已确认保留的原始草稿；本提示词包在 Tag 建立后的调度提交中记录精确 Tag commit。任何检查失败都应停止，不得从 v1、旧建设分支或浮动 HEAD 继续施工。
+`task1-data-parallel-baseline-v2` 冻结经过测试的 schema、compiler 和 validator。`task1-data-parallel-launch-v2` 指向包含最终手册、并行 README 和五份提示词的文档提交。五个建设任务从 launch Tag 创建 worktree，并动态比较当前 HEAD 与 launch Tag 的解引用提交，因此不在同一提交中硬编码它自己的 SHA。
 
-迁移说明：旧分支 `codex/task1-data-build-t09-t10` 已绑定其他 worktree，因此本轮五个建设任务统一改用带 `v2` 的全新分支和路径。不得删除、移动、接管旧分支或旧 worktree。
+旧建设分支或目录已经被其他任务占用时，不得删除、移动或接管。本轮只使用上表中的 v2 分支和专用目录。
+
+全局合同任务启动后必须先运行：
+
+```powershell
+git status --short --branch -uall
+git branch --show-current
+git worktree list --porcelain
+$launchCommit = git rev-parse "task1-data-parallel-launch-v2^{commit}"
+$headCommit = git rev-parse HEAD
+$schemaCommit = git rev-parse "task1-data-parallel-baseline-v2^{commit}"
+if ($headCommit -ne $launchCommit) { throw "HEAD does not match launch tag" }
+if ($schemaCommit -ne "1048681880b51e7a52a6b8b0b731eadeec44e118") { throw "unexpected schema baseline" }
+git merge-base --is-ancestor $schemaCommit HEAD
+git merge-base --is-ancestor 960021e472456515a89d3c2c4f2962fbf6cc51a1 HEAD
+```
+
+工作树必须干净，当前分支必须等于该提示词登记的分支，当前路径必须在 worktree 列表中与该分支绑定，HEAD 必须等于 launch Tag 的解引用提交，schema Tag 必须解引用到固定提交，两个祖先检查必须以 0 退出。任何检查失败都应停止，不得执行 `git switch` 操作共享工作树，也不得从旧分支或浮动 HEAD 继续施工。
 
 ## 每个建设任务的写入范围
 
 允许写入：
 
 ```text
-formal-dataset/generators/parallel/<build-id>/<team-id>/**
-formal-dataset/staging/teams/<team-id>/**
-formal-dataset/source-material/<team-id>/**
+MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/<build-id>/<team-id>/**
+MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/<team-id>/**
+MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/<team-id>/**
 ```
 
-共享候选库 `formal-dataset/source-material/shared/skills/**` 对五个建设任务只读。候选文件出现在仓库中不代表已绑定到任何 Team；实际采用时才把确认过来源和适配边界的包写入该 Team 的 source-material 目录。
+共享候选库 `MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/shared/skills/**` 对五个建设任务只读。候选文件出现在仓库中不代表已绑定到任何 Team；实际采用时才把确认过来源和适配边界的包写入该 Team 的 source-material 目录。
 
 禁止写入：
 
 ```text
-formal-dataset/registry/contracts/formal-v1.json
-formal-dataset/DATASET-BUILD-STATUS.json
-formal-dataset/provider/**
-formal-dataset/snapshots/**
+MemoryProxy/eval/tool-prompt-bench/formal-dataset/registry/contracts/formal-v1.json
+MemoryProxy/eval/tool-prompt-bench/formal-dataset/DATASET-BUILD-STATUS.json
+MemoryProxy/eval/tool-prompt-bench/formal-dataset/provider/**
+MemoryProxy/eval/tool-prompt-bench/formal-dataset/snapshots/**
 其他建设任务负责的 Team 目录
 生产代码、Prompt Variant、MemoryProxy 配置和真实运行配置
 ```
 
 如果现有脚本只能直接修改全局合同，建设任务不得运行该写入步骤。它应把同样的数据写成 Team 分片，交给集成任务合并。
 
+## 已闭合的共享合同
+
+阶段 A 已在 `1048681880b51e7a52a6b8b0b731eadeec44e118` 完成 provenance 分型：
+
+- `synthetic` 只记录生成模型、推理强度、prompt version、批次、时间、审查状态和内容引用。
+- `external_import` 严格记录 repository、revision、license、path、locator 和 hash。
+- L1 code/test locator 只对外部导入强制。
+- 建设任务不得修改 schema，也不得为合成内容填写占位仓库、假 commit、假 license 或假 locator。
+
+这不授权提取 official patch、安装上游依赖或运行上游测试。五个建设任务可以直接完成正式 staging 和 Team Gate。
+
 ## Team 分片结构
 
 每个 Team 的最终 staging 目录至少包含：
 
 ```text
-formal-dataset/staging/teams/Txx/
+MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/Txx/
 ├── team-fragment.json
 ├── assets/
 │   ├── memory.json
@@ -94,12 +125,22 @@ formal-dataset/staging/teams/Txx/
 ## 单个 Team 的固定工作流
 
 1. Sol 只读核对 Team 主题、现有材料、生产工具入口和当前 schema。
-2. Sol 写唯一的 Team input pack，冻结项目流、身份、资产命名空间、目标数量、可见性和禁止泄漏字段。
-3. Sol 调用 Luna 子智能体生成草稿。每个 Luna 使用 `gpt-5.6-luna`、`reasoning_effort=high`、`fork_turns=none`，只写唯一批次目录。
-4. Luna 批次按 Memory/上下文、Skill、Knowledge/自然负例拆分。可并发数量服从当前任务的可用槽位，必须给 Sol 留出检查能力；无槽位时排队，不扩大文件范围。
-5. Sol 逐份读取原始输出，检查唯一信息缺口、首动作、完整最小链路、pair 单变量、资产可见性、干扰真实性和 provider 泄漏。
-6. Sol 只把通过审核的内容写入 Team staging。Luna 不得写正式 staging、决定最终 Gold 或修改 schema。
-7. 先通过一组 Memory、一组 Skill、一组 Knowledge 试验 pair，再扩到每 Team 40 条。一个 Team 的 `gate.json` 通过后，才开始同一建设任务的第二个 Team。
+2. Sol 用普通 GitHub 关键词搜索选择真实 Skill 文件，冻结 repository URL、commit SHA、path、license 和 raw file SHA-256。目标 Skill 和干扰 Skill 都不能由 Luna 凭空编写，不设置 Star 数或热门度门槛，也不运行上游项目。
+3. Sol 写唯一的 Team input pack，冻结项目流、身份、资产命名空间、Skill 来源、目标数量、可见性和禁止泄漏字段。
+4. Sol 调用 Luna 子智能体生成草稿。每个 Luna 使用 `gpt-5.6-luna`、`reasoning_effort=high`、`fork_turns=none`，只写唯一批次目录。Memory、会话、项目历史和内部 Knowledge 可以合成；Skill 只能基于 input pack 中的真实 GitHub 文件做宿主适配和 case 构造。
+5. Luna 批次按 Memory/上下文、Skill、Knowledge/自然负例拆分。可并发数量服从当前任务的可用槽位，必须给 Sol 留出检查能力；无槽位时排队，不扩大文件范围。
+6. Sol 逐份读取原始输出，检查唯一信息缺口、首动作、完整最小链路、pair 单变量、资产可见性、干扰真实性和 provider 泄漏。
+7. Sol 只把通过审核的内容写入 Team staging。Luna 不得写正式 staging、决定最终 Gold、修改 schema 或凭空生成 Skill。
+8. 先通过一组 Memory、一组 Skill、一组 Knowledge 试验 pair，再扩到每 Team 40 条。一个 Team 的 `gate.json` 通过后，才开始同一建设任务的第二个 Team。
+
+Luna 原始批次只通过格式 validator：
+
+```powershell
+node MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/DS02/T01/validate-luna-batch.mjs `
+  <batch-dir> <family-or-natural-negative> <expected-count> <team-id> <stage>
+```
+
+该 validator 检查批次格式、Team、Stage、数量、明显泄漏和可选 hash，不证明信息缺口唯一、正式 Gold 正确、资产运行时可见或完整最小链路成立。这些结论必须由 Sol 复核，并由 Team Gate 与正式 validator 验证。
 
 ## 每个 Team 的目标容量
 
@@ -112,7 +153,7 @@ formal-dataset/staging/teams/Txx/
 | 自然 coding Negative | 10 |
 | 合计 | 40 |
 
-数量是目标，不得用改名复制造成伪多样性。质量 Gate 优先；无法获得唯一 Gold 的 case 移出正式集合，并在 `gate.json` 记录缺口。
+主集合数量是固定合同，不得用改名复制造成伪多样性。质量 Gate 优先；无法获得唯一 Gold 的 case 移出正式集合，并在 `gate.json` 记录缺口，同时必须用新的合格 case 补齐该 Team 的 40 条后才能通过。额外的合格 case 可以进入 exploratory 集合，但除非在 Prompt 调优前发布并冻结新的 dataset revision，否则不能改变主指标分母。
 
 ## 明确禁止的过度验证
 

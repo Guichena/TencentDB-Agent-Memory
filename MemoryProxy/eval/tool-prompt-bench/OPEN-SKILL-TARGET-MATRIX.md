@@ -1,6 +1,6 @@
 # 开源 Skill 与评测靶子配对方案
 
-> 状态：候选来源与第一批配对已完成只读核验；本文是候选研究记录。正式拓扑以 `TASK1-DATASET-CONSTRUCTION-RUNBOOK.md` 的一个 Space、T01～T10 为准，尚未生成正式 Case，也尚未获得真实链路指标资格。
+> 状态：候选来源与第一批配对已完成只读核验；本文是候选研究记录。正式拓扑以 `TASK1-DATASET-CONSTRUCTION-RUNBOOK.md` 的一个 Space、T01 至 T10 为准。冻结基线已有 T01 的 5 组检索压力 pair、10 条正式试点 case，但完整 400 条主集合和真实链路指标资格尚未完成。
 
 > Task 1 范围：正式实验运行到第一个目标资产响应，检查完整最小 Memory/Skill/Knowledge 调用链，不执行后续 coding，也不验证最终任务完成度。上游 workspace/verifier 只作历史研究资料，不运行。若两个 Skill 都同样合理，应修改或替换 case，不能通过执行上游任务来决定 Task 1 Gold。
 
@@ -18,7 +18,7 @@ T01～T03 继承历史 W01～W03 的候选研究，并改用“先确定 Skill �
 | 开源任务随附 Skill | 同一开源任务包内的 task 与 Skills；workspace/verifier 仅作可选参考 | 优先用于 Skill Positive，因为任务与 Skill 已天然配对 | 冻结 task、Skill、许可和实际使用的资源；Query 必须改写成当前系统的自然请求，不能复制 benchmark 提示词 |
 | 系统专属 Skill | Luna 根据固定仓库代码、测试、文档和任务约束生成 | 补充 repo 专属流程、版本边界和近义干扰 | 不得发明技术事实；保存 generator/model/prompt、输入证据、输出 hash；人工复核“是否值得调用”和唯一首动作即可 |
 
-历史轨迹仍用于构造 L0/L1/L2、历史决策和旧版本干扰。只有明确声称“这是团队从历史中总结的流程”时，Skill 才要求两条独立历史 Session。开源导入 Skill 和证据化生成 Skill 不需要伪造历史会话。
+历史轨迹可以用于构造 L0/L1/L2、历史决策和旧版本干扰，也可以由 Luna 按冻结 Team 世界合成。只有明确声称“这是团队从外部历史中总结的流程”并实际引用外部内容时，才保存对应来源。开源导入 Skill 和合成 Skill 不需要伪造历史会话。
 
 ## 2. 已核验来源
 

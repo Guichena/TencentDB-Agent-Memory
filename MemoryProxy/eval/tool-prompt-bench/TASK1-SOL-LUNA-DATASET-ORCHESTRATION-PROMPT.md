@@ -8,19 +8,21 @@
 - 生成 Agent 推理强度：`high`
 - Luna 输出详细度：`medium`
 - 数据内容基线提交：`960021e472456515a89d3c2c4f2962fbf6cc51a1`
-- 唯一启动引用：`task1-data-parallel-baseline-v1`
-- 工作目录：从上述 Tag 建立的独立 worktree
-- 当前分支：不要预设，启动时运行 `git status --short --branch -uall` 确认
+- schema 基线 Tag：`task1-data-parallel-baseline-v2`
+- schema 基线提交：`1048681880b51e7a52a6b8b0b731eadeec44e118`
+- 唯一启动引用：`task1-data-parallel-launch-v2`
+- 工作目录：只读总审计可在干净的管理 worktree；实际建设或集成必须改用对应 `parallel-prompts/THREAD-xx-*.md`，由该提示词创建专用 worktree
+- 当前分支：总控提示词不授权数据写入，不要在启动目录直接施工
 
 复制下面的正文作为新任务提示词。
 
 ---
 
-你是 Task 1 正式数据集构造工作的技术负责人，使用 `gpt-5.6-sol`。你的职责是核对源码和合同、制定每个阶段的执行计划、拆分 Luna 任务、检查所有生成结果、决定最终 Gold、运行 Gate 并管理阶段状态。批量数据草稿交给 `gpt-5.6-luna` 生成。Luna 不得替你决定 schema、Gold、来源合规、生产可见性和阶段是否通过。
+你是 Task 1 正式数据集构造工作的总控负责人，使用 `gpt-5.6-sol`。本提示词只负责只读总审计、任务分派和集成规划，不直接写 Team 数据。实际建设必须使用对应的 `parallel-prompts/THREAD-01` 至 `THREAD-05`，正式集成必须使用 `THREAD-00-INTEGRATION.md`。这些专用提示词负责创建独立 worktree，并规定唯一写入范围。批量数据草稿交给 `gpt-5.6-luna` 生成。Luna 不得替 Sol 决定 schema、Gold、来源合规、生产可见性和阶段是否通过。
 
-你的固定数据内容基线是 `960021e472456515a89d3c2c4f2962fbf6cc51a1`，唯一启动引用是 `task1-data-parallel-baseline-v1`。工作树必须从该 Tag 建立。开始前运行 `git rev-parse task1-data-parallel-baseline-v1` 和 `git merge-base --is-ancestor 960021e472456515a89d3c2c4f2962fbf6cc51a1 HEAD`；任一检查失败都停止并报告，不得从旧分支或浮动 HEAD 继续。
+你的固定数据内容基线是 `960021e472456515a89d3c2c4f2962fbf6cc51a1`，schema 基线 Tag 是 `task1-data-parallel-baseline-v2`，对应提交是 `1048681880b51e7a52a6b8b0b731eadeec44e118`，唯一启动引用是 `task1-data-parallel-launch-v2`。总审计开始前运行 `git status --short --branch -uall`、`git worktree list --porcelain`，动态比较当前 HEAD 与 launch Tag 的解引用提交，并确认 schema 基线提交和数据内容基线都是当前 HEAD 的祖先。总控任务不执行 `git switch`，不在启动目录写数据；建设和集成任务由专用提示词创建或进入自己的 worktree 后，再校验预期分支与基线。
 
-你要把数据集构造任务持续推进到可交付状态。每个阶段必须通过 Gate 后才能进入下一阶段。遇到局部数据质量问题时，优先替换或重写具体 case，不要增加大规模平台、复杂兜底或与 Task 1 无关的工程设施。
+你要把数据集构造任务持续协调到可交付状态。先确认五个建设任务和集成任务的专用提示词、分支与 worktree 计划；随后把实际写入交给对应任务。每个 Team 和全局阶段必须通过各自 Gate 后才能进入下一步。遇到局部数据质量问题时，优先要求原建设任务替换或重写具体 case，不要在总控任务中越权改分片。
 
 ## 目标
 
@@ -63,6 +65,7 @@ Task 1 只评价工具注入能否让模型作出正确调用决策。不要评�
 
 - `MemoryProxy/src/injection/injectors/tdai-tools-injector.ts`
 - `MemoryProxy/src/injection/injectors/tdai-profile-memory-injector.ts`
+- `MemoryProxy/src/injection/injectors/skill-tools-injector.ts`
 - `MemoryProxy/src/injection/injectors/skill-injector.ts`
 - `MemoryProxy/src/injection/injectors/knowledge-tools-injector.ts`
 - `MemoryProxy/src/injection/tool-prompt/runtime-contract.ts`
@@ -76,27 +79,15 @@ Task 1 只评价工具注入能否让模型作出正确调用决策。不要评�
 
 ## 当前状态，必须从这里继续
 
-截至 2026-08-29，工作区为：
+v2 schema 基线已包含 DS00、DS01、DS02 的 T01 检索压力试点，以及 synthetic 与 external import provenance 分型。正式合同已有 T01 的 5 组 pair、10 条 case：Memory 2 组、Skill 2 组、Knowledge 1 组。仓库还保留 T01 的四类待审核 Luna 原始批次：Memory 4 组、Skill 4 组、Knowledge 2 组、自然 coding Negative 10 条。它们不能自动接纳，也不应默认重新生成。四个批次当前 manifest 里的可选 `raw_output_sha256` 与 draft 不一致，build-01 应先确认 draft 内容，再删除可选字段或刷新为当前 hash；不能放宽 validator，也不能因此重生成整批。
 
-```text
-D:\projects\TencentDB-Agent-Memory-task1-p01-integration
-known integration baseline: codex/task1-data-d1-w01 at 5b7f2734cff5b93840b5622c2b344058882ddf9c
-current branch: do not assume; another task may have switched the shared worktree
-```
+`formal-dataset/DATASET-BUILD-STATUS.json` 已记录 `DS00`、`DS01`、`DS02_PILOT` 和 `SYNTHETIC_PROVENANCE_V2`，当前正式 schema、编译器、validator、恢复脚本和快照检查脚本已经存在。不要重建第二套数据工程框架。状态文件中的 `branch` 是最近一次集成元数据，不是建设任务应切换到的分支。建设任务不得修改该文件，只写自己 Team 的 `gate.json`；集成任务才更新全局状态。
 
-工作区中已有大量未提交的 Task 1 修改和新文件。先运行 `git status --short --branch -uall` 和 `git diff --check`，逐项确认归属。不要 reset、checkout、stash、删除或覆盖用户已有修改。不要从零重写已有工作。
+provenance 缺口已经闭合。`synthetic` 只记录生成批次和审查信息，禁止填写伪造的 repository、revision、license、path 或外部 hash；`external_import` 继续严格校验外部来源字段。五个建设任务不得修改该 schema，可以直接完成 Team staging 和本地 Gate。
 
-当前只读复核已经确认：
+启动工作树应当干净。如果 `git status --short --branch -uall` 或 `git diff --check` 显示修改，先逐项确认归属。不要 reset、checkout、stash、删除或覆盖已有修改。与 Task 1 无关的全量 typecheck 历史错误不阻塞数据构造；只要求相关 Gate 通过且本任务新增错误为零。
 
-- 当前有效 HEAD 为 `33c35e53f071c959db63854811784219cde6bf92`，包含 DS00、DS01 和 T01 检索压力试点。
-- 正式合同当前有 T01 的 5 组 pair、10 条 case：Memory 2 组、Skill 2 组、Knowledge 1 组。
-- T01 已有四类尚未进入 registry 的 Luna 原始批次：Memory 4 组、Skill 4 组、Knowledge 2 组、自然 coding Negative 10 条。它们需要重新按简化来源合同审核，不能因为旧 review 被清理就自动接纳或重新生成。
-- `formal-dataset/DATASET-BUILD-STATUS.json` 已存在，但仍记录 DS01 的 8 条状态，属于待集成任务修正的状态漂移；建设任务不得各自修改它。
-- 正式 schema、编译器、validator、恢复脚本和快照检查脚本已经存在。不要重建第二套数据工程框架。
-- 与 Task 1 无关的全量 typecheck 历史错误不阻塞数据构造；只要求本任务新增错误为零、相关 Gate 可运行。
-- 不需要下载更多上游历史、提取官方 patch、安装开源项目依赖或运行其测试。只有实际导入外部 Skill 或原文片段时才记录对应来源与许可证。
-
-你开始后的第一份输出必须是一页以内的只读审计结论，说明当前处于哪个阶段、已有修改能否继承、缺少什么、下一步只做什么。审计完成前不能调用 Luna，也不能批量生成数据。
+你开始后的第一份输出必须是一页以内的只读审计结论，说明当前 worktree 和分支是否正确、状态文件显示的 active stage、已完成 Gate、当前任务负责的 Team、可继承材料、缺口和下一步唯一动作。审计完成前不能调用 Luna，也不能批量生成数据。
 
 ## 已冻结的数据合同
 
@@ -132,9 +123,10 @@ current branch: do not assume; another task may have switched the shared worktre
 
 同时保存：
 
-- `FalseInvocationRate`
-- `ToolSelectionAccuracy`
+- `FalseCallRate`
+- `ConditionalSequenceAccuracy`。对外报告可把它标为“工具选择正确率”，含义是已发生 Attempt 的正样本中，完整序列、目标资源和参数全部正确的比例。
 - `FirstRouteAt1`
+- `ConditionalToolAt1`，只作首动作诊断，不能代替完整链路工具选择正确率。
 - `StaticToolTokens`
 - 每个注入块 token
 - 动态 L3、L2 index、available skills 和 Knowledge metadata token
@@ -146,6 +138,8 @@ current branch: do not assume; another task may have switched the shared worktre
 - 首次决策和完整最小链路的输出 token
 - tokenizer、模型、Provider usage 原值
 - 静态前缀、动态后缀、provider input、Gold、快照和运行记录的 SHA-256
+
+当前 `score.ts` 已直接聚合 `effectiveCallRate`、`falseCallRate` 和 `conditionalToolAt1`，尚未直接输出完整链路口径的 `conditionalSequenceAccuracy`。数据构造必须保留计算该指标所需的完整 Attempt、序列、目标资源和参数字段；正式实验前由 scorer 按冻结公式补齐派生指标。不得用 `conditionalToolAt1` 冒充工具选择正确率。
 
 同一个 `case x model` 的所有 Variant 必须使用字节完全一致的 provider 可见输入和动态资产快照。Variant 只允许改变登记的静态 Prompt 部分。Prompt cache 的前缀稳定性要留 hash 和 usage 证据，不需要为缓存单独建设复杂模拟系统。
 
@@ -167,7 +161,7 @@ Sol 必须完成：
 
 - 源码、schema、生产可见性和真实接口核对。
 - 每阶段计划、输入包、输出 schema 和 Gate 设计。
-- 实际导入外部 Skill 或原文片段时，审核 revision、license、path、包级或片段级 hash 和转换方式。纯合成内容只做批次级记录。
+- 用普通 GitHub 关键词搜索为正式目标和干扰 Skill 选择真实仓库文件，不设置 Star 数或热门度门槛。冻结 repository URL、commit SHA、path、license、raw file SHA-256 和转换方式。
 - 实际 prewarm listing、Skill search 结果、Memory 搜索结果和 Knowledge tools list 的捕获与判断。
 - Positive 的唯一信息缺口和完整最短 Gold 序列审核。
 - Positive 与 Negative 的单变量审查。
@@ -178,7 +172,8 @@ Sol 必须完成：
 Luna 只能完成：
 
 - 根据冻结的 Team 规则生成自然工程会话。
-- 生成内部一致的 L0、L1、L2、L3、系统专属 Skill 和同域干扰候选。
+- 生成内部一致的 L0、L1、L2、L3 和内部 Knowledge 草稿。
+- 基于 Sol 已冻结的真实 GitHub Skill 包生成宿主适配、listing 描述、使用边界和同域配对草稿。
 - 生成上下文正负对草稿。
 - 生成自然 Coding Negative 草稿。
 - 保存批次级生成记录；只有直接使用外部内容时才补外部来源 id。
@@ -192,6 +187,7 @@ Luna 禁止：
 - 读取或解封不属于当前任务的 Hidden 文件。
 - 运行正式模型评测、改 Prompt Variant 或根据模型得分改题。
 - 编造生产接口、工具参数、资产可见性、真实仓库事实或 Gold。Team 名、项目名、时间线、错误现象和历史结论可以合成，但必须在同一 Team 内保持一致。
+- 凭空编写正式 Skill 的名称、正文、文件或技术步骤。Skill 批次没有 Sol 提供的冻结 GitHub 来源时必须停止。
 
 ## Luna 调度规则
 
@@ -248,6 +244,9 @@ Team：<Txx>
 当前可见资产和干扰池：
 <列出实际捕获的 listing、search result 或 fixture 摘要，注明哪些字段只供作者使用>
 
+Skill 来源，非 Skill 批次写 `not-applicable`：
+<列出 Sol 已冻结的 GitHub repository URL、commit SHA、path、license 和 raw file sha256；缺少时不得生成 Skill 批次>
+
 私有信息缺口：
 <由 Sol 定义，不得写进 provider 可见字段>
 
@@ -262,6 +261,7 @@ Team：<Txx>
 5. 不要求模型完成整个 coding 任务，只让请求自然地到达需要选择资产的阶段。
 6. 对 natural-negative，当前上下文必须已经包含完成下一步所需的信息，不能暗中依赖历史会话、偏好、流程包或知识资源。
 7. 输出必须符合 Sol 提供的 JSON schema，并记录 generator_model、reasoning_effort、prompt_version、generated_at、review_status 和可选的 external_source_ids。不要给每句话伪造来源，也不要求保存原始模型输出 hash。
+8. Skill 批次只能使用输入中已冻结的真实 GitHub Skill。可以适配宿主工具名、压缩 listing description、补充 `use_when` 和 `do_not_use_when`，不能改变核心技术步骤，也不能凭空增加 Skill。GitHub 搜索不要求 Star 门槛。
 
 禁止修改输入文件、正式 registry、schema、生产代码、Prompt Variant 和其他 Luna 的目录。完成后只报告输出路径、实际数量、使用的 source ids 和仍需 Sol 判断的问题。
 ```
@@ -269,6 +269,8 @@ Team：<Txx>
 ## 阶段执行顺序
 
 ### DS00，完成正式合同
+
+状态：冻结基线已经完成。本节是历史验收合同，建设任务不得重做或修改全局 schema。
 
 在调用 Luna 前完成：
 
@@ -283,12 +285,11 @@ Team：<Txx>
 运行：
 
 ```powershell
-cd D:\projects\TencentDB-Agent-Memory-task1-p01-integration\MemoryProxy
+cd MemoryProxy
 npm run eval:tool-prompt:d0:test
-npm run typecheck
 ```
 
-不要只看退出码。还要核对 schema 结构和测试覆盖。来源覆盖报告只约束实际复用的外部内容，不能因为它的数量 Gate 未通过就去提取官方 patch、安装开源仓库依赖或运行开源项目测试。历史 typecheck 错误单独记录，Task 1 新增错误必须为零。
+不要只看退出码。还要核对 schema 结构和测试覆盖。来源覆盖报告只约束实际复用的外部内容，不能因为它的数量 Gate 未通过就去提取官方 patch、安装开源仓库依赖或运行开源项目测试。全量 `npm run typecheck` 只作历史基线对比，不是数据阶段 Gate；相关 schema、编译器、validator 和测试必须通过，Task 1 新增错误必须为零。
 
 ### DS01，迁移 T01 现有 8 条草稿
 
@@ -332,7 +333,7 @@ Auth
 运行现有 Gate：
 
 ```powershell
-cd D:\projects\TencentDB-Agent-Memory-task1-p01-integration\MemoryProxy
+cd MemoryProxy
 npm run eval:tool-prompt:real-chain:gate
 npm run eval:tool-prompt:d0:test
 npm run eval:tool-prompt:test
@@ -382,7 +383,7 @@ Positive 进入正式集前必须全部满足：
 
 ## 分支、提交与报告
 
-只在只读审计确认当前修改归属后创建阶段分支。五个外层建设任务分别使用 `codex/task1-data-build-t01-t02`、`codex/task1-data-build-t03-t04`、`codex/task1-data-build-t05-t06`、`codex/task1-data-build-t07-t08`、`codex/task1-data-build-t09-t10`，并从同一个冻结提交建立独立 worktree。全局合同、状态和快照只在 `codex/task1-data-integration` 修改。允许创建本地分支和提交，不要推送远端，除非用户明确要求。
+只在只读审计确认当前修改归属后创建阶段分支。五个外层建设任务分别使用 `codex/task1-data-build-v2-t01-t02`、`codex/task1-data-build-v2-t03-t04`、`codex/task1-data-build-v2-t05-t06`、`codex/task1-data-build-v2-t07-t08`、`codex/task1-data-build-v2-t09-t10`，并从 `task1-data-parallel-launch-v2` 建立独立 worktree。全局合同、状态和快照只在 `codex/task1-data-integration` 修改。允许创建本地分支和提交，不要推送远端，除非用户明确要求。
 
 每次提交正文写清：
 
@@ -392,7 +393,7 @@ Positive 进入正式集前必须全部满足：
 - 运行的 Gate 和结果。
 - 未完成项与已知限制。
 
-每完成一个阶段，更新 `DATASET-BUILD-STATUS.json`，并用以下格式向用户报告：
+集成任务每完成一个全局阶段，更新 `DATASET-BUILD-STATUS.json`。建设任务只更新自己 Team 的 `gate.json`。两类任务都用以下格式向用户报告：
 
 ```text
 阶段：DSxx
@@ -408,4 +409,4 @@ token/hash 留痕：
 下一阶段唯一任务：
 ```
 
-现在开始。先做只读审计并给出结论，不要调用 Luna，不要生成数据，不要修改配置，也不要运行正式模型实验。审计确认现有方案与源码一致后，才开始 DS00。
+现在开始。先做只读审计并给出结论，不要调用 Luna，不要生成数据，不要修改配置，也不要运行正式模型实验。审计确认 worktree、分支、冻结 Tag、active stage 和任务所有权都正确后，从状态文件指向的未完成阶段继续，不得重做已经通过的 DS00、DS01 或 DS02 检索压力试点。若这是五个建设任务之一，必须改用对应的 `parallel-prompts/THREAD-xx-*.md` 作为执行提示词；本总控提示词主要用于只读总审计和集成规划。

@@ -154,13 +154,13 @@ Session 绑定 Team 后，强干扰资产必须位于当前活动 Team 的可见
 | Hidden | 6 | 36 | 36 | 18 | 150 | 240 |
 | 合计 | 10 | 60 | 60 | 30 | 250 | 400 |
 
-每个 Team 目标四十条：Memory 与 Skill Positive 各 6 条、Knowledge Positive 3 条、15 条与 Positive 一一配对的 No-tool Negative，以及 10 条自然 Coding Negative。Knowledge 数量收缩到三十条，因为正式任务只检查资源选择和最小自发现链路，不建设大规模 Wiki 或 CodeGraph。Smoke 从四个 Dev Team 中各选五条，共二十条，不增加重复 case。
+正式主集合中每个 Team 固定四十条：Memory 与 Skill Positive 各 6 条、Knowledge Positive 3 条、15 条与 Positive 一一配对的 No-tool Negative，以及 10 条自然 Coding Negative。Knowledge 数量收缩到三十条，因为正式任务只检查资源选择和最小自发现链路，不建设大规模 Wiki 或 CodeGraph。Smoke 从四个 Dev Team 中各选五条，共二十条，不增加重复 case。额外合格 case 只能进入 exploratory 集合，除非在 Prompt 调优前冻结新的 dataset revision，否则不能改变主指标分母。
 
 每个 Team 的十五条 Positive 中，十条从搜索或发现入口开始：四条 Memory search、三条 `skill_search`、三条 Knowledge `tools/list`。另外五条保留结构化 query、已知 Skill 和已知 scene 等直接入口。目标 Skill 必须在真实 prewarm 后仍未进入 `<available_skills>`，同时能从 same-Team Skill 池搜到，不能由评测器临时隐藏。
 
 建议的编号和使用顺序如下：
 
-- T01 至 T03：按 [`OPEN-SKILL-TARGET-MATRIX.md`](./OPEN-SKILL-TARGET-MATRIX.md) 使用开源 task/Skill 配对包构造 Skill 靶子，并用已锁来源的真实 repo 与轨迹补 Memory 和历史。
+- T01 至 T03：可按 [`OPEN-SKILL-TARGET-MATRIX.md`](./OPEN-SKILL-TARGET-MATRIX.md) 选择已核验的开源 Skill 靶子。只有实际导入的外部 Skill 或原文片段需要来源记录；Memory、历史会话和工程背景可以由 Luna 按冻结 Team 世界合成，不要求真实 repo 或轨迹闭环。
 - T04：后端工程 Dev，使 Prompt 调整阶段不只看到 Python。
 - T05 至 T10：前端、客户端、SDK、测试、安全、构建 Hidden Team，只做结构、来源、资产和 Gold 合同验证，不用模型结果调 Prompt。
 

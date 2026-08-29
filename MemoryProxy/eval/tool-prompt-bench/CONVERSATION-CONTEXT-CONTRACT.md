@@ -1,6 +1,6 @@
 # Task 1 会话上下文构造合同
 
-> 目标：让评测发生在复杂、真实的工程协作上下文中，同时仍能唯一判断模型是否应调用 Memory、Skill、Knowledge 或不调用。正式实验在首次 TDAI 工具决策后停止，不执行后续 coding 任务。
+> 目标：让评测发生在复杂、真实的工程协作上下文中，同时仍能唯一判断模型是否应调用 Memory、Skill、Knowledge 或不调用。正式实验在目标资产所需的完整最小合法 TDAI 链路完成后停止，不执行后续 coding 任务。
 
 ## 1. 三层上下文必须分开
 
@@ -18,18 +18,18 @@
 
 | 档位 | `contextMessages` | Case 占比 | 典型形态 |
 |---|---:|---:|---|
-| 短 | 2～4 条 | 20% | 新任务、一次澄清、一个小日志片段 |
-| 中 | 6～10 条 | 55% | 需求、初步排查、失败尝试、版本/测试约束、当前结论 |
-| 长 | 12～18 条 | 25% | 多人交接式讨论、两个并行问题、旧方案被否定、局部代码与日志、最终收口请求 |
+| 短 | 4 至 6 条 | 20% | 新任务、一次澄清、一个小日志片段 |
+| 中 | 8 至 12 条 | 60% | 需求、初步排查、失败尝试、版本或测试约束、当前结论 |
+| 长 | 14 至 20 条 | 20% | 多人交接式讨论、两个并行问题、旧方案被否定、局部代码与日志、最终收口请求 |
 
 每个 Team 作为背景维护：
 
-- 3～5 个同时推进的项目主题；
-- 12～20 个历史 Session，共约 80～160 个 user/assistant turn；
-- 30～60 条 Atomic Memory，含 active、superseded、invalid 和近义事实；
-- 6～12 个 L2 Scene；
-- 14～20 个同 Team Skill，其中 5～7 个进入当前 listing，另外 9～13 个通过 search 可发现；
-- 4～8 个固定 Knowledge 资产，含当前仓库、相近仓库和旧 commit。
+- 3 至 6 个同时推进的项目主题；
+- 8 至 12 个历史 Session，每个 Session 含 12 至 40 条自然、内部一致的消息；
+- 12 至 20 条 Atomic Memory，含 active、superseded、invalid 和近义事实；
+- 4 至 6 个 L2 Scene；
+- 14 至 20 个同 Team Skill，其中 5 至 7 个进入当前 listing，另外 9 至 13 个通过 search 可发现；
+- 当前 Agent 固定绑定 3 个最小 Knowledge 资源，形成一个目标资源和两个同域或错仓库干扰资源。
 
 这些是 World 级共享背景，不为每条 Case 复制一套。Case 只选择与当前 Task 有关的一段可见会话，并使用同一冻结资产快照。
 
@@ -86,14 +86,17 @@
 
 ```json
 {
-  "pair_id": "...",
-  "shared_context_hash": "...",
-  "changed_message_index": 7,
-  "delta_type": "answer_now_in_current_context",
-  "positive_missing_information": "...",
-  "negative_supplied_information": "..."
+  "pairId": "T01-SKILL-001",
+  "positiveCaseId": "T01-SKILL-001-P",
+  "negativeCaseId": "T01-SKILL-001-N",
+  "counterfactualKind": "answer_in_current_context",
+  "controlledDeltaSha256": "...",
+  "currentEvidenceRefs": ["..."],
+  "contentHash": "..."
 }
 ```
+
+这是 `FormalPair` 的正式形状。`changed_message_index`、共享上下文 hash、两侧 delta hash 和单变量审查结论保存在 Luna draft、Team review 或编译报告中，不得作为不存在的正式字段写进 registry。
 
 ### 配对示意：同一段复杂会话只改一条信息
 

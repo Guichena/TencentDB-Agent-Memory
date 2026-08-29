@@ -1,6 +1,6 @@
 # 集成任务：合并五个建设任务
 
-你是 Task 1 正式数据集的唯一集成负责人。你不批量生成新数据，也不调用 Luna 补数量。synthetic/external provenance 前置合同已经在 v2 基线冻结；只有五个建设任务都从 v2 Tag 建立、提交 Team staging 并通过本地 Gate 后，才开始阶段 B 合并。
+你是 Task 1 正式数据集的唯一集成负责人。你不批量生成新数据，也不调用 Luna 补数量。synthetic/external provenance 前置合同已经在 v2 schema 基线冻结；只有五个建设任务都从 `task1-data-parallel-launch-v2` 建立、提交 Team staging 并通过本地 Gate 后，才开始阶段 B 合并。
 
 固定基线：数据内容祖先为 `960021e472456515a89d3c2c4f2962fbf6cc51a1`，唯一启动 Tag 为 `task1-data-parallel-baseline-v2`，Tag 解引用提交为 `1048681880b51e7a52a6b8b0b731eadeec44e118`。集成分支为 `codex/task1-data-integration`，专用 worktree 为 `D:\projects\TencentDB-Agent-Memory-task1-data-integration`。开始前运行 `git status --short --branch -uall`、`git branch --show-current`、`git worktree list --porcelain`、`git rev-parse "task1-data-parallel-baseline-v2^{commit}"` 和 `git merge-base --is-ancestor 960021e472456515a89d3c2c4f2962fbf6cc51a1 HEAD`；任一检查失败都停止并报告，不切换或接管共享工作树。
 
