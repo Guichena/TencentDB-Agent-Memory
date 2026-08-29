@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "task1.measurement-v2-overlay-manifest.v1",
+  "evaluationSchemaVersion": 2,
+  "visibility": "private_never_provider_visible",
+  "dataCore": {
+    "tag": "task1-data-core-formal-v1",
+    "commit": "418ecd102fa2019c139da9eebf88b163eca5a208",
+    "contractPath": "registry/contracts/formal-v1.json",
+    "contractFileSha256": "991ff87255019c0d4b64deba16b76b144bd3c63138be355c747865329e83da44",
+    "contractCanonicalSha256": "4fc62c1829301fe9f2410f6be40698d7b3d09ec90dde3bfe294452f7ef152d41",
+    "provider": {
+      "devCanonicalSha256": "ab1842aa1cc6d36a79bd8c232f2d66fd0d097c50eea4c2c09c4b4c8393e6308a",
+      "hiddenCanonicalSha256": "fc2d655011681cf63c38e5b71e92790ebeb601ec77ed5cf2ac42784aa73e212b",
+      "fullCanonicalSha256": "b50febf784e0c6dc2156c4e7853067556e1dd500d46d29ad3dbe718564c8dd52"
+    },
+    "privateAnnotations": {
+      "devCanonicalSha256": "b32d2c37d80baaa1359dde86211745241bc9f4f4d937aa16dc2dda64357c3cfe",
+      "hiddenCanonicalSha256": "1384bf8bfa30faab1d85e99700d4a8f9adddd577a14029809712a3633fc87790",
+      "fullCanonicalSha256": "6b1cdf62c618757be2c20fd414cf9b0302ab463a9feecbd6cbb4c592ede5287d"
+    },
+    "pairsCanonicalSha256": "6be4b917a3a0d5a5efb346efd61741daeacf32a9ec6b95dac7759cb3a8410642",
+    "snapshots": {
+      "devCanonicalSha256": "3a82d0ad8241ff3e2173555efbdb65dfb367a0a38c9998203c5b4754611a4783",
+      "hiddenCanonicalSha256": "23fe7b47d13c950765fa9557da918e1d102b7ab4558171cb15a8444d1cbd9c9e"
+    },
+    "caseIdsSha256": "b02ae7c84ef08a1d7e60d51964a47bf5edb3ce644531b0a919399c449c8d7b37",
+    "pairIdsSha256": "80bd2d43445c760eaf4b10cffb2f5d7212252852a4319e2a36bb77bce8479150"
+  },
+  "runtimeContractEvidence": {
+    "sourcePath": "MemoryProxy/src/injection/tool-prompt/runtime-contract.ts",
+    "sourceCommit": "3962bf45953eff692540a495f5bfe35592f446e5",
+    "sourceFileSha256": "2bd66e9d763f412fb351440e84d6395baf5fbaa51911ceeaf48be0d7cc76c33f",
+    "adaptedRuntimeContractsCanonicalSha256": "42c1f5847fe88ed70ec9ce35217dcd8cfdc90fa8a7dd9a53e45b50481204b96e",
+    "successfulHttpStatusEvidence": [
+      "MemoryProxy/src/__tests__/formal-evaluator-contract.test.ts",
+      "MemoryProxy/src/injection/tool-prompt/runtime-contract.ts"
+    ]
+  },
+  "overlays": {
+    "goldDev": {
+      "path": "measurement-v2/private/gold/dev.private.jsonl",
+      "count": 240,
+      "fileSha256": "e91a28b827251cd75a4ef66f3ae0064037e2e8acc0fee6b58e91a5a0c90e320d",
+      "canonicalSha256": "d9d3c708aa6a31eb290585df49b3298f33a48b4bb041cdce280a94084f2434e7"
+    },
+    "goldHidden": {
+      "path": "measurement-v2/private/gold/hidden.private.jsonl",
+      "count": 400,
+      "fileSha256": "894880aa4cdea36b4ed0192ba14d6bb1c5ca8a88bdd94bb76d3b5bc82970961f",
+      "canonicalSha256": "3e79ab7c76270b27968b60daec55ee180abfae675a88b72014f1826510e9b6c3"
+    },
+    "pairDev": {
+      "path": "measurement-v2/private/pairs/dev.private.jsonl",
+      "count": 90,
+      "fileSha256": "c467c196eccc49f315487a9dff40b7e30f3ef2c6f9438ed4a54f2c1616a0c423",
+      "canonicalSha256": "b4944c635af2590e6cae86d785d833377588697c81edf8466507bb93024926b1"
+    },
+    "pairHidden": {
+      "path": "measurement-v2/private/pairs/hidden.private.jsonl",
+      "count": 150,
+      "fileSha256": "975ebb0971d2e595b0627d71a1192d9c4b936abbb5b439b54d8dd0789595c154",
+      "canonicalSha256": "05a37dd5e6bcad41b999a2ae6285bf52c4411b9b7fde86284db8b3886084ceef"
+    },
+    "runtimeContracts": {
+      "path": "measurement-v2/private/runtime-contracts.private.json",
+      "count": 21,
+      "fileSha256": "cae2371307be3ffbdfee0227d2de21b6f7b936ac1557f550f92b7a9391e822e8",
+      "canonicalSha256": "42c1f5847fe88ed70ec9ce35217dcd8cfdc90fa8a7dd9a53e45b50481204b96e"
+    }
+  },
+  "counts": {
+    "goldV2": 640,
+    "goldV2Dev": 240,
+    "goldV2Hidden": 400,
+    "pairV2": 240,
+    "pairV2Dev": 90,
+    "pairV2Hidden": 150,
+    "runtimeContracts": 21
+  },
+  "providerExclusion": {
+    "overlayRoot": "measurement-v2/private",
+    "providerCompilerImportsOverlay": false,
+    "providerLeakageCount": 0,
+    "providerDevFileSha256": "8018bb65160eb1cac13e489ae54f258f2369dc4af058f09a3e1dc432961bc1f3",
+    "providerHiddenFileSha256": "743b2ee051572c81aec8b4db6b581a77143ed283ee136448b095e8576e0d5799"
+  },
+  "measurementV2Ready": true,
+  "formalMetricEligible": false
+}

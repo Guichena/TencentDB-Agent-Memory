@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "task1.measurement-v2-overlay-validation.v1",
+  "valid": true,
+  "errors": [],
+  "coreTag": "task1-data-core-formal-v1",
+  "coreCommit": "418ecd102fa2019c139da9eebf88b163eca5a208",
+  "counts": {
+    "goldV2": 640,
+    "goldV2Dev": 240,
+    "goldV2Hidden": 400,
+    "pairV2": 240,
+    "pairV2Dev": 90,
+    "pairV2Hidden": 150,
+    "runtimeContracts": 21
+  },
+  "canonicalSha256": {
+    "goldV2Full": "f083f2d4c4cfa8fd083d265004c0447c81f713fd5beadf26a6aaf0fdcf9be0e2",
+    "pairV2Full": "518162d5a19ceb55061690a5ce328541f483913c24832efe707a97b37aa6c7bc",
+    "runtimeContracts": "42c1f5847fe88ed70ec9ce35217dcd8cfdc90fa8a7dd9a53e45b50481204b96e",
+    "manifest": "c3f14cece54664d11897702be4dea7e12e7e72af66d900517b60bedcec8aade9"
+  },
+  "providerLeakageCount": 0,
+  "pairValidationErrorCount": 0,
+  "goldValidationErrorCount": 0,
+  "r01_r04": {
+    "R01_private_gold_v2": "cleared",
+    "R02_pair_v2": "cleared",
+    "R03_overlay_validator": "cleared",
+    "R04_provider_exclusion_and_m0_m1_compatibility": "cleared"
+  },
+  "measurementV2Ready": true,
+  "formalMetricEligible": false
+}
