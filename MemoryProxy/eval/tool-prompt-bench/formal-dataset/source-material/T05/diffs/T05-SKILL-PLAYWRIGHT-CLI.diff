@@ -1,0 +1,25 @@
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/playwright-cli/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-PLAYWRIGHT-CLI/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+diff --git MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/playwright-cli/SKILL.md MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-PLAYWRIGHT-CLI/SKILL.md
+index b7c8838..fb38b9c 100644
+--- MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/playwright-cli/SKILL.md
++++ MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-PLAYWRIGHT-CLI/SKILL.md
+@@ -1,7 +1,9 @@
+ ---
+-name: playwright-cli
+-description: Automate browser interactions, test web pages and work with Playwright tests.
+-allowed-tools: Bash(playwright-cli:*) Bash(npx:*) Bash(npm:*)
++name: playwright-browser-operations
++description: "使用 Playwright CLI 驱动浏览器、快照、trace、网络与会话。"
++use_when: "需要通过 Playwright CLI 进行浏览器交互或调试。"
++do_not_use_when: "编写 Playwright Test 代码、测 Web Vitals 或静态 UI 审查时不用。"
++tool-access: "Use the host-provided browser automation interface; command names in the examples are illustrative."
+ ---
+ 
+ # Browser Automation with playwright-cli
+@@ -423,3 +425,4 @@ playwright-cli show --annotate
+ * **Tracing** [references/tracing.md](references/tracing.md)
+ * **Video recording** [references/video-recording.md](references/video-recording.md)
+ * **Inspecting element attributes** [references/element-attributes.md](references/element-attributes.md)
++
+

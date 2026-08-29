@@ -1,0 +1,22 @@
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/react/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-REACT/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+diff --git MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/react/SKILL.md MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-REACT/SKILL.md
+index b9c9714..3c89e10 100644
+--- MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/react/SKILL.md
++++ MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-REACT/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+ name: react
+-description: Current React 19.2 guidance for concurrent rendering, Server Components, Actions, effects, React Compiler, state, and memoization. Use for React components and hooks. Next.js-specific routing/caching belongs to the nextjs skill; React Hook Form integration belongs to react-hook-form.
++description: "React 19 组件、Hook、effect、并发渲染与 memoization 的通用实现边界。"
++use_when: "任务是 React 组件或 Hook 的实现和审查，且并非专门的性能审计流程。"
++do_not_use_when: "Next.js 路由缓存、表单库专属行为或浏览器测量时不用。"
+ ---
+ 
+ # React 19 Best Practices
+@@ -71,3 +73,4 @@ Comprehensive performance optimization guide for React 19 applications. Contains
+ - For Next.js 16 App Router, see `nextjs` skill
+ - For client-side form handling, see `react-hook-form` skill
+ - For data caching with TanStack Query, see `tanstack-query` skill
++
+

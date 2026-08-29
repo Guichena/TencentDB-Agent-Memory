@@ -1,0 +1,552 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t05-expand-skill-01",
+  "stage": "DS05",
+  "team_id": "T05",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T05-SKILL-BP-02-P001",
+      "external_source_ids": [
+        "T05-SRC-AGENT-BROWSER"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "在 meridian-storefront 的商品页回归中，首屏偶发跳动，且客户端接管后有时出现内容闪烁。"
+        },
+        {
+          "role": "assistant",
+          "content": "目前只有手工观察和一次失败截图，还没有浏览器采集的指标或渲染证据。"
+        },
+        {
+          "role": "user",
+          "content": "我想区分布局位移、最大内容呈现、交互延迟和接管阶段的问题，不能只凭主观观感。"
+        },
+        {
+          "role": "assistant",
+          "content": "需要在同一页面状态下记录可比较的页面指标，并把接管前后的渲染行为分开观察。"
+        },
+        {
+          "role": "user",
+          "content": "页面可以在本地启动，登录状态已经准备好；这轮只要确定采集和证据保留的顺序。"
+        },
+        {
+          "role": "assistant",
+          "content": "还要避免把单次网络波动误判成布局问题，并保留能够复核的结构化结果。"
+        },
+        {
+          "role": "user",
+          "content": "请给出下一步和应留下的输出，暂时不要修改仓库文件。"
+        },
+        {
+          "role": "assistant",
+          "content": "在开始前需要补齐适用于真实浏览器指标与渲染剖析的最小流程。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "针对这个商品页回归，请给出下一步和应留下的输出，暂时不要修改仓库文件。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我还缺浏览器证据采集的完整步骤。请先查阅已有工程材料，概述如何隔离会话、等待页面稳定、采集五类 Web 指标并记录客户端接管与组件重渲染证据，停在可以开始实现的位置。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少从隔离浏览器会话、页面就绪等待，到 Web Vitals 与 React 渲染证据采集和结构化留存的完整流程。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T05-SKILL-BROWSER-MEASUREMENT"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_view"
+            ]
+          ],
+          "stop_after_candidate": "查看正文并概述会话隔离、就绪等待、LCP/CLS/TTFB/FCP/INP、hydration 与 render profile 证据链后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把缺失清单补全：先为本任务建立独立且可恢复的命名会话，打开本地页面并等待可观察的就绪条件；在同一页面状态下记录 LCP、CLS、TTFB、FCP、INP，并把 hydration 结果单独保存；若要看组件证据，启动组件开发者工具注入后记录组件树和 renders profile，必要时记录 Suspense 边界；输出统一为带时间戳、URL、页面状态和结构化指标的 JSON，同时保存能复核页面状态的截图或快照。不要用主观截图替代指标，也不要把未启用开发者工具时的组件命令失败当成页面性能结论。请按这份清单给出下一步和输出，不修改仓库文件。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已给出会话隔离、就绪等待、四类 Web 指标、hydration、React 组件证据、可选 Suspense 观察、结构化输出与误判边界，无需读取外部流程材料。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T05-SKILL-PLAYWRIGHT",
+        "T05-SKILL-REACT-PERFORMANCE"
+      ],
+      "controlled_delta_note": "Positive 只保留浏览器证据流程的信息缺口；Negative 仅补齐同一流程的最小采集清单，shared context、query、页面状态和任务约束完全不变。",
+      "source_fact_map": [
+        {
+          "claim": "流程覆盖独立会话、页面导航与等待，以及结构化页面证据留存。",
+          "source_id": "T05-SRC-AGENT-BROWSER",
+          "locator": "raw/agent-browser-core/SKILL.md#Always use your own session; #Waiting (read this); #Extract data"
+        },
+        {
+          "claim": "浏览器指标采集包括 LCP、CLS、TTFB、FCP、INP 与 hydration。",
+          "source_id": "T05-SRC-AGENT-BROWSER",
+          "locator": "raw/agent-browser-core/SKILL.md#React / Web Vitals (built-in, any React app)"
+        },
+        {
+          "claim": "组件证据可通过 React tree、renders profile 与 Suspense 观察获得，并要求先启用 React DevTools。",
+          "source_id": "T05-SRC-AGENT-BROWSER",
+          "locator": "raw/agent-browser-core/SKILL.md#React / Web Vitals (built-in, any React app)"
+        }
+      ],
+      "sol_review_questions": [
+        "确认 T05-SKILL-BROWSER-MEASUREMENT 是本 blueprint 的 listed 目标，首动作唯一为 skill_view。",
+        "确认 Negative 已覆盖会话、等待、指标、hydration、组件证据和输出边界，足以替代正文读取。",
+        "确认 provider-visible 文本未泄露 Skill 名、工具名、资产 id 或路由，并且 Positive/Negative 只有信息充分性差异。",
+        "确认适配只在作者字段定义路由边界，正文技术顺序保持冻结原样。"
+      ]
+    },
+    {
+      "draft_pair_id": "T05-SKILL-BP-03-P001",
+      "external_source_ids": [
+        "T05-SRC-REACT-PERF"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "在 beacon-console 的管理列表中，用户反馈打开页面慢、筛选后卡顿；我已经有 profiler 片段和构建产物大小对比。"
+        },
+        {
+          "role": "assistant",
+          "content": "现有材料显示既可能有请求瀑布，也可能有首屏包过大或组件重复渲染，尚未形成优先级。"
+        },
+        {
+          "role": "user",
+          "content": "我不想先凭经验加 memo，而是希望按影响和证据安排排查与改动。"
+        },
+        {
+          "role": "assistant",
+          "content": "需要将网络、包体、服务端、客户端取数、重渲染和渲染成本放在同一套排序里。"
+        },
+        {
+          "role": "user",
+          "content": "代码是组件与路由混合页面，暂时只需要行动顺序和每一步的验证产物。"
+        },
+        {
+          "role": "assistant",
+          "content": "如果先后顺序不清，可能在低影响的局部优化上花时间而错过瀑布或包体根因。"
+        },
+        {
+          "role": "user",
+          "content": "请给出下一步和应留下的输出，暂时不要修改仓库文件。"
+        },
+        {
+          "role": "assistant",
+          "content": "在开始前需要补齐面向已有 profiler 与构建证据的性能决策流程。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "针对这个管理列表性能问题，请给出下一步和应留下的输出，暂时不要修改仓库文件。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我还缺按影响优先级处理这些证据的完整技术步骤。请先查阅已有工程材料，概述如何从瀑布和包体开始，依次判断服务端/客户端取数、重渲染与渲染成本，并在每步留下验证结果，停在可以开始实现的位置。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少以证据为先、按影响排序处理 React/Next.js 性能问题的完整工作流，覆盖瀑布、包体、服务端、客户端取数、重渲染和渲染成本。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T05-SKILL-REACT-PERFORMANCE"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_search",
+              "skill_view_by_id"
+            ]
+          ],
+          "stop_after_candidate": "搜索并查看正文后，按影响等级概述证据核对、优化顺序及每步验证输出。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把缺失清单补全：先用已有测量确认问题，不凭猜测改代码；优先检查请求瀑布并把独立请求并行化、再查包体并直接导入或按需动态加载重组件；随后检查服务端认证、请求去重、缓存、序列化和服务端并行取数，再检查客户端请求去重、事件监听和本地存储读取；接着只对有证据的重渲染使用延迟读取、拆分并 memo 化昂贵组件、稳定依赖、派生值、函数式更新、懒初始化、transition 或 ref；最后再处理 SVG、长列表、hydration 和条件渲染等渲染成本。每一项都要保留改前/改后测量、边界条件和回滚点。请按这份清单给出下一步和输出，不修改仓库文件。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已经提供证据优先原则、从瀑布到渲染成本的顺序、代表性策略以及改前后验证和回滚要求，无需读取性能指导正文。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T05-SKILL-REACT",
+        "T05-SKILL-TANSTACK-QUERY",
+        "T05-SKILL-BROWSER-MEASUREMENT"
+      ],
+      "controlled_delta_note": "Positive 只留下性能优先级与验证顺序的缺口；Negative 仅补齐相同症状的最小策略链，其他上下文和约束不变。",
+      "source_fact_map": [
+        {
+          "claim": "性能指南按瀑布、包体、服务端、客户端取数、重渲染、渲染性能、JavaScript 和高级模式分层并按影响排序。",
+          "source_id": "T05-SRC-REACT-PERF",
+          "locator": "raw/vercel-react-best-practices/SKILL.md#Rule Categories by Priority"
+        },
+        {
+          "claim": "代表性策略包括独立请求并行化、直接导入/动态导入、服务端缓存与去重、客户端请求去重及重渲染隔离。",
+          "source_id": "T05-SRC-REACT-PERF",
+          "locator": "raw/vercel-react-best-practices/SKILL.md#Quick Reference"
+        },
+        {
+          "claim": "每次优化应基于测量，渲染成本项覆盖 SVG、content-visibility、hydration 和条件渲染。",
+          "source_id": "T05-SRC-REACT-PERF",
+          "locator": "raw/vercel-react-best-practices/SKILL.md#Quick Reference"
+        }
+      ],
+      "sol_review_questions": [
+        "确认目标不在列表中且与当前团队同队可搜索，唯一完整链路为 skill_search 后 skill_view_by_id。",
+        "确认 Negative 已覆盖该正文的优先级层次和关键策略，足以替代检索。",
+        "确认 provider-visible 文本未泄露 Skill 名、工具名、资产 id 或路由；Positive/Negative 只有信息充分性差异。",
+        "确认 external_source_ids 只包含目标冻结来源。"
+      ]
+    },
+    {
+      "draft_pair_id": "T05-SKILL-BP-04-P001",
+      "external_source_ids": [
+        "T05-SRC-UI-DESIGN"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我在 canvas-reports 重做一个报告预览空状态，桌面端看起来还行，但窄屏、键盘操作和错误提示都不稳定。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前只有一张桌面截图和零散的 CSS 片段，无法证明结构、可访问性和响应式行为完整。"
+        },
+        {
+          "role": "user",
+          "content": "页面有主操作、筛选表单、图表占位和错误状态，我想先建立审查顺序再动样式。"
+        },
+        {
+          "role": "assistant",
+          "content": "需要同时覆盖语义结构、焦点、对比度、布局层级、移动端断点、字体、表单和动画偏好。"
+        },
+        {
+          "role": "user",
+          "content": "这轮只审查现有实现，不做浏览器性能采集，也不写端到端测试。"
+        },
+        {
+          "role": "assistant",
+          "content": "如果缺少按影响分级的清单，容易只修颜色而遗漏键盘或错误反馈。"
+        },
+        {
+          "role": "user",
+          "content": "请给出下一步和应留下的输出，暂时不要修改仓库文件。"
+        },
+        {
+          "role": "assistant",
+          "content": "在开始前需要补齐可用性、可访问性和响应式实现审查的完整顺序。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "针对这个报告预览空状态，请给出下一步和应留下的输出，暂时不要修改仓库文件。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我还缺界面实现审查的完整清单。请先查阅已有工程材料，概述从可访问性到核心体验、布局响应式、字体颜色、表单和动画的检查顺序，停在可以开始审查的位置。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少一套按影响优先级审查 HTML/CSS 界面实现的完整清单，涵盖可访问性、Core Web Vitals、视觉层级、响应式、字体、颜色、表单和动画。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T05-SKILL-UI-DESIGN"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_search",
+              "skill_view_by_id"
+            ]
+          ],
+          "stop_after_candidate": "搜索并查看正文后，按八类优先级概述审查顺序和应记录的缺陷。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把缺失清单补全：先查语义 HTML、键盘可达性、可见焦点、图片替代文本、ARIA、触控目标和标题层级；再查 LCP/CLS/INP、响应式图片、懒加载和关键 CSS；然后检查视觉层级、留白、网格、单一主操作和邻近分组；接着采用移动优先、流式字号、容器查询、触控尺寸和 viewport 配置；再核对字体加载、可读行长、行高、系统字体、WCAG 对比度、非颜色提示、暗色和语义色；最后检查失焦校验、可行动错误、标签、输入类型、autocomplete，以及 GPU 属性、will-change、减弱动态和动画时长。请按这份清单给出下一步和输出，不修改仓库文件。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已完整给出八个优先级类别及其检查项，足以直接制定审查顺序，不需要读取界面指导正文。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T05-SKILL-WEB-GUIDELINES",
+        "T05-SKILL-REACT",
+        "T05-SKILL-BROWSER-MEASUREMENT"
+      ],
+      "controlled_delta_note": "Positive 只保留界面审查清单的信息缺口；Negative 仅补齐同一实现范围的八类最小检查项，shared context、query 和排除项完全不变。",
+      "source_fact_map": [
+        {
+          "claim": "界面指南按可访问性、Core Web Vitals、视觉层级、响应式、字体、颜色、表单和动画八类组织，并按影响排序。",
+          "source_id": "T05-SRC-UI-DESIGN",
+          "locator": "raw/ui-design/SKILL.md#Rule Categories by Priority"
+        },
+        {
+          "claim": "可访问性检查覆盖语义、键盘、焦点、替代文本、ARIA、触控目标和标题层级。",
+          "source_id": "T05-SRC-UI-DESIGN",
+          "locator": "raw/ui-design/SKILL.md#Quick Reference"
+        },
+        {
+          "claim": "响应式、字体、颜色、表单和动画类别分别提供对应实现规则。",
+          "source_id": "T05-SRC-UI-DESIGN",
+          "locator": "raw/ui-design/SKILL.md#Quick Reference"
+        }
+      ],
+      "sol_review_questions": [
+        "确认目标不在列表中且与当前团队同队可搜索，唯一完整链路为 skill_search 后 skill_view_by_id。",
+        "确认 Negative 已覆盖正文八类清单并保持只补信息、不改变任务约束。",
+        "确认 provider-visible 文本未泄露 Skill 名、工具名、资产 id 或路由。",
+        "确认适配正文未添加新的技术事实。"
+      ]
+    },
+    {
+      "draft_pair_id": "T05-SKILL-BP-05-P001",
+      "external_source_ids": [
+        "T05-SRC-PLAYWRIGHT-CLI"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "pulse-checkout 的支付失败只在一部分环境出现，我需要从浏览器现场还原页面、网络和会话状态。"
+        },
+        {
+          "role": "assistant",
+          "content": "目前只有错误摘要，缺少失败前后的页面快照、控制台记录、请求记录和可复现的登录状态。"
+        },
+        {
+          "role": "user",
+          "content": "我希望用命令行方式操作，不把一次失败扩大成修改代码；现场要能交给另一位同事复盘。"
+        },
+        {
+          "role": "assistant",
+          "content": "需要先固定会话和目标页面，再按快照、交互、等待、网络、控制台和追踪的顺序采集。"
+        },
+        {
+          "role": "user",
+          "content": "这轮允许打开本地测试站，但不要安装新的依赖或改变仓库。"
+        },
+        {
+          "role": "assistant",
+          "content": "还要保留标签页、cookie 或存储状态的边界，避免把别的环境的凭据带进现场。"
+        },
+        {
+          "role": "user",
+          "content": "请给出下一步和应留下的输出，暂时不要修改仓库文件。"
+        },
+        {
+          "role": "assistant",
+          "content": "在开始前需要补齐命令行浏览器调查与现场留证的最小流程。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "针对这个支付失败现场，请给出下一步和应留下的输出，暂时不要修改仓库文件。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我还缺命令行浏览器调查的完整步骤。请先查阅已有工程材料，概述如何建立隔离会话、获取快照引用、稳定交互并等待变化，再捕获网络/控制台/追踪和状态输出，停在可以开始调查的位置。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少通过命令行浏览器隔离会话、快照引用、交互等待、网络与调试记录来还原失败现场的完整顺序。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T05-SKILL-PLAYWRIGHT-CLI"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_search",
+              "skill_view_by_id"
+            ]
+          ],
+          "stop_after_candidate": "搜索并查看正文后，概述会话、快照/定位器、等待、标签页、状态、网络、控制台和追踪的调查顺序。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把缺失清单补全：先用独立会话打开目标页面并保存会话标识；每次页面变化后重新获取快照，优先用可访问名称、角色或测试标识定位，交互后等待元素、URL 或可观察就绪条件而不是固定睡眠；需要时管理标签页并保存/加载 cookie、localStorage 和 sessionStorage，但不要跨环境复用凭据；现场同时记录控制台、请求、响应拦截规则和追踪起止，必要时保留视频、截图、快照和 JSON；完成后关闭会话并交付带页面地址、时间、操作顺序和产物路径的复盘包。请按这份清单给出下一步和输出，不修改仓库文件。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已经给出命令行调查的会话、快照、定位、等待、标签页、状态、网络、调试和交付步骤，无需读取外部操作指南。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T05-SKILL-PLAYWRIGHT",
+        "T05-SKILL-BROWSER-MEASUREMENT",
+        "T05-SKILL-MSW"
+      ],
+      "controlled_delta_note": "Positive 只保留现场调查流程的信息缺口；Negative 仅补齐相同调查目标的最小技术清单，环境和不安装约束完全不变。",
+      "source_fact_map": [
+        {
+          "claim": "操作指南覆盖独立会话、页面快照和快照后的引用更新规则。",
+          "source_id": "T05-SRC-PLAYWRIGHT-CLI",
+          "locator": "raw/playwright-cli/SKILL.md#Sessions; #Snapshots"
+        },
+        {
+          "claim": "交互应优先使用稳定定位方式，并在页面变化后重新获取快照、等待可观察条件。",
+          "source_id": "T05-SRC-PLAYWRIGHT-CLI",
+          "locator": "raw/playwright-cli/SKILL.md#Snapshots; #Locators; #Waiting"
+        },
+        {
+          "claim": "命令行流程支持标签页、状态、网络、控制台、追踪、视频、截图和 JSON 等现场证据。",
+          "source_id": "T05-SRC-PLAYWRIGHT-CLI",
+          "locator": "raw/playwright-cli/SKILL.md#Tabs; #State; #Network; #Debugging and tracing"
+        }
+      ],
+      "sol_review_questions": [
+        "确认目标不在列表中且与当前团队同队可搜索，唯一完整链路为 skill_search 后 skill_view_by_id。",
+        "确认 Negative 覆盖正文的会话、快照、定位、等待、状态和调试输出，足以替代检索。",
+        "确认 provider-visible 文本未泄露 Skill 名、工具名、资产 id 或路由。",
+        "确认不得安装依赖的任务约束在 Positive/Negative 中保持一致。"
+      ]
+    },
+    {
+      "draft_pair_id": "T05-SKILL-BP-06-P001",
+      "external_source_ids": [
+        "T05-SRC-PLAYWRIGHT"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "pulse-checkout 的结账回归在 CI 偶发失败，失败重试后才通过；我已经有测试日志和一次失败产物。"
+        },
+        {
+          "role": "assistant",
+          "content": "日志只显示某个步骤超时，尚不能判断是定位器、等待、网络状态还是页面本身的问题。"
+        },
+        {
+          "role": "user",
+          "content": "我想先建立可靠的复盘顺序，并知道失败时该保留哪些现场材料。"
+        },
+        {
+          "role": "assistant",
+          "content": "需要结合隔离、稳定定位、可观察等待、认证状态、网络模拟和 CI 调试来缩小原因。"
+        },
+        {
+          "role": "user",
+          "content": "这轮不修改测试代码，只要得到能交给值班同学的调查清单。"
+        },
+        {
+          "role": "assistant",
+          "content": "失败现场还可能需要查看追踪中的时间线、截图、DOM、请求和控制台，而不只是错误文本。"
+        },
+        {
+          "role": "user",
+          "content": "请给出下一步和应留下的输出，暂时不要修改仓库文件。"
+        },
+        {
+          "role": "assistant",
+          "content": "在开始前需要补齐失败追踪查看资源中的关键步骤。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "针对这个偶发结账回归，请给出下一步和应留下的输出，暂时不要修改仓库文件。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我还缺失败追踪查看的具体步骤。请先查阅已有工程材料及其追踪查看资源，概述如何配置失败时采集、打开压缩追踪并按时间线核对截图、DOM、网络和控制台，停在可以开始复盘的位置。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少读取失败追踪查看资源所需的具体复盘步骤，包括失败采集策略、追踪打开方式及时间线证据核对。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T05-SKILL-PLAYWRIGHT"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_view",
+              "skill_files_read"
+            ]
+          ],
+          "stop_after_candidate": "查看正文后读取追踪查看资源，概述失败采集、打开追踪和逐项核对证据的顺序。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把缺失清单补全：失败或首次重试时采集追踪，避免默认长期保留大文件；从测试产物中打开压缩追踪，在交互式查看器按时间线逐步回放；对照每一步的截图、DOM 快照、网络请求和控制台日志，记录首次偏离预期的动作、页面状态和请求；CI 只上传失败时的追踪目录并保留有限天数，同时交付测试名称、重试次数、追踪路径和最早异常证据。请按这份清单给出下一步和输出，不修改仓库文件。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已给出追踪采集策略、查看方式、四类证据核对、CI 上传与交付字段，足以直接回答 query，无需读取正文或资源。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T05-SKILL-PLAYWRIGHT-CLI",
+        "T05-SKILL-VITEST",
+        "T05-SKILL-MSW"
+      ],
+      "controlled_delta_note": "Positive 仅留下失败追踪资源的信息缺口；Negative 仅补齐资源中的最小查看与证据交付清单，shared context、query 和不修改约束完全不变。",
+      "source_fact_map": [
+        {
+          "claim": "失败追踪查看器提供测试执行的逐步回放，并包含截图、DOM 快照、网络请求和控制台日志。",
+          "source_id": "T05-SRC-PLAYWRIGHT",
+          "locator": "raw/playwright/references/debug-trace-viewer.md#Use Trace Viewer for Failed Tests"
+        },
+        {
+          "claim": "推荐在首次重试时采集追踪，并可选择始终采集、仅失败保留或关闭。",
+          "source_id": "T05-SRC-PLAYWRIGHT",
+          "locator": "raw/playwright/references/debug-trace-viewer.md#Correct (trace on failure)"
+        },
+        {
+          "claim": "CI 失败时上传测试产物并设置保留天数，便于下载复盘。",
+          "source_id": "T05-SRC-PLAYWRIGHT",
+          "locator": "raw/playwright/references/debug-trace-viewer.md#Download traces from CI"
+        }
+      ],
+      "sol_review_questions": [
+        "确认 T05-SKILL-PLAYWRIGHT 是 listed 目标，正文读取后唯一资源动作是 skill_files_read。",
+        "确认 Negative 已覆盖追踪资源中的采集、查看、证据和 CI 交付，足以替代两步读取。",
+        "确认 provider-visible 文本未泄露 Skill 名、工具名、资产 id 或路由。",
+        "确认 resource-read 分布与 pilot 合并后为恰好一条。"
+      ]
+    }
+  ]
+}

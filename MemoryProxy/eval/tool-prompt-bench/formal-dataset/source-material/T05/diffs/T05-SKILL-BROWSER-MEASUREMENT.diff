@@ -1,0 +1,25 @@
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/agent-browser-core/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-BROWSER-MEASUREMENT/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+diff --git MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/agent-browser-core/SKILL.md MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-BROWSER-MEASUREMENT/SKILL.md
+index e3f1f05..3e714d1 100644
+--- MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/agent-browser-core/SKILL.md
++++ MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-BROWSER-MEASUREMENT/SKILL.md
+@@ -1,7 +1,9 @@
+ ---
+-name: core
+-description: Core agent-browser usage guide. Read this before running any agent-browser commands. Covers the snapshot-and-ref workflow, navigating pages, interacting with elements (click, fill, type, select), extracting text and data, taking screenshots, managing tabs, handling forms and auth, waiting for content, running multiple browser sessions in parallel, and troubleshooting common failures. Use when the user asks to interact with a website, fill a form, click something, extract data, take a screenshot, log into a site, test a web app, or automate any browser task.
+-allowed-tools: Bash(agent-browser:*), Bash(npx agent-browser:*)
++name: browser-vitals-measurement
++description: "通过浏览器采集 Web Vitals 与 React render profile，区分 CLS、LCP、INP 和重渲染证据。"
++use_when: "需要实际浏览器中的 Web Vitals、hydration 或 React render 证据。"
++do_not_use_when: "只写 Playwright 断言、静态代码审查或 D3 图形实现时不用。"
++tool-access: "Use the host-provided browser automation interface; command names in the examples are illustrative."
+ ---
+ 
+ # agent-browser core
+@@ -517,3 +519,4 @@ That pulls in:
+ - `references/proxy-support.md`: proxy configuration and CA certificates for HTTPS interception proxies
+ - `references/webgpu.md` — screenshots/video of WebGPU pages (three.js, Babylon.js), Linux/CI setup
+ - `templates/*` — starter shell scripts for auth, capture, form automation
++
+

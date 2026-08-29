@@ -1,0 +1,87 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T05-DS05-MEM-PILOT-01",
+  "stage": "DS05",
+  "team_id": "T05",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T05-DS05-MEM-PAIR-01",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们在 atlas-insights 维护经营分析图表。最近 revenue 趋势图的悬浮提示在窗口滚动后会偏离数据点，想先整理已有排查信息。"
+        },
+        {
+          "role": "assistant",
+          "content": "目前现象是：鼠标停在同一条折线节点上时，提示框第一次出现位置正常；页面滚动或容器发生纵向位移后，提示框会沿页面坐标偏移。SVG 图形本身没有跟着错位。"
+        },
+        {
+          "role": "user",
+          "content": "图表使用响应式容器，外层有一个可滚动的分析面板。提示框是独立的 HTML 元素，不是 SVG 内的 text。我们希望保留窗口滚动和面板滚动。"
+        },
+        {
+          "role": "assistant",
+          "content": "从现有实现看，指针事件拿到的是 SVG 内部坐标，提示框却挂在文档层；两者的参考系和滚动补偿必须明确。不要先改比例尺或数据排序，因为折线和节点位置目前一致。"
+        },
+        {
+          "role": "user",
+          "content": "还要兼容触摸设备和键盘聚焦。提示框不能因为重复渲染而闪烁，离开节点时也要及时收起。"
+        },
+        {
+          "role": "assistant",
+          "content": "验收会覆盖首次悬停、窗口滚动、面板滚动、调整窗口宽度以及键盘聚焦；每种情况下提示框都应贴合对应节点，并且不改变图表的 SVG 布局。"
+        },
+        {
+          "role": "user",
+          "content": "我记得团队以前处理过相似的坐标漂移，但当前分支里没有那次讨论的正文。请先不要凭经验假设采用哪一种坐标换算。"
+        },
+        {
+          "role": "assistant",
+          "content": "好的。我会把现有症状、滚动容器和交互验收条件作为固定背景，等确认历史结论后再给出最小修改方案。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请根据这组上下文给出本次 tooltip 坐标漂移修复的实施建议，并说明应如何验证滚动与键盘交互。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我现在仍缺少上次会话确认的精确坐标结论：究竟应以哪个坐标系计算提示框位置、滚动补偿应放在哪里，以及当时排除了哪些看似合理但不适用的做法。请先找回这段历史结论，再回答后续方案。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少 T05-L0-01 中关于 tooltip 坐标参考系、滚动补偿位置和排除项的精确会话结论。",
+          "route": "memory",
+          "target_asset_ids": ["T05-L0-01"],
+          "allowed_sequence_candidates": [["tdai_conversation_search"]],
+          "stop_after_candidate": "命中上次 tooltip 坐标漂移结论的历史会话后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "上次会话的精确结论是：先用节点的 getBoundingClientRect() 得到视口矩形，再把矩形左上角加上页面滚动偏移，作为挂在文档层提示框的定位基准；不要把 SVG 内部坐标直接当作文档坐标，也不要在事件回调里重复叠加面板滚动量。上次还确认无需改比例尺、数据排序或用固定 magic number 补偿。请基于这个结论回答后续方案。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "负例 delta 已完整给出历史结论、参考系、滚动补偿位置及排除项；实施建议与验证计划可直接由当前上下文推出。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T05-L0-02", "T05-L0-03"],
+      "controlled_delta_note": "正负例共享完全相同的 8 条上下文与查询，仅第 9 条 delta 改变：正例明确缺少历史结论，负例补足同一条精确结论及排除项。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "唯一信息缺口是否仅为历史会话中的坐标结论，而非当前代码或浏览器测量？",
+        "正例的首动作是否唯一指向历史会话检索，并在命中后停止？",
+        "负例是否已给出坐标系、滚动补偿位置和排除项的完整最小链路？",
+        "正负例是否只在 changed_message_index 的 delta_message 改变？",
+        "目标历史资产与两个同域干扰是否仅存在于 author-only 字段？",
+        "共享上下文、两条 delta 与 query 是否没有 provider 泄漏词或资产标识？",
+        "负例是否无需依赖额外历史、Skill 或知识库内容即可回答？"
+      ]
+    }
+  ]
+}

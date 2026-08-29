@@ -1,0 +1,22 @@
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/tanstack-query/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-TANSTACK-QUERY/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+diff --git MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/tanstack-query/SKILL.md MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-TANSTACK-QUERY/SKILL.md
+index 0d586dd..87b855c 100644
+--- MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/tanstack-query/SKILL.md
++++ MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-TANSTACK-QUERY/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+ name: tanstack-query
+-description: Current TanStack Query v5 guidance for queries, mutations, caching, prefetching, Suspense, and render optimization. Use with useQuery, useMutation, queryClient, queryOptions, skipToken, mutation scopes, or cache invalidation. API mocking is covered by the msw skill.
++description: "TanStack Query v5 查询、缓存、失效、预取和渲染订阅优化。"
++use_when: "问题明确涉及 useQuery、mutation、queryClient 或缓存失效。"
++do_not_use_when: "普通 React 本地状态、D3 数据绑定或 E2E 测试时不用。"
+ license: MIT
+ metadata:
+   author: community
+@@ -119,3 +121,4 @@ Each reference file contains:
+ ## Full Compiled Document
+ 
+ For the complete guide with all rules expanded: `AGENTS.md`
++
+

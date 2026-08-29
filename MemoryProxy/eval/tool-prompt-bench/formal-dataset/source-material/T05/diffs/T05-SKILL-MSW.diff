@@ -1,0 +1,22 @@
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/msw/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-MSW/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+diff --git MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/msw/SKILL.md MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-MSW/SKILL.md
+index 4a55649..7257325 100644
+--- MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/msw/SKILL.md
++++ MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-MSW/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+ name: msw
+-description: Current MSW v2 guidance for request handlers, Node/browser setup, HTTP and GraphQL mocking, test isolation, timing, and debugging. General test framework patterns are covered by vitest and methodology by tdd.
++description: "MSW v2 的浏览器/Node handler、网络模拟与测试隔离。"
++use_when: "任务明确需要 MSW 请求 handler 或网络 mock。"
++do_not_use_when: "直接 Playwright route、真实 Web Vitals 测量或 D3 数据处理时不用。"
+ ---
+ 
+ # MSW Best Practices
+@@ -116,3 +118,4 @@ Read individual reference files for detailed explanations and code examples:
+ ## Full Compiled Document
+ 
+ For the complete guide with all rules expanded: `AGENTS.md`
++
+

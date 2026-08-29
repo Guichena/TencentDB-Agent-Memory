@@ -1,0 +1,116 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t05-pilot-skill-01",
+  "stage": "DS05",
+  "team_id": "T05",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T05-SKILL-PILOT-01-P001",
+      "external_source_ids": ["T05-SRC-D3"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我在 atlas-insights 里要把本地业务数据做成可复现的多序列趋势图，输出用于代码审查和回归比对。"
+        },
+        {
+          "role": "assistant",
+          "content": "已确认输入是本地 CSV/JSON，图表需离线生成，先不接入线上数据。"
+        },
+        {
+          "role": "user",
+          "content": "图中会有多个序列、时间轴、数值轴和图例，可能还要悬停查看单点详情；这轮先固定结构和生成约束。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前需要先把数据排序、比例尺/轴、图例和输出文件的稳定性要求说清楚，再决定实现细节。"
+        },
+        {
+          "role": "user",
+          "content": "我已经整理了字段、维度、边距、颜色规则与标题单位，但还没有一份完整的可复现工作顺序。"
+        },
+        {
+          "role": "assistant",
+          "content": "如果缺少确定性规则，直接写图表容易引入随机布局、动态过渡、网络依赖或不稳定的 SVG 标识。"
+        },
+        {
+          "role": "user",
+          "content": "请先给出从本地数据到可核对 HTML/SVG 的最小流程，暂时不要修改仓库文件。"
+        },
+        {
+          "role": "assistant",
+          "content": "在开始前需要补齐适用于此类多序列图表的流程内容，尤其是排序、固定尺寸和离线依赖边界。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "针对这个多序列图表任务，请给出下一步和应留下的输出，暂时不要修改仓库文件。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我还缺这套流程的完整技术步骤和输出清单。请先查阅已有工程材料，概述从输入约束、确定性处理到 HTML/SVG 交付的顺序，停在可以开始实现的位置。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少从本地 CSV/TSV/JSON 输入与图表意图，到稳定排序、分组、渲染、离线依赖和 HTML/SVG 输出的完整确定性流程。",
+          "route": "skill",
+          "target_asset_ids": ["T05-SKILL-D3-VISUALIZATION"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "查看正文并概述输入、确定性处理、离线依赖与输出链路后停止。",
+          "adaptation_proposal": {
+            "host_name": "确定性数据可视化流程",
+            "listing_description": "从本地结构化数据生成可核对的离线 HTML/SVG，覆盖数据排序、比例尺、轴、图例、工具提示与稳定输出。",
+            "use_when": "需要本地数据驱动的 D3 图表、轴/比例尺、图例、工具提示或数据驱动 SVG 输出时。",
+            "do_not_use_when": "只要快速表格或摘要、仅做浏览器性能测量或普通组件功能时。"
+          }
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把缺失清单补全：先确认本地 CSV/TSV/JSON 输入、图表类型、x/y 字段与聚合、排序过滤、宽高边距、颜色和标题单位，以及静态/离线等约束；再按 x 与类别稳定排序，使用稳定分组顺序和固定格式化规则；渲染时禁止随机数和默认动画，固定 width、height、margin、viewBox、域和必要的刻度，并让剪裁或渐变 ID 来自稳定字符串；依赖不从 CDN 加载，固定并内置 d3@7.9.0。交付时优先留下 dist/chart.html、dist/chart.svg，确有需要再生成 dist/chart.png，并保留可复现的注释和目录约定；如需悬停交互，工具提示默认透明、用 visible 状态切换、禁止拦截指针事件并按鼠标页面坐标定位。请按这份清单给出下一步和输出，不修改仓库文件。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已提供输入与图表意图、确定性数据和渲染规则、离线版本依赖、交付文件以及交互边界，足以回答 query，无需读取外部流程材料。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T05-SKILL-REACT", "T05-SKILL-BROWSER-MEASUREMENT"],
+      "controlled_delta_note": "Positive 只保留从输入到确定性输出的流程信息缺口；Negative 仅补齐该流程的最小技术清单，shared context、query 和任务约束完全不变。",
+      "source_fact_map": [
+        {
+          "claim": "流程接受本地 CSV/TSV/JSON、图表意图字段及静态或离线等输出约束。",
+          "source_id": "T05-SRC-D3",
+          "locator": "raw/d3-visualization/SKILL.md#Inputs you should expect"
+        },
+        {
+          "claim": "确定性要求包括稳定排序与分组、固定格式化、无随机性和无默认动画、固定尺寸与 viewBox，以及稳定 ID。",
+          "source_id": "T05-SRC-D3",
+          "locator": "raw/d3-visualization/SKILL.md#Determinism rules (non-negotiable)"
+        },
+        {
+          "claim": "离线依赖应固定 D3 版本并优先使用内置 bundle，不从 CDN 加载。",
+          "source_id": "T05-SRC-D3",
+          "locator": "raw/d3-visualization/SKILL.md#Offline + dependency determinism"
+        },
+        {
+          "claim": "推荐输出包括 standalone HTML、导出的 SVG，以及按需生成的 PNG；默认目录为 dist。",
+          "source_id": "T05-SRC-D3",
+          "locator": "raw/d3-visualization/SKILL.md#Outputs you should produce"
+        },
+        {
+          "claim": "工具提示交互使用透明初始状态、visible 状态、pointer-events none 和页面坐标定位。",
+          "source_id": "T05-SRC-D3",
+          "locator": "raw/d3-visualization/SKILL.md#Tooltip pattern (recommended)"
+        }
+      ],
+      "sol_review_questions": [
+        "确认 T05-SKILL-D3-VISUALIZATION 是本 blueprint 的 listed 目标，首动作唯一为 skill_view。",
+        "确认 Negative 已覆盖输入、排序/分组、格式化、稳定渲染、离线依赖、交付和可选工具提示，足以替代正文读取。",
+        "确认 provider-visible 文本未泄露 Skill 名、工具名、资产 id 或路由，并且 Positive/Negative 仅在信息充分性上有控制差异。",
+        "确认 raw/d3-visualization/SKILL.md 的核心技术步骤未被改写，适配建议仅存在于作者字段。"
+      ]
+    }
+  ]
+}

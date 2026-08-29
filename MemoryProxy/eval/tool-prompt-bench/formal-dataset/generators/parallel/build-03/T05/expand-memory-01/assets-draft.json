@@ -1,0 +1,1061 @@
+{
+  "schema_version": "task1.memory_assets_draft.v1",
+  "batch_id": "T05-DS05-MEM-EXPAND-01",
+  "team_id": "T05",
+  "stage": "DS05",
+  "external_source_ids": [],
+  "l0_sessions": [
+    {
+      "asset_id": "T05-L0-01",
+      "session_id": "T05-L0-01",
+      "project": "atlas-insights",
+      "observed_at": "2026-08-12T09:00:00+08:00",
+      "topic": "tooltip 坐标漂移",
+      "messages": [
+        {
+          "message_id": "T05-L0-01-M001",
+          "role": "user",
+          "timestamp": "2026-08-12T09:00:00+08:00",
+          "content": "revenue 趋势图的提示框在滚动分析面板后偏离节点。"
+        },
+        {
+          "message_id": "T05-L0-01-M002",
+          "role": "assistant",
+          "timestamp": "2026-08-12T09:02:00+08:00",
+          "content": "先记录首次悬停正常、滚动后偏移且 SVG 节点不动的现象。"
+        },
+        {
+          "message_id": "T05-L0-01-M003",
+          "role": "user",
+          "timestamp": "2026-08-12T09:05:00+08:00",
+          "content": "提示框是独立 HTML 层，图表外层还有可滚动面板。"
+        },
+        {
+          "message_id": "T05-L0-01-M004",
+          "role": "assistant",
+          "timestamp": "2026-08-12T09:08:00+08:00",
+          "content": "这意味着事件坐标和文档定位的参考系必须分开核对。"
+        },
+        {
+          "message_id": "T05-L0-01-M005",
+          "role": "user",
+          "timestamp": "2026-08-12T09:12:00+08:00",
+          "content": "窗口滚动、面板滚动、触摸和键盘聚焦都要保留。"
+        },
+        {
+          "message_id": "T05-L0-01-M006",
+          "role": "assistant",
+          "timestamp": "2026-08-12T09:16:00+08:00",
+          "content": "验收会覆盖这些交互，并检查提示框不闪烁且离开节点能收起。"
+        },
+        {
+          "message_id": "T05-L0-01-M007",
+          "role": "user",
+          "timestamp": "2026-08-12T09:21:00+08:00",
+          "content": "有人建议直接把 SVG 内部坐标写给文档层，我觉得需要先验证。"
+        },
+        {
+          "message_id": "T05-L0-01-M008",
+          "role": "assistant",
+          "timestamp": "2026-08-12T09:25:00+08:00",
+          "content": "这个建议混用了两个坐标空间，不能在未核实滚动参考系前采用。"
+        },
+        {
+          "message_id": "T05-L0-01-M009",
+          "role": "user",
+          "timestamp": "2026-08-12T09:31:00+08:00",
+          "content": "请记录一次不改变比例尺和数据排序的最小排查。"
+        },
+        {
+          "message_id": "T05-L0-01-M010",
+          "role": "assistant",
+          "timestamp": "2026-08-12T09:36:00+08:00",
+          "content": "排查应观察节点视口矩形、页面滚动量和提示框的文档位置。"
+        },
+        {
+          "message_id": "T05-L0-01-M011",
+          "role": "user",
+          "timestamp": "2026-08-12T09:44:00+08:00",
+          "content": "复盘确认：用节点的 getBoundingClientRect() 得到视口矩形，再把矩形左上角加上页面滚动偏移，作为文档层提示框的定位基准。"
+        },
+        {
+          "message_id": "T05-L0-01-M012",
+          "role": "assistant",
+          "timestamp": "2026-08-12T09:48:00+08:00",
+          "content": "同时确认不要把 SVG 内部坐标直接当作文档坐标，也不要在事件回调里重复叠加面板滚动量；无需改比例尺、排序或用固定 magic number 补偿。"
+        }
+      ]
+    },
+    {
+      "asset_id": "T05-L0-02",
+      "session_id": "T05-L0-02",
+      "project": "atlas-insights",
+      "observed_at": "2026-08-13T10:00:00+08:00",
+      "topic": "D3 局部数据变换",
+      "messages": [
+        {
+          "message_id": "T05-L0-02-M001",
+          "role": "user",
+          "timestamp": "2026-08-13T10:00:00+08:00",
+          "content": "同比图需要把接口返回的月份字段转成排序用的数值。"
+        },
+        {
+          "message_id": "T05-L0-02-M002",
+          "role": "assistant",
+          "timestamp": "2026-08-13T10:02:00+08:00",
+          "content": "可以在数据进入比例尺前做纯映射，保留原始标签。"
+        },
+        {
+          "message_id": "T05-L0-02-M003",
+          "role": "user",
+          "timestamp": "2026-08-13T10:05:00+08:00",
+          "content": "空月份要显示为缺口，不能默认为零。"
+        },
+        {
+          "message_id": "T05-L0-02-M004",
+          "role": "assistant",
+          "timestamp": "2026-08-13T10:08:00+08:00",
+          "content": "过滤空值会改变线段，建议显式保留缺口标记。"
+        },
+        {
+          "message_id": "T05-L0-02-M005",
+          "role": "user",
+          "timestamp": "2026-08-13T10:12:00+08:00",
+          "content": "图例顺序仍按接口顺序，不随数值排序变化。"
+        },
+        {
+          "message_id": "T05-L0-02-M006",
+          "role": "assistant",
+          "timestamp": "2026-08-13T10:16:00+08:00",
+          "content": "把图例数组与绘图数组分开即可维持该约束。"
+        },
+        {
+          "message_id": "T05-L0-02-M007",
+          "role": "user",
+          "timestamp": "2026-08-13T10:21:00+08:00",
+          "content": "这次只改局部转换函数。"
+        },
+        {
+          "message_id": "T05-L0-02-M008",
+          "role": "assistant",
+          "timestamp": "2026-08-13T10:25:00+08:00",
+          "content": "我会补充边界输入的单元样例。"
+        },
+        {
+          "message_id": "T05-L0-02-M009",
+          "role": "user",
+          "timestamp": "2026-08-13T10:31:00+08:00",
+          "content": "负数月份被当成无效值。"
+        },
+        {
+          "message_id": "T05-L0-02-M010",
+          "role": "assistant",
+          "timestamp": "2026-08-13T10:36:00+08:00",
+          "content": "校验范围后再进入排序，避免影响刻度。"
+        },
+        {
+          "message_id": "T05-L0-02-M011",
+          "role": "user",
+          "timestamp": "2026-08-13T10:44:00+08:00",
+          "content": "局部样例已经覆盖正常、空值和负数。"
+        },
+        {
+          "message_id": "T05-L0-02-M012",
+          "role": "assistant",
+          "timestamp": "2026-08-13T10:48:00+08:00",
+          "content": "结果稳定，未涉及提示框或滚动行为。"
+        }
+      ]
+    },
+    {
+      "asset_id": "T05-L0-03",
+      "session_id": "T05-L0-03",
+      "project": "meridian-storefront",
+      "observed_at": "2026-08-14T11:00:00+08:00",
+      "topic": "CLS rollout 复盘",
+      "messages": [
+        {
+          "message_id": "T05-L0-03-M001",
+          "role": "user",
+          "timestamp": "2026-08-14T11:00:00+08:00",
+          "content": "商品页首屏的媒体卡片在字体加载后发生位移。"
+        },
+        {
+          "message_id": "T05-L0-03-M002",
+          "role": "assistant",
+          "timestamp": "2026-08-14T11:03:00+08:00",
+          "content": "先把媒体尺寸、加载时机和客户端接管分别记录。"
+        },
+        {
+          "message_id": "T05-L0-03-M003",
+          "role": "user",
+          "timestamp": "2026-08-14T11:07:00+08:00",
+          "content": "小屏和大屏的卡片比例不同，不能用一个固定高度覆盖。"
+        },
+        {
+          "message_id": "T05-L0-03-M004",
+          "role": "assistant",
+          "timestamp": "2026-08-14T11:11:00+08:00",
+          "content": "需要可预测的响应式占位，让服务端输出先建立布局。"
+        },
+        {
+          "message_id": "T05-L0-03-M005",
+          "role": "user",
+          "timestamp": "2026-08-14T11:16:00+08:00",
+          "content": "图片仍然要延迟加载，首屏不能一次请求全部资源。"
+        },
+        {
+          "message_id": "T05-L0-03-M006",
+          "role": "assistant",
+          "timestamp": "2026-08-14T11:20:00+08:00",
+          "content": "可以保留延迟加载边界，但必须让占位先于媒体替换生效。"
+        },
+        {
+          "message_id": "T05-L0-03-M007",
+          "role": "user",
+          "timestamp": "2026-08-14T11:27:00+08:00",
+          "content": "现有交接没有写每一步 rollout 的先后。"
+        },
+        {
+          "message_id": "T05-L0-03-M008",
+          "role": "assistant",
+          "timestamp": "2026-08-14T11:31:00+08:00",
+          "content": "先补齐时间线，再判断指标变化对应哪项改动。"
+        },
+        {
+          "message_id": "T05-L0-03-M009",
+          "role": "user",
+          "timestamp": "2026-08-14T11:38:00+08:00",
+          "content": "只在客户端补高度的方案让首次接管仍然跳动。"
+        },
+        {
+          "message_id": "T05-L0-03-M010",
+          "role": "assistant",
+          "timestamp": "2026-08-14T11:43:00+08:00",
+          "content": "这说明占位不能延后到接管阶段。"
+        },
+        {
+          "message_id": "T05-L0-03-M011",
+          "role": "user",
+          "timestamp": "2026-08-14T11:50:00+08:00",
+          "content": "复盘顺序确定为先保留服务端可预测宽高占位，再统一延迟加载边界，最后记录 hydration 前后的布局位移。"
+        },
+        {
+          "message_id": "T05-L0-03-M012",
+          "role": "assistant",
+          "timestamp": "2026-08-14T11:54:00+08:00",
+          "content": "最终排除了只在客户端补高度、关闭延迟加载和用全局样式兜底。"
+        }
+      ]
+    },
+    {
+      "asset_id": "T05-L0-04",
+      "session_id": "T05-L0-04",
+      "project": "meridian-storefront",
+      "observed_at": "2026-08-15T12:00:00+08:00",
+      "topic": "hydration 警告",
+      "messages": [
+        {
+          "message_id": "T05-L0-04-M001",
+          "role": "user",
+          "timestamp": "2026-08-15T12:00:00+08:00",
+          "content": "商品推荐卡在接管时偶发 hydration 警告。"
+        },
+        {
+          "message_id": "T05-L0-04-M002",
+          "role": "assistant",
+          "timestamp": "2026-08-15T12:03:00+08:00",
+          "content": "先比较服务端和客户端生成的推荐顺序。"
+        },
+        {
+          "message_id": "T05-L0-04-M003",
+          "role": "user",
+          "timestamp": "2026-08-15T12:07:00+08:00",
+          "content": "随机实验标记只在客户端可用。"
+        },
+        {
+          "message_id": "T05-L0-04-M004",
+          "role": "assistant",
+          "timestamp": "2026-08-15T12:11:00+08:00",
+          "content": "接管前应使用确定的默认标记，实验在接管后再切换。"
+        },
+        {
+          "message_id": "T05-L0-04-M005",
+          "role": "user",
+          "timestamp": "2026-08-15T12:16:00+08:00",
+          "content": "卡片尺寸不是这次警告的来源。"
+        },
+        {
+          "message_id": "T05-L0-04-M006",
+          "role": "assistant",
+          "timestamp": "2026-08-15T12:20:00+08:00",
+          "content": "我会把尺寸变化和文本差异分开验证。"
+        },
+        {
+          "message_id": "T05-L0-04-M007",
+          "role": "user",
+          "timestamp": "2026-08-15T12:27:00+08:00",
+          "content": "需要覆盖无推荐和单推荐两种状态。"
+        },
+        {
+          "message_id": "T05-L0-04-M008",
+          "role": "assistant",
+          "timestamp": "2026-08-15T12:31:00+08:00",
+          "content": "测试固定输入，避免网络返回顺序干扰。"
+        },
+        {
+          "message_id": "T05-L0-04-M009",
+          "role": "user",
+          "timestamp": "2026-08-15T12:38:00+08:00",
+          "content": "客户端实验标记在接管后更新。"
+        },
+        {
+          "message_id": "T05-L0-04-M010",
+          "role": "assistant",
+          "timestamp": "2026-08-15T12:43:00+08:00",
+          "content": "警告消失且卡片高度保持。"
+        },
+        {
+          "message_id": "T05-L0-04-M011",
+          "role": "user",
+          "timestamp": "2026-08-15T12:50:00+08:00",
+          "content": "这条记录只用于区分接管与布局问题。"
+        },
+        {
+          "message_id": "T05-L0-04-M012",
+          "role": "assistant",
+          "timestamp": "2026-08-15T12:54:00+08:00",
+          "content": "已保留复现条件和排除范围。"
+        }
+      ]
+    },
+    {
+      "asset_id": "T05-L0-05",
+      "session_id": "T05-L0-05",
+      "project": "beacon-console",
+      "observed_at": "2026-08-16T13:00:00+08:00",
+      "topic": "列表重渲染归因",
+      "messages": [
+        {
+          "message_id": "T05-L0-05-M001",
+          "role": "user",
+          "timestamp": "2026-08-16T13:00:00+08:00",
+          "content": "成员列表筛选条件不变时仍有大量行重绘。"
+        },
+        {
+          "message_id": "T05-L0-05-M002",
+          "role": "assistant",
+          "timestamp": "2026-08-16T13:03:00+08:00",
+          "content": "先记录容器提交、行提交和订阅通知的先后。"
+        },
+        {
+          "message_id": "T05-L0-05-M003",
+          "role": "user",
+          "timestamp": "2026-08-16T13:07:00+08:00",
+          "content": "实时计数必须继续更新。"
+        },
+        {
+          "message_id": "T05-L0-05-M004",
+          "role": "assistant",
+          "timestamp": "2026-08-16T13:11:00+08:00",
+          "content": "局部计数订阅不能因为优化而被移除。"
+        },
+        {
+          "message_id": "T05-L0-05-M005",
+          "role": "user",
+          "timestamp": "2026-08-16T13:16:00+08:00",
+          "content": "profiler 显示筛选事件后每行都重新渲染。"
+        },
+        {
+          "message_id": "T05-L0-05-M006",
+          "role": "assistant",
+          "timestamp": "2026-08-16T13:20:00+08:00",
+          "content": "还要确认是否是新数组引用触发行属性变化。"
+        },
+        {
+          "message_id": "T05-L0-05-M007",
+          "role": "user",
+          "timestamp": "2026-08-16T13:27:00+08:00",
+          "content": "当前摘要没有保留当时的最终归因。"
+        },
+        {
+          "message_id": "T05-L0-05-M008",
+          "role": "assistant",
+          "timestamp": "2026-08-16T13:31:00+08:00",
+          "content": "先找回复盘，再决定做引用稳定还是订阅调整。"
+        },
+        {
+          "message_id": "T05-L0-05-M009",
+          "role": "user",
+          "timestamp": "2026-08-16T13:38:00+08:00",
+          "content": "复盘最后确认：列表容器把每次筛选产生的新派生数组传给所有行，导致行属性变化并触发重绘。"
+        },
+        {
+          "message_id": "T05-L0-05-M010",
+          "role": "assistant",
+          "timestamp": "2026-08-16T13:43:00+08:00",
+          "content": "行级订阅本身没有变化，应优先稳定派生数组的引用。"
+        },
+        {
+          "message_id": "T05-L0-05-M011",
+          "role": "user",
+          "timestamp": "2026-08-16T13:50:00+08:00",
+          "content": "复盘也排除了全量 memo、移除实时计数和改写缓存存储。"
+        },
+        {
+          "message_id": "T05-L0-05-M012",
+          "role": "assistant",
+          "timestamp": "2026-08-16T13:54:00+08:00",
+          "content": "这条归因可以作为当前改动的边界。"
+        }
+      ]
+    },
+    {
+      "asset_id": "T05-L0-06",
+      "session_id": "T05-L0-06",
+      "project": "beacon-console",
+      "observed_at": "2026-08-17T14:00:00+08:00",
+      "topic": "缓存订阅整理",
+      "messages": [
+        {
+          "message_id": "T05-L0-06-M001",
+          "role": "user",
+          "timestamp": "2026-08-17T14:00:00+08:00",
+          "content": "控制台权限缓存更新后，顶部计数没有立即刷新。"
+        },
+        {
+          "message_id": "T05-L0-06-M002",
+          "role": "assistant",
+          "timestamp": "2026-08-17T14:03:00+08:00",
+          "content": "先确认写入和读取是否使用相同的键空间。"
+        },
+        {
+          "message_id": "T05-L0-06-M003",
+          "role": "user",
+          "timestamp": "2026-08-17T14:07:00+08:00",
+          "content": "列表本身没有性能回归。"
+        },
+        {
+          "message_id": "T05-L0-06-M004",
+          "role": "assistant",
+          "timestamp": "2026-08-17T14:11:00+08:00",
+          "content": "这次只看缓存失效通知，不扩展到行渲染。"
+        },
+        {
+          "message_id": "T05-L0-06-M005",
+          "role": "user",
+          "timestamp": "2026-08-17T14:16:00+08:00",
+          "content": "手动刷新页面后数字才正确。"
+        },
+        {
+          "message_id": "T05-L0-06-M006",
+          "role": "assistant",
+          "timestamp": "2026-08-17T14:20:00+08:00",
+          "content": "说明持久化数据正确但订阅没有收到变更。"
+        },
+        {
+          "message_id": "T05-L0-06-M007",
+          "role": "user",
+          "timestamp": "2026-08-17T14:27:00+08:00",
+          "content": "需要记录订阅边界。"
+        },
+        {
+          "message_id": "T05-L0-06-M008",
+          "role": "assistant",
+          "timestamp": "2026-08-17T14:31:00+08:00",
+          "content": "我会补充一次写入、失效和重读的日志。"
+        },
+        {
+          "message_id": "T05-L0-06-M009",
+          "role": "user",
+          "timestamp": "2026-08-17T14:38:00+08:00",
+          "content": "失效通知只发给详情页，没有发给顶部摘要。"
+        },
+        {
+          "message_id": "T05-L0-06-M010",
+          "role": "assistant",
+          "timestamp": "2026-08-17T14:43:00+08:00",
+          "content": "应让摘要订阅同一权限查询的失效事件。"
+        },
+        {
+          "message_id": "T05-L0-06-M011",
+          "role": "user",
+          "timestamp": "2026-08-17T14:50:00+08:00",
+          "content": "修补后无需改变列表组件。"
+        },
+        {
+          "message_id": "T05-L0-06-M012",
+          "role": "assistant",
+          "timestamp": "2026-08-17T14:54:00+08:00",
+          "content": "缓存订阅记录已单独归档。"
+        }
+      ]
+    },
+    {
+      "asset_id": "T05-L0-07",
+      "session_id": "T05-L0-07",
+      "project": "pulse-checkout",
+      "observed_at": "2026-08-18T15:00:00+08:00",
+      "topic": "结账回归失败",
+      "messages": [
+        {
+          "message_id": "T05-L0-07-M001",
+          "role": "user",
+          "timestamp": "2026-08-18T15:00:00+08:00",
+          "content": "优惠信息加载时，结账按钮偶发无法被回归脚本找到。"
+        },
+        {
+          "message_id": "T05-L0-07-M002",
+          "role": "assistant",
+          "timestamp": "2026-08-18T15:03:00+08:00",
+          "content": "先保存失败时的页面状态和按钮可见状态。"
+        },
+        {
+          "message_id": "T05-L0-07-M003",
+          "role": "user",
+          "timestamp": "2026-08-18T15:07:00+08:00",
+          "content": "多语言会改变按钮文案。"
+        },
+        {
+          "message_id": "T05-L0-07-M004",
+          "role": "assistant",
+          "timestamp": "2026-08-18T15:11:00+08:00",
+          "content": "定位不能把某个语言的文案当成永久标识。"
+        },
+        {
+          "message_id": "T05-L0-07-M005",
+          "role": "user",
+          "timestamp": "2026-08-18T15:16:00+08:00",
+          "content": "按钮的测试标记在设计稿里已经保留。"
+        },
+        {
+          "message_id": "T05-L0-07-M006",
+          "role": "assistant",
+          "timestamp": "2026-08-18T15:20:00+08:00",
+          "content": "还要确认标记不会随优惠状态改变。"
+        },
+        {
+          "message_id": "T05-L0-07-M007",
+          "role": "user",
+          "timestamp": "2026-08-18T15:27:00+08:00",
+          "content": "当前交接只写失败现象，没有团队约定原文。"
+        },
+        {
+          "message_id": "T05-L0-07-M008",
+          "role": "assistant",
+          "timestamp": "2026-08-18T15:31:00+08:00",
+          "content": "先核对稳定定位的原则，再修改断言。"
+        },
+        {
+          "message_id": "T05-L0-07-M009",
+          "role": "user",
+          "timestamp": "2026-08-18T15:38:00+08:00",
+          "content": "实验记录显示依赖文案的断言在法语页面失败。"
+        },
+        {
+          "message_id": "T05-L0-07-M010",
+          "role": "assistant",
+          "timestamp": "2026-08-18T15:43:00+08:00",
+          "content": "层级路径也会因优惠提示插入而变化。"
+        },
+        {
+          "message_id": "T05-L0-07-M011",
+          "role": "user",
+          "timestamp": "2026-08-18T15:50:00+08:00",
+          "content": "最终约定是优先使用面向用户语义且带稳定测试标记的按钮定位，等待状态变化由可见状态断言表达。"
+        },
+        {
+          "message_id": "T05-L0-07-M012",
+          "role": "assistant",
+          "timestamp": "2026-08-18T15:54:00+08:00",
+          "content": "复盘排除了依赖按钮文案、易变层级路径和自动生成类名，并将定位器问题与网络模拟问题分开。"
+        }
+      ]
+    },
+    {
+      "asset_id": "T05-L0-08",
+      "session_id": "T05-L0-08",
+      "project": "pulse-checkout",
+      "observed_at": "2026-08-19T16:00:00+08:00",
+      "topic": "网络 mock 隔离",
+      "messages": [
+        {
+          "message_id": "T05-L0-08-M001",
+          "role": "user",
+          "timestamp": "2026-08-19T16:00:00+08:00",
+          "content": "结账接口的失败响应会泄漏到相邻测试。"
+        },
+        {
+          "message_id": "T05-L0-08-M002",
+          "role": "assistant",
+          "timestamp": "2026-08-19T16:03:00+08:00",
+          "content": "先检查每个测试的 handler 生命周期和清理时机。"
+        },
+        {
+          "message_id": "T05-L0-08-M003",
+          "role": "user",
+          "timestamp": "2026-08-19T16:07:00+08:00",
+          "content": "单测并行运行时最容易出现这个问题。"
+        },
+        {
+          "message_id": "T05-L0-08-M004",
+          "role": "assistant",
+          "timestamp": "2026-08-19T16:11:00+08:00",
+          "content": "每个场景应在自身边界内注册响应，不共享可变数组。"
+        },
+        {
+          "message_id": "T05-L0-08-M005",
+          "role": "user",
+          "timestamp": "2026-08-19T16:16:00+08:00",
+          "content": "真实结账按钮定位不在这次范围。"
+        },
+        {
+          "message_id": "T05-L0-08-M006",
+          "role": "assistant",
+          "timestamp": "2026-08-19T16:20:00+08:00",
+          "content": "记录中明确分离网络隔离与页面定位。"
+        },
+        {
+          "message_id": "T05-L0-08-M007",
+          "role": "user",
+          "timestamp": "2026-08-19T16:27:00+08:00",
+          "content": "失败用例结束后仍有一个请求在途。"
+        },
+        {
+          "message_id": "T05-L0-08-M008",
+          "role": "assistant",
+          "timestamp": "2026-08-19T16:31:00+08:00",
+          "content": "应等待请求完成或显式取消，再释放 handler。"
+        },
+        {
+          "message_id": "T05-L0-08-M009",
+          "role": "user",
+          "timestamp": "2026-08-19T16:38:00+08:00",
+          "content": "清理改为每例执行后完成。"
+        },
+        {
+          "message_id": "T05-L0-08-M010",
+          "role": "assistant",
+          "timestamp": "2026-08-19T16:43:00+08:00",
+          "content": "相邻测试不再收到失败响应。"
+        },
+        {
+          "message_id": "T05-L0-08-M011",
+          "role": "user",
+          "timestamp": "2026-08-19T16:50:00+08:00",
+          "content": "这条记录只保留隔离策略。"
+        },
+        {
+          "message_id": "T05-L0-08-M012",
+          "role": "assistant",
+          "timestamp": "2026-08-19T16:54:00+08:00",
+          "content": "已与定位器约定分开存放。"
+        }
+      ]
+    },
+    {
+      "asset_id": "T05-L0-09",
+      "session_id": "T05-L0-09",
+      "project": "atlas-insights",
+      "observed_at": "2026-08-20T17:00:00+08:00",
+      "topic": "SVG 与 Canvas 决策",
+      "messages": [
+        {
+          "message_id": "T05-L0-09-M001",
+          "role": "user",
+          "timestamp": "2026-08-20T17:00:00+08:00",
+          "content": "图表团队要整理 SVG 与 Canvas 的历史切换决策。"
+        },
+        {
+          "message_id": "T05-L0-09-M002",
+          "role": "assistant",
+          "timestamp": "2026-08-20T17:03:00+08:00",
+          "content": "先列出数据量、键盘可读性和截图稳定性三个约束。"
+        },
+        {
+          "message_id": "T05-L0-09-M003",
+          "role": "user",
+          "timestamp": "2026-08-20T17:07:00+08:00",
+          "content": "小数据量的经营图仍需要键盘访问。"
+        },
+        {
+          "message_id": "T05-L0-09-M004",
+          "role": "assistant",
+          "timestamp": "2026-08-20T17:11:00+08:00",
+          "content": "可读性要求会影响渲染路径选择。"
+        },
+        {
+          "message_id": "T05-L0-09-M005",
+          "role": "user",
+          "timestamp": "2026-08-20T17:16:00+08:00",
+          "content": "大数据量静态概览的性能压力更明显。"
+        },
+        {
+          "message_id": "T05-L0-09-M006",
+          "role": "assistant",
+          "timestamp": "2026-08-20T17:20:00+08:00",
+          "content": "要把适用边界与统一实现的愿望分开。"
+        },
+        {
+          "message_id": "T05-L0-09-M007",
+          "role": "user",
+          "timestamp": "2026-08-20T17:27:00+08:00",
+          "content": "索引只剩日期和标题，正文没有载入。"
+        },
+        {
+          "message_id": "T05-L0-09-M008",
+          "role": "assistant",
+          "timestamp": "2026-08-20T17:31:00+08:00",
+          "content": "按记录类型与日期核对原决定，避免凭当前代码倒推。"
+        },
+        {
+          "message_id": "T05-L0-09-M009",
+          "role": "user",
+          "timestamp": "2026-08-20T17:38:00+08:00",
+          "content": "记录标注为 2026-08-12 的 decision。"
+        },
+        {
+          "message_id": "T05-L0-09-M010",
+          "role": "assistant",
+          "timestamp": "2026-08-20T17:43:00+08:00",
+          "content": "日期和类型足以缩小到一条旧决策。"
+        },
+        {
+          "message_id": "T05-L0-09-M011",
+          "role": "user",
+          "timestamp": "2026-08-20T17:50:00+08:00",
+          "content": "decision 确认：小于中等数据量且需要键盘可读性时保留 SVG；超大数据量的静态概览才允许 Canvas，并要求另提供文本摘要与稳定截图检查。"
+        },
+        {
+          "message_id": "T05-L0-09-M012",
+          "role": "assistant",
+          "timestamp": "2026-08-20T17:54:00+08:00",
+          "content": "不接受为了统一实现而全量切换；这条记录只恢复适用边界，不改变当前实现。"
+        }
+      ]
+    },
+    {
+      "asset_id": "T05-L0-10",
+      "session_id": "T05-L0-10",
+      "project": "canvas-reports",
+      "observed_at": "2026-08-21T18:00:00+08:00",
+      "topic": "预览 CLS 事故",
+      "messages": [
+        {
+          "message_id": "T05-L0-10-M001",
+          "role": "user",
+          "timestamp": "2026-08-21T18:00:00+08:00",
+          "content": "报告预览在窄屏加载字体和图表时发生两次位移。"
+        },
+        {
+          "message_id": "T05-L0-10-M002",
+          "role": "assistant",
+          "timestamp": "2026-08-21T18:03:00+08:00",
+          "content": "先记录预览容器、字体和图表占位的当前尺寸。"
+        },
+        {
+          "message_id": "T05-L0-10-M003",
+          "role": "user",
+          "timestamp": "2026-08-21T18:07:00+08:00",
+          "content": "宽屏没有明显位移，但也要纳入回归。"
+        },
+        {
+          "message_id": "T05-L0-10-M004",
+          "role": "assistant",
+          "timestamp": "2026-08-21T18:11:00+08:00",
+          "content": "事故验证需要至少覆盖窄屏和宽屏两个视口。"
+        },
+        {
+          "message_id": "T05-L0-10-M005",
+          "role": "user",
+          "timestamp": "2026-08-21T18:16:00+08:00",
+          "content": "目前只看到标题和影响数字，正文步骤未载入。"
+        },
+        {
+          "message_id": "T05-L0-10-M006",
+          "role": "assistant",
+          "timestamp": "2026-08-21T18:20:00+08:00",
+          "content": "不要把交互图表的历史结论混作事故流程。"
+        },
+        {
+          "message_id": "T05-L0-10-M007",
+          "role": "user",
+          "timestamp": "2026-08-21T18:27:00+08:00",
+          "content": "响应式断点必须保留。"
+        },
+        {
+          "message_id": "T05-L0-10-M008",
+          "role": "assistant",
+          "timestamp": "2026-08-21T18:31:00+08:00",
+          "content": "可以固定每个断点的容器约束，而不是取消响应式。"
+        },
+        {
+          "message_id": "T05-L0-10-M009",
+          "role": "user",
+          "timestamp": "2026-08-21T18:38:00+08:00",
+          "content": "事故正文已被索引，但尚未读到。"
+        },
+        {
+          "message_id": "T05-L0-10-M010",
+          "role": "assistant",
+          "timestamp": "2026-08-21T18:43:00+08:00",
+          "content": "补回正文后按原步骤复盘，并在合入前重复两种视口检查。"
+        },
+        {
+          "message_id": "T05-L0-10-M011",
+          "role": "user",
+          "timestamp": "2026-08-21T18:50:00+08:00",
+          "content": "记录当前仅用于定位事故场景。"
+        },
+        {
+          "message_id": "T05-L0-10-M012",
+          "role": "assistant",
+          "timestamp": "2026-08-21T18:54:00+08:00",
+          "content": "已保留症状、影响和验证范围。"
+        }
+      ]
+    }
+  ],
+  "l1_memories": [
+    {
+      "asset_id": "T05-L1-01",
+      "project": "atlas-insights",
+      "status": "active",
+      "content": "提示框定位需要区分视口矩形与文档位置。",
+      "source_message_ids": [
+        "T05-L0-01-M004",
+        "T05-L0-01-M010"
+      ]
+    },
+    {
+      "asset_id": "T05-L1-02",
+      "project": "atlas-insights",
+      "status": "superseded",
+      "content": "旧的局部数据转换记录只处理月份排序。",
+      "source_message_ids": [
+        "T05-L0-02-M002",
+        "T05-L0-02-M012"
+      ],
+      "superseded_by": "T05-L1-11"
+    },
+    {
+      "asset_id": "T05-L1-03",
+      "project": "meridian-storefront",
+      "status": "active",
+      "content": "媒体卡片需要响应式占位并保留延迟加载边界。",
+      "source_message_ids": [
+        "T05-L0-03-M004",
+        "T05-L0-03-M006"
+      ]
+    },
+    {
+      "asset_id": "T05-L1-04",
+      "project": "meridian-storefront",
+      "status": "superseded",
+      "content": "仅在客户端补高度的旧建议已被接管阶段的位移否定。",
+      "source_message_ids": [
+        "T05-L0-03-M009",
+        "T05-L0-04-M004"
+      ],
+      "superseded_by": "T05-L1-03"
+    },
+    {
+      "asset_id": "T05-L1-05",
+      "project": "beacon-console",
+      "status": "active",
+      "content": "成员列表重渲染来自列表容器把每次筛选产生的新派生数组传给所有行，改变行属性引用；行级订阅本身没有变化。复盘排除了全量 memo、移除实时计数和改写缓存存储。",
+      "source_message_ids": [
+        "T05-L0-05-M009",
+        "T05-L0-05-M010"
+      ]
+    },
+    {
+      "asset_id": "T05-L1-06",
+      "project": "beacon-console",
+      "status": "active",
+      "content": "权限摘要应订阅与详情一致的失效事件。",
+      "source_message_ids": [
+        "T05-L0-06-M009",
+        "T05-L0-06-M010"
+      ]
+    },
+    {
+      "asset_id": "T05-L1-07",
+      "project": "beacon-console",
+      "status": "superseded",
+      "content": "全量 memo 曾被列为候选但不再作为列表重绘的首选方向。",
+      "source_message_ids": [
+        "T05-L0-05-M011",
+        "T05-L0-05-M006"
+      ],
+      "superseded_by": "T05-L1-05"
+    },
+    {
+      "asset_id": "T05-L1-08",
+      "project": "pulse-checkout",
+      "status": "active",
+      "content": "优惠请求的测试隔离要求每例结束前完成清理。",
+      "source_message_ids": [
+        "T05-L0-08-M007",
+        "T05-L0-08-M010"
+      ]
+    },
+    {
+      "asset_id": "T05-L1-09",
+      "project": "pulse-checkout",
+      "status": "active",
+      "content": "结账按钮优先使用面向用户语义且带稳定测试标记的定位，等待状态变化由可见状态断言表达；复盘排除了依赖按钮文案、易变层级路径和自动生成类名。",
+      "source_message_ids": [
+        "T05-L0-07-M005",
+        "T05-L0-07-M011"
+      ]
+    },
+    {
+      "asset_id": "T05-L1-10",
+      "project": "pulse-checkout",
+      "status": "superseded",
+      "content": "依赖固定语言文案的旧定位方式已不适用于多语言页面。",
+      "source_message_ids": [
+        "T05-L0-07-M003",
+        "T05-L0-07-M009"
+      ],
+      "superseded_by": "T05-L1-09"
+    },
+    {
+      "asset_id": "T05-L1-11",
+      "project": "atlas-insights",
+      "status": "active",
+      "content": "经营图表的缺失月份应保持缺口而非填零。",
+      "source_message_ids": [
+        "T05-L0-02-M003",
+        "T05-L0-02-M004"
+      ]
+    },
+    {
+      "asset_id": "T05-L1-12",
+      "project": "canvas-reports",
+      "status": "active",
+      "content": "预览事故回归覆盖窄屏与宽屏两个视口。",
+      "source_message_ids": [
+        "T05-L0-10-M003",
+        "T05-L0-10-M004"
+      ]
+    },
+    {
+      "asset_id": "T05-L1-13",
+      "project": "atlas-insights",
+      "status": "active",
+      "content": "旧 decision 确认：小于中等数据量且需要键盘可读性时保留 SVG；超大数据量的静态概览才允许 Canvas，并要求另提供文本摘要与稳定截图检查；不接受为了统一实现而全量切换。",
+      "source_message_ids": [
+        "T05-L0-09-M001",
+        "T05-L0-09-M005"
+      ]
+    },
+    {
+      "asset_id": "T05-L1-14",
+      "project": "atlas-insights",
+      "status": "superseded",
+      "content": "为统一实现而全量切换渲染路径的提议已被保留边界的要求取代。",
+      "source_message_ids": [
+        "T05-L0-09-M006",
+        "T05-L0-09-M011"
+      ],
+      "superseded_by": "T05-L1-13"
+    },
+    {
+      "asset_id": "T05-L1-15",
+      "project": "meridian-storefront",
+      "status": "active",
+      "content": "接管前的推荐列表应使用确定的默认标记，实验切换延后到接管后。",
+      "source_message_ids": [
+        "T05-L0-04-M003",
+        "T05-L0-04-M004"
+      ]
+    },
+    {
+      "asset_id": "T05-L1-16",
+      "project": "canvas-reports",
+      "status": "superseded",
+      "content": "只验证窄屏的旧事故回归范围不足以作为合入门槛。",
+      "source_message_ids": [
+        "T05-L0-10-M003",
+        "T05-L0-10-M010"
+      ],
+      "superseded_by": "T05-L1-12"
+    }
+  ],
+  "l2_scenes": [
+    {
+      "asset_id": "T05-L2-01",
+      "projects": [
+        "atlas-insights",
+        "beacon-console"
+      ],
+      "status": "active",
+      "source_session_ids": [
+        "T05-L0-01",
+        "T05-L0-05"
+      ],
+      "summary": "记录两个前端性能问题的排查入口、现象边界与复盘产物，供后续按项目区分。",
+      "injected": true,
+      "path": "web/atlas-insights/beacon-performance.md",
+      "content": "记录 tooltip 与列表性能问题的排查入口、现象边界、证据来源和复盘产物，按项目区分后再进入实施记录。"
+    },
+    {
+      "asset_id": "T05-L2-02",
+      "projects": [
+        "meridian-storefront",
+        "pulse-checkout"
+      ],
+      "status": "active",
+      "source_session_ids": [
+        "T05-L0-03",
+        "T05-L0-07"
+      ],
+      "summary": "汇总商品页与结账页的浏览器回归背景，强调异步状态和交互约束的差异。",
+      "injected": true,
+      "path": "web/meridian-storefront/pulse-checkout.md",
+      "content": "汇总商品页稳定性与结账回归的背景、异步状态、交互约束和各自的验证范围，供跨项目复盘。"
+    },
+    {
+      "asset_id": "T05-L2-03",
+      "projects": [
+        "atlas-insights",
+        "canvas-reports"
+      ],
+      "status": "active",
+      "source_session_ids": [
+        "T05-L0-09",
+        "T05-L0-10"
+      ],
+      "summary": "关联两条图形与报告预览时间线，保留数据规模、视口和稳定性等讨论维度。",
+      "injected": true,
+      "path": "web/atlas-insights/canvas-reports.md",
+      "content": "关联图形渲染决策与报告预览事故的时间线，保留数据规模、视口、可读性和稳定性等讨论维度。"
+    },
+    {
+      "asset_id": "T05-L2-04",
+      "projects": [
+        "canvas-reports",
+        "meridian-storefront"
+      ],
+      "status": "active",
+      "source_session_ids": [
+        "T05-L0-10",
+        "T05-L0-03"
+      ],
+      "summary": "报告预览稳定性事故场景，包含跨视口复现、布局约束和发布前检查的背景，但不在摘要中写出具体修复答案。",
+      "injected": true,
+      "path": "web/canvas-reports/cls-incident-playbook.md",
+      "content": "先冻结预览容器的响应式尺寸，再为字体和图表保留确定性占位，随后在窄屏与宽屏各做一次首屏位移记录；只有在两种视口均稳定且文本仍可见时才合入。"
+    }
+  ],
+  "l3_profiles": [
+    {
+      "asset_id": "T05-L3-01",
+      "scope": "team",
+      "content": "团队偏好先保留可复现的现象与时间线，再以小范围证据确认归因；前端改动应尊重响应式、可访问性和渐进加载，回归记录需区分浏览器测量、组件渲染与测试隔离。对于历史结论，优先引用已确认的项目上下文，避免用相邻项目经验替代原记录。"
+    }
+  ]
+}
+

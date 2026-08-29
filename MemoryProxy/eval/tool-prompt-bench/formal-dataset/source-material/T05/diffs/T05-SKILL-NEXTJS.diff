@@ -1,0 +1,22 @@
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/nextjs/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-NEXTJS/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+diff --git MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/nextjs/SKILL.md MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-NEXTJS/SKILL.md
+index 2858156..140d64b 100644
+--- MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/nextjs/SKILL.md
++++ MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-NEXTJS/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+ name: nextjs
+-description: Current Next.js 16 App Router guidance for caching, Cache Components, Server Components, routing, Server Actions, and next.config.js. Use for Next.js 16.x code. Generic React 19 patterns are covered by the react skill.
++description: "Next.js 16 App Router、缓存、Server Components、Actions 和路由规则。"
++use_when: "任务明确涉及 Next.js App Router 或服务端/客户端边界。"
++do_not_use_when: "框架无关 React 组件、D3 可视化或纯浏览器测量时不用。"
+ ---
+ 
+ # Next.js Community Next.js 16 App Router Best Practices
+@@ -111,3 +113,4 @@ Read individual reference files for detailed explanations and code examples:
+ ## Full Compiled Document
+ 
+ For the complete guide with all rules expanded: `AGENTS.md`
++
+

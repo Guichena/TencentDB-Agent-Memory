@@ -1,0 +1,426 @@
+{
+  "schema_version": "task1.team_skill_assets.v1",
+  "team_id": "T05",
+  "skills": [
+    {
+      "assetId": "T05-SKILL-REACT",
+      "ownerAgentId": "agent-task1-t05-general",
+      "sourceEvidenceIds": [
+        "T05-SRC-REACT"
+      ],
+      "observedAt": "2026-08-20T21:14:10.000-04:00",
+      "name": "react",
+      "version": "0.1.0+t05.aec25a43",
+      "description": "React 19 组件、Hook、effect、并发渲染与 memoization 的通用实现边界。",
+      "useWhen": "任务是 React 组件或 Hook 的实现和审查，且并非专门的性能审计流程。",
+      "doNotUseWhen": "Next.js 路由缓存、表单库专属行为或浏览器测量时不用。",
+      "repoCommit": "aec25a43f4c03e45865d198409f28ba9dcf9c67f",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "7269bca373074f669ee7d737d8d9204f933f32227a62804274094399eca6663d"
+        }
+      ],
+      "contentHash": "6d3f6df87ccecc490a55ed1e65d2fdf3ed5f8ad3633f32b4c6fa1b8055b86316"
+    },
+    {
+      "assetId": "T05-SKILL-REACT-PERFORMANCE",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "T05-SRC-REACT-PERF"
+      ],
+      "observedAt": "2026-08-20T21:14:10.000-04:00",
+      "name": "react-performance",
+      "version": "0.1.0+t05.aec25a43",
+      "description": "按影响优先级处理 React/Next.js waterfall、bundle、RSC、重渲染和渲染成本。",
+      "useWhen": "已有 React 性能症状，需要选择并实施有证据的优化策略。",
+      "doNotUseWhen": "需要浏览器实测指标、普通组件功能实现或 Playwright E2E 时不用。",
+      "repoCommit": "aec25a43f4c03e45865d198409f28ba9dcf9c67f",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "fffdf77daeaedac9ce65c3a89cec3fbc0d9f9a6b205fb512cd1ab74bf70269a5"
+        }
+      ],
+      "contentHash": "1ef05a84f649ba939b40139b698e5f09cc7934d929c1af71ed0f8990e3d40651"
+    },
+    {
+      "assetId": "T05-SKILL-TANSTACK-QUERY",
+      "ownerAgentId": "agent-task1-t05-general",
+      "sourceEvidenceIds": [
+        "T05-SRC-TANSTACK"
+      ],
+      "observedAt": "2026-08-20T21:14:10.000-04:00",
+      "name": "tanstack-query",
+      "version": "0.1.0+t05.aec25a43",
+      "description": "TanStack Query v5 查询、缓存、失效、预取和渲染订阅优化。",
+      "useWhen": "问题明确涉及 useQuery、mutation、queryClient 或缓存失效。",
+      "doNotUseWhen": "普通 React 本地状态、D3 数据绑定或 E2E 测试时不用。",
+      "repoCommit": "aec25a43f4c03e45865d198409f28ba9dcf9c67f",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "2ed0bb34f23619d99f4cb3480866a0f4c6725155fa060745baee520fc2561430"
+        }
+      ],
+      "contentHash": "593c1e680c2cd83e0738120400fa50ac9111d1f7bbac2546973fbdc8715d7116"
+    },
+    {
+      "assetId": "T05-SKILL-REACT-HOOK-FORM",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "T05-SRC-RHF"
+      ],
+      "observedAt": "2026-08-20T21:14:10.000-04:00",
+      "name": "react-hook-form",
+      "version": "0.1.0+t05.aec25a43",
+      "description": "React Hook Form v7 的订阅、控制器、字段数组和表单性能规则。",
+      "useWhen": "问题明确涉及 useForm、useWatch、useController 或字段数组。",
+      "doNotUseWhen": "普通 React 状态、TanStack Query 或页面 CLS 时不用。",
+      "repoCommit": "aec25a43f4c03e45865d198409f28ba9dcf9c67f",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "e5347678e0129932931cfd343ebf27c4f7410881493293c7582d3e00e9f6ed06"
+        }
+      ],
+      "contentHash": "a890dcae76932edb9cd3344d589ed2277119f2c123352cb3bc069b6b6657f71e"
+    },
+    {
+      "assetId": "T05-SKILL-NEXTJS",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "T05-SRC-NEXTJS"
+      ],
+      "observedAt": "2026-08-20T21:14:10.000-04:00",
+      "name": "nextjs",
+      "version": "0.1.0+t05.aec25a43",
+      "description": "Next.js 16 App Router、缓存、Server Components、Actions 和路由规则。",
+      "useWhen": "任务明确涉及 Next.js App Router 或服务端/客户端边界。",
+      "doNotUseWhen": "框架无关 React 组件、D3 可视化或纯浏览器测量时不用。",
+      "repoCommit": "aec25a43f4c03e45865d198409f28ba9dcf9c67f",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "32b1dcf419c835937866444fab6522564e7b91a8fe1e9593aece1ea84b708f87"
+        }
+      ],
+      "contentHash": "0a5162a2e5e22dbbae6ae29459a69a06e5f24126a82b16b3d720bf65377735b2"
+    },
+    {
+      "assetId": "T05-SKILL-FEATURE-ARCH",
+      "ownerAgentId": "agent-task1-t05-assets-b",
+      "sourceEvidenceIds": [
+        "T05-SRC-FEATURE-ARCH"
+      ],
+      "observedAt": "2026-08-20T21:14:10.000-04:00",
+      "name": "feature-architecture",
+      "version": "0.1.0+t05.aec25a43",
+      "description": "React feature-based 模块边界和可扩展目录组织。",
+      "useWhen": "需要调整前端 feature/shared 分层和依赖方向。",
+      "doNotUseWhen": "局部性能测量、单个图表或测试断言时不用。",
+      "repoCommit": "aec25a43f4c03e45865d198409f28ba9dcf9c67f",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "54bee4c5eb3a71eb962bda6f5261f79222ca91467aa342c880cfa3deb39e3022"
+        }
+      ],
+      "contentHash": "9683761fb35ee61a00b1506b316a40446e35cced01ddf4e0371d9fcce199fa6d"
+    },
+    {
+      "assetId": "T05-SKILL-UI-DESIGN",
+      "ownerAgentId": "agent-task1-t05-assets-b",
+      "sourceEvidenceIds": [
+        "T05-SRC-UI-DESIGN"
+      ],
+      "observedAt": "2026-08-20T21:14:10.000-04:00",
+      "name": "ui-design",
+      "version": "0.1.0+t05.aec25a43",
+      "description": "前端可用性、可访问性、响应式布局和视觉实现审查。",
+      "useWhen": "需要 UI/UX 或响应式实现与审查。",
+      "doNotUseWhen": "React 重渲染、Web Vitals 采集或 Playwright 可靠性问题时不用。",
+      "repoCommit": "aec25a43f4c03e45865d198409f28ba9dcf9c67f",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "9cd6d383a00cfca48bfa1548c0f88ded1321c737d37d0621ea757653ba0118f6"
+        }
+      ],
+      "contentHash": "82733e63e0e01209cc238734ecf772e40aa6c04674a9e3e41138f92e1cc4369b"
+    },
+    {
+      "assetId": "T05-SKILL-WEB-GUIDELINES",
+      "ownerAgentId": "agent-task1-t05-assets-b",
+      "sourceEvidenceIds": [
+        "T05-SRC-WEB-GUIDELINES"
+      ],
+      "observedAt": "2026-08-20T21:14:10.000-04:00",
+      "name": "web-interface-guidelines",
+      "version": "0.1.0+t05.aec25a43",
+      "description": "按 Web Interface Guidelines 审查已给 UI 代码。",
+      "useWhen": "请求是界面规范合规审查并已提供相关 UI 代码。",
+      "doNotUseWhen": "创建 D3 图表、诊断 CLS 根因或写 E2E 测试时不用。",
+      "repoCommit": "aec25a43f4c03e45865d198409f28ba9dcf9c67f",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "e82232f885aea23bca3bd2e5d54d5427cadf75f7a7f881d561f119275777ca22"
+        }
+      ],
+      "contentHash": "acf034c43ab33362b2721cacc7b6155c12804fca42e6d3a97fb2b7672d05da00"
+    },
+    {
+      "assetId": "T05-SKILL-PLAYWRIGHT",
+      "ownerAgentId": "agent-task1-t05-general",
+      "sourceEvidenceIds": [
+        "T05-SRC-PLAYWRIGHT"
+      ],
+      "observedAt": "2026-08-20T21:14:10.000-04:00",
+      "name": "playwright-e2e",
+      "version": "0.1.0+t05.aec25a43",
+      "description": "为 React/Next.js E2E 测试提供稳定定位、等待、隔离、追踪与 CI 调试规则。",
+      "useWhen": "需要编写或修复 Playwright E2E 测试，尤其定位器、等待与 trace。",
+      "doNotUseWhen": "只测页面性能指标、Vitest 单测或浏览器探索时不用。",
+      "repoCommit": "aec25a43f4c03e45865d198409f28ba9dcf9c67f",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "8e6c4e6ec5d081d92d46036066c63287e88fd1f3a763fee512d837d2b83666d2"
+        },
+        {
+          "path": "references/debug-trace-viewer.md",
+          "sha256": "cf90a3c680662da2028539ce9d59fb89467465a666d50b09bd37dabcf2385c3d"
+        }
+      ],
+      "contentHash": "802e82cc41863fa6dd757c5029a0bab8ea13822ad021428b2950ccce4952ce44"
+    },
+    {
+      "assetId": "T05-SKILL-VITEST",
+      "ownerAgentId": "agent-task1-t05-assets-b",
+      "sourceEvidenceIds": [
+        "T05-SRC-VITEST"
+      ],
+      "observedAt": "2026-08-20T21:14:10.000-04:00",
+      "name": "vitest",
+      "version": "0.1.0+t05.aec25a43",
+      "description": "Vitest 4 单元测试、mock、异步断言、worker 和测试性能。",
+      "useWhen": "任务是 Vitest 单元/组件测试。",
+      "doNotUseWhen": "Playwright E2E、浏览器测量或 TDD 流程设计时不用。",
+      "repoCommit": "aec25a43f4c03e45865d198409f28ba9dcf9c67f",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "2596843e460f051414048f0d4bd1bb6e91f8bb9ff7230caf8b3a660496c6d0e6"
+        }
+      ],
+      "contentHash": "acc973e4929dbbd862ba7ef2cae0f6be52809f01cf53fc5011fd32e3fa07bbb4"
+    },
+    {
+      "assetId": "T05-SKILL-MSW",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "T05-SRC-MSW"
+      ],
+      "observedAt": "2026-08-20T21:14:10.000-04:00",
+      "name": "msw",
+      "version": "0.1.0+t05.aec25a43",
+      "description": "MSW v2 的浏览器/Node handler、网络模拟与测试隔离。",
+      "useWhen": "任务明确需要 MSW 请求 handler 或网络 mock。",
+      "doNotUseWhen": "直接 Playwright route、真实 Web Vitals 测量或 D3 数据处理时不用。",
+      "repoCommit": "aec25a43f4c03e45865d198409f28ba9dcf9c67f",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "40b3fd2d9d9b0c322f71a6c504de66ba5d8731e27a068f3b7762236a3896853b"
+        }
+      ],
+      "contentHash": "a3552961d803430b50975ee8f67c84e78b845e4d0fb3f82f29ce163e70fea2d9"
+    },
+    {
+      "assetId": "T05-SKILL-TDD",
+      "ownerAgentId": "agent-task1-t05-assets-b",
+      "sourceEvidenceIds": [
+        "T05-SRC-TDD"
+      ],
+      "observedAt": "2026-08-20T21:14:10.000-04:00",
+      "name": "tdd",
+      "version": "0.1.0+t05.aec25a43",
+      "description": "red-green-refactor 流程和测试先行边界。",
+      "useWhen": "用户明确要求测试先行或 red-green-refactor。",
+      "doNotUseWhen": "只修 Playwright flaky test、测量 CLS 或实现 D3 图表时不用。",
+      "repoCommit": "aec25a43f4c03e45865d198409f28ba9dcf9c67f",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "693c604d0f998ec77e211c014f467711b80fd56ed3d109a1726383ab8ee2e99d"
+        }
+      ],
+      "contentHash": "0b0217bfc7552721efd1711af0ee96a2a0f259babc4269dcd163f010814d3f37"
+    },
+    {
+      "assetId": "T05-SKILL-TAILWIND",
+      "ownerAgentId": "agent-task1-t05-general",
+      "sourceEvidenceIds": [
+        "T05-SRC-TAILWIND"
+      ],
+      "observedAt": "2026-08-20T21:14:10.000-04:00",
+      "name": "tailwind-v4",
+      "version": "0.1.0+t05.aec25a43",
+      "description": "Tailwind CSS v4 样式组织、构建输出和性能边界。",
+      "useWhen": "任务明确涉及 Tailwind v4 utilities、theme 或生成 CSS。",
+      "doNotUseWhen": "普通 CSS、D3 SVG 属性、React render profile 时不用。",
+      "repoCommit": "aec25a43f4c03e45865d198409f28ba9dcf9c67f",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "144075be234d88f0ee9ad0fb0d312f3e43e88bb5280e0ccba8cb46988f5bf208"
+        }
+      ],
+      "contentHash": "ad1e222b56855b71463c57fd0a906054f098b2d167888703ccd2201f82205e92"
+    },
+    {
+      "assetId": "T05-SKILL-D3-VISUALIZATION",
+      "ownerAgentId": "agent-task1-t05-general",
+      "sourceEvidenceIds": [
+        "T05-SRC-D3"
+      ],
+      "observedAt": "2026-07-23T19:04:59.000Z",
+      "name": "d3-visualization",
+      "version": "0.1.0+t05.9a1f4dd5",
+      "description": "可复现的 D3 SVG/HTML 可视化流程，覆盖数据绑定、比例尺、轴、图例和确定性输出。",
+      "useWhen": "需要构建或修正 D3 图表、交互式 SVG 或离线可视化。",
+      "doNotUseWhen": "只需表格摘要、浏览器性能测量或 React 重渲染诊断时不用。",
+      "repoCommit": "9a1f4dd5f7659f75707435da3ce854b6e48321d1",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "5f997027e58e15721988e2162dab90efbb417039c9f0312748642af4975c5bda"
+        }
+      ],
+      "contentHash": "84a384faeb7f21c9269485627ae361725179a6d5ea1748dcec51a16a658eb9a0"
+    },
+    {
+      "assetId": "T05-SKILL-PLAYWRIGHT-CLI",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "T05-SRC-PLAYWRIGHT-CLI"
+      ],
+      "observedAt": "2026-08-28T18:43:34.000-07:00",
+      "name": "playwright-browser-operations",
+      "version": "0.1.0+t05.de214f44",
+      "description": "使用 Playwright CLI 驱动浏览器、快照、trace、网络与会话。",
+      "useWhen": "需要通过 Playwright CLI 进行浏览器交互或调试。",
+      "doNotUseWhen": "编写 Playwright Test 代码、测 Web Vitals 或静态 UI 审查时不用。",
+      "repoCommit": "de214f440b7e34937fe4886f046b78b757136087",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "20ed1823d3d7152f3b9fa66ffa70247026e025040e255bce47908df215ce1d76"
+        }
+      ],
+      "contentHash": "15b81fc91b9540db381edeb7443f84c9b5d0c0b12092d40f298e09b5e7406771"
+    },
+    {
+      "assetId": "T05-SKILL-BROWSER-MEASUREMENT",
+      "ownerAgentId": "agent-task1-t05-general",
+      "sourceEvidenceIds": [
+        "T05-SRC-AGENT-BROWSER"
+      ],
+      "observedAt": "2026-08-26T15:25:48.000-05:00",
+      "name": "browser-vitals-measurement",
+      "version": "0.1.0+t05.fbd046c2",
+      "description": "通过浏览器采集 Web Vitals 与 React render profile，区分 CLS、LCP、INP 和重渲染证据。",
+      "useWhen": "需要实际浏览器中的 Web Vitals、hydration 或 React render 证据。",
+      "doNotUseWhen": "只写 Playwright 断言、静态代码审查或 D3 图形实现时不用。",
+      "repoCommit": "fbd046c23a2c1156891bda294aaaee715c23b3f1",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "81984146a0a6ce8427a49562fb7a42775d33643d4bea83c74fe23aa76772d42a"
+        }
+      ],
+      "contentHash": "5d88351e27f94776b72a0bc710670418f3fc541b385d0ea789f2eca701ae7972"
+    }
+  ]
+}

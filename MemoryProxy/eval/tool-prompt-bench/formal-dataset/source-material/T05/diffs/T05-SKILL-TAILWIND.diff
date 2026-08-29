@@ -1,0 +1,23 @@
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/tailwind/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-TAILWIND/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+diff --git MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/tailwind/SKILL.md MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-TAILWIND/SKILL.md
+index f2a49a6..dd1a068 100644
+--- MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/tailwind/SKILL.md
++++ MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-TAILWIND/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+-name: tailwind
+-description: Tailwind CSS v4 performance optimization and best practices guidelines (formerly tailwindcss-v4-style). This skill should be used when writing, reviewing, or refactoring Tailwind CSS v4 code to ensure optimal build performance, minimal CSS output, and correct usage of v4 features. Triggers on tasks involving Tailwind configuration, @theme directive, utility classes, responsive design, dark mode, container queries, or CSS generation optimization.
++name: tailwind-v4
++description: "Tailwind CSS v4 样式组织、构建输出和性能边界。"
++use_when: "任务明确涉及 Tailwind v4 utilities、theme 或生成 CSS。"
++do_not_use_when: "普通 CSS、D3 SVG 属性、React render profile 时不用。"
+ ---
+ 
+ # Tailwind Labs Tailwind CSS v4 Best Practices
+@@ -110,3 +112,4 @@ For a complete guide with all rules expanded, see [AGENTS.md](AGENTS.md).
+ | File | Description |
+ |------|-------------|
+ | [AGENTS.md](AGENTS.md) | Complete compiled guide with all rules |
++
+

@@ -1,0 +1,308 @@
+{
+  "schema_version": "task1.luna_natural_negative_draft.v1",
+  "batch_id": "t05-natural-negatives-01",
+  "stage": "DS05",
+  "team_id": "T05",
+  "cases": [
+    {
+      "draft_case_id": "T05-DS05-NN-001",
+      "external_source_ids": [],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Atlas 趋势卡片只需要整理一段局部数据转换，不涉及图表布局或交互。输入记录已经确定为 [{\"month\":\"Jan\",\"actual\":12,\"plan\":10},{\"month\":\"Feb\",\"actual\":null,\"plan\":15},{\"month\":\"Mar\",\"actual\":18,\"plan\":18} ]。"
+        },
+        {
+          "role": "assistant",
+          "content": "范围限定为纯数据变换：保留月份和计划值，把缺失的 actual 当作 0，并计算差值；不引入排序、取整或额外字段。"
+        },
+        {
+          "role": "user",
+          "content": "当前函数就是：\n```ts\ntype Row = { month: string; actual: number | null; plan: number };\nfunction toPoints(rows: Row[]) {\n  return rows.map(({ month, actual, plan }) => ({ month, actual: actual ?? 0, plan, delta: (actual ?? 0) - plan }));\n}\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "输出顺序与输入顺序相同，delta 使用替换缺失值后的 actual 计算；每个结果对象只有 month、actual、plan、delta 四个键。"
+        }
+      ],
+      "query": "直接列出 toPoints 处理这三条记录后的 JSON 数组，并保持字段顺序与函数返回对象一致。",
+      "why_current_context_is_sufficient": "输入数组、缺失值规则、差值公式和返回字段均已在上下文中明确；这是确定性的局部数据变换，不需要读取图表代码或其他资料。",
+      "visible_distractor_ids_author_only": ["T05-NN-D3-AXIS", "T05-NN-D3-TOOLTIP"],
+      "sol_review_questions": [
+        "是否只按给定函数计算，没有擅自添加排序或图表格式化？",
+        "是否将 Feb 的 actual 替换为 0 后再计算 delta？"
+      ]
+    },
+    {
+      "draft_case_id": "T05-DS05-NN-002",
+      "external_source_ids": [],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "商品卡片的编译错误只出现在 props 类型，组件渲染和事件逻辑都已完成。Product.id 在本页数据模型中是 number，选择回调也要接收这个 number。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会保留组件名称、字段名称和回调参数名，只修正公开 props 的类型边界，不改 JSX 或业务行为。"
+        },
+        {
+          "role": "user",
+          "content": "相关代码如下：\n```tsx\ntype Product = { id: number; title: string };\ntype ProductCardProps = {\n  product: Product;\n  onSelect: (id: string) => void;\n};\n\nexport function ProductCard({ product, onSelect }: ProductCardProps) {\n  return <button onClick={() => onSelect(product.id)}>{product.title}</button>;\n}\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "唯一不一致是 onSelect 把 id 声明成 string，而调用点传入 Product.id 的 number；其它声明都已经满足要求。"
+        }
+      ],
+      "query": "给出只修改 ProductCardProps 的最小 TypeScript 代码片段，使现有调用通过类型检查。",
+      "why_current_context_is_sufficient": "Product.id 的类型、回调调用点和允许的修改范围都已直接给出；只需修正一个 props 字段类型，不依赖 React 约定之外的信息。",
+      "visible_distractor_ids_author_only": ["T05-NN-REACT-HOOK", "T05-NN-REACT-MEMO"],
+      "sol_review_questions": [
+        "是否只把回调参数从 string 改为 number？",
+        "是否避免改动组件渲染和事件实现？"
+      ]
+    },
+    {
+      "draft_case_id": "T05-DS05-NN-003",
+      "external_source_ids": [],
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "报告页在 768px 宽度时，右侧结果卡片的长标题会把两列布局撑出水平滚动条。HTML 结构不能动，左栏固定 220px，右栏应占剩余空间。"
+        },
+        {
+          "role": "assistant",
+          "content": "这是一个 CSS 宽度约束问题；目标是让网格子项允许收缩，并让卡片内部的长文本换行，不调整断点、颜色或内容。"
+        },
+        {
+          "role": "user",
+          "content": "当前 CSS 和最小结构是：\n```css\n.layout { display: grid; grid-template-columns: 220px 1fr; gap: 16px; }\n.results { display: flex; flex-direction: column; }\n.result-card { display: flex; }\n.result-card__title { white-space: nowrap; }\n```\n```html\n<section class=\"layout\"><aside>筛选</aside><main class=\"results\"><article class=\"result-card\"><h2 class=\"result-card__title\">一段很长的报告标题</h2></article></main></section>\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "在不改 HTML 的前提下，网格项的 min-width: auto 和标题的 nowrap 是两个已知限制；可以用两条局部规则解除它们。"
+        }
+      ],
+      "query": "请给出最小 CSS patch，让 .results 能收缩且 .result-card__title 能在窄屏换行；保留现有网格列定义。",
+      "why_current_context_is_sufficient": "布局目标、现有规则、HTML 类名和两个造成溢出的 CSS 限制都已给出；所需 patch 仅涉及当前选择器，不需要浏览器测量或设计资料。",
+      "visible_distractor_ids_author_only": ["T05-NN-CSS-CLS", "T05-NN-TAILWIND-GRID"],
+      "sol_review_questions": [
+        "是否保留 220px 1fr 的网格定义？",
+        "是否同时解除网格子项收缩限制和标题禁止换行？"
+      ]
+    },
+    {
+      "draft_case_id": "T05-DS05-NN-004",
+      "external_source_ids": [],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "结账回归测试已经定位到唯一断言，按钮定位器和点击步骤都正确。接口返回成功后，页面实际显示的是带订单号的完整确认句。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会只调整断言表达式，不更换 locator、不增加等待，也不改变测试流程。"
+        },
+        {
+          "role": "user",
+          "content": "失败测试片段：\n```ts\nawait page.getByRole('button', { name: '提交订单' }).click();\nawait expect(page.getByTestId('confirmation')).toHaveText('订单已提交');\n```\n成功页面的固定文案是 `订单已提交，编号：A-1042`，订单号来自本测试中已经固定的响应。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前断言使用精确文本，但页面合同是固定前缀加本次已知编号；可以在同一个 confirmation locator 上改成适合完整句子的断言。"
+        }
+      ],
+      "query": "把最后一行改成一条能核对完整确认句的 Playwright 断言，并保留现有定位器。",
+      "why_current_context_is_sufficient": "已给出唯一 locator、实际完整文案和不允许改变的步骤；这是对现有断言的局部修改，不需要重新定位元素或查阅测试流程。",
+      "visible_distractor_ids_author_only": ["T05-NN-PW-LOCATOR", "T05-NN-PW-TRACE"],
+      "sol_review_questions": [
+        "是否保留 confirmation 定位器并核对完整文本？",
+        "是否避免增加不必要的等待或重新定位？"
+      ]
+    },
+    {
+      "draft_case_id": "T05-DS05-NN-005",
+      "external_source_ids": [],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "筛选工具栏的图标按钮当前文案和可访问名称不准确。它打开筛选菜单，不会立即执行刷新；菜单由同一组件渲染。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把可见文案和 aria 属性都对齐到‘筛选’，补上菜单按钮需要的 aria-haspopup，并保持现有 id、className 和点击处理不变。"
+        },
+        {
+          "role": "user",
+          "content": "当前 JSX：\n```tsx\n<button\n  id=\"filter-trigger\"\n  className=\"toolbar-icon\"\n  aria-label=\"刷新数据\"\n  onClick={openFilters}\n>\n  刷新\n</button>\n<div id=\"filter-menu\" hidden>筛选条件</div>\n```\n产品文案要求按钮显示“筛选”，无障碍名称也为“筛选”，并声明它控制一个菜单。"
+        },
+        {
+          "role": "assistant",
+          "content": "修改范围只有按钮文字、aria-label 和 aria-haspopup；不需要给隐藏菜单添加新的行为属性，因为本题只修正触发按钮的文案契约。"
+        }
+      ],
+      "query": "输出修正后的 button JSX，保留 id、className、onClick 和其余结构不变。",
+      "why_current_context_is_sufficient": "目标可见文案、无障碍名称、菜单语义以及必须保持不变的属性均已列明；这是一个局部 JSX 文案与 aria 修补，不依赖组件历史。",
+      "visible_distractor_ids_author_only": ["T05-NN-A11Y-DIALOG", "T05-NN-COPY-EMPTY"],
+      "sol_review_questions": [
+        "是否同时修正显示文字与 aria-label？",
+        "是否添加 aria-haspopup=\"menu\" 且未改动其他属性？"
+      ]
+    },
+    {
+      "draft_case_id": "T05-DS05-NN-006",
+      "external_source_ids": [],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "需要补一个独立的金额比例纯函数，调用方已经负责传入数值。函数不能四舍五入，也不能抛异常。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会依据给出的边界表实现函数，保持返回 number，并把 total 为 0 的情况按明确规则处理。"
+        },
+        {
+          "role": "user",
+          "content": "签名和规则固定如下：\n```ts\nfunction ratioPercent(value: number, total: number): number { /* TODO */ }\n```\n当 total > 0 时返回 value / total * 100；当 total === 0 时返回 0；value 可以是 0 到 total 之间的任意小数，结果保留原始浮点精度。"
+        },
+        {
+          "role": "assistant",
+          "content": "不需要校验负数或改变类型；实现只需表达正 total 的比例公式和 total 为零的分支。"
+        }
+      ],
+      "query": "写出 ratioPercent 的函数体，使用最少的分支满足上述规则。",
+      "why_current_context_is_sufficient": "函数签名、正数公式、零值分支、精度和异常约束均已明确；这是可独立完成的纯函数实现，不需要项目上下文。",
+      "visible_distractor_ids_author_only": ["T05-NN-MATH-ROUND", "T05-NN-UTIL-CURRENCY"],
+      "sol_review_questions": [
+        "是否在 total 为 0 时返回 0？",
+        "是否避免引入四舍五入、格式化或异常？"
+      ]
+    },
+    {
+      "draft_case_id": "T05-DS05-NN-007",
+      "external_source_ids": [],
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "商品列表的单元测试已经提供 fetch mock，测试只缺一条对结果的断言。请求地址、mock 返回值和被测函数都不需要改。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会根据给定的 mock 响应和 loadNames 的返回形状补断言，只验证名称数组，不额外检查网络实现。"
+        },
+        {
+          "role": "user",
+          "content": "测试文件片段：\n```ts\nimport { describe, expect, it, vi } from 'vitest';\n\nconst fetchMock = vi.fn().mockResolvedValue({\n  ok: true,\n  json: async () => ({ items: [{ id: 7, name: '青柠' }, { id: 8, name: '乌龙' }] })\n});\n\nasync function loadNames(fetcher: typeof fetch) {\n  const response = await fetcher('/api/products');\n  const body = await response.json();\n  return body.items.map((item: { name: string }) => item.name);\n}\n\nit('returns product names', async () => {\n  const names = await loadNames(fetchMock as unknown as typeof fetch);\n  // TODO: 在此补一个断言\n});\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "mock 的确定结果是按原顺序排列的两个名称：青柠、乌龙；断言应直接匹配这个数组。"
+        }
+      ],
+      "query": "只补出 TODO 位置的一条 Vitest 断言，确保 names 的顺序和内容都被核对。",
+      "why_current_context_is_sufficient": "mock 返回的 items、loadNames 的映射逻辑和测试位置全部在当前输入中；无需查找其他 mock 或测试规范即可写出精确数组断言。",
+      "visible_distractor_ids_author_only": ["T05-NN-VITEST-TIMER", "T05-NN-MSW-REST"],
+      "sol_review_questions": [
+        "是否断言完整数组而不是只断言长度？",
+        "是否保持 mock 给出的青柠、乌龙顺序？"
+      ]
+    },
+    {
+      "draft_case_id": "T05-DS05-NN-008",
+      "external_source_ids": [],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "设计系统有一个静态 SVG 状态图标，目标尺寸是 24×24，视口必须覆盖从 0 到 24 的坐标，图形使用当前文字色。它不是动画，也不需要数据绑定。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会只修正 svg 的尺寸、viewBox 和路径填充属性，保留路径数据及现有 class。"
+        },
+        {
+          "role": "user",
+          "content": "当前片段：\n```svg\n<svg class=\"status-icon\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" aria-hidden=\"true\">\n  <path class=\"status-icon__path\" fill=\"#7A869A\" d=\"M12 3 6.5 9 4 6.5 2.5 8l4 4 7-7z\" />\n</svg>\n```\n规范值是 width=\"24\"、height=\"24\"、viewBox=\"0 0 24 24\"、fill=\"currentColor\"。"
+        },
+        {
+          "role": "assistant",
+          "content": "四个规范值都已明确，path 的 d、class 和 aria-hidden 不在修改范围内。"
+        }
+      ],
+      "query": "给出完成这四处属性修正后的 SVG 片段，不要改动路径数据。",
+      "why_current_context_is_sufficient": "目标尺寸、坐标视口、颜色值和不可修改的属性均已显式给出；任务只是静态 SVG 属性替换，不需要可视化工具或运行时信息。",
+      "visible_distractor_ids_author_only": ["T05-NN-SVG-D3-SCALE", "T05-NN-SVG-ANIMATION"],
+      "sol_review_questions": [
+        "是否四处都采用规范值并保持路径 d 不变？",
+        "是否没有引入动态或数据绑定逻辑？"
+      ]
+    },
+    {
+      "draft_case_id": "T05-DS05-NN-009",
+      "external_source_ids": [],
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "报告预览应用已定位到 next.config.mjs 的 headers 配置。只需给 /reports/:path* 的静态资源响应加一条缓存头，其他路由和现有头部必须保持不变。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会在现有 headers 返回数组中新增一个独立的 header 对象，不改 matcher、不改现有 X-Frame-Options，也不涉及页面代码。"
+        },
+        {
+          "role": "user",
+          "content": "当前配置：\n```js\nconst nextConfig = {\n  async headers() {\n    return [\n      {\n        source: '/reports/:path*',\n        headers: [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }]\n      }\n    ];\n  }\n};\nexport default nextConfig;\n```\n新增要求是同一 source 下加入 `Cache-Control: public, max-age=60`。"
+        },
+        {
+          "role": "assistant",
+          "content": "这是一处已定位的配置局部修改：保留 source 和原有安全头，只在 headers 数组追加 Cache-Control 条目。"
+        }
+      ],
+      "query": "输出修改后的 headers() 返回值，确保同一 source 同时包含原有安全头和新的 Cache-Control。",
+      "why_current_context_is_sufficient": "配置结构、精确 source、既有 header 和新增 key/value 都已提供；只需按现有对象结构追加一项，不依赖路由缓存背景或其他文件。",
+      "visible_distractor_ids_author_only": ["T05-NN-NEXT-REVALIDATE", "T05-NN-NEXT-IMAGE"],
+      "sol_review_questions": [
+        "是否保留 X-Frame-Options 及其原值？",
+        "是否把 Cache-Control 放在同一个 /reports/:path* 条目中？"
+      ]
+    },
+    {
+      "draft_case_id": "T05-DS05-NN-010",
+      "external_source_ids": [],
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "结账测试服务器的 MSW handler 已经定位到购物车接口。现在只处理缺少 user 查询参数的局部错误分支，成功分支和其他 handler 不动。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会在现有 GET handler 开头读取 URLSearchParams；缺少 user 时返回 400 JSON，其余路径继续使用原成功响应。"
+        },
+        {
+          "role": "user",
+          "content": "当前 handler：\n```ts\nimport { http, HttpResponse } from 'msw';\n\nexport const handlers = [\n  http.get('/api/cart', ({ request }) => {\n    const user = new URL(request.url).searchParams.get('user');\n    return HttpResponse.json({ user, items: [{ sku: 'tea-01', qty: 1 }] });\n  })\n];\n```\n新契约：user 缺失或为空字符串时返回状态 400 和 `{ error: 'user is required' }`；有值时保持原 JSON 和默认 200。"
+        },
+        {
+          "role": "assistant",
+          "content": "条件判断应覆盖 null 与空字符串，成功分支原样保留；不需要新增路由、延迟或网络异常模拟。"
+        }
+      ],
+      "query": "给出这个 handler 的局部修改后完整代码，使缺少 user 时返回指定 400 JSON。",
+      "why_current_context_is_sufficient": "请求解析方式、错误条件、错误体、状态码和成功分支均已明确；这是单个 MSW handler 的局部分支修改，不需要额外网络或项目知识。",
+      "visible_distractor_ids_author_only": ["T05-NN-MSW-RETRY", "T05-NN-PW-ROUTE"],
+      "sol_review_questions": [
+        "是否将缺失和空字符串都判定为错误？",
+        "是否保持有值时原有 JSON 响应及默认 200？"
+      ]
+    }
+  ]
+}
