@@ -5,7 +5,9 @@
   "stage_status": "in_progress",
   "next_stage": "DS02_T01_completion",
   "branch": "codex/task1-data-t01-complete",
-  "baseline_commit": "5b7f2734cff5b93840b5622c2b344058882ddf9c",
+  "baseline_commit": "960021e472456515a89d3c2c4f2962fbf6cc51a1",
+  "parallel_baseline_ref": "task1-data-parallel-baseline-v1",
+  "content_baseline_commit": "960021e472456515a89d3c2c4f2962fbf6cc51a1",
   "completed_gates": ["DS00", "DS01", "DS02_PILOT"],
   "team_progress": {
     "T01": { "identity": "frozen", "assets": "ds02_pilot_frozen", "l0_sessions": 12, "skills": 2, "knowledge": 3, "cases": 10, "pairs": 5, "gate": "ds02_pilot_passed" },
@@ -27,5 +29,5 @@
   },
   "blocking_issues": [],
   "last_command": "validate DS02 pilot; run retrieval-pressure test; compile formal Dev twice; npm run eval:tool-prompt:d0:test; npm run eval:tool-prompt:test",
-  "last_verified_commit": "33c35e53f071c959db63854811784219cde6bf92"
+  "last_verified_commit": "960021e472456515a89d3c2c4f2962fbf6cc51a1"
 }
