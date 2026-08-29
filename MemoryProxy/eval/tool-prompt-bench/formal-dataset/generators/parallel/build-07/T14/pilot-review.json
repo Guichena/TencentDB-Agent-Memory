@@ -22,6 +22,23 @@
     "skill_source_hashes_match_freeze": true,
     "skill_core_steps_preserved": true
   },
+  "revision_reviews": [
+    {
+      "batch_id": "build-07-T14-pilot-skill-01",
+      "revision_id": "pilot-skill-01-revision-02",
+      "pair_id": "T14-SKL-003",
+      "decision": "pass",
+      "reviewed_at": "2026-08-30T02:20:00+08:00",
+      "checks": {
+        "cross_team_exact_query_duplicate": false,
+        "cross_team_high_order_ngram_duplicate_4_to_8": false,
+        "pair_query_identical": true,
+        "controlled_delta_unchanged": true,
+        "gold_route_unchanged": true,
+        "target_asset_visible": true
+      }
+    }
+  ],
   "sol_notes": [
     "Memory pilot keeps the Helm rollback decision absent only on the Positive side and leaves numerical details out of L2/L3 injection.",
     "The full expansion asset pack must add complete L2 content and retain the pilot decision as T14-L1-003.",
