@@ -29,9 +29,6 @@ export interface IntegratedCaseOutcomeForPairV2 {
   readonly failureLayer?: string;
 }
 
-/** @deprecated Use IntegratedCaseOutcomeForPairV2; retained for the frozen M1 v1 seam. */
-export type M0CaseOutcomeForPairV2 = IntegratedCaseOutcomeForPairV2;
-
 export interface PairCaseOutcomeValidationErrorV2 {
   readonly code: "INVALID_OUTCOME_SHAPE" | "INVALID_REQUIRED_FIELD" | "INVALID_SHA256";
   readonly pointer: string;
@@ -316,6 +313,112 @@ function cohortFromOutcome(
 
 function sameCohort(left: PairScoreCohortV2, right: PairScoreCohortV2): boolean {
   return canonicalJson(left) === canonicalJson(right);
+}
+
+function isEligiblePairScoreInternallyConsistent(score: PairScoreV2): boolean {
+  if (score.eligibility !== "eligible") return true;
+  if (score.cohort === null
+    || score.incompleteReasons.length !== 0
+    || score.repeatAggregationPolicyId !== PAIR_REPEAT_AGGREGATION_POLICY_ID
+    || score.scoringPolicySha256
+      !== computePairScoringPolicySha256V2(score.strictPairExactEnabled)
+    || score.split !== score.cohort.split
+    || !Array.isArray(score.repeatInputs?.positive)
+    || !Array.isArray(score.repeatInputs?.negative)
+    || !Array.isArray(score.repeatResults)
+    || !Array.isArray(score.repeatIds)
+    || score.repeatCount <= 0
+    || score.repeatCount !== score.repeatIds.length
+    || score.repeatCount !== score.repeatInputs.positive.length
+    || score.repeatCount !== score.repeatInputs.negative.length
+    || score.repeatCount !== score.repeatResults.length) {
+    return false;
+  }
+  const positiveValidations = score.repeatInputs.positive.map(validatePairCaseOutcomeV2);
+  const negativeValidations = score.repeatInputs.negative.map(validatePairCaseOutcomeV2);
+  if (positiveValidations.some((result) => !result.ok)
+    || negativeValidations.some((result) => !result.ok)) {
+    return false;
+  }
+  const positive = positiveValidations
+    .filter((result): result is { readonly ok: true; readonly value: IntegratedCaseOutcomeForPairV2 } => result.ok)
+    .map((result) => result.value);
+  const negative = negativeValidations
+    .filter((result): result is { readonly ok: true; readonly value: IntegratedCaseOutcomeForPairV2 } => result.ok)
+    .map((result) => result.value);
+  const positiveRepeatIds = positive.map((outcome) => outcome.repeatId);
+  const negativeRepeatIds = negative.map((outcome) => outcome.repeatId);
+  const resultRepeatIds = score.repeatResults.map((result) => result.repeatId);
+  const expectedRepeatIds = uniqueSorted(score.repeatIds);
+  if (hasDuplicate(score.repeatIds)
+    || hasDuplicate(positiveRepeatIds)
+    || hasDuplicate(negativeRepeatIds)
+    || hasDuplicate(resultRepeatIds)
+    || canonicalJson(uniqueSorted(positiveRepeatIds)) !== canonicalJson(expectedRepeatIds)
+    || canonicalJson(uniqueSorted(negativeRepeatIds)) !== canonicalJson(expectedRepeatIds)
+    || canonicalJson(uniqueSorted(resultRepeatIds)) !== canonicalJson(expectedRepeatIds)) {
+    return false;
+  }
+  const positiveByRepeat = new Map(positive.map((outcome) => [outcome.repeatId, outcome]));
+  const negativeByRepeat = new Map(negative.map((outcome) => [outcome.repeatId, outcome]));
+  for (const repeat of score.repeatResults) {
+    const positiveOutcome = positiveByRepeat.get(repeat.repeatId);
+    const negativeOutcome = negativeByRepeat.get(repeat.repeatId);
+    if (!positiveOutcome || !negativeOutcome) return false;
+    const expectedPositivePass = positiveOutcome.completeChainSuccess;
+    const expectedNegativePass = !negativeOutcome.executorBoundAttempt
+      && !negativeOutcome.malformedTdaiDispatchIntent;
+    const expectedFalseIntentTypes = uniqueSorted([
+      ...(negativeOutcome.executorBoundAttempt ? ["executor_bound"] : []),
+      ...(!negativeOutcome.executorBoundAttempt && negativeOutcome.malformedTdaiDispatchIntent
+        ? ["malformed_unbound"]
+        : []),
+    ]);
+    const expectedStrict = score.strictPairExactEnabled
+      ? positiveOutcome.strictChainExact === true && expectedNegativePass
+      : null;
+    if (repeat.positiveRunId !== positiveOutcome.runId
+      || repeat.negativeRunId !== negativeOutcome.runId
+      || repeat.positiveSessionId !== positiveOutcome.sessionId
+      || repeat.negativeSessionId !== negativeOutcome.sessionId
+      || repeat.positiveLocalStateId !== positiveOutcome.localStateId
+      || repeat.negativeLocalStateId !== negativeOutcome.localStateId
+      || repeat.positivePass !== expectedPositivePass
+      || repeat.negativePass !== expectedNegativePass
+      || repeat.pairExact !== (expectedPositivePass && expectedNegativePass)
+      || repeat.boundarySwitchCorrect
+        !== (positiveOutcome.executorBoundAttempt && !negativeOutcome.executorBoundAttempt)
+      || repeat.strictPairExact !== expectedStrict
+      || canonicalJson(uniqueSorted(repeat.negativeFalseIntentTypes))
+        !== canonicalJson(expectedFalseIntentTypes)
+      || repeat.positiveFailureLayer
+        !== (expectedPositivePass ? null : positiveOutcome.failureLayer ?? null)) {
+      return false;
+    }
+  }
+  const expectedPositivePass = score.repeatResults.every((repeat) => repeat.positivePass);
+  const expectedNegativePass = score.repeatResults.every((repeat) => repeat.negativePass);
+  const expectedBoundarySwitch = score.repeatResults.every(
+    (repeat) => repeat.boundarySwitchCorrect,
+  );
+  const expectedStrict = score.strictPairExactEnabled
+    ? score.repeatResults.every((repeat) => repeat.strictPairExact === true)
+    : null;
+  const expectedFalseIntentTypes = uniqueSorted(
+    score.repeatResults.flatMap((repeat) => repeat.negativeFalseIntentTypes),
+  );
+  const expectedFailureLayers = uniqueSorted(score.repeatResults
+    .map((repeat) => repeat.positiveFailureLayer)
+    .filter((layer): layer is string => layer !== null));
+  return score.positivePass === expectedPositivePass
+    && score.negativePass === expectedNegativePass
+    && score.pairExact === (expectedPositivePass && expectedNegativePass)
+    && score.boundarySwitchCorrect === expectedBoundarySwitch
+    && score.strictPairExact === expectedStrict
+    && canonicalJson(uniqueSorted(score.negativeFalseIntentTypes))
+      === canonicalJson(expectedFalseIntentTypes)
+    && canonicalJson(uniqueSorted(score.positiveFailureLayers))
+      === canonicalJson(expectedFailureLayers);
 }
 
 export function scorePairV2(
@@ -634,17 +737,22 @@ export function summarizePairScoresV2(
     .filter((score) => score.scoringPolicySha256 !== campaign.scoringPolicySha256
       || score.strictPairExactEnabled !== campaign.strictPairExactEnabled)
     .map((score) => score.pairId);
+  const inconsistentScoreIds = expectedScores
+    .filter((score) => !isEligiblePairScoreInternallyConsistent(score))
+    .map((score) => score.pairId);
   const campaignIncompleteReasons = uniqueSorted([
     ...(missingPairIds.length > 0 ? ["FROZEN_PAIR_SET_INCOMPLETE"] : []),
     ...(unexpectedPairIds.length > 0 ? ["UNEXPECTED_PAIR_SET_MEMBER"] : []),
     ...(cohortMismatchIds.length > 0 ? ["SCORE_COHORT_MISMATCH"] : []),
     ...(repeatMismatchIds.length > 0 ? ["EXPECTED_REPEAT_SET_MISMATCH"] : []),
     ...(policyMismatchIds.length > 0 ? ["SCORING_POLICY_MISMATCH"] : []),
+    ...(inconsistentScoreIds.length > 0 ? ["PAIR_SCORE_INCONSISTENT"] : []),
   ]);
   const structurallyEligibleIds = new Set(expectedScores
     .filter((score) => !cohortMismatchIds.includes(score.pairId))
     .filter((score) => !repeatMismatchIds.includes(score.pairId))
     .filter((score) => !policyMismatchIds.includes(score.pairId))
+    .filter((score) => !inconsistentScoreIds.includes(score.pairId))
     .map((score) => score.pairId));
   const eligible = expectedScores.filter((score) => score.eligibility === "eligible"
     && structurallyEligibleIds.has(score.pairId));
@@ -684,6 +792,9 @@ export function summarizePairScoresV2(
     incrementReason("EXPECTED_REPEAT_SET_MISMATCH", repeatMismatchIds.length);
   }
   if (policyMismatchIds.length > 0) incrementReason("SCORING_POLICY_MISMATCH", policyMismatchIds.length);
+  if (inconsistentScoreIds.length > 0) {
+    incrementReason("PAIR_SCORE_INCONSISTENT", inconsistentScoreIds.length);
+  }
   const eligiblePairIds = new Set(eligible.map((score) => score.pairId));
   const incompletePairIds = expectedPairIds.filter((pairId) => !eligiblePairIds.has(pairId));
 

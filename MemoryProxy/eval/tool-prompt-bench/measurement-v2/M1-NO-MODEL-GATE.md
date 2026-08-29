@@ -53,6 +53,8 @@ Repeat 不作为独立 pair。所有逐 repeat outcome 均保存在 `repeatInput
 
 Outcome 是不可信运行时输入：required string 必须非空，两个 identity 字段必须是 lowercase SHA-256，所有 required boolean 必须显式存在。缺少 `executorBoundAttempt` 或 `malformedTdaiDispatchIntent` 会得到 `NEGATIVE_OUTCOME_INVALID`，绝不会因 JavaScript falsy 规则被算作 clean negative。
 
+保存后重新载入的 `PairScoreV2` 同样不被盲信。Summary 会逐项核对 repeat count/ID、正负输入、逐 repeat 结果、run/session/local state 引用、false-intent 分类、顶层聚合布尔值和 scoring-policy hash；内部不一致的行得到 `PAIR_SCORE_INCONSISTENT`，并从 PairExact/BoundarySwitch/Strict 分母排除。
+
 ## RED 证据
 
 实现过程中按 public seam 执行了以下真实 RED：
@@ -64,6 +66,7 @@ Outcome 是不可信运行时输入：required string 必须非空，两个 iden
 5. repeat preservation slice 50 项中 1 项失败：incomplete score 尚未保存逐 repeat 输入。
 6. 独立审核反例暴露 2 个 P1：缺失 negative booleans 被当 clean negative；summary 可混合 Variant/split 并在整 pair/整 repeat 缺失时缩小分母。新增 12 个 runtime/campaign RED 后修为 GREEN。
 7. 初版把成员表 hash 错误地与 Variant/execution cohort 绑定，导致同一数据集跨候选得到不同成员身份；新增跨 Variant 反例后拆成外部内容 hash 与只绑定 split/pair IDs 的成员 hash。
+8. 第二轮独立复核证明可手工伪造顶层 `pairExact=true` 并清空 repeat 证据；新增 serialized-score RED，要求 Summary 从逐 repeat 输入/结果重验聚合一致性。
 
 每个 RED 均通过最小实现转为 GREEN；没有为了通过测试修改旧 evaluator、M0 语义或正式数据。
 
@@ -71,7 +74,7 @@ Outcome 是不可信运行时输入：required string 必须非空，两个 iden
 
 | Gate | 结果 | 说明 |
 | --- | --- | --- |
-| Focused M1 | PASS | `62/62` tests |
+| Focused M1 | PASS | `63/63` tests |
 | Existing tool-prompt eval | PASS | `30/30` tests |
 | Targeted strict TypeScript | PASS | M1 test 与其导入的 measurement-v2 模块无诊断 |
 | Repository full typecheck | BASELINE FAIL | 仅报告现存 handler/session/storage 等源码错误；没有 M1 文件诊断 |

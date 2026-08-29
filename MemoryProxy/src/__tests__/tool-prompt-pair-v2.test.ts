@@ -791,10 +791,18 @@ describe("Pair score summary v2", () => {
       { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
     );
     const failed = {
-      ...exact,
+      ...scorePairV2(
+        validatedContract(),
+        {
+          positive: [{
+            ...POSITIVE_OUTCOME,
+            completeChainSuccess: false,
+            failureLayer: "terminal_selection",
+          }],
+          negative: [NEGATIVE_OUTCOME],
+        },
+      ),
       pairId: "pair-skill-boundary-002",
-      pairExact: false,
-      positivePass: false,
     };
     const incomplete = {
       ...exact,
@@ -898,9 +906,15 @@ describe("Pair score summary v2", () => {
       { includeStrictPairExact: true },
     );
     const strictFail = {
-      ...strictPass,
+      ...scorePairV2(
+        validatedContract(),
+        {
+          positive: [{ ...POSITIVE_OUTCOME, strictChainExact: false }],
+          negative: [NEGATIVE_OUTCOME],
+        },
+        { includeStrictPairExact: true },
+      ),
       pairId: "pair-skill-boundary-005",
-      strictPairExact: false,
     };
 
     expect(summarizePairScoresV2(
@@ -976,6 +990,38 @@ describe("Pair score summary v2", () => {
     expect(summary.campaignEligibility).toBe("incomplete");
     expect(summary.campaignIncompleteReasons).toContain("EXPECTED_REPEAT_SET_MISMATCH");
     expect(summary.incompleteReasonCounts).toMatchObject({ EXPECTED_REPEAT_SET_MISMATCH: 1 });
+  });
+
+  it("excludes an internally inconsistent serialized PairScore from behavior metrics", () => {
+    const exact = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const forged = {
+      ...exact,
+      repeatCount: 0,
+      repeatInputs: { positive: [], negative: [] },
+      repeatResults: [],
+      positivePass: false,
+      negativePass: false,
+      pairExact: true,
+    };
+    const summary = summarizePairScoresV2(
+      [forged],
+      { campaign: summaryCampaign() },
+    );
+
+    expect(summary).toMatchObject({
+      campaignEligibility: "incomplete",
+      campaignIncompleteReasons: ["PAIR_SCORE_INCONSISTENT"],
+      jFrozen: 1,
+      jEligible: 0,
+      jIncomplete: 1,
+      pairExact: { numerator: 0, denominator: 0, value: null },
+      boundarySwitchAccuracy: { numerator: 0, denominator: 0, value: null },
+      incompletePairIds: [CONTRACT.pairId],
+      incompleteReasonCounts: { PAIR_SCORE_INCONSISTENT: 1 },
+    });
   });
 
   it("rejects a tampered expected-pair membership hash before computing a formal summary", () => {

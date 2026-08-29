@@ -112,6 +112,7 @@
     "expectedRepeatIdsRequired": true,
     "mixedCohortPolicy": "campaign incomplete; mismatched scores excluded from metric denominator",
     "missingPairPolicy": "campaign incomplete; jFrozen remains the frozen expected-pair count",
+    "serializedScorePolicy": "eligible PairScore rows are revalidated against repeat inputs/results and recomputed aggregate semantics before entering behavior denominators",
     "scoringPolicyBound": true
   },
   "metrics": {
