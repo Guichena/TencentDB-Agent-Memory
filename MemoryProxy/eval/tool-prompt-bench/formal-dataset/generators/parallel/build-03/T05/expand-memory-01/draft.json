@@ -1,0 +1,153 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T05-DS05-MEM-EXPAND-01",
+  "stage": "DS05",
+  "team_id": "T05",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T05-DS05-MEM-PAIR-02",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"我们在 meridian-storefront 复盘商品页的 CLS rollout，目标是让媒体卡片在首屏加载与 hydration 期间保持稳定。"},
+        {"role":"assistant","content":"当前观测到首屏有一次媒体高度变化，随后指标下降；图片尺寸、占位策略和客户端接管顺序需要按历史记录拆开看。"},
+        {"role":"user","content":"这次只关心 rollout 的先后步骤和已经排除的原因，不要把 beacon-console 的长列表重渲染经验混进来。"},
+        {"role":"assistant","content":"现有摘要能确认问题发生在媒体卡片，但没有保留每次改动与指标变化的完整时间线。"},
+        {"role":"user","content":"我们保留响应式布局和延迟加载，不能先假定把所有媒体改成固定高度；也要区分服务端输出与浏览器接管。"},
+        {"role":"assistant","content":"验收需要说明哪一项先落地、哪些候选被排除，以及最后如何观察 CLS 与 hydration 的变化。"},
+        {"role":"user","content":"当前分支只有简短交接，没有那次 rollout 复盘的原文。"},
+        {"role":"assistant","content":"我会先核对历史复盘，再据此整理最小实施顺序，避免用当前现象反推过去的决策。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请找回商品页 CLS rollout 复盘中确认的实施顺序与排除项，再给出本次复盘建议。",
+      "positive": {
+        "delta_message": {"role":"user","content":"目前仍缺少那次复盘确认的完整顺序：占位尺寸、媒体加载策略和 hydration 检查分别何时处理，以及当时排除了哪些替代方案。请先找回历史记录。"},
+        "private_proposal": {
+          "unique_information_gap":"缺少历史复盘中 CLS rollout 的精确步骤与排除项，当前上下文仅有现象和约束。",
+          "route":"memory",
+          "target_asset_ids":["T05-L0-03"],
+          "allowed_sequence_candidates":[["tdai_conversation_search","tdai_conversation_query"]],
+          "stop_after_candidate":"找到包含 rollout 顺序和排除项的历史会话后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"user","content":"交接已补回复盘结论：先为媒体卡片保留服务端可预测的宽高占位，再统一延迟加载边界，随后用浏览器记录 hydration 前后的布局位移；最终排除了只在客户端补高度、关闭延迟加载和用全局样式兜底。请基于这条结论继续。"},
+        "private_proposal": {"route":"none","why_current_context_is_sufficient":"负例 delta 已完整提供实施顺序、观测步骤和三项排除项，可直接回答查询。"}
+      },
+      "visible_distractor_ids_author_only":["T05-L0-04","T05-L0-06"],
+      "controlled_delta_note":"正负例共享八条背景与同一查询；仅第九条改变，正例保留 rollout 历史缺口，负例只补足对应顺序与排除项。",
+      "source_fact_map":[],
+      "sol_review_questions":["唯一缺口是否仅为 CLS rollout 的历史顺序与排除项？","正例首动作是否唯一指向会话检索，并在命中后停止？","负例是否只补足该缺口而未新增项目或工具事实？","两个版本是否仅 changed_message_index 的 delta 不同？","目标与至少两个同域干扰是否只在 author-only 字段出现？","可见文本是否没有 provider 禁止词或资产标识？"]
+    },
+    {
+      "draft_pair_id": "T05-DS05-MEM-PAIR-03",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"beacon-console 的成员列表最近出现不必要的重渲染，我们要对照过去一次 profiler 复盘确认归因。"},
+        {"role":"assistant","content":"症状集中在筛选条件不变时列表仍重新绘制，当前记录同时提到订阅粒度、派生数组和缓存读取。"},
+        {"role":"user","content":"这轮只看重渲染的根因，不改成讨论 meridian-storefront 的 hydration 或 CLS。"},
+        {"role":"assistant","content":"现有 profiler 摘要只有总耗时，没有保留当时如何区分父组件更新与行组件订阅的判断过程。"},
+        {"role":"user","content":"列表仍需支持实时计数和局部筛选；不能因为看到耗时就把所有订阅移到全局，也不能先删掉缓存层。"},
+        {"role":"assistant","content":"后续说明应指出真正触发重渲染的依赖，以及为什么其他看似相关的改动没有被采用。"},
+        {"role":"user","content":"我只有一段交接摘要，里面没有完整的历史归因结论。"},
+        {"role":"assistant","content":"先找回已经确认的归因，再决定当前代码需要哪一个最小改动。"}
+      ],
+      "changed_message_index": 8,
+      "query":"请找回上次 profiler 复盘确认的成员列表重渲染归因与排除项。",
+      "positive": {
+        "delta_message":{"role":"user","content":"当前上下文还没有保存那次复盘的精确归因：究竟是哪一级订阅导致行组件重绘，以及当时排除了哪些优化方向。请先找回历史结论。"},
+        "private_proposal":{"unique_information_gap":"缺少历史 profiler 复盘中关于订阅粒度导致重渲染的确认归因和排除项。","route":"memory","target_asset_ids":["T05-L1-05"],"allowed_sequence_candidates":[["tdai_memory_search"]],"stop_after_candidate":"找到已确认重渲染归因的记忆后停止。"}
+      },
+      "negative": {
+        "delta_message":{"role":"user","content":"交接已补齐结论：重渲染来自列表容器把每次筛选产生的新派生数组传给所有行，行级订阅本身没有变化；复盘排除了全量 memo、移除实时计数和改写缓存存储。请据此继续。"},
+        "private_proposal":{"route":"none","why_current_context_is_sufficient":"负例 delta 已给出唯一触发原因、影响边界和三项排除项，当前信息足够回答。"}
+      },
+      "visible_distractor_ids_author_only":["T05-L0-06","T05-L1-06"],
+      "controlled_delta_note":"两例的项目背景、限制、查询完全相同；只有第九条 delta 改变，负例严格补足历史归因，不引入新的实施要求。",
+      "source_fact_map":[],
+      "sol_review_questions":["信息缺口是否只涉及历史归因而非现场 profiler 测量？","正例是否唯一先检索记忆并在首个命中后停止？","负例是否完整提供根因及排除项且无需检索？","正负例是否保持单变量 delta？","目标和两个同域干扰是否为 author-only？","provider 可见文本是否保持禁止词为零？"]
+    },
+    {
+      "draft_pair_id":"T05-DS05-MEM-PAIR-04",
+      "external_source_ids":[],
+      "synthetic_scope":["team","project","conversation","history"],
+      "difficulty":"medium",
+      "context_bucket":"medium_6_to_10",
+      "shared_context_messages":[
+        {"role":"user","content":"pulse-checkout 的 Playwright 回归偶尔找不到结账按钮，需要确认团队已经定下的稳定定位器约定。"},
+        {"role":"assistant","content":"失败只出现在优惠信息异步出现的结账页，按钮视觉上存在但测试有时在文本变化前就尝试操作。"},
+        {"role":"user","content":"本轮只核对定位器约定，不要把等待策略或网络 mock 的临时修补当成团队规范。"},
+        {"role":"assistant","content":"当前测试片段混用了可见文本、层级选择器和少量属性，没有说明长期维护时哪类标记应优先。"},
+        {"role":"user","content":"结账流程会有多语言文案和优惠状态变化，定位器必须跨这些状态稳定；现有业务语义不能被改掉。"},
+        {"role":"assistant","content":"修复说明需要引用已确认的稳定约定，并把一次性等待调整与定位器原则分开。"},
+        {"role":"user","content":"当前交接只写了失败现象，没有保留上次团队确认的原始约定。"},
+        {"role":"assistant","content":"我先找回那条约定，再判断当前断言应如何收敛。"}
+      ],
+      "changed_message_index":8,
+      "query":"请找回团队已确认的结账按钮稳定定位器约定，再说明如何调整这条回归。",
+      "positive":{"delta_message":{"role":"user","content":"还缺少团队确认的精确规则：在多语言和优惠状态变化下，应依赖什么稳定语义，哪些脆弱选择器被明确排除？请先找回历史约定。"},"private_proposal":{"unique_information_gap":"缺少团队已经确认的定位器优先级和排除项。","route":"memory","target_asset_ids":["T05-L1-09"],"allowed_sequence_candidates":[["tdai_memory_search"]],"stop_after_candidate":"找到稳定定位器约定后停止。"}},
+      "negative":{"delta_message":{"role":"user","content":"交接已补回约定：优先使用面向用户语义且带稳定测试标记的按钮定位，等待状态变化由可见状态断言表达；复盘排除了依赖按钮文案、易变层级路径和自动生成类名。请据此调整。"},"private_proposal":{"route":"none","why_current_context_is_sufficient":"负例 delta 已提供定位优先级、状态表达方式及三项排除项，后续建议可直接推出。"}},
+      "visible_distractor_ids_author_only":["T05-L0-08","T05-L1-10"],
+      "controlled_delta_note":"共享上下文与查询不变；正例只留下定位器历史缺口，负例只加入该约定的最小完整表述。",
+      "source_fact_map":[],
+      "sol_review_questions":["是否只有历史定位器约定这一项缺口？","首动作是否唯一为记忆检索？","负例是否足以直接给出建议且不依赖其他历史？","delta 是否是唯一变量？","目标与两个干扰是否均为 pulse-checkout 域且仅 author-only？","可见文本是否无禁止词？"]
+    },
+    {
+      "draft_pair_id":"T05-DS05-MEM-PAIR-05",
+      "external_source_ids":[],
+      "synthetic_scope":["team","project","conversation","history"],
+      "difficulty":"hard",
+      "context_bucket":"medium_6_to_10",
+      "shared_context_messages":[
+        {"role":"user","content":"atlas-insights 需要整理一条旧的 Canvas 渲染切换决策，当前问题是新图表仍在两个渲染路径之间摇摆。"},
+        {"role":"assistant","content":"现状同时保留 SVG 和 Canvas 试验代码，性能讨论里提到数据量、可访问性和截图稳定性，但旧决策正文没有载入。"},
+        {"role":"user","content":"我只想核对 2026-08-12 的 decision 类型历史记录，并按这个日期过滤；不要把当前代码的取舍当成当时的结论。"},
+        {"role":"assistant","content":"日期和记录类型已经确定，缺的是那条决策选择的适用范围与保留条件。"},
+        {"role":"user","content":"这次整理要保留小数据图表的 SVG 可读性，同时记录大数据量场景的性能边界。"},
+        {"role":"assistant","content":"我会把日期筛选与项目范围作为固定条件，避免混入 tooltip 或其他图表流的历史记录。"},
+        {"role":"user","content":"当前索引只显示标题和日期，没有那条 decision 的正文。"},
+        {"role":"assistant","content":"先找回对应日期的决策正文，再把适用边界写进当前记录。"}
+      ],
+      "changed_message_index":8,
+      "query":"只查看指定日期的 decision 记录，找回 Canvas 切换决策的适用边界与保留条件。",
+      "positive":{"delta_message":{"role":"user","content":"当前索引仍没有保存那条 decision 的具体取舍：何时保留 SVG、何时允许 Canvas，以及可访问性和截图稳定性条件如何处理。请先找回原记录。"},"private_proposal":{"unique_information_gap":"缺少指定日期 decision 记录中的 Canvas/SVG 适用边界与保留条件。","route":"memory","target_asset_ids":["T05-L1-13"],"allowed_sequence_candidates":[["tdai_atomic_query"]],"stop_after_candidate":"按日期与 decision 类型命中该记录后停止。"}},
+      "negative":{"delta_message":{"role":"user","content":"交接已补回 decision：小于中等数据量且需要键盘可读性时保留 SVG；超大数据量的静态概览才允许 Canvas，并要求另提供文本摘要与稳定截图检查；不接受为了统一实现而全量切换。请基于此记录。"},"private_proposal":{"route":"none","why_current_context_is_sufficient":"负例 delta 已给出三项边界和保留条件，查询可直接回答。"}},
+      "visible_distractor_ids_author_only":["T05-L0-02","T05-L1-14"],
+      "controlled_delta_note":"两例共享日期过滤、项目背景和查询；第九条正例保留决策正文缺口，负例仅补足该决策的边界与约束。",
+      "source_fact_map":[],
+      "sol_review_questions":["日期与记录类型是否足以构成唯一直接检索入口？","目标是否确为窄的旧 decision，而非当前代码分析？","负例是否只补齐 SVG/Canvas 边界、文本摘要和截图约束？","正负例是否只改第九条？","目标与两个 atlas 同域干扰是否仅在 author-only？","可见文字是否没有 provider 禁止词？"]
+    },
+    {
+      "draft_pair_id":"T05-DS05-MEM-PAIR-06",
+      "external_source_ids":[],
+      "synthetic_scope":["team","project","conversation","history"],
+      "difficulty":"hard",
+      "context_bucket":"medium_6_to_10",
+      "shared_context_messages":[
+        {"role":"user","content":"canvas-reports 正在处理一次报告预览的 CLS 事故，需要把已经注入索引的事故场景正文补回工程记录。"},
+        {"role":"assistant","content":"现象是窄屏预览在字体和图表加载时发生两次位移，团队希望复用既有事故流程而不是临时改一个页面。"},
+        {"role":"user","content":"当前输入只有事故标题、影响范围和几个监测数字，正文步骤与检查顺序没有展开。"},
+        {"role":"assistant","content":"需要区分预览容器尺寸、字体加载和图表占位三个环节，避免把 atlas-insights 的图表交互结论当成事故流程。"},
+        {"role":"user","content":"修复应保留响应式断点，并在回归中同时观察首屏稳定性和内容可见性。"},
+        {"role":"assistant","content":"一旦找回完整场景，就按其步骤整理实施与验证，不额外发明新的事故分类。"},
+        {"role":"user","content":"我还没有看到那份场景正文，只知道它已被索引。"},
+        {"role":"assistant","content":"先读取对应事故场景，再继续写当前报告的复盘。"}
+      ],
+      "changed_message_index":8,
+      "query":"请补回这次 CLS 事故场景中记录的处理步骤和验证顺序。",
+      "positive":{"delta_message":{"role":"user","content":"目前仍缺少事故场景正文：预览容器、字体与图表占位应按什么顺序处理，最后需要哪些稳定性检查？请先找回完整场景。"},"private_proposal":{"unique_information_gap":"缺少已索引事故场景的正文步骤与验证顺序。","route":"memory","target_asset_ids":["T05-L2-04"],"allowed_sequence_candidates":[["tdai_read_scene"]],"stop_after_candidate":"读取该事故场景正文后停止。"}},
+      "negative":{"delta_message":{"role":"user","content":"交接已附上场景要点：先冻结预览容器的响应式尺寸，再为字体和图表保留确定性占位，随后在窄屏与宽屏各做一次首屏位移记录；只有在两种视口均稳定且文本仍可见时才合入。请按此复盘。"},"private_proposal":{"route":"none","why_current_context_is_sufficient":"负例 delta 已给出完整处理顺序、双视口验证和合入门槛，无需再读取场景。"}},
+      "visible_distractor_ids_author_only":["T05-L2-03","T05-L0-10"],
+      "controlled_delta_note":"正负例共享同一事故背景和查询；仅第九条改变，负例只补足场景中的顺序、验证范围和合入门槛。",
+      "source_fact_map":[],
+      "sol_review_questions":["唯一缺口是否仅为事故场景正文？","正例首动作是否唯一指向读取场景并在命中后停止？","负例是否已经包含足够的最小处理链路？","正负例是否只有 delta 变化？","目标和两个 canvas-reports 同域干扰是否只在 author-only？","可见文本是否 provider 禁止词为零？"]
+    }
+  ]
+}
+

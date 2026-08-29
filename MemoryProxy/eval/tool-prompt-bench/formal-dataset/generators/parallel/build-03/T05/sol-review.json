@@ -1,0 +1,120 @@
+{
+  "schema_version": "task1.sol_review.v1",
+  "team_id": "T05",
+  "reviewer": "gpt-5.6-sol",
+  "reviewed_at": "2026-08-29T23:10:00+08:00",
+  "verdict": "approved_for_team_gate",
+  "pair_count": 15,
+  "natural_negative_count": 10,
+  "checks": {
+    "unique_information_gap": "passed",
+    "unique_first_action": "passed",
+    "complete_minimal_chain": "passed",
+    "controlled_single_delta": "passed",
+    "visibility": "passed",
+    "at_least_two_realistic_distractors": "passed",
+    "provider_leakage": "passed",
+    "skill_technical_body_invariance": "passed"
+  },
+  "approved_pair_ids": [
+    "T05-DS05-MEM-PAIR-01",
+    "T05-DS05-MEM-PAIR-02",
+    "T05-DS05-MEM-PAIR-03",
+    "T05-DS05-MEM-PAIR-04",
+    "T05-DS05-MEM-PAIR-05",
+    "T05-DS05-MEM-PAIR-06",
+    "T05-SKILL-PILOT-01-P001",
+    "T05-SKILL-BP-02-P001",
+    "T05-SKILL-BP-03-P001",
+    "T05-SKILL-BP-04-P001",
+    "T05-SKILL-BP-05-P001",
+    "T05-SKILL-BP-06-P001",
+    "T05-DS05-KNOW-PAIR-01",
+    "T05-KNOW-BP-02",
+    "T05-KNOW-BP-03"
+  ],
+  "approved_natural_case_ids": [
+    "T05-DS05-NN-001",
+    "T05-DS05-NN-002",
+    "T05-DS05-NN-003",
+    "T05-DS05-NN-004",
+    "T05-DS05-NN-005",
+    "T05-DS05-NN-006",
+    "T05-DS05-NN-007",
+    "T05-DS05-NN-008",
+    "T05-DS05-NN-009",
+    "T05-DS05-NN-010"
+  ],
+  "batch_refs": [
+    {
+      "batch_key": "pilotMemory",
+      "batch_id": "T05-DS05-MEM-PILOT-01",
+      "path": "generators/parallel/build-03/T05/pilot-memory-01/draft.json",
+      "sha256": "edf1a6f6be57912c4dad637784ce1059dcff109b5abb74f791397c1083e80d7b",
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "fork_turns": "none",
+      "sol_review": "approved"
+    },
+    {
+      "batch_key": "pilotSkill",
+      "batch_id": "t05-pilot-skill-01",
+      "path": "generators/parallel/build-03/T05/pilot-skill-01/draft.json",
+      "sha256": "0f960606e993e525ccd91fd0651ce1daddd7b2e845e4ef7cac422d6d3d7b3fc8",
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "fork_turns": "none",
+      "sol_review": "approved"
+    },
+    {
+      "batch_key": "pilotKnowledge",
+      "batch_id": "T05-DS05-KNOW-PILOT-01",
+      "path": "generators/parallel/build-03/T05/pilot-knowledge-01/draft.json",
+      "sha256": "288d6db39b80c1b3ce676cd6f1aedc194066b6c32ff20cc2fbaa49913e6c4605",
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "fork_turns": "none",
+      "sol_review": "approved"
+    },
+    {
+      "batch_key": "expandMemory",
+      "batch_id": "T05-DS05-MEM-EXPAND-01",
+      "path": "generators/parallel/build-03/T05/expand-memory-01/draft.json",
+      "sha256": "690273632018cc20dc8a13baa634fd25d01a1b8edf4e95596bb97f4d36adbc19",
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "fork_turns": "none",
+      "sol_review": "approved"
+    },
+    {
+      "batch_key": "expandSkill",
+      "batch_id": "t05-expand-skill-01",
+      "path": "generators/parallel/build-03/T05/expand-skill-01/draft.json",
+      "sha256": "99be5eaa543ecbd3796339c3392e5848cda07f8a90670de9d8da6842c24cca63",
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "fork_turns": "none",
+      "sol_review": "approved"
+    },
+    {
+      "batch_key": "expandKnowledge",
+      "batch_id": "T05-DS05-KNOW-EXPAND-01",
+      "path": "generators/parallel/build-03/T05/expand-knowledge-01/draft.json",
+      "sha256": "3ac0ad1110cd934d26353dd2159193d2450bec0e55ebe36a04d9a1a76f781188",
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "fork_turns": "none",
+      "sol_review": "approved"
+    },
+    {
+      "batch_key": "natural",
+      "batch_id": "t05-natural-negatives-01",
+      "path": "generators/parallel/build-03/T05/natural-negatives-01/draft.json",
+      "sha256": "e959890fae7f555f425def3734737d034a71d553d793c7b0f5fb2fbea60b1284",
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "fork_turns": "none",
+      "sol_review": "approved"
+    }
+  ]
+}

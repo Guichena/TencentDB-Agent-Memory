@@ -1,0 +1,23 @@
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/feature-arch/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-FEATURE-ARCH/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+diff --git MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/feature-arch/SKILL.md MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-FEATURE-ARCH/SKILL.md
+index 8876436..205bb2d 100644
+--- MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/feature-arch/SKILL.md
++++ MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-FEATURE-ARCH/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+-name: feature-arch
+-description: React feature-based architecture guidelines for scalable applications (formerly feature-architecture). This skill should be used when writing, reviewing, or refactoring React code to ensure proper feature organization. Triggers on tasks involving project structure, feature organization, module boundaries, cross-feature imports, data fetching patterns, or component composition.
++name: feature-architecture
++description: "React feature-based 模块边界和可扩展目录组织。"
++use_when: "需要调整前端 feature/shared 分层和依赖方向。"
++do_not_use_when: "局部性能测量、单个图表或测试断言时不用。"
+ ---
+ 
+ # Feature-Based Architecture Best Practices
+@@ -113,3 +115,4 @@ Read individual reference files for detailed explanations and code examples:
+ ## Full Compiled Document
+ 
+ For the complete guide with all rules expanded: `AGENTS.md`
++
+

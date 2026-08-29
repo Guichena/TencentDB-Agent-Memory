@@ -1,0 +1,22 @@
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/tdd/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-TDD/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+diff --git MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/tdd/SKILL.md MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-TDD/SKILL.md
+index e8431b4..060a2b6 100644
+--- MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/tdd/SKILL.md
++++ MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-TDD/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+ name: tdd
+-description: Test-Driven Development methodology and red-green-refactor workflow (formerly test-tdd). This skill should be used when practicing TDD, writing tests first, designing tests before implementation, or reviewing test-first approaches. Triggers on "write tests first", "test before code", "red green refactor", "test driven development". This skill does NOT cover Vitest framework specifics (use vitest skill) or API mocking with MSW (use msw skill).
++description: "red-green-refactor 流程和测试先行边界。"
++use_when: "用户明确要求测试先行或 red-green-refactor。"
++do_not_use_when: "只修 Playwright flaky test、测量 CLS 或实现 D3 图表时不用。"
+ ---
+ 
+ # Community Test-Driven Development Best Practices
+@@ -120,3 +122,4 @@ Read individual reference files for detailed explanations and code examples:
+ ## Full Compiled Document
+ 
+ For the complete guide with all rules expanded: `AGENTS.md`
++
+

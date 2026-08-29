@@ -1,0 +1,180 @@
+{
+  "schema_version": "task1.team_knowledge_assets.v1",
+  "team_id": "T05",
+  "knowledge": [
+    {
+      "assetId": "T05-KNOWLEDGE-ATLAS-CG",
+      "ownerAgentId": "agent-task1-t05-general",
+      "sourceEvidenceIds": [
+        "source-t05-knowledge-t05-knowledge-atlas-cg"
+      ],
+      "observedAt": "2026-08-29T22:30:00+08:00",
+      "type": "code_graph",
+      "name": "Atlas 图表代码索引",
+      "snapshotSha256": "3b1f21448dd0317079653256819b0aea0dff7a976309729d86e6baa2254dd37d",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t05-general",
+          "visibility": "fixed"
+        }
+      ],
+      "repoUrl": "https://benchmark.invalid/tencentdb/task1/t05/atlas-insights.git",
+      "repoCommit": "df52adc3845fe60a736bda5ae195244042ee217b",
+      "indexVersion": "task1-t05-v1",
+      "contentHash": "bf15be7331c9fa894c75ab8be8befa3c42842b82e85fd93d9912cf6e0c7de657"
+    },
+    {
+      "assetId": "T05-KNOWLEDGE-MERIDIAN-WIKI",
+      "ownerAgentId": "agent-task1-t05-general",
+      "sourceEvidenceIds": [
+        "source-t05-knowledge-t05-knowledge-meridian-wiki"
+      ],
+      "observedAt": "2026-08-29T22:30:00+08:00",
+      "type": "wiki",
+      "name": "Meridian 前端决策库",
+      "snapshotSha256": "42662ec5845f1f3cc3d569e1470805cddc2df0477992616fb2abbd2cbccfa161",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t05-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "2d8ec3c491477ca9824c257495b32a0bd5924a46d2d16e3aa2b89339882cce41"
+    },
+    {
+      "assetId": "T05-KNOWLEDGE-PULSE-CG",
+      "ownerAgentId": "agent-task1-t05-general",
+      "sourceEvidenceIds": [
+        "source-t05-knowledge-t05-knowledge-pulse-cg"
+      ],
+      "observedAt": "2026-08-29T22:30:00+08:00",
+      "type": "code_graph",
+      "name": "Pulse 结账调用图",
+      "snapshotSha256": "d0de2b0ed0c667ba7a92ee564ca96111adc10781e0d60acb39db46fabc4e5f5d",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t05-general",
+          "visibility": "fixed"
+        }
+      ],
+      "repoUrl": "https://benchmark.invalid/tencentdb/task1/t05/pulse-checkout.git",
+      "repoCommit": "1cf9f43f2fd85347676475a3ef422d04b58e6b0c",
+      "indexVersion": "task1-t05-v1",
+      "contentHash": "5bc6d15c8d114ce0349e75a9a03db24048a061c4723fd408d19c726e7e465fbd"
+    }
+  ],
+  "fixtures": [
+    {
+      "knowledgeId": "T05-KNOWLEDGE-ATLAS-CG",
+      "toolList": [
+        {
+          "name": "find_symbol",
+          "required_params": [
+            "symbol"
+          ],
+          "read_only": true
+        }
+      ],
+      "toolFixtures": [
+        {
+          "tool_name": "find_symbol",
+          "read_only": true,
+          "request": {
+            "symbol": "RevenueTooltip"
+          },
+          "response": {
+            "symbol": "RevenueTooltip",
+            "definitions": [
+              {
+                "kind": "component",
+                "file": "src/charts/revenue/RevenueTooltip.tsx",
+                "line": 18
+              }
+            ],
+            "direct_callers": [
+              {
+                "symbol": "RevenuePanel",
+                "file": "src/charts/revenue/RevenuePanel.tsx",
+                "line": 74
+              },
+              {
+                "symbol": "RevenueSmallMultiples",
+                "file": "src/charts/revenue/RevenueSmallMultiples.tsx",
+                "line": 41
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "knowledgeId": "T05-KNOWLEDGE-MERIDIAN-WIKI",
+      "toolList": [
+        {
+          "name": "search_pages",
+          "required_params": [
+            "query"
+          ],
+          "read_only": true
+        }
+      ],
+      "toolFixtures": [
+        {
+          "tool_name": "search_pages",
+          "read_only": true,
+          "request": {
+            "query": "媒体占位 CLS"
+          },
+          "response": {
+            "pages": [
+              {
+                "title": "商品媒体占位与 CLS 决策",
+                "path": "decisions/media-placeholder-cls.md",
+                "summary": "媒体内容到达前必须保留固定比例的空间，首图预加载不能替代空间预留。",
+                "content": "商品媒体必须在内容到达前保留固定宽高比盒子，优先使用明确的 width/height 或 aspect-ratio；首图预加载不能替代空间预留。验证顺序为先按商品图库的 4:3 约束预留空间，再测量 CLS，最后才调整加载优先级。"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "knowledgeId": "T05-KNOWLEDGE-PULSE-CG",
+      "toolList": [
+        {
+          "name": "find_callers",
+          "required_params": [
+            "symbol"
+          ],
+          "read_only": true
+        }
+      ],
+      "toolFixtures": [
+        {
+          "tool_name": "find_callers",
+          "read_only": true,
+          "request": {
+            "symbol": "confirmPurchase"
+          },
+          "response": {
+            "symbol": "confirmPurchase",
+            "direct_callers": [
+              {
+                "symbol": "ReviewPanel",
+                "file": "src/checkout/ReviewPanel.tsx",
+                "line": 88,
+                "entry_kind": "standard_checkout"
+              },
+              {
+                "symbol": "ExpressPayButton",
+                "file": "src/checkout/ExpressPayButton.tsx",
+                "line": 52,
+                "entry_kind": "express_payment"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

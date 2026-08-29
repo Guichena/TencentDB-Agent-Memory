@@ -1,0 +1,73 @@
+{
+  "schema_version": "task1.sol_pilot_review.v1",
+  "team_id": "T05",
+  "stage": "DS05",
+  "reviewed_at": "2026-08-29T22:16:00+08:00",
+  "reviewer": "gpt-5.6-sol",
+  "batches": [
+    {
+      "batch_id": "T05-DS05-MEM-PILOT-01",
+      "directory": "pilot-memory-01",
+      "family": "memory",
+      "draft_sha256": "edf1a6f6be57912c4dad637784ce1059dcff109b5abb74f791397c1083e80d7b",
+      "format_gate": "passed",
+      "decision": "accepted",
+      "final_route": [
+        "tdai_conversation_search"
+      ],
+      "target_asset_ids": [
+        "T05-L0-01"
+      ],
+      "visibility_check": "target assigned to active/imported same-Team memory; distractors T05-L0-02/T05-L0-03 in frozen plan",
+      "unique_first_action": true,
+      "complete_minimal_chain": true,
+      "pair_single_variable": true,
+      "provider_leakage": 0,
+      "notes": "Exact prior-session wording and exclusions make conversation search uniquely preferable to atomic memory search."
+    },
+    {
+      "batch_id": "t05-pilot-skill-01",
+      "directory": "pilot-skill-01",
+      "family": "skill",
+      "draft_sha256": "0f960606e993e525ccd91fd0651ce1daddd7b2e845e4ef7cac422d6d3d7b3fc8",
+      "format_gate": "passed",
+      "decision": "accepted",
+      "final_route": [
+        "skill_view"
+      ],
+      "target_asset_ids": [
+        "T05-SKILL-D3-VISUALIZATION"
+      ],
+      "visibility_check": "target is frozen as active-agent bound/listed; React and browser-measurement distractors are also visible",
+      "unique_first_action": true,
+      "complete_minimal_chain": true,
+      "pair_single_variable": true,
+      "provider_leakage": 0,
+      "source_check": "T05-SRC-D3 raw sha and Apache-2.0 license reverified; adaptation is routing-only",
+      "notes": "Reusable deterministic visualization procedure is a Skill gap; fixed Knowledge resources expose code/wiki lookup rather than this workflow."
+    },
+    {
+      "batch_id": "T05-DS05-KNOW-PILOT-01",
+      "directory": "pilot-knowledge-01",
+      "family": "knowledge",
+      "draft_sha256": "288d6db39b80c1b3ce676cd6f1aedc194066b6c32ff20cc2fbaa49913e6c4605",
+      "format_gate": "passed",
+      "decision": "accepted",
+      "final_route": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "target_asset_ids": [
+        "T05-KNOWLEDGE-ATLAS-CG"
+      ],
+      "visibility_check": "all three Knowledge resources are fixed to active agent; Atlas workspace match uniquely selects target",
+      "unique_first_action": true,
+      "complete_minimal_chain": true,
+      "pair_single_variable": true,
+      "provider_leakage": 0,
+      "notes": "Definition/caller location is absent from current input and requires the project code index; stop after first successful lookup."
+    }
+  ],
+  "pilot_gate": "passed",
+  "expansion_authorized": true
+}

@@ -1,0 +1,23 @@
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/web-design-guidelines/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-WEB-GUIDELINES/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+diff --git MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/web-design-guidelines/SKILL.md MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-WEB-GUIDELINES/SKILL.md
+index 596a95d..8c5c937 100644
+--- MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/web-design-guidelines/SKILL.md
++++ MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-WEB-GUIDELINES/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+-name: web-design-guidelines
+-description: Review UI code for Web Interface Guidelines compliance. Use when asked to "review my UI", "check accessibility", "audit design", "review UX", or "check my site against best practices".
++name: web-interface-guidelines
++description: "按 Web Interface Guidelines 审查已给 UI 代码。"
++use_when: "请求是界面规范合规审查并已提供相关 UI 代码。"
++do_not_use_when: "创建 D3 图表、诊断 CLS 根因或写 E2E 测试时不用。"
+ metadata:
+   author: vercel
+   version: "1.0.0"
+@@ -37,3 +39,4 @@ When a user provides a file or pattern argument:
+ 4. Output findings using the format specified in the guidelines
+ 
+ If no files specified, ask the user which files to review.
++
+

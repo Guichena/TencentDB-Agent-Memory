@@ -1,0 +1,21 @@
+{
+  "schema_version": "task1.input_freeze.v1",
+  "build_id": "build-03",
+  "team_id": "T05",
+  "frozen_at": "2026-08-29T22:00:25+08:00",
+  "frozen_by": "gpt-5.6-sol",
+  "launch_ref": "task1-data-parallel-launch-v2",
+  "launch_commit": "ef2ca4bd84e529c6c7d8a8df661520cbc3bf4bb0",
+  "schema_baseline_commit": "1048681880b51e7a52a6b8b0b731eadeec44e118",
+  "data_content_baseline_commit": "960021e472456515a89d3c2c4f2962fbf6cc51a1",
+  "source_lock_sha256": "c51535d9ffe65d89f66b9acc37cd6cca12a41428ad9b1b2dcb598c36fe2e0bc3",
+  "input_pack_sha256": "15fa15b999e06065426e1e8b4ee11ccac3d647c915d8d5082ba4787312277f23",
+  "raw_skill_count": 16,
+  "raw_resource_count": 1,
+  "source_repository_count": 4,
+  "license_gate": "passed",
+  "raw_sha256_gate": "passed",
+  "upstream_dependencies_installed": false,
+  "upstream_tests_run": false,
+  "official_patch_used": false
+}
