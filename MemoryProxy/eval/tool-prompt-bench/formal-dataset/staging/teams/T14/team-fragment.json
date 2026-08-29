@@ -733,7 +733,7 @@
   "teams": [
     {
       "teamId": "T14",
-      "worldId": "task1-formal-v1",
+      "worldId": "world-task1-engineering",
       "split": "hidden_test",
       "name": "云原生交付",
       "businessAgentIds": [
@@ -781,7 +781,7 @@
         "T14-EVID-T14-SRC-FLUX-DEBUG",
         "T14-EVID-T14-SRC-FLUX-IMAGE-AUTOMATION"
       ],
-      "contentHash": "1fd2c51af257e1f751694db52c1a452c9d6a285d3e58786dcec939b997d55f8e"
+      "contentHash": "53c344cd28592d8b8b13e1ab3eec054152c0f73d8c0035ca92c3b2432d273e64"
     }
   ],
   "businessAgents": [

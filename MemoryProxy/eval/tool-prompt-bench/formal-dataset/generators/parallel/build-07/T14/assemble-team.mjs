@@ -407,7 +407,7 @@ const businessAgents = [
 
 const team = withHash({
   teamId: "T14",
-  worldId: "task1-formal-v1",
+  worldId: "world-task1-engineering",
   split: "hidden_test",
   name: "云原生交付",
   businessAgentIds: businessAgents.map((item) => item.agentId),

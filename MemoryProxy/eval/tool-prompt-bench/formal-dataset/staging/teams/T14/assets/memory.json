@@ -1709,9 +1709,10 @@
       "content": "完整记录：Aurora Release 的 Flagger canary 评审同时看成功率、p95 延迟变化、连续分析间隔与流量调整动作；异常时执行回退并保留复核路径。其他 Flagger 项目的口径只能作为干扰，具体门槛以历史记忆为准。",
       "injected": true,
       "supportingSessionIds": [
+        "session-t14-history-001",
         "session-t14-history-005"
       ],
-      "contentHash": "8981b53a9a35df966e35f2c0166ea13b0237c8334f69d31915a5ceee2cdbc107"
+      "contentHash": "96a8e80d6f0c71300a513989310134adda82f4f6087fa2821027fc4ce23a6161"
     },
     {
       "assetId": "T14-L2-005",

@@ -1732,9 +1732,10 @@
       "content": "场景记录：Nimbus 交互式小批量为了定位压缩热点临时生成火焰图，输入规模、worker 数量和采样开销随会话变化。该场景要求把临时画像与固定夜间基准分离，清理临时文件，并将任何并发讨论标记为交互任务约束。夜间基准的正式参数保留在另一条记忆中。",
       "injected": true,
       "supportingSessionIds": [
-        "session-t13-history-007"
+        "session-t13-history-007",
+        "session-t13-history-008"
       ],
-      "contentHash": "23e8f00cb33e2b167995051ed588b43fae6816a56035f1e7e47f5e4f1cae9c45"
+      "contentHash": "026874ab24398ff0816989e309ad53ba39b2d347b0b8c651ea663dccf3fd227e"
     },
     {
       "assetId": "T13-L2-004",
@@ -1748,9 +1749,10 @@
       "content": "场景记录：本次 paging 分组演练验证通知分组键、渠道路由和轮值交接；参与者提出短静默建议，但没有形成告警风暴的正式预算规则，也没有确定事故升级确认角色。该演练与 noise budget review 保持独立。",
       "injected": true,
       "supportingSessionIds": [
+        "session-t13-history-001",
         "session-t13-history-010"
       ],
-      "contentHash": "7034396d78071989fe81c99c77ca14fc4aeee67d949bb1e24820ed41ca982ed3"
+      "contentHash": "ff18b6509d69601d76e6270ec5fbb051f51bfa75be79cb34067cc64e55cd2129"
     },
     {
       "assetId": "T13-L2-005",
@@ -1764,9 +1766,10 @@
       "content": "场景正文：SentryGrid 告警风暴复盘确认重复 paging 必须受静默护栏约束。静默窗口上限为 12 分钟；noise budget 设为每小时 3 次 paging。预算耗尽后，由 incident commander 确认是否升级。解除静默、预算耗尽和升级确认都要写入事故时间线；当前值班表不改变这次复盘确定的角色。",
       "injected": true,
       "supportingSessionIds": [
+        "session-t13-history-001",
         "session-t13-history-010"
       ],
-      "contentHash": "8147cc22c165d1e623edcbd47d67d1d2e86bb7835e1a00dc77e98b88691c8c48"
+      "contentHash": "17b7c51f6f1b1aa29ed0f74142cd0074c90576a629005c6e9fa82ea5359312c4"
     }
   ],
   "l3Profiles": [
