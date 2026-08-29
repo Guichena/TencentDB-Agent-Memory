@@ -1,0 +1,47 @@
+{
+  "schema_version": "task1.team_project_sources.v1",
+  "team_id": "T02",
+  "frozen": true,
+  "projects": [
+    {
+      "task_id": "T02-TASK-PANDAS-RESAMPLING",
+      "repo_slug": "pandas-dev/pandas",
+      "package_path": "workspaces/pandas-dev__pandas",
+      "revision": "4f86f278709810f97841f8e130f888146cc0a998",
+      "license_spdx": "BSD-3-Clause",
+      "file_manifest_sha256": "f2c7d305b53c5ec91f6016de4148be710d64d597240f2e5460df2862752ea62c",
+      "tree_sha256": "7181f9258db42999dd49519f06ad85ffec90d3048e7207da9c135647e4bfef03",
+      "metadata_sha256": "f585b76f49edfd4c1b989c2ebe39a0e6d4403e45ca4cecdae04e9dcb35f78261"
+    },
+    {
+      "task_id": "T02-TASK-DASK-PARALLEL",
+      "repo_slug": "dask/dask",
+      "package_path": "workspaces/dask__dask",
+      "revision": "9dc535daa30d7d36d63d4a003b54342fbc7032db",
+      "license_spdx": "BSD-3-Clause",
+      "file_manifest_sha256": "6dfb9945c2683b14b8af4d38e6a11334fda9b58132e6809a7fa05b80ac41738a",
+      "tree_sha256": "68ef1e7a67d23d3e0b378131e941743e862dffdbe7b8cb71358b7d67a55b9e8c",
+      "metadata_sha256": "ee5e1c954e6209afff90c73406f4c4387f712a181ac299e754c864599f60fcba"
+    },
+    {
+      "task_id": "T02-TASK-TIMESERIES-DETREND",
+      "repo_slug": "statsmodels/statsmodels",
+      "package_path": "workspaces/statsmodels__statsmodels",
+      "revision": "159fe37c3ecd973b208d37fae5b55c0cb735e2a7",
+      "license_spdx": "BSD-3-Clause",
+      "file_manifest_sha256": "489136f99bef54faafccc0e95c2af7bcf6b2ca266dc2245f6b75cddb8a320779",
+      "tree_sha256": "8d4f59835bb405383074a96bed77f1a7ec394a8f5bb1c68d86065c4e21e2d814",
+      "metadata_sha256": "28c35724cd9a3bb1317dc469533fe8e483fdf3f77eee18b763646922b3858098"
+    },
+    {
+      "task_id": "T02-TASK-NOTEBOOK-HANDOFF",
+      "repo_slug": "jupyter/notebook",
+      "package_path": "workspaces/jupyter__notebook",
+      "revision": "062a2e41d3d2170ee144deff7b8e0fd252de96e2",
+      "license_spdx": "BSD-3-Clause",
+      "file_manifest_sha256": "a4bf13fd7111f2d362834a4ac819c28b138cc866a85d286a4fd0c8d27c69d189",
+      "tree_sha256": "8e4fc47cc0dee1cbfbc37c7d42bf478d86ee0a52c9de9ad70c83cf58e6968633",
+      "metadata_sha256": "1365b619c8ba67a4e254cece5ed43d517c7be480f247b92061524eed81d447d8"
+    }
+  ]
+}

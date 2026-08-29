@@ -1,0 +1,53 @@
+diff --git "a/D:\\projects\\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02\\MemoryProxy\\eval\\tool-prompt-bench\\formal-dataset\\source-material\\T02\\skills\\qdrant-performance-optimization\\raw/SKILL.md" "b/D:\\projects\\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02\\MemoryProxy\\eval\\tool-prompt-bench\\formal-dataset\\source-material\\T02\\skills\\qdrant-performance-optimization\\adapted/SKILL.md"
+index 09aa503..5c1a095 100644
+--- "a/D:\\projects\\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02\\MemoryProxy\\eval\\tool-prompt-bench\\formal-dataset\\source-material\\T02\\skills\\qdrant-performance-optimization\\raw/SKILL.md"
++++ "b/D:\\projects\\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02\\MemoryProxy\\eval\\tool-prompt-bench\\formal-dataset\\source-material\\T02\\skills\\qdrant-performance-optimization\\adapted/SKILL.md"
+@@ -15,7 +15,7 @@ There are different aspects of Qdrant performance, this document serves as a nav
+ 
+ ## Search Speed Optimization
+ 
+-There are two different criteria for search speed: latency and throughput. 
++There are two different criteria for search speed: latency and throughput.
+ Latency is the time it takes to get a response for a single query, while throughput is the number of queries that can be processed in a given time frame.
+ Depending on your use case, you may want to optimize for one or both of these metrics.
+ 
+@@ -34,4 +34,4 @@ More on indexing performance optimization can be found in the [Indexing Performa
+ Vector search can be memory intensive, especially when dealing with large datasets.
+ Qdrant has a flexible memory management system, which allows you to precisely control which parts of storage are kept in memory and which are stored on disk. This can help you optimize memory usage without sacrificing performance.
+ 
+-More on memory usage optimization can be found in the [Memory Usage Optimization](memory-usage-optimization/SKILL.md) skill.
+\ No newline at end of file
++More on memory usage optimization can be found in the [Memory Usage Optimization](memory-usage-optimization/SKILL.md) skill.
+diff --git "a/D:\\projects\\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02\\MemoryProxy\\eval\\tool-prompt-bench\\formal-dataset\\source-material\\T02\\skills\\qdrant-performance-optimization\\raw/indexing-performance-optimization/SKILL.md" "b/D:\\projects\\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02\\MemoryProxy\\eval\\tool-prompt-bench\\formal-dataset\\source-material\\T02\\skills\\qdrant-performance-optimization\\adapted/indexing-performance-optimization/SKILL.md"
+index 20d1555..f7f1694 100644
+--- "a/D:\\projects\\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02\\MemoryProxy\\eval\\tool-prompt-bench\\formal-dataset\\source-material\\T02\\skills\\qdrant-performance-optimization\\raw/indexing-performance-optimization/SKILL.md"
++++ "b/D:\\projects\\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02\\MemoryProxy\\eval\\tool-prompt-bench\\formal-dataset\\source-material\\T02\\skills\\qdrant-performance-optimization\\adapted/indexing-performance-optimization/SKILL.md"
+@@ -76,5 +76,5 @@ Read more about ACORN in [documentation](https://search.qdrant.tech/md/documenta
+ ## What NOT to Do
+ 
+ - Do not create payload indexes AFTER HNSW is built (breaks filterable vector index)
+-- Do not use `m=0` for bulk uploads into an existing collection, it might drop the existing HNSW and cause long reindexing 
++- Do not use `m=0` for bulk uploads into an existing collection, it might drop the existing HNSW and cause long reindexing
+ - Do not upload one point at a time (per-request overhead dominates)
+diff --git "a/D:\\projects\\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02\\MemoryProxy\\eval\\tool-prompt-bench\\formal-dataset\\source-material\\T02\\skills\\qdrant-performance-optimization\\raw/memory-usage-optimization/SKILL.md" "b/D:\\projects\\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02\\MemoryProxy\\eval\\tool-prompt-bench\\formal-dataset\\source-material\\T02\\skills\\qdrant-performance-optimization\\adapted/memory-usage-optimization/SKILL.md"
+index 07f3e7a..00c05dd 100644
+--- "a/D:\\projects\\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02\\MemoryProxy\\eval\\tool-prompt-bench\\formal-dataset\\source-material\\T02\\skills\\qdrant-performance-optimization\\raw/memory-usage-optimization/SKILL.md"
++++ "b/D:\\projects\\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02\\MemoryProxy\\eval\\tool-prompt-bench\\formal-dataset\\source-material\\T02\\skills\\qdrant-performance-optimization\\adapted/memory-usage-optimization/SKILL.md"
+@@ -64,4 +64,3 @@ Here are the main techniques to achieve that:
+ - Consider storing Sparse Vectors and text payload on disk, as they are usually more disk-friendly than dense vectors.
+ - Configure payload indexes to be stored on disk [docs](https://search.qdrant.tech/md/documentation/manage-data/indexing/?s=on-disk-payload-index)
+ - Configure sparse vectors to be stored on disk [docs](https://search.qdrant.tech/md/documentation/manage-data/indexing/?s=sparse-vector-index)
+-
+diff --git "a/D:\\projects\\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02\\MemoryProxy\\eval\\tool-prompt-bench\\formal-dataset\\source-material\\T02\\skills\\qdrant-performance-optimization\\raw/search-speed-optimization/SKILL.md" "b/D:\\projects\\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02\\MemoryProxy\\eval\\tool-prompt-bench\\formal-dataset\\source-material\\T02\\skills\\qdrant-performance-optimization\\adapted/search-speed-optimization/SKILL.md"
+index d25e8fa..f1b0b0b 100644
+--- "a/D:\\projects\\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02\\MemoryProxy\\eval\\tool-prompt-bench\\formal-dataset\\source-material\\T02\\skills\\qdrant-performance-optimization\\raw/search-speed-optimization/SKILL.md"
++++ "b/D:\\projects\\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02\\MemoryProxy\\eval\\tool-prompt-bench\\formal-dataset\\source-material\\T02\\skills\\qdrant-performance-optimization\\adapted/search-speed-optimization/SKILL.md"
+@@ -63,7 +63,7 @@ Use when: filtered search is significantly slower than unfiltered. Most common S
+ ### Recommended configuration changes
+ 
+ - reduce `optimizer_cpu_budget` to reserve more CPU for queries
+-- Use `prevent_unoptimized=true` to prevent creating segments with a large amount of unindexed data for searches. Instead, once a segment reaches the so called indexing_threshold, all additional points will be added in ‘deferred state’. 
++- Use `prevent_unoptimized=true` to prevent creating segments with a large amount of unindexed data for searches. Instead, once a segment reaches the so called indexing_threshold, all additional points will be added in ‘deferred state’.
+ 
+ Learn more [here](https://search.qdrant.tech/md/documentation/search/low-latency-search/?s=query-indexed-data-only)
+ 

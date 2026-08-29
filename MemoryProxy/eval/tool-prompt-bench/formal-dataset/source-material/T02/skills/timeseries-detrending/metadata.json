@@ -1,0 +1,33 @@
+{
+  "schema_version": "task1.github_skill_source.v1",
+  "team_id": "T02",
+  "name": "timeseries-detrending",
+  "repository_url": "https://github.com/benchflow-ai/skillsbench",
+  "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+  "source_path": "tasks/econ-detrending-correlation/environment/skills/timeseries-detrending/SKILL.md",
+  "license_spdx": "Apache-2.0",
+  "license_file": "../../licenses/Apache-2.0.txt",
+  "visibility": "listed",
+  "description": "Detrend two time series before correlation analysis while preserving the chosen trend model and validation steps.",
+  "use_when": "The task asks for time-series detrending before a correlation or comparison.",
+  "do_not_use_when": "The task is ordinary resampling, worker scheduling, or Notebook structure.",
+  "main_raw_sha256": "1169a82443b6b4571dbc37017c41e1b2b1e05e86e9d0b304af726c711111d4cd",
+  "raw_files": [
+    {
+      "path": "SKILL.md",
+      "source_path": "tasks/econ-detrending-correlation/environment/skills/timeseries-detrending/SKILL.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/econ-detrending-correlation/environment/skills/timeseries-detrending/SKILL.md",
+      "sha256": "1169a82443b6b4571dbc37017c41e1b2b1e05e86e9d0b304af726c711111d4cd",
+      "byte_length": 4658
+    }
+  ],
+  "adapted_files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "1169a82443b6b4571dbc37017c41e1b2b1e05e86e9d0b304af726c711111d4cd",
+      "byte_length": 4658
+    }
+  ],
+  "adaptation_diff": "adaptation.diff",
+  "frozen": true
+}

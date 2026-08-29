@@ -1,0 +1,99 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t02-knowledge-trial-01",
+  "stage": "DS03",
+  "team_id": "T02",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T02-TRIAL-KNOWLEDGE-01",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "今天继续整理 Pandas 的时区感知重采样复核。事件时间先归一化到 UTC，再转成 Asia/Shanghai 作为报告日界线，最后才做 daily resample；这条顺序是我们当前复核的前提。"
+        },
+        {
+          "role": "assistant",
+          "content": "收到。我会把报告边界和实现定位分开记录：naive 的混合时区时间不能直接分桶，代码位置只依据当前固定的 Pandas 版本材料核对，不从相邻 API 名称猜测。"
+        },
+        {
+          "role": "user",
+          "content": "我在看类似下面的调用：\n```python\nreport = (events.set_index('event_time')\n          .resample('D')\n          .agg(total=('value', 'sum')))\n```\n现在要确认这个调用返回的通用重采样对象，别把它和 DataFrame 的入口方法或 DatetimeIndex 的专门子类混为一谈。"
+        },
+        {
+          "role": "assistant",
+          "content": "理解。复核范围是通用的 Resampler 类本身及其 aggregate、transform 等行为；DataFrame 的入口和 DatetimeIndexResampler 只作为相邻符号，用来排除误定位。"
+        },
+        {
+          "role": "user",
+          "content": "固定项目材料里同时有 pandas/core/frame.py、pandas/core/resample.py 和重采样测试。测试能说明边界案例，但我需要类定义的源位置，不需要把测试用例或时区规则当成实现位置。"
+        },
+        {
+          "role": "assistant",
+          "content": "这一区分很重要：frame.py 更像调用入口，测试文件是行为证据，resample.py 才是本次符号定位的候选文件。当前记录仍只确认文件范围和符号关系。"
+        },
+        {
+          "role": "user",
+          "content": "我已经排除了把缺失小时桶的补齐顺序、时区转换顺序或聚合结果，误写成 Resampler 的源码位置；也不会因为附近有同名文档就补一个猜测的行号。"
+        },
+        {
+          "role": "assistant",
+          "content": "好的。目前已知的是项目、符号名、候选源文件以及需要核对的类定义；准确的 file/line 仍应从固定代码证据确认，不能由调用示例或测试名称推导。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请先给出当前固定 Pandas 代码中 Resampler 类定义的准确源文件和行号，供我核对这条重采样复核记录；不要延伸到调用链、时区规则或修复建议。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充日志仍然只有 Resampler 这个符号名和重采样调用背景，没有提供固定代码中的源文件行号；请保留这个定位缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "固定 Pandas 代码证据中 Resampler 类定义的准确源文件和行号尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": ["cg-t02pnd01"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "从固定 Pandas 代码图节点查询返回 Resampler 位于 pandas/core/resample.py:119 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充摘要已经补齐唯一缺口：固定 Pandas 代码显示 Resampler 类定义位于 pandas/core/resample.py:119；其他复核背景、排除项和查询保持不变。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已经给出 Resampler 的固定源文件和行号，并保留了与 DataFrame 入口、DatetimeIndexResampler 及测试文件的边界；无需再次查询资源。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["cg-t02dsk01", "wiki-t02ops01"],
+      "controlled_delta_note": "Positive 仅保留 Resampler 类定义的固定 file/line 缺口；Negative 仅补齐 pandas/core/resample.py:119，其他项目身份、调用背景、相邻符号排除项和 query 完全不变。",
+      "source_fact_map": [
+        {
+          "claim": "当前项目复核围绕 Pandas 的时区感知重采样，代码材料包含 resample.py、frame.py 和重采样测试。",
+          "source_id": "T02-TASK-PANDAS-RESAMPLING",
+          "locator": "input-pack.json#project_streams[0]"
+        },
+        {
+          "claim": "冻结的 Pandas 项目包固定在提交 4f86f278709810f97841f8e130f888146cc0a998，包含 pandas/core/resample.py。",
+          "source_id": "T02-TASK-PANDAS-RESAMPLING",
+          "locator": "source-material/T02/workspaces/pandas-dev__pandas/metadata.json#revision,files"
+        },
+        {
+          "claim": "固定代码图中 Resampler 节点的目标结果为 pandas/core/resample.py:119，并与 DataFrame 和 DatetimeIndexResampler 保持给定关系。",
+          "source_id": "cg-t02pnd01",
+          "locator": "asset-world/asset-world-batch-01/draft.json#knowledge_fixtures[0].snapshot"
+        }
+      ],
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为 Resampler 类定义的固定 file/line，而没有暗示方法体、调用边或修复结论？",
+        "Negative 是否只补入 pandas/core/resample.py:119，并保持 DataFrame 入口、DatetimeIndexResampler、测试文件排除项及 query 不变？",
+        "Pandas 重采样的项目线索与相邻符号排除项，是否足以在三个 ready 资源中唯一选择目标代码图？"
+      ]
+    }
+  ]
+}

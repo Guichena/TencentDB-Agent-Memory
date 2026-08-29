@@ -1,0 +1,28 @@
+{
+  "schema_version": "task1.github_workspace_source.v1",
+  "team_id": "T02",
+  "task_id": "T02-TASK-NOTEBOOK-HANDOFF",
+  "title": "Reproducible data-computing notebook handoff",
+  "repository_url": "https://github.com/jupyter/notebook",
+  "repo_slug": "jupyter/notebook",
+  "revision": "062a2e41d3d2170ee144deff7b8e0fd252de96e2",
+  "commit_time": "2026-08-17T16:43:34Z",
+  "license_spdx": "BSD-3-Clause",
+  "files": [
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/jupyter/notebook/062a2e41d3d2170ee144deff7b8e0fd252de96e2/LICENSE",
+      "sha256": "5ca74e4d2eeb9330b0d129c25f874d3544a13413bc62ae8d367819100d095072",
+      "byte_length": 1588
+    },
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/jupyter/notebook/062a2e41d3d2170ee144deff7b8e0fd252de96e2/README.md",
+      "sha256": "c915d71b0f3feab040d4268dc21e429c75fd6705cdf1ad9517b04ca214e2e8d7",
+      "byte_length": 5931
+    }
+  ],
+  "file_manifest_sha256": "a4bf13fd7111f2d362834a4ac819c28b138cc866a85d286a4fd0c8d27c69d189",
+  "tree_sha256": "8e4fc47cc0dee1cbfbc37c7d42bf478d86ee0a52c9de9ad70c83cf58e6968633",
+  "frozen": true
+}

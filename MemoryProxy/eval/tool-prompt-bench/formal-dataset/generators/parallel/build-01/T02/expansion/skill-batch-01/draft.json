@@ -1,0 +1,224 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t02-skill-expansion-batch-01",
+  "stage": "DS03",
+  "team_id": "T02",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T02-EXP-SKILL-01-P001",
+      "external_source_ids": ["source-t02-skill-workload-balancing"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我们在 Dask 的月度区域特征作业里已经选定分布式 worker 模型，现在要处理不同月份和区域的分区大小差异。"},
+        {"role": "assistant", "content": "我会把这次讨论限定在 worker 已经确定之后的任务分配与运行检查，不先声称有性能提升。"},
+        {"role": "user", "content": "抽样看有的分区很快结束，有的分区拖到最后，长尾比平均耗时更值得关注。"},
+        {"role": "assistant", "content": "这说明需要先确认不均衡和拖尾发生在哪里，再决定是重新分片、动态派发还是让空闲 worker 接手剩余任务。"},
+        {"role": "user", "content": "旧草案只按 customer_id 切分，月度区域组合的大小没有纳入评估。"},
+        {"role": "assistant", "content": "旧切分可以作为被否决的对照，但新的方案还要有可测量的分配、拖尾处理和运行监控步骤。"},
+        {"role": "user", "content": "我想先产出一份不改代码的执行清单，供数据平台和分析同学共同复核。"},
+        {"role": "assistant", "content": "目前上下文说明了问题和约束，但我手头没有那套固定的负载均衡流程正文。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请给出这项分区作业的负载均衡实施清单、选择依据和验收指标，先不要修改代码。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请补上从刻画任务耗时和大小、定位拖尾，到选择分片或调度策略、落地分配逻辑、运行中监控并在必要时自适应调整的精确步骤；还要说明什么情况下用等分、动态队列、工作窃取或按权重分配，以及最后如何验证没有饥饿、拖尾和过度切分。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结流程中先刻画负载、识别瓶颈、按任务特征选择策略、实现分配调度、监控自适应，以及等分、动态队列、工作窃取、按权重策略和验证指标的完整步骤。",
+          "route": "skill",
+          "target_asset_ids": ["workload-balancing"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "查看流程正文并给出实施清单与验收起点后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "完整清单如下：先测量任务耗时、输入大小和完成时间，标记均匀、可预测变化、不可预测变化与长尾；再定位分区大小不均、拖尾和空闲 worker。任务均匀且数量已知时用等量分块，流式输入用轮询，大对象按大小切分；耗时可估计时按权重从大到小放入当前总负载最小的 worker，不可预测时用动态队列，长尾时用工作窃取并设置时间限制。落地后逐步派发任务，worker 空闲就从最繁忙队列接手；对拖尾可设置超时和回退，必要时取消剩余工作并重新分配。运行中记录负载不均衡比 max(load)/avg(load)、拖尾比 max(time)/median(time)、worker 利用率和队列长度方差；验收要确认分布大致均匀、无饥饿、结果完整正确、分配开销可接受，并避免把过多小任务切开。请据此形成不改代码的复核清单。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "新增消息完整给出负载刻画、瓶颈识别、策略选择、实现与监控自适应，以及拖尾处理和验证指标，足以直接回答查询。"}
+      },
+      "visible_distractor_ids_author_only": ["T02-F06", "T02-F07"],
+      "controlled_delta_note": "Positive 只缺固定负载均衡流程；Negative 仅补全策略选择、实现、拖尾处理、监控指标和验收步骤，其他上下文与 query 不变。",
+      "source_fact_map": [
+        {"claim": "固定流程依次要求刻画负载、识别瓶颈、选择策略、实现分配调度并监控自适应。", "source_id": "source-t02-skill-workload-balancing", "locator": "formal-dataset/source-material/T02/skills/workload-balancing/raw/SKILL.md#Workflow"},
+        {"claim": "任务特征分别对应等分、动态调度/工作窃取和按权重分配，并有负载不均衡、拖尾比、利用率与队列方差指标。", "source_id": "source-t02-skill-workload-balancing", "locator": "formal-dataset/source-material/T02/skills/workload-balancing/raw/SKILL.md#Load Balancing Decision Tree; #Monitoring Metrics; #Verification Checklist"}
+      ],
+      "sol_review_questions": [
+        "确认 Positive 的唯一缺口是负载均衡流程正文，首动作严格为 skill_view，目标资产仅为 workload-balancing。",
+        "确认 Negative 已覆盖负载刻画、策略选择、拖尾处理、监控指标和验证清单，足以 route none。",
+        "确认 provider-visible 文本没有资产标识、动作名或生成/评分元语言。"
+      ]
+    },
+    {
+      "draft_pair_id": "T02-EXP-SKILL-01-P002",
+      "external_source_ids": ["source-t02-skill-python-parallelization"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我有一批互相独立的 TF-IDF 文档打分任务，当前 Python 循环是串行的，输入规模会从几万篇涨到百万篇。"},
+        {"role": "assistant", "content": "这看起来是计算密集且迭代之间没有共享写入的场景，但要先确认并行化不会改变结果顺序和异常行为。"},
+        {"role": "user", "content": "每篇文档只读取自己的词表，函数目前是模块顶层的普通函数，结果要按输入文档顺序回写。"},
+        {"role": "assistant", "content": "可以把候选工作与进程级执行分开审查，同时保留串行版本作为正确性基线。"},
+        {"role": "user", "content": "运行环境的 CPU 数量有限，不能因为开了并行就无限增加 worker。"},
+        {"role": "assistant", "content": "worker 数量、进程间数据复制、异常处理和资源释放都要成为方案的显式约束。"},
+        {"role": "user", "content": "这轮只要一份从分析到验证的改造方案，不要求现在提交代码。"},
+        {"role": "assistant", "content": "我还缺一份固定的 Python 并行改造流程和边界条件清单，暂不凭经验补写。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请为这批 CPU 密集型文档任务给出可执行的并行化方案、风险检查和验证步骤，暂时不提交代码。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请补全那套固定流程：如何找出可并行候选、判断 CPU/IO/数据并行类型、选择合适执行方式、处理同步与异常、限制资源并保持顺序，最后怎样用串行结果和实测吞吐验证收益。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结流程中分析候选、分类负载、选择执行方式、转换并处理同步异常、控制资源并验证正确性与加速的完整过程，尤其是有序且独立的 CPU 任务应采用有界进程执行。",
+          "route": "skill",
+          "target_asset_ids": ["python-parallelization"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "先检索并打开适用流程，概述从分析到验证的步骤后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "完整流程如下：先检查循环迭代是否独立、是否存在共享可变状态和前后依赖，再把负载分成 CPU 密集、IO 密集或数据并行。独立的 CPU 文档任务用有界的进程池映射；网络或磁盘等待用异步或线程，数组与表格先考虑向量化，大数据再考虑分块。改造时用上下文管理器创建进程池，显式限制 worker 数；需要保序时使用 map，需逐项处理异常时使用 submit 并捕获异常。不要把 lambda 或嵌套类送进进程池，注意进程复制大数据的内存代价，也不要为小任务过度并行。先让并行结果与串行基线在代表性输入上逐项一致，再记录基线耗时、并行耗时、吞吐和资源使用来判断实际收益，并确认池已关闭、无竞态、异常得到处理。请据此整理改造方案。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "新增消息已经给出候选分析、负载分类、进程级策略、顺序与异常边界、资源限制及基线和实测验证，足以直接回答。"}
+      },
+      "visible_distractor_ids_author_only": ["T02-F05", "T02-F06"],
+      "controlled_delta_note": "Positive 只缺有界 Python 并行改造流程；Negative 仅补全候选分析、策略、同步异常、资源边界与验证，其他上下文与 query 不变。",
+      "source_fact_map": [
+        {"claim": "固定流程从分析候选、分类负载、选择策略、转换并处理同步异常到验证正确性和预期加速。", "source_id": "source-t02-skill-python-parallelization", "locator": "formal-dataset/source-material/T02/skills/python-parallelization/raw/SKILL.md#Workflow"},
+        {"claim": "独立 CPU 迭代适合进程池，需识别共享状态、处理异常、使用上下文管理器、限制 worker，并在需要时保持顺序。", "source_id": "source-t02-skill-python-parallelization", "locator": "formal-dataset/source-material/T02/skills/python-parallelization/raw/SKILL.md#Parallelization Decision Tree; #Safety Requirements; #Verification Checklist"}
+      ],
+      "sol_review_questions": [
+        "确认 Positive 的首动作严格是 skill_search 后 skill_view_by_id，目标资产仅为 python-parallelization。",
+        "确认 Negative 已完整覆盖 CPU 任务判定、有界进程池、顺序、异常、资源和基线验证，足以 route none。",
+        "确认 provider-visible 文本没有资产标识、动作名或生成/评分元语言。"
+      ]
+    },
+    {
+      "draft_pair_id": "T02-EXP-SKILL-01-P003",
+      "external_source_ids": ["source-t02-skill-memory-optimization"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我们的 Pandas 清洗任务要扫过约 50GB 的事件 CSV，当前一次性读入、复制中间表，峰值内存会超过 worker 配额。"},
+        {"role": "assistant", "content": "要把峰值分解成输入、临时副本和结果保留三部分，再决定是改变数据流还是缩小数据表示。"},
+        {"role": "user", "content": "最终只需要输出聚合后的统计结果，原始记录不需要全部留在内存里。"},
+        {"role": "assistant", "content": "这给了逐块读取、处理后释放和避免全量物化的空间，但仍要先证明结果没有变化。"},
+        {"role": "user", "content": "数值列有不少默认的 int64 和 float64，状态列的取值也很重复。"},
+        {"role": "assistant", "content": "dtype 缩窄和重复字符串的紧凑表示可能有帮助，不过应以测量出来的热点为依据。"},
+        {"role": "user", "content": "请先给一份审查和改造顺序，不在这轮直接改清洗代码。"},
+        {"role": "assistant", "content": "目前只有现象和候选方向，还缺固定的峰值内存优化流程及其验证方式。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请给出这条大文件处理链的降峰值内存方案、实施顺序和验收检查点，暂时不修改代码。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请补上从内存剖析、数据结构和对象生命周期分析，到选择生成器、分块读取、视图或原地操作、dtype 缩窄等方案，再到保持功能并实测降幅的完整步骤；还要说明什么时候该丢弃中间结果、何时用有界缓存或内存映射。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结流程中定位最大分配、分析数据结构与生命周期、选择生成器/分块/视图/dtype 等策略、改造数据流并验证内存下降与功能不变的完整程序。",
+          "route": "skill",
+          "target_asset_ids": ["memory-optimization"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "检索并打开适用流程，概述内存审查起点和实施顺序后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "完整步骤如下：先用 tracemalloc 或内存剖析器记录最大分配和峰值，再检查容器、临时副本、缓存、全局引用及对象生命周期。全量文件改为 chunksize 分块读取，逐块处理后释放；只消费一次的列表改成生成器，能用视图或原地操作就避免复制；数值列按实际范围 downcast，重复字符串可用 category，超过内存的二进制数组可用只读内存映射。处理结果若能汇总就及时丢弃原始块，不要无界累积列表；缓存需要上限，临时大对象必要时显式删除。每次改造都用相同输入核对输出，再重新测峰值和热点，确认内存确实下降、没有泄漏、性能和可读性仍可接受。请据此形成评审清单。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "新增消息提供了剖析、生命周期分析、分块与生成器、数据表示、释放策略及正确性和内存实测验证，足以直接回答。"}
+      },
+      "visible_distractor_ids_author_only": ["T02-F06", "T02-F07"],
+      "controlled_delta_note": "Positive 只缺峰值内存优化流程；Negative 仅补全剖析、数据流策略、释放与验证，其他上下文与 query 不变。",
+      "source_fact_map": [
+        {"claim": "固定流程依次剖析瓶颈、分析数据结构与生命周期、选择策略、改造并验证降幅与功能。", "source_id": "source-t02-skill-memory-optimization", "locator": "formal-dataset/source-material/T02/skills/memory-optimization/raw/SKILL.md#Workflow"},
+        {"claim": "冻结方案包含生成器、分块读取、视图/原地操作、数值 downcast、处理后丢弃和有界缓存等数据流选择。", "source_id": "source-t02-skill-memory-optimization", "locator": "formal-dataset/source-material/T02/skills/memory-optimization/raw/SKILL.md#Memory Optimization Decision Tree; #Transformation Patterns; #Verification Checklist"}
+      ],
+      "sol_review_questions": [
+        "确认 Positive 的首动作严格是 skill_search 后 skill_view_by_id，目标资产仅为 memory-optimization。",
+        "确认 Negative 已覆盖剖析、分块、生成器、dtype、生命周期、释放和等价性验证，足以 route none。",
+        "确认 provider-visible 文本没有资产标识、动作名或生成/评分元语言。"
+      ]
+    },
+    {
+      "draft_pair_id": "T02-EXP-SKILL-01-P004",
+      "external_source_ids": ["source-t02-skill-testing-python"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "Pandas 时区重采样改动后，Python 测试在 CI 里失败了：一组边界日期断言不稳定，另一组异步存储适配测试偶发超时。"},
+        {"role": "assistant", "content": "先要把失败样本、环境和完整输出固定下来，再区分产品行为回归、测试隔离问题和外部依赖问题。"},
+        {"role": "user", "content": "测试文件里有混合职责的大测试，也有几组只是输入不同的重复用例。"},
+        {"role": "assistant", "content": "拆成单一行为、用参数化覆盖同一概念，通常更容易定位哪条边界出了问题。"},
+        {"role": "user", "content": "项目使用 pytest，异步模式已经在全局配置里打开；文件操作可以落到临时目录。"},
+        {"role": "assistant", "content": "异步测试和文件测试应遵守项目约定，同时把外部服务放在边界处替换掉。"},
+        {"role": "user", "content": "我只想先拿到失败排查、修复和复跑的证据清单，不立即修改测试。"},
+        {"role": "assistant", "content": "我还缺少这套 Python 测试失败处理规范的完整顺序和复跑要求。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请给出这次 Python 测试失败的证据优先排查、修复和复跑清单，暂时不改测试文件。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请补上固定的做法：怎样把每个失败缩成原子且自包含的行为、选择参数化或独立用例、在边界处隔离外部依赖，怎样复现并记录证据、修复后先跑针对性用例再跑完整套件，最后如何核对没有引入异步标记、导入位置和资源使用方面的违规。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结规范中原子测试设计、参数化边界、夹具与外部边界替换、证据复现、针对性后全量复跑及项目特定约束的完整失败处理流程。",
+          "route": "skill",
+          "target_asset_ids": ["testing-python"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "检索并打开测试规范，概述证据优先的排查与复跑起点后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "完整清单如下：先用最小命令重现每个失败，保存 pytest 输出、输入、环境和时间信息，并确认失败是否稳定；把测试改成一个测试只验证一个行为，重复输入变体用参数化，不同功能写独立测试。夹具优先函数作用域，文件用 tmp_path，外部服务只在边界处 mock，不替换自己拥有的实现；异步测试不加额外 asyncio 标记，所有导入放模块顶层，网络特性之外使用内存传输。定位根因并修改后，先跑失败文件或关键用例，再跑完整套件；对异步异常、边界日期和输出做明确断言，记录每次命令及结果，确认没有资源泄漏和回归。请据此整理证据和复跑计划。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "新增消息已覆盖复现证据、原子与参数化测试、夹具和 mock 边界、项目异步与导入约束、针对性及全量复跑，足以直接回答。"}
+      },
+      "visible_distractor_ids_author_only": ["T02-F01", "T02-F09"],
+      "controlled_delta_note": "Positive 只缺 Python 测试失败排查和复跑规范；Negative 仅补全测试设计、隔离、证据、项目约束与复跑步骤，其他上下文与 query 不变。",
+      "source_fact_map": [
+        {"claim": "测试应原子、自包含并验证单一功能；相同概念的输入变体适合参数化。", "source_id": "source-t02-skill-testing-python", "locator": "formal-dataset/source-material/T02/skills/testing-python/raw/SKILL.md#Core Principles; #Use parameterization for variations of the same concept"},
+        {"claim": "项目规范要求模块级导入、无额外异步标记、函数作用域夹具、tmp_path 和边界 mock，并提供针对性与全量 pytest 运行方式。", "source_id": "source-t02-skill-testing-python", "locator": "formal-dataset/source-material/T02/skills/testing-python/raw/SKILL.md#Project-Specific Rules; #Fixtures; #Mocking; #Running Tests"}
+      ],
+      "sol_review_questions": [
+        "确认 Positive 的首动作严格是 skill_search 后 skill_view_by_id，目标资产仅为 testing-python。",
+        "确认 Negative 已覆盖失败复现、原子测试、参数化、mock 边界、项目约束及分阶段复跑，足以 route none。",
+        "确认 provider-visible 文本没有资产标识、动作名或生成/评分元语言。"
+      ]
+    },
+    {
+      "draft_pair_id": "T02-EXP-SKILL-01-P005",
+      "external_source_ids": ["source-t02-skill-jupyter-notebook"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我要把 Pandas 时区检查、去趋势和图表交给同事复核，交付物必须是能从头运行的 Jupyter notebook。"},
+        {"role": "assistant", "content": "我会先固定目标、输入和成功标准，再把叙事、代码和可复核输出排成从上到下的顺序。"},
+        {"role": "user", "content": "第一段要验证时区和频率，去趋势完成后才能画图；不能依赖之前打开过的 kernel 状态。"},
+        {"role": "assistant", "content": "因此早期代码单元要建立全部状态，输出保持简洁，并在交付前完整运行一次。"},
+        {"role": "user", "content": "同事还会用脚本检查 ipynb 的基本结构，尤其关注单元顺序和未执行的脚手架。"},
+        {"role": "assistant", "content": "除了内容流程，还需要核对 notebook 文档本身的 JSON 结构和代码单元的默认字段。"},
+        {"role": "user", "content": "请先给出交付前的结构与执行检查清单，不直接生成文件。"},
+        {"role": "assistant", "content": "主流程方向已经明确，但我还没有逐项核对那份 notebook 结构参考中的字段级要求。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请给出这份可复现分析 notebook 的组织、执行和结构检查清单，暂时不要生成文件。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "我尤其缺少 ipynb 文档层面的精确要求：顶层必须有哪些字段，cells 如何保持有序，未执行的代码单元如何表示，脚手架输出和 markdown 元数据应填什么。请先查适用规范和对应的结构参考，再给出可开始审计的清单。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少主流程之外的 notebook-structure.md 字段级内容：nbformat/nbformat_minor、metadata、cells 顶层形状，单元有序性，代码 execution_count=null、outputs=[] 以及 markdown 的 cell_type/metadata 约束。",
+          "route": "skill",
+          "target_asset_ids": ["jupyter-notebook"],
+          "allowed_sequence_candidates": [["skill_view", "skill_files_read"]],
+          "stop_after_candidate": "先查看主规范，再读取 references/notebook-structure.md，概述字段级审计清单后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "结构要求也补全了：ipynb 顶层保留 nbformat、nbformat_minor、metadata 和 cells；cells 是按执行顺序排列的 markdown/code 单元列表，不要无意重排。未知执行状态的 code 单元使用 execution_count=null，脚手架 code 单元的 outputs=[]；markdown 单元保持 cell_type=markdown 和 metadata={}。流程上先写目标、成功标准和输入，再在早期单元导入所需包并固定种子，随后列计划与指标、运行最小基线、在结果附近记录短小指标，最后写下一步；交付前从头运行并确认没有隐藏状态、巨大输出或未标注的风险。请据此形成审计清单。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "新增消息同时给出了 notebook 工作流和 references/notebook-structure.md 的全部字段级要求，足以直接回答而无需读取规范。"}
+      },
+      "visible_distractor_ids_author_only": ["T02-F08", "T02-F09"],
+      "controlled_delta_note": "Positive 只缺主规范之外的 notebook-structure.md 字段级要求；Negative 仅补全顶层结构、单元字段和可复现执行顺序，其他上下文与 query 不变。",
+      "source_fact_map": [
+        {"claim": "notebook 主规范要求根据实验或教程意图选择模板，保持清晰、可运行、可复核的工作流并在交付前从头运行。", "source_id": "source-t02-skill-jupyter-notebook", "locator": "formal-dataset/source-material/T02/skills/jupyter-notebook/raw/SKILL.md#Workflow; #Validate the result"},
+        {"claim": "结构参考规定顶层 nbformat/nbformat_minor/metadata/cells、cells 有序、未知 execution_count=null、脚手架 outputs=[]，以及 markdown 的 cell_type 和 metadata。", "source_id": "source-t02-skill-jupyter-notebook", "locator": "formal-dataset/source-material/T02/skills/jupyter-notebook/raw/references/notebook-structure.md#Notebook Structure"}
+      ],
+      "sol_review_questions": [
+        "确认 Positive 的首动作严格为 skill_view 后 skill_files_read，且 resource 为 references/notebook-structure.md；目标资产仅为 jupyter-notebook。",
+        "确认 Negative 已覆盖主工作流以及结构参考的全部字段级要求，足以 route none，不能只依赖主页面。",
+        "确认 provider-visible 文本没有资产标识、动作名或生成/评分元语言。"
+      ]
+    }
+  ]
+}

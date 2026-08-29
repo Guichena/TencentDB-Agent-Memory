@@ -1,0 +1,226 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t02-memory-expansion-batch-01",
+  "stage": "DS03",
+  "team_id": "T02",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T02-EXPANSION-MEMORY-M2",
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"我在排查一个按天生成特征表的 Dask pipeline，最近某些月份的任务尾部明显变长，怀疑地区分布和热点客户共同造成了分区偏斜。"},
+        {"role":"assistant","content":"先把偏斜现象、月份范围、地区覆盖和分区统计的观察窗口记清楚，再讨论布局调整；不要只凭单个热点样本下结论。"},
+        {"role":"user","content":"目前有人提议用 customer_id 作为唯一切分依据，也有人想保留月份与地区这两个业务维度，但讨论记录只剩下方案草稿。"},
+        {"role":"assistant","content":"这两个方向需要放在同一份诊断记录里比较，尤其要观察组合键是否把长尾暴露出来，以及单字段方案会不会集中热点。"},
+        {"role":"user","content":"我已经补了每个候选分区的行数摘要和空地区值的标记，不过还没有把它们对应到最终采用的历史决定。"},
+        {"role":"assistant","content":"行数摘要能帮助复核分布，但不能替代团队当时对分区键的取舍；最终报告要把证据和历史决定分开写。"},
+        {"role":"user","content":"这次只想找回那条评审结论，不需要重新跑完整计算，也不希望把后来关于 worker 内存的约束混进来。"},
+        {"role":"assistant","content":"范围已经收窄到分区偏斜评审，下一步查历史对话中采用的分组方式及被否决的替代方案。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请找回这次分区偏斜评审的历史结论：最终按什么维度分组后再调整分区，以及哪个单字段方案被明确排除？",
+      "positive": {
+        "delta_message": {"role":"user","content":"现有记录只保留了热点客户、月份长尾和行数摘要，没有保留最终采用的分组方式，也没有保留单字段替代方案是否被否决；不能按经验补写。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少历史对话中先按月份与地区组合分组再调整分区的结论，以及 customer_id-only 被保留为拒绝选项的判断；当前上下文仅有现象和候选方案。",
+          "route": "memory",
+          "target_asset_ids": ["T02-L0-05"],
+          "allowed_sequence_candidates": [["tdai_conversation_search"]],
+          "stop_after_candidate": "tdai_conversation_search returns the reviewed month-region partition-skew conclusion and the rejected customer_id-only option."
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"user","content":"历史评审结论已补回：先按月份和地区组合分组，再据此调整分区；customer_id-only 作为记录在案的被拒选项保留，不采用。"},
+        "private_proposal": {"route":"none","why_current_context_is_sufficient":"Negative delta supplies exactly the adopted month-region grouping and the rejected customer_id-only alternative; the observed skew, evidence scope, and query remain unchanged."}
+      },
+      "visible_distractor_ids_author_only": ["T02-L0-07", "T02-L1-DASK-ROW-SPREAD-FIRST", "T02-L1-DASK-MEMORY-BOUNDARY"],
+      "controlled_delta_note": "Both variants share the same Dask feature pipeline, skew symptoms, candidate discussion, evidence scope, and query. Only message 8 changes: Positive leaves the historical grouping and rejection unresolved; Negative supplies exactly the month-region grouping and rejected customer_id-only option.",
+      "source_fact_map": [
+        {"claim":"The reviewed conversation records grouping the feature workload by month and region before repartitioning, with customer_id-only retained as a rejected option.","source_id":"T02-L0-05","locator":"asset-world/asset-world-batch-01/draft.json#l0_sessions[T02-L0-05]"},
+        {"claim":"The corresponding L1 instruction states the adopted month-region order and the rejected single-field alternative.","source_id":"T02-L1-DASK-PARTITION-SKEW","locator":"asset-world/asset-world-batch-01/draft.json#l1_memories[T02-L1-DASK-PARTITION-SKEW]"},
+        {"claim":"The frozen synthetic fact defines the month-region partition-skew decision for this internal team history.","source_id":"T02-F05","locator":"input-pack.json#synthetic_world_facts[T02-F05]"}
+      ],
+      "sol_review_questions": [
+        "唯一缺口是否确实是月份与地区组合的采用结论及 customer_id-only 被拒，而不是行数统计或 worker 内存规则？",
+        "Negative delta 是否只补回这两个历史判断，没有引入新的分区指标或重新计算结果？"
+      ]
+    },
+    {
+      "draft_pair_id": "T02-EXPANSION-MEMORY-M3",
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"我要把季度相关性复核交接给另一位同事，当前 notebook 能显示结果，但从头运行时偶尔会遇到前置状态不一致。"},
+        {"role":"assistant","content":"交接前要清掉依赖隐藏内核状态的单元格，并记录输入范围、诊断产物和每一步的依赖关系。"},
+        {"role":"user","content":"现在有一段时间语义检查、一段趋势处理和几张结果图，作者以前是按自己的习惯跳着执行的。"},
+        {"role":"assistant","content":"需要把这些段落整理成可复现的线性流程；图表和趋势处理之间的先后尤其要在说明中明确。"},
+        {"role":"user","content":"我还发现开头的 timezone、frequency 检查有时在 notebook 中间才运行，导致交接人难以判断输入是否合格。"},
+        {"role":"assistant","content":"先保留这项观察，另外核对团队交接记录里对首个诊断区块、趋势处理和图表位置的既定安排。"},
+        {"role":"user","content":"这次只恢复那条交接约定，不讨论旧输出是否新鲜，也不改动趋势模型。"},
+        {"role":"assistant","content":"范围明确为 notebook 的执行顺序约定，下一步查历史记录中的完整安排。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请找回团队为交接 notebook 确认的执行安排：从哪里开始做诊断，趋势处理与图表的先后是什么？",
+      "positive": {
+        "delta_message": {"role":"user","content":"现有交接说明只写了要可复现和要检查时间语义，没有保留已批准的完整执行顺序及图表应放在哪一步之后；请不要自行推断。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少交接 notebook 必须从上到下运行、第一诊断区块先核验 timezone/frequency、图表只能位于去趋势之后的完整安排；当前上下文只描述了问题。",
+          "route": "memory",
+          "target_asset_ids": ["T02-L1-NOTEBOOK-EXECUTION-ORDER"],
+          "allowed_sequence_candidates": [["tdai_memory_search"]],
+          "stop_after_candidate": "tdai_memory_search returns the approved notebook execution-order handoff rule."
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"user","content":"交接约定已补回：notebook 必须自上而下运行，第一段诊断先核验 timezone 和 frequency，图表只能放在去趋势步骤之后。"},
+        "private_proposal": {"route":"none","why_current_context_is_sufficient":"Negative delta supplies exactly the top-to-bottom order, first timezone/frequency diagnostics, and post-detrending chart placement; the handoff scope and query stay unchanged."}
+      },
+      "visible_distractor_ids_author_only": ["T02-L0-09", "T02-L0-03", "T02-L1-NOTEBOOK-STALE-OUTPUT"],
+      "controlled_delta_note": "Both variants retain the same reproducibility handoff problem, notebook sections, input-semantic concern, scope boundary, and query. Only message 8 changes: Positive leaves the approved order unresolved; Negative supplies exactly top-to-bottom execution, first timezone/frequency diagnostics, and charts after detrending.",
+      "source_fact_map": [
+        {"claim":"The reviewed handoff memory requires top-to-bottom execution, timezone/frequency as the first diagnostic, and charts only after detrending.","source_id":"T02-L1-NOTEBOOK-EXECUTION-ORDER","locator":"asset-world/asset-world-batch-01/draft.json#l1_memories[T02-L1-NOTEBOOK-EXECUTION-ORDER]"},
+        {"claim":"The underlying conversation records the execution-order and chart-placement handoff discussion.","source_id":"T02-L0-08","locator":"asset-world/asset-world-batch-01/draft.json#l0_sessions[T02-L0-08]"},
+        {"claim":"The frozen synthetic fact defines the internal notebook handoff order.","source_id":"T02-F08","locator":"input-pack.json#synthetic_world_facts[T02-F08]"}
+      ],
+      "sol_review_questions": [
+        "唯一缺口是否是完整的 notebook 执行顺序，而不是 stale output 证据规则或趋势模型选择？",
+        "Negative delta 是否只补足首段诊断、从上到下运行和图表位置这三项约定？"
+      ]
+    },
+    {
+      "draft_pair_id": "T02-EXPANSION-MEMORY-M4",
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"季度相关性复核又要开始了，两条指标序列都有明显的长期变化，大家对预处理边界的记忆不一致。"},
+        {"role":"assistant","content":"先把这次复核的目标、序列范围和历史讨论分开，避免把探索阶段的建议当成当前执行规则。"},
+        {"role":"user","content":"有人想直接对原序列算相关，也有人提到先处理趋势；季节项的处理又是另一条讨论线。"},
+        {"role":"assistant","content":"这些选择不能混成一个步骤，应该找回评审时对趋势处理和季节项边界的原始表述。"},
+        {"role":"user","content":"当前摘要只写了要让相关性更可解释，没有留下每条序列如何处理的细节。"},
+        {"role":"assistant","content":"可解释性目标本身不足以决定执行细节，尤其要避免把两条序列合在一起拟合或顺手改变季节项。"},
+        {"role":"user","content":"我只需要恢复那段历史措辞，后续实现和残差检查另开任务。"},
+        {"role":"assistant","content":"明白，下一步查找原始对话中已批准的趋势边界措辞，不扩展到新的模型或验证结果。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请找回季度相关性复核中关于去趋势边界的原话：两条序列应怎样处理，季节调整是否包含在这一步？",
+      "positive": {
+        "delta_message": {"role":"user","content":"现有摘要没有保留那段关于两条序列处理方式和季节调整边界的准确措辞；这条历史决定不能从目标自行推导。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少历史对话中的精确边界：每条序列分别移除线性趋势，且季节调整留在该步骤之外；共享上下文只说明存在分歧，未给出这段 wording。",
+          "route": "memory",
+          "target_asset_ids": ["T02-L0-03"],
+          "allowed_sequence_candidates": [["tdai_conversation_search"]],
+          "stop_after_candidate": "tdai_conversation_search returns the exact reviewed detrending-boundary wording."
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"user","content":"历史评审的准确措辞已补回：季度相关性复核中，每条序列分别移除线性趋势，季节调整留在这一步之外。"},
+        "private_proposal": {"route":"none","why_current_context_is_sufficient":"Negative delta supplies exactly the separate linear-detrending rule and the boundary excluding seasonal adjustment; the review goal and query remain unchanged."}
+      },
+      "visible_distractor_ids_author_only": ["T02-L0-04", "T02-L1-TIMESERIES-DIFFERENCE-OLD", "T02-L1-TIMESERIES-RESIDUAL-AUDIT"],
+      "controlled_delta_note": "Both variants share the same quarterly-correlation review, trend disagreement, seasonal-item scope, implementation boundary, and query. Only message 8 changes: Positive leaves the exact historical wording unresolved; Negative supplies only separate linear detrending and the exclusion of seasonal adjustment.",
+      "source_fact_map": [
+        {"claim":"The reviewed conversation contains the approved boundary to detrend each series separately and keep seasonal adjustment outside the step.","source_id":"T02-L0-03","locator":"asset-world/asset-world-batch-01/draft.json#l0_sessions[T02-L0-03]"},
+        {"claim":"The active L1 memory records the same quarterly-correlation instruction and its date.","source_id":"T02-L1-TIMESERIES-DETREND-LINEAR","locator":"asset-world/asset-world-batch-01/draft.json#l1_memories[T02-L1-TIMESERIES-DETREND-LINEAR]"},
+        {"claim":"The frozen synthetic fact supplies the internal detrending boundary, not an upstream repository claim.","source_id":"T02-F03","locator":"input-pack.json#synthetic_world_facts[T02-F03]"}
+      ],
+      "sol_review_questions": [
+        "共享上下文是否确实没有泄露‘每条序列分别线性去趋势、季节调整置外’这段所需 wording？",
+        "Negative delta 是否只恢复该边界措辞，没有带入旧差分建议、残差结果或新模型？"
+      ]
+    },
+    {
+      "draft_pair_id": "T02-EXPANSION-MEMORY-M5",
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"我在准备季度相关性复核的变更说明，想确认当前采用的去趋势方法属于哪条已审核的团队记录。"},
+        {"role":"assistant","content":"先限定在团队的历史 instruction 记录，别把旧的探索笔记或实现草稿当成当前规则。"},
+        {"role":"user","content":"这次需要的是 2026-07-14 那条记录，类型筛选也要固定为 instruction；其他日期的讨论只作背景。"},
+        {"role":"assistant","content":"日期和类型已经足够缩小范围，查询结果只需回答当时批准的去趋势边界，不要扩展到执行指标。"},
+        {"role":"user","content":"当前变更说明还没有抄入那条记录的正文，我不想用旧笔记里的 differencing 建议代替它。"},
+        {"role":"assistant","content":"保持旧建议与当前记录分离；在拿到正文前，不应假定本次复核的具体趋势处理方式。"},
+        {"role":"user","content":"结果会用于检查 notebook 的预处理段落，查询范围仍然只限这条日期和类型。"},
+        {"role":"assistant","content":"明白，下一步按指定日期和类型读取那条 instruction 的原文，再回填变更说明。"}
+      ],
+      "changed_message_index": 8,
+      "query": "只查询 date=2026-07-14、type=instruction 的团队记录，告诉我季度相关性复核批准的去趋势边界。",
+      "positive": {
+        "delta_message": {"role":"user","content":"变更说明目前只有日期、类型和旧建议的排除说明，尚未保留 2026-07-14 那条 instruction 的具体去趋势内容。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少 date=2026-07-14、type=instruction 记录中的已批准 detrending instruction；日期和类型筛选条件已在上下文与 query 中明确。",
+          "route": "memory",
+          "target_asset_ids": ["T02-L1-TIMESERIES-DETREND-LINEAR"],
+          "filters": {"type":"instruction","date":"2026-07-14"},
+          "allowed_sequence_candidates": [["tdai_atomic_query"]],
+          "stop_after_candidate": "tdai_atomic_query returns the dated instruction containing the approved separate linear-detrending boundary."
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"user","content":"已审核记录正文补回：2026-07-14 的季度相关性复核要求对每条序列分别移除线性趋势，并将季节调整置于此步骤之外。"},
+        "private_proposal": {"route":"none","why_current_context_is_sufficient":"Negative delta supplies exactly the dated instruction content; the date/type filter, exclusion of the old note, notebook scope, and query remain unchanged."}
+      },
+      "visible_distractor_ids_author_only": ["T02-L0-04", "T02-L0-03", "T02-L1-TIMESERIES-DIFFERENCE-OLD"],
+      "controlled_delta_note": "Both variants expose the same date=2026-07-14 and type=instruction filter, old-note exclusion, notebook scope, and query. Only message 8 changes: Positive leaves the instruction body missing; Negative supplies exactly the dated separate-linear-detrending and seasonal-boundary text.",
+      "source_fact_map": [
+        {"claim":"The active memory is dated 2026-07-14, has runtime type instruction, and states the separate linear-detrending boundary.","source_id":"T02-L1-TIMESERIES-DETREND-LINEAR","locator":"asset-world/asset-world-batch-01/draft.json#l1_memories[T02-L1-TIMESERIES-DETREND-LINEAR]"},
+        {"claim":"The source conversation records the approved wording and distinguishes seasonal adjustment from the detrending step.","source_id":"T02-L0-03","locator":"asset-world/asset-world-batch-01/draft.json#l0_sessions[T02-L0-03]"},
+        {"claim":"The frozen fact fixes the required date and instruction content for this internal project history.","source_id":"T02-F03","locator":"input-pack.json#synthetic_world_facts[T02-F03]"}
+      ],
+      "sol_review_questions": [
+        "query 是否明确包含 date=2026-07-14 与 type=instruction，且适合 direct atomic lookup？",
+        "Negative delta 是否只补入该日期 instruction 的正文，没有把 2026-06-28 的 superseded 建议带回当前结论？"
+      ]
+    },
+    {
+      "draft_pair_id": "T02-EXPANSION-MEMORY-M6",
+      "synthetic_scope": ["team", "project", "scenario", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"我在写 Dask 特征计算的运维交接，手头有分区偏斜、worker 内存峰值和利用率解读三组零散笔记。"},
+        {"role":"assistant","content":"先保持三组观察的边界：分区布局解决数据分布，内存约束解决中间对象，利用率只能在行数证据之后解读。"},
+        {"role":"user","content":"现有笔记提到按月份和地区看热点，也提到持久化前裁掉不需要的列，但没有一份统一的场景说明。"},
+        {"role":"assistant","content":"统一说明应保留每个决定的来源和先后，避免把诊断顺序改写成未经测量的性能承诺。"},
+        {"role":"user","content":"另外，worker 的内存边界和分区行数 spread 分散在不同交接页里，阅读者很难看出它们怎样共同约束操作。"},
+        {"role":"assistant","content":"这正是需要读取项目场景摘要的地方；当前只整理问题，不先替场景补写综合结论。"},
+        {"role":"user","content":"我只想获得团队已经整理好的那份 Dask 分区运维背景，不要求重新运行任务或判断加速效果。"},
+        {"role":"assistant","content":"范围限定为既有场景内容，下一步读取对应的分区运维场景并按其原有脉络总结。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请读取团队整理的 Dask 分区运维场景，说明它如何串起偏斜处理、worker 内存边界和行数分布优先的诊断顺序。",
+      "positive": {
+        "delta_message": {"role":"user","content":"当前交接材料只有三组彼此分散的笔记，没有保留那份把分区偏斜、worker 内存边界、持久化前列裁剪和行数分布检查串起来的场景摘要。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少合并 skew、worker memory、persist 前 required-column projection、row-count spread first 的综合 Dask 分区运维场景；需要读取固定场景路径。",
+          "route": "memory",
+          "target_asset_ids": ["T02-L2-DASK-PARTITION-OPERATIONS"],
+          "scene_path": "/t02/dask/partition-operations",
+          "allowed_sequence_candidates": [["tdai_read_scene"]],
+          "stop_after_candidate": "tdai_read_scene returns the synthesized Dask partition-operations scene at the exact requested path."
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"user","content":"场景摘要已补回：它把按月份与地区处理分区偏斜、每个 worker 的 6 GiB 内存边界、持久化前裁剪必需列，以及先比较分区行数分布再解读利用率的顺序放在同一条运维脉络中；这些都是团队内部运行记录。"},
+        "private_proposal": {"route":"none","why_current_context_is_sufficient":"Negative delta supplies exactly the synthesized scene joining skew, worker-memory, column-projection, and row-spread-first decisions; the handoff scope and query remain unchanged."}
+      },
+      "visible_distractor_ids_author_only": ["T02-L0-05", "T02-L0-06", "T02-L0-07"],
+      "controlled_delta_note": "Both variants share the same Dask handoff, three scattered note groups, no-rerun boundary, and query. Only message 8 changes: Positive lacks the synthesized scene; Negative supplies exactly the joined skew, 6 GiB memory, pre-persist column projection, and row-spread-first narrative.",
+      "source_fact_map": [
+        {"claim":"The target L2 scene synthesizes partition skew, worker memory, pre-persist column projection, and row-count-spread-first diagnostics.","source_id":"T02-L2-DASK-PARTITION-OPERATIONS","locator":"asset-world/asset-world-batch-01/draft.json#l2_scenes[T02-L2-DASK-PARTITION-OPERATIONS]"},
+        {"claim":"The scene is supported by the three reviewed Dask conversations on skew, memory boundary, and row-count spread.","source_id":"T02-L0-05/T02-L0-06/T02-L0-07","locator":"asset-world/asset-world-batch-01/draft.json#l0_sessions[T02-L0-05,T02-L0-06,T02-L0-07]"},
+        {"claim":"The frozen asset mapping fixes the exact scene path for the Dask partition-operations target.","source_id":"T02-L2-DASK-PARTITION-OPERATIONS","locator":"input-pack.json#required_memory_assets.l2[T02-L2-DASK-PARTITION-OPERATIONS]"}
+      ],
+      "sol_review_questions": [
+        "target 是否确实是 /t02/dask/partition-operations 这一固定场景，而不是三个 L0 会话中的任一单项？",
+        "Negative delta 是否只补回综合场景脉络，没有新增 benchmark、运行结果或上游项目事实？"
+      ]
+    }
+  ]
+}

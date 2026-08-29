@@ -1,0 +1,112 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t02-memory-trial-01",
+  "stage": "DS03",
+  "team_id": "T02",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T02-TRIAL-MEMORY-01",
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我在整理订单事件的日报 pipeline：原始 event_time 有带 UTC 偏移的值，也混进了少量没有时区的值，最近跨午夜的统计出现了边界错位。"
+        },
+        {
+          "role": "assistant",
+          "content": "先把瞬时时刻和报告日期分开看；没有时区的值要先确认来源，不能和带偏移的时间一起直接分桶。"
+        },
+        {
+          "role": "user",
+          "content": "数据表现在用 event_time 做索引，23:30 左右的事件在日报里尤其容易跑到相邻日期。我想保留原始时间，另外生成用于报表的日期键。"
+        },
+        {
+          "role": "assistant",
+          "content": "这个现象通常说明采集瞬时点和报告日界线混在了一起；先检查索引是否真的是 timezone-aware，再核对报表时区的定义。"
+        },
+        {
+          "role": "user",
+          "content": "我已经在 Pandas notebook 里补了输入检查和一组跨日样本，但代码评审要求沿用团队以前确认过的时间处理规范，不要凭经验另起一套。"
+        },
+        {
+          "role": "assistant",
+          "content": "可以，样本和检查只用来复现边界，不足以决定规范本身；日报的日期应由明确的报告时区产生，而不是照搬原始日期字段。"
+        },
+        {
+          "role": "user",
+          "content": "空小时桶的补齐我会放到另一个变更里，这次只核对时间标准化和日报聚合之间的关系，避免把两个问题混成一个结论。"
+        },
+        {
+          "role": "assistant",
+          "content": "范围、输入异常和复现样本都确认了；交付前还差把历史记录中时间标准化与日报聚合的先后顺序找回来。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请找回团队确认过的事件时间处理顺序：我要据此修正日报的跨午夜边界，并在 notebook 中保持原始时间与报告日期的语义分离。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "现有交接记录只保留了跨午夜的错误样本和检查结果，没有保留时间标准化与报告聚合的具体先后；这一步不能按直觉补写。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少团队已确认的事件时间标准化、报告时区边界与日报重采样之间的精确顺序；当前上下文仅说明存在跨午夜错位，未给出可执行的顺序。",
+          "route": "memory",
+          "target_asset_ids": [
+            "T02-L1-PANDAS-RESAMPLE-TIMEZONE"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_memory_search"
+            ]
+          ],
+          "stop_after_candidate": "tdai_memory_search returns the reviewed timezone and reporting-resample ordering rule."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接备注已经补上规范：先把事件时间统一到 UTC，再转换到 Asia/Shanghai 作为报告日界线，最后按天做 daily resample。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "The negative delta supplies the complete UTC normalization, Asia/Shanghai reporting-boundary conversion, then daily-resample order; no retrieval is needed."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T02-L0-02",
+        "T02-L0-10",
+        "T02-L1-PANDAS-MISSING-BUCKETS"
+      ],
+      "controlled_delta_note": "Both variants retain the same order-event pipeline, mixed-timezone symptom, notebook scope, and query. Only message 8 changes: Positive leaves the approved normalization/reporting order unresolved; Negative supplies exactly the UTC, Asia/Shanghai reporting-boundary, then daily-resample sequence.",
+      "source_fact_map": [
+        {
+          "claim": "The reviewed event-time decision concerns timezone-aware reporting boundaries and rejects direct resampling of naive mixed-zone timestamps.",
+          "source_id": "T02-L1-PANDAS-RESAMPLE-TIMEZONE",
+          "locator": "asset-world/asset-world-batch-01/draft.json#l1_memories[T02-L1-PANDAS-RESAMPLE-TIMEZONE]"
+        },
+        {
+          "claim": "The underlying reviewed conversation records the timezone-normalization decision and its reporting-boundary rationale.",
+          "source_id": "T02-L0-01",
+          "locator": "asset-world/asset-world-batch-01/draft.json#l0_sessions[T02-L0-01]"
+        },
+        {
+          "claim": "The frozen synthetic world fact states the required UTC, Asia/Shanghai reporting-boundary, then daily-resample order.",
+          "source_id": "T02-F01",
+          "locator": "input-pack.json#synthetic_world_facts[T02-F01]"
+        }
+      ],
+      "sol_review_questions": [
+        "是否确认该 pair 的唯一信息缺口确实是 UTC 归一化、Asia/Shanghai 报告日界线、daily resample 的先后，而不是缺失值补桶规则？",
+        "Negative delta 是否只补足这三个步骤的顺序，且没有改变跨午夜样本、notebook 范围或最终查询？"
+      ]
+    }
+  ]
+}

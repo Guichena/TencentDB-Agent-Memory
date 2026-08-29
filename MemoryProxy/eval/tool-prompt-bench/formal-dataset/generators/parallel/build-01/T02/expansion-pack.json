@@ -1,0 +1,66 @@
+{
+  "schema_version": "task1.t02_expansion_pack.v1",
+  "frozen": true,
+  "stage": "DS03",
+  "team_id": "T02",
+  "input_pack_sha256": "f190ede8852d94441c7da26d3737158dfced230bab8996d446cd99f0abb2c8cc",
+  "asset_world_draft_sha256": "7673cfc3a7048aad3fddbc52e614eeca8868bc64e1a65ec9b3149871a14d5435",
+  "skill_manifest_sha256": "be77f6fdfa5523ea027c6b53296d8a32c10a8de77392addb4041bb6b5f34fc57",
+  "project_manifest_sha256": "1aa33c0934dd7df151ee5e5bc657f8365ecc71efb5ffb0a239354e1ff4dd1f66",
+  "reviewed_trials": [
+    {"batch_id":"t02-memory-trial-01","family":"memory","count":1,"draft_sha256":"d3c68614c06244fb2b13c4d5b0995b0d208fd2a5b7cbe127add3a9e75bcdf008","status":"pass"},
+    {"batch_id":"t02-skill-trial-01","family":"skill","count":1,"draft_sha256":"486f590ff56e6eec279986e803dfd4d7f6f6f83db0a35d9956f2216e9cb2c014","status":"pass"},
+    {"batch_id":"t02-knowledge-trial-01","family":"knowledge","count":1,"draft_sha256":"ebf8f4eb727ac65137264a4af7df3132c0fa13fb761d51871cf483f4b856e85e","status":"pass"}
+  ],
+  "pair_batches": {
+    "memory": [
+      {"slot":"M2","target":"T02-L0-05","sequence":["tdai_conversation_search"],"task_id":"T02-TASK-DASK-PARALLEL","gap":"the exact prior month-and-region partition-skew conclusion; customer_id-only was rejected"},
+      {"slot":"M3","target":"T02-L1-NOTEBOOK-EXECUTION-ORDER","sequence":["tdai_memory_search"],"task_id":"T02-TASK-NOTEBOOK-HANDOFF","gap":"the approved top-to-bottom notebook order, first timezone/frequency diagnostics, and charts only after detrending"},
+      {"slot":"M4","target":"T02-L0-03","sequence":["tdai_conversation_search"],"task_id":"T02-TASK-TIMESERIES-DETREND","gap":"the exact prior wording that each series is linearly detrended separately and seasonal adjustment stays outside"},
+      {"slot":"M5","target":"T02-L1-TIMESERIES-DETREND-LINEAR","sequence":["tdai_atomic_query"],"task_id":"T02-TASK-TIMESERIES-DETREND","filters":{"type":"instruction","date":"2026-07-14"},"gap":"the dated approved detrending instruction"},
+      {"slot":"M6","target":"T02-L2-DASK-PARTITION-OPERATIONS","sequence":["tdai_read_scene"],"task_id":"T02-TASK-DASK-PARALLEL","path":"/t02/dask/partition-operations","gap":"the synthesized Dask partition-operations scene joining skew, worker-memory, and row-spread decisions"}
+    ],
+    "skill": [
+      {"slot":"S2","target":"workload-balancing","sequence":["skill_view"],"task_id":"T02-TASK-DASK-PARALLEL","gap":"the listed procedure for balancing uneven worker work after the worker model is selected"},
+      {"slot":"S3","target":"python-parallelization","sequence":["skill_search","skill_view_by_id"],"task_id":"T02-TASK-DASK-PARALLEL","gap":"the search-only procedure for bounded process-level parallel execution"},
+      {"slot":"S4","target":"memory-optimization","sequence":["skill_search","skill_view_by_id"],"task_id":"T02-TASK-DASK-PARALLEL","gap":"the search-only peak-memory and bounded-intermediate procedure"},
+      {"slot":"S5","target":"testing-python","sequence":["skill_search","skill_view_by_id"],"task_id":"T02-TASK-PANDAS-RESAMPLING","gap":"the search-only evidence-first Python failure-triage and rerun procedure"},
+      {"slot":"S6","target":"jupyter-notebook","sequence":["skill_view","skill_files_read"],"task_id":"T02-TASK-NOTEBOOK-HANDOFF","resource":"references/notebook-structure.md","gap":"the listed notebook workflow plus the exact notebook-structure reference needed for the handoff"}
+    ],
+    "knowledge": [
+      {"slot":"K2","target":"cg-t02dsk01","sequence":["knowledge_tools_list","knowledge_tools_call"],"task_id":"T02-TASK-DASK-PARALLEL","tool":"node","params":{"symbol":"Repartition"},"answer":"dask/dataframe/dask_expr/_repartition.py:29"},
+      {"slot":"K3","target":"wiki-t02ops01","sequence":["knowledge_tools_list","knowledge_tools_call"],"task_id":"T02-TASK-DASK-PARALLEL","tool":"search","params":{"query":"partition skew minimum evidence"},"answer":"Compare partition row-count spread and record the partitioning decision before interpreting worker utilization; do not claim speedup without a measured run."}
+    ]
+  },
+  "natural_negative_batch": {
+    "count": 10,
+    "task_distribution": {
+      "T02-TASK-PANDAS-RESAMPLING": 3,
+      "T02-TASK-DASK-PARALLEL": 3,
+      "T02-TASK-TIMESERIES-DETREND": 2,
+      "T02-TASK-NOTEBOOK-HANDOFF": 2
+    },
+    "designs": [
+      "The current context fully supplies a timezone-aware resample order for a local code-review checklist.",
+      "The current context supplies the post-aggregation missing-bucket rule and asks for a concise verification plan.",
+      "The current context supplies dtype, index, and sample-scope facts for a Pandas diagnostic summary.",
+      "The current context supplies month-region partitioning and the rejected customer-only option.",
+      "The current context supplies the 6 GiB worker limit, projection-before-persist, and no-full-frame-compute boundary.",
+      "The current context supplies partition row counts and asks only to summarize the measured skew evidence.",
+      "The current context supplies the separate linear-detrend rule and asks for an implementation-independent checklist.",
+      "The current context supplies both the superseded differencing note and the newer decision, so recency is resolvable locally.",
+      "The current context supplies top-to-bottom notebook order and the first diagnostic section.",
+      "The current context supplies the stale-output rejection rule and current input fingerprint/order evidence."
+    ]
+  },
+  "generation_contract": {
+    "generator_model": "gpt-5.6-luna",
+    "reasoning_effort": "high",
+    "fork_turns": "none",
+    "prompt_version": "task1.luna-batch.v1",
+    "pair_schema_version": "task1.luna_pair_draft.v1",
+    "natural_schema_version": "task1.luna_natural_negative_draft.v1",
+    "pair_batch_limit": 5,
+    "required_files": ["draft.json", "manifest.json", "questions.md"]
+  }
+}

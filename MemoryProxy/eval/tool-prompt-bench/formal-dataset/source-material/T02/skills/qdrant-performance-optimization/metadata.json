@@ -1,0 +1,69 @@
+{
+  "schema_version": "task1.github_skill_source.v1",
+  "team_id": "T02",
+  "name": "qdrant-performance-optimization",
+  "repository_url": "https://github.com/github/awesome-copilot",
+  "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+  "source_path": "skills/qdrant-performance-optimization/SKILL.md",
+  "license_spdx": "MIT",
+  "license_file": "../../licenses/MIT.txt",
+  "visibility": "search",
+  "description": "Tune Qdrant indexing and search performance.",
+  "use_when": "Vector-search latency or throughput is the explicit bottleneck.",
+  "do_not_use_when": "The system is a Pandas/Dask batch pipeline.",
+  "main_raw_sha256": "5323301ea670baa98623e53f8c363845f6edde59a2f0f88e0c6e948d61438a3f",
+  "raw_files": [
+    {
+      "path": "indexing-performance-optimization/SKILL.md",
+      "source_path": "skills/qdrant-performance-optimization/indexing-performance-optimization/SKILL.md",
+      "url": "https://raw.githubusercontent.com/github/awesome-copilot/f11a4e441c5ff061b4f8ae37952be8c602e4034e/skills/qdrant-performance-optimization/indexing-performance-optimization/SKILL.md",
+      "sha256": "344b4283daa2a2977525bccedaee4f96aed8a5bccaeb562c46816c3380c27c29",
+      "byte_length": 4863
+    },
+    {
+      "path": "memory-usage-optimization/SKILL.md",
+      "source_path": "skills/qdrant-performance-optimization/memory-usage-optimization/SKILL.md",
+      "url": "https://raw.githubusercontent.com/github/awesome-copilot/f11a4e441c5ff061b4f8ae37952be8c602e4034e/skills/qdrant-performance-optimization/memory-usage-optimization/SKILL.md",
+      "sha256": "d3be8c9d207f4b625b4724048e45e438f0efeb4650e7cca1da2d40e2ba37dd9d",
+      "byte_length": 4859
+    },
+    {
+      "path": "search-speed-optimization/SKILL.md",
+      "source_path": "skills/qdrant-performance-optimization/search-speed-optimization/SKILL.md",
+      "url": "https://raw.githubusercontent.com/github/awesome-copilot/f11a4e441c5ff061b4f8ae37952be8c602e4034e/skills/qdrant-performance-optimization/search-speed-optimization/SKILL.md",
+      "sha256": "ede068e053005c19718bf11853e99ab94b337db2769f74e52fe63f81fc525131",
+      "byte_length": 4730
+    },
+    {
+      "path": "SKILL.md",
+      "source_path": "skills/qdrant-performance-optimization/SKILL.md",
+      "url": "https://raw.githubusercontent.com/github/awesome-copilot/f11a4e441c5ff061b4f8ae37952be8c602e4034e/skills/qdrant-performance-optimization/SKILL.md",
+      "sha256": "5323301ea670baa98623e53f8c363845f6edde59a2f0f88e0c6e948d61438a3f",
+      "byte_length": 1842
+    }
+  ],
+  "adapted_files": [
+    {
+      "path": "indexing-performance-optimization/SKILL.md",
+      "sha256": "2c274262f9c4e9351e24808abe028d7db91ca07fb2d1786baf90d51c1b04fa8d",
+      "byte_length": 4942
+    },
+    {
+      "path": "memory-usage-optimization/SKILL.md",
+      "sha256": "a36c4e2f257ffe93378c35886c4c27338d3e991ad9814e272aa34ad491e536cb",
+      "byte_length": 4924
+    },
+    {
+      "path": "search-speed-optimization/SKILL.md",
+      "sha256": "2e9e85246e8f7ddc4b37b8f846052e51894dad671c8d0ddf8b3fc9e5a0cecbac",
+      "byte_length": 4806
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "f861884a0605993abfc81c082c6ed116f5f7ec07e3ef6b4e9b65b3a479ebfa80",
+      "byte_length": 1879
+    }
+  ],
+  "adaptation_diff": "adaptation.diff",
+  "frozen": true
+}

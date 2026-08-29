@@ -1,0 +1,938 @@
+{
+  "schema_version": "task1.luna_asset_world_validation.v1",
+  "valid": true,
+  "team_id": "T02",
+  "stage": "DS03",
+  "batch_id": "t02-asset-world-batch-01",
+  "draft_sha256": "7673cfc3a7048aad3fddbc52e614eeca8868bc64e1a65ec9b3149871a14d5435",
+  "counts": {
+    "l0_sessions": 10,
+    "l1_memories": 15,
+    "l2_scenes": 4,
+    "l3_profiles": 1,
+    "knowledge_fixtures": 3
+  },
+  "check_count": 162,
+  "checks": [
+    {
+      "name": "required draft.json",
+      "passed": true
+    },
+    {
+      "name": "required manifest.json",
+      "passed": true
+    },
+    {
+      "name": "required questions.md",
+      "passed": true
+    },
+    {
+      "name": "draft schema",
+      "passed": true
+    },
+    {
+      "name": "manifest identity",
+      "passed": true
+    },
+    {
+      "name": "manifest generator",
+      "passed": true
+    },
+    {
+      "name": "manifest locks",
+      "passed": true
+    },
+    {
+      "name": "no raw output metadata",
+      "passed": true
+    },
+    {
+      "name": "l0_sessions count",
+      "passed": true,
+      "detail": 10
+    },
+    {
+      "name": "l1_memories count",
+      "passed": true,
+      "detail": 15
+    },
+    {
+      "name": "l2_scenes count",
+      "passed": true,
+      "detail": 4
+    },
+    {
+      "name": "l3_profiles count",
+      "passed": true,
+      "detail": 1
+    },
+    {
+      "name": "knowledge_fixtures count",
+      "passed": true,
+      "detail": 3
+    },
+    {
+      "name": "manifest total count",
+      "passed": true,
+      "detail": {
+        "l0_sessions": 10,
+        "l1_memories": 15,
+        "l2_scenes": 4,
+        "l3_profiles": 1,
+        "knowledge_fixtures": 3
+      }
+    },
+    {
+      "name": "exact L0 ids",
+      "passed": true,
+      "detail": [
+        "T02-L0-01",
+        "T02-L0-02",
+        "T02-L0-03",
+        "T02-L0-04",
+        "T02-L0-05",
+        "T02-L0-06",
+        "T02-L0-07",
+        "T02-L0-08",
+        "T02-L0-09",
+        "T02-L0-10"
+      ]
+    },
+    {
+      "name": "T02-L0-01 message count",
+      "passed": true,
+      "detail": 12
+    },
+    {
+      "name": "T02-L0-01 alternating roles",
+      "passed": true
+    },
+    {
+      "name": "T02-L0-01 message text",
+      "passed": true
+    },
+    {
+      "name": "T02-L0-01 timestamp",
+      "passed": true,
+      "detail": "2026-07-09T09:15:00+08:00"
+    },
+    {
+      "name": "T02-L0-02 message count",
+      "passed": true,
+      "detail": 12
+    },
+    {
+      "name": "T02-L0-02 alternating roles",
+      "passed": true
+    },
+    {
+      "name": "T02-L0-02 message text",
+      "passed": true
+    },
+    {
+      "name": "T02-L0-02 timestamp",
+      "passed": true,
+      "detail": "2026-07-10T10:05:00+08:00"
+    },
+    {
+      "name": "T02-L0-03 message count",
+      "passed": true,
+      "detail": 12
+    },
+    {
+      "name": "T02-L0-03 alternating roles",
+      "passed": true
+    },
+    {
+      "name": "T02-L0-03 message text",
+      "passed": true
+    },
+    {
+      "name": "T02-L0-03 timestamp",
+      "passed": true,
+      "detail": "2026-07-14T14:20:00+08:00"
+    },
+    {
+      "name": "T02-L0-04 message count",
+      "passed": true,
+      "detail": 12
+    },
+    {
+      "name": "T02-L0-04 alternating roles",
+      "passed": true
+    },
+    {
+      "name": "T02-L0-04 message text",
+      "passed": true
+    },
+    {
+      "name": "T02-L0-04 timestamp",
+      "passed": true,
+      "detail": "2026-07-15T09:40:00+08:00"
+    },
+    {
+      "name": "T02-L0-05 message count",
+      "passed": true,
+      "detail": 12
+    },
+    {
+      "name": "T02-L0-05 alternating roles",
+      "passed": true
+    },
+    {
+      "name": "T02-L0-05 message text",
+      "passed": true
+    },
+    {
+      "name": "T02-L0-05 timestamp",
+      "passed": true,
+      "detail": "2026-08-03T11:10:00+08:00"
+    },
+    {
+      "name": "T02-L0-06 message count",
+      "passed": true,
+      "detail": 12
+    },
+    {
+      "name": "T02-L0-06 alternating roles",
+      "passed": true
+    },
+    {
+      "name": "T02-L0-06 message text",
+      "passed": true
+    },
+    {
+      "name": "T02-L0-06 timestamp",
+      "passed": true,
+      "detail": "2026-08-04T15:30:00+08:00"
+    },
+    {
+      "name": "T02-L0-07 message count",
+      "passed": true,
+      "detail": 12
+    },
+    {
+      "name": "T02-L0-07 alternating roles",
+      "passed": true
+    },
+    {
+      "name": "T02-L0-07 message text",
+      "passed": true
+    },
+    {
+      "name": "T02-L0-07 timestamp",
+      "passed": true,
+      "detail": "2026-08-05T10:25:00+08:00"
+    },
+    {
+      "name": "T02-L0-08 message count",
+      "passed": true,
+      "detail": 12
+    },
+    {
+      "name": "T02-L0-08 alternating roles",
+      "passed": true
+    },
+    {
+      "name": "T02-L0-08 message text",
+      "passed": true
+    },
+    {
+      "name": "T02-L0-08 timestamp",
+      "passed": true,
+      "detail": "2026-08-11T13:00:00+08:00"
+    },
+    {
+      "name": "T02-L0-09 message count",
+      "passed": true,
+      "detail": 12
+    },
+    {
+      "name": "T02-L0-09 alternating roles",
+      "passed": true
+    },
+    {
+      "name": "T02-L0-09 message text",
+      "passed": true
+    },
+    {
+      "name": "T02-L0-09 timestamp",
+      "passed": true,
+      "detail": "2026-08-12T16:45:00+08:00"
+    },
+    {
+      "name": "T02-L0-10 message count",
+      "passed": true,
+      "detail": 12
+    },
+    {
+      "name": "T02-L0-10 alternating roles",
+      "passed": true
+    },
+    {
+      "name": "T02-L0-10 message text",
+      "passed": true
+    },
+    {
+      "name": "T02-L0-10 timestamp",
+      "passed": true,
+      "detail": "2026-07-18T11:35:00+08:00"
+    },
+    {
+      "name": "unique L1 ids",
+      "passed": true
+    },
+    {
+      "name": "T02-L1-PANDAS-RESAMPLE-TIMEZONE present",
+      "passed": true
+    },
+    {
+      "name": "T02-L1-PANDAS-RESAMPLE-TIMEZONE exact fact",
+      "passed": true,
+      "detail": "Normalize event timestamps to UTC, convert to Asia/Shanghai for reporting boundaries, then perform the daily resample; do not resample naive mixed-zone timestamps."
+    },
+    {
+      "name": "T02-L1-PANDAS-RESAMPLE-TIMEZONE date",
+      "passed": true,
+      "detail": "2026-07-09"
+    },
+    {
+      "name": "T02-L1-PANDAS-RESAMPLE-TIMEZONE types",
+      "passed": true,
+      "detail": {
+        "formal": "decision",
+        "runtime": "instruction"
+      }
+    },
+    {
+      "name": "T02-L1-PANDAS-RESAMPLE-TIMEZONE status",
+      "passed": true,
+      "detail": "active"
+    },
+    {
+      "name": "T02-L1-PANDAS-MISSING-BUCKETS present",
+      "passed": true
+    },
+    {
+      "name": "T02-L1-PANDAS-MISSING-BUCKETS exact fact",
+      "passed": true,
+      "detail": "The Team's approved order fills missing hourly buckets after aggregation, not before, so absent raw events are not invented."
+    },
+    {
+      "name": "T02-L1-PANDAS-MISSING-BUCKETS date",
+      "passed": true,
+      "detail": "2026-07-10"
+    },
+    {
+      "name": "T02-L1-PANDAS-MISSING-BUCKETS types",
+      "passed": true,
+      "detail": {
+        "formal": "fact",
+        "runtime": "fact"
+      }
+    },
+    {
+      "name": "T02-L1-PANDAS-MISSING-BUCKETS status",
+      "passed": true,
+      "detail": "active"
+    },
+    {
+      "name": "T02-L1-TIMESERIES-DETREND-LINEAR present",
+      "passed": true
+    },
+    {
+      "name": "T02-L1-TIMESERIES-DETREND-LINEAR exact fact",
+      "passed": true,
+      "detail": "For the quarterly correlation review, remove the linear trend from each series separately and keep seasonal adjustment outside this step."
+    },
+    {
+      "name": "T02-L1-TIMESERIES-DETREND-LINEAR date",
+      "passed": true,
+      "detail": "2026-07-14"
+    },
+    {
+      "name": "T02-L1-TIMESERIES-DETREND-LINEAR types",
+      "passed": true,
+      "detail": {
+        "formal": "decision",
+        "runtime": "instruction"
+      }
+    },
+    {
+      "name": "T02-L1-TIMESERIES-DETREND-LINEAR status",
+      "passed": true,
+      "detail": "active"
+    },
+    {
+      "name": "T02-L1-TIMESERIES-DIFFERENCE-OLD present",
+      "passed": true
+    },
+    {
+      "name": "T02-L1-TIMESERIES-DIFFERENCE-OLD exact fact",
+      "passed": true,
+      "detail": "An older note proposed differencing first; it is superseded by the 2026-07-14 linear-detrend decision for this project."
+    },
+    {
+      "name": "T02-L1-TIMESERIES-DIFFERENCE-OLD date",
+      "passed": true,
+      "detail": "2026-06-28"
+    },
+    {
+      "name": "T02-L1-TIMESERIES-DIFFERENCE-OLD types",
+      "passed": true,
+      "detail": {
+        "formal": "event",
+        "runtime": "fact"
+      }
+    },
+    {
+      "name": "T02-L1-TIMESERIES-DIFFERENCE-OLD status",
+      "passed": true,
+      "detail": "superseded"
+    },
+    {
+      "name": "T02-L1-TIMESERIES-DIFFERENCE-OLD superseded_by",
+      "passed": true,
+      "detail": "T02-L1-TIMESERIES-DETREND-LINEAR"
+    },
+    {
+      "name": "T02-L1-DASK-PARTITION-SKEW present",
+      "passed": true
+    },
+    {
+      "name": "T02-L1-DASK-PARTITION-SKEW exact fact",
+      "passed": true,
+      "detail": "The skew review groups the feature workload by month and region before repartitioning; customer_id-only partitioning is retained as a documented rejected option."
+    },
+    {
+      "name": "T02-L1-DASK-PARTITION-SKEW date",
+      "passed": true,
+      "detail": "2026-08-03"
+    },
+    {
+      "name": "T02-L1-DASK-PARTITION-SKEW types",
+      "passed": true,
+      "detail": {
+        "formal": "decision",
+        "runtime": "instruction"
+      }
+    },
+    {
+      "name": "T02-L1-DASK-PARTITION-SKEW status",
+      "passed": true,
+      "detail": "active"
+    },
+    {
+      "name": "T02-L1-DASK-MEMORY-BOUNDARY present",
+      "passed": true
+    },
+    {
+      "name": "T02-L1-DASK-MEMORY-BOUNDARY exact fact",
+      "passed": true,
+      "detail": "Project guidance limits each worker to 6 GiB, projects required columns before persist, and avoids a full-frame compute during diagnostics."
+    },
+    {
+      "name": "T02-L1-DASK-MEMORY-BOUNDARY date",
+      "passed": true,
+      "detail": "2026-08-04"
+    },
+    {
+      "name": "T02-L1-DASK-MEMORY-BOUNDARY types",
+      "passed": true,
+      "detail": {
+        "formal": "decision",
+        "runtime": "instruction"
+      }
+    },
+    {
+      "name": "T02-L1-DASK-MEMORY-BOUNDARY status",
+      "passed": true,
+      "detail": "active"
+    },
+    {
+      "name": "T02-L1-DASK-ROW-SPREAD-FIRST present",
+      "passed": true
+    },
+    {
+      "name": "T02-L1-DASK-ROW-SPREAD-FIRST exact fact",
+      "passed": true,
+      "detail": "The approved review compares partition row-count spread before interpreting worker utilization; it does not claim a benchmark speedup."
+    },
+    {
+      "name": "T02-L1-DASK-ROW-SPREAD-FIRST date",
+      "passed": true,
+      "detail": "2026-08-05"
+    },
+    {
+      "name": "T02-L1-DASK-ROW-SPREAD-FIRST types",
+      "passed": true,
+      "detail": {
+        "formal": "fact",
+        "runtime": "fact"
+      }
+    },
+    {
+      "name": "T02-L1-DASK-ROW-SPREAD-FIRST status",
+      "passed": true,
+      "detail": "active"
+    },
+    {
+      "name": "T02-L1-NOTEBOOK-EXECUTION-ORDER present",
+      "passed": true
+    },
+    {
+      "name": "T02-L1-NOTEBOOK-EXECUTION-ORDER exact fact",
+      "passed": true,
+      "detail": "The handoff notebook must run top-to-bottom; its first diagnostic section validates timezone and frequency, and charts appear only after the detrending step."
+    },
+    {
+      "name": "T02-L1-NOTEBOOK-EXECUTION-ORDER date",
+      "passed": true,
+      "detail": "2026-08-11"
+    },
+    {
+      "name": "T02-L1-NOTEBOOK-EXECUTION-ORDER types",
+      "passed": true,
+      "detail": {
+        "formal": "decision",
+        "runtime": "instruction"
+      }
+    },
+    {
+      "name": "T02-L1-NOTEBOOK-EXECUTION-ORDER status",
+      "passed": true,
+      "detail": "active"
+    },
+    {
+      "name": "T02-L1-NOTEBOOK-STALE-OUTPUT present",
+      "passed": true
+    },
+    {
+      "name": "T02-L1-NOTEBOOK-STALE-OUTPUT exact fact",
+      "passed": true,
+      "detail": "Stored cell output is not accepted as execution evidence when the input hash or execution order is stale."
+    },
+    {
+      "name": "T02-L1-NOTEBOOK-STALE-OUTPUT date",
+      "passed": true,
+      "detail": "2026-08-12"
+    },
+    {
+      "name": "T02-L1-NOTEBOOK-STALE-OUTPUT types",
+      "passed": true,
+      "detail": {
+        "formal": "fact",
+        "runtime": "fact"
+      }
+    },
+    {
+      "name": "T02-L1-NOTEBOOK-STALE-OUTPUT status",
+      "passed": true,
+      "detail": "active"
+    },
+    {
+      "name": "T02-L1-PANDAS-RESAMPLE-TIMEZONE formal type",
+      "passed": true,
+      "detail": "decision"
+    },
+    {
+      "name": "T02-L1-PANDAS-RESAMPLE-TIMEZONE source sessions",
+      "passed": true,
+      "detail": [
+        "T02-L0-01",
+        "T02-L0-02"
+      ]
+    },
+    {
+      "name": "T02-L1-PANDAS-MISSING-BUCKETS formal type",
+      "passed": true,
+      "detail": "fact"
+    },
+    {
+      "name": "T02-L1-PANDAS-MISSING-BUCKETS source sessions",
+      "passed": true,
+      "detail": [
+        "T02-L0-02",
+        "T02-L0-01"
+      ]
+    },
+    {
+      "name": "T02-L1-TIMESERIES-DETREND-LINEAR formal type",
+      "passed": true,
+      "detail": "decision"
+    },
+    {
+      "name": "T02-L1-TIMESERIES-DETREND-LINEAR source sessions",
+      "passed": true,
+      "detail": [
+        "T02-L0-03",
+        "T02-L0-04"
+      ]
+    },
+    {
+      "name": "T02-L1-TIMESERIES-DIFFERENCE-OLD formal type",
+      "passed": true,
+      "detail": "event"
+    },
+    {
+      "name": "T02-L1-TIMESERIES-DIFFERENCE-OLD source sessions",
+      "passed": true,
+      "detail": [
+        "T02-L0-04",
+        "T02-L0-03"
+      ]
+    },
+    {
+      "name": "T02-L1-DASK-PARTITION-SKEW formal type",
+      "passed": true,
+      "detail": "decision"
+    },
+    {
+      "name": "T02-L1-DASK-PARTITION-SKEW source sessions",
+      "passed": true,
+      "detail": [
+        "T02-L0-05",
+        "T02-L0-07"
+      ]
+    },
+    {
+      "name": "T02-L1-DASK-MEMORY-BOUNDARY formal type",
+      "passed": true,
+      "detail": "decision"
+    },
+    {
+      "name": "T02-L1-DASK-MEMORY-BOUNDARY source sessions",
+      "passed": true,
+      "detail": [
+        "T02-L0-06",
+        "T02-L0-05"
+      ]
+    },
+    {
+      "name": "T02-L1-DASK-ROW-SPREAD-FIRST formal type",
+      "passed": true,
+      "detail": "fact"
+    },
+    {
+      "name": "T02-L1-DASK-ROW-SPREAD-FIRST source sessions",
+      "passed": true,
+      "detail": [
+        "T02-L0-07",
+        "T02-L0-06"
+      ]
+    },
+    {
+      "name": "T02-L1-NOTEBOOK-EXECUTION-ORDER formal type",
+      "passed": true,
+      "detail": "decision"
+    },
+    {
+      "name": "T02-L1-NOTEBOOK-EXECUTION-ORDER source sessions",
+      "passed": true,
+      "detail": [
+        "T02-L0-08",
+        "T02-L0-03"
+      ]
+    },
+    {
+      "name": "T02-L1-NOTEBOOK-STALE-OUTPUT formal type",
+      "passed": true,
+      "detail": "fact"
+    },
+    {
+      "name": "T02-L1-NOTEBOOK-STALE-OUTPUT source sessions",
+      "passed": true,
+      "detail": [
+        "T02-L0-09",
+        "T02-L0-08"
+      ]
+    },
+    {
+      "name": "T02-L1-PANDAS-DTYPE-CHECK formal type",
+      "passed": true,
+      "detail": "preference"
+    },
+    {
+      "name": "T02-L1-PANDAS-DTYPE-CHECK source sessions",
+      "passed": true,
+      "detail": [
+        "T02-L0-10",
+        "T02-L0-01"
+      ]
+    },
+    {
+      "name": "T02-L1-DASK-NULL-CATEGORY formal type",
+      "passed": true,
+      "detail": "decision"
+    },
+    {
+      "name": "T02-L1-DASK-NULL-CATEGORY source sessions",
+      "passed": true,
+      "detail": [
+        "T02-L0-05",
+        "T02-L0-07"
+      ]
+    },
+    {
+      "name": "T02-L1-DASK-SUMMARY-ONLY formal type",
+      "passed": true,
+      "detail": "preference"
+    },
+    {
+      "name": "T02-L1-DASK-SUMMARY-ONLY source sessions",
+      "passed": true,
+      "detail": [
+        "T02-L0-06",
+        "T02-L0-07"
+      ]
+    },
+    {
+      "name": "T02-L1-NOTEBOOK-INPUT-FINGERPRINT formal type",
+      "passed": true,
+      "detail": "fact"
+    },
+    {
+      "name": "T02-L1-NOTEBOOK-INPUT-FINGERPRINT source sessions",
+      "passed": true,
+      "detail": [
+        "T02-L0-09",
+        "T02-L0-08"
+      ]
+    },
+    {
+      "name": "T02-L1-PANDAS-SAMPLE-SCOPE formal type",
+      "passed": true,
+      "detail": "preference"
+    },
+    {
+      "name": "T02-L1-PANDAS-SAMPLE-SCOPE source sessions",
+      "passed": true,
+      "detail": [
+        "T02-L0-10",
+        "T02-L0-02"
+      ]
+    },
+    {
+      "name": "T02-L1-TIMESERIES-RESIDUAL-AUDIT formal type",
+      "passed": true,
+      "detail": "preference"
+    },
+    {
+      "name": "T02-L1-TIMESERIES-RESIDUAL-AUDIT source sessions",
+      "passed": true,
+      "detail": [
+        "T02-L0-03",
+        "T02-L0-04"
+      ]
+    },
+    {
+      "name": "exact L2 ids",
+      "passed": true
+    },
+    {
+      "name": "T02-L2-PANDAS-RESAMPLE-REVIEW path",
+      "passed": true,
+      "detail": "/t02/pandas/resample-review"
+    },
+    {
+      "name": "T02-L2-PANDAS-RESAMPLE-REVIEW supporting sessions",
+      "passed": true,
+      "detail": [
+        "T02-L0-01",
+        "T02-L0-02",
+        "T02-L0-10"
+      ]
+    },
+    {
+      "name": "T02-L2-PANDAS-RESAMPLE-REVIEW injected",
+      "passed": true
+    },
+    {
+      "name": "T02-L2-DASK-PARTITION-OPERATIONS path",
+      "passed": true,
+      "detail": "/t02/dask/partition-operations"
+    },
+    {
+      "name": "T02-L2-DASK-PARTITION-OPERATIONS supporting sessions",
+      "passed": true,
+      "detail": [
+        "T02-L0-05",
+        "T02-L0-06",
+        "T02-L0-07"
+      ]
+    },
+    {
+      "name": "T02-L2-DASK-PARTITION-OPERATIONS injected",
+      "passed": true
+    },
+    {
+      "name": "T02-L2-TIMESERIES-VALIDATION path",
+      "passed": true,
+      "detail": "/t02/timeseries/validation"
+    },
+    {
+      "name": "T02-L2-TIMESERIES-VALIDATION supporting sessions",
+      "passed": true,
+      "detail": [
+        "T02-L0-03",
+        "T02-L0-04",
+        "T02-L0-08"
+      ]
+    },
+    {
+      "name": "T02-L2-TIMESERIES-VALIDATION injected",
+      "passed": true
+    },
+    {
+      "name": "T02-L2-NOTEBOOK-HANDOFF path",
+      "passed": true,
+      "detail": "/t02/notebook/handoff"
+    },
+    {
+      "name": "T02-L2-NOTEBOOK-HANDOFF supporting sessions",
+      "passed": true,
+      "detail": [
+        "T02-L0-08",
+        "T02-L0-09",
+        "T02-L0-03"
+      ]
+    },
+    {
+      "name": "T02-L2-NOTEBOOK-HANDOFF injected",
+      "passed": true
+    },
+    {
+      "name": "L3 id",
+      "passed": true,
+      "detail": "T02-L3-DATA-COMPUTING-PROFILE"
+    },
+    {
+      "name": "L3 stability",
+      "passed": true,
+      "detail": "team"
+    },
+    {
+      "name": "L3 Chinese length",
+      "passed": true,
+      "detail": 116
+    },
+    {
+      "name": "exact Knowledge ids",
+      "passed": true,
+      "detail": [
+        "cg-t02pnd01",
+        "cg-t02dsk01",
+        "wiki-t02ops01"
+      ]
+    },
+    {
+      "name": "cg-t02pnd01 type/name",
+      "passed": true
+    },
+    {
+      "name": "cg-t02pnd01 repo pin",
+      "passed": true
+    },
+    {
+      "name": "cg-t02pnd01 target node",
+      "passed": true,
+      "detail": [
+        {
+          "symbol": "Resampler",
+          "file": "pandas/core/resample.py",
+          "line": 119
+        },
+        {
+          "symbol": "DataFrame"
+        },
+        {
+          "symbol": "DatetimeIndexResampler"
+        }
+      ]
+    },
+    {
+      "name": "cg-t02pnd01 target tool",
+      "passed": true,
+      "detail": [
+        "node",
+        "edges",
+        "file_summary"
+      ]
+    },
+    {
+      "name": "cg-t02dsk01 type/name",
+      "passed": true
+    },
+    {
+      "name": "cg-t02dsk01 repo pin",
+      "passed": true
+    },
+    {
+      "name": "cg-t02dsk01 target node",
+      "passed": true,
+      "detail": [
+        {
+          "symbol": "Repartition",
+          "file": "dask/dataframe/dask_expr/_repartition.py",
+          "line": 29
+        },
+        {
+          "symbol": "DataFrame"
+        },
+        {
+          "symbol": "Array"
+        }
+      ]
+    },
+    {
+      "name": "cg-t02dsk01 target tool",
+      "passed": true,
+      "detail": [
+        "node",
+        "edges",
+        "dependencies"
+      ]
+    },
+    {
+      "name": "wiki-t02ops01 type/name",
+      "passed": true
+    },
+    {
+      "name": "wiki-t02ops01 policy result",
+      "passed": true,
+      "detail": {
+        "pages": [
+          {
+            "title": "partition skew minimum evidence",
+            "summary": "Compare partition row-count spread and record the partitioning decision before interpreting worker utilization; do not claim speedup without a measured run."
+          },
+          {
+            "title": "diagnostic evidence scope",
+            "summary": "Keep observations within the measured input and execution scope."
+          }
+        ]
+      }
+    },
+    {
+      "name": "wiki-t02ops01 target tool",
+      "passed": true,
+      "detail": [
+        "search",
+        "page",
+        "related_pages"
+      ]
+    },
+    {
+      "name": "visible prose leakage",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "input pack hash",
+      "passed": true,
+      "detail": "f190ede8852d94441c7da26d3737158dfced230bab8996d446cd99f0abb2c8cc"
+    }
+  ],
+  "error_count": 0,
+  "errors": []
+}

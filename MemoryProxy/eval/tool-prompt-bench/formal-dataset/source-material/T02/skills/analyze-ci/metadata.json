@@ -1,0 +1,33 @@
+{
+  "schema_version": "task1.github_skill_source.v1",
+  "team_id": "T02",
+  "name": "analyze-ci",
+  "repository_url": "https://github.com/benchflow-ai/skillsbench",
+  "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+  "source_path": "tasks/fix-build-agentops/environment/skills/analyze-ci/SKILL.md",
+  "license_spdx": "Apache-2.0",
+  "license_file": "../../licenses/Apache-2.0.txt",
+  "visibility": "listed",
+  "description": "Separate CI log symptoms from root causes and preserve the evidence for a build decision.",
+  "use_when": "The data project is blocked on a CI failure snapshot.",
+  "do_not_use_when": "The request is an analysis method or worker-layout plan.",
+  "main_raw_sha256": "f59a07dcffe019f17cfa6ec211cbfb070e6292257be7119ed55ffa0b9bce7197",
+  "raw_files": [
+    {
+      "path": "SKILL.md",
+      "source_path": "tasks/fix-build-agentops/environment/skills/analyze-ci/SKILL.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/fix-build-agentops/environment/skills/analyze-ci/SKILL.md",
+      "sha256": "f59a07dcffe019f17cfa6ec211cbfb070e6292257be7119ed55ffa0b9bce7197",
+      "byte_length": 958
+    }
+  ],
+  "adapted_files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "ebf10c1c4f7e49efbb7112ac0b5160d0549596d1db7ee961b9ecd4c6182ae6c5",
+      "byte_length": 997
+    }
+  ],
+  "adaptation_diff": "adaptation.diff",
+  "frozen": true
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": "task1.github_skill_source.v1",
+  "team_id": "T02",
+  "name": "testing-python",
+  "repository_url": "https://github.com/benchflow-ai/skillsbench",
+  "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+  "source_path": "tasks/fix-build-agentops/environment/skills/testing-python/SKILL.md",
+  "license_spdx": "Apache-2.0",
+  "license_file": "../../licenses/Apache-2.0.txt",
+  "visibility": "search",
+  "description": "Audit and repair Python test or build failures with explicit evidence and rerun outputs.",
+  "use_when": "A Python data-computing change needs a failure-triage and test workflow.",
+  "do_not_use_when": "The missing method is specifically detrending, parallel scheduling, or Notebook construction.",
+  "main_raw_sha256": "2741f4b02a7021658993213ce85095871e30ebfc1eba2bbef9d56f0bb71dea32",
+  "raw_files": [
+    {
+      "path": "SKILL.md",
+      "source_path": "tasks/fix-build-agentops/environment/skills/testing-python/SKILL.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/fix-build-agentops/environment/skills/testing-python/SKILL.md",
+      "sha256": "2741f4b02a7021658993213ce85095871e30ebfc1eba2bbef9d56f0bb71dea32",
+      "byte_length": 5362
+    }
+  ],
+  "adapted_files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "3a210279d297921c5c32c8be3e9938c711e5da80fe4a9625324b541e86d9333c",
+      "byte_length": 5582
+    }
+  ],
+  "adaptation_diff": "adaptation.diff",
+  "frozen": true
+}
