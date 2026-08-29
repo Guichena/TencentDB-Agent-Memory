@@ -1,0 +1,188 @@
+{
+  "schema_version": "task1.luna_natural_negative_draft.v1",
+  "batch_id": "T16-DS05-natural-negative-01",
+  "stage": "DS05",
+  "team_id": "T16",
+  "cases": [
+    {
+      "draft_case_id": "T16-NN-001",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Relay Orders Stream 的生产代码是：\n```python\ndef publish(order, producer):\n    event = {\"order_id\": order[\"id\"], \"customer_id\": order[\"customer\"]}\n    producer.send(\"orders\", key=order[\"customer\"], value=event)\n```\n主题有 6 个分区，要求同一 order_id 的事件始终落在同一分区并保持写入顺序；不同订单可以并行。"
+        },
+        {
+          "role": "assistant",
+          "content": "分区键必须是稳定的 order_id 字符串，不能使用 customer_id、随机值或时间戳；事件内容保持现有字段，发送接口的 key 需要与事件中的 order_id 对齐。"
+        }
+      ],
+      "query": "请改写 publish 函数，使它满足分区键和顺序要求，并说明为什么不同订单仍可并行。",
+      "why_current_context_is_sufficient": "现有函数、分区数量、同订单顺序约束和精确分区键规则均已提供，修改只需将 key 对齐 order_id 并保留事件字段。",
+      "visible_distractor_ids_author_only": ["T16-L0-001", "T16-SKL-001", "T16-KNW-001"],
+      "sol_review_questions": ["确认 key 使用 order_id 且没有引入随机分区或跨订单串行化。"]
+    },
+    {
+      "draft_case_id": "T16-NN-002",
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Relay Orders Stream 的消费者配置如下：\n```yaml\ngroup_id: relay-orders-v2\nenable_auto_commit: true\nmax_poll_records: 500\nmax_poll_interval_ms: 60000\nsession_timeout_ms: 45000\n```\n单条订单处理最多 90 秒，同一分区必须逐条完成；只有处理成功才可提交 offset，失败消息要保留在当前分区重试。"
+        },
+        {
+          "role": "assistant",
+          "content": "修复目标是关闭自动提交、把拉取批量限制为 20，并把 poll 间隔设为 180000 毫秒；处理循环必须在成功后提交当前 offset，不能并行处理同一分区。"
+        }
+      ],
+      "query": "请返回修正后的 YAML，并给出一段伪代码说明提交 offset 的位置。",
+      "why_current_context_is_sufficient": "配置目标值、最长处理时间、分区顺序和提交条件都已明确，YAML 与伪代码可直接按这些约束编写。",
+      "visible_distractor_ids_author_only": ["T16-L0-002", "T16-SKL-006", "T16-KNW-003"],
+      "sol_review_questions": ["确认关闭自动提交、批量为 20、poll 间隔为 180000，且提交发生在成功处理之后。"]
+    },
+    {
+      "draft_case_id": "T16-NN-003",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Beacon Notification Queue 的失败处理器如下：\n```js\nasync function handle(msg, attempts, send) {\n  try {\n    await send(msg);\n  } catch (err) {\n    attempts += 1;\n    if (attempts > 3) throw err;\n    await sleep(2 ** attempts * 1000);\n    return handle(msg, attempts, send);\n  }\n}\n```\n冻结语义为：初始发送后最多重试 3 次，总计最多 4 次发送；第 1、2、3 次失败后分别等待 1 秒、2 秒、4 秒再重试；第 4 次发送失败后写入 `notify.dlq` 并结束，不得进行第 5 次发送。"
+        },
+        {
+          "role": "assistant",
+          "content": "attempts 代表已经失败的次数，发送失败后才递增；DLQ 写入函数为 `sendToDlq(msg, err)`，写入成功后返回 `{status: 'dead-lettered'}`；失败次数为 1、2、3 时继续重试，失败次数为 4 时只写入 DLQ，不再发送。"
+        }
+      ],
+      "query": "请修复这个处理器，准确实现初始发送加最多三次重试、1/2/4 秒退避和第四次失败后的死信终止，并保留异步接口。",
+      "why_current_context_is_sufficient": "初始发送、最多三次重试、四次发送的边界、三段延迟、死信队列和终止条件均已给出，可直接改写分支而无需额外约定。",
+      "visible_distractor_ids_author_only": ["T16-L1-003", "T16-SKL-002", "T16-KNW-002"],
+      "sol_review_questions": ["确认总计最多四次发送，第 1/2/3 次失败后等待 1/2/4 秒，第 4 次失败后写入死信且不再发送。"]
+    },
+    {
+      "draft_case_id": "T16-NN-004",
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Beacon 的死信重放输入为：\n```text\npartition=0 offset=41 id=m41 payload={kind:email}\npartition=0 offset=42 id=m42\npartition=1 offset=9 id=m09 payload={kind:sms}\n```\n规则：每批最多 2 条；同一 partition 从小 offset 到大 offset；重放前过滤 `payload` 缺失的记录并单独列出；每条成功后保留原 id，并在结果中记录 batch_no、id、status。"
+        },
+        {
+          "role": "assistant",
+          "content": "请使用纯 Python 标准库实现 `build_replay_batches(records)`，返回 `(batches, rejected)`；batches 是按 partition 分组、每组按 offset 排序后切片的列表，rejected 按输入顺序保留缺 payload 的记录。"
+        }
+      ],
+      "query": "请给出 build_replay_batches 的实现，并用三条输入记录展示返回结构。",
+      "why_current_context_is_sufficient": "输入格式、过滤条件、分区排序、批量上限、返回结构和 id 保留要求均已封闭定义，标准库实现不依赖外部运行手册。",
+      "visible_distractor_ids_author_only": ["T16-L1-004", "T16-SKL-005", "T16-KNW-001"],
+      "sol_review_questions": ["确认按 partition 与 offset 排序、每批不超过 2 条，并将缺 payload 记录单独保留。"]
+    },
+    {
+      "draft_case_id": "T16-NN-005",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Ledger Event Ingestion 的表结构和事务伪代码如下：\n```sql\norders(id bigint primary key, state text);\noutbox(id uuid primary key, aggregate_id bigint, event_type text, payload jsonb, status text);\nBEGIN;\nUPDATE orders SET state = 'paid' WHERE id = :id;\n-- 这里缺少 outbox 写入\nCOMMIT;\n```\n要求订单状态更新与 outbox 写入必须原子；outbox.status 初始为 `pending`，event_type 为 `OrderPaid`，payload 必须包含 order_id 和新状态。"
+        },
+        {
+          "role": "assistant",
+          "content": "请补齐事务中的一条 INSERT，并说明任一步失败时应回滚。只允许使用给定参数 `:id`，事件 id 使用数据库生成的 UUID。"
+        }
+      ],
+      "query": "请返回完整的 SQL 事务片段，包含满足约束的 outbox INSERT。",
+      "why_current_context_is_sufficient": "表结构、事务边界、字段初值、事件类型、payload 内容和参数限制均已明确，INSERT 与回滚说明可直接完成。",
+      "visible_distractor_ids_author_only": ["T16-L0-005", "T16-SKL-008", "T16-KNW-002"],
+      "sol_review_questions": ["确认 UPDATE 与 INSERT 在同一事务，status 为 pending 且 payload 同时含 order_id/state。"]
+    },
+    {
+      "draft_case_id": "T16-NN-006",
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Ledger 消费去重函数目前只做内存判断：\n```go\nfunc accept(eventID string, seen map[string]bool) bool {\n    if seen[eventID] { return false }\n    seen[eventID] = true\n    return true\n}\n```\n服务有多个实例，数据库表 `processed_events(event_id uuid primary key, processed_at timestamp)` 已存在。事务规则是：事务开始先 INSERT 该 event_id 作为 claim；插入主键冲突时视为 duplicate 并跳过业务；获 claim 的实例在同一事务内执行业务，业务失败就回滚 claim，业务成功才提交 claim。"
+        },
+        {
+          "role": "assistant",
+          "content": "请改为事务安全的 Go 伪代码，函数返回 `duplicate` 或 `process`；不能依赖实例本地 map，事务开始的唯一 INSERT 必须可区分主键冲突，获 claim 者在同一事务内完成业务，失败回滚 claim，成功提交。"
+        }
+      ],
+      "query": "请给出修正版伪代码和并发下两个实例同时收到同一 event_id 时的结果。",
+      "why_current_context_is_sufficient": "多实例场景、唯一表结构、先 claim 再业务的事务顺序、冲突语义和成功/失败提交规则均已提供，答案只需围绕数据库事务实现幂等。",
+      "visible_distractor_ids_author_only": ["T16-L1-006", "T16-SKL-009", "T16-KNW-003"],
+      "sol_review_questions": ["确认不使用本地 map，先 claim 的唯一键冲突只让一个实例执行业务，失败回滚 claim，成功才提交。"]
+    },
+    {
+      "draft_case_id": "T16-NN-007",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Streamline Event Schema 的旧 envelope 是：\n```json\n{\"event_id\":\"e1\",\"event_type\":\"InvoicePaid\",\"event_version\":1,\"occurred_at\":\"2026-08-30T10:00:00Z\",\"amount\":12}\n```\n新 envelope 在保留上述字段的同时新增可选字段 `currency`，并将 event_version 改为 2。"
+        },
+        {
+          "role": "assistant",
+          "content": "治理规则固定为：保留必备 envelope 字段时，新增 optional 字段是兼容变化；同一 major 内的 minor 版本可演进，只有删除字段或改变已有字段类型才需要 major；消费者必须忽略不认识的 optional 字段。"
+        }
+      ],
+      "query": "请判断这次变化是否兼容，并写出消费者处理 currency 的向后兼容伪代码。",
+      "why_current_context_is_sufficient": "前后 envelope、字段性质、版本号和完整治理规则都已给出，兼容分类及忽略未知字段的伪代码可直接推导。",
+      "visible_distractor_ids_author_only": ["T16-L0-007", "T16-SKL-010", "T16-KNW-003"],
+      "sol_review_questions": ["确认保留旧字段、新增 optional currency 且消费者忽略未知字段时判为兼容。"]
+    },
+    {
+      "draft_case_id": "T16-NN-008",
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Streamline 消费者解析器如下：\n```ts\ntype Envelope = { event_id: string; event_type: string; event_version: number; data: unknown };\nfunction parse(x: any): Envelope {\n  if (!x.event_id || !x.event_type || !x.data) throw new Error('invalid');\n  return x as Envelope;\n}\n```\n输入可能有 `data: 0` 或空对象 `{}`；合法 envelope 只要求四个键存在，其中 data 可以是任意 JSON 值（包括 0、false、空字符串、null 和空对象）。"
+        },
+        {
+          "role": "assistant",
+          "content": "请保留类型定义，改用键存在性而不是 truthiness 校验；event_version 必须是有限整数，event_id 和 event_type 必须是非空字符串。"
+        }
+      ],
+      "query": "请修复 parse 函数，并给出 data=0、data=null、缺少 event_version 三个测试结果。",
+      "why_current_context_is_sufficient": "类型、必需键、每个字段的精确值约束以及三个边界样例都已给出，修复可完全基于消息中的验证规则。",
+      "visible_distractor_ids_author_only": ["T16-L1-008", "T16-SKL-011", "T16-KNW-001"],
+      "sol_review_questions": ["确认 data 的 falsy JSON 值合法，并严格校验 event_version 为有限整数。"]
+    },
+    {
+      "draft_case_id": "T16-NN-009",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Consumer Watch 收到同一 consumer group 的指标：\n```text\npartition 0: lag=120, rate=85 msg/s\npartition 1: lag=6400, rate=0 msg/s\npartition 2: lag=90, rate=80 msg/s\n```\n诊断规则：lag>5000 且消费速率为 0 判定为卡分区；其他分区正常时优先检查该分区当前消息和处理日志，不要立刻扩容。"
+        },
+        {
+          "role": "assistant",
+          "content": "输出必须是 JSON，字段为 `blocked_partition`、`evidence`、`first_action`；evidence 同时列出 lag 和 rate，first_action 固定为检查当前消息与处理日志。"
+        }
+      ],
+      "query": "请根据指标生成符合格式的诊断 JSON，并说明为什么不是扩容。",
+      "why_current_context_is_sufficient": "三分区指标、卡分区阈值、首要动作和输出 JSON 结构均已明确，唯一满足条件的是 partition 1。",
+      "visible_distractor_ids_author_only": ["T16-L0-009", "T16-SKL-003", "T16-KNW-002"],
+      "sol_review_questions": ["确认只将 partition 1 标为 blocked，并同时输出 lag=6400、rate=0 和指定首要动作。"]
+    },
+    {
+      "draft_case_id": "T16-NN-010",
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Consumer Watch 的消费循环和日志如下：\n```python\nfor record in poll():\n    handle(record.value)\n    commit(record.offset)\n```\n日志显示同一 `event_id=evt-9` 在 offset 18 和 offset 18 重复出现；需要考虑两种崩溃点：业务事务提交前，或业务事务提交后但 offset 提交前。约束：`handle(event_id, value)` 必须把业务更新与持久化 processed marker 放在同一数据库事务中，并且只在该事务提交后返回 `processed`；若 marker 已存在则返回 `duplicate` 且不执行更新；handle 失败不得提交 offset。"
+        },
+        {
+          "role": "assistant",
+          "content": "请在不改变 poll 接口的前提下给出修正版循环，使用名为 `processed` 的持久化集合；业务更新与 marker 必须原子提交，handle 返回 `processed` 或 `duplicate` 后才提交 offset，重复事件只写日志并提交当前 offset。"
+        }
+      ],
+      "query": "请返回修正版 Python 伪代码，并列出 evt-9 崩溃重启后的两种路径结果。",
+      "why_current_context_is_sufficient": "崩溃发生点、业务更新与 marker 的原子事务、handle 返回语义、提交条件、持久化集合名称和重复事件行为均已完整给出，循环与两种结果可直接实现。",
+      "visible_distractor_ids_author_only": ["T16-L1-010", "T16-SKL-012", "T16-KNW-001"],
+      "sol_review_questions": ["确认业务更新与 marker 同事务：提交前崩溃会整体回滚并重做一次，提交后 offset 前崩溃会命中 marker、只记 duplicate，不二次执行业务。"]
+    }
+  ]
+}

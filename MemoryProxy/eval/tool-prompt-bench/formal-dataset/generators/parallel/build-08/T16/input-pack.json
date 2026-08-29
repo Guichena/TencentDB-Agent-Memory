@@ -1,0 +1,98 @@
+{
+  "schema_version": "task1.team_input_pack.v1",
+  "build_id": "build-08",
+  "stage": "DS05",
+  "team_id": "T16",
+  "split": "hidden_test",
+  "topic": "事件驱动系统",
+  "world_as_of": "2026-08-29T23:59:59+08:00",
+  "identity": {
+    "space_id": "space-task1-engineering",
+    "active_agent_id": "agent-task1-t16-general",
+    "asset_agent_ids": ["agent-task1-t16-assets-a", "agent-task1-t16-assets-b"],
+    "user_id": "user-task1-hidden-t16"
+  },
+  "project_streams": [
+    {"id":"relay-orders","name":"Relay Orders Stream","focus":"Kafka 订单事件、partition key、顺序与 consumer group","task_id":"task-t16-relay-orders"},
+    {"id":"beacon-notify","name":"Beacon Notification Queue","focus":"消息队列、重试退避、poison message 与死信恢复","task_id":"task-t16-beacon-notify"},
+    {"id":"ledger-ingest","name":"Ledger Event Ingestion","focus":"outbox、幂等 key、去重与至少一次投递","task_id":"task-t16-ledger-ingest"},
+    {"id":"streamline-schema","name":"Streamline Event Schema","focus":"事件 envelope、schema 版本演进和消费者兼容","task_id":"task-t16-streamline-schema"},
+    {"id":"consumer-watch","name":"Consumer Watch","focus":"consumer lag、卡分区、重复投递、日志与指标诊断","task_id":"task-t16-consumer-watch"}
+  ],
+  "memory_plan": {
+    "l0_sessions": 12,
+    "messages_per_session": "12-24",
+    "l1_memories": 16,
+    "l2_scenes": 5,
+    "l3_profiles": 1,
+    "l0_ids": ["T16-L0-001","T16-L0-002","T16-L0-003","T16-L0-004","T16-L0-005","T16-L0-006","T16-L0-007","T16-L0-008","T16-L0-009","T16-L0-010","T16-L0-011","T16-L0-012"],
+    "l1_ids": ["T16-L1-001","T16-L1-002","T16-L1-003","T16-L1-004","T16-L1-005","T16-L1-006","T16-L1-007","T16-L1-008","T16-L1-009","T16-L1-010","T16-L1-011","T16-L1-012","T16-L1-013","T16-L1-014","T16-L1-015","T16-L1-016"],
+    "l2": [
+      {"asset_id":"T16-L2-001","path":"events/relay/partition-ordering.md","injected":true,"summary_rule":"说明顺序场景与入口，不泄露当前 partition key"},
+      {"asset_id":"T16-L2-002","path":"retry/beacon/dlq-policy.md","injected":true,"summary_rule":"说明重试和死信场景，不泄露当前阈值"},
+      {"asset_id":"T16-L2-003","path":"idempotency/ledger/dedup.md","injected":true,"summary_rule":"说明幂等场景，不泄露当前 key 组成"},
+      {"asset_id":"T16-L2-004","path":"schema/streamline/evolution.md","injected":true,"summary_rule":"说明 schema 演进入口，不泄露采用的兼容规则"},
+      {"asset_id":"T16-L2-005","path":"consumers/watch/lag-diagnosis.md","injected":true,"summary_rule":"说明 consumer 诊断流程，不泄露本次根因"}
+    ],
+    "l3_id": "T16-L3-001",
+    "l3_rule": "80-220 中文字，只写稳定的先观察再重放、幂等优先、保留顺序与关联标识等偏好；不得含任一 case 答案"
+  },
+  "skill_pool": {
+    "source_lock": "formal-dataset/source-material/T16/skill-sources.json",
+    "adaptation_policy": "只允许改宿主工具名、listing description、use_when、do_not_use_when；核心技术步骤与资源引用保持不变",
+    "bound": [
+      {"asset_id":"T16-SKL-001","source_name":"cloud-design-patterns","owner":"agent-task1-t16-general","resource":"references/messaging-integration.md"},
+      {"asset_id":"T16-SKL-002","source_name":"python-azure-iot-edge-modules","owner":"agent-task1-t16-general"},
+      {"asset_id":"T16-SKL-003","source_name":"aws-cloudwatch-investigation","owner":"agent-task1-t16-general"},
+      {"asset_id":"T16-SKL-004","source_name":"incident-postmortem","owner":"agent-task1-t16-general"},
+      {"asset_id":"T16-SKL-005","source_name":"bug-reproduction-brief","owner":"agent-task1-t16-general"},
+      {"asset_id":"T16-SKL-006","source_name":"create-github-action-workflow-specification","owner":"agent-task1-t16-general"}
+    ],
+    "team_searchable": [
+      {"asset_id":"T16-SKL-007","source_name":"saga-orchestration","owner":"agent-task1-t16-assets-a"},
+      {"asset_id":"T16-SKL-008","source_name":"cqrs-implementation","owner":"agent-task1-t16-assets-a"},
+      {"asset_id":"T16-SKL-009","source_name":"projection-patterns","owner":"agent-task1-t16-assets-a"},
+      {"asset_id":"T16-SKL-010","source_name":"microservices-patterns","owner":"agent-task1-t16-assets-a"},
+      {"asset_id":"T16-SKL-011","source_name":"workflow-orchestration-patterns","owner":"agent-task1-t16-assets-a"},
+      {"asset_id":"T16-SKL-012","source_name":"qdrant-monitoring","owner":"agent-task1-t16-assets-a"},
+      {"asset_id":"T16-SKL-013","source_name":"mvvm-toolkit-messenger","owner":"agent-task1-t16-assets-b"},
+      {"asset_id":"T16-SKL-014","source_name":"aspire","owner":"agent-task1-t16-assets-b"},
+      {"asset_id":"T16-SKL-015","source_name":"bug-receipt","owner":"agent-task1-t16-assets-b"},
+      {"asset_id":"T16-SKL-016","source_name":"project-workflow-analysis-blueprint-generator","owner":"agent-task1-t16-assets-b"},
+      {"asset_id":"T16-SKL-017","source_name":"build-evidence-map","owner":"agent-task1-t16-assets-b"}
+    ],
+    "listing_contract": "6 bound skills are eligible for prewarm listing; 11 team skills must remain outside listing and searchable by skill_search",
+    "positive_quota": {"listed_view":2,"team_search_then_view_by_id":3,"view_then_files_read":1}
+  },
+  "knowledge_plan": [
+    {"asset_id":"T16-KNW-001","type":"code_graph","name":"Ledger consumer code graph","workspace_match":"internal/ledger-ingest","tools":[{"name":"search","params":{"query":"string"}},{"name":"callers","params":{"symbol":"string"}}]},
+    {"asset_id":"T16-KNW-002","type":"wiki","name":"Beacon DLQ recovery runbook","about":"内部重试阈值、poison message 隔离、死信重放和审计步骤","tools":[{"name":"search","params":{"query":"string"}},{"name":"read_page","params":{"page_id":"string"}}]},
+    {"asset_id":"T16-KNW-003","type":"wiki","name":"Streamline event schema governance","about":"事件 envelope、版本演进、兼容级别和消费者迁移","tools":[{"name":"search","params":{"query":"string"}},{"name":"read_page","params":{"page_id":"string"}}]}
+  ],
+  "positive_distribution": {
+    "memory": {"count":6,"search_first":4,"direct_first":2},
+    "skill": {"count":6,"search_first":3,"direct_first":3},
+    "knowledge": {"count":3,"discovery_first":3,"direct_first":0}
+  },
+  "trial_pairs": [
+    {"draft_pair_id":"T16-TRIAL-MEM-001","family":"memory","project":"ledger-ingest","target_asset_ids":["T16-L0-004"],"gap":"需要找回 Ledger consumer 对幂等键组成的精确决定，当前只知道采用了去重","route_hint":"conversation search；目标消息返回即停","distractors":["T16-L0-003","T16-L1-006","T16-L2-003"]},
+    {"draft_pair_id":"T16-TRIAL-SKL-001","family":"skill","project":"beacon-notify","target_asset_ids":["T16-SKL-007"],"gap":"需要跨服务失败后的补偿、超时和死信恢复流程，但该流程不在首屏 listing","route_hint":"team skill search 后按返回 skill_id 打开","distractors":["T16-SKL-001","T16-SKL-010","T16-SKL-011"]},
+    {"draft_pair_id":"T16-TRIAL-KNW-001","family":"knowledge","project":"beacon-notify","target_asset_ids":["T16-KNW-002"],"gap":"需要内部批准的 poison message 隔离阈值与死信重放步骤，当前上下文未给出","route_hint":"对匹配 runbook 先发现工具，再用返回的 search 工具查询；首个成功查询响应即停","distractors":["T16-KNW-001","T16-KNW-003","T16-L2-002"]}
+  ],
+  "authoring_rules": {
+    "provider_visible_forbidden": ["TDAI","tdai_","skill_search","skill_view","knowledge_id","tools/list","tools/call","allowedSequences","targetAssetIds","informationGap","Gold"],
+    "pair_rule": "shared messages、query、identity、workspace、snapshot 完全相同；只在 changed_message_index 的 delta_message 改变信息是否充分",
+    "context_buckets": {"short":"4-6","medium":"8-12","long":"14-20"},
+    "natural_negative_rule": "自包含 coding 请求，加载完整干扰池，不依赖历史、流程包或知识索引",
+    "no_official_patch": true,
+    "no_upstream_install_or_tests": true,
+    "luna_may_not_write_staging_or_final_gold": true
+  },
+  "batch_contract": {
+    "model": "gpt-5.6-luna",
+    "reasoning_effort": "high",
+    "fork_turns": "none",
+    "prompt_version": "task1.luna-batch.v1",
+    "unique_batch_directory_required": true
+  }
+}

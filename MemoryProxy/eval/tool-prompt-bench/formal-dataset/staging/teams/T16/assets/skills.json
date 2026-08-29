@@ -1,0 +1,453 @@
+{
+  "schema_version": "task1.team_assets.skills.v1",
+  "team_id": "T16",
+  "skills": [
+    {
+      "assetId": "T16-SKL-001",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-EXT-SKL-001",
+        "T16-EXT-RES-001"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "cloud-design-patterns",
+      "version": "1.0.0",
+      "description": "提供分布式系统的云设计模式索引，覆盖可靠性、消息、性能、安全和部署取舍。",
+      "useWhen": "需要比较事件驱动、消息集成、可靠性或部署模式的架构取舍。",
+      "doNotUseWhen": "需要实现具体 CQRS/投影代码、IoT 模块或按告警时间调查单一事故。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/cloud-design-patterns/SKILL.md",
+          "sha256": "69b0e14a0011137f7253f90b85745eba1710d8849710e3b5b677e3bf9dfe6320"
+        },
+        {
+          "path": "skills/cloud-design-patterns/references/messaging-integration.md",
+          "sha256": "16b3a768c6fad4a33351c4791709b748edf6977c176104cdc9954c90167a0bd1"
+        }
+      ],
+      "contentHash": "6b1178428e9cbcbf5c97941ff4482474f4002e5483169afd8eaade4b80d3dc60"
+    },
+    {
+      "assetId": "T16-SKL-002",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-EXT-SKL-002"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "python-azure-iot-edge-modules",
+      "version": "1.0.0",
+      "description": "设计和运维 Python IoT Edge 模块，覆盖消息、部署清单、可观测性和生产检查。",
+      "useWhen": "需要边缘遥测处理、部署、断线重试、健康检查、回滚或安全控制。",
+      "doNotUseWhen": "任务是通用事件投影、CloudWatch 告警关联或云模式选型。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/python-azure-iot-edge-modules/SKILL.md",
+          "sha256": "51b16bbdf7271198b60bc1958322b6c52be19ab7313e1f146b77dd7c31add26d"
+        }
+      ],
+      "contentHash": "2264f69ff2622a93b5a4d72fe14827ba4dc67dc352883185775995b1a63068eb"
+    },
+    {
+      "assetId": "T16-SKL-003",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-EXT-SKL-003"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "aws-cloudwatch-investigation",
+      "version": "1.0.0",
+      "description": "用 CloudWatch 日志、指标和告警模式调查生产事故并缩小影响范围。",
+      "useWhen": "需要定位错误峰值、关联部署与告警、重建事故时间线或分析指标异常。",
+      "doNotUseWhen": "需要实现消息投影、IoT Edge 运行时或跨服务补偿编排。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/aws-cloudwatch-investigation/SKILL.md",
+          "sha256": "e278e755854bb81bcce39e41395aaae189f49aa6f4397d8723dd1a01518b1526"
+        }
+      ],
+      "contentHash": "34a73caf7b5c09388e264d47461f8d586f283b984c87cd5421f6368f58db91c9"
+    },
+    {
+      "assetId": "T16-SKL-004",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-EXT-SKL-004"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "incident-postmortem",
+      "version": "1.0.0",
+      "description": "整理生产事故的影响、时间线、根因、修复和后续行动。",
+      "useWhen": "需要在事故后形成结构化复盘和行动项。",
+      "doNotUseWhen": "需要实时 CloudWatch 调查、消息模式选择或投影实现。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/incident-postmortem/SKILL.md",
+          "sha256": "0492b8e05eba16cf045041b519536f906b06b278c77a0a33b4b947ed0b79176b"
+        }
+      ],
+      "contentHash": "5416eee2b6d99c86d2c69eaeed50647dcde1c169eb86abfbc8b8fe715b7faf0f"
+    },
+    {
+      "assetId": "T16-SKL-005",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-EXT-SKL-005"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "bug-reproduction-brief",
+      "version": "1.0.0",
+      "description": "把缺陷现象、复现条件、预期与实际结果整理为可执行简报。",
+      "useWhen": "需要稳定复现并记录单个缺陷的最小条件。",
+      "doNotUseWhen": "需要跨服务事件设计、投影恢复或云架构模式选择。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/bug-reproduction-brief/SKILL.md",
+          "sha256": "522ad2948c498f6dcee6d48773387058d2cba3c45ba9e093ed35210601d141b6"
+        }
+      ],
+      "contentHash": "45ffe3923dd643268c5818706f01f22989501f11caaf86c929b5a807e84b9c57"
+    },
+    {
+      "assetId": "T16-SKL-006",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-EXT-SKL-006"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "create-github-action-workflow-specification",
+      "version": "1.0.0",
+      "description": "为 GitHub Actions 工作流编写结构化、可验证的流程规格。",
+      "useWhen": "需要定义 CI/CD 触发器、作业、步骤、权限和验收要求。",
+      "doNotUseWhen": "任务是事件投影、IoT 模块、CloudWatch 调查或 Saga 设计。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/create-github-action-workflow-specification/SKILL.md",
+          "sha256": "25b57a8e4ed35e2e640dc9f6f255dc6c8f86574b98d2abc5153b5a8c9b22491c"
+        }
+      ],
+      "contentHash": "2b0be09f9b885f6a0a701a6830a275c0a7ac6e4542a527385b7e090d1dbf41cd"
+    },
+    {
+      "assetId": "T16-SKL-007",
+      "ownerAgentId": "agent-task1-t16-assets-a",
+      "sourceEvidenceIds": [
+        "T16-EXT-SKL-013"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "saga-orchestration",
+      "version": "1.0.0",
+      "description": "为分布式事务设计有序步骤、补偿动作、逐步超时和恢复监控。",
+      "useWhen": "需要跨服务长事务、部分失败补偿或死信恢复。",
+      "doNotUseWhen": "任务只是单服务 CRUD、纯实时流处理，或只需一般云消息模式选型。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "plugins/backend-development/skills/saga-orchestration/SKILL.md",
+          "sha256": "95372f5b8235053557c135d9d8a6d785d2feb9af1187230a72c8285aa38793f5"
+        }
+      ],
+      "contentHash": "1f3406ec9e94834bcf82e99c224c30d36a5474c752e0dd5966b1f48f48ee1d16"
+    },
+    {
+      "assetId": "T16-SKL-008",
+      "ownerAgentId": "agent-task1-t16-assets-a",
+      "sourceEvidenceIds": [
+        "T16-EXT-SKL-014"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "cqrs-implementation",
+      "version": "1.0.0",
+      "description": "实现 CQRS 读写分离，组织命令、查询、事件和读模型投影。",
+      "useWhen": "需要独立扩展读写、采用事件驱动读模型或优化复杂查询。",
+      "doNotUseWhen": "任务是单纯消息模式、IoT Edge 可靠性或事故调查。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "plugins/backend-development/skills/cqrs-implementation/SKILL.md",
+          "sha256": "03102920d27186143fe6349cda929b50c18733e989bc3f2b491667f26fa9fe34"
+        }
+      ],
+      "contentHash": "3e0e1a57e79278ce6fcb14ad6602f065a2b5866a0f884d74a0c0a64780081d13"
+    },
+    {
+      "assetId": "T16-SKL-009",
+      "ownerAgentId": "agent-task1-t16-assets-a",
+      "sourceEvidenceIds": [
+        "T16-EXT-SKL-015"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "projection-patterns",
+      "version": "1.0.0",
+      "description": "从事件流构建读模型和投影，覆盖实时、追赶、持久化和内联类型。",
+      "useWhen": "需要构建物化视图、搜索索引、实时仪表盘或可恢复投影。",
+      "doNotUseWhen": "任务是跨服务补偿、云告警调查或边缘模块部署。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "plugins/backend-development/skills/projection-patterns/SKILL.md",
+          "sha256": "b05b06b24ea2c6287d4b3957547b263df43c2cc945ea3acdcd58f513a0bda1d5"
+        }
+      ],
+      "contentHash": "5e526ae00803df7b9cd6e734242699123b2aca1c98a3dfcfb03ea882adf7b98c"
+    },
+    {
+      "assetId": "T16-SKL-010",
+      "ownerAgentId": "agent-task1-t16-assets-a",
+      "sourceEvidenceIds": [
+        "T16-EXT-SKL-016"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "microservices-patterns",
+      "version": "1.0.0",
+      "description": "设计微服务边界、同步与异步通信、数据归属和通用韧性模式。",
+      "useWhen": "需要拆分服务、设计服务通信、数据隔离或选择重试与熔断。",
+      "doNotUseWhen": "需要具体投影 checkpoint、CloudWatch 关联或 IoT Edge 运行时。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "plugins/backend-development/skills/microservices-patterns/SKILL.md",
+          "sha256": "c9d34026de5eb5b9f730604d1979df9aaa58dd7fa40c022e071da5ca65d68759"
+        }
+      ],
+      "contentHash": "0bf6e54d9efb0104fc190a692cc117adbc255ba61a9b2794b8d6654932e25dee"
+    },
+    {
+      "assetId": "T16-SKL-011",
+      "ownerAgentId": "agent-task1-t16-assets-a",
+      "sourceEvidenceIds": [
+        "T16-EXT-SKL-017"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "workflow-orchestration-patterns",
+      "version": "1.0.0",
+      "description": "使用持久化工作流编排长流程，关注 workflow/activity 边界、确定性、超时和恢复。",
+      "useWhen": "需要跨服务长流程、分布式事务、持久状态或从最后成功步骤恢复。",
+      "doNotUseWhen": "任务是简单 CRUD、实时流处理，或只需 CQRS/投影读模型。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "plugins/backend-development/skills/workflow-orchestration-patterns/SKILL.md",
+          "sha256": "f4418f98189bd89d7b801ec65df48b53caa1c555a23f1d9684799415818f1024"
+        }
+      ],
+      "contentHash": "42d1565d509adcfd0042b719b7acbf72f3de5250695e9960c4488958b4232df9"
+    },
+    {
+      "assetId": "T16-SKL-012",
+      "ownerAgentId": "agent-task1-t16-assets-a",
+      "sourceEvidenceIds": [
+        "T16-EXT-SKL-007"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "qdrant-monitoring",
+      "version": "1.0.0",
+      "description": "监控向量数据库的健康、延迟、容量和异常信号。",
+      "useWhen": "需要检查向量检索服务、集合状态或运行时告警。",
+      "doNotUseWhen": "需要构建投影、调查云日志或编排跨服务事务。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/qdrant-monitoring/SKILL.md",
+          "sha256": "5264e89c01d4e02fb3db9ad9bebd0132c7de951a249c1ebc93d863a834529af2"
+        }
+      ],
+      "contentHash": "2e0cec4deae447400f2895e50c7c2efcf5e28c7e8b068a93ea130ab6f71379cb"
+    },
+    {
+      "assetId": "T16-SKL-013",
+      "ownerAgentId": "agent-task1-t16-assets-b",
+      "sourceEvidenceIds": [
+        "T16-EXT-SKL-008"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "mvvm-toolkit-messenger",
+      "version": "1.0.0",
+      "description": "为 MVVM 应用设计类型安全的消息注册、发送和订阅。",
+      "useWhen": "需要在视图模型间传递消息或解耦 UI 通知。",
+      "doNotUseWhen": "需要跨服务补偿、投影重建或云监控调查。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/mvvm-toolkit-messenger/SKILL.md",
+          "sha256": "05fe9691a670b8d5d43184f66f40e36d980c9e878673d11639a3ac48375fa563"
+        }
+      ],
+      "contentHash": "2b323d5e814a4ceeaf97489ce5170c26ae82ab49cc78054ed8d9ffb636da1245"
+    },
+    {
+      "assetId": "T16-SKL-014",
+      "ownerAgentId": "agent-task1-t16-assets-b",
+      "sourceEvidenceIds": [
+        "T16-EXT-SKL-009"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "aspire",
+      "version": "1.0.0",
+      "description": "编排本地分布式应用的服务、依赖和可观测运行环境。",
+      "useWhen": "需要定义多服务本地启动、依赖关系或开发期遥测。",
+      "doNotUseWhen": "需要 CQRS、投影重建或跨服务补偿流程。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/aspire/SKILL.md",
+          "sha256": "f4cb7a6c3d437edd447a097d984ed43e519c8c53433ddf131a3061c477753542"
+        }
+      ],
+      "contentHash": "dd84aeeb1570dbb898e9b92cb73244f1797c1bb10a53d8ccb59a34e65c8d234a"
+    },
+    {
+      "assetId": "T16-SKL-015",
+      "ownerAgentId": "agent-task1-t16-assets-b",
+      "sourceEvidenceIds": [
+        "T16-EXT-SKL-010"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "bug-receipt",
+      "version": "1.0.0",
+      "description": "把缺陷现象、复现条件和影响范围整理成结构化记录。",
+      "useWhen": "需要收集可复现的缺陷上下文并交接给工程团队。",
+      "doNotUseWhen": "需要设计服务架构、投影或运行时监控。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/bug-receipt/SKILL.md",
+          "sha256": "8d3803c8b10504a11b279ca5872b108cb09f549adf4bf8898ed3cceac5a3b991"
+        }
+      ],
+      "contentHash": "8a0411ecb27ea5c1da7f87b1315a5b9983b9bff62e499c99390b5af4c19af337"
+    },
+    {
+      "assetId": "T16-SKL-016",
+      "ownerAgentId": "agent-task1-t16-assets-b",
+      "sourceEvidenceIds": [
+        "T16-EXT-SKL-011"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "project-workflow-analysis-blueprint-generator",
+      "version": "1.0.0",
+      "description": "分析项目工作流并生成可执行的交付蓝图与依赖关系。",
+      "useWhen": "需要把复杂项目拆成阶段、工件、角色和检查点。",
+      "doNotUseWhen": "需要微服务韧性模式、投影实现或日志告警调查。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/project-workflow-analysis-blueprint-generator/SKILL.md",
+          "sha256": "1563be31e5dd0568317b196dc92e10282a41d628db7bc04a990ad9019d35c37b"
+        }
+      ],
+      "contentHash": "0ea43ce7751863bfc81051c52a0a9529615b90f9e8d70297fe2093abf91dccf6"
+    },
+    {
+      "assetId": "T16-SKL-017",
+      "ownerAgentId": "agent-task1-t16-assets-b",
+      "sourceEvidenceIds": [
+        "T16-EXT-SKL-012"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "name": "build-evidence-map",
+      "version": "1.0.0",
+      "description": "将需求、实现和验证证据整理为可追溯的证据映射。",
+      "useWhen": "需要把声明与代码、测试或文档证据建立对应关系。",
+      "doNotUseWhen": "需要设计事件投影、边缘模块或云架构模式。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/build-evidence-map/SKILL.md",
+          "sha256": "fb104196d94a0530eb5b86c56edfdaac0954a842f7cc71dfd4dcf87b20675fc9"
+        }
+      ],
+      "contentHash": "ae55c36b832b5f0974a51cd3ae61467d938b23be7c7f0180182797d6082349e7"
+    }
+  ]
+}

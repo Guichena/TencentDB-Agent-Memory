@@ -1,0 +1,73 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T16-DS05-knowledge-trial-01",
+  "stage": "DS05",
+  "team_id": "T16",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T16-TRIAL-KNW-001",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Beacon Notification Queue 正在调整重试退避和消费者恢复流程，需要把 poison message 的处置与死信运维衔接起来。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前方案只确认要保留消息关联标识、先观察再恢复，并记录每次处理；具体隔离门槛和重放顺序尚未展开。"
+        },
+        {
+          "role": "user",
+          "content": "我需要一次性确认何时把消息隔离到死信，以及怎样安全地把它们重放回队列。"
+        },
+        {
+          "role": "assistant",
+          "content": "代码和当前讨论没有给出这套运维细节，应该以内部恢复记录中的可执行步骤为准。"
+        }
+      ],
+      "changed_message_index": 4,
+      "query": "请查询内部 Beacon 恢复手册，给出 poison message 的隔离阈值和死信重放步骤。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "会话里没有恢复手册的具体阈值或步骤；请先定位匹配的内部资料，再查询并回答。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "当前上下文没有 Beacon DLQ recovery runbook 中的 poison message 隔离阈值和死信重放步骤，需要读取 T16-KNW-002。",
+          "route": "knowledge",
+          "target_asset_ids": ["T16-KNW-002"],
+          "allowed_sequence_candidates": [
+            ["knowledge_tools_list", "knowledge_tools_call"]
+          ],
+          "stop_after_candidate": "首次发现目标资源后，按 listing 返回的精确 search tool_name 与 params 完成一次成功查询即停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充可直接执行的 runbook 决定：同一 message_id 连续失败 5 次后标记为 poison 并转入 beacon.notify.dlq，保留原始 partition、offset 和 message_id；死信重放前先暂停 consumer group，修复或隔离坏消息后按原 partition 顺序从最旧条目开始，每批 100 条重放，成功后再恢复 consumer，并在审计记录中写入 replay 操作人、时间和结果。这就是本次要查的阈值与步骤。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已给出连续失败阈值、目标死信队列、关联标识保留、重放前置条件、顺序、批量大小、恢复时机和审计字段，足以直接回答查询。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T16-KNW-001",
+        "T16-KNW-003",
+        "T16-L2-002"
+      ],
+      "controlled_delta_note": "Positive 保留隔离阈值与重放步骤的信息空缺；Negative 直接提供完整 runbook 事实，其他共享消息和查询保持不变。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "确认正例可见文字未泄露失败次数、队列名、批量大小或重放顺序。",
+        "确认资源工具列表后只调用一次 listing 返回的 search，并在成功响应后停止。",
+        "确认负例 delta 与 search 成功结果中的 rule_text 逐字一致。"
+      ]
+    }
+  ]
+}

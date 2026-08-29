@@ -1,0 +1,52 @@
+{
+  "schema_version": "task1.skill_source_lock.v1",
+  "team_id": "T16",
+  "frozen_at": "2026-08-30T22:00:00+08:00",
+  "repositories": [
+    {
+      "key": "github-awesome-copilot",
+      "url": "https://github.com/github/awesome-copilot",
+      "commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "commit_author_time": "2026-08-28T05:41:12Z",
+      "license": "MIT",
+      "license_path": "LICENSE",
+      "license_sha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823"
+    },
+    {
+      "key": "wshobson-agents",
+      "url": "https://github.com/wshobson/agents",
+      "commit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "commit_author_time": "2026-08-26T12:14:08Z",
+      "license": "MIT",
+      "license_path": "LICENSE",
+      "license_sha256": "f89abb55d9f073f38f1703e4518f0613c788c6174be7f13b8dfe48a1c076c746"
+    }
+  ],
+  "files": [
+    {"source_id":"T16-EXT-SKL-001","name":"cloud-design-patterns","repository_key":"github-awesome-copilot","path":"skills/cloud-design-patterns/SKILL.md","copied_path":"cloud-design-patterns/SKILL.md","sha256":"69b0e14a0011137f7253f90b85745eba1710d8849710e3b5b677e3bf9dfe6320"},
+    {"source_id":"T16-EXT-RES-001","name":"cloud-design-patterns-messaging-integration","repository_key":"github-awesome-copilot","path":"skills/cloud-design-patterns/references/messaging-integration.md","copied_path":"cloud-design-patterns/references/messaging-integration.md","sha256":"16b3a768c6fad4a33351c4791709b748edf6977c176104cdc9954c90167a0bd1"},
+    {"source_id":"T16-EXT-SKL-002","name":"python-azure-iot-edge-modules","repository_key":"github-awesome-copilot","path":"skills/python-azure-iot-edge-modules/SKILL.md","copied_path":"python-azure-iot-edge-modules/SKILL.md","sha256":"51b16bbdf7271198b60bc1958322b6c52be19ab7313e1f146b77dd7c31add26d"},
+    {"source_id":"T16-EXT-SKL-003","name":"aws-cloudwatch-investigation","repository_key":"github-awesome-copilot","path":"skills/aws-cloudwatch-investigation/SKILL.md","copied_path":"aws-cloudwatch-investigation/SKILL.md","sha256":"e278e755854bb81bcce39e41395aaae189f49aa6f4397d8723dd1a01518b1526"},
+    {"source_id":"T16-EXT-SKL-004","name":"incident-postmortem","repository_key":"github-awesome-copilot","path":"skills/incident-postmortem/SKILL.md","copied_path":"incident-postmortem/SKILL.md","sha256":"0492b8e05eba16cf045041b519536f906b06b278c77a0a33b4b947ed0b79176b"},
+    {"source_id":"T16-EXT-SKL-005","name":"bug-reproduction-brief","repository_key":"github-awesome-copilot","path":"skills/bug-reproduction-brief/SKILL.md","copied_path":"bug-reproduction-brief/SKILL.md","sha256":"522ad2948c498f6dcee6d48773387058d2cba3c45ba9e093ed35210601d141b6"},
+    {"source_id":"T16-EXT-SKL-006","name":"create-github-action-workflow-specification","repository_key":"github-awesome-copilot","path":"skills/create-github-action-workflow-specification/SKILL.md","copied_path":"create-github-action-workflow-specification/SKILL.md","sha256":"25b57a8e4ed35e2e640dc9f6f255dc6c8f86574b98d2abc5153b5a8c9b22491c"},
+    {"source_id":"T16-EXT-SKL-007","name":"qdrant-monitoring","repository_key":"github-awesome-copilot","path":"skills/qdrant-monitoring/SKILL.md","copied_path":"qdrant-monitoring/SKILL.md","sha256":"5264e89c01d4e02fb3db9ad9bebd0132c7de951a249c1ebc93d863a834529af2"},
+    {"source_id":"T16-EXT-SKL-008","name":"mvvm-toolkit-messenger","repository_key":"github-awesome-copilot","path":"skills/mvvm-toolkit-messenger/SKILL.md","copied_path":"mvvm-toolkit-messenger/SKILL.md","sha256":"05fe9691a670b8d5d43184f66f40e36d980c9e878673d11639a3ac48375fa563"},
+    {"source_id":"T16-EXT-SKL-009","name":"aspire","repository_key":"github-awesome-copilot","path":"skills/aspire/SKILL.md","copied_path":"aspire/SKILL.md","sha256":"f4cb7a6c3d437edd447a097d984ed43e519c8c53433ddf131a3061c477753542"},
+    {"source_id":"T16-EXT-SKL-010","name":"bug-receipt","repository_key":"github-awesome-copilot","path":"skills/bug-receipt/SKILL.md","copied_path":"bug-receipt/SKILL.md","sha256":"8d3803c8b10504a11b279ca5872b108cb09f549adf4bf8898ed3cceac5a3b991"},
+    {"source_id":"T16-EXT-SKL-011","name":"project-workflow-analysis-blueprint-generator","repository_key":"github-awesome-copilot","path":"skills/project-workflow-analysis-blueprint-generator/SKILL.md","copied_path":"project-workflow-analysis-blueprint-generator/SKILL.md","sha256":"1563be31e5dd0568317b196dc92e10282a41d628db7bc04a990ad9019d35c37b"},
+    {"source_id":"T16-EXT-SKL-012","name":"build-evidence-map","repository_key":"github-awesome-copilot","path":"skills/build-evidence-map/SKILL.md","copied_path":"build-evidence-map/SKILL.md","sha256":"fb104196d94a0530eb5b86c56edfdaac0954a842f7cc71dfd4dcf87b20675fc9"},
+    {"source_id":"T16-EXT-SKL-013","name":"saga-orchestration","repository_key":"wshobson-agents","path":"plugins/backend-development/skills/saga-orchestration/SKILL.md","copied_path":"saga-orchestration/SKILL.md","sha256":"95372f5b8235053557c135d9d8a6d785d2feb9af1187230a72c8285aa38793f5"},
+    {"source_id":"T16-EXT-SKL-014","name":"cqrs-implementation","repository_key":"wshobson-agents","path":"plugins/backend-development/skills/cqrs-implementation/SKILL.md","copied_path":"cqrs-implementation/SKILL.md","sha256":"03102920d27186143fe6349cda929b50c18733e989bc3f2b491667f26fa9fe34"},
+    {"source_id":"T16-EXT-SKL-015","name":"projection-patterns","repository_key":"wshobson-agents","path":"plugins/backend-development/skills/projection-patterns/SKILL.md","copied_path":"projection-patterns/SKILL.md","sha256":"b05b06b24ea2c6287d4b3957547b263df43c2cc945ea3acdcd58f513a0bda1d5"},
+    {"source_id":"T16-EXT-SKL-016","name":"microservices-patterns","repository_key":"wshobson-agents","path":"plugins/backend-development/skills/microservices-patterns/SKILL.md","copied_path":"microservices-patterns/SKILL.md","sha256":"c9d34026de5eb5b9f730604d1979df9aaa58dd7fa40c022e071da5ca65d68759"},
+    {"source_id":"T16-EXT-SKL-017","name":"workflow-orchestration-patterns","repository_key":"wshobson-agents","path":"plugins/backend-development/skills/workflow-orchestration-patterns/SKILL.md","copied_path":"workflow-orchestration-patterns/SKILL.md","sha256":"f4418f98189bd89d7b801ec65df48b53caa1c555a23f1d9684799415818f1024"}
+  ],
+  "review": {
+    "license_verified": true,
+    "raw_hashes_verified": true,
+    "upstream_dependencies_installed": false,
+    "upstream_tests_run": false,
+    "reviewed_by": "sol-owner"
+  }
+}

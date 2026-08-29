@@ -1,0 +1,57 @@
+{
+  "schema_version":"task1.luna_pair_draft.v1",
+  "batch_id":"build-08-T16-memory-trial-01",
+  "stage":"DS05",
+  "team_id":"T16",
+  "family":"memory",
+  "pairs":[
+    {
+      "draft_pair_id":"T16-TRIAL-MEM-001",
+      "external_source_ids":[],
+      "synthetic_scope":["team","project","conversation","history"],
+      "difficulty":"hard",
+      "context_bucket":"long_12_to_18",
+      "shared_context_messages":[
+        {"role":"user","content":"我们在 Ledger Event Ingestion 的工作区复盘 consumer 幂等问题，请只围绕 outbox 事件进入 consumer 后的去重背景整理。"},
+        {"role":"assistant","content":"收到。我会把 outbox 发布、至少一次投递和 consumer 去重分开记录，避免把 Beacon 的重试阈值混进来。"},
+        {"role":"user","content":"同一笔 ledger 事件偶尔会被投递两次，第一次处理成功，第二次在写入前被识别为重复。"},
+        {"role":"assistant","content":"那要确认去重键是否在不同重试路径保持稳定，而不是只看 broker 的 offset。"},
+        {"role":"user","content":"事件来自同一个租户和账户，entry 也相同，但 envelope 会带投递尝试信息。"},
+        {"role":"assistant","content":"投递尝试信息通常描述传输过程，是否进入业务幂等键需要单独确认。"},
+        {"role":"user","content":"别把 Relay 的 partition key 或 Consumer Watch 的 lag 标识当成 ledger 幂等键。"},
+        {"role":"assistant","content":"明白，分区路由和延迟诊断都是相邻干扰，当前只核对 Ledger consumer 的业务去重决定。"},
+        {"role":"user","content":"我们已经确定要做去重，但当前摘要没有保留键由哪些字段组成。"},
+        {"role":"assistant","content":"需要找回当时讨论中直接写出字段顺序和排除字段的那条原始消息。"},
+        {"role":"user","content":"这个问题问的是精确决定，不是泛泛解释幂等的概念。"},
+        {"role":"assistant","content":"好的，恢复时要保留原话中的字段、拼接顺序和不应加入的投递字段。"},
+        {"role":"user","content":"请把范围留在 Ledger consumer 的幂等复盘，不要扩大到 schema 版本演进。"},
+        {"role":"assistant","content":"会限定在这条 consumer 复盘，命中直接写出决定的消息后停止。"}
+      ],
+      "changed_message_index":14,
+      "query":"上次 Ledger consumer 复盘中，幂等键由哪些字段按什么顺序组成，并明确排除了哪个字段？",
+      "positive":{
+        "delta_message":{"role":"assistant","content":"当前上下文只确认需要稳定去重键，还没有保留字段组成、拼接顺序和排除字段的精确决定；请找回 Ledger 复盘原话。"},
+        "private_proposal":{
+          "unique_information_gap":"需要找回 T16-L0-004 中 Ledger consumer 幂等键组成的精确原话，包含字段、顺序和被排除的投递尝试字段。",
+          "route":"memory",
+          "target_asset_ids":["T16-L0-004"],
+          "allowed_sequence_candidates":[["tdai_conversation_search"]],
+          "stop_after_candidate":"返回包含字段组成、拼接顺序和排除字段的目标消息后立即停止。"
+        }
+      },
+      "negative":{
+        "delta_message":{"role":"assistant","content":"复盘决定是：幂等键按 tenant_id|account_id|entry_id|schema_version 拼接，只使用这四个字段；明确不把 attempt_id 放入键，因为它会随投递重试变化。"},
+        "private_proposal":{"route":"none","why_current_context_is_sufficient":"追加消息已经完整给出幂等键的四个字段、拼接顺序和排除字段及理由。"}
+      },
+      "visible_distractor_ids_author_only":["T16-L0-003","T16-L1-006","T16-L2-003"],
+      "controlled_delta_note":"正负样本共享相同的 Ledger 团队背景、14 条消息和查询；仅追加消息从缺少幂等键事实变为给出完整决定。",
+      "source_fact_map":[],
+      "sol_review_questions":[
+        "正例是否只留下字段组成、顺序和排除字段这一个事实缺口？",
+        "负例是否完整补足四字段拼接和 attempt_id 排除理由？",
+        "Relay partition key、摘要概括和幂等场景说明是否构成至少两个真实干扰？",
+        "候选消息返回后是否只需一次 conversation_search 并立即停止？"
+      ]
+    }
+  ]
+}

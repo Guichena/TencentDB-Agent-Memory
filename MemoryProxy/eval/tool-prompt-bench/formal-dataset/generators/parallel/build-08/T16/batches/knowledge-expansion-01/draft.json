@@ -1,0 +1,137 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T16-DS05-knowledge-expansion-01",
+  "stage": "DS05",
+  "team_id": "T16",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T16-EXP-KNW-001",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Ledger Event Ingestion 正在梳理写库、outbox 发布和消费者去重之间的责任边界，目标是保证至少一次投递下不重复入账。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前方案只确认要保留事件关联标识、让写库与 outbox 处于同一事务，并在消费侧做幂等处理；具体代码调用关系尚未展开。"
+        },
+        {
+          "role": "user",
+          "content": "我需要确认 outbox 写入从哪里进入、发布使用哪个幂等键，以及重复事件在哪一层被丢弃。"
+        },
+        {
+          "role": "assistant",
+          "content": "这些关系不能从当前讨论推断，应该以 Ledger 内部代码图谱中的入口和边为准。"
+        }
+      ],
+      "changed_message_index": 4,
+      "query": "请查询内部 Ledger 代码图谱，给出 outbox 写入、发布、幂等去重的完整调用链和关键规则。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "当前会话没有这条调用链的确切记录；请先定位匹配的内部代码资料，再查询并回答。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "上下文缺少 Ledger consumer code graph 中的 outbox 入口、发布幂等键、去重位置和完整调用链，需要读取 T16-KNW-001。",
+          "route": "knowledge",
+          "target_asset_ids": ["T16-KNW-001"],
+          "allowed_sequence_candidates": [
+            ["knowledge_tools_list", "knowledge_tools_call"]
+          ],
+          "stop_after_candidate": "首次发现目标资源后，按 listing 返回的精确 search tool_name 与 params 完成一次成功查询即停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充可直接采用的图谱结论：Ledger 写库事务在 OrderOutboxWriter.commit 中同时写入 outbox；LedgerDispatcher.publish 以 event_id 作为幂等键；重复事件在 LedgerConsumer.deduplicate 中按 event_id 丢弃，确认成功后才提交 offset；调用链为 OrderService.save → OrderOutboxWriter.commit → LedgerDispatcher.publish → LedgerConsumer.deduplicate。这就是本次要查的调用链。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已给出事务入口、outbox 写入位置、发布幂等键、去重位置、提交时机和完整调用顺序，足以直接回答查询。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T16-L0-002",
+        "T16-SKL-008",
+        "T16-KNW-003"
+      ],
+      "controlled_delta_note": "Positive 保留代码图谱事实空缺；Negative 直接提供完整 outbox/幂等调用链，其他共享消息和查询保持不变。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "确认正例可见文字未泄露方法名、幂等键或调用顺序。",
+        "确认资源工具列表后只调用一次 listing 返回的 search，并在成功响应后停止。",
+        "确认负例 delta 与 search 成功结果中的 rule_text 逐字一致。"
+      ]
+    },
+    {
+      "draft_pair_id": "T16-EXP-KNW-002",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Streamline Event Schema 正在安排 envelope 的版本演进，既要让新消费者使用新字段，也要避免旧消费者在迁移期间停止处理事件。"
+        },
+        {
+          "role": "assistant",
+          "content": "目前只确认要维持事件关联信息、按版本管理变更，并给消费者留出迁移窗口；采用哪些字段和兼容级别尚未在会话中展开。"
+        },
+        {
+          "role": "user",
+          "content": "我需要一次性确认 envelope 的必备字段、何时升 major 或 minor，以及旧消费者要支持到哪个版本。"
+        },
+        {
+          "role": "assistant",
+          "content": "可以据此规划迁移，但具体治理规则必须以 Streamline 的内部 schema 记录为准。"
+        }
+      ],
+      "changed_message_index": 4,
+      "query": "请查询内部事件 schema 治理资料，给出 envelope 必备字段、版本升级规则和消费者兼容窗口。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "当前讨论没有治理记录中的精确字段或版本规则；请先定位匹配的内部 schema 资料，再查询并回答。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "上下文缺少 Streamline event schema governance 中的 envelope 必备字段、major/minor 规则和消费者兼容窗口，需要读取 T16-KNW-003。",
+          "route": "knowledge",
+          "target_asset_ids": ["T16-KNW-003"],
+          "allowed_sequence_candidates": [
+            ["knowledge_tools_list", "knowledge_tools_call"]
+          ],
+          "stop_after_candidate": "首次发现目标资源后，按 listing 返回的精确 search tool_name 与 params 完成一次成功查询即停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充可直接采用的治理决定：envelope 必须保留 event_id、event_type、event_version、occurred_at；新增 optional 字段沿用当前 major 并递增 minor；删除字段或把 optional 改 required 需递增 major；消费者兼容窗口要求旧消费者至少支持当前与前一 minor，迁移完成后才停发旧版本。这就是本次要查的 schema 规则。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已给出四个必备字段、optional 新增的版本规则、破坏性变更的 major 规则和旧消费者兼容窗口，足以直接回答查询。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T16-L1-011",
+        "T16-SKL-017",
+        "T16-KNW-001"
+      ],
+      "controlled_delta_note": "Positive 保留 schema 治理事实空缺；Negative 直接提供完整 envelope、版本和消费者兼容事实，其他共享消息和查询保持不变。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "确认正例可见文字未泄露必备字段、版本增量或兼容窗口。",
+        "确认资源工具列表后只调用一次 listing 返回的 search，并在成功响应后停止。",
+        "确认负例 delta 与 search 成功结果中的 rule_text 逐字一致。"
+      ]
+    }
+  ]
+}
