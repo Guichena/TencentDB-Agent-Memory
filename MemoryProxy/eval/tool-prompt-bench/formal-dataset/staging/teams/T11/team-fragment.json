@@ -4541,180 +4541,180 @@
       "positiveCaseId": "T11-MEMORY-001-P",
       "negativeCaseId": "T11-MEMORY-001-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "98e6ba0fb84e300aa23ab64a1a41ada804f938a1f56f88721ce092691a5771f3",
+      "controlledDeltaSha256": "b274b42c020607bcad479fe31e51a215e5ca935df1a2862db0fc94ed54276f26",
       "currentEvidenceRefs": [
         "source-t11-current-anchor",
         "source-t11-pairs"
       ],
-      "contentHash": "24bff803e6fc5a1a035f7165736ff7557a865d6fe11f14f47ac54dd9edab4ef2"
+      "contentHash": "eb498c09ff925116700a1d59044081994bd6eaf869fb74bb39dd463bfc5d8d56"
     },
     {
       "pairId": "T11-PAIR-002",
       "positiveCaseId": "T11-MEMORY-002-P",
       "negativeCaseId": "T11-MEMORY-002-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "82b97f89db976e3b4f13de103b77d625b1a5f754cae4dc89012db0e9adeda269",
+      "controlledDeltaSha256": "1fe2c76d07611ef505396438e20d0c118afae016f911c22a00e0a599f8be4595",
       "currentEvidenceRefs": [
         "source-t11-current-anchor",
         "source-t11-pairs"
       ],
-      "contentHash": "893a999cdc534244183466fd3623a6de53f7f921595e78bf7e04cdeecee80e87"
+      "contentHash": "86c1ee5c63fa54b46ab5f284ce95a412e94b95a1191780c2b7b51fca25878a4b"
     },
     {
       "pairId": "T11-PAIR-003",
       "positiveCaseId": "T11-MEMORY-003-P",
       "negativeCaseId": "T11-MEMORY-003-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "aac3aff46b00a18f7145532e46c87096bf8374ebe05596d2cb917a050c10ba31",
+      "controlledDeltaSha256": "b43bb5a816dce120d801a3322b3a8a791025079a6ed5daee72dd25d0ba271746",
       "currentEvidenceRefs": [
         "source-t11-current-anchor",
         "source-t11-pairs"
       ],
-      "contentHash": "f16bf0aea97d3415d83e9498f3cb09cc50f30a7f34000924b5980660efe5f6c0"
+      "contentHash": "712490c79eaedb359fdba3c45ae1372058e65e70fd553d1a05d1448cb9c06eee"
     },
     {
       "pairId": "T11-PAIR-004",
       "positiveCaseId": "T11-MEMORY-004-P",
       "negativeCaseId": "T11-MEMORY-004-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "01e9d2dbd5f5394789798d3546608399b8e5237798f0c8ff26a47da71a4c91ac",
+      "controlledDeltaSha256": "3cb6648cddb90141391919b903578fa430f96de168ef20c28b05b2ee2fecf6b7",
       "currentEvidenceRefs": [
         "source-t11-current-anchor",
         "source-t11-pairs"
       ],
-      "contentHash": "5a1adc301d169d0cbab9deb5d987a9bf95c4a59eb66b081d9454a244e97c6bb4"
+      "contentHash": "87def45691b757d3aaa7e53e8cb8014c7b996d622237ac40fe66e1a06cd35ec5"
     },
     {
       "pairId": "T11-PAIR-005",
       "positiveCaseId": "T11-MEMORY-005-P",
       "negativeCaseId": "T11-MEMORY-005-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "c93e8c5aea706cf1f0c4ea81adeeecf6777823d407f86434baff00cb82b90bf1",
+      "controlledDeltaSha256": "4dd4f00eddc7e12371099b7b4ecd5a8cb6eeeb866ef69a05b847d89e97588145",
       "currentEvidenceRefs": [
         "source-t11-current-anchor",
         "source-t11-pairs"
       ],
-      "contentHash": "9472f5c259ec39ff2d69b3b72d83ce8e1044797d0e3a74cbd47e9b997aa78454"
+      "contentHash": "131c11c9789593a7faa09cf11144ac163fa743b8dab919cba61361b04ab59afc"
     },
     {
       "pairId": "T11-PAIR-006",
       "positiveCaseId": "T11-MEMORY-006-P",
       "negativeCaseId": "T11-MEMORY-006-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "66211b5bf6d53e48a4154bd72833c88cf88fcfa0af7f8371cf7d0dd6c4cee58e",
+      "controlledDeltaSha256": "af8271fdf78fe8ecd842611ddb6e4f8c0a84ffb562c7f279a4b05734492f3bac",
       "currentEvidenceRefs": [
         "source-t11-current-anchor",
         "source-t11-pairs"
       ],
-      "contentHash": "725b70ed7e8fe6a9d7fbb7bfeafd84a9fde8993044eb805113402a768641177a"
+      "contentHash": "c66942c3dd4b2a8e9a16f8473c0eb2f8a64383f92a7fdbee8dc47e80ce902d7c"
     },
     {
       "pairId": "T11-PAIR-007",
       "positiveCaseId": "T11-SKILL-007-P",
       "negativeCaseId": "T11-SKILL-007-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "89c4399b7a138ebdb4263160a36430cb752641e040e83c8afa546c3c13e02b7d",
+      "controlledDeltaSha256": "20175e0bcba158426b335ee911bbd8936ff383307ca913f22f7bf066201fc9b6",
       "currentEvidenceRefs": [
         "source-t11-current-anchor",
         "source-t11-pairs"
       ],
-      "contentHash": "54385b20e382358807bb5ba3fcbb933981730668483418e831f6fbe0eff7b4a5"
+      "contentHash": "434152b78f5aa67eb805e6c6cff105e279968dfc709c9b3e4f87af41d283db89"
     },
     {
       "pairId": "T11-PAIR-008",
       "positiveCaseId": "T11-SKILL-008-P",
       "negativeCaseId": "T11-SKILL-008-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "9bf72b5ed58d9b184d907b9d4177caf4568a0aded391961f1401e57efb57fe8d",
+      "controlledDeltaSha256": "2ceca8a8304165e6098690af59cd9031aa6fa763eedae70f5c5d7fb35457f32d",
       "currentEvidenceRefs": [
         "source-t11-current-anchor",
         "source-t11-pairs"
       ],
-      "contentHash": "9bfb97ae50853541fbc7fd8108366ff438f2034ea2bcccf7661107aa5a89d8e7"
+      "contentHash": "99b0154f3869924c4b86667607fb03754423a39e4cd54dc21a1475ed0b5aca4e"
     },
     {
       "pairId": "T11-PAIR-009",
       "positiveCaseId": "T11-SKILL-009-P",
       "negativeCaseId": "T11-SKILL-009-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "b7e54e8ce14b3e74a567bd5683426c3bff2aebb1e2aafb9c8dfef5a0586d76a6",
+      "controlledDeltaSha256": "88a0bf89d873226b50c06d73a62d05ba559b90a8c2a0f796cbf45fac52c399e1",
       "currentEvidenceRefs": [
         "source-t11-current-anchor",
         "source-t11-pairs"
       ],
-      "contentHash": "32fe8fe81bbd541e18c09f49c2ceab630877301d10fe8626a5decf94a9f82560"
+      "contentHash": "ebb3525555f2728ee5dba4380ca45652d3d2840ea72c01013f1e457932f15179"
     },
     {
       "pairId": "T11-PAIR-010",
       "positiveCaseId": "T11-SKILL-010-P",
       "negativeCaseId": "T11-SKILL-010-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "032e086b1351576c3d091cc039d18c64fcc8f9ca80257a19539787d6fe45a4bc",
+      "controlledDeltaSha256": "5ddc5c223f31285e282480e1905c5ab13039bdbb7f86d1a6b18ec293da523a3b",
       "currentEvidenceRefs": [
         "source-t11-current-anchor",
         "source-t11-pairs"
       ],
-      "contentHash": "905c7bdb3795ae0022f6517ab88f82fe4b9e8a29af7857d33aa22befb6acdb11"
+      "contentHash": "eeb1ada996dbee57976e70192f03ad3e6eaced85abeea224b0e4e2d464c90127"
     },
     {
       "pairId": "T11-PAIR-011",
       "positiveCaseId": "T11-SKILL-011-P",
       "negativeCaseId": "T11-SKILL-011-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "23e4b59731c0bbfb9f548befb21c1fafedd2f0fb8e339cff097072a82ca3713e",
+      "controlledDeltaSha256": "0c73215556fc4b837c9d3b68e1fe09137122b510bb671e9afc802cfd6c2fc322",
       "currentEvidenceRefs": [
         "source-t11-current-anchor",
         "source-t11-pairs"
       ],
-      "contentHash": "f0d7a852b99378b1a4aba31823d071f17fab27be84234496827b946cf2b2d7ae"
+      "contentHash": "089d6a90446c4c7322a02c39806512113df8021bf13420c174a0798ef432bb9c"
     },
     {
       "pairId": "T11-PAIR-012",
       "positiveCaseId": "T11-SKILL-012-P",
       "negativeCaseId": "T11-SKILL-012-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "d6cb9231c8d829d1808bb56856ac28bbac6126592e6e8ecab0461c9a69323368",
+      "controlledDeltaSha256": "6c47a8320daf10e84e740ebf169a90c7b366f6ba391b4c592127be62cacac4d0",
       "currentEvidenceRefs": [
         "source-t11-current-anchor",
         "source-t11-pairs"
       ],
-      "contentHash": "f02421fb46958a1675f1b583e4d68307eb2a1ee7f319de98f4a3aa393fc65cb7"
+      "contentHash": "17c078f06ed3f45eb8dcc27a1f4a127c0465f56cf7f46b8f7d5a4a648fd6b427"
     },
     {
       "pairId": "T11-PAIR-013",
       "positiveCaseId": "T11-KNOWLEDGE-013-P",
       "negativeCaseId": "T11-KNOWLEDGE-013-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "d1d33a0f16a762a36e1ad9bc89588de2bf6407cc2ca698292d213b902cc3ed8f",
+      "controlledDeltaSha256": "868bc6e478f850ff2957c307b3929a59ee68778dbc24c404106db09bf60a3213",
       "currentEvidenceRefs": [
         "source-t11-current-anchor",
         "source-t11-pairs"
       ],
-      "contentHash": "8b7026a85fe58b2d72340be8d7840138d3f738f8040ce0abea9eaef017382dc3"
+      "contentHash": "988eb1b539535dab258e42d93d1ba72b8a6fe7069881c0aedd1a86794f803f07"
     },
     {
       "pairId": "T11-PAIR-014",
       "positiveCaseId": "T11-KNOWLEDGE-014-P",
       "negativeCaseId": "T11-KNOWLEDGE-014-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "bbb9e99b3d9afac91d75f42dfea2a4f12da09ed54147bbe2bb70879c5867dbac",
+      "controlledDeltaSha256": "f72c31d7d3e187abdfb7eb82b9e258042e0016af7efe5fd0b040351bc668148f",
       "currentEvidenceRefs": [
         "source-t11-current-anchor",
         "source-t11-pairs"
       ],
-      "contentHash": "9675d25d4c0c0cc41e253fd43cb43fe5660a2b7f174bb8750bc3d897f37bef55"
+      "contentHash": "c0b3705e5750c2d029aec4d9df6801d7a134bc72fa47b3fe0d2ed9bce7f58467"
     },
     {
       "pairId": "T11-PAIR-015",
       "positiveCaseId": "T11-KNOWLEDGE-015-P",
       "negativeCaseId": "T11-KNOWLEDGE-015-N",
       "counterfactualKind": "answer_in_current_context",
-      "controlledDeltaSha256": "61b5f551a3eb39758c8d256bbf668d3e3b59fb73f3db20e3870c4f2d909f9fd8",
+      "controlledDeltaSha256": "5660835f7bb3bef882b5cfe67133c3d1060b4b076d39a2522064fda6f3da7867",
       "currentEvidenceRefs": [
         "source-t11-current-anchor",
         "source-t11-pairs"
       ],
-      "contentHash": "960b71b9872685aa6fda724cedd07a9080564ca50363875f5fa3477295b8a1a8"
+      "contentHash": "9c2c4d0070488c78820678914b6960ff23f03bb28d7a375bf77ac1c7a6d267d4"
     }
   ],
   "snapshotAssetIds": [
@@ -4751,7 +4751,10 @@
       "path": "build-system/agp/agp-9-upgrade/SKILL.md",
       "license": "Apache-2.0",
       "rawFileSha256": "58ef4a47c25d1ebe44f433be03c2dab672efecb4a641b6e025f93f5712d6f651",
-      "storedPath": "source-material/T11/skills/android-agp9-upgrade/SKILL.md"
+      "storedFileSha256": "58ef4a47c25d1ebe44f433be03c2dab672efecb4a641b6e025f93f5712d6f651",
+      "storedPath": "source-material/T11/skills/android-agp9-upgrade/SKILL.md",
+      "licenseFileSha256": "49bbe9114e49214df2ccc324cb3ac8d1d1aa1c3a0947f94c286765e86647b32e",
+      "storedLicensePath": "source-material/T11/skills/licenses/android-skills-LICENSE.txt"
     },
     {
       "sourceId": "source-t11-skill-profiler",
@@ -4760,7 +4763,10 @@
       "path": "profilers/android-profiler/SKILL.md",
       "license": "Apache-2.0",
       "rawFileSha256": "5728c27f7f5f19d8f18e7d0f4a1a3690a9bca06bd7d0989456ec52466aaf892a",
-      "storedPath": "source-material/T11/skills/android-profiler/SKILL.md"
+      "storedFileSha256": "5728c27f7f5f19d8f18e7d0f4a1a3690a9bca06bd7d0989456ec52466aaf892a",
+      "storedPath": "source-material/T11/skills/android-profiler/SKILL.md",
+      "licenseFileSha256": "49bbe9114e49214df2ccc324cb3ac8d1d1aa1c3a0947f94c286765e86647b32e",
+      "storedLicensePath": "source-material/T11/skills/licenses/android-skills-LICENSE.txt"
     },
     {
       "sourceId": "source-t11-skill-state-restoration",
@@ -4769,7 +4775,10 @@
       "path": "compose/patterns/testing-state-restoration/SKILL.md",
       "license": "Apache-2.0",
       "rawFileSha256": "d60eb54dc82a08050c45aa4d74a4d4e3fe05d299058273a5c8902051ff13af63",
-      "storedPath": "source-material/T11/skills/compose-state-restoration-test/SKILL.md"
+      "storedFileSha256": "d60eb54dc82a08050c45aa4d74a4d4e3fe05d299058273a5c8902051ff13af63",
+      "storedPath": "source-material/T11/skills/compose-state-restoration-test/SKILL.md",
+      "licenseFileSha256": "fabd7028904f0fb3fb547523786ef3b288b03d0c4114feaa1c2256e79c652dae",
+      "storedLicensePath": "source-material/T11/skills/licenses/android-testing-skills-LICENSE"
     }
   ]
 }
