@@ -1,7 +1,16 @@
+import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
+import { captureStageInventory } from "../../eval/tool-prompt-bench/capture-code-freeze.js";
 import { CASES, FIXTURES } from "../../eval/tool-prompt-bench/case-definitions.js";
 import { evaluateToolPromptCase } from "../../eval/tool-prompt-bench/evaluator.js";
 import { createToolPromptMockBridge } from "../../eval/tool-prompt-bench/mock-bridge.js";
@@ -627,6 +636,52 @@ describe("TDAI-ToolPromptBench dataset", () => {
       const content = readFileSync(resolve(root, relativePath));
       expect(content.byteLength).toBe(expected.bytes);
       expect(createHash("sha256").update(content).digest("hex")).toBe(expected.sha256);
+    }
+  });
+
+  it("pins stage gate hashes to tag blobs across LF and CRLF worktrees", () => {
+    const repoRoot = mkdtempSync(join(tmpdir(), "task1-stage-freeze-"));
+    const gateRoot = resolve(
+      repoRoot,
+      "MemoryProxy",
+      "eval",
+      "tool-prompt-bench",
+      "reports",
+      "gates",
+    );
+    const lfGate = "# Test Gate\n\n- status: `PASSED`\n";
+    const expectedGateSha256 = "368ebc8eee0678643ed6eb6844430b484e7d14733fd7db26279e95f2d7ca40fd";
+
+    try {
+      mkdirSync(gateRoot, { recursive: true });
+      for (let index = 0; index < 6; index += 1) {
+        writeFileSync(resolve(gateRoot, `C0${index}-gate.md`), lfGate, "utf8");
+      }
+      execFileSync("git", ["init", "--quiet"], { cwd: repoRoot });
+      execFileSync("git", ["config", "user.name", "Task 1 Test"], { cwd: repoRoot });
+      execFileSync("git", ["config", "user.email", "task1-test@example.invalid"], { cwd: repoRoot });
+      execFileSync("git", ["add", "MemoryProxy/eval/tool-prompt-bench/reports/gates"], { cwd: repoRoot });
+      execFileSync("git", ["commit", "--quiet", "-m", "test: freeze stage gates"], { cwd: repoRoot });
+      for (let index = 0; index < 6; index += 1) {
+        execFileSync("git", ["tag", `task1-c0${index}-pass`], { cwd: repoRoot });
+      }
+
+      const fromLfWorktree = captureStageInventory(repoRoot);
+      for (let index = 0; index < 6; index += 1) {
+        writeFileSync(
+          resolve(gateRoot, `C0${index}-gate.md`),
+          lfGate.replace(/\n/g, "\r\n"),
+          "utf8",
+        );
+      }
+      const fromCrlfWorktree = captureStageInventory(repoRoot);
+
+      expect(fromCrlfWorktree).toEqual(fromLfWorktree);
+      expect(fromLfWorktree.map((item) => item.gateSha256)).toEqual(
+        Array.from({ length: 6 }, () => expectedGateSha256),
+      );
+    } finally {
+      rmSync(repoRoot, { recursive: true, force: true });
     }
   });
 
