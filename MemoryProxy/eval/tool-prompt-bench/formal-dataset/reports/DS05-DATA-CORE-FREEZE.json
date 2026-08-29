@@ -1,0 +1,53 @@
+{
+  "schema_version": "task1.data_core_freeze_report.v1",
+  "stage": "DS05_data_core_freeze",
+  "status": "passed",
+  "data_core_status": "frozen",
+  "measurementV2Ready": false,
+  "formalMetricEligible": false,
+  "counts": {
+    "teams": 16,
+    "cases": 640,
+    "dev_cases": 240,
+    "hidden_test_cases": 400,
+    "pairs": 240
+  },
+  "canonical_sha256": {
+    "contract": "4fc62c1829301fe9f2410f6be40698d7b3d09ec90dde3bfe294452f7ef152d41",
+    "provider_full": "b50febf784e0c6dc2156c4e7853067556e1dd500d46d29ad3dbe718564c8dd52",
+    "provider_dev": "ab1842aa1cc6d36a79bd8c232f2d66fd0d097c50eea4c2c09c4b4c8393e6308a",
+    "provider_hidden": "fc2d655011681cf63c38e5b71e92790ebeb601ec77ed5cf2ac42784aa73e212b",
+    "private_gold_dev_v1": "064f259bf42459639548173b6f03d9665d0431e25e10ae701209de097b4cee7f",
+    "private_gold_hidden_v1": "33b75389c53e146298178d9b7dfec05e2a4ace4d9a620817070ccc5b0e73f4a0",
+    "snapshot_dev": "3a82d0ad8241ff3e2173555efbdb65dfb367a0a38c9998203c5b4754611a4783",
+    "snapshot_hidden": "23fe7b47d13c950765fa9557da918e1d102b7ab4558171cb15a8444d1cbd9c9e"
+  },
+  "file_sha256": {
+    "contract": "991ff87255019c0d4b64deba16b76b144bd3c63138be355c747865329e83da44",
+    "provider_dev": "8018bb65160eb1cac13e489ae54f258f2369dc4af058f09a3e1dc432961bc1f3",
+    "provider_hidden": "743b2ee051572c81aec8b4db6b581a77143ed283ee136448b095e8576e0d5799",
+    "private_gold_dev_v1": "88b7fc08ac9011f55e82af782ef66df4969cd46840d23075023d1fccb7e86495",
+    "private_gold_hidden_v1": "b083f1f8436b99757cc7ee6ff8e62828cc3664f0ccbe7b7b80db84c461327944",
+    "snapshot_dev": "a65226bf6ca0b32a22fd3ca97bffa83ad421a60a57d60a642a1b1130aaac1056",
+    "snapshot_hidden": "04c19a44bdea3c2bbbab86c7c2014d760e9e956ce2070d758eca4efb247cd07e",
+    "full_validation_report": "ff67e91dff17a7a5d64959abe8bb7869d46576c3dd854d6bb342007494750186"
+  },
+  "gates": {
+    "strict_formal_v1": "passed",
+    "provider_leakage_count": 0,
+    "pair_integrity_error_count": 0,
+    "cross_split_duplicate_count": 0,
+    "deterministic_compile": "passed",
+    "d0_vitest": "32/32",
+    "source_tools_python": "19/19",
+    "tool_prompt_contract": "30/30"
+  },
+  "measurement_blockers": {
+    "R01": "blocked_until_private_gold_v2_overlay",
+    "R02": "blocked_until_pair_v2_overlay",
+    "R03": "blocked_until_overlay_validator_passes",
+    "R04": "blocked_until_provider_exclusion_and_m0_m1_compatibility_pass"
+  },
+  "tag": "task1-data-core-formal-v1",
+  "note": "The annotated core tag is created after this self-contained report is committed; its commit id is intentionally not embedded to avoid self-reference."
+}

@@ -1,9 +1,12 @@
 {
   "schema_version": "task1.dataset_build_status.v1",
   "dataset_revision": "formal-v1",
-  "active_stage": "DS04_hidden_integration",
+  "active_stage": "DS05_data_core_freeze",
   "stage_status": "passed",
-  "next_stage": "DS05_full_freeze_gates",
+  "next_stage": "DS06_measurement_v2_overlay",
+  "data_core_status": "frozen",
+  "measurementV2Ready": false,
+  "formalMetricEligible": false,
   "branch": "codex/task1-data-integration",
   "baseline_commit": "960021e472456515a89d3c2c4f2962fbf6cc51a1",
   "parallel_baseline_ref": "task1-data-parallel-baseline-v2",
@@ -36,7 +39,10 @@
     "DS03_D0_TESTS",
     "DS03_TOOL_PROMPT_TESTS",
     "DS04_HIDDEN_STRICT_FREEZE",
-    "DS04_HIDDEN_DETERMINISTIC_COMPILE"
+    "DS04_HIDDEN_DETERMINISTIC_COMPILE",
+    "DS05_FULL_STRICT_FREEZE",
+    "DS05_FULL_CROSS_SPLIT_GATES",
+    "DS05_DATA_CORE_FROZEN"
   ],
   "team_progress": {
     "T01": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
@@ -58,8 +64,8 @@
   },
   "artifacts": {
     "contract": "registry/contracts/formal-v1.json",
-    "contract_file_sha256": "cb7c292bd1f326eeb0288e5afca14808b66e8870108849c32d6cb3a267754a34",
-    "contract_canonical_sha256": "e395311f1188b0f0be65356b11ae06d542a2934ef90c21e9bc0a55012f088a91",
+    "contract_file_sha256": "991ff87255019c0d4b64deba16b76b144bd3c63138be355c747865329e83da44",
+    "contract_canonical_sha256": "4fc62c1829301fe9f2410f6be40698d7b3d09ec90dde3bfe294452f7ef152d41",
     "provider_dev_file_sha256": "8018bb65160eb1cac13e489ae54f258f2369dc4af058f09a3e1dc432961bc1f3",
     "provider_dev_canonical_sha256": "ab1842aa1cc6d36a79bd8c232f2d66fd0d097c50eea4c2c09c4b4c8393e6308a",
     "private_gold_dev_file_sha256": "88b7fc08ac9011f55e82af782ef66df4969cd46840d23075023d1fccb7e86495",
@@ -73,10 +79,16 @@
     "snapshot_hidden_file_sha256": "04c19a44bdea3c2bbbab86c7c2014d760e9e956ce2070d758eca4efb247cd07e",
     "snapshot_hidden_canonical_sha256": "23fe7b47d13c950765fa9557da918e1d102b7ab4558171cb15a8444d1cbd9c9e"
   },
-  "blocking_issues": [],
-  "known_limitations": [
-    "All 16 Teams are integrated, but world.status remains draft until the DS05 Full cross-split Gate and final deterministic rebuild pass."
+  "blocking_issues": [
+    "R01: private Gold v2 overlay is not yet frozen and bound to the data core",
+    "R02: Pair v2 overlay is not yet frozen and bound to the data core",
+    "R03: Measurement-v2 overlay validator has not yet passed for all 640 cases and 240 pairs",
+    "R04: provider-exclusion and M0/M1 compatibility Gates have not yet passed for the overlay"
   ],
-  "last_command": "strict formal-v1 Hidden validation; compile Hidden twice; preliminary Full cross-split validation",
+  "known_limitations": [
+    "The 640-case data core is frozen, but legacy Gold and Pair fields alone are not sufficient for formal Measurement-v2 scoring.",
+    "No formal metric may be reported until the private Measurement-v2 overlay passes DS06 Integration."
+  ],
+  "last_command": "frozen 16-Team deterministic rebuild; Dev/Hidden compile; strict formal-v1 Full validation",
   "last_verified_source_commit": "19b7fa08793381918a322a6b08877c735d8b4745"
 }

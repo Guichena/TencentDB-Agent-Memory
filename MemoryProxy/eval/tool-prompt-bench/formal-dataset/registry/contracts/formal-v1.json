@@ -2,7 +2,7 @@
   "world": {
     "worldId": "world-task1-engineering",
     "spaceId": "space-task1-engineering",
-    "status": "draft",
+    "status": "frozen",
     "worldAsOf": "2026-08-30T23:59:59+08:00",
     "teamIds": [
       "T01",
@@ -535,7 +535,7 @@
       "writeL0": false,
       "archiveWriteBack": false
     },
-    "contentHash": "670d1e2e3238b6164f4b442aafed0607ad8d126684954ff68b7beeb6f226a726"
+    "contentHash": "436fbb729cbaa4186b479e407b1f351e0d2056363e64b5c80b75d478edb07fdb"
   },
   "sourceEvidence": [
     {
