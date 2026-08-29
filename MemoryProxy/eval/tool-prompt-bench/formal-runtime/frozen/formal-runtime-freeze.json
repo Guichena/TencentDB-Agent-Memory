@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "task1.formal-runtime-freeze.v1",
+  "datasetContractRevision": "formal-v1",
+  "dataFreeze": {
+    "tag": "task1-data-formal-v1.1",
+    "tagObject": "6ba3a0e4098786882dd500f884823f2f8dfbb9d3",
+    "commit": "02620d8313dcb883b7a57c4c2edc8f4286eb4bc9",
+    "statusTagBlob": "6e1f9324b0f2a5cce645340701ad9624f3683c21",
+    "statusFileSha256": "94c447322c8c204403b44a4abf6f691480b8902c3300caa09224ac11fe3f1267"
+  },
+  "counts": {
+    "total": 640,
+    "dev": 240,
+    "hiddenTest": 400
+  },
+  "sources": {
+    "contract": {
+      "fileSha256": "991ff87255019c0d4b64deba16b76b144bd3c63138be355c747865329e83da44",
+      "canonicalSha256": "4fc62c1829301fe9f2410f6be40698d7b3d09ec90dde3bfe294452f7ef152d41"
+    },
+    "provider": {
+      "devFileSha256": "8018bb65160eb1cac13e489ae54f258f2369dc4af058f09a3e1dc432961bc1f3",
+      "devCanonicalSha256": "ab1842aa1cc6d36a79bd8c232f2d66fd0d097c50eea4c2c09c4b4c8393e6308a",
+      "hiddenFileSha256": "743b2ee051572c81aec8b4db6b581a77143ed283ee136448b095e8576e0d5799",
+      "hiddenCanonicalSha256": "fc2d655011681cf63c38e5b71e92790ebeb601ec77ed5cf2ac42784aa73e212b"
+    },
+    "snapshots": {
+      "devCanonicalSha256": "3a82d0ad8241ff3e2173555efbdb65dfb367a0a38c9998203c5b4754611a4783",
+      "hiddenCanonicalSha256": "23fe7b47d13c950765fa9557da918e1d102b7ab4558171cb15a8444d1cbd9c9e"
+    }
+  },
+  "measurementV2": {
+    "manifestCanonicalSha256": "ff5384e0386079a1e16464063247520eae7ea4964b43c6b7a9972e38b2ba7da9",
+    "gold": {
+      "devCanonicalSha256": "8cfffec5c06b37b92b41cf95ee0d70333e9a2a7f6063145100b20ce753fe58c5",
+      "hiddenCanonicalSha256": "fdcbfbce3ada6b274cdfb6a9444c3f151af004b6186ca5e0186fe7e16d3c883f",
+      "fullCanonicalSha256": "7b08420acc04894b2a9aa6f56a17994bc79f2d1913032eebb94a17ace332e3a8"
+    },
+    "pairs": {
+      "devCanonicalSha256": "72def9ee92733ad5b2bc33f40ff500a75abf748ccdf4703f6b8464678e508c31",
+      "hiddenCanonicalSha256": "9195cf6dc6fbec5dca2f1824c93763f50d42cb3f00f06339f7431dde239b42b8",
+      "fullCanonicalSha256": "79f531d3cef550c390c167444f9f97d656b78d95c5392a4962a2a65a94c10652"
+    },
+    "runtimeContractsCanonicalSha256": "42c1f5847fe88ed70ec9ce35217dcd8cfdc90fa8a7dd9a53e45b50481204b96e"
+  },
+  "artifacts": {
+    "caseBindings": {
+      "path": "formal-runtime/frozen/case-bindings.jsonl",
+      "count": 640,
+      "devCount": 240,
+      "hiddenTestCount": 400,
+      "fileSha256": "c9e9d2ea07ea6e4810114e3b3470c72202b86d29727a7871a49f30fbd3cce3d8",
+      "canonicalSha256": "82eec3de1f587f5224bca20ecc739b3339af7ff3dea6358198519b9ba65f1feb"
+    },
+    "devSmokePreregistration": {
+      "path": "formal-runtime/frozen/dev-smoke-preregistration.json",
+      "count": 12,
+      "fileSha256": "49c982bc355b5a2c9b024207a6d3d4470e22837772f3ab180486b46342469918",
+      "selectionCanonicalSha256": "f300079fc408878cf2bf5921a9e6b3004ce9e5fa3034857221554c00a9a101ec"
+    }
+  },
+  "formalMetricEligible": false
+}
