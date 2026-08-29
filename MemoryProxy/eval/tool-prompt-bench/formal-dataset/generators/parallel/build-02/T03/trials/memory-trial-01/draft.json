@@ -1,0 +1,103 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t03-memory-trial-01",
+  "stage": "DS03",
+  "team_id": "T03",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T03-MEMORY-TRIAL-01-DVC-CLI-HISTORY",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "long_12_to_18",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "这轮要整理 DVC 管道复现的交接，当前固定在 iterative/dvc 的提交 a2f1367a9a75849ef6ad7ee23a5bacc18580f102。"
+        },
+        {
+          "role": "assistant",
+          "content": "我先把它归到管道与命令行演进这条项目流；SimPO 复现实验、TRL-GRPO 训练和 MONAI 影像管道都保持分开。"
+        },
+        {
+          "role": "user",
+          "content": "目前的现象是在重放导入数据时命令行流程表现不稳定，但还不能从现有日志判断历史上采用了哪种参数传递方式。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把导入网址流程、参数向下传递和管道复现三个相近主题分开，避免把旁支的结论拼进这次说明。"
+        },
+        {
+          "role": "user",
+          "content": "工作区和提交已经核对过，现阶段只需要恢复上次验证过的命令行行为，不重新设计管道接口。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前笔记留下了失败症状和复现范围，却没有保留那次会话中最终确认的行为细节。"
+        },
+        {
+          "role": "user",
+          "content": "旁边还有一次关于参数传播的讨论，以及一次关于缓存留存的讨论；它们都可能出现类似的导入词，但不应混用。"
+        },
+        {
+          "role": "assistant",
+          "content": "我已经标记这两个近义干扰，只追踪同一项目流里实际验证过的命令行重放过程。"
+        },
+        {
+          "role": "user",
+          "content": "交接摘要只说重放后来通过，没有写明当时先执行了什么、随后怎样确认结果。"
+        },
+        {
+          "role": "assistant",
+          "content": "因此实现或补测试之前，应该先找回那段历史会话中的具体验证顺序和最终操作约定。"
+        },
+        {
+          "role": "user",
+          "content": "当前上下文已经足够限定项目、固定工作区和排除项，但缺少历史记录里的关键细节。"
+        },
+        {
+          "role": "assistant",
+          "content": "我准备按项目主题和命令行重放语境查找旧会话，找到后只吸收与这条 DVC 流直接相关的结论。"
+        }
+      ],
+      "changed_message_index": 12,
+      "query": "请找回我们之前验证 DVC 导入数据命令行重放时采用的具体操作顺序和最终行为，供当前回归说明对照。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "最新日志仍只有通用的解析和重放结果，没有保留上次会话中确认的具体操作顺序或最终行为。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少历史会话中已经验证的 DVC 导入数据命令行重放顺序与最终行为；现有上下文只有项目、提交、现象和排除项。",
+          "route": "memory",
+          "target_asset_ids": ["T03-L0-DVC-CLI"],
+          "allowed_sequence_candidates": [["tdai_conversation_search"]],
+          "stop_after_candidate": "tdai_conversation_search returns the reviewed DVC CLI history with the validated replay order and final behavior."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接记录已经补全：先用固定的导入网址流程生成本地复现输入，再显式传递同一参数集合重放管道，最后用输出清单和退出状态核对；这次验证确认重放应保持原参数，不在命令行阶段改写输入。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta supplies exactly the missing historical replay order and final behavior while preserving the same project, workspace, symptoms, distractors, and query."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T03-L0-DVC-IMPORT-URL",
+        "T03-L0-DVC-PARAM-PROPAGATION",
+        "T03-L1-DVC-RETENTION"
+      ],
+      "controlled_delta_note": "Both variants share the same DVC workspace, four-project separation, symptoms, near-meaning distractors, identity assumptions, snapshot assumptions, and final query. Only appended message 12 changes: Positive leaves the historical order unresolved; Negative supplies that one order and behavior.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否接受 T03-L0-DVC-CLI 作为本次项目主题会话检索的候选目标，待 Sol 审阅后再决定是否冻结？",
+        "Negative delta 是否只补足导入数据重放的操作顺序与参数保持行为，没有混入参数传播或留存旁支？",
+        "是否保留导入网址流程与参数传播两个近义干扰在共享上下文中，以检验项目内主题区分？"
+      ]
+    }
+  ]
+}

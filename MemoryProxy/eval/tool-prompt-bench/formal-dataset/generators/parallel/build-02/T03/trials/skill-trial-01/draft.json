@@ -1,0 +1,107 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t03-skill-trial-01",
+  "stage": "DS03",
+  "team_id": "T03",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T03-SKILL-TRIAL-01-RL-DIAGNOSTIC",
+      "external_source_ids": [
+        "formal-dataset/source-material/T03/skills/rl-post-training/raw/SKILL.md",
+        "formal-dataset/source-material/T03/skills/rl-post-training/adapted/SKILL.md"
+      ],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "这轮要排查一个语言模型强化学习后训练运行，工作区和运行快照已经固定；目标是解释奖励长期不变，暂时不改训练代码。"
+        },
+        {
+          "role": "assistant",
+          "content": "我先把现象归为训练管线诊断，只关注这次运行；旁边的算法说明和框架接口资料暂不展开。"
+        },
+        {
+          "role": "user",
+          "content": "目前看到多轮回报几乎一样，日志里还有损失和采样输出，但还不知道问题发生在评分、优势、概率、损失还是解码。"
+        },
+        {
+          "role": "assistant",
+          "content": "现有记录能确认无提升和观测范围，却没有跨阶段的核对顺序或每阶段不变量。"
+        },
+        {
+          "role": "user",
+          "content": "我曾想先调学习率和裁剪范围，但这会把数值、梯度和生成问题混在一起。"
+        },
+        {
+          "role": "assistant",
+          "content": "先恢复一套按管线阶段推进的诊断流程，再决定是否需要改动；不把单一症状直接归因于优化器。"
+        },
+        {
+          "role": "user",
+          "content": "当前工作区、运行快照、奖励日志、采样文本和损失日志都已整理；没有可靠的已验证诊断结论。"
+        },
+        {
+          "role": "assistant",
+          "content": "我还缺少那套流程中每一步的检查项、停止条件和最终验证边界，不能自行补齐。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请给出这次运行的可执行诊断顺序、每阶段重点检查项和完成前应验证的边界，先不改代码。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我没有那套完整流程的实际步骤。请先从团队已有资料中找到适用流程并概述，从第一阶段检查开始，暂不改代码。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结后训练诊断流程的五阶段顺序、各阶段检查项与不变量，以及声明诊断完成前必须覆盖生成和解码边界的完整方法。",
+          "route": "skill",
+          "target_asset_ids": ["T03-SKILL-RL-POST-TRAINING"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "查看团队可搜索到的后训练诊断流程并概述其第一阶段起点，暂不修改代码。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把缺失流程补全：按奖励信号、优势计算、逐 token 对数概率、损失、生成与解码依次检查。先确认奖励不恒定、与完成质量相关且评分看到正确文本；再确认奖励变化时优势非零，核对每个稳定性常数应保持为小的正值，并确认组大小高于 2；随后确认有效 token 的对数概率不为正，并用小型确定性输入与标准 log-softmax 对照、检查近似 one-hot 时主 token 接近零；接着分开观察跨步损失、KL 项、策略梯度项和被裁剪样本比例；最后确认 padding 与解码伪影已清理，对完整、不完整、无标记、只有前缀或只有后缀的输出做往返检查，并抽样核对交给评分器的实际字符串。只有这些不变量和边界都核对完，才算完成诊断；本轮仍不改代码。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta supplies the frozen procedure's ordered reward, advantage, log-probability, loss, and generation/decoding checks plus the completion boundary, so the query can be answered without consulting an asset."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T03-SKILL-GRPO",
+        "T03-SKILL-TRL",
+        "T03-SKILL-SETUP-ENV"
+      ],
+      "controlled_delta_note": "Both variants share the same synthetic post-training workspace, run snapshot, symptoms, logs, identity assumptions, and query. Only appended message 8 changes: Positive leaves the five-stage diagnostic procedure unresolved; Negative supplies that procedure and its final boundary checks without changing the requested no-code-edit scope.",
+      "source_fact_map": [
+        {
+          "claim": "The frozen diagnostic guide orders investigation through reward, advantage, log-probability, loss, and generation/decoding stages.",
+          "source_id": "formal-dataset/source-material/T03/skills/rl-post-training/adapted/SKILL.md",
+          "locator": "#Diagnostic Methodology; Stage 1 through Stage 5"
+        },
+        {
+          "claim": "The guide requires non-constant rewards, reward/text alignment, non-zero advantages when rewards vary, stability-constant checks, and an adequate group size.",
+          "source_id": "formal-dataset/source-material/T03/skills/rl-post-training/raw/SKILL.md",
+          "locator": "## Diagnostic Methodology; ### Stage 1: Verify Reward Signal; ### Stage 2: Verify Advantage Computation"
+        },
+        {
+          "claim": "The guide specifies non-positive log-probabilities, comparison with standard log-softmax, loss-term and clipping checks, and decoding round-trip inspection including degenerate marker shapes.",
+          "source_id": "formal-dataset/source-material/T03/skills/rl-post-training/adapted/SKILL.md",
+          "locator": "### Stage 3: Verify Log-Probability Computation; ### Stage 4: Verify Loss Computation; ### Stage 5: Verify Generation and Decoding; ## Key Mathematical Invariants"
+        }
+      ],
+      "sol_review_questions": [
+        "确认目标流程在当前冻结快照中是 team-visible 且不在 active listing，首选顺序为同 Team 搜索后按返回标识查看。",
+        "确认 Negative 只补足冻结正文支持的五阶段检查与完成边界，没有引入算法或框架旁支的专属步骤。",
+        "确认 GRPO、TRL 和环境准备材料仅作为作者侧近义干扰，不应改变目标路由或出现在 provider-visible 文本中。",
+        "确认本稿不替 Sol 决定最终 Gold、生产可见性或正式评测结论。"
+      ]
+    }
+  ]
+}

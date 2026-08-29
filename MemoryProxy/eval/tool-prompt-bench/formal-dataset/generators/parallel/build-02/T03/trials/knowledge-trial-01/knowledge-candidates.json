@@ -1,0 +1,145 @@
+{
+  "schema_version": "task1.knowledge_candidates.v1",
+  "stage": "DS03",
+  "team_id": "T03",
+  "frozen_at": "2026-08-29T20:40:00+08:00",
+  "candidates": [
+    {
+      "asset_id": "T03-KNOW-DVC-CODEGRAPH",
+      "type": "code_graph",
+      "name": "DVC pipeline code graph",
+      "status": "ready",
+      "visibility": "fixed",
+      "project_id": "T03-PROJECT-DVC-PIPELINES",
+      "repository": {
+        "slug": "iterative/dvc",
+        "url": "https://github.com/iterative/dvc",
+        "commit": "a2f1367a9a75849ef6ad7ee23a5bacc18580f102"
+      },
+      "scope": "pipeline reproduction, import-url command flow, parameter propagation, and regression tests",
+      "fixed_tool_list": [
+        "get_info",
+        "search",
+        "explore",
+        "callers",
+        "callees",
+        "impact",
+        "node",
+        "status",
+        "files"
+      ],
+      "successful_readonly_search_fixture": {
+        "tool": "search",
+        "params": {
+          "query": "import-url parameter propagation pipeline",
+          "limit": 8
+        },
+        "read_only": true,
+        "expected_status": "success"
+      },
+      "selection_metadata": {
+        "workspace_anchor": "DVC pipeline and CLI evolution",
+        "unique_topics": [
+          "DVC",
+          "pipeline",
+          "import-url",
+          "parameter propagation"
+        ],
+        "not_for": [
+          "MONAI transforms",
+          "GRPO rollout policy"
+        ]
+      }
+    },
+    {
+      "asset_id": "T03-KNOW-MONAI-CODEGRAPH",
+      "type": "code_graph",
+      "name": "MONAI imaging pipeline code graph",
+      "status": "ready",
+      "visibility": "fixed",
+      "project_id": "T03-PROJECT-MONAI-IMAGING",
+      "repository": {
+        "slug": "Project-MONAI/MONAI",
+        "url": "https://github.com/Project-MONAI/MONAI",
+        "commit": "866d53df3f754e25fb4635abeb3f27cdaaa718cd"
+      },
+      "scope": "transform pipelines, deterministic tests, cache boundaries, and notebook validation",
+      "fixed_tool_list": [
+        "get_info",
+        "search",
+        "explore",
+        "callers",
+        "callees",
+        "impact",
+        "node",
+        "status",
+        "files"
+      ],
+      "successful_readonly_search_fixture": {
+        "tool": "search",
+        "params": {
+          "query": "Compose CacheDataset deterministic transform cache boundary",
+          "limit": 8
+        },
+        "read_only": true,
+        "expected_status": "success",
+        "expected_relation": {
+          "from": "CacheDataset",
+          "to": "Compose",
+          "kind": "constructs_and_uses"
+        }
+      },
+      "selection_metadata": {
+        "workspace_anchor": "MONAI imaging pipelines",
+        "unique_topics": [
+          "transform pipeline",
+          "deterministic tests",
+          "cache boundary",
+          "notebook validation"
+        ],
+        "not_for": [
+          "DVC CLI evolution",
+          "GRPO rollout and reward"
+        ]
+      }
+    },
+    {
+      "asset_id": "T03-KNOW-RL-RUNBOOK",
+      "type": "wiki",
+      "name": "GRPO rollout and reproducibility runbook",
+      "status": "ready",
+      "visibility": "fixed",
+      "project_id": "T03-PROJECT-TRL-GRPO",
+      "scope": "GRPO rollout, reward diagnostics, sampling signals, and reproducibility decisions",
+      "fixed_tool_list": [
+        "get_info",
+        "search",
+        "open",
+        "status",
+        "files"
+      ],
+      "successful_readonly_search_fixture": {
+        "tool": "search",
+        "params": {
+          "query": "GRPO rollout reward reproducibility decision",
+          "limit": 6
+        },
+        "read_only": true,
+        "expected_status": "success"
+      },
+      "selection_metadata": {
+        "workspace_anchor": "TRL GRPO post-training",
+        "unique_topics": [
+          "GRPO",
+          "rollout",
+          "reward",
+          "reproducibility"
+        ],
+        "not_for": [
+          "MONAI transform graph",
+          "DVC pipeline graph"
+        ]
+      }
+    }
+  ]
+}

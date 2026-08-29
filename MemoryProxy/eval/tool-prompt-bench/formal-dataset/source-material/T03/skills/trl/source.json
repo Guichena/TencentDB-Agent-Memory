@@ -1,0 +1,27 @@
+{
+  "schema_version": "task1.skill_source_lock.v1",
+  "team_id": "T03",
+  "asset_id": "T03-SKILL-TRL",
+  "name": "trl",
+  "repository": "https://github.com/benchflow-ai/skillsbench",
+  "commit_sha": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+  "path": "tasks/debug-trl-grpo/environment/skills/trl/SKILL.md",
+  "license": "Apache-2.0",
+  "license_path": "LICENSE",
+  "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+  "raw_file_sha256": "96e11df1379f5488435028ea9c073006917319d29540cd42baca0a97c6f2edcd",
+  "adapted_file_sha256": "96e11df1379f5488435028ea9c073006917319d29540cd42baca0a97c6f2edcd",
+  "package_sha256": "e7e44b6b5004edaadd904f716012c413c444d2095edc99ab09ae0cb719b2800f",
+  "resource_files": [],
+  "adaptation": {
+    "kind": "registry_metadata_only",
+    "technical_body_changed": false,
+    "allowed_changes": [
+      "listing description",
+      "use_when",
+      "do_not_use_when"
+    ],
+    "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "frozen_at": "2026-08-29T20:40:00+08:00"
+}

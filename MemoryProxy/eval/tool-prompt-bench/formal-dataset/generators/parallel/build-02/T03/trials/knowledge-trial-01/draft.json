@@ -1,0 +1,99 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t03-knowledge-trial-01",
+  "stage": "DS03",
+  "team_id": "T03",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T03-DS03-KNOWLEDGE-001",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "这条工作线固定在 MONAI imaging pipelines 项目和给定提交上，重点是 transform pipeline、deterministic tests、cache boundaries 与 notebook validation；不要把 DVC 或 GRPO 工作区的结论混进来。"
+        },
+        {
+          "role": "assistant",
+          "content": "工作区边界已记下。我会只核对 MONAI 影像变换链的结构事实，不改代码，也不把相邻 notebook 验证线当成缓存结论。"
+        },
+        {
+          "role": "user",
+          "content": "当前症状是同一批输入在重复运行时出现缓存边界判断不一致；日志只留下了 Compose、CacheDataset 和 set_determinism 这些名称。"
+        },
+        {
+          "role": "assistant",
+          "content": "这些名称只能说明问题落在变换与缓存交界处，尚不能证明它们在固定代码中的跨文件关系或节点位置。"
+        },
+        {
+          "role": "user",
+          "content": "我先排除了训练奖励和数据版本控制两条相邻主线，也没有把 notebook 中的实验顺序当作库内调用关系。"
+        },
+        {
+          "role": "assistant",
+          "content": "排除范围保持不变；接下来只需要核对固定 MONAI 图里与可重复变换及缓存边界直接相关的关系。"
+        },
+        {
+          "role": "user",
+          "content": "已有材料仍只有症状、三个符号名和固定项目背景，未给出跨文件关系、关系方向或对应节点的源文件位置。"
+        },
+        {
+          "role": "assistant",
+          "content": "因此当前唯一未决事实是固定代码图中的缓存边界关系及其节点位置；不要从相似的 notebook 或训练代码推断。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请确认固定 MONAI 代码图中缓存边界对应的节点关系、关系方向和源文件位置，只返回与这条影像变换链直接相关的结果。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充日志仍只有 Compose、CacheDataset、set_determinism 和重复运行现象，没有给出固定代码图的关系或文件位置；请保留这个结构缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "固定 MONAI code graph 中与可重复变换和缓存边界相关的跨文件关系、方向及节点源文件位置尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": [
+            "T03-KNOW-MONAI-CODEGRAPH"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "knowledge_tools_list",
+              "knowledge_tools_call"
+            ]
+          ],
+          "chain_kind": "self_discovery_two_step",
+          "stop_after_candidate": "先发现固定 MONAI 代码图可用的只读检索能力，再以缓存边界相关符号查询；返回 CacheDataset -> Compose 的构造/使用关系及其节点文件后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已补齐唯一缺口：固定代码图显示 CacheDataset 构造并使用 Compose，CacheDataset 位于 monai/data/dataset.py，Compose 位于 monai/transforms/compose.py；set_determinism 只是确定性控制线，不是这条缓存关系的终点。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已给出关系方向、两个节点的固定源文件，以及 set_determinism 与目标关系的边界；不需要再查询资源。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T03-KNOW-DVC-CODEGRAPH",
+        "T03-KNOW-RL-RUNBOOK"
+      ],
+      "controlled_delta_note": "Positive 只保留 MONAI 缓存边界关系与节点文件的结构缺口；Negative 只补齐 CacheDataset 构造并使用 Compose、两个源文件和 set_determinism 的边界，其他工作区、症状、排除项及 query 完全不变。",
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为固定 MONAI 图的关系方向与节点文件，而没有暗示实现细节或修复方案？",
+        "Negative 是否只补齐关系、两个节点源文件和 set_determinism 的非终点边界，并保持其余上下文不变？",
+        "MONAI 项目、transform/cache/determinism 主题是否足以在三个 ready 候选中唯一选择 MONAI code graph？",
+        "Positive 的私有序列是否明确覆盖先发现能力、再调用已发现检索的两步链，并在得到候选结果后停止？"
+      ]
+    }
+  ]
+}

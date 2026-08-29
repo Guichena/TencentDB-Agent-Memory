@@ -1,0 +1,27 @@
+{
+  "schema_version": "task1.skill_source_lock.v1",
+  "team_id": "T03",
+  "asset_id": "T03-SKILL-NLP-REPRO-ENV",
+  "name": "nlp-research-repo-package-installment",
+  "repository": "https://github.com/benchflow-ai/skillsbench",
+  "commit_sha": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+  "path": "tasks/simpo-code-reproduction/environment/skills/nlp-research-repo-package-installment/SKILL.md",
+  "license": "Apache-2.0",
+  "license_path": "LICENSE",
+  "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+  "raw_file_sha256": "65c77284858ffc4544dd8d85dbae5771855e6df44c37812f2877490e3afa70b2",
+  "adapted_file_sha256": "65c77284858ffc4544dd8d85dbae5771855e6df44c37812f2877490e3afa70b2",
+  "package_sha256": "9480e65deaec7b98faefd882efceb284021d355ba982ccea746dd21ce2ef97ac",
+  "resource_files": [],
+  "adaptation": {
+    "kind": "registry_metadata_only",
+    "technical_body_changed": false,
+    "allowed_changes": [
+      "listing description",
+      "use_when",
+      "do_not_use_when"
+    ],
+    "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "frozen_at": "2026-08-29T20:40:00+08:00"
+}

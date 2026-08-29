@@ -1,0 +1,224 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t03-memory-expand-01",
+  "stage": "DS03",
+  "team_id": "T03",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T03-MEMORY-EXPAND-01-GRPO-REWARD",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "memory", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮要回顾 TRL-GRPO 的奖励诊断，当前只整理团队内部已经讨论过的采样与奖励边界。"},
+        {"role": "assistant", "content": "我先把 rollout、奖励计算和日志汇总分成三块，不把训练器安装或部署话题带进来。"},
+        {"role": "user", "content": "最近一轮的批次平均奖励下降了，但单条样本的有效率没有同步下降。"},
+        {"role": "assistant", "content": "需要按批次和过滤阶段拆开看，不能让一个平均值遮住少数样本的变化。"},
+        {"role": "user", "content": "初步对照显示异常集中在长度过滤之后，训练器配置本身没有改动。"},
+        {"role": "assistant", "content": "长度过滤属于采样信号边界，先不要把它写成奖励实现发生变化。"},
+        {"role": "user", "content": "有一次诊断临时降低了采样上限，恢复上限后现象有所缓解。"},
+        {"role": "assistant", "content": "临时采样设置和正式训练器配置要并列记录，影响范围不能混在一起。"},
+        {"role": "user", "content": "现有交接只留下均值变化和恢复上限这两句话，没有保留当时完整的诊断记录。"},
+        {"role": "assistant", "content": "当前要找的是那次奖励诊断确认的统计组合与归因边界；rollout 配置旁支和正式训练器记录先作为相近主题排除。"}
+      ],
+      "changed_message_index": 10,
+      "query": "请找回我们之前确认的 TRL-GRPO 奖励诊断记录，说明应该保留哪些统计以及如何解释这次异常。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "最新复盘仍只有平均奖励曲线，缺少上次会话确认的完整统计组合和对长度过滤变化的解释。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少历史会话中确认的奖励诊断统计组合：批次平均值、单条有效率、各过滤阶段计数，以及不能仅凭平均奖励解释异常的边界。",
+          "route": "memory",
+          "target_asset_ids": ["T03-L1-TRL-REWARD-DIAGNOSTIC"],
+          "allowed_sequence_candidates": [["tdai_memory_search"]],
+          "stop_after_candidate": "tdai_memory_search returns the reviewed TRL-GRPO reward diagnostic memory and its sampling-boundary interpretation."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接记录补回了上次的诊断约定：同时查看批次平均奖励、单条有效率和各过滤阶段计数，不能用平均奖励单独解释异常；长度过滤变化仍归在采样信号边界。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies exactly the missing diagnostic statistic set and attribution boundary while leaving the same TRL-GRPO timeline and distractors unchanged."}
+      },
+      "visible_distractor_ids_author_only": ["T03-L1-TRL-SAMPLING-BOUNDARY", "T03-L1-TRL-TRAINER-CONFIG", "T03-L0-TRL-ROLLOUT"],
+      "controlled_delta_note": "Both variants share the same TRL-GRPO symptoms, temporary sampling-cap context, project scope, and near-meaning rollout/configuration distractors. Only appended message 10 changes: Positive leaves the historical diagnostic record unresolved; Negative supplies that one record and its boundary.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否接受 T03-L1-TRL-REWARD-DIAGNOSTIC 作为 plan alias T03-L1-GRPO-REWARD 的真实候选目标，待 Sol 审阅后再决定是否冻结？",
+        "Negative delta 是否只补足平均值、有效率、过滤计数及采样边界，没有混入正式训练器配置结论？",
+        "共享上下文中的 rollout 与训练器配置是否构成至少两个真实可见的近义干扰？"
+      ]
+    },
+    {
+      "draft_pair_id": "T03-MEMORY-EXPAND-01-MONAI-CACHE",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮要从 MONAI 影像管道的历史会话中找回缓存边界，不扩展到别的项目流。"},
+        {"role": "assistant", "content": "我会把稳定变换、随机增强、缓存目录和测试断言分开整理。"},
+        {"role": "user", "content": "同一个最小样本第二次运行仍然触发了部分预处理，现有日志没有说明是哪一段应该重算。"},
+        {"role": "assistant", "content": "先区分缓存未命中和随机增强本来就需要重算，两个现象不能用同一句话概括。"},
+        {"role": "user", "content": "固定随机种子后，稳定部分的输出和形状可以复现，但随机结果会变化。"},
+        {"role": "assistant", "content": "验证应锁定稳定输出、形状和缓存标志，不要求随机增强逐像素相同。"},
+        {"role": "user", "content": "管道复盘提到要调整缓存点，但没有保留那次会话最终确认的变换顺序。"},
+        {"role": "assistant", "content": "notebook 校验和后续流水线复盘是相近记录；这次只追踪最初缓存会话里确认的边界。"},
+        {"role": "user", "content": "当前交接能说明缓存与随机增强有关，却不能说明第二次运行哪些步骤命中、哪些步骤继续计算。"},
+        {"role": "assistant", "content": "需要恢复历史会话的具体顺序和验证约定，再决定如何补当前说明。"}
+      ],
+      "changed_message_index": 10,
+      "query": "请找回我们之前在 MONAI 缓存会话中确认的变换顺序、缓存命中行为和确定性验证约定。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "最新记录仍只说第二次运行触发了预处理，没有保留缓存点应放在哪里以及随机增强应怎样验证。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少历史会话中确认的 MONAI 缓存边界：稳定变换之后缓存，随机增强在缓存之后重算，并分别验证缓存命中与随机结果一致性。",
+          "route": "memory",
+          "target_asset_ids": ["T03-L0-MONAI-CACHE"],
+          "allowed_sequence_candidates": [["tdai_conversation_search", "tdai_conversation_query"]],
+          "stop_after_candidate": "tdai_conversation_search followed by tdai_conversation_query returns the reviewed MONAI cache conversation and its exact boundary details."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接记录补全了那次会话的约定：缓存放在稳定变换之后，随机增强在缓存之后继续重算；验证时分别检查缓存命中与随机结果的一致性，不把两种边界混为一个断言。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies only the missing cache-placement, recomputation, and separated-validation facts for the same MONAI conversation."}
+      },
+      "visible_distractor_ids_author_only": ["T03-L0-MONAI-NOTEBOOK", "T03-L0-MONAI-PIPELINE-REVIEW", "T03-L1-MONAI-DETERMINISM"],
+      "controlled_delta_note": "Both variants share the MONAI cache symptoms, fixed-seed boundary, project scope, and notebook/pipeline-review distractors. Only appended message 10 changes: Positive leaves the historical cache order unresolved; Negative supplies that one order and its separate validation rule.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否接受 T03-L0-MONAI-CACHE 作为 plan alias T03-L0-MONAI-CACHE 的真实会话候选，待 Sol 审阅后再决定是否冻结？",
+        "Negative delta 是否只补足稳定变换、随机增强和分别验证的边界，没有借用 notebook 校验旁支？",
+        "共享上下文中的 notebook 校验与流水线复盘是否提供至少两个真实可见近义干扰？"
+      ]
+    },
+    {
+      "draft_pair_id": "T03-MEMORY-EXPAND-01-SIMPO-METRIC",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "memory", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮整理 SimPO 复现实验的指标来源，只使用团队内部已经核对过的环境与表格记录。"},
+        {"role": "assistant", "content": "我先把环境锁定、数据切分和指标表三层分开，不从最终数字反推运行参数。"},
+        {"role": "user", "content": "现有表格把验证集和测试集结果放在同一列，读者无法判断每个数字的范围。"},
+        {"role": "assistant", "content": "先按数据切分拆列，再沿着配置记录追每一列的计算来源。"},
+        {"role": "user", "content": "拆列之后主指标没有变，但辅助统计的差异变得明显。"},
+        {"role": "assistant", "content": "辅助统计只用于解释，不能反过来改写主指标。"},
+        {"role": "user", "content": "环境说明已经写了批大小和温度，旧 notebook 还显示一个不同的默认标签。"},
+        {"role": "assistant", "content": "环境锁定记录和过时 notebook 标签都是相近主题；这次要找的是指标表本身的来源链。"},
+        {"role": "user", "content": "交接只保留了主指标数值，没有留下温度、批大小和采样策略如何追溯到配置的说明。"},
+        {"role": "assistant", "content": "当前只缺指标来源和分栏约定，环境版本锁定与旧标签不应被重新解释。"}
+      ],
+      "changed_message_index": 10,
+      "query": "请找回我们之前核对 SimPO 指标表时确认的分栏方式和指标来源追溯规则。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "最新表格仍只有主指标数字，缺少上次会话确认的切分分栏、配置追溯字段和辅助统计边界。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少历史会话中确认的 SimPO 指标来源规则：按数据切分分栏，从配置追溯温度、批大小和采样策略，且辅助统计不改写主指标。",
+          "route": "memory",
+          "target_asset_ids": ["T03-L1-SIMPO-METRIC-SOURCE"],
+          "allowed_sequence_candidates": [["tdai_memory_search"]],
+          "stop_after_candidate": "tdai_memory_search returns the reviewed SimPO metric-source memory with its split and configuration provenance rules."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接记录补回了指标表规则：按验证集与测试集分栏，从配置追溯温度、批大小和采样策略；辅助统计只作说明，不改写主指标。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies exactly the missing metric split, configuration provenance, and auxiliary-statistic boundary for the same SimPO history."}
+      },
+      "visible_distractor_ids_author_only": ["T03-L1-SIMPO-ENV-LOCK", "T03-L1-SIMPO-NOTEBOOK-DEFAULT", "T03-L0-SIMPO-ENV"],
+      "controlled_delta_note": "Both variants share the SimPO mixed-column symptom, environment context, old-label distractor, and the same provenance query. Only appended message 10 changes: Positive leaves the metric-source rule unresolved; Negative supplies that one rule.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否接受 T03-L1-SIMPO-METRIC-SOURCE 作为 plan alias T03-L1-SIMPO-METRIC 的真实候选目标，待 Sol 审阅后再决定是否冻结？",
+        "Negative delta 是否只补足数据切分、配置追溯和辅助统计边界，没有混入环境锁定或旧 notebook 默认值？",
+        "共享上下文中的环境锁定与旧 notebook 标签是否构成至少两个真实可见近义干扰？"
+      ]
+    },
+    {
+      "draft_pair_id": "T03-MEMORY-EXPAND-01-DVC-RETENTION",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "memory", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮要整理 DVC 项目里输出留存的历史结论，当前不重新做导入网址复现。"},
+        {"role": "assistant", "content": "我把参数进入阶段、管道节点和清理留存分开，避免把不同旁支的结论拼接。"},
+        {"role": "user", "content": "一个下游节点曾拿到默认参数，后来补上传递映射后值已经一致。"},
+        {"role": "assistant", "content": "参数快照用于解释传播边界；它与清理后哪些文件应留下是两个不同问题。"},
+        {"role": "user", "content": "当前复盘提到会清理临时目录，但没有写清最终输出清单是否会受影响。"},
+        {"role": "assistant", "content": "需要单独找回留存边界，不用完整命令行重放记录替代它。"},
+        {"role": "user", "content": "交接文档还混用了导入网址、参数传播和清理几个词，读者容易把旁支当成一个流程。"},
+        {"role": "assistant", "content": "导入重放顺序和参数传播快照是本次的近义干扰；只保留与中间目录清理直接相关的历史事实。"},
+        {"role": "user", "content": "现有日志只显示清理动作成功，没有保留原始输入、临时中间目录和最终清单之间的边界。"},
+        {"role": "assistant", "content": "当前项目、症状和排除项已经明确，剩下的是那次会话确认的留存范围。"}
+      ],
+      "changed_message_index": 10,
+      "query": "请找回我们之前确认的 DVC 输出留存边界，说明清理动作应影响哪些内容、不能影响哪些结果。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "最新交接仍只有清理成功的状态，没有保留上次会话确认的中间目录、最终清单和重放顺序之间的区别。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少历史会话中确认的 DVC 留存边界：清理可以删除中间目录而不改变最终输出清单，且留存结论要与命令行重放顺序分开记录。",
+          "route": "memory",
+          "target_asset_ids": ["T03-L1-DVC-RETENTION-BOUNDARY"],
+          "allowed_sequence_candidates": [["tdai_atomic_query"]],
+          "stop_after_candidate": "tdai_atomic_query returns the reviewed DVC retention-boundary memory without expanding into replay-order history."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接记录补回了留存结论：清理动作可以删除中间目录而不改变最终输出清单；原始输入和命令行重放顺序另行记录，不能把留存结论当作重放步骤。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies only the missing cleanup scope and separation from replay order for the same DVC retention history."}
+      },
+      "visible_distractor_ids_author_only": ["T03-L0-DVC-PARAM-PROPAGATION", "T03-L0-DVC-CLI", "T03-L2-SCENE-DVC-CLI-VS-PARAMS"],
+      "controlled_delta_note": "Both variants share the DVC propagation symptom, cleanup status, project scope, and replay/parameter distractors. Only appended message 10 changes: Positive leaves the retention boundary unresolved; Negative supplies that one boundary and its separation from replay order.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否接受 T03-L1-DVC-RETENTION-BOUNDARY 作为 plan alias T03-L1-DVC-RETENTION 的真实候选目标，待 Sol 审阅后再决定是否冻结？",
+        "Negative delta 是否只补足中间目录、最终清单和重放顺序的留存边界，没有把参数传播快照当成清理规则？",
+        "共享上下文中的参数传播与完整重放是否构成至少两个真实可见近义干扰？"
+      ]
+    },
+    {
+      "draft_pair_id": "T03-MEMORY-EXPAND-01-GRPO-ROLLOUT-SCENE",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "scene", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮需要回顾 TRL-GRPO rollout 的项目场景，把采样、长度过滤和奖励变化放回同一条时间线。"},
+        {"role": "assistant", "content": "我会区分正式训练器配置、临时 rollout 实验和奖励诊断，不把三种记录压成一个结论。"},
+        {"role": "user", "content": "一次临时实验降低了采样上限，基线和实验的奖励分布与有效样本比例表现不同。"},
+        {"role": "assistant", "content": "先保留采样数量、过滤阶段计数和奖励分布，再判断变化发生在哪个边界。"},
+        {"role": "user", "content": "恢复采样上限后长度过滤比例回到基线附近，训练器正式配置没有跟着改。"},
+        {"role": "assistant", "content": "这支持把变化放在采样信号上，而不是直接写成奖励实现变化。"},
+        {"role": "user", "content": "当前复盘散落在两条会话里，摘要没有说明临时设置、过滤计数和奖励分布的先后关系。"},
+        {"role": "assistant", "content": "奖励诊断统计和训练器配置是相近干扰；本次要恢复能串起 rollout 事件的项目场景，而不是单点指标。"},
+        {"role": "user", "content": "现有说明已经知道异常缓解，却无法回答采样变化为什么不能直接归因于奖励实现。"},
+        {"role": "assistant", "content": "项目、时间线范围和排除项都已限定，剩下的是历史场景中各边界如何并列。"}
+      ],
+      "changed_message_index": 10,
+      "query": "请找回我们之前整理的 TRL-GRPO rollout 场景，串起奖励统计、采样上限、长度过滤和训练器配置的边界。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "最新场景摘要只写了采样上限恢复后现象缓解，没有保留各项证据和不能混淆采样变化与奖励实现的完整关系。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少历史 L2 场景对奖励统计、采样上限、长度过滤和训练器配置的串联说明，以及采样变化不等于奖励实现变化的边界。",
+          "route": "memory",
+          "target_asset_ids": ["T03-L2-SCENE-TRL-SAMPLING-VS-REWARD"],
+          "allowed_sequence_candidates": [["tdai_read_scene"]],
+          "stop_after_candidate": "tdai_read_scene returns the reviewed TRL-GRPO rollout scene with its sampling-versus-reward boundary."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "场景记录补回了完整关系：奖励统计、采样上限、长度过滤和训练器配置应放在同一时间线；临时降低采样上限会改变过滤比例，但不能把这种采样变化写成奖励实现变化。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies only the missing scene-level timeline and sampling-versus-reward boundary for the same TRL-GRPO rollout history."}
+      },
+      "visible_distractor_ids_author_only": ["T03-L1-TRL-REWARD-DIAGNOSTIC", "T03-L1-TRL-TRAINER-CONFIG", "T03-L0-TRL-REWARD"],
+      "controlled_delta_note": "Both variants share the TRL-GRPO rollout timeline, temporary-cap event, project scope, and reward/configuration distractors. Only appended message 10 changes: Positive leaves the integrated scene unresolved; Negative supplies that one scene relationship.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否接受 T03-L2-SCENE-TRL-SAMPLING-VS-REWARD 作为 plan alias T03-L2-GRPO-ROLLOUT 的真实候选目标，待 Sol 审阅后再决定是否冻结？",
+        "Negative delta 是否只补足 rollout 场景时间线和采样/奖励边界，没有把单点奖励诊断当成场景本身？",
+        "共享上下文中的奖励诊断与训练器配置是否构成至少两个真实可见近义干扰？"
+      ]
+    }
+  ]
+}

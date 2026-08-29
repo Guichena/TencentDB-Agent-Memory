@@ -1,0 +1,316 @@
+{
+  "schema_version": "task1.luna_natural_negative_draft.v1",
+  "batch_id": "t03-natural-negative-01",
+  "stage": "DS03",
+  "team_id": "T03",
+  "cases": [
+    {
+      "draft_case_id": "T03-DS03-NN-001",
+      "external_source_ids": [],
+      "difficulty": "easy",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "DVC 命令包装器的局部代码已经完整给出：`raw = [\"--rev\", \"v2\", \"--remote\", \"origin\"]`，`def build_import_args(raw): return [\"dvc\", \"import-url\", *raw]`。"
+        },
+        {
+          "role": "assistant",
+          "content": "这里的函数只是在前面加上两个固定词，并按原顺序展开列表；不需要推断仓库中的其他参数。"
+        },
+        {
+          "role": "user",
+          "content": "我只想在 CLI 回归笔记中记录这个确定性转换，确认参数顺序没有被排序或重排。"
+        }
+      ],
+      "query": "写出 `build_import_args(raw)` 的精确返回列表，并说明 `--remote` 与 `origin` 的相对顺序。",
+      "why_current_context_is_sufficient": "输入列表、函数体和展开位置都在当前消息中直接给出；返回值是一次局部列表展开，答案不需要命令行文档或仓库信息。",
+      "visible_distractor_ids_author_only": [
+        "T03-KNOW-DVC-CODEGRAPH",
+        "T03-SKILL-CLI-CREATOR"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否只依据给出的函数体计算返回列表，没有引入 DVC 的额外命令语义？",
+        "是否明确保留了 raw 中参数的原始顺序？"
+      ]
+    },
+    {
+      "draft_case_id": "T03-DS03-NN-002",
+      "external_source_ids": [],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "配置差异函数和两份输入都在这里：`current = {\"stage\": \"train\", \"params\": {\"lr\": 0.001, \"epochs\": 3, \"seed\": 7}}`，`desired = {\"stage\": \"train\", \"params\": {\"lr\": 0.002, \"epochs\": 3, \"seed\": 11}}`。"
+        },
+        {
+          "role": "assistant",
+          "content": "比较只读取同名 params：学习率和 seed 的值不同，epochs 相同；stage 不参与这个局部差异列表。"
+        },
+        {
+          "role": "user",
+          "content": "实现约定是 `changed = sorted(k for k, v in desired[\"params\"].items() if current[\"params\"].get(k) != v)`，并额外记录 `len(changed)`。"
+        },
+        {
+          "role": "assistant",
+          "content": "因此输出只需对两个字典中的已给值做确定性比较，不涉及参数传播或流水线重放。"
+        }
+      ],
+      "query": "给出 `changed` 的精确列表及其长度，并说明 `epochs` 为什么不在列表中。",
+      "why_current_context_is_sufficient": "两份 params、比较表达式和排序规则均已完整提供；每个键的值可以在当前上下文内直接比较，未留下外部配置缺口。",
+      "visible_distractor_ids_author_only": [
+        "T03-KNOW-MONAI-CODEGRAPH",
+        "T03-SKILL-SETUP-ENV"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否只比较 params 中同名值并忽略 stage？",
+        "是否按 sorted 的字典序给出结果？"
+      ]
+    },
+    {
+      "draft_case_id": "T03-DS03-NN-003",
+      "external_source_ids": [],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "SimPO 环境重建的选择函数已经缩成可执行的局部片段：`def plan(has_project, has_requirements):\n    if has_project: return [\"uv sync\", \"uv run python -c 'import torch'\"]\n    if has_requirements: return [\"uv venv\", \"uv pip install -r requirements.txt\"]\n    return [\"stop: missing dependency declaration\"]`。"
+        },
+        {
+          "role": "assistant",
+          "content": "这个片段明确规定项目声明优先；两个布尔值同时为真时只走第一个分支，不能把两组命令拼接。"
+        },
+        {
+          "role": "user",
+          "content": "当前机器上 `has_project = True`、`has_requirements = True`。我只需要写安装前的环境决定，不要执行命令。"
+        }
+      ],
+      "query": "根据给定函数，列出这台机器应记录的计划命令，并说明为什么不采用 requirements 分支。",
+      "why_current_context_is_sufficient": "函数的全部分支、分支优先级和两个布尔输入都在当前消息中给出；这是对局部控制流的直接求值，不需要读取环境文件或安装任何依赖。",
+      "visible_distractor_ids_author_only": [
+        "T03-SKILL-NLP-REPRO-ENV",
+        "T03-SKILL-JUPYTER"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否只执行代码片段的第一个 if 分支？",
+        "是否避免把‘应记录命令’误写成已经执行安装？"
+      ]
+    },
+    {
+      "draft_case_id": "T03-DS03-NN-004",
+      "external_source_ids": [],
+      "difficulty": "easy",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Notebook 的最小结构已经在当前脚本中列明：`cells = [\"title\", \"setup\", \"plan\", \"baseline\", \"sweep\", \"results\"]`；首次可运行检查使用 `first_run = [c for c in cells if c != \"sweep\"]`。"
+        },
+        {
+          "role": "assistant",
+          "content": "首次运行只移除 sweep，其余 cell 的相对顺序保持不变；这只是整理已有列表。"
+        },
+        {
+          "role": "user",
+          "content": "请把这个顺序写进 SimPO 实验笔记的结构说明，暂时不要增加图表或新的实验步骤。"
+        }
+      ],
+      "query": "列出 `first_run` 的完整 cell 顺序，并指出被延后的唯一 cell。",
+      "why_current_context_is_sufficient": "原始 cell 列表、过滤条件和输出目标均已直接给出；只需执行一次列表过滤，完全不依赖 Notebook 规范或项目资料。",
+      "visible_distractor_ids_author_only": [
+        "T03-SKILL-JUPYTER",
+        "T03-KNOW-RL-RUNBOOK"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否保留 title、setup、plan、baseline、results 的原顺序？",
+        "是否只指出 sweep 被延后而没有扩展实验设计？"
+      ]
+    },
+    {
+      "draft_case_id": "T03-DS03-NN-005",
+      "external_source_ids": [],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "指标来源测试的输入对象已完整给出：`result = {\"validation\": {\"score\": 0.72}, \"test\": {\"score\": 0.68}}`。我不想再让两种切分共用一列。"
+        },
+        {
+          "role": "assistant",
+          "content": "最小测试应同时确认两个键存在、各自的 score 保持独立，并验证 validation 与 test 的数值没有互换。"
+        },
+        {
+          "role": "user",
+          "content": "测试名称约定为 `test_metric_provenance_keeps_splits`；断言只能针对这个对象，不能读取数据集或重跑实验。"
+        },
+        {
+          "role": "assistant",
+          "content": "断言可以直接写成键和值的精确核对，足以捕捉把 test 数值写入 validation 栏的回归。"
+        }
+      ],
+      "query": "给出该测试名称以及三条最小断言，确保两个 split 的 score 分栏和数值都正确。",
+      "why_current_context_is_sufficient": "测试名称、完整 result 对象和断言范围已在当前对话中明确；三条断言可以直接对给定字典做局部数据核对，无需外部指标定义。",
+      "visible_distractor_ids_author_only": [
+        "T03-SKILL-TESTING-PYTHON",
+        "T03-SKILL-NLP-REPRO-ENV"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否分别断言 validation.score 和 test.score，而不是只断言一个总分？",
+        "是否保持断言为纯数据检查，不引入运行实验？"
+      ]
+    },
+    {
+      "draft_case_id": "T03-DS03-NN-006",
+      "external_source_ids": [],
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "这次 GRPO 运行的阶段日志和诊断顺序已经写在消息里：`reward=[1.0, 1.0, 1.0]`、`advantage=[0.0, 0.0, 0.0]`、`logprob=[-0.4, -0.7]`、`loss=0.0`；约定顺序是 reward → advantage → logprob → loss → decode。"
+        },
+        {
+          "role": "assistant",
+          "content": "第一处应先看 reward 是否提供组内差异；若 reward 恒定，后续零 advantage 和零 loss 可以由这个局部输入解释，不能直接归咎于 logprob。"
+        },
+        {
+          "role": "user",
+          "content": "我只要一段不改代码的归因记录，要求区分‘已由日志支持的解释’和‘当前不能断言的阶段’。"
+        }
+      ],
+      "query": "按给定顺序写出第一检查点、当前最有依据的归因，以及仍不能从这些日志断言的内容。",
+      "why_current_context_is_sufficient": "日志值、检查顺序和归因边界都已由当前消息明确规定；任务是对恒定 reward 与后续观测做有限的因果解释，不需要算法资料或运行查询。",
+      "visible_distractor_ids_author_only": [
+        "T03-SKILL-GRPO",
+        "T03-KNOW-RL-RUNBOOK"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否先检查 reward，而不是先改学习率或裁剪参数？",
+        "是否避免把 logprob 的两个数直接判定为错误？"
+      ]
+    },
+    {
+      "draft_case_id": "T03-DS03-NN-007",
+      "external_source_ids": [],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "裁剪损失的局部计算已经给全：`ratio = 1.25`、`advantage = 2.0`、`clip_eps = 0.2`；`clipped = max(1 - clip_eps, min(1 + clip_eps, ratio))`，`surrogate = min(ratio * advantage, clipped * advantage)`。"
+        },
+        {
+          "role": "assistant",
+          "content": "给定数值下 ratio 会被上界 1.2 截住；两个候选 surrogate 分别来自未裁剪和裁剪后的乘积。"
+        },
+        {
+          "role": "user",
+          "content": "这只是一次 RL 数学小算例，结果保留一位小数即可，不要把它扩展成训练器实现审计。"
+        }
+      ],
+      "query": "计算 `clipped`、未裁剪项 `ratio * advantage` 和最终 `surrogate`，并指出本例触发了哪一侧的裁剪。",
+      "why_current_context_is_sufficient": "三个数值、裁剪表达式和取最小值的规则都完整出现在当前消息中；结果可直接算出，不需要外部实现或训练运行。",
+      "visible_distractor_ids_author_only": [
+        "T03-SKILL-RL-POST-TRAINING",
+        "T03-SKILL-TRL"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否先得到上界 1.2 再计算裁剪项？",
+        "是否把最终值取为两个 surrogate 候选中的较小者？"
+      ]
+    },
+    {
+      "draft_case_id": "T03-DS03-NN-008",
+      "external_source_ids": [],
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "MONAI 变换缓存的局部表已给出：`steps = [(\"LoadImage\", True), (\"ScaleIntensity\", True), (\"RandFlip\", False)]`，其中第二列表示该步骤是否可缓存。"
+        },
+        {
+          "role": "assistant",
+          "content": "缓存阶段只接收标记为 True 的步骤；False 的随机步骤仍在每次运行时重新计算。"
+        },
+        {
+          "role": "user",
+          "content": "请为复盘写一行‘首次计算/再次运行’说明，严格使用这三行表格，不推断其他变换行为。"
+        }
+      ],
+      "query": "分别列出会进入缓存的步骤和再次运行时仍需计算的步骤。",
+      "why_current_context_is_sufficient": "三步名称及其布尔标记、标记的含义和所需输出类别都直接给出；只需按 True/False 分组，不依赖 MONAI 代码图或外部文档。",
+      "visible_distractor_ids_author_only": [
+        "T03-KNOW-MONAI-CODEGRAPH",
+        "T03-SKILL-JUPYTER"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否把 LoadImage 和 ScaleIntensity 归入缓存，把 RandFlip 归入重算？",
+        "是否避免声称随机步骤的具体随机结果？"
+      ]
+    },
+    {
+      "draft_case_id": "T03-DS03-NN-009",
+      "external_source_ids": [],
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "确定性测试的两次输出已完整提供：稳定分支 `stable_a = [1, 2]`、`stable_b = [1, 2]`；随机增强分支 `random_a = [0, 1]`、`random_b = [1, 0]`。两次输出形状都为 `(2,)`。"
+        },
+        {
+          "role": "assistant",
+          "content": "测试目标是稳定分支逐元素相等、两类输出形状相等；随机增强的值允许变化，不能对它增加逐元素相等断言。"
+        },
+        {
+          "role": "user",
+          "content": "现有草稿错误地对 `random_a` 和 `random_b` 使用了完整数组相等断言。我只要最小修订建议，不执行测试。"
+        }
+      ],
+      "query": "给出保留的两类断言与应删除的一条断言，确保测试既检查稳定输出又允许随机值变化。",
+      "why_current_context_is_sufficient": "四个数组、共同形状和测试目标均已在当前上下文中明确；修订只涉及断言类型的选择，不需要读取测试框架或项目代码。",
+      "visible_distractor_ids_author_only": [
+        "T03-SKILL-TESTING-PYTHON",
+        "T03-KNOW-MONAI-CODEGRAPH"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否保留 stable_a 与 stable_b 的逐元素相等断言？",
+        "是否为 random_a/random_b 保留形状断言并删除值相等断言？"
+      ]
+    },
+    {
+      "draft_case_id": "T03-DS03-NN-010",
+      "external_source_ids": [],
+      "difficulty": "easy",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "SimPO 指标表的两行和分栏函数已经给出：`rows = [{\"split\": \"validation\", \"metric\": \"acc\", \"value\": 0.72}, {\"split\": \"test\", \"metric\": \"acc\", \"value\": 0.68}]`，`def acc_by_split(rows): return {r[\"split\"]: r[\"value\"] for r in rows if r[\"metric\"] == \"acc\"}`。"
+        },
+        {
+          "role": "assistant",
+          "content": "函数只筛选 metric 为 acc 的行，并用 split 作为键；两行的 split 不同，所以不会互相覆盖。"
+        },
+        {
+          "role": "user",
+          "content": "这是一项指标来源表的局部核对，只需要写出字典结果，不要解释论文指标或运行参数。"
+        }
+      ],
+      "query": "计算 `acc_by_split(rows)` 的精确字典，并说明为什么结果包含两个键。",
+      "why_current_context_is_sufficient": "输入行、筛选条件和字典推导式全部在当前消息中直接给出；结果是简单的局部数据变换，没有隐藏的指标或仓库事实。",
+      "visible_distractor_ids_author_only": [
+        "T03-SKILL-NLP-REPRO-ENV",
+        "T03-SKILL-JUPYTER"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否只保留 metric=acc 的两行？",
+        "是否正确使用 validation/test 作为字典键而没有合并数值？"
+      ]
+    }
+  ]
+}

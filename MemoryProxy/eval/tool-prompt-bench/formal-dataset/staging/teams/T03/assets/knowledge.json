@@ -1,0 +1,147 @@
+{
+  "schema_version": "task1.formal_knowledge_assets.v1",
+  "team_id": "T03",
+  "knowledge": [
+    {
+      "assetId": "T03-KNOW-DVC-CODEGRAPH",
+      "ownerAgentId": "agent-task1-t03-general",
+      "sourceEvidenceIds": [
+        "source-t03-knowledge-t03-know-dvc-codegraph"
+      ],
+      "observedAt": "2026-08-29T20:40:00+08:00",
+      "type": "code_graph",
+      "name": "DVC pipeline code graph",
+      "repoUrl": "https://github.com/iterative/dvc",
+      "repoCommit": "a2f1367a9a75849ef6ad7ee23a5bacc18580f102",
+      "indexVersion": "task1-t03-codegraph-fixture-v1",
+      "snapshotSha256": "031124579be88406e041424445b07103c6f67aba2b080ab7b4dd24ad27b0a04d",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t03-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "261b91585dc0a23b15905fc01335f62c3c5a0ee88bed472f8103c9eb5d45501a"
+    },
+    {
+      "assetId": "T03-KNOW-MONAI-CODEGRAPH",
+      "ownerAgentId": "agent-task1-t03-general",
+      "sourceEvidenceIds": [
+        "source-t03-knowledge-t03-know-monai-codegraph"
+      ],
+      "observedAt": "2026-08-29T20:40:00+08:00",
+      "type": "code_graph",
+      "name": "MONAI imaging pipeline code graph",
+      "repoUrl": "https://github.com/Project-MONAI/MONAI",
+      "repoCommit": "866d53df3f754e25fb4635abeb3f27cdaaa718cd",
+      "indexVersion": "task1-t03-codegraph-fixture-v1",
+      "snapshotSha256": "6aab8fe50ec3c39fe01a263ed02d7bf4bcc0169b67fb266fa2a8d29dbe06fdfa",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t03-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "bca4bfa069bd002e31832cd45a4fea034140c087db1f30669319cea4b0c34bfb"
+    },
+    {
+      "assetId": "T03-KNOW-RL-RUNBOOK",
+      "ownerAgentId": "agent-task1-t03-general",
+      "sourceEvidenceIds": [
+        "source-t03-knowledge-t03-know-rl-runbook"
+      ],
+      "observedAt": "2026-08-29T20:40:00+08:00",
+      "type": "wiki",
+      "name": "GRPO rollout and reproducibility runbook",
+      "snapshotSha256": "40bd9e508cac7b9d33f8975293711974e9b9edc42f0786543181338f6b8cb3b6",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t03-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "0104991ecf6a0576c0296786b917d7fad8e83d352a4a70ff7e7ea8c641f66529"
+    }
+  ],
+  "fixtures": {
+    "T03-KNOW-DVC-CODEGRAPH": {
+      "schema_version": "task1.knowledge_retrieval_fixture.v1",
+      "knowledge_id": "T03-KNOW-DVC-CODEGRAPH",
+      "status": "ready",
+      "tools": [
+        "get_info",
+        "search",
+        "explore",
+        "callers",
+        "callees",
+        "impact",
+        "node",
+        "status",
+        "files"
+      ],
+      "call": {
+        "tool": "search",
+        "params": {
+          "query": "import-url parameter propagation pipeline",
+          "limit": 8
+        },
+        "read_only": true,
+        "expected_status": "success"
+      },
+      "result": "交接摘要已补齐唯一缺口：冻结图的结构搜索结果给出了 import-url 命令入口与参数传播在 pipeline reproduction 流程中的关联；没有新增具体函数、文件或代码边，也没有引出修复方案。"
+    },
+    "T03-KNOW-MONAI-CODEGRAPH": {
+      "schema_version": "task1.knowledge_retrieval_fixture.v1",
+      "knowledge_id": "T03-KNOW-MONAI-CODEGRAPH",
+      "status": "ready",
+      "tools": [
+        "get_info",
+        "search",
+        "explore",
+        "callers",
+        "callees",
+        "impact",
+        "node",
+        "status",
+        "files"
+      ],
+      "call": {
+        "tool": "search",
+        "params": {
+          "query": "Compose CacheDataset deterministic transform cache boundary",
+          "limit": 8
+        },
+        "read_only": true,
+        "expected_status": "success",
+        "expected_relation": {
+          "from": "CacheDataset",
+          "to": "Compose",
+          "kind": "constructs_and_uses"
+        }
+      },
+      "result": "交接摘要已补齐唯一缺口：固定代码图显示 CacheDataset 构造并使用 Compose，CacheDataset 位于 monai/data/dataset.py，Compose 位于 monai/transforms/compose.py；set_determinism 只是确定性控制线，不是这条缓存关系的终点。"
+    },
+    "T03-KNOW-RL-RUNBOOK": {
+      "schema_version": "task1.knowledge_retrieval_fixture.v1",
+      "knowledge_id": "T03-KNOW-RL-RUNBOOK",
+      "status": "ready",
+      "tools": [
+        "get_info",
+        "search",
+        "open",
+        "status",
+        "files"
+      ],
+      "call": {
+        "tool": "search",
+        "params": {
+          "query": "GRPO rollout reward reproducibility decision",
+          "limit": 6
+        },
+        "read_only": true,
+        "expected_status": "success"
+      },
+      "result": "交接摘要已补齐唯一缺口：内部 runbook 将固定 rollout 配置、可追溯的 reward 诊断与 sampling 信号记录作为复现基线；调整这些设置前要保留对照运行和原因记录。这是团队内部决策，不是外部仓库事实。"
+    }
+  }
+}
