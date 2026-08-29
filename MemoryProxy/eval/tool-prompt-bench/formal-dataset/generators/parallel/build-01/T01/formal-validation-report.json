@@ -3,7 +3,8 @@
   "valid": true,
   "errors": [],
   "splits": [
-    "dev"
+    "dev",
+    "hidden_test"
   ],
   "case_count": 40,
   "team_case_counts": {

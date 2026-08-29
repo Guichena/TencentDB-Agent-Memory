@@ -543,6 +543,10 @@ delete agent.contentHash;
 const finalAgent = hashed(agent);
 
 const teamFragment = {
+  schema_version: "task1.team_fragment.v1",
+  build_id: "build-01",
+  team_id: "T01",
+  split: "dev",
   sourceEvidence,
   teams: [finalTeam],
   businessAgents: [finalAgent],
@@ -550,6 +554,45 @@ const teamFragment = {
   publicCases: publicCases.sort((a, b) => a.caseId.localeCompare(b.caseId)),
   privateAnnotations: privateAnnotations.sort((a, b) => a.caseId.localeCompare(b.caseId)),
   pairs: pairs.sort((a, b) => a.pairId.localeCompare(b.pairId)),
+  snapshotAssetIds: [
+    ...pilotL0,
+    ...l1Memories,
+    ...l2Scenes,
+    ...l3Profiles,
+    ...skills,
+    ...knowledge,
+  ].map((asset) => asset.assetId).sort(),
+  generatorBatchRefs: [
+    ["legacy/memory-batch-01", "memory", 4],
+    ["legacy/skill-batch-01", "skill", 4],
+    ["legacy/knowledge-batch-01", "knowledge", 2],
+    ["legacy/natural-negative-batch-01", "natural-negative", 10],
+    ["memory-assets/memory-assets-batch-01", "memory-assets", 20],
+  ].map(([directory, family, count]) => {
+    const manifest = readJson(join(scriptDir, directory, "manifest.json"));
+    return {
+      batchId: manifest.batch_id,
+      path: `formal-dataset/generators/parallel/build-01/T01/${directory}`,
+      family,
+      count,
+      generatorModel: manifest.generator_model,
+      reasoningEffort: manifest.reasoning_effort,
+      promptVersion: manifest.prompt_version,
+      draftSha256: sha256(readFileSync(join(scriptDir, directory, "draft.json"))),
+      solReview: "approved",
+    };
+  }),
+  externalImports: skillSources.sources.map((source) => ({
+    assetId: skills.find((skill) => skill.name === source.name)?.assetId,
+    repository: source.repository_url,
+    commit: source.revision,
+    path: source.source_path,
+    license: source.license_spdx,
+    rawSha256: source.main_raw_sha256,
+    metadataSha256: source.metadata_sha256,
+    localRawPath: `formal-dataset/source-material/T01/${source.package_path}/raw/SKILL.md`,
+    localAdaptedPath: `formal-dataset/source-material/T01/${source.package_path}/adapted/SKILL.md`,
+  })),
 };
 
 mkdirSync(join(stagingDir, "assets"), { recursive: true });

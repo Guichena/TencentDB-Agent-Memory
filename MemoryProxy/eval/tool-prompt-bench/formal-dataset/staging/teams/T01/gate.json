@@ -83,14 +83,25 @@
       "name": "team fragment keys",
       "passed": true,
       "detail": [
+        "build_id",
         "businessAgents",
+        "externalImports",
+        "generatorBatchRefs",
         "pairs",
         "privateAnnotations",
         "publicCases",
+        "schema_version",
+        "snapshotAssetIds",
         "sourceEvidence",
+        "split",
         "tasks",
+        "team_id",
         "teams"
       ]
+    },
+    {
+      "name": "team fragment identity",
+      "passed": true
     },
     {
       "name": "formal schema preview",
@@ -561,6 +572,77 @@
     {
       "name": "knowledge asset count",
       "passed": true
+    },
+    {
+      "name": "snapshot asset ids",
+      "passed": true,
+      "detail": 50
+    },
+    {
+      "name": "fragment Luna batch refs",
+      "passed": true,
+      "detail": [
+        {
+          "batchId": "t01-memory-batch-01",
+          "path": "formal-dataset/generators/parallel/build-01/T01/legacy/memory-batch-01",
+          "family": "memory",
+          "count": 4,
+          "generatorModel": "gpt-5.6-luna",
+          "reasoningEffort": "high",
+          "promptVersion": "task1.luna-batch.v1",
+          "draftSha256": "4f2d0d7d99dc7c38b1b837052d7782de58d6a167ee09a5aacb05e222eea59718",
+          "solReview": "approved"
+        },
+        {
+          "batchId": "t01-skill-batch-01",
+          "path": "formal-dataset/generators/parallel/build-01/T01/legacy/skill-batch-01",
+          "family": "skill",
+          "count": 4,
+          "generatorModel": "gpt-5.6-luna",
+          "reasoningEffort": "high",
+          "promptVersion": "task1.luna-batch.v1",
+          "draftSha256": "d6e582abe777e63ad7da5541e4b4f111644b03420b92401107c98f087443038c",
+          "solReview": "approved"
+        },
+        {
+          "batchId": "t01-knowledge-batch-01",
+          "path": "formal-dataset/generators/parallel/build-01/T01/legacy/knowledge-batch-01",
+          "family": "knowledge",
+          "count": 2,
+          "generatorModel": "gpt-5.6-luna",
+          "reasoningEffort": "high",
+          "promptVersion": "task1.luna-batch.v1",
+          "draftSha256": "51aada55cf9056606a6235038d142ea30384cc7c212fe82be2d997a8078f7b25",
+          "solReview": "approved"
+        },
+        {
+          "batchId": "t01-natural-negative-batch-01",
+          "path": "formal-dataset/generators/parallel/build-01/T01/legacy/natural-negative-batch-01",
+          "family": "natural-negative",
+          "count": 10,
+          "generatorModel": "gpt-5.6-luna",
+          "reasoningEffort": "high",
+          "promptVersion": "task1.luna-batch.v1",
+          "draftSha256": "aefc7097a9eef7b4d7c0f166fe6e5e0576a1bc1d26b92efb662a0b8c7c46f330",
+          "solReview": "approved"
+        },
+        {
+          "batchId": "t01-memory-assets-batch-01",
+          "path": "formal-dataset/generators/parallel/build-01/T01/memory-assets/memory-assets-batch-01",
+          "family": "memory-assets",
+          "count": 20,
+          "generatorModel": "gpt-5.6-luna",
+          "reasoningEffort": "high",
+          "promptVersion": "task1.t01-memory-assets.v1",
+          "draftSha256": "650a2ae05e10e0a8fda2912b7a827c9b9cd1605e628ab36c7f9c9f68afa04b86",
+          "solReview": "approved"
+        }
+      ]
+    },
+    {
+      "name": "fragment external imports",
+      "passed": true,
+      "detail": 15
     },
     {
       "name": "source package count",

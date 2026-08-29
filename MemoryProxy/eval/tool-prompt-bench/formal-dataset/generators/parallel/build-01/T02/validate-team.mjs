@@ -46,15 +46,21 @@ check("launch tag commit", launchCommit === "ef2ca4bd84e529c6c7d8a8df661520cbc3b
 check("schema baseline ancestor", spawnSync("git", ["merge-base", "--is-ancestor", "1048681880b51e7a52a6b8b0b731eadeec44e118", "HEAD"], { cwd: repoDir }).status === 0);
 check("content baseline ancestor", spawnSync("git", ["merge-base", "--is-ancestor", "960021e472456515a89d3c2c4f2962fbf6cc51a1", "HEAD"], { cwd: repoDir }).status === 0);
 const allowedPrefixes = [
+  "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-01/T01/",
   "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-01/T02/",
+  "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T01/",
   "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T02/",
+  "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T01/",
   "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T02/",
 ];
-const changedPaths = git("status", "--porcelain=v1", "--untracked-files=all").split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).replaceAll("\\", "/"));
+const statusResult = spawnSync("git", ["status", "--porcelain=v1", "--untracked-files=all"], { cwd: repoDir, encoding: "utf8", windowsHide: true });
+if (statusResult.status !== 0) throw new Error(`git status failed: ${statusResult.stderr}`);
+const changedPaths = statusResult.stdout.split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).replaceAll("\\", "/"));
 check("write scope", changedPaths.filter((path) => !allowedPrefixes.some((prefix) => path.startsWith(prefix))).length === 0, changedPaths.filter((path) => !allowedPrefixes.some((prefix) => path.startsWith(prefix))));
 
-const requiredKeys = ["sourceEvidence", "teams", "businessAgents", "tasks", "publicCases", "privateAnnotations", "pairs"].sort();
+const requiredKeys = ["schema_version", "build_id", "team_id", "split", "sourceEvidence", "teams", "businessAgents", "tasks", "publicCases", "privateAnnotations", "pairs", "snapshotAssetIds", "generatorBatchRefs", "externalImports"].sort();
 check("team fragment keys", JSON.stringify(Object.keys(fragment).sort()) === JSON.stringify(requiredKeys), Object.keys(fragment).sort());
+check("team fragment identity", fragment.schema_version === "task1.team_fragment.v1" && fragment.build_id === "build-01" && fragment.team_id === "T02" && fragment.split === "dev");
 check("formal schema preview", formalReport.valid === true && formalReport.errors.length === 0, formalReport.errors);
 check("formal case count", formalReport.case_count === 80 && formalReport.team_case_counts.T02 === 40, formalReport.team_case_counts);
 check("formal pair count", formalReport.pair_count === 30 && formalReport.pairs_by_team.T02 === 15, formalReport.pairs_by_team);
@@ -131,6 +137,10 @@ check("production endpoints", endpointErrors.length === 0, endpointErrors);
 const agent = fragment.businessAgents[0];
 check("skill counts", skillsFile.skills.length === 15 && agent.boundSkillIds.length === 5 && skillsFile.skills.filter((item) => !agent.boundSkillIds.includes(item.assetId)).length === 10, { total: skillsFile.skills.length, listed: agent.boundSkillIds.length });
 check("knowledge count", knowledgeFile.knowledge.length === 3 && agent.fixedKnowledgeIds.length === 3, knowledgeFile.knowledge.length);
+const stagedAssetIds = [...memory.l0Conversations, ...memory.l1Memories, ...memory.l2Scenes, ...memory.l3Profiles, ...skillsFile.skills, ...knowledgeFile.knowledge].map((asset) => asset.assetId).sort();
+check("snapshot asset ids", JSON.stringify(fragment.snapshotAssetIds) === JSON.stringify(stagedAssetIds), fragment.snapshotAssetIds.length);
+check("fragment Luna batch refs", fragment.generatorBatchRefs.length === 8 && fragment.generatorBatchRefs.every((batch) => batch.generatorModel === "gpt-5.6-luna" && batch.reasoningEffort === "high" && /^[a-f0-9]{64}$/.test(batch.draftSha256)), fragment.generatorBatchRefs);
+check("fragment external imports", fragment.externalImports.length === 15 && fragment.externalImports.every((item) => item.assetId && item.repository.startsWith("https://github.com/") && /^[a-f0-9]{40}$/.test(item.commit) && /^[a-f0-9]{64}$/.test(item.rawSha256)), fragment.externalImports.length);
 check("project/task counts", projectManifest.projects.length === 4 && fragment.tasks.length === 4, { projects: projectManifest.projects.length, tasks: fragment.tasks.length });
 
 const pinsByName = new Map(inputPack.skill_source_pins.map((pin) => [pin.name, pin]));
