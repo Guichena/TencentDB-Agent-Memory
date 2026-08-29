@@ -80,6 +80,13 @@
     "boundarySwitch": "positive.executorBoundAttempt && !negative.executorBoundAttempt",
     "note": "BoundarySwitch is intentionally weaker than PairExact and ignores malformed unbound negative intent."
   },
+  "pairScoreIdentityFields": [
+    "pairId",
+    "positiveCaseId",
+    "negativeCaseId",
+    "independenceKey",
+    "split"
+  ],
   "repeatAggregation": {
     "policyId": "all-repeats-pass-v1",
     "rule": "a pair-level metric passes only when every matched repeat passes",
@@ -112,7 +119,7 @@
     "expectedRepeatIdsRequired": true,
     "mixedCohortPolicy": "campaign incomplete; mismatched scores excluded from metric denominator",
     "missingPairPolicy": "campaign incomplete; jFrozen remains the frozen expected-pair count",
-    "serializedScorePolicy": "eligible PairScore rows are revalidated against repeat inputs/results and recomputed aggregate semantics before entering behavior denominators",
+    "serializedScorePolicy": "every reloaded PairScore is byte-for-byte compared with the canonical score rederived by the same scorer from its frozen identity and repeat inputs; malformed, eligibility, trace, cohort, isolation, case-ID, result, or aggregate drift is excluded",
     "scoringPolicyBound": true
   },
   "metrics": {

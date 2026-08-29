@@ -14,6 +14,7 @@ import {
   summarizePairScoresV2,
   validatePairCaseOutcomeV2,
   type IntegratedCaseOutcomeForPairV2,
+  type PairScoreV2,
   type PairSummaryCampaignV2,
 } from "../../eval/tool-prompt-bench/measurement-v2/pair-scorer.js";
 
@@ -140,6 +141,10 @@ function canonicalJson(value: unknown): string {
     .sort()
     .map((key) => `${JSON.stringify(key)}:${canonicalJson(record[key])}`)
     .join(",")}}`;
+}
+
+function clonePairScore(score: PairScoreV2): PairScoreV2 {
+  return JSON.parse(JSON.stringify(score)) as PairScoreV2;
 }
 
 describe("Pair Contract v2", () => {
@@ -805,15 +810,14 @@ describe("Pair score summary v2", () => {
       pairId: "pair-skill-boundary-002",
     };
     const incomplete = {
-      ...exact,
+      ...scorePairV2(
+        validatedContract(),
+        {
+          positive: [POSITIVE_OUTCOME],
+          negative: [{ ...NEGATIVE_OUTCOME, traceComplete: false }],
+        },
+      ),
       pairId: "pair-skill-boundary-003",
-      eligibility: "incomplete" as const,
-      incompleteReasons: ["NEGATIVE_TRACE_INCOMPLETE"],
-      pairExact: null,
-      positivePass: null,
-      negativePass: null,
-      boundarySwitchCorrect: null,
-      strictPairExact: null,
     };
 
     const campaign = summaryCampaign([
@@ -941,6 +945,18 @@ describe("Pair score summary v2", () => {
         variantId: "V2",
         model: "another-model",
       },
+      repeatInputs: {
+        positive: v3Dev.repeatInputs.positive.map((outcome) => ({
+          ...outcome,
+          variantId: "V2",
+          model: "another-model",
+        })),
+        negative: v3Dev.repeatInputs.negative.map((outcome) => ({
+          ...outcome,
+          variantId: "V2",
+          model: "another-model",
+        })),
+      },
     };
     const campaign = summaryCampaign([CONTRACT.pairId, v2Hidden.pairId]);
     const summary = summarizePairScoresV2([v3Dev, v2Hidden], { campaign });
@@ -1020,6 +1036,85 @@ describe("Pair score summary v2", () => {
       pairExact: { numerator: 0, denominator: 0, value: null },
       boundarySwitchAccuracy: { numerator: 0, denominator: 0, value: null },
       incompletePairIds: [CONTRACT.pairId],
+      incompleteReasonCounts: { PAIR_SCORE_INCONSISTENT: 1 },
+    });
+  });
+
+  it.each([
+    ["integration eligibility", (score: PairScoreV2) => {
+      (score.repeatInputs.positive[0] as { integrationEligible: boolean }).integrationEligible = false;
+    }],
+    ["trace completeness", (score: PairScoreV2) => {
+      (score.repeatInputs.negative[0] as { traceComplete: boolean }).traceComplete = false;
+    }],
+    ["Variant identity", (score: PairScoreV2) => {
+      (score.repeatInputs.positive[0] as { variantId: string }).variantId = "V2";
+    }],
+    ["execution identity", (score: PairScoreV2) => {
+      (score.repeatInputs.positive[0] as { executionIdentitySha256: string }).executionIdentitySha256 = "f".repeat(64);
+    }],
+    ["session isolation", (score: PairScoreV2) => {
+      const sessionId = score.repeatInputs.positive[0].sessionId;
+      (score.repeatInputs.negative[0] as { sessionId: string }).sessionId = sessionId;
+      (score.repeatResults[0] as { negativeSessionId: string }).negativeSessionId = sessionId;
+    }],
+    ["local-state isolation", (score: PairScoreV2) => {
+      const localStateId = score.repeatInputs.positive[0].localStateId;
+      (score.repeatInputs.negative[0] as { localStateId: string }).localStateId = localStateId;
+      (score.repeatResults[0] as { negativeLocalStateId: string }).negativeLocalStateId = localStateId;
+    }],
+    ["case identity", (score: PairScoreV2) => {
+      (score.repeatInputs.negative[0] as { caseId: string }).caseId = "another-negative-case";
+    }],
+  ] as const)("revalidates %s from serialized repeat inputs", (_label, mutate) => {
+    const exact = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const tampered = clonePairScore(exact);
+    mutate(tampered);
+
+    const summary = summarizePairScoresV2(
+      [tampered],
+      { campaign: summaryCampaign() },
+    );
+    expect(summary).toMatchObject({
+      campaignEligibility: "incomplete",
+      campaignIncompleteReasons: ["PAIR_SCORE_INCONSISTENT"],
+      jEligible: 0,
+      pairExact: { numerator: 0, denominator: 0, value: null },
+      incompleteReasonCounts: { PAIR_SCORE_INCONSISTENT: 1 },
+    });
+  });
+
+  it.each([
+    ["repeatIds", (score: Record<string, unknown>) => { score.repeatIds = false; }],
+    ["aggregate false-intent types", (score: Record<string, unknown>) => {
+      score.negativeFalseIntentTypes = false;
+    }],
+    ["repeat false-intent types", (score: Record<string, unknown>) => {
+      const repeats = score.repeatResults as Array<Record<string, unknown>>;
+      repeats[0].negativeFalseIntentTypes = false;
+    }],
+    ["incomplete reasons", (score: Record<string, unknown>) => { score.incompleteReasons = null; }],
+  ] as const)("fails closed without a TypeError for malformed serialized %s", (_label, mutate) => {
+    const exact = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const tampered = clonePairScore(exact) as unknown as Record<string, unknown>;
+    mutate(tampered);
+
+    expect(() => summarizePairScoresV2(
+      [tampered as unknown as PairScoreV2],
+      { campaign: summaryCampaign() },
+    )).not.toThrow();
+    expect(summarizePairScoresV2(
+      [tampered as unknown as PairScoreV2],
+      { campaign: summaryCampaign() },
+    )).toMatchObject({
+      campaignEligibility: "incomplete",
+      jEligible: 0,
       incompleteReasonCounts: { PAIR_SCORE_INCONSISTENT: 1 },
     });
   });
