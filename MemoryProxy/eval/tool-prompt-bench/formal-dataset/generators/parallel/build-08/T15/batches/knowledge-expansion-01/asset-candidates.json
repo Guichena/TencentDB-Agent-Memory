@@ -1,0 +1,120 @@
+{
+  "schema_version": "task1.knowledge_asset_candidates.v1",
+  "stage": "DS05",
+  "team_id": "T15",
+  "synthetic": true,
+  "candidates": [
+    {
+      "asset_id": "T15-KNW-001",
+      "status": "ready",
+      "name": "Harbor API contract graph",
+      "type": "code_graph",
+      "service_url": "https://knowledge.synthetic.invalid/harbor-contract",
+      "workspace_match": "internal/harbor-contract",
+      "about": "Harbor 合作方 API 的契约关系、入口和调用关联。",
+      "summary": "用于选择与 OpenAPI 契约关联分析主题匹配的内部资源。",
+      "tools": [
+        {"name": "search", "params": {"query": "string"}},
+        {"name": "callers", "params": {"symbol": "string"}}
+      ],
+      "minimal_synthetic_query_result": {
+        "tool_listing": {
+          "tool_name": "tools/list",
+          "result": {
+            "tools": [
+              {"tool_name": "search", "params": {"query": "string"}},
+              {"tool_name": "callers", "params": {"symbol": "string"}}
+            ]
+          }
+        },
+        "successful_query": {
+          "tool_name": "search",
+          "params": {"query": "contract compatibility review entrypoint callers"},
+          "result": {
+            "title": "Harbor API contract graph",
+            "rule_text": "补充可直接采用的图谱结论：Harbor 契约兼容审查入口是 ContractReviewController.review；调用方只有 GatewayPublishPipeline 和 PartnerCompatibilityJob；发布前使用 schema-diff --mode backward，结果写入 compatibility-report。这就是本次要查的代码关系。",
+            "entrypoint": "ContractReviewController.review",
+            "callers": ["GatewayPublishPipeline", "PartnerCompatibilityJob"],
+            "pre_publish_check": "schema-diff --mode backward",
+            "output": "compatibility-report"
+          }
+        }
+      }
+    },
+    {
+      "asset_id": "T15-KNW-002",
+      "status": "ready",
+      "name": "Atlas API version governance",
+      "type": "wiki",
+      "service_url": "https://knowledge.synthetic.invalid/atlas-version-governance",
+      "workspace_match": "internal/atlas-versioning",
+      "about": "内部版本协商、弃用窗口和兼容例外的设计记录。",
+      "summary": "用于选择与 Atlas Partner API 版本协商、弃用窗口主题匹配的内部资源；摘要不包含规则正文。",
+      "tools": [
+        {"name": "search", "params": {"query": "string"}},
+        {"name": "read_page", "params": {"page_id": "string"}}
+      ],
+      "minimal_synthetic_query_result": {
+        "tool_listing": {
+          "tool_name": "tools/list",
+          "result": {
+            "tools": [
+              {"tool_name": "search", "params": {"query": "string"}},
+              {"tool_name": "read_page", "params": {"page_id": "string"}}
+            ]
+          }
+        },
+        "successful_query": {
+          "tool_name": "search",
+          "params": {"query": "approved deprecation exception"},
+          "result": {
+            "title": "Atlas API version governance",
+            "rule_text": "补充可直接采用的内部决定：当合作方仍在旧版本且迁移成本被批准为高时，保留旧版本 30 天；仅允许新增可选字段，禁止删除或改类型；例外须由 API owner 和兼容性评审共同签字，并在窗口到期前完成迁移通知。这就是本次要查的例外规则。",
+            "conditions": "合作方仍在旧版本且迁移成本被批准为高",
+            "window": "保留旧版本 30 天",
+            "compatibility_boundary": "仅允许新增可选字段，禁止删除或改类型",
+            "approval": "API owner 和兼容性评审共同签字",
+            "action": "在窗口到期前完成迁移通知"
+          }
+        }
+      }
+    },
+    {
+      "asset_id": "T15-KNW-003",
+      "status": "ready",
+      "name": "Meridian SDK release handbook",
+      "type": "wiki",
+      "service_url": "https://knowledge.synthetic.invalid/meridian-sdk-release",
+      "workspace_match": "internal/meridian-sdk",
+      "about": "SDK 生成、语言矩阵、版本钉住与发布交接。",
+      "summary": "用于选择与 Meridian SDK 生成和发布流程主题匹配的内部资源。",
+      "tools": [
+        {"name": "search", "params": {"query": "string"}},
+        {"name": "read_page", "params": {"page_id": "string"}}
+      ],
+      "minimal_synthetic_query_result": {
+        "tool_listing": {
+          "tool_name": "tools/list",
+          "result": {
+            "tools": [
+              {"tool_name": "search", "params": {"query": "string"}},
+              {"tool_name": "read_page", "params": {"page_id": "string"}}
+            ]
+          }
+        },
+        "successful_query": {
+          "tool_name": "search",
+          "params": {"query": "frozen version generation order release handoff"},
+          "result": {
+            "title": "Meridian SDK release handbook",
+            "rule_text": "补充可直接采用的发布决定：本轮冻结版本为 3.8.0；先生成 TypeScript，再生成 Python；两种包通过兼容性检查后由 Release Engineering 统一发布，交接单需附生成日志与版本清单。这就是本次要查的手册事实。",
+            "frozen_version": "3.8.0",
+            "generation_order": ["TypeScript", "Python"],
+            "release_owner": "Release Engineering",
+            "handoff_artifacts": ["生成日志", "版本清单"]
+          }
+        }
+      }
+    }
+  ]
+}

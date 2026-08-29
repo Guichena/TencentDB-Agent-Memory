@@ -1,0 +1,110 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "build-08-T15-memory-trial-01",
+  "stage": "DS05",
+  "team_id": "T15",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T15-TRIAL-MEM-001",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "long_12_to_18",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们在 Pactline 契约验证流里复盘 Harbor 合作方 API 的 provider verification，当前工作区是 pactline-tests。请只围绕请求头兼容性整理这次复盘背景。"
+        },
+        {
+          "role": "assistant",
+          "content": "收到。我会把网关适配层、契约匹配器和 consumer 侧的现象分开记录，避免把版本协商问题混进来。"
+        },
+        {
+          "role": "user",
+          "content": "失败发生在一条带自定义请求头的 consumer 契约上；同一个值在不同客户端发出时，头名称的大小写不一致。"
+        },
+        {
+          "role": "assistant",
+          "content": "所以要区分名称的大小写和 header value 的大小写，不能为了匹配方便把值也改掉。"
+        },
+        {
+          "role": "user",
+          "content": "我们已经确认 HTTP 语义里名称应按不区分大小写处理，但 Pactline 的匹配入口当时没有统一表现。"
+        },
+        {
+          "role": "assistant",
+          "content": "我记下了问题范围：进入 provider verification 前的请求头归一化，以及失败报告里如何标出归一化前后的名称。"
+        },
+        {
+          "role": "user",
+          "content": "别把这个和 Meridian SDK 生成出来的参数命名混为一谈；那是另一条发布链路。"
+        },
+        {
+          "role": "assistant",
+          "content": "明白，SDK 的字段命名、Atlas 的版本弃用窗口和这次请求头匹配都分别处理。"
+        },
+        {
+          "role": "user",
+          "content": "测试重放显示，consumer 发送 X-Trace-Id，provider fixture 写成 x-trace-id；值本身完全相同。"
+        },
+        {
+          "role": "assistant",
+          "content": "这说明复现点在名称比较，不在值转换，也不在 required 字段或枚举演进。"
+        },
+        {
+          "role": "user",
+          "content": "团队当时说过一个很具体的处理决定，但当前摘要只剩下‘已处理 header 大小写’这类概括。"
+        },
+        {
+          "role": "assistant",
+          "content": "如果要恢复当时的原话，应该回到那次 provider verification 复盘的原始讨论，而不是从摘要反推。"
+        },
+        {
+          "role": "user",
+          "content": "请保持查询范围在 Pactline 这条项目流，别把相邻项目里关于字段名大小写的讨论当成同一结论。"
+        },
+        {
+          "role": "assistant",
+          "content": "好的。我会优先核对与这次失败重放直接相邻的讨论，并在找到目标消息后停止继续扩大范围。"
+        }
+      ],
+      "changed_message_index": 14,
+      "query": "上次 provider verification 失败后，我们对请求头名称大小写归一化作出的精确决定原话是什么？",
+      "positive": {
+        "delta_message": {
+          "role": "assistant",
+          "content": "目前这段上下文仍只有处理方向，没有保留那条决定的精确措辞；请找回 Pactline 复盘讨论中直接写出该决定的消息。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "当前上下文只表明要处理请求头名称大小写，缺少 T15-L0-004 中记录的精确决定原话；需要在 Pactline 对话记忆中定位目标消息。",
+          "route": "memory",
+          "target_asset_ids": ["T15-L0-004"],
+          "allowed_sequence_candidates": [
+            ["tdai_conversation_search"]
+          ],
+          "stop_after_candidate": "返回包含该精确决定原话的目标消息后立即停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "assistant",
+          "content": "复盘决定是：在进入匹配前把请求头名称统一转换为小写，仅归一化名称、不改动 header value；因此 X-Trace-Id 与 x-trace-id 应按同一名称处理。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经给出决定的完整内容、适用边界和具体示例，查询无需再检索历史。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T15-L0-003", "T15-L1-006", "T15-L2-003"],
+      "controlled_delta_note": "两种条件共享完全相同的项目背景、14 条上下文消息与查询；仅追加消息改变信息是否足以回答精确决定原话。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "正例追加消息是否确实保留一个需要从历史消息恢复的单一信息缺口？",
+        "负例追加消息是否只补足请求头名称归一化决定，而没有改变查询或上下文范围？",
+        "提供方可见文本是否避免了工具名、层级名、私有资产 ID 和评测术语？",
+        "干扰候选是否会造成相邻项目或概括性摘要的自然混淆，但不会提供目标原话？"
+      ]
+    }
+  ]
+}

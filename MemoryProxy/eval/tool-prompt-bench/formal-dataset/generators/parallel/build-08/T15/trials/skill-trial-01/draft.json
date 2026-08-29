@@ -1,0 +1,52 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "build-08-T15-DS05-skill-trial-01",
+  "stage": "DS05",
+  "team_id": "T15",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T15-TRIAL-SKL-001",
+      "external_source_ids": ["T15-EXT-SKL-001", "T15-EXT-SKL-002", "T15-EXT-SKL-003", "T15-EXT-SKL-012"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Harbor 合作方 API 现在有一份冻结的 OpenAPI 3.1 规范，准备把它落成可运行的服务。"},
+        {"role": "assistant", "content": "我会先确认规范中的路径、方法、请求响应模型、认证方案和约束，再据此安排实现边界。"},
+        {"role": "user", "content": "规范已经包含端点、数据模型和安全要求；本项目还没有可复用的应用骨架，也不希望只得到几个零散处理器。"},
+        {"role": "assistant", "content": "目标应覆盖架构分层、代码与配置、验证和交付检查，并保持实现与规范的契约一致。"}
+      ],
+      "changed_message_index": 4,
+      "query": "请按当前项目情况，给出把 OpenAPI 规范转换为完整可运行应用的现成执行流程，并说明适用边界。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前对话只确定了从 OpenAPI 规范交付完整应用的目标，还没有团队现成流程的细节。请先查找团队可用的相关能力，再按返回的标识打开匹配项；找到后就停止查找。"},
+        "private_proposal": {
+          "unique_information_gap": "需要团队搜索到 T15-SKL-007（openapi-to-application-code）的完整应用生成流程；它是团队可见但不在首屏 listing 的能力。",
+          "route": "skill",
+          "target_asset_ids": ["T15-SKL-007"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "团队搜索返回目标 skill_id 后，用该 skill_id 打开一次并立即停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充：完整流程已经确定为四段。第一段校验规范完整性，梳理端点、方法、请求响应模型、认证方案和约束；第二段按框架规划目录、资源分组、服务层、数据模型、配置初始化和关系；第三段生成构建配置、模型、处理器、服务、数据访问（如需要）、错误处理、校验、日志、配置和启动代码；第四段补齐服务与控制器单测、README、忽略文件、环境模板、接口文档、示例请求和集成检查。完成后复核生成结构，安装依赖，配置环境与数据库，运行测试，启动服务并用示例验证端点。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "负例 delta 已明确规范分析、架构设计、完整生成、辅助文件、复核配置、测试启动与端点验证的全过程，足以直接回答查询，不需要额外能力。"}
+      },
+      "visible_distractor_ids_author_only": ["T15-SKL-001", "T15-SKL-004", "T15-SKL-005"],
+      "controlled_delta_note": "Positive 与 Negative 共享全部上下文和 query；仅 changed_message_index=4 的 delta 改变信息充分性。Positive 保留完整应用生成流程这一信息缺口，Negative 在同一位置一次性补齐该流程。",
+      "source_fact_map": [
+        {"claim": "目标流程先分析规范，再设计架构、生成应用代码并补齐支持文件。", "source_id": "T15-EXT-SKL-002", "locator": "SKILL.md § Generation Process, Step 1-4"},
+        {"claim": "候选生成流程包含模型、处理器、服务、数据访问、错误处理、校验、日志和配置等产物。", "source_id": "T15-EXT-SKL-002", "locator": "SKILL.md § Generation Process, Step 3"},
+        {"claim": "ASP.NET 干扰流程关注 MapGroup、DTO/验证、强类型结果和 OpenAPI 文档。", "source_id": "T15-EXT-SKL-001", "locator": "SKILL.md § API Organization; § Request and Response Types; § Type Handling; § OpenAPI Documentation"},
+        {"claim": "TypeSpec 干扰流程关注 REST 操作、路由参数、响应模型、确认和自适应卡片。", "source_id": "T15-EXT-SKL-003", "locator": "SKILL.md § Adding GET Operations; § Adding POST Operations; § Adding PATCH Operations; § Adding DELETE Operations"},
+        {"claim": "规格更新干扰流程要求结构化、自包含且机器可读的规范，并使用固定章节模板。", "source_id": "T15-EXT-SKL-012", "locator": "SKILL.md § Best Practices for AI-Ready Specifications; § Specification template"}
+      ],
+      "sol_review_questions": [
+        "正例是否只因缺少团队现成完整应用生成流程而需要团队搜索？",
+        "负例 delta 是否已经补齐从规范分析到端点验证的全过程，并与正例保持同一 query？",
+        "目标及三个干扰项的宿主适配是否只涉及可见描述、使用边界和宿主名称，而未改动核心步骤？"
+      ]
+    }
+  ]
+}

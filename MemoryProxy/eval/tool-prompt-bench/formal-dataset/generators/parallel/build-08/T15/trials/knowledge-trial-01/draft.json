@@ -1,0 +1,72 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T15-DS05-knowledge-trial-01",
+  "stage": "DS05",
+  "team_id": "T15",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T15-TRIAL-KNW-001",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们正在推进 Atlas Partner API 的版本协商和旧版本迁移，近期需要把合作方通知与网关发布安排对齐。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前讨论已确认要同时照顾新旧版本，并把兼容性影响记录在项目决策中；实现细节暂不展开。"
+        },
+        {
+          "role": "user",
+          "content": "代码和当前上下文只覆盖常规双版本运行，没有给出某个合作方的特殊迁移处理。"
+        },
+        {
+          "role": "assistant",
+          "content": "可以继续围绕弃用通知、兼容边界和迁移责任人整理行动项，但需要先补齐内部治理记录中的依据。"
+        }
+      ],
+      "changed_message_index": 4,
+      "query": "请找出内部版本治理资料中已批准的弃用窗口例外规则，并给出适用条件与处理动作。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我记得这条规则写在内部版本治理资料里，但当前对话没有规则原文；请先定位匹配的内部资料，再据此查询并回答。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "当前上下文没有 Atlas 版本治理资料中的已批准弃用窗口例外规则；需要从 T15-KNW-002 获取该规则。",
+          "route": "knowledge",
+          "target_asset_ids": ["T15-KNW-002"],
+          "allowed_sequence_candidates": [
+            ["knowledge_tools_list", "knowledge_tools_call"]
+          ],
+          "stop_after_candidate": "目标资源首次发现后，按返回的精确 tool_name 与 params 完成一次成功查询即停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充可直接采用的内部决定：当合作方仍在旧版本且迁移成本被批准为高时，保留旧版本 30 天；仅允许新增可选字段，禁止删除或改类型；例外须由 API owner 和兼容性评审共同签字，并在窗口到期前完成迁移通知。这就是本次要查的例外规则。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经给出适用条件、保留时长、兼容边界、审批责任和通知动作，足以直接回答查询。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T15-KNW-001",
+        "T15-KNW-003",
+        "T15-L2-004"
+      ],
+      "controlled_delta_note": "Positive 只说明规则原文缺失并保留信息空缺；Negative 提供完整规则事实，除此之外共享上下文与查询完全相同。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "确认正例 delta 没有泄露规则答案，且负例 delta 已完整提供查询所需事实。",
+        "确认资源发现后只执行一次按返回值构造的成功查询，不追加无关查询。"
+      ]
+    }
+  ]
+}

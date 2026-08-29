@@ -1,0 +1,85 @@
+{
+  "schema_version": "task1.memory_asset_candidates.v1",
+  "batch_id": "build-08-T15-memory-trial-01",
+  "stage": "DS05",
+  "team_id": "T15",
+  "family": "memory",
+  "draft_pair_id": "T15-TRIAL-MEM-001",
+  "synthetic_team_background": {
+    "team_name": "T15 API 契约与兼容性小组",
+    "project_stream": "pactline-tests",
+    "focus": "consumer-driven contract、provider verification、破坏性变更",
+    "workspace": "pactline-tests",
+    "background": "团队维护合作方 API 的契约验证与请求适配，近期复盘了一次自定义请求头名称大小写不一致导致的验证失败。背景、对话和候选摘要均为本试验合成内容。"
+  },
+  "candidates": [
+    {
+      "asset_id": "T15-L0-004",
+      "asset_type": "l0_session",
+      "role": "target",
+      "project_stream": "pactline-tests",
+      "supports_trial": true,
+      "messages": [
+        {"role":"user","content":"provider verification 的失败重放先从哪条契约看？"},
+        {"role":"assistant","content":"先看带自定义请求头的 consumer 契约，失败只出现在名称大小写写法不一致时。"},
+        {"role":"user","content":"consumer 发的是 X-Trace-Id，fixture 中是 x-trace-id，值完全相同。"},
+        {"role":"assistant","content":"那就先排除 value 转换，比较入口对名称的处理。"},
+        {"role":"user","content":"HTTP 层对请求头名称本来就不应区分大小写。"},
+        {"role":"assistant","content":"对，但当前匹配入口没有在所有路径保持这个语义。"},
+        {"role":"user","content":"有人建议把名称和值一起转小写。"},
+        {"role":"assistant","content":"值不能动，否则会改变 token 和追踪标识的语义。"},
+        {"role":"user","content":"那我们要把决定写成可以落到适配层的句子。"},
+        {"role":"assistant","content":"我会把归一化放在进入匹配前，并保留原值。"},
+        {"role":"user","content":"复盘里最后采用的精确说法是什么？"},
+        {"role":"assistant","content":"决定是：在进入匹配前把请求头名称统一转换为小写，仅归一化名称、不改动 header value；因此 X-Trace-Id 与 x-trace-id 应按同一名称处理。"},
+        {"role":"user","content":"把它和失败报告的范围一起留在 Pactline 讨论里。"},
+        {"role":"assistant","content":"已记录；后续只核对这条 provider verification 复盘，不把 SDK 参数命名带进来。"}
+      ]
+    },
+    {
+      "asset_id": "T15-L0-003",
+      "asset_type": "l0_session",
+      "role": "near_synonym_distractor",
+      "project_stream": "pactline-tests",
+      "supports_trial": false,
+      "messages": [
+        {"role":"user","content":"另一轮契约演练也提到 header 大小写，是否同一个问题？"},
+        {"role":"assistant","content":"不是同一条失败；那轮只讨论日志展示和字段标签的统一。"},
+        {"role":"user","content":"当时有人说把 header key 做 canonicalize。"},
+        {"role":"assistant","content":"那是报告显示层的建议，不是 provider 匹配入口的行为决定。"},
+        {"role":"user","content":"请求值需要一起变换吗？"},
+        {"role":"assistant","content":"那次讨论没有改值，也没有形成适配层实施结论。"},
+        {"role":"user","content":"这会不会和合作方 API 的版本协商混淆？"},
+        {"role":"assistant","content":"会，所以记录里把版本协商和契约失败分开。"},
+        {"role":"user","content":"我只记得‘大小写无关’几个字。"},
+        {"role":"assistant","content":"这是概括，不是可直接引用的最终句子。"},
+        {"role":"user","content":"那轮没有具体的 X-Trace-Id 重放吗？"},
+        {"role":"assistant","content":"没有，使用的是普通标签样例，未进入真实请求头匹配。"},
+        {"role":"user","content":"明白，我不会把它当作 provider verification 的结论。"},
+        {"role":"assistant","content":"对，若要恢复精确决定，应继续找带失败重放的那条讨论。"}
+      ]
+    },
+    {
+      "asset_id": "T15-L1-006",
+      "asset_type": "l1_memory",
+      "role": "summary_distractor",
+      "supports_trial": false,
+      "summary": "团队曾总结 provider verification 的请求头兼容性问题：名称比较需要遵守 HTTP 语义，值保持原样；摘要没有保存复盘中的逐字决定，也没有标明具体重放样例。"
+    },
+    {
+      "asset_id": "T15-L2-003",
+      "asset_type": "l2_scene",
+      "role": "scene_distractor",
+      "supports_trial": false,
+      "path": "contracts/pactline/provider-verification.md",
+      "summary": "说明 provider verification 的验证场景与复现入口，不泄露失败原因或复盘原话。"
+    },
+    {
+      "asset_id": "T15-L3-001",
+      "asset_type": "l3_profile",
+      "role": "preference_support",
+      "supports_trial": false,
+      "summary": "稳定偏好：先契约后实现、证据优先；审查 API 兼容性时优先核对可引用的原始消息。"
+    }
+  ]
+}

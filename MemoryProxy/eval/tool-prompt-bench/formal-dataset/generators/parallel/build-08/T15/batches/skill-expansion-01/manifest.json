@@ -1,0 +1,10 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "build-08-T15-DS05-skill-expansion-01",
+  "external_source_ids": ["T15-EXT-SKL-001", "T15-EXT-SKL-002", "T15-EXT-SKL-003", "T15-EXT-SKL-004", "T15-EXT-SKL-005", "T15-EXT-SKL-006", "T15-EXT-SKL-007", "T15-EXT-SKL-008", "T15-EXT-SKL-009", "T15-EXT-SKL-010", "T15-EXT-SKL-011", "T15-EXT-SKL-012", "T15-EXT-SKL-013", "T15-EXT-SKL-014", "T15-EXT-SKL-015", "T15-EXT-SKL-016", "T15-EXT-SKL-017", "T15-EXT-SKL-018", "T15-EXT-RES-001"],
+  "generated_at": "2026-08-30T21:00:00+08:00",
+  "actual_count": 5
+}

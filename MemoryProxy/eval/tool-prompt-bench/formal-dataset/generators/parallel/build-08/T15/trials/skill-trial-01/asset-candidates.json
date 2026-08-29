@@ -1,0 +1,65 @@
+{
+  "schema_version": "task1.skill_asset_candidates.v1",
+  "team_id": "T15",
+  "batch_id": "build-08-T15-DS05-skill-trial-01",
+  "source_lock": {"repository_url": "https://github.com/github/awesome-copilot", "repository_commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e", "license": "MIT"},
+  "allowed_host_adaptations": ["替换宿主工具名称或宿主引用", "调整 listing description", "调整 useWhen 与 doNotUseWhen", "保留核心技术步骤、示例和资源引用"],
+  "candidates": [
+    {
+      "candidate_id": "T15-SKL-007",
+      "name": "openapi-to-application-code",
+      "source_id": "T15-EXT-SKL-002",
+      "source_path": "skills/openapi-to-application-code/SKILL.md",
+      "sha256": "4ac9c35e14140129df922091b62288258887e5d0efc0760ab390b3b248a35c16",
+      "description": "从 OpenAPI 规范规划并生成完整、可运行的应用骨架、业务层、配置、测试和交付文档。",
+      "useWhen": "需要把已有 OpenAPI 规范端到端落成应用，并覆盖分析、架构、代码、辅助文件与验证。",
+      "doNotUseWhen": "只需为单个框架补少量端点、只编辑规范文本，或只需增加 TypeSpec 操作。",
+      "proposed_visibility": "same-team-search",
+      "allowed_host_adaptations": ["将宿主检索与打开方式映射为团队当前可用的能力入口", "保留四阶段生成顺序、输出结构和后续验证步骤", "保持 OpenAPI、框架、认证、测试和配置等技术语义不变"],
+      "use_in_draft_pair": "T15-TRIAL-SKL-001",
+      "role": "target"
+    },
+    {
+      "candidate_id": "T15-SKL-001",
+      "name": "aspnet-minimal-api-openapi",
+      "source_id": "T15-EXT-SKL-001",
+      "source_path": "skills/aspnet-minimal-api-openapi/SKILL.md",
+      "sha256": "16e632ce8cb514d413e968811a2e07b8e0f1e97c6e2e93174efd6cec2e49e86f",
+      "description": "为 ASP.NET Minimal API 端点组织类型、安全校验和 OpenAPI 文档。",
+      "useWhen": "任务聚焦 ASP.NET Minimal API 的端点分组、请求响应类型、强类型结果或文档设置。",
+      "doNotUseWhen": "需要从完整 OpenAPI 规范生成跨层应用，或任务主要是 TypeSpec 操作与规范文件编辑。",
+      "proposed_visibility": "listed",
+      "allowed_host_adaptations": ["可替换宿主引用并调整中性 listing 文案", "保留 MapGroup、DTO、验证、强类型结果和文档变换步骤", "不扩展为完整应用生成流程"],
+      "use_in_draft_pair": "T15-TRIAL-SKL-001",
+      "role": "distractor"
+    },
+    {
+      "candidate_id": "T15-SKL-004",
+      "name": "typespec-api-operations",
+      "source_id": "T15-EXT-SKL-003",
+      "source_path": "skills/typespec-api-operations/SKILL.md",
+      "sha256": "882751e73fb23048fcffd739345cabec0b3176a922b528f271c3dc7ce78ddd8a",
+      "description": "在既有 TypeSpec API 插件中添加 REST 操作、参数、响应模型、确认和自适应卡片。",
+      "useWhen": "已有 TypeSpec API 插件，需要补 GET、POST、PATCH 或 DELETE 操作及其路由和参数。",
+      "doNotUseWhen": "需要从 OpenAPI 生成完整应用结构，或只需编辑独立规格文档与 ASP.NET 端点。",
+      "proposed_visibility": "listed",
+      "allowed_host_adaptations": ["可替换宿主引用并调整中性 listing 文案", "保留 REST 路由、参数装饰、响应模型、确认和卡片绑定步骤", "不改写为跨层应用脚手架生成器"],
+      "use_in_draft_pair": "T15-TRIAL-SKL-001",
+      "role": "distractor"
+    },
+    {
+      "candidate_id": "T15-SKL-005",
+      "name": "update-specification",
+      "source_id": "T15-EXT-SKL-012",
+      "source_path": "skills/update-specification/SKILL.md",
+      "sha256": "2d6df53ebd1d50e5a69a4425bc579d5c8a15e0102c6bff685c3fa3ac70e920a6",
+      "description": "按新需求更新结构化、机器可读且自包含的解决方案规格文件。",
+      "useWhen": "已有规格需要补充需求、约束、接口、验收、测试策略或边界示例。",
+      "doNotUseWhen": "需要生成可运行应用、端点实现、服务层或应用测试，而不是更新规格文件。",
+      "proposed_visibility": "listed",
+      "allowed_host_adaptations": ["可替换宿主引用并调整中性 listing 文案", "保留规范章节模板、命名约束、验收和验证要求", "不增加应用生成、依赖安装或服务启动步骤"],
+      "use_in_draft_pair": "T15-TRIAL-SKL-001",
+      "role": "distractor"
+    }
+  ]
+}
