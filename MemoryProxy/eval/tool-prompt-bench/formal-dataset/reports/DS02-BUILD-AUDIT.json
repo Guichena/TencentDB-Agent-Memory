@@ -1,0 +1,262 @@
+{
+  "schema_version": "task1.build_audit.v1",
+  "audit_scope": "stage-1-pre-integration",
+  "schema_baseline_tag": "task1-data-parallel-baseline-v2",
+  "schema_baseline_commit": "1048681880b51e7a52a6b8b0b731eadeec44e118",
+  "content_baseline_commit": "960021e472456515a89d3c2c4f2962fbf6cc51a1",
+  "build_count": 8,
+  "team_count": 16,
+  "case_count": 640,
+  "pair_count": 240,
+  "status": "passed",
+  "independent_audit": {
+    "recursive_content_hashes_checked": 6684,
+    "unique_non_source_ids": 1796,
+    "unique_sources": 496,
+    "independent_query_groups": 400,
+    "unique_provider_payloads": 640,
+    "pair_hashes_checked": 240,
+    "visible_asset_set_hashes_checked": 640,
+    "errors": 0
+  },
+  "builds": [
+    {
+      "build_id": "build-01",
+      "branch": "codex/task1-data-build-v2-t01-t02",
+      "launch_tag": "task1-data-parallel-launch-v2",
+      "launch_commit": "ef2ca4bd84e529c6c7d8a8df661520cbc3bf4bb0",
+      "audited_head": "2fb377657414cc5054d6b59b694670be49429366",
+      "audited_commits": [
+        "7e211055c8ad8aad6dc88091afc9b7925e31122d",
+        "b264ebe4aafcf134a4c09023535bb2f4385df05b",
+        "2fb377657414cc5054d6b59b694670be49429366"
+      ],
+      "allowed_prefixes": [
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-01/T01/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T01/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T01/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-01/T02/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T02/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T02/"
+      ],
+      "changed_path_count": 301,
+      "worktree_clean": true,
+      "acceptance": "passed",
+      "teams": [
+        { "team_id": "T01", "split": "dev", "external_import_count": 15, "synthetic_batch_count": 5 },
+        { "team_id": "T02", "split": "dev", "external_import_count": 15, "synthetic_batch_count": 8 }
+      ]
+    },
+    {
+      "build_id": "build-02",
+      "branch": "codex/task1-data-build-v2-t03-t04",
+      "launch_tag": "task1-data-parallel-launch-v2",
+      "launch_commit": "ef2ca4bd84e529c6c7d8a8df661520cbc3bf4bb0",
+      "audited_head": "c52edc1b08c3b6d245d4ba8be2059b0bdacebb05",
+      "audited_commits": [
+        "d495f2bd978eacd911c3cab6f102f8b3c6af75bb",
+        "6043053e319ab6d9cf9ea890e68399a62cb84fe6",
+        "c52edc1b08c3b6d245d4ba8be2059b0bdacebb05"
+      ],
+      "allowed_prefixes": [
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-02/T03/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T03/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T03/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-02/T04/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T04/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T04/"
+      ],
+      "changed_path_count": 234,
+      "worktree_clean": true,
+      "acceptance": "passed",
+      "teams": [
+        { "team_id": "T03", "split": "dev", "external_import_count": 16, "synthetic_batch_count": 7 },
+        { "team_id": "T04", "split": "dev", "external_import_count": 16, "synthetic_batch_count": 7 }
+      ]
+    },
+    {
+      "build_id": "build-03",
+      "branch": "codex/task1-data-build-v2-t05-t06",
+      "launch_tag": "task1-data-parallel-launch-v2",
+      "launch_commit": "ef2ca4bd84e529c6c7d8a8df661520cbc3bf4bb0",
+      "audited_head": "66ead133fa01fd24a52419c0b75546f0f3fbb5cf",
+      "audited_commits": [
+        "921ab8baf5dae688b63e7c81a0668b01d8102180",
+        "79b29205d022430ce1bfd50b8dbfb3d2dfb0407a",
+        "66ead133fa01fd24a52419c0b75546f0f3fbb5cf"
+      ],
+      "allowed_prefixes": [
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-03/T05/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T05/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-03/T06/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T06/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T06/"
+      ],
+      "changed_path_count": 224,
+      "worktree_clean": true,
+      "acceptance": "passed",
+      "teams": [
+        { "team_id": "T05", "split": "hidden_test", "external_import_count": 16, "synthetic_batch_count": 7 },
+        { "team_id": "T06", "split": "hidden_test", "external_import_count": 16, "synthetic_batch_count": 7 }
+      ]
+    },
+    {
+      "build_id": "build-04",
+      "branch": "codex/task1-data-build-v2-t07-t08",
+      "launch_tag": "task1-data-parallel-launch-v2",
+      "launch_commit": "ef2ca4bd84e529c6c7d8a8df661520cbc3bf4bb0",
+      "audited_head": "00cda8e0d5d21c634e4a0ae5e5cd6d6f7c66d761",
+      "audited_commits": [
+        "89fb4d2d5f2c21cfd2b307d9da6aa370aea938b7",
+        "00cda8e0d5d21c634e4a0ae5e5cd6d6f7c66d761"
+      ],
+      "allowed_prefixes": [
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-04/T07/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T07/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T07/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-04/T08/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T08/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/"
+      ],
+      "changed_path_count": 190,
+      "worktree_clean": true,
+      "acceptance": "passed",
+      "teams": [
+        { "team_id": "T07", "split": "hidden_test", "external_import_count": 16, "synthetic_batch_count": 7 },
+        { "team_id": "T08", "split": "hidden_test", "external_import_count": 16, "synthetic_batch_count": 7 }
+      ]
+    },
+    {
+      "build_id": "build-05",
+      "branch": "codex/task1-data-build-v2-t09-t10",
+      "launch_tag": "task1-data-parallel-launch-v2",
+      "launch_commit": "ef2ca4bd84e529c6c7d8a8df661520cbc3bf4bb0",
+      "audited_head": "94ecfb3904f94ea800dc02e94f5c8284a4bbe888",
+      "audited_commits": [
+        "c6b49057d1da6358bf1b70ac5257be2a4e44c296",
+        "6392148381234b736b0732c1213c6833ac0495c0",
+        "94ecfb3904f94ea800dc02e94f5c8284a4bbe888"
+      ],
+      "allowed_prefixes": [
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-05/T09/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T09/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T09/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-05/T10/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T10/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T10/"
+      ],
+      "changed_path_count": 181,
+      "worktree_clean": true,
+      "acceptance": "passed",
+      "teams": [
+        { "team_id": "T09", "split": "hidden_test", "external_import_count": 14, "synthetic_batch_count": 7 },
+        { "team_id": "T10", "split": "hidden_test", "external_import_count": 14, "synthetic_batch_count": 7 }
+      ]
+    },
+    {
+      "build_id": "build-06",
+      "branch": "codex/task1-data-build-16team-t11-t12",
+      "launch_tag": "task1-data-parallel-launch-16team-v1",
+      "launch_commit": "8257782c23eaa5e31f05b0ea33aa2ac7f2b6bb84",
+      "audited_head": "0a1d6df568d31edb105a7ea2a3a803f279616cc4",
+      "audited_commits": [
+        "1757b00c1db2a87103f5f29cf265d426c417c45b",
+        "85a6314b77d08c52b61e53b979d57fba572534aa",
+        "1648feaaf4ba4d710dacbae54f8ac2fb8f602808",
+        "73a03559533750255a754ecafcd72e82729f0de7",
+        "fc79cc500c7e25651e3195700c96d9181e9ff509",
+        "447cf870812da95cacca34807ca197d982763cb7",
+        "0a1d6df568d31edb105a7ea2a3a803f279616cc4"
+      ],
+      "allowed_prefixes": [
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-06/T11/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T11/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T11/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-06/T12/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T12/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T12/"
+      ],
+      "changed_path_count": 80,
+      "worktree_clean": true,
+      "acceptance": "passed",
+      "teams": [
+        { "team_id": "T11", "split": "dev", "external_import_count": 14, "synthetic_batch_count": 7 },
+        { "team_id": "T12", "split": "dev", "external_import_count": 14, "synthetic_batch_count": 7 }
+      ]
+    },
+    {
+      "build_id": "build-07",
+      "branch": "codex/task1-data-build-16team-t13-t14",
+      "launch_tag": "task1-data-parallel-launch-16team-v1",
+      "launch_commit": "8257782c23eaa5e31f05b0ea33aa2ac7f2b6bb84",
+      "audited_head": "a7525bddd2e392db9a3117ad9947414fca0fd6ce",
+      "audited_commits": [
+        "6505d0ce75e6794fa0ad1190e780064aee894f18",
+        "4e48c1eb473006a929d329f4d46475fc8368bb01",
+        "ca6f349cbc912af95b8943d59278e445038f4712",
+        "6001aac8c2eb9811eabca24e91585139860a116b",
+        "a7525bddd2e392db9a3117ad9947414fca0fd6ce"
+      ],
+      "allowed_prefixes": [
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-07/T13/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T13/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T13/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-07/T14/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T14/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T14/"
+      ],
+      "changed_path_count": 162,
+      "worktree_clean": true,
+      "acceptance": "passed",
+      "teams": [
+        { "team_id": "T13", "split": "hidden_test", "external_import_count": 17, "synthetic_batch_count": 7 },
+        { "team_id": "T14", "split": "hidden_test", "external_import_count": 17, "synthetic_batch_count": 7 }
+      ]
+    },
+    {
+      "build_id": "build-08",
+      "branch": "codex/task1-data-build-16team-t15-t16",
+      "launch_tag": "task1-data-parallel-launch-16team-v1",
+      "launch_commit": "8257782c23eaa5e31f05b0ea33aa2ac7f2b6bb84",
+      "audited_head": "6686323097b7c15f6c4c301569596245d4f99e3e",
+      "audited_commits": [
+        "4293fdf254ffa2f963eda72b7a0a5f9e6cde9006",
+        "ed5d83e07ff0b1810765e2a0b83ba9937878c54c",
+        "6e1bb1bebceba71d081667c6c192b66b5dc4adb7",
+        "6686323097b7c15f6c4c301569596245d4f99e3e"
+      ],
+      "allowed_prefixes": [
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-08/T15/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T15/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T15/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-08/T16/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T16/",
+        "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T16/"
+      ],
+      "changed_path_count": 117,
+      "worktree_clean": true,
+      "acceptance": "passed",
+      "teams": [
+        { "team_id": "T15", "split": "hidden_test", "external_import_count": 19, "synthetic_batch_count": 7 },
+        { "team_id": "T16", "split": "hidden_test", "external_import_count": 18, "synthetic_batch_count": 7 }
+      ]
+    }
+  ],
+  "team_acceptance_contract": {
+    "case_count": 40,
+    "pair_count": 15,
+    "memory_positive_count": 6,
+    "skill_positive_count": 6,
+    "knowledge_positive_count": 3,
+    "paired_negative_count": 15,
+    "natural_negative_count": 10,
+    "provider_leakage_count": 0,
+    "pair_error_count": 0,
+    "visibility_error_count": 0,
+    "sequence_error_count": 0,
+    "source_error_count": 0,
+    "review_status": "passed",
+    "blocking_items": []
+  }
+}

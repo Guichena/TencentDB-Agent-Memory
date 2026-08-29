@@ -1,0 +1,44 @@
+{
+  "schema_version": "task1.dev_integration_report.v1",
+  "dataset_revision": "formal-v1",
+  "stage": "DS03_dev_integration",
+  "status": "passed",
+  "teams": ["T01", "T02", "T03", "T04", "T11", "T12"],
+  "counts": {
+    "teams": 6,
+    "cases": 240,
+    "pairs": 90,
+    "memory_positive": 36,
+    "skill_positive": 36,
+    "knowledge_positive": 18,
+    "paired_negative": 90,
+    "natural_coding_negative": 60,
+    "discovery_positive": 60,
+    "direct_positive": 30
+  },
+  "strict_validation": {
+    "freeze_contract": "formal-v1",
+    "valid": true,
+    "errors": 0,
+    "pair_integrity_errors": 0,
+    "provider_leakage": 0,
+    "invalid_sequences": 0,
+    "missing_source_refs": 0,
+    "report": "DS03-DEV-VALIDATION.json"
+  },
+  "deterministic_compile": {
+    "runs": 2,
+    "file_diff_count": 0,
+    "provider_canonical_sha256": "ab1842aa1cc6d36a79bd8c232f2d66fd0d097c50eea4c2c09c4b4c8393e6308a",
+    "private_gold_canonical_sha256": "064f259bf42459639548173b6f03d9665d0431e25e10ae701209de097b4cee7f",
+    "snapshot_canonical_sha256": "3a82d0ad8241ff3e2173555efbdb65dfb367a0a38c9998203c5b4754611a4783"
+  },
+  "tests": {
+    "d0_vitest": "32/32 passed",
+    "source_tools_python": "19/19 passed",
+    "tool_prompt_contract": "30/30 passed",
+    "count_drift_negative_test": "passed"
+  },
+  "formal_model_evaluation_runs": 0,
+  "blocking_issues": []
+}

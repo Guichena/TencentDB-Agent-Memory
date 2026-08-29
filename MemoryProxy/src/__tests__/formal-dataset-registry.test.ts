@@ -6,6 +6,7 @@ import {
   type FormalWorldContract,
 } from "../../eval/tool-prompt-bench/worlds/formal-schema.js";
 import { compileFormalSplitInputs } from "../../eval/tool-prompt-bench/worlds/formal-compile.js";
+import { validateFormalV1Freeze } from "../../eval/tool-prompt-bench/formal-dataset/scripts/validate-formal-dataset.js";
 
 const root = resolve(process.cwd(), "eval/tool-prompt-bench/formal-dataset");
 
@@ -42,67 +43,41 @@ describe("Task 1 DS00 identity registry", () => {
     }
   });
 
-  it("adds exactly the four thin construction entry points", () => {
+  it("keeps construction and freeze entry points explicit", () => {
     expect(readdirSync(resolve(root, "scripts")).sort()).toEqual([
       "compile-formal-dataset.ts",
       "inspect-formal-snapshot.ts",
+      "integrate-team-fragments.ts",
       "restore-formal-snapshot.ts",
       "validate-formal-dataset.ts",
     ]);
   });
 });
 
-describe("Task 1 T01 staged construction", () => {
-  it("retains the DS01 migration while admitting the DS02 retrieval-pressure pilot", () => {
+describe("Task 1 formal-v1 integrated contract", () => {
+  it("accepts the current Dev milestone or the final Full freeze", () => {
     const contractText = readFileSync(resolve(root, "registry/contracts/formal-v1.json"), "utf8");
     const contract = JSON.parse(contractText) as FormalWorldContract;
     expect(validateFormalWorldContract(contract)).toEqual({ valid: true, errors: [] });
     expect(contract.world.spaceId).toBe("space-task1-engineering");
-    expect(contract.teams).toHaveLength(10);
-    expect(contract.publicCases.filter((item) => item.identity.teamId === "T01").length).toBeGreaterThanOrEqual(10);
-    expect(contract.pairs.length).toBeGreaterThanOrEqual(5);
-    expect(compileFormalSplitInputs(contract, "dev").length).toBeGreaterThanOrEqual(10);
-    expect(compileFormalSplitInputs(contract, "hidden_test")).toHaveLength(0);
-
-    expect(contract.assets.l0Conversations).toHaveLength(12);
-    for (const session of contract.assets.l0Conversations) {
-      expect(session.messages.length).toBeGreaterThanOrEqual(12);
-      expect(session.messages.length).toBeLessThanOrEqual(40);
-    }
-    expect(contract.assets.l1Memories).toEqual([]);
-    expect(contract.assets.l2Scenes).toEqual([]);
-    expect(contract.assets.l3Profiles).toEqual([]);
-
-    expect(contract.pairs.map((item) => item.pairId)).toEqual(expect.arrayContaining([
-      "T01-PAIR-001",
-      "T01-PAIR-002",
-      "T01-PAIR-003",
-      "T01-PAIR-004",
-      "T01-PAIR-005",
-    ]));
-    expect(contract.assets.knowledge.map((item) => item.assetId).sort()).toEqual([
-      "cg-t01mypy1",
-      "cg-t01ujs01",
-      "wiki-t01rel01",
-    ]);
-
-    const annotationById = new Map(contract.privateAnnotations.map((item) => [item.caseId, item]));
-    const listed = annotationById.get("T01-SKILL-TARGET-001-P")!.gold;
-    expect(listed.allowedSequences).toEqual([["skill_view"]]);
-    expect(listed.stopAfter).toMatch(/skill_view returns/);
-    const searched = annotationById.get("T01-SKILL-HARNESS-002-P")!.gold;
-    expect(searched.allowedSequences).toEqual([["skill_search", "skill_view_by_id"]]);
-    expect(searched.expectedFollowupActions?.[0].tool).toBe("skill_view_by_id");
-    expect(searched.stopAfter).toMatch(/skill_view_by_id returns/);
+    const isDevMilestone = contract.teams.length === 6;
+    expect(validateFormalV1Freeze(contract, isDevMilestone ? "dev" : undefined)).toEqual([]);
+    expect(compileFormalSplitInputs(contract, "dev")).toHaveLength(240);
+    expect(compileFormalSplitInputs(contract, "hidden_test")).toHaveLength(isDevMilestone ? 0 : 400);
+    expect(contract.publicCases).toHaveLength(isDevMilestone ? 240 : 640);
+    expect(contract.privateAnnotations).toHaveLength(contract.publicCases.length);
+    expect(contract.pairs).toHaveLength(isDevMilestone ? 90 : 240);
     expect(contractText).not.toContain("stop_after_first_tdai_tool_decision");
+  });
 
-    const provenance = JSON.parse(readFileSync(resolve(root, "provenance/T01.json"), "utf8")) as {
-      inputs: { w01_pair_draft_sha256: string; w01_l0_draft_sha256: string };
-      l0_migration: Array<{ input_sha256: string; output_sha256: string }>;
-    };
-    expect(provenance.inputs.w01_pair_draft_sha256).toBe("b4bdf8f4bf1f8547bc84028489f38d0a6fe6c3390c0e1f6399ab50d77874d71a");
-    expect(provenance.inputs.w01_l0_draft_sha256).toBe("749be097a0417d6e4876f6e5c0ef3847fa3a8aa098498fc06e3bda86b2dffe8c");
-    expect(provenance.l0_migration).toHaveLength(6);
-    expect(provenance.l0_migration.every((item) => /^[a-f0-9]{64}$/.test(item.input_sha256) && /^[a-f0-9]{64}$/.test(item.output_sha256))).toBe(true);
+  it("rejects formal-v1 count drift directly", () => {
+    const contract = JSON.parse(readFileSync(resolve(root, "registry/contracts/formal-v1.json"), "utf8")) as FormalWorldContract;
+    const isDevMilestone = contract.teams.length === 6;
+    const drifted = structuredClone(contract);
+    drifted.publicCases.pop();
+    drifted.privateAnnotations.pop();
+    expect(validateFormalV1Freeze(drifted, isDevMilestone ? "dev" : undefined)).toEqual(
+      expect.arrayContaining([expect.stringMatching(/Cases expected/)]),
+    );
   });
 });

@@ -1,9 +1,9 @@
 {
   "schema_version": "task1.dataset_build_status.v1",
   "dataset_revision": "formal-v1",
-  "active_stage": "DS02_parallel_16team",
-  "stage_status": "parallel_ready",
-  "next_stage": "eight_team_builds_then_single_integration",
+  "active_stage": "DS03_dev_integration",
+  "stage_status": "passed",
+  "next_stage": "DS04_hidden_integration",
   "branch": "codex/task1-data-integration",
   "baseline_commit": "960021e472456515a89d3c2c4f2962fbf6cc51a1",
   "parallel_baseline_ref": "task1-data-parallel-baseline-v2",
@@ -12,7 +12,6 @@
     { "ref": "task1-data-parallel-launch-v2", "builds": ["build-01", "build-02", "build-03", "build-04", "build-05"] },
     { "ref": "task1-data-parallel-launch-16team-v1", "builds": ["build-06", "build-07", "build-08"] }
   ],
-  "content_baseline_commit": "960021e472456515a89d3c2c4f2962fbf6cc51a1",
   "target_counts": {
     "spaces": 1,
     "teams": 16,
@@ -26,35 +25,50 @@
     "paired_negative": 240,
     "natural_coding_negative": 160
   },
-  "completed_gates": ["DS00", "DS01", "DS02_PILOT", "SYNTHETIC_PROVENANCE_V2"],
+  "completed_gates": [
+    "DS00",
+    "DS01",
+    "DS02_PILOT",
+    "SYNTHETIC_PROVENANCE_V2",
+    "DS02_16TEAM_BUILD_AUDIT",
+    "DS03_DEV_STRICT_FREEZE",
+    "DS03_DEV_DETERMINISTIC_COMPILE",
+    "DS03_D0_TESTS",
+    "DS03_TOOL_PROMPT_TESTS"
+  ],
   "team_progress": {
-    "T01": { "identity": "frozen", "assets": "ds02_pilot_frozen", "l0_sessions": 12, "skills": 2, "knowledge": 3, "cases": 10, "pairs": 5, "gate": "ds02_pilot_passed" },
-    "T02": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
-    "T03": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
-    "T04": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
-    "T05": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
-    "T06": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
-    "T07": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
-    "T08": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
-    "T09": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
-    "T10": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
-    "T11": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
-    "T12": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
-    "T13": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
-    "T14": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
-    "T15": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
-    "T16": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" }
+    "T01": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T02": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T03": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T04": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T05": { "build": "audited", "integration": "pending_hidden", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T06": { "build": "audited", "integration": "pending_hidden", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T07": { "build": "audited", "integration": "pending_hidden", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T08": { "build": "audited", "integration": "pending_hidden", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T09": { "build": "audited", "integration": "pending_hidden", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T10": { "build": "audited", "integration": "pending_hidden", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T11": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T12": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T13": { "build": "audited", "integration": "pending_hidden", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T14": { "build": "audited", "integration": "pending_hidden", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T15": { "build": "audited", "integration": "pending_hidden", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T16": { "build": "audited", "integration": "pending_hidden", "cases": 40, "pairs": 15, "gate": "passed" }
   },
   "artifacts": {
     "contract": "registry/contracts/formal-v1.json",
-    "contract_canonical_sha256": "8d90dbdc0146b2b4d5f25f5baae9f581d3c9eb8712f37a1d8a27270615ebb187",
-    "provider_dev_sha256": "03f9aca397313fbdf296af121b3802326b6d55d47215d7687ef7ea334cc26cd2",
-    "snapshot_dev_sha256": "281bfa9b5c761fb5ad9cf93fa027f75c9d2bc37ca32ba1b4b8427b0f3b4c4102"
+    "contract_file_sha256": "52e2917bd389ae61706ecabea05b05b7ba46545d049f6b62fd3f297be7ab263d",
+    "contract_canonical_sha256": "c69e5adaa2f552026d1e21c7c1706e039c07e7b03a1a4d8971c0331c2f1424d6",
+    "provider_dev_file_sha256": "8018bb65160eb1cac13e489ae54f258f2369dc4af058f09a3e1dc432961bc1f3",
+    "provider_dev_canonical_sha256": "ab1842aa1cc6d36a79bd8c232f2d66fd0d097c50eea4c2c09c4b4c8393e6308a",
+    "private_gold_dev_file_sha256": "88b7fc08ac9011f55e82af782ef66df4969cd46840d23075023d1fccb7e86495",
+    "private_gold_dev_canonical_sha256": "064f259bf42459639548173b6f03d9665d0431e25e10ae701209de097b4cee7f",
+    "snapshot_dev_file_sha256": "a65226bf6ca0b32a22fd3ca97bffa83ad421a60a57d60a642a1b1130aaac1056",
+    "snapshot_dev_canonical_sha256": "3a82d0ad8241ff3e2173555efbdb65dfb367a0a38c9998203c5b4754611a4783"
   },
   "blocking_issues": [],
   "known_limitations": [
-    "The checked-in formal-v1 contract and Dev snapshot-input are pilot artifacts, not the final 16-Team contract. After all eight builds pass, the integration owner must rebuild the global contract and snapshots deterministically; Team builders must not modify global artifacts."
+    "The formal-v1 contract currently contains the six frozen Dev Teams only; the ten audited Hidden Teams are integrated in DS04 before the final Full freeze."
   ],
-  "last_command": "validate formal provenance v2; compile formal Dev twice; npm run eval:tool-prompt:d0:test; retrieval-pressure and tool-prompt suites",
-  "last_verified_commit": "1048681880b51e7a52a6b8b0b731eadeec44e118"
+  "last_command": "strict formal-v1 Dev validation; compile Dev twice; D0 32/32 plus Python 19/19; tool-prompt 30/30",
+  "last_verified_source_commit": "7df6a3d978cfb7fa79bd47d053f69b9112d712b4"
 }
