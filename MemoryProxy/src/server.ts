@@ -30,6 +30,8 @@ export interface CreateAppDeps {
   serverInstanceId?: string;
   /** Deterministic test seam; production instances use their creation time. */
   serverStartedAt?: string;
+  /** Exact SHA-256 of the YAML bytes read by the production startup entry. */
+  experimentConfigFileSha256?: string;
 }
 
 export function createApp(config: ProxyConfig, deps: CreateAppDeps = {}): Hono {
@@ -125,6 +127,7 @@ export function createApp(config: ProxyConfig, deps: CreateAppDeps = {}): Hono {
       injectionEnabled: config.injection.enabled,
       toolPromptProfile: config.injection.toolPromptProfile,
       experimentConfigFingerprint,
+      experimentConfigFileSha256: deps.experimentConfigFileSha256 ?? null,
       experimentReadOnly: {
         ...experimentReadOnly,
         ready: Object.values(experimentReadOnly).every(Boolean),

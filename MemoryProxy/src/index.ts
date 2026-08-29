@@ -1,5 +1,9 @@
 /** Entry point: parse config, start server. */
 
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
 if (!process.version.startsWith("v22.")) {
   console.error(`\x1b[31m[ERROR] Node.js version check failed!\x1b[0m`);
   console.error(`\x1b[31m[ERROR] Required Node.js version: v22.x\x1b[0m`);
@@ -34,7 +38,24 @@ import { initProxyStorage, getEffectiveBackend } from "./storage/factory.js";
 import { flushPendingWrites, pendingWriteCount } from "./tdai/pending-writes.js";
 
 const overrides = parseArgv(process.argv);
+const configFilePath = resolve(overrides.configFile || "config.yaml");
+const readConfigFileSha256 = (): string | undefined => {
+  try {
+    return createHash("sha256").update(readFileSync(configFilePath)).digest("hex");
+  } catch {
+    return undefined;
+  }
+};
+const configFileSha256BeforeLoad = readConfigFileSha256();
 const config = buildConfig(overrides);
+const configFileSha256AfterLoad = readConfigFileSha256();
+if (configFileSha256BeforeLoad !== configFileSha256AfterLoad) {
+  throw new Error("Config file changed while MemoryProxy was loading it; refusing an ambiguous startup receipt");
+}
+// Normal production startup historically allows a missing default config.
+// Formal experiments require an explicit receipt and fail closed in their
+// health preflight when this value is absent.
+const experimentConfigFileSha256 = configFileSha256AfterLoad;
 
 // ── Initialize structured logging system ─────────────────────────────────────
 initLogger({
@@ -104,7 +125,7 @@ if (isRequestPrepareActive(config)) {
   });
 }
 
-const app = createApp(config);
+const app = createApp(config, { experimentConfigFileSha256 });
 
 log.info("server.starting", {
   host: config.server.host,

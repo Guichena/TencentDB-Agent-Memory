@@ -77,6 +77,7 @@ describe("Task 1 formal production profile selection", () => {
     const response = await createApp(config, {
       serverInstanceId: "formal-profile-instance-01",
       serverStartedAt: "2026-08-30T00:00:00.000Z",
+      experimentConfigFileSha256: "a".repeat(64),
     }).request("http://memory-proxy.test/health");
     const body = await response.json() as Record<string, unknown>;
 
@@ -91,6 +92,7 @@ describe("Task 1 formal production profile selection", () => {
         baseSha256: expect.stringMatching(/^[a-f0-9]{64}$/),
         effectiveSha256: expect.stringMatching(/^[a-f0-9]{64}$/),
       },
+      experimentConfigFileSha256: "a".repeat(64),
       experimentReadOnly: {
         extractionDisabled: true,
         tdaiL0WriteDisabled: true,
