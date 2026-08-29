@@ -1,0 +1,41 @@
+{
+  "schema_version": "task1.sol_pilot_review.v1",
+  "team_id": "T06",
+  "stage": "DS05",
+  "reviewer": "sol",
+  "status": "passed",
+  "reviewed_batches": [
+    {
+      "batch_id": "t06-pilot-memory-01",
+      "family": "memory",
+      "pair_count": 1,
+      "draft_sha256": "c3f47bc47494bb489693289fe4b6c236d34f6d60153eeb2a6616d9df291154b4",
+      "validator": "passed"
+    },
+    {
+      "batch_id": "t06-pilot-skill-01",
+      "family": "skill",
+      "pair_count": 1,
+      "draft_sha256": "112e9c9f8bce48822c9029c36bf921903506f550a0d9bce9b86e52b2c62d1469",
+      "validator": "passed"
+    },
+    {
+      "batch_id": "t06-pilot-knowledge-01",
+      "family": "knowledge",
+      "pair_count": 1,
+      "draft_sha256": "650694dcef215a798babcb7c452f95e0b1484cf5d36e270f6b5580b3144a29ab",
+      "validator": "passed"
+    }
+  ],
+  "checks": {
+    "shared_context_and_query_are_identical_within_each_pair": true,
+    "single_changed_message_delta": true,
+    "positive_has_one_unique_information_gap": true,
+    "negative_fully_closes_that_gap": true,
+    "route_and_target_are_unique": true,
+    "visible_same_domain_distractors_are_present": true,
+    "provider_visible_text_has_no_private_protocol_or_asset_id_leak": true,
+    "source_claims_are_bound_to_frozen_sources_where_applicable": true
+  },
+  "decision": "Expansion is authorized from the immutable T06 input freeze."
+}

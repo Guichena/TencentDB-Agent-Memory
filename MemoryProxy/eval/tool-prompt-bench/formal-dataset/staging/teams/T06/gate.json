@@ -1,0 +1,99 @@
+{
+  "schema_version": "task1.team_gate.v1",
+  "team_id": "T06",
+  "build_id": "build-03",
+  "status": "passed",
+  "counts": {
+    "cases": 40,
+    "pairs": 15,
+    "memory_positive": 6,
+    "skill_positive": 6,
+    "knowledge_positive": 3,
+    "paired_negative": 15,
+    "natural_negative": 10,
+    "l0": 10,
+    "l1": 16,
+    "l2": 4,
+    "l3": 1,
+    "skills": 16,
+    "knowledge": 3,
+    "external_imports": 16
+  },
+  "batch_validations": [
+    {
+      "batch_dir": "pilot-memory-01",
+      "family": "memory",
+      "expected_count": 1,
+      "valid": true,
+      "raw_output_sha256": "c3f47bc47494bb489693289fe4b6c236d34f6d60153eeb2a6616d9df291154b4",
+      "errors": []
+    },
+    {
+      "batch_dir": "pilot-skill-01",
+      "family": "skill",
+      "expected_count": 1,
+      "valid": true,
+      "raw_output_sha256": "112e9c9f8bce48822c9029c36bf921903506f550a0d9bce9b86e52b2c62d1469",
+      "errors": []
+    },
+    {
+      "batch_dir": "pilot-knowledge-01",
+      "family": "knowledge",
+      "expected_count": 1,
+      "valid": true,
+      "raw_output_sha256": "650694dcef215a798babcb7c452f95e0b1484cf5d36e270f6b5580b3144a29ab",
+      "errors": []
+    },
+    {
+      "batch_dir": "expand-memory-01",
+      "family": "memory",
+      "expected_count": 5,
+      "valid": true,
+      "raw_output_sha256": "9deeff39aa2a7ba2f3a5a66bcfc6fcc5b582b4ddbce023b47b301d2f98dd87ce",
+      "errors": []
+    },
+    {
+      "batch_dir": "expand-skill-01",
+      "family": "skill",
+      "expected_count": 5,
+      "valid": true,
+      "raw_output_sha256": "93034bc060431ba8e953250e0d47d5479568ffe9063fffe6ddac68804dae2d27",
+      "errors": []
+    },
+    {
+      "batch_dir": "expand-knowledge-01",
+      "family": "knowledge",
+      "expected_count": 2,
+      "valid": true,
+      "raw_output_sha256": "b5219c3e98c88b310441a6a06947c9e77c078960f3cecf726a57dc70dd9a94a2",
+      "errors": []
+    },
+    {
+      "batch_dir": "natural-negatives-01",
+      "family": "natural-negative",
+      "expected_count": 10,
+      "valid": true,
+      "raw_output_sha256": "4c9c4841a9f856630897d20481eed8dea3e29d29e8a8e2ecab9ba147febe6315",
+      "errors": []
+    }
+  ],
+  "checks": {
+    "sol_review": "passed",
+    "luna_batch_format": "passed",
+    "formal_schema": "passed",
+    "quantity": "passed",
+    "source_freeze": "passed",
+    "provider_leakage": "passed",
+    "visibility": "passed",
+    "pair_single_delta": "passed",
+    "fresh_sessions": "passed",
+    "distractors": "passed",
+    "search_direct_distribution": "passed"
+  },
+  "integration_preview": {
+    "base_contract": "formal-v1.json",
+    "base_contract_sha256": "a4de4b2d4007636b280958d72d5bed588a3dac8876515ab246a7557bc7522e58",
+    "formal_validation_error_count": 0
+  },
+  "blocking_issues": []
+}

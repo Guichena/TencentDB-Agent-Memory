@@ -1,0 +1,15 @@
+diff --git a/raw/logseq-cli-maintenance/SKILL.md b/adapted/T06-SKILL-LOGSEQ-CLI-MAINTENANCE/SKILL.md
+index 29e4a53..618cb8a 100644
+--- a/raw/logseq-cli-maintenance/SKILL.md
++++ b/adapted/T06-SKILL-LOGSEQ-CLI-MAINTENANCE/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+-name: logseq-cli-maintenance
+-description: Improve readability, consistency, and long-term maintainability of Logseq CLI-related code, command flows, and tests.
++name: cli-argument-maintenance
++description: 'Maintain CLI argument parsing, validation, execution, presentation, exit codes, and tests without changing behavior.'
++use_when: 'Use when refactoring CLI parsing, validation, execution, presentation, exit codes, and command tests without changing behavior.'
++do_not_use_when: 'Do not use for new feature delivery unless maintenance is explicitly requested.'
+ ---
+ 
+ # logseq-cli-maintenance

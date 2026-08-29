@@ -1,0 +1,14 @@
+{
+  "schema_version": "task1.input_freeze.v1",
+  "team_id": "T06",
+  "frozen_by": "gpt-5.6-sol",
+  "frozen_at": "2026-08-29T23:20:00+08:00",
+  "source_lock_sha256": "0ab499a6a821a4ce3029e911136d5ef302ae40fbe74fad0fa3f28ed3f8ea6081",
+  "input_pack_sha256": "8a13d1cd9540819e1b77f833ae9e9ece9c6fbd4739c16bd6d33e58d31deada58",
+  "skill_count": 16,
+  "repository_count": 5,
+  "raw_and_license_hashes_verified": true,
+  "clear_licenses_only": true,
+  "upstream_dependencies_installed": false,
+  "upstream_tests_run": false
+}

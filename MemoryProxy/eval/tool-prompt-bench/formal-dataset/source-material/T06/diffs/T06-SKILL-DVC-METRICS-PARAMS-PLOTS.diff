@@ -1,0 +1,16 @@
+diff --git a/raw/dvc-metrics-params-plots/SKILL.md b/adapted/T06-SKILL-DVC-METRICS-PARAMS-PLOTS/SKILL.md
+index 50d7da5..7d7d50c 100644
+--- a/raw/dvc-metrics-params-plots/SKILL.md
++++ b/adapted/T06-SKILL-DVC-METRICS-PARAMS-PLOTS/SKILL.md
+@@ -1,7 +1,8 @@
+ ---
+-name: metrics-params-plots
+-description: "Track, compare, inspect, and troubleshoot DVC metrics, params, and
+-  plots from CLI, dvc.yaml, and the public Python API."
++name: dvc-metrics-params-plots
++description: "Track, compare, inspect, and troubleshoot DVC metrics, parameters, and plots from supported interfaces."
++use_when: "Use for declaring, showing, diffing, or troubleshooting DVC metrics, parameters, and plots."
++do_not_use_when: "Do not use for remote configuration, generic CLI creation, or extension command registration."
+ disable-model-invocation: true
+ metadata:
+   disco-role: operating

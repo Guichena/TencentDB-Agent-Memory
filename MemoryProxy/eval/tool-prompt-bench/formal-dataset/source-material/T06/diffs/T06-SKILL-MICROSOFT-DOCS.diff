@@ -1,0 +1,14 @@
+diff --git a/raw/microsoft-docs/SKILL.md b/adapted/T06-SKILL-MICROSOFT-DOCS/SKILL.md
+index bbfd424..b8b9cfa 100644
+--- a/raw/microsoft-docs/SKILL.md
++++ b/adapted/T06-SKILL-MICROSOFT-DOCS/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+ name: microsoft-docs
+-description: 'Query official Microsoft documentation to find concepts, tutorials, and code examples across Azure, .NET, Agent Framework, Aspire, VS Code, GitHub, and more. Uses Microsoft Learn MCP as the default, with Context7 and Aspire MCP for content that lives outside learn.microsoft.com.'
++description: 'Research official Microsoft ecosystem documentation and code examples through documented source routes.'
++use_when: 'Use when the task needs current Microsoft, .NET, Azure, or VS Code documentation and examples from documented source routes.'
++do_not_use_when: 'Do not use when the required implementation procedure is already in a specific local skill.'
+ ---
+ 
+ # Microsoft Docs

@@ -1,0 +1,14 @@
+diff --git a/raw/documentation-writer/SKILL.md b/adapted/T06-SKILL-DOCUMENTATION-WRITER/SKILL.md
+index 93e3fbf..4c96386 100644
+--- a/raw/documentation-writer/SKILL.md
++++ b/adapted/T06-SKILL-DOCUMENTATION-WRITER/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+ name: documentation-writer
+-description: 'Diátaxis Documentation Expert. An expert technical writer specializing in creating high-quality software documentation, guided by the principles and structure of the Diátaxis technical documentation authoring framework.'
++description: 'Technical writing workflow for tutorials, how-to guides, reference material, and explanations using Diátaxis.'
++use_when: 'Use when choosing and writing tutorials, how-to guides, references, or explanations for a defined audience and goal.'
++do_not_use_when: 'Do not use for implementing CLI parsers, extension commands, or DVC pipelines.'
+ ---
+ 
+ # Diátaxis Documentation Expert

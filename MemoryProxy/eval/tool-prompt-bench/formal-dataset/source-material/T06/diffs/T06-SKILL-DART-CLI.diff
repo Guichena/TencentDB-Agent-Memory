@@ -1,0 +1,14 @@
+diff --git a/raw/dart-build-cli-app/SKILL.md b/adapted/T06-SKILL-DART-CLI/SKILL.md
+index 239a892..ec5128d 100644
+--- a/raw/dart-build-cli-app/SKILL.md
++++ b/adapted/T06-SKILL-DART-CLI/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+ name: dart-build-cli-app
+-description: Entrypoint structure, exit codes, cross-platform scripts. Use when building command line utilities, scripts, or applications.
++description: 'Build Dart command-line applications with structured entrypoints, argument routing, testing, exit codes, and compilation.'
++use_when: 'Use when building Dart command-line apps with args, CommandRunner, exit codes, testing, or compilation.'
++do_not_use_when: 'Do not use for .NET System.CommandLine, VS Code extensions, DVC workflows, or generic documentation.'
+ metadata:
+   model: models/gemini-3.1-pro-preview
+   last_modified: Fri, 04 May 2026 17:41:00 GMT

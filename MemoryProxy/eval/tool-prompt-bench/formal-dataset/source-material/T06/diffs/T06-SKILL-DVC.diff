@@ -1,0 +1,17 @@
+diff --git a/raw/dvc/SKILL.md b/adapted/T06-SKILL-DVC/SKILL.md
+index 092a3ce..170d3d2 100644
+--- a/raw/dvc/SKILL.md
++++ b/adapted/T06-SKILL-DVC/SKILL.md
+@@ -1,8 +1,8 @@
+ ---
+-name: dvc
+-description: "Use the DVC repository skill for data versioning, pipelines,
+-  experiments, remotes/cache, metrics/params/plots, Python API usage, and DVC
+-  codebase maintenance."
++name: dvc-cli
++description: "Route DVC data versioning, pipelines, experiments, remotes/cache, metrics/params/plots, Python API usage, and maintenance tasks."
++use_when: "Use when a task names DVC, dvc CLI commands, data pipelines, experiments, remotes, cache, metrics, or parameters."
++do_not_use_when: "Do not use for generic CLI creation, editor command contributions, or ordinary documentation."
+ disable-model-invocation: true
+ metadata:
+   disco-role: operating

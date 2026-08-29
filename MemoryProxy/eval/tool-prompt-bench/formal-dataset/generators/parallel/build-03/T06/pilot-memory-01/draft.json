@@ -1,0 +1,84 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t06-pilot-memory-01",
+  "stage": "DS05",
+  "team_id": "T06",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T06-MEM-BP-01",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们正在继续 harbor-admin-cli 的全局选项整理。目标是让根命令下的子命令都能稳定拿到同一份配置，同时保留现有的帮助文本和退出码行为。"
+        },
+        {
+          "role": "assistant",
+          "content": "我先看了当前命令树：有根命令、导出和检查两个子命令，配置读取目前散落在各自处理函数附近。现有回归覆盖了正常调用和缺少值的错误分支。"
+        },
+        {
+          "role": "user",
+          "content": "上次改动后，命令行参数在本地运行没问题，但我不确定全局选项应该在哪一层注册，以及校验失败应该在哪个阶段被拦截。"
+        },
+        {
+          "role": "assistant",
+          "content": "我们排除了把同一个选项复制到每个子命令的做法，因为那会让帮助和默认值出现分叉。也没有动现有的退出码映射。"
+        },
+        {
+          "role": "user",
+          "content": "并行的 orbit-vscode-extension 任务正在整理命令贡献的可见性；那边的菜单条件与这里的参数解析无关，只是都在做客户端命令入口清理。"
+        },
+        {
+          "role": "assistant",
+          "content": "lineage-ml-pipeline 还在处理实验缓存的远端命名，relay-terminal-client 则在核对参数缺失时的输出合同。这两件事可以作为同域背景，但不能替代 harbor-admin-cli 的历史决定。"
+        },
+        {
+          "role": "user",
+          "content": "当前分支已经把命令树和现有测试整理好了，下一步只需要按照团队之前确认的方案补齐注册与校验位置，不需要重写处理函数。"
+        },
+        {
+          "role": "assistant",
+          "content": "我手头的上下文能确定方向和排除项，但没有保留那次讨论的逐字结论。需要先找回历史会话中的准确决定，再按它更新实现计划。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请确认上次关于 harbor-admin-cli 递归全局选项注册与校验位置的准确结论，并告诉我下一步应按什么边界实施。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我记得那次讨论提到过根命令和校验时机，但现在只能确认不要复制到各个子命令；请结合历史记录把当时的精确决定找回来。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "冻结历史中的精确结论尚未出现在上下文：递归全局选项必须注册在根命令，并在解析阶段完成统一校验；排除在每个子命令重复注册、在处理函数内校验以及改动退出码映射。需要找回历史原话。",
+          "route": "memory",
+          "target_asset_ids": ["T06-L0-01"],
+          "allowed_sequence_candidates": [["tdai_conversation_search"]],
+          "stop_after_candidate": "返回承载该结论的历史消息后停止，不继续读取完整会话。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充那次讨论的结论：递归全局选项注册在根命令，让所有子命令继承同一配置；统一校验放在参数解析阶段。明确排除在每个子命令重复注册、在处理函数内再次校验，以及修改现有退出码映射。请按这个边界继续。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已经完整给出注册层级、校验阶段和三个排除项；无需读取历史会话即可回答下一步边界。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T06-L0-03", "T06-L1-09", "T06-L1-05"],
+      "controlled_delta_note": "两条变体共享同一组 8 条消息与完全相同的查询；仅第 9 条消息改变。正例保留历史精确结论缺口，负例只补齐该结论及排除项。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "正例是否只缺冻结历史中的精确结论，而非缺少当前任务所需的其他事实？",
+        "负例是否同时给出根命令注册、解析阶段校验和全部排除项，因而无需读取历史？",
+        "上下文中的 orbit-vscode-extension、lineage-ml-pipeline 与 relay-terminal-client 是否构成至少两个真实同域干扰且未改变目标？",
+        "provider-visible 文本是否未暴露内部资产标识、工具名或私有判定字段？"
+      ]
+    }
+  ]
+}

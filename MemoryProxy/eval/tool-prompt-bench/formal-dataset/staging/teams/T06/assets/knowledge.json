@@ -1,0 +1,254 @@
+{
+  "schema_version": "task1.team_knowledge_assets.v1",
+  "team_id": "T06",
+  "knowledge": [
+    {
+      "assetId": "T06-KNOWLEDGE-HARBOR-CG",
+      "ownerAgentId": "agent-task1-t06-general",
+      "sourceEvidenceIds": [
+        "source-t06-knowledge-t06-knowledge-harbor-cg"
+      ],
+      "observedAt": "2026-08-29T23:59:59+08:00",
+      "type": "code_graph",
+      "name": "Harbor CLI 代码索引",
+      "snapshotSha256": "b56a824210d18e6eb4e228a111983574e89f968ef2a69bca8ff212632568c302",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t06-general",
+          "visibility": "fixed"
+        }
+      ],
+      "repoUrl": "https://benchmark.invalid/tencentdb/task1/t06/harbor-admin-cli.git",
+      "repoCommit": "c1a5e9597d0e2547be8904a3d27ea0e3940d7305",
+      "indexVersion": "task1-t06-v1",
+      "contentHash": "6f1cd16897a7847efa90863dcf268a63c164ac1bf355021e728b8527592f2216"
+    },
+    {
+      "assetId": "T06-KNOWLEDGE-ORBIT-WIKI",
+      "ownerAgentId": "agent-task1-t06-general",
+      "sourceEvidenceIds": [
+        "source-t06-knowledge-t06-knowledge-orbit-wiki"
+      ],
+      "observedAt": "2026-08-29T23:59:59+08:00",
+      "type": "wiki",
+      "name": "Orbit 扩展决策库",
+      "snapshotSha256": "a454505a2b037e22911dbf72ca6b8f11ecb405dcb395ac8b1ab9e1f6e48ca40a",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t06-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "6af0813da8d79008ee4dcc782daf6198d5585f34c20fcfc29ff82599c39feb82"
+    },
+    {
+      "assetId": "T06-KNOWLEDGE-LINEAGE-CG",
+      "ownerAgentId": "agent-task1-t06-general",
+      "sourceEvidenceIds": [
+        "source-t06-knowledge-t06-knowledge-lineage-cg"
+      ],
+      "observedAt": "2026-08-29T23:59:59+08:00",
+      "type": "code_graph",
+      "name": "Lineage DVC 流水线索引",
+      "snapshotSha256": "0821d37a6ee3007349dcfd212729008abdc5315836489ead83242d7cbf0859cb",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t06-general",
+          "visibility": "fixed"
+        }
+      ],
+      "repoUrl": "https://benchmark.invalid/tencentdb/task1/t06/lineage-ml-pipeline.git",
+      "repoCommit": "e574fcd8d6172633e83b91babfe5201bcf966dcb",
+      "indexVersion": "task1-t06-v1",
+      "contentHash": "27cc671b89c0ca60de5ed0bb0d44eed348b284f462c82431d74c663f71c0ffda"
+    }
+  ],
+  "fixtures": [
+    {
+      "knowledgeId": "T06-KNOWLEDGE-HARBOR-CG",
+      "toolList": [
+        {
+          "name": "find_symbol",
+          "required_params": [
+            "symbol"
+          ]
+        }
+      ],
+      "toolFixtures": [
+        {
+          "fixture_id": "T06-KNOWLEDGE-HARBOR-CG-FX-01",
+          "tool_name": "find_symbol",
+          "expected_invocation": {
+            "tool_name": "find_symbol",
+            "arguments": {
+              "symbol": "ExportCommand"
+            }
+          },
+          "expected_result": {
+            "symbol": "ExportCommand",
+            "definition": {
+              "path": "src/Harbor.Admin.Cli/Commands/ExportCommand.cs",
+              "line": 12
+            },
+            "registration": {
+              "owner": "HarborRootCommand.Build()",
+              "path": "src/Harbor.Admin.Cli/HarborRootCommand.cs",
+              "line": 48,
+              "command": "export"
+            },
+            "verification_scope": [
+              "ExportCommand",
+              "HarborRootCommand.Build()",
+              "tests/Integration/ExportCommandTests.cs"
+            ]
+          },
+          "request": {
+            "symbol": "ExportCommand"
+          },
+          "response": {
+            "symbol": "ExportCommand",
+            "definition": {
+              "path": "src/Harbor.Admin.Cli/Commands/ExportCommand.cs",
+              "line": 12
+            },
+            "registration": {
+              "owner": "HarborRootCommand.Build()",
+              "path": "src/Harbor.Admin.Cli/HarborRootCommand.cs",
+              "line": 48,
+              "command": "export"
+            },
+            "verification_scope": [
+              "ExportCommand",
+              "HarborRootCommand.Build()",
+              "tests/Integration/ExportCommandTests.cs"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "knowledgeId": "T06-KNOWLEDGE-ORBIT-WIKI",
+      "toolList": [
+        {
+          "name": "search_pages",
+          "required_params": [
+            "query"
+          ]
+        }
+      ],
+      "toolFixtures": [
+        {
+          "fixture_id": "T06-KNOWLEDGE-ORBIT-WIKI-FX-01",
+          "tool_name": "search_pages",
+          "expected_invocation": {
+            "tool_name": "search_pages",
+            "arguments": {
+              "query": "命令标题 本地化"
+            }
+          },
+          "expected_result": {
+            "matches": [
+              {
+                "ref": "wiki/orbit-command-title-localization",
+                "title": "命令标题 本地化",
+                "summary": "命令 ID 保持不变；commands、menus.commandPalette 与 views/title 引用 orbit.command.openPanel.title；英文和简体中文分别位于 package.nls.json 与 package.nls.zh-cn.json；校验中文缺失时的英文回退。"
+              }
+            ]
+          },
+          "request": {
+            "query": "命令标题 本地化"
+          },
+          "response": {
+            "matches": [
+              {
+                "ref": "wiki/orbit-command-title-localization",
+                "title": "命令标题 本地化",
+                "summary": "命令 ID 保持不变；commands、menus.commandPalette 与 views/title 引用 orbit.command.openPanel.title；英文和简体中文分别位于 package.nls.json 与 package.nls.zh-cn.json；校验中文缺失时的英文回退。"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "knowledgeId": "T06-KNOWLEDGE-LINEAGE-CG",
+      "toolList": [
+        {
+          "name": "inspect_stage",
+          "required_params": [
+            "stage"
+          ]
+        }
+      ],
+      "toolFixtures": [
+        {
+          "fixture_id": "T06-KNOWLEDGE-LINEAGE-CG-FX-01",
+          "tool_name": "inspect_stage",
+          "expected_invocation": {
+            "tool_name": "inspect_stage",
+            "arguments": {
+              "stage": "train"
+            }
+          },
+          "expected_result": {
+            "stage": "train",
+            "path": "dvc.yaml",
+            "deps": [
+              "data/features.parquet",
+              "data/labels.parquet",
+              "params.yaml"
+            ],
+            "cmd": "python src/train.py --config params.yaml",
+            "outs": [
+              "model/model.pkl"
+            ],
+            "metrics": [
+              "metrics/train.json"
+            ],
+            "downstream": [
+              {
+                "stage": "evaluate",
+                "uses": [
+                  "model/model.pkl"
+                ]
+              }
+            ],
+            "not_directly_used_by": [
+              "publish"
+            ]
+          },
+          "request": {
+            "stage": "train"
+          },
+          "response": {
+            "stage": "train",
+            "path": "dvc.yaml",
+            "deps": [
+              "data/features.parquet",
+              "data/labels.parquet",
+              "params.yaml"
+            ],
+            "cmd": "python src/train.py --config params.yaml",
+            "outs": [
+              "model/model.pkl"
+            ],
+            "metrics": [
+              "metrics/train.json"
+            ],
+            "downstream": [
+              {
+                "stage": "evaluate",
+                "uses": [
+                  "model/model.pkl"
+                ]
+              }
+            ],
+            "not_directly_used_by": [
+              "publish"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+diff --git a/raw/dvc-experiments/SKILL.md b/adapted/T06-SKILL-DVC-EXPERIMENTS/SKILL.md
+index 492b92f..8c58997 100644
+--- a/raw/dvc-experiments/SKILL.md
++++ b/adapted/T06-SKILL-DVC-EXPERIMENTS/SKILL.md
+@@ -1,7 +1,8 @@
+ ---
+-name: experiments
+-description: "Run, queue, compare, promote, share, and clean up DVC experiments
+-  without confusing them with ordinary pipeline reproduction."
++name: dvc-experiments
++description: "Plan DVC experiment run, queue, comparison, promotion, sharing, and cleanup workflows."
++use_when: "Use for dvc exp run, queue, show, diff, apply, branch, share, rename, and cleanup workflows."
++do_not_use_when: "Do not use for ordinary dvc repro pipeline design, remote setup, or generic argument parsing."
+ disable-model-invocation: true
+ metadata:
+   disco-role: operating

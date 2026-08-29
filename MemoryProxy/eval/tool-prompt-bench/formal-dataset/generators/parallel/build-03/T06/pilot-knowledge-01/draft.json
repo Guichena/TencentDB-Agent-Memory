@@ -1,0 +1,90 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t06-pilot-knowledge-01",
+  "stage": "DS05",
+  "team_id": "T06",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T06-KNOW-BP-01",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们在复查 harbor-admin-cli 的命令树改造，范围限定为当前仓库的命令定义、装配和回归核对。"
+        },
+        {
+          "role": "assistant",
+          "content": "现有记录确认根命令负责装配认证、项目和数据操作子命令，命令处理器与参数绑定分别放在 Commands 和 Parsing 目录。"
+        },
+        {
+          "role": "user",
+          "content": "ImportCommand 的实现位于 Commands/ImportCommand.cs，StatusCommand 也保留在同一命令组中；这两个现成命令只作为旁路参照。"
+        },
+        {
+          "role": "assistant",
+          "content": "参数层的 ParseResult 读取和全局 --format 选项由 OptionBinder 处理，不能把参数绑定位置误认为命令注册位置。"
+        },
+        {
+          "role": "user",
+          "content": "本轮要核对新增导出流程，同时留意 ImportCommand 和 StatusCommand 的相邻实现，避免被同一目录里的相似代码带偏。"
+        },
+        {
+          "role": "assistant",
+          "content": "复查边界包括命令类、根命令装配调用以及对应的集成测试入口；普通帮助文本和 VS Code 扩展改动不在范围内。"
+        },
+        {
+          "role": "user",
+          "content": "另外，Orbit 扩展的命令贡献和 Lineage 流水线的阶段名称会出现在项目索引中，但它们不是 Harbor 命令树的实现。"
+        },
+        {
+          "role": "assistant",
+          "content": "最近一次摘要只记录了相邻命令和参数层的核对结果，尚未给出本轮导出流程所需的完整代码定位。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请确认 Harbor 管理 CLI 中 ExportCommand 的定义位置、注册位置，以及核对时应覆盖的边界。",
+      "positive": {
+        "delta_message": {
+          "role": "assistant",
+          "content": "补充本轮检视结果：当前记录仍没有 ExportCommand 的定义位置、加入根命令树的位置或导出流程的核对范围，请继续查明这三项。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "共享上下文没有 Harbor CLI 代码索引中 ExportCommand 的定义与注册结果；缺口还包括应核对的导出实现边界。",
+          "route": "knowledge",
+          "target_asset_ids": ["T06-KNOWLEDGE-HARBOR-CG"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "目标资源的 find_symbol 查询成功返回 ExportCommand 的定义与注册结果后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "assistant",
+          "content": "补充本轮检视结果：ExportCommand 定义在 src/Harbor.Admin.Cli/Commands/ExportCommand.cs，由 HarborRootCommand.Build() 在 export 子命令位置注册；核对范围是该类、注册调用和 export 集成测试路径三者保持一致。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "补充消息已经给出 ExportCommand 的定义文件、HarborRootCommand.Build() 的注册位置和三项核对边界，不需要读取外部索引。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T06-KNOWLEDGE-ORBIT-WIKI",
+        "T06-KNOWLEDGE-LINEAGE-CG",
+        "ImportCommand",
+        "StatusCommand"
+      ],
+      "controlled_delta_note": "Positive 与 Negative 共享完全相同的 8 条上下文和 query；仅追加索引结果补充消息，Positive 保留定义与注册缺口，Negative 一次性补足定义、注册位置和核对边界。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 是否只缺 Harbor CLI 代码索引中的 ExportCommand 定义与注册结果？",
+        "Negative 是否完整给出定义文件、注册位置和核对边界并因此无需查询？",
+        "Harbor 侧 ImportCommand 与 StatusCommand 是否构成至少两个同域代码干扰？",
+        "Orbit 与 Lineage 资源是否保持可见但不改变 Harbor 目标的唯一性？",
+        "provider-visible 文本是否未泄漏内部资源标识、发现协议或私有字段？"
+      ]
+    }
+  ]
+}
