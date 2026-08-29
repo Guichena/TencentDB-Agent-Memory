@@ -5,7 +5,7 @@
 ## Language
 
 **World**:
-一个隔离的正式评测环境；Task 1 的正式 World 对应一个 MemoryProxy Space，包含 T01 至 T10，并按 Team split 使用互斥的 Dev/Hidden 可恢复快照。旧的“每个 World 固定两个 Team”只保留为历史设计。
+一个隔离的正式评测环境；Task 1 的正式 World 对应一个 MemoryProxy Space，包含 T01 至 T16，并按 Team split 使用互斥的 Dev/Hidden 可恢复快照。旧的“每个 World 固定两个 Team”只保留为历史设计。
 _Avoid_: Project, Scenario, Dataset row
 
 **Space**:

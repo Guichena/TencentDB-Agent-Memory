@@ -1,6 +1,6 @@
 # Task 1 数据基座选择与正式 World 重建方案
 
-> 历史设计说明：来源选择、许可和轨迹转换仍可参考。正式数据已改为一个 Space、十个 Team，并按最小合法链路计算有效调用。实体、数量和执行 Gate 以 [`TASK1-DATASET-CONSTRUCTION-RUNBOOK.md`](./TASK1-DATASET-CONSTRUCTION-RUNBOOK.md) 为准。
+> 历史设计说明：来源选择、许可和轨迹转换仍可参考。正式数据已改为一个 Space、十六个 Team，并按最小合法链路计算有效调用。本文后续的 10 Space、400 Case 内容只记录旧方案，不决定当前合同；实体、数量和执行 Gate 以 [`TASK1-DATASET-CONSTRUCTION-RUNBOOK.md`](./TASK1-DATASET-CONSTRUCTION-RUNBOOK.md) 为准。
 >
 > 状态：已完成源码对齐和来源初筛；W01～W03 可以按本方案进入来源锁定与数据构造，但在各自 Gate 通过前不得计入正式指标。
 >
@@ -103,7 +103,7 @@ Case = 一次真实 Session
 | 来源 | 正式角色 | 不承担的角色 | 使用条件 |
 |---|---|---|---|
 | SWE-Gym/SWE-Gym | W01～W03 的真实任务、repo、base commit、测试和 patch 锚点 | 不直接提供 TDAI 资产 | 锁 revision `bb94ed9e39bbeb96a7fcbfb533b80f25a7fd59cb`，并复核每个 repo 在对应 commit 的 LICENSE |
-| SWE-Gym/OpenHands-SFT-Trajectories | W01～W03 的 L0 原始 Agent replay与 L1/L2/Skill 的候选证据 | 不冒充真人团队会话，也不直接提供成品 Memory/Skill/No-tool | 锁 revision `4aaa5a4a4b5861f4799d2336908760c190ac3b17`；只选成功轨迹；先确定性 join SWE-Gym，再保留消息顺序和 `origin=synthetic_agent_replay` |
+| SWE-Gym/OpenHands-SFT-Trajectories | W01～W03 的 L0 原始 Agent replay 与 L1/L2/Skill 的候选证据 | 不冒充真人团队会话，也不直接提供成品 Memory/Skill/No-tool | 锁 revision `4aaa5a4a4b5861f4799d2336908760c190ac3b17`；只选成功轨迹；先确定性 join SWE-Gym，再保留消息顺序和 `origin=synthetic_agent_replay` |
 | benchflow-ai/skillsbench v1.1 | task/workspace/verifier 与开源 Skill 的成对靶子 | 不直接决定 TDAI Gold，不把 task.md 原文作为最终 Query | 锁 revision `b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af`；只用 `tasks/` active 包；逐 task 保存 digest、Skill path 和资源 manifest |
 | github/awesome-copilot | 成熟通用 Skill 与同 Team 语义干扰 | 不因仓库知名度自动成为 Positive | 锁 revision `f11a4e441c5ff061b4f8ae37952be8c602e4034e`；保留 MIT 归属；个别目录许可证/NOTICE 同时保留 |
 | openai/skills | 官方通用 Skill 与资源包 | 不假设所有 Skill 都适合软件工程 World | 锁 revision `49f948faa9258a0c61caceaf225e179651397431`；逐 Skill 读取目录许可证；本批优先 `jupyter-notebook` |

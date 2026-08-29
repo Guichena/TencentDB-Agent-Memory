@@ -1,10 +1,10 @@
-# 验收并集成五个数据建设任务
+# 验收并集成八个数据建设任务
 
 把本文件完整交给一个新的 Codex 任务。使用 `gpt-5.6-sol`，推理强度设为 `high`。这个任务使用现有集成 worktree，不创建新的 worktree，不调用 Luna，不生成新 case，也不运行正式模型评测。
 
-你是 Task 1 正式数据集的验收和集成负责人。五个建设任务完成后，先只读验收它们的分支、Team 分片、资产、case、Gold、来源和本地 Gate。五个分支全部通过后，继续在同一个任务里按 Dev、Hidden 的顺序完成集成，生成正式 provider input、private Gold、snapshot、验证报告和 hash，并把当前 400 条数据冻结为 `formal-v1`。
+你是 Task 1 正式数据集的验收和集成负责人。八个建设任务完成后，先只读验收它们的分支、Team 分片、资产、case、Gold、来源和本地 Gate。八个分支全部通过后，继续在同一个任务里按 Dev、Hidden 的顺序完成一次集成，生成正式 provider input、private Gold、snapshot、验证报告和 hash，并把 16 个 Team、640 条数据冻结为 `formal-v1`。
 
-以后增加数据时创建新的 dataset revision，例如 `formal-v2`。不得回写 `formal-v1` 的 Query、上下文、Gold、资产池、provider 文件或 hash。实验结果必须记录 dataset revision 和数据 hash，因此当前 400 条可以先独立评测，新增数据也可以作为新 revision 或新增切片单独评测。
+前五个任务和新增三个任务是同一轮正式数据建设。禁止先把 T01 至 T10 合并成 400 条中间版，禁止在八个任务全部通过前冻结、评测或发布 `formal-v1`。`formal-v1` 冻结后，如需继续增加数据，才创建新的 dataset revision，例如 `formal-v2`，不得回写已冻结内容和 hash。
 
 ## 完成条件
 
@@ -12,7 +12,7 @@
 
 `BLOCKED`：任一建设分支缺失、工作树不干净、越界修改、Team Gate 不可信、数量不符、来源不完整、Gold 不唯一、pair 不是单变量、目标资产不可见、完整最小链路错误、provider 泄漏或跨集合重复。此时不要合并任何建设分支，不要修改集成工作树，只报告具体分支、Team、case、文件和修复要求。
 
-`COMPLETE`：五个建设分支全部通过只读验收，T01 至 T10 已按顺序集成，Dev 160 条、Hidden 240 条、全集 400 条全部通过 Gate，确定性编译两次得到相同 hash，`formal-v1` 已冻结并创建不可变 Tag。
+`COMPLETE`：八个建设分支全部通过只读验收，T01 至 T16 已按顺序集成，Dev 240 条、Hidden 400 条、全集 640 条全部通过 Gate，确定性编译两次得到相同 hash，`formal-v1` 已冻结并创建不可变 Tag。
 
 建设任务自己写出的 `gate.json` 只是待验收材料，不能直接当作通过证明。你必须亲自运行仓库中的 validator，并复核每个 Team 的关键语义。
 
@@ -36,13 +36,14 @@ codex/task1-data-integration
 |---|---|---|
 | 数据内容祖先 | commit | `960021e472456515a89d3c2c4f2962fbf6cc51a1` |
 | schema、compiler、validator 基线 | `task1-data-parallel-baseline-v2` | `1048681880b51e7a52a6b8b0b731eadeec44e118` |
-| 五个建设任务的启动 Tag | `task1-data-parallel-launch-v2` | `ef2ca4bd84e529c6c7d8a8df661520cbc3bf4bb0` |
+| build-01 至 build-05 启动 Tag | `task1-data-parallel-launch-v2` | `ef2ca4bd84e529c6c7d8a8df661520cbc3bf4bb0` |
+| build-06 至 build-08 启动 Tag | `task1-data-parallel-launch-16team-v1` | 启动时动态解析 |
 
-`task1-data-parallel-baseline-v2` 不是建设任务的启动 Tag。它只冻结经过测试的 schema、compiler 和 validator。五个建设分支必须包含 `task1-data-parallel-launch-v2`。
+`task1-data-parallel-baseline-v2` 不是建设任务的启动 Tag，只冻结经过测试的 schema、compiler 和 validator。前五个建设分支必须包含 `task1-data-parallel-launch-v2`，新增三个建设分支必须包含 `task1-data-parallel-launch-16team-v1`。两个启动 Tag 共享同一 schema 和数据内容祖先，不代表两套数据集。
 
 集成分支允许比 launch Tag 更新，因为本提示词会在 launch Tag 之后继续完善。开始时只要求 launch Tag、schema 基线和数据内容基线都是当前集成 HEAD 的祖先。
 
-## 五个待验收分支
+## 八个待验收分支
 
 | Build | Team | Split | 分支 | worktree |
 |---|---|---|---|---|
@@ -51,6 +52,9 @@ codex/task1-data-integration
 | build-03 | T05、T06 | Hidden | `codex/task1-data-build-v2-t05-t06` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t05-t06` |
 | build-04 | T07、T08 | Hidden | `codex/task1-data-build-v2-t07-t08` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t07-t08` |
 | build-05 | T09、T10 | Hidden | `codex/task1-data-build-v2-t09-t10` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t09-t10` |
+| build-06 | T11、T12 | Dev | `codex/task1-data-build-16team-t11-t12` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-16team-t11-t12` |
+| build-07 | T13、T14 | Hidden | `codex/task1-data-build-16team-t13-t14` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-16team-t13-t14` |
+| build-08 | T15、T16 | Hidden | `codex/task1-data-build-16team-t15-t16` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-16team-t15-t16` |
 
 每个分支只能修改自己的三个目录族：
 
@@ -75,6 +79,9 @@ MemoryProxy/eval/tool-prompt-bench/parallel-prompts/THREAD-02-T03-T04.md
 MemoryProxy/eval/tool-prompt-bench/parallel-prompts/THREAD-03-T05-T06.md
 MemoryProxy/eval/tool-prompt-bench/parallel-prompts/THREAD-04-T07-T08.md
 MemoryProxy/eval/tool-prompt-bench/parallel-prompts/THREAD-05-T09-T10.md
+MemoryProxy/eval/tool-prompt-bench/parallel-prompts/THREAD-06-T11-T12.md
+MemoryProxy/eval/tool-prompt-bench/parallel-prompts/THREAD-07-T13-T14.md
+MemoryProxy/eval/tool-prompt-bench/parallel-prompts/THREAD-08-T15-T16.md
 MemoryProxy/eval/tool-prompt-bench/formal-dataset/DATASET-BUILD-STATUS.json
 MemoryProxy/eval/tool-prompt-bench/formal-dataset/registry/contracts/formal-v1.json
 MemoryProxy/eval/tool-prompt-bench/formal-dataset/scripts/compile-formal-dataset.ts
@@ -94,7 +101,7 @@ MemoryProxy/eval/tool-prompt-bench/evaluator.ts
 ```powershell
 Set-Location 'D:\projects\TencentDB-Agent-Memory-task1-data-integration'
 
-$expectedLaunch = 'ef2ca4bd84e529c6c7d8a8df661520cbc3bf4bb0'
+$expectedLaunchV2 = 'ef2ca4bd84e529c6c7d8a8df661520cbc3bf4bb0'
 $expectedSchema = '1048681880b51e7a52a6b8b0b731eadeec44e118'
 $expectedContent = '960021e472456515a89d3c2c4f2962fbf6cc51a1'
 
@@ -102,25 +109,29 @@ git status --short --branch -uall
 if (git status --porcelain) { throw 'integration worktree is not clean' }
 if ((git branch --show-current) -ne 'codex/task1-data-integration') { throw 'unexpected integration branch' }
 
-$launchCommit = git rev-parse 'task1-data-parallel-launch-v2^{commit}'
+$launchCommitV2 = git rev-parse 'task1-data-parallel-launch-v2^{commit}'
+$launchCommit16Team = git rev-parse 'task1-data-parallel-launch-16team-v1^{commit}'
 $schemaCommit = git rev-parse 'task1-data-parallel-baseline-v2^{commit}'
 $headCommit = git rev-parse HEAD
-if ($launchCommit -ne $expectedLaunch) { throw 'launch tag moved or resolved incorrectly' }
+if ($launchCommitV2 -ne $expectedLaunchV2) { throw 'v2 launch tag moved or resolved incorrectly' }
+if (-not $launchCommit16Team) { throw '16-Team launch tag cannot be resolved' }
 if ($schemaCommit -ne $expectedSchema) { throw 'schema tag moved or resolved incorrectly' }
 
 git merge-base --is-ancestor $expectedContent $headCommit
 if ($LASTEXITCODE -ne 0) { throw 'content baseline is not an ancestor of integration HEAD' }
 git merge-base --is-ancestor $schemaCommit $headCommit
 if ($LASTEXITCODE -ne 0) { throw 'schema baseline is not an ancestor of integration HEAD' }
-git merge-base --is-ancestor $launchCommit $headCommit
-if ($LASTEXITCODE -ne 0) { throw 'launch commit is not an ancestor of integration HEAD' }
+git merge-base --is-ancestor $launchCommitV2 $headCommit
+if ($LASTEXITCODE -ne 0) { throw 'v2 launch commit is not an ancestor of integration HEAD' }
+git merge-base --is-ancestor $launchCommit16Team $headCommit
+if ($LASTEXITCODE -ne 0) { throw '16-Team launch commit is not an ancestor of integration HEAD' }
 ```
 
 不要运行 `git pull`、`git push`、`git switch`、`git reset` 或清理命令。不要接管、移动或删除现有 worktree。
 
-## 阶段 1：一次性只读验收五个建设分支
+## 阶段 1：一次性只读验收八个建设分支
 
-这一阶段不能修改集成 worktree。先把五个分支全部验收完，再决定是否开始集成。即使前四个分支通过，只要第五个分支失败，也不能先合并前四个。
+这一阶段不能修改集成 worktree。先把八个分支全部验收完，再决定是否开始集成。即使七个分支通过，只要一个分支失败，也不能先合并通过的分支。
 
 ### Git 和所有权
 
@@ -129,7 +140,7 @@ if ($LASTEXITCODE -ne 0) { throw 'launch commit is not an ancestor of integratio
 1. 本地分支存在，且对应 worktree 存在。
 2. 建设 worktree 当前绑定预期分支。
 3. 建设 worktree 没有未提交或未跟踪文件。
-4. `task1-data-parallel-launch-v2` 是建设分支的祖先。
+4. 该任务登记的启动 Tag 是建设分支的祖先。
 5. 分支相对 launch Tag 的全部改动都在该任务的允许目录内。
 6. 分支没有修改其他 Team、全局合同、状态、provider、snapshot、生产代码或 Prompt 文档。
 7. 最终提交信息写明 Team、数量、来源、Gate 和已知限制。
@@ -137,12 +148,17 @@ if ($LASTEXITCODE -ne 0) { throw 'launch commit is not an ancestor of integratio
 可以使用下面的只读骨架。不要把检查结果写回建设分支：
 
 ```powershell
+$launchCommitV2 = git rev-parse 'task1-data-parallel-launch-v2^{commit}'
+$launchCommit16Team = git rev-parse 'task1-data-parallel-launch-16team-v1^{commit}'
 $builds = @(
-  [pscustomobject]@{ Id = 'build-01'; Branch = 'codex/task1-data-build-v2-t01-t02'; Worktree = 'D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02'; Teams = @('T01', 'T02') },
-  [pscustomobject]@{ Id = 'build-02'; Branch = 'codex/task1-data-build-v2-t03-t04'; Worktree = 'D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t03-t04'; Teams = @('T03', 'T04') },
-  [pscustomobject]@{ Id = 'build-03'; Branch = 'codex/task1-data-build-v2-t05-t06'; Worktree = 'D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t05-t06'; Teams = @('T05', 'T06') },
-  [pscustomobject]@{ Id = 'build-04'; Branch = 'codex/task1-data-build-v2-t07-t08'; Worktree = 'D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t07-t08'; Teams = @('T07', 'T08') },
-  [pscustomobject]@{ Id = 'build-05'; Branch = 'codex/task1-data-build-v2-t09-t10'; Worktree = 'D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t09-t10'; Teams = @('T09', 'T10') }
+  [pscustomobject]@{ Id = 'build-01'; Branch = 'codex/task1-data-build-v2-t01-t02'; Worktree = 'D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02'; Teams = @('T01', 'T02'); LaunchCommit = $launchCommitV2 },
+  [pscustomobject]@{ Id = 'build-02'; Branch = 'codex/task1-data-build-v2-t03-t04'; Worktree = 'D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t03-t04'; Teams = @('T03', 'T04'); LaunchCommit = $launchCommitV2 },
+  [pscustomobject]@{ Id = 'build-03'; Branch = 'codex/task1-data-build-v2-t05-t06'; Worktree = 'D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t05-t06'; Teams = @('T05', 'T06'); LaunchCommit = $launchCommitV2 },
+  [pscustomobject]@{ Id = 'build-04'; Branch = 'codex/task1-data-build-v2-t07-t08'; Worktree = 'D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t07-t08'; Teams = @('T07', 'T08'); LaunchCommit = $launchCommitV2 },
+  [pscustomobject]@{ Id = 'build-05'; Branch = 'codex/task1-data-build-v2-t09-t10'; Worktree = 'D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t09-t10'; Teams = @('T09', 'T10'); LaunchCommit = $launchCommitV2 },
+  [pscustomobject]@{ Id = 'build-06'; Branch = 'codex/task1-data-build-16team-t11-t12'; Worktree = 'D:\projects\TencentDB-Agent-Memory-task1-data-build-16team-t11-t12'; Teams = @('T11', 'T12'); LaunchCommit = $launchCommit16Team },
+  [pscustomobject]@{ Id = 'build-07'; Branch = 'codex/task1-data-build-16team-t13-t14'; Worktree = 'D:\projects\TencentDB-Agent-Memory-task1-data-build-16team-t13-t14'; Teams = @('T13', 'T14'); LaunchCommit = $launchCommit16Team },
+  [pscustomobject]@{ Id = 'build-08'; Branch = 'codex/task1-data-build-16team-t15-t16'; Worktree = 'D:\projects\TencentDB-Agent-Memory-task1-data-build-16team-t15-t16'; Teams = @('T15', 'T16'); LaunchCommit = $launchCommit16Team }
 )
 
 foreach ($build in $builds) {
@@ -152,7 +168,7 @@ foreach ($build in $builds) {
   if (git -C $build.Worktree status --porcelain) { throw "dirty build worktree: $($build.Worktree)" }
   if ((git -C $build.Worktree branch --show-current) -ne $build.Branch) { throw "worktree branch mismatch: $($build.Worktree)" }
 
-  git merge-base --is-ancestor $launchCommit $build.Branch
+  git merge-base --is-ancestor $build.LaunchCommit $build.Branch
   if ($LASTEXITCODE -ne 0) { throw "launch tag is not an ancestor: $($build.Branch)" }
 
   $allowedPrefixes = @()
@@ -163,7 +179,7 @@ foreach ($build in $builds) {
   }
 
   $unexpected = @()
-  foreach ($path in @(git diff --name-only "$launchCommit..$($build.Branch)")) {
+  foreach ($path in @(git diff --name-only "$($build.LaunchCommit)..$($build.Branch)")) {
     $allowed = $false
     foreach ($prefix in $allowedPrefixes) {
       if ($path.StartsWith($prefix)) { $allowed = $true; break }
@@ -204,7 +220,7 @@ T01 的正式 40 条分片替换基线里的 10 条 pilot。集成时不能把 p
 | 自然 Coding Negative | 10 |
 | 合计 | 40 |
 
-每个 Positive 恰好有一个配对 Negative。每个 Team 应有 15 个 pair。T01 至 T10 合计应为 400 个 case 和 150 个 pair。
+每个 Positive 恰好有一个配对 Negative。每个 Team 应有 15 个 pair。T01 至 T16 合计应为 640 个 case 和 240 个 pair。
 
 ### 决策和完整链路
 
@@ -273,16 +289,17 @@ blocking_items
 
 ## 阶段 2：导入 Dev 建设分支
 
-只有阶段 1 的十个 Team 全部通过，才开始写入。
+只有阶段 1 的十六个 Team 全部通过，才开始写入。阶段 2 和阶段 3 是同一次集成流程的两个步骤，不得在 Dev 完成后冻结、打 Tag 或启动正式评测。
 
 按下面顺序导入 Dev 分支：
 
 ```text
 codex/task1-data-build-v2-t01-t02
 codex/task1-data-build-v2-t03-t04
+codex/task1-data-build-16team-t11-t12
 ```
 
-读取每个分支从 launch Tag 之后的提交列表，按原顺序 cherry-pick。不要直接 merge 整个未审计分支，不要 squash 掉建设任务的来源和 Gate 记录。发生冲突时，只能解决确定性路径或完全相同的来源文件冲突。Query、上下文、Gold、资产内容或来源记录冲突时，执行 `git cherry-pick --abort` 并报告，不能自行选择一侧。
+读取每个分支从它自己的 launch Tag 之后的提交列表，按原顺序 cherry-pick。不要直接 merge 整个未审计分支，不要 squash 掉建设任务的来源和 Gate 记录。发生冲突时，只能解决确定性路径或完全相同的来源文件冲突。Query、上下文、Gold、资产内容或来源记录冲突时，执行 `git cherry-pick --abort` 并报告，不能自行选择一侧。
 
 导入后实现或补齐最小的确定性 Team fragment 集成入口。优先复用：
 
@@ -304,7 +321,7 @@ worlds/formal-snapshot.ts
 
 不要为此建立新的通用框架、任务队列、数据库或恢复系统。不要手工复制数组和 hash。相同输入连续运行两次必须得到相同文件内容。
 
-T01 至 T04 集成后，应得到 Dev 160 条、60 个 pair。只运行 Dev validator 和编译，不要求此时 Hidden 已有 240 条。
+T01 至 T04、T11、T12 集成后，应得到 Dev 240 条、90 个 pair。只运行 Dev validator 和编译，不要求此时 Hidden 已有 400 条，但 Dev 结果仍不是可发布的中间数据集。
 
 在 `MemoryProxy` 目录运行仓库现有命令：
 
@@ -327,14 +344,14 @@ npm run eval:tool-prompt:test
 
 Dev Gate 必须确认：
 
-- T01 至 T04 每个 Team 40 条。
-- Dev 合计 160 条和 60 个 pair。
+- T01 至 T04、T11、T12 每个 Team 40 条。
+- Dev 合计 240 条和 90 个 pair。
 - schema、pair、可见性、完整链路、来源、检索压力和泄漏检查通过。
 - provider input 不含 Gold、target、pairId、informationGap 或私有资产 id。
 - 两次独立编译的文件列表和 SHA-256 完全一致。
 - T01 pilot 已被正式 T01 分片替换。
 
-Dev 通过后提交一次。提交只包含 Dev 集成、确定性集成代码、Dev provider/private Gold/snapshot、验证报告和必要的状态更新。提交正文记录四个 Team 的建设提交、数量、命令、hash 和已知限制。
+Dev 通过后可以提交一次过程提交。提交只包含 Dev 集成、确定性集成代码、Dev provider/private Gold/snapshot、验证报告和必要的状态更新。提交正文记录六个 Team 的建设提交、数量、命令、hash 和已知限制。此时不得创建 `task1-data-formal-v1` Tag，也不得运行正式 Prompt 评测。
 
 ## 阶段 3：导入 Hidden 建设分支
 
@@ -344,11 +361,13 @@ Dev 通过后提交一次。提交只包含 Dev 集成、确定性集成代码�
 codex/task1-data-build-v2-t05-t06
 codex/task1-data-build-v2-t07-t08
 codex/task1-data-build-v2-t09-t10
+codex/task1-data-build-16team-t13-t14
+codex/task1-data-build-16team-t15-t16
 ```
 
 沿用阶段 2 已验收的提交列表和同样的 cherry-pick 规则。不要在 Hidden 集成阶段查看 Prompt Variant 的评测结果，也不要根据 Dev 或任何模型得分改写 Hidden。
 
-T05 至 T10 集成后，应得到 Hidden 240 条、90 个 pair。运行 Hidden validator 和编译：
+T05 至 T10、T13 至 T16 集成后，应得到 Hidden 400 条、150 个 pair。运行 Hidden validator 和编译：
 
 ```powershell
 npm exec -- tsx eval/tool-prompt-bench/formal-dataset/scripts/validate-formal-dataset.ts `
@@ -364,7 +383,7 @@ npm exec -- tsx eval/tool-prompt-bench/formal-dataset/scripts/compile-formal-dat
 
 把同一 Hidden contract 编译到两个独立临时目录并比较全部 SHA-256。Hidden provider 文件只能公开运行输入，private Gold 必须保存在 scorer private 路径，sealed manifest 只公开 Team、数量、来源类型计数、provider bytes/token 准备字段和 snapshot hash。
 
-## 阶段 4：运行 400 条全局 Gate
+## 阶段 4：运行 640 条全局 Gate
 
 Hidden 编译通过后，对完整 `formal-v1` 运行无 split validator，并重新运行测试：
 
@@ -381,11 +400,12 @@ git diff --check
 全局 Gate 至少检查：
 
 - case id、pair id、asset id、source id 和 batch id 全局唯一。
-- T01 至 T10 每个 Team 严格为 40 条。
-- Dev 为 160 条，Hidden 为 240 条，总计 400 条。
-- 150 个 Positive 都有唯一配对 Negative。
-- Memory Positive 为 60 条，Skill Positive 为 60 条，Knowledge Positive 为 30 条。
-- 配对 Negative 为 150 条，自然 Coding Negative 为 100 条。
+- T01 至 T16 每个 Team 严格为 40 条。
+- Dev 为 240 条，Hidden 为 400 条，总计 640 条。
+- 240 个 Positive 都有唯一配对 Negative。
+- Memory Positive 为 96 条，Skill Positive 为 96 条，Knowledge Positive 为 48 条。
+- 配对 Negative 为 240 条，自然 Coding Negative 为 160 条。
+- Search 或 discovery Positive 至少 160 条，直接调用 Positive 为 80 条。
 - Dev 和 Hidden 的 query hash、完整句、上下文 hash、pair 模板和高阶 n-gram 没有重复。
 - Team 之间没有改名复制 case。
 - 所有外部导入文件的 hash、revision、path 和 license 完整。
@@ -414,7 +434,7 @@ formal-dataset/reports/**
 
 - `dataset_revision = formal-v1`
 - 当前集成分支和最终 commit
-- T01 至 T10 的建设分支和最终 commit
+- T01 至 T16 的建设分支、各自启动 Tag 和最终 commit
 - 每个 Team 的类别数量和 Gate
 - Dev、Hidden、全集数量
 - contract canonical SHA-256
@@ -478,14 +498,14 @@ task1-data-formal-v1
 - 当前分支仍为 `codex/task1-data-integration`。
 - `task1-data-formal-v1^{commit}` 等于最终 HEAD。
 - launch Tag、schema Tag 和数据内容基线仍是最终 HEAD 的祖先。
-- 五个建设分支未被修改或删除。
+- 八个建设分支未被修改、删除、变基或接管。
 - provider、private Gold、snapshot 和 contract 的实际 hash 等于冻结报告。
 - 再运行一次正式 validator，结果不依赖未提交文件。
 
 最终回复必须列出：
 
 - 状态是 `COMPLETE` 还是 `BLOCKED`。
-- 五个建设分支各自的最终提交和验收结论。
+- 八个建设分支各自的启动 Tag、最终提交和验收结论。
 - 三个集成提交。
 - 最终 dataset revision、commit 和 Tag。
 - Dev、Hidden 和全集数量。

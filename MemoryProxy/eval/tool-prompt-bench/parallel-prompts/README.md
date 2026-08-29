@@ -1,10 +1,10 @@
 # Task 1 数据集并行建设说明
 
-本目录用于把 T01 至 T10 的正式数据建设拆成五个相互独立的 Codex 任务。每个任务负责两个 Team，并在任务内部调用 `gpt-5.6-luna` 子智能体生成批量草稿。当前任务只负责冻结公共输入、准备提示词和最终集成，不替五个建设任务生成数据。
+本目录用于把 T01 至 T16 的正式数据建设拆成八个相互独立的 Codex 任务。每个任务负责两个 Team，并在任务内部调用 `gpt-5.6-luna` 子智能体生成批量草稿。当前集成任务只负责冻结公共输入、准备提示词和最终集成，不替八个建设任务生成数据。
 
 ## 为什么这样拆
 
-并行单位是完整 Team 分片，不是全局合同中的任意数组。五个建设任务可以同时工作，因为它们拥有不同的 Team 和输出目录。共享的 `formal-v1.json`、状态文件、provider 输出和快照只能由集成任务修改，否则多个任务会产生难以审查的合并冲突，也可能让某个 Team 的可见资产误进入另一个 Team。
+并行单位是完整 Team 分片，不是全局合同中的任意数组。八个建设任务可以同时工作，因为它们拥有不同的 Team 和输出目录。共享的 `formal-v1.json`、状态文件、provider 输出和快照只能由集成任务修改，否则多个任务会产生难以审查的合并冲突，也可能让某个 Team 的可见资产误进入另一个 Team。
 
 每个建设任务只包含两个主任务：完成第一个 Team，完成第二个 Team。一个 Team 内仍可把 Memory、Skill、Knowledge/自然负例草稿委派给不同 Luna 子智能体，但同一文件只能有一个写入者。
 
@@ -17,19 +17,23 @@
 | `THREAD-03-T05-T06.md` | 完成 T05；完成 T06 | Hidden | `codex/task1-data-build-v2-t05-t06` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t05-t06` |
 | `THREAD-04-T07-T08.md` | 完成 T07；完成 T08 | Hidden | `codex/task1-data-build-v2-t07-t08` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t07-t08` |
 | `THREAD-05-T09-T10.md` | 完成 T09；完成 T10 | Hidden | `codex/task1-data-build-v2-t09-t10` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t09-t10` |
+| `THREAD-06-T11-T12.md` | 完成 T11；完成 T12 | Dev | `codex/task1-data-build-16team-t11-t12` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-16team-t11-t12` |
+| `THREAD-07-T13-T14.md` | 完成 T13；完成 T14 | Hidden | `codex/task1-data-build-16team-t13-t14` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-16team-t13-t14` |
+| `THREAD-08-T15-T16.md` | 完成 T15；完成 T16 | Hidden | `codex/task1-data-build-16team-t15-t16` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-16team-t15-t16` |
 
 每份 `THREAD-xx` 提示词都包含自己的 `git worktree add` 命令。推荐先把提示词交给新任务，让该任务创建并转入专用 worktree，再开始数据写入。若目标分支或目录已经存在，任务必须先用 `git worktree list --porcelain` 查明归属，不能在共享目录执行 `git switch`，也不能删除或接管已有 worktree。
 
-阶段 A 已完成。五个建设任务使用两个不可变引用：
+阶段 A 已完成。八个任务共享数据内容和 schema 基线，但使用两个不可变启动点：
 
 - 数据内容基线提交：`960021e472456515a89d3c2c4f2962fbf6cc51a1`
 - schema 基线 Tag：`task1-data-parallel-baseline-v2`
 - schema 基线提交：`1048681880b51e7a52a6b8b0b731eadeec44e118`
-- 唯一启动引用：`task1-data-parallel-launch-v2`
+- build-01 至 build-05 启动引用：`task1-data-parallel-launch-v2`
+- build-06 至 build-08 启动引用：`task1-data-parallel-launch-16team-v1`
 
-`task1-data-parallel-baseline-v2` 冻结经过测试的 schema、compiler 和 validator。`task1-data-parallel-launch-v2` 指向包含最终手册、并行 README 和五份提示词的文档提交。五个建设任务从 launch Tag 创建 worktree，并动态比较当前 HEAD 与 launch Tag 的解引用提交，因此不在同一提交中硬编码它自己的 SHA。
+`task1-data-parallel-baseline-v2` 冻结经过测试的 schema、compiler 和 validator。前五个任务已经从 `task1-data-parallel-launch-v2` 启动，因此不得重启、变基或移动该 Tag。新增三份提示词、T11 至 T16 注册信息和 16-Team 集成合同由 `task1-data-parallel-launch-16team-v1` 冻结。两个启动点不代表两套数据集或两种 schema；八个任务完成后只合并一次，并只生成一个 `formal-v1`。
 
-旧建设分支或目录已经被其他任务占用时，不得删除、移动或接管。本轮只使用上表中的 v2 分支和专用目录。
+旧建设分支或目录已经被其他任务占用时，不得删除、移动或接管。本轮只使用上表登记的八个分支和专用目录。
 
 全局合同任务启动后必须先运行：
 
@@ -37,7 +41,8 @@
 git status --short --branch -uall
 git branch --show-current
 git worktree list --porcelain
-$launchCommit = git rev-parse "task1-data-parallel-launch-v2^{commit}"
+$launchTag = "<使用当前 THREAD 文件登记的启动 Tag>"
+$launchCommit = git rev-parse "$($launchTag)^{commit}"
 $headCommit = git rev-parse HEAD
 $schemaCommit = git rev-parse "task1-data-parallel-baseline-v2^{commit}"
 if ($headCommit -ne $launchCommit) { throw "HEAD does not match launch tag" }
@@ -58,7 +63,7 @@ MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/<team-id>/**
 MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/<team-id>/**
 ```
 
-共享候选库 `MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/shared/skills/**` 对五个建设任务只读。候选文件出现在仓库中不代表已绑定到任何 Team；实际采用时才把确认过来源和适配边界的包写入该 Team 的 source-material 目录。
+共享候选库 `MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/shared/skills/**` 对八个建设任务只读。候选文件出现在仓库中不代表已绑定到任何 Team；实际采用时才把确认过来源和适配边界的包写入该 Team 的 source-material 目录。
 
 禁止写入：
 
@@ -82,7 +87,7 @@ MemoryProxy/eval/tool-prompt-bench/formal-dataset/snapshots/**
 - L1 code/test locator 只对外部导入强制。
 - 建设任务不得修改 schema，也不得为合成内容填写占位仓库、假 commit、假 license 或假 locator。
 
-这不授权提取 official patch、安装上游依赖或运行上游测试。五个建设任务可以直接完成正式 staging 和 Team Gate。
+这不授权提取 official patch、安装上游依赖或运行上游测试。八个建设任务可以直接完成正式 staging 和 Team Gate。
 
 ## Team 分片结构
 
@@ -169,4 +174,6 @@ node MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/DS02/T01/valid
 
 ## 集成顺序
 
-五个建设任务各自提交 Team staging 后，集成任务按 T01 至 T10 顺序合并。集成任务统一更新全局合同和 `DATASET-BUILD-STATUS.json`，生成 Dev/Hidden provider 输入、private Gold、快照和 hash，并运行跨 Team 重复度与泄漏检查。建设任务的本地 `gate=passed` 只表示分片可供集成，不表示 Dev 或 Hidden 已正式冻结。
+八个建设任务全部提交 Team staging 后，集成任务才按 T01 至 T16 顺序一次性合并。即使七个任务通过而一个任务失败，也不得先合并通过的分片或冻结 400 条中间版本。集成任务统一重建全局合同和 `DATASET-BUILD-STATUS.json`，生成 Dev/Hidden provider 输入、private Gold、快照和 hash，并运行跨 Team 重复度与泄漏检查。
+
+最终 `formal-v1` 固定为 640 条：Dev 包含 T01 至 T04、T11、T12，共 240 条和 90 个 pair；Hidden 包含 T05 至 T10、T13 至 T16，共 400 条和 150 个 pair。全集包含 96 条 Memory Positive、96 条 Skill Positive、48 条 Knowledge Positive、240 条配对 No-tool Negative 和 160 条自然 Coding Negative，共 240 个 pair。建设任务的本地 `gate=passed` 只表示分片可供集成，不表示 Dev、Hidden 或全集已经冻结。

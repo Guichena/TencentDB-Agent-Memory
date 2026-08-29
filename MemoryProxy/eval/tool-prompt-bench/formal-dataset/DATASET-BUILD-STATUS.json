@@ -1,14 +1,31 @@
 {
   "schema_version": "task1.dataset_build_status.v1",
   "dataset_revision": "formal-v1",
-  "active_stage": "DS02_parallel_v2",
+  "active_stage": "DS02_parallel_16team",
   "stage_status": "parallel_ready",
-  "next_stage": "five_team_builds",
+  "next_stage": "eight_team_builds_then_single_integration",
   "branch": "codex/task1-data-integration",
   "baseline_commit": "960021e472456515a89d3c2c4f2962fbf6cc51a1",
   "parallel_baseline_ref": "task1-data-parallel-baseline-v2",
   "parallel_baseline_commit": "1048681880b51e7a52a6b8b0b731eadeec44e118",
+  "launch_refs": [
+    { "ref": "task1-data-parallel-launch-v2", "builds": ["build-01", "build-02", "build-03", "build-04", "build-05"] },
+    { "ref": "task1-data-parallel-launch-16team-v1", "builds": ["build-06", "build-07", "build-08"] }
+  ],
   "content_baseline_commit": "960021e472456515a89d3c2c4f2962fbf6cc51a1",
+  "target_counts": {
+    "spaces": 1,
+    "teams": 16,
+    "cases": 640,
+    "dev_cases": 240,
+    "hidden_test_cases": 400,
+    "pairs": 240,
+    "memory_positive": 96,
+    "skill_positive": 96,
+    "knowledge_positive": 48,
+    "paired_negative": 240,
+    "natural_coding_negative": 160
+  },
   "completed_gates": ["DS00", "DS01", "DS02_PILOT", "SYNTHETIC_PROVENANCE_V2"],
   "team_progress": {
     "T01": { "identity": "frozen", "assets": "ds02_pilot_frozen", "l0_sessions": 12, "skills": 2, "knowledge": 3, "cases": 10, "pairs": 5, "gate": "ds02_pilot_passed" },
@@ -20,7 +37,13 @@
     "T07": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
     "T08": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
     "T09": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
-    "T10": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" }
+    "T10": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
+    "T11": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
+    "T12": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
+    "T13": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
+    "T14": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
+    "T15": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
+    "T16": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" }
   },
   "artifacts": {
     "contract": "registry/contracts/formal-v1.json",
@@ -30,7 +53,7 @@
   },
   "blocking_issues": [],
   "known_limitations": [
-    "The checked-in Dev snapshot-input artifact still reflects the pre-v2 pilot source pack. The integration owner must regenerate it deterministically when freezing Dev; Team builders must not modify global snapshots."
+    "The checked-in formal-v1 contract and Dev snapshot-input are pilot artifacts, not the final 16-Team contract. After all eight builds pass, the integration owner must rebuild the global contract and snapshots deterministically; Team builders must not modify global artifacts."
   ],
   "last_command": "validate formal provenance v2; compile formal Dev twice; npm run eval:tool-prompt:d0:test; retrieval-pressure and tool-prompt suites",
   "last_verified_commit": "1048681880b51e7a52a6b8b0b731eadeec44e118"

@@ -1,6 +1,6 @@
 # 开源 Skill 与评测靶子配对方案
 
-> 状态：候选来源与第一批配对已完成只读核验；本文是候选研究记录。正式拓扑以 `TASK1-DATASET-CONSTRUCTION-RUNBOOK.md` 的一个 Space、T01 至 T10 为准。冻结基线已有 T01 的 5 组检索压力 pair、10 条正式试点 case，但完整 400 条主集合和真实链路指标资格尚未完成。
+> 状态：候选来源与第一批配对已完成只读核验；本文是候选研究记录。正式拓扑以 `TASK1-DATASET-CONSTRUCTION-RUNBOOK.md` 的一个 Space、T01 至 T16 为准。冻结基线已有 T01 的 5 组检索压力 pair、10 条正式试点 case，但完整 640 条主集合和真实链路指标资格尚未完成。
 
 > Task 1 范围：正式实验运行到第一个目标资产响应，检查完整最小 Memory/Skill/Knowledge 调用链，不执行后续 coding，也不验证最终任务完成度。上游 workspace/verifier 只作历史研究资料，不运行。若两个 Skill 都同样合理，应修改或替换 case，不能通过执行上游任务来决定 Task 1 Gold。
 

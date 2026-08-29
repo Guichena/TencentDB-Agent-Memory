@@ -1,6 +1,6 @@
 # 正式数据阶段索引
 
-正式数据已改为一个 Space、十个 Team，并以完整最小链路作为有效调用主口径。新的端到端步骤见 [`TASK1-DATASET-CONSTRUCTION-RUNBOOK.md`](../TASK1-DATASET-CONSTRUCTION-RUNBOOK.md)。下表中的 D0 至 D5 文件保留为旧十 Space 方案的来源、许可和 W01 草稿记录，不再决定正式实体布局、数量或评分口径。
+正式数据已改为一个 Space、十六个 Team，并以完整最小链路作为有效调用主口径。新的端到端步骤见 [`TASK1-DATASET-CONSTRUCTION-RUNBOOK.md`](../TASK1-DATASET-CONSTRUCTION-RUNBOOK.md)。下表中的 D0 至 D5 文件保留为旧十 Space 方案的来源、许可和 W01 草稿记录，不再决定正式实体布局、数量或评分口径。
 
 | 阶段 | 文件 | 建议分支 | 完成条件 |
 |---|---|---|---|

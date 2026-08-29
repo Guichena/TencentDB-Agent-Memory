@@ -105,7 +105,7 @@ World 资产写入真实本地数据栈
 | Wiki 与 Code Graph | 开启 |
 | LLM 直接写入 | 关闭 |
 | 自动资产抽取与归档写回 | 关闭 |
-| 主实验重复 | Dev 单次；入围候选三次；Test 240 条单次全量 + 预登记 80 条平衡子集三次稳定性复核 |
+| 主实验重复 | Dev 单次；入围候选三次；Test 400 条单次全量 + 预登记 80 条平衡子集三次稳定性复核 |
 
 Primary Campaign 只用 Luna。若时间和预算允许，可在最终候选冻结后增加第二模型复核，结果单独成表，不能与 Luna 汇总成一个比例。
 
@@ -128,12 +128,12 @@ Capability Fixture 在 V0、V0-C、V1 和 V2 中保持不变。V3 只根据生�
 
 ### 数据集与源码实体的映射
 
-正式数据使用一个 Space，其中包含十个 Team。每个 Team 维护多个真实工程项目流、一个通用业务 Agent 和四十条 case。每条 case 在 Session Init 中选择一个 Team、Agent 和 Task。
+正式数据使用一个 Space，其中包含十六个 Team。每个 Team 维护多个真实工程项目流、一个通用业务 Agent 和四十条 case。每条 case 在 Session Init 中选择一个 Team、Agent 和 Task。
 
 ```text
 Space: space-task1-engineering
-├─ T01 至 T04: Dev，160 条 Case
-└─ T05 至 T10: Hidden，240 条 Case
+├─ T01 至 T04、T11、T12: Dev，240 条 Case
+└─ T05 至 T10、T13 至 T16: Hidden，400 条 Case
    每个 Team 均包含：
    ├─ 一个 General Software Engineering Agent
    ├─ 3 至 6 个并行项目流
@@ -146,15 +146,15 @@ Session 绑定 Team 后，强干扰资产必须位于当前活动 Team 的可见
 
 ### 规模与切分
 
-正式目标是一个 Space、十个 Team，共 400 条 case。切分单位是完整 Team，同一 Team 不能同时进入 Dev 和 Hidden。两个 split 使用互斥快照，运行时不会同时恢复。
+正式目标是一个 Space、十六个 Team，共 640 条 case。切分单位是完整 Team，同一 Team 不能同时进入 Dev 和 Hidden。两个 split 使用互斥快照，运行时不会同时恢复。
 
 | Split | Team | Memory | Skill | Knowledge | No Tool | 合计 |
 |---|---:|---:|---:|---:|---:|---:|
-| Dev | 4 | 24 | 24 | 12 | 100 | 160 |
-| Hidden | 6 | 36 | 36 | 18 | 150 | 240 |
-| 合计 | 10 | 60 | 60 | 30 | 250 | 400 |
+| Dev | 6 | 36 | 36 | 18 | 150 | 240 |
+| Hidden | 10 | 60 | 60 | 30 | 250 | 400 |
+| 合计 | 16 | 96 | 96 | 48 | 400 | 640 |
 
-正式主集合中每个 Team 固定四十条：Memory 与 Skill Positive 各 6 条、Knowledge Positive 3 条、15 条与 Positive 一一配对的 No-tool Negative，以及 10 条自然 Coding Negative。Knowledge 数量收缩到三十条，因为正式任务只检查资源选择和最小自发现链路，不建设大规模 Wiki 或 CodeGraph。Smoke 从四个 Dev Team 中各选五条，共二十条，不增加重复 case。额外合格 case 只能进入 exploratory 集合，除非在 Prompt 调优前冻结新的 dataset revision，否则不能改变主指标分母。
+正式主集合中每个 Team 固定四十条：Memory 与 Skill Positive 各 6 条、Knowledge Positive 3 条、15 条与 Positive 一一配对的 No-tool Negative，以及 10 条自然 Coding Negative。Knowledge 合计四十八条，因为正式任务只检查资源选择和最小自发现链路，不建设大规模 Wiki 或 CodeGraph。Smoke 从预登记的四个 Dev Team 中各选五条，共二十条，不增加重复 case。额外合格 case 只能进入 exploratory 集合，除非在 Prompt 调优前冻结新的 dataset revision，否则不能改变主指标分母。
 
 每个 Team 的十五条 Positive 中，十条从搜索或发现入口开始：四条 Memory search、三条 `skill_search`、三条 Knowledge `tools/list`。另外五条保留结构化 query、已知 Skill 和已知 scene 等直接入口。目标 Skill 必须在真实 prewarm 后仍未进入 `<available_skills>`，同时能从 same-Team Skill 池搜到，不能由评测器临时隐藏。
 
@@ -162,7 +162,8 @@ Session 绑定 Team 后，强干扰资产必须位于当前活动 Team 的可见
 
 - T01 至 T03：可按 [`OPEN-SKILL-TARGET-MATRIX.md`](./OPEN-SKILL-TARGET-MATRIX.md) 选择已核验的开源 Skill 靶子。只有实际导入的外部 Skill 或原文片段需要来源记录；Memory、历史会话和工程背景可以由 Luna 按冻结 Team 世界合成，不要求真实 repo 或轨迹闭环。
 - T04：后端工程 Dev，使 Prompt 调整阶段不只看到 Python。
-- T05 至 T10：前端、客户端、SDK、测试、安全、构建 Hidden Team，只做结构、来源、资产和 Gold 合同验证，不用模型结果调 Prompt。
+- T05 至 T10、T13 至 T16：Hidden Team，只做结构、来源、资产和 Gold 合同验证，不用模型结果调 Prompt。
+- T11、T12：移动端工程和数据库演进 Dev Team，补充非 Python 的工程触发与干扰。
 
 Dev 与 Hidden 之间不得复用 source task、trajectory、patch hash、Memory/session id、L2 路径、Knowledge id 或近重复 Query。通用开源 Skill 可以在真实业务需要时复用，但不能围绕同一个来源任务和同一组表述构造两边样本。
 
@@ -237,7 +238,7 @@ interface WorldEvalCase {
 
 ### 资产构造和冻结流程
 
-1. 先定义 World、Team、项目主题和二十个真实 Task，确定每条题目的信息缺口。
+1. 先定义 Space、Team 和每 Team 3 至 6 个项目流，确定每条题目的信息缺口。
 2. 构造历史对话、Memory、Skill 和 Knowledge，并加入同 Team 的强干扰项。
 3. 通过现有数据面 Interface 上传或导入真实本地 MemoryCore、Skill 和 MemoryKnowledge。自动资产抽取不是前置条件。
 4. 通过面板或读取 Interface 抽查资产，确认 id、归属、内容、Listing、仓库绑定和时间信息正确。
@@ -511,10 +512,10 @@ Gate：任何人只看冻结清单和一条 case，都能判断哪些内容是�
 - 把 Attempt、Malformed Attempt、真实 Entry Call 和 Infrastructure Error 分开。
 - 把历史上下文作为真实 Responses 消息发送，把活动项目文件写入临时工作区。
 - 保留 Mock Bridge 的 100 case 回归和完整 Gold 序列 smoke。
-- 完成正式 W01 至 W03，再补齐多语言 W04，形成 160 条 Dev。
-- 创建 W05 至 W10 Test，做结构、来源与合同验证后封存 240 条。
+- 完成 T01 至 T04、T11、T12，形成 240 条 Dev。
+- 完成 T05 至 T10、T13 至 T16，做结构、来源与合同验证后封存 400 条 Hidden。
 
-Gate：十个 World 都能完成无模型 dry run、Session Init、生产 Prompt 捕获和合同重放。数据与真实资产快照冻结，运行前后资产 hash 不变。模型驱动的 20 条 Smoke 留到 P04，不在数据准备阶段执行。
+Gate：十六个 Team 都能完成无模型 dry run、Session Init、生产 Prompt 捕获和合同重放。数据与真实资产快照冻结，运行前后资产 hash 不变。模型驱动的 20 条 Smoke 留到 P04，不在数据准备阶段执行。
 
 阶段产物：World manifest、snapshot manifest、真实链路 runner、无模型 dry-run manifest 和合同 trace。
 
@@ -562,7 +563,7 @@ Gate：每个 Variant 只有声明的改造类型发生变化，静态 Prompt di
 
 - 只在 P01 数据 Gate 与 P03 代码 Gate 都通过后建立实验集成分支。
 - 先用 V0 完成 20 条真实链路 Smoke，确认 Session Init、生产 InjectionPipeline、真实入口观测和本地产物完整。
-- 依次完成 V0 对 V0-C、V0-C 对 V1a、V1a 对 V1、V1 对 V2、V2 对 V3 的 160 条 Dev 配对比较。
+- 依次完成 V0 对 V0-C、V0-C 对 V1a、V1a 对 V1、V1 对 V2、V2 对 V3 的 240 条 Dev 配对比较。
 - 每一组完成并做出阶段决定后才运行下一组，同组两个 Variant 按 case 交错。
 - 对 V0-C、V1 和 V2 交错运行固定的 Baseline Sentinel，观察时间漂移。
 - 先应用行为 Gate，再比较 FCR、Static Tool Tokens 和改动范围。
@@ -582,7 +583,7 @@ Gate：每个 Variant 只有声明的改造类型发生变化，静态 Prompt di
 工作内容：
 
 - 只运行 V0、V0-C 和 Final，不再修改 Prompt 或 Gold。
-- 在 240 条 Test 上运行 V0、V0-C 和 Final 的单次全量；再对预登记的 80 条 Family/语言/难度平衡子集运行到三次，单次全量主表与重复稳定性表分开报告，按 case 和 repeat 交错。
+- 在 400 条 Hidden 上运行 V0、V0-C 和 Final 的单次全量；再对预登记的 80 条 Family/语言/难度平衡子集运行到三次，单次全量主表与重复稳定性表分开报告，按 case 和 repeat 交错。
 - 保存完整 Token、Hash、稳定前缀和 Provider usage。
 - 在每个 Family 选少量 case 做完整真实链路 smoke，结果单独报告。
 - 若预算允许，增加第二模型的平衡子集复核，不与 Luna 合并。
@@ -652,8 +653,8 @@ Campaign 至少保存 `campaign-manifest.json`、`scores.jsonl`、`summary.json`
 
 满足以下条件后才采集 V0 正式基线：
 
-- W01 至 W04 共 160 条 Dev case 完成来源、结构、唯一性、干扰项和合同验证。
-- W05 至 W10 共 240 条 Test case 已冻结，未参与 Prompt 调整。
+- T01 至 T04、T11、T12 共 240 条 Dev case 完成来源、结构、唯一性、干扰项和合同验证。
+- T05 至 T10、T13 至 T16 共 400 条 Hidden case 已冻结，未参与 Prompt 调整。
 - 真实本地 MemoryCore、Skill 和 MemoryKnowledge 可以从同一快照恢复。
 - 自动写回和抽取已关闭，或每个 Variant 前能恢复同一快照。
 - 20 条 Smoke 全部经过正常 Session Init 和生产 InjectionPipeline。

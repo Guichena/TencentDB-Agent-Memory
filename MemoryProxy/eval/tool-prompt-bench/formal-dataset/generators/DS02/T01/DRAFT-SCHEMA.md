@@ -12,7 +12,7 @@ Write `draft.json` as UTF-8 JSON:
   "schema_version": "task1.luna_pair_draft.v1",
   "batch_id": "string",
   "stage": "DS02 | DS03 | DS05",
-  "team_id": "T01 | T02 | ... | T10",
+  "team_id": "T01 | T02 | ... | T16",
   "family": "memory | skill | knowledge",
   "pairs": [
     {

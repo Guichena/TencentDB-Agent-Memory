@@ -1,8 +1,8 @@
 # Task 1 正式数据集构造与验收手册
 
-状态：执行版 1.2
+状态：执行版 1.3
 
-适用启动基线：阶段 A 已完成。schema 基线 Tag `task1-data-parallel-baseline-v2` 解引用到 `1048681880b51e7a52a6b8b0b731eadeec44e118`，数据内容祖先为 `960021e472456515a89d3c2c4f2962fbf6cc51a1`。五个 Team 建设任务从包含最终手册和提示词的不可变 Tag `task1-data-parallel-launch-v2` 建立独立 worktree。
+适用启动基线：阶段 A 已完成。schema 基线 Tag `task1-data-parallel-baseline-v2` 解引用到 `1048681880b51e7a52a6b8b0b731eadeec44e118`，数据内容祖先为 `960021e472456515a89d3c2c4f2962fbf6cc51a1`。build-01 至 build-05 已从 `task1-data-parallel-launch-v2` 启动；build-06 至 build-08 从包含 T11 至 T16 注册信息和三份新提示词的 `task1-data-parallel-launch-16team-v1` 启动。两个启动点共享相同 schema 和内容祖先，八个任务完成后一次性集成。
 
 适用任务：Proxy 系统提示词注入优化
 
@@ -22,8 +22,8 @@
 
 正式交付物包括：
 
-1. 一个 Space、十个 Team 和四百个 case 的冻结定义。
-2. Dev 160 case 与 Hidden 240 case 两份互斥快照。
+1. 一个 Space、十六个 Team 和六百四十个 case 的冻结定义。
+2. Dev 240 case 与 Hidden 400 case 两份互斥快照。
 3. Memory、Skill 和最小 Knowledge 路由资产的定义、导入记录与恢复脚本。只有实际导入的外部 Skill 或原文片段需要来源和许可证记录。
 4. 每个 case 的公开输入、私有 Gold、允许序列和配对关系。
 5. 数据验证报告、真实链路无模型 Gate 报告和最终冻结 manifest。
@@ -171,7 +171,7 @@ Task 1 仍然要求覆盖 Knowledge，所以不能只放空的 `<knowledge_tools
 
 允许多个合理首动作的 case 很难解释，也容易在看到模型输出后修改 Gold。正式主集只保留首动作唯一的 case。确实有两个等价入口时，必须在冻结前写入 `allowedFirstActions`，并在 `decision-review.json` 说明等价原因。
 
-## 一个 Space、十个 Team
+## 一个 Space、十六个 Team
 
 正式数据使用一个逻辑 Space：
 
@@ -179,7 +179,7 @@ Task 1 仍然要求覆盖 Knowledge，所以不能只放空的 `<knowledge_tools
 space-task1-engineering
 ```
 
-这个 Space 下有十个 Team。Team 用来组织同域项目、可见 Skill 池、Memory 资产和 Knowledge 绑定，不承担 Task 1 的隔离指标。正式运行仍要校验 Session Init 解析到了预期 Team，避免加载错资产，但不写跨 Team 攻击题，也不报告 ACL 指标。
+这个 Space 下有十六个 Team。Team 用来组织同域项目、可见 Skill 池、Memory 资产和 Knowledge 绑定，不承担 Task 1 的隔离指标。正式运行仍要校验 Session Init 解析到了预期 Team，避免加载错资产，但不写跨 Team 攻击题，也不报告 ACL 指标。
 
 | Team | 工程主题 | 主要真实任务 | 主要近义 Skill 干扰 |
 |---|---|---|---|
@@ -193,29 +193,35 @@ space-task1-engineering
 | T08 | 测试质量 | pytest coverage、Jest、Playwright | 单测、覆盖率、E2E、构建失败、浏览器探索 |
 | T09 | 安全与依赖 | Trivy 离线审计、依赖报告 | 扫描、CVSS 提取、CSV 报告、普通升级 |
 | T10 | 构建与发布 | Maven、Python build、release workflow | 生命周期、依赖、插件、CI 分析、环境搭建 |
+| T11 | 移动端工程 | Android/iOS 构建、生命周期、离线同步、性能与 UI 测试 | 平台、构建、状态同步、性能和测试工具的近义干扰 |
+| T12 | 数据库演进 | schema migration、在线变更、索引、查询计划、数据回填 | 迁移、备份、ORM、性能分析和兼容性工具 |
+| T13 | 可观测性与故障定位 | metrics、logs、traces、告警关联、性能剖析 | 采集、查询、仪表盘、告警和事故响应工具 |
+| T14 | 云原生交付 | Kubernetes、Helm、GitOps、容器构建、发布策略 | 编排、模板、镜像、CI/CD 和配置管理工具 |
+| T15 | API 契约与兼容性 | OpenAPI、SDK 生成、版本策略、契约测试 | 文档、schema、代码生成、测试和网关工具 |
+| T16 | 事件驱动系统 | 消息队列、事件 schema、幂等、顺序、重试、死信 | broker、stream、序列化、可靠性和消费者诊断工具 |
 
 T01 继承当前 W01-B 的 Mypy 与 fuzzing 材料。其他 Team 从 `OPEN-SKILL-TARGET-MATRIX.md` 和 `ENGINEERING-SKILL-CANDIDATE-RESEARCH.md` 中选择已核验靶子。任何 Team 都可以同时维护多个项目，因为这更接近一个工程部门的实际状态。
 
 每个 Team 只有一个 Agent 会被正式 case 选为当前 Agent。另设最多两个资产来源 Agent，专门持有 team-visible Skill 和可导入 Memory，不作为 Codex、Claude Code 或其他终端，也不作为 case 的运行主体。这个结构对应 `formal-visibility.ts` 的真实边界：当前 Agent 最多导入两个同 Team Agent 的 Memory，`skill_search` 可以查到同 Team 的 team-visible Skill。
 
-正式 schema 需要把旧的 `FormalWorld.teamIds: readonly [string, string]` 改为一个 Space 下的 Team 列表，并把 `split` 从 World 级下沉到 Team 或 case。完成该修改前，不得伪造十个不同 `space_id` 来绕开 schema。
+正式 schema 已把旧的 `FormalWorld.teamIds: readonly [string, string]` 改为一个 Space 下的 Team 列表，并把 `split` 从 World 级下沉到 Team 或 case。Team id 是通用字符串，不需要为 T11 至 T16 再次修改 schema，也不得伪造多个 `space_id` 绕开合同。
 
 ## 规模与分布
 
-正式主集合固定为四百个 case，每个 Team 四十个。质量 Gate 优先于机械凑数，但质量不合格的 case 必须替换，不能通过减少某个 Team、再从其他 Team 补量来改变冻结分布：
+正式主集合固定为六百四十个 case，每个 Team 四十个。质量 Gate 优先于机械凑数，但质量不合格的 case 必须替换，不能通过减少某个 Team、再从其他 Team 补量来改变冻结分布：
 
 | 类型 | 每 Team | 全集 | 作用 |
 |---|---:|---:|---|
-| Memory Positive | 6 | 60 | 覆盖 L0、L1、L2 的真实触发与选型 |
-| Skill Positive | 6 | 60 | 覆盖 listed、team search 和少量 resource read |
-| Knowledge Positive | 3 | 30 | 覆盖资源选择与最小两步协议 |
-| 配对 No-tool Negative | 15 | 150 | 每个 Positive 对应一个只改变信息充分性的负例 |
-| 自然 coding Negative | 10 | 100 | 测试注入是否干扰普通工程任务 |
-| 合计 | 40 | 400 | 正样本 150，负样本 250 |
+| Memory Positive | 6 | 96 | 覆盖 L0、L1、L2 的真实触发与选型 |
+| Skill Positive | 6 | 96 | 覆盖 listed、team search 和少量 resource read |
+| Knowledge Positive | 3 | 48 | 覆盖资源选择与最小两步协议 |
+| 配对 No-tool Negative | 15 | 240 | 每个 Positive 对应一个只改变信息充分性的负例 |
+| 自然 coding Negative | 10 | 160 | 测试注入是否干扰普通工程任务 |
+| 合计 | 40 | 640 | 正样本 240，负样本 400 |
 
-Knowledge 数量低于 Memory 和 Skill，因为 Task 1 不评价知识资产质量，也不建设大规模知识库。三十个样本足以检查触发、资源选择和两步协议，同时把更多预算留给误调用率。
+Knowledge 数量低于 Memory 和 Skill，因为 Task 1 不评价知识资产质量，也不建设大规模知识库。四十八个样本用于检查触发、资源选择和两步协议，同时把更多预算留给误调用率。
 
-四百条不能通过同一句话替换名词得到。某个 Team 暂时无法写出六个独立、首动作唯一的 Skill Positive 时，应替换薄弱靶子或重写具体 case；该 Team 未达到四十条合同前，不能通过本地 Gate。若确有理由改变数量合同，必须在任何 Prompt 调优或正式运行前发布新的 dataset revision，重新冻结每个 Team 的数量、分母和 manifest。额外生成的合格 case 可进入 exploratory 集合，不进入主指标分母。
+六百四十条不能通过同一句话替换名词得到。某个 Team 暂时无法写出六个独立、首动作唯一的 Skill Positive 时，应替换薄弱靶子或重写具体 case；该 Team 未达到四十条合同前，不能通过本地 Gate。若确有理由改变数量合同，必须在任何 Prompt 调优或正式运行前发布新的 dataset revision，重新冻结每个 Team 的数量、分母和 manifest。额外生成的合格 case 可进入 exploratory 集合，不进入主指标分母。
 
 ### 三分之二正样本从搜索或发现入口开始
 
@@ -228,7 +234,7 @@ Knowledge 数量低于 Memory 和 Skill，因为 Task 1 不评价知识资产质
 | Knowledge | 3 | 0 | 3 |
 | 合计 | 10 | 5 | 15 |
 
-全集至少一百条 Positive 从 `tdai_memory_search`、`tdai_conversation_search`、`skill_search` 或 Knowledge `tools/list` 开始，另外五十条保留已知 Skill、已知 scene、结构化 Memory 条件等直接入口。搜索样本占多数，直接样本仍然存在，用来检查模型会不会形成“看到工具就先搜一遍”的新误调用习惯。
+全集至少一百六十条 Positive 从 `tdai_memory_search`、`tdai_conversation_search`、`skill_search` 或 Knowledge `tools/list` 开始，另外八十条保留已知 Skill、已知 scene、结构化 Memory 条件等直接入口。搜索样本占多数，直接样本仍然存在，用来检查模型会不会形成“看到工具就先搜一遍”的新误调用习惯。
 
 搜索配额不能靠评测器临时隐藏资产实现。每条 case 的当前 Agent、Task、Skill ownership、binding 和 visibility 在快照中固定，prewarm 使用真实 Agent 与 Task 描述生成 listing。目标 Skill 只有在真实 prewarm 后仍未进入 `<available_skills>`，同时能被 `skill_search` 找到，才有资格标为搜索 Positive。
 
@@ -236,8 +242,8 @@ Knowledge 数量低于 Memory 和 Skill，因为 Task 1 不评价知识资产质
 
 | Split | Team | case 数 |
 |---|---|---:|
-| Dev | T01 至 T04 | 160 |
-| Hidden | T05 至 T10 | 240 |
+| Dev | T01 至 T04、T11、T12 | 240 |
+| Hidden | T05 至 T10、T13 至 T16 | 400 |
 
 一个 Space 不代表两个 split 同时加载。生成两个互斥、不可变快照：
 
@@ -246,7 +252,7 @@ snapshot-task1-dev-v1
 snapshot-task1-hidden-v1
 ```
 
-Dev 运行时只恢复 T01 至 T04 的资产，Hidden 运行时只恢复 T05 至 T10 的资产。Prompt 调整只看 Dev。Hidden Gold、上下文和资产摘要在 Prompt 冻结前不得提供给改造 Prompt 的会话。
+Dev 运行时只恢复 T01 至 T04、T11、T12 的资产，Hidden 运行时只恢复 T05 至 T10、T13 至 T16 的资产。Prompt 调整只看 Dev。Hidden Gold、上下文和资产摘要在 Prompt 冻结前不得提供给改造 Prompt 的会话。
 
 ## 每个 Team 最少构造哪些东西
 
@@ -603,7 +609,7 @@ eval/tool-prompt-bench/formal-dataset/
 
 ## 只增加四个施工入口
 
-不为四百条数据建设大型平台。复用现有 `formal-*` 模块，只增加四个薄脚本：
+不为六百四十条数据建设大型平台。复用现有 `formal-*` 模块，只增加四个薄脚本：
 
 | 脚本 | 作用 | 必须复用 |
 |---|---|---|
@@ -620,29 +626,31 @@ eval/tool-prompt-bench/formal-dataset/
 
 schema 基线 Tag `task1-data-parallel-baseline-v2` 已包含 DS00、DS01、DS02 的 T01 检索压力试点，以及 synthetic 与 external import provenance 分型。建设任务不得重复执行已完成阶段，也不得在各自分支修改全局合同。启动时先读取 `formal-dataset/DATASET-BUILD-STATUS.json`；其中的 `branch` 是最近一次集成元数据，不是当前建设任务应切换到的分支。
 
-`worlds/formal-schema.ts`、compiler、validator 和直接相关测试已经同步支持两类 provenance。`synthetic` 只记录生成批次与审查信息，禁止填写伪造的外部来源字段；`external_import` 继续严格校验 repository、revision、license、path、locator 和 hash。L1 code/test locator 只对外部导入强制。五个建设任务可以直接完成 staging 和本地 Gate。
+`worlds/formal-schema.ts`、compiler、validator 和直接相关测试已经同步支持两类 provenance。`synthetic` 只记录生成批次与审查信息，禁止填写伪造的外部来源字段；`external_import` 继续严格校验 repository、revision、license、path、locator 和 hash。L1 code/test locator 只对外部导入强制。八个建设任务可以直接完成 staging 和本地 Gate。
 
 当前并行施工边界如下：
 
 - build-01 继续完成 DS02 的 T01，并建设 T02。
 - build-02 建设 DS03 的 T03、T04。
 - build-03 至 build-05 建设 DS05 的 T05 至 T10 分片。
+- build-06 建设 Dev 的 T11、T12 分片。
+- build-07、build-08 建设 Hidden 的 T13 至 T16 分片。
 - DS04、DS06 及后续全局冻结、快照和状态更新只由集成任务完成。
 
 ### DS00：冻结一 Space 设计和多步评分合同
 
-状态：一 Space、十 Team、split、完整链路评分和 provenance 分型均已在 v2 schema 基线完成。本节历史任务不应在建设分支重做。
+状态：一 Space、多 Team、split、完整链路评分和 provenance 分型均已在 v2 schema 基线完成。v2 首先冻结 T01 至 T10 的身份；当前 16-Team 启动合同只增加 T11 至 T16 注册身份，不改变通用 schema。本节历史任务不应在建设分支重做。
 
 前置条件：在专用合同分支执行，不生成模型数据，不导入资产。
 
 执行任务：
 
-1. 修改正式 schema，使一个 Space 可以包含十个 Team，并允许 Team 或 case 持有 split。
+1. 修改正式 schema，使一个 Space 可以包含可扩展的 Team 列表，并允许 Team 或 case 持有 split。
 2. 给 `ToolPromptEvalCase` 保留 `allowedFirstActions`、`expectedFollowupActions`、`expectedKnowledgeCalls` 和 `allowedSequences`。
 3. 明确 `EffectiveCallRate` 使用完整最小链路，`FirstRouteAt1` 只作诊断。
 4. 正式 provenance 区分 `synthetic` 和 `external_import`。纯合成资产只关联生成批次，不能为了满足旧 schema 伪造 repository、revision、license 或文件 hash。
 5. 修改旧文档索引，标记本文件替代十 Space、第一步即停和逐条外部来源闭环假设。
-6. 为 T01 至 T10 写空 Team registry，只放 id、主题、Agent 和 split。
+6. v2 为 T01 至 T10 写空 Team registry；16-Team 启动合同以相同格式增加 T11 至 T16。
 
 需要运行：
 
@@ -655,7 +663,7 @@ npm run eval:tool-prompt:d0:test
 
 Gate：
 
-- schema 能表达一个 Space、十个 Team。
+- schema 能表达一个 Space 和十六个 Team，并允许后续扩展 Team id。
 - Dev 和 Hidden 可以在同一 Space 下分开编译。
 - evaluator 的首路由和完整序列测试都通过。
 - 没有正式 case 或资产被生成。
@@ -667,7 +675,7 @@ feat(tool-prompt-bench): revise formal dataset to one-space multi-team contract
 
 - move split ownership below the space level
 - preserve first-route and minimal-chain scoring
-- freeze T01-T10 registry identities
+- freeze initial T01-T10 registry identities
 - supersede the legacy ten-space construction assumption
 ```
 
@@ -734,11 +742,11 @@ Gate：
 - 十条自然负例没有隐藏的信息缺口。
 - provider leakage 为 0。
 
-### DS03：扩展 Dev 的 T02 至 T04
+### DS03：扩展 Dev 的 T02 至 T04、T11、T12
 
-前置条件：DS00 合同和 T01 检索压力试点已通过，构造模板不再修改 schema。T02 至 T04 的分片施工不必等待 T01 扩充到 40 条；Dev 全局冻结仍必须等待 T01 至 T04 全部通过。
+前置条件：DS00 合同和 T01 检索压力试点已通过，构造模板不再修改 schema。T02 至 T04、T11、T12 的分片施工不必等待 T01 扩充到 40 条；Dev 全局冻结仍必须等待 T01 至 T04、T11、T12 全部通过，而且不能在其余 Hidden 任务完成前形成正式 `formal-v1`。
 
-T02 至 T04 各自按 DS02 的四十条结构建设。Team 之间可以由不同 Codex 任务并行施工；同一个 Codex 任务负责的两个 Team 仍按顺序完成，一个 Team 通过本地 Gate 后再开始该任务内的下一个 Team。施工任务只能写各自的 Team 分片，不能并发修改全局合同、总状态文件、编译产物或冻结快照。
+T02 至 T04、T11、T12 各自按 DS02 的四十条结构建设。Team 之间可以由不同 Codex 任务并行施工；同一个 Codex 任务负责的两个 Team 仍按顺序完成，一个 Team 通过本地 Gate 后再开始该任务内的下一个 Team。施工任务只能写各自的 Team 分片，不能并发修改全局合同、总状态文件、编译产物或冻结快照。
 
 每个 Team 的执行循环：
 
@@ -752,11 +760,11 @@ T02 至 T04 各自按 DS02 的四十条结构建设。Team 之间可以由不同
 
 Dev Gate：
 
-- T01 至 T04 共 160 条。
-- 四个 Team 的类别总数符合 manifest。
+- T01 至 T04、T11、T12 共 240 条。
+- 六个 Dev Team 的类别总数符合 manifest。
 - 所有实际导入的外部 Skill 或原文片段有必要的来源、license 和 adapted Skill diff；纯合成内容不要求外部来源。
 - Dev provider input、private Gold 和 snapshot hash 冻结。
-- Dev 数据可交给 Prompt 代码分支开始 V0 至 V3 迭代。
+- Dev 数据只有在八个建设任务全部通过并完成一次性 `formal-v1` 集成后，才交给 Prompt 代码分支开始 V0 至 V3 迭代。
 
 ### DS04：冻结 Dev，不再改题
 
@@ -771,13 +779,13 @@ Dev 冻结后只允许修复以下客观错误：
 
 不能因为某个 Variant 得分低而改 Query、Gold、干扰池或调用次数。每次客观修复都递增 dataset revision，并重新运行所有 Variant 的受影响 case。
 
-### DS05：建设 Hidden 的 T05 至 T10
+### DS05：建设 Hidden 的 T05 至 T10、T13 至 T16
 
 前置条件：正式 schema、数量合同和 Hidden 写入边界已冻结。Hidden 分片施工可以与 Dev 分片施工并行，但 Hidden 的全局集成、sealed manifest 和交给实验运行必须等待 Dev 冻结；Prompt 代码开发会话不能读取 Hidden 内容。
 
 Hidden 每个 Team 同样建设四十条。数据 Agent 可以复用 schema、validator 和生成 prompt，但不能复制 Dev 的具体句子。Hidden 中至少一半 Skill 靶子来自前端、客户端、SDK、测试、安全和构建轨道，避免 Hidden 只是 Python 词汇替换。
 
-T05 至 T10 可以由三个独立 Codex 任务并行建设。每个任务只读取 Dev 的结构合同和公开计数，不读取或改写其他 Hidden 任务的 Query、上下文、Gold 和资产摘要。所有 Hidden 任务先输出 Team 分片，最后由单独的集成任务统一做去重、泄漏检查、编译和 sealed manifest。
+T05 至 T10、T13 至 T16 可以由五个独立 Codex 任务并行建设。每个任务只读取 Dev 的结构合同和公开计数，不读取或改写其他 Hidden 任务的 Query、上下文、Gold 和资产摘要。所有 Hidden 任务先输出 Team 分片，最后由单独的集成任务统一做去重、泄漏检查、编译和 sealed manifest。
 
 每个 Team 完成后生成 sealed manifest，只公开：
 
@@ -791,7 +799,7 @@ T05 至 T10 可以由三个独立 Codex 任务并行建设。每个任务只读�
 
 Hidden Gate：
 
-- 240 条全部通过与 Dev 相同的 validator。
+- 400 条全部通过与 Dev 相同的 validator。
 - 与 Dev 的 n-gram、完整句、query hash 和上下文 hash 无重复。
 - Dev 与 Hidden 可以采用相同工程领域，但不能复制具体 query、上下文、信息缺口或 pair 模板。
 - Hidden 快照能独立恢复，不依赖 Dev 资产。
@@ -867,7 +875,7 @@ DS07 不调用 Luna，也不产生正式模型指标。
 
 - dataset revision 和 Git commit。
 - Dev、Hidden snapshot id 与 SHA-256。
-- 400 条分布表。
+- 640 条分布表。
 - provider input manifest。
 - private Gold manifest。
 - 外部导入项的 source 与 license manifest，若没有外部导入则明确记录为空。
@@ -1000,7 +1008,7 @@ Prompt cache 不要求每个 case 的完整 system prompt 相同，因为 L3、L
 
 ## `DATASET-BUILD-STATUS.json`
 
-`DATASET-BUILD-STATUS.json` 是全局集成状态，只能由集成任务更新。五个建设任务必须把进度、数量和 Gate 写入各自 Team 的 `gate.json`，不能并发修改总状态文件。状态文件中的 `branch` 记录最近一次全局状态写入来源，不代表其他任务应切换到该分支。
+`DATASET-BUILD-STATUS.json` 是全局集成状态，只能由集成任务更新。八个建设任务必须把进度、数量和 Gate 写入各自 Team 的 `gate.json`，不能并发修改总状态文件。状态文件中的 `branch` 记录最近一次全局状态写入来源，不代表其他任务应切换到该分支。
 
 当前冻结基线中的状态结构示意如下。实际值必须直接读取文件，不能从本段复制：
 
@@ -1008,7 +1016,7 @@ Prompt cache 不要求每个 case 的完整 system prompt 相同，因为 L3、L
 {
   "schema_version": "task1.dataset_build_status.v1",
   "dataset_revision": "formal-v1",
-  "active_stage": "DS02_parallel_v2",
+  "active_stage": "DS02_parallel_16team",
   "stage_status": "parallel_ready",
   "branch": "<last-integration-branch>",
   "parallel_baseline_ref": "task1-data-parallel-baseline-v2",
@@ -1046,7 +1054,7 @@ Agent 开始工作时按以下顺序读取：
 
 ## 外层并行施工合同
 
-正式数据建设使用五个互相独立的 Codex 任务。这里的“任务”指用户在 Codex 中单独打开的任务，不是 Team 内部的 Luna 批次：
+正式数据建设使用八个互相独立的 Codex 任务。这里的“任务”指用户在 Codex 中单独打开的任务，不是 Team 内部的 Luna 批次：
 
 | 建设任务 | 负责 Team | Split | 建议分支 |
 |---|---|---|---|
@@ -1055,8 +1063,11 @@ Agent 开始工作时按以下顺序读取：
 | build-03 | T05、T06 | Hidden | `codex/task1-data-build-v2-t05-t06` |
 | build-04 | T07、T08 | Hidden | `codex/task1-data-build-v2-t07-t08` |
 | build-05 | T09、T10 | Hidden | `codex/task1-data-build-v2-t09-t10` |
+| build-06 | T11、T12 | Dev | `codex/task1-data-build-16team-t11-t12` |
+| build-07 | T13、T14 | Hidden | `codex/task1-data-build-16team-t13-t14` |
+| build-08 | T15、T16 | Hidden | `codex/task1-data-build-16team-t15-t16` |
 
-五个建设任务从不可变 Tag `task1-data-parallel-launch-v2` 建立专用 worktree。launch Tag 必须包含本手册、并行 README、五份提示词和 v2 schema 基线。`1048681880b51e7a52a6b8b0b731eadeec44e118` 与数据内容基线 `960021e472456515a89d3c2c4f2962fbf6cc51a1` 都必须是启动 HEAD 的祖先。任何阶段都不能让多个任务共享一个可写工作目录，也不能让建设任务直接修改以下全局文件：
+前五个建设任务已从不可变 Tag `task1-data-parallel-launch-v2` 建立专用 worktree，继续在原分支完成，不重启、不变基。新增三个任务从 `task1-data-parallel-launch-16team-v1` 建立专用 worktree。后一个 Tag 包含 16-Team 手册、并行 README、T11 至 T16 注册信息和三份独立提示词。两个 Tag 都必须包含 schema 基线提交 `1048681880b51e7a52a6b8b0b731eadeec44e118` 和数据内容祖先 `960021e472456515a89d3c2c4f2962fbf6cc51a1`。任何阶段都不能让多个任务共享一个可写工作目录，也不能让建设任务直接修改以下全局文件：
 
 ```text
 formal-dataset/registry/contracts/formal-v1.json
@@ -1089,7 +1100,7 @@ gate.json
 
 每个建设任务内部由 Sol 负责源码核对、输入冻结、Gold 决策和验收，批量草稿必须委派给 `gpt-5.6-luna`、`reasoning_effort=high` 的子智能体。一个 Luna 子智能体只写一个唯一批次目录。任务内可以并发 Memory、Skill、Knowledge/自然负例批次，但合并前必须由该任务的 Sol 逐份复核。
 
-外层并行结束后，当前集成任务按 T01 至 T10 的顺序合并 Team 分片，统一执行 schema、数量、pair、泄漏、可见性、重复度、检索压力、快照和 hash Gate。任何建设任务都不能自行宣布 Dev 或 Hidden 已冻结。
+外层并行结束后，只有八个任务全部通过只读验收，当前集成任务才按 T01 至 T16 的顺序一次性合并 Team 分片，统一执行 schema、数量、pair、泄漏、可见性、重复度、检索压力、快照和 hash Gate。不得先合并前五个任务形成 400 条中间版。任何建设任务都不能自行宣布 Dev 或 Hidden 已冻结。
 
 每个独立任务使用一份专属提示词，文件位于：
 
@@ -1099,11 +1110,14 @@ parallel-prompts/THREAD-02-T03-T04.md
 parallel-prompts/THREAD-03-T05-T06.md
 parallel-prompts/THREAD-04-T07-T08.md
 parallel-prompts/THREAD-05-T09-T10.md
+parallel-prompts/THREAD-06-T11-T12.md
+parallel-prompts/THREAD-07-T13-T14.md
+parallel-prompts/THREAD-08-T15-T16.md
 ```
 
 ## 分支与提交
 
-五个建设任务从同一个冻结 Tag 建立独立 worktree 和分支，集成工作保留在单独分支：
+八个建设任务按各自提示词登记的冻结 Tag 建立独立 worktree 和分支，集成工作保留在单独分支：
 
 ```text
 codex/task1-data-build-v2-t01-t02
@@ -1111,6 +1125,9 @@ codex/task1-data-build-v2-t03-t04
 codex/task1-data-build-v2-t05-t06
 codex/task1-data-build-v2-t07-t08
 codex/task1-data-build-v2-t09-t10
+codex/task1-data-build-16team-t11-t12
+codex/task1-data-build-16team-t13-t14
+codex/task1-data-build-16team-t15-t16
 codex/task1-data-integration
 codex/task1-data-real-snapshot
 ```
@@ -1129,7 +1146,8 @@ git worktree add -b codex/task1-data-build-v2-t03-t04 `
 git status --short --branch -uall
 git branch --show-current
 git worktree list --porcelain
-$launchCommit = git rev-parse "task1-data-parallel-launch-v2^{commit}"
+$launchTag = "<使用当前 THREAD 文件登记的启动 Tag>"
+$launchCommit = git rev-parse "$($launchTag)^{commit}"
 $headCommit = git rev-parse HEAD
 $schemaCommit = git rev-parse "task1-data-parallel-baseline-v2^{commit}"
 if ($headCommit -ne $launchCommit) { throw "HEAD does not match launch tag" }
@@ -1172,13 +1190,13 @@ git merge-base --is-ancestor 960021e472456515a89d3c2c4f2962fbf6cc51a1 HEAD
 
 只有以下条件全部满足，数据集构造才算完成：
 
-- 一个 Space、十个 Team 的 schema 和 registry 已冻结。
-- Dev 160 条、Hidden 240 条均通过 validator。
+- 一个 Space、十六个 Team 的 schema 和 registry 已冻结。
+- Dev 240 条、Hidden 400 条均通过 validator。
 - 每个 Positive 的首路由和最小链路 Gold 均已冻结。
-- 至少一百条 Positive 从真实搜索或发现入口开始，五十条保留直接入口。
+- 至少一百六十条 Positive 从真实搜索或发现入口开始，八十条保留直接入口。
 - 所有 Skill 搜索 Positive 的目标都不在实际注入 listing 中，并能从 same-Team 池搜到。
-- 150 组配对负例通过单变量审查。
-- 100 条自然 coding Negative 在完整干扰资产池下可运行。
+- 240 组配对负例通过单变量审查。
+- 160 条自然 coding Negative 在完整干扰资产池下可运行。
 - Memory、Skill 和最小 Knowledge 资产都能通过真实接口恢复和读取。
 - 连续两次恢复得到相同 snapshot hash。
 - Provider input 与私有 Gold 完全分离，泄漏为 0。
