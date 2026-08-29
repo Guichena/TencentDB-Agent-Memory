@@ -1,0 +1,176 @@
+{
+  "schema_version": "task1.knowledge_asset_candidates.v1",
+  "batch_id": "t09-knowledge-trial-01",
+  "team_id": "T09",
+  "status": "proposal_only_not_approved_or_visible",
+  "synthetic": true,
+  "resources": [
+    {
+      "asset_id": "wiki-t09audit01",
+      "knowledge_id": "wiki-t09audit01",
+      "type": "wiki",
+      "name": "Nebula Offline Audit Operations",
+      "summary": "Internal operational runbooks for the nebula-console air-gapped audit environment.",
+      "repo_match": "aegis/nebula-console",
+      "status": "ready",
+      "tool_name": "search_pages",
+      "required_param": "query",
+      "tools/list": {
+        "request": {
+          "knowledge_id": "wiki-t09audit01"
+        },
+        "response": {
+          "tools": [
+            {
+              "name": "search_pages",
+              "description": "Search the frozen operations pages by text query.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": ["query"],
+                "additionalProperties": false
+              }
+            }
+          ]
+        }
+      },
+      "deterministic_read_only_responses": [
+        {
+          "request": {
+            "tool_name": "search_pages",
+            "arguments": {
+              "query": "frozen vulnerability database older than fourteen days exception code"
+            }
+          },
+          "response": {
+            "pages": [
+              {
+                "ref": "offline-database-exceptions",
+                "title": "Offline vulnerability database exceptions",
+                "path": "/security/audit/offline-runbook",
+                "content": "For a frozen vulnerability database older than fourteen days, record exception code AIRGAP-DB-AGE-14."
+              }
+            ]
+          }
+        }
+      ],
+      "private_fact_author_only": "The current exception code for a frozen vulnerability database older than fourteen days is AIRGAP-DB-AGE-14."
+    },
+    {
+      "asset_id": "cg-t09risk01",
+      "knowledge_id": "cg-t09risk01",
+      "type": "code_graph",
+      "name": "Risk Catalog Symbol Graph",
+      "summary": "Read-only symbol graph for the risk-catalog normalizer repository.",
+      "repo_match": "aegis/risk-catalog",
+      "status": "ready",
+      "tool_name": "search_symbols",
+      "required_param": "query",
+      "tools/list": {
+        "request": {
+          "knowledge_id": "cg-t09risk01"
+        },
+        "response": {
+          "tools": [
+            {
+              "name": "search_symbols",
+              "description": "Search the frozen symbol graph by symbol or concept.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": ["query"],
+                "additionalProperties": false
+              }
+            }
+          ]
+        }
+      },
+      "deterministic_read_only_responses": [
+        {
+          "request": {
+            "tool_name": "search_symbols",
+            "arguments": {
+              "query": "CVSS normalization boundary"
+            }
+          },
+          "response": {
+            "symbols": [
+              {
+                "symbol": "normalizeCvssCandidate",
+                "kind": "function",
+                "file": "src/normalizers/cvss.ts"
+              }
+            ]
+          }
+        }
+      ],
+      "private_fact_author_only": "The normalization boundary used by the current branch is normalizeCvssCandidate in src/normalizers/cvss.ts."
+    },
+    {
+      "asset_id": "wiki-t09comp01",
+      "knowledge_id": "wiki-t09comp01",
+      "type": "wiki",
+      "name": "Compliance Export Contract",
+      "summary": "Internal report schemas and retention rules for compliance-export.",
+      "repo_match": "aegis/compliance-export",
+      "status": "ready",
+      "tool_name": "search_pages",
+      "required_param": "query",
+      "tools/list": {
+        "request": {
+          "knowledge_id": "wiki-t09comp01"
+        },
+        "response": {
+          "tools": [
+            {
+              "name": "search_pages",
+              "description": "Search the frozen compliance contract pages by text query.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": ["query"],
+                "additionalProperties": false
+              }
+            }
+          ]
+        }
+      },
+      "deterministic_read_only_responses": [
+        {
+          "request": {
+            "tool_name": "search_pages",
+            "arguments": {
+              "query": "active consumer contract file encoding"
+            }
+          },
+          "response": {
+            "pages": [
+              {
+                "ref": "audit-bom-contract",
+                "title": "Audit export consumer contract",
+                "path": "/security/reporting/csv-contract",
+                "content": "The active consumer contract is audit-bom-v2 and requires UTF-8 without BOM."
+              }
+            ]
+          }
+        }
+      ],
+      "private_fact_author_only": "The active consumer contract is audit-bom-v2 and requires UTF-8 without BOM."
+    }
+  ]
+}

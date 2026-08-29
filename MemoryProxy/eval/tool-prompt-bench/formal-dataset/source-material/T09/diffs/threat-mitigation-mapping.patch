@@ -1,0 +1,10 @@
+--- a/raw/wshobson-agents/threat-mitigation-mapping/SKILL.md
++++ b/adapted/threat-mitigation-mapping/SKILL.md
+@@ -1,4 +1,6 @@
+ ---
+ name: threat-mitigation-mapping
+-description: Map identified threats to appropriate security controls and mitigations. Use when prioritizing security investments, creating remediation plans, or validating control effectiveness.
++description: "把已识别威胁映射到预防、检测和纠正控制，并用纵深防御组织缓解计划。"
++use_when: "需要规划威胁处置、检查控制覆盖或制定分层防御路线图。"
++do_not_use_when: "尚未识别威胁、只需进行威胁分类，或任务是扫描依赖与配置 CI。"
+ ---

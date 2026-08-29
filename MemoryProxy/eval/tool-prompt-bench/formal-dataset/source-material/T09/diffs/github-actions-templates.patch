@@ -1,0 +1,10 @@
+--- a/raw/wshobson-agents/github-actions-templates/SKILL.md
++++ b/adapted/github-actions-templates/SKILL.md
+@@ -1,4 +1,6 @@
+ ---
+ name: github-actions-templates
+-description: Create production-ready GitHub Actions workflows for automated testing, building, and deploying applications. Use when setting up CI/CD with GitHub Actions, automating development workflows, or creating reusable workflow templates.
++description: "为 GitHub Actions 创建测试、构建、部署、安全检查、矩阵和可复用工作流模板。"
++use_when: "任务明确需要实现 GitHub Actions 工作流或其测试、构建和部署步骤。"
++do_not_use_when: "任务是离线依赖扫描本身、GitLab CI 实现，或与平台无关的流水线架构设计。"
+ ---

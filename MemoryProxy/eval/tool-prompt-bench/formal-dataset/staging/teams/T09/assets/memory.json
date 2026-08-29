@@ -1,0 +1,1663 @@
+{
+  "schema_version": "task1.team_memory_assets.v1",
+  "team_id": "T09",
+  "l0Conversations": [
+    {
+      "assetId": "T09-L0-01",
+      "ownerAgentId": "agent-task1-t09-assets-a",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l0"
+      ],
+      "observedAt": "2026-07-15T09:00:00+08:00",
+      "sessionId": "T09-L0-01",
+      "messages": [
+        {
+          "messageId": "T09-L0-01-M001",
+          "role": "user",
+          "content": "t09-nebula-console 本轮围绕固定数据库下的依赖审计展开，先确认输入、时间边界和交付目标。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-15T09:00:00+08:00",
+          "contentHash": "206ab4f432d26e3d0cda0dacb2628bb747118babd01a3b16f90548b0aab01921"
+        },
+        {
+          "messageId": "T09-L0-01-M002",
+          "role": "assistant",
+          "content": "我把范围限定在固定数据库下的依赖审计，并把风险字段整理、合规报表和普通升级保持为独立工作流。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-15T09:00:00+08:00",
+          "contentHash": "6136a0cdcdc1d014c305635afd07f1f4ced87fc55f80654e9050110c4d1f803f"
+        },
+        {
+          "messageId": "T09-L0-01-M003",
+          "role": "user",
+          "content": "当前工作区能确认现状，但交接摘要还没有保留这条会话的完整决定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-15T09:00:00+08:00",
+          "contentHash": "801667423af669d430c2372d2d33f75d54456967060fef542237064054626fac"
+        },
+        {
+          "messageId": "T09-L0-01-M004",
+          "role": "assistant",
+          "content": "相近的在线、容器或源码工作只能作为对照，不能替代本轮的输入边界。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-15T09:00:00+08:00",
+          "contentHash": "544034bd815256ebeed40e440c4e04034572d2213a1e55b625ac076c25c1a1b0"
+        },
+        {
+          "messageId": "T09-L0-01-M005",
+          "role": "user",
+          "content": "方向从重新执行审计改为复核此前已经验证的可重复约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-15T09:00:00+08:00",
+          "contentHash": "496b41a268cdee7a0e646843d19fa3c1496894297c8a87211eed8b3a23db38af"
+        },
+        {
+          "messageId": "T09-L0-01-M006",
+          "role": "assistant",
+          "content": "项目、固定输入和责任分工都核对完了，剩下的是把历史结论整理成可执行记录。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-15T09:00:00+08:00",
+          "contentHash": "91e1f5e74c199405f5800b3ae5025cdb994ade79c26e17ed0d9f42bd18f42241"
+        },
+        {
+          "messageId": "T09-L0-01-M007",
+          "role": "user",
+          "content": "我不会从目录名、对象键或单次日志中猜出未保存的细节。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-15T09:00:00+08:00",
+          "contentHash": "bf452115ef624859db218362dcb6ca135997bbf52a2c3f2f1bfdeb5f2e00d31e"
+        },
+        {
+          "messageId": "T09-L0-01-M008",
+          "role": "assistant",
+          "content": "先把证据范围和停止条件写清楚，再决定是否需要后续动作。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-15T09:00:00+08:00",
+          "contentHash": "da45642f7f340ec56dfcd3c3dfa92b5525fb5ac890b93a6e077b837ec299d7ca"
+        },
+        {
+          "messageId": "T09-L0-01-M009",
+          "role": "user",
+          "content": "这条记录只保留与固定数据库下的依赖审计直接相关的事实，不引入其他项目的结论。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-15T09:00:00+08:00",
+          "contentHash": "fbd1ee063a28af969ce06bd677737b801bd5077016b154117a410b3b11657d03"
+        },
+        {
+          "messageId": "T09-L0-01-M010",
+          "role": "assistant",
+          "content": "如果发现已有结果，就沿用其输入来源，不把发现、解析和报告步骤混为一谈。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-15T09:00:00+08:00",
+          "contentHash": "7152a86032d60114cff565c2ab02e5df6965d5c3bea831a048af7e735a923ad6"
+        },
+        {
+          "messageId": "T09-L0-01-M011",
+          "role": "user",
+          "content": "复核已经覆盖主要干扰项，下一步只核对最后的历史约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-15T09:00:00+08:00",
+          "contentHash": "62f1cf830a9d1eac12c0d25d6502e8855d71580e8e49a0724d51cf2a10ed6745"
+        },
+        {
+          "messageId": "T09-L0-01-M012",
+          "role": "assistant",
+          "content": "此前记录确认：缓存目录为 .audit-cache/2026-07-15；原始审计 JSON 写入 build/audit/trivy.raw.json。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-15T09:00:00+08:00",
+          "contentHash": "1921aa673eaaf8a25f7de1cd111810b2f8a0102eaab50a680ef445d83b3bda8c"
+        }
+      ],
+      "contentHash": "7377c42fcabf2df563b736a7bdbc1c233e1e8feb6e3bc5a94e28307157bbfdc5"
+    },
+    {
+      "assetId": "T09-L0-02",
+      "ownerAgentId": "agent-task1-t09-assets-b",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l0"
+      ],
+      "observedAt": "2026-07-16T09:00:00+08:00",
+      "sessionId": "T09-L0-02",
+      "messages": [
+        {
+          "messageId": "T09-L0-02-M001",
+          "role": "user",
+          "content": "t09-nebula-console 本轮围绕在线数据库更新与隔离输入的取舍展开，先确认输入、时间边界和交付目标。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-16T09:00:00+08:00",
+          "contentHash": "d9fcd4e4e4e1972883dbf5f1850127e2d3b64ba00857763c57e62f5b91e8fe15"
+        },
+        {
+          "messageId": "T09-L0-02-M002",
+          "role": "assistant",
+          "content": "我把范围限定在在线数据库更新与隔离输入的取舍，并把容器镜像扫描和应用依赖审计保持为独立工作流。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-16T09:00:00+08:00",
+          "contentHash": "b9614523ae2d878f3ca64b9a05231876c48403647b296c846d788ff2e6975a4a"
+        },
+        {
+          "messageId": "T09-L0-02-M003",
+          "role": "user",
+          "content": "当前工作区能确认现状，但交接摘要还没有保留这条会话的完整决定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-16T09:00:00+08:00",
+          "contentHash": "4ca5c2a13f13214be8286927ceed399551c2cb502f5d36f8e3534bba15292672"
+        },
+        {
+          "messageId": "T09-L0-02-M004",
+          "role": "assistant",
+          "content": "相近的在线、容器或源码工作只能作为对照，不能替代本轮的输入边界。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-16T09:00:00+08:00",
+          "contentHash": "538967f356a2628dcfb4c2c8a3c5c535ac651d560e9e4c0b0257b985d2cdf7ac"
+        },
+        {
+          "messageId": "T09-L0-02-M005",
+          "role": "user",
+          "content": "方向从追求最新数据库改为复核此前已经验证的可重复约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-16T09:00:00+08:00",
+          "contentHash": "86d8ec71b87deb2d3f48501079d9d4c2507f2fcc2116e9b885aab41478581a62"
+        },
+        {
+          "messageId": "T09-L0-02-M006",
+          "role": "assistant",
+          "content": "项目、固定输入和责任分工都核对完了，剩下的是把历史结论整理成可执行记录。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-16T09:00:00+08:00",
+          "contentHash": "375c173818cf33153b2a39c2418315f186b72b33d4751ca636630a6f47e94f00"
+        },
+        {
+          "messageId": "T09-L0-02-M007",
+          "role": "user",
+          "content": "我不会从目录名、对象键或单次日志中猜出未保存的细节。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-16T09:00:00+08:00",
+          "contentHash": "f9b62deee1fb4724f2970773bf4d15c0a358106a37ec1f88dde930acf4e93e7b"
+        },
+        {
+          "messageId": "T09-L0-02-M008",
+          "role": "assistant",
+          "content": "先把证据范围和停止条件写清楚，再决定是否需要后续动作。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-16T09:00:00+08:00",
+          "contentHash": "820bb8f614226b6e40599415da8c6dd54d3cc9ff789c5c03216ebf56b107d610"
+        },
+        {
+          "messageId": "T09-L0-02-M009",
+          "role": "user",
+          "content": "这条记录只保留与在线数据库更新与隔离输入的取舍直接相关的事实，不引入其他项目的结论。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-16T09:00:00+08:00",
+          "contentHash": "d1e6c95421e8f112f29e1837eb4750d85933d8b2b3a9e2b6de8178cbbd7c6006"
+        },
+        {
+          "messageId": "T09-L0-02-M010",
+          "role": "assistant",
+          "content": "如果发现已有结果，就沿用其输入来源，不把发现、解析和报告步骤混为一谈。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-16T09:00:00+08:00",
+          "contentHash": "0bc36062debbc9ba293aef0700f0869c8a3bf1f7eef1f5547a8745238fc06740"
+        },
+        {
+          "messageId": "T09-L0-02-M011",
+          "role": "user",
+          "content": "复核已经覆盖主要干扰项，下一步只核对最后的历史约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-16T09:00:00+08:00",
+          "contentHash": "f5b8c053f5e350c3a1ff023440fe540dcf90ba16efb4ce71c86bbf6dc32ab00b"
+        },
+        {
+          "messageId": "T09-L0-02-M012",
+          "role": "assistant",
+          "content": "最终记录确认：采用可重复的固定输入思路，但本会话不记录隔离包装器的准确路径。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-16T09:00:00+08:00",
+          "contentHash": "bacf86182f2fc11ede530a129005cbead045b0146b0100e91f28e6919af7caf2"
+        }
+      ],
+      "contentHash": "002b4fa6049ba68a5588e37f56e916bfeaba64e6c18971cb081b190463e788dc"
+    },
+    {
+      "assetId": "T09-L0-03",
+      "ownerAgentId": "agent-task1-t09-assets-a",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l0"
+      ],
+      "observedAt": "2026-07-17T09:00:00+08:00",
+      "sessionId": "T09-L0-03",
+      "messages": [
+        {
+          "messageId": "T09-L0-03-M001",
+          "role": "user",
+          "content": "t09-risk-catalog 本轮围绕已有漏洞 JSON 的 CVSS 来源优先级展开，先确认输入、时间边界和交付目标。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-17T09:00:00+08:00",
+          "contentHash": "079763e62ef4186ff2c6c8782f2dd99a8e4a063b1c2f6a706d6f1751b189e5d0"
+        },
+        {
+          "messageId": "T09-L0-03-M002",
+          "role": "assistant",
+          "content": "我把范围限定在已有漏洞 JSON 的 CVSS 来源优先级，并把扫描范围和报表列生成保持为独立工作流。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-17T09:00:00+08:00",
+          "contentHash": "fa3acfa23834643c92b733284ca555eddd85435636e73dba4af49c1a799b32ee"
+        },
+        {
+          "messageId": "T09-L0-03-M003",
+          "role": "user",
+          "content": "当前工作区能确认现状，但交接摘要还没有保留这条会话的完整决定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-17T09:00:00+08:00",
+          "contentHash": "f0fb1c3fbc308496f256730aefe8f88a19aae680e5b55c2beca4393c9657ad56"
+        },
+        {
+          "messageId": "T09-L0-03-M004",
+          "role": "assistant",
+          "content": "相近的在线、容器或源码工作只能作为对照，不能替代本轮的输入边界。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-17T09:00:00+08:00",
+          "contentHash": "5e6434acbdbb3eb00e8518b121c26da9b8a3ccbd74055a02dbe8809746d33991"
+        },
+        {
+          "messageId": "T09-L0-03-M005",
+          "role": "user",
+          "content": "方向从只信单一权威源改为复核此前已经验证的可重复约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-17T09:00:00+08:00",
+          "contentHash": "c1d30429108754edfb9b509e64400796ee9eccca480d4a128079bd3ae0ce11e7"
+        },
+        {
+          "messageId": "T09-L0-03-M006",
+          "role": "assistant",
+          "content": "项目、固定输入和责任分工都核对完了，剩下的是把历史结论整理成可执行记录。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-17T09:00:00+08:00",
+          "contentHash": "945c39c6e420edfbfc5a5412a77527160dacb08b0d3dc9f3b4d748b573da2510"
+        },
+        {
+          "messageId": "T09-L0-03-M007",
+          "role": "user",
+          "content": "我不会从目录名、对象键或单次日志中猜出未保存的细节。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-17T09:00:00+08:00",
+          "contentHash": "f11fc6eb88b3aad0ad82acf93f8fb3e1a993cde946556bb7b87804a7c20ff32d"
+        },
+        {
+          "messageId": "T09-L0-03-M008",
+          "role": "assistant",
+          "content": "先把证据范围和停止条件写清楚，再决定是否需要后续动作。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-17T09:00:00+08:00",
+          "contentHash": "13bed48181b2dd1fae7def1a429e2df82c81deddacd2dfca1f7b32becf2c0c28"
+        },
+        {
+          "messageId": "T09-L0-03-M009",
+          "role": "user",
+          "content": "这条记录只保留与已有漏洞 JSON 的 CVSS 来源优先级直接相关的事实，不引入其他项目的结论。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-17T09:00:00+08:00",
+          "contentHash": "84146504cafbf630a47c80dd6466d29c7b12052d646b6630d9e2c87f4c76ff45"
+        },
+        {
+          "messageId": "T09-L0-03-M010",
+          "role": "assistant",
+          "content": "如果发现已有结果，就沿用其输入来源，不把发现、解析和报告步骤混为一谈。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-17T09:00:00+08:00",
+          "contentHash": "783560399af1e56a6d526b9249c7480e5b0bd87b3bb049bab402869106d8d402"
+        },
+        {
+          "messageId": "T09-L0-03-M011",
+          "role": "user",
+          "content": "复核已经覆盖主要干扰项，下一步只核对最后的历史约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-17T09:00:00+08:00",
+          "contentHash": "2a5530d3288dda7ff1b1da99380ae94e869aba18cabcb5eb0a8ff45ba4214a77"
+        },
+        {
+          "messageId": "T09-L0-03-M012",
+          "role": "assistant",
+          "content": "最终评审采用 NVD→GHSA→供应商的顺序；只查 NVD 与供应商优先两种方案均被否决，并确认无来源时不臆造数值。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-17T09:00:00+08:00",
+          "contentHash": "c284bc187639103dd62c7ecaac7b585c786294aec554cbcc63e0fc7d38b5bae3"
+        }
+      ],
+      "contentHash": "1bd14a032cbca8e7f7a7fe64d28e5a690bcc97c20a43bb8c2803e5b8144b2186"
+    },
+    {
+      "assetId": "T09-L0-04",
+      "ownerAgentId": "agent-task1-t09-assets-b",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l0"
+      ],
+      "observedAt": "2026-07-18T09:00:00+08:00",
+      "sessionId": "T09-L0-04",
+      "messages": [
+        {
+          "messageId": "T09-L0-04-M001",
+          "role": "user",
+          "content": "t09-nebula-console 本轮围绕容器镜像、锁文件和源码分析的输入差异展开，先确认输入、时间边界和交付目标。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-18T09:00:00+08:00",
+          "contentHash": "7b5193a23e225ed7fecec4b82ee126add191601811fcc267c4934599dc3413a5"
+        },
+        {
+          "messageId": "T09-L0-04-M002",
+          "role": "assistant",
+          "content": "我把范围限定在容器镜像、锁文件和源码分析的输入差异，并把隔离包装器路径和报表字段保持为独立工作流。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-18T09:00:00+08:00",
+          "contentHash": "2b85095d2219ca3d217fa09e71263da405b10f3d0b08703e068f24f6043409fc"
+        },
+        {
+          "messageId": "T09-L0-04-M003",
+          "role": "user",
+          "content": "当前工作区能确认现状，但交接摘要还没有保留这条会话的完整决定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-18T09:00:00+08:00",
+          "contentHash": "cd9c41427057f8b496d8a7dc7f4cf4d956a7607bf25835bcdc02434297e99101"
+        },
+        {
+          "messageId": "T09-L0-04-M004",
+          "role": "assistant",
+          "content": "相近的在线、容器或源码工作只能作为对照，不能替代本轮的输入边界。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-18T09:00:00+08:00",
+          "contentHash": "3d67d5958fe03eaaba9f6f982453278e740ab0932c80c7a001f551147a8fa5f7"
+        },
+        {
+          "messageId": "T09-L0-04-M005",
+          "role": "user",
+          "content": "方向从合并所有安全结果改为复核此前已经验证的可重复约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-18T09:00:00+08:00",
+          "contentHash": "f516120ae27baaecdce4e3e8e7668997cf58059059bab221549b4d38d6797924"
+        },
+        {
+          "messageId": "T09-L0-04-M006",
+          "role": "assistant",
+          "content": "项目、固定输入和责任分工都核对完了，剩下的是把历史结论整理成可执行记录。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-18T09:00:00+08:00",
+          "contentHash": "e8d58f6957f22dfb426453714958d1865727e9de6ebabd90e8b0d6d5a2fc9b85"
+        },
+        {
+          "messageId": "T09-L0-04-M007",
+          "role": "user",
+          "content": "我不会从目录名、对象键或单次日志中猜出未保存的细节。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-18T09:00:00+08:00",
+          "contentHash": "baab48b282ed99226e813c04d7595653996d3639234ea7fa3056ed8c079a2ed1"
+        },
+        {
+          "messageId": "T09-L0-04-M008",
+          "role": "assistant",
+          "content": "先把证据范围和停止条件写清楚，再决定是否需要后续动作。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-18T09:00:00+08:00",
+          "contentHash": "eb091a33916102f9b967c3549a3647ca64e88d9cb77919bcb8db502480a47d20"
+        },
+        {
+          "messageId": "T09-L0-04-M009",
+          "role": "user",
+          "content": "这条记录只保留与容器镜像、锁文件和源码分析的输入差异直接相关的事实，不引入其他项目的结论。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-18T09:00:00+08:00",
+          "contentHash": "07ab70eafd406337a8472ca42d4142f9d909c8daab667d56d7f4a46fa5ee7f66"
+        },
+        {
+          "messageId": "T09-L0-04-M010",
+          "role": "assistant",
+          "content": "如果发现已有结果，就沿用其输入来源，不把发现、解析和报告步骤混为一谈。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-18T09:00:00+08:00",
+          "contentHash": "5cf4ae457d9d25218bb4907f8b945d7fb28a7dc55e9fed0cf2ed3dc1a80fb84f"
+        },
+        {
+          "messageId": "T09-L0-04-M011",
+          "role": "user",
+          "content": "复核已经覆盖主要干扰项，下一步只核对最后的历史约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-18T09:00:00+08:00",
+          "contentHash": "f6a5f988deceab36634f35936bfe22b706c1219d7bf4695cd970b00b9a76b553"
+        },
+        {
+          "messageId": "T09-L0-04-M012",
+          "role": "assistant",
+          "content": "最终记录确认：保留容器、依赖和源码三条线，各自使用对应的输入和输出约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-18T09:00:00+08:00",
+          "contentHash": "4d643a91368ddefe587cdbfe9eee1c027794ee60fa84fb3ee9261e686665a1a2"
+        }
+      ],
+      "contentHash": "f0088020b687f63176cc698db1504cc6eaf89dfdf753caa9e744be8c440caaab"
+    },
+    {
+      "assetId": "T09-L0-05",
+      "ownerAgentId": "agent-task1-t09-assets-a",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l0"
+      ],
+      "observedAt": "2026-07-19T09:00:00+08:00",
+      "sessionId": "T09-L0-05",
+      "messages": [
+        {
+          "messageId": "T09-L0-05-M001",
+          "role": "user",
+          "content": "t09-compliance-export 本轮围绕已解析漏洞记录的确定性 CSV 导出展开，先确认输入、时间边界和交付目标。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-19T09:00:00+08:00",
+          "contentHash": "bab4affa6f8145c2d7fc3accd64eff4443940e5d159c12e55f5884bb12cd899f"
+        },
+        {
+          "messageId": "T09-L0-05-M002",
+          "role": "assistant",
+          "content": "我把范围限定在已解析漏洞记录的确定性 CSV 导出，并把漏洞发现和原始 JSON 生成保持为独立工作流。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-19T09:00:00+08:00",
+          "contentHash": "81e16917252fa3c1a9b832d1db4e27fe527f9d84d86cecdb6204ef1f71db761e"
+        },
+        {
+          "messageId": "T09-L0-05-M003",
+          "role": "user",
+          "content": "当前工作区能确认现状，但交接摘要还没有保留这条会话的完整决定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-19T09:00:00+08:00",
+          "contentHash": "80f8c6e0a19069dbc86d68bd1e175f246daec944963c430bfe2eda3a172348b8"
+        },
+        {
+          "messageId": "T09-L0-05-M004",
+          "role": "assistant",
+          "content": "相近的在线、容器或源码工作只能作为对照，不能替代本轮的输入边界。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-19T09:00:00+08:00",
+          "contentHash": "34f793343c61b6cf34d5b1d9a8d2d51b4fd1c37a7f43572e4797bf4b50db50f9"
+        },
+        {
+          "messageId": "T09-L0-05-M005",
+          "role": "user",
+          "content": "方向从快速打印 JSON改为复核此前已经验证的可重复约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-19T09:00:00+08:00",
+          "contentHash": "281622bc1184cf399d76752d43e8b7e309a3384ca62e863590757a2d6e83c543"
+        },
+        {
+          "messageId": "T09-L0-05-M006",
+          "role": "assistant",
+          "content": "项目、固定输入和责任分工都核对完了，剩下的是把历史结论整理成可执行记录。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-19T09:00:00+08:00",
+          "contentHash": "7b634398244f908cd9f2b712ee6804a46157f4982871085390205b7f9fd62821"
+        },
+        {
+          "messageId": "T09-L0-05-M007",
+          "role": "user",
+          "content": "我不会从目录名、对象键或单次日志中猜出未保存的细节。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-19T09:00:00+08:00",
+          "contentHash": "0dcaa91567546f770d9db66bee359a4c1458fdd5da868e9f7e89076d0d885d32"
+        },
+        {
+          "messageId": "T09-L0-05-M008",
+          "role": "assistant",
+          "content": "先把证据范围和停止条件写清楚，再决定是否需要后续动作。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-19T09:00:00+08:00",
+          "contentHash": "8a713d40cd0fa0973e1703237121636403fbadbe0766b5f4ee8e3bc698e6902f"
+        },
+        {
+          "messageId": "T09-L0-05-M009",
+          "role": "user",
+          "content": "这条记录只保留与已解析漏洞记录的确定性 CSV 导出直接相关的事实，不引入其他项目的结论。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-19T09:00:00+08:00",
+          "contentHash": "5298e37e6fc57e2fb90e793c6ddf47b0d3d860a9cc1fd6cef0b0d82f5a794ded"
+        },
+        {
+          "messageId": "T09-L0-05-M010",
+          "role": "assistant",
+          "content": "如果发现已有结果，就沿用其输入来源，不把发现、解析和报告步骤混为一谈。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-19T09:00:00+08:00",
+          "contentHash": "bc37eca3acd5e055c87b7b02dc714efcf2eb51f5ea0931fdbd601aa7d2bccded"
+        },
+        {
+          "messageId": "T09-L0-05-M011",
+          "role": "user",
+          "content": "复核已经覆盖主要干扰项，下一步只核对最后的历史约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-19T09:00:00+08:00",
+          "contentHash": "f79c51921516162f3c2bca9c54373c6e2232e81b77953b4293f4c19e486bd3fb"
+        },
+        {
+          "messageId": "T09-L0-05-M012",
+          "role": "assistant",
+          "content": "最终记录确认：按固定行模型、列顺序、转义和编码生成确定性 CSV。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-19T09:00:00+08:00",
+          "contentHash": "f7aea1729b5311a1ecb8574260a2d49efc2095073e88a2202ae0db8beb766b6f"
+        }
+      ],
+      "contentHash": "3d90937d37310adae7e7b7098cc2dd2d85d120368ff95b990dd7db678877d9ba"
+    },
+    {
+      "assetId": "T09-L0-06",
+      "ownerAgentId": "agent-task1-t09-assets-b",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l0"
+      ],
+      "observedAt": "2026-07-20T09:00:00+08:00",
+      "sessionId": "T09-L0-06",
+      "messages": [
+        {
+          "messageId": "T09-L0-06-M001",
+          "role": "user",
+          "content": "t09-harbor-gateway 本轮围绕已知依赖的目标版本升级展开，先确认输入、时间边界和交付目标。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-20T09:00:00+08:00",
+          "contentHash": "8451a32a2abdea79d9e383b4d51f1b99243fdb7c0a1b468f0cf22db2821d90db"
+        },
+        {
+          "messageId": "T09-L0-06-M002",
+          "role": "assistant",
+          "content": "我把范围限定在已知依赖的目标版本升级，并把漏洞集合确定和结果提取保持为独立工作流。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-20T09:00:00+08:00",
+          "contentHash": "65e287bda90042d4a53e3595fc43dc74bd65e80a764e329ede3fb1eda5435adb"
+        },
+        {
+          "messageId": "T09-L0-06-M003",
+          "role": "user",
+          "content": "当前工作区能确认现状，但交接摘要还没有保留这条会话的完整决定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-20T09:00:00+08:00",
+          "contentHash": "f3f9f7806958afb70b6da29d6c718e7a662c7ab9723ffd5596dfa99279d8debe"
+        },
+        {
+          "messageId": "T09-L0-06-M004",
+          "role": "assistant",
+          "content": "相近的在线、容器或源码工作只能作为对照，不能替代本轮的输入边界。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-20T09:00:00+08:00",
+          "contentHash": "aa4fb3732a8d2a417a79d7a36481165f03f20d4ac082f5b9d82b96265212991f"
+        },
+        {
+          "messageId": "T09-L0-06-M005",
+          "role": "user",
+          "content": "方向从一次性改版本改为复核此前已经验证的可重复约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-20T09:00:00+08:00",
+          "contentHash": "8ab35dfe31c99810807997ee31a6ccd99e2f3ef5b7f9fe6c4411e548ad46c249"
+        },
+        {
+          "messageId": "T09-L0-06-M006",
+          "role": "assistant",
+          "content": "项目、固定输入和责任分工都核对完了，剩下的是把历史结论整理成可执行记录。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-20T09:00:00+08:00",
+          "contentHash": "c7bfc8bf5f3467b3b6344fcbd1e6e839c2bc9017d49782af987137f1f4388f16"
+        },
+        {
+          "messageId": "T09-L0-06-M007",
+          "role": "user",
+          "content": "我不会从目录名、对象键或单次日志中猜出未保存的细节。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-20T09:00:00+08:00",
+          "contentHash": "dec50749e88eb7f9836bcf6cc4f816e9322a9eac9e7b5523a0335e54ff8bfd65"
+        },
+        {
+          "messageId": "T09-L0-06-M008",
+          "role": "assistant",
+          "content": "先把证据范围和停止条件写清楚，再决定是否需要后续动作。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-20T09:00:00+08:00",
+          "contentHash": "e26277241240fe6a28677f01a661371692abb28b693ed083dfbb0ab2f35a3f26"
+        },
+        {
+          "messageId": "T09-L0-06-M009",
+          "role": "user",
+          "content": "这条记录只保留与已知依赖的目标版本升级直接相关的事实，不引入其他项目的结论。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-20T09:00:00+08:00",
+          "contentHash": "9c5811263d438c2f37bbefb56b990fdaae6f99f70be9a27b6521fb730d9e3d1a"
+        },
+        {
+          "messageId": "T09-L0-06-M010",
+          "role": "assistant",
+          "content": "如果发现已有结果，就沿用其输入来源，不把发现、解析和报告步骤混为一谈。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-20T09:00:00+08:00",
+          "contentHash": "2dae2785ebb0db508ecf0e06d9ca014a72ff4bc3506f923b99f71267083c5273"
+        },
+        {
+          "messageId": "T09-L0-06-M011",
+          "role": "user",
+          "content": "复核已经覆盖主要干扰项，下一步只核对最后的历史约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-20T09:00:00+08:00",
+          "contentHash": "6a45d98f6d92ebd6a6803b4ea81d5c655e589d0fd4633238475c5ed85a3fe3bc"
+        },
+        {
+          "messageId": "T09-L0-06-M012",
+          "role": "assistant",
+          "content": "最终记录确认：先改清单、锁定解析，再分阶段执行构建、单元测试、集成启动和协议回归。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-20T09:00:00+08:00",
+          "contentHash": "786ebc126abf0a621a3713a6c25a18f85a884855848bfb9f2f63b2d3e439f234"
+        }
+      ],
+      "contentHash": "bbc64b4d8f0171419862cd76f6a38700a8a200f8cbdc605c5b6a627004e94749"
+    },
+    {
+      "assetId": "T09-L0-07",
+      "ownerAgentId": "agent-task1-t09-assets-a",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l0"
+      ],
+      "observedAt": "2026-07-21T09:00:00+08:00",
+      "sessionId": "T09-L0-07",
+      "messages": [
+        {
+          "messageId": "T09-L0-07-M001",
+          "role": "user",
+          "content": "t09-sentinel-api 本轮围绕源码静态分析的规则与排除边界展开，先确认输入、时间边界和交付目标。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-21T09:00:00+08:00",
+          "contentHash": "5d00a6a055c15bfccd72eb5f91921465c3d624018309696fe9286b0751cd8d0f"
+        },
+        {
+          "messageId": "T09-L0-07-M002",
+          "role": "assistant",
+          "content": "我把范围限定在源码静态分析的规则与排除边界，并把依赖包扫描和漏洞字段提取保持为独立工作流。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-21T09:00:00+08:00",
+          "contentHash": "bb3b8f1e33e8661d80faca1e7dfdf345bdd016edd82f8244acd88c1ee2dc9f18"
+        },
+        {
+          "messageId": "T09-L0-07-M003",
+          "role": "user",
+          "content": "当前工作区能确认现状，但交接摘要还没有保留这条会话的完整决定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-21T09:00:00+08:00",
+          "contentHash": "d77eacfc1e63af4ce89a6b9a5ea5a517302401f44f46ca608aef63d403d41301"
+        },
+        {
+          "messageId": "T09-L0-07-M004",
+          "role": "assistant",
+          "content": "相近的在线、容器或源码工作只能作为对照，不能替代本轮的输入边界。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-21T09:00:00+08:00",
+          "contentHash": "004f1efe4fd65e9f2dfd119dcf2364b8993a502f3bfd20673a81a3ed28b5e673"
+        },
+        {
+          "messageId": "T09-L0-07-M005",
+          "role": "user",
+          "content": "方向从扩大规则数量改为复核此前已经验证的可重复约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-21T09:00:00+08:00",
+          "contentHash": "dc731d1ae80d2640235a49487af776753c0574a640788d39c4f1fb9b57634aa5"
+        },
+        {
+          "messageId": "T09-L0-07-M006",
+          "role": "assistant",
+          "content": "项目、固定输入和责任分工都核对完了，剩下的是把历史结论整理成可执行记录。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-21T09:00:00+08:00",
+          "contentHash": "a08c50f74a40770768ce204ba6354c2004986985b0ad471a08789db5daafe1e1"
+        },
+        {
+          "messageId": "T09-L0-07-M007",
+          "role": "user",
+          "content": "我不会从目录名、对象键或单次日志中猜出未保存的细节。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-21T09:00:00+08:00",
+          "contentHash": "74fe28815c096fa336d5cce185eb1948b9c26c0893c0ed6b92fecb2769c93b91"
+        },
+        {
+          "messageId": "T09-L0-07-M008",
+          "role": "assistant",
+          "content": "先把证据范围和停止条件写清楚，再决定是否需要后续动作。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-21T09:00:00+08:00",
+          "contentHash": "59e86c01b84c07bcfc1eb52fb91ad931a7d4c3b3165f0cc35b8f94ef9d67e886"
+        },
+        {
+          "messageId": "T09-L0-07-M009",
+          "role": "user",
+          "content": "这条记录只保留与源码静态分析的规则与排除边界直接相关的事实，不引入其他项目的结论。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-21T09:00:00+08:00",
+          "contentHash": "3f2f5bb389aa98d1d2d4cecdd9fe79ae14ff5f80b9cacbab64cc3c76ee82bda1"
+        },
+        {
+          "messageId": "T09-L0-07-M010",
+          "role": "assistant",
+          "content": "如果发现已有结果，就沿用其输入来源，不把发现、解析和报告步骤混为一谈。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-21T09:00:00+08:00",
+          "contentHash": "338dd62632997640d2adbb4319fae3bf282bb66c5560391869499f86270c349c"
+        },
+        {
+          "messageId": "T09-L0-07-M011",
+          "role": "user",
+          "content": "复核已经覆盖主要干扰项，下一步只核对最后的历史约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-21T09:00:00+08:00",
+          "contentHash": "638c95edc78d232570186821c69becc309800aca730db887655cd9d8330d497d"
+        },
+        {
+          "messageId": "T09-L0-07-M012",
+          "role": "assistant",
+          "content": "最终记录确认：保持源码静态分析独立，按规则、语言版本和生成目录边界复核。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-21T09:00:00+08:00",
+          "contentHash": "2c114b1695177de5832399314ba13dc8c87213faa0e37f4e1a6b863f0d3f0524"
+        }
+      ],
+      "contentHash": "f5688e97cd06186510bc7f96762d26afb7271948d7877e41b337d1a9a6917e2b"
+    },
+    {
+      "assetId": "T09-L0-08",
+      "ownerAgentId": "agent-task1-t09-assets-b",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l0"
+      ],
+      "observedAt": "2026-07-22T09:00:00+08:00",
+      "sessionId": "T09-L0-08",
+      "messages": [
+        {
+          "messageId": "T09-L0-08-M001",
+          "role": "user",
+          "content": "t09-vault-line 本轮围绕已分诊 SAST/DAST 发现项的逐项修复展开，先确认输入、时间边界和交付目标。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-22T09:00:00+08:00",
+          "contentHash": "6a07977f6b88fa97934a7ad6a30b8d56b1282414b78e79cbee149e6f78166713"
+        },
+        {
+          "messageId": "T09-L0-08-M002",
+          "role": "assistant",
+          "content": "我把范围限定在已分诊 SAST/DAST 发现项的逐项修复，并把依赖扫描和普通升级保持为独立工作流。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-22T09:00:00+08:00",
+          "contentHash": "049665296d55b805b6997f2bd4809c8683ca4b234304ede8353b791d987f51c1"
+        },
+        {
+          "messageId": "T09-L0-08-M003",
+          "role": "user",
+          "content": "当前工作区能确认现状，但交接摘要还没有保留这条会话的完整决定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-22T09:00:00+08:00",
+          "contentHash": "01ac568b0cbba17434c0a97e31fb41de694792119366e8bf0ed48e3d9d661506"
+        },
+        {
+          "messageId": "T09-L0-08-M004",
+          "role": "assistant",
+          "content": "相近的在线、容器或源码工作只能作为对照，不能替代本轮的输入边界。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-22T09:00:00+08:00",
+          "contentHash": "6f3c5227ff273312cc6bc2daf1b60351afacff74bfcc086edf5fbda67da38ddf"
+        },
+        {
+          "messageId": "T09-L0-08-M005",
+          "role": "user",
+          "content": "方向从批量关闭告警改为复核此前已经验证的可重复约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-22T09:00:00+08:00",
+          "contentHash": "db1ea2fabd435d0c0df0c72a4af8c92c1a968de7990b193d1762c5d3e9f975dc"
+        },
+        {
+          "messageId": "T09-L0-08-M006",
+          "role": "assistant",
+          "content": "项目、固定输入和责任分工都核对完了，剩下的是把历史结论整理成可执行记录。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-22T09:00:00+08:00",
+          "contentHash": "3265942919cebaaac32d8805062d08039f7ca6074d96a509ff67e95a2042b38b"
+        },
+        {
+          "messageId": "T09-L0-08-M007",
+          "role": "user",
+          "content": "我不会从目录名、对象键或单次日志中猜出未保存的细节。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-22T09:00:00+08:00",
+          "contentHash": "472339549970ac8c407a72a1552f253da51b8b3c770860388f89e99b08dc2882"
+        },
+        {
+          "messageId": "T09-L0-08-M008",
+          "role": "assistant",
+          "content": "先把证据范围和停止条件写清楚，再决定是否需要后续动作。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-22T09:00:00+08:00",
+          "contentHash": "a0ac5d31394903870141a132d3d9038cd76882734ae7d11b74ffabf4754e3998"
+        },
+        {
+          "messageId": "T09-L0-08-M009",
+          "role": "user",
+          "content": "这条记录只保留与已分诊 SAST/DAST 发现项的逐项修复直接相关的事实，不引入其他项目的结论。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-22T09:00:00+08:00",
+          "contentHash": "6ce70fae073ebfc6ae06c174ffbbc793dbdd5a6c7d6a81ecbb3af69074bd3cb0"
+        },
+        {
+          "messageId": "T09-L0-08-M010",
+          "role": "assistant",
+          "content": "如果发现已有结果，就沿用其输入来源，不把发现、解析和报告步骤混为一谈。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-22T09:00:00+08:00",
+          "contentHash": "efac5226f0485c9a29d57f28df8f14e2e236c964fe3a65a596fd590e1fa39ea8"
+        },
+        {
+          "messageId": "T09-L0-08-M011",
+          "role": "user",
+          "content": "复核已经覆盖主要干扰项，下一步只核对最后的历史约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-22T09:00:00+08:00",
+          "contentHash": "57e232c0feea2382cece06132a17ee3e8f16c5d0659ff6dd8311cf0f94ed6335"
+        },
+        {
+          "messageId": "T09-L0-08-M012",
+          "role": "assistant",
+          "content": "最终记录确认：按发现项保留原因、最小修复、回归验证和证据留存。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-22T09:00:00+08:00",
+          "contentHash": "3e839921daca92c843f1bc043d6e6aa0ee004731893e63707dd3168206d3b4b9"
+        }
+      ],
+      "contentHash": "be1abff3cb992aa5d116c1bb486189c6ae4d4f6610024930785b5c6b31a07083"
+    },
+    {
+      "assetId": "T09-L0-09",
+      "ownerAgentId": "agent-task1-t09-assets-a",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l0"
+      ],
+      "observedAt": "2026-07-23T09:00:00+08:00",
+      "sessionId": "T09-L0-09",
+      "messages": [
+        {
+          "messageId": "T09-L0-09-M001",
+          "role": "user",
+          "content": "t09-nebula-console 本轮围绕冻结数据库的日期、指纹和复核窗口展开，先确认输入、时间边界和交付目标。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-23T09:00:00+08:00",
+          "contentHash": "630b373ed4e49fe5cc5fb58ba0e70a9b95ac7821417bd762fe19329d85728869"
+        },
+        {
+          "messageId": "T09-L0-09-M002",
+          "role": "assistant",
+          "content": "我把范围限定在冻结数据库的日期、指纹和复核窗口，并把在线更新和包装器路径保持为独立工作流。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-23T09:00:00+08:00",
+          "contentHash": "dddc8a0fded2eeecb6000e7ceca134458b5d20d784ac1c9b92c87c2ac87081bd"
+        },
+        {
+          "messageId": "T09-L0-09-M003",
+          "role": "user",
+          "content": "当前工作区能确认现状，但交接摘要还没有保留这条会话的完整决定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-23T09:00:00+08:00",
+          "contentHash": "a592ef0b298d9e05e417848d91ad6dbfcf07bf4d8e3196cd1f4be4b5f7f08dd1"
+        },
+        {
+          "messageId": "T09-L0-09-M004",
+          "role": "assistant",
+          "content": "相近的在线、容器或源码工作只能作为对照，不能替代本轮的输入边界。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-23T09:00:00+08:00",
+          "contentHash": "015a113e3025f8e816542064af206dd0acb27ca5adae7f849db610c220dcda46"
+        },
+        {
+          "messageId": "T09-L0-09-M005",
+          "role": "user",
+          "content": "方向从追求最新输入改为复核此前已经验证的可重复约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-23T09:00:00+08:00",
+          "contentHash": "d683512204e71862a9c9f8d9e514549fb0bd07ee70317b51962ca2b421078498"
+        },
+        {
+          "messageId": "T09-L0-09-M006",
+          "role": "assistant",
+          "content": "项目、固定输入和责任分工都核对完了，剩下的是把历史结论整理成可执行记录。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-23T09:00:00+08:00",
+          "contentHash": "8e10d30d9c904747e9eb89cc51465e90036dfea5563b4dc63010dfb618904037"
+        },
+        {
+          "messageId": "T09-L0-09-M007",
+          "role": "user",
+          "content": "我不会从目录名、对象键或单次日志中猜出未保存的细节。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-23T09:00:00+08:00",
+          "contentHash": "0cef8833f9f18a25f7d0ff108975ac7d8dd636ad606e8f13ff359fb00b770f0a"
+        },
+        {
+          "messageId": "T09-L0-09-M008",
+          "role": "assistant",
+          "content": "先把证据范围和停止条件写清楚，再决定是否需要后续动作。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-23T09:00:00+08:00",
+          "contentHash": "51719001b5189e457c92ee06c3f39948c9f1a7f35e68aa5eb21fda6562a86f8c"
+        },
+        {
+          "messageId": "T09-L0-09-M009",
+          "role": "user",
+          "content": "这条记录只保留与冻结数据库的日期、指纹和复核窗口直接相关的事实，不引入其他项目的结论。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-23T09:00:00+08:00",
+          "contentHash": "d2b7a5f02caa5bdc42ce3853c0a7bfecb1c508e3783b5370246153fb76370edf"
+        },
+        {
+          "messageId": "T09-L0-09-M010",
+          "role": "assistant",
+          "content": "如果发现已有结果，就沿用其输入来源，不把发现、解析和报告步骤混为一谈。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-23T09:00:00+08:00",
+          "contentHash": "5e78ff413c77590acebca6f38efb3c3e834d2f10e5f6d3f059da83de25a4da45"
+        },
+        {
+          "messageId": "T09-L0-09-M011",
+          "role": "user",
+          "content": "复核已经覆盖主要干扰项，下一步只核对最后的历史约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-23T09:00:00+08:00",
+          "contentHash": "9be9bf9fab05266e650047398e0e6d6d88c31117c3ce888c663b686d506a7aee"
+        },
+        {
+          "messageId": "T09-L0-09-M012",
+          "role": "assistant",
+          "content": "最终记录确认：冻结输入、明确例外并保留批次证据，路径以专门包装记录为准。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-23T09:00:00+08:00",
+          "contentHash": "aa31032ebc1f4daf270db94d07c8509640dc1a08e994fd642f0de6825806760f"
+        }
+      ],
+      "contentHash": "511c0f02f5fc9ad4bf71c0be00d8813075c9fe0a4c2c337469062d15f7e3a879"
+    },
+    {
+      "assetId": "T09-L0-10",
+      "ownerAgentId": "agent-task1-t09-assets-b",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l0"
+      ],
+      "observedAt": "2026-07-24T09:00:00+08:00",
+      "sessionId": "T09-L0-10",
+      "messages": [
+        {
+          "messageId": "T09-L0-10-M001",
+          "role": "user",
+          "content": "t09-compliance-export 本轮围绕已解析记录到稳定报告的转换展开，先确认输入、时间边界和交付目标。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-24T09:00:00+08:00",
+          "contentHash": "114b4dbe7b8697ba6fc51258321d74c576ed9b5bc5386eb651eb03cf6fd737f8"
+        },
+        {
+          "messageId": "T09-L0-10-M002",
+          "role": "assistant",
+          "content": "我把范围限定在已解析记录到稳定报告的转换，并把审计发现和普通依赖升级保持为独立工作流。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-24T09:00:00+08:00",
+          "contentHash": "f62f5ec6e93bc014c7d75d2c690b7af93547d5cb30b474e3d11c537b61217c3c"
+        },
+        {
+          "messageId": "T09-L0-10-M003",
+          "role": "user",
+          "content": "当前工作区能确认现状，但交接摘要还没有保留这条会话的完整决定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-24T09:00:00+08:00",
+          "contentHash": "e68ecdc14ddfc53986b33db0c96dff70e8a3d178a6ee4f62125390cf103b8226"
+        },
+        {
+          "messageId": "T09-L0-10-M004",
+          "role": "assistant",
+          "content": "相近的在线、容器或源码工作只能作为对照，不能替代本轮的输入边界。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-24T09:00:00+08:00",
+          "contentHash": "9bd4b9ee013674a7753736fa60d00b22f7a1e45138f0ab46deaa3ae99572dad8"
+        },
+        {
+          "messageId": "T09-L0-10-M005",
+          "role": "user",
+          "content": "方向从人工检查样例改为复核此前已经验证的可重复约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-24T09:00:00+08:00",
+          "contentHash": "4e49ddac524379e6aada13da88ec7f7a1731087f55bc28536d14954e095fd15f"
+        },
+        {
+          "messageId": "T09-L0-10-M006",
+          "role": "assistant",
+          "content": "项目、固定输入和责任分工都核对完了，剩下的是把历史结论整理成可执行记录。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-24T09:00:00+08:00",
+          "contentHash": "bc95e3cee1d259b4ca183b63ffce26e97764fdd93fd1b7ab2da121387f552858"
+        },
+        {
+          "messageId": "T09-L0-10-M007",
+          "role": "user",
+          "content": "我不会从目录名、对象键或单次日志中猜出未保存的细节。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-24T09:00:00+08:00",
+          "contentHash": "0321421c41cd22996015bda0af73bab7b6a1725b6d49182784e80b5e54ff6220"
+        },
+        {
+          "messageId": "T09-L0-10-M008",
+          "role": "assistant",
+          "content": "先把证据范围和停止条件写清楚，再决定是否需要后续动作。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-24T09:00:00+08:00",
+          "contentHash": "345b5c4cde6447815ae499d10a65f19000e01e9387d782f6c217a1429c4582a9"
+        },
+        {
+          "messageId": "T09-L0-10-M009",
+          "role": "user",
+          "content": "这条记录只保留与已解析记录到稳定报告的转换直接相关的事实，不引入其他项目的结论。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-24T09:00:00+08:00",
+          "contentHash": "85532678880576418946c94ec04b8991e2f8745e727c1546902661f6cfb38098"
+        },
+        {
+          "messageId": "T09-L0-10-M010",
+          "role": "assistant",
+          "content": "如果发现已有结果，就沿用其输入来源，不把发现、解析和报告步骤混为一谈。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-24T09:00:00+08:00",
+          "contentHash": "d94b4cdbab19024d7760eb29369abfff9d98e3feeb286010f5d831463531c548"
+        },
+        {
+          "messageId": "T09-L0-10-M011",
+          "role": "user",
+          "content": "复核已经覆盖主要干扰项，下一步只核对最后的历史约定。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-24T09:00:00+08:00",
+          "contentHash": "5ccb7a471bb02ebee74670b790e267db7340b114c441305be209d79af3596b2c"
+        },
+        {
+          "messageId": "T09-L0-10-M012",
+          "role": "assistant",
+          "content": "最终记录确认：固定排序、转义、换行和编码，同一批输入生成相同字节。",
+          "sourceEvidenceIds": [
+            "source-t09-luna-l0"
+          ],
+          "observedAt": "2026-07-24T09:00:00+08:00",
+          "contentHash": "a9818b7ad2f3e126b261f1cfb7764cde6bd8de07628022ac0e76470e0a124ac4"
+        }
+      ],
+      "contentHash": "ae2cf85f38f26065c6580726c37d5014fd4b20e1722fa765f80186b7d94faf7d"
+    }
+  ],
+  "l1Memories": [
+    {
+      "assetId": "T09-L1-01",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l1"
+      ],
+      "observedAt": "2026-07-15T16:00:00+08:00",
+      "type": "decision",
+      "content": "审计只保留 HIGH 与 CRITICAL；修复版本缺失时保留空字段；不得从冻结扫描 JSON 之外臆造漏洞结果。",
+      "status": "active",
+      "validFrom": "2026-07-15T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T09-L0-01-M008"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "3dedb692eca34be14900f5529e2c7f52f5381a65550da470be63691413f6e0a8"
+    },
+    {
+      "assetId": "T09-L1-02",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l1"
+      ],
+      "observedAt": "2026-07-16T16:00:00+08:00",
+      "type": "event",
+      "content": "固定审计数据库超过团队允许的新鲜度时，先记录例外并暂停发布确认，不以联网更新替代冻结输入。",
+      "status": "active",
+      "validFrom": "2026-07-16T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T09-L0-02-M003"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "fb70694a4995457d02095ec8f0b49083f0fa3f1447e80d661c13e41fd9b6b52b"
+    },
+    {
+      "assetId": "T09-L1-03",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l1"
+      ],
+      "observedAt": "2026-07-17T16:00:00+08:00",
+      "type": "fact",
+      "content": "只有依赖工件尚未产生结果时才执行固定离线扫描；已有漏洞 JSON 时转入解析或报告流程。",
+      "status": "active",
+      "validFrom": "2026-07-17T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T09-L0-02-M010"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "a51970bfeeed39dc25722eb8bcf93a70818c76bac3f969e8769997cc7037df17"
+    },
+    {
+      "assetId": "T09-L1-04",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l1"
+      ],
+      "observedAt": "2026-07-18T16:00:00+08:00",
+      "type": "decision",
+      "content": "已有漏洞记录需要 CVSS 时，按 NVD、GHSA、供应商公告的顺序尝试；全部缺失则保持缺失，不填猜测值。",
+      "status": "active",
+      "validFrom": "2026-07-18T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T09-L0-03-M005"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "45b218bb98347e3896bad77c4e48166fe562bdae85e611cd8be99439be8a9a0f"
+    },
+    {
+      "assetId": "T09-L1-05",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l1"
+      ],
+      "observedAt": "2026-07-19T16:00:00+08:00",
+      "type": "decision",
+      "content": "漏洞 CSV 的列顺序固定为 vulnerability_id、package_name、installed_version、fixed_version、severity、cvss_score。",
+      "status": "active",
+      "validFrom": "2026-07-19T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T09-L0-03-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "5fd58130b27094f44e38146625df1c60da089a6315463e0a17b25c9c933a9d42"
+    },
+    {
+      "assetId": "T09-L1-06",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l1"
+      ],
+      "observedAt": "2026-07-20T16:00:00+08:00",
+      "type": "fact",
+      "content": "没有任何可验证的 CVSS 分数时保留空值；空值不应被解释成零分，也不触发重新扫描。",
+      "status": "active",
+      "validFrom": "2026-07-20T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T09-L0-04-M007"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "3c10463169a6a3bf2a3023faef0aa35fe8c0ac4be44748c794dbdc92f6849b2d"
+    },
+    {
+      "assetId": "T09-L1-07",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l1"
+      ],
+      "observedAt": "2026-07-21T16:00:00+08:00",
+      "type": "preference",
+      "content": "报表过滤只作用于已解析记录的 severity 字段，发现集合与字段映射由上游输入决定。",
+      "status": "active",
+      "validFrom": "2026-07-21T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T09-L0-05-M002"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "b8bf6996476cd67a33f94273411d1ff210f8ed82ec07c9f6677290b991a5b137"
+    },
+    {
+      "assetId": "T09-L1-08",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l1"
+      ],
+      "observedAt": "2026-07-22T16:00:00+08:00",
+      "type": "event",
+      "content": "原始审计 JSON 与确定性 CSV 是两类产物，报告生成不得覆盖或重写原始证据。",
+      "status": "active",
+      "validFrom": "2026-07-22T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T09-L0-05-M009"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "51585adb9ba1ab43c9e075f765abef86ed339e309ac187dbead13d8d37cc1024"
+    },
+    {
+      "assetId": "T09-L1-09",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l1"
+      ],
+      "observedAt": "2026-07-28T16:00:00+08:00",
+      "type": "decision",
+      "content": "2026-07-28 的 decision 记录确认：routine upgrade review 必须把兼容性工作与扫描结果提取分开。",
+      "status": "active",
+      "validFrom": "2026-07-28T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T09-L0-06-M004"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "60551be52cdd159a41c4a52ed3272e204b6c727cd106e9d250b20c22fdb95db3"
+    },
+    {
+      "assetId": "T09-L1-10",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l1"
+      ],
+      "observedAt": "2026-07-24T16:00:00+08:00",
+      "type": "fact",
+      "content": "同一批输入应生成相同字节的报告；列顺序、排序、转义、换行和编码都必须固定。",
+      "status": "active",
+      "validFrom": "2026-07-24T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T09-L0-06-M011"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "5a2eb762cd2adbd44cb281812b42c1321a01813a854ea086bb572337045ff5ad"
+    },
+    {
+      "assetId": "T09-L1-11",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l1"
+      ],
+      "observedAt": "2026-07-25T16:00:00+08:00",
+      "type": "decision",
+      "content": "普通依赖升级采用清单变更、锁定解析、构建、单元测试、集成启动和协议回归的分阶段验证。",
+      "status": "active",
+      "validFrom": "2026-07-25T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T09-L0-07-M006"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "5220e89714acfd515624b142cba164e0882cb3e31fab872a20de39dfc0ca03e8"
+    },
+    {
+      "assetId": "T09-L1-12",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l1"
+      ],
+      "observedAt": "2026-07-26T16:00:00+08:00",
+      "type": "event",
+      "content": "容器镜像层扫描不能替代 Node.js 锁文件依赖审计；镜像、依赖和源码分析结果分别保存。",
+      "status": "active",
+      "validFrom": "2026-07-26T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T09-L0-08-M001"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "2339ad363c90aa79a14c514f2721c7fe935b71cf26f7815f7da33f2e077bf216"
+    },
+    {
+      "assetId": "T09-L1-13",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l1"
+      ],
+      "observedAt": "2026-07-27T16:00:00+08:00",
+      "type": "fact",
+      "content": "隔离审计包装器的缓存目录与原始结果文件必须作为同一批次的成对约定记录，不能用默认目录推断。",
+      "status": "active",
+      "validFrom": "2026-07-27T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T09-L0-08-M008"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "11ae86579b70ab9d60115d2f333b24f68e5d1f1d4b03fd0ebff0677a6a06c2bc"
+    },
+    {
+      "assetId": "T09-L1-14",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l1"
+      ],
+      "observedAt": "2026-07-28T16:00:00+08:00",
+      "type": "preference",
+      "content": "审计输入指纹、批次标识、原始结果和复核记录要一并保留，便于在隔离环境还原当时的决定。",
+      "status": "active",
+      "validFrom": "2026-07-28T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T09-L0-09-M003"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "5d8feb22df1b951f86a594f3cf70f96bd6da07c1382019fd4b4f1567b86a0922"
+    }
+  ],
+  "l2Scenes": [
+    {
+      "assetId": "T09-L2-01",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l2"
+      ],
+      "observedAt": "2026-08-01T10:00:00+08:00",
+      "path": "/security/audit/offline-runbook",
+      "summary": "隔离审计运行手册，说明固定输入、复核角色与产物衔接。",
+      "content": "适用范围：nebula-console 在无外网环境中使用固定漏洞数据库进行依赖审计。运行前确认数据库指纹、批次日期与工作区一致；包装器从固定缓存读取数据库，完成依赖工件检查后写出原始结果。退出处理：扫描进程返回 0 时包装器标记 success；返回 5 表示发现漏洞，包装器仍标记 completed_with_findings 并保留原始 JSON；其他非零返回标记 failed，停止报告生成。缓存目录为 .audit-cache/2026-07-15，原始结果文件为 build/audit/trivy.raw.json。已有原始 JSON 时不得再次扫描，应转交解析或报表流程。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T09-L0-01",
+        "T09-L0-02"
+      ],
+      "contentHash": "2491058705765babe7bb4d3caa203204f22fbfdda35a2502dd96c97e28e95a9c"
+    },
+    {
+      "assetId": "T09-L2-02",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l2"
+      ],
+      "observedAt": "2026-08-02T10:00:00+08:00",
+      "path": "/security/reporting/cvss-policy",
+      "summary": "风险报告中的分数来源、缺失值与审阅责任说明。",
+      "content": "CVSS 归一化仅针对已经产生的漏洞记录。按 NVD、GHSA、供应商公告依次寻找可验证分数；来源之间不强行合并向量。三者都没有可用值时写入空值并保留缺失原因，不把空值当作零分，也不据此扩大扫描范围。审阅人应记录来源和时间，确保后续报告能够解释每个非空分数。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T09-L0-03",
+        "T09-L0-04"
+      ],
+      "contentHash": "0b105afb0606c783a3c64f51117de9bdd2ea0ec4fbbfdd85699472c663debf9b"
+    },
+    {
+      "assetId": "T09-L2-03",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l2"
+      ],
+      "observedAt": "2026-08-03T10:00:00+08:00",
+      "path": "/security/reporting/csv-contract",
+      "summary": "合规导出契约，说明稳定行模型与消费者约束。",
+      "content": "输入是已解析的漏洞记录，不包含发现步骤。输出采用固定列顺序：vulnerability_id, package_name, installed_version, fixed_version, severity, cvss_score。缺少 fixed_version 或 cvss_score 时保留空字段；行内逗号、引号和换行按 CSV 规则转义。输出使用 UTF-8 without BOM，记录按 vulnerability_id、package_name、installed_version 的稳定键排序，重复运行应得到相同字节。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T09-L0-05",
+        "T09-L0-06"
+      ],
+      "contentHash": "17d7b97e5b0a25aa8f28c796914ae64c71bc82e3b1fccdbd12ff024c2682213c"
+    },
+    {
+      "assetId": "T09-L2-04",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l2"
+      ],
+      "observedAt": "2026-08-04T10:00:00+08:00",
+      "path": "/security/upgrade/review-checklist",
+      "summary": "普通依赖升级复核清单，覆盖兼容性与分阶段验证。",
+      "content": "升级前锁定当前版本、目标版本、运行时约束和回滚点。先修改清单并重新解析锁文件，再执行构建、单元测试、集成启动和关键协议回归；每一步记录结果，出现破坏性变更时先写迁移说明。兼容性复核与漏洞结果提取分开，不能用升级流程替代依赖扫描，也不能把已有扫描结果当成兼容性证明。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T09-L0-07",
+        "T09-L0-08"
+      ],
+      "contentHash": "09f49b5b1be7fd8fa19a492c273f1f5c6d23dea3dc78e28877c1448c9bdb5145"
+    }
+  ],
+  "l3Profiles": [
+    {
+      "assetId": "T09-L3-01",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-luna-l3"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "content": "稳定原则：规划阶段不执行真实发布或安全扫描；优先使用冻结输入；明确区分发现、解析与报告；对缺失信息保持诚实并留下可复核的批次边界。",
+      "stability": "team",
+      "contentHash": "7a2d20d78c8c16fce4402c96c34d2e23bdf78e1c3c3506353bd7c4544293adff"
+    }
+  ]
+}

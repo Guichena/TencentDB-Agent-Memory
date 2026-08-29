@@ -1,0 +1,168 @@
+{
+  "schema_version": "task1.skill_adaptation_manifest.v1",
+  "team_id": "T09",
+  "policy": "Only neutral discovery metadata changed; package bodies and resources are preserved.",
+  "skills": [
+    {
+      "asset_id": "T09-SKILL-TRIVY-OFFLINE",
+      "name": "trivy-offline-vulnerability-scanning",
+      "raw_path": "raw/benchflow-skillsbench/trivy-offline-vulnerability-scanning/SKILL.md",
+      "raw_sha256": "594389f6d5d0d58c1c7714592bfce7f871154827a4b65f948d9829f2af3108a3",
+      "adapted_path": "adapted/trivy-offline-vulnerability-scanning/SKILL.md",
+      "adapted_sha256": "37e20d74bedb935cd52826f55391ce8448486d233159f9231caa44f141704efb",
+      "core_body_sha256": "4b19527f839aed373895cd84a16b40569bbb059471e42e082da593755f34fe8a",
+      "diff_path": "diffs/trivy-offline-vulnerability-scanning.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T09-SKILL-CVSS-EXTRACTION",
+      "name": "cvss-score-extraction",
+      "raw_path": "raw/benchflow-skillsbench/cvss-score-extraction/SKILL.md",
+      "raw_sha256": "5f9e2a22ec2a8230c9d6ed234fb7c48742e257631d397eb9bcabd5d12b7798d2",
+      "adapted_path": "adapted/cvss-score-extraction/SKILL.md",
+      "adapted_sha256": "67befed4cdcf0593ae84bb94b06ee3047acaa5c288454712dd46edb70c476ca3",
+      "core_body_sha256": "5fab698645bfa121a635618f1e2ec0c1686e2c05d3075909315259c2cc3ebf92",
+      "diff_path": "diffs/cvss-score-extraction.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T09-SKILL-VULNERABILITY-CSV",
+      "name": "vulnerability-csv-reporting",
+      "raw_path": "raw/benchflow-skillsbench/vulnerability-csv-reporting/SKILL.md",
+      "raw_sha256": "80c79f8543d118a2c4625cdcdb4b7576b3e834f9cb7f9adbe3ace6c7040a3439",
+      "adapted_path": "adapted/vulnerability-csv-reporting/SKILL.md",
+      "adapted_sha256": "6ef5e5564fb3a7b5b17554c639988595124d2f8c3b4e139c674542e9aa42647e",
+      "core_body_sha256": "03cf47a58f162325c2985ada1203e8cf42a9639603aba89c24c439b188287fb0",
+      "diff_path": "diffs/vulnerability-csv-reporting.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T09-SKILL-DEPENDENCY-UPGRADE",
+      "name": "dependency-upgrade",
+      "raw_path": "raw/wshobson-agents/dependency-upgrade/SKILL.md",
+      "raw_sha256": "4cf4ff9b0520bca4092cce3981af6a064bbd904788375ce1b6ae4d866dea8d8d",
+      "adapted_path": "adapted/dependency-upgrade/SKILL.md",
+      "adapted_sha256": "1ef79a297276765fc3adebf47a9ad37c0e109291aef3a3afc380f055231c49fa",
+      "core_body_sha256": "a299ecf2fcd1b4c5065a14dd36fd7b222d004495881d8ebff1172235841d9af6",
+      "diff_path": "diffs/dependency-upgrade.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T09-SKILL-SAST-CONFIGURATION",
+      "name": "sast-configuration",
+      "raw_path": "raw/wshobson-agents/sast-configuration/SKILL.md",
+      "raw_sha256": "cc31d39b62ed486936e2f48fcfffd789224503eac5a02fde3595f4d789ea997d",
+      "adapted_path": "adapted/sast-configuration/SKILL.md",
+      "adapted_sha256": "d42b6a2515cfa2be26b3f4e7b4aaa0bfcf0d58c96a9ce310d6219952dabaa242",
+      "core_body_sha256": "8a52881768df3dae3d41250e9fffc77f890efec71a0bcab35ed65cfec3fe8571",
+      "diff_path": "diffs/sast-configuration.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T09-SKILL-FORTIFY-REMEDIATE",
+      "name": "fortify-remediate",
+      "raw_path": "raw/fortify-skills/fortify-remediate/SKILL.md",
+      "raw_sha256": "033e7d34d2dbbe2cf79139095fe0097b915c2bef7ad5a03bd5a23ece933d7c97",
+      "adapted_path": "adapted/fortify-remediate/SKILL.md",
+      "adapted_sha256": "8afaa8ef24d4c0ad888509e06a405c91502f4188a25c2aa6f60027a427cebe51",
+      "core_body_sha256": "0062c2840639393e177244076e949e21fde6eb7acef8ef694e50a14f056d3f7f",
+      "diff_path": "diffs/fortify-remediate.patch",
+      "resource_paths": [
+        {
+          "path": "references/sast-dast-implementation.md",
+          "raw_sha256": "23ccf57ecee5229f504cd7f45a9e5a07b9faacdee7589e6280552c45b0a9da85",
+          "checked_in_path": "raw/fortify-skills/fortify-remediate/references/sast-dast-implementation.md",
+          "adapted_path": "adapted/fortify-remediate/references/sast-dast-implementation.md"
+        }
+      ]
+    },
+    {
+      "asset_id": "T09-SKILL-ATTACK-TREE",
+      "name": "attack-tree-construction",
+      "raw_path": "raw/wshobson-agents/attack-tree-construction/SKILL.md",
+      "raw_sha256": "69021049bd4c57a1b65ea29b79f4770e2b546ba1d9797fcd5e61909a47375d91",
+      "adapted_path": "adapted/attack-tree-construction/SKILL.md",
+      "adapted_sha256": "87922080c56b3fab56bb6ef43f255ae6f04bc71a08adf635e466593de61053f4",
+      "core_body_sha256": "b8d1918e0a14cdd53417e777ede5890b61562fc38901beff14fbab98c22a9831",
+      "diff_path": "diffs/attack-tree-construction.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T09-SKILL-SECURITY-REQUIREMENTS",
+      "name": "security-requirement-extraction",
+      "raw_path": "raw/wshobson-agents/security-requirement-extraction/SKILL.md",
+      "raw_sha256": "bf391927dc404280e0f4d8c0ec20513c579fc6c277dfd04ad5a8e0a730ce8dde",
+      "adapted_path": "adapted/security-requirement-extraction/SKILL.md",
+      "adapted_sha256": "bc2f3302ecf1e577c4c992754af2121fac87e4139f5ce2d7e3365b26ed1d6c66",
+      "core_body_sha256": "62b21b94799f4ff9abf3aae18d31141f013a87c1385b5ae9dc472200bdc84ce4",
+      "diff_path": "diffs/security-requirement-extraction.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T09-SKILL-STRIDE-ANALYSIS",
+      "name": "stride-analysis-patterns",
+      "raw_path": "raw/wshobson-agents/stride-analysis-patterns/SKILL.md",
+      "raw_sha256": "b7cfab85be4d04a81d22f79cc3b0e95aab8aa3ae4dfacbcf44de076dbeb16f1e",
+      "adapted_path": "adapted/stride-analysis-patterns/SKILL.md",
+      "adapted_sha256": "9b48b2393ae5c478ec22b3c02e3b741d8ca366a593970e80711d922e7888d808",
+      "core_body_sha256": "0b60f23ab496a6bd010b51ffb6de6145c1792a439553a83063e1f7cbb233da18",
+      "diff_path": "diffs/stride-analysis-patterns.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T09-SKILL-THREAT-MITIGATION",
+      "name": "threat-mitigation-mapping",
+      "raw_path": "raw/wshobson-agents/threat-mitigation-mapping/SKILL.md",
+      "raw_sha256": "40cf933689b7783480fbf567c9b7573a9626977912acf7fcb808287934c7dfa8",
+      "adapted_path": "adapted/threat-mitigation-mapping/SKILL.md",
+      "adapted_sha256": "a173638800ba862e22e63eda93243addf022f03ede03274572fb22708a60d229",
+      "core_body_sha256": "1dba3c2f98655add347a363da363ab829b93b89d5fe9e9f53f195e89b97d08db",
+      "diff_path": "diffs/threat-mitigation-mapping.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T09-SKILL-DEPLOYMENT-PIPELINE",
+      "name": "deployment-pipeline-design",
+      "raw_path": "raw/wshobson-agents/deployment-pipeline-design/SKILL.md",
+      "raw_sha256": "9a56bd9401c1dc8ef5a15758d7234f211193097ddb3895d46d1ddcd730687b18",
+      "adapted_path": "adapted/deployment-pipeline-design/SKILL.md",
+      "adapted_sha256": "6b6d54166cfda592b1f88c94e85943e6c36b545b6d02ac75de7e86c2cab4ef63",
+      "core_body_sha256": "71d5ade9347e91c476f5ad025f0bd6cde553ce6b010f977d12db365b73be3bf3",
+      "diff_path": "diffs/deployment-pipeline-design.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T09-SKILL-GITHUB-ACTIONS",
+      "name": "github-actions-templates",
+      "raw_path": "raw/wshobson-agents/github-actions-templates/SKILL.md",
+      "raw_sha256": "a280b280bd57708d6ed834c37253605d169c7a6f0214b64789c70de73f17ea69",
+      "adapted_path": "adapted/github-actions-templates/SKILL.md",
+      "adapted_sha256": "91ac679c256799a5ff8939dfbb4dfcd6fe41d5c2ad833e839e57eb5f2b985189",
+      "core_body_sha256": "67eaceaba0f1a1bf73a7aca9fb041485cd167a06b23a68bbe39a0b99430b3994",
+      "diff_path": "diffs/github-actions-templates.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T09-SKILL-GITLAB-CI",
+      "name": "gitlab-ci-patterns",
+      "raw_path": "raw/wshobson-agents/gitlab-ci-patterns/SKILL.md",
+      "raw_sha256": "0b2d3cf90961e4df928106fc40911cd7a1c4d4703354a86b9d7bacadff7df8fd",
+      "adapted_path": "adapted/gitlab-ci-patterns/SKILL.md",
+      "adapted_sha256": "de875ad8c810f8581892395e0016fae8dcf7276a36172079cef5af30a81773c9",
+      "core_body_sha256": "410920786c478da997c8f43bf675e02e3813c33b6bad3c43c60e7f3d970c890f",
+      "diff_path": "diffs/gitlab-ci-patterns.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T09-SKILL-SECRETS-MANAGEMENT",
+      "name": "secrets-management",
+      "raw_path": "raw/wshobson-agents/secrets-management/SKILL.md",
+      "raw_sha256": "da14565446a404c0a3ca2cf4363f755dc06a351c4b588be453ea73680d5658d0",
+      "adapted_path": "adapted/secrets-management/SKILL.md",
+      "adapted_sha256": "2da9a1a255a424c3dcbac42944e7cb8045250ae723431e6b26feb80c202f00b6",
+      "core_body_sha256": "9f34905ad8bd81d117fe889821803f8757ff79a9a48742d20764919ee1696a6e",
+      "diff_path": "diffs/secrets-management.patch",
+      "resource_paths": []
+    }
+  ]
+}

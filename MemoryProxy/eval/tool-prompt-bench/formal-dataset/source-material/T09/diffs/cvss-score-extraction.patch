@@ -1,0 +1,10 @@
+--- a/raw/benchflow-skillsbench/cvss-score-extraction/SKILL.md
++++ b/adapted/cvss-score-extraction/SKILL.md
+@@ -1,4 +1,6 @@
+ ---
+ name: cvss-score-extraction
+-description: Extract CVSS (Common Vulnerability Scoring System) scores from vulnerability data sources with proper fallback handling. This skill covers understanding CVSS v3, handling multiple score sources (NVD, GHSA, RedHat), implementing source priority logic, and dealing with missing scores in security reporting.
++description: "从已有漏洞记录提取 CVSS 分数，并按来源优先级处理缺失分数的流程。"
++use_when: "漏洞记录已经存在，当前缺口是 CVSS 版本、来源优先级或缺失值回退。"
++do_not_use_when: "仍需发现漏洞、执行扫描，或需要把完整结果筛选并格式化为 CSV。"
+ ---

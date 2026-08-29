@@ -1,0 +1,57 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t09-skill-trial-01",
+  "stage": "DS05",
+  "team_id": "T09",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T09-DRAFT-SKILL-001",
+      "external_source_ids": ["source-t09-skill-trivy-offline"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我在 nebula-console 的受限网络发布流里，需要对 Node.js 依赖做一次可复现的离线安全审计。当前先整理流程，不执行真实发布。"},
+        {"role": "assistant", "content": "已确认这次审计使用工作区中固定的依赖文件和预置数据库，结果需要落成可供后续报告处理的 JSON；暂不改变依赖或发布配置。"},
+        {"role": "user", "content": "最初我想直接沿用上次在线检查的命令，后来发现本次环境不能联网，而且数据库版本必须固定。"},
+        {"role": "assistant", "content": "方向调整为先核对离线执行的边界和可复现性，再决定如何保存扫描结果；在线更新和发布动作先不纳入。"},
+        {"role": "user", "content": "已整理好待审计的依赖锁定文件、固定数据库目录和结果输出位置，也确认审计只关注依赖漏洞。"},
+        {"role": "assistant", "content": "工作区和输入已经就绪，但我手头没有一份可复用的离线扫描步骤，尤其是不清楚数据库检查、参数组合和失败处理的顺序。"},
+        {"role": "user", "content": "请先帮我找到适用的既有流程，确认从数据库检查到 JSON 结果落盘的起点，暂时不要执行扫描。"},
+        {"role": "assistant", "content": "这一步应先完成流程资料核对，再停在可以开始本地审计的位置，不直接运行命令。"}
+      ],
+      "changed_message_index": 8,
+      "query": "针对当前受限网络的依赖审计，请先给出从数据库检查到结果落盘的可执行下一步，暂时不要执行扫描。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "我还缺这套离线依赖扫描流程的具体步骤。请先查看适用的既有流程材料，概述数据库检查、扫描参数和失败处理，停在可以开始本地审计的位置。"},
+        "private_proposal": {
+          "unique_information_gap": "工作区、依赖文件、固定数据库目录和输出位置已知，但可复用的离线扫描工作流正文缺失；需要读取已列出的目标 Skill 内容及其 manifest。",
+          "route": "skill",
+          "target_asset_ids": ["T09-SKILL-TRIVY-OFFLINE"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "返回已列出 Skill 的正文和 manifest 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "我把缺失的流程补全：先确认固定缓存目录下的数据库文件存在；再以依赖锁定文件为文件系统目标，输出 JSON，启用仅漏洞扫描、跳过数据库更新、离线扫描，并显式指定缓存目录和输出文件；执行时不要因非零返回自动抛异常，要记录标准错误并在失败时停止；若扫描程序不存在也要给出安装提示；成功后确认 JSON 结果已写入指定位置。请据此给出下一步，仍不要执行扫描。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已提供数据库存在性检查、文件系统目标、JSON 输出、仅漏洞扫描、跳过数据库更新、离线模式、缓存目录、错误处理和成功落盘确认的完整流程，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T09-SKILL-CVSS-EXTRACTION", "T09-SKILL-GITHUB-ACTIONS", "T09-SKILL-SECRETS-MANAGEMENT"],
+      "controlled_delta_note": "Positive 仅保留离线依赖审计流程的一个信息缺口；Negative 仅补齐数据库检查、扫描参数、失败分支与成功落盘确认，shared context 和 query 完全相同。",
+      "source_fact_map": [
+        {"claim": "离线流程材料覆盖固定数据库检查、文件系统目标扫描、JSON 输出、跳过数据库更新、离线模式和缓存目录参数。", "source_id": "source-t09-skill-trivy-offline", "locator": "raw/benchflow-skillsbench/trivy-offline-vulnerability-scanning/SKILL.md#Offline Scanning Workflow"},
+        {"claim": "流程材料要求显式处理扫描非零返回、程序缺失和结果输出位置。", "source_id": "source-t09-skill-trivy-offline", "locator": "raw/benchflow-skillsbench/trivy-offline-vulnerability-scanning/SKILL.md#Step 3: Execute Scan; #Complete Example"}
+      ],
+      "sol_review_questions": [
+        "确认该 trial 只包含 T09-DRAFT-SKILL-001，且 Positive 的首动作仅为 Sol 冻结的 listed target skill_view。",
+        "确认 provider-visible 文本未出现工具名、Skill 名、私有 ID、Gold 或评测字样；目标、route、stop_after 仅在 author-only 字段中。",
+        "确认 Negative 只补齐冻结原文支持的离线扫描步骤，没有决定最终 Gold 或许可证权限。",
+        "确认 asset-candidates.json 覆盖 source-lock 中全部 14 个 Skill，并仅提出中性的 description、use_when、do_not_use_when。"
+      ]
+    }
+  ]
+}

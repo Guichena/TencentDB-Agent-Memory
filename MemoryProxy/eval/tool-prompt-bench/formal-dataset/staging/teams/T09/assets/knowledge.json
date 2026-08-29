@@ -1,0 +1,217 @@
+{
+  "schema_version": "task1.team_knowledge_assets.v1",
+  "team_id": "T09",
+  "knowledge": [
+    {
+      "assetId": "wiki-t09audit01",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-knowledge-wiki-t09audit01"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "type": "wiki",
+      "name": "Nebula Offline Audit Operations",
+      "snapshotSha256": "eddc18f28361795cd07e55787d5d732f48f6a1a875bdfea630ba22f1342a13a0",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t09-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "7d0ebbe39ebbe0588061f6af4b8511af5a669d49ec83c7d770d59a13b561d620"
+    },
+    {
+      "assetId": "cg-t09risk01",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-knowledge-cg-t09risk01"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "type": "code_graph",
+      "name": "Risk Catalog Symbol Graph",
+      "repoUrl": "https://github.com/TencentCloud/TencentDB-Agent-Memory.git",
+      "repoCommit": "960021e472456515a89d3c2c4f2962fbf6cc51a1",
+      "indexVersion": "task1-t09-synthetic-v1",
+      "snapshotSha256": "e2db4322551d613e2719815ec91e9eb05ee15f68c1e208ad4e94ce71d0b1746a",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t09-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "b4f7816aaece5c0e294b43014185255185266d364462c8c9066c7dea99bc9087"
+    },
+    {
+      "assetId": "wiki-t09comp01",
+      "ownerAgentId": "agent-task1-t09-general",
+      "sourceEvidenceIds": [
+        "source-t09-knowledge-wiki-t09comp01"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "type": "wiki",
+      "name": "Compliance Export Contract",
+      "snapshotSha256": "42534de985f7cf41daa29d59b3d0b26421eec84a89c587e4b5f561552c0cc7ca",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t09-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "39074ae7a8b0240a2f7540fc7fbd6b2ab05ea989ff36d393675ef8945e76424b"
+    }
+  ],
+  "fixtures": [
+    {
+      "asset_id": "wiki-t09audit01",
+      "status": "ready",
+      "repo_match": "aegis/nebula-console",
+      "tools_list": {
+        "request": {
+          "knowledge_id": "wiki-t09audit01"
+        },
+        "response": {
+          "tools": [
+            {
+              "name": "search_pages",
+              "description": "Search the frozen operations pages by text query.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "query"
+                ],
+                "additionalProperties": false
+              }
+            }
+          ]
+        }
+      },
+      "tools_call": [
+        {
+          "request": {
+            "tool_name": "search_pages",
+            "params": {
+              "query": "frozen vulnerability database older than fourteen days exception code"
+            }
+          },
+          "response": {
+            "pages": [
+              {
+                "ref": "offline-database-exceptions",
+                "title": "Offline vulnerability database exceptions",
+                "path": "/security/audit/offline-runbook",
+                "content": "For a frozen vulnerability database older than fourteen days, record exception code AIRGAP-DB-AGE-14."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "asset_id": "cg-t09risk01",
+      "status": "ready",
+      "repo_match": "aegis/risk-catalog",
+      "tools_list": {
+        "request": {
+          "knowledge_id": "cg-t09risk01"
+        },
+        "response": {
+          "tools": [
+            {
+              "name": "search_symbols",
+              "description": "Search the frozen symbol graph by symbol or concept.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "query"
+                ],
+                "additionalProperties": false
+              }
+            }
+          ]
+        }
+      },
+      "tools_call": [
+        {
+          "request": {
+            "tool_name": "search_symbols",
+            "params": {
+              "query": "CVSS normalization boundary"
+            }
+          },
+          "response": {
+            "symbols": [
+              {
+                "symbol": "normalizeCvssCandidate",
+                "kind": "function",
+                "file": "src/normalizers/cvss.ts"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "asset_id": "wiki-t09comp01",
+      "status": "ready",
+      "repo_match": "aegis/compliance-export",
+      "tools_list": {
+        "request": {
+          "knowledge_id": "wiki-t09comp01"
+        },
+        "response": {
+          "tools": [
+            {
+              "name": "search_pages",
+              "description": "Search the frozen compliance contract pages by text query.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "query"
+                ],
+                "additionalProperties": false
+              }
+            }
+          ]
+        }
+      },
+      "tools_call": [
+        {
+          "request": {
+            "tool_name": "search_pages",
+            "params": {
+              "query": "active consumer contract file encoding"
+            }
+          },
+          "response": {
+            "pages": [
+              {
+                "ref": "audit-bom-contract",
+                "title": "Audit export consumer contract",
+                "path": "/security/reporting/csv-contract",
+                "content": "The active consumer contract is audit-bom-v2 and requires UTF-8 without BOM."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t09-knowledge-batch-02",
+  "stage": "DS05",
+  "team_id": "T09",
+  "family": "knowledge",
+  "external_source_ids": [],
+  "pairs": [
+    {
+      "draft_pair_id": "T09-DRAFT-KNOW-002",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "今天继续处理 risk-catalog 的漏洞记录归一化，工作区是 aegis/risk-catalog；扫描结果 JSON 已经生成，这条线只讨论记录字段的归一化，不要和离线扫描或合规 CSV 导出混在一起。"
+        },
+        {
+          "role": "assistant",
+          "content": "边界已确认。当前输入是已经产出的漏洞 JSON，接下来只核对归一化环节的实现边界，不重新扫描，也不把最终报告格式当成归一化规则。"
+        },
+        {
+          "role": "user",
+          "content": "这次评审需要确认 CVSS 候选值最后经过哪个稳定的代码入口；仓库里能看到字段和若干调用，但工作区摘录没有保留当前分支的边界符号。"
+        },
+        {
+          "role": "assistant",
+          "content": "我先整理已有的字段来源和调用背景。既然输入记录已经存在，眼下要补的是当前分支的归一化边界，而不是重新判断漏洞集合或设计评分优先级。"
+        },
+        {
+          "role": "user",
+          "content": "我一开始想从相邻的 CVSS 提取说明里推断函数名，后来发现那只能说明来源优先级，不能证明 risk-catalog 当前代码实际使用的符号。"
+        },
+        {
+          "role": "assistant",
+          "content": "方向改为只核对与当前仓库匹配的内部代码图资料；离线审计运维资料和合规导出资料属于相邻流程，不能替代这条代码边界事实。"
+        },
+        {
+          "role": "user",
+          "content": "已经完成的是确认仓库、输入已冻结、讨论范围和排除项，也确认不需要执行新的扫描或改动代码；现在只剩把当前分支使用的归一化符号和文件位置补进评审摘要。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前上下文没有这个符号及其文件路径本身。为了避免从调用方式臆测实现边界，先保留这一个信息缺口，再核对匹配的内部代码图资料。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请先确认当前分支用于 CVSS 候选归一化的准确函数符号和文件路径；只返回资料中的符号与路径，不扩展到重新扫描、评分优先级或 CSV 格式。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充摘录仍只有字段和调用关系，没有写出当前分支的归一化边界符号及文件路径；请保留这个唯一缺口，不要根据调用方式推断。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "与 aegis/risk-catalog 匹配的内部代码图中，当前分支用于归一化 CVSS 候选值的准确边界符号及其文件路径尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": ["cg-t09risk01"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "先发现固定代码图资料提供的只读检索能力，再以 CVSS 候选归一化边界为查询条件检索并返回 normalizeCvssCandidate 及 src/normalizers/cvss.ts 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "评审摘要已补齐唯一缺口：当前分支的归一化边界是 src/normalizers/cvss.ts 中的 normalizeCvssCandidate；其他仓库、输入和流程边界不变。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已明确匹配的 risk-catalog 仓库、CVSS 候选归一化任务及准确符号 normalizeCvssCandidate 和路径 src/normalizers/cvss.ts；无需再次读取内部代码图。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["wiki-t09audit01", "wiki-t09comp01", "T09-SKILL-CVSS-EXTRACTION"],
+      "controlled_delta_note": "Positive 只保留当前分支归一化边界符号及路径缺口；Negative 只补入 normalizeCvssCandidate 和 src/normalizers/cvss.ts，保持同一仓库、冻结输入、排除项和最终 query 完全不变。",
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为当前分支的 CVSS 归一化符号及文件路径，没有暗示扫描、评分来源或报告格式？",
+        "Negative 是否只补入 normalizeCvssCandidate 与 src/normalizers/cvss.ts，并保持仓库、输入、流程边界和 query 完全不变？",
+        "risk-catalog、归一化边界和代码图线索是否足以在三个 ready 资源中唯一选择匹配的代码图？",
+        "provider-visible 文本是否没有暴露内部资源标识、检索动作名称、私有知识字段或最终答案？"
+      ]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-KNOW-003",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "今天继续处理 compliance-export 的漏洞报告导出，工作区是 aegis/compliance-export；解析后的 findings 已经准备好，这条线只讨论下游消费契约和文件编码，不要和扫描或普通依赖升级混在一起。"
+        },
+        {
+          "role": "assistant",
+          "content": "边界已确认。当前输入是已经解析的漏洞记录，接下来只核对导出结果需要满足的内部消费契约，不重新发现漏洞，也不重新设计上游字段提取。"
+        },
+        {
+          "role": "user",
+          "content": "这次交接要把报告交给现有消费方，仓库里已有字段映射和 CSV 生成流程，但工作区摘录没有保留当前生效的消费契约名称与文件编码要求。"
+        },
+        {
+          "role": "assistant",
+          "content": "我先确认已有解析结果、导出边界和交接对象。既然报告流程已经整理好，眼下要补的是内部契约的两个窄事实，而不是重新扫描或改变 findings 的字段含义。"
+        },
+        {
+          "role": "user",
+          "content": "我一开始想沿用通用 CSV 约定，后来发现这可能遗漏当前消费方的版本化契约，也无法证明是否允许文件带 BOM。"
+        },
+        {
+          "role": "assistant",
+          "content": "方向改为只核对与当前仓库匹配的内部合规导出资料；离线审计运维资料和代码图属于相邻流程，不能拿来替代这条消费契约事实。"
+        },
+        {
+          "role": "user",
+          "content": "已经完成的是确认仓库、解析结果、导出范围和排除项，也确认不需要执行新的扫描或升级；现在只剩把当前消费方要求的契约版本与编码写进交接摘要。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前上下文没有生效契约名称和编码要求本身。为了避免套用通用报告习惯，先保留这一个信息缺口，再核对匹配的内部合规资料。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请先确认当前消费方要求的准确契约名称和文件编码；只返回资料中的契约与编码，不扩展到重新扫描、字段发现或依赖升级。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘录仍只有解析和导出流程，没有写出当前生效的消费契约名称及文件编码；请保留这个唯一缺口，不要套用通用 CSV 习惯。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "与 aegis/compliance-export 匹配的内部合规资料中，当前生效的消费契约名称及其文件编码要求尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": ["wiki-t09comp01"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "先发现固定合规资料提供的只读检索能力，再以当前消费契约和文件编码为查询条件检索并返回 audit-bom-v2 与 UTF-8 without BOM 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已补齐唯一缺口：当前消费契约是 audit-bom-v2，文件必须使用 UTF-8 without BOM；其他仓库、解析结果和导出边界不变。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已明确匹配的 compliance-export 仓库、现有消费方和准确契约 audit-bom-v2 及 UTF-8 without BOM 编码要求；无需再次读取内部合规资料。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["wiki-t09audit01", "cg-t09risk01", "T09-SKILL-VULNERABILITY-CSV"],
+      "controlled_delta_note": "Positive 只保留当前消费契约名称及文件编码缺口；Negative 只补入 audit-bom-v2 与 UTF-8 without BOM，保持同一仓库、解析结果、导出边界和最终 query 完全不变。",
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为消费契约名称和文件编码，没有暗示扫描、字段发现或升级步骤？",
+        "Negative 是否只补入 audit-bom-v2 与 UTF-8 without BOM，并保持仓库、解析结果、导出边界和 query 完全不变？",
+        "compliance-export、消费契约和合规资料线索是否足以在三个 ready 资源中唯一选择匹配的 wiki？",
+        "provider-visible 文本是否没有暴露内部资源标识、检索动作名称、私有知识字段或最终答案？"
+      ]
+    }
+  ]
+}

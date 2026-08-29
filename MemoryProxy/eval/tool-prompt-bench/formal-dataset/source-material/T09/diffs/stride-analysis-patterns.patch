@@ -1,0 +1,10 @@
+--- a/raw/wshobson-agents/stride-analysis-patterns/SKILL.md
++++ b/adapted/stride-analysis-patterns/SKILL.md
+@@ -1,4 +1,6 @@
+ ---
+ name: stride-analysis-patterns
+-description: Apply STRIDE methodology to systematically identify threats. Use when analyzing system security, conducting threat modeling sessions, or creating security documentation.
++description: "使用 STRIDE 类别系统识别威胁并形成威胁分析文档。"
++use_when: "开始威胁建模、审查系统架构或需要系统化覆盖六类威胁。"
++do_not_use_when: "已有威胁清单只需映射控制措施，或任务是依赖扫描、SAST 配置和漏洞修复。"
+ ---
