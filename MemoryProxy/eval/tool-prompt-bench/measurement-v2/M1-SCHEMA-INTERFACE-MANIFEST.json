@@ -1,0 +1,107 @@
+{
+  "manifestSchemaVersion": "m1-schema-interface-manifest-v1",
+  "candidateId": "M1",
+  "publicApis": [
+    "validatePairContractV2",
+    "scorePairV2",
+    "summarizePairScoresV2"
+  ],
+  "pairContract": {
+    "schemaVersion": "2",
+    "invariantProjectionSchemaVersion": "pair-invariant-projection-v2",
+    "requiredFields": [
+      "pairId",
+      "positiveCaseId",
+      "negativeCaseId",
+      "causalFactorId",
+      "allowedChangedPointers",
+      "invariantProjectionSchemaVersion",
+      "invariantFieldsSha256",
+      "changedPointerCount",
+      "minimalityReviewStatus",
+      "independenceKey",
+      "split"
+    ],
+    "minimalityReviewStatusRequired": "approved",
+    "splitValues": [
+      "dev",
+      "hidden"
+    ],
+    "failsClosedOn": [
+      "invalid runtime shape or schema version",
+      "invalid, duplicate, overlapping, empty, or unused changed-pointer allowlist",
+      "change outside allowlist",
+      "case identity or split mismatch",
+      "changed-pointer count mismatch",
+      "invariant projection or SHA-256 mismatch"
+    ]
+  },
+  "m0IntegrationSeam": {
+    "interface": "M0CaseOutcomeForPairV2",
+    "ownership": "read-only M0 outcome consumed by M1 at integration",
+    "recomputesEcr": false,
+    "fields": [
+      "caseId",
+      "repeatId",
+      "variantId",
+      "model",
+      "reasoningEffort",
+      "assetSnapshotSha256",
+      "runId",
+      "sessionId",
+      "localStateId",
+      "integrationEligible",
+      "traceComplete",
+      "completeChainSuccess",
+      "strictChainExact?",
+      "executorBoundAttempt",
+      "malformedTdaiDispatchIntent",
+      "failureLayer?"
+    ],
+    "completeChainSource": "M0.completeChainSuccess",
+    "strictChainSource": "M0.strictChainExact when preregistered",
+    "fcrAttemptSemanticsChanged": false
+  },
+  "negativeBoundary": {
+    "negativePass": "!executorBoundAttempt && !malformedTdaiDispatchIntent",
+    "falseIntentTypes": [
+      "executor_bound",
+      "malformed_unbound"
+    ],
+    "boundarySwitch": "positive.executorBoundAttempt && !negative.executorBoundAttempt",
+    "note": "BoundarySwitch is intentionally weaker than PairExact and ignores malformed unbound negative intent."
+  },
+  "repeatAggregation": {
+    "policyId": "all-repeats-pass-v1",
+    "rule": "a pair-level metric passes only when every matched repeat passes",
+    "matchedRepeatIdsRequired": true,
+    "preservesPerRepeatInputsAndScores": true,
+    "repeatsAreIndependentPairs": false
+  },
+  "metrics": {
+    "jFrozen": "count of unique frozen pairIds presented to the summary",
+    "jEligible": "count of pairIds whose two sides and all matched repeats pass integration, trace, identity, isolation, and parity gates",
+    "jIncomplete": "jFrozen - jEligible",
+    "pairExact": "all-repeats(M0.completeChainSuccess_positive && negativePass)",
+    "boundarySwitchAccuracy": "all-repeats(positive.executorBoundAttempt && !negative.executorBoundAttempt)",
+    "strictPairExact": "optional preregistered all-repeats(M0.strictChainExact_positive && negativePass)"
+  },
+  "independenceClusters": {
+    "key": "PairContractV2.independenceKey",
+    "eligiblePairsOnly": true,
+    "samplingUnit": "whole matched cluster",
+    "minimumBlocksForBootstrapReady": 2
+  },
+  "syntheticFixture": {
+    "path": "fixtures/m1-pair-v2.synthetic.json",
+    "canonicalization": "recursive lexicographic object-key order; array order preserved; compact JSON scalars",
+    "canonicalSha256": "fdfe28c25e70715a23f68ff6ab964be455bba2ae227093b8f98d9f5d3ebf5ecf"
+  },
+  "formalDataStatus": "FORMAL_DATA_BLOCKED",
+  "formalDataBlockers": [
+    "Formal pair rows are not present and frozen on this implementation branch.",
+    "Formal allowedChangedPointers, invariantFieldsSha256, causalFactorId, minimalityReviewStatus, and independenceKey have not been validated by M1.",
+    "M0 formal case outcomes are integrated later and are not duplicated by this candidate."
+  ],
+  "modelRuns": 0
+}

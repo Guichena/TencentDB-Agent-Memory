@@ -1,0 +1,95 @@
+{
+  "fixtureSchemaVersion": "m1-pair-v2-synthetic-v1",
+  "contract": {
+    "schemaVersion": "2",
+    "pairId": "pair-skill-boundary-001",
+    "positiveCaseId": "pair-skill-positive",
+    "negativeCaseId": "pair-skill-negative",
+    "causalFactorId": "answer-source-saved-vs-present",
+    "allowedChangedPointers": [
+      "/gold/needTdaiTool",
+      "/query"
+    ],
+    "invariantProjectionSchemaVersion": "pair-invariant-projection-v2",
+    "invariantFieldsSha256": "bea7821895ab65d5ca0c55ad67980d9fe3eb1c16247ec90a59d016e99c789d40",
+    "changedPointerCount": 2,
+    "minimalityReviewStatus": "approved",
+    "independenceKey": "team-payments-source-formatter",
+    "split": "dev"
+  },
+  "positiveCase": {
+    "caseId": "pair-skill-positive",
+    "split": "dev",
+    "comparisonDocument": {
+      "query": "Use the saved team formatter for this log output.",
+      "context": {
+        "team": "payments",
+        "language": "ts"
+      },
+      "capabilities": {
+        "memory": true,
+        "skill": true
+      },
+      "gold": {
+        "needTdaiTool": true
+      }
+    }
+  },
+  "negativeCase": {
+    "caseId": "pair-skill-negative",
+    "split": "dev",
+    "comparisonDocument": {
+      "query": "Use the formatter already shown above for this log output.",
+      "context": {
+        "team": "payments",
+        "language": "ts"
+      },
+      "capabilities": {
+        "memory": true,
+        "skill": true
+      },
+      "gold": {
+        "needTdaiTool": false
+      }
+    }
+  },
+  "outcomes": {
+    "positive": [
+      {
+        "caseId": "pair-skill-positive",
+        "repeatId": "repeat-01",
+        "variantId": "V3",
+        "model": "gpt-5.6-luna",
+        "reasoningEffort": "high",
+        "assetSnapshotSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "runId": "positive-run-01",
+        "sessionId": "positive-session-01",
+        "localStateId": "positive-state-01",
+        "integrationEligible": true,
+        "traceComplete": true,
+        "completeChainSuccess": true,
+        "strictChainExact": true,
+        "executorBoundAttempt": true,
+        "malformedTdaiDispatchIntent": false
+      }
+    ],
+    "negative": [
+      {
+        "caseId": "pair-skill-negative",
+        "repeatId": "repeat-01",
+        "variantId": "V3",
+        "model": "gpt-5.6-luna",
+        "reasoningEffort": "high",
+        "assetSnapshotSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "runId": "negative-run-01",
+        "sessionId": "negative-session-01",
+        "localStateId": "negative-state-01",
+        "integrationEligible": true,
+        "traceComplete": true,
+        "completeChainSuccess": false,
+        "executorBoundAttempt": false,
+        "malformedTdaiDispatchIntent": false
+      }
+    ]
+  }
+}
