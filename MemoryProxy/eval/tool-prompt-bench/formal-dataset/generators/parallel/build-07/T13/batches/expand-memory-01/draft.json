@@ -1,0 +1,255 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T13-expand-memory-01",
+  "stage": "DS05",
+  "team_id": "T13",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T13-MEM-002-expand",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_5_to_8",
+      "shared_context_messages": [
+        {"role": "user", "content": "Harborlane Payments 的支付告警最近出现同一笔交易被日志和链路重复报出的情况。"},
+        {"role": "assistant", "content": "先把支付服务、重试队列和告警聚合的时间线对齐，再判断是重复事件还是同一故障的不同观测。"},
+        {"role": "user", "content": "昨晚区域切换演练时，值班同学说日志里能找到交易，但链路页有时接不上。"},
+        {"role": "assistant", "content": "这种现象要同时核对日志字段、链路传播和采样配置，不能只凭告警标题合并。"},
+        {"role": "user", "content": "我看到过一份支付可观测性复盘，里面讨论过怎样把一笔交易串起来。"},
+        {"role": "assistant", "content": "可以回看那次复盘的原始讨论，确认团队最终选定的关联做法。"},
+        {"role": "user", "content": "当前仪表盘还有一个相似的退款超时告警，别把它和这次切换演练混在一起。"},
+        {"role": "assistant", "content": "会把退款路径作为同域干扰，只采用能解释支付交易关联的历史结论。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请回忆区域切换复盘中，支付交易的日志与链路是靠哪些字段和采样约定关联起来的？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "补充线索：那次讨论发生在一次支付链路演练之后，重点是同一笔交易在不同服务之间偶尔断链；我想核对最终采用的关联细节。"},
+        "private_proposal": {
+          "unique_information_gap": "正例只有演练和断链主题，缺少历史记录中最终采用的日志关联字段及链路采样约定。",
+          "route": "memory",
+          "target_asset_ids": ["T13-L0-003"],
+          "allowed_sequence_candidates": [["tdai_conversation_search"]],
+          "stop_after_candidate": "候选同时说明交易标识如何写入日志、如何透传到链路，以及为保证关联采用的采样比例后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充完整记录：日志统一写入 order_id 并透传 traceparent；支付入口保留 20% head sampling，重试异常时临时提升到 100% 以便串联链路。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加内容已经直接给出日志字段、传播字段和两档采样约定，无需再找历史。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T13-L0-002", "T13-L0-005", "T13-L1-005"],
+      "controlled_delta_note": "正负共享同一支付演练历史与查询；只有追加消息从主题线索变成完整关联规则。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "正例是否只需一次支付项目历史发现即可命中唯一会话？",
+        "负例是否只补齐字段与采样比例，没有引入新的诊断步骤？",
+        "退款超时等同域记录是否足以构成干扰但不会承载相同完整答案？"
+      ]
+    },
+    {
+      "draft_pair_id": "T13-MEM-003-expand",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_5_to_8",
+      "shared_context_messages": [
+        {"role": "user", "content": "我在排查 Harborlane Payments 的账单回调延迟，失败重试会把尾延迟拉得很长。"},
+        {"role": "assistant", "content": "先区分回调入口、签名校验和下游重试的耗时，再查历史上已经确认的限流边界。"},
+        {"role": "user", "content": "这次只在批量补单窗口明显，实时订单看起来正常。"},
+        {"role": "assistant", "content": "批量窗口可能触发不同的并发和退避设置，应与实时路径分开观察。"},
+        {"role": "user", "content": "团队以前讨论过一套回调失败后的退避方案，我只记得它和补单有关。"},
+        {"role": "assistant", "content": "先按项目和补单主题找到那段讨论，再查看上下文中的具体阶段和边界。"},
+        {"role": "user", "content": "旁边还有退款 webhook 的重放问题，术语很像但不是同一路径。"},
+        {"role": "assistant", "content": "会把退款重放作为相似干扰，确认候选必须明确是账单回调。"},
+        {"role": "user", "content": "如果历史结论能解释为什么尾延迟在某个阶段突然放大，就能决定是否改配置。"},
+        {"role": "assistant", "content": "找到候选后还要把它与这次批量补单的时间线逐项核对。"}
+      ],
+      "changed_message_index": 10,
+      "query": "请找回批量补单场景下账单回调失败的退避与重试边界，并说明在哪个阶段停止继续重试。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "再给一个线索：结论来自一次补单压测复盘，讨论焦点是签名校验通过后下游暂时不可用时的尾延迟。"},
+        "private_proposal": {
+          "unique_information_gap": "正例仅暴露补单压测和故障阶段，退避间隔、重试次数及停止阶段仍只存在于目标历史会话。",
+          "route": "memory",
+          "target_asset_ids": ["T13-L0-004"],
+          "allowed_sequence_candidates": [["tdai_conversation_search", "tdai_conversation_query"]],
+          "stop_after_candidate": "先发现补单回调复盘，再查询其中包含完整退避序列和停止边界的会话片段后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充完整记录：签名校验通过后按 30 秒、2 分钟、10 分钟退避，最多重试 3 次；下游连续返回 5xx 时在第三次后转入人工队列，不再自动重放。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已覆盖三个退避阶段、次数上限和停止后的人工处理，问题可以直接回答。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T13-L0-003", "T13-L0-006", "T13-L1-006"],
+      "controlled_delta_note": "正例追加的是压测定位线索，负例只替换为同一结论的完整数值与动作。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "正例是否需要先搜索再查询，且搜索结果不会把退避数字直接注入？",
+        "负例是否完整但没有额外改变批量补单的上下文？",
+        "退款重放干扰是否保持同项目、同故障形态而不成为第二个答案？"
+      ]
+    },
+    {
+      "draft_pair_id": "T13-MEM-004-expand",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "long_9_to_12",
+      "shared_context_messages": [
+        {"role": "user", "content": "Nimbus Batch 的夜间画像作业在最近一次版本回归后变慢，火焰图里有一段压缩调用变宽。"},
+        {"role": "assistant", "content": "先固定同一批输入和 worker 数量，确认是 CPU、I/O 还是画像采集本身的开销。"},
+        {"role": "user", "content": "基准批次的总耗时从二十多分钟变成接近四十分钟，失败率没有明显变化。"},
+        {"role": "assistant", "content": "这更像吞吐退化而不是功能错误，需要把火焰图热点与发布差异对齐。"},
+        {"role": "user", "content": "有人提过一条关于批次分片和画像采样的历史决定，但我找不到原话。"},
+        {"role": "assistant", "content": "可以从 Nimbus 项目的性能回归记录中查找决定，再验证它是否针对同一压缩热点。"},
+        {"role": "user", "content": "另一个相似任务也在生成火焰图，不过它用的是交互式小批量，不要混淆。"},
+        {"role": "assistant", "content": "会用夜间画像作业、固定输入和发布回归作为筛选条件。"},
+        {"role": "user", "content": "当前只需要恢复可比的基准，不想顺手改 worker 配置。"},
+        {"role": "assistant", "content": "先找出当时的采样与分片决定，再决定是否需要最小回滚。"},
+        {"role": "user", "content": "我记得那份记录还说明了什么时候应该停止画像，而不是一直收集。"},
+        {"role": "assistant", "content": "这个停止条件会是区分正确操作和临时猜测的关键。"},
+        {"role": "user", "content": "请保留版本回归的证据链，结果要能给复盘使用。"},
+        {"role": "assistant", "content": "会把历史决定、当前火焰图和复现批次分开引用，避免把推断写成既定规则。"}
+      ],
+      "changed_message_index": 14,
+      "query": "请回忆 Nimbus 夜间画像回归时确定的采样比例、分片并发上限和停止画像条件。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "补充线索：那次决定是在压缩热点回归评审里形成的，目标是让夜间基准可比并限制画像开销；具体参数我没有记全。"},
+        "private_proposal": {
+          "unique_information_gap": "正例只有评审主题和目标，采样比例、并发上限与何时停止仍缺失，需定位项目历史记忆。",
+          "route": "memory",
+          "target_asset_ids": ["T13-L1-010"],
+          "allowed_sequence_candidates": [["tdai_memory_search"]],
+          "stop_after_candidate": "候选同时给出采样比例、分片并发上限及停止画像的条件后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充完整记录：基准画像固定 10% 采样，分片并发最多 8 个；当单个热点累计样本达到 50 万或画像开销超过批次 CPU 的 5% 就停止采集。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息直接给出三个所问参数与停止条件，不需要查历史。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T13-L1-009", "T13-L1-011", "T13-L0-007"],
+      "controlled_delta_note": "长上下文保留性能回归、火焰图与交互批次干扰；正例仅给决定主题，负例仅补齐三项参数。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "目标记忆是否能同时覆盖采样、并发和停止三个字段？",
+        "负例是否没有改变基准批次或引入新的性能结论？",
+        "交互式小批量记录是否与夜间批次足够相似以考验项目与场景筛选？"
+      ]
+    },
+    {
+      "draft_pair_id": "T13-MEM-005-expand",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "decision", "history"],
+      "difficulty": "hard",
+      "context_bucket": "long_13_plus",
+      "shared_context_messages": [
+        {"role": "user", "content": "Atlas Collector 的采样迁移准备在下周进入灰度，我在核对旧管线与新管线的差异。"},
+        {"role": "assistant", "content": "先列出接收、处理、导出三个阶段的行为差异，再把已批准的迁移决定与当前配置逐项对照。"},
+        {"role": "user", "content": "现在看到的只是 exporter 队列偶发堆积，不能据此判定迁移方案有问题。"},
+        {"role": "assistant", "content": "需要结合迁移期间的采样预算、尾部保留和回退护栏观察，避免把瞬时队列当成结论。"},
+        {"role": "user", "content": "团队在八月上旬到中旬做过一次正式评审，应该有最终决定。"},
+        {"role": "assistant", "content": "可以按决定类型和时间范围核对正式记录，优先找已经批准而非讨论中的草案。"},
+        {"role": "user", "content": "同域还有 Alloy 管线的标签清理变更，时间也接近，别把它当成采样迁移。"},
+        {"role": "assistant", "content": "会把标签清理作为相似干扰，只保留与采样迁移批准动作直接相关的记录。"},
+        {"role": "user", "content": "我关心的是上线时哪些数据必须保留，以及什么情况要回退到旧管线。"},
+        {"role": "assistant", "content": "这两个问题通常会在批准决定的约束段落中一起出现。"},
+        {"role": "user", "content": "当前灰度清单还没有填完，先不要依据它推测最终数值。"},
+        {"role": "assistant", "content": "会将灰度清单视为当前状态，把历史批准记录作为决策来源。"},
+        {"role": "user", "content": "评审日期可能跨了两个工作周，我只记得在八月中旬收口。"},
+        {"role": "assistant", "content": "日期线索足以缩小范围，但还需要确认记录的决定类别。"},
+        {"role": "user", "content": "如果找到决定，请把采样比例和回退触发写得精确一些。"},
+        {"role": "assistant", "content": "会先定位唯一决定，再只摘录与这次迁移问题对应的约束。"}
+      ],
+      "changed_message_index": 16,
+      "query": "请确认八月上旬至中旬 Atlas 采样迁移的批准决定：必须保留什么比例的数据，什么条件触发回退？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "补充线索：这是采样迁移的正式批准记录，不是标签清理变更；评审在 8 月 1 日到 8 月 16 日之间收口。"},
+        "private_proposal": {
+          "unique_information_gap": "正例提供了决定类型和时间边界，但批准记录中的保留比例与回退条件仍缺失。",
+          "route": "memory",
+          "target_asset_ids": ["T13-L1-013"],
+          "allowed_sequence_candidates": [["tdai_atomic_query"]],
+          "required_filter": {"type": "decision", "time_start": "2026-08-01T00:00:00+08:00", "time_end": "2026-08-16T00:00:00+08:00"},
+          "stop_after_candidate": "按决定类型和时间范围命中批准记录，并获得保留比例与回退触发后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充完整记录：批准方案保留 15% 的全量 traces；若 exporter 队列连续 5 分钟超过 70% 或关键租户丢失率达到 1%，立即回退旧管线。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已直接给出保留比例、两个回退触发阈值和动作，无需查询历史决定。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T13-L1-012", "T13-L1-014", "T13-L0-008"],
+      "controlled_delta_note": "正例只增加项目、类型和日期线索，负例只增加批准决定的比例与回退阈值；其它迁移上下文完全相同。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "正例是否保留了唯一的决定细节缺口，同时日期与类型足以支持一次精确查询？",
+        "负例是否没有增加与问题无关的 exporter 配置？",
+        "标签清理记录是否形成可见但不会命中的同域干扰？"
+      ]
+    },
+    {
+      "draft_pair_id": "T13-MEM-006-expand",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "incident", "scene"],
+      "difficulty": "hard",
+      "context_bucket": "long_13_plus",
+      "shared_context_messages": [
+        {"role": "user", "content": "SentryGrid 刚做完一次告警风暴演练，多个服务同时触发但真正需要升级的信号很少。"},
+        {"role": "assistant", "content": "先把事故时间线、告警收敛动作和指挥角色分开记录，避免把演练噪声当成生产级别。"},
+        {"role": "user", "content": "演练中值班台一度被重复通知淹没，之后通过静默和分组稍微稳定下来。"},
+        {"role": "assistant", "content": "需要回看事故场景记录，确认临时静默是否有明确的时限和解除责任。"},
+        {"role": "user", "content": "复盘提到过 noise budget，但我只记得它和升级门槛、值班负责人有关。"},
+        {"role": "assistant", "content": "事故场景里的决定通常比聊天摘要更完整，应找到对应的复盘场景再核对。"},
+        {"role": "user", "content": "另一个 on-call 演练也讨论了 paging 分组，名称相近但不属于这次风暴。"},
+        {"role": "assistant", "content": "会用 SentryGrid、告警风暴和 noise budget 作为组合条件，并把 paging 分组作为干扰。"},
+        {"role": "user", "content": "我想知道最后定下的静默窗口，以及超过预算后由谁确认升级。"},
+        {"role": "assistant", "content": "这两个决定应在场景的行动项中相邻出现，但当前对话没有具体值。"},
+        {"role": "user", "content": "现在不要根据今天的值班安排猜责任人，复盘时的角色才是依据。"},
+        {"role": "assistant", "content": "会区分当前值班表与历史场景中的责任分工。"},
+        {"role": "user", "content": "如果静默没有上限，噪声减少也可能掩盖真实故障。"},
+        {"role": "assistant", "content": "所以要同时核对静默上限、预算阈值和升级确认步骤。"},
+        {"role": "user", "content": "请按那次演练的最终复盘给出可执行的规则。"},
+        {"role": "assistant", "content": "会先读取唯一匹配的事故场景，再提取最终行动项，不把相似演练拼接进来。"}
+      ],
+      "changed_message_index": 16,
+      "query": "请回忆 SentryGrid 告警风暴复盘中定下的静默窗口、noise budget 上限和升级确认角色。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "补充线索：这是 SentryGrid 那次告警风暴的 noise budget review，复盘讨论了静默不能无限延长以及升级必须有人确认，但细节需要从场景记录核对。"},
+        "private_proposal": {
+          "unique_information_gap": "正例只给场景主题和两条原则，静默时长、预算上限与确认角色仍需要读取唯一事故场景。",
+          "route": "memory",
+          "target_asset_ids": ["T13-L2-005"],
+          "allowed_sequence_candidates": [["tdai_read_scene"]],
+          "injected_path": "incidents/sentrygrid/noise-budget-review.md",
+          "stop_after_candidate": "读取指定事故场景并同时确认静默窗口、预算上限和升级确认角色后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充完整复盘摘录：静默窗口上限为 12 分钟，noise budget 设为每小时 3 次 paging；预算耗尽后由 incident commander 确认是否升级。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加摘录已经直接给出窗口、预算上限和升级确认角色，不需要读取场景。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T13-L2-003", "T13-L2-004", "T13-L1-016"],
+      "controlled_delta_note": "事故场景使用长上下文和同域演练干扰；正例保留三个可执行字段，负例仅把它们逐项补齐。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "正例是否只能通过一次场景读取获得三项细节，且对话没有泄漏路径？",
+        "负例是否仅补齐同一复盘摘录，没有暗示另一个事故？",
+        "当前值班安排与相似演练是否构成真实可见干扰？"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t13-expand-knowledge-01",
+  "stage": "DS05",
+  "team_id": "T13",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T13-DS05-KNW-002",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "今天继续处理 SentryGrid 的事故响应与告警收敛复盘，固定快照和工作区不变；不要把 Asteria Edge 网关告警或 Nimbus Batch 剖析混进来。"
+        },
+        {
+          "role": "assistant",
+          "content": "边界已记下：当前只处理 SentryGrid 的事故响应线，保持既定快照和工作区，不合并另外两个项目的上下文。"
+        },
+        {
+          "role": "user",
+          "content": "复盘材料里出现了 incident-command、告警收敛和复盘入口等词，也夹着一条 Asteria Edge 的 burn-rate 记录；那是同域但不同项目的独立线索。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把这些当作检索线索，不从相似项目或术语直接猜手册约定；Asteria Edge 的记录仍排除在当前复盘之外。"
+        },
+        {
+          "role": "user",
+          "content": "本次只需要确认事故响应手册对告警收敛动作的责任归属和后续记录位置，不要扩展到事故分级阈值或演练流程。"
+        },
+        {
+          "role": "assistant",
+          "content": "范围已收窄到手册中这一条收敛约定：只核对负责确认的角色和记录入口，不推导阈值、演练或其他项目结论。"
+        },
+        {
+          "role": "user",
+          "content": "目前能确认的是 SentryGrid、事故响应手册、告警收敛和复盘主题；尚未确认哪个角色完成最终确认，也没有手册条目的具体记录入口。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前没有足够材料安全写出责任角色或记录入口；我会保留这一个内部约定缺口，不用术语相似性替代手册事实。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请确认 SentryGrid 事故响应手册中，告警收敛动作由谁统一确认，并记录到什么入口；只返回这一条约定。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充交接仍只有 incident-command、收敛和复盘主题，未提供手册中责任角色及记录入口的原文；请保留这处内部约定缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "SentryGrid 事故响应手册中告警收敛动作的责任角色与记录入口尚未出现在当前上下文，不能由主题摘要推出。",
+          "route": "knowledge",
+          "target_asset_ids": ["T13-KNOW-INCIDENT-WIKI"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "frozen_tool_request": {
+            "toolName": "search",
+            "parameters": {"text": "告警收敛后的指挥角色", "topic": "incident response"}
+          },
+          "stop_after_candidate": "用 SentryGrid 事故响应手册的主题检索得到‘由当班事故指挥统一确认收敛动作并记录复盘入口’后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已补齐唯一内部约定：由当班事故指挥统一确认收敛动作并记录复盘入口；分级阈值、演练流程与其他项目内容仍不在本次范围。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加摘要已经逐字补齐手册所需的责任角色与记录入口，并保持 SentryGrid 范围及其他项目排除项；无需再查资源。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T13-KNOW-ASTERIA-CG", "T13-KNOW-NIMBUS-CG"],
+      "controlled_delta_note": "Positive 只保留 SentryGrid 手册中责任角色与记录入口的单一缺口；Negative 只补齐‘由当班事故指挥统一确认收敛动作并记录复盘入口’，项目边界、排除项和 query 完全不变。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为 SentryGrid 手册中收敛动作的责任角色和记录入口，没有隐含分级阈值、演练步骤或修复结论？",
+        "Negative 是否只补入‘由当班事故指挥统一确认收敛动作并记录复盘入口’，并保持 Asteria Edge、Nimbus Batch 排除项及 query 不变？",
+        "SentryGrid、事故响应、告警收敛和复盘这些自然线索，是否足以在三个 ready 资源中唯一选择事故响应手册，同时避免首屏列表直接给出该约定？"
+      ]
+    },
+    {
+      "draft_pair_id": "T13-DS05-KNW-003",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "今天继续处理 Nimbus Batch 的批处理性能剖析和回归定位，固定快照与工作区不变；不要把 Asteria Edge 的网关告警或 SentryGrid 的事故复盘混进来。"
+        },
+        {
+          "role": "assistant",
+          "content": "边界已记下：当前只处理 Nimbus Batch 的性能线，保持既定快照和工作区，不合并网关告警或事故响应上下文。"
+        },
+        {
+          "role": "user",
+          "content": "这次关注批处理回归的影响范围。记录提到 BatchProfileCollector、collector 和 runner 等词，也有一条 SentryGrid 的告警收敛笔记；那不是同一工作区。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把符号词当作定位线索，不从普通文件名推测调用边；SentryGrid 的笔记继续作为同域干扰，不纳入 Nimbus 的影响分析。"
+        },
+        {
+          "role": "user",
+          "content": "本次只要固定代码索引里 BatchProfileCollector 的直接影响节点和边数量，不要延伸到性能成因、火焰图解读或修复建议。"
+        },
+        {
+          "role": "assistant",
+          "content": "范围已收窄到代码索引中的影响关系：只核对该符号的下游节点和边数量，不把性能现象扩写成成因或改动方案。"
+        },
+        {
+          "role": "user",
+          "content": "目前能确认的是 Nimbus Batch、批处理回归和 BatchProfileCollector 这个符号；尚未确认固定索引给出的具体下游文件节点及边数量。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前只有符号和性能主题，没有可靠的影响节点清单或边数；我会保留这一处代码关系缺口，不按相邻 collector/runner 名称猜测。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请确认 Nimbus Batch 固定代码索引中 BatchProfileCollector 的直接影响节点和边数量；只返回节点清单与边数。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充交接仍只有 BatchProfileCollector、collector 和 runner 这些符号线索，没有给出固定索引的下游文件节点或边数量；请保留这处影响关系缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "Nimbus Batch 固定代码索引中 BatchProfileCollector 的直接影响节点与边数量尚未出现在当前上下文，不能从性能主题或文件名推导。",
+          "route": "knowledge",
+          "target_asset_ids": ["T13-KNOW-NIMBUS-CG"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "frozen_tool_request": {
+            "toolName": "impact",
+            "parameters": {"symbol": "BatchProfileCollector", "project": "t13-nimbus-batch", "depth": 2}
+          },
+          "stop_after_candidate": "用 Nimbus Batch 代码索引的影响查询得到 profile/collector.go:88、jobs/runner.go:211 和 edge_count=2 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已补齐唯一影响关系：固定索引显示 BatchProfileCollector 的下游节点为 profile/collector.go:88 与 jobs/runner.go:211，边数量为 2；性能成因、火焰图和修复建议仍不在本次范围。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加摘要已经给出固定索引所需的两个下游节点与边数量，并保持 Nimbus Batch 范围及其他项目排除项；无需再查资源。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T13-KNOW-ASTERIA-CG", "T13-KNOW-INCIDENT-WIKI"],
+      "controlled_delta_note": "Positive 只保留 BatchProfileCollector 的下游节点与边数量这一单一缺口；Negative 只补齐 profile/collector.go:88、jobs/runner.go:211 和 2 条边，项目边界、排除项和 query 完全不变。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为 BatchProfileCollector 的固定影响节点和边数量，没有隐含性能成因、火焰图解读或修复建议？",
+        "Negative 是否只补入 profile/collector.go:88、jobs/runner.go:211 与 2 条边，并保持 Asteria Edge、SentryGrid 排除项及 query 不变？",
+        "Nimbus Batch、批处理回归和 BatchProfileCollector 这些自然线索，是否足以在三个 ready 资源中唯一选择 Nimbus 代码索引，同时避免首屏列表直接给出影响结果？"
+      ]
+    }
+  ]
+}

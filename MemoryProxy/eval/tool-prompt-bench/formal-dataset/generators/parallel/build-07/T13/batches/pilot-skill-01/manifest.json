@@ -1,0 +1,10 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "build-07-T13-pilot-skill-01",
+  "external_source_ids": ["T13-SRC-TEMPO"],
+  "generated_at": "2026-08-30T00:20:00+08:00",
+  "actual_count": 1
+}

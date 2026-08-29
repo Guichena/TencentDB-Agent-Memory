@@ -1,0 +1,108 @@
+{
+  "schema_version": "task1.synthetic_memory_assets.v1",
+  "synthetic": true,
+  "team_id": "T13",
+  "batch_id": "T13-pilot-memory-01",
+  "world_as_of": "2026-08-29T12:00:00+08:00",
+  "note": "本文件中的会话、记忆、场景和画像均为合成 pilot 资产，用于支撑一组历史回忆路由候选。",
+  "l0_sessions": [
+    {
+      "asset_id": "T13-L0-001",
+      "level": "L0",
+      "project_id": "t13-asteria-edge",
+      "synthetic": true,
+      "messages": [
+        {"role": "user", "content": "Asteria Edge 的边缘网关延迟告警最近会反复触发。"},
+        {"role": "assistant", "content": "先记录发生时间、持续时间和恢复前后的告警状态。"},
+        {"role": "user", "content": "问题主要出现在晚高峰，恢复前会看到短时尖峰。"},
+        {"role": "assistant", "content": "这更像是窗口太短或采样不稳定造成的抖动，需要和 SLO 消耗速度一起看。"},
+        {"role": "user", "content": "网关的目标是 99.9% 可用性，当前面板同时显示短期和长期趋势。"},
+        {"role": "assistant", "content": "保留两个时间尺度有助于区分瞬时尖峰和持续性风险。"},
+        {"role": "user", "content": "我不想为了压低噪声而漏掉真正的持续故障。"},
+        {"role": "assistant", "content": "可以把升级条件设成两个尺度都确认后再通知，同时保留明确的回退护栏。"},
+        {"role": "user", "content": "团队在本月中旬似乎讨论过类似规则。"},
+        {"role": "assistant", "content": "那次讨论的背景和这次现象相近，应该把它作为历史决策线索。"},
+        {"role": "user", "content": "我只记得结论包含多窗口和采样质量检查。"},
+        {"role": "assistant", "content": "我会把当前症状与历史决策分开记录，避免临时判断覆盖原有约定。"}
+      ]
+    },
+    {
+      "asset_id": "T13-L0-002",
+      "level": "L0",
+      "project_id": "t13-asteria-edge",
+      "synthetic": true,
+      "messages": [
+        {"role": "user", "content": "我们复查了边缘网关延迟告警的多窗口方案。"},
+        {"role": "assistant", "content": "先确认短窗口和长窗口的单位，再确认升级是否需要连续观测。"},
+        {"role": "user", "content": "短窗口用于及时发现突发退化，长窗口用于确认是否形成 SLO 风险。"},
+        {"role": "assistant", "content": "两者都确认后升级，可以减少单次尖峰造成的误报。"},
+        {"role": "user", "content": "评审还关心采样丢失时不能继续放大告警。"},
+        {"role": "assistant", "content": "应将采样质量作为单独的回退护栏，并在变更说明中记录。"},
+        {"role": "user", "content": "当时有人提到短窗 5 分钟和长窗 1 小时。"},
+        {"role": "assistant", "content": "这两个尺度与现有 SLO 面板一致，但仍需从历史决定中核对数值。"},
+        {"role": "user", "content": "我还记得不是看到一次就升级。"},
+        {"role": "assistant", "content": "连续评估的设计正是为了过滤单轮抖动。"},
+        {"role": "user", "content": "采样质量下降时应恢复旧规则。"},
+        {"role": "assistant", "content": "把回退条件和两个窗口的阈值放在同一条决策记录里，方便后续复盘。"}
+      ]
+    }
+  ],
+  "l1_memories": [
+    {
+      "asset_id": "T13-L1-001",
+      "level": "L1",
+      "project_id": "t13-asteria-edge",
+      "synthetic": true,
+      "title": "Asteria Edge SLO 告警背景",
+      "content": "Asteria Edge 的边缘网关以 99.9% 可用性为目标，延迟告警需要同时观察短期突发和长期消耗，避免单次尖峰直接改变事故级别。",
+      "support_chain": ["T13-L0-001", "T13-L0-002"]
+    },
+    {
+      "asset_id": "T13-L1-002",
+      "level": "L1",
+      "project_id": "t13-asteria-edge",
+      "synthetic": true,
+      "title": "告警抖动复盘线索",
+      "content": "本月中旬的复盘将反复触发归因于单轮短时尖峰与采样稳定性混在一起判断，因此采用短期、长期两个尺度，并要求连续观测后再升级。",
+      "support_chain": ["T13-L0-001", "T13-L0-002"]
+    },
+    {
+      "asset_id": "T13-L1-003",
+      "level": "L1",
+      "project_id": "t13-asteria-edge",
+      "synthetic": true,
+      "title": "多窗口阈值与回退决定",
+      "content": "历史决定为：5 分钟 burn rate 超过 14、1 小时 burn rate 超过 2；两个窗口各连续评估两轮后才升级；采样丢失率超过 3% 时回退到旧规则。该决定用于压低告警抖动，同时保留采样异常时的安全退路。",
+      "support_chain": ["T13-L0-001", "T13-L0-002"]
+    },
+    {
+      "asset_id": "T13-L1-004",
+      "level": "L1",
+      "project_id": "t13-asteria-edge",
+      "synthetic": true,
+      "title": "上线核对与复盘约束",
+      "content": "上线核对沿用短窗 5 分钟、长窗 1 小时的双尺度判断；升级前需完成两轮连续评估，采样质量超过既定丢失上限则恢复旧规则并留下复盘记录。",
+      "support_chain": ["T13-L0-002", "T13-L1-003"]
+    }
+  ],
+  "l2_scenes": [
+    {
+      "asset_id": "T13-L2-001",
+      "level": "L2",
+      "project_id": "t13-asteria-edge",
+      "synthetic": true,
+      "scene": "边缘网关可观测性与告警策略复盘",
+      "summary": "团队围绕延迟告警抖动、SLO 风险和采样稳定性做过一轮策略复盘，形成了可供历史核对的多窗口决策记录。具体数字与回退门槛保留在相关历史条目中。",
+      "linked_assets": ["T13-L0-001", "T13-L0-002", "T13-L1-001", "T13-L1-002", "T13-L1-003", "T13-L1-004"]
+    }
+  ],
+  "l3_profiles": [
+    {
+      "asset_id": "T13-L3-001",
+      "level": "L3",
+      "synthetic": true,
+      "summary": "用户长期负责工程可观测性，偏好先核对历史决策，再进行小范围、可回退的变更。",
+      "linked_projects": ["t13-asteria-edge"]
+    }
+  ]
+}

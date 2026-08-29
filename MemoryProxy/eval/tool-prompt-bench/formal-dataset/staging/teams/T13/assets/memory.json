@@ -1,0 +1,1791 @@
+{
+  "schema_version": "task1.team_memory_assets.v1",
+  "team_id": "T13",
+  "l0Conversations": [
+    {
+      "assetId": "T13-L0-001",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "sessionId": "session-t13-history-001",
+      "messages": [
+        {
+          "messageId": "T13-L0-001-M01",
+          "role": "user",
+          "content": "Asteria Edge 的边缘网关延迟告警最近会反复触发。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "9c7f380274106fff6b58c067253098d43cc6321cb10939d4f1a33845bb71c190"
+        },
+        {
+          "messageId": "T13-L0-001-M02",
+          "role": "assistant",
+          "content": "先记录发生时间、持续时间和恢复前后的告警状态。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "7b6684d3c26c26a6c034d59c57cd30a0b2d8804fc686cb076e8e31d8298b546f"
+        },
+        {
+          "messageId": "T13-L0-001-M03",
+          "role": "user",
+          "content": "问题主要出现在晚高峰，恢复前会看到短时尖峰。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "c66c34774198475555ba8678d0cffe0a6027dc33b979e962cd70996f5d534d1a"
+        },
+        {
+          "messageId": "T13-L0-001-M04",
+          "role": "assistant",
+          "content": "这更像是窗口太短或采样不稳定造成的抖动，需要和 SLO 消耗速度一起看。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "be96325fb3f7db7c964889573d8d964cc26c67a91729b8518c86d59ec621351f"
+        },
+        {
+          "messageId": "T13-L0-001-M05",
+          "role": "user",
+          "content": "网关的目标是 99.9% 可用性，当前面板同时显示短期和长期趋势。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "a8588973347a84f30ff913919d5e6fa17a4c8461a8f44a8bf9603b630f0e55eb"
+        },
+        {
+          "messageId": "T13-L0-001-M06",
+          "role": "assistant",
+          "content": "保留两个时间尺度有助于区分瞬时尖峰和持续性风险。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "88b328ed3a77e58059e7a7853822340e85ae0b25724dd7743221250a14d28c68"
+        },
+        {
+          "messageId": "T13-L0-001-M07",
+          "role": "user",
+          "content": "我不想为了压低噪声而漏掉真正的持续故障。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "10385fbdde1e11db77be19efecba533a11a8935b8cb0fe6a0e33eb42dd02c8df"
+        },
+        {
+          "messageId": "T13-L0-001-M08",
+          "role": "assistant",
+          "content": "可以把升级条件设成两个尺度都确认后再通知，同时保留明确的回退护栏。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "5f1b3b77662808269694309052aa57fb8458c01e68ccf1c8b2b2d03c8086ed89"
+        },
+        {
+          "messageId": "T13-L0-001-M09",
+          "role": "user",
+          "content": "团队在本月中旬似乎讨论过类似规则。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "c71f9f8e1797fb17e973f49750cb84bcce6130a2ac6772de5094748c759102de"
+        },
+        {
+          "messageId": "T13-L0-001-M10",
+          "role": "assistant",
+          "content": "那次讨论的背景和这次现象相近，应该把它作为历史决策线索。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "7cef194e03220619ba1e55353cf96a26de6221e2b0ca16fa0fe51f806cebfbe8"
+        },
+        {
+          "messageId": "T13-L0-001-M11",
+          "role": "user",
+          "content": "我只记得结论包含多窗口和采样质量检查。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "0de6909d4ded5519ff130f629608a6447e9ad9d411d0392b8dcb2dbe76554747"
+        },
+        {
+          "messageId": "T13-L0-001-M12",
+          "role": "assistant",
+          "content": "我会把当前症状与历史决策分开记录，避免临时判断覆盖原有约定。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "92772704c739aa852704649b4b6cfe69ca2dd105292641f411e37b5e1dd3dbd1"
+        }
+      ],
+      "contentHash": "33999974a1a452849727f9ab292b2d829151381d0c44e5f9d7410e86c112a4df"
+    },
+    {
+      "assetId": "T13-L0-002",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "sessionId": "session-t13-history-002",
+      "messages": [
+        {
+          "messageId": "T13-L0-002-M01",
+          "role": "user",
+          "content": "我们复查了边缘网关延迟告警的多窗口方案。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "0b87a700cc3139d9bdfa7979c2b9fee16631484a1efb689ad660c2066c5ce7fe"
+        },
+        {
+          "messageId": "T13-L0-002-M02",
+          "role": "assistant",
+          "content": "先确认短窗口和长窗口的单位，再确认升级是否需要连续观测。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "6dca502af57218fa328890abb65923620734ebc0524e51c41f3b552d40026fd0"
+        },
+        {
+          "messageId": "T13-L0-002-M03",
+          "role": "user",
+          "content": "短窗口用于及时发现突发退化，长窗口用于确认是否形成 SLO 风险。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "fe5b075cc9c82c386b3c54fbedce770ff063e2999744a95dd0939608cc540b18"
+        },
+        {
+          "messageId": "T13-L0-002-M04",
+          "role": "assistant",
+          "content": "两者都确认后升级，可以减少单次尖峰造成的误报。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "5c3ac298829be47c5adbfea0c3ad17073edeb5fed5ae643971fa9c6a21bdb528"
+        },
+        {
+          "messageId": "T13-L0-002-M05",
+          "role": "user",
+          "content": "评审还关心采样丢失时不能继续放大告警。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "766ad812775ef34b2c73977e453bfed0e42a3c0603bc9133885d58adae4a8921"
+        },
+        {
+          "messageId": "T13-L0-002-M06",
+          "role": "assistant",
+          "content": "应将采样质量作为单独的回退护栏，并在变更说明中记录。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "71b8db6949cde4c05bbc422731019b241d314891737198b00bee4faa471a8439"
+        },
+        {
+          "messageId": "T13-L0-002-M07",
+          "role": "user",
+          "content": "当时有人提到短窗 5 分钟和长窗 1 小时。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "168651cac001bc447d34c0341ae34dafc7437136570483fbd46053c8f02bb61d"
+        },
+        {
+          "messageId": "T13-L0-002-M08",
+          "role": "assistant",
+          "content": "这两个尺度与现有 SLO 面板一致，但仍需从历史决定中核对数值。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "c904bc5fd0651e58cedb8bd2bf9fe21362dad700e7b60d112acfdff7ef08c517"
+        },
+        {
+          "messageId": "T13-L0-002-M09",
+          "role": "user",
+          "content": "我还记得不是看到一次就升级。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "7b0d15f73fd9a71dd41ddcb4d5bf2884cce971b0b732d0a9ca634fcb27d7e5a9"
+        },
+        {
+          "messageId": "T13-L0-002-M10",
+          "role": "assistant",
+          "content": "连续评估的设计正是为了过滤单轮抖动。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "239989de54fecf5ba9569c8495d8a335663d8524d4868519d1298366d1aa2b5f"
+        },
+        {
+          "messageId": "T13-L0-002-M11",
+          "role": "user",
+          "content": "采样质量下降时应恢复旧规则。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "2ec3a748ac4adf2702f6147b8e3a2c0b8734c287f5f88e1680f6eda6dd4799b7"
+        },
+        {
+          "messageId": "T13-L0-002-M12",
+          "role": "assistant",
+          "content": "把回退条件和两个窗口的阈值放在同一条决策记录里，方便后续复盘。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "267a2442832efde266de56e2f52c6252cc6b93bd68be93683a45d10543f1178b"
+        }
+      ],
+      "contentHash": "6273f5c663ab25c8ac762b27c2b73172957c841f45a5ade02bc69014e2b2fac1"
+    },
+    {
+      "assetId": "T13-L0-003",
+      "ownerAgentId": "agent-task1-t13-assets-a",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "sessionId": "session-t13-history-003",
+      "messages": [
+        {
+          "messageId": "T13-L0-003-M01",
+          "role": "user",
+          "content": "Harborlane Payments 做了区域切换演练，支付日志和链路偶尔接不上。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "305f2af112ea227dec1480d7a06a7c31db24424b0c0e8a4a47267b62d3de0605"
+        },
+        {
+          "messageId": "T13-L0-003-M02",
+          "role": "assistant",
+          "content": "先用同一笔交易的时间戳对齐入口、重试和下游服务。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "677f8a7dc918795a48a1060c20b3ea162ee759681671e899d510961ecfe8b729"
+        },
+        {
+          "messageId": "T13-L0-003-M03",
+          "role": "user",
+          "content": "日志能找到订单，但链路页有时只有半段。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "e3624e74457a8094b18ef9fc3c2acef210df2e150afbdddb3e2d09db887011e9"
+        },
+        {
+          "messageId": "T13-L0-003-M04",
+          "role": "assistant",
+          "content": "要检查统一交易标识是否写入每个服务，以及传播头是否被重试保留。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "09f85105826d25ee3cf108a6b3b5a7d9b36d85ac5cd4cd0dd02f6307b09d1992"
+        },
+        {
+          "messageId": "T13-L0-003-M05",
+          "role": "user",
+          "content": "我们不想把退款 webhook 的相似告警误并进来。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "41229bcec55f9c7611e00165f417766a17a876331e7cf8c5ce4b5f90f7d682fc"
+        },
+        {
+          "messageId": "T13-L0-003-M06",
+          "role": "assistant",
+          "content": "退款路径单独标记，先聚焦支付入口到授权服务。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "304a07b97c86ed29630011cc1157471607c0326f6d41a758c0128c13d1f4e9c8"
+        },
+        {
+          "messageId": "T13-L0-003-M07",
+          "role": "user",
+          "content": "演练复盘要求日志和链路能互相跳转。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "f8a019d5957717d9579388381a5403bbbd9f26cb3415f473b3d6336010a66a40"
+        },
+        {
+          "messageId": "T13-L0-003-M08",
+          "role": "assistant",
+          "content": "关联规则要同时约束日志字段和链路传播，不能只改仪表盘。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "62278c0cd1695836f66fedefb1455c91c0c0062a63960be34263db844664eb0a"
+        },
+        {
+          "messageId": "T13-L0-003-M09",
+          "role": "user",
+          "content": "重试异常时还需要更高的可见性。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "c00ceffda47911a529d92005dd246f140c9f5b1a8436348ee2fc4167faeeaa61"
+        },
+        {
+          "messageId": "T13-L0-003-M10",
+          "role": "assistant",
+          "content": "把正常流量的采样和异常时的临时采样分开记录。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "79369251bb152fd6cf01ccea246f19ccd82df46593192e9d2b79af0711d464d4"
+        },
+        {
+          "messageId": "T13-L0-003-M11",
+          "role": "user",
+          "content": "最终做法在复盘结论里，不在当前配置摘要里。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "71307e904eab34f8a18fe154ece37251508ebebd1cb6e6ddfc4cd91464c12a30"
+        },
+        {
+          "messageId": "T13-L0-003-M12",
+          "role": "assistant",
+          "content": "将复盘作为唯一决定来源，并与退款重放记录区分。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "d9ded63b203599ddb7a892e90b9177985790e7e4c5ea1fbc09afd68ac33f5f30"
+        },
+        {
+          "messageId": "T13-L0-003-M13",
+          "role": "user",
+          "content": "最终关联约定需要写回复盘正文，方便下次区域切换核对。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "c3cb081ea0a7119b5b1bcd57009e535c778d5e9c9e503553a1230ec9b245fe41"
+        },
+        {
+          "messageId": "T13-L0-003-M14",
+          "role": "assistant",
+          "content": "正文结论：日志统一写入 order_id 并透传 traceparent；支付入口采用 20% head sampling，重试异常时临时提升到 100% 以便串联链路。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "cc451ff87bd87fd404781ba02c47cdedbf9c650ac44e2d55306d30764fff87cf"
+        }
+      ],
+      "contentHash": "f43a2900c3c71acd9dc4d2f2c47abec63f4a32378214e0fef50788e8e5168345"
+    },
+    {
+      "assetId": "T13-L0-004",
+      "ownerAgentId": "agent-task1-t13-assets-a",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "sessionId": "session-t13-history-004",
+      "messages": [
+        {
+          "messageId": "T13-L0-004-M01",
+          "role": "user",
+          "content": "批量补单时账单回调尾延迟突然变长，实时订单没有同样问题。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "e84880228f594c066ab618cbb3f813b99fc2af26f428ec38cbc170724f4878a6"
+        },
+        {
+          "messageId": "T13-L0-004-M02",
+          "role": "assistant",
+          "content": "把签名校验、下游调用和失败重试分别计时。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "01f50bb2c0f5269e6a685cf7e64f07b20fb7787e86532c8bc6f053e3acca9dc1"
+        },
+        {
+          "messageId": "T13-L0-004-M03",
+          "role": "user",
+          "content": "签名校验正常，主要耗时集中在下游暂时不可用之后。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "40c534aafe7b37ced1f44bde469ebc7126295f69058742b79fedf998af65d362"
+        },
+        {
+          "messageId": "T13-L0-004-M04",
+          "role": "assistant",
+          "content": "先确认重试是否挤占了批量窗口，再核对历史退避决定。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "8341295345c1d474e06844dee3daca8bf4e6ce3180381e27df7ceb2ebc349dbf"
+        },
+        {
+          "messageId": "T13-L0-004-M05",
+          "role": "user",
+          "content": "压测复盘也比较了退款 webhook 的重放策略。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "5c9894d704a8bc9f94d0748d03c5b17efc7c20075131e7b065c1fb145e470c9c"
+        },
+        {
+          "messageId": "T13-L0-004-M06",
+          "role": "assistant",
+          "content": "退款重放只作同域参照，账单回调要单独追踪。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "922b6ba47ef2efac83950a41ef4244a41948761b0fa7010a90319a3d5893dfa2"
+        },
+        {
+          "messageId": "T13-L0-004-M07",
+          "role": "user",
+          "content": "我们需要知道自动重试什么时候应该停。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "9f9f0ee87cda64c892c0d617a0a2bb61f82771edd0ab2514ab2d4217295d5a53"
+        },
+        {
+          "messageId": "T13-L0-004-M08",
+          "role": "assistant",
+          "content": "停止边界要和退避阶段、人工接管动作放在同一条记录中。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "5651ff074d076646f17e76c87a0f7ec57f554243b02e7f7ad261c8e41d976761"
+        },
+        {
+          "messageId": "T13-L0-004-M09",
+          "role": "user",
+          "content": "如果连续 5xx 一直重放，尾延迟会继续放大。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "ca102d525e0047c8fe1c4043bb623f3cd1ce86009cacf50ba550b4dbb304cf5c"
+        },
+        {
+          "messageId": "T13-L0-004-M10",
+          "role": "assistant",
+          "content": "历史决定应明确最大次数，超过后转人工而不是继续排队。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "5978fed15ceddb6ddc68a42a90a99a779038c66d0c01b24bc5c9f17784755f38"
+        },
+        {
+          "messageId": "T13-L0-004-M11",
+          "role": "user",
+          "content": "这项决定是在补单压测评审中收口的。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "60e852350c75e3e3c10b27199f19e041545cc8a22ac66e6e3e73934e4a5d3972"
+        },
+        {
+          "messageId": "T13-L0-004-M12",
+          "role": "assistant",
+          "content": "保留压测上下文，避免拿实时订单的参数替代它。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "9e9c94fd20add2d45b217f23e02015e44d04afca445f085e7e9b2d569587a516"
+        },
+        {
+          "messageId": "T13-L0-004-M13",
+          "role": "user",
+          "content": "把退避阶段和停止边界补进压测复盘，后续才能解释尾延迟。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "cb7a14b080d34b06302a976496d1efda80e428876e49f62407e5a4e2a1136353"
+        },
+        {
+          "messageId": "T13-L0-004-M14",
+          "role": "assistant",
+          "content": "正文结论：签名校验通过后按 30 秒、2 分钟、10 分钟退避，最多重试 3 次；下游连续返回 5xx 时在第三次后转入人工队列，不再自动重放。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "8e57b3f3738db00dc23a7b3975c1ec09de78a195ff70e96526902396bbf02c48"
+        }
+      ],
+      "contentHash": "767703dcf815c79e0a5900305519552b83b068bc145cf8255e8c302021a88646"
+    },
+    {
+      "assetId": "T13-L0-005",
+      "ownerAgentId": "agent-task1-t13-assets-a",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "sessionId": "session-t13-history-005",
+      "messages": [
+        {
+          "messageId": "T13-L0-005-M01",
+          "role": "user",
+          "content": "退款 webhook 偶尔重复投递，客服看到同一退款两次。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "ab85a4b2686faa49ef11061230b407f66e2b9628edb8b9c496308c9eeaeef69b"
+        },
+        {
+          "messageId": "T13-L0-005-M02",
+          "role": "assistant",
+          "content": "先核对幂等键和重放队列，再看是否与支付回调混用。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "4ee5bb1ab3f4a4471c0ea9a5922eaf83eb46e70eb6091ffa49cebf25e78d0327"
+        },
+        {
+          "messageId": "T13-L0-005-M03",
+          "role": "user",
+          "content": "重放主要发生在对账窗口。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "dc421605a16c9df76d419e77d19ac8dc3249e85614df5ad38813e9828281cb97"
+        },
+        {
+          "messageId": "T13-L0-005-M04",
+          "role": "assistant",
+          "content": "对账窗口的并发与支付补单不同，记录要分开。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "72cfd96d5c992acf4369340f20298c54f162ae0c9f1c7d2ffd8faab120241ad0"
+        },
+        {
+          "messageId": "T13-L0-005-M05",
+          "role": "user",
+          "content": "有人建议给失败事件更长的退避。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "c8e750919625573654b48ea6db1a25218ca0c161d0518f79f8eeb02e5b87cb53"
+        },
+        {
+          "messageId": "T13-L0-005-M06",
+          "role": "assistant",
+          "content": "建议先验证退款消费者的去重行为。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "911d4f223e8ed15713c765882a667315ca8817416c70ab1d16cdde311167e6b6"
+        },
+        {
+          "messageId": "T13-L0-005-M07",
+          "role": "user",
+          "content": "这不是区域切换演练的记录。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "17848c7e4fc988559f90db05d186acdd9a97e2790678d6cf148ed10cf12deb97"
+        },
+        {
+          "messageId": "T13-L0-005-M08",
+          "role": "assistant",
+          "content": "标记为退款路径，避免与支付链路关联复盘混淆。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "c354c50b56d25ea40529bba9b395afe62d0597b4efeb7e11b942a7ac8b95dbbf"
+        },
+        {
+          "messageId": "T13-L0-005-M09",
+          "role": "user",
+          "content": "告警标题和账单回调很像。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "d9643349f70ee2eea043c934a0a7086963239aa453806b0f54d2e2c76f38d75b"
+        },
+        {
+          "messageId": "T13-L0-005-M10",
+          "role": "assistant",
+          "content": "搜索时加入资源类型和事件方向两个限定。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "b826fcf333f1fd6266b33bb8a1c80d56c65d1b346c812f9ebb2ae29bab6188fb"
+        },
+        {
+          "messageId": "T13-L0-005-M11",
+          "role": "user",
+          "content": "暂时不改全局重试参数。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "ef0c3f6cabd5d646458af46be075b5dca79b704dfa5a305eed60dfd5b2c57044"
+        },
+        {
+          "messageId": "T13-L0-005-M12",
+          "role": "assistant",
+          "content": "保留现状，等待退款专项复盘。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "93c7910267b925e7f2a03349d448fed86d86d4b145b3947c53d892106aa798c7"
+        }
+      ],
+      "contentHash": "f69297499a3310d90c6a7ac21ce8e59bb477fdbff0670c523ef7637c4b37af82"
+    },
+    {
+      "assetId": "T13-L0-006",
+      "ownerAgentId": "agent-task1-t13-assets-a",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "sessionId": "session-t13-history-006",
+      "messages": [
+        {
+          "messageId": "T13-L0-006-M01",
+          "role": "user",
+          "content": "支付入口的链路样本在高峰期明显变少。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "e133323fd5cc94ce4a1cad961670194844a64db449005ff411b45a103321d440"
+        },
+        {
+          "messageId": "T13-L0-006-M02",
+          "role": "assistant",
+          "content": "先比较入口、授权和结算三个服务的采样状态。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "177c5b0852368ef734ae490b9d92fe72449eb89247529f7b29dd73d7bff3d1ae"
+        },
+        {
+          "messageId": "T13-L0-006-M03",
+          "role": "user",
+          "content": "授权服务仍能看到大部分请求。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "143b967b4037cebbedb62a1bd1243b8f5beade70c59de4423e69834ee27b06f2"
+        },
+        {
+          "messageId": "T13-L0-006-M04",
+          "role": "assistant",
+          "content": "可能是入口策略与下游策略不一致。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "7bb20674bfd41a8ffda29d59a5c836ef68c55a010c7abadcb216e7fe0273be66"
+        },
+        {
+          "messageId": "T13-L0-006-M05",
+          "role": "user",
+          "content": "区域切换演练也出现过链路断点。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "a44394915c105854e0065b60aabf81d9ede45cb3065319a1dda5cbddd4ee161e"
+        },
+        {
+          "messageId": "T13-L0-006-M06",
+          "role": "assistant",
+          "content": "这条记录只讨论采样观察，不等于演练关联规则。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "d16b545d96ac9467c5afac9b865b96fd90380c736d8983fb3dfd00b2a29b6127"
+        },
+        {
+          "messageId": "T13-L0-006-M07",
+          "role": "user",
+          "content": "重试流量看起来比正常流量更容易留下样本。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "90f65f02c206a74f06b8e64e973638cebc492df0dfeb382958c20fa77292560f"
+        },
+        {
+          "messageId": "T13-L0-006-M08",
+          "role": "assistant",
+          "content": "记录异常流量的可见性，但不要推断最终采样决定。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "26dbdf42181977546516500ad6ba82bd0ce9c9a29ca48f84ad03c0143dd0cfda"
+        },
+        {
+          "messageId": "T13-L0-006-M09",
+          "role": "user",
+          "content": "退款路径的样本另有一套标签。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "95c99de755652f82338d9a7a97fb16adebbb5d47ed9252b6b6c82c0afb60c1f9"
+        },
+        {
+          "messageId": "T13-L0-006-M10",
+          "role": "assistant",
+          "content": "保持退款与支付入口隔离。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "dd3642030f5af3abba88d2c733387173adb9fbebb050fbe12367c2286ad9bc5c"
+        },
+        {
+          "messageId": "T13-L0-006-M11",
+          "role": "user",
+          "content": "需要后续评估采样成本。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "154d16749c3eb814086a785991160f768c9c2c667c81b2e00b3b869f319a362e"
+        },
+        {
+          "messageId": "T13-L0-006-M12",
+          "role": "assistant",
+          "content": "把成本评估留给采样专项。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "ddef94fce2bfc0373015461ebea89c8ee076718f167c28d52e42e849bc603a23"
+        }
+      ],
+      "contentHash": "63430a55aea90c698289e876deca2bac7b6a568bb2b36350968a24ca45b2ab3c"
+    },
+    {
+      "assetId": "T13-L0-007",
+      "ownerAgentId": "agent-task1-t13-assets-b",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "sessionId": "session-t13-history-007",
+      "messages": [
+        {
+          "messageId": "T13-L0-007-M01",
+          "role": "user",
+          "content": "Nimbus 的交互式小批量查询需要临时生成火焰图。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "545749542f737f5547149ed2583a9aecb89418e8f3c8bdba659fffe095e38766"
+        },
+        {
+          "messageId": "T13-L0-007-M02",
+          "role": "assistant",
+          "content": "先限制单次输入规模，避免把交互延迟和夜间批处理混在一起。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "bf98cb053a38cf9119198f2e2f9effa7802732c75ad5d063c1dbbd2ed14bf4ed"
+        },
+        {
+          "messageId": "T13-L0-007-M03",
+          "role": "user",
+          "content": "这个任务只跑几分钟，采样开销不明显。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "0ac42b3a04b11cd873d0dbf6e07d01bc2300c5d1d888c1063d8546181a96e5c9"
+        },
+        {
+          "messageId": "T13-L0-007-M04",
+          "role": "assistant",
+          "content": "交互任务的画像策略不能直接套用夜间基准。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "51a6ecfea5a5658917a7fdac8e8320dfcd248b1f3153dbfdd92dd69d70b32a46"
+        },
+        {
+          "messageId": "T13-L0-007-M05",
+          "role": "user",
+          "content": "也看到压缩调用变宽，但不是版本回归主线。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "c33566485ff4d53c980d7d23be8fad00f5da6bc71b47313c6438d0b946a04afe"
+        },
+        {
+          "messageId": "T13-L0-007-M06",
+          "role": "assistant",
+          "content": "记录热点供开发者参考，不下批次性能结论。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "90fab2f72c4588291042e114b19f7e6ed840a813c267b835d1b675a23943653e"
+        },
+        {
+          "messageId": "T13-L0-007-M07",
+          "role": "user",
+          "content": "worker 数量由用户临时选择。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "31a45393c2a7aa5bbef8268804d28e18ce1b400c886b92f3d69d88e5446fd153"
+        },
+        {
+          "messageId": "T13-L0-007-M08",
+          "role": "assistant",
+          "content": "保留选择值，后续与固定基准分开比较。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "fd7ab36aa9775037d9480340224455f071e88f4e26e6852b1367f39066779682"
+        },
+        {
+          "messageId": "T13-L0-007-M09",
+          "role": "user",
+          "content": "有人问过并发上限。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "29ab3854775251a79727bdc89ff5629b4caf4b19b4a81c16b79ebed8516f906b"
+        },
+        {
+          "messageId": "T13-L0-007-M10",
+          "role": "assistant",
+          "content": "当前只约束交互会话，不代表批量分片规则。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "0d51bb8c480c5653126305aae049793d7f0923d446204dae0bd3b7e2c6d22a86"
+        },
+        {
+          "messageId": "T13-L0-007-M11",
+          "role": "user",
+          "content": "画像结束后立即清理临时文件。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "a0853e3fe1ba8671db21dac2978f09248b09ff4668ba68d0eefa9c4d32567389"
+        },
+        {
+          "messageId": "T13-L0-007-M12",
+          "role": "assistant",
+          "content": "将清理动作记录在交互任务日志中。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "5f43eb00bc19b800d8b98d13cc4595c5c665ab1894b961fc3b6ae73d5842c73d"
+        }
+      ],
+      "contentHash": "ca2a7d0c836fbe0087f73da38eb324a9776c1984e0b03b9fd74be216253cbc30"
+    },
+    {
+      "assetId": "T13-L0-008",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "sessionId": "session-t13-history-008",
+      "messages": [
+        {
+          "messageId": "T13-L0-008-M01",
+          "role": "user",
+          "content": "Atlas Collector 的 Alloy 标签清理变更在八月中旬上线。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "3ef917a292cabed39419eb45b5f6873b3c7a1c4481802c6f7423f5629b8b6c9e"
+        },
+        {
+          "messageId": "T13-L0-008-M02",
+          "role": "assistant",
+          "content": "先核对接收端是否仍能识别必要资源标签。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "64e139a151a6eaaba1cb6059d5bca33abef4e0e9c4276b51695e37728b1a430d"
+        },
+        {
+          "messageId": "T13-L0-008-M03",
+          "role": "user",
+          "content": "exporter 队列有短时波动，但采样迁移不在这条变更里。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "c352a24f90433b2be1bae5af20e8223522bc19ed6c7707c5cae167b50d650996"
+        },
+        {
+          "messageId": "T13-L0-008-M04",
+          "role": "assistant",
+          "content": "把队列波动和标签重写分开验证。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "bae40d9be94c858b82e34be83d96d92344a36740173f33939be04bbbacd2374e"
+        },
+        {
+          "messageId": "T13-L0-008-M05",
+          "role": "user",
+          "content": "评审讨论了丢失标签的补救办法。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "15406b07133941cdda4879e2dd5de8bcca78e2fbd6f92e564a6dba4c21a9a205"
+        },
+        {
+          "messageId": "T13-L0-008-M06",
+          "role": "assistant",
+          "content": "补救办法不等于采样迁移的批准决定。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "c4de32030153a87708f9fd41d3021edec3e98e4a2d61cc8544507af56231f14b"
+        },
+        {
+          "messageId": "T13-L0-008-M07",
+          "role": "user",
+          "content": "变更日期与另一份正式评审很接近。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "1f48943e5e22c5490a0c919db787215e68215e5bdb5e5a8cea37eba647230792"
+        },
+        {
+          "messageId": "T13-L0-008-M08",
+          "role": "assistant",
+          "content": "搜索时必须同时限定变更主题和决定类型。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "d1152e262703ba3f7ea62c3780816360a318e55e15abe9a855d4c4f85de64aff"
+        },
+        {
+          "messageId": "T13-L0-008-M09",
+          "role": "user",
+          "content": "目前只观察关键租户。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "65a73769b4d0d900f99bc4997bf2d87c4c6f33604af4fa0a2b8d5bcf5a46ea1b"
+        },
+        {
+          "messageId": "T13-L0-008-M10",
+          "role": "assistant",
+          "content": "观察范围记录在标签变更单中。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "99cf78d5f880cb6331b06c8f8f0350f5856d93e0d7d3ac3c46be17495b8b4efc"
+        },
+        {
+          "messageId": "T13-L0-008-M11",
+          "role": "user",
+          "content": "不调整 traces 保留比例。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "00f2ea49b6874302c5d8845476ecb5d7a9b8576a21a090b608e8926b928720bb"
+        },
+        {
+          "messageId": "T13-L0-008-M12",
+          "role": "assistant",
+          "content": "保留当前采样设置，等待迁移评审。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "77630a42690bde258affbbbf3f38a2e962351e1517c7dfe541c21438c2457ae8"
+        }
+      ],
+      "contentHash": "40e4d89f8d9284f8f5eff0e3de36790451c33cb1fce700a9ac7549980a163cec"
+    },
+    {
+      "assetId": "T13-L0-009",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "sessionId": "session-t13-history-009",
+      "messages": [
+        {
+          "messageId": "T13-L0-009-M01",
+          "role": "user",
+          "content": "Atlas exporter 队列在灰度早期有过堆积。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "f5d7078c74a592af11f5f6502a78f3e278d7ae45a61976876f8c3e6acf9aefe1"
+        },
+        {
+          "messageId": "T13-L0-009-M02",
+          "role": "assistant",
+          "content": "先记录队列水位、租户范围和持续时间。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "a1ae193e5f98ea78678f654b2dab08cce58cab2222bb967391c1b7375a8e89c0"
+        },
+        {
+          "messageId": "T13-L0-009-M03",
+          "role": "user",
+          "content": "堆积没有持续到整个灰度窗口。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "54b07ce0736e1e8fd045fbab6146c5167f65899e2a8020b432f95269df67bf66"
+        },
+        {
+          "messageId": "T13-L0-009-M04",
+          "role": "assistant",
+          "content": "短暂波动不能直接触发管线回退。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "52ed616638ccf5a3c54f1504f804536a512554991dc9b259d861b9a41e0a8c39"
+        },
+        {
+          "messageId": "T13-L0-009-M05",
+          "role": "user",
+          "content": "采样迁移小组在同步观察丢失率。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "da5ca0c7333e5356b9c2b6d73ee09bd247bb58c00503c2f2e4a288f71beb65e9"
+        },
+        {
+          "messageId": "T13-L0-009-M06",
+          "role": "assistant",
+          "content": "将观察指标与批准的迁移约束分开保存。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "fc418629c37b1603e86b8ace873f043d07047225ef4e15c2ad79128198f1fc0d"
+        },
+        {
+          "messageId": "T13-L0-009-M07",
+          "role": "user",
+          "content": "同一周还有 Alloy 标签清理。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "3b015c0ea10d0b3ad59e488ba1b6f6894280e73cb4d3a6f17094af7ddade0eb8"
+        },
+        {
+          "messageId": "T13-L0-009-M08",
+          "role": "assistant",
+          "content": "标签清理作为时间相近的干扰。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "309ec5f19d94f6743f311361b146b176a361bd04a0b14236e0205bb18c3f34da"
+        },
+        {
+          "messageId": "T13-L0-009-M09",
+          "role": "user",
+          "content": "我还没有找到最终批准文档。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "141fc092bf93793d9dfd2ef9529cc71a880c11aedc7587ff8dc53832e0b4ee01"
+        },
+        {
+          "messageId": "T13-L0-009-M10",
+          "role": "assistant",
+          "content": "按项目、决定类型和日期检索正式文档。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "4f049b690f20233bac5f15f64c5464b2c969fb59eb33da5d7c07c0f3276f4d46"
+        },
+        {
+          "messageId": "T13-L0-009-M11",
+          "role": "user",
+          "content": "当前不要改 exporter 队列参数。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "22c07b6c91c106c0c8eeb7552a960b0c1a0f4ae11fe34e6f901494cfa4a2b336"
+        },
+        {
+          "messageId": "T13-L0-009-M12",
+          "role": "assistant",
+          "content": "只做观测，等待正式决定。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "b7975a327710eb948c4956235cd9f7ab3ee159eb0c211c0a132e0b8f145ce28f"
+        }
+      ],
+      "contentHash": "2ba446bf2b3c03a005b3482def5efd4a7519980c24b5a378968d37b96c314095"
+    },
+    {
+      "assetId": "T13-L0-010",
+      "ownerAgentId": "agent-task1-t13-assets-a",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "sessionId": "session-t13-history-010",
+      "messages": [
+        {
+          "messageId": "T13-L0-010-M01",
+          "role": "user",
+          "content": "SentryGrid 做了 paging 分组演练，值班台收到许多相似通知。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "034e17304ebfc6ebee890ed5397613370411588605034c0cb2136643765972ff"
+        },
+        {
+          "messageId": "T13-L0-010-M02",
+          "role": "assistant",
+          "content": "先检查分组键、通知渠道和轮值交接。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "7f0c9fbe6c7e489155a510dbd919de13affb10a4b6d63e391c2cc0014892a0fd"
+        },
+        {
+          "messageId": "T13-L0-010-M03",
+          "role": "user",
+          "content": "演练没有模拟真正的多服务告警风暴。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "19db86c783a3674d293b8101d994065c63fe90488508f3e4678ff1790a51c791"
+        },
+        {
+          "messageId": "T13-L0-010-M04",
+          "role": "assistant",
+          "content": "因此不要把它与 noise budget 复盘混为一谈。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "5d65bd938c1da74848e7a6841e6190c9748b6d785990315cda554ee2515bf16b"
+        },
+        {
+          "messageId": "T13-L0-010-M05",
+          "role": "user",
+          "content": "有人提议给 paging 加一个短静默。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "6a5b06941f47b4264fb337dd46b77f778a2c12c24c5646c81c4de862c0673c3b"
+        },
+        {
+          "messageId": "T13-L0-010-M06",
+          "role": "assistant",
+          "content": "这只是演练建议，尚未形成事故场景决定。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "73b334bb8341a3fd8d88c9137459f174253ec3a62139b2688f7d551e4025f74e"
+        },
+        {
+          "messageId": "T13-L0-010-M07",
+          "role": "user",
+          "content": "升级由当班 lead 口头确认。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "72a3cf4f4176f6ac91fb821821e6b4930f3daf12b32df0a770881bfa047017af"
+        },
+        {
+          "messageId": "T13-L0-010-M08",
+          "role": "assistant",
+          "content": "记录临时做法，不推断正式指挥角色。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "f3d71c2256882a5ba8c9a833d8406555194be529c9aa5509715019d8fc357255"
+        },
+        {
+          "messageId": "T13-L0-010-M09",
+          "role": "user",
+          "content": "名称和告警风暴复盘很像。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "111a7ebec90751de86d6398cada5348ac4608ef1835335eebb281b5bfcab1bc0"
+        },
+        {
+          "messageId": "T13-L0-010-M10",
+          "role": "assistant",
+          "content": "用事件类型和复盘主题区分两份记录。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "772ab4c6b27d4c02aeace1377c6a9f2a46cfca9e98e99c88bbb90f6afa84dd6f"
+        },
+        {
+          "messageId": "T13-L0-010-M11",
+          "role": "user",
+          "content": "这次只验证分组通知。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "607eb77f17ab6b442a80529b06dce017fa2582e4f86dfe43b49b77177619f4b3"
+        },
+        {
+          "messageId": "T13-L0-010-M12",
+          "role": "assistant",
+          "content": "保留 paging 分组结果，等待专项复盘。",
+          "sourceEvidenceIds": [
+            "T13-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-28T18:00:00+08:00",
+          "contentHash": "cfccd0b01bc172bdcaa91bdad5e574820f8c3dd813b2d76db5becdd1f5273099"
+        }
+      ],
+      "contentHash": "584985695501202e35356a81d65ce6d0616e214c51904b979c89572ef17fa093"
+    }
+  ],
+  "l1Memories": [
+    {
+      "assetId": "T13-L1-001",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "Asteria Edge 的边缘网关以 99.9% 可用性为目标，延迟告警需要同时观察短期突发和长期消耗，避免单次尖峰直接改变事故级别。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T13-L0-001-M11",
+        "T13-L0-001-M12",
+        "T13-L0-002-M11",
+        "T13-L0-002-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "85c497e11687a463826e0ce7d123544a8e799e4c06acaca36c0f50dfea85427b"
+    },
+    {
+      "assetId": "T13-L1-002",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "本月中旬的复盘将反复触发归因于单轮短时尖峰与采样稳定性混在一起判断，因此采用短期、长期两个尺度，并要求连续观测后再升级。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T13-L0-001-M11",
+        "T13-L0-001-M12",
+        "T13-L0-002-M11",
+        "T13-L0-002-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "154502e6305a00ffc32ca3424e3904c7d1ab327680ccda8ebd4bae9ab1fc4e10"
+    },
+    {
+      "assetId": "T13-L1-003",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "decision",
+      "content": "历史决定为：5 分钟 burn rate 超过 14、1 小时 burn rate 超过 2；两个窗口各连续评估两轮后才升级；采样丢失率超过 3% 时回退到旧规则。该决定用于压低告警抖动，同时保留采样异常时的安全退路。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T13-L0-001-M11",
+        "T13-L0-001-M12",
+        "T13-L0-002-M11",
+        "T13-L0-002-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "e4583a1f24051d24cc1ce202cf102edf0f1e94d794226456cbffb9f6dabdad8e"
+    },
+    {
+      "assetId": "T13-L1-004",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "上线核对沿用短窗 5 分钟、长窗 1 小时的双尺度判断；升级前需完成两轮连续评估，采样质量超过既定丢失上限则恢复旧规则并留下复盘记录。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T13-L0-002-M11",
+        "T13-L0-002-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "3b46ccc8932aeebf447c75ed6f1787185e7af356006fcc7d1f838eaf4416506c"
+    },
+    {
+      "assetId": "T13-L1-005",
+      "ownerAgentId": "agent-task1-t13-assets-a",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "event",
+      "content": "退款 webhook 的重复投递属于独立路径；与支付入口的区域切换演练相比，它们共享部分告警词汇但不共享关联决定。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T13-L0-005-M11",
+        "T13-L0-005-M12",
+        "T13-L0-006-M11",
+        "T13-L0-006-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "8afc223906341ceb985363cb938e334843ca33ce8f93b834288a93c24ef7e93e"
+    },
+    {
+      "assetId": "T13-L1-006",
+      "ownerAgentId": "agent-task1-t13-assets-a",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "账单回调的尾延迟回归集中在批量补单和下游暂时不可用阶段，历史处理应与实时订单及退款重放分开核对。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T13-L0-004-M13",
+        "T13-L0-004-M14",
+        "T13-L0-005-M11",
+        "T13-L0-005-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "93b2b8b3a0ed07fd474e5a7eb5771f14c73529591a8ae64cccdeab917cf189de"
+    },
+    {
+      "assetId": "T13-L1-007",
+      "ownerAgentId": "agent-task1-t13-assets-a",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "decision",
+      "content": "支付入口的采样波动会使链路看起来不完整，但观察记录没有替代区域切换关联复盘中的最终做法。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T13-L0-003-M13",
+        "T13-L0-003-M14",
+        "T13-L0-006-M11",
+        "T13-L0-006-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "f3f009259d266cc929a00816e203ab67105c281b0afdc04e02dd63c93037890c"
+    },
+    {
+      "assetId": "T13-L1-008",
+      "ownerAgentId": "agent-task1-t13-assets-b",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "夜间批次性能回归必须固定输入和 worker 基线，并把交互式小批量画像作为独立场景。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T13-L0-007-M11",
+        "T13-L0-007-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "b8b64bb3e0fdcc12e3867fa1b2561dfe86d55f0bbbcd76c6ad6e2a725323740b"
+    },
+    {
+      "assetId": "T13-L1-009",
+      "ownerAgentId": "agent-task1-t13-assets-b",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "Nimbus 的压缩调用热点在版本回归中变宽，画像结果需要与批次吞吐和采样开销一起解释。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T13-L0-007-M11",
+        "T13-L0-007-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "b870b4f28164786fd96259562498857f7cc57b9b359e9f1cd936e538fc47c5e6"
+    },
+    {
+      "assetId": "T13-L1-010",
+      "ownerAgentId": "agent-task1-t13-assets-b",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "decision",
+      "content": "夜间基准画像固定 10% 采样，分片并发最多 8 个；当单个热点累计样本达到 50 万或画像开销超过批次 CPU 的 5% 就停止采集。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T13-L0-007-M11",
+        "T13-L0-007-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "8e5a607e5686d4ff6204df2ada32d7770bc1db0e0a163d13695a4b7c3caa2817"
+    },
+    {
+      "assetId": "T13-L1-011",
+      "ownerAgentId": "agent-task1-t13-assets-b",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "火焰图复盘要求保留发布版本、固定批次和热点排序，不能用交互任务的临时样本替代夜间基准。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T13-L0-007-M11",
+        "T13-L0-007-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "918474f1716b08995a576dcdfc768de08c2f2ae703f9d4b3e424fe7aac3b9229"
+    },
+    {
+      "assetId": "T13-L1-012",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "Atlas 采样迁移灰度期间应同时观察 exporter 队列和关键租户数据完整性，短时队列波动本身不等于回退。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T13-L0-008-M11",
+        "T13-L0-008-M12",
+        "T13-L0-009-M11",
+        "T13-L0-009-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "e1c662a7783d87db6a878e0c6133fd5747ab7fe95d371015f617fa7a17e14192"
+    },
+    {
+      "assetId": "T13-L1-013",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "decision",
+      "content": "正式批准方案保留 15% 的全量 traces；若 exporter 队列连续 5 分钟超过 70% 或关键租户丢失率达到 1%，立即回退旧管线。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T13-L0-008-M11",
+        "T13-L0-008-M12",
+        "T13-L0-009-M11",
+        "T13-L0-009-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "cb5cbc7dfc53789f4495fea653839f66d7f037439d50c52aad8641799da62bb0"
+    },
+    {
+      "assetId": "T13-L1-014",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "event",
+      "content": "Alloy 标签清理发生在相近时间，但它处理的是标签识别与重写，不改变采样迁移批准决定。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T13-L0-008-M11",
+        "T13-L0-008-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "abf5ff0526e3c478ba2ad36379ad625e38924be586de60584d3ed64600f491fa"
+    },
+    {
+      "assetId": "T13-L1-015",
+      "ownerAgentId": "agent-task1-t13-assets-a",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "SentryGrid 告警风暴复盘围绕重复通知、静默护栏、noise budget 和升级确认展开，具体行动项保留在事故场景中。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T13-L0-010-M11",
+        "T13-L0-010-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "a67793bb85f750477c8c1f9362385382b944ce4d3b4329cd8eeb8bb09603b28c"
+    },
+    {
+      "assetId": "T13-L1-016",
+      "ownerAgentId": "agent-task1-t13-assets-a",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "type": "fact",
+      "content": "paging 分组演练只验证通知分组和轮值交接，与告警风暴的 noise budget 决定相似但不是同一事件。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T13-L0-010-M11",
+        "T13-L0-010-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "fa031a8d34f3b089124296f332b96f3882ec4a3c1f0f2905b34e6f936bb641fe"
+    }
+  ],
+  "l2Scenes": [
+    {
+      "assetId": "T13-L2-001",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "path": "reviews/asteria-edge/latency-alerts.md",
+      "summary": "团队围绕延迟告警抖动、SLO 风险和采样稳定性做过一轮策略复盘，形成了可供历史核对的多窗口决策记录。具体数字与回退门槛保留在相关历史条目中。",
+      "content": "场景记录：Asteria Edge 在晚高峰出现延迟尖峰，团队比较短期和长期 SLO 消耗，并决定将窗口判断、连续观测和采样质量护栏放在同一条复盘链路中。短窗、长窗的具体阈值与采样丢失回退门槛由关联的历史记忆保存；本场景只记录决策背景、核对顺序和复盘要求。",
+      "injected": true,
+      "supportingSessionIds": [
+        "session-t13-history-001",
+        "session-t13-history-002"
+      ],
+      "contentHash": "e632802454993e3d0e113e9650192409b1ca2cbb2066968d3d56158ec2d8cdeb"
+    },
+    {
+      "assetId": "T13-L2-002",
+      "ownerAgentId": "agent-task1-t13-assets-a",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "path": "reviews/harborlane/region-failover.md",
+      "summary": "一次支付区域切换演练集中讨论日志、链路和重复告警的关联方式；退款重放是相邻但独立的场景。",
+      "content": "场景记录：区域切换演练从支付入口到授权服务复盘同一交易的日志与链路连续性，要求统一交易标识、传播链路上下文，并为异常重试保留更高可见性。退款 webhook 的重复投递被列为独立干扰。完整字段与采样档位写入关联会话结论。",
+      "injected": true,
+      "supportingSessionIds": [
+        "session-t13-history-003",
+        "session-t13-history-005"
+      ],
+      "contentHash": "90d54beee7f71269883c82ac50c5d43076a252153d2bd06f6a50c0d4f93435f1"
+    },
+    {
+      "assetId": "T13-L2-003",
+      "ownerAgentId": "agent-task1-t13-assets-b",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "path": "reviews/nimbus/interactive-profile.md",
+      "summary": "交互式小批量画像包含压缩热点和临时采样讨论，与夜间基准回归相似但约束不同。",
+      "content": "场景记录：Nimbus 交互式小批量为了定位压缩热点临时生成火焰图，输入规模、worker 数量和采样开销随会话变化。该场景要求把临时画像与固定夜间基准分离，清理临时文件，并将任何并发讨论标记为交互任务约束。夜间基准的正式参数保留在另一条记忆中。",
+      "injected": true,
+      "supportingSessionIds": [
+        "session-t13-history-007"
+      ],
+      "contentHash": "23e8f00cb33e2b167995051ed588b43fae6816a56035f1e7e47f5e4f1cae9c45"
+    },
+    {
+      "assetId": "T13-L2-004",
+      "ownerAgentId": "agent-task1-t13-assets-a",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "path": "incidents/sentrygrid/paging-drill.md",
+      "summary": "该场景验证通知分组、轮值交接和临时静默建议，不是告警风暴 noise budget 的正式复盘。",
+      "content": "场景记录：本次 paging 分组演练验证通知分组键、渠道路由和轮值交接；参与者提出短静默建议，但没有形成告警风暴的正式预算规则，也没有确定事故升级确认角色。该演练与 noise budget review 保持独立。",
+      "injected": true,
+      "supportingSessionIds": [
+        "session-t13-history-010"
+      ],
+      "contentHash": "7034396d78071989fe81c99c77ca14fc4aeee67d949bb1e24820ed41ca982ed3"
+    },
+    {
+      "assetId": "T13-L2-005",
+      "ownerAgentId": "agent-task1-t13-assets-a",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "path": "incidents/sentrygrid/noise-budget-review.md",
+      "summary": "告警风暴复盘场景记录了重复通知、静默护栏、noise budget 和升级确认的最终行动项；具体执行细节仅在场景正文中核对，摘要不展开数值。",
+      "content": "场景正文：SentryGrid 告警风暴复盘确认重复 paging 必须受静默护栏约束。静默窗口上限为 12 分钟；noise budget 设为每小时 3 次 paging。预算耗尽后，由 incident commander 确认是否升级。解除静默、预算耗尽和升级确认都要写入事故时间线；当前值班表不改变这次复盘确定的角色。",
+      "injected": true,
+      "supportingSessionIds": [
+        "session-t13-history-010"
+      ],
+      "contentHash": "8147cc22c165d1e623edcbd47d67d1d2e86bb7835e1a00dc77e98b88691c8c48"
+    }
+  ],
+  "l3Profiles": [
+    {
+      "assetId": "T13-L3-001",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-HISTORY-L3"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "content": "用户长期负责工程可观测性，偏好先核对历史决策，再进行小范围、可回退的变更。",
+      "stability": "team",
+      "contentHash": "f8d0c2b1f73df062e704eaf409aa2721bcfadd3c8944e15991475f9a2539a354"
+    }
+  ],
+  "injectionContract": {
+    "l0Injected": false,
+    "l1Injected": false,
+    "l2PathAndSummaryInjected": true,
+    "l3ContentInjected": true
+  }
+}

@@ -1,0 +1,180 @@
+{
+  "schema_version": "task1.skill_source_adaptation.v1",
+  "team_id": "T13",
+  "repository_url": "https://github.com/grafana/skills",
+  "commit_sha": "51d33e71e191b409bbd25fc7be2684c610d18166",
+  "license": "Apache-2.0",
+  "adaptations": [
+    {
+      "asset_id": "T13-SKILL-PROMETHEUS",
+      "source_id": "T13-SRC-PROMETHEUS",
+      "raw_path": "raw/prometheus/SKILL.md",
+      "adapted_path": "adapted/T13-SKILL-PROMETHEUS/SKILL.md",
+      "raw_sha256": "1547de8e4e92ef45bf13911b6279770c6d771577815683da68880e18cb97473a",
+      "adapted_sha256": "1547de8e4e92ef45bf13911b6279770c6d771577815683da68880e18cb97473a",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T13-SKILL-LOKI",
+      "source_id": "T13-SRC-LOKI",
+      "raw_path": "raw/loki/SKILL.md",
+      "adapted_path": "adapted/T13-SKILL-LOKI/SKILL.md",
+      "raw_sha256": "62e7daecefc73d4392585fff99a5c5d72d2de1aa1472c80c8305b96222982779",
+      "adapted_sha256": "62e7daecefc73d4392585fff99a5c5d72d2de1aa1472c80c8305b96222982779",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T13-SKILL-DPM-FINDER",
+      "source_id": "T13-SRC-DPM-FINDER",
+      "raw_path": "raw/dpm-finder/SKILL.md",
+      "adapted_path": "adapted/T13-SKILL-DPM-FINDER/SKILL.md",
+      "raw_sha256": "b7bc79fd57d3bdba388e273407c6ba55addea9611aea31fcbbac74b70485d0df",
+      "adapted_sha256": "b7bc79fd57d3bdba388e273407c6ba55addea9611aea31fcbbac74b70485d0df",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T13-SKILL-OPENTELEMETRY",
+      "source_id": "T13-SRC-OPENTELEMETRY",
+      "raw_path": "raw/opentelemetry/SKILL.md",
+      "adapted_path": "adapted/T13-SKILL-OPENTELEMETRY/SKILL.md",
+      "raw_sha256": "79c3e457dfe9083ab628eb011abd8d4084fe1cd0b7a59315be32901678796e4d",
+      "adapted_sha256": "79c3e457dfe9083ab628eb011abd8d4084fe1cd0b7a59315be32901678796e4d",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T13-SKILL-DASHBOARDING",
+      "source_id": "T13-SRC-DASHBOARDING",
+      "raw_path": "raw/dashboarding/SKILL.md",
+      "adapted_path": "adapted/T13-SKILL-DASHBOARDING/SKILL.md",
+      "raw_sha256": "dca785650631cb087228adf9a720a05d68e49ee6ec9ba151af9897a86d531c84",
+      "adapted_sha256": "dca785650631cb087228adf9a720a05d68e49ee6ec9ba151af9897a86d531c84",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T13-SKILL-SYNTHETIC",
+      "source_id": "T13-SRC-SYNTHETIC",
+      "raw_path": "raw/synthetic-monitoring-checks/SKILL.md",
+      "adapted_path": "adapted/T13-SKILL-SYNTHETIC/SKILL.md",
+      "raw_sha256": "87747add5854773f2c134dce4f51af9634e625a39a84e32b7f40031fba936c55",
+      "adapted_sha256": "87747add5854773f2c134dce4f51af9634e625a39a84e32b7f40031fba936c55",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T13-SKILL-TEMPO",
+      "source_id": "T13-SRC-TEMPO",
+      "raw_path": "raw/tempo/SKILL.md",
+      "adapted_path": "adapted/T13-SKILL-TEMPO/SKILL.md",
+      "raw_sha256": "548446ae11f0bb5c63bb5d37e53d0f158b2f866002ccff825cc22c2fa474be75",
+      "adapted_sha256": "548446ae11f0bb5c63bb5d37e53d0f158b2f866002ccff825cc22c2fa474be75",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T13-SKILL-PYROSCOPE",
+      "source_id": "T13-SRC-PYROSCOPE",
+      "raw_path": "raw/pyroscope/SKILL.md",
+      "adapted_path": "adapted/T13-SKILL-PYROSCOPE/SKILL.md",
+      "raw_sha256": "58ab9560110f50d05cdd3191ac970912af75eb5682855d9a66cd708c8bb2bf96",
+      "adapted_sha256": "58ab9560110f50d05cdd3191ac970912af75eb5682855d9a66cd708c8bb2bf96",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T13-SKILL-ALERTING-IRM",
+      "source_id": "T13-SRC-ALERTING-IRM",
+      "raw_path": "raw/alerting-irm/SKILL.md",
+      "adapted_path": "adapted/T13-SKILL-ALERTING-IRM/SKILL.md",
+      "raw_sha256": "e23570f778be7f546f65930539c83bd8f6e6d984e471f9022a9474fca706daf2",
+      "adapted_sha256": "e23570f778be7f546f65930539c83bd8f6e6d984e471f9022a9474fca706daf2",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T13-SKILL-ALLOY",
+      "source_id": "T13-SRC-ALLOY",
+      "raw_path": "raw/alloy/SKILL.md",
+      "adapted_path": "adapted/T13-SKILL-ALLOY/SKILL.md",
+      "raw_sha256": "ad0b2175dc1b7ec79874e7128c476c44f6e2238b8d5041b418072fa015c2e92d",
+      "adapted_sha256": "ad0b2175dc1b7ec79874e7128c476c44f6e2238b8d5041b418072fa015c2e92d",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T13-SKILL-PROFILECLI",
+      "source_id": "T13-SRC-PROFILECLI",
+      "raw_path": "raw/profilecli-insights/SKILL.md",
+      "adapted_path": "adapted/T13-SKILL-PROFILECLI/SKILL.md",
+      "raw_sha256": "68a7cf8249dc96c09fcb349287e8733bd3dfc4f710ed3d07a1af6d17303f4d6c",
+      "adapted_sha256": "68a7cf8249dc96c09fcb349287e8733bd3dfc4f710ed3d07a1af6d17303f4d6c",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T13-SKILL-PROMQL",
+      "source_id": "T13-SRC-PROMQL",
+      "raw_path": "raw/promql/SKILL.md",
+      "adapted_path": "adapted/T13-SKILL-PROMQL/SKILL.md",
+      "raw_sha256": "c2283cb8e2921d95da9641834c9b9bae8a2d8f287aa0e893f8f5ce31ea79c069",
+      "adapted_sha256": "c2283cb8e2921d95da9641834c9b9bae8a2d8f287aa0e893f8f5ce31ea79c069",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T13-SKILL-LOKI-LABEL",
+      "source_id": "T13-SRC-LOKI-LABEL",
+      "raw_path": "raw/loki-label-analyzer/SKILL.md",
+      "adapted_path": "adapted/T13-SKILL-LOKI-LABEL/SKILL.md",
+      "raw_sha256": "979748d247d1569090028e16a7e405c662464f0edd30c81556f876a8a52e88ce",
+      "adapted_sha256": "979748d247d1569090028e16a7e405c662464f0edd30c81556f876a8a52e88ce",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T13-SKILL-K6-INVESTIGATE",
+      "source_id": "T13-SRC-K6-INVESTIGATE",
+      "raw_path": "raw/k6-cloud-investigate-test/SKILL.md",
+      "adapted_path": "adapted/T13-SKILL-K6-INVESTIGATE/SKILL.md",
+      "raw_sha256": "9e281bd63db9a5455417b197d152718f6a9b480591fa6b4ffffd854d84e83bcc",
+      "adapted_sha256": "9e281bd63db9a5455417b197d152718f6a9b480591fa6b4ffffd854d84e83bcc",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T13-SKILL-K6-TREND",
+      "source_id": "T13-SRC-K6-TREND",
+      "raw_path": "raw/k6-trend-analysis/SKILL.md",
+      "adapted_path": "adapted/T13-SKILL-K6-TREND/SKILL.md",
+      "raw_sha256": "b85bd1b9914e66e5ea643bf5f8de58ad5ee3cee30a7e359b54945bfe101cad31",
+      "adapted_sha256": "b85bd1b9914e66e5ea643bf5f8de58ad5ee3cee30a7e359b54945bfe101cad31",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T13-SKILL-K6-WEBSITE",
+      "source_id": "T13-SRC-K6-WEBSITE",
+      "raw_path": "raw/k6-perf-test-website/SKILL.md",
+      "adapted_path": "adapted/T13-SKILL-K6-WEBSITE/SKILL.md",
+      "raw_sha256": "3fa52f3e32dafda884614b76e4359a34e8db7099aaa58e383067ee881cc6bf0b",
+      "adapted_sha256": "3fa52f3e32dafda884614b76e4359a34e8db7099aaa58e383067ee881cc6bf0b",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    }
+  ],
+  "resources": [
+    {
+      "asset_id": "T13-SKILL-DPM-FINDER",
+      "source_id": "T13-SRC-DPM-CLI",
+      "raw_path": "raw/dpm-finder/references/cli.md",
+      "adapted_path": "adapted/T13-SKILL-DPM-FINDER/references/cli.md",
+      "raw_sha256": "334a06f4b08ded30c7077d39eb55744da1ac50cf57ae45fc20c3921b3660857b",
+      "adapted_sha256": "334a06f4b08ded30c7077d39eb55744da1ac50cf57ae45fc20c3921b3660857b",
+      "body_transform": "byte_identical"
+    }
+  ]
+}

@@ -1,0 +1,204 @@
+{
+  "schema_version": "task1.skill_source_freeze.v1",
+  "team_id": "T13",
+  "frozen_by": "sol",
+  "repository_url": "https://github.com/grafana/skills",
+  "commit_sha": "51d33e71e191b409bbd25fc7be2684c610d18166",
+  "license": "Apache-2.0",
+  "license_path": "LICENSE",
+  "license_raw_url": "https://raw.githubusercontent.com/grafana/skills/51d33e71e191b409bbd25fc7be2684c610d18166/LICENSE",
+  "license_sha256": "efb4d91baa7cd9559d3452f79deb2b3d9dc819c83d7058a1f90ac70484a1a23e",
+  "ordinary_github_search": [
+    "site:github.com SKILL.md prometheus grafana observability",
+    "site:github.com SKILL.md OpenTelemetry logs tracing incident response"
+  ],
+  "sources": [
+    {
+      "source_id": "T13-SRC-PROMETHEUS",
+      "repository_url": "https://github.com/grafana/skills",
+      "commit_sha": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "path": "skills/grafana-lgtm/prometheus/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_url": "https://raw.githubusercontent.com/grafana/skills/51d33e71e191b409bbd25fc7be2684c610d18166/skills/grafana-lgtm/prometheus/SKILL.md",
+      "raw_file_sha256": "1547de8e4e92ef45bf13911b6279770c6d771577815683da68880e18cb97473a",
+      "local_path": "raw/prometheus/SKILL.md",
+      "kind": "skill"
+    },
+    {
+      "source_id": "T13-SRC-LOKI",
+      "repository_url": "https://github.com/grafana/skills",
+      "commit_sha": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "path": "skills/grafana-lgtm/loki/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_url": "https://raw.githubusercontent.com/grafana/skills/51d33e71e191b409bbd25fc7be2684c610d18166/skills/grafana-lgtm/loki/SKILL.md",
+      "raw_file_sha256": "62e7daecefc73d4392585fff99a5c5d72d2de1aa1472c80c8305b96222982779",
+      "local_path": "raw/loki/SKILL.md",
+      "kind": "skill"
+    },
+    {
+      "source_id": "T13-SRC-TEMPO",
+      "repository_url": "https://github.com/grafana/skills",
+      "commit_sha": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "path": "skills/grafana-lgtm/tempo/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_url": "https://raw.githubusercontent.com/grafana/skills/51d33e71e191b409bbd25fc7be2684c610d18166/skills/grafana-lgtm/tempo/SKILL.md",
+      "raw_file_sha256": "548446ae11f0bb5c63bb5d37e53d0f158b2f866002ccff825cc22c2fa474be75",
+      "local_path": "raw/tempo/SKILL.md",
+      "kind": "skill"
+    },
+    {
+      "source_id": "T13-SRC-PYROSCOPE",
+      "repository_url": "https://github.com/grafana/skills",
+      "commit_sha": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "path": "skills/grafana-lgtm/pyroscope/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_url": "https://raw.githubusercontent.com/grafana/skills/51d33e71e191b409bbd25fc7be2684c610d18166/skills/grafana-lgtm/pyroscope/SKILL.md",
+      "raw_file_sha256": "58ab9560110f50d05cdd3191ac970912af75eb5682855d9a66cd708c8bb2bf96",
+      "local_path": "raw/pyroscope/SKILL.md",
+      "kind": "skill"
+    },
+    {
+      "source_id": "T13-SRC-PROFILECLI",
+      "repository_url": "https://github.com/grafana/skills",
+      "commit_sha": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "path": "skills/grafana-lgtm/profilecli-insights/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_url": "https://raw.githubusercontent.com/grafana/skills/51d33e71e191b409bbd25fc7be2684c610d18166/skills/grafana-lgtm/profilecli-insights/SKILL.md",
+      "raw_file_sha256": "68a7cf8249dc96c09fcb349287e8733bd3dfc4f710ed3d07a1af6d17303f4d6c",
+      "local_path": "raw/profilecli-insights/SKILL.md",
+      "kind": "skill"
+    },
+    {
+      "source_id": "T13-SRC-PROMQL",
+      "repository_url": "https://github.com/grafana/skills",
+      "commit_sha": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "path": "skills/grafana-core/promql/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_url": "https://raw.githubusercontent.com/grafana/skills/51d33e71e191b409bbd25fc7be2684c610d18166/skills/grafana-core/promql/SKILL.md",
+      "raw_file_sha256": "c2283cb8e2921d95da9641834c9b9bae8a2d8f287aa0e893f8f5ce31ea79c069",
+      "local_path": "raw/promql/SKILL.md",
+      "kind": "skill"
+    },
+    {
+      "source_id": "T13-SRC-ALERTING-IRM",
+      "repository_url": "https://github.com/grafana/skills",
+      "commit_sha": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "path": "skills/grafana-core/alerting-irm/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_url": "https://raw.githubusercontent.com/grafana/skills/51d33e71e191b409bbd25fc7be2684c610d18166/skills/grafana-core/alerting-irm/SKILL.md",
+      "raw_file_sha256": "e23570f778be7f546f65930539c83bd8f6e6d984e471f9022a9474fca706daf2",
+      "local_path": "raw/alerting-irm/SKILL.md",
+      "kind": "skill"
+    },
+    {
+      "source_id": "T13-SRC-ALLOY",
+      "repository_url": "https://github.com/grafana/skills",
+      "commit_sha": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "path": "skills/grafana-core/alloy/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_url": "https://raw.githubusercontent.com/grafana/skills/51d33e71e191b409bbd25fc7be2684c610d18166/skills/grafana-core/alloy/SKILL.md",
+      "raw_file_sha256": "ad0b2175dc1b7ec79874e7128c476c44f6e2238b8d5041b418072fa015c2e92d",
+      "local_path": "raw/alloy/SKILL.md",
+      "kind": "skill"
+    },
+    {
+      "source_id": "T13-SRC-OPENTELEMETRY",
+      "repository_url": "https://github.com/grafana/skills",
+      "commit_sha": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "path": "skills/grafana-core/opentelemetry/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_url": "https://raw.githubusercontent.com/grafana/skills/51d33e71e191b409bbd25fc7be2684c610d18166/skills/grafana-core/opentelemetry/SKILL.md",
+      "raw_file_sha256": "79c3e457dfe9083ab628eb011abd8d4084fe1cd0b7a59315be32901678796e4d",
+      "local_path": "raw/opentelemetry/SKILL.md",
+      "kind": "skill"
+    },
+    {
+      "source_id": "T13-SRC-DASHBOARDING",
+      "repository_url": "https://github.com/grafana/skills",
+      "commit_sha": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "path": "skills/grafana-core/dashboarding/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_url": "https://raw.githubusercontent.com/grafana/skills/51d33e71e191b409bbd25fc7be2684c610d18166/skills/grafana-core/dashboarding/SKILL.md",
+      "raw_file_sha256": "dca785650631cb087228adf9a720a05d68e49ee6ec9ba151af9897a86d531c84",
+      "local_path": "raw/dashboarding/SKILL.md",
+      "kind": "skill"
+    },
+    {
+      "source_id": "T13-SRC-LOKI-LABEL",
+      "repository_url": "https://github.com/grafana/skills",
+      "commit_sha": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "path": "skills/grafana-cloud/loki-label-analyzer/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_url": "https://raw.githubusercontent.com/grafana/skills/51d33e71e191b409bbd25fc7be2684c610d18166/skills/grafana-cloud/loki-label-analyzer/SKILL.md",
+      "raw_file_sha256": "979748d247d1569090028e16a7e405c662464f0edd30c81556f876a8a52e88ce",
+      "local_path": "raw/loki-label-analyzer/SKILL.md",
+      "kind": "skill"
+    },
+    {
+      "source_id": "T13-SRC-DPM-FINDER",
+      "repository_url": "https://github.com/grafana/skills",
+      "commit_sha": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "path": "skills/grafana-cloud/dpm-finder/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_url": "https://raw.githubusercontent.com/grafana/skills/51d33e71e191b409bbd25fc7be2684c610d18166/skills/grafana-cloud/dpm-finder/SKILL.md",
+      "raw_file_sha256": "b7bc79fd57d3bdba388e273407c6ba55addea9611aea31fcbbac74b70485d0df",
+      "local_path": "raw/dpm-finder/SKILL.md",
+      "kind": "skill"
+    },
+    {
+      "source_id": "T13-SRC-SYNTHETIC",
+      "repository_url": "https://github.com/grafana/skills",
+      "commit_sha": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "path": "skills/grafana-cloud/synthetic-monitoring-checks/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_url": "https://raw.githubusercontent.com/grafana/skills/51d33e71e191b409bbd25fc7be2684c610d18166/skills/grafana-cloud/synthetic-monitoring-checks/SKILL.md",
+      "raw_file_sha256": "87747add5854773f2c134dce4f51af9634e625a39a84e32b7f40031fba936c55",
+      "local_path": "raw/synthetic-monitoring-checks/SKILL.md",
+      "kind": "skill"
+    },
+    {
+      "source_id": "T13-SRC-K6-INVESTIGATE",
+      "repository_url": "https://github.com/grafana/skills",
+      "commit_sha": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "path": "skills/grafana-k6/k6-cloud-investigate-test/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_url": "https://raw.githubusercontent.com/grafana/skills/51d33e71e191b409bbd25fc7be2684c610d18166/skills/grafana-k6/k6-cloud-investigate-test/SKILL.md",
+      "raw_file_sha256": "9e281bd63db9a5455417b197d152718f6a9b480591fa6b4ffffd854d84e83bcc",
+      "local_path": "raw/k6-cloud-investigate-test/SKILL.md",
+      "kind": "skill"
+    },
+    {
+      "source_id": "T13-SRC-K6-TREND",
+      "repository_url": "https://github.com/grafana/skills",
+      "commit_sha": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "path": "skills/grafana-k6/k6-trend-analysis/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_url": "https://raw.githubusercontent.com/grafana/skills/51d33e71e191b409bbd25fc7be2684c610d18166/skills/grafana-k6/k6-trend-analysis/SKILL.md",
+      "raw_file_sha256": "b85bd1b9914e66e5ea643bf5f8de58ad5ee3cee30a7e359b54945bfe101cad31",
+      "local_path": "raw/k6-trend-analysis/SKILL.md",
+      "kind": "skill"
+    },
+    {
+      "source_id": "T13-SRC-K6-WEBSITE",
+      "repository_url": "https://github.com/grafana/skills",
+      "commit_sha": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "path": "skills/grafana-k6/k6-perf-test-website/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_url": "https://raw.githubusercontent.com/grafana/skills/51d33e71e191b409bbd25fc7be2684c610d18166/skills/grafana-k6/k6-perf-test-website/SKILL.md",
+      "raw_file_sha256": "3fa52f3e32dafda884614b76e4359a34e8db7099aaa58e383067ee881cc6bf0b",
+      "local_path": "raw/k6-perf-test-website/SKILL.md",
+      "kind": "skill"
+    },
+    {
+      "source_id": "T13-SRC-DPM-CLI",
+      "repository_url": "https://github.com/grafana/skills",
+      "commit_sha": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "path": "skills/grafana-cloud/dpm-finder/references/cli.md",
+      "license": "Apache-2.0",
+      "raw_url": "https://raw.githubusercontent.com/grafana/skills/51d33e71e191b409bbd25fc7be2684c610d18166/skills/grafana-cloud/dpm-finder/references/cli.md",
+      "raw_file_sha256": "334a06f4b08ded30c7077d39eb55744da1ac50cf57ae45fc20c3921b3660857b",
+      "local_path": "raw/dpm-finder/references/cli.md",
+      "kind": "resource"
+    }
+  ]
+}
