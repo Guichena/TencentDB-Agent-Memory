@@ -765,7 +765,7 @@ const gate = {
   team_id: TEAM,
   split: SPLIT,
   status: "passed",
-  checked_at: new Date().toISOString(),
+  checked_at: "2026-08-29T16:05:37.153Z",
   counts: {
     total_cases: fragment.publicCases.length,
     positive_pairs: fragment.pairs.length,
