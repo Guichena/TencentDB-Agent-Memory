@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 2,
+  "measurementModuleId": "M2",
+  "artifacts": [
+    {
+      "file": "PROVIDER-USAGE-SYNTHETIC.json",
+      "sha256": "6b2a8909a298d044f06145a7a4558d929dad20954a4375d0cf431b84b04ba528"
+    },
+    {
+      "file": "TOKEN-LEDGER-SYNTHETIC.json",
+      "sha256": "2225c5d39397b2027f836dc50640a979d6398450359e98d02e8cf32171dce1eb"
+    },
+    {
+      "file": "ISOLATION-ELIGIBILITY-SYNTHETIC.json",
+      "sha256": "0a8aed3fc832502583414ef36a54a690c7d1bfb6773e211ddb4d21e94d880715"
+    },
+    {
+      "file": "METADATA-PARITY.json",
+      "sha256": "a8eaa3d8611390b33428870951dd3c16aa4e7ab58563263f584fcc8badf2d0af"
+    },
+    {
+      "file": "INTERFACE-MANIFEST.json",
+      "sha256": "61eac7223115834d1c1f5a00107e1a6a1a28c0f1668bff915e39fa24b5e23c4e"
+    },
+    {
+      "file": "NO-MODEL-GATE.json",
+      "sha256": "6cddae1bf30bf551bbc9d149a7fafe2d7ea51dd7345072f96c720421f2ec1a31"
+    }
+  ]
+}

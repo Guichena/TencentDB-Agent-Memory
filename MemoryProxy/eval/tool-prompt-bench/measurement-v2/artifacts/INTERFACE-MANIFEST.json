@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 2,
+  "measurementModuleId": "M2",
+  "formalDataState": "blocked",
+  "formalMetricEligibleOwner": "Integration",
+  "providerContracts": [
+    {
+      "fixtureId": "openai-responses-cache-write-unsupported",
+      "provider": "openai",
+      "schema": "openai.responses",
+      "apiVersion": "2026-08-01",
+      "adapterVersion": "responses-v1",
+      "requiredFields": [
+        "providerTotalInputTokens",
+        "ordinaryInputTokens",
+        "cacheReadInputTokens",
+        "outputTokens"
+      ],
+      "unsupportedFields": [
+        "cacheWriteInputTokens"
+      ]
+    },
+    {
+      "fixtureId": "openai-responses-cache-write-reported",
+      "provider": "openai",
+      "schema": "openai.responses",
+      "apiVersion": "2026-08-01",
+      "adapterVersion": "responses-v2-cache-write",
+      "requiredFields": [
+        "providerTotalInputTokens",
+        "ordinaryInputTokens",
+        "cacheReadInputTokens",
+        "cacheWriteInputTokens",
+        "outputTokens"
+      ],
+      "unsupportedFields": []
+    },
+    {
+      "fixtureId": "openai-chat-cache-write-unsupported",
+      "provider": "openai",
+      "schema": "openai.chat-completions",
+      "apiVersion": "2026-08-01",
+      "adapterVersion": "chat-v1",
+      "requiredFields": [
+        "providerTotalInputTokens",
+        "ordinaryInputTokens",
+        "cacheReadInputTokens",
+        "outputTokens"
+      ],
+      "unsupportedFields": [
+        "cacheWriteInputTokens"
+      ]
+    },
+    {
+      "fixtureId": "openai-codex-jsonl-complete",
+      "provider": "openai",
+      "schema": "openai.codex-jsonl",
+      "apiVersion": "codex-jsonl-v1",
+      "adapterVersion": "codex-runner-v1",
+      "requiredFields": [
+        "providerTotalInputTokens",
+        "ordinaryInputTokens",
+        "cacheReadInputTokens",
+        "cacheWriteInputTokens",
+        "outputTokens",
+        "reasoningOrThinkingTokens"
+      ],
+      "unsupportedFields": []
+    },
+    {
+      "fixtureId": "anthropic-messages-complete",
+      "provider": "anthropic",
+      "schema": "anthropic.messages",
+      "apiVersion": "2023-06-01",
+      "adapterVersion": "messages-v1",
+      "requiredFields": [
+        "providerTotalInputTokens",
+        "ordinaryInputTokens",
+        "cacheReadInputTokens",
+        "cacheWriteInputTokens",
+        "outputTokens"
+      ],
+      "unsupportedFields": [
+        "reasoningOrThinkingTokens"
+      ]
+    }
+  ],
+  "tokenAccounting": {
+    "authoritative": [
+      "totalInjectionTokens",
+      "toolDescriptionStaticTokens"
+    ],
+    "diagnostics": [
+      "staticTemplateTokens",
+      "executionContractTokens",
+      "runtimeBindingTokens",
+      "dynamicAssetTokens"
+    ],
+    "componentRule": "independently_encoded_non_additive",
+    "providerUsageRule": "never add local token estimates to provider totals"
+  },
+  "hashSemantics": {
+    "caseInputControlSha256": "Frozen case/query/context control; excludes Variant prompt text.",
+    "comparisonGroupSha256": "Binds planned variant, counterfactual, or repeat comparison members.",
+    "providerRequestSha256": "Complete provider request; diagnostic and only equality-gated for repeat comparisons.",
+    "snapshotSha256": "Expected and restored MemoryProxy asset snapshot identity.",
+    "visibleAssetsSha256": "Exact provider-visible asset-set identity."
+  },
+  "comparisonPurposes": {
+    "variant": "Same case input and repeat; Prompt Variant and full provider request may differ.",
+    "counterfactual": "Same comparison group and repeat; positive/negative case inputs and requests must differ.",
+    "repeat": "Same case, Variant, input, and complete provider request; repeat index and run state differ.",
+    "none": "Ordinary run; paired evidence is not required."
+  },
+  "m0Integration": {
+    "requiredInterface": "M0_EVALUATION_PREFIX",
+    "terminalCosts": [
+      "providerInputToEvaluationHorizon",
+      "providerInputToTerminalGivenSuccess",
+      "modelRoundsToTerminal",
+      "tdaiCallCount",
+      "timeToTerminalMs"
+    ]
+  },
+  "metadataParityScope": "Single text blocks and multi-text-block insertion-only rebuilds whose original blocks remain exact ordered substrings. Unsupported rewrites fail the hook closed."
+}

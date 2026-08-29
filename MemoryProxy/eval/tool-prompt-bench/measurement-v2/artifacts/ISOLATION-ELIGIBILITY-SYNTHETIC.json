@@ -1,0 +1,80 @@
+{
+  "formalDataState": "blocked",
+  "runIsolation": {
+    "schemaVersion": 2,
+    "runId": "synthetic-m2-evidence",
+    "runNamespace": "task1/synthetic-m2-evidence",
+    "caseId": "synthetic-case",
+    "variantId": "V0",
+    "repeatIndex": 0,
+    "caseInputControlSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "comparisonGroupSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+    "providerRequestSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+    "counterfactualRole": null,
+    "session": {
+      "id": "synthetic-session",
+      "fresh": true
+    },
+    "memoryProxyContext": {
+      "id": "synthetic-proxy-context",
+      "fresh": true
+    },
+    "snapshot": {
+      "id": "synthetic-snapshot",
+      "expectedSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+      "restoredSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+      "restoreSucceeded": true
+    },
+    "visibleAssetsSha256": "5555555555555555555555555555555555555555555555555555555555555555",
+    "localState": {
+      "pathId": "synthetic-local-state",
+      "fresh": true,
+      "inheritedHistory": false
+    },
+    "providerCache": {
+      "cacheLane": "warm",
+      "cacheReadInputTokens": 40,
+      "cacheWriteInputTokens": 10,
+      "cacheReadState": "reported",
+      "cacheWriteState": "reported",
+      "telemetryUsable": true
+    },
+    "isolationStatus": "ready",
+    "blockers": []
+  },
+  "eligibility": {
+    "schemaVersion": 2,
+    "measurementModuleId": "M2",
+    "runId": "synthetic-m2-evidence",
+    "variantId": "V0",
+    "formalDataState": "blocked",
+    "evaluationLayer": "mock-contract",
+    "m2EvidenceStatus": "blocked",
+    "blockers": [
+      "FORMAL_DATA_BLOCKED",
+      "MOCK_LAYER_NOT_FORMAL"
+    ],
+    "noModelGate": {
+      "status": "ready",
+      "modelRuns": 0,
+      "codexProcessesStarted": 0,
+      "servicesStarted": false,
+      "authFilesRead": false,
+      "authFilesCopied": false
+    },
+    "usageEvidenceSha256": "f516479af86d6add35230c904730339373ddd2d1735e3e14f5b6a286b65b0fab",
+    "tokenLedgerCanonicalSha256": "42c3d32d3a0d91972ddc082d29b1b28204a744fd1119adb14dba100736e9d371",
+    "comparisonPurpose": "none",
+    "m0EvaluationPrefix": {
+      "status": "pending"
+    },
+    "m0EvaluationPrefixGate": {
+      "status": "pending",
+      "blockers": []
+    },
+    "integrationRequirements": [
+      "M0_EVALUATION_PREFIX",
+      "INTEGRATION_OWNS_FORMAL_METRIC_ELIGIBLE"
+    ]
+  }
+}

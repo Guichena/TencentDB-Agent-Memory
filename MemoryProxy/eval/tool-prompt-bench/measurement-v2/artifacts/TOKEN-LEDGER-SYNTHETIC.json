@@ -1,0 +1,47 @@
+{
+  "formalDataState": "blocked",
+  "ledger": {
+    "schemaVersion": 2,
+    "measurementModuleId": "M2",
+    "variantId": "V0",
+    "runId": "synthetic-m2-evidence",
+    "tokenizer": {
+      "id": "o200k_base",
+      "version": "tiktoken-1.0.22"
+    },
+    "componentTokenAccounting": "independently_encoded_non_additive",
+    "totalInjectionTokens": 40,
+    "toolDescriptionStaticTokens": 21,
+    "staticTemplateTokens": 11,
+    "executionContractTokens": 11,
+    "runtimeBindingTokens": 7,
+    "dynamicAssetTokens": 13,
+    "totalInjectionUtf8Bytes": 175,
+    "toolDescriptionStaticUtf8Bytes": 90,
+    "totalInjectionSha256": "3df1a3632b6101c8febdf8674d6c267406adad4adbba05be687dc7b4ba47c518",
+    "toolDescriptionStaticSha256": "e4479d66fe512e8a65a10a5870d6d4bf5e20e0ffa73dd1c9e97f3c7a82aece1f",
+    "componentMeasurements": {
+      "staticTemplate": {
+        "tokens": 11,
+        "utf8Bytes": 38,
+        "sha256": "bc962e6b187fbbff70d287d4f770e497815eca9aad1a8a983c32787f01a013f1"
+      },
+      "executionContract": {
+        "tokens": 11,
+        "utf8Bytes": 52,
+        "sha256": "316d68def6946ef48d6ccc0f852c50c845dcea5cf29b69e7e24aab2ae79af314"
+      },
+      "runtimeBinding": {
+        "tokens": 7,
+        "utf8Bytes": 29,
+        "sha256": "8c113d38a73364f5df5ed6230d5b1192f3b746651b9ccabbbbcecddafe6ef122"
+      },
+      "dynamicAsset": {
+        "tokens": 13,
+        "utf8Bytes": 56,
+        "sha256": "c8fc770f54a62cc4883bcd607ea53ea27750a6ab3fe4032072437b5929fe8c27"
+      }
+    },
+    "canonicalSha256": "42c3d32d3a0d91972ddc082d29b1b28204a744fd1119adb14dba100736e9d371"
+  }
+}

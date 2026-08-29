@@ -1,0 +1,334 @@
+{
+  "schemaVersion": 2,
+  "measurementModuleId": "M2",
+  "formalDataState": "blocked",
+  "fixtures": [
+    {
+      "fixtureId": "openai-responses-cache-write-unsupported",
+      "provenance": "synthetic",
+      "input": {
+        "provider": "openai",
+        "schema": "openai.responses",
+        "apiVersion": "2026-08-01",
+        "adapterVersion": "responses-v1",
+        "requiredFields": [
+          "providerTotalInputTokens",
+          "ordinaryInputTokens",
+          "cacheReadInputTokens",
+          "outputTokens"
+        ],
+        "unsupportedFields": [
+          "cacheWriteInputTokens"
+        ],
+        "rawUsage": {
+          "input_tokens": 100,
+          "input_tokens_details": {
+            "cached_tokens": 40
+          },
+          "output_tokens": 12,
+          "output_tokens_details": {
+            "reasoning_tokens": 3
+          }
+        }
+      },
+      "result": {
+        "ok": true,
+        "provider": "openai",
+        "schema": "openai.responses",
+        "apiVersion": "2026-08-01",
+        "adapterVersion": "responses-v1",
+        "requiredFields": [
+          "providerTotalInputTokens",
+          "ordinaryInputTokens",
+          "cacheReadInputTokens",
+          "outputTokens"
+        ],
+        "unsupportedFields": [
+          "cacheWriteInputTokens"
+        ],
+        "rawUsageSha256": "a0d2c27fe8d134c081ff0b6ff0d5183c2d85dff69be4a8a27eccdc87029d6f8f",
+        "fieldStates": {
+          "providerTotalInputTokens": "reported",
+          "ordinaryInputTokens": "derived",
+          "cacheReadInputTokens": "reported",
+          "cacheWriteInputTokens": "unsupported",
+          "outputTokens": "reported",
+          "reasoningOrThinkingTokens": "reported"
+        },
+        "usage": {
+          "providerTotalInputTokens": 100,
+          "ordinaryInputTokens": 60,
+          "cacheReadInputTokens": 40,
+          "cacheWriteInputTokens": null,
+          "outputTokens": 12,
+          "reasoningOrThinkingTokens": 3,
+          "usageCompleteForRequiredFields": true,
+          "unsupportedOptionalFields": [
+            "cacheWriteInputTokens"
+          ]
+        },
+        "errors": [],
+        "canonicalSha256": "58151f2ec44d2785b5fc05e3c80e088dd151d714c1e1dffa1c905c2b063032b6"
+      }
+    },
+    {
+      "fixtureId": "openai-responses-cache-write-reported",
+      "provenance": "synthetic",
+      "input": {
+        "provider": "openai",
+        "schema": "openai.responses",
+        "apiVersion": "2026-08-01",
+        "adapterVersion": "responses-v2-cache-write",
+        "requiredFields": [
+          "providerTotalInputTokens",
+          "ordinaryInputTokens",
+          "cacheReadInputTokens",
+          "cacheWriteInputTokens",
+          "outputTokens"
+        ],
+        "unsupportedFields": [],
+        "rawUsage": {
+          "input_tokens": 100,
+          "input_tokens_details": {
+            "cached_tokens": 40,
+            "cache_write_tokens": 10
+          },
+          "output_tokens": 12
+        }
+      },
+      "result": {
+        "ok": true,
+        "provider": "openai",
+        "schema": "openai.responses",
+        "apiVersion": "2026-08-01",
+        "adapterVersion": "responses-v2-cache-write",
+        "requiredFields": [
+          "providerTotalInputTokens",
+          "ordinaryInputTokens",
+          "cacheReadInputTokens",
+          "cacheWriteInputTokens",
+          "outputTokens"
+        ],
+        "unsupportedFields": [],
+        "rawUsageSha256": "03483bc40fbee3134dc1ad07a9431a7e7db890f2d3d08ff7dc055cd95b929f32",
+        "fieldStates": {
+          "providerTotalInputTokens": "reported",
+          "ordinaryInputTokens": "derived",
+          "cacheReadInputTokens": "reported",
+          "cacheWriteInputTokens": "reported",
+          "outputTokens": "reported",
+          "reasoningOrThinkingTokens": "missing"
+        },
+        "usage": {
+          "providerTotalInputTokens": 100,
+          "ordinaryInputTokens": 50,
+          "cacheReadInputTokens": 40,
+          "cacheWriteInputTokens": 10,
+          "outputTokens": 12,
+          "reasoningOrThinkingTokens": null,
+          "usageCompleteForRequiredFields": true,
+          "unsupportedOptionalFields": []
+        },
+        "errors": [],
+        "canonicalSha256": "f516479af86d6add35230c904730339373ddd2d1735e3e14f5b6a286b65b0fab"
+      }
+    },
+    {
+      "fixtureId": "openai-chat-cache-write-unsupported",
+      "provenance": "synthetic",
+      "input": {
+        "provider": "openai",
+        "schema": "openai.chat-completions",
+        "apiVersion": "2026-08-01",
+        "adapterVersion": "chat-v1",
+        "requiredFields": [
+          "providerTotalInputTokens",
+          "ordinaryInputTokens",
+          "cacheReadInputTokens",
+          "outputTokens"
+        ],
+        "unsupportedFields": [
+          "cacheWriteInputTokens"
+        ],
+        "rawUsage": {
+          "prompt_tokens": 90,
+          "prompt_tokens_details": {
+            "cached_tokens": 20
+          },
+          "completion_tokens": 11,
+          "completion_tokens_details": {
+            "reasoning_tokens": 4
+          }
+        }
+      },
+      "result": {
+        "ok": true,
+        "provider": "openai",
+        "schema": "openai.chat-completions",
+        "apiVersion": "2026-08-01",
+        "adapterVersion": "chat-v1",
+        "requiredFields": [
+          "providerTotalInputTokens",
+          "ordinaryInputTokens",
+          "cacheReadInputTokens",
+          "outputTokens"
+        ],
+        "unsupportedFields": [
+          "cacheWriteInputTokens"
+        ],
+        "rawUsageSha256": "8903e6a5f5e34c12bbd379447639dfba1727d854ee064c942a1393e2f82e2184",
+        "fieldStates": {
+          "providerTotalInputTokens": "reported",
+          "ordinaryInputTokens": "derived",
+          "cacheReadInputTokens": "reported",
+          "cacheWriteInputTokens": "unsupported",
+          "outputTokens": "reported",
+          "reasoningOrThinkingTokens": "reported"
+        },
+        "usage": {
+          "providerTotalInputTokens": 90,
+          "ordinaryInputTokens": 70,
+          "cacheReadInputTokens": 20,
+          "cacheWriteInputTokens": null,
+          "outputTokens": 11,
+          "reasoningOrThinkingTokens": 4,
+          "usageCompleteForRequiredFields": true,
+          "unsupportedOptionalFields": [
+            "cacheWriteInputTokens"
+          ]
+        },
+        "errors": [],
+        "canonicalSha256": "9e2c6ef74cf1fa852a728c5402f62dfae333920de4ab46231ea70016159f948a"
+      }
+    },
+    {
+      "fixtureId": "openai-codex-jsonl-complete",
+      "provenance": "synthetic",
+      "input": {
+        "provider": "openai",
+        "schema": "openai.codex-jsonl",
+        "apiVersion": "codex-jsonl-v1",
+        "adapterVersion": "codex-runner-v1",
+        "requiredFields": [
+          "providerTotalInputTokens",
+          "ordinaryInputTokens",
+          "cacheReadInputTokens",
+          "cacheWriteInputTokens",
+          "outputTokens",
+          "reasoningOrThinkingTokens"
+        ],
+        "unsupportedFields": [],
+        "rawUsage": {
+          "input_tokens": 120,
+          "cached_input_tokens": 50,
+          "cache_write_input_tokens": 10,
+          "output_tokens": 20,
+          "reasoning_output_tokens": 7
+        }
+      },
+      "result": {
+        "ok": true,
+        "provider": "openai",
+        "schema": "openai.codex-jsonl",
+        "apiVersion": "codex-jsonl-v1",
+        "adapterVersion": "codex-runner-v1",
+        "requiredFields": [
+          "providerTotalInputTokens",
+          "ordinaryInputTokens",
+          "cacheReadInputTokens",
+          "cacheWriteInputTokens",
+          "outputTokens",
+          "reasoningOrThinkingTokens"
+        ],
+        "unsupportedFields": [],
+        "rawUsageSha256": "31ca96b33501342fd127cf3d588d55643c4a88b3c53d12d5095e939da9fe8b8a",
+        "fieldStates": {
+          "providerTotalInputTokens": "reported",
+          "ordinaryInputTokens": "derived",
+          "cacheReadInputTokens": "reported",
+          "cacheWriteInputTokens": "reported",
+          "outputTokens": "reported",
+          "reasoningOrThinkingTokens": "reported"
+        },
+        "usage": {
+          "providerTotalInputTokens": 120,
+          "ordinaryInputTokens": 60,
+          "cacheReadInputTokens": 50,
+          "cacheWriteInputTokens": 10,
+          "outputTokens": 20,
+          "reasoningOrThinkingTokens": 7,
+          "usageCompleteForRequiredFields": true,
+          "unsupportedOptionalFields": []
+        },
+        "errors": [],
+        "canonicalSha256": "fbee35f04f2bcd24412d1ca702834da4c45bdc3a608d2ccebeffa13950a7d058"
+      }
+    },
+    {
+      "fixtureId": "anthropic-messages-complete",
+      "provenance": "synthetic",
+      "input": {
+        "provider": "anthropic",
+        "schema": "anthropic.messages",
+        "apiVersion": "2023-06-01",
+        "adapterVersion": "messages-v1",
+        "requiredFields": [
+          "providerTotalInputTokens",
+          "ordinaryInputTokens",
+          "cacheReadInputTokens",
+          "cacheWriteInputTokens",
+          "outputTokens"
+        ],
+        "unsupportedFields": [
+          "reasoningOrThinkingTokens"
+        ],
+        "rawUsage": {
+          "input_tokens": 60,
+          "cache_read_input_tokens": 30,
+          "cache_creation_input_tokens": 10,
+          "output_tokens": 8
+        }
+      },
+      "result": {
+        "ok": true,
+        "provider": "anthropic",
+        "schema": "anthropic.messages",
+        "apiVersion": "2023-06-01",
+        "adapterVersion": "messages-v1",
+        "requiredFields": [
+          "providerTotalInputTokens",
+          "ordinaryInputTokens",
+          "cacheReadInputTokens",
+          "cacheWriteInputTokens",
+          "outputTokens"
+        ],
+        "unsupportedFields": [
+          "reasoningOrThinkingTokens"
+        ],
+        "rawUsageSha256": "21b566262b924cca8528bdee03cd70fd4bc0682542e43309c9e4501e2162ad61",
+        "fieldStates": {
+          "providerTotalInputTokens": "derived",
+          "ordinaryInputTokens": "reported",
+          "cacheReadInputTokens": "reported",
+          "cacheWriteInputTokens": "reported",
+          "outputTokens": "reported",
+          "reasoningOrThinkingTokens": "unsupported"
+        },
+        "usage": {
+          "providerTotalInputTokens": 100,
+          "ordinaryInputTokens": 60,
+          "cacheReadInputTokens": 30,
+          "cacheWriteInputTokens": 10,
+          "outputTokens": 8,
+          "reasoningOrThinkingTokens": null,
+          "usageCompleteForRequiredFields": true,
+          "unsupportedOptionalFields": [
+            "reasoningOrThinkingTokens"
+          ]
+        },
+        "errors": [],
+        "canonicalSha256": "b2e191baa329df292c861f48fd0037c65397e35205e08d4618d58fe3202d34dc"
+      }
+    }
+  ]
+}
