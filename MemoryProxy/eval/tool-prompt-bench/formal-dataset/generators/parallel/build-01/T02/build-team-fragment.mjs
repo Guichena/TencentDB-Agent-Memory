@@ -402,6 +402,10 @@ delete finalAgent.contentHash;
 const agent = hashed(finalAgent);
 
 const teamFragment = {
+  schema_version: "task1.team_fragment.v1",
+  build_id: "build-01",
+  team_id: "T02",
+  split: "dev",
   sourceEvidence,
   teams: [team],
   businessAgents: [agent],
@@ -409,6 +413,48 @@ const teamFragment = {
   publicCases: publicCases.sort((a, b) => a.caseId.localeCompare(b.caseId)),
   privateAnnotations: privateAnnotations.sort((a, b) => a.caseId.localeCompare(b.caseId)),
   pairs: pairs.sort((a, b) => a.pairId.localeCompare(b.pairId)),
+  snapshotAssetIds: [
+    ...l0Conversations,
+    ...l1Memories,
+    ...l2Scenes,
+    ...l3Profiles,
+    ...skills,
+    ...knowledge,
+  ].map((asset) => asset.assetId).sort(),
+  generatorBatchRefs: [
+    ["asset-world/asset-world-batch-01", "asset-world", 33],
+    ["trials/memory-trial-01", "memory", 1],
+    ["trials/skill-trial-01", "skill", 1],
+    ["trials/knowledge-trial-01", "knowledge", 1],
+    ["expansion/memory-batch-01", "memory", 5],
+    ["expansion/skill-batch-01", "skill", 5],
+    ["expansion/knowledge-batch-01", "knowledge", 2],
+    ["expansion/natural-negative-batch-01", "natural-negative", 10],
+  ].map(([directory, family, count]) => {
+    const manifest = readJson(join(scriptDir, directory, "manifest.json"));
+    return {
+      batchId: manifest.batch_id,
+      path: `formal-dataset/generators/parallel/build-01/T02/${directory}`,
+      family,
+      count,
+      generatorModel: manifest.generator_model,
+      reasoningEffort: manifest.reasoning_effort,
+      promptVersion: manifest.prompt_version,
+      draftSha256: sha256(readFileSync(join(scriptDir, directory, "draft.json"))),
+      solReview: "approved",
+    };
+  }),
+  externalImports: skillSources.sources.map((source) => ({
+    assetId: skills.find((skill) => skill.name === source.name)?.assetId,
+    repository: source.repository_url,
+    commit: source.revision,
+    path: source.source_path,
+    license: source.license_spdx,
+    rawSha256: source.main_raw_sha256,
+    metadataSha256: source.metadata_sha256,
+    localRawPath: `formal-dataset/source-material/T02/${source.package_path}/raw/SKILL.md`,
+    localAdaptedPath: `formal-dataset/source-material/T02/${source.package_path}/adapted/SKILL.md`,
+  })),
 };
 mkdirSync(join(stagingDir, "assets"), { recursive: true });
 writeJson(join(stagingDir, "team-fragment.json"), teamFragment);

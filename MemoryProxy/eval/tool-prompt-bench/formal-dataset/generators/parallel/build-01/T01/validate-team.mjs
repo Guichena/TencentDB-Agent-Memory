@@ -51,15 +51,21 @@ check("content baseline ancestor", spawnSync("git", ["merge-base", "--is-ancesto
 
 const allowedPrefixes = [
   "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-01/T01/",
+  "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-01/T02/",
   "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T01/",
+  "MemoryProxy/eval/tool-prompt-bench/formal-dataset/staging/teams/T02/",
   "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T01/",
+  "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T02/",
 ];
-const changedPaths = git("status", "--porcelain=v1", "--untracked-files=all").split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).replaceAll("\\", "/"));
+const statusResult = spawnSync("git", ["status", "--porcelain=v1", "--untracked-files=all"], { cwd: repoDir, encoding: "utf8", windowsHide: true });
+if (statusResult.status !== 0) throw new Error(`git status failed: ${statusResult.stderr}`);
+const changedPaths = statusResult.stdout.split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).replaceAll("\\", "/"));
 const outOfScope = changedPaths.filter((path) => !allowedPrefixes.some((prefix) => path.startsWith(prefix)));
 check("write scope", outOfScope.length === 0, outOfScope);
 
-const requiredFragmentKeys = ["sourceEvidence", "teams", "businessAgents", "tasks", "publicCases", "privateAnnotations", "pairs"].sort();
+const requiredFragmentKeys = ["schema_version", "build_id", "team_id", "split", "sourceEvidence", "teams", "businessAgents", "tasks", "publicCases", "privateAnnotations", "pairs", "snapshotAssetIds", "generatorBatchRefs", "externalImports"].sort();
 check("team fragment keys", JSON.stringify(Object.keys(fragment).sort()) === JSON.stringify(requiredFragmentKeys), Object.keys(fragment).sort());
+check("team fragment identity", fragment.schema_version === "task1.team_fragment.v1" && fragment.build_id === "build-01" && fragment.team_id === "T01" && fragment.split === "dev");
 check("formal schema preview", formalReport.valid === true && formalReport.errors.length === 0, formalReport.errors);
 check("formal case count", formalReport.case_count === 40 && formalReport.team_case_counts.T01 === 40, formalReport.team_case_counts);
 check("formal pair count", formalReport.pair_count === 15 && formalReport.pairs_by_team.T01 === 15, formalReport.pairs_by_team);
@@ -155,6 +161,10 @@ const agent = fragment.businessAgents[0];
 check("listed Skill count", agent.boundSkillIds.length === 5, agent.boundSkillIds);
 check("search Skill count", skillsFile.skills.filter((skill) => !agent.boundSkillIds.includes(skill.assetId)).length === 10);
 check("knowledge asset count", knowledgeFile.knowledge.length === 3 && agent.fixedKnowledgeIds.length === 3);
+const stagedAssetIds = [...memory.l0Conversations, ...memory.l1Memories, ...memory.l2Scenes, ...memory.l3Profiles, ...skillsFile.skills, ...knowledgeFile.knowledge].map((asset) => asset.assetId).sort();
+check("snapshot asset ids", JSON.stringify(fragment.snapshotAssetIds) === JSON.stringify(stagedAssetIds), fragment.snapshotAssetIds.length);
+check("fragment Luna batch refs", fragment.generatorBatchRefs.length === 5 && fragment.generatorBatchRefs.every((batch) => batch.generatorModel === "gpt-5.6-luna" && batch.reasoningEffort === "high" && /^[a-f0-9]{64}$/.test(batch.draftSha256)), fragment.generatorBatchRefs);
+check("fragment external imports", fragment.externalImports.length === 15 && fragment.externalImports.every((item) => item.assetId && item.repository.startsWith("https://github.com/") && /^[a-f0-9]{40}$/.test(item.commit) && /^[a-f0-9]{64}$/.test(item.rawSha256)), fragment.externalImports.length);
 check("source package count", sourceManifest.sources.length === 15, sourceManifest.sources.length);
 const pinsByName = new Map(inputPack.skill_source_pins.map((pin) => [pin.name, pin]));
 const packageErrors = [];
