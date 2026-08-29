@@ -14,14 +14,14 @@ dependency_installs: 0
 repeat_aggregation_policy: all-repeats-pass-v1
 ```
 
-M1 的 synthetic Gate 已通过。该结论只覆盖 Pair Contract v2、M0 只读 outcome seam、pair-level scorer、repeat 聚合和 independence cluster 输入；不代表正式数据已经满足合同，也不代表 M0 已经集成。
+M1 的 synthetic Gate 已通过。该结论只覆盖 Pair Contract v2、Integration-owned outcome seam、pair-level scorer、冻结 campaign/repeat 分母和 independence cluster 输入；不代表正式数据已经满足合同，也不代表 M0/M2 已经集成。
 
 ## 实现边界
 
 本提交只新增：
 
 - `measurement-v2/pair-contract.ts`：不可信输入边界、最小反事实 allowlist 与 invariant SHA 校验。
-- `measurement-v2/pair-scorer.ts`：消费 M0 已判定 outcome；不读取 raw trace，不重算 ECR。
+- `measurement-v2/pair-scorer.ts`：消费 Integration 合成的 outcome（M0 chain facts + M2 eligibility/execution evidence）；不读取 raw trace，不重算 ECR 或 final eligibility。
 - `measurement-v2/fixtures/m1-pair-v2.synthetic.json`：唯一 synthetic fixture。
 - `measurement-v2/M1-SCHEMA-INTERFACE-MANIFEST.json`：公开接口、公式与冻结策略。
 - `src/__tests__/tool-prompt-pair-v2.test.ts`：typed synthetic public-API tests。
@@ -49,6 +49,10 @@ StrictPairExact = only when preregistered:
 
 Repeat 不作为独立 pair。所有逐 repeat outcome 均保存在 `repeatInputs`，匹配成功后另存 `repeatResults`；pair-level 聚合策略固定为 `all-repeats-pass-v1`。`J_frozen`、`J_eligible` 和 cluster 都只按唯一 `pairId` 计数。
 
+`J_frozen` 不再从传入结果行数推断，而由 `pair-summary-campaign-v2` 的冻结 `expectedPairIds` 确定。外部 `frozenPairSetSha256` 绑定正式数据内容，M1 另算只依赖 split 与 pair IDs 的 `expectedPairIdsSha256` 来验证成员表；后者刻意不含 Variant 或执行环境，因此所有候选可以共享同一个 pair 分母。同一 summary 还冻结 Variant、模型、reasoning、provider、API protocol、adapter、execution identity、资产 snapshot、expected repeat set 和评分策略。缺少整 pair、双方共同少 repeat、混入其他 cohort 或评分策略不一致都会使 campaign 标为 incomplete；这些行不能静默改变行为分母。
+
+Outcome 是不可信运行时输入：required string 必须非空，两个 identity 字段必须是 lowercase SHA-256，所有 required boolean 必须显式存在。缺少 `executorBoundAttempt` 或 `malformedTdaiDispatchIntent` 会得到 `NEGATIVE_OUTCOME_INVALID`，绝不会因 JavaScript falsy 规则被算作 clean negative。
+
 ## RED 证据
 
 实现过程中按 public seam 执行了以下真实 RED：
@@ -58,6 +62,8 @@ Repeat 不作为独立 pair。所有逐 repeat outcome 均保存在 `repeatInput
 3. scorer/summary slice 新增后 47 项中 5 项失败：Strict outcome 缺失未 fail closed，summary API 尚不存在。
 4. frozen artifact slice 因 manifest/fixture 尚不存在而失败。
 5. repeat preservation slice 50 项中 1 项失败：incomplete score 尚未保存逐 repeat 输入。
+6. 独立审核反例暴露 2 个 P1：缺失 negative booleans 被当 clean negative；summary 可混合 Variant/split 并在整 pair/整 repeat 缺失时缩小分母。新增 12 个 runtime/campaign RED 后修为 GREEN。
+7. 初版把成员表 hash 错误地与 Variant/execution cohort 绑定，导致同一数据集跨候选得到不同成员身份；新增跨 Variant 反例后拆成外部内容 hash 与只绑定 split/pair IDs 的成员 hash。
 
 每个 RED 均通过最小实现转为 GREEN；没有为了通过测试修改旧 evaluator、M0 语义或正式数据。
 
@@ -65,7 +71,7 @@ Repeat 不作为独立 pair。所有逐 repeat outcome 均保存在 `repeatInput
 
 | Gate | 结果 | 说明 |
 | --- | --- | --- |
-| Focused M1 | PASS | `50/50` tests |
+| Focused M1 | PASS | `62/62` tests |
 | Existing tool-prompt eval | PASS | `30/30` tests |
 | Targeted strict TypeScript | PASS | M1 test 与其导入的 measurement-v2 模块无诊断 |
 | Repository full typecheck | BASELINE FAIL | 仅报告现存 handler/session/storage 等源码错误；没有 M1 文件诊断 |
@@ -80,7 +86,10 @@ Capture observation 不改变 Task 1 Prompt freeze：变化仅是既有 C00–C0
 - Pair Contract schema：`2`
 - Invariant projection schema：`pair-invariant-projection-v2`
 - Repeat policy：`all-repeats-pass-v1`
-- Synthetic fixture canonical SHA-256：`fdfe28c25e70715a23f68ff6ab964be455bba2ae227093b8f98d9f5d3ebf5ecf`
+- Synthetic fixture canonical SHA-256：`dc8de04273b6779819686333a2c4c1bd5f64e068d950ddbd7c4a60e0b23cc570`
+- Synthetic scoring-policy SHA-256：`abd2448c425839fcc812f2e335acd86b1bfc22515366f40b8ae16e8e94fb7153`
+- Synthetic frozen pair-set content SHA-256：`0c509c532b4710b395567177fb63635ff2a117d1824bcdd357a667df814ddf44`
+- Synthetic expected pair-membership SHA-256：`3538dbdd3d97f0a19003d90f8eaac85d479dce5ce47c0268213a1bdc743b55be`
 - Canonicalization：对象 key 递归字典序；数组顺序保持；标量使用 compact JSON。
 - Manifest：`M1-SCHEMA-INTERFACE-MANIFEST.json`
 
@@ -90,7 +99,8 @@ Capture observation 不改变 Task 1 Prompt freeze：变化仅是既有 C00–C0
 
 1. 每个正式 pair 提供 `allowedChangedPointers`、`invariantFieldsSha256`、`causalFactorId`、`minimalityReviewStatus=approved` 和 `independenceKey`。
 2. 正负 case 在同一 split，且只包含 allowlist 内的受控差异。
-3. 集成 M0 的正式 case outcome；M1 只能消费 `completeChainSuccess`/可选 `strictChainExact`，不能自行推导 ECR。
-4. 每个 pair 的 repeat ID 集完全相同，run/session/local state 相互独立，Variant/model/reasoning/snapshot 完全一致。
+3. Integration 合成正式 case outcome；M1 只能消费 M0 的 `completeChainSuccess`/可选 `strictChainExact` 和 M2 的 eligibility/execution evidence，不能自行推导 ECR 或 final eligibility。
+4. 每个 pair 的 repeat ID 集完全相同，run/session/local state 相互独立，Variant/model/reasoning/provider/API/adapter/execution identity/snapshot 完全一致。
+5. 每个 campaign 提供冻结 pair-set SHA、expected pair IDs、expected repeat IDs 和 scoring-policy SHA；所有 Variant 使用同一 split/pair-set，不得混合 Dev/Hidden。
 
 在这些条件满足前，可以集成 M1 的 schema 与 synthetic scorer，但不得发布正式 PairExact 数字或创建 formal-ready 标签。

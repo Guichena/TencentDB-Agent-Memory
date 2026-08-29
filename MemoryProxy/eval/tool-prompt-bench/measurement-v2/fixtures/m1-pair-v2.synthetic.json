@@ -53,6 +53,29 @@
       }
     }
   },
+  "summaryCampaign": {
+    "schemaVersion": "pair-summary-campaign-v2",
+    "split": "dev",
+    "variantId": "V3",
+    "model": "gpt-5.6-luna",
+    "reasoningEffort": "high",
+    "provider": "openai",
+    "apiProtocol": "responses-v1",
+    "adapterVersion": "memory-proxy-openai-v1",
+    "executionIdentitySha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "assetSnapshotSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "expectedPairIds": [
+      "pair-skill-boundary-001"
+    ],
+    "expectedRepeatIds": [
+      "repeat-01"
+    ],
+    "frozenPairSetRevision": "synthetic:m1-pair-v2-synthetic-v1",
+    "frozenPairSetSha256": "0c509c532b4710b395567177fb63635ff2a117d1824bcdd357a667df814ddf44",
+    "expectedPairIdsSha256": "3538dbdd3d97f0a19003d90f8eaac85d479dce5ce47c0268213a1bdc743b55be",
+    "strictPairExactEnabled": false,
+    "scoringPolicySha256": "abd2448c425839fcc812f2e335acd86b1bfc22515366f40b8ae16e8e94fb7153"
+  },
   "outcomes": {
     "positive": [
       {
@@ -61,6 +84,10 @@
         "variantId": "V3",
         "model": "gpt-5.6-luna",
         "reasoningEffort": "high",
+        "provider": "openai",
+        "apiProtocol": "responses-v1",
+        "adapterVersion": "memory-proxy-openai-v1",
+        "executionIdentitySha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
         "assetSnapshotSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "runId": "positive-run-01",
         "sessionId": "positive-session-01",
@@ -80,6 +107,10 @@
         "variantId": "V3",
         "model": "gpt-5.6-luna",
         "reasoningEffort": "high",
+        "provider": "openai",
+        "apiProtocol": "responses-v1",
+        "adapterVersion": "memory-proxy-openai-v1",
+        "executionIdentitySha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
         "assetSnapshotSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "runId": "negative-run-01",
         "sessionId": "negative-session-01",
