@@ -6,7 +6,7 @@ import path from "node:path";
 const ROOT = process.cwd();
 const TEAM = "T15";
 const BUILD = "build-08";
-const WORLD_ID = "world-task1-formal-v1";
+const WORLD_ID = "world-task1-engineering";
 const SNAPSHOT_ID = "snapshot-task1-hidden-v1";
 const WORLD_AS_OF = "2026-08-29T23:59:59+08:00";
 const OBSERVED_AT = "2026-08-29T20:00:00+08:00";

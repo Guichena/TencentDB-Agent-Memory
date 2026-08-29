@@ -781,7 +781,7 @@
   "teams": [
     {
       "teamId": "T16",
-      "worldId": "world-task1-formal-v1",
+      "worldId": "world-task1-engineering",
       "split": "hidden_test",
       "name": "事件驱动系统",
       "businessAgentIds": [
@@ -831,7 +831,7 @@
         "T16-EXT-SKL-016",
         "T16-EXT-SKL-017"
       ],
-      "contentHash": "96f735f04c06a56f4c022e24c76b650d180d04f5a43f1e035dd1058c3cd95428"
+      "contentHash": "6a89fb34dbf874ad1cc14b416793b1dc92e7baec7a771d778f8f4a9a0e32e3da"
     }
   ],
   "businessAgents": [
