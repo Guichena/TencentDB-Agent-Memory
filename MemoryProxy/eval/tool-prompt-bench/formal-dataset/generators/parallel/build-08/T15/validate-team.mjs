@@ -73,6 +73,9 @@ check(memory.l3Profiles.length === 1, "L3 count must be 1");
 check(skillsFile.skills.length === 18, "Skill count must be 18");
 check(knowledgeFile.knowledge.length === 3, "Knowledge count must be 3");
 check(fragment.snapshotAssetIds.length === allAssets.length && fragment.snapshotAssetIds.every((id) => assetById.has(id)), "snapshot asset ids mismatch");
+const primaryIdentity = fragment.publicCases[0].identity;
+const expectedVisibleSha = sha({ teamId: primaryIdentity.teamId, userId: primaryIdentity.userId, agentId: primaryIdentity.agentId, assetIds: [...fragment.snapshotAssetIds].sort((left, right) => left.localeCompare(right)) });
+check(fragment.publicCases.every((item) => item.visibleAssetSetSha256 === expectedVisibleSha), "identity-aware visible asset hash mismatch");
 
 const messageIds = new Set();
 for (const session of memory.l0Conversations) {

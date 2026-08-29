@@ -1180,8 +1180,8 @@
         }
       ],
       "query": "上次 Ledger consumer 复盘中，幂等键由哪些字段按什么顺序组成，并明确排除了哪个字段？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "cb3b328377252c5b15d3533b42aab360425f2f0cb4a2e1c025046854bee0ced1"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "97e8f238d78c634e2dd2ecc5b71d334e170574d67c66ff02ee5090b911b692d3"
     },
     {
       "caseId": "T16-MEM-001-N",
@@ -1271,8 +1271,8 @@
         }
       ],
       "query": "上次 Ledger consumer 复盘中，幂等键由哪些字段按什么顺序组成，并明确排除了哪个字段？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "9f97c7eefd7b3338e117dff0b9a06be6122d922a8292bd8026a30b6a866f69d5"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "7d124106099b5f92b173c20a31bf3ad859a015f2160959634de7aeff147d6890"
     },
     {
       "caseId": "T16-MEM-002-P",
@@ -1338,8 +1338,8 @@
         }
       ],
       "query": "Relay Orders 最终用哪个 partition key 保证同一订单事件有序？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "cd6a1fd89924547b57bb9020998c94cf9fcf824bdd8c4f64fa130e45baafd389"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "19f28d2ebd419e431b2f546ea7e08474b411d6703ff8bf9283ea49c19b3c5c00"
     },
     {
       "caseId": "T16-MEM-002-N",
@@ -1405,8 +1405,8 @@
         }
       ],
       "query": "Relay Orders 最终用哪个 partition key 保证同一订单事件有序？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "cfbf06309ec42b291f257ebdd08d2b802f7d18599d4412b93eba5c2d85ffe9f4"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "d2c6bc2d4b1fe1133ce486388a8e472a411c60ad9f441bcfe854ad25072501ee"
     },
     {
       "caseId": "T16-MEM-003-P",
@@ -1472,8 +1472,8 @@
         }
       ],
       "query": "Beacon 对 retryable 429/503 使用什么延迟序列，non-retryable validation error 又如何处理？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "c603baf0a5fee972bf1b46cdb86f41eaba1ec593ae5dec0a3464da32df1054cd"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "1a0f5e09c0005447ba8f8c87a186b1ee8ad6e68e931864caac16b6f5f4a99975"
     },
     {
       "caseId": "T16-MEM-003-N",
@@ -1539,8 +1539,8 @@
         }
       ],
       "query": "Beacon 对 retryable 429/503 使用什么延迟序列，non-retryable validation error 又如何处理？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "1c44cd4510ea1fe2a69efdfd08cd5f66f6fcbc9988ece1f70f2d563fe0f8e32f"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "d5f585ef79c465133e85385faf4e71160c53cbb651278e8d17987700c1d42ce5"
     },
     {
       "caseId": "T16-MEM-004-P",
@@ -1606,8 +1606,8 @@
         }
       ],
       "query": "Ledger outbox 事件应在 broker ack 之前还是之后标记为已发布？复盘原话是什么？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "3e3bf3e6a2220ce8e759547af0bfd67034a17416871c494f0ba98c5cd82b44ce"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "f2181433a750bfa79b46c584ad875de7a97a99ead6f3eb22e073e2ba393fa5b5"
     },
     {
       "caseId": "T16-MEM-004-N",
@@ -1673,8 +1673,8 @@
         }
       ],
       "query": "Ledger outbox 事件应在 broker ack 之前还是之后标记为已发布？复盘原话是什么？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "bd6c3cded9ae69730916f05b70a3bc5eece6625f6e88147424546d03ccae4762"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "e114a0c0630feb8d2348be372b2e4df7f8ab280f0e68c50b6d405eb10f3adbe2"
     },
     {
       "caseId": "T16-MEM-005-P",
@@ -1740,8 +1740,8 @@
         }
       ],
       "query": "在 Streamline 的 decision 记录中，2026-08-01 至 2026-08-29 期间 envelope 新增 trace_id 最终采用什么兼容规则？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "134e1492c32f63835a43c315e47b22108264f9d2be9223725284175a614a8caf"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "91fb4d4eff802b97b1553bc131690bfe495fd3fe6bdd708e5cf6b6edd61c6c36"
     },
     {
       "caseId": "T16-MEM-005-N",
@@ -1807,8 +1807,8 @@
         }
       ],
       "query": "在 Streamline 的 decision 记录中，2026-08-01 至 2026-08-29 期间 envelope 新增 trace_id 最终采用什么兼容规则？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "a0929438fbbe7b19d2fd2d659a6d6698458c5787a65a35f75aa7a0bf31ac4472"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "39ec4d5ebc6008d8c15e6763b6cf7a8dc96ff74ef74aff33c36bda05c5f5e698"
     },
     {
       "caseId": "T16-MEM-006-P",
@@ -1874,8 +1874,8 @@
         }
       ],
       "query": "Consumer Watch 这次滚动发布期间 lag 突增的根因是什么？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "245c7fbb7ac1654c54af3bd3f135f0cdba56a899b03a21ac5e28ecdf8ca9f091"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "f24ca60e488001320e2ba60517bfe71fd80b65ea0f00a7199a8af18d0811b4c7"
     },
     {
       "caseId": "T16-MEM-006-N",
@@ -1941,8 +1941,8 @@
         }
       ],
       "query": "Consumer Watch 这次滚动发布期间 lag 突增的根因是什么？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "931640d32a236c9d13d69032be5d843cbc14e5b772fa9ae37a58fc18ba6266fc"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "b59f9c67672c3ccd86cb2709bc3ab47dc4bd3f23ac6bad277b895229f291ab11"
     },
     {
       "caseId": "T16-SKL-001-P",
@@ -1992,8 +1992,8 @@
         }
       ],
       "query": "请给出这个跨服务长流程在失败时的补偿、超时和死信恢复核心流程。",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "5b669e3558a461554728e8f2b3e99e0fcf7ffc1b2118c97e7b6d5bbce8e42159"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "887b575e192eb0d0aa38b794825031d3b6747d84070bb2357edc8862bfbc4d1e"
     },
     {
       "caseId": "T16-SKL-001-N",
@@ -2043,8 +2043,8 @@
         }
       ],
       "query": "请给出这个跨服务长流程在失败时的补偿、超时和死信恢复核心流程。",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "38a8a9c8c7428be80721cfaaa834b50f1a836d770e054e70310720342e75d6dd"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "3fbd705b434d801936d7f40821da244ba20916f89e5400159b0d025bba54ff10"
     },
     {
       "caseId": "T16-SKL-002-P",
@@ -2094,8 +2094,8 @@
         }
       ],
       "query": "在 CQRS 中，事件产生后由哪个组件更新读模型？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "a5b62836d7bca0d27536224d17c43e1aaf665c00b10a5f547efd83c4b05a811d"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "40cc524b353d44c60a52d0d0400bbf5b5b9bac3c066e4584937eccb680c30467"
     },
     {
       "caseId": "T16-SKL-002-N",
@@ -2145,8 +2145,8 @@
         }
       ],
       "query": "在 CQRS 中，事件产生后由哪个组件更新读模型？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "4d3b8a3a755ea9a6a1e7d1bb79e801a14f8da7f09c1b9e846457e900af722745"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "aebb0b8cd8542594b016e13f001ac8a368d299b9ed0804796fd58d15de5d762d"
     },
     {
       "caseId": "T16-SKL-003-P",
@@ -2196,8 +2196,8 @@
         }
       ],
       "query": "需要在重启后从上次位置继续的投影，应保存什么？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "ca2136f3a32d1f651257dc54c7926661e3c780e332d16db2b36b5fabdba02c93"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "9e9e9d2edfe68c354e6ae04be5b12a532d5af78326dd50bc8c45bbf89ce0e994"
     },
     {
       "caseId": "T16-SKL-003-N",
@@ -2247,8 +2247,8 @@
         }
       ],
       "query": "需要在重启后从上次位置继续的投影，应保存什么？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "e32b269bfc801d37c02b8e1a0df1881a8e757285e3e21f9f0b4c9def7daa5ed4"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "d68a7b4fc4ce495098e738eb06c11e5e860b8ef1186a2871c46f83cf6f63da29"
     },
     {
       "caseId": "T16-SKL-004-P",
@@ -2298,8 +2298,8 @@
         }
       ],
       "query": "IoT Edge 模块如何处理网络断开、重试和重复消息？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "cebbd23cc0f69166d170f83a102736dafb2d1c5f4bf10aec01496b9cb8c50132"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "646237bc0f28a65e632c20ed464088cf19a274ad65cebbd801486efd1c1b0343"
     },
     {
       "caseId": "T16-SKL-004-N",
@@ -2349,8 +2349,8 @@
         }
       ],
       "query": "IoT Edge 模块如何处理网络断开、重试和重复消息？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "572bf65ac789ca3b75c5b0c1812723388b2c763e7c77d644ce7138342fd4e528"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "e38ce9d7d0e1c0edf893ef88ddb98a5f26036bc4309ab83cfce2493ecd340643"
     },
     {
       "caseId": "T16-SKL-005-P",
@@ -2400,8 +2400,8 @@
         }
       ],
       "query": "如何判定一个部署事件与 CloudWatch 告警强关联？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "855eda39326a8106ff589ee7698ac127e374dce344f6f96d81b5586aadb94258"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "16f17d8494008aaaa20d314626907fb8262853769a6d8e6c20d18cdf037937ac"
     },
     {
       "caseId": "T16-SKL-005-N",
@@ -2451,8 +2451,8 @@
         }
       ],
       "query": "如何判定一个部署事件与 CloudWatch 告警强关联？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "ab049fe4aa8c757ab5a17d09a5d264417301bb59a78b30fa7913a17f681cdefa"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "5d07e6ee027581788c7a4b68dbcd5bedba72fe265341abe1b5e1b0aee97e03ff"
     },
     {
       "caseId": "T16-SKL-006-P",
@@ -2502,8 +2502,8 @@
         }
       ],
       "query": "采用 Choreography 模式时，各服务如何协作并保证消息处理可靠？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "f6f122f676e77042d482c4dafb6823b58ff4905e6a4170a88748b91b6fbf0967"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "87872b3af0a232d91fe00f90ffd28f99600dd82cc2c804c6e1225f8b8be6d78b"
     },
     {
       "caseId": "T16-SKL-006-N",
@@ -2553,8 +2553,8 @@
         }
       ],
       "query": "采用 Choreography 模式时，各服务如何协作并保证消息处理可靠？",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "9b609d1aaf728fd495739df255d201f27b7d66a82b9725a9cc74baab87bca716"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "d8f2cc6f442b23cb819f7640722e27b507847d4e61600c798dc82f1a22305961"
     },
     {
       "caseId": "T16-KNW-001-P",
@@ -2604,8 +2604,8 @@
         }
       ],
       "query": "请查询内部 Beacon 恢复手册，给出 poison message 的隔离阈值和死信重放步骤。",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "ea6031590e09b258fa7841a8664f58770a6e1f33ce8f3f094c28373e20437725"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "626be26716c545c57cb57abb225642cc22f8e07dda6d3b3722aaf4ca703842d5"
     },
     {
       "caseId": "T16-KNW-001-N",
@@ -2655,8 +2655,8 @@
         }
       ],
       "query": "请查询内部 Beacon 恢复手册，给出 poison message 的隔离阈值和死信重放步骤。",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "45a16a786ff5049f01335072f9827dd18ba1753f6f0385f7d3e0872d5945697b"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "b21eb2ae2eaae4082085d59621e6ef90e15b33cb90806d44c64074e4a7356e71"
     },
     {
       "caseId": "T16-KNW-002-P",
@@ -2706,8 +2706,8 @@
         }
       ],
       "query": "请查询内部 Ledger 代码图谱，给出 outbox 写入、发布、幂等去重的完整调用链和关键规则。",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "7c280872a6de94f3d780b0ae91fe588bc74aad23d7b350073fab7fdcbd07823e"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "01e415a9106e43e2ff0f185d82fe58006a9e7969958dee5edcc284340fe60e76"
     },
     {
       "caseId": "T16-KNW-002-N",
@@ -2757,8 +2757,8 @@
         }
       ],
       "query": "请查询内部 Ledger 代码图谱，给出 outbox 写入、发布、幂等去重的完整调用链和关键规则。",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "e88c447258e41300b0acb1f3c90bd9992b82eb7eedc667e0e620412b9c54ec5e"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "c3551e02a339c9803d1b02b53f221f243ef821a63b4cf76817a7351ef5c96f46"
     },
     {
       "caseId": "T16-KNW-003-P",
@@ -2808,8 +2808,8 @@
         }
       ],
       "query": "请查询内部事件 schema 治理资料，给出 envelope 必备字段、版本升级规则和消费者兼容窗口。",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "264b1583f73a8a9739abc50ff9f1e90399f70d5ebaec183b875a6fef3ccdfaa9"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "8cb5cc4a80604d5db191227e2dbc8f15656a7e4ed4b7bc0a4e62f595c6136e9c"
     },
     {
       "caseId": "T16-KNW-003-N",
@@ -2859,8 +2859,8 @@
         }
       ],
       "query": "请查询内部事件 schema 治理资料，给出 envelope 必备字段、版本升级规则和消费者兼容窗口。",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "3ddd863d3fb7d4e4100dbc88b555bbcc88bf9349c8fa736b6e88f65d940278cf"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "339d1dc7648ae9503c031b288ced2ac2373ced1e10ead286f43bf75d19dfb640"
     },
     {
       "caseId": "T16-COD-001",
@@ -2898,8 +2898,8 @@
         }
       ],
       "query": "请改写 publish 函数，使它满足分区键和顺序要求，并说明为什么不同订单仍可并行。",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "26f488c7bcaa04fc4f4705c66324f2756a872dc6f540b51757742ef52b12a8db"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "dad0adf8901f20be07c84a14f3d99aba8b9326371945036e1f552ad65b344660"
     },
     {
       "caseId": "T16-COD-002",
@@ -2937,8 +2937,8 @@
         }
       ],
       "query": "请返回修正后的 YAML，并给出一段伪代码说明提交 offset 的位置。",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "e36d9dc67cc9429a5713365c9bb3880584c08c9e566799695c827fbdc853a360"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "4aa056210a0901d9ab336594c015bdd3801ae5b880f41bcb3790352cabe0774e"
     },
     {
       "caseId": "T16-COD-003",
@@ -2976,8 +2976,8 @@
         }
       ],
       "query": "请修复这个处理器，准确实现初始发送加最多三次重试、1/2/4 秒退避和第四次失败后的死信终止，并保留异步接口。",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "2c7d08430a7f9990a9c4be7d88cb12b9627f5f6ae84f8ee8f9391f1b2da9951f"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "6420dd6d84cf2e8a4fabdc5fcd689f0368ce26c5d05ef4854433d71c8043788c"
     },
     {
       "caseId": "T16-COD-004",
@@ -3015,8 +3015,8 @@
         }
       ],
       "query": "请给出 build_replay_batches 的实现，并用三条输入记录展示返回结构。",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "ff52213c2d19e6dff6c50491680e63943091bcf5536208dfe93a1a4bf182a0a2"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "eb15a54c1735db038b7cb37ec705fee6d9b69b84b65cc4c3a422df659950b27f"
     },
     {
       "caseId": "T16-COD-005",
@@ -3054,8 +3054,8 @@
         }
       ],
       "query": "请返回完整的 SQL 事务片段，包含满足约束的 outbox INSERT。",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "6c6c40f321512b047d40111d03177d25daeb20ef6e2cfe358e86818fdca9a4ff"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "5ea21475491b9d03700287bdadcc33f84ffd47356ea5e45dff1aba1dfa0c9b13"
     },
     {
       "caseId": "T16-COD-006",
@@ -3093,8 +3093,8 @@
         }
       ],
       "query": "请给出修正版伪代码和并发下两个实例同时收到同一 event_id 时的结果。",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "5475e90957cff10a5362773b609beec88fa84020a20608a05580451c428134ff"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "fe5fa3cafbda143ac670cac381340d7159bff6479a63220f6f8884c90eece742"
     },
     {
       "caseId": "T16-COD-007",
@@ -3132,8 +3132,8 @@
         }
       ],
       "query": "请判断这次变化是否兼容，并写出消费者处理 currency 的向后兼容伪代码。",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "d77943998b8c3dbb68ebf00c9caec12400f7aabd5169190aea103f02914649d4"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "9c4b322ddba84c0f710157ad4911f91387cf1f8364dc692d54d925e631759917"
     },
     {
       "caseId": "T16-COD-008",
@@ -3171,8 +3171,8 @@
         }
       ],
       "query": "请修复 parse 函数，并给出 data=0、data=null、缺少 event_version 三个测试结果。",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "1d2520e6c081cdc88787063e76f37a05c06c6cec77512f6ecd17c2883290e75d"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "c6c8838ff65f03f5d2f998929410288d085d1a76d9980ffe3dd9b42869cd1118"
     },
     {
       "caseId": "T16-COD-009",
@@ -3210,8 +3210,8 @@
         }
       ],
       "query": "请根据指标生成符合格式的诊断 JSON，并说明为什么不是扩容。",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "fa5b4114fd614d9629bc547ca62822dfac538be35c1704abb612e70ac8424ac9"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "ccc86009b801fdf487de7d7f1d3d581db92916746621f83cbf8b736c5a3d2b16"
     },
     {
       "caseId": "T16-COD-010",
@@ -3249,8 +3249,8 @@
         }
       ],
       "query": "请返回修正版 Python 伪代码，并列出 evt-9 崩溃重启后的两种路径结果。",
-      "visibleAssetSetSha256": "728bb89a1366e1c04939623f69bdbce8560ed008297710e682548c791baa15d6",
-      "contentHash": "fac926dcd238fd9c89abcede7dfcd7b1df9a9694846a6071fdf91c01d063e7b1"
+      "visibleAssetSetSha256": "61a87bdce2b6a936553333d4fedab1af2882021c46c8ac518f77817a829eb965",
+      "contentHash": "2da353a49a14973f5081d84b686ebf7063a8600bb4ec62ad1d7dad54aa5bbdcc"
     }
   ],
   "privateAnnotations": [

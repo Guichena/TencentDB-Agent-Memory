@@ -338,7 +338,7 @@ const knowledge = knowledgeCandidates.candidates.map((item) => withHash({
 
 const memoryAssets = [...l0Conversations, ...l1Conversations, ...l2Scenes, ...l3Profiles];
 const allAssetIds = [...memoryAssets, ...skills, ...knowledge].map((item) => item.assetId).sort();
-const visibleAssetSetSha256 = sha(allAssetIds);
+const visibleAssetSetSha256 = sha({ teamId: TEAM, userId: USER, agentId: ACTIVE, assetIds: [...allAssetIds].sort((left, right) => left.localeCompare(right)) });
 
 function agentDetail(description, prompt) {
   return withHash({ description, prompt });
