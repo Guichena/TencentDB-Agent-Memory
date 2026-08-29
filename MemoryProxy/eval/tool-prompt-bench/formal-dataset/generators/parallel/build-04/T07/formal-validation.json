@@ -1,0 +1,122 @@
+{
+  "schema_version": "task1.formal_dataset_validation.v2",
+  "valid": true,
+  "errors": [],
+  "splits": [
+    "hidden_test"
+  ],
+  "case_count": 40,
+  "team_case_counts": {
+    "T01": 0,
+    "T02": 0,
+    "T03": 0,
+    "T04": 0,
+    "T05": 0,
+    "T06": 0,
+    "T08": 0,
+    "T09": 0,
+    "T10": 0,
+    "T07": 40
+  },
+  "pair_count": 20,
+  "pairs_by_team": {
+    "T01": 5,
+    "T02": 0,
+    "T03": 0,
+    "T04": 0,
+    "T05": 0,
+    "T06": 0,
+    "T08": 0,
+    "T09": 0,
+    "T10": 0,
+    "T07": 15
+  },
+  "pair_integrity_error_count": 0,
+  "pair_integrity_errors": [],
+  "provider_leakage_count": 0,
+  "invalid_sequence_count": 0,
+  "missing_source_ref_count": 0,
+  "provenance": {
+    "synthetic": {
+      "count": 15,
+      "sourceIds": [
+        "source-t07-current-anchor",
+        "source-t07-knowledge-cg-t07qd01",
+        "source-t07-knowledge-wiki-t07ap01",
+        "source-t07-knowledge-wiki-t07gr01",
+        "source-t07-memory-l0",
+        "source-t07-memory-l1",
+        "source-t07-memory-l2",
+        "source-t07-memory-l3",
+        "source-t07-natural-negatives",
+        "source-t07-pairs-t07-knowledge-expansion-01",
+        "source-t07-pairs-t07-knowledge-trial-01",
+        "source-t07-pairs-t07-memory-expansion-01",
+        "source-t07-pairs-t07-memory-trial-01",
+        "source-t07-pairs-t07-skill-expansion-01",
+        "source-t07-pairs-t07-skill-trial-01"
+      ],
+      "batchIds": [
+        "build-04-T07-natural-negative-01",
+        "t07-knowledge-expansion-01",
+        "t07-knowledge-trial-01",
+        "T07-memory-expansion-01",
+        "T07-memory-trial-01",
+        "T07-skill-expansion-01",
+        "T07-skill-trial-01"
+      ]
+    },
+    "externalImport": {
+      "count": 42,
+      "sourceIds": [
+        "source-t01-current-mypy-regression",
+        "source-t01-current-ujson-fuzzing",
+        "source-t01-current-ujson-impact",
+        "source-t01-history-getmoto__moto-5134",
+        "source-t01-history-getmoto__moto-5587",
+        "source-t01-history-getmoto__moto-6567",
+        "source-t01-history-getmoto__moto-6585",
+        "source-t01-history-getmoto__moto-6913",
+        "source-t01-history-getmoto__moto-7365",
+        "source-t01-history-python__mypy-10424",
+        "source-t01-history-python__mypy-11567",
+        "source-t01-history-python__mypy-12943",
+        "source-t01-history-python__mypy-15184",
+        "source-t01-history-python__mypy-16869",
+        "source-t01-history-python__mypy-5617",
+        "source-t01-knowledge-mypy-codegraph",
+        "source-t01-knowledge-reliability-wiki",
+        "source-t01-knowledge-ujson-codegraph",
+        "source-t01-pair-001",
+        "source-t01-pair-002",
+        "source-t01-pair-003",
+        "source-t01-pair-004",
+        "source-t01-pair-005",
+        "source-t01-skill-discover-important-function",
+        "source-t01-skill-fuzzing-python",
+        "source-t07-skill-aspnet-minimal-api-openapi",
+        "source-t07-skill-azure-role-selector",
+        "source-t07-skill-copilot-sdk",
+        "source-t07-skill-javascript-typescript-jest",
+        "source-t07-skill-msgraph-sdk",
+        "source-t07-skill-openapi-to-application-code",
+        "source-t07-skill-qdrant-clients-sdk",
+        "source-t07-skill-qdrant-deployment-options",
+        "source-t07-skill-qdrant-indexing-performance",
+        "source-t07-skill-qdrant-memory-optimization",
+        "source-t07-skill-qdrant-model-migration",
+        "source-t07-skill-qdrant-monitoring-debugging",
+        "source-t07-skill-qdrant-search-quality-diagnosis",
+        "source-t07-skill-qdrant-search-speed-optimization",
+        "source-t07-skill-typescript-mcp-server-generator",
+        "source-t07-skill-typespec-api-operations",
+        "source-task1-registry-ds00"
+      ]
+    }
+  },
+  "provider_sha256": "00c39950701dc2c126b996f87fd3195f6271ccd558ef2a282fdf3b4914d940da",
+  "snapshot_sha256": {
+    "dev": "281bfa9b5c761fb5ad9cf93fa027f75c9d2bc37ca32ba1b4b8427b0f3b4c4102",
+    "hidden_test": "817fead784d4f0608806477a748d1572c1d7d5b9966b03d229ffe2efd04110be"
+  }
+}

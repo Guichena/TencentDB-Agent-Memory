@@ -1,0 +1,404 @@
+{
+  "schema_version": "task1.luna_natural_negative_draft.v1",
+  "batch_id": "build-04-T07-natural-negative-01",
+  "stage": "DS05",
+  "team_id": "T07",
+  "cases": [
+    {
+      "draft_case_id": "T07-NAT-001",
+      "external_source_ids": [],
+      "synthetic_scope": ["project", "conversation"],
+      "difficulty": "medium",
+      "context_bucket": "short_2_to_4",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "在 TypeScript 客户端的 `src/normalizeUrl.ts` 中，函数接收一个基地址和相对路径。当前实现是：\n```ts\nexport function normalizeUrl(base: string, path: string): string {\n  return `${base}/${path}`;\n}\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "可见调用约定是 `normalizeUrl('https://api.example.test/', '/users')` 应得到 `https://api.example.test/users`，而 `normalizeUrl('https://api.example.test', 'users')` 也应得到同样结果。请只修改这个本地函数，保留 TypeScript 的字符串返回类型。"
+        }
+      ],
+      "query": "请给出最小代码改动，避免拼接结果出现双斜杠，同时不要改变协议分隔符。",
+      "why_current_context_is_sufficient": "函数签名、现有实现、两个边界调用及精确期望结果都在上下文中；修复只需处理 base 与 path 的连接，不需要项目历史或外部资料。",
+      "visible_distractor_ids_author_only": ["T07-SKILL-ASPNET-OPENAPI", "T07-SKILL-TYPESPEC-OPS"],
+      "source_fact_map": [],
+      "sol_review_questions": ["是否只改动 URL 连接逻辑并覆盖两个给定调用？", "是否保持协议中的 `://` 不被错误替换？"]
+    },
+    {
+      "draft_case_id": "T07-NAT-002",
+      "external_source_ids": [],
+      "synthetic_scope": ["project", "conversation", "tests"],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "请修复 `tests/graphClient.test.ts` 中一个自包含的 Jest mock 问题。被测模块 `src/graphClient.ts` 导出 `loadPage()`，它调用 `directoryApi.get()` 并返回响应中的 `items`。"
+        },
+        {
+          "role": "assistant",
+          "content": "测试文件当前有一个模块级 mock：\n```ts\nconst get = jest.fn();\njest.mock('../src/directoryApi', () => ({ get }));\n```"
+        },
+        {
+          "role": "user",
+          "content": "第一条测试在执行前设置 `get.mockResolvedValue({ items: ['a'] })`，断言 `loadPage()` 返回 `['a']`，测试本身通过。"
+        },
+        {
+          "role": "assistant",
+          "content": "第二条测试设置 `get.mockResolvedValue({ items: ['b'] })`，断言返回 `['b']`，但偶发看到调用次数为 2；失败原因是第一条测试的调用记录跨测试保留。"
+        },
+        {
+          "role": "user",
+          "content": "约束：不要改生产代码，不要重写 mock 工厂，不要清除 mock 的实现，因为每条测试都需要继续设置自己的 resolved value。"
+        },
+        {
+          "role": "assistant",
+          "content": "请在这个测试文件中加入合适的每测试清理，并保留两条测试已有的行为断言。"
+        }
+      ],
+      "query": "如何最小化修复 mock 调用次数累积，同时保留每条测试自行配置返回值的能力？",
+      "why_current_context_is_sufficient": "上下文给出了 mock、跨测试污染的症状、不可改变的生产代码和实现保留约束；添加针对调用状态的每测试清理即可完成任务。",
+      "visible_distractor_ids_author_only": ["T07-SKILL-COPILOT-SDK", "T07-SKILL-TS-MCP"],
+      "source_fact_map": [],
+      "sol_review_questions": ["是否清除了调用记录而没有清空 mock 实现？", "两条测试是否仍能分别设置 `a` 与 `b` 的返回值？"]
+    },
+    {
+      "draft_case_id": "T07-NAT-003",
+      "external_source_ids": [],
+      "synthetic_scope": ["project", "conversation"],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "在 Python 文件 `src/validation.py` 中，有一个纯函数需要检查发送给 API 的 payload。输入应是字典，必须包含 `tenant_id` 和 `items` 两个键。"
+        },
+        {
+          "role": "assistant",
+          "content": "`tenant_id` 必须是非空字符串；`items` 必须是列表；列表中的每一项必须是字典，并且包含非空字符串键 `id`。"
+        },
+        {
+          "role": "user",
+          "content": "当前骨架如下：\n```python\ndef validate_payload(payload):\n    return True\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "调用方希望合法输入返回 `True`，其余情况返回 `False`；不要抛出异常，也不要修改传入的对象。"
+        },
+        {
+          "role": "user",
+          "content": "合法示例是 `{'tenant_id': 'acme', 'items': [{'id': 'p1'}]}`。空列表也合法，因为批处理器允许空批次。"
+        },
+        {
+          "role": "assistant",
+          "content": "非法示例包括缺少 `tenant_id`、`tenant_id` 为 `''`、`items` 为元组、某项不是字典，以及某项的 `id` 为空字符串。"
+        }
+      ],
+      "query": "请实现这个纯校验函数，保持无副作用，并覆盖缺键、类型错误和嵌套项目错误。",
+      "why_current_context_is_sufficient": "输入结构、每个字段的类型和非空规则、空列表例外、返回协议及非法样例均已明确；实现不依赖 SDK 版本、网络或项目历史。",
+      "visible_distractor_ids_author_only": ["T07-SKILL-QDRANT-DEPLOY", "T07-SKILL-QDRANT-MIGRATION"],
+      "source_fact_map": [],
+      "sol_review_questions": ["是否将非字典 payload 安全地判为 False？", "是否允许 `items` 为空列表且不修改输入？"]
+    },
+    {
+      "draft_case_id": "T07-NAT-004",
+      "external_source_ids": [],
+      "synthetic_scope": ["project", "conversation"],
+      "difficulty": "easy",
+      "context_bucket": "short_2_to_4",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "`openapi/schema.yaml` 中的响应字段描述目前写成：\n```yaml\nstatus:\n  type: string\n  description: response code\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "该字段实际返回可读的处理状态，例如 `queued`、`completed` 或 `failed`，不是数字 HTTP 状态码。请只做文档文字修正，保持 YAML 结构和类型不变。"
+        }
+      ],
+      "query": "请把 description 改成准确、简洁的英文说明，并给出修改后的 YAML 片段。",
+      "why_current_context_is_sufficient": "现有片段、真实语义、示例值及不可改变的结构都直接可见；这是局部文档编辑，不需要生成客户端或查阅任何外部规范。",
+      "visible_distractor_ids_author_only": ["T07-SKILL-ASPNET-OPENAPI", "T07-SKILL-QDRANT-DEBUG"],
+      "source_fact_map": [],
+      "sol_review_questions": ["description 是否说明这是可读处理状态而非 HTTP 数字码？", "是否保持 `type: string` 和 YAML 层级不变？"]
+    },
+    {
+      "draft_case_id": "T07-NAT-005",
+      "external_source_ids": [],
+      "synthetic_scope": ["project", "conversation", "tests"],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "请调整 `src/retrieval/filters.py` 的类型注解。函数接收用户选择的过滤条件并构造一个发送给向量服务的过滤字典。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前实现是：\n```python\ndef make_filter(user_id: str, tags: list[str]) -> dict[str, str]:\n    return {'user_id': user_id, 'tags': tags}\n```"
+        },
+        {
+          "role": "user",
+          "content": "运行时行为已经正确，调用方依赖 `tags` 作为字符串列表传输；本次只修正静态类型，不要改变返回对象的键名或值。"
+        },
+        {
+          "role": "assistant",
+          "content": "类型检查器报告返回值的 `tags` 不是字符串。允许字典值为字符串或字符串列表，且 `user_id` 仍然是字符串。"
+        },
+        {
+          "role": "user",
+          "content": "项目使用 Python 3.11，标准库类型语法可用；不需要引入第三方 typing 包。"
+        },
+        {
+          "role": "assistant",
+          "content": "请给出函数签名的最小修订，并说明为什么新的注解能表达这两个值类型。"
+        }
+      ],
+      "query": "请修复返回字典的类型注解，使它准确描述 `user_id` 与 `tags` 的实际类型，而不改动函数体。",
+      "why_current_context_is_sufficient": "函数体、输入类型、返回键值的实际类型、Python 版本和只改签名的约束均已给出；可以直接选择标准联合类型表达字典值。",
+      "visible_distractor_ids_author_only": ["T07-SKILL-QDRANT-INDEX", "T07-SKILL-QDRANT-MEMORY"],
+      "source_fact_map": [],
+      "sol_review_questions": ["注解是否允许字符串与字符串列表两种值？", "是否避免无关的函数体或运行时行为改动？"]
+    },
+    {
+      "draft_case_id": "T07-NAT-006",
+      "external_source_ids": [],
+      "synthetic_scope": ["project", "conversation", "tests"],
+      "difficulty": "easy",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "`packages/graph-client/src/adapter.ts` 的适配器在找不到目录项时返回一个错误对象。成功路径、重试逻辑和错误码都已经固定，本次只需要调整面向使用者的文案。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前代码片段是：\n```ts\nreturn {\n  code: 'DIRECTORY_ITEM_NOT_FOUND',\n  message: 'No item',\n};\n```"
+        },
+        {
+          "role": "user",
+          "content": "产品文案要求 message 明确说明“未找到请求的目录项”，使用英文句子并以句号结束。"
+        },
+        {
+          "role": "assistant",
+          "content": "接口消费者已经按 `code` 分支处理，所以不得修改 `DIRECTORY_ITEM_NOT_FOUND`，也不要增加字段。"
+        },
+        {
+          "role": "user",
+          "content": "测试只会断言 code 不变、message 等于新的规范文案；不需要讨论认证、分页或节流。"
+        },
+        {
+          "role": "assistant",
+          "content": "请给出这一处 copy edit 的补丁或修改后对象。"
+        }
+      ],
+      "query": "请把错误 message 改成 `The requested directory item was not found.`，并保持其余返回结构完全不变。",
+      "why_current_context_is_sufficient": "旧文案、指定新文案、不可变的错误码和字段约束全部可见；请求明确限定为一处字符串编辑，不需要任何集成背景。",
+      "visible_distractor_ids_author_only": ["T07-SKILL-COPILOT-SDK", "T07-SKILL-QDRANT-SPEED"],
+      "source_fact_map": [],
+      "sol_review_questions": ["message 是否与指定文本逐字一致并以句号结尾？", "code 和对象字段是否保持不变？"]
+    },
+    {
+      "draft_case_id": "T07-NAT-007",
+      "external_source_ids": [],
+      "synthetic_scope": ["project", "conversation", "tests"],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "在 `src/runtime/request.ts` 中，普通 REST 请求的超时常量命名不符合团队约定。当前代码是：\n```ts\nconst REQUEST_TIMEOUT = 5000;\nexport async function request(url: string) {\n  return fetch(url, { signal: AbortSignal.timeout(REQUEST_TIMEOUT) });\n}\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "团队约定所有毫秒单位的请求超时常量都使用 `HTTP_REQUEST_TIMEOUT_MS`，数值 5000 代表五秒。"
+        },
+        {
+          "role": "user",
+          "content": "这是一个普通的 HTTP client，不涉及第三方服务专用协议；调用方没有从模块导入这个常量。"
+        },
+        {
+          "role": "assistant",
+          "content": "代码库中只有该函数体内这一处引用。请求的行为、AbortSignal 的使用方式和数值都必须保持不变。"
+        },
+        {
+          "role": "user",
+          "content": "请完成重命名并展示修改后的相关代码；不需要增加配置项或重构请求函数。"
+        },
+        {
+          "role": "assistant",
+          "content": "验收会检查新名称在声明和引用处一致，并确认仍传入 5000。"
+        }
+      ],
+      "query": "请将超时常量重命名为 `HTTP_REQUEST_TIMEOUT_MS`，仅更新必要引用并保持运行时行为。",
+      "why_current_context_is_sufficient": "旧名称、唯一引用、新名称、单位、数值及行为不变要求都已明确；这是本地符号重命名，不依赖历史信息。",
+      "visible_distractor_ids_author_only": ["T07-SKILL-TYPESPEC-OPS", "T07-SKILL-QDRANT-DEPLOY"],
+      "source_fact_map": [],
+      "sol_review_questions": ["声明与唯一引用是否都使用新名称？", "超时数值和 AbortSignal 调用是否未改变？"]
+    },
+    {
+      "draft_case_id": "T07-NAT-008",
+      "external_source_ids": [],
+      "synthetic_scope": ["project", "conversation", "tests"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "In `src/ingestion/batches.py`, a helper splits a list of vectors into fixed-size chunks before sending them to an existing client. The current code is:\n```python\ndef chunks(values, size):\n    return [values[i:i + size] for i in range(0, len(values) - size, size)]\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "The helper must preserve input order, never mutate `values`, and emit every element exactly once. `size` is always a positive integer."
+        },
+        {
+          "role": "user",
+          "content": "The current bug drops the final full chunk when the input length is an exact multiple of `size`; it also drops a short remainder."
+        },
+        {
+          "role": "assistant",
+          "content": "For `values = [0, 1, 2, 3, 4]` and `size = 2`, the required result is `[[0, 1], [2, 3], [4]]`."
+        },
+        {
+          "role": "user",
+          "content": "For an empty input, return an empty list. A one-element input must return one one-element chunk."
+        },
+        {
+          "role": "assistant",
+          "content": "Do not add batching, retries, or client calls; this request concerns only the pure slicing helper."
+        }
+      ],
+      "query": "Provide the smallest correction to the range boundary so the helper includes both a final full chunk and any remainder, while preserving the stated examples.",
+      "why_current_context_is_sufficient": "The complete helper, invariant, positive size constraint, edge cases, and expected output are visible; the off-by-one fix is local and needs no service-specific knowledge.",
+      "visible_distractor_ids_author_only": ["T07-SKILL-QDRANT-MIGRATION", "T07-SKILL-QDRANT-INDEX", "T07-SKILL-QDRANT-SPEED"],
+      "source_fact_map": [],
+      "sol_review_questions": ["Does the range reach the last valid start index?", "Are exact multiples, remainders, and empty input all handled without mutation?"]
+    },
+    {
+      "draft_case_id": "T07-NAT-009",
+      "external_source_ids": [],
+      "synthetic_scope": ["project", "conversation", "tests"],
+      "difficulty": "medium",
+      "context_bucket": "long_12_to_18",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "In `Models/UserDto.cs`, the API response model uses nullable reference types. The project enables `#nullable enable` and treats warnings as errors."
+        },
+        {
+          "role": "assistant",
+          "content": "The DTO currently declares:\n```csharp\npublic sealed class UserDto\n{\n    public string Id { get; init; } = string.Empty;\n    public string DisplayName { get; init; } = string.Empty;\n    public string Mail { get; init; } = string.Empty;\n}\n```"
+        },
+        {
+          "role": "user",
+          "content": "The upstream endpoint guarantees `id` and `displayName` for every returned user."
+        },
+        {
+          "role": "assistant",
+          "content": "The endpoint may omit `mail`, and it serializes an omitted mail field as absent rather than as an empty string."
+        },
+        {
+          "role": "user",
+          "content": "The deserializer maps an absent JSON property to the CLR default without a custom converter."
+        },
+        {
+          "role": "assistant",
+          "content": "A contract test currently fails because `Mail` is modeled as non-nullable even though the fixture omits it."
+        },
+        {
+          "role": "user",
+          "content": "The desired model should make the C# type communicate that absence is valid to callers."
+        },
+        {
+          "role": "assistant",
+          "content": "Keep the property name, accessor style, class name, and initialization of the always-present fields unchanged."
+        },
+        {
+          "role": "user",
+          "content": "Do not change the wire format, serializer settings, endpoint, or test fixture."
+        },
+        {
+          "role": "assistant",
+          "content": "No other model property is optional in the supplied contract."
+        },
+        {
+          "role": "user",
+          "content": "The codebase targets a modern C# version where nullable reference type annotations are available."
+        },
+        {
+          "role": "assistant",
+          "content": "Please return the smallest DTO declaration change that removes the warning and accurately represents the response."
+        }
+      ],
+      "query": "Which single C# property declaration should become nullable, and what is the resulting corrected line?",
+      "why_current_context_is_sufficient": "The full DTO, nullable context, endpoint guarantees, omission behavior, and no-other-changes constraints are visible; the correct annotation follows directly from the supplied contract.",
+      "visible_distractor_ids_author_only": ["T07-SKILL-ASPNET-OPENAPI", "T07-SKILL-QDRANT-MEMORY"],
+      "source_fact_map": [],
+      "sol_review_questions": ["Is only `Mail` annotated as nullable?", "Are the property name, accessor, and wire behavior unchanged?"]
+    },
+    {
+      "draft_case_id": "T07-NAT-010",
+      "external_source_ids": [],
+      "synthetic_scope": ["project", "conversation", "documentation"],
+      "difficulty": "medium",
+      "context_bucket": "long_12_to_18",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Please correct one README example for a small API client. All facts needed for the edit are included below; do not infer behavior from a repository or service."
+        },
+        {
+          "role": "assistant",
+          "content": "The client constructor takes a base URL and a bearer token: `new ApiClient('https://api.example.test', 'demo-token')`."
+        },
+        {
+          "role": "user",
+          "content": "The documented endpoint is `GET /v1/users`, and the client automatically adds the bearer authorization header."
+        },
+        {
+          "role": "assistant",
+          "content": "The response body is a JSON object with an `items` array. Each item has `id` and `displayName` fields."
+        },
+        {
+          "role": "user",
+          "content": "The README currently shows:\n```ts\nconst client = new ApiClient('https://api.example.test/v1/users', 'demo-token');\nconst users = await client.listUsers();\nconsole.log(users.items[0].name);\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "The base URL must stop before the versioned path because the method appends `/v1/users` itself."
+        },
+        {
+          "role": "user",
+          "content": "The token is passed as the second constructor argument and should remain the literal placeholder `demo-token` in documentation."
+        },
+        {
+          "role": "assistant",
+          "content": "The method returns the full response object, so accessing `items` is correct."
+        },
+        {
+          "role": "user",
+          "content": "The item property is named `displayName`, not `name`."
+        },
+        {
+          "role": "assistant",
+          "content": "Keep the example in TypeScript and retain the `console.log` demonstration."
+        },
+        {
+          "role": "user",
+          "content": "Do not add pagination, error handling, environment variables, or claims about fields that were not listed."
+        },
+        {
+          "role": "assistant",
+          "content": "The requested result is a corrected copy of only the three-line example."
+        }
+      ],
+      "query": "Rewrite the three-line README snippet so the constructor receives the base URL, the method's path is not duplicated, and the logged field matches the visible response shape.",
+      "why_current_context_is_sufficient": "Constructor signature, URL composition, authentication behavior, response shape, current mistakes, and exact scope of the edit are all explicitly visible; no hidden documentation or project context is needed.",
+      "visible_distractor_ids_author_only": ["T07-SKILL-TYPESPEC-OPS", "T07-SKILL-TS-MCP", "T07-SKILL-COPILOT-SDK"],
+      "source_fact_map": [],
+      "sol_review_questions": ["Does the constructor use exactly the base URL and placeholder token?", "Does the corrected example log `displayName` through `items` without duplicating the endpoint path?"]
+    }
+  ]
+}

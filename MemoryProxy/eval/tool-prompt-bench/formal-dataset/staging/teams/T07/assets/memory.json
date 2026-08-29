@@ -1,0 +1,1724 @@
+{
+  "schema_version": "task1.formal_memory_assets.v1",
+  "team_id": "T07",
+  "l0Conversations": [
+    {
+      "assetId": "T07-L0-01",
+      "ownerAgentId": "agent-task1-t07-general",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l0"
+      ],
+      "observedAt": "2026-08-16T10:00:00Z",
+      "sessionId": "T07-L0-01",
+      "messages": [
+        {
+          "messageId": "T07-L0-01-M01",
+          "role": "user",
+          "content": "我们这周继续收敛目录同步适配器，先把认证、字段选择、翻页和节流四件事放在同一条链路里看。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:00:00Z",
+          "contentHash": "261c4342fd1ad3ea907ac935f11b3f448d492daf79ec0fcf11be949e965af065"
+        },
+        {
+          "messageId": "T07-L0-01-M02",
+          "role": "assistant",
+          "content": "可以，先把请求边界固定下来，再分别确认认证凭据、返回字段、分页游标和重试行为，最后用适配器测试串起来。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:01:00Z",
+          "contentHash": "93f0df1d1580795e51b3807006000b4dae4c044c1a93331475ddde68ebc1697e"
+        },
+        {
+          "messageId": "T07-L0-01-M03",
+          "role": "user",
+          "content": "运行环境是无用户交互的后台任务，不能把登录窗口或人工授权当成兜底。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:02:00Z",
+          "contentHash": "bfbd28442b4af67175b33a1759ac2984b16302d28034761f0978dd6391808236"
+        },
+        {
+          "messageId": "T07-L0-01-M04",
+          "role": "assistant",
+          "content": "那就按服务到服务的运行假设设计，并把权限范围、凭据注入位置和失效时的错误分类写进适配器约定。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:03:00Z",
+          "contentHash": "a9d87c22bff1f7b4777e5dbfdea578c893587dbf86d96df4e893f15e77ffe65e"
+        },
+        {
+          "messageId": "T07-L0-01-M05",
+          "role": "user",
+          "content": "目录记录很多，单次响应不可能装完；调用方还要能在测试里观察是否继续取下一页。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:04:00Z",
+          "contentHash": "dc0f23a71debfdf52c9e19521cacfe36f3b1df6fc1834c61f04971bff89e4cf0"
+        },
+        {
+          "messageId": "T07-L0-01-M06",
+          "role": "assistant",
+          "content": "分页循环需要以服务端返回的后续链接为准，直到链接缺失；测试可以准备首尾两页，并检查两页结果被合并。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:05:00Z",
+          "contentHash": "34d65496c4223fe98f58561f04460eff05f62468b4d5dc8f744a97de27b634dc"
+        },
+        {
+          "messageId": "T07-L0-01-M07",
+          "role": "user",
+          "content": "字段方面只消费同步真正需要的标识、显示名和邮箱，其他属性不要顺手带回来。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:06:00Z",
+          "contentHash": "8d0dbe8fa241c43a814f48f369e7c7a17f44d71b708006de5d40db8e075f885d"
+        },
+        {
+          "messageId": "T07-L0-01-M08",
+          "role": "assistant",
+          "content": "我会把字段投影放在请求构造处，让适配器的输入输出都只暴露同步所需的最小集合。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:07:00Z",
+          "contentHash": "7160722e295f601073cb9e8c5234c2a8ffb42d6ef55c684665369b93e324f68c"
+        },
+        {
+          "messageId": "T07-L0-01-M09",
+          "role": "user",
+          "content": "上游偶尔会限流，不能把一次 429 直接变成全量任务失败，也不能无限等待。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:08:00Z",
+          "contentHash": "20acbda32c5e08860e84aeb1f8449406cbec129051b3078dc9e56f0903f0f822"
+        },
+        {
+          "messageId": "T07-L0-01-M10",
+          "role": "assistant",
+          "content": "重试应读取响应提供的等待提示，采用有界退避并记录尝试次数；超过上限后再交给任务层处理。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:09:00Z",
+          "contentHash": "99c41c65a018f0a0a0f17e8f2e68ed4f1804dd0ca8a09c701d9fecdd46ad6cb9"
+        },
+        {
+          "messageId": "T07-L0-01-M11",
+          "role": "user",
+          "content": "评审时请把认证方式、字段裁剪、翻页停止条件和限流恢复放在一段能直接贴到变更说明里的话里。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:10:00Z",
+          "contentHash": "15f9a9af9353c0acf24b8d2a41d8cfcaa761e285ff5ad1e0850ea8eb5a5ebad7"
+        },
+        {
+          "messageId": "T07-L0-01-M12",
+          "role": "assistant",
+          "content": "收到。我还会让测试覆盖认证配置被传入、字段集合准确、后续链接被消费，以及限流后恢复这几个观察点。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-16T10:11:00Z",
+          "contentHash": "bb256face098bd8a44ea4e5e7933cad059cdb8e82348835d1ddf29f1132c51b9"
+        }
+      ],
+      "contentHash": "b5dd193f8c721bf1823a1085c5e0e1215762842cb6b6ab1cf38d1187520257bc"
+    },
+    {
+      "assetId": "T07-L0-02",
+      "ownerAgentId": "agent-task1-t07-general",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l0"
+      ],
+      "observedAt": "2026-08-17T10:00:00Z",
+      "sessionId": "T07-L0-02",
+      "messages": [
+        {
+          "messageId": "T07-L0-02-M01",
+          "role": "user",
+          "content": "今天看适配器测试的可读性，先把请求客户端和凭据提供器拆开。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:00:00Z",
+          "contentHash": "975edf04b82d05e4d43540983e15ca29df5fe4b55431a612dc32c2c84a8f3a2d"
+        },
+        {
+          "messageId": "T07-L0-02-M02",
+          "role": "assistant",
+          "content": "拆开后测试可以只替换凭据提供器，不必启动完整后台任务。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:01:00Z",
+          "contentHash": "8a0219f95dc69e113b7efa07bee6cc48ab98bdcce8fcacd0dbd7a24cf862f2eb"
+        },
+        {
+          "messageId": "T07-L0-02-M03",
+          "role": "user",
+          "content": "请求构造的字段投影也要有一个明确断言，避免未来有人悄悄扩大响应。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:02:00Z",
+          "contentHash": "b2842db43bb6ad0bba68e257129a72fa1f04309731d03cab06c60359e2c06150"
+        },
+        {
+          "messageId": "T07-L0-02-M04",
+          "role": "assistant",
+          "content": "我会断言查询参数的字段集合，并让多余字段出现在模拟响应时也不会进入领域对象。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:03:00Z",
+          "contentHash": "7427f3d19999a89e54d719b56ef9c97d29f96d1f62a9322fbc34891d67b05b31"
+        },
+        {
+          "messageId": "T07-L0-02-M05",
+          "role": "user",
+          "content": "翻页测试别只测两页成功，还要测没有后续链接时停止。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:04:00Z",
+          "contentHash": "cf0ff846bdeb73d4b2c1f52c95693006752e325a583083e5259c208da7c972e5"
+        },
+        {
+          "messageId": "T07-L0-02-M06",
+          "role": "assistant",
+          "content": "可以准备一页终止响应，并验证客户端没有发出第三次请求。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:05:00Z",
+          "contentHash": "ea173fbfd42d420b7201ed3a00bbeeb061eed403210ed970194a27b4a8919b33"
+        },
+        {
+          "messageId": "T07-L0-02-M07",
+          "role": "user",
+          "content": "限流场景的等待时间不能真的拖慢测试。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:06:00Z",
+          "contentHash": "03f74e135bff52cdec2a99342c18c0d6632f609d3dcf838b5872084daea7fb15"
+        },
+        {
+          "messageId": "T07-L0-02-M08",
+          "role": "assistant",
+          "content": "测试里注入时钟和等待函数，检查读取的等待提示及重试次数，不使用真实延迟。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:07:00Z",
+          "contentHash": "05e83424698ceac62ce9706defc9aa2931062adea19408b26e23f5bda0ef0070"
+        },
+        {
+          "messageId": "T07-L0-02-M09",
+          "role": "user",
+          "content": "认证失败和限流失败要分成不同的错误类别。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:08:00Z",
+          "contentHash": "fe0bb124e7b3d19f34f601746bcb2020ba6bb4754962957d43321612b565c826"
+        },
+        {
+          "messageId": "T07-L0-02-M10",
+          "role": "assistant",
+          "content": "前者直接交给配置或凭据诊断，后者在耗尽有界尝试后交给调度层，两者都保留请求上下文。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:09:00Z",
+          "contentHash": "9cded30b0e5ce546eaa267da1b4bbcb4f8d07cba3f8f4363e55225f119cea24b"
+        },
+        {
+          "messageId": "T07-L0-02-M11",
+          "role": "user",
+          "content": "把这些观察点补到适配器测试清单，之后再处理目录同步的日志格式。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:10:00Z",
+          "contentHash": "45eb0663cca19c92dcf1bcb4a187ae183e0b535b371c3db520e766488aca8b30"
+        },
+        {
+          "messageId": "T07-L0-02-M12",
+          "role": "assistant",
+          "content": "清单会按认证、字段、分页、节流和错误分类分组，日志格式另开一项。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-17T10:11:00Z",
+          "contentHash": "38f8c7cfadeaef65ec8b3afe2976b4c6857d5a50d7dc3fd365404a3d12df8c10"
+        }
+      ],
+      "contentHash": "a08491ad006bd0f5d742e15359bbf6bbbf138bdf4dc62c168d386fb2e28de948"
+    },
+    {
+      "assetId": "T07-L0-03",
+      "ownerAgentId": "agent-task1-t07-general",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l0"
+      ],
+      "observedAt": "2026-08-18T10:00:00Z",
+      "sessionId": "T07-L0-03",
+      "messages": [
+        {
+          "messageId": "T07-L0-03-M01",
+          "role": "user",
+          "content": "我想复查目录同步在租户数据量上升后的表现，重点是请求次数和单页负载。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:00:00Z",
+          "contentHash": "b9999351dd07f70efbea53f0535c4d47692f9cd5fa77d90d272d0d62183b9618"
+        },
+        {
+          "messageId": "T07-L0-03-M02",
+          "role": "assistant",
+          "content": "先记录分页请求总数、每页条数和合并后的记录数，再观察限流比例。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:01:00Z",
+          "contentHash": "8793a6339edc749331e3a040326c01ca2d13cf56ea7c688eb1e2541f9dd08285"
+        },
+        {
+          "messageId": "T07-L0-03-M03",
+          "role": "user",
+          "content": "如果返回字段继续膨胀，网络和解析开销都会被放大。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:02:00Z",
+          "contentHash": "9faf176086a7ba6333c8a45082bada053133729db334da8bca03634d0843ffdf"
+        },
+        {
+          "messageId": "T07-L0-03-M04",
+          "role": "assistant",
+          "content": "因此字段投影应由适配器统一维护，领域层不接受任意透传属性。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:03:00Z",
+          "contentHash": "154eb69b83e6625c1d561c03aa33696083501ee33936245f01442d8ae75691f3"
+        },
+        {
+          "messageId": "T07-L0-03-M05",
+          "role": "user",
+          "content": "翻页链接可能带有服务端状态，调用方不要自行拼接偏移量。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:04:00Z",
+          "contentHash": "20a2ef2e675ac1f46b2e87398511617b14adb26bbcca0b52603ce9d75972f271"
+        },
+        {
+          "messageId": "T07-L0-03-M06",
+          "role": "assistant",
+          "content": "同意，循环只消费服务端给出的后续链接，并把链接缺失作为自然终点。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:05:00Z",
+          "contentHash": "5b0abe9f64d9176913519a4984a4faa1f87e71e60c304d1051ab972d46e77665"
+        },
+        {
+          "messageId": "T07-L0-03-M07",
+          "role": "user",
+          "content": "限流时我更关心恢复是否遵守服务端给的等待时间。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:06:00Z",
+          "contentHash": "8a354bcf60d935292f72c41b0fd56cdd4c6115a1a8146cf860f70d1458583f9f"
+        },
+        {
+          "messageId": "T07-L0-03-M08",
+          "role": "assistant",
+          "content": "重试策略先读取等待提示，再应用最大尝试次数和最大等待边界。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:07:00Z",
+          "contentHash": "6b37ea2bdb5647b5a757c8848374f6d19de8ed44b6f5b7ec6c7faca1d3f9b61e"
+        },
+        {
+          "messageId": "T07-L0-03-M09",
+          "role": "user",
+          "content": "后台认证凭据的刷新也需要和请求逻辑隔离。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:08:00Z",
+          "contentHash": "255f008b956c09ed7cf670d018f7239909449df2be35fa7f1a353af370dc9682"
+        },
+        {
+          "messageId": "T07-L0-03-M10",
+          "role": "assistant",
+          "content": "凭据提供器负责取得有效令牌，客户端只负责把它作为认证配置使用。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:09:00Z",
+          "contentHash": "27aafbaa872c7e2e05449588190e0777894df8162e37c4a056c456fdbd36c418"
+        },
+        {
+          "messageId": "T07-L0-03-M11",
+          "role": "user",
+          "content": "这些原则最后要进入容量评审记录，不需要写成具体租户的结论。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:10:00Z",
+          "contentHash": "309251a938e3f99a94f4eb08d3253fce8d64d3d9746c39286d6ba708977c3aca"
+        },
+        {
+          "messageId": "T07-L0-03-M12",
+          "role": "assistant",
+          "content": "我会记录为可观测的设计约束，并用合成数据做请求次数回归。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-18T10:11:00Z",
+          "contentHash": "7c2e30c19cb7112dcab277e42f969399019afb92dd011c3a7b486a5f9a3a9c09"
+        }
+      ],
+      "contentHash": "aa04c1d7ae883d9cb84c6aa61b0e1fecf89f5ae4517dcb967c037b04ecdf6f3b"
+    },
+    {
+      "assetId": "T07-L0-04",
+      "ownerAgentId": "agent-task1-t07-assets-a",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l0"
+      ],
+      "observedAt": "2026-08-19T10:00:00Z",
+      "sessionId": "T07-L0-04",
+      "messages": [
+        {
+          "messageId": "T07-L0-04-M01",
+          "role": "user",
+          "content": "昨天批量写入网关出现重复点，先梳理这次幂等写入事故的时间线。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:00:00Z",
+          "contentHash": "759911613e155216bbbc000b0531f00e32e1923f6c490272e61adc4f47bade92"
+        },
+        {
+          "messageId": "T07-L0-04-M02",
+          "role": "assistant",
+          "content": "先按批次接收、重试、确认和再次提交四个阶段标记日志，再比对点标识是否稳定。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:01:00Z",
+          "contentHash": "fceeba4f2dc2c960e8879e240e4e7834a81e5fdd6bfc7ca8ebd24c34a89d7cb0"
+        },
+        {
+          "messageId": "T07-L0-04-M03",
+          "role": "user",
+          "content": "调用方在超时后会再次提交同一批，不能把重试当成新数据。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:02:00Z",
+          "contentHash": "67d9974ad06632de6699b0b2d5a26bc2136338ccb04b8989f5c40e4d21009bb8"
+        },
+        {
+          "messageId": "T07-L0-04-M04",
+          "role": "assistant",
+          "content": "写入接口要使用由业务记录派生的稳定点标识，并让覆盖写语义保持一致。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:03:00Z",
+          "contentHash": "3c049325c93d4e0dff1297072bf7efff9abe55c1a5df052fa6bdc5bbb39b21eb"
+        },
+        {
+          "messageId": "T07-L0-04-M05",
+          "role": "user",
+          "content": "集合初始化和批量写入之间还有竞态，首次启动尤其明显。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:04:00Z",
+          "contentHash": "3bc9fd1ac5ff421ad78c98e9348f27704b91b7e9120d9c9a1de358135190d0be"
+        },
+        {
+          "messageId": "T07-L0-04-M06",
+          "role": "assistant",
+          "content": "初始化步骤需要可重复执行，写入前确认集合配置已就绪，失败时保留清晰阶段信息。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:05:00Z",
+          "contentHash": "8fde2ef8cbc765953e1fd69512cebfbd694172b9e2986e0b4c469007072a82db"
+        },
+        {
+          "messageId": "T07-L0-04-M07",
+          "role": "user",
+          "content": "这次的重复点是否来自批次切分，而不是底层存储本身？",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:06:00Z",
+          "contentHash": "bc8f8b773f5a7473ccab4e983c0cc5512b9cdcd4fbd54e64803fa5d71e6a835b"
+        },
+        {
+          "messageId": "T07-L0-04-M08",
+          "role": "assistant",
+          "content": "初步看是切分器在重试路径重新生成了临时标识，底层按不同标识接收了两份。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:07:00Z",
+          "contentHash": "3e016787d854590e12f367adff8f38c581c8ea6ce2b328f8cfcb18a587c47513"
+        },
+        {
+          "messageId": "T07-L0-04-M09",
+          "role": "user",
+          "content": "那修复应该锁定标识生成和重试边界，不要先改检索逻辑。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:08:00Z",
+          "contentHash": "84a3831811bb0ebe9dead3b257cac54944a0f45556cbc72e847663befe1cce20"
+        },
+        {
+          "messageId": "T07-L0-04-M10",
+          "role": "assistant",
+          "content": "对，先让一次批次生命周期共享标识映射，并增加重复提交的回归样例。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:09:00Z",
+          "contentHash": "0c788f276230901edb69120152c0a479a236721b34bcdda3e021efcadf9b3c81"
+        },
+        {
+          "messageId": "T07-L0-04-M11",
+          "role": "user",
+          "content": "事故记录里要区分已确认写入和未知状态，方便后续补偿。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:10:00Z",
+          "contentHash": "61d6ef52aa26b13a09206375ca57cc1ec17c4a66ea3fa795a339f179e3319dfd"
+        },
+        {
+          "messageId": "T07-L0-04-M12",
+          "role": "assistant",
+          "content": "我会给两种状态分别定义补偿动作，并把原始批次摘要关联到诊断记录。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-19T10:11:00Z",
+          "contentHash": "8ddf1d2f9a64765623ed3e8700e3269aa17db6e29ad9f784d6e13d9f23504cb2"
+        }
+      ],
+      "contentHash": "9662a6e652b31e5c010eafebe186d17cba445154b3622f000cc03579c353a27f"
+    },
+    {
+      "assetId": "T07-L0-05",
+      "ownerAgentId": "agent-task1-t07-assets-a",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l0"
+      ],
+      "observedAt": "2026-08-20T10:00:00Z",
+      "sessionId": "T07-L0-05",
+      "messages": [
+        {
+          "messageId": "T07-L0-05-M01",
+          "role": "user",
+          "content": "今天把向量网关的集合初始化和过滤查询接口整理成一条验收清单。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:00:00Z",
+          "contentHash": "85a9568553659c2616811cdc55b4f0ed6c26ebc6dd256365640812a3d2e5971d"
+        },
+        {
+          "messageId": "T07-L0-05-M02",
+          "role": "assistant",
+          "content": "清单可以分成集合参数、点写入、负载字段、过滤条件和结果排序五组。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:01:00Z",
+          "contentHash": "56e836fdd976aa5af09482958f833dda4227b66af2cf9e5d1e815f69c2a54945"
+        },
+        {
+          "messageId": "T07-L0-05-M03",
+          "role": "user",
+          "content": "初始化重复执行时不能破坏已有数据。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:02:00Z",
+          "contentHash": "6898cff0d6f0fae4e7d552bdc2683bc0dfe230d377b21f75d1bb8d9db93e9a92"
+        },
+        {
+          "messageId": "T07-L0-05-M04",
+          "role": "assistant",
+          "content": "初始化先读取现状，只有缺失时创建；配置冲突则显式报告，避免静默覆盖。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:03:00Z",
+          "contentHash": "5bb5e3fd18b35034b4dc64fd370d97b815b401fb5b53a0d5a3b51772a36f6314"
+        },
+        {
+          "messageId": "T07-L0-05-M05",
+          "role": "user",
+          "content": "过滤查询只按租户和文档状态筛选，不把业务排序混进过滤表达式。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:04:00Z",
+          "contentHash": "85d4e0f8fd3b61071dda33618dfd8ab47f4b53e354101220697c0aec1bca710f"
+        },
+        {
+          "messageId": "T07-L0-05-M06",
+          "role": "assistant",
+          "content": "我会保持过滤结构和排序参数分离，并用组合条件覆盖空值与未知状态。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:05:00Z",
+          "contentHash": "2501d77c73c0f4eb1a234bdd343f97c51158fb33fc1603f4c5ae78b1af302dac"
+        },
+        {
+          "messageId": "T07-L0-05-M07",
+          "role": "user",
+          "content": "写入接口要支持小批量和大批量共用一套校验。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:06:00Z",
+          "contentHash": "a5a003420c92d1b4b78b8604530a5fbc4cbe0180279b2b5a9a4c0a02efedfec5"
+        },
+        {
+          "messageId": "T07-L0-05-M08",
+          "role": "assistant",
+          "content": "在进入客户端前统一检查维度、点标识和负载必填字段，再按大小切分请求。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:07:00Z",
+          "contentHash": "e1c6b91eff992492b6f706111d8bc3b93b23f9877d2bd8ae099050208acd20b8"
+        },
+        {
+          "messageId": "T07-L0-05-M09",
+          "role": "user",
+          "content": "查询结果的空集合应该是正常结果，不要当成异常。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:08:00Z",
+          "contentHash": "7dae4ad43eb647a70c28c2d733731e91370b6cb69656a84ed3fad4bee4021f54"
+        },
+        {
+          "messageId": "T07-L0-05-M10",
+          "role": "assistant",
+          "content": "适配层返回明确的空列表，只有连接或协议错误才转成异常。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:09:00Z",
+          "contentHash": "f5e8379ba13f37489fc5c5bf75271bfd6a4edb165f076dc84c3bd50ea74e63e9"
+        },
+        {
+          "messageId": "T07-L0-05-M11",
+          "role": "user",
+          "content": "验收样例要同时覆盖首次启动、重复启动、命中和无命中。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:10:00Z",
+          "contentHash": "34527de5606ce6389897bb2ee894c0bc804942c47c571cdeb65220c59979af8d"
+        },
+        {
+          "messageId": "T07-L0-05-M12",
+          "role": "assistant",
+          "content": "我会将四个场景分别固定成可重复的测试夹具，并记录请求参数。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-20T10:11:00Z",
+          "contentHash": "ee97391eb81216537e73190213e2b5068be244cfbbaf508148ed735fbd1f0c0f"
+        }
+      ],
+      "contentHash": "9e0b7a5dc5b115f6a0228dfe2bed9814dbc3b2c72684b8b6da17502b2ee93892"
+    },
+    {
+      "assetId": "T07-L0-06",
+      "ownerAgentId": "agent-task1-t07-assets-a",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l0"
+      ],
+      "observedAt": "2026-08-21T10:00:00Z",
+      "sessionId": "T07-L0-06",
+      "messages": [
+        {
+          "messageId": "T07-L0-06-M01",
+          "role": "user",
+          "content": "检索质量诊断的第一版报告出来了，相关性和召回率要分开看。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:00:00Z",
+          "contentHash": "deaf020ad684cf6dd4c755c2aec88ccae94430d15dc6b74af1fd7c421f252280"
+        },
+        {
+          "messageId": "T07-L0-06-M02",
+          "role": "assistant",
+          "content": "先固定一组带标签的查询，分别记录候选数、命中数和排序位置，再讨论阈值。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:01:00Z",
+          "contentHash": "58f76c39a8be80de0468f1ab2cfc73df19da1ef278e67d01937cc4f23b9c4830"
+        },
+        {
+          "messageId": "T07-L0-06-M03",
+          "role": "user",
+          "content": "有些查询命中很多，但真正相关的结果排在后面。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:02:00Z",
+          "contentHash": "68259965cb2c541b2df2d19003b1a77c3393044cbdc6989f1e843e430bbac49c"
+        },
+        {
+          "messageId": "T07-L0-06-M04",
+          "role": "assistant",
+          "content": "这更像排序或过滤组合问题，不能只看总命中数量。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:03:00Z",
+          "contentHash": "8eff88a27908257fee6b597bf4299f2d556070af2d2418ad792d0be3e90aa778"
+        },
+        {
+          "messageId": "T07-L0-06-M05",
+          "role": "user",
+          "content": "另一些查询一个结果都没有，可能是租户过滤条件过严。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:04:00Z",
+          "contentHash": "30be7ae1b3aa49ef2726af6125edcdea60f130f12bd205177d6bde58a4202994"
+        },
+        {
+          "messageId": "T07-L0-06-M06",
+          "role": "assistant",
+          "content": "诊断时先去掉一个过滤维度做对照，确认是数据缺失、条件不匹配还是向量相似度阈值导致。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:05:00Z",
+          "contentHash": "93160f261e153a581082e7dbd8107e280630c8fab51fb94e1c5ce3e948975dbd"
+        },
+        {
+          "messageId": "T07-L0-06-M07",
+          "role": "user",
+          "content": "报告不要直接给出某个业务案例的答案，要留下可复用检查步骤。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:06:00Z",
+          "contentHash": "346870d5726710b87bea3b5ceea9a643a671c7cb86a7ea511fb023738d20262e"
+        },
+        {
+          "messageId": "T07-L0-06-M08",
+          "role": "assistant",
+          "content": "会以查询集、过滤变体、指标表和下一步实验组成报告，案例只作为匿名样本。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:07:00Z",
+          "contentHash": "3052e714638d45e1efadf4550154b50c34f06392fd960f6f2900bc237e0255e7"
+        },
+        {
+          "messageId": "T07-L0-06-M09",
+          "role": "user",
+          "content": "还要确认点的负载字段没有被旧批次污染。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:08:00Z",
+          "contentHash": "ad6cd0f86f25954fc85687dc2429ee0ab85d79f8bd8b3b821201dfe194bacccd"
+        },
+        {
+          "messageId": "T07-L0-06-M10",
+          "role": "assistant",
+          "content": "抽样比对写入时间、租户标签和状态字段，发现混入后先追溯写入链路。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:09:00Z",
+          "contentHash": "93dab61c7691ebe8d378cbb6d171fe6e3b41ae0c5c68737d47301263badee5f2"
+        },
+        {
+          "messageId": "T07-L0-06-M11",
+          "role": "user",
+          "content": "把质量报告和写入事故报告分开，避免根因互相覆盖。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:10:00Z",
+          "contentHash": "d35bfed177ad900044d32562a32ad2f5445510a0b40fc7d5131cfd1b42a7c447"
+        },
+        {
+          "messageId": "T07-L0-06-M12",
+          "role": "assistant",
+          "content": "好的，一个聚焦查询质量，一个聚焦数据一致性，两个报告只共享必要的批次标识。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-21T10:11:00Z",
+          "contentHash": "942bd7418b8c352eedd2d64b9c56a5b5607da7bbfa28d803b3586aa8b55db775"
+        }
+      ],
+      "contentHash": "dfc9fc4cb388e0f3e27a0b8abc76561463ea4ad2aa789d873c30e6931b52f952"
+    },
+    {
+      "assetId": "T07-L0-07",
+      "ownerAgentId": "agent-task1-t07-assets-b",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l0"
+      ],
+      "observedAt": "2026-08-22T10:00:00Z",
+      "sessionId": "T07-L0-07",
+      "messages": [
+        {
+          "messageId": "T07-L0-07-M01",
+          "role": "user",
+          "content": "合作方的接口描述今天更新了，我们要从模式文件重新生成类型和请求封装。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:00:00Z",
+          "contentHash": "c42c1e3fa661fe4155481c020e80df678183344c6001fd8f5b01ae02cbb45270"
+        },
+        {
+          "messageId": "T07-L0-07-M02",
+          "role": "assistant",
+          "content": "先检查模式变更，再生成类型、路径封装和运行时支持，最后看契约测试差异。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:01:00Z",
+          "contentHash": "51a5836a58fcf0875772943f67c711e9d28c8d30db05c7facfd6d0b4e3aa8697"
+        },
+        {
+          "messageId": "T07-L0-07-M03",
+          "role": "user",
+          "content": "手写层只保留业务适配，不要直接修改生成目录。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:02:00Z",
+          "contentHash": "a1514b6b43ccd8f63c63fc8dcdbff2293b5b138f0ad2fdf89eaae833bb292793"
+        },
+        {
+          "messageId": "T07-L0-07-M04",
+          "role": "assistant",
+          "content": "我会把定制逻辑放在边界层，生成内容作为可重复产物处理。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:03:00Z",
+          "contentHash": "38e6cc171455b4f135bd2bf381f28f4cee76041af09d2fde54836ceb2a3cc451"
+        },
+        {
+          "messageId": "T07-L0-07-M05",
+          "role": "user",
+          "content": "本次变更主要是新增一个列表响应字段和一个可选查询参数。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:04:00Z",
+          "contentHash": "b19c92b803b6cdcde3746a49070aabf18978e12e23342ea7a7b3b3aec34bd1ad"
+        },
+        {
+          "messageId": "T07-L0-07-M06",
+          "role": "assistant",
+          "content": "契约测试需要验证新字段可被解析，也要验证未提供可选参数时仍保持旧调用行为。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:05:00Z",
+          "contentHash": "f26d7658c8b7f98c06099d55a70d8125f66a7091c79b9930ceb7e96b4005f544"
+        },
+        {
+          "messageId": "T07-L0-07-M07",
+          "role": "user",
+          "content": "生成命令要固定版本，避免不同机器产出漂移。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:06:00Z",
+          "contentHash": "e7392c813df7310810efb0dedd40b49c77e038a0bd50faf11c6cdaa80151355f"
+        },
+        {
+          "messageId": "T07-L0-07-M08",
+          "role": "assistant",
+          "content": "把生成器版本和模式文件校验纳入脚本入口，并在变更说明里列出产物摘要。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:07:00Z",
+          "contentHash": "7a3fbb1c9497f46d18ce708bb6b20c0688f3c4a50b8c8dc5a77224492684ecb0"
+        },
+        {
+          "messageId": "T07-L0-07-M09",
+          "role": "user",
+          "content": "认证头由运行时注入，不要让模式文件承载环境密钥。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:08:00Z",
+          "contentHash": "faac1244226e19accae747db1ee4a4975aef52583d277c1ec2d055ca552df42f"
+        },
+        {
+          "messageId": "T07-L0-07-M10",
+          "role": "assistant",
+          "content": "运行时只接收抽象凭据提供器，生成代码保持环境无关。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:09:00Z",
+          "contentHash": "9bf35bbb0628ace5b5a5c322bdf8d56610274c304f56b0727667af0711cee7b0"
+        },
+        {
+          "messageId": "T07-L0-07-M11",
+          "role": "user",
+          "content": "如果模式描述中的文字改动不影响类型，可以单独审阅。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:10:00Z",
+          "contentHash": "ccc3761b09a0b9a01ec5a1bd911fee91d20257dd96bf97f788ed6f90809e104c"
+        },
+        {
+          "messageId": "T07-L0-07-M12",
+          "role": "assistant",
+          "content": "我会将说明文字、结构变更和运行时行为分开标注，降低审阅噪声。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-22T10:11:00Z",
+          "contentHash": "25687d22390be78243551657ab61d4a088e76cc5aeb6e9cc49cd89e62792d0a4"
+        }
+      ],
+      "contentHash": "2b683b1c37a46053bee115f7b7d884a1d379a238f9c3d6dd2a8ae29b6f2d436b"
+    },
+    {
+      "assetId": "T07-L0-08",
+      "ownerAgentId": "agent-task1-t07-assets-b",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l0"
+      ],
+      "observedAt": "2026-08-23T10:00:00Z",
+      "sessionId": "T07-L0-08",
+      "messages": [
+        {
+          "messageId": "T07-L0-08-M01",
+          "role": "user",
+          "content": "我们需要定下生成客户端的认证、超时和重试边界，调用方希望行为可预测。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:00:00Z",
+          "contentHash": "c4a93c78af4862e45e18d6059a29654b917e4111527f571aa224496ae506501f"
+        },
+        {
+          "messageId": "T07-L0-08-M02",
+          "role": "assistant",
+          "content": "先区分凭据注入、连接超时、服务端失败和调用方取消，再决定每类由哪一层负责。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:01:00Z",
+          "contentHash": "a488f57525d02ea5055e594eaaa25704ebf0f6c55ba2374793307f5ad79cddbd"
+        },
+        {
+          "messageId": "T07-L0-08-M03",
+          "role": "user",
+          "content": "凭据不能写进生成产物，也不能由每个接口重复拼接。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:02:00Z",
+          "contentHash": "c9300a9e062deef238b465d180604f884ff8af29563d1426564c0518f08709c5"
+        },
+        {
+          "messageId": "T07-L0-08-M04",
+          "role": "assistant",
+          "content": "统一运行时处理认证头，接口封装只描述请求参数和响应类型。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:03:00Z",
+          "contentHash": "c231fe83867f9a1bef4899dba4676ed666ab32bc29c304372fb0de7c8d5ee043"
+        },
+        {
+          "messageId": "T07-L0-08-M05",
+          "role": "user",
+          "content": "普通的可重试失败可以由调用方决定是否重试。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:04:00Z",
+          "contentHash": "52f94b036c788867daef28f76842cf4d747a7876928ab367cb505d3a4c6afc2e"
+        },
+        {
+          "messageId": "T07-L0-08-M06",
+          "role": "assistant",
+          "content": "客户端默认不隐藏重试次数；若需要自动重试，应由边界层显式配置并保留取消能力。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:05:00Z",
+          "contentHash": "d32e9e4e2dea40787b5479874c310a9e0aca1b0c9264d60c292e22a892164963"
+        },
+        {
+          "messageId": "T07-L0-08-M07",
+          "role": "user",
+          "content": "超时要能在测试中快速触发，不要依赖真实网络。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:06:00Z",
+          "contentHash": "a9e71e496763a933c6ca737a3abe25d92b84a7aee66194547ebe82e58203ef4f"
+        },
+        {
+          "messageId": "T07-L0-08-M08",
+          "role": "assistant",
+          "content": "运行时接收可替换的传输实现和时钟，契约测试用受控响应验证边界。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:07:00Z",
+          "contentHash": "5671ecc48010177fdb647490912fb4746037bdf0382b542b021f490852ed61cb"
+        },
+        {
+          "messageId": "T07-L0-08-M09",
+          "role": "user",
+          "content": "接口生成升级时，认证和重试的责任归属不能悄悄变化。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:08:00Z",
+          "contentHash": "14bb700db42d145acee91baa9d955d5364e18cd482dc5120b23e19e6e65082a9"
+        },
+        {
+          "messageId": "T07-L0-08-M10",
+          "role": "assistant",
+          "content": "把责任边界写成稳定约定，并在升级检查中比较运行时配置和公开接口。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:09:00Z",
+          "contentHash": "0e5ff0a3e03fda98ea4df99886366d8abd6632fd43039ae9e3a26eb1aea84b1b"
+        },
+        {
+          "messageId": "T07-L0-08-M11",
+          "role": "user",
+          "content": "最后给调用方一张简短的错误分类表。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:10:00Z",
+          "contentHash": "4f0966f30d93be1da85fd72553d81584047fc4dc6427f7080a15d071d7b3c854"
+        },
+        {
+          "messageId": "T07-L0-08-M12",
+          "role": "assistant",
+          "content": "错误表按认证、参数、网络、服务端和取消分组，并说明是否建议重试。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-23T10:11:00Z",
+          "contentHash": "d09d39c8f1d4e627e3920fec2b50e8314e65ac76ff4fa55994143f42a49a851b"
+        }
+      ],
+      "contentHash": "9128354576bf14c00052bd6fc4260047a8edade3a868875662d80929adb14035"
+    },
+    {
+      "assetId": "T07-L0-09",
+      "ownerAgentId": "agent-task1-t07-assets-b",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l0"
+      ],
+      "observedAt": "2026-08-24T10:00:00Z",
+      "sessionId": "T07-L0-09",
+      "messages": [
+        {
+          "messageId": "T07-L0-09-M01",
+          "role": "user",
+          "content": "这轮重点是生成客户端的契约测试，确保模式、类型和运行时边界没有脱节。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:00:00Z",
+          "contentHash": "82d763a301d58dc529b6d4e32bf35ba9d4c139029dd06012e28cc38a9c121727"
+        },
+        {
+          "messageId": "T07-L0-09-M02",
+          "role": "assistant",
+          "content": "测试分成模式解析、请求序列化、响应解析和错误映射四层。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:01:00Z",
+          "contentHash": "79fa143a4ae1220ef03d4d179c5ed463a3d7bad66ad125bac38cafff4b300164"
+        },
+        {
+          "messageId": "T07-L0-09-M03",
+          "role": "user",
+          "content": "请求序列化要覆盖可选参数缺省、显式空值和数组参数。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:02:00Z",
+          "contentHash": "0c03151098532547c7bc9293095f2d19be64bfecb71630a388a49a892b152893"
+        },
+        {
+          "messageId": "T07-L0-09-M04",
+          "role": "assistant",
+          "content": "我会为三种情况分别固定传输层看到的请求，防止默认值被错误发送。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:03:00Z",
+          "contentHash": "10b4f1f646da75bd3d357d156aa7dfdc5d5379ae0ccda52bd3960ff638f4c97f"
+        },
+        {
+          "messageId": "T07-L0-09-M05",
+          "role": "user",
+          "content": "响应测试要包含未知字段，确认向前兼容策略。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:04:00Z",
+          "contentHash": "493a1a4fc69f608e6b948de7ce6a5767e69037526f340644d1a4bf949fb8e697"
+        },
+        {
+          "messageId": "T07-L0-09-M06",
+          "role": "assistant",
+          "content": "解析器只读取声明字段，未知字段不会阻断正常响应。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:05:00Z",
+          "contentHash": "43f225d52c27a2459b623409e73064396f3a55b3dea29b3d0057368fe7b1b995"
+        },
+        {
+          "messageId": "T07-L0-09-M07",
+          "role": "user",
+          "content": "认证失败的响应需要保留状态和请求追踪信息。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:06:00Z",
+          "contentHash": "d3803c64a0ba40e1b2e99aa3a236f819be84de679c4da3f71359008f3240fbd4"
+        },
+        {
+          "messageId": "T07-L0-09-M08",
+          "role": "assistant",
+          "content": "错误映射会保留状态、追踪标识和安全的服务端摘要，不保留凭据内容。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:07:00Z",
+          "contentHash": "9e8a61ebcb6f74be75b45e16041b023e81bc78556bce26ac69756d23bb99f510"
+        },
+        {
+          "messageId": "T07-L0-09-M09",
+          "role": "user",
+          "content": "生成结果变化时，测试快照要能说明是模式变化还是生成器变化。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:08:00Z",
+          "contentHash": "9162b58875de966b6ab3de8d37ce05f8b3b963873dd307de85ed6260277cbad5"
+        },
+        {
+          "messageId": "T07-L0-09-M10",
+          "role": "assistant",
+          "content": "快照旁记录模式摘要和生成器版本，变更审阅时先确认输入再看产物。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:09:00Z",
+          "contentHash": "4be812a2e1cab568c29c97f2b7c17761b1834066072d2f70aaad063967e46acd"
+        },
+        {
+          "messageId": "T07-L0-09-M11",
+          "role": "user",
+          "content": "不要把某个合作方真实响应复制进仓库。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:10:00Z",
+          "contentHash": "a4ae9a6eb779e0e78a0721ce280765a6088a03d63126a58c83b6c541f4f7bc5d"
+        },
+        {
+          "messageId": "T07-L0-09-M12",
+          "role": "assistant",
+          "content": "测试夹具全部使用脱敏合成响应，并在文件头标明用途和边界。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-24T10:11:00Z",
+          "contentHash": "f17e1dfb126f0068830bf6bc3f273cf1327a39ea1b3df4b3cd56d31bda113efe"
+        }
+      ],
+      "contentHash": "fdf857dd476ba709c13ec21bd852303ceb3678e37d44bab8f70c0021c4021e1c"
+    },
+    {
+      "assetId": "T07-L0-10",
+      "ownerAgentId": "agent-task1-t07-assets-b",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l0"
+      ],
+      "observedAt": "2026-08-25T10:00:00Z",
+      "sessionId": "T07-L0-10",
+      "messages": [
+        {
+          "messageId": "T07-L0-10-M01",
+          "role": "user",
+          "content": "三条集成流要在同一周完成联调，但每条仍然保持自己的边界。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:00:00Z",
+          "contentHash": "e463d6952f907fd7aabbc97d6456b8e09be0bd2f06ea7d62b2d7b315a9a9a2c8"
+        },
+        {
+          "messageId": "T07-L0-10-M02",
+          "role": "assistant",
+          "content": "可以共享日志关联和任务编排约定，认证、写入和生成客户端仍由各自适配层负责。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:01:00Z",
+          "contentHash": "f2fe6ccf7b120f10e42fad002225964b9e25ebe20d5a31f03f7a1af3ecce06a8"
+        },
+        {
+          "messageId": "T07-L0-10-M03",
+          "role": "user",
+          "content": "联调顺序先验证接口可用，再验证数据进入，最后检查查询消费。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:02:00Z",
+          "contentHash": "723fd942968f7920ca58f3072b4e9b33b6bb80bd8ea931eac8a06adca2f70d24"
+        },
+        {
+          "messageId": "T07-L0-10-M04",
+          "role": "assistant",
+          "content": "每个阶段提供可重复的合成夹具和明确的通过条件，失败时保留阶段上下文。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:03:00Z",
+          "contentHash": "0a59a44d2768a98ec7ca045306f1451ae586c76c25ba2303ef9bcfa2038ecfd2"
+        },
+        {
+          "messageId": "T07-L0-10-M05",
+          "role": "user",
+          "content": "跨流日志只记录必要标识，不把访问令牌和完整负载打出来。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:04:00Z",
+          "contentHash": "244d73544f755aa5f2999b1414458183c926b3598473e512d081e9156368b7dc"
+        },
+        {
+          "messageId": "T07-L0-10-M06",
+          "role": "assistant",
+          "content": "日志采用脱敏摘要和关联键，详细负载留在受控诊断入口。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:05:00Z",
+          "contentHash": "ad4e8d5a90c59845376962ce2a4ebdca7cb1fd50a10e1108c800df86990d62ad"
+        },
+        {
+          "messageId": "T07-L0-10-M07",
+          "role": "user",
+          "content": "如果上游限流，编排层要知道是等待还是终止，不要猜。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:06:00Z",
+          "contentHash": "bd5b745e681f30129ea8f9ae2a150a2218d681d2242a9ff2869a8baba34fb846"
+        },
+        {
+          "messageId": "T07-L0-10-M08",
+          "role": "assistant",
+          "content": "各适配器返回结构化状态，编排层只依据状态和明确的下一动作继续。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:07:00Z",
+          "contentHash": "7c2e905d4fbc4bc9c95aa873f32dc38a49f67beb60b850bc14c3c6134b94b377"
+        },
+        {
+          "messageId": "T07-L0-10-M09",
+          "role": "user",
+          "content": "集成验收要能重复运行，不能依赖上一次残留数据。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:08:00Z",
+          "contentHash": "3c4fed998d2ed56827af735c2e253c1e4751ad3445b83eadbd101b75812982ec"
+        },
+        {
+          "messageId": "T07-L0-10-M10",
+          "role": "assistant",
+          "content": "每次运行使用隔离的合成命名空间，并在开始和结束阶段执行清理检查。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:09:00Z",
+          "contentHash": "054bbad0cdb9353efba79a9b2329fa38b7d00393913dd3e540b393f70bc754a5"
+        },
+        {
+          "messageId": "T07-L0-10-M11",
+          "role": "user",
+          "content": "最后只汇总跨流的接口约定，不替各项目做实现决定。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:10:00Z",
+          "contentHash": "1c756a99cbb763870e699da292fbb3018faaa11f1d83335ee472d93a78ba9d5c"
+        },
+        {
+          "messageId": "T07-L0-10-M12",
+          "role": "assistant",
+          "content": "汇总会记录边界、可观测性和失败转交规则，具体实现继续留在各自项目。",
+          "sourceEvidenceIds": [
+            "source-t07-memory-l0"
+          ],
+          "observedAt": "2026-08-25T10:11:00Z",
+          "contentHash": "89438560285deae83a4163e1d87f85140b1f211fbd108538aae9211264e77706"
+        }
+      ],
+      "contentHash": "e9061523c320d382cdbbfd0af7677442d11372a8c8ef91bd4462dbb133ccea96"
+    }
+  ],
+  "l1Memories": [
+    {
+      "assetId": "T07-L1-01",
+      "ownerAgentId": "agent-task1-t07-general",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "type": "decision",
+      "content": "早期曾把交互式登录作为后台认证兜底；该替代方案已被无交互服务到服务凭据决策取代。",
+      "status": "superseded",
+      "supersededBy": "T07-L1-11",
+      "validFrom": "2026-07-15T00:00:00Z",
+      "supportingMessageIds": [
+        "T07-L0-01-M03",
+        "T07-L0-01-M04"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "6bad58698b011cb9d6e3ee87ca53cb13ba03f15f615020cb8e41a1f9b457a0db"
+    },
+    {
+      "assetId": "T07-L1-02",
+      "ownerAgentId": "agent-task1-t07-general",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "type": "decision",
+      "content": "目录列表处理依赖服务端后续链接，并以链接缺失作为分页终点。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00Z",
+      "supportingMessageIds": [
+        "T07-L0-01-M05",
+        "T07-L0-01-M06"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "07476c5fe5976fb410f1da7845a4c9dc543a7072458d075f336863d2c5a2d7c3"
+    },
+    {
+      "assetId": "T07-L1-03",
+      "ownerAgentId": "agent-task1-t07-assets-b",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "type": "decision",
+      "content": "当前生成客户端决策将认证和请求执行放在运行时边界，普通可重试失败由调用方拥有重试选择；客户端不隐式接管重试，并保留取消能力。",
+      "status": "active",
+      "validFrom": "2026-08-18T00:00:00Z",
+      "supportingMessageIds": [
+        "T07-L0-08-M01",
+        "T07-L0-08-M02",
+        "T07-L0-08-M05",
+        "T07-L0-08-M06",
+        "T07-L0-08-M09",
+        "T07-L0-08-M10"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "0aacb9e98a0446feeff732753a6c7ac82f2d9c4af9d48163ee0e580efe2ffa32"
+    },
+    {
+      "assetId": "T07-L1-04",
+      "ownerAgentId": "agent-task1-t07-general",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "type": "decision",
+      "content": "适配器测试将凭据提供器和请求客户端隔离，并检查字段集合的稳定性。",
+      "status": "active",
+      "validFrom": "2026-08-02T00:00:00Z",
+      "supportingMessageIds": [
+        "T07-L0-02-M01",
+        "T07-L0-02-M04"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "2f3ec74b8c83bbc67618390622ec17627d67218b600ff7e4fba2e0757159b5f5"
+    },
+    {
+      "assetId": "T07-L1-05",
+      "ownerAgentId": "agent-task1-t07-general",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "type": "fact",
+      "content": "测试覆盖分页自然终止、受控节流等待，以及认证失败和限流失败的分类。",
+      "status": "active",
+      "validFrom": "2026-08-02T00:00:00Z",
+      "supportingMessageIds": [
+        "T07-L0-02-M05",
+        "T07-L0-02-M10"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "8c242bf8240c870a0d3c420ef5d7355bb3d3a98c1b885f1db9148f79af8d7d95"
+    },
+    {
+      "assetId": "T07-L1-06",
+      "ownerAgentId": "agent-task1-t07-general",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "type": "fact",
+      "content": "容量复查同时观察请求次数与单页负载，字段投影作为控制网络和解析开销的约束。",
+      "status": "active",
+      "validFrom": "2026-08-03T00:00:00Z",
+      "supportingMessageIds": [
+        "T07-L0-03-M01",
+        "T07-L0-03-M04"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "43621db3a8f344cb2d49c7e944ddb709866bb3502601e0597216bbd42a7ae042"
+    },
+    {
+      "assetId": "T07-L1-07",
+      "ownerAgentId": "agent-task1-t07-assets-a",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "type": "decision",
+      "content": "批量写入重试必须复用稳定点标识，重复提交遵循一致的覆盖语义。",
+      "status": "active",
+      "validFrom": "2026-08-04T00:00:00Z",
+      "supportingMessageIds": [
+        "T07-L0-04-M03",
+        "T07-L0-04-M04"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "ac094b9902135ba5f193950d5b2381ca643df9fd60c28ea9ffa04c58bab0691a"
+    },
+    {
+      "assetId": "T07-L1-08",
+      "ownerAgentId": "agent-task1-t07-assets-a",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "type": "decision",
+      "content": "网关启动把可重复初始化置于批量写入前，并对配置冲突提供阶段化错误。",
+      "status": "active",
+      "validFrom": "2026-08-04T00:00:00Z",
+      "supportingMessageIds": [
+        "T07-L0-04-M05",
+        "T07-L0-04-M06"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "2645a65fa5972f8349057eb320d1cad64532d53362f099c8acb5616798d17416"
+    },
+    {
+      "assetId": "T07-L1-09",
+      "ownerAgentId": "agent-task1-t07-assets-a",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "type": "decision",
+      "content": "集合初始化先读取现状，过滤结构和排序参数保持分离。",
+      "status": "active",
+      "validFrom": "2026-08-05T00:00:00Z",
+      "supportingMessageIds": [
+        "T07-L0-05-M03",
+        "T07-L0-05-M06"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "1757abce317ee4d86d1a5971121f256d839a9785517c1b62ed4ca8246407dc1a"
+    },
+    {
+      "assetId": "T07-L1-10",
+      "ownerAgentId": "agent-task1-t07-assets-a",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "type": "fact",
+      "content": "点写入在统一校验后按批大小切分，验收夹具覆盖初始化和查询的基本分支。",
+      "status": "active",
+      "validFrom": "2026-08-05T00:00:00Z",
+      "supportingMessageIds": [
+        "T07-L0-05-M07",
+        "T07-L0-05-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "ffdccd0820e44437598bd99d059ae5870e2334075282aa2ce37f9b6a83888aba"
+    },
+    {
+      "assetId": "T07-L1-11",
+      "ownerAgentId": "agent-task1-t07-general",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "type": "decision",
+      "content": "2026-08-18 起，目录同步采用无交互的服务到服务认证，凭据由独立提供器注入客户端；交互式登录不再作为后台兜底。",
+      "status": "active",
+      "validFrom": "2026-08-18T00:00:00Z",
+      "supportingMessageIds": [
+        "T07-L0-01-M03",
+        "T07-L0-01-M04"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "602d809c6a349af2e2015b848249bd2a7ab416b35f3b8fde0e1febfe22a4f4af"
+    },
+    {
+      "assetId": "T07-L1-12",
+      "ownerAgentId": "agent-task1-t07-assets-a",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "type": "fact",
+      "content": "质量报告使用匿名合成样本和可复用检查步骤，与数据一致性报告分开维护。",
+      "status": "active",
+      "validFrom": "2026-08-06T00:00:00Z",
+      "supportingMessageIds": [
+        "T07-L0-06-M07",
+        "T07-L0-06-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "cba2336e8a0f891b2e3ee78247543020c2e06d48b11bbf5551cc9a5667ae2a26"
+    },
+    {
+      "assetId": "T07-L1-13",
+      "ownerAgentId": "agent-task1-t07-assets-b",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "type": "decision",
+      "content": "模式变化先审阅再生成产物，定制业务逻辑停留在边界层而非生成目录。",
+      "status": "active",
+      "validFrom": "2026-08-07T00:00:00Z",
+      "supportingMessageIds": [
+        "T07-L0-07-M01",
+        "T07-L0-07-M04"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "eaa59d128a292e9b6660f5db72004f876c603ed992990b608bda939e469c9abb"
+    },
+    {
+      "assetId": "T07-L1-14",
+      "ownerAgentId": "agent-task1-t07-assets-b",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "type": "decision",
+      "content": "生成过程固定工具版本，认证信息由运行时注入并与模式文件隔离。",
+      "status": "active",
+      "validFrom": "2026-08-07T00:00:00Z",
+      "supportingMessageIds": [
+        "T07-L0-07-M07",
+        "T07-L0-07-M10"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "f471d5676a95b2ac4c4e43337a6f00634aa58253374ce9e52f5ed347ca1cc081"
+    },
+    {
+      "assetId": "T07-L1-15",
+      "ownerAgentId": "agent-task1-t07-assets-b",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "type": "decision",
+      "content": "生成客户端的认证、超时、服务端失败和取消边界需要显式分层，默认不隐藏自动重试。",
+      "status": "active",
+      "validFrom": "2026-08-08T00:00:00Z",
+      "supportingMessageIds": [
+        "T07-L0-08-M01",
+        "T07-L0-08-M06"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "dcee8da2e05f0a3d8d2504bd28599a7c7c282d69c243d0985c8acab18ced4bd9"
+    },
+    {
+      "assetId": "T07-L1-16",
+      "ownerAgentId": "agent-task1-t07-assets-b",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l1"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "type": "fact",
+      "content": "契约测试覆盖序列化、解析和错误映射，夹具采用脱敏合成响应而非真实负载。",
+      "status": "active",
+      "validFrom": "2026-08-09T00:00:00Z",
+      "supportingMessageIds": [
+        "T07-L0-09-M01",
+        "T07-L0-09-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "e928d4c6713b4995d49afe9644e1c2ed843986c84d5581a08aa60cad08480f7d"
+    }
+  ],
+  "l2Scenes": [
+    {
+      "assetId": "T07-L2-01",
+      "ownerAgentId": "agent-task1-t07-assets-b",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l2"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "path": "scenes/partner-openapi/generated-client",
+      "summary": "合作方客户端生成工作的连续场景，覆盖模式更新、运行时约定和契约验证。",
+      "content": "场景从模式文件变更开始：先审阅结构差异，再重新生成类型和请求封装，手写适配留在边界层。随后团队单独确定凭据注入、超时、服务端失败和取消的责任边界，约定普通重试由调用方显式选择。最后用分层契约夹具检查序列化、未知字段解析和错误映射，所有响应均为脱敏合成数据。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T07-L0-07",
+        "T07-L0-08",
+        "T07-L0-09"
+      ],
+      "contentHash": "1cac785f35d538594d89e5b7cdf46c824d95d34dd036ea9c8f7f5fa9f3369ec6"
+    },
+    {
+      "assetId": "T07-L2-02",
+      "ownerAgentId": "agent-task1-t07-assets-a",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l2"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "path": "scenes/qdrant-ingestion/quality-and-consistency",
+      "summary": "向量接入网关围绕写入一致性、集合验收和检索质量形成连续工作场景。",
+      "content": "场景先复盘批量写入中的重复点和重试边界，再建立可重复的集合初始化、点校验、过滤查询和空结果验收夹具。验收完成后，团队用带标签查询区分相关性与召回率，做过滤变体和负载抽样检查，并把查询质量报告与写入一致性报告分别维护。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T07-L0-04",
+        "T07-L0-05",
+        "T07-L0-06"
+      ],
+      "contentHash": "704aafd005493629bb1e5fc80ea67d50f541caee7a21a50530fd7a4556495a12"
+    },
+    {
+      "assetId": "T07-L2-03",
+      "ownerAgentId": "agent-task1-t07-assets-a",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l2"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "path": "scenes/qdrant-ingestion/cutover-chronology",
+      "summary": "向量接入从事故复盘到稳定验收再到质量诊断的迁移编年场景。",
+      "content": "切换编年先记录批次接收、重试、确认和再次提交的阶段，再将稳定点标识与可重复初始化纳入写入路径。第二阶段建立集合参数、负载字段、过滤条件和排序分离的验收清单，使用隔离夹具验证首次与重复启动。第三阶段固定带标签查询，分别观察候选数量、命中数量、排序位置和过滤变体，将遗留负载污染排查与检索质量判断拆开。",
+      "injected": false,
+      "supportingSessionIds": [
+        "T07-L0-04",
+        "T07-L0-05",
+        "T07-L0-06"
+      ],
+      "contentHash": "bdc00a6d2473f52c9aa9b87b0f48a96017b1de34a1cb2c2be22925a07e5fb02e"
+    },
+    {
+      "assetId": "T07-L2-04",
+      "ownerAgentId": "agent-task1-t07-general",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l2"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "path": "scenes/integration/isolated-cutover",
+      "summary": "三条集成流在隔离夹具中联调，重点记录跨项目边界和失败转交。",
+      "content": "联调使用隔离的合成命名空间，先验证接口可用，再验证数据进入，最后检查查询消费。各适配层分别负责自己的认证、写入或生成逻辑；跨流仅共享脱敏日志关联、结构化状态和阶段化验收。遇到等待、终止或未知状态时，由产生该状态的边界明确下一动作，编排层不自行猜测。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T07-L0-01",
+        "T07-L0-04",
+        "T07-L0-10"
+      ],
+      "contentHash": "9c63cb40c9f85a757cd76e1134756239516830e01560e469b03a6c4a94640967"
+    }
+  ],
+  "l3Profiles": [
+    {
+      "assetId": "T07-L3-01",
+      "ownerAgentId": "agent-task1-t07-general",
+      "sourceEvidenceIds": [
+        "source-t07-memory-l3"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "content": "团队偏好在边界处保持职责清晰：凭据、请求、数据写入、查询和编排分别承担可验证的责任。实现先用隔离的合成夹具建立可重复测试，再以结构化状态、最小数据暴露和有界等待处理失败。跨项目协作共享术语、日志关联和验收节奏，但不把一个项目的实现细节扩散到其他项目。",
+      "stability": "team",
+      "contentHash": "9b0591b434441b88a2d2034aaa6276522bfaccebf743b114c45ec5119c00aef9"
+    }
+  ]
+}

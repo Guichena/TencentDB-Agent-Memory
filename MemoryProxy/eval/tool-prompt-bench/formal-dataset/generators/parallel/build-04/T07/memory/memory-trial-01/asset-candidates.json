@@ -1,0 +1,239 @@
+{
+  "schema_version": "task1.synthetic_memory_candidate_pool.v1",
+  "stage": "DS05",
+  "team_id": "T07",
+  "family": "memory",
+  "synthetic": true,
+  "external_source_ids": [],
+  "l0_sessions": [
+    {
+      "id": "T07-L0-01",
+      "synthetic": true,
+      "project_id": "graph-tenant-sync",
+      "task_id": "task-task1-t07-graphsync",
+      "messages": [
+        {"id":"T07-L0-01-M01","role":"user","content":"我们这周继续收敛目录同步适配器，先把认证、字段选择、翻页和节流四件事放在同一条链路里看。","synthetic":true},
+        {"id":"T07-L0-01-M02","role":"assistant","content":"可以，先把请求边界固定下来，再分别确认认证凭据、返回字段、分页游标和重试行为，最后用适配器测试串起来。","synthetic":true},
+        {"id":"T07-L0-01-M03","role":"user","content":"运行环境是无用户交互的后台任务，不能把登录窗口或人工授权当成兜底。","synthetic":true},
+        {"id":"T07-L0-01-M04","role":"assistant","content":"那就按服务到服务的运行假设设计，并把权限范围、凭据注入位置和失效时的错误分类写进适配器约定。","synthetic":true},
+        {"id":"T07-L0-01-M05","role":"user","content":"目录记录很多，单次响应不可能装完；调用方还要能在测试里观察是否继续取下一页。","synthetic":true},
+        {"id":"T07-L0-01-M06","role":"assistant","content":"分页循环需要以服务端返回的后续链接为准，直到链接缺失；测试可以准备首尾两页，并检查两页结果被合并。","synthetic":true},
+        {"id":"T07-L0-01-M07","role":"user","content":"字段方面只消费同步真正需要的标识、显示名和邮箱，其他属性不要顺手带回来。","synthetic":true},
+        {"id":"T07-L0-01-M08","role":"assistant","content":"我会把字段投影放在请求构造处，让适配器的输入输出都只暴露同步所需的最小集合。","synthetic":true},
+        {"id":"T07-L0-01-M09","role":"user","content":"上游偶尔会限流，不能把一次 429 直接变成全量任务失败，也不能无限等待。","synthetic":true},
+        {"id":"T07-L0-01-M10","role":"assistant","content":"重试应读取响应提供的等待提示，采用有界退避并记录尝试次数；超过上限后再交给任务层处理。","synthetic":true},
+        {"id":"T07-L0-01-M11","role":"user","content":"评审时请把认证方式、字段裁剪、翻页停止条件和限流恢复放在一段能直接贴到变更说明里的话里。","synthetic":true},
+        {"id":"T07-L0-01-M12","role":"assistant","content":"收到。我还会让测试覆盖认证配置被传入、字段集合准确、后续链接被消费，以及限流后恢复这几个观察点。","synthetic":true}
+      ]
+    },
+    {
+      "id": "T07-L0-02",
+      "synthetic": true,
+      "project_id": "graph-tenant-sync",
+      "task_id": "task-task1-t07-graphsync",
+      "messages": [
+        {"id":"T07-L0-02-M01","role":"user","content":"今天看适配器测试的可读性，先把请求客户端和凭据提供器拆开。","synthetic":true},
+        {"id":"T07-L0-02-M02","role":"assistant","content":"拆开后测试可以只替换凭据提供器，不必启动完整后台任务。","synthetic":true},
+        {"id":"T07-L0-02-M03","role":"user","content":"请求构造的字段投影也要有一个明确断言，避免未来有人悄悄扩大响应。","synthetic":true},
+        {"id":"T07-L0-02-M04","role":"assistant","content":"我会断言查询参数的字段集合，并让多余字段出现在模拟响应时也不会进入领域对象。","synthetic":true},
+        {"id":"T07-L0-02-M05","role":"user","content":"翻页测试别只测两页成功，还要测没有后续链接时停止。","synthetic":true},
+        {"id":"T07-L0-02-M06","role":"assistant","content":"可以准备一页终止响应，并验证客户端没有发出第三次请求。","synthetic":true},
+        {"id":"T07-L0-02-M07","role":"user","content":"限流场景的等待时间不能真的拖慢测试。","synthetic":true},
+        {"id":"T07-L0-02-M08","role":"assistant","content":"测试里注入时钟和等待函数，检查读取的等待提示及重试次数，不使用真实延迟。","synthetic":true},
+        {"id":"T07-L0-02-M09","role":"user","content":"认证失败和限流失败要分成不同的错误类别。","synthetic":true},
+        {"id":"T07-L0-02-M10","role":"assistant","content":"前者直接交给配置或凭据诊断，后者在耗尽有界尝试后交给调度层，两者都保留请求上下文。","synthetic":true},
+        {"id":"T07-L0-02-M11","role":"user","content":"把这些观察点补到适配器测试清单，之后再处理目录同步的日志格式。","synthetic":true},
+        {"id":"T07-L0-02-M12","role":"assistant","content":"清单会按认证、字段、分页、节流和错误分类分组，日志格式另开一项。","synthetic":true}
+      ]
+    },
+    {
+      "id": "T07-L0-03",
+      "synthetic": true,
+      "project_id": "graph-tenant-sync",
+      "task_id": "task-task1-t07-graphsync",
+      "messages": [
+        {"id":"T07-L0-03-M01","role":"user","content":"我想复查目录同步在租户数据量上升后的表现，重点是请求次数和单页负载。","synthetic":true},
+        {"id":"T07-L0-03-M02","role":"assistant","content":"先记录分页请求总数、每页条数和合并后的记录数，再观察限流比例。","synthetic":true},
+        {"id":"T07-L0-03-M03","role":"user","content":"如果返回字段继续膨胀，网络和解析开销都会被放大。","synthetic":true},
+        {"id":"T07-L0-03-M04","role":"assistant","content":"因此字段投影应由适配器统一维护，领域层不接受任意透传属性。","synthetic":true},
+        {"id":"T07-L0-03-M05","role":"user","content":"翻页链接可能带有服务端状态，调用方不要自行拼接偏移量。","synthetic":true},
+        {"id":"T07-L0-03-M06","role":"assistant","content":"同意，循环只消费服务端给出的后续链接，并把链接缺失作为自然终点。","synthetic":true},
+        {"id":"T07-L0-03-M07","role":"user","content":"限流时我更关心恢复是否遵守服务端给的等待时间。","synthetic":true},
+        {"id":"T07-L0-03-M08","role":"assistant","content":"重试策略先读取等待提示，再应用最大尝试次数和最大等待边界。","synthetic":true},
+        {"id":"T07-L0-03-M09","role":"user","content":"后台认证凭据的刷新也需要和请求逻辑隔离。","synthetic":true},
+        {"id":"T07-L0-03-M10","role":"assistant","content":"凭据提供器负责取得有效令牌，客户端只负责把它作为认证配置使用。","synthetic":true},
+        {"id":"T07-L0-03-M11","role":"user","content":"这些原则最后要进入容量评审记录，不需要写成具体租户的结论。","synthetic":true},
+        {"id":"T07-L0-03-M12","role":"assistant","content":"我会记录为可观测的设计约束，并用合成数据做请求次数回归。","synthetic":true}
+      ]
+    },
+    {
+      "id": "T07-L0-04",
+      "synthetic": true,
+      "project_id": "qdrant-ingestion-gateway",
+      "task_id": "task-task1-t07-qdrant",
+      "messages": [
+        {"id":"T07-L0-04-M01","role":"user","content":"昨天批量写入网关出现重复点，先梳理这次幂等写入事故的时间线。","synthetic":true},
+        {"id":"T07-L0-04-M02","role":"assistant","content":"先按批次接收、重试、确认和再次提交四个阶段标记日志，再比对点标识是否稳定。","synthetic":true},
+        {"id":"T07-L0-04-M03","role":"user","content":"调用方在超时后会再次提交同一批，不能把重试当成新数据。","synthetic":true},
+        {"id":"T07-L0-04-M04","role":"assistant","content":"写入接口要使用由业务记录派生的稳定点标识，并让覆盖写语义保持一致。","synthetic":true},
+        {"id":"T07-L0-04-M05","role":"user","content":"集合初始化和批量写入之间还有竞态，首次启动尤其明显。","synthetic":true},
+        {"id":"T07-L0-04-M06","role":"assistant","content":"初始化步骤需要可重复执行，写入前确认集合配置已就绪，失败时保留清晰阶段信息。","synthetic":true},
+        {"id":"T07-L0-04-M07","role":"user","content":"这次的重复点是否来自批次切分，而不是底层存储本身？","synthetic":true},
+        {"id":"T07-L0-04-M08","role":"assistant","content":"初步看是切分器在重试路径重新生成了临时标识，底层按不同标识接收了两份。","synthetic":true},
+        {"id":"T07-L0-04-M09","role":"user","content":"那修复应该锁定标识生成和重试边界，不要先改检索逻辑。","synthetic":true},
+        {"id":"T07-L0-04-M10","role":"assistant","content":"对，先让一次批次生命周期共享标识映射，并增加重复提交的回归样例。","synthetic":true},
+        {"id":"T07-L0-04-M11","role":"user","content":"事故记录里要区分已确认写入和未知状态，方便后续补偿。","synthetic":true},
+        {"id":"T07-L0-04-M12","role":"assistant","content":"我会给两种状态分别定义补偿动作，并把原始批次摘要关联到诊断记录。","synthetic":true}
+      ]
+    },
+    {
+      "id": "T07-L0-05",
+      "synthetic": true,
+      "project_id": "qdrant-ingestion-gateway",
+      "task_id": "task-task1-t07-qdrant",
+      "messages": [
+        {"id":"T07-L0-05-M01","role":"user","content":"今天把向量网关的集合初始化和过滤查询接口整理成一条验收清单。","synthetic":true},
+        {"id":"T07-L0-05-M02","role":"assistant","content":"清单可以分成集合参数、点写入、负载字段、过滤条件和结果排序五组。","synthetic":true},
+        {"id":"T07-L0-05-M03","role":"user","content":"初始化重复执行时不能破坏已有数据。","synthetic":true},
+        {"id":"T07-L0-05-M04","role":"assistant","content":"初始化先读取现状，只有缺失时创建；配置冲突则显式报告，避免静默覆盖。","synthetic":true},
+        {"id":"T07-L0-05-M05","role":"user","content":"过滤查询只按租户和文档状态筛选，不把业务排序混进过滤表达式。","synthetic":true},
+        {"id":"T07-L0-05-M06","role":"assistant","content":"我会保持过滤结构和排序参数分离，并用组合条件覆盖空值与未知状态。","synthetic":true},
+        {"id":"T07-L0-05-M07","role":"user","content":"写入接口要支持小批量和大批量共用一套校验。","synthetic":true},
+        {"id":"T07-L0-05-M08","role":"assistant","content":"在进入客户端前统一检查维度、点标识和负载必填字段，再按大小切分请求。","synthetic":true},
+        {"id":"T07-L0-05-M09","role":"user","content":"查询结果的空集合应该是正常结果，不要当成异常。","synthetic":true},
+        {"id":"T07-L0-05-M10","role":"assistant","content":"适配层返回明确的空列表，只有连接或协议错误才转成异常。","synthetic":true},
+        {"id":"T07-L0-05-M11","role":"user","content":"验收样例要同时覆盖首次启动、重复启动、命中和无命中。","synthetic":true},
+        {"id":"T07-L0-05-M12","role":"assistant","content":"我会将四个场景分别固定成可重复的测试夹具，并记录请求参数。","synthetic":true}
+      ]
+    },
+    {
+      "id": "T07-L0-06",
+      "synthetic": true,
+      "project_id": "qdrant-ingestion-gateway",
+      "task_id": "task-task1-t07-qdrant",
+      "messages": [
+        {"id":"T07-L0-06-M01","role":"user","content":"检索质量诊断的第一版报告出来了，相关性和召回率要分开看。","synthetic":true},
+        {"id":"T07-L0-06-M02","role":"assistant","content":"先固定一组带标签的查询，分别记录候选数、命中数和排序位置，再讨论阈值。","synthetic":true},
+        {"id":"T07-L0-06-M03","role":"user","content":"有些查询命中很多，但真正相关的结果排在后面。","synthetic":true},
+        {"id":"T07-L0-06-M04","role":"assistant","content":"这更像排序或过滤组合问题，不能只看总命中数量。","synthetic":true},
+        {"id":"T07-L0-06-M05","role":"user","content":"另一些查询一个结果都没有，可能是租户过滤条件过严。","synthetic":true},
+        {"id":"T07-L0-06-M06","role":"assistant","content":"诊断时先去掉一个过滤维度做对照，确认是数据缺失、条件不匹配还是向量相似度阈值导致。","synthetic":true},
+        {"id":"T07-L0-06-M07","role":"user","content":"报告不要直接给出某个业务案例的答案，要留下可复用检查步骤。","synthetic":true},
+        {"id":"T07-L0-06-M08","role":"assistant","content":"会以查询集、过滤变体、指标表和下一步实验组成报告，案例只作为匿名样本。","synthetic":true},
+        {"id":"T07-L0-06-M09","role":"user","content":"还要确认点的负载字段没有被旧批次污染。","synthetic":true},
+        {"id":"T07-L0-06-M10","role":"assistant","content":"抽样比对写入时间、租户标签和状态字段，发现混入后先追溯写入链路。","synthetic":true},
+        {"id":"T07-L0-06-M11","role":"user","content":"把质量报告和写入事故报告分开，避免根因互相覆盖。","synthetic":true},
+        {"id":"T07-L0-06-M12","role":"assistant","content":"好的，一个聚焦查询质量，一个聚焦数据一致性，两个报告只共享必要的批次标识。","synthetic":true}
+      ]
+    },
+    {
+      "id": "T07-L0-07",
+      "synthetic": true,
+      "project_id": "partner-openapi-client",
+      "task_id": "task-task1-t07-openapi",
+      "messages": [
+        {"id":"T07-L0-07-M01","role":"user","content":"合作方的接口描述今天更新了，我们要从模式文件重新生成类型和请求封装。","synthetic":true},
+        {"id":"T07-L0-07-M02","role":"assistant","content":"先检查模式变更，再生成类型、路径封装和运行时支持，最后看契约测试差异。","synthetic":true},
+        {"id":"T07-L0-07-M03","role":"user","content":"手写层只保留业务适配，不要直接修改生成目录。","synthetic":true},
+        {"id":"T07-L0-07-M04","role":"assistant","content":"我会把定制逻辑放在边界层，生成内容作为可重复产物处理。","synthetic":true},
+        {"id":"T07-L0-07-M05","role":"user","content":"本次变更主要是新增一个列表响应字段和一个可选查询参数。","synthetic":true},
+        {"id":"T07-L0-07-M06","role":"assistant","content":"契约测试需要验证新字段可被解析，也要验证未提供可选参数时仍保持旧调用行为。","synthetic":true},
+        {"id":"T07-L0-07-M07","role":"user","content":"生成命令要固定版本，避免不同机器产出漂移。","synthetic":true},
+        {"id":"T07-L0-07-M08","role":"assistant","content":"把生成器版本和模式文件校验纳入脚本入口，并在变更说明里列出产物摘要。","synthetic":true},
+        {"id":"T07-L0-07-M09","role":"user","content":"认证头由运行时注入，不要让模式文件承载环境密钥。","synthetic":true},
+        {"id":"T07-L0-07-M10","role":"assistant","content":"运行时只接收抽象凭据提供器，生成代码保持环境无关。","synthetic":true},
+        {"id":"T07-L0-07-M11","role":"user","content":"如果模式描述中的文字改动不影响类型，可以单独审阅。","synthetic":true},
+        {"id":"T07-L0-07-M12","role":"assistant","content":"我会将说明文字、结构变更和运行时行为分开标注，降低审阅噪声。","synthetic":true}
+      ]
+    },
+    {
+      "id": "T07-L0-08",
+      "synthetic": true,
+      "project_id": "partner-openapi-client",
+      "task_id": "task-task1-t07-openapi",
+      "messages": [
+        {"id":"T07-L0-08-M01","role":"user","content":"我们需要定下生成客户端的认证、超时和重试边界，调用方希望行为可预测。","synthetic":true},
+        {"id":"T07-L0-08-M02","role":"assistant","content":"先区分凭据注入、连接超时、服务端失败和调用方取消，再决定每类由哪一层负责。","synthetic":true},
+        {"id":"T07-L0-08-M03","role":"user","content":"凭据不能写进生成产物，也不能由每个接口重复拼接。","synthetic":true},
+        {"id":"T07-L0-08-M04","role":"assistant","content":"统一运行时处理认证头，接口封装只描述请求参数和响应类型。","synthetic":true},
+        {"id":"T07-L0-08-M05","role":"user","content":"普通的可重试失败可以由调用方决定是否重试。","synthetic":true},
+        {"id":"T07-L0-08-M06","role":"assistant","content":"客户端默认不隐藏重试次数；若需要自动重试，应由边界层显式配置并保留取消能力。","synthetic":true},
+        {"id":"T07-L0-08-M07","role":"user","content":"超时要能在测试中快速触发，不要依赖真实网络。","synthetic":true},
+        {"id":"T07-L0-08-M08","role":"assistant","content":"运行时接收可替换的传输实现和时钟，契约测试用受控响应验证边界。","synthetic":true},
+        {"id":"T07-L0-08-M09","role":"user","content":"接口生成升级时，认证和重试的责任归属不能悄悄变化。","synthetic":true},
+        {"id":"T07-L0-08-M10","role":"assistant","content":"把责任边界写成稳定约定，并在升级检查中比较运行时配置和公开接口。","synthetic":true},
+        {"id":"T07-L0-08-M11","role":"user","content":"最后给调用方一张简短的错误分类表。","synthetic":true},
+        {"id":"T07-L0-08-M12","role":"assistant","content":"错误表按认证、参数、网络、服务端和取消分组，并说明是否建议重试。","synthetic":true}
+      ]
+    },
+    {
+      "id": "T07-L0-09",
+      "synthetic": true,
+      "project_id": "partner-openapi-client",
+      "task_id": "task-task1-t07-openapi",
+      "messages": [
+        {"id":"T07-L0-09-M01","role":"user","content":"这轮重点是生成客户端的契约测试，确保模式、类型和运行时边界没有脱节。","synthetic":true},
+        {"id":"T07-L0-09-M02","role":"assistant","content":"测试分成模式解析、请求序列化、响应解析和错误映射四层。","synthetic":true},
+        {"id":"T07-L0-09-M03","role":"user","content":"请求序列化要覆盖可选参数缺省、显式空值和数组参数。","synthetic":true},
+        {"id":"T07-L0-09-M04","role":"assistant","content":"我会为三种情况分别固定传输层看到的请求，防止默认值被错误发送。","synthetic":true},
+        {"id":"T07-L0-09-M05","role":"user","content":"响应测试要包含未知字段，确认向前兼容策略。","synthetic":true},
+        {"id":"T07-L0-09-M06","role":"assistant","content":"解析器只读取声明字段，未知字段不会阻断正常响应。","synthetic":true},
+        {"id":"T07-L0-09-M07","role":"user","content":"认证失败的响应需要保留状态和请求追踪信息。","synthetic":true},
+        {"id":"T07-L0-09-M08","role":"assistant","content":"错误映射会保留状态、追踪标识和安全的服务端摘要，不保留凭据内容。","synthetic":true},
+        {"id":"T07-L0-09-M09","role":"user","content":"生成结果变化时，测试快照要能说明是模式变化还是生成器变化。","synthetic":true},
+        {"id":"T07-L0-09-M10","role":"assistant","content":"快照旁记录模式摘要和生成器版本，变更审阅时先确认输入再看产物。","synthetic":true},
+        {"id":"T07-L0-09-M11","role":"user","content":"不要把某个合作方真实响应复制进仓库。","synthetic":true},
+        {"id":"T07-L0-09-M12","role":"assistant","content":"测试夹具全部使用脱敏合成响应，并在文件头标明用途和边界。","synthetic":true}
+      ]
+    },
+    {
+      "id": "T07-L0-10",
+      "synthetic": true,
+      "project_id": "partner-openapi-client",
+      "task_id": "task-task1-t07-openapi",
+      "messages": [
+        {"id":"T07-L0-10-M01","role":"user","content":"三条集成流要在同一周完成联调，但每条仍然保持自己的边界。","synthetic":true},
+        {"id":"T07-L0-10-M02","role":"assistant","content":"可以共享日志关联和任务编排约定，认证、写入和生成客户端仍由各自适配层负责。","synthetic":true},
+        {"id":"T07-L0-10-M03","role":"user","content":"联调顺序先验证接口可用，再验证数据进入，最后检查查询消费。","synthetic":true},
+        {"id":"T07-L0-10-M04","role":"assistant","content":"每个阶段提供可重复的合成夹具和明确的通过条件，失败时保留阶段上下文。","synthetic":true},
+        {"id":"T07-L0-10-M05","role":"user","content":"跨流日志只记录必要标识，不把访问令牌和完整负载打出来。","synthetic":true},
+        {"id":"T07-L0-10-M06","role":"assistant","content":"日志采用脱敏摘要和关联键，详细负载留在受控诊断入口。","synthetic":true},
+        {"id":"T07-L0-10-M07","role":"user","content":"如果上游限流，编排层要知道是等待还是终止，不要猜。","synthetic":true},
+        {"id":"T07-L0-10-M08","role":"assistant","content":"各适配器返回结构化状态，编排层只依据状态和明确的下一动作继续。","synthetic":true},
+        {"id":"T07-L0-10-M09","role":"user","content":"集成验收要能重复运行，不能依赖上一次残留数据。","synthetic":true},
+        {"id":"T07-L0-10-M10","role":"assistant","content":"每次运行使用隔离的合成命名空间，并在开始和结束阶段执行清理检查。","synthetic":true},
+        {"id":"T07-L0-10-M11","role":"user","content":"最后只汇总跨流的接口约定，不替各项目做实现决定。","synthetic":true},
+        {"id":"T07-L0-10-M12","role":"assistant","content":"汇总会记录边界、可观测性和失败转交规则，具体实现继续留在各自项目。","synthetic":true}
+      ]
+    }
+  ],
+  "l1_memories": [
+    {"id":"T07-L1-01","synthetic":true,"project_id":"graph-tenant-sync","task_id":"task-task1-t07-graphsync","type":"decision","status":"superseded","valid_from":"2026-07-15","superseded_by":"T07-L1-11","source_message_ids":["T07-L0-01-M03","T07-L0-01-M04"],"summary":"早期曾把交互式登录作为后台认证兜底；该替代方案已被无交互服务到服务凭据决策取代。"},
+    {"id":"T07-L1-02","synthetic":true,"project_id":"graph-tenant-sync","task_id":"task-task1-t07-graphsync","type":"decision","status":"active","valid_from":"2026-08-01","source_message_ids":["T07-L0-01-M05","T07-L0-01-M06"],"summary":"目录列表处理依赖服务端后续链接，并以链接缺失作为分页终点。"},
+    {"id":"T07-L1-03","synthetic":true,"project_id":"partner-openapi-client","task_id":"task-task1-t07-openapi","type":"decision","status":"active","valid_from":"2026-08-18","source_message_ids":["T07-L0-08-M01","T07-L0-08-M02","T07-L0-08-M05","T07-L0-08-M06","T07-L0-08-M09","T07-L0-08-M10"],"summary":"当前生成客户端决策将认证和请求执行放在运行时边界，普通可重试失败由调用方拥有重试选择；客户端不隐式接管重试，并保留取消能力。"},
+    {"id":"T07-L1-04","synthetic":true,"project_id":"graph-tenant-sync","task_id":"task-task1-t07-graphsync","type":"decision","status":"active","valid_from":"2026-08-02","source_message_ids":["T07-L0-02-M01","T07-L0-02-M04"],"summary":"适配器测试将凭据提供器和请求客户端隔离，并检查字段集合的稳定性。"},
+    {"id":"T07-L1-05","synthetic":true,"project_id":"graph-tenant-sync","task_id":"task-task1-t07-graphsync","type":"fact","status":"active","valid_from":"2026-08-02","source_message_ids":["T07-L0-02-M05","T07-L0-02-M10"],"summary":"测试覆盖分页自然终止、受控节流等待，以及认证失败和限流失败的分类。"},
+    {"id":"T07-L1-06","synthetic":true,"project_id":"graph-tenant-sync","task_id":"task-task1-t07-graphsync","type":"fact","status":"active","valid_from":"2026-08-03","source_message_ids":["T07-L0-03-M01","T07-L0-03-M04"],"summary":"容量复查同时观察请求次数与单页负载，字段投影作为控制网络和解析开销的约束。"},
+    {"id":"T07-L1-07","synthetic":true,"project_id":"qdrant-ingestion-gateway","task_id":"task-task1-t07-qdrant","type":"decision","status":"active","valid_from":"2026-08-04","source_message_ids":["T07-L0-04-M03","T07-L0-04-M04"],"summary":"批量写入重试必须复用稳定点标识，重复提交遵循一致的覆盖语义。"},
+    {"id":"T07-L1-08","synthetic":true,"project_id":"qdrant-ingestion-gateway","task_id":"task-task1-t07-qdrant","type":"decision","status":"active","valid_from":"2026-08-04","source_message_ids":["T07-L0-04-M05","T07-L0-04-M06"],"summary":"网关启动把可重复初始化置于批量写入前，并对配置冲突提供阶段化错误。"},
+    {"id":"T07-L1-09","synthetic":true,"project_id":"qdrant-ingestion-gateway","task_id":"task-task1-t07-qdrant","type":"decision","status":"active","valid_from":"2026-08-05","source_message_ids":["T07-L0-05-M03","T07-L0-05-M06"],"summary":"集合初始化先读取现状，过滤结构和排序参数保持分离。"},
+    {"id":"T07-L1-10","synthetic":true,"project_id":"qdrant-ingestion-gateway","task_id":"task-task1-t07-qdrant","type":"fact","status":"active","valid_from":"2026-08-05","source_message_ids":["T07-L0-05-M07","T07-L0-05-M12"],"summary":"点写入在统一校验后按批大小切分，验收夹具覆盖初始化和查询的基本分支。"},
+    {"id":"T07-L1-11","synthetic":true,"project_id":"graph-tenant-sync","task_id":"task-task1-t07-graphsync","type":"decision","status":"active","valid_from":"2026-08-18","source_message_ids":["T07-L0-01-M03","T07-L0-01-M04"],"summary":"2026-08-18 起，目录同步采用无交互的服务到服务认证，凭据由独立提供器注入客户端；交互式登录不再作为后台兜底。"},
+    {"id":"T07-L1-12","synthetic":true,"project_id":"qdrant-ingestion-gateway","task_id":"task-task1-t07-qdrant","type":"fact","status":"active","valid_from":"2026-08-06","source_message_ids":["T07-L0-06-M07","T07-L0-06-M12"],"summary":"质量报告使用匿名合成样本和可复用检查步骤，与数据一致性报告分开维护。"},
+    {"id":"T07-L1-13","synthetic":true,"project_id":"partner-openapi-client","task_id":"task-task1-t07-openapi","type":"decision","status":"active","valid_from":"2026-08-07","source_message_ids":["T07-L0-07-M01","T07-L0-07-M04"],"summary":"模式变化先审阅再生成产物，定制业务逻辑停留在边界层而非生成目录。"},
+    {"id":"T07-L1-14","synthetic":true,"project_id":"partner-openapi-client","task_id":"task-task1-t07-openapi","type":"decision","status":"active","valid_from":"2026-08-07","source_message_ids":["T07-L0-07-M07","T07-L0-07-M10"],"summary":"生成过程固定工具版本，认证信息由运行时注入并与模式文件隔离。"},
+    {"id":"T07-L1-15","synthetic":true,"project_id":"partner-openapi-client","task_id":"task-task1-t07-openapi","type":"decision","status":"active","valid_from":"2026-08-08","source_message_ids":["T07-L0-08-M01","T07-L0-08-M06"],"summary":"生成客户端的认证、超时、服务端失败和取消边界需要显式分层，默认不隐藏自动重试。"},
+    {"id":"T07-L1-16","synthetic":true,"project_id":"partner-openapi-client","task_id":"task-task1-t07-openapi","type":"fact","status":"active","valid_from":"2026-08-09","source_message_ids":["T07-L0-09-M01","T07-L0-09-M12"],"summary":"契约测试覆盖序列化、解析和错误映射，夹具采用脱敏合成响应而非真实负载。"}
+  ],
+  "l2_scenes": [
+    {"id":"T07-L2-01","synthetic":true,"project_id":"partner-openapi-client","task_id":"task-task1-t07-openapi","path":"scenes/partner-openapi/generated-client","session_ids":["T07-L0-07","T07-L0-08","T07-L0-09"],"summary":"合作方客户端生成工作的连续场景，覆盖模式更新、运行时约定和契约验证。","content":"场景从模式文件变更开始：先审阅结构差异，再重新生成类型和请求封装，手写适配留在边界层。随后团队单独确定凭据注入、超时、服务端失败和取消的责任边界，约定普通重试由调用方显式选择。最后用分层契约夹具检查序列化、未知字段解析和错误映射，所有响应均为脱敏合成数据。"},
+    {"id":"T07-L2-02","synthetic":true,"project_id":"qdrant-ingestion-gateway","task_id":"task-task1-t07-qdrant","path":"scenes/qdrant-ingestion/quality-and-consistency","session_ids":["T07-L0-04","T07-L0-05","T07-L0-06"],"summary":"向量接入网关围绕写入一致性、集合验收和检索质量形成连续工作场景。","content":"场景先复盘批量写入中的重复点和重试边界，再建立可重复的集合初始化、点校验、过滤查询和空结果验收夹具。验收完成后，团队用带标签查询区分相关性与召回率，做过滤变体和负载抽样检查，并把查询质量报告与写入一致性报告分别维护。"},
+    {"id":"T07-L2-03","synthetic":true,"project_id":"qdrant-ingestion-gateway","task_id":"task-task1-t07-qdrant","path":"scenes/qdrant-ingestion/cutover-chronology","session_ids":["T07-L0-04","T07-L0-05","T07-L0-06"],"summary":"向量接入从事故复盘到稳定验收再到质量诊断的迁移编年场景。","content":"切换编年先记录批次接收、重试、确认和再次提交的阶段，再将稳定点标识与可重复初始化纳入写入路径。第二阶段建立集合参数、负载字段、过滤条件和排序分离的验收清单，使用隔离夹具验证首次与重复启动。第三阶段固定带标签查询，分别观察候选数量、命中数量、排序位置和过滤变体，将遗留负载污染排查与检索质量判断拆开。"},
+    {"id":"T07-L2-04","synthetic":true,"project_id":"space-task1-engineering","task_id":"task-task1-t07-openapi","path":"scenes/integration/isolated-cutover","session_ids":["T07-L0-01","T07-L0-04","T07-L0-10"],"summary":"三条集成流在隔离夹具中联调，重点记录跨项目边界和失败转交。","content":"联调使用隔离的合成命名空间，先验证接口可用，再验证数据进入，最后检查查询消费。各适配层分别负责自己的认证、写入或生成逻辑；跨流仅共享脱敏日志关联、结构化状态和阶段化验收。遇到等待、终止或未知状态时，由产生该状态的边界明确下一动作，编排层不自行猜测。"}
+  ],
+  "l3_profile": {
+    "id":"T07-L3-01",
+    "synthetic":true,
+    "summary":"团队偏好在边界处保持职责清晰：凭据、请求、数据写入、查询和编排分别承担可验证的责任。实现先用隔离的合成夹具建立可重复测试，再以结构化状态、最小数据暴露和有界等待处理失败。跨项目协作共享术语、日志关联和验收节奏，但不把一个项目的实现细节扩散到其他项目。"
+  }
+}

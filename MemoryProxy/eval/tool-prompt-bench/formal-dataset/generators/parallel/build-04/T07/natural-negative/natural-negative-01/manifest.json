@@ -1,0 +1,15 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "build-04-T07-natural-negative-01",
+  "stage": "DS05",
+  "team_id": "T07",
+  "family": "natural-negative",
+  "external_source_ids": [],
+  "raw_output_file": "draft.json",
+  "raw_output_sha256": "cadd0e095df90d75ae289f7a3d7d13fed5eeb8279c38ef60ae4e39759ec2e540",
+  "generated_at": "2026-08-29T12:00:00+08:00",
+  "actual_count": 10
+}
