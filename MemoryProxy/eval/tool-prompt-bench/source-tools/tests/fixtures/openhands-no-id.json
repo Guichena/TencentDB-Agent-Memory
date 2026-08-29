@@ -1,0 +1,3 @@
+[
+  {"messages": [{"role": "system", "content": "harness"}, {"role": "user", "content": "<pr_description>task-1</pr_description>"}]}
+]

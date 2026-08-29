@@ -1,0 +1,8 @@
+{
+  "schema_version": "task1.team_registry.v1",
+  "space_id": "space-task1-engineering",
+  "team_id": "T16",
+  "topic": "事件驱动系统",
+  "split": "hidden_test",
+  "active_agent": { "agent_id": "agent-task1-t16-general", "name": "T16 通用业务 Agent" }
+}

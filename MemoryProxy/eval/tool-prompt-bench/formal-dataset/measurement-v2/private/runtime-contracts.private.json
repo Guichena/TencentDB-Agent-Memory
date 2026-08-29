@@ -1,0 +1,295 @@
+[
+  {
+    "contractId": "knowledge_tools_call:callers",
+    "family": "knowledge",
+    "tool": "knowledge_tools_call",
+    "endpoint": "/tools/call",
+    "method": "POST",
+    "operation": {
+      "kind": "argument",
+      "path": "tool_name",
+      "value": "callers"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
+    "contractId": "knowledge_tools_call:find_callers",
+    "family": "knowledge",
+    "tool": "knowledge_tools_call",
+    "endpoint": "/tools/call",
+    "method": "POST",
+    "operation": {
+      "kind": "argument",
+      "path": "tool_name",
+      "value": "find_callers"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
+    "contractId": "knowledge_tools_call:find_symbol",
+    "family": "knowledge",
+    "tool": "knowledge_tools_call",
+    "endpoint": "/tools/call",
+    "method": "POST",
+    "operation": {
+      "kind": "argument",
+      "path": "tool_name",
+      "value": "find_symbol"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
+    "contractId": "knowledge_tools_call:impact",
+    "family": "knowledge",
+    "tool": "knowledge_tools_call",
+    "endpoint": "/tools/call",
+    "method": "POST",
+    "operation": {
+      "kind": "argument",
+      "path": "tool_name",
+      "value": "impact"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
+    "contractId": "knowledge_tools_call:inspect_stage",
+    "family": "knowledge",
+    "tool": "knowledge_tools_call",
+    "endpoint": "/tools/call",
+    "method": "POST",
+    "operation": {
+      "kind": "argument",
+      "path": "tool_name",
+      "value": "inspect_stage"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
+    "contractId": "knowledge_tools_call:node",
+    "family": "knowledge",
+    "tool": "knowledge_tools_call",
+    "endpoint": "/tools/call",
+    "method": "POST",
+    "operation": {
+      "kind": "argument",
+      "path": "tool_name",
+      "value": "node"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
+    "contractId": "knowledge_tools_call:search",
+    "family": "knowledge",
+    "tool": "knowledge_tools_call",
+    "endpoint": "/tools/call",
+    "method": "POST",
+    "operation": {
+      "kind": "argument",
+      "path": "tool_name",
+      "value": "search"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
+    "contractId": "knowledge_tools_call:search_code",
+    "family": "knowledge",
+    "tool": "knowledge_tools_call",
+    "endpoint": "/tools/call",
+    "method": "POST",
+    "operation": {
+      "kind": "argument",
+      "path": "tool_name",
+      "value": "search_code"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
+    "contractId": "knowledge_tools_call:search_pages",
+    "family": "knowledge",
+    "tool": "knowledge_tools_call",
+    "endpoint": "/tools/call",
+    "method": "POST",
+    "operation": {
+      "kind": "argument",
+      "path": "tool_name",
+      "value": "search_pages"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
+    "contractId": "knowledge_tools_call:search_symbols",
+    "family": "knowledge",
+    "tool": "knowledge_tools_call",
+    "endpoint": "/tools/call",
+    "method": "POST",
+    "operation": {
+      "kind": "argument",
+      "path": "tool_name",
+      "value": "search_symbols"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
+    "contractId": "knowledge_tools_list",
+    "family": "knowledge",
+    "tool": "knowledge_tools_list",
+    "endpoint": "/tools/list",
+    "method": "POST",
+    "operation": {
+      "kind": "none"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
+    "contractId": "skill_files_read",
+    "family": "skill",
+    "tool": "skill_files_read",
+    "endpoint": "/skill-bridge/v3/skill/files/read",
+    "method": "POST",
+    "operation": {
+      "kind": "none"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
+    "contractId": "skill_search",
+    "family": "skill",
+    "tool": "skill_search",
+    "endpoint": "/skill-bridge/v3/skill/search",
+    "method": "POST",
+    "operation": {
+      "kind": "none"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
+    "contractId": "skill_view",
+    "family": "skill",
+    "tool": "skill_view",
+    "endpoint": "/skill-bridge/v3/skill/get-by-name",
+    "method": "POST",
+    "operation": {
+      "kind": "none"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
+    "contractId": "skill_view_by_id",
+    "family": "skill",
+    "tool": "skill_view_by_id",
+    "endpoint": "/skill-bridge/v3/skill/get",
+    "method": "POST",
+    "operation": {
+      "kind": "none"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
+    "contractId": "tdai_atomic_query",
+    "family": "memory",
+    "tool": "tdai_atomic_query",
+    "endpoint": "/memory-bridge/v3/atomic/query",
+    "method": "POST",
+    "operation": {
+      "kind": "none"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
+    "contractId": "tdai_conversation_query",
+    "family": "memory",
+    "tool": "tdai_conversation_query",
+    "endpoint": "/memory-bridge/v3/conversation/query",
+    "method": "POST",
+    "operation": {
+      "kind": "none"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
+    "contractId": "tdai_conversation_search",
+    "family": "memory",
+    "tool": "tdai_conversation_search",
+    "endpoint": "/memory-bridge/v3/conversation/search",
+    "method": "POST",
+    "operation": {
+      "kind": "none"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
+    "contractId": "tdai_memory_search",
+    "family": "memory",
+    "tool": "tdai_memory_search",
+    "endpoint": "/memory-bridge/v3/atomic/search",
+    "method": "POST",
+    "operation": {
+      "kind": "none"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
+    "contractId": "tdai_read_scene",
+    "family": "memory",
+    "tool": "tdai_read_scene",
+    "endpoint": "/memory-bridge/v3/scenario/read",
+    "method": "POST",
+    "operation": {
+      "kind": "none"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
+    "contractId": "tdai_scenario_ls",
+    "family": "memory",
+    "tool": "tdai_scenario_ls",
+    "endpoint": "/memory-bridge/v3/scenario/ls",
+    "method": "POST",
+    "operation": {
+      "kind": "none"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  }
+]

@@ -1,0 +1,159 @@
+{
+  "schema_version": "task1.dataset_build_status.v1",
+  "dataset_revision": "formal-v1",
+  "active_stage": "DS06_1_data_overlay_contract_v1_1",
+  "stage_status": "passed",
+  "next_stage": "R01_real_chain_adapter",
+  "data_core_status": "frozen",
+  "dataContractReady": true,
+  "realChainR01R04Status": "pending",
+  "measurementIntegrationReady": false,
+  "formalCampaignReady": false,
+  "formalMetricEligible": false,
+  "branch": "codex/task1-data-integration",
+  "baseline_commit": "960021e472456515a89d3c2c4f2962fbf6cc51a1",
+  "parallel_baseline_ref": "task1-data-parallel-baseline-v2",
+  "parallel_baseline_commit": "1048681880b51e7a52a6b8b0b731eadeec44e118",
+  "launch_refs": [
+    { "ref": "task1-data-parallel-launch-v2", "builds": ["build-01", "build-02", "build-03", "build-04", "build-05"] },
+    { "ref": "task1-data-parallel-launch-16team-v1", "builds": ["build-06", "build-07", "build-08"] }
+  ],
+  "target_counts": {
+    "spaces": 1,
+    "teams": 16,
+    "cases": 640,
+    "dev_cases": 240,
+    "hidden_test_cases": 400,
+    "pairs": 240,
+    "memory_positive": 96,
+    "skill_positive": 96,
+    "knowledge_positive": 48,
+    "paired_negative": 240,
+    "natural_coding_negative": 160
+  },
+  "completed_gates": [
+    "DS00",
+    "DS01",
+    "DS02_PILOT",
+    "SYNTHETIC_PROVENANCE_V2",
+    "DS02_16TEAM_BUILD_AUDIT",
+    "DS03_DEV_STRICT_FREEZE",
+    "DS03_DEV_DETERMINISTIC_COMPILE",
+    "DS03_D0_TESTS",
+    "DS03_TOOL_PROMPT_TESTS",
+    "DS04_HIDDEN_STRICT_FREEZE",
+    "DS04_HIDDEN_DETERMINISTIC_COMPILE",
+    "DS05_FULL_STRICT_FREEZE",
+    "DS05_FULL_CROSS_SPLIT_GATES",
+    "DS05_DATA_CORE_FROZEN",
+    "DS06-G01_PRIVATE_GOLD_V2_640",
+    "DS06-G02_PRIVATE_PAIR_V2_240",
+    "DS06-G03_OVERLAY_VALIDATOR",
+    "DS06-G04_PROVIDER_EXCLUSION_AND_SCHEMA_SHAPE"
+  ],
+  "team_progress": {
+    "T01": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T02": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T03": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T04": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T05": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T06": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T07": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T08": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T09": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T10": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T11": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T12": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T13": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T14": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T15": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T16": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" }
+  },
+  "artifacts": {
+    "contract": "registry/contracts/formal-v1.json",
+    "contract_file_sha256": "991ff87255019c0d4b64deba16b76b144bd3c63138be355c747865329e83da44",
+    "contract_canonical_sha256": "4fc62c1829301fe9f2410f6be40698d7b3d09ec90dde3bfe294452f7ef152d41",
+    "provider_dev_file_sha256": "8018bb65160eb1cac13e489ae54f258f2369dc4af058f09a3e1dc432961bc1f3",
+    "provider_dev_canonical_sha256": "ab1842aa1cc6d36a79bd8c232f2d66fd0d097c50eea4c2c09c4b4c8393e6308a",
+    "private_gold_dev_file_sha256": "88b7fc08ac9011f55e82af782ef66df4969cd46840d23075023d1fccb7e86495",
+    "private_gold_dev_canonical_sha256": "064f259bf42459639548173b6f03d9665d0431e25e10ae701209de097b4cee7f",
+    "snapshot_dev_file_sha256": "a65226bf6ca0b32a22fd3ca97bffa83ad421a60a57d60a642a1b1130aaac1056",
+    "snapshot_dev_canonical_sha256": "3a82d0ad8241ff3e2173555efbdb65dfb367a0a38c9998203c5b4754611a4783",
+    "provider_hidden_file_sha256": "743b2ee051572c81aec8b4db6b581a77143ed283ee136448b095e8576e0d5799",
+    "provider_hidden_canonical_sha256": "fc2d655011681cf63c38e5b71e92790ebeb601ec77ed5cf2ac42784aa73e212b",
+    "private_gold_hidden_file_sha256": "b083f1f8436b99757cc7ee6ff8e62828cc3664f0ccbe7b7b80db84c461327944",
+    "private_gold_hidden_canonical_sha256": "33b75389c53e146298178d9b7dfec05e2a4ace4d9a620817070ccc5b0e73f4a0",
+    "snapshot_hidden_file_sha256": "04c19a44bdea3c2bbbab86c7c2014d760e9e956ce2070d758eca4efb247cd07e",
+    "snapshot_hidden_canonical_sha256": "23fe7b47d13c950765fa9557da918e1d102b7ab4558171cb15a8444d1cbd9c9e",
+    "measurement_v2_manifest": "measurement-v2/private/manifest.private.json",
+    "measurement_v2_manifest_canonical_sha256": "ff5384e0386079a1e16464063247520eae7ea4964b43c6b7a9972e38b2ba7da9",
+    "gold_v2_full_canonical_sha256": "7b08420acc04894b2a9aa6f56a17994bc79f2d1913032eebb94a17ace332e3a8",
+    "pair_v2_full_canonical_sha256": "79f531d3cef550c390c167444f9f97d656b78d95c5392a4962a2a65a94c10652",
+    "runtime_contracts_v2_canonical_sha256": "42c1f5847fe88ed70ec9ce35217dcd8cfdc90fa8a7dd9a53e45b50481204b96e",
+    "pair_approval_ledger_file_sha256": "c831b22508c2e2077f258de2cc9a0670c7a409c809c01cb8c574cc43e84213f6",
+    "pair_approval_ledger_canonical_sha256": "d1638c40ff677cc295f5d3d29e0e18774ee665e77f60f59e2e13e9c1198e8ec4",
+    "memory_followup_audit_canonical_sha256": "fa223ad798042076155b4b4b7d651b0ce230c8e31a275550d182c0ce53a8b8b3"
+  },
+  "canonical_contracts": {
+    "data_core": {
+      "id": "task1.formal-snapshot.canonical-json.v1",
+      "source_blob": "e17398492cf0f1515ad1cc78806053df800260ad"
+    },
+    "private_overlay": {
+      "id": "task1.measurement-v2.canonical-json.v2.1",
+      "source_blob": "a9fe41894fab2d5cb997a703ff11af5d99181655",
+      "shared_test_blob": "6d10c5476956a310b6e800c6f2549dac477d4a8e",
+      "m1_tag": "task1-measure-m1-v2.1-pass",
+      "m2_tag": "task1-measure-m2-v2.1-pass"
+    }
+  },
+  "memory_followup_contract": {
+    "audited_cases": 15,
+    "conversation_search_terminal_downgrades": 9,
+    "scenario_path_typed_bindings": 6,
+    "scenario_response_path": "data.entries.0.path",
+    "conversation_session_id_response_path": null,
+    "negative_binding_tests": 6,
+    "strict_canonical_sha256": "fa223ad798042076155b4b4b7d651b0ce230c8e31a275550d182c0ce53a8b8b3"
+  },
+  "pair_contract": {
+    "independence_unit": "team",
+    "dev_clusters": 6,
+    "hidden_clusters": 10,
+    "pairs_per_cluster": 15,
+    "minimality_approved_pairs": 240,
+    "approval_ledger_canonical_sha256": "d1638c40ff677cc295f5d3d29e0e18774ee665e77f60f59e2e13e9c1198e8ec4"
+  },
+  "frozen_m0_gold_validation": {
+    "tag": "task1-measure-m0-v2-pass",
+    "commit": "a5f7e1a908b9104e8542506c9238bd3e6e5e0074",
+    "validated_gold": 640,
+    "negative_binding_tests": 6,
+    "errors": 0
+  },
+  "tag_eligibility": {
+    "task1-data-core-formal-v1": "audit_only_data_core",
+    "task1-data-formal-v1": "audit_only_not_an_integration_input_due_to_gate_namespace_canonical_and_memory_binding_defects",
+    "task1-data-formal-v1.1": "approved_data_contract_input_after_annotated_tag_creation"
+  },
+  "provenance": {
+    "data_core_commit": "418ecd102fa2019c139da9eebf88b163eca5a208",
+    "data_core_commit_signed_off_by": false,
+    "legacy_overlay_commit": "363c433b6c2f77de7e2cac4bee1e1e25727991ed",
+    "legacy_overlay_commit_signed_off_by": false,
+    "v1_1_correction_commit_requirement": "must_contain_Signed-off-by_and_be_the_task1-data-formal-v1.1_target"
+  },
+  "blocking_issues": [],
+  "data_overlay_gates": {
+    "DS06-G01_private_gold_v2": "passed",
+    "DS06-G02_pair_v2": "passed",
+    "DS06-G03_overlay_validator": "passed",
+    "DS06-G04_provider_exclusion_and_schema_shape": "passed"
+  },
+  "known_limitations": [
+    "The real-chain R01-R04 gates, M0/M1/M2 measurement Integration, and campaign evidence are pending; dataContractReady does not imply measurementIntegrationReady or formalMetricEligible.",
+    "task1-data-formal-v1 is retained only as an immutable audit point and must not be used as an Integration input."
+  ],
+  "last_command": "build and re-read validate private Measurement-v2 overlay; frozen M0 640/640; Pair ledger 240/240; 15 Memory follow-ups audited; provider leakage 0",
+  "latest_team_fragment_source_commit_in_ds05_merge": "19b7fa08793381918a322a6b08877c735d8b4745"
+}

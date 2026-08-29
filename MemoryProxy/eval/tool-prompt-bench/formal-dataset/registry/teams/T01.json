@@ -1,0 +1,8 @@
+{
+  "schema_version": "task1.team_registry.v1",
+  "space_id": "space-task1-engineering",
+  "team_id": "T01",
+  "topic": "Python 可靠性",
+  "split": "dev",
+  "active_agent": { "agent_id": "agent-task1-t01-general", "name": "T01 通用业务 Agent" }
+}
