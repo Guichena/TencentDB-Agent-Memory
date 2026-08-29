@@ -1,0 +1,109 @@
+{
+  "manifestSchemaVersion": 1,
+  "candidateId": "M0",
+  "evaluationSchemaVersion": 2,
+  "publicEntrypoint": "index.ts",
+  "publicFunctions": [
+    "scoreCaseChain",
+    "aggregateCaseChainFacts"
+  ],
+  "publicSignatures": [
+    {
+      "function": "scoreCaseChain",
+      "inputContracts": [
+        "RawTraceObservationV2",
+        "PrivateChainGoldV2",
+        "RuntimeToolContractV2[]"
+      ],
+      "outputContract": "CaseChainScoreV2",
+      "outputFields": [
+        "evaluationSchemaVersion",
+        "caseId",
+        "runId",
+        "variantId",
+        "rawTraceStatus",
+        "traceCompleteness",
+        "rawInfrastructureFailure",
+        "triggeredAttempt",
+        "firstActionSelectionCorrect",
+        "terminalSelectionCorrect",
+        "completeChainSuccess",
+        "strictChainExact",
+        "falseCallAttempt",
+        "falseCallAccepted",
+        "malformedFalseIntent",
+        "positiveOvercall",
+        "matchedSequenceId",
+        "shortestAllowedLength",
+        "matchedSequenceLength",
+        "observedAttemptCount",
+        "evaluationPrefixAttemptCount",
+        "terminalAttemptIndex",
+        "toolSplContribution",
+        "shortestExact",
+        "failureLayer"
+      ]
+    },
+    {
+      "function": "aggregateCaseChainFacts",
+      "inputContracts": [
+        "CaseChainScoreV2[]"
+      ],
+      "outputContract": "CaseChainAggregateV2",
+      "outputFields": [
+        "evaluationSchemaVersion",
+        "aggregationScope",
+        "caseCount",
+        "toolPositiveCount",
+        "noToolCount",
+        "triggerRecall",
+        "firstActionSelectionAccuracy",
+        "terminalSelectionRate",
+        "completeChainSuccessRate",
+        "conditionalTerminalAccuracy",
+        "strictChainExactRate",
+        "positiveOvercallRate",
+        "falseCallAttemptRate",
+        "falseCallAcceptedRate",
+        "malformedFalseIntentRate",
+        "toolSpl",
+        "shortestExactRate",
+        "incompleteTraceCount",
+        "rawInfrastructureFailureCaseCount",
+        "failureLayerCounts"
+      ]
+    }
+  ],
+  "inputPreconditions": [
+    "Observation and Gold use evaluationSchemaVersion 2 and have the same caseId.",
+    "attemptBudget is a non-negative integer; no-tool Gold has no allowed sequences.",
+    "Tool-positive Gold has unique non-empty sequences; each has unique step IDs and exactly one final terminal step.",
+    "Every prior-output binding references an earlier step in the same sequence.",
+    "Runtime contract IDs are unique; every Gold step references a present identity/operation-compatible contract with frozen integer acceptance statuses.",
+    "The public scorer throws on an input-precondition violation instead of turning bad data into a model outcome."
+  ],
+  "semanticInvariants": [
+    "Only executor-bound attempts contribute to triggeredAttempt, observedAttemptCount, and FCR_attempt facts.",
+    "A complete chain is an ordered allowed-sequence match with per-step identity, operation, arguments, prior-output binding, exact referenced-contract acceptance, and terminal semantics.",
+    "Unexpected, duplicate, or over-budget attempts can preserve completeChainSuccess but make strictChainExact false, positiveOvercall true, and ToolSPL smaller.",
+    "A forbidden wrong-family, typed wrong-terminal, or genuinely premature accepted terminal before a correct terminal prevents later repair from creating terminalSelectionCorrect or completeChainSuccess.",
+    "The evaluation prefix stops at the earliest complete private-Gold-plus-exact-contract terminal; failed positives stop at budget or turn completion.",
+    "terminalAttemptIndex identifies the terminal used by the complete match, otherwise the Qi match, otherwise an in-prefix raw terminal candidate.",
+    "Post-terminal behavior does not change decision metrics, but raw trace and infrastructure facts remain preserved for Integration.",
+    "M0 never produces final formal metric eligibility."
+  ],
+  "ownsFormalMetricEligible": false,
+  "formalDataStatus": "FORMAL_DATA_BLOCKED",
+  "formalDataBlockers": [
+    "The frozen v1 ToolPromptEvalCase schema still represents allowedSequences as string[][] rather than per-sequence typed predicates.",
+    "The frozen v1 schema still shares expectedFollowupActions and expectedKnowledgeCalls across branches.",
+    "No formal Gold v2 revision/tag or closed skill_view versus skill_view_by_id RuntimeToolContract is available in this branch."
+  ],
+  "syntheticFixture": {
+    "path": "synthetic-fixtures.ts",
+    "canonicalization": "raw UTF-8 file bytes",
+    "bytes": 11001,
+    "sha256": "86853dd4bae261c0fe452ae23390cb41e2bd808c28a491055a76cd1a98c4c6ed"
+  },
+  "modelRuns": 0
+}

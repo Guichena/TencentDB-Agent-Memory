@@ -1,0 +1,151 @@
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { describe, expect, it } from "vitest";
+import * as publicApi from "../index.js";
+import {
+  MEMORY_SEARCH_GOLD,
+  MEMORY_SEARCH_SUCCESS_TRACE,
+  SYNTHETIC_RUNTIME_CONTRACTS,
+} from "../synthetic-fixtures.js";
+
+const FROZEN_FIXTURE_BYTES = 11001;
+const FROZEN_FIXTURE_SHA256 = "86853dd4bae261c0fe452ae23390cb41e2bd808c28a491055a76cd1a98c4c6ed";
+const SCORE_OUTPUT_FIELDS = [
+  "evaluationSchemaVersion",
+  "caseId",
+  "runId",
+  "variantId",
+  "rawTraceStatus",
+  "traceCompleteness",
+  "rawInfrastructureFailure",
+  "triggeredAttempt",
+  "firstActionSelectionCorrect",
+  "terminalSelectionCorrect",
+  "completeChainSuccess",
+  "strictChainExact",
+  "falseCallAttempt",
+  "falseCallAccepted",
+  "malformedFalseIntent",
+  "positiveOvercall",
+  "matchedSequenceId",
+  "shortestAllowedLength",
+  "matchedSequenceLength",
+  "observedAttemptCount",
+  "evaluationPrefixAttemptCount",
+  "terminalAttemptIndex",
+  "toolSplContribution",
+  "shortestExact",
+  "failureLayer",
+] as const;
+const AGGREGATE_OUTPUT_FIELDS = [
+  "evaluationSchemaVersion",
+  "aggregationScope",
+  "caseCount",
+  "toolPositiveCount",
+  "noToolCount",
+  "triggerRecall",
+  "firstActionSelectionAccuracy",
+  "terminalSelectionRate",
+  "completeChainSuccessRate",
+  "conditionalTerminalAccuracy",
+  "strictChainExactRate",
+  "positiveOvercallRate",
+  "falseCallAttemptRate",
+  "falseCallAcceptedRate",
+  "malformedFalseIntentRate",
+  "toolSpl",
+  "shortestExactRate",
+  "incompleteTraceCount",
+  "rawInfrastructureFailureCaseCount",
+  "failureLayerCounts",
+] as const;
+const FORMAL_DATA_BLOCKERS = [
+  "The frozen v1 ToolPromptEvalCase schema still represents allowedSequences as string[][] rather than per-sequence typed predicates.",
+  "The frozen v1 schema still shares expectedFollowupActions and expectedKnowledgeCalls across branches.",
+  "No formal Gold v2 revision/tag or closed skill_view versus skill_view_by_id RuntimeToolContract is available in this branch.",
+] as const;
+
+interface PublicSignature {
+  function: string;
+  inputContracts: string[];
+  outputContract: string;
+  outputFields: string[];
+}
+
+interface InterfaceManifest {
+  candidateId: string;
+  evaluationSchemaVersion: number;
+  publicEntrypoint: string;
+  publicFunctions: string[];
+  publicSignatures: PublicSignature[];
+  inputPreconditions: string[];
+  ownsFormalMetricEligible: boolean;
+  formalDataStatus: string;
+  formalDataBlockers: string[];
+  syntheticFixture: {
+    path: string;
+    bytes: number;
+    sha256: string;
+  };
+  modelRuns: number;
+}
+
+describe("Measurement v2 M0 frozen artifacts", () => {
+  it("pins both public signatures and the canonical fixture without claiming formal readiness", () => {
+    const root = fileURLToPath(new URL("../", import.meta.url));
+    const manifest = JSON.parse(
+      readFileSync(new URL("../interface-manifest.json", import.meta.url), "utf8"),
+    ) as InterfaceManifest;
+    const fixture = readFileSync(new URL(`../${manifest.syntheticFixture.path}`, import.meta.url));
+    const score = publicApi.scoreCaseChain({
+      observation: MEMORY_SEARCH_SUCCESS_TRACE,
+      gold: MEMORY_SEARCH_GOLD,
+      runtimeContracts: SYNTHETIC_RUNTIME_CONTRACTS,
+    });
+    const aggregate = publicApi.aggregateCaseChainFacts([score]);
+
+    expect(manifest).toMatchObject({
+      candidateId: "M0",
+      evaluationSchemaVersion: 2,
+      publicEntrypoint: "index.ts",
+      ownsFormalMetricEligible: false,
+      formalDataStatus: "FORMAL_DATA_BLOCKED",
+      modelRuns: 0,
+    });
+    expect(Object.keys(publicApi).sort()).toEqual([
+      "aggregateCaseChainFacts",
+      "scoreCaseChain",
+    ]);
+    expect(manifest.publicFunctions).toEqual([
+      "scoreCaseChain",
+      "aggregateCaseChainFacts",
+    ]);
+    expect(manifest.publicSignatures).toEqual([{
+      function: "scoreCaseChain",
+      inputContracts: [
+        "RawTraceObservationV2",
+        "PrivateChainGoldV2",
+        "RuntimeToolContractV2[]",
+      ],
+      outputContract: "CaseChainScoreV2",
+      outputFields: [...SCORE_OUTPUT_FIELDS],
+    }, {
+      function: "aggregateCaseChainFacts",
+      inputContracts: ["CaseChainScoreV2[]"],
+      outputContract: "CaseChainAggregateV2",
+      outputFields: [...AGGREGATE_OUTPUT_FIELDS],
+    }]);
+    expect(Object.keys(score)).toEqual([...SCORE_OUTPUT_FIELDS]);
+    expect(Object.keys(aggregate)).toEqual([...AGGREGATE_OUTPUT_FIELDS]);
+    expect(score).not.toHaveProperty("formalMetricEligible");
+    expect(aggregate).not.toHaveProperty("formalMetricEligible");
+    expect(manifest.inputPreconditions.length).toBeGreaterThan(0);
+    expect(manifest.formalDataBlockers).toEqual([...FORMAL_DATA_BLOCKERS]);
+    expect(manifest.syntheticFixture.bytes).toBe(FROZEN_FIXTURE_BYTES);
+    expect(fixture.byteLength).toBe(FROZEN_FIXTURE_BYTES);
+    expect(manifest.syntheticFixture.sha256).toBe(FROZEN_FIXTURE_SHA256);
+    expect(createHash("sha256").update(fixture).digest("hex")).toBe(FROZEN_FIXTURE_SHA256);
+    expect(root.endsWith("measurement-v2\\") || root.endsWith("measurement-v2/")).toBe(true);
+  });
+});
