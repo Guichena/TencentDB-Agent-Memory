@@ -1,0 +1,350 @@
+{
+  "schema_version": "task1.skill_asset_candidates.v1",
+  "team_id": "T08",
+  "stage": "DS05",
+  "source_locks": {
+    "awesome-copilot": {
+      "repository_url": "https://github.com/github/awesome-copilot",
+      "commit_sha": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "commit_time": "2026-08-28T05:41:12Z",
+      "license": "MIT",
+      "license_path": "LICENSE",
+      "license_local_path": "_licenses/awesome-copilot-MIT.txt",
+      "license_sha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823"
+    },
+    "skillsbench": {
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "commit_sha": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "commit_time": "2026-06-16T22:10:25Z",
+      "license": "Apache-2.0",
+      "license_path": "LICENSE",
+      "license_local_path": "_licenses/skillsbench-Apache-2.0.txt",
+      "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    }
+  },
+  "proposals": [
+    {
+      "asset_id": "T08-SKILL-PYTEST-COVERAGE",
+      "name": "pytest-coverage",
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/pytest-coverage/raw/SKILL.md",
+      "raw_sha256": "3778add8809c5aac585ab764090f46e7cfdb009ae3fc9fb308710538627970f9",
+      "role": "target",
+      "source_policy_id": "awesome-copilot",
+      "listing_description": "Annotated pytest coverage workflow for locating missing lines and iterating toward complete line coverage.",
+      "use_when": "A Python pytest suite needs an annotated coverage report and tests for specific missing lines.",
+      "do_not_use_when": "The task is JavaScript unit testing, browser E2E, or only a build configuration failure.",
+      "host_tool_name_adaptation": "No host-specific tool is required; retain pytest commands as written.",
+      "adapted_proposal": "Provide the annotated pytest coverage workflow with the host's ordinary command runner.",
+      "unchanged_technical_points": [
+        "The goal is to cover all source lines.",
+        "Run pytest --cov --cov-report=annotate:cov_annotate.",
+        "Optionally scope with --cov=module or a specific test file while retaining the annotate report.",
+        "Inspect cov_annotate, with one annotated file per source file.",
+        "Do not open files reported at 100%; inspect matching files below 100%.",
+        "A line beginning ! is uncovered; add tests for missing lines and repeat until all lines are covered."
+      ]
+    },
+    {
+      "asset_id": "T08-SKILL-JEST",
+      "name": "javascript-typescript-jest",
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/javascript-typescript-jest/raw/SKILL.md",
+      "raw_sha256": "cb9a552dfe63cae4f310b27067ba28351b59ad17e83a9e1c5ff23c542ce6fdd8",
+      "role": "target",
+      "source_policy_id": "awesome-copilot",
+      "listing_description": "Jest guidance for structured JavaScript and TypeScript unit tests, mocks, asynchronous assertions, snapshots, and common matchers.",
+      "use_when": "An existing JavaScript or TypeScript implementation needs Jest unit tests, mocks or async assertions.",
+      "do_not_use_when": "The request is browser E2E, Python coverage, or production logic is still undefined.",
+      "host_tool_name_adaptation": "Use the host's JavaScript test runner label while retaining Jest API names.",
+      "adapted_proposal": "Guide a Jest test implementation using the repository's test-file layout and available host runner.",
+      "unchanged_technical_points": [
+        "Use .test.ts or .test.js files next to code or in __tests__, descriptive names, nested describe blocks, and the describe/it pattern.",
+        "Mock external dependencies with jest.mock, jest.spyOn, mockImplementation or mockReturnValue, and reset with jest.resetAllMocks in afterEach.",
+        "Return promises or use async/await; use resolves/rejects and set jest.setTimeout for slow tests.",
+        "Keep snapshots small and focused and review snapshot changes; for React use React Testing Library, user behavior, accessibility queries, and userEvent over fireEvent.",
+        "Retain the listed Jest matcher families for equality, truthiness, numbers, strings, arrays, objects, exceptions, and mock calls."
+      ]
+    },
+    {
+      "asset_id": "T08-SKILL-TEMPORAL",
+      "name": "temporal-python-testing",
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/temporal-python-testing/raw/SKILL.md",
+      "raw_sha256": "21e5d2382d474553eadb2771c764f4aa2b55a12bd75bc40894e68630c02db7bb",
+      "role": "target",
+      "source_policy_id": "skillsbench",
+      "resource_paths": [
+        {"path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/temporal-python-testing/raw/resources/unit-testing.md", "sha256": "1836367b98c5ee84e9ea98d1b30726bf48ef5404aaf0426f88742bdcce5712cf"},
+        {"path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/temporal-python-testing/raw/resources/replay-testing.md", "sha256": "9fc02f45c66324e15229047e28d5c77b3496299ca4fa83dbfaae6fb67af8bfc3"}
+      ],
+      "listing_description": "Temporal Python testing guidance with pytest, time-skipping, activity isolation, integration coverage, and replay determinism.",
+      "use_when": "Temporal Python workflows need pytest time-skipping, activity isolation or replay determinism testing.",
+      "do_not_use_when": "The application does not use Temporal, or the request is ordinary pytest coverage without workflow history.",
+      "host_tool_name_adaptation": "Replace only host references for loading progressive resources; preserve Temporal and pytest names.",
+      "adapted_proposal": "Apply the Temporal workflow-testing guide and load the relevant frozen resource for unit, integration, local setup, or replay work.",
+      "unchanged_technical_points": [
+        "Use pytest async fixtures, time-skipping, mocked activities, replay determinism, and mostly integration tests; distinguish unit, integration, and sparing end-to-end tests.",
+        "Progressively load unit-testing, integration-testing, replay-testing, or local-setup resources according to the testing need.",
+        "WorkflowEnvironment.start_time_skipping with Worker and ActivityEnvironment are the basic workflow and activity patterns; cover workflows and activities at the stated 80% target.",
+        "Use time-skipping, manual time advancement, isolated activities, shared fixtures, parameterization, retries, error cases, and deterministic feedback.",
+        "Replay testing re-executes histories with Replayer, checks deterministic decisions, supports multiple histories, exported files, CI integration, version compatibility with workflow.get_version, and avoids random(), datetime.now(), and direct external calls.",
+        "The imported unit-testing resource covers WorkflowEnvironment, ActivityEnvironment, fast long-running tests, manual advancement, pytest fixtures, and patterns; the imported replay-testing resource covers history replay, determinism, CI, compatibility, and history export."
+      ]
+    },
+    {
+      "asset_id": "T08-SKILL-CSHARP-MSTEST",
+      "name": "csharp-mstest",
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/csharp-mstest/raw/SKILL.md",
+      "raw_sha256": "325e70e82f3edecb7312a7e504a89e87c8fb684c8f2aa55df6f29905ef1bf859",
+      "role": "distractor",
+      "source_policy_id": "awesome-copilot",
+      "listing_description": "MSTest 3.x/4.x practices for unit-test structure, modern assertions, lifecycle, data-driven tests, and test context.",
+      "use_when": "A C# project explicitly uses MSTest for unit or data-driven tests.",
+      "do_not_use_when": "The project uses pytest, Jest, Playwright or Spring/JUnit.",
+      "host_tool_name_adaptation": "Use the host's .NET test command label; preserve dotnet test and MSTest API names.",
+      "adapted_proposal": "Guide a C# MSTest suite using the project's existing test-project conventions and host command runner.",
+      "unchanged_technical_points": [
+        "Use a separate [ProjectName].Tests project, MSTest 3.x+ packages, optionally MSTest.Sdk, and dotnet test.",
+        "Use sealed [TestClass] classes, [TestMethod], AAA, descriptive MethodName_Scenario_ExpectedBehavior names, constructors for setup, cleanup attributes, and the documented execution order.",
+        "Retain modern Assert, StringAssert, CollectionAssert, exception, comparison, type, and Assert.That APIs; prefer Assert.Throws over ExpectedException.",
+        "Use DataRow and prefer typed ValueTuple or TestDataRow DynamicData over object arrays.",
+        "Use TestContext property or constructor injection, cancellation tokens with Timeout, output/result files, retry, OS/CI conditions, parallelization, and work-item traceability as applicable.",
+        "Follow the listed mistake avoidance, test organization, analyzer, and Moq/NSubstitute isolation guidance."
+      ]
+    },
+    {
+      "asset_id": "T08-SKILL-GHA-EFFICIENCY",
+      "name": "github-actions-efficiency",
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/github-actions-efficiency/raw/SKILL.md",
+      "raw_sha256": "9c41e860468e5c88d83ab6eec70c585b0f122facec2632ea65497b3389139e43",
+      "role": "distractor",
+      "source_policy_id": "awesome-copilot",
+      "listing_description": "Evidence-led GitHub Actions workflow efficiency audit covering runtime, caching, triggers, concurrency, matrices, and validation.",
+      "use_when": "GitHub Actions workflow duration, caching or redundant CI work needs optimization.",
+      "do_not_use_when": "The immediate gap is a test procedure, browser scenario or local assertion.",
+      "host_tool_name_adaptation": "Use the host shell and CI command labels; retain rg, gh, and workflow concepts.",
+      "adapted_proposal": "Audit workflows from repository files and available run evidence, then recommend and validate only supported efficiency fixes.",
+      "unchanged_technical_points": [
+        "If workflows are absent, load the actions reference and define a baseline; if shell or gh is unavailable, request workflow and recent-run contents and label the result static-only.",
+        "Measure triggers, paths, strategy/matrix, cache, recent runs, and failed logs; look for cache gaps, missing cancellation, broad triggers, duplicate coverage, and expensive unconditional jobs.",
+        "Apply guardrails: retain required validation, justify parallelism changes, preserve documented matrix legs, flag automatic write-back jobs for opt-in triggers, and separate repo YAML from org settings.",
+        "Select up to three evidence-supported fixes from lockfile caching, concurrency cancellation, duplicate coverage removal, safe trigger narrowing, matrix reduction, and independent-job parallelization, ranked by daily minutes saved.",
+        "Validate live with a non-protected test push when gh is available; otherwise state what was local-only, and report waste sources, fixes, validation, and measured versus expected impact."
+      ]
+    },
+    {
+      "asset_id": "T08-SKILL-BREAKDOWN",
+      "name": "breakdown-test",
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/breakdown-test/raw/SKILL.md",
+      "raw_sha256": "83727ec30a986686f1bc8eaeeb42360379c11416a280c4e77d38d39e0e02555f",
+      "role": "distractor",
+      "source_policy_id": "awesome-copilot",
+      "listing_description": "Comprehensive QA planning prompt for test strategy, task breakdown, quality gates, issues, dependencies, and metrics.",
+      "use_when": "An existing broad test must be decomposed into smaller focused test cases.",
+      "do_not_use_when": "The task is to discover missing coverage, explore a browser or choose a testing framework.",
+      "host_tool_name_adaptation": "Use repository-specific documentation and issue-system labels without changing QA terminology.",
+      "adapted_proposal": "Generate the three requested QA planning documents from the supplied feature artifacts, retaining the framework and quality-gate structure.",
+      "unchanged_technical_points": [
+        "Require PRD, technical breakdown, implementation plan, and GitHub project plan inputs.",
+        "Produce test strategy, test issues checklist, and QA plan at the documented paths.",
+        "Apply ISTQB activities and design techniques, functional/non-functional/structural/change-related test types, risk-based testing, and ISO 25010 characteristics.",
+        "Cover environment and data strategy, tools, CI/CD, test-level and task-level issues, estimates, dependencies, sequencing, assignment, and quality metrics.",
+        "Include quality gates, entry/exit criteria, escalation, issue template compliance, labels, priorities, dependency validation, estimation review, and the specified coverage, defect, performance, accessibility, and security targets."
+      ]
+    },
+    {
+      "asset_id": "T08-SKILL-PLAYWRIGHT-GEN",
+      "name": "playwright-generate-test",
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/playwright-generate-test/raw/SKILL.md",
+      "raw_sha256": "79dbb1a49fc5a6502788ccba1a4bd30769a017a1cc31d9db329d1326ea3d898f",
+      "role": "target",
+      "source_policy_id": "awesome-copilot",
+      "listing_description": "Scenario-first Playwright test generation after completing each prescribed browser interaction.",
+      "use_when": "A supplied browser scenario must be explored step by step before emitting a passing Playwright TypeScript test.",
+      "do_not_use_when": "The request is unit testing, coverage-only work, or no browser scenario is provided.",
+      "host_tool_name_adaptation": "Translate only the browser automation host label; preserve Playwright MCP references where they are technical requirements.",
+      "adapted_proposal": "Complete the supplied browser scenario step by step, then save and run the resulting @playwright/test TypeScript file in tests.",
+      "unchanged_technical_points": [
+        "Ask for a scenario when none is provided.",
+        "Do not generate code prematurely; run each scenario step using the provided browser automation service.",
+        "Only after all steps emit a Playwright TypeScript test using @playwright/test, save it in tests, execute it, and iterate until it passes."
+      ]
+    },
+    {
+      "asset_id": "T08-SKILL-SCOUTQA",
+      "name": "scoutqa-test",
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/scoutqa-test/raw/SKILL.md",
+      "raw_sha256": "6c09a43984b05b6a108e79c2defb51d8f7fee7e230610a5e220f63dde8bcdee1",
+      "role": "target",
+      "source_policy_id": "awesome-copilot",
+      "listing_description": "Exploratory web QA workflow for smoke tests, accessibility, user flows, issue extraction, and result reporting.",
+      "use_when": "A web application needs exploratory QA, accessibility auditing or user-flow verification.",
+      "do_not_use_when": "The request is a deterministic unit test, code coverage report or non-browser build failure.",
+      "host_tool_name_adaptation": "Use the host's background-command and browser-report labels; preserve scoutqa command syntax.",
+      "adapted_proposal": "Write a goal-oriented exploratory prompt, start the remote web QA run, capture its identifiers, and report analyzed issues with severity and location.",
+      "unchanged_technical_points": [
+        "Use the workflow: write a specific prompt, run scoutqa in background with a five-second command timeout, tell the user the execution and browser URLs, then extract and analyze results.",
+        "Prompts describe goals rather than prescriptive steps and may cover authentication, core workflows, accessibility, forms, responsiveness, smoke tests, or feature verification.",
+        "Support localhost URLs, optional project association, verbose output, issue listing by execution, issue verification, and follow-up messages for stuck runs.",
+        "Final reports include execution ID, each issue's severity/category/impact/location, and a concise summary; use cleanup and graceful timeout guidance."
+      ]
+    },
+    {
+      "asset_id": "T08-SKILL-SPRING-TEST",
+      "name": "spring-boot-testing",
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/spring-boot-testing/raw/SKILL.md",
+      "raw_sha256": "8161940340dc52766242ab30589369623b31089b41ebd7baa19a27f411648550",
+      "role": "target",
+      "source_policy_id": "awesome-copilot",
+      "listing_description": "Spring Boot 4 testing guidance for narrow test slices, AssertJ assertions, modern APIs, coverage, and maintainable test organization.",
+      "use_when": "A Spring Boot application needs the narrowest appropriate JUnit test slice and meaningful assertions.",
+      "do_not_use_when": "The project is Python or TypeScript, or the failure is solely CI infrastructure.",
+      "host_tool_name_adaptation": "Use the host's Java build command label while preserving Spring, JUnit, AssertJ, and annotation names.",
+      "adapted_proposal": "Select the narrowest Spring test style for the behavior, use modern Spring Boot 4 APIs and AssertJ, and organize tests by scenario and risk.",
+      "unchanged_technical_points": [
+        "Follow the pyramid unit > slice > integration, narrowest-confidence, AssertJ, MockMvcTester, and RestTestClient principles.",
+        "Select @WebMvcTest, @DataJpaTest, @RestClientTest, @JsonTest, or @SpringBootTest for the corresponding scenario; use the listed reference materials.",
+        "Use the Spring Boot 4 highlights RestTestClient, @MockitoBean, MockMvcTester, modular starters, and context pausing.",
+        "Refactor methods needing more than 5-7 cases, avoid redundancy, use descriptive @DisplayName, order happy path/alternatives/errors, and test production scenarios.",
+        "Aim for 80% meaningful coverage with Jacoco, prioritize critical/complex/error/integration paths, and retain the listed test, web, and Testcontainers dependencies."
+      ]
+    },
+    {
+      "asset_id": "T08-SKILL-PLAYWRIGHT-EXPLORE",
+      "name": "playwright-explore-website",
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/playwright-explore-website/raw/SKILL.md",
+      "raw_sha256": "1496280e250b5b79c2c3081f093fa1fea22ac19a2fdc05074589875cdd9f55d3",
+      "role": "distractor",
+      "source_policy_id": "awesome-copilot",
+      "listing_description": "Browser exploration workflow that identifies core flows, records locators and outcomes, and proposes tests.",
+      "use_when": "A site must be interactively explored and documented without yet generating a durable E2E test.",
+      "do_not_use_when": "The scenario and desired artifact are already a Playwright test file or a unit test.",
+      "host_tool_name_adaptation": "Use the host browser automation label without changing the interaction and locator requirements.",
+      "adapted_proposal": "Explore the supplied site, document three to five core flows with UI locators and outcomes, close the browser, summarize findings, and propose tests.",
+      "unchanged_technical_points": [
+        "Navigate to the provided URL and ask for one if absent.",
+        "Identify and interact with 3-5 core features or user flows.",
+        "Document interactions, relevant UI elements and locators, expected outcomes, a concise summary, and proposed test cases.",
+        "Close the browser context on completion."
+      ]
+    },
+    {
+      "asset_id": "T08-SKILL-WEBAPP-TEST",
+      "name": "webapp-testing",
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/webapp-testing/raw/SKILL.md",
+      "raw_sha256": "c4629221463d79c84555721ae2a30a6c345dd4d16c38cf6dbe735126e2426044",
+      "role": "distractor",
+      "source_policy_id": "awesome-copilot",
+      "listing_description": "Local web-application browser testing for functionality, debugging, screenshots, console logs, and responsive behavior.",
+      "use_when": "A general web application test plan or interaction smoke test is requested.",
+      "do_not_use_when": "The task requires a specific pytest, Jest, Spring or frozen Playwright procedure.",
+      "host_tool_name_adaptation": "Use the available browser automation host or local Node.js fallback; retain Playwright API names.",
+      "adapted_proposal": "Verify a running local web application through browser interactions and observable outputs, capturing diagnostics and cleaning up resources.",
+      "unchanged_technical_points": [
+        "Prefer the browser automation service and fall back to local Node.js with Playwright when unavailable; require Node.js, an accessible app, and Playwright.",
+        "Support navigation, clicks, form fills, dropdowns, dialogs, presence/text/visibility/URL assertions, responsive checks, screenshots, console logs, network inspection, and failed-test debugging.",
+        "Always verify the app is running, use explicit waits, capture failure screenshots, close resources, handle timeouts, and test incrementally.",
+        "Prefer data-testid or role selectors and retain the wait, existence, console, and error-handling patterns; do not claim native mobile support."
+      ]
+    },
+    {
+      "asset_id": "T08-SKILL-REACT19",
+      "name": "react19-test-patterns",
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/react19-test-patterns/raw/SKILL.md",
+      "raw_sha256": "c3eac6a63114127eacc0562b98514e80d415e194bac9d59e0d72dded7824c94d",
+      "role": "distractor",
+      "source_policy_id": "awesome-copilot",
+      "listing_description": "React 19 test migration patterns for act imports, event simulation, StrictMode counts, and async warnings.",
+      "use_when": "React 19 component behavior needs framework-specific test patterns.",
+      "do_not_use_when": "The target is a non-React Jest library, Python package or browser journey.",
+      "host_tool_name_adaptation": "Use the host test command label only; retain React, RTL, and npm command semantics.",
+      "adapted_proposal": "Migrate React tests in the prescribed dependency order and measure, rather than guess, StrictMode call counts.",
+      "unchanged_technical_points": [
+        "Fix act import from react-dom/test-utils to react first.",
+        "Replace Simulate with fireEvent and renderIntoDocument with render from @testing-library/react; remove remaining test-utils APIs using the mapping.",
+        "Measure React 19 StrictMode effect call counts from the failing test, update effect assertions to one call, retain two calls for render-phase calls, then address async act warnings.",
+        "Verify a custom render helper once per codebase rather than per test."
+      ]
+    },
+    {
+      "asset_id": "T08-SKILL-VUE-PINIA",
+      "name": "unit-test-vue-pinia",
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/unit-test-vue-pinia/raw/SKILL.md",
+      "raw_sha256": "4239e4c27c148bf4bbafd338bf8aeeb7993eda9e544eb80f0f15c68d5536e167",
+      "role": "distractor",
+      "source_policy_id": "awesome-copilot",
+      "listing_description": "Behavior-first Vue 3, TypeScript, Vitest, and Pinia unit-test guidance with focused stores, components, and composables.",
+      "use_when": "Vue code with Pinia stores needs focused unit tests.",
+      "do_not_use_when": "The project uses Jest without Vue, Playwright E2E, pytest or Spring Boot.",
+      "host_tool_name_adaptation": "Use the host's JavaScript test command label; retain Vitest, Pinia, and Vue Test Utils API names.",
+      "adapted_proposal": "Choose the narrowest Vue behavior boundary, configure the least powerful Pinia setup, drive public inputs, and assert observable outputs.",
+      "unchanged_technical_points": [
+        "Identify component, composable, or store behavior; use one behavior per test and black-box observable assertions before instance assertions.",
+        "Prefer explicit beforeEach setup, reset mocks, checked-in Pinia patterns, createTestingPinia with createSpy: vi.fn for component tests, and stubActions according to need.",
+        "Use initialState and plugins when needed, getter overrides only for edge cases, createPinia for pure store transitions, and real actions only when side effects require them.",
+        "Mount shallow by default, drive props/forms/clicks/emits/store APIs, use nextTick only for async updates, assert emitted payloads, and reserve wrapper.vm for exceptions.",
+        "Keep fixtures deterministic, avoid private details and excessive snapshots, and flag coverage gaps, brittle selectors, and coupled assertions."
+      ]
+    },
+    {
+      "asset_id": "T08-SKILL-AZURE-PREFLIGHT",
+      "name": "azure-deployment-preflight",
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/azure-deployment-preflight/raw/SKILL.md",
+      "raw_sha256": "dab815a49ff9fda7d48631c40df7e2540bb3fa7ba1cce63ce219aaa0a830b6a1",
+      "role": "distractor",
+      "source_policy_id": "awesome-copilot",
+      "listing_description": "Azure Bicep preflight validation for syntax, what-if changes, permissions, parameters, and a Markdown report.",
+      "use_when": "An Azure deployment needs subscription, resource and configuration preflight checks.",
+      "do_not_use_when": "The failure is a local test, coverage gap or browser flow.",
+      "host_tool_name_adaptation": "Use the host shell's Azure command labels while retaining az, azd, and bicep commands.",
+      "adapted_proposal": "Detect azd or az workflow, locate Bicep and parameters, validate syntax, run scope-appropriate what-if with fallback, and write the required report.",
+      "unchanged_technical_points": [
+        "Detect azure.yaml for azd, locate Bicep under infra or common locations, and auto-detect .bicepparam, .parameters.json, parameters.json, or environment parameters.",
+        "Run bicep build --stdout; capture errors, warnings, and status, noting missing CLI while continuing.",
+        "Use azd provision --preview for azd projects; otherwise inspect targetScope and use group/sub/mg/tenant what-if with Provider validation and ProviderNoRbac fallback for permission errors.",
+        "Classify create/delete/modify/no-change/ignore/deploy results and capture modified properties.",
+        "Generate project-root preflight-report.md with summary, tools, issues, what-if results, and recommendations; gather resource group, subscription, location, and environment as required, and check tool availability."
+      ]
+    },
+    {
+      "asset_id": "T08-SKILL-ORACLE-CREATE",
+      "name": "creating-oracle-to-postgres-migration-integration-tests",
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/creating-oracle-to-postgres-migration-integration-tests/raw/SKILL.md",
+      "raw_sha256": "4bb8ae9ca9d6742646f3bd51c81d2a47137762922bf800e965ba6540aadc6ec5",
+      "role": "distractor",
+      "source_policy_id": "awesome-copilot",
+      "listing_description": "Phase-3 Oracle integration-test creation for portable data-access behavior, collision-safe seeds, deterministic assertions, and rollback.",
+      "use_when": "Oracle-to-PostgreSQL migration integration tests must be implemented.",
+      "do_not_use_when": "No database migration exists, or the task is unit coverage or browser E2E.",
+      "host_tool_name_adaptation": "Use the host's .NET test command label without changing Oracle, PostgreSQL, or transaction terminology.",
+      "adapted_proposal": "For Phase 3 only, inspect one existing Oracle test project, seed minimal records, write portable integration cases, and review determinism before migration.",
+      "unchanged_technical_points": [
+        "Require an existing compiling test project and read its base test class and seed conventions.",
+        "Discover conventions, identify database-touching repositories/DAOs/procedure callers/query builders, create minimal collision-safe seeds without TRUNCATE, avoid committing seeds, and use transaction rollback.",
+        "Load and verify seeds; create or reuse LookupConstants for stable lookup identifiers.",
+        "Inherit the base class, cover each in-scope database method, assert logical concrete outputs rather than platform messages or non-null values, and avoid impossible/redundant cases.",
+        "Where applicable cover empty and NULL text, and datetime round trips at the Oracle column precision; review every assertion for deterministic seeded behavior.",
+        "Keep the work scoped to Phase 3 Oracle as the golden source, not Phase 6 PostgreSQL."
+      ]
+    },
+    {
+      "asset_id": "T08-SKILL-ORACLE-PLAN",
+      "name": "planning-oracle-to-postgres-migration-integration-testing",
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T08/skills/planning-oracle-to-postgres-migration-integration-testing/raw/SKILL.md",
+      "raw_sha256": "9462c7d627ab958a8c55b7b972b3e187dea779c000350453b6ad04d2260c7696",
+      "role": "distractor",
+      "source_policy_id": "awesome-copilot",
+      "listing_description": "Single-project Oracle-to-PostgreSQL integration-test planning for data-access artifacts, migration risks, seeds, and coverage mapping.",
+      "use_when": "An Oracle-to-PostgreSQL integration testing migration plan is needed before implementation.",
+      "do_not_use_when": "The task is a current test failure, ordinary coverage work or browser exploration.",
+      "host_tool_name_adaptation": "Use the host documentation and issue-path labels while preserving the required report path and database terminology.",
+      "adapted_proposal": "Analyze one project, rank database touchpoints by migration risk, and write the prescribed integration-testing plan.",
+      "unchanged_technical_points": [
+        "Identify repositories, DAOs, stored procedure callers, and service CRUD methods that directly interact with the database, within one target project.",
+        "Classify risk and prioritize Oracle-specific refcursors, TO_CHAR, implicit coercion, and NO_DATA_FOUND over simple CRUD.",
+        "Write the Markdown plan to .github/oracle-to-postgres-migration/Reports/{TARGET_PROJECT} Integration Testing Plan.md.",
+        "Include artifact method signatures, cases, seed requirements, Oracle-to-PostgreSQL differences, and coverage mapping for every database touchpoint.",
+        "Explicitly cover empty and NULL text, datetime/timezone round trips and comparisons, timestamp without time zone or timestamp(0), and timezone-application expectations.",
+        "Keep single-project/database-only scope, Oracle as golden source, and no multi-connection harnessing."
+      ]
+    }
+  ]
+}

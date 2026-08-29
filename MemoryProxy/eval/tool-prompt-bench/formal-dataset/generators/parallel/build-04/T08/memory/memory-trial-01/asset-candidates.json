@@ -1,0 +1,235 @@
+{
+  "schema_version": "task1.luna_asset_candidates.v1",
+  "team_id": "T08",
+  "family": "memory",
+  "external_source_ids": [],
+  "l0_sessions": [
+    {
+      "asset_id": "T08-L0-01",
+      "level": "L0",
+      "project_id": "pytest-coverage-lab",
+      "title": "Annotated coverage report review",
+      "messages": [
+        {"role":"user","content":"The report shows uncovered branches in the parser and cache adapter."},
+        {"role":"assistant","content":"Keep the annotated line report and group the branches by changed module."},
+        {"role":"user","content":"Should we raise the threshold immediately?"},
+        {"role":"assistant","content":"First distinguish a missing test from an unreachable defensive branch."},
+        {"role":"user","content":"The parser branch is reachable for malformed headers."},
+        {"role":"assistant","content":"Add a focused case for that header and retain the annotation as evidence."},
+        {"role":"user","content":"The cache adapter branch depends on a fixture state."},
+        {"role":"assistant","content":"Record the fixture state in the report so a later run is reproducible."},
+        {"role":"user","content":"I will attach the report to the review."},
+        {"role":"assistant","content":"Include the missing-line numbers and the test names that close them."},
+        {"role":"user","content":"That gives us a useful recovery checklist."},
+        {"role":"assistant","content":"Yes, use it as evidence rather than as a substitute for a stable gate."}
+      ]
+    },
+    {
+      "asset_id": "T08-L0-02",
+      "level": "L0",
+      "project_id": "pytest-coverage-lab",
+      "title": "Parametrized edge cases",
+      "messages": [
+        {"role":"user","content":"The parametrized parser tests miss empty, unicode, and truncated inputs."},
+        {"role":"assistant","content":"List those as explicit parameters with expected outcomes."},
+        {"role":"user","content":"A single fixture currently hides which parameter failed."},
+        {"role":"assistant","content":"Give each case an id and include it in the assertion output."},
+        {"role":"user","content":"The invalid-header case also touches the fallback branch."},
+        {"role":"assistant","content":"Keep that branch in the same matrix but explain its separate purpose."},
+        {"role":"user","content":"One case passes locally and fails after the full suite."},
+        {"role":"assistant","content":"Run it alone and after the neighboring cases to check state leakage."},
+        {"role":"user","content":"The isolated run is stable."},
+        {"role":"assistant","content":"Then preserve the isolated command in the review notes."},
+        {"role":"user","content":"I have added the missing parameter ids."},
+        {"role":"assistant","content":"Good; the report can now connect each edge case to its branch."}
+      ]
+    },
+    {
+      "asset_id": "T08-L0-03",
+      "level": "L0",
+      "project_id": "pytest-coverage-lab",
+      "title": "Flaky fixture isolation",
+      "messages": [
+        {"role":"user","content":"A database fixture leaves a temporary flag set for the next test."},
+        {"role":"assistant","content":"Reproduce the order-sensitive failure with the smallest neighboring set."},
+        {"role":"user","content":"The failure disappears when the test is run alone."},
+        {"role":"assistant","content":"That points to shared state, not to a random assertion timeout."},
+        {"role":"user","content":"The fixture uses module scope for speed."},
+        {"role":"assistant","content":"Try function scope for the affected tests and reset the flag in teardown."},
+        {"role":"user","content":"Function scope removes the order dependence."},
+        {"role":"assistant","content":"Keep the isolated reproduction and the full-suite confirmation."},
+        {"role":"user","content":"The annotated report now shows the intended branch."},
+        {"role":"assistant","content":"Mention that fixture isolation was required before interpreting coverage."},
+        {"role":"user","content":"I will separate the flaky issue from the missing-line issue."},
+        {"role":"assistant","content":"That separation makes the recovery record much easier to audit."}
+      ]
+    },
+    {
+      "asset_id": "T08-L0-04",
+      "level": "L0",
+      "project_id": "jest-runtime-suite",
+      "title": "Shared mock ownership incident",
+      "messages": [
+        {"role":"user","content":"After reset, a runtime test lost the default mock implementation and began failing."},
+        {"role":"assistant","content":"Which layer had been responsible for installing that implementation?"},
+        {"role":"user","content":"A shared setup file had installed it for every test without documenting ownership."},
+        {"role":"assistant","content":"Reset correctly removed the implementation, exposing the hidden dependency."},
+        {"role":"user","content":"The first proposed fix only updated snapshots."},
+        {"role":"assistant","content":"Snapshots can record the symptom; they cannot restore mock ownership."},
+        {"role":"user","content":"We moved the needed implementation into each test or its beforeEach."},
+        {"role":"assistant","content":"That makes the test owner explicit and keeps the setup local."},
+        {"role":"user","content":"Cleanup now clears calls and restores replaced behavior consistently."},
+        {"role":"assistant","content":"Good; each test owns what it needs and cleanup removes cross-test state."},
+        {"role":"user","content":"The suite is stable without broad snapshot churn."},
+        {"role":"assistant","content":"Record the ownership change as the resolution, with snapshots only as updated evidence."}
+      ]
+    },
+    {
+      "asset_id": "T08-L0-05",
+      "level": "L0",
+      "project_id": "jest-runtime-suite",
+      "title": "Async assertion and fake clock review",
+      "messages": [
+        {"role":"user","content":"An async matcher test sometimes finishes before the promise settles."},
+        {"role":"assistant","content":"Await the assertion and make the rejection path explicit."},
+        {"role":"user","content":"Another test uses a fake clock but never advances it."},
+        {"role":"assistant","content":"Advance the clock at the point the scheduled callback is expected."},
+        {"role":"user","content":"The fake clock is configured in a package setup file."},
+        {"role":"assistant","content":"Keep the configuration narrow so unrelated tests use real time."},
+        {"role":"user","content":"A timeout made the failure look like a matcher regression."},
+        {"role":"assistant","content":"Capture the pending promise and clock state before changing the timeout."},
+        {"role":"user","content":"The explicit await removes the intermittent pass."},
+        {"role":"assistant","content":"Add a focused failure message for the unresolved branch."},
+        {"role":"user","content":"The package tests now finish deterministically."},
+        {"role":"assistant","content":"Keep the clock setup and async assertion in the test's ownership boundary."}
+      ]
+    },
+    {
+      "asset_id": "T08-L0-06",
+      "level": "L0",
+      "project_id": "playwright-browser-journeys",
+      "title": "Locator discovery pass",
+      "messages": [
+        {"role":"user","content":"The checkout journey currently locates the submit control with a brittle CSS chain."},
+        {"role":"assistant","content":"Explore the visible name, label, and stable test hook before changing the test."},
+        {"role":"user","content":"The control has an accessible name and a nearby form label."},
+        {"role":"assistant","content":"Capture both candidates and note which one survives the responsive layout."},
+        {"role":"user","content":"The generated trace shows the name is unique on the payment page."},
+        {"role":"assistant","content":"Keep the trace as evidence and avoid committing an arbitrary DOM path."},
+        {"role":"user","content":"A test hook exists on the confirmation action."},
+        {"role":"assistant","content":"Compare its stability with the role-and-name candidate across the journey."},
+        {"role":"user","content":"The role candidate reads more like the user action."},
+        {"role":"assistant","content":"Prefer it when the trace confirms uniqueness and actionable feedback."},
+        {"role":"user","content":"I will record the alternatives before migrating."},
+        {"role":"assistant","content":"That discovery record will make later locator changes reviewable."}
+      ]
+    },
+    {
+      "asset_id": "T08-L0-07",
+      "level": "L0",
+      "project_id": "playwright-browser-journeys",
+      "title": "Trace-backed locator validation",
+      "messages": [
+        {"role":"user","content":"The migrated locator passes Chromium but fails in a WebKit journey."},
+        {"role":"assistant","content":"Open the trace at the action and inspect the accessible tree in both runs."},
+        {"role":"user","content":"WebKit exposes a duplicate label from a hidden dialog."},
+        {"role":"assistant","content":"Scope the locator to the visible checkout region and rerun the trace."},
+        {"role":"user","content":"The scoped role locator is unique in both traces."},
+        {"role":"assistant","content":"Retain the before-and-after trace links in the migration note."},
+        {"role":"user","content":"A test hook would also avoid the duplicate."},
+        {"role":"assistant","content":"Use the hook only if the user-facing contract cannot remain unique."},
+        {"role":"user","content":"The role locator still gives the clearer failure message."},
+        {"role":"assistant","content":"Then make cross-browser trace validation part of the acceptance evidence."},
+        {"role":"user","content":"The journey now passes on all selected engines."},
+        {"role":"assistant","content":"Document the hidden-dialog cause so the locator is not widened later."}
+      ]
+    },
+    {
+      "asset_id": "T08-L0-08",
+      "level": "L0",
+      "project_id": "playwright-browser-journeys",
+      "title": "Cross-browser journey evidence",
+      "messages": [
+        {"role":"user","content":"The account journey has three steps with different control markup by browser."},
+        {"role":"assistant","content":"Assert the user-visible role or label at each step before considering a hook."},
+        {"role":"user","content":"The first step has a stable role and the second has a stable label."},
+        {"role":"assistant","content":"Keep those semantic candidates and capture a trace for each browser."},
+        {"role":"user","content":"The final action has a dedicated test hook."},
+        {"role":"assistant","content":"Use the hook there if the semantic name is localized or duplicated."},
+        {"role":"user","content":"Firefox exposed a timing wait around the final action."},
+        {"role":"assistant","content":"Wait on the action's enabled state rather than adding a fixed delay."},
+        {"role":"user","content":"The trace confirms the action is enabled before the click."},
+        {"role":"assistant","content":"Include that state transition in the journey evidence."},
+        {"role":"user","content":"All three browser runs now agree on the assertions."},
+        {"role":"assistant","content":"The stable journey should preserve the discovery and trace notes."}
+      ]
+    },
+    {
+      "asset_id": "T08-L0-09",
+      "level": "L0",
+      "project_id": "spring-quality-gate",
+      "title": "Deterministic integration build failure",
+      "messages": [
+        {"role":"user","content":"The deterministic integration build fails because the custom integrationTest classes cannot find a resource."},
+        {"role":"assistant","content":"Check whether that source set still processes its test resources before changing application code."},
+        {"role":"user","content":"The processTestResources dependency was removed from the custom task."},
+        {"role":"assistant","content":"That explains why the resource is absent when the integration classes run."},
+        {"role":"user","content":"The task also reports an old output directory as up to date."},
+        {"role":"assistant","content":"Restore the task dependency and invalidate the stale output for that task."},
+        {"role":"user","content":"After invalidation, resources are copied and the build fails no longer."},
+        {"role":"assistant","content":"Keep the fix in build configuration; production code is not implicated."},
+        {"role":"user","content":"A clean repeat reproduces the successful result."},
+        {"role":"assistant","content":"Record the dependency edge and stale-output invalidation as the conclusion."},
+        {"role":"user","content":"This is separate from test-slice selection."},
+        {"role":"assistant","content":"Yes, triage the deterministic build failure independently from test semantics."}
+      ]
+    },
+    {
+      "asset_id": "T08-L0-10",
+      "level": "L0",
+      "project_id": "spring-quality-gate",
+      "title": "Spring test slice comparison",
+      "messages": [
+        {"role":"user","content":"A controller test loads the whole application context for one serialization assertion."},
+        {"role":"assistant","content":"Compare a narrow web slice with the full context and list the required collaborators."},
+        {"role":"user","content":"The narrow slice needs one explicit service stub."},
+        {"role":"assistant","content":"Provide that stub and keep the assertion focused on the HTTP contract."},
+        {"role":"user","content":"A repository test currently includes unrelated web configuration."},
+        {"role":"assistant","content":"Move it to the data-oriented slice and avoid loading web beans."},
+        {"role":"user","content":"Startup time drops in both tests."},
+        {"role":"assistant","content":"Check that the narrower context still exercises the intended boundary."},
+        {"role":"user","content":"The assertions remain meaningful after the split."},
+        {"role":"assistant","content":"Keep a note of why each slice was chosen."},
+        {"role":"user","content":"The build configuration issue is tracked elsewhere."},
+        {"role":"assistant","content":"Good; keep scope selection and deterministic build triage as separate records."}
+      ]
+    }
+  ],
+  "l1_memories": [
+    {"asset_id":"T08-L1-01","level":"L1","project_id":"pytest-coverage-lab","title":"Superseded uniform coverage gate","content":"An older pytest policy required a uniform 100% line-coverage merge gate for every change. It is retained as historical context only and is superseded by the dated current policy.","status":"superseded","valid_from":"2026-02-01","superseded_by":"T08-L1-11","source_session_ids":["T08-L0-01","T08-L0-02"]},
+    {"asset_id":"T08-L1-02","level":"L1","project_id":"pytest-coverage-lab","title":"Annotated report practice","content":"Keep an annotated report with missing executable line numbers and the responsible test module; use it to plan focused additions and review residual gaps.","status":"active","valid_from":"2026-05-12","source_session_ids":["T08-L0-01"]},
+    {"asset_id":"T08-L1-03","level":"L1","project_id":"pytest-coverage-lab","title":"Parametrization review rule","content":"Give boundary inputs explicit parameter ids and expected outcomes so a coverage review can connect each branch to a readable case.","status":"active","valid_from":"2026-05-20","source_session_ids":["T08-L0-02"]},
+    {"asset_id":"T08-L1-04","level":"L1","project_id":"pytest-coverage-lab","title":"Fixture isolation note","content":"When a fixture can leak state, reproduce the smallest order-dependent set, narrow its scope, and verify the fix both alone and in the full suite.","status":"active","valid_from":"2026-05-25","source_session_ids":["T08-L0-03"]},
+    {"asset_id":"T08-L1-05","level":"L1","project_id":"pytest-coverage-lab","title":"Coverage report naming","content":"Coverage artifacts should use a date and commit label, preserve branch annotations, and identify whether a line belongs to a changed module.","status":"active","valid_from":"2026-06-02","source_session_ids":["T08-L0-01","T08-L0-03"]},
+    {"asset_id":"T08-L1-06","level":"L1","project_id":"pytest-coverage-lab","title":"Parameter failure triage","content":"Start a parameter failure in isolation, then rerun adjacent cases to distinguish a bad expectation from shared fixture state.","status":"active","valid_from":"2026-06-08","source_session_ids":["T08-L0-02","T08-L0-03"]},
+    {"asset_id":"T08-L1-07","level":"L1","project_id":"jest-runtime-suite","title":"Local mock ownership","content":"A test that needs a special mock behavior should install it in the test or its beforeEach and leave cleanup to clear and restore state.","status":"active","valid_from":"2026-06-13","source_session_ids":["T08-L0-04"]},
+    {"asset_id":"T08-L1-08","level":"L1","project_id":"jest-runtime-suite","title":"Async assertion convention","content":"Await asynchronous matchers, make rejection paths explicit, and preserve the pending operation in failure evidence.","status":"active","valid_from":"2026-06-15","source_session_ids":["T08-L0-05"]},
+    {"asset_id":"T08-L1-09","level":"L1","project_id":"playwright-browser-journeys","title":"Semantic locator preference","content":"During locator discovery, record role and label candidates before a dedicated test hook; choose the narrowest candidate that expresses the user action.","status":"active","valid_from":"2026-06-21","source_session_ids":["T08-L0-06","T08-L0-08"]},
+    {"asset_id":"T08-L1-10","level":"L1","project_id":"playwright-browser-journeys","title":"Trace evidence retention","content":"A locator migration review keeps before-and-after traces, browser names, and the visible-region scope used to establish uniqueness.","status":"active","valid_from":"2026-06-24","source_session_ids":["T08-L0-06","T08-L0-07"]},
+    {"asset_id":"T08-L1-11","level":"L1","project_id":"pytest-coverage-lab","title":"Current pytest coverage gate","content":"As of 2026-08-20, the current merge gate requires overall line coverage >=85% plus no newly uncovered executable lines in changed modules. The older uniform 100% merge gate is no longer current; annotated 100% remains a focused gap-closure technique rather than the universal merge threshold.","status":"active","valid_from":"2026-08-20","source_session_ids":["T08-L0-01","T08-L0-02","T08-L0-03"]},
+    {"asset_id":"T08-L1-12","level":"L1","project_id":"spring-quality-gate","title":"Narrow Spring test slices","content":"Select the narrowest Spring test slice that exercises the intended boundary, provide explicit collaborators, and keep assertions tied to that boundary.","status":"active","valid_from":"2026-07-02","source_session_ids":["T08-L0-10"]},
+    {"asset_id":"T08-L1-13","level":"L1","project_id":"spring-quality-gate","title":"Build triage evidence","content":"For a repeatable build failure, capture the task graph, resource output, and a clean rerun before changing production sources.","status":"active","valid_from":"2026-07-05","source_session_ids":["T08-L0-09"]},
+    {"asset_id":"T08-L1-14","level":"L1","project_id":"jest-runtime-suite","title":"Current Jest flaky-evidence ownership","content":"For a current Jest flaky failure, the package owner supplies a minimal reproduction or seed, fake-timer configuration, and isolated failing command; the CI owner supplies worker and environment evidence. Accepting a snapshot update alone is forbidden.","status":"active","valid_from":"2026-08-15","source_session_ids":["T08-L0-04","T08-L0-05"]},
+    {"asset_id":"T08-L1-15","level":"L1","project_id":"playwright-browser-journeys","title":"Cross-browser action readiness","content":"For browser journeys, wait on the action's enabled or visible state and retain engine-specific traces instead of adding fixed delays.","status":"active","valid_from":"2026-07-18","source_session_ids":["T08-L0-07","T08-L0-08"]},
+    {"asset_id":"T08-L1-16","level":"L1","project_id":"spring-quality-gate","title":"Resource task dependency check","content":"Custom integration source sets must process their resources before execution; stale task output should be invalidated when a missing dependency caused a deterministic failure.","status":"active","valid_from":"2026-07-22","source_session_ids":["T08-L0-09"]}
+  ],
+  "l2_scenes": [
+    {"asset_id":"T08-L2-01","level":"L2","project_id":"pytest-coverage-lab","path":"scenes/pytest/coverage-recovery","injected":true,"title":"Continuous coverage recovery","content":"Coverage recovery begins by establishing an annotated report, then adding tests for uncovered branches, isolating flaky fixtures, and finally applying the 85% overall line-coverage plus no-new-uncovered-lines gate for changed modules. The report is retained as a continuous loop: inspect, add focused cases, stabilize fixtures, and recheck the gate.","supporting_session_ids":["T08-L0-01","T08-L0-02","T08-L0-03"]},
+    {"asset_id":"T08-L2-02","level":"L2","project_id":"jest-runtime-suite","path":"scenes/jest/mock-and-async-review","injected":false,"title":"Jest isolation review","content":"The review traces a shared mock incident into local ownership, consistent cleanup, awaited async assertions, and narrowly configured fake clocks. Snapshot evidence is useful only after behavior and ownership are correct.","supporting_session_ids":["T08-L0-04","T08-L0-05"]},
+    {"asset_id":"T08-L2-03","level":"L2","project_id":"playwright-browser-journeys","path":"scenes/playwright/locator-migration-chronology","injected":false,"title":"Locator migration chronology","content":"Phase one moves from brittle CSS toward role, label, and test-id candidates discovered from the visible page. Phase two validates the chosen candidate with traces and scopes it when hidden or duplicate controls appear. Phase three keeps cross-browser stable assertions, action readiness, and engine-specific trace evidence so the journey remains durable.","supporting_session_ids":["T08-L0-06","T08-L0-07","T08-L0-08"]},
+    {"asset_id":"T08-L2-04","level":"L2","project_id":"spring-quality-gate","path":"scenes/spring/deterministic-quality-triage","injected":false,"title":"Spring quality triage","content":"The scene separates narrow test-slice choice from deterministic build triage: inspect the custom source-set task graph, restore missing resource processing, invalidate stale output, and verify with a clean repeat before considering production changes.","supporting_session_ids":["T08-L0-09","T08-L0-10"]}
+  ],
+  "l3_profiles": [
+    {"asset_id":"T08-L3-01","level":"L3","content":"偏好可复现、可定位的测试证据：先缩小失败范围，再保留报告、参数、轨迹或任务图；测试应拥有明确的夹具和模拟状态，异步操作要显式等待，浏览器断言优先表达用户可见语义。覆盖率、切片选择与构建排障分别记录，避免用表面结果掩盖根因。"}
+  ]
+}

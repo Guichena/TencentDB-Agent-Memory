@@ -1,0 +1,157 @@
+{
+  "schema_version": "task1.knowledge_asset_candidates.v1",
+  "team_id": "T08",
+  "bound_agent_id": "agent-task1-t08-general",
+  "candidates": [
+    {
+      "knowledge_id": "cg-t08py01",
+      "kind": "code_graph",
+      "status": "ready",
+      "synthetic": true,
+      "owner_agent_id": "agent-task1-t08-general",
+      "bound_agent_id": "agent-task1-t08-general",
+      "external_source_ids": [],
+      "workspace_match": {
+        "space_id": "space-task1-engineering",
+        "snapshot_id": "snapshot-task1-hidden-v1",
+        "agent_id": "agent-task1-t08-general",
+        "status": "ready",
+        "resource_slot": "pytest-coverage-lab"
+      },
+      "repo_match": {
+        "project_id": "pytest-coverage-lab",
+        "task_id": "task-task1-t08-pytest",
+        "repository_url": "https://github.com/pytest-dev/pytest",
+        "commit_sha": "fdba12e1708313f56e9cf713d260c029764ca2b7",
+        "language": "python",
+        "structure": "src-layout Python package with src/_pytest, testing, pyproject.toml and coverage annotations",
+        "status": "ready"
+      },
+      "tools_list_definition": {
+        "read_only": true,
+        "tools": [
+          {
+            "name": "search_code",
+            "description": "在固定仓库提交的合成代码图中按符号或路径检索位置。",
+            "read_only": true
+          }
+        ]
+      },
+      "query_tools": {
+        "search_code": {
+          "request_fixture": {
+            "symbol": "pytest_addoption",
+            "repository_url": "https://github.com/pytest-dev/pytest",
+            "commit_sha": "fdba12e1708313f56e9cf713d260c029764ca2b7",
+            "read_only": true
+          },
+          "response_fixture": {
+            "symbol": "pytest_addoption",
+            "path": "src/_pytest/config/__init__.py",
+            "line": 1240,
+            "synthetic_fixed_fixture": true,
+            "description": "coverage-adjacent command-line setup 的注册条目"
+          }
+        }
+      }
+    },
+    {
+      "knowledge_id": "wiki-t08js01",
+      "kind": "wiki",
+      "status": "ready",
+      "synthetic": true,
+      "owner_agent_id": "agent-task1-t08-general",
+      "bound_agent_id": "agent-task1-t08-general",
+      "external_source_ids": [],
+      "workspace_match": {
+        "space_id": "space-task1-engineering",
+        "snapshot_id": "snapshot-task1-hidden-v1",
+        "agent_id": "agent-task1-t08-general",
+        "status": "ready",
+        "resource_slot": "jest-runtime-suite"
+      },
+      "repo_match": {
+        "project_id": "jest-runtime-suite",
+        "task_id": "task-task1-t08-jest",
+        "repository_url": "https://github.com/jestjs/jest",
+        "commit_sha": "be425a0b0e3bd60a74e4a7e350aa38c63a2d25ef",
+        "language": "typescript",
+        "structure": "Yarn monorepo with packages/jest-runtime, packages/expect, e2e fixtures and snapshot tests",
+        "status": "ready"
+      },
+      "tools_list_definition": {
+        "read_only": true,
+        "tools": [
+          {
+            "name": "search_pages",
+            "description": "在固定 Jest wiki 的合成页面中按主题检索只读条目。",
+            "read_only": true
+          }
+        ]
+      },
+      "query_tools": {
+        "search_pages": {
+          "request_fixture": {
+            "topic": "failure evidence ownership",
+            "repository_url": "https://github.com/jestjs/jest",
+            "commit_sha": "be425a0b0e3bd60a74e4a7e350aa38c63a2d25ef",
+            "read_only": true
+          },
+          "response_fixture": {
+            "page_title": "Jest failure-evidence ownership",
+            "body": "包负责人提供最小复现/种子、fake-timer 配置和隔离的失败命令；CI 负责人提供 worker/环境证据；仅更新 snapshot 不算闭环。"
+          }
+        }
+      }
+    },
+    {
+      "knowledge_id": "wiki-t08pw01",
+      "kind": "wiki",
+      "status": "ready",
+      "synthetic": true,
+      "owner_agent_id": "agent-task1-t08-general",
+      "bound_agent_id": "agent-task1-t08-general",
+      "external_source_ids": [],
+      "workspace_match": {
+        "space_id": "space-task1-engineering",
+        "snapshot_id": "snapshot-task1-hidden-v1",
+        "agent_id": "agent-task1-t08-general",
+        "status": "ready",
+        "resource_slot": "playwright-browser-journeys"
+      },
+      "repo_match": {
+        "project_id": "playwright-browser-journeys",
+        "task_id": "task-task1-t08-playwright",
+        "repository_url": "https://github.com/microsoft/playwright",
+        "commit_sha": "de214f440b7e34937fe4886f046b78b757136087",
+        "language": "typescript",
+        "structure": "Node workspace with packages/playwright, packages/playwright-core, tests/playwright-test and browser fixtures",
+        "status": "ready"
+      },
+      "tools_list_definition": {
+        "read_only": true,
+        "tools": [
+          {
+            "name": "search_pages",
+            "description": "在固定 Playwright wiki 的合成页面中按主题检索只读条目。",
+            "read_only": true
+          }
+        ]
+      },
+      "query_tools": {
+        "search_pages": {
+          "request_fixture": {
+            "topic": "browser journey review ownership",
+            "repository_url": "https://github.com/microsoft/playwright",
+            "commit_sha": "de214f440b7e34937fe4886f046b78b757136087",
+            "read_only": true
+          },
+          "response_fixture": {
+            "page_title": "Playwright browser-journey review",
+            "body": "探索者负责可观察步骤和 locator 候选；测试作者负责持久断言；失败重试时附加 trace，并在闭环前跨浏览器验证选择器。"
+          }
+        }
+      }
+    }
+  ]
+}

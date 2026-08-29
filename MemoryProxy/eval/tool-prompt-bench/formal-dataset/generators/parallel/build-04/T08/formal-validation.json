@@ -1,0 +1,122 @@
+{
+  "schema_version": "task1.formal_dataset_validation.v2",
+  "valid": true,
+  "errors": [],
+  "splits": [
+    "hidden_test"
+  ],
+  "case_count": 40,
+  "team_case_counts": {
+    "T01": 0,
+    "T02": 0,
+    "T03": 0,
+    "T04": 0,
+    "T05": 0,
+    "T06": 0,
+    "T07": 0,
+    "T09": 0,
+    "T10": 0,
+    "T08": 40
+  },
+  "pair_count": 20,
+  "pairs_by_team": {
+    "T01": 5,
+    "T02": 0,
+    "T03": 0,
+    "T04": 0,
+    "T05": 0,
+    "T06": 0,
+    "T07": 0,
+    "T09": 0,
+    "T10": 0,
+    "T08": 15
+  },
+  "pair_integrity_error_count": 0,
+  "pair_integrity_errors": [],
+  "provider_leakage_count": 0,
+  "invalid_sequence_count": 0,
+  "missing_source_ref_count": 0,
+  "provenance": {
+    "synthetic": {
+      "count": 15,
+      "sourceIds": [
+        "source-t08-current-anchor",
+        "source-t08-knowledge-cg-t08py01",
+        "source-t08-knowledge-wiki-t08js01",
+        "source-t08-knowledge-wiki-t08pw01",
+        "source-t08-memory-l0",
+        "source-t08-memory-l1",
+        "source-t08-memory-l2",
+        "source-t08-memory-l3",
+        "source-t08-natural-negatives",
+        "source-t08-pairs-build-04-t08-knowledge-expansion-01",
+        "source-t08-pairs-build-04-t08-knowledge-trial-01",
+        "source-t08-pairs-t08-ds05-skill-expansion-01",
+        "source-t08-pairs-t08-ds05-skill-trial-01",
+        "source-t08-pairs-t08-memory-expansion-01",
+        "source-t08-pairs-t08-memory-trial-01"
+      ],
+      "batchIds": [
+        "build-04-T08-knowledge-expansion-01",
+        "build-04-T08-knowledge-trial-01",
+        "build-04-T08-natural-negative-01",
+        "T08-DS05-SKILL-EXPANSION-01",
+        "T08-DS05-SKILL-TRIAL-01",
+        "T08-memory-expansion-01",
+        "T08-memory-trial-01"
+      ]
+    },
+    "externalImport": {
+      "count": 42,
+      "sourceIds": [
+        "source-t01-current-mypy-regression",
+        "source-t01-current-ujson-fuzzing",
+        "source-t01-current-ujson-impact",
+        "source-t01-history-getmoto__moto-5134",
+        "source-t01-history-getmoto__moto-5587",
+        "source-t01-history-getmoto__moto-6567",
+        "source-t01-history-getmoto__moto-6585",
+        "source-t01-history-getmoto__moto-6913",
+        "source-t01-history-getmoto__moto-7365",
+        "source-t01-history-python__mypy-10424",
+        "source-t01-history-python__mypy-11567",
+        "source-t01-history-python__mypy-12943",
+        "source-t01-history-python__mypy-15184",
+        "source-t01-history-python__mypy-16869",
+        "source-t01-history-python__mypy-5617",
+        "source-t01-knowledge-mypy-codegraph",
+        "source-t01-knowledge-reliability-wiki",
+        "source-t01-knowledge-ujson-codegraph",
+        "source-t01-pair-001",
+        "source-t01-pair-002",
+        "source-t01-pair-003",
+        "source-t01-pair-004",
+        "source-t01-pair-005",
+        "source-t01-skill-discover-important-function",
+        "source-t01-skill-fuzzing-python",
+        "source-t08-skill-azure-deployment-preflight",
+        "source-t08-skill-breakdown-test",
+        "source-t08-skill-creating-oracle-to-postgres-migration-integration-tests",
+        "source-t08-skill-csharp-mstest",
+        "source-t08-skill-github-actions-efficiency",
+        "source-t08-skill-javascript-typescript-jest",
+        "source-t08-skill-planning-oracle-to-postgres-migration-integration-testing",
+        "source-t08-skill-playwright-explore-website",
+        "source-t08-skill-playwright-generate-test",
+        "source-t08-skill-pytest-coverage",
+        "source-t08-skill-react19-test-patterns",
+        "source-t08-skill-scoutqa-test",
+        "source-t08-skill-spring-boot-testing",
+        "source-t08-skill-temporal-python-testing",
+        "source-t08-skill-unit-test-vue-pinia",
+        "source-t08-skill-webapp-testing",
+        "source-task1-registry-ds00"
+      ]
+    }
+  },
+  "provider_sha256": "cb41239f751530268d3b6e301648a025ee9a9dba6b87b4824ea66bab4772af04",
+  "snapshot_sha256": {
+    "dev": "281bfa9b5c761fb5ad9cf93fa027f75c9d2bc37ca32ba1b4b8427b0f3b4c4102",
+    "hidden_test": "3386444c72e8a42e7758ea643acf5b91eeaa08be216d60aa94d311aaabcd6c34"
+  }
+}
