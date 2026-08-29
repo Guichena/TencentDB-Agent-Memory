@@ -1,0 +1,252 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T07-skill-expansion-01",
+  "stage": "DS05",
+  "team_id": "T07",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T07-PAIR-S02",
+      "external_source_ids": ["T07-SKILL-OPENAPI-APP"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "medium",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "合作方项目已经有 openapi/schema.yaml，仓库里也有 src/generated、src/runtime 和契约测试目录；这次要让规范继续驱动 TypeScript 应用客户端。"},
+        {"role": "assistant", "content": "我会先核对规范的端点、模型和安全约束，再把生成边界和运行时职责整理成可执行的工作项。"},
+        {"role": "user", "content": "请先说明从现有规范到可维护代码的完整接入路径，覆盖认证、错误处理、验证、日志、测试和 README，但先不要改文件。"},
+        {"role": "assistant", "content": "当前只知道仓库结构和目标，具体的规范分析、分层规划、代码及配套文件生成顺序还需要补齐。"}
+      ],
+      "changed_message_index": 4,
+      "query": "请给出这个 OpenAPI 驱动客户端项目开始实现前的完整步骤和检查边界，先不要修改代码。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前对话还没有那套从规范生成应用的具体步骤；请先取得既有生成指南，概括输入校验、端点与安全分析、架构规划、代码和配套文件生成，以及后续验证，停在可以开始实现的位置。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结 OpenAPI 应用生成指南中关于规范输入、完整性分析、分层架构、模型与处理器生成、支持文件和生成后检查的完整流程。",
+          "route": "skill",
+          "target_asset_ids": ["T07-SKILL-OPENAPI-APP"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "查看冻结的 OpenAPI 应用生成指南并概述适用于当前客户端项目的实现顺序后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "我把生成指南中的要点补齐：输入可以是规范 URL、本地路径或直接粘贴的内容；先校验完整性，识别端点、HTTP 方法、请求响应模型、安全方案、关系和约束并标出歧义。随后按框架规划目录、资源分组、服务层、数据模型和配置初始化；再生成构建配置、模型/DTO、路由处理器、服务、仓储（适用时）、错误处理、验证、日志、配置和启动代码。还要生成单测、README、忽略文件、环境模板、文档和示例请求或集成测试，最后安装依赖、配置环境、跑测试、启动服务并验证端点。请据此给出开始实现前的步骤，不修改代码。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已提供规范输入形式、分析项目、分层规划、代码与支持文件输出以及生成后的验证顺序，足以回答查询。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T07-SKILL-ASPNET-OPENAPI", "T07-SKILL-TYPESPEC-OPS"],
+      "controlled_delta_note": "正负分支共享四条上下文和同一查询；正分支只指出生成流程缺失，负分支仅补齐冻结指南直接支持的输入、分析、分层生成、支持文件和验证事实。",
+      "source_fact_map": [
+        {"claim": "指南允许以 URL、本地文件路径或直接粘贴的 OpenAPI 内容作为输入，并要求提供缺失的项目细节。", "source_id": "T07-SKILL-OPENAPI-APP", "locator": "skills/openapi-to-application-code/raw/SKILL.md#Input Requirements"},
+        {"claim": "指南要求先校验规范并识别端点、方法、模型、安全方案、关系和约束，再规划目录、处理器、服务、模型和配置。", "source_id": "T07-SKILL-OPENAPI-APP", "locator": "skills/openapi-to-application-code/raw/SKILL.md#Step 1: Analyze the OpenAPI Specification"},
+        {"claim": "指南的生成和配套输出包括构建配置、模型、处理器、服务、仓储、错误处理、验证、日志、测试、README、环境模板、文档和示例。", "source_id": "T07-SKILL-OPENAPI-APP", "locator": "skills/openapi-to-application-code/raw/SKILL.md#Step 3: Generate Application Code; #Step 4: Add Supporting Files"},
+        {"claim": "指南要求安装依赖、配置环境、运行测试、启动开发服务并测试端点作为生成后步骤。", "source_id": "T07-SKILL-OPENAPI-APP", "locator": "skills/openapi-to-application-code/raw/SKILL.md#Next Steps"}
+      ],
+      "sol_review_questions": [
+        "确认正分支只留下 OpenAPI 生成流程的信息缺口，且与现有 TypeScript 客户端项目匹配。",
+        "确认负分支没有把 ASP.NET、TypeSpec 或其他项目特定步骤混入冻结指南事实。",
+        "确认最终许可证资格、可见性、路由接受和 Gold 仍由 Sol 审核决定。"
+      ]
+    },
+    {
+      "draft_pair_id": "T07-PAIR-S03",
+      "external_source_ids": ["T07-SKILL-MSGRAPH-SDK"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "long_12_to_18",
+      "shared_context_messages": [
+        {"role": "user", "content": "目录同步项目是 pnpm workspace，包含 packages/graph-client、services/directory-sync 和 tests/adapter，代码语言确定为 TypeScript。"},
+        {"role": "assistant", "content": "我会先按后台守护进程的身份场景确定认证边界，再核对客户端复用和同步接口的生命周期。"},
+        {"role": "user", "content": "这是无用户交互的 daemon，要访问租户目录，不能把用户委托上下文混进来。"},
+        {"role": "assistant", "content": "这个场景需要应用身份的认证决策，并且秘密不能写入源码；客户端应在应用级复用。"},
+        {"role": "user", "content": "同步只需要少量字段，目录集合也可能分页，不能假设一次响应就完整。"},
+        {"role": "assistant", "content": "我会把字段选择和分页处理放在首次实现范围内，并保留可持续同步所需的状态。"},
+        {"role": "user", "content": "首次全量同步后，希望只拉取变更；多个独立资源初始化时还要控制请求数量。"},
+        {"role": "assistant", "content": "增量链接和批量请求都要考虑响应关联，不能只按返回顺序拼接结果。"},
+        {"role": "user", "content": "租户偶尔返回 429，重试必须按服务端给出的等待时间，不接受固定 sleep。"},
+        {"role": "assistant", "content": "节流处理需要显式遵循 Retry-After，并检查客户端的重试中间件是否启用。"},
+        {"role": "user", "content": "适配器测试目录已经建好，但我们还缺 TypeScript 的包安装、深层导入、凭据和 fluent 调用细节。"},
+        {"role": "assistant", "content": "在开始改动前，需要把主指南和 TypeScript 专用参考中的可执行细节对齐到这个 workspace。"}
+      ],
+      "changed_message_index": 12,
+      "query": "请按当前 TypeScript daemon workspace 说明 Graph 客户端接入的下一步、关键代码边界和同步注意事项，先不要修改文件。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前上下文还没有主接入指南和 TypeScript 参考的具体内容；请先取得主指南，再读取它所指向的 TypeScript 参考，概括凭据与客户端创建、类型导入、字段选择、分页、批处理、增量同步和 429 处理，停在可实现的接口边界。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少主 Graph 指南的语言/认证决策和同步原则，以及其 TypeScript 参考中的包安装、凭据、客户端构造、调用、分页、批量、delta、重试和 ESM 细节。",
+          "route": "skill",
+          "target_asset_ids": ["T07-SKILL-MSGRAPH-SDK"],
+          "allowed_sequence_candidates": [["skill_view", "skill_files_read"]],
+          "stop_after_candidate": "先查看主指南，再按 manifest 指定路径读取 TypeScript 参考并概述适配器边界后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "我把两份指南中的缺失事实补齐：TypeScript 项目安装 `@microsoft/microsoft-graph-client` 和 `@azure/identity`，类型定义作为开发依赖；应用级客户端通常复用，但 OBO 要按请求创建。daemon 使用 client credentials 和 `https://graph.microsoft.com/.default`，Azure 托管应用优先 DefaultAzureCredential；秘密放环境变量、Key Vault 或 Secret Manager。客户端用 `Client.initWithMiddleware` 和 TokenCredentialAuthenticationProvider 构造，调用采用 `.api()` fluent 链并用 select/filter 限制服务端结果。集合读取检查 `@odata.nextLink`，可用 PageIterator；批处理最多 20 个独立请求且按响应 id 配对；delta 首次遍历 nextLink 后持久化 deltaLink，后续用它只取变化。429 必须遵循 Retry-After，必要时启用重试中间件。TypeScript ESM 深层导入带 `/index.js` 后缀，`.api()` 返回值应按 Graph 类型定义进行类型化。请据此给出实现前的边界，不修改文件。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已同时提供主指南和 TypeScript 参考所需的语言判定、认证、包、客户端、调用、分页、批处理、delta、节流和类型导入事实，足以回答查询。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T07-SKILL-COPILOT-SDK", "T07-SKILL-TS-MCP"],
+      "controlled_delta_note": "正负分支共享 12 条长上下文和同一查询；正分支要求严格先读主文件再按 manifest 路径读取 TypeScript 参考，负分支只补齐两份冻结源直接支持的 TypeScript daemon 接入事实。",
+      "source_fact_map": [
+        {"claim": "主指南要求先按项目文件确定语言，再读取匹配的 TypeScript 参考并选择认证模式；daemon 使用 client credentials，Azure 托管应用优先 managed identity。", "source_id": "T07-SKILL-MSGRAPH-SDK", "locator": "skills/msgraph-sdk/raw/SKILL.md#Determine the target language first; #Authentication — choose the right pattern"},
+        {"claim": "主指南要求复用单一客户端、使用 fluent API、$select/$filter、处理 nextLink/PageIterator、批处理按 id 配对、持久化 deltaLink，并按 Retry-After 处理 429。", "source_id": "T07-SKILL-MSGRAPH-SDK", "locator": "skills/msgraph-sdk/raw/SKILL.md#Core SDK usage patterns; #Pagination; #Batch requests; #Delta queries; #Throttling"},
+        {"claim": "TypeScript 参考列出 @microsoft/microsoft-graph-client、@azure/identity 和类型包，并给出 Client.initWithMiddleware、凭据 provider 以及 ESM 深层导入后缀。", "source_id": "T07-SKILL-MSGRAPH-SDK", "locator": "skills/msgraph-sdk/raw/references/typescript.md#Packages; #Client setup; #TypeScript-specific guidance"},
+        {"claim": "TypeScript 参考要求批处理响应按 id 查找、deltaLink 持久化，且 OBO 凭据按请求创建；应用级代码可 singleton 客户端。", "source_id": "T07-SKILL-MSGRAPH-SDK", "locator": "skills/msgraph-sdk/raw/references/typescript.md#Batch requests; #Delta queries; #Client setup"}
+      ],
+      "sol_review_questions": [
+        "确认正分支的 provider 文本自然表达需要 Graph TypeScript 细节，但不泄露路由、资产或文件读取动作。",
+        "确认 allowed sequence 仅为先查看主文件再读取 manifest 指定的 references/typescript.md，且 source map locator 与冻结 raw 文件一致。",
+        "确认负分支没有把 OBO、委托权限或其他非 daemon 场景误当作当前实现要求；最终许可证资格、可见性和 Gold 仍由 Sol 审核决定。"
+      ]
+    },
+    {
+      "draft_pair_id": "T07-PAIR-S04",
+      "external_source_ids": ["T07-SKILL-QDRANT-DIAGNOSIS"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "Qdrant 摄取网关已经能完成查询，但用户报告结果不相关，线上也看到召回下降；目前没有质量基线。"},
+        {"role": "assistant", "content": "先不要凭感觉调索引参数，我会把模型、搜索方式、过滤和量化因素拆开验证。"},
+        {"role": "user", "content": "现在还不知道 exact 查询和近似查询谁更差，也没有 recall@K 的对照数据。"},
+        {"role": "assistant", "content": "诊断顺序应先建立可重复的 exact 基线，再比较近似结果并记录召回。"},
+        {"role": "user", "content": "数据带日期和类别过滤，有些文档切块后会出现重复结果；团队还试过二值量化。"},
+        {"role": "assistant", "content": "过滤、重复 chunk 和量化都可能改变相关性，不能把它们与向量模型问题混为一谈。"},
+        {"role": "user", "content": "请先给出排查路径和每一步的停止条件，不要修改网关或集合配置。"},
+        {"role": "assistant", "content": "我需要一份专门针对搜索质量的诊断流程，才能决定下一步测量还是调参。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请给出这个 Qdrant 检索质量问题的下一步诊断路径、对照实验和常见禁忌，暂时不要改配置。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前上下文缺少结构化质量诊断流程；请先取得相关指南，概括 exact 与 approximate 基线、模型和管线分流、HNSW/量化/过滤检查及重复结果处理，停在测量方案层面。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结指南关于 exact KNN 基线、approximate HNSW 对照、模型与管线分流、HNSW 参数、量化重排、过滤和 grouping 的诊断事实。",
+          "route": "skill",
+          "target_asset_ids": ["T07-SKILL-QDRANT-DIAGNOSIS"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "按检索结果查看冻结的质量诊断指南并给出不改配置的对照实验方案后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "诊断事实如下：先用 `exact=true` 建立 ground-truth KNN，再与 approximate HNSW 对比并关注 recall@K，生产目标是大于 95%。exact 也差通常指向 embedding 模型或检索管线；exact 好而 approximate 差才调 HNSW。要比较量化前后质量，过滤过严时检查 ACORN，chunk 重复可用 Grouping API 去重；payload 过滤元数据，稀疏向量用于文本搜索，两者不是一回事。近似质量可提高 query-time `hnsw_ef`、`ef_construct`（高质量 200+）和 `m`（默认 16，高召回可 32）；量化要 oversampling 并 rescore，二值量化尤其需要 rescore 和至少 3–5 倍 oversampling。若 exact 也差且模型未定，可在 100–1000 条样本查询上比较前三个 MTEB 模型并测 recall@10；不要在验证模型前调参、让 hnsw_ef 小于请求结果数、跳过过滤字段索引或没有基线就上线。请据此给出排查路径，不修改配置。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已给出 exact/approximate 分流、召回基线、模型试验、HNSW、量化、过滤、去重及禁止事项，足以回答查询。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T07-SKILL-QDRANT-SPEED", "T07-SKILL-QDRANT-DEBUG"],
+      "controlled_delta_note": "正负分支共享八条上下文和同一查询；正分支只留下质量诊断指南缺口，负分支仅补足该冻结源支持的基线、分流、参数检查和禁忌。",
+      "source_fact_map": [
+        {"claim": "指南要求用 exact=true 建立基线，与 approximate HNSW 比较并以 recall@K 衡量，exact 坏与 approximate 坏的归因不同。", "source_id": "T07-SKILL-QDRANT-DIAGNOSIS", "locator": "skills/qdrant-search-quality-diagnosis/raw/SKILL.md#How to Diagnose Bad Search Quality; #Don't Know What's Wrong Yet"},
+        {"claim": "指南要求检查量化、过滤和重复 chunk；payload 过滤与 sparse vector search 是不同配置，重复结果可用 Grouping API。", "source_id": "T07-SKILL-QDRANT-DIAGNOSIS", "locator": "skills/qdrant-search-quality-diagnosis/raw/SKILL.md#Don't Know What's Wrong Yet"},
+        {"claim": "指南列出 hnsw_ef、ef_construct、m、oversampling/rescore 和 ACORN 作为 approximate 或过滤质量检查项，并规定 binary quantization 需要 rescore。", "source_id": "T07-SKILL-QDRANT-DIAGNOSIS", "locator": "skills/qdrant-search-quality-diagnosis/raw/SKILL.md#Approximate Search Worse Than Exact"},
+        {"claim": "指南建议在 exact 也差且模型未确定时比较 100–1000 条样本查询上的前三个 MTEB 模型并测 recall@10，并列出调参前置条件和禁止事项。", "source_id": "T07-SKILL-QDRANT-DIAGNOSIS", "locator": "skills/qdrant-search-quality-diagnosis/raw/SKILL.md#Wrong Embedding Model; #What NOT to Do"}
+      ],
+      "sol_review_questions": [
+        "确认正分支仅要求检索并查看未绑定的相关性诊断程序，没有把速度或运行监控程序当作目标。",
+        "确认负分支的 exact/approximate 分流和量化、过滤、模型事实均能在冻结 raw 文件中定位。",
+        "确认最终许可证资格、可见性、路由接受和 Gold 仍由 Sol 审核决定。"
+      ]
+    },
+    {
+      "draft_pair_id": "T07-PAIR-S05",
+      "external_source_ids": ["T07-SKILL-JEST"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "Graph 适配器的 TypeScript 实现已经完成并通过人工检查：分页、错误分支和返回值都正确，生产逻辑不需要改。"},
+        {"role": "assistant", "content": "我会把剩余工作严格限制在测试覆盖，不重新设计或修补已经正确的适配器实现。"},
+        {"role": "user", "content": "现在唯一缺少的是 Jest 单元测试，尤其是外部客户端 mock、异步成功和失败断言。"},
+        {"role": "assistant", "content": "测试需要隔离网络依赖，并验证调用参数和 Promise 行为；实现本身保持不变。"},
+        {"role": "user", "content": "tests/adapter 目录已存在，测试文件要和 TypeScript workspace 的约定一致。"},
+        {"role": "assistant", "content": "我会先确认测试文件命名、describe/it 结构、mock 清理和异步 matcher 的规范，再列出测试用例。"},
+        {"role": "user", "content": "请只给出单元测试方案和必要的断言边界，不要声称需要补业务逻辑。"},
+        {"role": "assistant", "content": "上下文已经明确实现正确且只缺 Jest 单测；还差的是可复用的测试写法细节。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请为这个已正确实现的 TypeScript 适配器给出 Jest-only 单元测试方案、mock 隔离和异步断言边界，不修改生产代码。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "实现已经确认正确，当前唯一缺口是 Jest 单元测试写法；请先取得适用于 JavaScript/TypeScript 的测试指南，概括文件布局、describe/it、外部依赖 mock、mock 重置、异步断言和 matcher，停在测试设计层面。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结 Jest 指南关于测试文件位置和命名、describe/it 结构、jest.mock/spyOn、mock 清理、async/await 与 resolves/rejects 以及常用 matcher 的事实。",
+          "route": "skill",
+          "target_asset_ids": ["T07-SKILL-JEST"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "按检索结果查看冻结测试指南并给出只新增 Jest 单测的设计边界后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "测试指南的事实是：测试文件使用 `.test.ts` 或 `.test.js`，可放在被测代码旁或 `__tests__` 目录；用描述性 `describe`/`it` 组织测试。外部 API 或数据库用 `jest.mock()` 隔离，单个函数可用 `jest.spyOn()`，并在 `afterEach` 调用 `jest.resetAllMocks()`。异步测试使用 async/await 或 `resolves`/`rejects`，慢测试可设 `jest.setTimeout()`；断言可用 `toBe`、`toEqual`、`toHaveBeenCalledWith`、`toHaveProperty`、`toThrow` 等匹配器。请据此给出只增加 Jest 单测的方案，不修改生产实现。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经补齐 Jest 文件约定、测试组织、依赖隔离、mock 清理、异步写法和所需 matcher，且明确不改生产逻辑。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T07-SKILL-MSGRAPH-SDK", "T07-SKILL-COPILOT-SDK"],
+      "controlled_delta_note": "正负分支共享八条上下文和同一查询；两条分支均明确实现正确且只缺 Jest 单测，负分支仅补足冻结测试指南的测试结构和断言事实。",
+      "source_fact_map": [
+        {"claim": "指南规定 .test.ts/.test.js 后缀、相邻或 __tests__ 目录，以及描述性 describe/it 结构。", "source_id": "T07-SKILL-JEST", "locator": "skills/javascript-typescript-jest/raw/SKILL.md#Test Structure"},
+        {"claim": "指南建议用 jest.mock、jest.spyOn、mockImplementation/mockReturnValue 隔离外部依赖，并在 afterEach 中 resetAllMocks。", "source_id": "T07-SKILL-JEST", "locator": "skills/javascript-typescript-jest/raw/SKILL.md#Effective Mocking"},
+        {"claim": "指南要求异步测试使用 Promise/async/await、resolves/rejects，并列出常用基础、对象、异常和 mock matcher。", "source_id": "T07-SKILL-JEST", "locator": "skills/javascript-typescript-jest/raw/SKILL.md#Testing Async Code; #Common Jest Matchers"}
+      ],
+      "sol_review_questions": [
+        "确认 provider 文本明确实现已正确且只缺 Jest 单测，未诱导修复生产代码。",
+        "确认负分支只补齐冻结测试指南直接支持的 Jest 事实，没有扩展到浏览器 E2E 或业务逻辑。",
+        "确认最终许可证资格、可见性、路由接受和 Gold 仍由 Sol 审核决定。"
+      ]
+    },
+    {
+      "draft_pair_id": "T07-PAIR-S06",
+      "external_source_ids": ["T07-SKILL-AZURE-ROLE"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "目录同步服务需要执行一项具体的 Azure RBAC 操作：给运行身份授予读取目标存储资源所需的访问权限。"},
+        {"role": "assistant", "content": "我会围绕资源操作本身选择最小权限角色，并把角色分配落到可审查的部署产物。"},
+        {"role": "user", "content": "安全要求优先使用匹配的内置角色；如果没有精确匹配，才考虑自定义角色。"},
+        {"role": "assistant", "content": "决策需要先查权限与角色匹配，再处理无匹配时的定义和分配方式。"},
+        {"role": "user", "content": "交付物除了角色选择，还要有给身份分配角色的 CLI 命令和 Bicep 片段。"},
+        {"role": "assistant", "content": "我会同时检查部署片段的最佳实践和范围，避免把权限扩大成不相关的访问。"},
+        {"role": "user", "content": "请先写出 Azure RBAC 操作的评估路径，不要讨论 Graph scope、OAuth 流程或普通 API token。"},
+        {"role": "assistant", "content": "当前缺少的是按具体 Azure 操作选择最小内置角色并生成部署材料的步骤。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请给出这个 Azure RBAC 访问操作的最小权限评估、角色分配命令和 Bicep 交付路径，先不要修改部署文件。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前对话还没有针对具体 Azure RBAC 操作的角色选择流程；请先取得角色选择指南，概括最小匹配内置角色、无匹配时的自定义角色、CLI 分配和 Bicep 片段步骤，停在评估与交付方案层面。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结 Azure 角色选择指南关于最小匹配内置角色、无匹配时自定义角色、CLI 分配和 Bicep/最佳实践交付的四步流程。",
+          "route": "skill",
+          "target_asset_ids": ["T07-SKILL-AZURE-ROLE"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "按检索结果查看冻结角色选择指南并给出 Azure RBAC 评估及部署产物方案后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "角色指南规定的顺序是：先根据目标权限查找最小匹配的 Azure 内置角色；没有匹配时用生成能力创建自定义角色定义；再生成给目标身份分配该角色所需的 CLI 命令；最后提供角色分配的 Bicep 代码片段，并结合最佳实践检查。请严格按这条 Azure RBAC 流程给出评估与交付方案，不讨论其他认证或 API scope。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经提供最小内置角色、自定义角色、CLI 分配、Bicep 片段和最佳实践检查的完整 Azure RBAC 顺序，足以回答查询。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T07-SKILL-MSGRAPH-SDK", "T07-SKILL-QDRANT-DEPLOY"],
+      "controlled_delta_note": "正负分支共享八条上下文和同一查询；provider 文本始终限定为 Azure RBAC 操作，负分支只补齐冻结角色指南直接支持的四步角色选择与部署产物流程。",
+      "source_fact_map": [
+        {"claim": "指南要求按目标权限查找最小匹配的内置角色。", "source_id": "T07-SKILL-AZURE-ROLE", "locator": "skills/azure-role-selector/raw/SKILL.md#role selection"},
+        {"claim": "指南要求无内置角色匹配时生成自定义角色定义，并生成将角色分配给身份的 CLI 命令。", "source_id": "T07-SKILL-AZURE-ROLE", "locator": "skills/azure-role-selector/raw/SKILL.md#custom role and CLI assignment"},
+        {"claim": "指南要求使用 Bicep 角色分配片段并结合最佳实践工具提供部署建议。", "source_id": "T07-SKILL-AZURE-ROLE", "locator": "skills/azure-role-selector/raw/SKILL.md#Bicep role assignment"}
+      ],
+      "sol_review_questions": [
+        "确认 provider 文本始终是具体 Azure RBAC 操作，不出现 Graph scope、OAuth 或普通 token 路由。",
+        "确认负分支只补齐冻结 raw Skill 直接支持的四步流程，没有捏造具体 Azure 内置角色名称或权限。",
+        "确认最终许可证资格、可见性、路由接受和 Gold 仍由 Sol 审核决定。"
+      ]
+    }
+  ]
+}

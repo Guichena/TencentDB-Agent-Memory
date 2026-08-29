@@ -1,0 +1,56 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T07-memory-trial-01",
+  "stage": "DS05",
+  "team_id": "T07",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T07-PAIR-M01",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "long_12_to_18",
+      "shared_context_messages": [
+        {"role": "user", "content": "我们这周继续收敛目录同步适配器，先把认证、字段选择、翻页和节流四件事放在同一条链路里看。"},
+        {"role": "assistant", "content": "可以，先把请求边界固定下来，再分别确认认证凭据、返回字段、分页游标和重试行为，最后用适配器测试串起来。"},
+        {"role": "user", "content": "运行环境是无用户交互的后台任务，不能把登录窗口或人工授权当成兜底。"},
+        {"role": "assistant", "content": "那就按服务到服务的运行假设设计，并把权限范围、凭据注入位置和失效时的错误分类写进适配器约定。"},
+        {"role": "user", "content": "目录记录很多，单次响应不可能装完；调用方还要能在测试里观察是否继续取下一页。"},
+        {"role": "assistant", "content": "分页循环需要以服务端返回的后续链接为准，直到链接缺失；测试可以准备首尾两页，并检查两页结果被合并。"},
+        {"role": "user", "content": "字段方面只消费同步真正需要的标识、显示名和邮箱，其他属性不要顺手带回来。"},
+        {"role": "assistant", "content": "我会把字段投影放在请求构造处，让适配器的输入输出都只暴露同步所需的最小集合。"},
+        {"role": "user", "content": "上游偶尔会限流，不能把一次 429 直接变成全量任务失败，也不能无限等待。"},
+        {"role": "assistant", "content": "重试应读取响应提供的等待提示，采用有界退避并记录尝试次数；超过上限后再交给任务层处理。"},
+        {"role": "user", "content": "评审时请把认证方式、字段裁剪、翻页停止条件和限流恢复放在一段能直接贴到变更说明里的话里。"},
+        {"role": "assistant", "content": "收到。我还会让测试覆盖认证配置被传入、字段集合准确、后续链接被消费，以及限流后恢复这几个观察点。"}
+      ],
+      "changed_message_index": 12,
+      "query": "请找回我们上次目录同步评审里关于认证、字段裁剪、分页和节流的结论原话。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "我记得那段评审结论曾经整理过，但当前上下文没有保留它的完整措辞；请帮我找回原来的表述。"},
+        "private_proposal": {
+          "unique_information_gap": "需要从先前的目录同步会话中恢复认证、最小字段集合、后续链接分页和有界限流重试的完整评审措辞。",
+          "route": "memory",
+          "target_asset_ids": ["T07-L0-01"],
+          "allowed_sequence_candidates": [["tdai_conversation_search"]],
+          "stop_after_candidate": "找到支持该目录同步评审结论的会话后即可停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "评审结论原话是：守护进程认证使用应用权限并集中注入客户端；请求只取 id、displayName、mail，分页沿用 nextLink 直到耗尽；每页遇到 429 按 Retry-After 做有界退避，适配器测试覆盖首末页与节流恢复。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经逐项给出认证方式、字段集合、分页停止条件、限流等待依据和测试覆盖范围，无需寻找历史内容。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T07-L0-02", "T07-L0-03"],
+      "controlled_delta_note": "两条分支共享完全相同的 12 条上下文和查询；正分支只说明完整措辞缺失，负分支在同一位置补足唯一结论。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "正分支是否确实需要恢复历史会话，而不是仅依据上下文重写一段常识性建议？",
+        "负分支追加内容是否完整覆盖认证、字段、分页、限流和测试五个要点，并且没有引入第二个变量？"
+      ]
+    }
+  ]
+}
