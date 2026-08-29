@@ -1,0 +1,10 @@
+--- a/raw/benchflow-skillsbench/maven-dependency-management/SKILL.md
++++ b/adapted/maven-dependency-management/SKILL.md
+@@ -1,4 +1,6 @@
+ ---
+ name: maven-dependency-management
+-description: Use when managing Maven dependencies, resolving dependency conflicts, configuring BOMs, or optimizing dependency trees in Java projects.
++description: "管理 Maven 依赖声明、scope、版本、BOM、传递依赖和依赖树冲突。"
++use_when: "需要集中管理依赖版本、导入 BOM、处理 scope 或排除项，或分析依赖收敛和树冲突。"
++do_not_use_when: "问题是生命周期阶段顺序、反应堆选择、插件执行配置，或通用 CI 失败日志分析。"
+ ---

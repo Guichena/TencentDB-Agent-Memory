@@ -1,0 +1,10 @@
+--- a/raw/benchflow-skillsbench/uv-package-manager/SKILL.md
++++ b/adapted/uv-package-manager/SKILL.md
+@@ -1,4 +1,6 @@
+ ---
+ name: uv-package-manager
+-description: Master the uv package manager for fast Python dependency management, virtual environments, and modern Python project workflows. Use when setting up Python projects, managing dependencies, or optimizing Python development workflows with uv.
++description: "使用 uv 管理 Python 解释器、虚拟环境、依赖、工作区和锁文件，并支持可复现同步。"
++use_when: "需要创建 uv 环境、添加或同步依赖、维护 uv.lock、固定 Python 版本或配置离线/CI 安装。"
++do_not_use_when: "缺口是 wheel/sdist 的打包元数据契约、通用测试设计，或 Python 模块目录组织。"
+ ---

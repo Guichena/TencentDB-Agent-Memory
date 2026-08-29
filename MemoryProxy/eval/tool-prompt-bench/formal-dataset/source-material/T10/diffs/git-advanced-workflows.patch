@@ -1,0 +1,10 @@
+--- a/raw/wshobson-agents/git-advanced-workflows/SKILL.md
++++ b/adapted/git-advanced-workflows/SKILL.md
+@@ -1,4 +1,6 @@
+ ---
+ name: git-advanced-workflows
+-description: Master advanced Git workflows including rebasing, cherry-picking, bisect, worktrees, and reflog to maintain clean history and recover from any situation. Use when managing complex Git histories, collaborating on feature branches, or troubleshooting repository issues.
++description: "处理 Git rebase、cherry-pick、bisect、worktree、reflog 和分支恢复等高级历史工作流。"
++use_when: "需要整理提交历史、跨分支应用提交、定位回归、并行 worktree 或恢复 Git 操作。"
++do_not_use_when: "问题是构建生命周期、Python 打包测试，或 CI/CD 流水线配置而非 Git 历史管理。"
+ ---

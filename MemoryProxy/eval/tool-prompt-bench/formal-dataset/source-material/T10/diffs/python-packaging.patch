@@ -1,0 +1,10 @@
+--- a/raw/wshobson-agents/python-packaging/SKILL.md
++++ b/adapted/python-packaging/SKILL.md
+@@ -1,4 +1,6 @@
+ ---
+ name: python-packaging
+-description: Create distributable Python packages with proper project structure, setup.py/pyproject.toml, and publishing to PyPI. Use when packaging Python libraries, creating CLI tools, or distributing Python code.
++description: "依据 pyproject.toml 和构建后端创建可分发的 Python 包，检查 wheel/sdist 元数据并组织发布流程。"
++use_when: "需要配置包元数据和构建系统、生成 wheel 或源码分发包、检查分发物，或规划发布到包索引。"
++do_not_use_when: "任务只是 Python 项目目录组织、测试设计，或只需管理 uv 环境和锁文件而不涉及分发契约。"
+ ---
