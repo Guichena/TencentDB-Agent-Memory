@@ -805,7 +805,7 @@
   "teams": [
     {
       "teamId": "T15",
-      "worldId": "world-task1-formal-v1",
+      "worldId": "world-task1-engineering",
       "split": "hidden_test",
       "name": "API 契约与兼容性",
       "businessAgentIds": [
@@ -856,7 +856,7 @@
         "T15-EXT-SKL-018",
         "T15-EXT-RES-001"
       ],
-      "contentHash": "090cb78ad08dd7931616d7f79d95e370f44279c4b7cba69e45c698c3c25058f2"
+      "contentHash": "5f0ce463632bb63813a96b5a6d530f30cbd6538789b9323a6218183fcdcecd80"
     }
   ],
   "businessAgents": [
