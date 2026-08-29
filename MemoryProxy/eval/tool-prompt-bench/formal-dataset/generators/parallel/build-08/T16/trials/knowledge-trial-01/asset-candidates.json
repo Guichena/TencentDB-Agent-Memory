@@ -1,0 +1,106 @@
+{
+  "schema_version": "task1.knowledge_asset_candidates.v1",
+  "stage": "DS05",
+  "team_id": "T16",
+  "synthetic": true,
+  "candidates": [
+    {
+      "asset_id": "T16-KNW-001",
+      "status": "ready",
+      "name": "Ledger consumer code graph",
+      "type": "code_graph",
+      "service_url": "https://knowledge.synthetic.invalid/ledger-consumer",
+      "workspace_match": "internal/ledger-ingest",
+      "about": "Ledger 事件消费者的 outbox、幂等键和去重调用关联。",
+      "summary": "用于选择与 Ledger 事件摄取和消费者调用关系主题匹配的内部资源。",
+      "tools": [
+        {"name": "search", "params": {"query": "string"}},
+        {"name": "callers", "params": {"symbol": "string"}}
+      ],
+      "minimal_synthetic_query_result": {
+        "tool_listing": {
+          "tool_name": "tools/list",
+          "result": {
+            "tools": [
+              {"tool_name": "search", "params": {"query": "string"}},
+              {"tool_name": "callers", "params": {"symbol": "string"}}
+            ]
+          }
+        },
+        "successful_query": {
+          "tool_name": "search",
+          "params": {"query": "ledger idempotency consumer graph"},
+          "result": {"title": "Ledger consumer code graph", "summary": "返回与 Ledger 消费者调用关系主题匹配的图谱摘要。"}
+        }
+      }
+    },
+    {
+      "asset_id": "T16-KNW-002",
+      "status": "ready",
+      "name": "Beacon DLQ recovery runbook",
+      "type": "wiki",
+      "service_url": "https://knowledge.synthetic.invalid/beacon-dlq-recovery",
+      "workspace_match": "internal/beacon-notify",
+      "about": "内部重试阈值、poison message 隔离、死信重放和审计步骤。",
+      "summary": "用于选择与 Beacon 消息重试、poison message 和死信恢复主题匹配的内部资源；摘要不包含阈值或步骤正文。",
+      "tools": [
+        {"name": "search", "params": {"query": "string"}},
+        {"name": "read_page", "params": {"page_id": "string"}}
+      ],
+      "minimal_synthetic_query_result": {
+        "tool_listing": {
+          "tool_name": "tools/list",
+          "result": {
+            "tools": [
+              {"tool_name": "search", "params": {"query": "string"}},
+              {"tool_name": "read_page", "params": {"page_id": "string"}}
+            ]
+          }
+        },
+        "successful_query": {
+          "tool_name": "search",
+          "params": {"query": "poison message isolation threshold dead-letter replay"},
+          "result": {
+            "title": "Beacon DLQ recovery runbook",
+            "rule_text": "补充可直接执行的 runbook 决定：同一 message_id 连续失败 5 次后标记为 poison 并转入 beacon.notify.dlq，保留原始 partition、offset 和 message_id；死信重放前先暂停 consumer group，修复或隔离坏消息后按原 partition 顺序从最旧条目开始，每批 100 条重放，成功后再恢复 consumer，并在审计记录中写入 replay 操作人、时间和结果。这就是本次要查的阈值与步骤。",
+            "isolation_threshold": "同一 message_id 连续失败 5 次",
+            "dead_letter_queue": "beacon.notify.dlq",
+            "preserved_identifiers": ["原始 partition", "offset", "message_id"],
+            "replay_steps": ["暂停 consumer group", "修复或隔离坏消息", "按原 partition 顺序从最旧条目开始", "每批 100 条重放", "成功后恢复 consumer"],
+            "audit_fields": ["replay 操作人", "时间", "结果"]
+          }
+        }
+      }
+    },
+    {
+      "asset_id": "T16-KNW-003",
+      "status": "ready",
+      "name": "Streamline event schema governance",
+      "type": "wiki",
+      "service_url": "https://knowledge.synthetic.invalid/streamline-schema-governance",
+      "workspace_match": "internal/streamline-schema",
+      "about": "事件 envelope、版本演进、兼容级别和消费者迁移。",
+      "summary": "用于选择与 Streamline 事件 schema 演进和消费者兼容主题匹配的内部资源。",
+      "tools": [
+        {"name": "search", "params": {"query": "string"}},
+        {"name": "read_page", "params": {"page_id": "string"}}
+      ],
+      "minimal_synthetic_query_result": {
+        "tool_listing": {
+          "tool_name": "tools/list",
+          "result": {
+            "tools": [
+              {"tool_name": "search", "params": {"query": "string"}},
+              {"tool_name": "read_page", "params": {"page_id": "string"}}
+            ]
+          }
+        },
+        "successful_query": {
+          "tool_name": "search",
+          "params": {"query": "event envelope schema compatibility"},
+          "result": {"title": "Streamline event schema governance", "summary": "返回与事件 schema 演进和消费者兼容主题匹配的页面摘要。"}
+        }
+      }
+    }
+  ]
+}

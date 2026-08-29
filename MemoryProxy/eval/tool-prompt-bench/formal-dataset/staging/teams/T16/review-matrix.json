@@ -1,0 +1,388 @@
+{
+  "schema_version": "task1.team_review_matrix.v1",
+  "team_id": "T16",
+  "rows": [
+    {
+      "pairId": "T16-PAIR-MEM-001",
+      "family": "memory",
+      "sequence": [
+        "tdai_conversation_search"
+      ],
+      "targetAssetIds": [
+        "T16-L0-004"
+      ],
+      "distractorIds": [
+        "T16-L0-003",
+        "T16-L1-006",
+        "T16-L2-003"
+      ],
+      "changedMessageIndex": 14,
+      "solReviewed": true
+    },
+    {
+      "pairId": "T16-PAIR-MEM-002",
+      "family": "memory",
+      "sequence": [
+        "tdai_memory_search"
+      ],
+      "targetAssetIds": [
+        "T16-L1-001"
+      ],
+      "distractorIds": [
+        "T16-L0-002",
+        "T16-L1-003",
+        "T16-L2-001"
+      ],
+      "changedMessageIndex": 8,
+      "solReviewed": true
+    },
+    {
+      "pairId": "T16-PAIR-MEM-003",
+      "family": "memory",
+      "sequence": [
+        "tdai_memory_search"
+      ],
+      "targetAssetIds": [
+        "T16-L1-004"
+      ],
+      "distractorIds": [
+        "T16-L0-005",
+        "T16-L1-005",
+        "T16-L2-002"
+      ],
+      "changedMessageIndex": 8,
+      "solReviewed": true
+    },
+    {
+      "pairId": "T16-PAIR-MEM-004",
+      "family": "memory",
+      "sequence": [
+        "tdai_conversation_search"
+      ],
+      "targetAssetIds": [
+        "T16-L0-009"
+      ],
+      "distractorIds": [
+        "T16-L0-004",
+        "T16-L1-006",
+        "T16-L2-003"
+      ],
+      "changedMessageIndex": 8,
+      "solReviewed": true
+    },
+    {
+      "pairId": "T16-PAIR-MEM-005",
+      "family": "memory",
+      "sequence": [
+        "tdai_atomic_query"
+      ],
+      "targetAssetIds": [
+        "T16-L1-011"
+      ],
+      "distractorIds": [
+        "T16-L0-008",
+        "T16-L1-010",
+        "T16-L2-004"
+      ],
+      "changedMessageIndex": 8,
+      "solReviewed": true
+    },
+    {
+      "pairId": "T16-PAIR-MEM-006",
+      "family": "memory",
+      "sequence": [
+        "tdai_read_scene"
+      ],
+      "targetAssetIds": [
+        "T16-L2-005"
+      ],
+      "distractorIds": [
+        "T16-L0-012",
+        "T16-L1-014",
+        "T16-L2-002"
+      ],
+      "changedMessageIndex": 8,
+      "solReviewed": true
+    },
+    {
+      "pairId": "T16-PAIR-SKL-001",
+      "family": "skill",
+      "sequence": [
+        "skill_search",
+        "skill_view_by_id"
+      ],
+      "targetAssetIds": [
+        "T16-SKL-007"
+      ],
+      "distractorIds": [
+        "T16-SKL-001",
+        "T16-SKL-010",
+        "T16-SKL-011"
+      ],
+      "changedMessageIndex": 4,
+      "solReviewed": true
+    },
+    {
+      "pairId": "T16-PAIR-SKL-002",
+      "family": "skill",
+      "sequence": [
+        "skill_search",
+        "skill_view_by_id"
+      ],
+      "targetAssetIds": [
+        "T16-SKL-008"
+      ],
+      "distractorIds": [
+        "T16-SKL-009",
+        "T16-SKL-010",
+        "T16-SKL-011"
+      ],
+      "changedMessageIndex": 4,
+      "solReviewed": true
+    },
+    {
+      "pairId": "T16-PAIR-SKL-003",
+      "family": "skill",
+      "sequence": [
+        "skill_search",
+        "skill_view_by_id"
+      ],
+      "targetAssetIds": [
+        "T16-SKL-009"
+      ],
+      "distractorIds": [
+        "T16-SKL-008",
+        "T16-SKL-010",
+        "T16-SKL-011"
+      ],
+      "changedMessageIndex": 4,
+      "solReviewed": true
+    },
+    {
+      "pairId": "T16-PAIR-SKL-004",
+      "family": "skill",
+      "sequence": [
+        "skill_view"
+      ],
+      "targetAssetIds": [
+        "T16-SKL-002"
+      ],
+      "distractorIds": [
+        "T16-SKL-001",
+        "T16-SKL-003",
+        "T16-SKL-014"
+      ],
+      "changedMessageIndex": 4,
+      "solReviewed": true
+    },
+    {
+      "pairId": "T16-PAIR-SKL-005",
+      "family": "skill",
+      "sequence": [
+        "skill_view"
+      ],
+      "targetAssetIds": [
+        "T16-SKL-003"
+      ],
+      "distractorIds": [
+        "T16-SKL-001",
+        "T16-SKL-002",
+        "T16-SKL-014"
+      ],
+      "changedMessageIndex": 4,
+      "solReviewed": true
+    },
+    {
+      "pairId": "T16-PAIR-SKL-006",
+      "family": "skill",
+      "sequence": [
+        "skill_view",
+        "skill_files_read"
+      ],
+      "targetAssetIds": [
+        "T16-SKL-001"
+      ],
+      "distractorIds": [
+        "T16-SKL-010",
+        "T16-SKL-011",
+        "T16-SKL-003"
+      ],
+      "changedMessageIndex": 4,
+      "solReviewed": true
+    },
+    {
+      "pairId": "T16-PAIR-KNW-001",
+      "family": "knowledge",
+      "sequence": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "targetAssetIds": [
+        "T16-KNW-002"
+      ],
+      "distractorIds": [
+        "T16-KNW-001",
+        "T16-KNW-003",
+        "T16-L2-002"
+      ],
+      "changedMessageIndex": 4,
+      "solReviewed": true
+    },
+    {
+      "pairId": "T16-PAIR-KNW-002",
+      "family": "knowledge",
+      "sequence": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "targetAssetIds": [
+        "T16-KNW-001"
+      ],
+      "distractorIds": [
+        "T16-L0-002",
+        "T16-SKL-008",
+        "T16-KNW-003"
+      ],
+      "changedMessageIndex": 4,
+      "solReviewed": true
+    },
+    {
+      "pairId": "T16-PAIR-KNW-003",
+      "family": "knowledge",
+      "sequence": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "targetAssetIds": [
+        "T16-KNW-003"
+      ],
+      "distractorIds": [
+        "T16-L1-011",
+        "T16-SKL-017",
+        "T16-KNW-001"
+      ],
+      "changedMessageIndex": 4,
+      "solReviewed": true
+    },
+    {
+      "caseId": "T16-COD-001",
+      "family": "none",
+      "sequence": [],
+      "targetAssetIds": [],
+      "distractorIds": [
+        "T16-L0-001",
+        "T16-SKL-001",
+        "T16-KNW-001"
+      ],
+      "solReviewed": true
+    },
+    {
+      "caseId": "T16-COD-002",
+      "family": "none",
+      "sequence": [],
+      "targetAssetIds": [],
+      "distractorIds": [
+        "T16-L0-002",
+        "T16-SKL-006",
+        "T16-KNW-003"
+      ],
+      "solReviewed": true
+    },
+    {
+      "caseId": "T16-COD-003",
+      "family": "none",
+      "sequence": [],
+      "targetAssetIds": [],
+      "distractorIds": [
+        "T16-L1-003",
+        "T16-SKL-002",
+        "T16-KNW-002"
+      ],
+      "solReviewed": true
+    },
+    {
+      "caseId": "T16-COD-004",
+      "family": "none",
+      "sequence": [],
+      "targetAssetIds": [],
+      "distractorIds": [
+        "T16-L1-004",
+        "T16-SKL-005",
+        "T16-KNW-001"
+      ],
+      "solReviewed": true
+    },
+    {
+      "caseId": "T16-COD-005",
+      "family": "none",
+      "sequence": [],
+      "targetAssetIds": [],
+      "distractorIds": [
+        "T16-L0-005",
+        "T16-SKL-008",
+        "T16-KNW-002"
+      ],
+      "solReviewed": true
+    },
+    {
+      "caseId": "T16-COD-006",
+      "family": "none",
+      "sequence": [],
+      "targetAssetIds": [],
+      "distractorIds": [
+        "T16-L1-006",
+        "T16-SKL-009",
+        "T16-KNW-003"
+      ],
+      "solReviewed": true
+    },
+    {
+      "caseId": "T16-COD-007",
+      "family": "none",
+      "sequence": [],
+      "targetAssetIds": [],
+      "distractorIds": [
+        "T16-L0-007",
+        "T16-SKL-010",
+        "T16-KNW-003"
+      ],
+      "solReviewed": true
+    },
+    {
+      "caseId": "T16-COD-008",
+      "family": "none",
+      "sequence": [],
+      "targetAssetIds": [],
+      "distractorIds": [
+        "T16-L1-008",
+        "T16-SKL-011",
+        "T16-KNW-001"
+      ],
+      "solReviewed": true
+    },
+    {
+      "caseId": "T16-COD-009",
+      "family": "none",
+      "sequence": [],
+      "targetAssetIds": [],
+      "distractorIds": [
+        "T16-L0-009",
+        "T16-SKL-003",
+        "T16-KNW-002"
+      ],
+      "solReviewed": true
+    },
+    {
+      "caseId": "T16-COD-010",
+      "family": "none",
+      "sequence": [],
+      "targetAssetIds": [],
+      "distractorIds": [
+        "T16-L1-010",
+        "T16-SKL-012",
+        "T16-KNW-001"
+      ],
+      "solReviewed": true
+    }
+  ]
+}
