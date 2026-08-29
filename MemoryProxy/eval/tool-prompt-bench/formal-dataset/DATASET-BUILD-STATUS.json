@@ -1,14 +1,15 @@
 {
   "schema_version": "task1.dataset_build_status.v1",
   "dataset_revision": "formal-v1",
-  "active_stage": "DS02",
-  "stage_status": "in_progress",
-  "next_stage": "DS02_T01_completion",
-  "branch": "codex/task1-data-t01-complete",
+  "active_stage": "DS02_parallel_v2",
+  "stage_status": "parallel_ready",
+  "next_stage": "five_team_builds",
+  "branch": "codex/task1-data-integration",
   "baseline_commit": "960021e472456515a89d3c2c4f2962fbf6cc51a1",
-  "parallel_baseline_ref": "task1-data-parallel-baseline-v1",
+  "parallel_baseline_ref": "task1-data-parallel-baseline-v2",
+  "parallel_baseline_commit": "1048681880b51e7a52a6b8b0b731eadeec44e118",
   "content_baseline_commit": "960021e472456515a89d3c2c4f2962fbf6cc51a1",
-  "completed_gates": ["DS00", "DS01", "DS02_PILOT"],
+  "completed_gates": ["DS00", "DS01", "DS02_PILOT", "SYNTHETIC_PROVENANCE_V2"],
   "team_progress": {
     "T01": { "identity": "frozen", "assets": "ds02_pilot_frozen", "l0_sessions": 12, "skills": 2, "knowledge": 3, "cases": 10, "pairs": 5, "gate": "ds02_pilot_passed" },
     "T02": { "identity": "frozen", "assets": "not_started", "cases": 0, "pairs": 0, "gate": "pending" },
@@ -23,11 +24,14 @@
   },
   "artifacts": {
     "contract": "registry/contracts/formal-v1.json",
-    "contract_canonical_sha256": "da67389b9cebba62535b69ac6fe10807329b7c07237728ebfdf16b113926743b",
+    "contract_canonical_sha256": "8d90dbdc0146b2b4d5f25f5baae9f581d3c9eb8712f37a1d8a27270615ebb187",
     "provider_dev_sha256": "03f9aca397313fbdf296af121b3802326b6d55d47215d7687ef7ea334cc26cd2",
-    "snapshot_dev_sha256": "84cf53372c436cbce8bd493c1d0e4c4391b9f8a76ac303b5f1e53dae2537e1f4"
+    "snapshot_dev_sha256": "281bfa9b5c761fb5ad9cf93fa027f75c9d2bc37ca32ba1b4b8427b0f3b4c4102"
   },
   "blocking_issues": [],
-  "last_command": "validate DS02 pilot; run retrieval-pressure test; compile formal Dev twice; npm run eval:tool-prompt:d0:test; npm run eval:tool-prompt:test",
-  "last_verified_commit": "960021e472456515a89d3c2c4f2962fbf6cc51a1"
+  "known_limitations": [
+    "The checked-in Dev snapshot-input artifact still reflects the pre-v2 pilot source pack. The integration owner must regenerate it deterministically when freezing Dev; Team builders must not modify global snapshots."
+  ],
+  "last_command": "validate formal provenance v2; compile formal Dev twice; npm run eval:tool-prompt:d0:test; retrieval-pressure and tool-prompt suites",
+  "last_verified_commit": "1048681880b51e7a52a6b8b0b731eadeec44e118"
 }

@@ -2,7 +2,7 @@
 
 你是 Task 1 正式数据集的独立建设负责人。你在单独 worktree 中工作，只完成两个主任务：完成 T01 Python 可靠性 Team 分片；完成 T02 数据计算 Team 分片。批量内容必须由 `gpt-5.6-luna`、`reasoning_effort=high`、`fork_turns=none` 的子智能体生成，你负责源码核对、输入冻结、最终 Gold、逐批复核、Team Gate 和提交。
 
-固定基线：数据内容提交为 `960021e472456515a89d3c2c4f2962fbf6cc51a1`，唯一启动引用为 `task1-data-parallel-baseline-v1`。本任务 worktree 必须从该 Tag 建立。开始前运行 `git rev-parse task1-data-parallel-baseline-v1` 和 `git merge-base --is-ancestor 960021e472456515a89d3c2c4f2962fbf6cc51a1 HEAD`；任一检查失败都停止并报告。
+固定基线与唯一映射：数据内容祖先为 `960021e472456515a89d3c2c4f2962fbf6cc51a1`；唯一启动 Tag 为 `task1-data-parallel-baseline-v2`；Tag 解引用提交必须为 `1048681880b51e7a52a6b8b0b731eadeec44e118`；分支为 `codex/task1-data-build-v2-t01-t02`；专用 worktree 为 `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02`。从该 Tag 创建 worktree 后，运行 `git status --short --branch -uall`、`git branch --show-current`、`git worktree list --porcelain`、`git rev-parse "task1-data-parallel-baseline-v2^{commit}"` 和 `git merge-base --is-ancestor 960021e472456515a89d3c2c4f2962fbf6cc51a1 HEAD`。工作树必须干净，路径必须绑定上述分支，Tag 结果必须严格等于上述提交，祖先检查必须以 0 退出；任一失败都停止，不得从 v1 或旧分支施工，也不得删除、移动或接管已有 worktree。
 
 开始前完整阅读：
 
@@ -11,7 +11,7 @@
 - `MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/DS02/T01/DRAFT-SCHEMA.md`
 - 当前 `formal-v1.json`、T01 registry、Team registry、生产 Memory/Skill/Knowledge 路由源码。
 
-先只读运行 `git status --short --branch -uall`、`git log -5 --oneline` 和相关校验。期望分支为 `codex/task1-data-build-t01-t02`；若分支、基线或 worktree 不对，停止并报告，不要切换共享工作树，不要清理别人的文件。
+先只读运行上述 Git Gate 和 `git log -5 --oneline`。期望分支为 `codex/task1-data-build-v2-t01-t02`，期望路径为 `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02`；若分支、基线或 worktree 不对，停止并报告，不要切换共享工作树，不要清理别人的文件。
 
 允许写入：
 

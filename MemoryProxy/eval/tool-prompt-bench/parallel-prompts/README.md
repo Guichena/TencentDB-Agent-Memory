@@ -10,20 +10,23 @@
 
 ## 固定任务划分
 
-| 提示词 | 主任务 | Split | 分支 |
-|---|---|---|---|
-| `THREAD-01-T01-T02.md` | 完成 T01；完成 T02 | Dev | `codex/task1-data-build-t01-t02` |
-| `THREAD-02-T03-T04.md` | 完成 T03；完成 T04 | Dev | `codex/task1-data-build-t03-t04` |
-| `THREAD-03-T05-T06.md` | 完成 T05；完成 T06 | Hidden | `codex/task1-data-build-t05-t06` |
-| `THREAD-04-T07-T08.md` | 完成 T07；完成 T08 | Hidden | `codex/task1-data-build-t07-t08` |
-| `THREAD-05-T09-T10.md` | 完成 T09；完成 T10 | Hidden | `codex/task1-data-build-t09-t10` |
+| 提示词 | 主任务 | Split | 固定分支 | 固定 worktree |
+|---|---|---|---|---|
+| `THREAD-01-T01-T02.md` | 完成 T01；完成 T02 | Dev | `codex/task1-data-build-v2-t01-t02` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02` |
+| `THREAD-02-T03-T04.md` | 完成 T03；完成 T04 | Dev | `codex/task1-data-build-v2-t03-t04` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t03-t04` |
+| `THREAD-03-T05-T06.md` | 完成 T05；完成 T06 | Hidden | `codex/task1-data-build-v2-t05-t06` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t05-t06` |
+| `THREAD-04-T07-T08.md` | 完成 T07；完成 T08 | Hidden | `codex/task1-data-build-v2-t07-t08` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t07-t08` |
+| `THREAD-05-T09-T10.md` | 完成 T09；完成 T10 | Hidden | `codex/task1-data-build-v2-t09-t10` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t09-t10` |
 
 五个任务必须从同一个冻结 Tag 建立独立 worktree：
 
 - 数据内容基线提交：`960021e472456515a89d3c2c4f2962fbf6cc51a1`
-- 唯一启动引用：`task1-data-parallel-baseline-v1`
+- 唯一启动引用：`task1-data-parallel-baseline-v2`
+- Tag 解引用提交：`1048681880b51e7a52a6b8b0b731eadeec44e118`
 
-启动后必须先运行 `git rev-parse task1-data-parallel-baseline-v1`，并用 `git merge-base --is-ancestor 960021e472456515a89d3c2c4f2962fbf6cc51a1 HEAD` 确认数据内容基线是当前分支祖先。Tag 包含本目录、正式 schema、validator、T01 当前试点、已确认保留的原始草稿和全部分任务提示词。任何检查失败都应停止，不得从旧分支或浮动 HEAD 继续施工。
+启动后必须运行 `git rev-parse "task1-data-parallel-baseline-v2^{commit}"`，结果必须严格等于 `1048681880b51e7a52a6b8b0b731eadeec44e118`；再用 `git merge-base --is-ancestor 960021e472456515a89d3c2c4f2962fbf6cc51a1 HEAD` 确认数据内容基线是当前分支祖先。Tag 冻结正式 schema、compiler、validator、T01 当前试点和已确认保留的原始草稿；本提示词包在 Tag 建立后的调度提交中记录精确 Tag commit。任何检查失败都应停止，不得从 v1、旧建设分支或浮动 HEAD 继续施工。
+
+迁移说明：旧分支 `codex/task1-data-build-t09-t10` 已绑定其他 worktree，因此本轮五个建设任务统一改用带 `v2` 的全新分支和路径。不得删除、移动、接管旧分支或旧 worktree。
 
 ## 每个建设任务的写入范围
 

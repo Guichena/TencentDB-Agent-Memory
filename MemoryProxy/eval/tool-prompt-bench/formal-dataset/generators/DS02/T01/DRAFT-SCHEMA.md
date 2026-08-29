@@ -103,6 +103,25 @@ synthetic. Do not create fake source ids or claim synthetic details are facts
 from an upstream repository. Source mapping is required only for directly
 imported external Skill files or quoted source fragments.
 
+## Formal staging provenance
+
+After Sol review, every accepted formal `sourceEvidence` entry uses exactly one
+of the following discriminated shapes:
+
+- `provenanceKind: "synthetic"` records `generatorModel`, `reasoningEffort`,
+  `promptVersion`, `batchId`, `generatedAt`, `reviewStatus: "reviewed"`, and
+  non-empty `contentRefs`. It must not contain dataset, repository, revision,
+  license, external path, or source hash fields.
+- `provenanceKind: "external_import"` keeps the pinned dataset plus mandatory
+  repository URL, 40-character revision, license, evidence path, evidence
+  SHA-256, transform input hash, PII scan, and reviewer fields. Use it only for
+  content actually imported from that source.
+
+Both shapes retain the formal role, transform, world cutoff, and object
+`contentHash`. Synthetic L1/Skill assets keep their message/session support
+chain but do not invent code or test locators; external evidence retains those
+locator gates.
+
 Validate a batch with:
 
 ```text

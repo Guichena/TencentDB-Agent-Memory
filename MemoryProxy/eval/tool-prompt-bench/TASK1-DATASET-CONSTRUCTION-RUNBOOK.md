@@ -1010,15 +1010,15 @@ Agent 完成一个阶段时：
 
 正式数据建设使用五个互相独立的 Codex 任务。这里的“任务”指用户在 Codex 中单独打开的任务，不是 Team 内部的 Luna 批次：
 
-| 建设任务 | 负责 Team | Split | 建议分支 |
-|---|---|---|---|
-| build-01 | T01、T02 | Dev | `codex/task1-data-build-t01-t02` |
-| build-02 | T03、T04 | Dev | `codex/task1-data-build-t03-t04` |
-| build-03 | T05、T06 | Hidden | `codex/task1-data-build-t05-t06` |
-| build-04 | T07、T08 | Hidden | `codex/task1-data-build-t07-t08` |
-| build-05 | T09、T10 | Hidden | `codex/task1-data-build-t09-t10` |
+| 建设任务 | 负责 Team | Split | 固定分支 | 固定 worktree |
+|---|---|---|---|---|
+| build-01 | T01、T02 | Dev | `codex/task1-data-build-v2-t01-t02` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t01-t02` |
+| build-02 | T03、T04 | Dev | `codex/task1-data-build-v2-t03-t04` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t03-t04` |
+| build-03 | T05、T06 | Hidden | `codex/task1-data-build-v2-t05-t06` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t05-t06` |
+| build-04 | T07、T08 | Hidden | `codex/task1-data-build-v2-t07-t08` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t07-t08` |
+| build-05 | T09、T10 | Hidden | `codex/task1-data-build-v2-t09-t10` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t09-t10` |
 
-五个任务必须从同一个已冻结基线提交建立独立 worktree。不能让多个任务共享一个可写工作目录，也不能让它们直接修改以下全局文件：
+五个任务必须从 annotated Tag `task1-data-parallel-baseline-v2` 建立独立 worktree。该 Tag 解引用提交固定为 `1048681880b51e7a52a6b8b0b731eadeec44e118`，且数据内容提交 `960021e472456515a89d3c2c4f2962fbf6cc51a1` 必须是其祖先。旧 `task1-data-parallel-baseline-v1` 和无 `v2` 的建设分支已经被本轮冻结替代，不得继续用于正式 staging。不能让多个任务共享一个可写工作目录，也不能让它们直接修改以下全局文件：
 
 ```text
 formal-dataset/registry/contracts/formal-v1.json
@@ -1068,11 +1068,11 @@ parallel-prompts/THREAD-05-T09-T10.md
 当前数据工作基线保留在现有分支。五个建设任务从同一个冻结提交建立独立 worktree 和分支，集成工作保留在单独分支：
 
 ```text
-codex/task1-data-build-t01-t02
-codex/task1-data-build-t03-t04
-codex/task1-data-build-t05-t06
-codex/task1-data-build-t07-t08
-codex/task1-data-build-t09-t10
+codex/task1-data-build-v2-t01-t02
+codex/task1-data-build-v2-t03-t04
+codex/task1-data-build-v2-t05-t06
+codex/task1-data-build-v2-t07-t08
+codex/task1-data-build-v2-t09-t10
 codex/task1-data-integration
 codex/task1-data-real-snapshot
 ```

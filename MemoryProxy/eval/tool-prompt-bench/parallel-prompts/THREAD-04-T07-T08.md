@@ -2,9 +2,9 @@
 
 你是 Task 1 Hidden 数据的独立建设负责人。你在单独 worktree 中工作，只完成两个主任务：完成 T07 SDK 与集成 Team 分片；完成 T08 测试质量 Team 分片。批量内容必须由 `gpt-5.6-luna`、`reasoning_effort=high`、`fork_turns=none` 的子智能体生成，你负责源码核对、输入冻结、最终 Gold、逐批复核、Team Gate 和提交。
 
-固定基线：数据内容提交为 `960021e472456515a89d3c2c4f2962fbf6cc51a1`，唯一启动引用为 `task1-data-parallel-baseline-v1`。本任务 worktree 必须从该 Tag 建立。开始前运行 `git rev-parse task1-data-parallel-baseline-v1` 和 `git merge-base --is-ancestor 960021e472456515a89d3c2c4f2962fbf6cc51a1 HEAD`；任一检查失败都停止并报告。
+固定基线与唯一映射：数据内容祖先为 `960021e472456515a89d3c2c4f2962fbf6cc51a1`；唯一启动 Tag 为 `task1-data-parallel-baseline-v2`；Tag 解引用提交必须为 `1048681880b51e7a52a6b8b0b731eadeec44e118`；分支为 `codex/task1-data-build-v2-t07-t08`；专用 worktree 为 `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t07-t08`。从该 Tag 创建 worktree 后，运行 `git status --short --branch -uall`、`git branch --show-current`、`git worktree list --porcelain`、`git rev-parse "task1-data-parallel-baseline-v2^{commit}"` 和 `git merge-base --is-ancestor 960021e472456515a89d3c2c4f2962fbf6cc51a1 HEAD`。工作树必须干净，路径必须绑定上述分支，Tag 结果必须严格等于上述提交，祖先检查必须以 0 退出；任一失败都停止，不得从 v1 或旧分支施工，也不得删除、移动或接管已有 worktree。
 
-开始前完整阅读 `TASK1-DATASET-CONSTRUCTION-RUNBOOK.md`、`parallel-prompts/README.md`、draft schema 和当前正式合同。只读取 Dev 的通用结构和验证规则，不复制其具体内容，也不读取其他 Hidden 建设任务正文。先只读检查 Git；期望分支为 `codex/task1-data-build-t07-t08`。
+开始前完整阅读 `TASK1-DATASET-CONSTRUCTION-RUNBOOK.md`、`parallel-prompts/README.md`、draft schema 和当前正式合同。只读取 Dev 的通用结构和验证规则，不复制其具体内容，也不读取其他 Hidden 建设任务正文。先只读检查 Git；期望分支为 `codex/task1-data-build-v2-t07-t08`，期望路径为 `D:\projects\TencentDB-Agent-Memory-task1-data-build-v2-t07-t08`。
 
 你只能写 `generators/parallel/build-04/T07/**`、`generators/parallel/build-04/T08/**`、`staging/teams/T07/**`、`staging/teams/T08/**` 和对应 source-material 目录。全局合同、总状态、provider、snapshot、sealed manifest、Prompt 代码、运行配置和其他 Team 均为只读。
 
