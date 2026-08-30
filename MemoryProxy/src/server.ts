@@ -215,6 +215,12 @@ export function createApp(config: ProxyConfig, deps: CreateAppDeps = {}): Hono {
       createSessionForceArchiveHandler(config)(c),
     );
   });
+  app.post("/v3/formal-bench/preflight-session", (c) => {
+    return import("./routes/formal-benchmark-preflight-session.js").then(
+      ({ createFormalBenchmarkPreflightSessionHandler }) =>
+        createFormalBenchmarkPreflightSessionHandler(config)(c),
+    );
+  });
 
   // ── Whitelisted primary endpoints ────────────────────────────────────────
   // Anthropic Messages API

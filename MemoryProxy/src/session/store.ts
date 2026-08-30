@@ -65,6 +65,13 @@ export interface RecoveryContext {
   presetIdentity?: PresetIdentity;
 }
 
+export type SessionNamespaceLayer = "l1" | "l2a" | "l2b" | "history-scan";
+
+export interface SessionNamespacePresence {
+  readonly layer: SessionNamespaceLayer;
+  readonly matchedSessionIds: readonly string[];
+}
+
 export class SessionStore {
   private states = new Map<string, SessionInitState>();
   /** keyId → identity map — populated via {@link bind} to keep repo/binding writes user-namespaced. */
@@ -130,6 +137,43 @@ export class SessionStore {
     }
 
     return state;
+  }
+
+  /**
+   * Read-only namespace probe used by the disabled-by-default Formal preflight.
+   *
+   * It deliberately does not call `getOrRecover`: recovery may promote or
+   * rebuild state and would destroy the evidence that the namespace was fresh
+   * before registration. `history-scan` is empty because the preflight request
+   * carries no prior Session Init form transcript; the later formal model turn
+   * uses the same opaque session id but cannot register until this probe passes.
+   */
+  async inspectNamespacePresence(identity: SessionIdentity): Promise<readonly SessionNamespacePresence[]> {
+    const compositeKey = `${identity.agentSource}:${identity.sessionId}`;
+    const l1 = this.states.has(compositeKey) ? [identity.sessionId] : [];
+    const l2aState = this.repo
+      ? await this.repo.getBySessionId(
+        spaceOf(identity),
+        identity.userId,
+        identity.agentSource,
+        identity.sessionId,
+      )
+      : null;
+    const l2bBinding = this.bindingRepo
+      ? await this.bindingRepo.getBinding(spaceOf(identity), identity.sessionId)
+      : null;
+    return Object.freeze([
+      Object.freeze({ layer: "l1" as const, matchedSessionIds: Object.freeze(l1) }),
+      Object.freeze({
+        layer: "l2a" as const,
+        matchedSessionIds: Object.freeze(l2aState ? [identity.sessionId] : []),
+      }),
+      Object.freeze({
+        layer: "l2b" as const,
+        matchedSessionIds: Object.freeze(l2bBinding ? [identity.sessionId] : []),
+      }),
+      Object.freeze({ layer: "history-scan" as const, matchedSessionIds: Object.freeze([]) }),
+    ]);
   }
 
   /**
