@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "tokenizer": "o200k_base",
+  "baseline": {
+    "candidate": "V3",
+    "fullInjectionTokens": 2224,
+    "staticToolTokens": 2027,
+    "fullStaticTemplateTokens": 2025,
+    "injectionSha256": "625dba5f8a74df608c3fcabd92b9cc9aea191e4c1d14c89df70d28767587f607"
+  },
+  "rows": [
+    {
+      "candidate": "TSCG-SIG",
+      "profile": "tscg-sig",
+      "enabledOperators": [
+        "typed-signature"
+      ],
+      "fullInjectionTokens": 2945,
+      "staticToolTokens": 2748,
+      "deltaVsV3": 721,
+      "contractEquivalent": true,
+      "roundTrip": null,
+      "shaRerunIdentical": true,
+      "captureSha256": {
+        "injection": {
+          "first": "8c0bf166a94d5040c412a058bb8d5ca9aa332113a74bfe2c22df479b714f4bd0",
+          "second": "8c0bf166a94d5040c412a058bb8d5ca9aa332113a74bfe2c22df479b714f4bd0",
+          "identical": true
+        },
+        "prompt": {
+          "first": "79c904727285607639aea603ecdc7f01949e8482011463ac08217fc77a837c7a",
+          "second": "79c904727285607639aea603ecdc7f01949e8482011463ac08217fc77a837c7a",
+          "identical": true
+        },
+        "staticTemplate": {
+          "first": "6ba258d1f6682a9336e1d6d03a2595d90a38335ecaca23ac476a05d14f32ec08",
+          "second": "6ba258d1f6682a9336e1d6d03a2595d90a38335ecaca23ac476a05d14f32ec08",
+          "identical": true
+        }
+      },
+      "injectionSha256": "8c0bf166a94d5040c412a058bb8d5ca9aa332113a74bfe2c22df479b714f4bd0"
+    },
+    {
+      "candidate": "TSCG-SDM",
+      "profile": "tscg-sdm",
+      "enabledOperators": [
+        "typed-signature",
+        "sdm"
+      ],
+      "fullInjectionTokens": 2401,
+      "staticToolTokens": 2204,
+      "deltaVsV3": 177,
+      "contractEquivalent": true,
+      "roundTrip": null,
+      "shaRerunIdentical": true,
+      "captureSha256": {
+        "injection": {
+          "first": "82f83c91e31d03525787b5add7947c41372eb4d59a5a0f0ebd4c75407f203850",
+          "second": "82f83c91e31d03525787b5add7947c41372eb4d59a5a0f0ebd4c75407f203850",
+          "identical": true
+        },
+        "prompt": {
+          "first": "e1f4b19a5fcbae5c534e2a722f902ce16ca15afbd32239adcea0d156479278d0",
+          "second": "e1f4b19a5fcbae5c534e2a722f902ce16ca15afbd32239adcea0d156479278d0",
+          "identical": true
+        },
+        "staticTemplate": {
+          "first": "459b138bf2c5c247d2ebb1d7ba615e689629eb7de3c7bad6f5a1172f98f6c8f5",
+          "second": "459b138bf2c5c247d2ebb1d7ba615e689629eb7de3c7bad6f5a1172f98f6c8f5",
+          "identical": true
+        }
+      },
+      "injectionSha256": "82f83c91e31d03525787b5add7947c41372eb4d59a5a0f0ebd4c75407f203850"
+    },
+    {
+      "candidate": "TSCG-DRO",
+      "profile": "tscg-dro",
+      "enabledOperators": [
+        "typed-signature",
+        "sdm",
+        "dro"
+      ],
+      "fullInjectionTokens": 2109,
+      "staticToolTokens": 1912,
+      "deltaVsV3": -115,
+      "contractEquivalent": true,
+      "roundTrip": true,
+      "shaRerunIdentical": true,
+      "captureSha256": {
+        "injection": {
+          "first": "fb41082f06e8d34f6f0d3cd18677de337262dd4a151e8ba914a518f2de2e7742",
+          "second": "fb41082f06e8d34f6f0d3cd18677de337262dd4a151e8ba914a518f2de2e7742",
+          "identical": true
+        },
+        "prompt": {
+          "first": "84feedbb439c4875298f0e96af45135e0c92d45d7fb4e09d8f3a4c23cf4c8849",
+          "second": "84feedbb439c4875298f0e96af45135e0c92d45d7fb4e09d8f3a4c23cf4c8849",
+          "identical": true
+        },
+        "staticTemplate": {
+          "first": "963f3deded4b591d5e05fe23f0eec7ef73a5b59dcf7ec48187827a2f0643419a",
+          "second": "963f3deded4b591d5e05fe23f0eec7ef73a5b59dcf7ec48187827a2f0643419a",
+          "identical": true
+        }
+      },
+      "injectionSha256": "fb41082f06e8d34f6f0d3cd18677de337262dd4a151e8ba914a518f2de2e7742"
+    },
+    {
+      "candidate": "TSCG-CFO",
+      "profile": "tscg-cfo",
+      "enabledOperators": [
+        "typed-signature",
+        "sdm",
+        "dro",
+        "cfo"
+      ],
+      "fullInjectionTokens": 2109,
+      "staticToolTokens": 1912,
+      "deltaVsV3": -115,
+      "contractEquivalent": true,
+      "roundTrip": true,
+      "shaRerunIdentical": true,
+      "captureSha256": {
+        "injection": {
+          "first": "e40880f225b1967e6c823a59ed25938811463c6b3d6c65328bb3afc42d713210",
+          "second": "e40880f225b1967e6c823a59ed25938811463c6b3d6c65328bb3afc42d713210",
+          "identical": true
+        },
+        "prompt": {
+          "first": "d4c8f5373baf53c1c5dff24d0cea47116d0dd0e46ddeb1b4fea9d8c244ce945f",
+          "second": "d4c8f5373baf53c1c5dff24d0cea47116d0dd0e46ddeb1b4fea9d8c244ce945f",
+          "identical": true
+        },
+        "staticTemplate": {
+          "first": "a343b847ad0f96ce6e838c027b87d7ee4ab43808384b9d445b49e187a2526471",
+          "second": "a343b847ad0f96ce6e838c027b87d7ee4ab43808384b9d445b49e187a2526471",
+          "identical": true
+        }
+      },
+      "injectionSha256": "e40880f225b1967e6c823a59ed25938811463c6b3d6c65328bb3afc42d713210"
+    }
+  ]
+}

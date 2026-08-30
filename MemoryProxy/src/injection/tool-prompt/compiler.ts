@@ -4,11 +4,20 @@ import { applyContractCorrections } from "./contract-corrections.js";
 import { applyProtocolCompaction } from "./protocol-compact.js";
 import { applySelectionCalibration } from "./selection-calibrated.js";
 import { applySemanticCompaction } from "./semantic-compact.js";
-import { getToolPromptProfileDefinition, getToolPromptProfileLineage } from "./profiles.js";
+import {
+  getToolPromptProfileDefinition,
+  getToolPromptProfileLineage,
+  isTscgLiteProfile,
+} from "./profiles.js";
 import { getRuntimeToolContracts } from "./runtime-contract.js";
 import { KNOWLEDGE_TOOL_PROMPT_SPECS } from "./specs/knowledge.js";
 import { MEMORY_TOOL_PROMPT_SPECS } from "./specs/memory.js";
 import { SKILL_TOOL_PROMPT_SPECS } from "./specs/skill.js";
+import {
+  applyTscgLiteOperators,
+  TSCG_LITE_COMPILER_VERSION,
+  TSCG_LITE_PROFILE_OPERATORS,
+} from "./tscg-lite.js";
 import type {
   CompiledToolPrompt,
   CompileToolPromptInput,
@@ -73,6 +82,7 @@ function validateCatalog(
  */
 export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPrompt {
   const definition = getToolPromptProfileDefinition(input.profile);
+  const tscgProfile = isTscgLiteProfile(input.profile) ? input.profile : null;
   if (input.legacyUnits.length === 0) {
     throw new Error(`cannot compile empty ${input.surface} prompt surface`);
   }
@@ -106,6 +116,7 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
     || definition.renderer === "semantic-compact"
     || definition.renderer === "selection-calibrated"
     || definition.renderer === "capability-pruned"
+    || definition.renderer === "tscg-lite"
     ? applyProtocolCompaction({
         family: input.family,
         surface: input.surface,
@@ -117,10 +128,12 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
   const semanticUnits = definition.renderer === "semantic-compact"
     || definition.renderer === "selection-calibrated"
     || definition.renderer === "capability-pruned"
+    || definition.renderer === "tscg-lite"
     ? applySemanticCompaction(input.surface, protocolUnits)
     : protocolUnits;
   const selectionUnits = definition.renderer === "selection-calibrated"
     || definition.renderer === "capability-pruned"
+    || definition.renderer === "tscg-lite"
     ? applySelectionCalibration({
         family: input.family,
         surface: input.surface,
@@ -131,6 +144,7 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
       })
     : semanticUnits;
   const capabilityResult = definition.renderer === "capability-pruned"
+    || definition.renderer === "tscg-lite"
     ? applyCapabilityPruning({
         family: input.family,
         surface: input.surface,
@@ -139,14 +153,25 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
         units: selectionUnits,
       })
     : null;
-  const units = capabilityResult?.units ?? selectionUnits;
+  const tscgResult = tscgProfile
+    ? applyTscgLiteOperators({
+        family: input.family,
+        surface: input.surface,
+        capabilitySignature: input.capabilitySignature,
+        contracts,
+        specs,
+        units: capabilityResult?.units ?? selectionUnits,
+        operators: TSCG_LITE_PROFILE_OPERATORS[tscgProfile],
+      })
+    : null;
+  const units = tscgResult?.units ?? capabilityResult?.units ?? selectionUnits;
   const content = units.map((unit) => unit.content).join("");
   if (content.length === 0) {
     throw new Error(`cannot compile empty ${input.surface} prompt content`);
   }
 
   return {
-    compilerVersion: TOOL_PROMPT_COMPILER_VERSION,
+    compilerVersion: tscgProfile ? TSCG_LITE_COMPILER_VERSION : TOOL_PROMPT_COMPILER_VERSION,
     profile: input.profile,
     profileLineage: getToolPromptProfileLineage(input.profile),
     family: input.family,
@@ -162,5 +187,15 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
           .filter((spec) => capabilityResult.visibleContractIds.includes(spec.contractId))
           .map((spec) => spec.id)
       : specs.map((spec) => spec.id),
+    ...(tscgResult?.program
+      ? {
+          tscgLite: {
+            enabledOperators: tscgResult.enabledOperators,
+            removedUnitMappings: tscgResult.removedUnitMappings,
+            contractEquivalent: tscgResult.contractComparison?.equivalent ?? false,
+            droRoundTrip: tscgResult.droRoundTrip,
+          },
+        }
+      : {}),
   };
 }

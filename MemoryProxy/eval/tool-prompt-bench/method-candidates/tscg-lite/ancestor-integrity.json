@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "baselineCommit": "0373227c4b345c77f79ace5b0c19eb98e0fc50df",
+  "variantMapping": {
+    "V0": "legacy",
+    "V0-C": "contract-corrected",
+    "V1a": "protocol-compact",
+    "V1": "compact",
+    "V2": "selection-calibrated",
+    "V3": "capability-pruned"
+  },
+  "allByteIdentical": true,
+  "rows": [
+    {
+      "variant": "V0",
+      "profile": "legacy",
+      "frozenStage": "c00",
+      "files": [
+        {
+          "filename": "injection.txt",
+          "sha256": "c84371246a0e9502fdbf78bc11dd98a7eebdf22bd2b26030f66d6206cee3842c",
+          "baselineSha256": "c84371246a0e9502fdbf78bc11dd98a7eebdf22bd2b26030f66d6206cee3842c",
+          "byteIdentical": true
+        },
+        {
+          "filename": "prompt.txt",
+          "sha256": "69e866ec8b97dd65177d08f9d42bf703bdf6dbea1df2c760bb5f666926166f95",
+          "baselineSha256": "69e866ec8b97dd65177d08f9d42bf703bdf6dbea1df2c760bb5f666926166f95",
+          "byteIdentical": true
+        },
+        {
+          "filename": "manifest.json",
+          "sha256": "35de75e8d8abbccda874549d17017f14085f5ca64f2115f08880382870aa721f",
+          "baselineSha256": "35de75e8d8abbccda874549d17017f14085f5ca64f2115f08880382870aa721f",
+          "byteIdentical": true
+        }
+      ]
+    },
+    {
+      "variant": "V0-C",
+      "profile": "contract-corrected",
+      "frozenStage": "c01",
+      "files": [
+        {
+          "filename": "injection.txt",
+          "sha256": "8b3a11049a2125edef37db75e27f117a9f384f52e756b52287d493e70450594b",
+          "baselineSha256": "8b3a11049a2125edef37db75e27f117a9f384f52e756b52287d493e70450594b",
+          "byteIdentical": true
+        },
+        {
+          "filename": "prompt.txt",
+          "sha256": "f20d3e984d5365b415ae22eca8cf5bf6c286f30833255335a8d5af3f70ccdd86",
+          "baselineSha256": "f20d3e984d5365b415ae22eca8cf5bf6c286f30833255335a8d5af3f70ccdd86",
+          "byteIdentical": true
+        },
+        {
+          "filename": "manifest.json",
+          "sha256": "07e53009f0efff6bbb34dfc204d91398b75208f1ad67a4adaa59fc0e047849f4",
+          "baselineSha256": "07e53009f0efff6bbb34dfc204d91398b75208f1ad67a4adaa59fc0e047849f4",
+          "byteIdentical": true
+        }
+      ]
+    },
+    {
+      "variant": "V1a",
+      "profile": "protocol-compact",
+      "frozenStage": "c02",
+      "files": [
+        {
+          "filename": "injection.txt",
+          "sha256": "1ca0590a3ed8919995f6e6f1ffdc9240ee67f6229235ca1e39833076168552fa",
+          "baselineSha256": "1ca0590a3ed8919995f6e6f1ffdc9240ee67f6229235ca1e39833076168552fa",
+          "byteIdentical": true
+        },
+        {
+          "filename": "prompt.txt",
+          "sha256": "70771044aac4c998fdb69ce0fefc2f402cc1a13048e78e5f5a5292066c9bc429",
+          "baselineSha256": "70771044aac4c998fdb69ce0fefc2f402cc1a13048e78e5f5a5292066c9bc429",
+          "byteIdentical": true
+        },
+        {
+          "filename": "manifest.json",
+          "sha256": "9b1dfa409bd1b9e0b4a14beb7533c7be5baef4c8e6a78623fa98f2f23e43a698",
+          "baselineSha256": "9b1dfa409bd1b9e0b4a14beb7533c7be5baef4c8e6a78623fa98f2f23e43a698",
+          "byteIdentical": true
+        }
+      ]
+    },
+    {
+      "variant": "V1",
+      "profile": "compact",
+      "frozenStage": "c03",
+      "files": [
+        {
+          "filename": "injection.txt",
+          "sha256": "444be855524cb01e8c0377eba8b36b9b4da8911f20e4df14b8bba7dfc24e8167",
+          "baselineSha256": "444be855524cb01e8c0377eba8b36b9b4da8911f20e4df14b8bba7dfc24e8167",
+          "byteIdentical": true
+        },
+        {
+          "filename": "prompt.txt",
+          "sha256": "9dac01f195138de458e1e2d85b554daf274b6c138c76ef35998d269335f9af14",
+          "baselineSha256": "9dac01f195138de458e1e2d85b554daf274b6c138c76ef35998d269335f9af14",
+          "byteIdentical": true
+        },
+        {
+          "filename": "manifest.json",
+          "sha256": "2c4c5642dd4d2625f6c1915c5da21dd636ec89f4f8d490909ccf047015ad6eb5",
+          "baselineSha256": "2c4c5642dd4d2625f6c1915c5da21dd636ec89f4f8d490909ccf047015ad6eb5",
+          "byteIdentical": true
+        }
+      ]
+    },
+    {
+      "variant": "V2",
+      "profile": "selection-calibrated",
+      "frozenStage": "c04",
+      "files": [
+        {
+          "filename": "injection.txt",
+          "sha256": "80d6f7f3e2289649d62280fa87a41372938eab35c2f0f27095261c9af045bc03",
+          "baselineSha256": "80d6f7f3e2289649d62280fa87a41372938eab35c2f0f27095261c9af045bc03",
+          "byteIdentical": true
+        },
+        {
+          "filename": "prompt.txt",
+          "sha256": "420680e1be50559bc9a3e416029d98001ec987087ec7fa8b59c0f3b5ba70fdf2",
+          "baselineSha256": "420680e1be50559bc9a3e416029d98001ec987087ec7fa8b59c0f3b5ba70fdf2",
+          "byteIdentical": true
+        },
+        {
+          "filename": "manifest.json",
+          "sha256": "665a70280aa3a65d394ccf006f3d6a4f8c86c5b5d16290a70606188dc05885da",
+          "baselineSha256": "665a70280aa3a65d394ccf006f3d6a4f8c86c5b5d16290a70606188dc05885da",
+          "byteIdentical": true
+        }
+      ]
+    },
+    {
+      "variant": "V3",
+      "profile": "capability-pruned",
+      "frozenStage": "c05",
+      "files": [
+        {
+          "filename": "injection.txt",
+          "sha256": "625dba5f8a74df608c3fcabd92b9cc9aea191e4c1d14c89df70d28767587f607",
+          "baselineSha256": "625dba5f8a74df608c3fcabd92b9cc9aea191e4c1d14c89df70d28767587f607",
+          "byteIdentical": true
+        },
+        {
+          "filename": "prompt.txt",
+          "sha256": "ce4fe51c20b815e0288c3b54bcd355b9003f93f48539479f3d1a06d2bb762e70",
+          "baselineSha256": "ce4fe51c20b815e0288c3b54bcd355b9003f93f48539479f3d1a06d2bb762e70",
+          "byteIdentical": true
+        },
+        {
+          "filename": "manifest.json",
+          "sha256": "a95c1a8bc1b7c5c4cb44c042355d820d3bba3f753382b341cf9e07e339e40857",
+          "baselineSha256": "a95c1a8bc1b7c5c4cb44c042355d820d3bba3f753382b341cf9e07e339e40857",
+          "byteIdentical": true
+        }
+      ]
+    }
+  ]
+}

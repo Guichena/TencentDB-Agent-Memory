@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "TSCG-SIG",
+  "profile": "tscg-sig",
+  "parentProfile": "capability-pruned",
+  "profileLineage": [
+    "legacy",
+    "contract-corrected",
+    "protocol-compact",
+    "compact",
+    "selection-calibrated",
+    "capability-pruned",
+    "tscg-sig"
+  ],
+  "enabledOperators": [
+    "typed-signature"
+  ],
+  "baselineCommit": "0373227c4b345c77f79ace5b0c19eb98e0fc50df",
+  "compilerVersion": "tscg-lite.1",
+  "capabilitySignature": "memory=1;skill=1;knowledge=1;wiki=1;code_graph=1;skill_write=0;skill_extract=0",
+  "tokenizer": "o200k_base",
+  "tokenAccounting": "Each full injection and full static template is encoded as one complete string; component sums are not used as totals.",
+  "totalInjectionCharacters": 10844,
+  "totalInjectionBytes": 11698,
+  "totalInjectionTokens": 2945,
+  "totalInjectionSha256": "8c0bf166a94d5040c412a058bb8d5ca9aa332113a74bfe2c22df479b714f4bd0",
+  "staticTemplateCharacters": 10271,
+  "staticTemplateBytes": 11047,
+  "staticToolTokens": 2748,
+  "fullStaticTemplateTokens": 2746,
+  "staticTemplateSha256": "6ba258d1f6682a9336e1d6d03a2595d90a38335ecaca23ac476a05d14f32ec08",
+  "effectiveSystemTokens": 2999,
+  "effectiveSystemSha256": "79c904727285607639aea603ecdc7f01949e8482011463ac08217fc77a837c7a",
+  "deltaVsV3Tokens": 721,
+  "contractEquivalent": true,
+  "roundTrip": null,
+  "captureSha256": {
+    "injection": {
+      "first": "8c0bf166a94d5040c412a058bb8d5ca9aa332113a74bfe2c22df479b714f4bd0",
+      "second": "8c0bf166a94d5040c412a058bb8d5ca9aa332113a74bfe2c22df479b714f4bd0",
+      "identical": true
+    },
+    "prompt": {
+      "first": "79c904727285607639aea603ecdc7f01949e8482011463ac08217fc77a837c7a",
+      "second": "79c904727285607639aea603ecdc7f01949e8482011463ac08217fc77a837c7a",
+      "identical": true
+    },
+    "staticTemplate": {
+      "first": "6ba258d1f6682a9336e1d6d03a2595d90a38335ecaca23ac476a05d14f32ec08",
+      "second": "6ba258d1f6682a9336e1d6d03a2595d90a38335ecaca23ac476a05d14f32ec08",
+      "identical": true
+    }
+  },
+  "shaRerunIdentical": true,
+  "cacheIdentities": [
+    {
+      "hookId": "skill-tools-injector",
+      "cacheIdentity": "skill-tools-injector-tp-tscg-sig-9df3f77da589"
+    },
+    {
+      "hookId": "skill-injector",
+      "cacheIdentity": "skill-injector-tp-tscg-sig-9df3f77da589"
+    },
+    {
+      "hookId": "knowledge-tools-injector",
+      "cacheIdentity": "knowledge-tools-injector-tp-tscg-sig-9df3f77da589"
+    },
+    {
+      "hookId": "tdai-memory-tools-injector",
+      "cacheIdentity": "tdai-memory-tools-injector-tp-tscg-sig-9df3f77da589"
+    },
+    {
+      "hookId": "tdai-profile-memory-injector",
+      "cacheIdentity": "tdai-profile-memory-injector-tp-tscg-sig-9df3f77da589"
+    }
+  ],
+  "toolAudits": [
+    {
+      "family": "skill",
+      "surface": "skill-tools",
+      "contractIds": [
+        "skill_search",
+        "skill_view",
+        "skill_view_by_id",
+        "skill_files_read",
+        "skill_files_download"
+      ],
+      "specIds": [
+        "skill_search",
+        "skill_view",
+        "skill_view_by_id",
+        "skill_files_read",
+        "skill_files_download"
+      ],
+      "contentSha256": "065e6dc0a58fa12e8ee510d0d925e981cb9bba507b1191cf3ac8eb7c2a5799ec",
+      "contractEquivalent": true,
+      "droRoundTrip": null,
+      "removedUnitMappings": []
+    },
+    {
+      "family": "knowledge",
+      "surface": "knowledge-tools",
+      "contractIds": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "specIds": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "contentSha256": "ff493a0aeb4e6fa20001f7194850c402cf68bd1d6e84dc6bbccff0715e7ca3d5",
+      "contractEquivalent": true,
+      "droRoundTrip": null,
+      "removedUnitMappings": []
+    },
+    {
+      "family": "memory",
+      "surface": "memory-tools",
+      "contractIds": [
+        "tdai_memory_search",
+        "tdai_atomic_query",
+        "tdai_conversation_search",
+        "tdai_conversation_query",
+        "tdai_scenario_ls",
+        "tdai_read_scene"
+      ],
+      "specIds": [
+        "tdai_memory_search",
+        "tdai_atomic_query",
+        "tdai_conversation_search",
+        "tdai_conversation_query",
+        "tdai_scenario_ls",
+        "tdai_read_scene"
+      ],
+      "contentSha256": "7dfbce447a80b2e6f438977b7632c882ad26ae99a5ba2af71b49f0511b6f0efe",
+      "contractEquivalent": true,
+      "droRoundTrip": null,
+      "removedUnitMappings": []
+    }
+  ],
+  "blocks": [
+    {
+      "blockId": "skill_tools",
+      "injectionPoint": "system.before_tools",
+      "tokens": 743,
+      "staticToolTokens": 734,
+      "sha256": "065e6dc0a58fa12e8ee510d0d925e981cb9bba507b1191cf3ac8eb7c2a5799ec"
+    },
+    {
+      "blockId": "available_skills",
+      "injectionPoint": "system.before_tools",
+      "tokens": 117,
+      "staticToolTokens": 90,
+      "sha256": "e098e9968c2d6aa03524923fb71d530363b4c7d69c6646401ecdb338fa751d94"
+    },
+    {
+      "blockId": "knowledge_tools",
+      "injectionPoint": "system.before_tools",
+      "tokens": 495,
+      "staticToolTokens": 452,
+      "sha256": "ff493a0aeb4e6fa20001f7194850c402cf68bd1d6e84dc6bbccff0715e7ca3d5"
+    },
+    {
+      "blockId": "tdai_memory_tools",
+      "injectionPoint": "system.suffix",
+      "tokens": 1404,
+      "staticToolTokens": 1395,
+      "sha256": "7dfbce447a80b2e6f438977b7632c882ad26ae99a5ba2af71b49f0511b6f0efe"
+    },
+    {
+      "blockId": "tdai_profile_memory",
+      "injectionPoint": "system.suffix",
+      "tokens": 186,
+      "staticToolTokens": 77,
+      "sha256": "3330b79dd199bad69b065ecb0c32dbaca14107259c309336347c7a68b1d862c6"
+    }
+  ]
+}

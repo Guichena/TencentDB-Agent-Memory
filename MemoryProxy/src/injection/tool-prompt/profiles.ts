@@ -1,9 +1,13 @@
 import { createHash } from "node:crypto";
 import {
-  TOOL_PROMPT_PROFILES,
+  ALL_TOOL_PROMPT_PROFILES,
+  TSCG_LITE_PROFILES,
   type CompiledToolPromptProfile,
+  type TscgLiteProfile,
   type ToolPromptProfile,
 } from "./types.js";
+
+export type { ToolPromptProfile } from "./types.js";
 
 export interface ToolPromptProfileDefinition {
   id: ToolPromptProfile;
@@ -14,7 +18,8 @@ export interface ToolPromptProfileDefinition {
     | "protocol-compact"
     | "semantic-compact"
     | "selection-calibrated"
-    | "capability-pruned";
+    | "capability-pruned"
+    | "tscg-lite";
 }
 
 const DEFINITIONS: Record<ToolPromptProfile, ToolPromptProfileDefinition> = {
@@ -44,17 +49,46 @@ const DEFINITIONS: Record<ToolPromptProfile, ToolPromptProfileDefinition> = {
     parent: "selection-calibrated",
     renderer: "capability-pruned",
   },
+  "tscg-sig": {
+    id: "tscg-sig",
+    parent: "capability-pruned",
+    renderer: "tscg-lite",
+  },
+  "tscg-sdm": {
+    id: "tscg-sdm",
+    parent: "tscg-sig",
+    renderer: "tscg-lite",
+  },
+  "tscg-dro": {
+    id: "tscg-dro",
+    parent: "tscg-sdm",
+    renderer: "tscg-lite",
+  },
+  "tscg-cfo": {
+    id: "tscg-cfo",
+    parent: "tscg-dro",
+    renderer: "tscg-lite",
+  },
 };
 
-const PROFILE_SET = new Set<string>(TOOL_PROMPT_PROFILES);
+const PROFILE_SET = new Set<string>(ALL_TOOL_PROMPT_PROFILES);
+const TSCG_PROFILE_SET = new Set<string>(TSCG_LITE_PROFILES);
 
 export function parseToolPromptProfile(value: unknown): ToolPromptProfile {
   if (typeof value === "string" && PROFILE_SET.has(value)) {
     return value as ToolPromptProfile;
   }
   throw new Error(
-    `invalid injection.toolPromptProfile ${JSON.stringify(value)}; expected one of ${TOOL_PROMPT_PROFILES.join(", ")}`,
+    `invalid injection.toolPromptProfile ${JSON.stringify(value)}; expected one of ${ALL_TOOL_PROMPT_PROFILES.join(", ")}`,
   );
+}
+
+export function isTscgLiteProfile(profile: ToolPromptProfile): profile is TscgLiteProfile {
+  return TSCG_PROFILE_SET.has(profile);
+}
+
+export function isCapabilityPrunedProfile(profile: ToolPromptProfile): boolean {
+  return profile === "capability-pruned" || isTscgLiteProfile(profile);
 }
 
 export function getToolPromptProfileDefinition(

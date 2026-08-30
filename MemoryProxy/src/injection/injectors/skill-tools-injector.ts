@@ -40,7 +40,11 @@ import type {
 import { HOOK_PRIORITY } from "../types.js";
 import { compileToolPrompt } from "../tool-prompt/compiler.js";
 import { resolveSessionCapabilitySignature } from "../tool-prompt/capability-pruned.js";
-import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
+import {
+  isCapabilityPrunedProfile,
+  isTscgLiteProfile,
+  toolPromptCacheIdentity,
+} from "../tool-prompt/profiles.js";
 import type { ToolPromptProfile } from "../tool-prompt/types.js";
 import {
   buildCompiledPromptProductionSources,
@@ -209,14 +213,17 @@ function locateSkillRuntimeBindings(
   content: string,
   input: RenderSkillToolsPromptArtifactInput,
 ): ProductionPromptBinding[] {
-  const bridge = `${input.proxyBaseUrl.replace(/\/$/, "")}/skill-bridge/v3/skill`;
+  const proxyOrigin = input.proxyBaseUrl.replace(/\/$/, "");
+  const bridge = `${proxyOrigin}/skill-bridge/v3/skill`;
+  const tscgLite = isTscgLiteProfile(input.profile ?? "legacy");
   return [
     ...locateBoundedProductionPromptBindings({
       text: content,
-      id: "skill-bridge",
-      value: bridge,
+      id: tscgLite ? "proxy-origin" : "skill-bridge",
+      value: tscgLite ? proxyOrigin : bridge,
       kind: "runtime-binding",
       boundaries: [
+        { before: "origin: ", after: "\n" },
         { before: "endpoint-base: ", after: "\n" },
         { before: "    path: ", after: "/" },
         { before: "  其中 <bridge> = ", after: "\n" },
@@ -366,7 +373,7 @@ export class SkillToolsInjector implements InjectionHook {
 
     const profile = this.config.toolPromptProfile ?? "legacy";
     const baseSignature = this.config.capabilitySignature ?? "unconfigured";
-    const capabilitySignature = profile === "capability-pruned"
+    const capabilitySignature = isCapabilityPrunedProfile(profile)
       ? resolveSessionCapabilitySignature(baseSignature, assetCapabilities)
       : baseSignature;
     const artifact = renderSkillToolsPromptArtifact({
@@ -385,7 +392,7 @@ export class SkillToolsInjector implements InjectionHook {
         productionPromptSources: artifact.productionSources,
         // Stable cache-dedup key — varies by allowLlmWrite to avoid stale cache
         cacheKey: `skill-tools-injector:catalog:${allowLlmWrite ? "rw" : "ro"}`
-          + (profile === "capability-pruned" ? `:${capabilitySignature}` : ""),
+          + (isCapabilityPrunedProfile(profile) ? `:${capabilitySignature}` : ""),
       },
     }];
   }

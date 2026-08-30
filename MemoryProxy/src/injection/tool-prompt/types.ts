@@ -21,11 +21,33 @@ export const TOOL_PROMPT_PROFILES = [
   "capability-pruned",
 ] as const;
 
-export type ToolPromptProfile = (typeof TOOL_PROMPT_PROFILES)[number];
+/**
+ * Historical V0-V3 profiles. Keep this list frozen because the C00-C06
+ * capture code iterates it when checking ancestor byte parity.
+ */
+export type HistoricalToolPromptProfile = (typeof TOOL_PROMPT_PROFILES)[number];
+
+export const TSCG_LITE_PROFILES = [
+  "tscg-sig",
+  "tscg-sdm",
+  "tscg-dro",
+  "tscg-cfo",
+] as const;
+
+export const ALL_TOOL_PROMPT_PROFILES = [
+  ...TOOL_PROMPT_PROFILES,
+  ...TSCG_LITE_PROFILES,
+] as const;
+
+export type TscgLiteProfile = (typeof TSCG_LITE_PROFILES)[number];
+export type ToolPromptProfile = (typeof ALL_TOOL_PROMPT_PROFILES)[number];
 export type CompiledToolPromptProfile = Exclude<ToolPromptProfile, "legacy">;
 
 export type ToolPromptPhase = "read" | "lifecycle" | "write";
 export type ToolPromptResponseKind = "json" | "bytes" | "dynamic-schema";
+export type ToolPromptOperation =
+  | { kind: "none" }
+  | { kind: "argument"; path: string };
 
 /** Runtime truth derived from Bridge allowlists and downstream schemas. */
 export interface RuntimeToolContract {
@@ -38,6 +60,7 @@ export interface RuntimeToolContract {
   requiredArgs: readonly string[];
   optionalArgs: readonly string[];
   forbiddenArgs: readonly string[];
+  operation: ToolPromptOperation;
   responseKind: ToolPromptResponseKind;
   capability: string;
   sourceRefs: readonly string[];
@@ -113,4 +136,15 @@ export interface CompiledToolPrompt {
   units: readonly PromptUnit[];
   contractIds: readonly string[];
   specIds: readonly string[];
+  tscgLite?: {
+    enabledOperators: readonly string[];
+    removedUnitMappings: readonly {
+      sourceUnit: string;
+      retainedUnit: string;
+      field: string;
+      canonicalValue: string;
+    }[];
+    contractEquivalent: boolean;
+    droRoundTrip: boolean | null;
+  };
 }

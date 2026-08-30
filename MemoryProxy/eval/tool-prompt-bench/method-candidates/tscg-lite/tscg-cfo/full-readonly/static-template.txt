@@ -1,0 +1,86 @@
+<skill_tools>
+以下是云端 skill 操作工具。
+
+origin: <proxy-origin>
+headers: x-tdai-service-id: <space-id>; x-conversation-id: <session-id>
+
+可用工具：
+
+  @D|m=POST|h=content-type,x-tdai-service-id,x-conversation-id|ph=read|cap=skill.read|op=none|r=json
+  @T|id=skill_search|p=/skill-bridge/v3/skill/search|req=query|opt=-|x=user_id,team_id,agent_id,task_id,top_k,mode|w=A reusable team workflow may exist but its exact skill name is not known.
+  @T|id=skill_view|p=/skill-bridge/v3/skill/get-by-name|req=skill_name|opt=version,include_content,include_manifest|x=user_id,team_id,agent_id,task_id|w=A skill owned by the current agent is known by name and must be opened to read its instructions and manifest.
+  @T|id=skill_view_by_id|p=/skill-bridge/v3/skill/get|req=skill_id|opt=version,include_content,include_manifest|x=user_id,team_id,agent_id,task_id|w=A team skill returned by skill_search, or any skill known by exact skill_id, must be opened.
+  @T|id=skill_files_download|p=/skill-bridge/v3/skill/files/download|req=skill_id,path|opt=version,encoding|x=user_id,team_id,agent_id,task_id|r=bytes|w=A specific resource path from a viewed skill manifest must be downloaded as raw bytes.|a=Do not guess skill ids or resource paths.
+  @T|id=skill_files_read|p=/skill-bridge/v3/skill/files/read|req=skill_id,path|opt=version,encoding|x=user_id,team_id,agent_id,task_id|w=A specific resource path from a viewed skill manifest must be read into context.|a=Do not guess skill ids or resource paths.
+
+注意：当前仅开放只读操作。如需创建/修改 skill 请联系管理员。
+</skill_tools>
+## Available skills
+These are optional cloud workflow assets for the current agent. Open one only when its description clearly matches missing task guidance; keyword overlap or availability alone is insufficient.
+Use `skill_search` only when a reusable team workflow is needed and no listed skill matches.
+
+**重要：这些 skill 在云端，不能用 read_file / tool_use 访问；按统一协议调用 `<skill_tools>`。**
+{{dynamic:available-skills}}
+
+<knowledge_tools>
+## 已绑定资源
+{{dynamic:knowledge-resource}}
+
+## 知识库专用流程
+origin: target <knowledge>.url; knowledge_id stays in body
+headers: x-tdai-service-id: <space-id>; x-conversation-id: <session-id>; x-tdai-user-id: <user-id>; x-tdai-team-id: <team-id>; x-tdai-agent-id: <agent-id>; x-tdai-agent-source: <agent-source>; x-tdai-space-id: <space-id>
+
+  @D|m=POST|h=content-type,x-tdai-service-id|ph=read|cap=knowledge.read|r=dynamic-schema
+  @T|id=knowledge_tools_list|p=/tools/list|req=knowledge_id|opt=-|x=-|op=none|w=A matching knowledge resource is needed and its resource-specific tool schema has not been discovered in this session.
+  @T|id=knowledge_tools_call|p=/tools/call|req=knowledge_id,tool_name,params|opt=-|x=-|op=argument:tool_name|w=A tool name and parameter schema returned by tools/list must be executed against the same knowledge resource.|a=Do not invent dynamic tool names or parameters.
+
+## 约定
+
+- 找文件名用 explore（query 支持文件名，如 "session-manager.ts"）；search 只按符号名定位，files 只用于一次性总览目录结构，每个资源每会话最多一次。
+- wiki 先 search 命中再 read_page，不要全量 list_pages。
+- 多个资源可并行发起，无需串行等待。同一调用连续失败 2 次即放弃，回退本地检索。
+
+</knowledge_tools>
+
+<tdai_memory_tools>
+## 统一工具调用协议
+These records are Bash HTTP tools, not native functions.
+- endpoint = family `origin` + full `path`; knowledge uses resource `url` + `path`.
+- Send JSON with only `requiredArgs`/`optionalArgs`; never send `forbiddenArgs`. Add every `requiredHeaders` entry using the family values below; memory/skill identity is session-injected.
+- `responseKind=json|dynamic-schema` uses `{code,message,data}` and succeeds only at code=0; `bytes` is raw.
+canonical: `curl -sSk -X POST '<endpoint>' <headers> -d '<body>'`
+
+## Tool / no-tool gate
+Call an injected tool only when required information is missing from current context and supplied by an enabled persistent asset, or when a supported asset lifecycle/write action matches a tool card.
+Do not call for pure or self-contained coding, general knowledge, current-context answers, or exact/current local-source work.
+Choose the needed family before choosing a tool:
+- memory: missing user history, preferences, prior decisions, exact past wording, or a known L2 scene body; injected L3 and the L2 index already count as current context.
+- skill: missing reusable workflow instructions clearly matched by a listed/team skill; keyword overlap or availability alone is insufficient.
+- knowledge: a matching resource is needed for cross-file structure or design rationale; reject mismatched repository indexes and use local source for exact/current code.
+Choose the narrowest card by `when`; obey `avoid` and `contrast`. Use multiple families only when each supplies distinct missing information.
+
+
+origin: <proxy-origin>
+headers: x-tdai-service-id: <space-id>; x-conversation-id: <session-id>
+
+  @D|m=POST|h=content-type,x-tdai-service-id,x-conversation-id|ph=read|cap=memory.read|op=none|r=json
+  @T|id=tdai_atomic_query|p=/memory-bridge/v3/atomic/query|req=-|opt=type,limit,offset,time_start,time_end|x=user_id,team_id,agent_id,task_id|w=The caller needs atomic memories filtered by type, time window, or page rather than semantic similarity.
+  @T|id=tdai_conversation_query|p=/memory-bridge/v3/conversation/query|req=-|opt=session_id,limit,offset,time_start,time_end|x=user_id,team_id,agent_id,task_id|w=A known session id must be read in chronological order.
+  @T|id=tdai_conversation_search|p=/memory-bridge/v3/conversation/search|req=query|opt=limit,session_id,time_start,time_end|x=user_id,team_id,agent_id,task_id|w=Exact historical wording, quotations, or fine-grained timeline evidence is missing from the current context.|c=tdai_memory_search>Use atomic search for distilled preferences and conclusions.
+  @T|id=tdai_memory_search|p=/memory-bridge/v3/atomic/search|req=query|opt=limit,type,time_start,time_end|x=user_id,team_id,agent_id,task_id|w=A stable preference, past conclusion, instruction, or fact may exist in atomic memory.|c=tdai_conversation_search>Use conversation search for exact message text or timeline details.
+  @T|id=tdai_scenario_ls|p=/memory-bridge/v3/scenario/ls|req=-|opt=path_prefix|x=user_id,team_id,agent_id,task_id|w=The injected scene index is absent, stale, or must be filtered by path prefix.
+  @T|id=tdai_read_scene|p=/memory-bridge/v3/scenario/read|req=path|opt=agent_id,version|x=user_id,team_id,task_id|w=A scene path is known from the injected index or scenario listing and its full body is required.|a=Do not invent a scene path.
+
+## 调用约束
+- 这些是只读工具；要修改 L1/L2/L3 必须用主链路（agent_id 自动归属）。
+- 失败重试：HTTP 5xx 可一次性 retry；HTTP 4xx 不要重试。
+
+</tdai_memory_tools>
+{{dynamic:profile-memory}}
+
+<memory-tools-guide>
+## Memory constraints
+- `tdai_memory_search` + `tdai_conversation_search` total ≤ 3 calls per turn.
+- If retrieval is empty, say the memory was not found; do not invent it.
+- Do not read the same L2 path twice in one turn.
+</memory-tools-guide>

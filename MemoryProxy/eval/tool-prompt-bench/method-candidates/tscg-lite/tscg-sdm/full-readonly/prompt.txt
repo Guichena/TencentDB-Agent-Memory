@@ -1,0 +1,236 @@
+Canonical CodeBuddy provider prompt for Task 1 TSCG-lite artifacts.
+<mcp_protocol>native tools</mcp_protocol>
+<skill_tools>
+以下是云端 skill 操作工具。
+
+origin: http://127.0.0.1:8096
+headers: x-tdai-service-id: space-c00; x-conversation-id: session-c00
+
+可用工具：
+
+  [typed-defaults]
+    method: POST
+    requiredHeaders: content-type,x-tdai-service-id,x-conversation-id
+    phase: read
+    capability: skill.read
+    operation: none
+    responseKind: json
+  [/typed-defaults]
+
+  [typed-tool]
+    id: skill_search
+    path: /skill-bridge/v3/skill/search
+    requiredArgs: query
+    optionalArgs: -
+    forbiddenArgs: user_id,team_id,agent_id,task_id,top_k,mode
+    when: A reusable team workflow may exist but its exact skill name is not known.
+  [/typed-tool]
+
+  [typed-tool]
+    id: skill_view
+    path: /skill-bridge/v3/skill/get-by-name
+    requiredArgs: skill_name
+    optionalArgs: version,include_content,include_manifest
+    forbiddenArgs: user_id,team_id,agent_id,task_id
+    when: A skill owned by the current agent is known by name and must be opened to read its instructions and manifest.
+  [/typed-tool]
+
+  [typed-tool]
+    id: skill_view_by_id
+    path: /skill-bridge/v3/skill/get
+    requiredArgs: skill_id
+    optionalArgs: version,include_content,include_manifest
+    forbiddenArgs: user_id,team_id,agent_id,task_id
+    when: A team skill returned by skill_search, or any skill known by exact skill_id, must be opened.
+  [/typed-tool]
+
+  [typed-tool]
+    id: skill_files_read
+    path: /skill-bridge/v3/skill/files/read
+    requiredArgs: skill_id,path
+    optionalArgs: version,encoding
+    forbiddenArgs: user_id,team_id,agent_id,task_id
+    when: A specific resource path from a viewed skill manifest must be read into context.
+    avoid: Do not guess skill ids or resource paths.
+  [/typed-tool]
+
+  [typed-tool]
+    id: skill_files_download
+    path: /skill-bridge/v3/skill/files/download
+    requiredArgs: skill_id,path
+    optionalArgs: version,encoding
+    forbiddenArgs: user_id,team_id,agent_id,task_id
+    responseKind: bytes
+    when: A specific resource path from a viewed skill manifest must be downloaded as raw bytes.
+    avoid: Do not guess skill ids or resource paths.
+  [/typed-tool]
+
+注意：当前仅开放只读操作。如需创建/修改 skill 请联系管理员。
+</skill_tools>## Available skills
+These are optional cloud workflow assets for the current agent. Open one only when its description clearly matches missing task guidance; keyword overlap or availability alone is insufficient.
+Use `skill_search` only when a reusable team workflow is needed and no listed skill matches.
+
+**重要：这些 skill 在云端，不能用 read_file / tool_use 访问；按统一协议调用 `<skill_tools>`。**
+<available_skills>
+- task1-review: Review proxy prompt contracts and evidence
+- typescript-tests: Run deterministic TypeScript contract tests
+</available_skills>
+<agent_skills>native skills</agent_skills>
+<tdai_memory_tools>
+## 统一工具调用协议
+These records are Bash HTTP tools, not native functions.
+- endpoint = family `origin` + full `path`; knowledge uses resource `url` + `path`.
+- Send JSON with only `requiredArgs`/`optionalArgs`; never send `forbiddenArgs`. Add every `requiredHeaders` entry using the family values below; memory/skill identity is session-injected.
+- `responseKind=json|dynamic-schema` uses `{code,message,data}` and succeeds only at code=0; `bytes` is raw.
+canonical: `curl -sSk -X POST '<endpoint>' <headers> -d '<body>'`
+
+## Tool / no-tool gate
+Call an injected tool only when required information is missing from current context and supplied by an enabled persistent asset, or when a supported asset lifecycle/write action matches a tool card.
+Do not call for pure or self-contained coding, general knowledge, current-context answers, or exact/current local-source work.
+Choose the needed family before choosing a tool:
+- memory: missing user history, preferences, prior decisions, exact past wording, or a known L2 scene body; injected L3 and the L2 index already count as current context.
+- skill: missing reusable workflow instructions clearly matched by a listed/team skill; keyword overlap or availability alone is insufficient.
+- knowledge: a matching resource is needed for cross-file structure or design rationale; reject mismatched repository indexes and use local source for exact/current code.
+Choose the narrowest card by `when`; obey `avoid` and `contrast`. Use multiple families only when each supplies distinct missing information.
+
+
+origin: http://127.0.0.1:8096
+headers: x-tdai-service-id: space-c00; x-conversation-id: session-c00
+
+  [typed-defaults]
+    method: POST
+    requiredHeaders: content-type,x-tdai-service-id,x-conversation-id
+    phase: read
+    capability: memory.read
+    operation: none
+    responseKind: json
+  [/typed-defaults]
+
+  [typed-tool]
+    id: tdai_memory_search
+    path: /memory-bridge/v3/atomic/search
+    requiredArgs: query
+    optionalArgs: limit,type,time_start,time_end
+    forbiddenArgs: user_id,team_id,agent_id,task_id
+    when: A stable preference, past conclusion, instruction, or fact may exist in atomic memory.
+    contrast[tdai_conversation_search]: Use conversation search for exact message text or timeline details.
+  [/typed-tool]
+
+  [typed-tool]
+    id: tdai_atomic_query
+    path: /memory-bridge/v3/atomic/query
+    requiredArgs: -
+    optionalArgs: type,limit,offset,time_start,time_end
+    forbiddenArgs: user_id,team_id,agent_id,task_id
+    when: The caller needs atomic memories filtered by type, time window, or page rather than semantic similarity.
+  [/typed-tool]
+
+  [typed-tool]
+    id: tdai_conversation_search
+    path: /memory-bridge/v3/conversation/search
+    requiredArgs: query
+    optionalArgs: limit,session_id,time_start,time_end
+    forbiddenArgs: user_id,team_id,agent_id,task_id
+    when: Exact historical wording, quotations, or fine-grained timeline evidence is missing from the current context.
+    contrast[tdai_memory_search]: Use atomic search for distilled preferences and conclusions.
+  [/typed-tool]
+
+  [typed-tool]
+    id: tdai_conversation_query
+    path: /memory-bridge/v3/conversation/query
+    requiredArgs: -
+    optionalArgs: session_id,limit,offset,time_start,time_end
+    forbiddenArgs: user_id,team_id,agent_id,task_id
+    when: A known session id must be read in chronological order.
+  [/typed-tool]
+
+  [typed-tool]
+    id: tdai_scenario_ls
+    path: /memory-bridge/v3/scenario/ls
+    requiredArgs: -
+    optionalArgs: path_prefix
+    forbiddenArgs: user_id,team_id,agent_id,task_id
+    when: The injected scene index is absent, stale, or must be filtered by path prefix.
+  [/typed-tool]
+
+  [typed-tool]
+    id: tdai_read_scene
+    path: /memory-bridge/v3/scenario/read
+    requiredArgs: path
+    optionalArgs: agent_id,version
+    forbiddenArgs: user_id,team_id,task_id
+    when: A scene path is known from the injected index or scenario listing and its full body is required.
+    avoid: Do not invent a scene path.
+  [/typed-tool]
+
+## 调用约束
+- 这些是只读工具；要修改 L1/L2/L3 必须用主链路（agent_id 自动归属）。
+- 失败重试：HTTP 5xx 可一次性 retry；HTTP 4xx 不要重试。
+
+</tdai_memory_tools><memories>native memory
+<tdai_profile_memory>
+以下是 TDAI 为当前 agent 维护的长期工作记忆（自有 + 借入分段；L2 仅给索引，按需用工具读全文）：
+<agent name="task1-agent" role="self" agent_id="agent-c00">
+<l3_core_memory>
+Prefers evidence-backed prompt changes.
+</l3_core_memory>
+<l2_scene_index>
+- `task1/compiler.md` — Compiler implementation decisions
+</l2_scene_index>
+</agent>
+</tdai_profile_memory>
+
+<memory-tools-guide>
+## Memory constraints
+- `tdai_memory_search` + `tdai_conversation_search` total ≤ 3 calls per turn.
+- If retrieval is empty, say the memory was not found; do not invent it.
+- Do not read the same L2 path twice in one turn.
+</memory-tools-guide></memories><knowledge_tools>
+## 已绑定资源
+<knowledge type="wiki" id="wiki-c00"
+  url="http://127.0.0.1:8421/v3"
+  name="Task 1 architecture"
+  about="Frozen design decisions for proxy prompt injection" />
+
+## 知识库专用流程
+origin: target <knowledge>.url; knowledge_id stays in body
+headers: x-tdai-service-id: space-c00; x-conversation-id: session-c00; x-tdai-user-id: user-c00; x-tdai-team-id: team-c00; x-tdai-agent-id: agent-c00; x-tdai-agent-source: codex; x-tdai-space-id: space-c00
+
+  [typed-defaults]
+    method: POST
+    requiredHeaders: content-type,x-tdai-service-id
+    phase: read
+    capability: knowledge.read
+    responseKind: dynamic-schema
+  [/typed-defaults]
+
+  [typed-tool]
+    id: knowledge_tools_list
+    path: /tools/list
+    requiredArgs: knowledge_id
+    optionalArgs: -
+    forbiddenArgs: -
+    operation: none
+    when: A matching knowledge resource is needed and its resource-specific tool schema has not been discovered in this session.
+  [/typed-tool]
+
+  [typed-tool]
+    id: knowledge_tools_call
+    path: /tools/call
+    requiredArgs: knowledge_id,tool_name,params
+    optionalArgs: -
+    forbiddenArgs: -
+    operation: argument:tool_name
+    when: A tool name and parameter schema returned by tools/list must be executed against the same knowledge resource.
+    avoid: Do not invent dynamic tool names or parameters.
+  [/typed-tool]
+
+## 约定
+
+- 找文件名用 explore（query 支持文件名，如 "session-manager.ts"）；search 只按符号名定位，files 只用于一次性总览目录结构，每个资源每会话最多一次。
+- wiki 先 search 命中再 read_page，不要全量 list_pages。
+- 多个资源可并行发起，无需串行等待。同一调用连续失败 2 次即放弃，回退本地检索。
+
+</knowledge_tools>
+
+<rules>native rules</rules>

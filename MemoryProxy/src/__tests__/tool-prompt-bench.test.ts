@@ -221,6 +221,10 @@ describe("TDAI-ToolPromptBench dataset", () => {
       V1: "compact",
       V2: "selection-calibrated",
       V3: "capability-pruned",
+      "TSCG-SIG": "tscg-sig",
+      "TSCG-SDM": "tscg-sdm",
+      "TSCG-DRO": "tscg-dro",
+      "TSCG-CFO": "tscg-cfo",
     });
     expect(() => resolveToolPromptVariant("latest")).toThrow(/unsupported tool prompt variant/);
 
@@ -247,13 +251,133 @@ describe("TDAI-ToolPromptBench dataset", () => {
     );
     const byVariant = new Map(rendered);
 
-    expect(new Set(rendered.map(([, result]) => result.promptSha256)).size).toBe(6);
+    expect(new Set(rendered.map(([, result]) => result.promptSha256)).size).toBe(10);
     expect(byVariant.get("V0")?.prompt).toContain("## Skills (mandatory)");
     expect(byVariant.get("V1a")?.prompt).toContain("## 统一工具调用协议");
     expect(byVariant.get("V2")?.prompt).toContain("## Tool / no-tool gate");
     expect(byVariant.get("V2")?.prompt).toContain('<tool name="skill_extract">');
     expect(byVariant.get("V3")?.prompt).not.toContain('<tool name="skill_extract">');
     expect(byVariant.get("V3")?.capabilitySignature).toContain("skill_extract=0");
+    expect(byVariant.get("TSCG-SIG")?.prompt).toContain("[typed-tool]");
+    expect(byVariant.get("TSCG-SDM")?.prompt).toContain("[typed-defaults]");
+    expect(byVariant.get("TSCG-DRO")?.prompt).toContain("@T|id=");
+    expect(byVariant.get("TSCG-CFO")?.prompt).toContain("@T|id=");
+  });
+
+  it("freezes independent TSCG-lite manifests, ledgers, dynamic bindings, and rerun hashes", () => {
+    const root = resolve(
+      process.cwd(),
+      "eval",
+      "tool-prompt-bench",
+      "method-candidates",
+      "tscg-lite",
+    );
+    const ledger = JSON.parse(readFileSync(resolve(root, "token-ledger.json"), "utf8")) as {
+      baseline: { fullInjectionTokens: number; staticToolTokens: number };
+      rows: Array<{
+        candidate: string;
+        profile: string;
+        fullInjectionTokens: number;
+        staticToolTokens: number;
+        contractEquivalent: boolean;
+        roundTrip: boolean | null;
+        shaRerunIdentical: boolean;
+        injectionSha256: string;
+      }>;
+    };
+    expect(ledger.baseline).toEqual({
+      fullInjectionTokens: 2224,
+      staticToolTokens: 2027,
+      candidate: "V3",
+      fullStaticTemplateTokens: 2025,
+      injectionSha256: "625dba5f8a74df608c3fcabd92b9cc9aea191e4c1d14c89df70d28767587f607",
+    });
+    expect(ledger.rows.map((row) => row.candidate)).toEqual([
+      "TSCG-SIG",
+      "TSCG-SDM",
+      "TSCG-DRO",
+      "TSCG-CFO",
+    ]);
+    const v3 = readFileSync(resolve(
+      process.cwd(),
+      "eval/tool-prompt-bench/variants/c05/capability-pruned/full-readonly/injection.txt",
+    ), "utf8");
+    const dynamicPatterns = [
+      /<available_skills>[\s\S]*?<\/available_skills>/,
+      /<knowledge type="[^"]+"[\s\S]*? \/>/,
+      /<tdai_profile_memory>[\s\S]*?<\/tdai_profile_memory>/,
+    ];
+    const cacheIdentities = new Set<string>();
+    for (const row of ledger.rows) {
+      const candidateRoot = resolve(root, row.profile, "full-readonly");
+      const injection = readFileSync(resolve(candidateRoot, "injection.txt"), "utf8");
+      const manifest = JSON.parse(readFileSync(resolve(candidateRoot, "manifest.json"), "utf8")) as {
+        totalInjectionSha256: string;
+        totalInjectionTokens: number;
+        staticToolTokens: number;
+        contractEquivalent: boolean;
+        roundTrip: boolean | null;
+        shaRerunIdentical: boolean;
+        captureSha256: {
+          injection: { first: string; second: string; identical: boolean };
+          prompt: { first: string; second: string; identical: boolean };
+          staticTemplate: { first: string; second: string; identical: boolean };
+        };
+        cacheIdentities: Array<{ cacheIdentity: string }>;
+      };
+      expect(createHash("sha256").update(injection).digest("hex")).toBe(row.injectionSha256);
+      expect(manifest).toMatchObject({
+        totalInjectionSha256: row.injectionSha256,
+        totalInjectionTokens: row.fullInjectionTokens,
+        staticToolTokens: row.staticToolTokens,
+        contractEquivalent: true,
+        roundTrip: row.roundTrip,
+        shaRerunIdentical: true,
+      });
+      expect(Object.values(manifest.captureSha256).every((capture) => (
+        capture.identical && capture.first === capture.second
+      ))).toBe(true);
+      expect(manifest.captureSha256.injection.first).toBe(row.injectionSha256);
+      for (const pattern of dynamicPatterns) {
+        expect(injection.match(pattern)?.[0]).toBe(v3.match(pattern)?.[0]);
+      }
+      for (const item of manifest.cacheIdentities) cacheIdentities.add(item.cacheIdentity);
+      expect(row.contractEquivalent).toBe(true);
+      expect(row.shaRerunIdentical).toBe(true);
+    }
+    expect(cacheIdentities.size).toBe(ledger.rows.length * 5);
+    expect(ledger.rows.find((row) => row.candidate === "TSCG-DRO")!.fullInjectionTokens)
+      .toBeLessThan(ledger.baseline.fullInjectionTokens);
+
+    const attribution = JSON.parse(readFileSync(
+      resolve(root, "operator-attribution.json"),
+      "utf8",
+    )) as { rows: Array<{ operator: string; savedTokens: number; beforeToolOrder: string[]; afterToolOrder: string[]; removedUnitMapping: unknown[] }> };
+    expect(attribution.rows.map((row) => row.operator)).toEqual([
+      "typed-signature",
+      "sdm",
+      "dro",
+      "cfo",
+    ]);
+    expect(attribution.rows.find((row) => row.operator === "sdm")!.removedUnitMapping.length)
+      .toBeGreaterThan(0);
+    expect(attribution.rows.find((row) => row.operator === "cfo")!.beforeToolOrder)
+      .not.toEqual(attribution.rows.find((row) => row.operator === "cfo")!.afterToolOrder);
+    const integrity = JSON.parse(readFileSync(
+      resolve(root, "ancestor-integrity.json"),
+      "utf8",
+    )) as { allByteIdentical: boolean };
+    expect(integrity.allByteIdentical).toBe(true);
+
+    const artifacts = JSON.parse(readFileSync(
+      resolve(root, "artifact-sha256.json"),
+      "utf8",
+    )) as { files: Record<string, { bytes: number; sha256: string }> };
+    for (const [path, expected] of Object.entries(artifacts.files)) {
+      const content = readFileSync(resolve(root, path));
+      expect(content.byteLength).toBe(expected.bytes);
+      expect(createHash("sha256").update(content).digest("hex")).toBe(expected.sha256);
+    }
   });
 
   it("safely executes an allowed curl intent and correlates it with the bridge call", async () => {

@@ -7,6 +7,10 @@ export const TOOL_PROMPT_VARIANT_PROFILES = {
   V1: "compact",
   V2: "selection-calibrated",
   V3: "capability-pruned",
+  "TSCG-SIG": "tscg-sig",
+  "TSCG-SDM": "tscg-sdm",
+  "TSCG-DRO": "tscg-dro",
+  "TSCG-CFO": "tscg-cfo",
 } as const satisfies Record<string, ToolPromptProfile>;
 
 export type ToolPromptVariant = keyof typeof TOOL_PROMPT_VARIANT_PROFILES;

@@ -7,6 +7,7 @@ import type {
 const IDENTITY_ARGS = ["user_id", "team_id", "agent_id", "task_id"] as const;
 const BRIDGE_HEADERS = ["content-type", "x-tdai-service-id", "x-conversation-id"] as const;
 const KNOWLEDGE_HEADERS = ["content-type", "x-tdai-service-id"] as const;
+const NO_OPERATION = { kind: "none" } as const;
 
 export const RUNTIME_TOOL_CONTRACTS = [
   {
@@ -19,6 +20,7 @@ export const RUNTIME_TOOL_CONTRACTS = [
     requiredArgs: ["query"],
     optionalArgs: ["limit", "type", "time_start", "time_end"],
     forbiddenArgs: IDENTITY_ARGS,
+    operation: NO_OPERATION,
     responseKind: "json",
     capability: "memory.read",
     sourceRefs: [
@@ -36,6 +38,7 @@ export const RUNTIME_TOOL_CONTRACTS = [
     requiredArgs: [],
     optionalArgs: ["type", "limit", "offset", "time_start", "time_end"],
     forbiddenArgs: IDENTITY_ARGS,
+    operation: NO_OPERATION,
     responseKind: "json",
     capability: "memory.read",
     sourceRefs: [
@@ -53,6 +56,7 @@ export const RUNTIME_TOOL_CONTRACTS = [
     requiredArgs: ["query"],
     optionalArgs: ["limit", "session_id", "time_start", "time_end"],
     forbiddenArgs: IDENTITY_ARGS,
+    operation: NO_OPERATION,
     responseKind: "json",
     capability: "memory.read",
     sourceRefs: [
@@ -70,6 +74,7 @@ export const RUNTIME_TOOL_CONTRACTS = [
     requiredArgs: [],
     optionalArgs: ["session_id", "limit", "offset", "time_start", "time_end"],
     forbiddenArgs: IDENTITY_ARGS,
+    operation: NO_OPERATION,
     responseKind: "json",
     capability: "memory.read",
     sourceRefs: [
@@ -87,6 +92,7 @@ export const RUNTIME_TOOL_CONTRACTS = [
     requiredArgs: [],
     optionalArgs: ["path_prefix"],
     forbiddenArgs: IDENTITY_ARGS,
+    operation: NO_OPERATION,
     responseKind: "json",
     capability: "memory.read",
     sourceRefs: [
@@ -104,6 +110,7 @@ export const RUNTIME_TOOL_CONTRACTS = [
     requiredArgs: ["path"],
     optionalArgs: ["agent_id", "version"],
     forbiddenArgs: ["user_id", "team_id", "task_id"],
+    operation: NO_OPERATION,
     responseKind: "json",
     capability: "memory.read",
     sourceRefs: [
@@ -121,6 +128,7 @@ export const RUNTIME_TOOL_CONTRACTS = [
     requiredArgs: ["query"],
     optionalArgs: [],
     forbiddenArgs: [...IDENTITY_ARGS, "top_k", "mode"],
+    operation: NO_OPERATION,
     responseKind: "json",
     capability: "skill.read",
     sourceRefs: [
@@ -138,6 +146,7 @@ export const RUNTIME_TOOL_CONTRACTS = [
     requiredArgs: ["skill_name"],
     optionalArgs: ["version", "include_content", "include_manifest"],
     forbiddenArgs: IDENTITY_ARGS,
+    operation: NO_OPERATION,
     responseKind: "json",
     capability: "skill.read",
     sourceRefs: [
@@ -155,6 +164,7 @@ export const RUNTIME_TOOL_CONTRACTS = [
     requiredArgs: ["skill_id"],
     optionalArgs: ["version", "include_content", "include_manifest"],
     forbiddenArgs: IDENTITY_ARGS,
+    operation: NO_OPERATION,
     responseKind: "json",
     capability: "skill.read",
     sourceRefs: [
@@ -172,6 +182,7 @@ export const RUNTIME_TOOL_CONTRACTS = [
     requiredArgs: ["skill_id", "path"],
     optionalArgs: ["version", "encoding"],
     forbiddenArgs: IDENTITY_ARGS,
+    operation: NO_OPERATION,
     responseKind: "json",
     capability: "skill.read",
     sourceRefs: [
@@ -189,6 +200,7 @@ export const RUNTIME_TOOL_CONTRACTS = [
     requiredArgs: ["skill_id", "path"],
     optionalArgs: ["version", "encoding"],
     forbiddenArgs: IDENTITY_ARGS,
+    operation: NO_OPERATION,
     responseKind: "bytes",
     capability: "skill.read",
     sourceRefs: [
@@ -206,6 +218,7 @@ export const RUNTIME_TOOL_CONTRACTS = [
     requiredArgs: [],
     optionalArgs: ["reason"],
     forbiddenArgs: [...IDENTITY_ARGS, "messages"],
+    operation: NO_OPERATION,
     responseKind: "json",
     capability: "skill.extract",
     sourceRefs: [
@@ -223,6 +236,7 @@ export const RUNTIME_TOOL_CONTRACTS = [
     requiredArgs: ["name", "content"],
     optionalArgs: ["resources", "metadata"],
     forbiddenArgs: IDENTITY_ARGS,
+    operation: NO_OPERATION,
     responseKind: "json",
     capability: "skill.write",
     sourceRefs: [
@@ -240,6 +254,7 @@ export const RUNTIME_TOOL_CONTRACTS = [
     requiredArgs: ["skill_id", "expected_version", "content"],
     optionalArgs: [],
     forbiddenArgs: IDENTITY_ARGS,
+    operation: NO_OPERATION,
     responseKind: "json",
     capability: "skill.write",
     sourceRefs: [
@@ -257,6 +272,7 @@ export const RUNTIME_TOOL_CONTRACTS = [
     requiredArgs: ["skill_id", "expected_version", "old_string", "new_string"],
     optionalArgs: ["replace_all"],
     forbiddenArgs: IDENTITY_ARGS,
+    operation: NO_OPERATION,
     responseKind: "json",
     capability: "skill.write",
     sourceRefs: [
@@ -274,6 +290,7 @@ export const RUNTIME_TOOL_CONTRACTS = [
     requiredArgs: ["skill_id", "expected_version"],
     optionalArgs: [],
     forbiddenArgs: IDENTITY_ARGS,
+    operation: NO_OPERATION,
     responseKind: "json",
     capability: "skill.write",
     sourceRefs: [
@@ -291,6 +308,7 @@ export const RUNTIME_TOOL_CONTRACTS = [
     requiredArgs: ["skill_id", "expected_version", "files"],
     optionalArgs: [],
     forbiddenArgs: IDENTITY_ARGS,
+    operation: NO_OPERATION,
     responseKind: "json",
     capability: "skill.write",
     sourceRefs: [
@@ -308,6 +326,7 @@ export const RUNTIME_TOOL_CONTRACTS = [
     requiredArgs: ["skill_id", "expected_version", "paths"],
     optionalArgs: [],
     forbiddenArgs: IDENTITY_ARGS,
+    operation: NO_OPERATION,
     responseKind: "json",
     capability: "skill.write",
     sourceRefs: [
@@ -325,6 +344,7 @@ export const RUNTIME_TOOL_CONTRACTS = [
     requiredArgs: ["knowledge_id"],
     optionalArgs: [],
     forbiddenArgs: [],
+    operation: NO_OPERATION,
     responseKind: "dynamic-schema",
     capability: "knowledge.read",
     sourceRefs: ["MemoryKnowledge/src/routes/tools.ts#app.post(/list)"],
@@ -339,6 +359,7 @@ export const RUNTIME_TOOL_CONTRACTS = [
     requiredArgs: ["knowledge_id", "tool_name", "params"],
     optionalArgs: [],
     forbiddenArgs: [],
+    operation: { kind: "argument", path: "tool_name" },
     responseKind: "dynamic-schema",
     capability: "knowledge.read",
     sourceRefs: ["MemoryKnowledge/src/routes/tools.ts#app.post(/call)"],

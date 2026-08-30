@@ -1,0 +1,474 @@
+{
+  "schemaVersion": 1,
+  "baselineCommit": "0373227c4b345c77f79ace5b0c19eb98e0fc50df",
+  "capabilitySignature": "memory=1;skill=1;knowledge=1;wiki=1;code_graph=1;skill_write=0;skill_extract=0",
+  "executionPlane": [
+    {
+      "id": "tdai_memory_search",
+      "method": "POST",
+      "path": "/memory-bridge/v3/atomic/search",
+      "requiredHeaders": [
+        "content-type",
+        "x-tdai-service-id",
+        "x-conversation-id"
+      ],
+      "requiredArgs": [
+        "query"
+      ],
+      "optionalArgs": [
+        "limit",
+        "type",
+        "time_start",
+        "time_end"
+      ],
+      "forbiddenArgs": [
+        "user_id",
+        "team_id",
+        "agent_id",
+        "task_id"
+      ],
+      "phase": "read",
+      "capability": "memory.read",
+      "operation": {
+        "kind": "none"
+      },
+      "responseKind": "json"
+    },
+    {
+      "id": "tdai_atomic_query",
+      "method": "POST",
+      "path": "/memory-bridge/v3/atomic/query",
+      "requiredHeaders": [
+        "content-type",
+        "x-tdai-service-id",
+        "x-conversation-id"
+      ],
+      "requiredArgs": [],
+      "optionalArgs": [
+        "type",
+        "limit",
+        "offset",
+        "time_start",
+        "time_end"
+      ],
+      "forbiddenArgs": [
+        "user_id",
+        "team_id",
+        "agent_id",
+        "task_id"
+      ],
+      "phase": "read",
+      "capability": "memory.read",
+      "operation": {
+        "kind": "none"
+      },
+      "responseKind": "json"
+    },
+    {
+      "id": "tdai_conversation_search",
+      "method": "POST",
+      "path": "/memory-bridge/v3/conversation/search",
+      "requiredHeaders": [
+        "content-type",
+        "x-tdai-service-id",
+        "x-conversation-id"
+      ],
+      "requiredArgs": [
+        "query"
+      ],
+      "optionalArgs": [
+        "limit",
+        "session_id",
+        "time_start",
+        "time_end"
+      ],
+      "forbiddenArgs": [
+        "user_id",
+        "team_id",
+        "agent_id",
+        "task_id"
+      ],
+      "phase": "read",
+      "capability": "memory.read",
+      "operation": {
+        "kind": "none"
+      },
+      "responseKind": "json"
+    },
+    {
+      "id": "tdai_conversation_query",
+      "method": "POST",
+      "path": "/memory-bridge/v3/conversation/query",
+      "requiredHeaders": [
+        "content-type",
+        "x-tdai-service-id",
+        "x-conversation-id"
+      ],
+      "requiredArgs": [],
+      "optionalArgs": [
+        "session_id",
+        "limit",
+        "offset",
+        "time_start",
+        "time_end"
+      ],
+      "forbiddenArgs": [
+        "user_id",
+        "team_id",
+        "agent_id",
+        "task_id"
+      ],
+      "phase": "read",
+      "capability": "memory.read",
+      "operation": {
+        "kind": "none"
+      },
+      "responseKind": "json"
+    },
+    {
+      "id": "tdai_scenario_ls",
+      "method": "POST",
+      "path": "/memory-bridge/v3/scenario/ls",
+      "requiredHeaders": [
+        "content-type",
+        "x-tdai-service-id",
+        "x-conversation-id"
+      ],
+      "requiredArgs": [],
+      "optionalArgs": [
+        "path_prefix"
+      ],
+      "forbiddenArgs": [
+        "user_id",
+        "team_id",
+        "agent_id",
+        "task_id"
+      ],
+      "phase": "read",
+      "capability": "memory.read",
+      "operation": {
+        "kind": "none"
+      },
+      "responseKind": "json"
+    },
+    {
+      "id": "tdai_read_scene",
+      "method": "POST",
+      "path": "/memory-bridge/v3/scenario/read",
+      "requiredHeaders": [
+        "content-type",
+        "x-tdai-service-id",
+        "x-conversation-id"
+      ],
+      "requiredArgs": [
+        "path"
+      ],
+      "optionalArgs": [
+        "agent_id",
+        "version"
+      ],
+      "forbiddenArgs": [
+        "user_id",
+        "team_id",
+        "task_id"
+      ],
+      "phase": "read",
+      "capability": "memory.read",
+      "operation": {
+        "kind": "none"
+      },
+      "responseKind": "json"
+    },
+    {
+      "id": "skill_search",
+      "method": "POST",
+      "path": "/skill-bridge/v3/skill/search",
+      "requiredHeaders": [
+        "content-type",
+        "x-tdai-service-id",
+        "x-conversation-id"
+      ],
+      "requiredArgs": [
+        "query"
+      ],
+      "optionalArgs": [],
+      "forbiddenArgs": [
+        "user_id",
+        "team_id",
+        "agent_id",
+        "task_id",
+        "top_k",
+        "mode"
+      ],
+      "phase": "read",
+      "capability": "skill.read",
+      "operation": {
+        "kind": "none"
+      },
+      "responseKind": "json"
+    },
+    {
+      "id": "skill_view",
+      "method": "POST",
+      "path": "/skill-bridge/v3/skill/get-by-name",
+      "requiredHeaders": [
+        "content-type",
+        "x-tdai-service-id",
+        "x-conversation-id"
+      ],
+      "requiredArgs": [
+        "skill_name"
+      ],
+      "optionalArgs": [
+        "version",
+        "include_content",
+        "include_manifest"
+      ],
+      "forbiddenArgs": [
+        "user_id",
+        "team_id",
+        "agent_id",
+        "task_id"
+      ],
+      "phase": "read",
+      "capability": "skill.read",
+      "operation": {
+        "kind": "none"
+      },
+      "responseKind": "json"
+    },
+    {
+      "id": "skill_view_by_id",
+      "method": "POST",
+      "path": "/skill-bridge/v3/skill/get",
+      "requiredHeaders": [
+        "content-type",
+        "x-tdai-service-id",
+        "x-conversation-id"
+      ],
+      "requiredArgs": [
+        "skill_id"
+      ],
+      "optionalArgs": [
+        "version",
+        "include_content",
+        "include_manifest"
+      ],
+      "forbiddenArgs": [
+        "user_id",
+        "team_id",
+        "agent_id",
+        "task_id"
+      ],
+      "phase": "read",
+      "capability": "skill.read",
+      "operation": {
+        "kind": "none"
+      },
+      "responseKind": "json"
+    },
+    {
+      "id": "skill_files_read",
+      "method": "POST",
+      "path": "/skill-bridge/v3/skill/files/read",
+      "requiredHeaders": [
+        "content-type",
+        "x-tdai-service-id",
+        "x-conversation-id"
+      ],
+      "requiredArgs": [
+        "skill_id",
+        "path"
+      ],
+      "optionalArgs": [
+        "version",
+        "encoding"
+      ],
+      "forbiddenArgs": [
+        "user_id",
+        "team_id",
+        "agent_id",
+        "task_id"
+      ],
+      "phase": "read",
+      "capability": "skill.read",
+      "operation": {
+        "kind": "none"
+      },
+      "responseKind": "json"
+    },
+    {
+      "id": "skill_files_download",
+      "method": "POST",
+      "path": "/skill-bridge/v3/skill/files/download",
+      "requiredHeaders": [
+        "content-type",
+        "x-tdai-service-id",
+        "x-conversation-id"
+      ],
+      "requiredArgs": [
+        "skill_id",
+        "path"
+      ],
+      "optionalArgs": [
+        "version",
+        "encoding"
+      ],
+      "forbiddenArgs": [
+        "user_id",
+        "team_id",
+        "agent_id",
+        "task_id"
+      ],
+      "phase": "read",
+      "capability": "skill.read",
+      "operation": {
+        "kind": "none"
+      },
+      "responseKind": "bytes"
+    },
+    {
+      "id": "knowledge_tools_list",
+      "method": "POST",
+      "path": "/tools/list",
+      "requiredHeaders": [
+        "content-type",
+        "x-tdai-service-id"
+      ],
+      "requiredArgs": [
+        "knowledge_id"
+      ],
+      "optionalArgs": [],
+      "forbiddenArgs": [],
+      "phase": "read",
+      "capability": "knowledge.read",
+      "operation": {
+        "kind": "none"
+      },
+      "responseKind": "dynamic-schema"
+    },
+    {
+      "id": "knowledge_tools_call",
+      "method": "POST",
+      "path": "/tools/call",
+      "requiredHeaders": [
+        "content-type",
+        "x-tdai-service-id"
+      ],
+      "requiredArgs": [
+        "knowledge_id",
+        "tool_name",
+        "params"
+      ],
+      "optionalArgs": [],
+      "forbiddenArgs": [],
+      "phase": "read",
+      "capability": "knowledge.read",
+      "operation": {
+        "kind": "argument",
+        "path": "tool_name"
+      },
+      "responseKind": "dynamic-schema"
+    }
+  ],
+  "decisionPlane": [
+    {
+      "id": "tdai_memory_search",
+      "contractId": "tdai_memory_search",
+      "when": "A stable preference, past conclusion, instruction, or fact may exist in atomic memory.",
+      "contrasts": [
+        {
+          "otherTool": "tdai_conversation_search",
+          "cue": "Use conversation search for exact message text or timeline details."
+        }
+      ]
+    },
+    {
+      "id": "tdai_atomic_query",
+      "contractId": "tdai_atomic_query",
+      "when": "The caller needs atomic memories filtered by type, time window, or page rather than semantic similarity."
+    },
+    {
+      "id": "tdai_conversation_search",
+      "contractId": "tdai_conversation_search",
+      "when": "Exact historical wording, quotations, or fine-grained timeline evidence is missing from the current context.",
+      "contrasts": [
+        {
+          "otherTool": "tdai_memory_search",
+          "cue": "Use atomic search for distilled preferences and conclusions."
+        }
+      ]
+    },
+    {
+      "id": "tdai_conversation_query",
+      "contractId": "tdai_conversation_query",
+      "when": "A known session id must be read in chronological order."
+    },
+    {
+      "id": "tdai_scenario_ls",
+      "contractId": "tdai_scenario_ls",
+      "when": "The injected scene index is absent, stale, or must be filtered by path prefix."
+    },
+    {
+      "id": "tdai_read_scene",
+      "contractId": "tdai_read_scene",
+      "when": "A scene path is known from the injected index or scenario listing and its full body is required.",
+      "avoid": "Do not invent a scene path."
+    },
+    {
+      "id": "skill_search",
+      "contractId": "skill_search",
+      "when": "A reusable team workflow may exist but its exact skill name is not known."
+    },
+    {
+      "id": "skill_view",
+      "contractId": "skill_view",
+      "when": "A skill owned by the current agent is known by name and must be opened to read its instructions and manifest."
+    },
+    {
+      "id": "skill_view_by_id",
+      "contractId": "skill_view_by_id",
+      "when": "A team skill returned by skill_search, or any skill known by exact skill_id, must be opened."
+    },
+    {
+      "id": "skill_files_read",
+      "contractId": "skill_files_read",
+      "when": "A specific resource path from a viewed skill manifest must be read into context.",
+      "avoid": "Do not guess skill ids or resource paths."
+    },
+    {
+      "id": "skill_files_download",
+      "contractId": "skill_files_download",
+      "when": "A specific resource path from a viewed skill manifest must be downloaded as raw bytes.",
+      "avoid": "Do not guess skill ids or resource paths."
+    },
+    {
+      "id": "knowledge_tools_list",
+      "contractId": "knowledge_tools_list",
+      "when": "A matching knowledge resource is needed and its resource-specific tool schema has not been discovered in this session."
+    },
+    {
+      "id": "knowledge_tools_call",
+      "contractId": "knowledge_tools_call",
+      "when": "A tool name and parameter schema returned by tools/list must be executed against the same knowledge resource.",
+      "avoid": "Do not invent dynamic tool names or parameters."
+    }
+  ],
+  "dynamicBindingPlane": {
+    "runtimeBindings": [
+      "proxyOrigin",
+      "sessionId",
+      "spaceId",
+      "userId",
+      "teamId",
+      "agentId",
+      "agentSource"
+    ],
+    "assetRecords": [
+      "available_skills",
+      "knowledge resource records",
+      "tdai_profile_memory L2/L3"
+    ],
+    "staticTemplateSha256": "cb5466b168ec47c36b09b91a02b3ea5e424b6cb02fb667be41c3e094227702b2"
+  }
+}

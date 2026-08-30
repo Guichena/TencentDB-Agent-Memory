@@ -1,0 +1,639 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "TSCG-SDM",
+  "profile": "tscg-sdm",
+  "parentProfile": "tscg-sig",
+  "profileLineage": [
+    "legacy",
+    "contract-corrected",
+    "protocol-compact",
+    "compact",
+    "selection-calibrated",
+    "capability-pruned",
+    "tscg-sig",
+    "tscg-sdm"
+  ],
+  "enabledOperators": [
+    "typed-signature",
+    "sdm"
+  ],
+  "baselineCommit": "0373227c4b345c77f79ace5b0c19eb98e0fc50df",
+  "compilerVersion": "tscg-lite.1",
+  "capabilitySignature": "memory=1;skill=1;knowledge=1;wiki=1;code_graph=1;skill_write=0;skill_extract=0",
+  "tokenizer": "o200k_base",
+  "tokenAccounting": "Each full injection and full static template is encoded as one complete string; component sums are not used as totals.",
+  "totalInjectionCharacters": 9031,
+  "totalInjectionBytes": 9559,
+  "totalInjectionTokens": 2401,
+  "totalInjectionSha256": "82f83c91e31d03525787b5add7947c41372eb4d59a5a0f0ebd4c75407f203850",
+  "staticTemplateCharacters": 8458,
+  "staticTemplateBytes": 8908,
+  "staticToolTokens": 2204,
+  "fullStaticTemplateTokens": 2202,
+  "staticTemplateSha256": "459b138bf2c5c247d2ebb1d7ba615e689629eb7de3c7bad6f5a1172f98f6c8f5",
+  "effectiveSystemTokens": 2455,
+  "effectiveSystemSha256": "e1f4b19a5fcbae5c534e2a722f902ce16ca15afbd32239adcea0d156479278d0",
+  "deltaVsV3Tokens": 177,
+  "contractEquivalent": true,
+  "roundTrip": null,
+  "captureSha256": {
+    "injection": {
+      "first": "82f83c91e31d03525787b5add7947c41372eb4d59a5a0f0ebd4c75407f203850",
+      "second": "82f83c91e31d03525787b5add7947c41372eb4d59a5a0f0ebd4c75407f203850",
+      "identical": true
+    },
+    "prompt": {
+      "first": "e1f4b19a5fcbae5c534e2a722f902ce16ca15afbd32239adcea0d156479278d0",
+      "second": "e1f4b19a5fcbae5c534e2a722f902ce16ca15afbd32239adcea0d156479278d0",
+      "identical": true
+    },
+    "staticTemplate": {
+      "first": "459b138bf2c5c247d2ebb1d7ba615e689629eb7de3c7bad6f5a1172f98f6c8f5",
+      "second": "459b138bf2c5c247d2ebb1d7ba615e689629eb7de3c7bad6f5a1172f98f6c8f5",
+      "identical": true
+    }
+  },
+  "shaRerunIdentical": true,
+  "cacheIdentities": [
+    {
+      "hookId": "skill-tools-injector",
+      "cacheIdentity": "skill-tools-injector-tp-tscg-sdm-9df3f77da589"
+    },
+    {
+      "hookId": "skill-injector",
+      "cacheIdentity": "skill-injector-tp-tscg-sdm-9df3f77da589"
+    },
+    {
+      "hookId": "knowledge-tools-injector",
+      "cacheIdentity": "knowledge-tools-injector-tp-tscg-sdm-9df3f77da589"
+    },
+    {
+      "hookId": "tdai-memory-tools-injector",
+      "cacheIdentity": "tdai-memory-tools-injector-tp-tscg-sdm-9df3f77da589"
+    },
+    {
+      "hookId": "tdai-profile-memory-injector",
+      "cacheIdentity": "tdai-profile-memory-injector-tp-tscg-sdm-9df3f77da589"
+    }
+  ],
+  "toolAudits": [
+    {
+      "family": "skill",
+      "surface": "skill-tools",
+      "contractIds": [
+        "skill_search",
+        "skill_view",
+        "skill_view_by_id",
+        "skill_files_read",
+        "skill_files_download"
+      ],
+      "specIds": [
+        "skill_search",
+        "skill_view",
+        "skill_view_by_id",
+        "skill_files_read",
+        "skill_files_download"
+      ],
+      "contentSha256": "4fc8bda70d6725e4d02ca59f85e9cd83b35304fec5ff0b5e59b0fc1d52e45874",
+      "contractEquivalent": true,
+      "droRoundTrip": null,
+      "removedUnitMappings": [
+        {
+          "sourceUnit": "skill_search.method",
+          "retainedUnit": "defaults.method",
+          "field": "method",
+          "canonicalValue": "\"POST\""
+        },
+        {
+          "sourceUnit": "skill_view.method",
+          "retainedUnit": "defaults.method",
+          "field": "method",
+          "canonicalValue": "\"POST\""
+        },
+        {
+          "sourceUnit": "skill_view_by_id.method",
+          "retainedUnit": "defaults.method",
+          "field": "method",
+          "canonicalValue": "\"POST\""
+        },
+        {
+          "sourceUnit": "skill_files_read.method",
+          "retainedUnit": "defaults.method",
+          "field": "method",
+          "canonicalValue": "\"POST\""
+        },
+        {
+          "sourceUnit": "skill_files_download.method",
+          "retainedUnit": "defaults.method",
+          "field": "method",
+          "canonicalValue": "\"POST\""
+        },
+        {
+          "sourceUnit": "skill_search.requiredHeaders",
+          "retainedUnit": "defaults.requiredHeaders",
+          "field": "requiredHeaders",
+          "canonicalValue": "[\"content-type\",\"x-tdai-service-id\",\"x-conversation-id\"]"
+        },
+        {
+          "sourceUnit": "skill_view.requiredHeaders",
+          "retainedUnit": "defaults.requiredHeaders",
+          "field": "requiredHeaders",
+          "canonicalValue": "[\"content-type\",\"x-tdai-service-id\",\"x-conversation-id\"]"
+        },
+        {
+          "sourceUnit": "skill_view_by_id.requiredHeaders",
+          "retainedUnit": "defaults.requiredHeaders",
+          "field": "requiredHeaders",
+          "canonicalValue": "[\"content-type\",\"x-tdai-service-id\",\"x-conversation-id\"]"
+        },
+        {
+          "sourceUnit": "skill_files_read.requiredHeaders",
+          "retainedUnit": "defaults.requiredHeaders",
+          "field": "requiredHeaders",
+          "canonicalValue": "[\"content-type\",\"x-tdai-service-id\",\"x-conversation-id\"]"
+        },
+        {
+          "sourceUnit": "skill_files_download.requiredHeaders",
+          "retainedUnit": "defaults.requiredHeaders",
+          "field": "requiredHeaders",
+          "canonicalValue": "[\"content-type\",\"x-tdai-service-id\",\"x-conversation-id\"]"
+        },
+        {
+          "sourceUnit": "skill_search.phase",
+          "retainedUnit": "defaults.phase",
+          "field": "phase",
+          "canonicalValue": "\"read\""
+        },
+        {
+          "sourceUnit": "skill_view.phase",
+          "retainedUnit": "defaults.phase",
+          "field": "phase",
+          "canonicalValue": "\"read\""
+        },
+        {
+          "sourceUnit": "skill_view_by_id.phase",
+          "retainedUnit": "defaults.phase",
+          "field": "phase",
+          "canonicalValue": "\"read\""
+        },
+        {
+          "sourceUnit": "skill_files_read.phase",
+          "retainedUnit": "defaults.phase",
+          "field": "phase",
+          "canonicalValue": "\"read\""
+        },
+        {
+          "sourceUnit": "skill_files_download.phase",
+          "retainedUnit": "defaults.phase",
+          "field": "phase",
+          "canonicalValue": "\"read\""
+        },
+        {
+          "sourceUnit": "skill_search.capability",
+          "retainedUnit": "defaults.capability",
+          "field": "capability",
+          "canonicalValue": "\"skill.read\""
+        },
+        {
+          "sourceUnit": "skill_view.capability",
+          "retainedUnit": "defaults.capability",
+          "field": "capability",
+          "canonicalValue": "\"skill.read\""
+        },
+        {
+          "sourceUnit": "skill_view_by_id.capability",
+          "retainedUnit": "defaults.capability",
+          "field": "capability",
+          "canonicalValue": "\"skill.read\""
+        },
+        {
+          "sourceUnit": "skill_files_read.capability",
+          "retainedUnit": "defaults.capability",
+          "field": "capability",
+          "canonicalValue": "\"skill.read\""
+        },
+        {
+          "sourceUnit": "skill_files_download.capability",
+          "retainedUnit": "defaults.capability",
+          "field": "capability",
+          "canonicalValue": "\"skill.read\""
+        },
+        {
+          "sourceUnit": "skill_search.operation",
+          "retainedUnit": "defaults.operation",
+          "field": "operation",
+          "canonicalValue": "{\"kind\":\"none\"}"
+        },
+        {
+          "sourceUnit": "skill_view.operation",
+          "retainedUnit": "defaults.operation",
+          "field": "operation",
+          "canonicalValue": "{\"kind\":\"none\"}"
+        },
+        {
+          "sourceUnit": "skill_view_by_id.operation",
+          "retainedUnit": "defaults.operation",
+          "field": "operation",
+          "canonicalValue": "{\"kind\":\"none\"}"
+        },
+        {
+          "sourceUnit": "skill_files_read.operation",
+          "retainedUnit": "defaults.operation",
+          "field": "operation",
+          "canonicalValue": "{\"kind\":\"none\"}"
+        },
+        {
+          "sourceUnit": "skill_files_download.operation",
+          "retainedUnit": "defaults.operation",
+          "field": "operation",
+          "canonicalValue": "{\"kind\":\"none\"}"
+        },
+        {
+          "sourceUnit": "skill_search.responseKind",
+          "retainedUnit": "defaults.responseKind",
+          "field": "responseKind",
+          "canonicalValue": "\"json\""
+        },
+        {
+          "sourceUnit": "skill_view.responseKind",
+          "retainedUnit": "defaults.responseKind",
+          "field": "responseKind",
+          "canonicalValue": "\"json\""
+        },
+        {
+          "sourceUnit": "skill_view_by_id.responseKind",
+          "retainedUnit": "defaults.responseKind",
+          "field": "responseKind",
+          "canonicalValue": "\"json\""
+        },
+        {
+          "sourceUnit": "skill_files_read.responseKind",
+          "retainedUnit": "defaults.responseKind",
+          "field": "responseKind",
+          "canonicalValue": "\"json\""
+        }
+      ]
+    },
+    {
+      "family": "knowledge",
+      "surface": "knowledge-tools",
+      "contractIds": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "specIds": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "contentSha256": "caba14d9af3ef7e97d66f1e8da20f5080b298e93e720c899528478826b0d4c87",
+      "contractEquivalent": true,
+      "droRoundTrip": null,
+      "removedUnitMappings": [
+        {
+          "sourceUnit": "knowledge_tools_list.method",
+          "retainedUnit": "defaults.method",
+          "field": "method",
+          "canonicalValue": "\"POST\""
+        },
+        {
+          "sourceUnit": "knowledge_tools_call.method",
+          "retainedUnit": "defaults.method",
+          "field": "method",
+          "canonicalValue": "\"POST\""
+        },
+        {
+          "sourceUnit": "knowledge_tools_list.requiredHeaders",
+          "retainedUnit": "defaults.requiredHeaders",
+          "field": "requiredHeaders",
+          "canonicalValue": "[\"content-type\",\"x-tdai-service-id\"]"
+        },
+        {
+          "sourceUnit": "knowledge_tools_call.requiredHeaders",
+          "retainedUnit": "defaults.requiredHeaders",
+          "field": "requiredHeaders",
+          "canonicalValue": "[\"content-type\",\"x-tdai-service-id\"]"
+        },
+        {
+          "sourceUnit": "knowledge_tools_list.phase",
+          "retainedUnit": "defaults.phase",
+          "field": "phase",
+          "canonicalValue": "\"read\""
+        },
+        {
+          "sourceUnit": "knowledge_tools_call.phase",
+          "retainedUnit": "defaults.phase",
+          "field": "phase",
+          "canonicalValue": "\"read\""
+        },
+        {
+          "sourceUnit": "knowledge_tools_list.capability",
+          "retainedUnit": "defaults.capability",
+          "field": "capability",
+          "canonicalValue": "\"knowledge.read\""
+        },
+        {
+          "sourceUnit": "knowledge_tools_call.capability",
+          "retainedUnit": "defaults.capability",
+          "field": "capability",
+          "canonicalValue": "\"knowledge.read\""
+        },
+        {
+          "sourceUnit": "knowledge_tools_list.responseKind",
+          "retainedUnit": "defaults.responseKind",
+          "field": "responseKind",
+          "canonicalValue": "\"dynamic-schema\""
+        },
+        {
+          "sourceUnit": "knowledge_tools_call.responseKind",
+          "retainedUnit": "defaults.responseKind",
+          "field": "responseKind",
+          "canonicalValue": "\"dynamic-schema\""
+        }
+      ]
+    },
+    {
+      "family": "memory",
+      "surface": "memory-tools",
+      "contractIds": [
+        "tdai_memory_search",
+        "tdai_atomic_query",
+        "tdai_conversation_search",
+        "tdai_conversation_query",
+        "tdai_scenario_ls",
+        "tdai_read_scene"
+      ],
+      "specIds": [
+        "tdai_memory_search",
+        "tdai_atomic_query",
+        "tdai_conversation_search",
+        "tdai_conversation_query",
+        "tdai_scenario_ls",
+        "tdai_read_scene"
+      ],
+      "contentSha256": "2a34f85bf6436689e7db5b81150c62ac91d9310d2687aead8fb2e2fed71dfc62",
+      "contractEquivalent": true,
+      "droRoundTrip": null,
+      "removedUnitMappings": [
+        {
+          "sourceUnit": "tdai_memory_search.method",
+          "retainedUnit": "defaults.method",
+          "field": "method",
+          "canonicalValue": "\"POST\""
+        },
+        {
+          "sourceUnit": "tdai_atomic_query.method",
+          "retainedUnit": "defaults.method",
+          "field": "method",
+          "canonicalValue": "\"POST\""
+        },
+        {
+          "sourceUnit": "tdai_conversation_search.method",
+          "retainedUnit": "defaults.method",
+          "field": "method",
+          "canonicalValue": "\"POST\""
+        },
+        {
+          "sourceUnit": "tdai_conversation_query.method",
+          "retainedUnit": "defaults.method",
+          "field": "method",
+          "canonicalValue": "\"POST\""
+        },
+        {
+          "sourceUnit": "tdai_scenario_ls.method",
+          "retainedUnit": "defaults.method",
+          "field": "method",
+          "canonicalValue": "\"POST\""
+        },
+        {
+          "sourceUnit": "tdai_read_scene.method",
+          "retainedUnit": "defaults.method",
+          "field": "method",
+          "canonicalValue": "\"POST\""
+        },
+        {
+          "sourceUnit": "tdai_memory_search.requiredHeaders",
+          "retainedUnit": "defaults.requiredHeaders",
+          "field": "requiredHeaders",
+          "canonicalValue": "[\"content-type\",\"x-tdai-service-id\",\"x-conversation-id\"]"
+        },
+        {
+          "sourceUnit": "tdai_atomic_query.requiredHeaders",
+          "retainedUnit": "defaults.requiredHeaders",
+          "field": "requiredHeaders",
+          "canonicalValue": "[\"content-type\",\"x-tdai-service-id\",\"x-conversation-id\"]"
+        },
+        {
+          "sourceUnit": "tdai_conversation_search.requiredHeaders",
+          "retainedUnit": "defaults.requiredHeaders",
+          "field": "requiredHeaders",
+          "canonicalValue": "[\"content-type\",\"x-tdai-service-id\",\"x-conversation-id\"]"
+        },
+        {
+          "sourceUnit": "tdai_conversation_query.requiredHeaders",
+          "retainedUnit": "defaults.requiredHeaders",
+          "field": "requiredHeaders",
+          "canonicalValue": "[\"content-type\",\"x-tdai-service-id\",\"x-conversation-id\"]"
+        },
+        {
+          "sourceUnit": "tdai_scenario_ls.requiredHeaders",
+          "retainedUnit": "defaults.requiredHeaders",
+          "field": "requiredHeaders",
+          "canonicalValue": "[\"content-type\",\"x-tdai-service-id\",\"x-conversation-id\"]"
+        },
+        {
+          "sourceUnit": "tdai_read_scene.requiredHeaders",
+          "retainedUnit": "defaults.requiredHeaders",
+          "field": "requiredHeaders",
+          "canonicalValue": "[\"content-type\",\"x-tdai-service-id\",\"x-conversation-id\"]"
+        },
+        {
+          "sourceUnit": "tdai_memory_search.phase",
+          "retainedUnit": "defaults.phase",
+          "field": "phase",
+          "canonicalValue": "\"read\""
+        },
+        {
+          "sourceUnit": "tdai_atomic_query.phase",
+          "retainedUnit": "defaults.phase",
+          "field": "phase",
+          "canonicalValue": "\"read\""
+        },
+        {
+          "sourceUnit": "tdai_conversation_search.phase",
+          "retainedUnit": "defaults.phase",
+          "field": "phase",
+          "canonicalValue": "\"read\""
+        },
+        {
+          "sourceUnit": "tdai_conversation_query.phase",
+          "retainedUnit": "defaults.phase",
+          "field": "phase",
+          "canonicalValue": "\"read\""
+        },
+        {
+          "sourceUnit": "tdai_scenario_ls.phase",
+          "retainedUnit": "defaults.phase",
+          "field": "phase",
+          "canonicalValue": "\"read\""
+        },
+        {
+          "sourceUnit": "tdai_read_scene.phase",
+          "retainedUnit": "defaults.phase",
+          "field": "phase",
+          "canonicalValue": "\"read\""
+        },
+        {
+          "sourceUnit": "tdai_memory_search.capability",
+          "retainedUnit": "defaults.capability",
+          "field": "capability",
+          "canonicalValue": "\"memory.read\""
+        },
+        {
+          "sourceUnit": "tdai_atomic_query.capability",
+          "retainedUnit": "defaults.capability",
+          "field": "capability",
+          "canonicalValue": "\"memory.read\""
+        },
+        {
+          "sourceUnit": "tdai_conversation_search.capability",
+          "retainedUnit": "defaults.capability",
+          "field": "capability",
+          "canonicalValue": "\"memory.read\""
+        },
+        {
+          "sourceUnit": "tdai_conversation_query.capability",
+          "retainedUnit": "defaults.capability",
+          "field": "capability",
+          "canonicalValue": "\"memory.read\""
+        },
+        {
+          "sourceUnit": "tdai_scenario_ls.capability",
+          "retainedUnit": "defaults.capability",
+          "field": "capability",
+          "canonicalValue": "\"memory.read\""
+        },
+        {
+          "sourceUnit": "tdai_read_scene.capability",
+          "retainedUnit": "defaults.capability",
+          "field": "capability",
+          "canonicalValue": "\"memory.read\""
+        },
+        {
+          "sourceUnit": "tdai_memory_search.operation",
+          "retainedUnit": "defaults.operation",
+          "field": "operation",
+          "canonicalValue": "{\"kind\":\"none\"}"
+        },
+        {
+          "sourceUnit": "tdai_atomic_query.operation",
+          "retainedUnit": "defaults.operation",
+          "field": "operation",
+          "canonicalValue": "{\"kind\":\"none\"}"
+        },
+        {
+          "sourceUnit": "tdai_conversation_search.operation",
+          "retainedUnit": "defaults.operation",
+          "field": "operation",
+          "canonicalValue": "{\"kind\":\"none\"}"
+        },
+        {
+          "sourceUnit": "tdai_conversation_query.operation",
+          "retainedUnit": "defaults.operation",
+          "field": "operation",
+          "canonicalValue": "{\"kind\":\"none\"}"
+        },
+        {
+          "sourceUnit": "tdai_scenario_ls.operation",
+          "retainedUnit": "defaults.operation",
+          "field": "operation",
+          "canonicalValue": "{\"kind\":\"none\"}"
+        },
+        {
+          "sourceUnit": "tdai_read_scene.operation",
+          "retainedUnit": "defaults.operation",
+          "field": "operation",
+          "canonicalValue": "{\"kind\":\"none\"}"
+        },
+        {
+          "sourceUnit": "tdai_memory_search.responseKind",
+          "retainedUnit": "defaults.responseKind",
+          "field": "responseKind",
+          "canonicalValue": "\"json\""
+        },
+        {
+          "sourceUnit": "tdai_atomic_query.responseKind",
+          "retainedUnit": "defaults.responseKind",
+          "field": "responseKind",
+          "canonicalValue": "\"json\""
+        },
+        {
+          "sourceUnit": "tdai_conversation_search.responseKind",
+          "retainedUnit": "defaults.responseKind",
+          "field": "responseKind",
+          "canonicalValue": "\"json\""
+        },
+        {
+          "sourceUnit": "tdai_conversation_query.responseKind",
+          "retainedUnit": "defaults.responseKind",
+          "field": "responseKind",
+          "canonicalValue": "\"json\""
+        },
+        {
+          "sourceUnit": "tdai_scenario_ls.responseKind",
+          "retainedUnit": "defaults.responseKind",
+          "field": "responseKind",
+          "canonicalValue": "\"json\""
+        },
+        {
+          "sourceUnit": "tdai_read_scene.responseKind",
+          "retainedUnit": "defaults.responseKind",
+          "field": "responseKind",
+          "canonicalValue": "\"json\""
+        },
+        {
+          "sourceUnit": "shared.execution-grammar",
+          "retainedUnit": "shared.execution-grammar.canonical",
+          "field": "executionGrammar",
+          "canonicalValue": "## 统一工具调用协议\nThese records are Bash HTTP tools, not native functions.\n- endpoint = family `origin` + full `path`; knowledge uses resource `url` + `path`.\n- Send JSON with only `requiredArgs`/`optionalArgs`; never send `forbiddenArgs`. Add every `requiredHeaders` entry using the family values below; memory/skill identity is session-injected.\n- `responseKind=json|dynamic-schema` uses `{code,message,data}` and succeeds only at code=0; `bytes` is raw.\ncanonical: `curl -sSk -X POST '<endpoint>' <headers> -d '<body>'`"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "blockId": "skill_tools",
+      "injectionPoint": "system.before_tools",
+      "tokens": 585,
+      "staticToolTokens": 576,
+      "sha256": "4fc8bda70d6725e4d02ca59f85e9cd83b35304fec5ff0b5e59b0fc1d52e45874"
+    },
+    {
+      "blockId": "available_skills",
+      "injectionPoint": "system.before_tools",
+      "tokens": 117,
+      "staticToolTokens": 90,
+      "sha256": "e098e9968c2d6aa03524923fb71d530363b4c7d69c6646401ecdb338fa751d94"
+    },
+    {
+      "blockId": "knowledge_tools",
+      "injectionPoint": "system.before_tools",
+      "tokens": 471,
+      "staticToolTokens": 428,
+      "sha256": "caba14d9af3ef7e97d66f1e8da20f5080b298e93e720c899528478826b0d4c87"
+    },
+    {
+      "blockId": "tdai_memory_tools",
+      "injectionPoint": "system.suffix",
+      "tokens": 1042,
+      "staticToolTokens": 1033,
+      "sha256": "2a34f85bf6436689e7db5b81150c62ac91d9310d2687aead8fb2e2fed71dfc62"
+    },
+    {
+      "blockId": "tdai_profile_memory",
+      "injectionPoint": "system.suffix",
+      "tokens": 186,
+      "staticToolTokens": 77,
+      "sha256": "3330b79dd199bad69b065ecb0c32dbaca14107259c309336347c7a68b1d862c6"
+    }
+  ]
+}

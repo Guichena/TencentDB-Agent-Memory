@@ -46,7 +46,11 @@ import { HOOK_PRIORITY } from "../types.js";
 import { getTdaiIdentity } from "../../tdai/identity.js";
 import { compileToolPrompt } from "../tool-prompt/compiler.js";
 import { resolveSessionCapabilitySignature } from "../tool-prompt/capability-pruned.js";
-import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
+import {
+  isCapabilityPrunedProfile,
+  isTscgLiteProfile,
+  toolPromptCacheIdentity,
+} from "../tool-prompt/profiles.js";
 import type { ToolPromptProfile } from "../tool-prompt/types.js";
 import {
   buildCompiledPromptProductionSources,
@@ -166,14 +170,17 @@ function locateMemoryRuntimeBindings(
   content: string,
   input: RenderTdaiMemoryToolsPromptArtifactInput,
 ): ProductionPromptBinding[] {
-  const bridge = `${input.proxyBaseUrl.replace(/\/$/, "")}/memory-bridge/v3`;
+  const proxyOrigin = input.proxyBaseUrl.replace(/\/$/, "");
+  const bridge = `${proxyOrigin}/memory-bridge/v3`;
+  const tscgLite = isTscgLiteProfile(input.profile ?? "legacy");
   return [
     ...locateBoundedProductionPromptBindings({
       text: content,
-      id: "memory-bridge",
-      value: bridge,
+      id: tscgLite ? "proxy-origin" : "memory-bridge",
+      value: tscgLite ? proxyOrigin : bridge,
       kind: "runtime-binding",
       boundaries: [
+        { before: "origin: ", after: "\n" },
         { before: "endpoint-base: ", after: "\n" },
         { before: "    curl: ", after: "/" },
         { before: "curl -sfk -X POST ", after: "/" },
@@ -302,7 +309,7 @@ export class TdaiMemoryToolsInjector implements InjectionHook {
   ): ContextBlock[] {
     const profile = this.cfg.toolPromptProfile ?? "legacy";
     const baseSignature = this.cfg.capabilitySignature ?? "unconfigured";
-    const capabilitySignature = profile === "capability-pruned"
+    const capabilitySignature = isCapabilityPrunedProfile(profile)
       ? resolveSessionCapabilitySignature(baseSignature, assetCapabilities)
       : baseSignature;
     const artifact = renderTdaiMemoryToolsPromptArtifact({
@@ -320,7 +327,7 @@ export class TdaiMemoryToolsInjector implements InjectionHook {
         productionPromptSources: artifact.productionSources,
         sessionId,
         cacheKey: "tdai-memory-tools-injector:tools"
-          + (profile === "capability-pruned" ? `:${capabilitySignature}` : ""),
+          + (isCapabilityPrunedProfile(profile) ? `:${capabilitySignature}` : ""),
       },
     }];
   }

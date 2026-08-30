@@ -25,9 +25,15 @@ import { InjectionPipeline } from "../injection/pipeline.js";
 import { HookRegistryImpl } from "../injection/registry.js";
 import type { AnchorTarget, InjectionPoint, Protocol } from "../injection/types.js";
 import {
+  applyContractFlowOrdering,
+  applySemanticDeduplication,
   buildCapabilitySignature,
+  buildTypedSignatureProgram,
   CAPABILITY_PRUNING_INVENTORY,
+  compareTscgContracts,
   compileToolPrompt,
+  decodeTscgField,
+  encodeTscgField,
   constrainCapabilitySignature,
   CONTRACT_CORRECTIONS,
   coordinateToolPromptSurface,
@@ -35,21 +41,29 @@ import {
   getRuntimeToolContracts,
   getToolPromptProfileLineage,
   getVisibleRuntimeToolContracts,
+  getVisibleTscgDependencyEdges,
   lintCapabilityPrunedSurface,
   lintDuplicateSemanticUnits,
   lintSelectionPolicy,
+  lintTscgCapabilityProjection,
   parseToolPromptProfile,
   parseCapabilitySignature,
   resolveSessionCapabilitySignature,
+  roundTripDroProgram,
   SELECTION_POLICY_INVENTORY,
   SEMANTIC_UNIT_INVENTORY,
   toolPromptCacheIdentity,
+  TSCG_LITE_PROFILES,
+  TSCG_SIGNATURE_FIELD_ORDER,
+  stableTopologicalOrder,
   TOOL_PROMPT_PROFILES,
   type CompiledToolPromptProfile,
   type CapabilitySurfaceBundle,
   type SelectionSurfaceBundle,
   type ToolPromptCapabilityState,
 } from "../injection/tool-prompt/index.js";
+import { MEMORY_TOOL_PROMPT_SPECS } from "../injection/tool-prompt/specs/memory.js";
+import { SKILL_TOOL_PROMPT_SPECS } from "../injection/tool-prompt/specs/skill.js";
 
 const CAPABILITY_SIGNATURE = buildCapabilitySignature({
   memory: true,
@@ -62,7 +76,8 @@ const CAPABILITY_SIGNATURE = buildCapabilitySignature({
 });
 
 const COMPILED_PROFILES = TOOL_PROMPT_PROFILES.filter(
-  (profile): profile is CompiledToolPromptProfile => profile !== "legacy",
+  (profile): profile is Exclude<(typeof TOOL_PROMPT_PROFILES)[number], "legacy"> =>
+    profile !== "legacy",
 );
 
 interface AgentParityCase {
@@ -273,7 +288,7 @@ async function renderProviderParityPrompt(
   });
 }
 
-describe("tool prompt compiler C00-C05", () => {
+describe("tool prompt compiler C00-C05 and TSCG-lite", () => {
   it("keeps legacy as the default and rejects unknown profile names", () => {
     expect(DEFAULT_CONFIG.injection.toolPromptProfile).toBe("legacy");
     expect(parseToolPromptProfile("capability-pruned")).toBe("capability-pruned");
@@ -694,32 +709,39 @@ describe("tool prompt compiler C00-C05", () => {
       codeGraph: true,
     });
 
-    const injector = new SkillToolsInjector({
-      proxyBaseUrl: "http://127.0.0.1:8096",
-      allowLlmWrite: true,
-      toolPromptProfile: "capability-pruned",
-      capabilitySignature: base,
-    });
-    const blocks = await injector.prewarm!({
-      keyId: "capability-session",
-      userId: "user-parity",
-      agentSource: "codex",
-      spaceId: "space-parity",
-      sessionInfo: {
-        session_id: "session-parity",
-        space_id: "space-parity",
-        user_id: "user-parity",
-        team_id: "team-parity",
-        agent_id: "agent-parity",
-      },
-      agentDetail: null,
-      taskDetail: null,
-      assetCapabilities: flags,
-    });
-    expect(blocks).toHaveLength(1);
-    expect(blocks[0].content).not.toContain("- memory:");
-    expect(blocks[0].content).toContain("- knowledge: a matching code-graph resource");
-    expect(blocks[0].metadata?.cacheKey).toContain(expected);
+    for (const toolPromptProfile of ["capability-pruned", "tscg-cfo"] as const) {
+      const injector = new SkillToolsInjector({
+        proxyBaseUrl: "http://127.0.0.1:8096",
+        allowLlmWrite: true,
+        toolPromptProfile,
+        capabilitySignature: base,
+      });
+      const blocks = await injector.prewarm!({
+        keyId: `capability-session:${toolPromptProfile}`,
+        userId: "user-parity",
+        agentSource: "codex",
+        spaceId: "space-parity",
+        sessionInfo: {
+          session_id: "session-parity",
+          space_id: "space-parity",
+          user_id: "user-parity",
+          team_id: "team-parity",
+          agent_id: "agent-parity",
+        },
+        agentDetail: null,
+        taskDetail: null,
+        assetCapabilities: flags,
+      });
+      expect(blocks).toHaveLength(1);
+      expect(blocks[0].content).not.toContain("- memory:");
+      expect(blocks[0].content).toContain("- knowledge: a matching code-graph resource");
+      expect(blocks[0].metadata?.cacheKey).toContain(expected);
+      if (toolPromptProfile === "tscg-cfo") {
+        expect(blocks[0].content).toContain("@T|id=skill_create");
+        expect(blocks[0].content).not.toContain("memory/skill identity");
+        expect(blocks[0].content).toContain("skill identity is session-injected");
+      }
+    }
   });
 
   it("keeps the C01 correction inventory unique and source-backed", () => {
@@ -1020,6 +1042,169 @@ describe("tool prompt compiler C00-C05", () => {
     });
     expect(() => coordinateToolPromptSurfaceFromCapabilitySignature("unconfigured"))
       .toThrow(/missing memory=0\|1/);
+  });
+
+  it("compiles four uniquely identified TSCG-lite ladder profiles from frozen V3", () => {
+    const memory = renderProductionFamilyBlocks().memory;
+    const compile = (profile: "capability-pruned" | (typeof TSCG_LITE_PROFILES)[number]) =>
+      compileToolPrompt({
+        profile,
+        family: "memory",
+        surface: "memory-tools",
+        legacyUnits: [{ id: "memory.tscg-fixture", kind: "legacy-body", content: memory }],
+        capabilitySignature: CAPABILITY_SIGNATURE,
+      });
+    const v3 = compile("capability-pruned");
+    const sig = compile("tscg-sig");
+    const sdm = compile("tscg-sdm");
+    const dro = compile("tscg-dro");
+    const cfo = compile("tscg-cfo");
+
+    expect(parseToolPromptProfile("tscg-cfo")).toBe("tscg-cfo");
+    expect(getToolPromptProfileLineage("tscg-cfo")).toEqual([
+      "legacy",
+      "contract-corrected",
+      "protocol-compact",
+      "compact",
+      "selection-calibrated",
+      "capability-pruned",
+      "tscg-sig",
+      "tscg-sdm",
+      "tscg-dro",
+      "tscg-cfo",
+    ]);
+    expect(v3.content).toContain('<tool name="tdai_memory_search">');
+    expect(sig.content).toContain("[typed-tool]");
+    expect(sig.content).not.toContain("[typed-defaults]");
+    expect(sig.content).toContain("origin: http://127.0.0.1:8096");
+    expect(sig.content).toContain("`origin` + full tool `path`");
+    expect(sig.content).not.toContain("endpoint-base:");
+    expect(sig.content).not.toContain(
+      "/memory-bridge/v3/memory-bridge/v3",
+    );
+    expect(sdm.content).toContain("[typed-defaults]");
+    expect(dro.content).toContain("@D|");
+    expect(dro.content).toContain("@T|id=tdai_memory_search");
+    expect(cfo.content).toContain("@T|id=tdai_atomic_query");
+    expect(cfo.content).not.toBe(dro.content);
+    expect(new Set([sig, sdm, dro, cfo].map((item) => item.contentSha256)).size).toBe(4);
+    for (const candidate of [sig, sdm, dro, cfo]) {
+      expect(candidate.contractIds).toEqual(v3.contractIds);
+      expect(candidate.specIds).toEqual(v3.specIds);
+      expect(candidate.tscgLite?.contractEquivalent).toBe(true);
+      expect(candidate.content).toContain("session-parity");
+      expect(candidate.content).toContain("space-parity");
+    }
+    expect(sig.tscgLite?.enabledOperators).toEqual(["typed-signature"]);
+    expect(sdm.tscgLite?.removedUnitMappings.length).toBeGreaterThan(0);
+    expect(dro.tscgLite?.droRoundTrip).toBe(true);
+    expect(cfo.tscgLite?.droRoundTrip).toBe(true);
+
+    const identities = TSCG_LITE_PROFILES.map((profile) =>
+      toolPromptCacheIdentity("tdai-memory-tools-injector", profile, CAPABILITY_SIGNATURE)
+    );
+    expect(new Set(identities).size).toBe(4);
+  });
+
+  it("keeps every O1 contract field exact and makes every O2 deletion auditable", () => {
+    const contracts = getVisibleRuntimeToolContracts(CAPABILITY_SIGNATURE, "skill");
+    const typed = buildTypedSignatureProgram({
+      family: "skill",
+      surface: "skill-tools",
+      contracts,
+      specs: SKILL_TOOL_PROMPT_SPECS,
+    });
+    expect(TSCG_SIGNATURE_FIELD_ORDER).toEqual([
+      "id",
+      "method",
+      "path",
+      "requiredHeaders",
+      "requiredArgs",
+      "optionalArgs",
+      "forbiddenArgs",
+      "phase",
+      "capability",
+      "operation",
+      "responseKind",
+    ]);
+    expect(compareTscgContracts(contracts, typed)).toEqual({
+      equivalent: true,
+      differences: [],
+    });
+    const sdm = applySemanticDeduplication(typed);
+    expect(compareTscgContracts(contracts, sdm.program).equivalent).toBe(true);
+    expect(sdm.removedUnitMappings.length).toBeGreaterThan(0);
+    for (const mapping of sdm.removedUnitMappings) {
+      expect(mapping.sourceUnit).toMatch(/^[a-z0-9_]+\./);
+      expect(mapping.retainedUnit).toBe(`defaults.${mapping.field}`);
+      expect(JSON.stringify(sdm.program.defaults[mapping.field])).toBe(mapping.canonicalValue);
+    }
+    expect(sdm.program.tools.map((tool) => tool.decision))
+      .toEqual(typed.tools.map((tool) => tool.decision));
+  });
+
+  it("round-trips DRO escaping and fails CFO cycles closed", () => {
+    const escaped = "value|with^reserved>delimiters%and\nnewline";
+    expect(decodeTscgField(encodeTscgField(escaped))).toBe(escaped);
+    expect(encodeTscgField(escaped)).not.toMatch(/[|^>\n]/);
+    const contracts = getVisibleRuntimeToolContracts(CAPABILITY_SIGNATURE, "memory");
+    const typed = buildTypedSignatureProgram({
+      family: "memory",
+      surface: "memory-tools",
+      contracts,
+      specs: MEMORY_TOOL_PROMPT_SPECS,
+    });
+    const sdm = applySemanticDeduplication(typed).program;
+    const roundTrip = roundTripDroProgram(sdm);
+    expect(roundTrip.identical).toBe(true);
+    expect(roundTrip.encoded).toContain("@T|id=tdai_memory_search");
+
+    const ordered = applyContractFlowOrdering(sdm);
+    const ids = ordered.tools.map((tool) => tool.contract.id);
+    expect(ids.indexOf("tdai_scenario_ls")).toBeLessThan(ids.indexOf("tdai_read_scene"));
+    const canonicalRecords = (program: typeof sdm) => [...program.tools]
+      .sort((left, right) => left.contract.id < right.contract.id ? -1 : 1)
+      .map((tool) => JSON.stringify(tool));
+    expect(canonicalRecords(ordered)).toEqual(canonicalRecords(sdm));
+    expect(() => stableTopologicalOrder(["a", "b"], [
+      { from: "a", to: "b", flow: "x" },
+      { from: "b", to: "a", flow: "y" },
+    ])).toThrow(/dependency cycle/);
+  });
+
+  it("drops all TSCG contrasts and graph edges that reference pruned tools", () => {
+    const readonlySignature = buildCapabilitySignature({
+      memory: false,
+      skill: true,
+      knowledge: false,
+      wiki: false,
+      codeGraph: false,
+      skillWrite: false,
+      skillExtract: false,
+    });
+    const visible = getVisibleRuntimeToolContracts(readonlySignature, "skill");
+    const program = buildTypedSignatureProgram({
+      family: "skill",
+      surface: "skill-tools",
+      contracts: visible,
+      specs: SKILL_TOOL_PROMPT_SPECS,
+    });
+    expect(() => lintTscgCapabilityProjection(
+      program,
+      visible.map((contract) => contract.id),
+    )).not.toThrow();
+    expect(getVisibleTscgDependencyEdges(visible.map((contract) => contract.id)))
+      .toEqual(program.dependencyEdges);
+    const referenced = JSON.stringify(program.dependencyEdges);
+    for (const pruned of [
+      "skill_extract",
+      "skill_create",
+      "skill_update",
+      "skill_patch",
+      "skill_delete",
+      "skill_files_write",
+      "skill_files_remove",
+    ]) expect(referenced).not.toContain(pruned);
   });
 
   it("persists prewarmed candidate content under cacheIdentity while reporting the hook id", async () => {
