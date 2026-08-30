@@ -59,7 +59,7 @@ describe("server_team production transport", () => {
   });
 
   it("routes MemoryKnowledge actions without forwarding the MemoryCore user key", async () => {
-    const fetchImpl = vi.fn(async () => new Response(
+    const fetchImpl = vi.fn(async (_input: string | URL | Request, _init?: RequestInit) => new Response(
       JSON.stringify({ code: 0, data: { wiki_id: "wiki-runtime" } }),
       { status: 201, headers: { "content-type": "application/json" } },
     ));
