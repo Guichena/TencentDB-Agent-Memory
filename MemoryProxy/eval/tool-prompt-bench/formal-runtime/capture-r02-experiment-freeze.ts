@@ -8,7 +8,11 @@ import { canonicalSha256 } from "../measurement-v2/canonical-json.js";
 const R02_SOURCE_COMMIT = "41bce09fd034c41f694f5fda5f776a09cb3efc69";
 const R01_SOURCE_COMMIT = "b7944f2ef252eb454de619382b87eb89da1ce0dc";
 const DATA_TAG = "task1-data-formal-v1.1";
+const DATA_TAG_OBJECT = "6ba3a0e4098786882dd500f884823f2f8dfbb9d3";
+const DATA_COMMIT = "02620d8313dcb883b7a57c4c2edc8f4286eb4bc9";
 const CODE_FREEZE_TAG = "task1-code-freeze";
+const CODE_FREEZE_TAG_OBJECT = "edbf18309fbf100cdf5b26d64c0fbb6f12c8f3a5";
+const CODE_FREEZE_COMMIT = "d0996809ed63f6cfc67504ad180db0d48ac70475";
 const SCRIPT_DIRECTORY = dirname(fileURLToPath(import.meta.url));
 const DEFAULT_REPOSITORY_ROOT = resolve(SCRIPT_DIRECTORY, "../../../..");
 const OUTPUT_PATH = "MemoryProxy/eval/tool-prompt-bench/EXPERIMENT-FREEZE-MANIFEST.json";
@@ -118,10 +122,23 @@ function readJsonAt(
   ) as Record<string, unknown>;
 }
 
-function assertAnnotatedTag(repositoryRoot: string, tag: string): void {
+function assertFrozenAnnotatedTag(
+  repositoryRoot: string,
+  tag: string,
+  expectedTagObject: string,
+  expectedCommit: string,
+): void {
   const objectType = gitText(repositoryRoot, "cat-file", "-t", tag);
   if (objectType !== "tag") {
     throw new Error(`${tag} must resolve to an annotated tag object`);
+  }
+  const actualTagObject = gitText(repositoryRoot, "rev-parse", tag);
+  const actualCommit = gitText(repositoryRoot, "rev-parse", `${tag}^{}`);
+  if (actualTagObject !== expectedTagObject || actualCommit !== expectedCommit) {
+    throw new Error(
+      `${tag} drifted: expected ${expectedTagObject} -> ${expectedCommit}; `
+      + `got ${actualTagObject} -> ${actualCommit}`,
+    );
   }
 }
 
@@ -157,7 +174,8 @@ function assertRuntimeFreeze(runtimeFreeze: Record<string, unknown>): void {
   if (
     runtimeFreeze.schemaVersion !== "task1.formal-runtime-freeze.v1"
     || dataFreeze?.tag !== DATA_TAG
-    || dataFreeze.commit !== "02620d8313dcb883b7a57c4c2edc8f4286eb4bc9"
+    || dataFreeze.tagObject !== DATA_TAG_OBJECT
+    || dataFreeze.commit !== DATA_COMMIT
     || counts?.total !== 640
     || counts.dev !== 240
     || counts.hiddenTest !== 400
@@ -171,8 +189,18 @@ export function buildR02ExperimentFreezeManifest(
   repositoryRoot = DEFAULT_REPOSITORY_ROOT,
 ): Record<string, unknown> {
   assertR02Lineage(repositoryRoot);
-  assertAnnotatedTag(repositoryRoot, DATA_TAG);
-  assertAnnotatedTag(repositoryRoot, CODE_FREEZE_TAG);
+  assertFrozenAnnotatedTag(
+    repositoryRoot,
+    DATA_TAG,
+    DATA_TAG_OBJECT,
+    DATA_COMMIT,
+  );
+  assertFrozenAnnotatedTag(
+    repositoryRoot,
+    CODE_FREEZE_TAG,
+    CODE_FREEZE_TAG_OBJECT,
+    CODE_FREEZE_COMMIT,
+  );
 
   const runtimeFreezePath = SOURCE_ARTIFACTS.data[0];
   const runtimeFreeze = readJsonAt(repositoryRoot, R02_SOURCE_COMMIT, runtimeFreezePath);
@@ -189,7 +217,13 @@ export function buildR02ExperimentFreezeManifest(
     schemaVersion: "task1.r02-experiment-freeze.v1",
     stage: "R02-acceptance",
     acceptanceStatus: "HISTORICAL_R02_ATTESTED_DOWNSTREAM_GATE_REQUIRED",
-    generatedAt: gitText(repositoryRoot, "show", "-s", "--format=%cI", R02_SOURCE_COMMIT),
+    sourceCommittedAt: gitText(
+      repositoryRoot,
+      "show",
+      "-s",
+      "--format=%cI",
+      R02_SOURCE_COMMIT,
+    ),
     implementation: {
       sourceCommit: R02_SOURCE_COMMIT,
       sourceTree: gitText(repositoryRoot, "rev-parse", `${R02_SOURCE_COMMIT}^{tree}`),
@@ -221,11 +255,21 @@ export function buildR02ExperimentFreezeManifest(
       readsOrWritesCodexAuth: false,
       modelRuns: 0,
       formalMetricEligible: false,
+      candidateBaseEligible: false,
     },
     downstreamRequirement: {
       reason:
         "Historical R02 predates the repaired Measurement-v2 overcall contract; final acceptance must use the R05-compatible scorer and rerun this freeze on the common integration base.",
       requiredAncestor: "c86b154f9f597da0788592c66b93d574fd3f10f9",
+      requiredScorerContract: "M0_R05_REPAIRED_OVERCALL_AND_TERMINAL_HORIZON",
+      requiredGates: [
+        "D0_TYPESCRIPT_42_OF_42",
+        "D0_PYTHON_19_OF_19",
+        "R05_RUNTIME_SMOKE_12_OF_12_READY",
+        "MEASUREMENT_V2_INTEGRATION_PASS",
+        "SELECTION_CONTRACT_FROZEN",
+      ],
+      closesOnly: "R02 historical acceptance; satisfying it does not itself create a candidate base.",
     },
   };
   return {

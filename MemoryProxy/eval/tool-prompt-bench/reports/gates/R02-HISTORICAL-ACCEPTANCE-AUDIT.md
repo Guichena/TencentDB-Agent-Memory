@@ -26,7 +26,7 @@ contract on the R05-compatible common base.
 ## Deterministic identities
 
 - Manifest canonical SHA-256:
-  `c91ab14377fe99fed5f97aea71800a8d676fc710bfacd83910937cf6863dadcb`
+  `c03ef93d1cfc1cfde0345d1e2736adac3acb44ca892eda6491b77b2c967057df`
 - Command-set canonical SHA-256:
   `1bc17241369af39c9be00ad13bcedcbf909e357101cc03513ccd7f9e6c85ed57`
 - R02 source tree:
@@ -35,6 +35,12 @@ contract on the R05-compatible common base.
   `6ba3a0e4098786882dd500f884823f2f8dfbb9d3`
 - Prompt-freeze tag object:
   `edbf18309fbf100cdf5b26d64c0fbb6f12c8f3a5`
+
+The generator fails closed unless those exact annotated Tag objects peel to
+`02620d8...` and `d099680...`; it cannot silently re-sign a moved local Tag.
+The manifest also encodes `candidateBaseEligible=false` and the required D0,
+R05 runtime Smoke, Measurement-v2 Integration, and Selection Contract gates as
+machine-readable fields.
 
 ## No-model evidence
 

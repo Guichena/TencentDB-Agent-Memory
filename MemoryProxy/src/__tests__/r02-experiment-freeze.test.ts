@@ -9,7 +9,7 @@ const manifestPath = resolve(
 );
 
 describe("R02 experiment freeze acceptance", () => {
-  it("rebuilds the checked freeze manifest byte-for-byte as JSON", () => {
+  it("rebuilds the checked freeze manifest with canonical semantic identity", () => {
     const expected = JSON.parse(readFileSync(manifestPath, "utf8"));
     expect(buildR02ExperimentFreezeManifest(resolve(".."))).toEqual(expected);
   }, 20_000);
@@ -31,6 +31,7 @@ describe("R02 experiment freeze acceptance", () => {
       readsOrWritesCodexAuth: false,
       modelRuns: 0,
       formalMetricEligible: false,
+      candidateBaseEligible: false,
     });
   });
 });
