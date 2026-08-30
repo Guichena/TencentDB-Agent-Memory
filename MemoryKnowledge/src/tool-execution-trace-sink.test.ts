@@ -18,7 +18,7 @@ describe("MemoryKnowledge tool execution trace sink", () => {
         finishClose = callback;
       },
     }, {
-      markFinished: () => order.push("sealed"),
+      markFinished: () => { order.push("sealed"); },
     });
 
     expect(order).toEqual(["close-started"]);
