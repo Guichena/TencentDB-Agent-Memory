@@ -1,0 +1,234 @@
+{
+  "schemaVersion": "task1.r02-experiment-freeze.v1",
+  "stage": "R02-acceptance",
+  "acceptanceStatus": "HISTORICAL_R02_ATTESTED_DOWNSTREAM_GATE_REQUIRED",
+  "sourceCommittedAt": "2026-08-30T07:35:16+08:00",
+  "implementation": {
+    "sourceCommit": "41bce09fd034c41f694f5fda5f776a09cb3efc69",
+    "sourceTree": "61438c2f8d66c9fc5e8ee613964255e2f7ab6298",
+    "r01Ancestor": "b7944f2ef252eb454de619382b87eb89da1ce0dc"
+  },
+  "freezes": {
+    "data": {
+      "tag": "task1-data-formal-v1.1",
+      "tagObject": "6ba3a0e4098786882dd500f884823f2f8dfbb9d3",
+      "commit": "02620d8313dcb883b7a57c4c2edc8f4286eb4bc9",
+      "runtimeFreeze": {
+        "schemaVersion": "task1.formal-runtime-freeze.v1",
+        "datasetContractRevision": "formal-v1",
+        "dataFreeze": {
+          "tag": "task1-data-formal-v1.1",
+          "tagObject": "6ba3a0e4098786882dd500f884823f2f8dfbb9d3",
+          "commit": "02620d8313dcb883b7a57c4c2edc8f4286eb4bc9",
+          "statusTagBlob": "6e1f9324b0f2a5cce645340701ad9624f3683c21",
+          "statusFileSha256": "94c447322c8c204403b44a4abf6f691480b8902c3300caa09224ac11fe3f1267"
+        },
+        "counts": {
+          "total": 640,
+          "dev": 240,
+          "hiddenTest": 400
+        },
+        "sources": {
+          "contract": {
+            "fileSha256": "991ff87255019c0d4b64deba16b76b144bd3c63138be355c747865329e83da44",
+            "canonicalSha256": "4fc62c1829301fe9f2410f6be40698d7b3d09ec90dde3bfe294452f7ef152d41"
+          },
+          "provider": {
+            "devFileSha256": "8018bb65160eb1cac13e489ae54f258f2369dc4af058f09a3e1dc432961bc1f3",
+            "devCanonicalSha256": "ab1842aa1cc6d36a79bd8c232f2d66fd0d097c50eea4c2c09c4b4c8393e6308a",
+            "hiddenFileSha256": "743b2ee051572c81aec8b4db6b581a77143ed283ee136448b095e8576e0d5799",
+            "hiddenCanonicalSha256": "fc2d655011681cf63c38e5b71e92790ebeb601ec77ed5cf2ac42784aa73e212b"
+          },
+          "snapshots": {
+            "devCanonicalSha256": "3a82d0ad8241ff3e2173555efbdb65dfb367a0a38c9998203c5b4754611a4783",
+            "hiddenCanonicalSha256": "23fe7b47d13c950765fa9557da918e1d102b7ab4558171cb15a8444d1cbd9c9e"
+          }
+        },
+        "measurementV2": {
+          "manifestCanonicalSha256": "ff5384e0386079a1e16464063247520eae7ea4964b43c6b7a9972e38b2ba7da9",
+          "gold": {
+            "devCanonicalSha256": "8cfffec5c06b37b92b41cf95ee0d70333e9a2a7f6063145100b20ce753fe58c5",
+            "hiddenCanonicalSha256": "fdcbfbce3ada6b274cdfb6a9444c3f151af004b6186ca5e0186fe7e16d3c883f",
+            "fullCanonicalSha256": "7b08420acc04894b2a9aa6f56a17994bc79f2d1913032eebb94a17ace332e3a8"
+          },
+          "pairs": {
+            "devCanonicalSha256": "72def9ee92733ad5b2bc33f40ff500a75abf748ccdf4703f6b8464678e508c31",
+            "hiddenCanonicalSha256": "9195cf6dc6fbec5dca2f1824c93763f50d42cb3f00f06339f7431dde239b42b8",
+            "fullCanonicalSha256": "79f531d3cef550c390c167444f9f97d656b78d95c5392a4962a2a65a94c10652"
+          },
+          "runtimeContractsCanonicalSha256": "42c1f5847fe88ed70ec9ce35217dcd8cfdc90fa8a7dd9a53e45b50481204b96e"
+        },
+        "artifacts": {
+          "caseBindings": {
+            "path": "formal-runtime/frozen/case-bindings.jsonl",
+            "count": 640,
+            "devCount": 240,
+            "hiddenTestCount": 400,
+            "fileSha256": "c9e9d2ea07ea6e4810114e3b3470c72202b86d29727a7871a49f30fbd3cce3d8",
+            "canonicalSha256": "82eec3de1f587f5224bca20ecc739b3339af7ff3dea6358198519b9ba65f1feb"
+          },
+          "devSmokePreregistration": {
+            "path": "formal-runtime/frozen/dev-smoke-preregistration.json",
+            "count": 12,
+            "fileSha256": "49c982bc355b5a2c9b024207a6d3d4470e22837772f3ab180486b46342469918",
+            "selectionCanonicalSha256": "f300079fc408878cf2bf5921a9e6b3004ce9e5fa3034857221554c00a9a101ec"
+          }
+        },
+        "formalMetricEligible": false
+      }
+    },
+    "prompt": {
+      "tag": "task1-code-freeze",
+      "tagObject": "edbf18309fbf100cdf5b26d64c0fbb6f12c8f3a5",
+      "commit": "d0996809ed63f6cfc67504ad180db0d48ac70475"
+    }
+  },
+  "sourceArtifacts": {
+    "adapter": [
+      {
+        "path": "MemoryProxy/eval/tool-prompt-bench/real-chain-adapter.ts",
+        "bytes": 17042,
+        "fileSha256": "bcf345be84169aa5180a2c21a5bf2f3cec6600e1854b8083005d9bd9c149c61c",
+        "gitBlobSha1": "2c4b26e35c0e6a5824eac0e42a3e7809b63f52ef"
+      }
+    ],
+    "config": [
+      {
+        "path": "MemoryProxy/src/config.ts",
+        "bytes": 26965,
+        "fileSha256": "d3a14e9e3364f13a9813c3fca3dbf03dc03f317d331e7cbd1faea41a22c98844",
+        "gitBlobSha1": "138af45423537f746b074949dc4c53f2d26f08c7"
+      },
+      {
+        "path": "MemoryProxy/src/experiment-config-fingerprint.ts",
+        "bytes": 3114,
+        "fileSha256": "6ab759e45ee9a1a5d7c9778fb1148382f2a0f814f002878fc71ae54b38ed2ace",
+        "gitBlobSha1": "8697f8f4053b1438dcf89f80ce04718fb53e9c48"
+      }
+    ],
+    "prompt": [
+      {
+        "path": "MemoryProxy/eval/tool-prompt-bench/variants/code-freeze/code-freeze-manifest.json",
+        "bytes": 35480,
+        "fileSha256": "ff5f09106564378a563cfb205517bf281faafde1d41a6d76ae3762f22348ab43",
+        "gitBlobSha1": "a56d80b6df14a8e97e24b85d7859c9fa229cacf6"
+      }
+    ],
+    "runner": [
+      {
+        "path": "MemoryProxy/eval/tool-prompt-bench/formal-prepare-cli.ts",
+        "bytes": 4755,
+        "fileSha256": "f0bb8cfdb3ce09afd44dfe21806131ab963ca5bebc1eb6b09871c3555e8249d4",
+        "gitBlobSha1": "0e47662f8d91892931bc5d520df6d043c44f70ad"
+      },
+      {
+        "path": "MemoryProxy/eval/tool-prompt-bench/formal-prepare-datasource.ts",
+        "bytes": 5848,
+        "fileSha256": "db9b98d5e02667cfb6ea372b48e6b8a1d5f0d7e2c7f013e67fa22349ef22641b",
+        "gitBlobSha1": "329ea5e19781c48b79a58015007b61530bc172a6"
+      },
+      {
+        "path": "MemoryProxy/eval/tool-prompt-bench/formal-prepare-entry.ts",
+        "bytes": 11288,
+        "fileSha256": "1983b47d3fc58710539b3316af483fefd2d0f0959140fe921400e37dbbe2d245",
+        "gitBlobSha1": "eeab24c9132e3b2453d28ba4a19fad17cb6e94e8"
+      },
+      {
+        "path": "MemoryProxy/eval/tool-prompt-bench/formal-prepare-runner.ts",
+        "bytes": 36662,
+        "fileSha256": "28ec4b24a5b2d939d90575a9cbac4ef98fa84a8d48e4ce14c3540a4c101c56ff",
+        "gitBlobSha1": "29663afc76174a648d1a86e4145458cc586801a5"
+      },
+      {
+        "path": "MemoryProxy/eval/tool-prompt-bench/run-formal-prepare.ps1",
+        "bytes": 1549,
+        "fileSha256": "82e2bca85fb574ff64b8981cc4ee9197bad0caf46243dffab7f5d2aa48db8bac",
+        "gitBlobSha1": "0d1638d7bdb27bdca36fff91abd2b6806017c614"
+      }
+    ],
+    "scorer": [
+      {
+        "path": "MemoryProxy/eval/tool-prompt-bench/evaluator.ts",
+        "bytes": 9214,
+        "fileSha256": "93b103956b5cee988133ca3ed179d3d5c985e2cddef2311963007c37aa066bd7",
+        "gitBlobSha1": "a4de499d0192a172e3a77ea1a75bd0723f85c70d"
+      },
+      {
+        "path": "MemoryProxy/eval/tool-prompt-bench/score.ts",
+        "bytes": 6024,
+        "fileSha256": "633399b5609da15b04fff6bb932e5bd6985ec38aea76dd1759d7c47350975b75",
+        "gitBlobSha1": "9476874f88352206aeb6be002c6c69336800e68a"
+      },
+      {
+        "path": "MemoryProxy/eval/tool-prompt-bench/formal-runtime/private-loader.ts",
+        "bytes": 11824,
+        "fileSha256": "5d74b49ea2d8cb2d69b64d4894263f73469f63a34d50da40ab09a45124549ec7",
+        "gitBlobSha1": "b14557ea2f1a7db1ec263a3bcd78e52c19a93af1"
+      }
+    ],
+    "data": [
+      {
+        "path": "MemoryProxy/eval/tool-prompt-bench/formal-runtime/frozen/formal-runtime-freeze.json",
+        "bytes": 2925,
+        "fileSha256": "eb759933bf57ac158682c12cc794020f2d13078b6c929127d930302b0fe83e3c",
+        "gitBlobSha1": "0353bcd2ab0570662c31c57e70bffaf9c0131ad6"
+      }
+    ]
+  },
+  "acceptanceOverlayArtifacts": [
+    {
+      "path": "MemoryProxy/package.json",
+      "bytes": 3913,
+      "fileSha256": "159f6a9ad7f2addeca89cfbb1a6aff16040cb53c2e5ae95715b66c1fe67a4809"
+    },
+    {
+      "path": "MemoryProxy/eval/tool-prompt-bench/formal-runtime/capture-r02-experiment-freeze.ts",
+      "bytes": 9922,
+      "fileSha256": "313ee40dc400775960ed6478df9e6b5b333b18591cad166691f726335a2335ea"
+    },
+    {
+      "path": "MemoryProxy/eval/tool-prompt-bench/formal-runtime/vitest.r02.config.ts",
+      "bytes": 652,
+      "fileSha256": "22a49f638b871b1e4cb8a7a76b5562664f2eecf6196b94f70db7f881474a85d1"
+    },
+    {
+      "path": "MemoryProxy/src/__tests__/r02-experiment-freeze.test.ts",
+      "bytes": 1546,
+      "fileSha256": "6f1c1c551fd6f3a1fbda88a86d8bfdaadd25780cfc9976e1d36884d3caf14f68"
+    }
+  ],
+  "commands": {
+    "eval:tool-prompt:d0:test": "vitest run src/__tests__/formal-world-schema.test.ts src/__tests__/formal-visibility.test.ts src/__tests__/formal-snapshot.test.ts src/__tests__/formal-provenance.test.ts src/__tests__/formal-evaluator-contract.test.ts src/__tests__/formal-dataset-registry.test.ts src/__tests__/formal-measurement-v2-overlay.test.ts src/__tests__/tool-prompt-canonical-json-shared.test.ts && python -m unittest discover -s eval/tool-prompt-bench/source-tools/tests -q",
+    "eval:tool-prompt:test": "vitest run src/__tests__/tool-prompt-bench.test.ts",
+    "eval:tool-prompt:real-chain:gate": "vitest run src/__tests__/real-chain-adapter.test.ts",
+    "eval:tool-prompt:formal:gate": "vitest run src/__tests__/formal-profile-override.test.ts src/__tests__/formal-runtime.test.ts src/__tests__/formal-runtime-bindings.test.ts src/__tests__/formal-private-measurement.test.ts src/__tests__/formal-smoke-preregistration.test.ts src/__tests__/formal-runtime-freeze.test.ts src/__tests__/formal-public-datasource.test.ts src/__tests__/formal-prepare-datasource.test.ts src/__tests__/formal-prepare-runner.test.ts src/__tests__/formal-prepare-entry.test.ts",
+    "eval:tool-prompt:formal:prepare": "tsx eval/tool-prompt-bench/formal-prepare-cli.ts",
+    "eval:tool-prompt:formal:freeze-runtime": "tsx eval/tool-prompt-bench/formal-runtime/freeze-formal-runtime.ts",
+    "eval:tool-prompt:capture-freeze": "tsx eval/tool-prompt-bench/capture-code-freeze.ts",
+    "eval:tool-prompt:formal:capture-r02-freeze": "tsx eval/tool-prompt-bench/formal-runtime/capture-r02-experiment-freeze.ts"
+  },
+  "commandSetSha256": "1bc17241369af39c9be00ad13bcedcbf909e357101cc03513ccd7f9e6c85ed57",
+  "executionContract": {
+    "model": "gpt-5.6-luna",
+    "reasoningEffort": "high",
+    "prepareOnly": true,
+    "readsOrWritesCodexAuth": false,
+    "modelRuns": 0,
+    "formalMetricEligible": false,
+    "candidateBaseEligible": false
+  },
+  "downstreamRequirement": {
+    "reason": "Historical R02 predates the repaired Measurement-v2 overcall contract; final acceptance must use the R05-compatible scorer and rerun this freeze on the common integration base.",
+    "requiredAncestor": "c86b154f9f597da0788592c66b93d574fd3f10f9",
+    "requiredScorerContract": "M0_R05_REPAIRED_OVERCALL_AND_TERMINAL_HORIZON",
+    "requiredGates": [
+      "D0_TYPESCRIPT_42_OF_42",
+      "D0_PYTHON_19_OF_19",
+      "R05_RUNTIME_SMOKE_12_OF_12_READY",
+      "MEASUREMENT_V2_INTEGRATION_PASS",
+      "SELECTION_CONTRACT_FROZEN"
+    ],
+    "closesOnly": "R02 historical acceptance; satisfying it does not itself create a candidate base."
+  },
+  "manifestCanonicalSha256": "c03ef93d1cfc1cfde0345d1e2736adac3acb44ca892eda6491b77b2c967057df"
+}

@@ -22,6 +22,7 @@
     "eval:tool-prompt:validate": "tsx eval/tool-prompt-bench/validate.ts",
     "eval:tool-prompt:test": "vitest run src/__tests__/tool-prompt-bench.test.ts",
     "eval:tool-prompt:real-chain:gate": "vitest run src/__tests__/real-chain-adapter.test.ts",
+    "eval:tool-prompt:d0:test": "vitest run src/__tests__/formal-world-schema.test.ts src/__tests__/formal-visibility.test.ts src/__tests__/formal-snapshot.test.ts src/__tests__/formal-provenance.test.ts src/__tests__/formal-evaluator-contract.test.ts src/__tests__/formal-dataset-registry.test.ts src/__tests__/formal-measurement-v2-overlay.test.ts src/__tests__/tool-prompt-canonical-json-shared.test.ts && python -m unittest discover -s eval/tool-prompt-bench/source-tools/tests -q",
     "eval:tool-prompt:formal:gate": "vitest run src/__tests__/formal-profile-override.test.ts src/__tests__/formal-runtime.test.ts src/__tests__/formal-runtime-bindings.test.ts src/__tests__/formal-private-measurement.test.ts src/__tests__/formal-smoke-preregistration.test.ts src/__tests__/formal-runtime-freeze.test.ts src/__tests__/formal-public-datasource.test.ts src/__tests__/formal-prepare-datasource.test.ts src/__tests__/formal-prepare-runner.test.ts src/__tests__/formal-prepare-entry.test.ts",
     "eval:tool-prompt:formal:r03:gate": "vitest run src/__tests__/real-chain-adapter.test.ts src/__tests__/tool-execution-completion-observer.test.ts src/__tests__/formal-execution-preflight.test.ts src/__tests__/formal-asset-restore-plan.test.ts src/__tests__/formal-asset-restore-plan-contract.test.ts src/__tests__/formal-build-frozen-restore-plan.test.ts src/__tests__/formal-asset-restore-runtime.test.ts",
     "eval:tool-prompt:formal:build-restore-plan": "tsx eval/tool-prompt-bench/formal-dataset/scripts/build-formal-restore-plan.ts",
@@ -29,6 +30,7 @@
     "eval:tool-prompt:formal:inspect-assets": "tsx eval/tool-prompt-bench/formal-dataset/scripts/inspect-formal-snapshot.ts",
     "eval:tool-prompt:formal:prepare": "tsx eval/tool-prompt-bench/formal-prepare-cli.ts",
     "eval:tool-prompt:formal:freeze-runtime": "tsx eval/tool-prompt-bench/formal-runtime/freeze-formal-runtime.ts",
+    "eval:tool-prompt:formal:capture-r02-freeze": "tsx eval/tool-prompt-bench/formal-runtime/capture-r02-experiment-freeze.ts",
     "eval:tool-prompt:score": "tsx eval/tool-prompt-bench/score.ts",
     "eval:tool-prompt:codex": "tsx eval/tool-prompt-bench/codex-runner.ts"
   },
