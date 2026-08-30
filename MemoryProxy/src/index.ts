@@ -40,6 +40,7 @@ import {
   closeServerAndSealTrace,
   createToolExecutionTraceSinkFromEnv,
 } from "./tool-execution-trace-sink.js";
+import { createProviderRequestTraceSinkFromEnv } from "./provider-request-trace-sink.js";
 
 const overrides = parseArgv(process.argv);
 const configFilePath = resolve(overrides.configFile || "config.yaml");
@@ -130,6 +131,10 @@ if (isRequestPrepareActive(config)) {
 }
 
 const toolExecutionTraceSink = createToolExecutionTraceSinkFromEnv(process.env);
+const providerRequestTraceSink = createProviderRequestTraceSinkFromEnv(
+  process.env,
+  { processInstanceId: toolExecutionTraceSink.processInstanceId ?? "" },
+);
 const app = createApp(config, {
   experimentConfigFileSha256,
   ...(toolExecutionTraceSink.enabled
@@ -138,6 +143,9 @@ const app = createApp(config, {
       bridgeEntryObserver: toolExecutionTraceSink.entryObserver,
       bridgeCompletionObserver: toolExecutionTraceSink.completionObserver,
     }
+    : {}),
+  ...(providerRequestTraceSink.enabled
+    ? { providerRequestObserver: providerRequestTraceSink }
     : {}),
 });
 
@@ -175,6 +183,7 @@ const server = serve(
   },
   ({ address, port }) => {
     toolExecutionTraceSink.markReady();
+    providerRequestTraceSink.markReady();
     log.info("server.listening", { address, port });
 
     // ── Startup connectivity check (fire-and-forget, never blocks) ───────
@@ -192,7 +201,14 @@ const server = serve(
 async function gracefulShutdown(signal: "SIGTERM" | "SIGINT"): Promise<void> {
   log.info("server.shutdown", { signal });
   try {
-    await closeServerAndSealTrace(server, toolExecutionTraceSink);
+    await closeServerAndSealTrace(server, {
+      markFinished: async () => {
+        await Promise.all([
+          toolExecutionTraceSink.markFinished(),
+          providerRequestTraceSink.markFinished(),
+        ]);
+      },
+    });
   } catch (error) {
     // A failed drain must not produce a misleading complete trace seal.
     log.warn("server.shutdown.http_drain_failed", { error: String(error) });

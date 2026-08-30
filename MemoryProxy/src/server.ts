@@ -25,11 +25,13 @@ import type {
   BridgeCompletionObserver,
   BridgeEntryObserver,
 } from "./bridge-entry-observer.js";
+import type { ProviderRequestObserver } from "./provider-request-trace-sink.js";
 import type { ProxyConfig } from "./types.js";
 
 export interface CreateAppDeps {
   bridgeEntryObserver?: BridgeEntryObserver;
   bridgeCompletionObserver?: BridgeCompletionObserver;
+  providerRequestObserver?: ProviderRequestObserver;
   /** Deterministic test seam; production instances receive a fresh UUID. */
   serverInstanceId?: string;
   /** Deterministic test seam; production instances use their creation time. */
@@ -43,6 +45,11 @@ export function createApp(config: ProxyConfig, deps: CreateAppDeps = {}): Hono {
   const serverInstanceId = deps.serverInstanceId ?? randomUUID();
   const serverStartedAt = deps.serverStartedAt ?? new Date().toISOString();
   const experimentConfigFingerprint = fingerprintProxyConfigForExperiment(config);
+  const codexHandler = (c: Parameters<typeof handleCodexEndpoint>[0]) => (
+    handleCodexEndpoint(c, config, {
+      providerRequestObserver: deps.providerRequestObserver,
+    })
+  );
 
   // Eagerly activate storage/bindingRepo so bridge-only requests (no main
   // /v1/messages hits yet) can still recover session state via L2 fallthrough
@@ -272,15 +279,15 @@ export function createApp(config: ProxyConfig, deps: CreateAppDeps = {}): Hono {
   //   /codex/<spaceId>/v1/responses  ← codex 客户端 base 自带 v1 时命中
   //   /codex/<spaceId>/responses     ← codex 客户端 base 不带 v1 时命中（对齐 CC/CB 用法）
   // 两条路径全部映射到 handleCodexEndpoint，行为完全一致。
-  app.post("/codex/:spaceId/v1/responses/compact", (c) => handleCodexEndpoint(c, config));
-  app.post("/codex/:spaceId/v1/memories/trace_summarize", (c) => handleCodexEndpoint(c, config));
-  app.post("/codex/:spaceId/v1/realtime/calls", (c) => handleCodexEndpoint(c, config));
-  app.post("/codex/:spaceId/v1/responses", (c) => handleCodexEndpoint(c, config));
+  app.post("/codex/:spaceId/v1/responses/compact", codexHandler);
+  app.post("/codex/:spaceId/v1/memories/trace_summarize", codexHandler);
+  app.post("/codex/:spaceId/v1/realtime/calls", codexHandler);
+  app.post("/codex/:spaceId/v1/responses", codexHandler);
   // 兼容 base_url 不带 /v1 的写法（对齐 CC/CB 的用户体验）
-  app.post("/codex/:spaceId/responses/compact", (c) => handleCodexEndpoint(c, config));
-  app.post("/codex/:spaceId/memories/trace_summarize", (c) => handleCodexEndpoint(c, config));
-  app.post("/codex/:spaceId/realtime/calls", (c) => handleCodexEndpoint(c, config));
-  app.post("/codex/:spaceId/responses", (c) => handleCodexEndpoint(c, config));
+  app.post("/codex/:spaceId/responses/compact", codexHandler);
+  app.post("/codex/:spaceId/memories/trace_summarize", codexHandler);
+  app.post("/codex/:spaceId/realtime/calls", codexHandler);
+  app.post("/codex/:spaceId/responses", codexHandler);
 
   // ── Workbuddy endpoints (must precede generic /:agent/:spaceId routes) ────
   // WorkBuddy CLI/Desktop 客户端走 OpenAI Responses API（与 Codex 同协议），
@@ -317,12 +324,12 @@ export function createApp(config: ProxyConfig, deps: CreateAppDeps = {}): Hono {
   //   传给注入 pipeline（见 codexHandler.ts injection 段落中 `requestPath:
   //   c.req.path`），路由一注册 `/analyse` marker 立即对 codex 生效。
   if (config.costGuard.markerOptIn) {
-    app.post("/codex/:spaceId/cost-guard/v1/responses", (c) => handleCodexEndpoint(c, config));
-    app.post("/codex/:spaceId/cost-guard/responses", (c) => handleCodexEndpoint(c, config));
+    app.post("/codex/:spaceId/cost-guard/v1/responses", codexHandler);
+    app.post("/codex/:spaceId/cost-guard/responses", codexHandler);
   }
   if (config.injection?.assetReflection?.markerOptIn) {
-    app.post("/codex/:spaceId/analyse/v1/responses", (c) => handleCodexEndpoint(c, config));
-    app.post("/codex/:spaceId/analyse/responses", (c) => handleCodexEndpoint(c, config));
+    app.post("/codex/:spaceId/analyse/v1/responses", codexHandler);
+    app.post("/codex/:spaceId/analyse/responses", codexHandler);
   }
 
   // ── deepseek-harness (dsh) endpoints ──────────────────────────────────────

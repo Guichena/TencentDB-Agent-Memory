@@ -51,7 +51,7 @@ export interface ToolExecutionTraceSink {
   readonly entryObserver?: BridgeEntryObserver;
   readonly completionObserver?: BridgeCompletionObserver;
   markReady(): void;
-  markFinished(): void;
+  markFinished(): void | Promise<void>;
 }
 
 export interface ToolExecutionTraceSinkDependencies {
@@ -80,7 +80,7 @@ export async function closeServerAndSealTrace(
       reject(error);
     }
   });
-  sink.markFinished();
+  await sink.markFinished();
 }
 
 /**

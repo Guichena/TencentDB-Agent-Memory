@@ -18,6 +18,10 @@ import { parseCodexJsonlEvents } from "../../eval/tool-prompt-bench/codex-runner
 import { initAuth } from "../auth.js";
 import type { ObservedBridgeEntry } from "../bridge-entry-observer.js";
 import { DEFAULT_CONFIG } from "../config.js";
+import type {
+  ProviderCompletionEvidence,
+  ProviderRequestEvidence,
+} from "../provider-request-trace-sink.js";
 import { __resetHookCacheRepoForTests } from "../db/hookCacheRepo.js";
 import { __resetSessionRepoForTests } from "../db/sessionRepo.js";
 import { __resetInjectionPipelineForTests } from "../injection/index.js";
@@ -74,7 +78,17 @@ function createInMemoryCaptureBoundary(): InMemoryCaptureBoundary {
     const body = rawBody ? JSON.parse(rawBody) as Record<string, unknown> : {};
     if (path === "/responses") {
       upstreamRequests.push({ path, method, headers, body });
-      return new Response(null, { status: 204 });
+      return new Response([
+        "event: response.completed",
+        "data: {\"type\":\"response.completed\",\"response\":{\"status\":\"completed\",\"usage\":{\"input_tokens\":321,\"input_tokens_details\":{\"cached_tokens\":123},\"output_tokens\":9,\"total_tokens\":330}}}",
+        "",
+      ].join("\n"), {
+        status: 200,
+        headers: {
+          "content-type": "text/event-stream",
+          "x-request-id": `provider-${upstreamRequests.length}`,
+        },
+      });
     }
     if (path === "/v3/atomic/search" || path === "/v3/skill/search") {
       bridgeRequests.push({ path, method, headers, body });
@@ -979,9 +993,17 @@ describe("Task 1 R01 real-chain Adapter", () => {
     await initProxyStorage(config.storage);
     initAuth(config.auth);
     const observedBridgeEntries: ObservedBridgeEntry[] = [];
+    const observedProviderRequests: ProviderRequestEvidence[] = [];
+    const observedProviderCompletions: ProviderCompletionEvidence[] = [];
+    const providerEvidenceTasks: Promise<unknown>[] = [];
     const app = createApp(config, {
       bridgeEntryObserver: (entry) => {
         observedBridgeEntries.push(entry);
+      },
+      providerRequestObserver: {
+        observeRequest: (request) => observedProviderRequests.push(request),
+        observeCompletion: (completion) => observedProviderCompletions.push(completion),
+        track: (task) => { providerEvidenceTasks.push(task); },
       },
     });
     const adapter = new RealChainAdapter({
@@ -1021,10 +1043,35 @@ describe("Task 1 R01 real-chain Adapter", () => {
       providerAuthorization: "Bearer provider-probe-token",
       tdaiUserKey: "tdai-probe-user-key",
     });
+    await Promise.all(providerEvidenceTasks);
 
-    expect(result.status).toBe(204);
-    expect(repeatedResult.status).toBe(204);
+    expect(result.status).toBe(200);
+    expect(repeatedResult.status).toBe(200);
     expect(capture.upstreamRequests).toHaveLength(2);
+    expect(observedProviderRequests).toHaveLength(2);
+    expect(observedProviderCompletions).toEqual([
+      expect.objectContaining({
+        correlationId: expect.any(String),
+        status: 200,
+        usage: expect.objectContaining({
+          input_tokens: 321,
+          input_tokens_details: { cached_tokens: 123 },
+          output_tokens: 9,
+        }),
+      }),
+      expect.objectContaining({
+        correlationId: expect.any(String),
+        status: 200,
+        usage: expect.objectContaining({ input_tokens: 321 }),
+      }),
+    ]);
+    expect(observedProviderRequests[0]).toMatchObject({
+      method: "POST",
+      path: "/codex/space-eval/v1/responses",
+      body: capture.upstreamRequests[0]?.body,
+      correlationHeaders: { "session-id": input.identity.sessionId },
+    });
+    expect(observedProviderRequests[0]?.rawBody).toBe(JSON.stringify(capture.upstreamRequests[0]?.body));
     expect(capture.metadataPaths.filter((path) => prewarmAssetPaths.has(path)))
       .toEqual(prewarmAssetRequestsAfterFirstRun);
     for (const path of prewarmAssetPaths) {

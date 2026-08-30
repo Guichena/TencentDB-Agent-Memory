@@ -36,6 +36,25 @@ describe("MemoryProxy tool execution trace sink", () => {
     expect(order).toEqual(["close-started", "sealed"]);
   });
 
+  it("awaits asynchronous evidence sealing after the HTTP server drains", async () => {
+    const order: string[] = [];
+    const closing = closeServerAndSealTrace({
+      close: (callback) => {
+        order.push("close-started");
+        callback();
+      },
+    }, {
+      markFinished: async () => {
+        await Promise.resolve();
+        order.push("sealed");
+      },
+    });
+
+    expect(order).toEqual(["close-started"]);
+    await closing;
+    expect(order).toEqual(["close-started", "sealed"]);
+  });
+
   it("is completely disabled unless both formal trace variables are present", () => {
     const traceRoot = mkdtempSync(join(tmpdir(), "task1-proxy-trace-disabled-"));
     const sink = createToolExecutionTraceSinkFromEnv({
