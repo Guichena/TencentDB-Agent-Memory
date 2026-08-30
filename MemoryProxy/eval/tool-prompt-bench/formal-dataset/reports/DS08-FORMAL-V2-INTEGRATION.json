@@ -1,0 +1,93 @@
+{
+  "schema_version": "task1.formal_v2_integration.v1",
+  "dataset_revision": "formal-v2",
+  "base_dataset_revision": "formal-v1.1",
+  "source_launch_tag": "task1-data-parallel-launch-20team-v1",
+  "schema_baseline_tag": "task1-data-parallel-baseline-v2",
+  "status": "passed",
+  "team_branch_commits": {
+    "codex/task1-data-build-20team-t17-t18": [
+      "b880314f1d719da1b0b02ac4fbf8d3ca8749960d",
+      "9422208d8297f4df43109e9d94e7482659bf54ca"
+    ],
+    "codex/task1-data-build-20team-t19-t20": [
+      "07d171ccdf5897a455ea4b6e1efd14d1d8607d77",
+      "ae9b84e6bfb987b72a37b45e3b0e7aa19fff0836"
+    ]
+  },
+  "case_distribution": {
+    "teams": 20,
+    "dev_cases": 320,
+    "hidden_test_cases": 480,
+    "full_cases": 800,
+    "pairs": 300,
+    "memory_positive": 120,
+    "skill_positive": 120,
+    "knowledge_positive": 60,
+    "paired_no_tool_negative": 300,
+    "natural_coding_negative": 200,
+    "discovery_positive": 200,
+    "direct_positive": 100
+  },
+  "model_runs": 0,
+  "artifacts": {
+    "contract": {
+      "path": "registry/contracts/formal-v2.json",
+      "canonical_sha256": "eb04b26cfe03810030f6b7d0a06f82dfedf7c8011ce11bb181db8af0b94b58b7",
+      "file_sha256": "0d398c9e4c46b60f86f245265769062b9ede2ffdf53a80088fe0421fdd797d9d"
+    },
+    "provider_dev": {
+      "path": "revisions/formal-v2/provider/dev.jsonl",
+      "canonical_sha256": "2b4d0645d8111699f7a6a06d4fb387b767122037b2c813583fe393068dbcde10",
+      "file_sha256": "b062d284cb849edd6504340e81f4f34e1dc37b126dca53edab6062749b1c2ed4"
+    },
+    "provider_hidden": {
+      "path": "revisions/formal-v2/provider/hidden.sealed.jsonl",
+      "canonical_sha256": "34e01c72495d4617ff8951d2c4b0b2a574b9dabc9b621fcd5385bb27c4699566",
+      "file_sha256": "0a38a9433761adaf286b00a62b2bbda6526c41ab83dcad844b0f7b83929118fc"
+    },
+    "private_gold_dev": {
+      "path": "revisions/formal-v2/snapshots/dev/scorer-gold.private.jsonl",
+      "canonical_sha256": "cca93a58c796ee38ddfeb9d4512ce32f493c7b8e0ce8e47b498f9c8802cae1fa",
+      "file_sha256": "bbe6fa20aa46a00d484e5d22e5b9c2a8b4d8afb42fb4205de2e459541d25cf1c"
+    },
+    "private_gold_hidden": {
+      "path": "revisions/formal-v2/snapshots/hidden/scorer-gold.private.jsonl",
+      "canonical_sha256": "39b444c7de45975b27948d0320108f9bdea4c998b39dd99ff99f319b1ed28940",
+      "file_sha256": "859ba15c0b50f96d34844f415e411e444283a9cf83948e12bf0636b7204a9723"
+    },
+    "snapshot_dev": {
+      "path": "revisions/formal-v2/snapshots/dev/snapshot-input.json",
+      "canonical_sha256": "addd9c6311d4bd44478ea9438f50816d59eb2c8adfb9c4d9f53fd3fc152e0b7e",
+      "file_sha256": "3ae4b58c1ece2e871a9e4eec4ffafc18807a98b15ac080fd2c6b5a360faa9fb0"
+    },
+    "snapshot_hidden": {
+      "path": "revisions/formal-v2/snapshots/hidden/snapshot-input.json",
+      "canonical_sha256": "93d18538660330603f082a396791712e9b0cdba6647ea819fa3ca6e456085fbb",
+      "file_sha256": "d2014bc57f5235fad86c1a3155604526c7b4a21b554ee144335c7faa38fc73bc"
+    }
+  },
+  "deterministic_compile_result": {
+    "independent_compiles": 2,
+    "artifact_files_compared": 6,
+    "byte_identical": true,
+    "official_output_matches": true
+  },
+  "all_gate_results": {
+    "team_gates": "4/4 passed",
+    "dev_strict_validator": "passed",
+    "hidden_strict_validator": "passed",
+    "full_strict_validator": "passed",
+    "provider_leakage_count": 0,
+    "pair_integrity_error_count": 0,
+    "invalid_sequence_count": 0,
+    "missing_source_ref_count": 0,
+    "d0_tests": "44/44 passed plus 19/19 source-tool tests",
+    "tool_prompt_tests": "30/30 passed"
+  },
+  "known_limitations": [
+    "The 800-case Measurement-v2 Gold/Pair overlays and real-service restoration gates have not been built for formal-v2.",
+    "No formal model evaluation was run during construction or integration."
+  ],
+  "append_policy": "formal-v1.1 remains immutable. Any change to the 800-case content, Gold, provider projection, or snapshots must create a later dataset revision and new hashes; scores from different revisions must not be pooled without an explicit dataset-revision boundary."
+}

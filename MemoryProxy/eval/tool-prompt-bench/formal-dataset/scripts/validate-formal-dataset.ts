@@ -13,6 +13,10 @@ import { canonicalJson, canonicalSha256 } from "../../worlds/formal-snapshot.js"
 const DEV_TEAMS = ["T01", "T02", "T03", "T04", "T11", "T12"] as const;
 const HIDDEN_TEAMS = ["T05", "T06", "T07", "T08", "T09", "T10", "T13", "T14", "T15", "T16"] as const;
 const ALL_TEAMS = [...DEV_TEAMS, ...HIDDEN_TEAMS].sort((a, b) => a.localeCompare(b));
+const FORMAL_V2_DEV_TEAMS = [...DEV_TEAMS, "T17", "T18"] as const;
+const FORMAL_V2_HIDDEN_TEAMS = [...HIDDEN_TEAMS, "T19", "T20"] as const;
+const FORMAL_V2_ALL_TEAMS = [...FORMAL_V2_DEV_TEAMS, ...FORMAL_V2_HIDDEN_TEAMS]
+  .sort((a, b) => a.localeCompare(b));
 const DISCOVERY_TOOLS = new Set([
   "knowledge_tools_list", "skill_search", "tdai_conversation_search",
   "tdai_memory_search", "tdai_scenario_ls",
@@ -32,6 +36,10 @@ function legacyDraftDeltaSha256(input: {
   }), "utf8").digest("hex");
 }
 
+function omitUndefined(input: Record<string, unknown>): Record<string, unknown> {
+  return Object.fromEntries(Object.entries(input).filter(([, value]) => value !== undefined));
+}
+
 function validatePairIntegrity(contract: FormalWorldContract): string[] {
   const errors: string[] = [];
   const publicById = new Map(contract.publicCases.map((item) => [item.caseId, item]));
@@ -43,7 +51,7 @@ function validatePairIntegrity(contract: FormalWorldContract): string[] {
     const { sessionId: negativeSessionId, ...negativeIdentity } = negative.identity;
     void positiveSessionId;
     void negativeSessionId;
-    const sameFrozenFields = canonicalSha256({
+    const sameFrozenFields = canonicalSha256(omitUndefined({
       identity: positiveIdentity,
       snapshotId: positive.snapshotId,
       workspace: positive.workspace,
@@ -51,7 +59,7 @@ function validatePairIntegrity(contract: FormalWorldContract): string[] {
       difficulty: positive.difficulty,
       query: positive.query,
       visibleAssetSetSha256: positive.visibleAssetSetSha256,
-    }) === canonicalSha256({
+    })) === canonicalSha256(omitUndefined({
       identity: negativeIdentity,
       snapshotId: negative.snapshotId,
       workspace: negative.workspace,
@@ -59,7 +67,7 @@ function validatePairIntegrity(contract: FormalWorldContract): string[] {
       difficulty: negative.difficulty,
       query: negative.query,
       visibleAssetSetSha256: negative.visibleAssetSetSha256,
-    });
+    }));
     if (!sameFrozenFields) errors.push(`${pair.pairId}: positive/negative frozen fields differ`);
     if (positive.contextMessages.length !== negative.contextMessages.length) {
       errors.push(`${pair.pairId}: positive/negative context lengths differ`);
@@ -95,7 +103,7 @@ function normalizeText(value: string): string {
 
 function normalizedCopyText(value: string): string {
   return normalizeText(value)
-    .replace(/\bt(?:0[1-9]|1[0-6])\b/gi, "<team>")
+    .replace(/\bt(?:0[1-9]|1[0-9]|20)\b/gi, "<team>")
     .replace(/\b(?:agent|team|task|session|user)-task1-[a-z0-9-]+\b/gi, "<identity>")
     .replace(/\b(?:case|pair)[-_]?[a-z0-9-]+\b/gi, "<case>");
 }
@@ -184,13 +192,19 @@ function validateCrossSplitCopies(contract: FormalWorldContract): string[] {
   return errors;
 }
 
-/** Contract-only formal-v1 freeze checks. Exported for direct success/count-drift tests. */
-export function validateFormalV1Freeze(contract: FormalWorldContract, requestedSplit?: FormalSplit): string[] {
+function validateFreeze(
+  contract: FormalWorldContract,
+  revision: "formal-v1" | "formal-v2",
+  devTeams: readonly string[],
+  hiddenTeams: readonly string[],
+  requestedSplit?: FormalSplit,
+): string[] {
   const errors: string[] = [];
-  const expectedTeams = requestedSplit === "dev" ? DEV_TEAMS : ALL_TEAMS;
-  expectExactSet(errors, "formal-v1 Team set", contract.teams.map((team) => team.teamId), expectedTeams);
+  const allTeams = [...devTeams, ...hiddenTeams].sort((left, right) => left.localeCompare(right));
+  const expectedTeams = revision === "formal-v1" && requestedSplit === "dev" ? devTeams : allTeams;
+  expectExactSet(errors, `${revision} Team set`, contract.teams.map((team) => team.teamId), expectedTeams);
   if (contract.world.spaceId !== "space-task1-engineering") {
-    errors.push(`formal-v1 Space expected space-task1-engineering, got ${contract.world.spaceId}`);
+    errors.push(`${revision} Space expected space-task1-engineering, got ${contract.world.spaceId}`);
   }
   expectExactSet(errors, "world.teamIds", contract.world.teamIds, contract.teams.map((team) => team.teamId));
 
@@ -268,8 +282,8 @@ export function validateFormalV1Freeze(contract: FormalWorldContract, requestedS
   const selectedPositives = selectedAnnotations.filter((item) => item.gold.needTdaiTool);
   const selectedPairs = contract.pairs.filter((pair) =>
     selectedTeamIds.has(publicById.get(pair.positiveCaseId)?.identity.teamId ?? ""));
-  const multiplier = requestedSplit === "dev" ? DEV_TEAMS.length
-    : requestedSplit === "hidden_test" ? HIDDEN_TEAMS.length : ALL_TEAMS.length;
+  const multiplier = requestedSplit === "dev" ? devTeams.length
+    : requestedSplit === "hidden_test" ? hiddenTeams.length : allTeams.length;
   const label = requestedSplit ?? "full";
   expectCount(errors, `${label} Cases`, selectedCases.length, multiplier * 40);
   expectCount(errors, `${label} Pairs`, selectedPairs.length, multiplier * 15);
@@ -283,8 +297,18 @@ export function validateFormalV1Freeze(contract: FormalWorldContract, requestedS
   expectCount(errors, `${label} discovery positives`, discovery, multiplier * 10);
   expectCount(errors, `${label} direct positives`, selectedPositives.length - discovery, multiplier * 5);
 
-  if (!requestedSplit && contract.teams.length === ALL_TEAMS.length) errors.push(...validateCrossSplitCopies(contract));
+  if (!requestedSplit && contract.teams.length === allTeams.length) errors.push(...validateCrossSplitCopies(contract));
   return errors;
+}
+
+/** Contract-only formal-v1 freeze checks. Exported for direct success/count-drift tests. */
+export function validateFormalV1Freeze(contract: FormalWorldContract, requestedSplit?: FormalSplit): string[] {
+  return validateFreeze(contract, "formal-v1", DEV_TEAMS, HIDDEN_TEAMS, requestedSplit);
+}
+
+/** Contract-only formal-v2 freeze checks. Exported for direct success/count-drift tests. */
+export function validateFormalV2Freeze(contract: FormalWorldContract, requestedSplit?: FormalSplit): string[] {
+  return validateFreeze(contract, "formal-v2", FORMAL_V2_DEV_TEAMS, FORMAL_V2_HIDDEN_TEAMS, requestedSplit);
 }
 
 interface StagedFragment {
@@ -345,7 +369,7 @@ function option(name: string): string | undefined {
 }
 
 function usage(): never {
-  console.error("usage: tsx validate-formal-dataset.ts --contract <formal-world.json> [--split dev|hidden_test] [--freeze-contract formal-v1] [--report report.json]");
+  console.error("usage: tsx validate-formal-dataset.ts --contract <formal-world.json> [--split dev|hidden_test] [--freeze-contract formal-v1|formal-v2] [--report report.json]");
   process.exit(2);
 }
 
@@ -355,7 +379,7 @@ async function main(): Promise<void> {
   const freezeContract = option("--freeze-contract");
   if (!contractPath
     || (requestedSplit && requestedSplit !== "dev" && requestedSplit !== "hidden_test")
-    || (freezeContract && freezeContract !== "formal-v1")) usage();
+    || (freezeContract && freezeContract !== "formal-v1" && freezeContract !== "formal-v2")) usage();
   const contract = JSON.parse(await readFile(resolve(contractPath), "utf8")) as FormalWorldContract;
   const validation = validateFormalWorldContract(contract);
   const splits: FormalSplit[] = requestedSplit ? [requestedSplit] : ["dev", "hidden_test"];
@@ -368,8 +392,10 @@ async function main(): Promise<void> {
   ];
   const leakedMarkers = privateMarkers.filter((marker) => providerText.includes(marker));
   const pairIntegrityErrors = validation.valid ? validatePairIntegrity(contract) : [];
-  const freezeErrors = freezeContract === "formal-v1" && validation.valid ? [
-    ...validateFormalV1Freeze(contract, requestedSplit),
+  const freezeErrors = freezeContract && validation.valid ? [
+    ...(freezeContract === "formal-v1"
+      ? validateFormalV1Freeze(contract, requestedSplit)
+      : validateFormalV2Freeze(contract, requestedSplit)),
     ...await validateStagedFreeze(resolve(import.meta.dirname, ".."), contract.teams.map((team) => team.teamId)),
   ] : [];
   const teamCounts = Object.fromEntries(contract.teams.map((team) => [team.teamId,
@@ -383,7 +409,9 @@ async function main(): Promise<void> {
     contract.pairs.filter((pair) => contract.publicCases.find((item) =>
       item.caseId === pair.positiveCaseId)?.identity.teamId === team.teamId).length]));
   const report = {
-    schema_version: freezeContract === "formal-v1" ? "task1.formal_dataset_validation.v3" : "task1.formal_dataset_validation.v2",
+    schema_version: freezeContract === "formal-v2" ? "task1.formal_dataset_validation.v4"
+      : freezeContract === "formal-v1" ? "task1.formal_dataset_validation.v3"
+        : "task1.formal_dataset_validation.v2",
     freeze_contract: freezeContract ?? null,
     valid: errors.length === 0,
     errors,

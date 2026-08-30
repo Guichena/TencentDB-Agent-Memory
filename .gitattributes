@@ -1,0 +1,4 @@
+MemoryProxy/eval/tool-prompt-bench/formal-dataset/registry/contracts/formal-v2.json text eol=lf
+MemoryProxy/eval/tool-prompt-bench/formal-dataset/reports/DS07-FORMAL-V2-*.json text eol=lf
+MemoryProxy/eval/tool-prompt-bench/formal-dataset/reports/DS08-FORMAL-V2-*.json text eol=lf
+MemoryProxy/eval/tool-prompt-bench/formal-dataset/revisions/formal-v2/** text eol=lf

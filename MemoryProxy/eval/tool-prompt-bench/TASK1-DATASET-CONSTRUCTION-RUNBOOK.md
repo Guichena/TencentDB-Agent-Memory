@@ -2,6 +2,8 @@
 
 状态：执行版 1.3
 
+修订说明：本手册主体记录 `formal-v1` 的 16-Team 构造合同，已经冻结的 `formal-v1.1` 不回写。T17 至 T20 以 `task1-data-parallel-launch-20team-v1` 为启动点追加为 `formal-v2`：Dev 增加 T17、T18，Hidden 增加 T19、T20，全集为 20 Team、800 case、300 pair。增量集成命令、产物路径和 Gate 见 `parallel-prompts/FORMAL-V2-INTEGRATION.md`；后续运行必须显式携带 dataset revision，不能把 formal-v1 与 formal-v2 分数直接混合。
+
 适用启动基线：阶段 A 已完成。schema 基线 Tag `task1-data-parallel-baseline-v2` 解引用到 `1048681880b51e7a52a6b8b0b731eadeec44e118`，数据内容祖先为 `960021e472456515a89d3c2c4f2962fbf6cc51a1`。build-01 至 build-05 已从 `task1-data-parallel-launch-v2` 启动；build-06 至 build-08 从包含 T11 至 T16 注册信息和三份新提示词的 `task1-data-parallel-launch-16team-v1` 启动。两个启动点共享相同 schema 和内容祖先，八个任务完成后一次性集成。
 
 适用任务：Proxy 系统提示词注入优化

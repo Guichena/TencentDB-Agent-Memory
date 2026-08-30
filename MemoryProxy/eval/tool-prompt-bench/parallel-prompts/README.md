@@ -200,3 +200,5 @@ node MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/DS02/T01/valid
 T17 和 T18 各 40 条 Dev，T19 和 T20 各 40 条 Hidden。本轮增量为 160 条和 60 个 pair。四个 Team 全部通过后，单独创建 `formal-v2` 集成任务，把增量追加到 `formal-v1.1`，得到 Dev 320 条、Hidden 480 条、全集 800 条和 300 个 pair。最终类别数量应为 Memory Positive 120、Skill Positive 120、Knowledge Positive 60、配对 No-tool Negative 300、自然 Coding Negative 200；搜索或 discovery Positive 200、直接调用 Positive 100。
 
 原 `THREAD-00-INTEGRATION.md` 只适用于已经完成的 T01 至 T16 集成，不能拿来合并 T17 至 T20，也不能移动 `task1-data-formal-v1.1`。等两个新增建设任务都完成后，再根据它们的实际提交生成 formal-v2 集成提示词。
+
+formal-v2 集成现已形成独立流程，详见 `FORMAL-V2-INTEGRATION.md`。它保留 `formal-v1.json` 及原 provider/snapshot 不变，把新合同写入 `registry/contracts/formal-v2.json`，把新编译产物写入 `formal-dataset/revisions/formal-v2/`，并使用 `--freeze-contract formal-v2` 验证 320 条 Dev、480 条 Hidden 和 800 条全集。
