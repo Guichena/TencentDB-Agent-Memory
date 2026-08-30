@@ -172,12 +172,35 @@ function externalBinding(
 function resolveRef(
   ref: RuntimeValueRef,
   subjectId: string,
+  plan: FormalAssetRestorePlan,
   bindings: ProductionRestoreRuntimeBindings,
   actionCaptures: ReadonlyMap<string, Readonly<Record<string, unknown>>>,
   requirementValues: ReadonlyMap<string, Readonly<Record<string, unknown>>>,
 ): unknown {
   const bound = externalBinding(ref, bindings);
   if (bound !== undefined) return bound;
+
+  if (ref.$runtimeRef === "derived_chat_memory_asset_id" && ref.logicalId !== undefined) {
+    const agentAction = ref.actionId === undefined
+      ? plan.actions.find((action) => action.executionIdentity.datasetAgentId === ref.logicalId)
+      : plan.actions.find((action) => action.actionId === ref.actionId);
+    const datasetTeamId = agentAction?.executionIdentity.datasetTeamId;
+    const runtimeAgentId = agentAction === undefined
+      ? undefined
+      : actionCaptures.get(agentAction.actionId)?.runtimeAgentId;
+    const teamAction = datasetTeamId === undefined
+      ? undefined
+      : plan.actions.find((action) =>
+        action.executionIdentity.datasetTeamId === datasetTeamId
+        && Object.hasOwn(action.captures, "runtimeTeamId")
+      );
+    const runtimeTeamId = teamAction === undefined
+      ? undefined
+      : actionCaptures.get(teamAction.actionId)?.runtimeTeamId;
+    if (typeof runtimeTeamId === "string" && typeof runtimeAgentId === "string") {
+      return `chat_memory-${runtimeTeamId}-${runtimeAgentId}`;
+    }
+  }
 
   if (ref.actionId !== undefined) {
     const requirementValue = requirementValues.get(ref.actionId)?.[ref.$runtimeRef];
@@ -200,6 +223,7 @@ function resolveRef(
 function resolveNested<T>(
   value: T,
   subjectId: string,
+  plan: FormalAssetRestorePlan,
   bindings: ProductionRestoreRuntimeBindings,
   actionCaptures: ReadonlyMap<string, Readonly<Record<string, unknown>>>,
   requirementValues: ReadonlyMap<string, Readonly<Record<string, unknown>>>,
@@ -208,6 +232,7 @@ function resolveNested<T>(
     return resolveRef(
       value,
       subjectId,
+      plan,
       bindings,
       actionCaptures,
       requirementValues,
@@ -217,6 +242,7 @@ function resolveNested<T>(
     return value.map((child) => resolveNested(
       child,
       subjectId,
+      plan,
       bindings,
       actionCaptures,
       requirementValues,
@@ -225,7 +251,7 @@ function resolveNested<T>(
   if (isRecord(value)) {
     return Object.fromEntries(Object.entries(value).map(([key, child]) => [
       key,
-      resolveNested(child, subjectId, bindings, actionCaptures, requirementValues),
+      resolveNested(child, subjectId, plan, bindings, actionCaptures, requirementValues),
     ])) as T;
   }
   return value;
@@ -288,6 +314,7 @@ export async function executeProductionRestorePlan(
   const resolveValue = <T>(value: T, subjectId: string): T => resolveNested(
     value,
     subjectId,
+    input.plan,
     input.bindings,
     actionCaptures,
     requirementValues,

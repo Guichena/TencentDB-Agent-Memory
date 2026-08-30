@@ -150,7 +150,13 @@ describe("formal asset restore plan", () => {
       }));
     }
     expect(first.requirements.some((requirement) => requirement.kind === "skill_package_bytes")).toBe(true);
-    expect(first.requirements.some((requirement) => requirement.kind === "knowledge_snapshot_import")).toBe(true);
+    expect(first.requirements.some((requirement) => requirement.kind === "knowledge_snapshot_import")).toBe(false);
+    for (const action of first.actions.filter((item) => item.endpoint === "/v3/knowledge/create")) {
+      expect(action.blockedByRequirements).toBeUndefined();
+    }
+    for (const action of first.actions.filter((item) => item.actionId.startsWith("knowledge-asset-register-"))) {
+      expect(action.body).not.toHaveProperty("content_ref");
+    }
     expect(first.identityMappings.users).toEqual([{
       datasetUserId: "user-task1-t01-eval",
       resolvedAuthUserId: { state: "unresolved", requiredGate: "auth-user-mapping" },
@@ -206,13 +212,7 @@ describe("formal asset restore plan", () => {
     }
     expect(plan.actions.find((action) => action.endpoint === "/v3/knowledge/create")?.serviceBoundary)
       .toBe("memory_core");
-    for (const requirement of plan.requirements.filter((item) => item.kind === "knowledge_snapshot_import")) {
-      expect(requirement.dependsOnActions).toEqual([expect.stringMatching(/^knowledge-shell-create-/u)]);
-      expect(requirement.runtimeAssetRef).toEqual(expect.objectContaining({
-        $runtimeRef: "runtime_asset_id",
-        actionId: expect.stringMatching(/^knowledge-shell-create-/u),
-      }));
-    }
+    expect(plan.requirements.some((item) => item.kind === "knowledge_snapshot_import")).toBe(false);
   });
 
   it("deduplicates the whole public Dev split into the exact snapshot identities", () => {

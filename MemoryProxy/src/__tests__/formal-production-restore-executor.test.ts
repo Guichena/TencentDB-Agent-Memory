@@ -213,6 +213,61 @@ describe("formal production restore executor", () => {
     ]);
   });
 
+  it("derives production chat-memory ids from captured Team and Agent ids", async () => {
+    const requests: Array<{ actionId: string; body: Readonly<Record<string, unknown>> }> = [];
+    await executeProductionRestorePlan({
+      plan: plan([
+        action(1, "team-create", {
+          executionIdentity: {
+            datasetSpaceId: "SPACE-01",
+            datasetUserId: "USER-01",
+            datasetTeamId: "TEAM-01",
+          },
+          captures: { runtimeTeamId: "response.data.team_id" },
+        }),
+        action(2, "agent-create", {
+          dependsOn: ["team-create"],
+          executionIdentity: {
+            datasetSpaceId: "SPACE-01",
+            datasetUserId: "USER-01",
+            datasetTeamId: "TEAM-01",
+            datasetAgentId: "AGENT-01",
+          },
+          captures: { runtimeAgentId: "response.data.agent_id" },
+        }),
+        action(3, "binding-set", {
+          dependsOn: ["agent-create"],
+          body: {
+            asset_id: runtimeRef(
+              "derived_chat_memory_asset_id",
+              "AGENT-01",
+              "agent-create",
+            ),
+          },
+        }),
+      ]),
+      bindings: {
+        ...bindings,
+        chatMemoryAssetIdsByDatasetAgentId: {},
+      },
+      resolveRequirement: async () => ({ values: {}, evidence: {} }),
+      transport: async (request) => {
+        requests.push({ actionId: request.actionId, body: request.body });
+        if (request.actionId === "team-create") {
+          return { status: 200, body: { code: 0, data: { team_id: "team-runtime" } } };
+        }
+        if (request.actionId === "agent-create") {
+          return { status: 200, body: { code: 0, data: { agent_id: "agent-runtime" } } };
+        }
+        return { status: 200, body: { code: 0, data: {} } };
+      },
+    });
+
+    expect(requests[2]?.body).toEqual({
+      asset_id: "chat_memory-team-runtime-agent-runtime",
+    });
+  });
+
   it("stops before transport when a blocking requirement cannot be resolved", async () => {
     const transport = vi.fn();
 

@@ -625,19 +625,6 @@ export function compileFormalAssetRestorePlan(input: {
     } else {
       const value = asset as SafeKnowledge;
       const shellId = actionId("knowledge-shell-create", value.assetId);
-      const requirementId = actionId("require-knowledge-snapshot", value.assetId);
-      requirements.push({
-        requirementId, kind: "knowledge_snapshot_import", blocking: true,
-        formalAssetId: value.assetId, expectedSha256: value.snapshotSha256,
-        dependsOnActions: [shellId],
-        runtimeAssetRef: runtimeRef("runtime_asset_id", value.assetId, shellId),
-        sourcePin: {
-          ...(value.repoUrl ? { repoUrl: value.repoUrl } : {}),
-          ...(value.repoCommit ? { repoCommit: value.repoCommit } : {}),
-          ...(value.indexVersion ? { indexVersion: value.indexVersion } : {}),
-        },
-        reason: "Production create only creates a shell; a real hash-verified snapshot import capability is still required.",
-      });
       push({
         actionId: shellId, phase: "knowledge", serviceBoundary: "memory_knowledge", service: "knowledge-resource",
         method: "POST", endpoint: value.type === "wiki" ? "/v3/wiki/create" : "/v3/code-graph/create", ...base,
@@ -659,7 +646,6 @@ export function compileFormalAssetRestorePlan(input: {
       push({
         actionId: coreId, phase: "knowledge", serviceBoundary: "memory_core", service: "knowledge-metadata",
         method: "POST", endpoint: "/v3/knowledge/create", dependsOn: [shellId],
-        blockedByRequirements: [requirementId],
         executionIdentity: base.executionIdentity,
         body: {
           knowledge_id: runtimeRef("runtime_asset_id", value.assetId, shellId),
@@ -682,7 +668,6 @@ export function compileFormalAssetRestorePlan(input: {
           asset_type: value.type === "wiki" ? "llm_wiki" : "code_graph", name: value.name,
           owner_user_id: runtimeRef("resolved_auth_user_id", datasetUserId),
           source_type: "formal_restore", source_ref: value.assetId, visibility: "private", status: "approved",
-          content_ref: value.snapshotSha256,
           metadata_json: canonicalJson({ formalAssetId: value.assetId, contentHash: value.contentHash }),
         },
         captures: {},
