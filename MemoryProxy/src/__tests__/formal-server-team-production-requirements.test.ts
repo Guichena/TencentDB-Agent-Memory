@@ -7,6 +7,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   createServerTeamRequirementResolver,
+  discoverFrozenSkillPackageRoots,
   ServerTeamRequirementError,
 } from "../../eval/tool-prompt-bench/formal-assets/server-team-production-requirements.js";
 import type {
@@ -216,5 +217,40 @@ describe("server_team production requirements", () => {
       "req-knowledge",
       "knowledge_snapshot_import",
     ), { resolve: (value) => value })).rejects.toBeInstanceOf(ServerTeamRequirementError);
+  });
+
+  it("discovers only adapted Skill package roots from a frozen data checkout", async () => {
+    const dataRoot = await mkdtemp(join(tmpdir(), "task1-data-root-"));
+    tempRoots.push(dataRoot);
+    const adapted = join(
+      dataRoot,
+      "MemoryProxy",
+      "eval",
+      "tool-prompt-bench",
+      "formal-dataset",
+      "source-material",
+      "T01",
+      "skills",
+      "demo",
+      "adapted",
+    );
+    const raw = join(
+      dataRoot,
+      "MemoryProxy",
+      "eval",
+      "tool-prompt-bench",
+      "formal-dataset",
+      "source-material",
+      "T01",
+      "skills",
+      "demo",
+      "raw",
+    );
+    await mkdir(adapted, { recursive: true });
+    await mkdir(raw, { recursive: true });
+    await writeFile(join(adapted, "SKILL.md"), "adapted", "utf8");
+    await writeFile(join(raw, "SKILL.md"), "raw", "utf8");
+
+    await expect(discoverFrozenSkillPackageRoots(dataRoot)).resolves.toEqual([adapted]);
   });
 });

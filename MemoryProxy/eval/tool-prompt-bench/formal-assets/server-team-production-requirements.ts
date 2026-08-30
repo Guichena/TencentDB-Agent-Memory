@@ -1,8 +1,8 @@
 /** Deployment requirement resolvers for the local server_team Formal restore. */
 import { createHash } from "node:crypto";
 import { isUtf8 } from "node:buffer";
-import { readFile } from "node:fs/promises";
-import { isAbsolute, relative, resolve, sep } from "node:path";
+import { readFile, readdir } from "node:fs/promises";
+import { isAbsolute, join, relative, resolve, sep } from "node:path";
 
 import { canonicalSha256 } from "../formal-runtime/canonical.js";
 import type {
@@ -53,6 +53,51 @@ export interface ServerTeamRequirementResolverConfig {
   readonly skillPackageRoots: readonly string[];
   readonly importMemoryL1: ServerTeamMemoryImportHook;
   readonly importMemoryL2: ServerTeamMemoryImportHook;
+}
+
+/**
+ * Locate package roots in a separate checkout of the frozen data tag.
+ * Raw upstream copies are intentionally ignored; the Formal manifest hashes
+ * refer to the adapted package bytes used by the benchmark.
+ */
+export async function discoverFrozenSkillPackageRoots(
+  frozenDataCheckoutRoot: string,
+): Promise<readonly string[]> {
+  const sourceRoot = resolve(
+    frozenDataCheckoutRoot,
+    "MemoryProxy",
+    "eval",
+    "tool-prompt-bench",
+    "formal-dataset",
+    "source-material",
+  );
+  const roots: string[] = [];
+
+  const walk = async (directory: string): Promise<void> => {
+    const entries = (await readdir(directory, { withFileTypes: true }))
+      .sort((left, right) => left.name.localeCompare(right.name));
+    if (entries.some((entry) => entry.isFile() && entry.name === "SKILL.md")) {
+      const segments = relative(sourceRoot, directory).split(sep);
+      if (segments.includes("adapted")) roots.push(directory);
+    }
+    for (const entry of entries) {
+      if (entry.isDirectory()) await walk(join(directory, entry.name));
+    }
+  };
+
+  try {
+    await walk(sourceRoot);
+  } catch (cause) {
+    const code = (cause as NodeJS.ErrnoException).code;
+    if (code === "ENOENT") {
+      throw new Error(
+        "Frozen data checkout does not contain formal-dataset/source-material; "
+        + "create it from task1-data-formal-v1.1 before restore",
+      );
+    }
+    throw cause;
+  }
+  return Object.freeze(roots.sort((left, right) => left.localeCompare(right)));
 }
 
 type JsonRecord = Record<string, unknown>;
