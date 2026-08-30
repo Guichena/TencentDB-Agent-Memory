@@ -1,35 +1,36 @@
 {
   "schema_version": "task1.dataset_build_status.v1",
-  "dataset_revision": "formal-v1",
-  "active_stage": "DS06_1_data_overlay_contract_v1_1",
+  "dataset_revision": "formal-v2",
+  "active_stage": "DS08_formal_v2_freeze",
   "stage_status": "passed",
-  "next_stage": "R01_real_chain_adapter",
+  "next_stage": "formal_v2_real_asset_restore_and_measurement_overlay",
   "data_core_status": "frozen",
   "dataContractReady": true,
   "realChainR01R04Status": "pending",
   "measurementIntegrationReady": false,
   "formalCampaignReady": false,
   "formalMetricEligible": false,
-  "branch": "codex/task1-data-integration",
+  "branch": "codex/task1-data-formal-v2-integration",
   "baseline_commit": "960021e472456515a89d3c2c4f2962fbf6cc51a1",
   "parallel_baseline_ref": "task1-data-parallel-baseline-v2",
   "parallel_baseline_commit": "1048681880b51e7a52a6b8b0b731eadeec44e118",
   "launch_refs": [
     { "ref": "task1-data-parallel-launch-v2", "builds": ["build-01", "build-02", "build-03", "build-04", "build-05"] },
-    { "ref": "task1-data-parallel-launch-16team-v1", "builds": ["build-06", "build-07", "build-08"] }
+    { "ref": "task1-data-parallel-launch-16team-v1", "builds": ["build-06", "build-07", "build-08"] },
+    { "ref": "task1-data-parallel-launch-20team-v1", "builds": ["build-09", "build-10"] }
   ],
   "target_counts": {
     "spaces": 1,
-    "teams": 16,
-    "cases": 640,
-    "dev_cases": 240,
-    "hidden_test_cases": 400,
-    "pairs": 240,
-    "memory_positive": 96,
-    "skill_positive": 96,
-    "knowledge_positive": 48,
-    "paired_negative": 240,
-    "natural_coding_negative": 160
+    "teams": 20,
+    "cases": 800,
+    "dev_cases": 320,
+    "hidden_test_cases": 480,
+    "pairs": 300,
+    "memory_positive": 120,
+    "skill_positive": 120,
+    "knowledge_positive": 60,
+    "paired_negative": 300,
+    "natural_coding_negative": 200
   },
   "completed_gates": [
     "DS00",
@@ -49,7 +50,12 @@
     "DS06-G01_PRIVATE_GOLD_V2_640",
     "DS06-G02_PRIVATE_PAIR_V2_240",
     "DS06-G03_OVERLAY_VALIDATOR",
-    "DS06-G04_PROVIDER_EXCLUSION_AND_SCHEMA_SHAPE"
+    "DS06-G04_PROVIDER_EXCLUSION_AND_SCHEMA_SHAPE",
+    "DS07_FORMAL_V2_BUILD_AUDIT",
+    "DS08_FORMAL_V2_DEV_STRICT_FREEZE",
+    "DS08_FORMAL_V2_HIDDEN_STRICT_FREEZE",
+    "DS08_FORMAL_V2_FULL_STRICT_FREEZE",
+    "DS08_FORMAL_V2_DETERMINISTIC_COMPILE"
   ],
   "team_progress": {
     "T01": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
@@ -67,7 +73,11 @@
     "T13": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
     "T14": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
     "T15": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
-    "T16": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" }
+    "T16": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T17": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T18": { "build": "audited", "integration": "dev_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T19": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" },
+    "T20": { "build": "audited", "integration": "hidden_integrated", "cases": 40, "pairs": 15, "gate": "passed" }
   },
   "artifacts": {
     "contract": "registry/contracts/formal-v1.json",
@@ -93,6 +103,24 @@
     "pair_approval_ledger_file_sha256": "c831b22508c2e2077f258de2cc9a0670c7a409c809c01cb8c574cc43e84213f6",
     "pair_approval_ledger_canonical_sha256": "d1638c40ff677cc295f5d3d29e0e18774ee665e77f60f59e2e13e9c1198e8ec4",
     "memory_followup_audit_canonical_sha256": "fa223ad798042076155b4b4b7d651b0ce230c8e31a275550d182c0ce53a8b8b3"
+  },
+  "formal_v2_artifacts": {
+    "dataset_content_commit": "1372d09046e4e3f3a34f3f99b63c51f939a7e004",
+    "contract": "registry/contracts/formal-v2.json",
+    "contract_file_sha256": "0d398c9e4c46b60f86f245265769062b9ede2ffdf53a80088fe0421fdd797d9d",
+    "contract_canonical_sha256": "eb04b26cfe03810030f6b7d0a06f82dfedf7c8011ce11bb181db8af0b94b58b7",
+    "provider_dev_file_sha256": "b062d284cb849edd6504340e81f4f34e1dc37b126dca53edab6062749b1c2ed4",
+    "provider_dev_canonical_sha256": "2b4d0645d8111699f7a6a06d4fb387b767122037b2c813583fe393068dbcde10",
+    "provider_hidden_file_sha256": "0a38a9433761adaf286b00a62b2bbda6526c41ab83dcad844b0f7b83929118fc",
+    "provider_hidden_canonical_sha256": "34e01c72495d4617ff8951d2c4b0b2a574b9dabc9b621fcd5385bb27c4699566",
+    "private_gold_dev_file_sha256": "bbe6fa20aa46a00d484e5d22e5b9c2a8b4d8afb42fb4205de2e459541d25cf1c",
+    "private_gold_dev_canonical_sha256": "cca93a58c796ee38ddfeb9d4512ce32f493c7b8e0ce8e47b498f9c8802cae1fa",
+    "private_gold_hidden_file_sha256": "859ba15c0b50f96d34844f415e411e444283a9cf83948e12bf0636b7204a9723",
+    "private_gold_hidden_canonical_sha256": "39b444c7de45975b27948d0320108f9bdea4c998b39dd99ff99f319b1ed28940",
+    "snapshot_dev_file_sha256": "3ae4b58c1ece2e871a9e4eec4ffafc18807a98b15ac080fd2c6b5a360faa9fb0",
+    "snapshot_dev_canonical_sha256": "addd9c6311d4bd44478ea9438f50816d59eb2c8adfb9c4d9f53fd3fc152e0b7e",
+    "snapshot_hidden_file_sha256": "d2014bc57f5235fad86c1a3155604526c7b4a21b554ee144335c7faa38fc73bc",
+    "snapshot_hidden_canonical_sha256": "93d18538660330603f082a396791712e9b0cdba6647ea819fa3ca6e456085fbb"
   },
   "canonical_contracts": {
     "data_core": {
@@ -124,6 +152,13 @@
     "minimality_approved_pairs": 240,
     "approval_ledger_canonical_sha256": "d1638c40ff677cc295f5d3d29e0e18774ee665e77f60f59e2e13e9c1198e8ec4"
   },
+  "formal_v2_pair_contract": {
+    "independence_unit": "team",
+    "dev_clusters": 8,
+    "hidden_clusters": 12,
+    "pairs_per_cluster": 15,
+    "minimality_approved_pairs": 300
+  },
   "frozen_m0_gold_validation": {
     "tag": "task1-measure-m0-v2-pass",
     "commit": "a5f7e1a908b9104e8542506c9238bd3e6e5e0074",
@@ -134,7 +169,8 @@
   "tag_eligibility": {
     "task1-data-core-formal-v1": "audit_only_data_core",
     "task1-data-formal-v1": "audit_only_not_an_integration_input_due_to_gate_namespace_canonical_and_memory_binding_defects",
-    "task1-data-formal-v1.1": "approved_data_contract_input_after_annotated_tag_creation"
+    "task1-data-formal-v1.1": "approved_data_contract_input_after_annotated_tag_creation",
+    "task1-data-formal-v2": "approved_20_team_data_contract_input_after_annotated_tag_creation"
   },
   "provenance": {
     "data_core_commit": "418ecd102fa2019c139da9eebf88b163eca5a208",
@@ -152,8 +188,13 @@
   },
   "known_limitations": [
     "The real-chain R01-R04 gates, M0/M1/M2 measurement Integration, and campaign evidence are pending; dataContractReady does not imply measurementIntegrationReady or formalMetricEligible.",
-    "task1-data-formal-v1 is retained only as an immutable audit point and must not be used as an Integration input."
+    "task1-data-formal-v1 is retained only as an immutable audit point and must not be used as an Integration input.",
+    "Measurement-v2 private overlays still bind formal-v1.1 (640 cases); a formal-v2 overlay and real-service gates are required before the 800-case revision is formal-metric eligible."
   ],
-  "last_command": "build and re-read validate private Measurement-v2 overlay; frozen M0 640/640; Pair ledger 240/240; 15 Memory follow-ups audited; provider leakage 0",
-  "latest_team_fragment_source_commit_in_ds05_merge": "19b7fa08793381918a322a6b08877c735d8b4745"
+  "last_command": "validate formal-v2 full freeze; 800/800 cases; 300/300 pairs; provider leakage 0; deterministic compile byte-identical",
+  "latest_team_fragment_source_commit_in_ds05_merge": "19b7fa08793381918a322a6b08877c735d8b4745",
+  "latest_team_fragment_source_commits_in_ds08_merge": [
+    "9422208d8297f4df43109e9d94e7482659bf54ca",
+    "ae9b84e6bfb987b72a37b45e3b0e7aa19fff0836"
+  ]
 }
