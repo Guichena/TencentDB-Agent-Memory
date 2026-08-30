@@ -90,6 +90,7 @@ git -C $ExecutionRoot rev-parse 'task1-data-formal-v1.1^{}'
 
 - Node.js 必须是 22；脚本在任何写操作或服务数据调用前校验。
 - `TDAI_FORMAL_ASSET_IMPORT_ENABLED=1` 必须在 MemoryCore 进程启动前设置；源码在构造 gateway dependencies 时读取它。冻结 L0/L1/L2 都通过这个默认关闭的 seam 直接 seed，L0 不走公开 `/conversation/add`，因此不会触发 embedding、quota、`notifyPipeline` 或后台 L1/L2/L3 派生。
+- `TDAI_SKILL_ENABLED=true` 必须在 MemoryCore 进程启动前设置。standalone 配置默认关闭可选 Skill 模块；未显式开启时 `/v3/skill/create` 虽已注册，但会按生产合同返回 `404 Skill module not enabled`。本开关只启用正式数据所需的本地 Skill 存储与查询，不启用 Skill 抽取，也不调用模型。
 - MemoryKnowledge 必须以 `KNOWLEDGE_AUTO_SYNC_ENABLED=false` 和 `TDAI_FORMAL_PREFLIGHT_ENABLED=1` 启动。R05 通过默认关闭的 formal-ready shell 模式只恢复任务一需要的 Code Graph 元数据与可见性，不 clone/index 仓库正文；同 Team、同仓库的不同冻结 Knowledge 资产仍使用 formal asset id 保持为不同 runtime shell。`Restore` 成功后会停在 `wait-for-knowledge-ready`；用户确认全部可见 code-graph 已为 `ready` 后，在同一服务实例、同一数据栈和同一 RunRoot 上执行 `Inspect`。
 - `TDAI_FORMAL_PREFLIGHT_ENABLED=1` 必须在 MemoryProxy 进程启动前设置；preflight route 的默认依赖在模块加载时读取它。
 - MemoryProxy 必须以实际 config、`--tool-prompt-profile legacy --experiment-read-only` 启动。
@@ -139,6 +140,7 @@ $env:TDAI_DATA_DIR = Join-Path $StackRoot "core"
 $env:TDAI_METADATA_SQLITE_BASE_DIR = Join-Path $StackRoot "core-metadata"
 $env:TDAI_GATEWAY_API_KEY = $LocalCoreKey
 $env:TDAI_FORMAL_ASSET_IMPORT_ENABLED = "1"
+$env:TDAI_SKILL_ENABLED = "true"
 Set-Location (Join-Path $ExecutionRoot "MemoryCore")
 node --import tsx src/gateway/server.ts
 ```
