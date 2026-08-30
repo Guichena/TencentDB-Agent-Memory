@@ -177,3 +177,26 @@ node MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/DS02/T01/valid
 八个建设任务全部提交 Team staging 后，集成任务才按 T01 至 T16 顺序一次性合并。即使七个任务通过而一个任务失败，也不得先合并通过的分片或冻结 400 条中间版本。集成任务统一重建全局合同和 `DATASET-BUILD-STATUS.json`，生成 Dev/Hidden provider 输入、private Gold、快照和 hash，并运行跨 Team 重复度与泄漏检查。
 
 最终 `formal-v1` 固定为 640 条：Dev 包含 T01 至 T04、T11、T12，共 240 条和 90 个 pair；Hidden 包含 T05 至 T10、T13 至 T16，共 400 条和 150 个 pair。全集包含 96 条 Memory Positive、96 条 Skill Positive、48 条 Knowledge Positive、240 条配对 No-tool Negative 和 160 条自然 Coding Negative，共 240 个 pair。建设任务的本地 `gate=passed` 只表示分片可供集成，不表示 Dev、Hidden 或全集已经冻结。
+
+## T17 至 T20 的 formal-v2 增量轮
+
+`formal-v1.1` 已冻结。新增两个建设任务只生成 T17 至 T20 分片，不能回写原 revision：
+
+| 提示词 | 主任务 | Split | 分支 | 专用 worktree |
+|---|---|---|---|---|
+| `THREAD-09-T17-T18.md` | 完成 T17；完成 T18 | Dev | `codex/task1-data-build-20team-t17-t18` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-20team-t17-t18` |
+| `THREAD-10-T19-T20.md` | 完成 T19；完成 T20 | Hidden | `codex/task1-data-build-20team-t19-t20` | `D:\projects\TencentDB-Agent-Memory-task1-data-build-20team-t19-t20` |
+
+两个任务使用同一个不可变启动点：
+
+- 启动 Tag：`task1-data-parallel-launch-20team-v1`
+- Tag object：`02391aef5fd8564be0ead99025cd6921accd3ee4`
+- Tag 解引用提交：`ffa1fe18085d47ed4da6b2306240152cc8590a86`
+- `formal-v1.1` 祖先：`02620d8313dcb883b7a57c4c2edc8f4286eb4bc9`
+- schema 基线：`1048681880b51e7a52a6b8b0b731eadeec44e118`
+
+两份提示词假定准备任务已经建立分支和 worktree。新 Codex 任务必须在创建时绑定表中的专用 worktree，不能在绑定错误的任务里用 `cd` 继续。
+
+T17 和 T18 各 40 条 Dev，T19 和 T20 各 40 条 Hidden。本轮增量为 160 条和 60 个 pair。四个 Team 全部通过后，单独创建 `formal-v2` 集成任务，把增量追加到 `formal-v1.1`，得到 Dev 320 条、Hidden 480 条、全集 800 条和 300 个 pair。最终类别数量应为 Memory Positive 120、Skill Positive 120、Knowledge Positive 60、配对 No-tool Negative 300、自然 Coding Negative 200；搜索或 discovery Positive 200、直接调用 Positive 100。
+
+原 `THREAD-00-INTEGRATION.md` 只适用于已经完成的 T01 至 T16 集成，不能拿来合并 T17 至 T20，也不能移动 `task1-data-formal-v1.1`。等两个新增建设任务都完成后，再根据它们的实际提交生成 formal-v2 集成提示词。
