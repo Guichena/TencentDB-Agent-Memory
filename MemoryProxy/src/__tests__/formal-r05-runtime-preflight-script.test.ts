@@ -158,6 +158,8 @@ describe("R05 reusable no-model runtime preflight", () => {
     expect(runbook).toMatch(/不(?:是|代表).*(?:创新|方法).*结果/u);
     expect(runbook).toMatch(/support worktree[\s\S]*只做离线[\s\S]*85\/85/u);
     expect(runbook).toMatch(/Measurement-v2 integration provisional common-base/u);
+    expect(runbook).toMatch(/Selection Contract[\s\S]*freeze manifest/u);
+    expect(runbook).toMatch(/不得再修改 HEAD/u);
     expect(runbook).toMatch(/普通 Prompt[\s\S]*不重跑公共 Gate/u);
     expect(runbook).not.toMatch(/\$R05Root\s*=\s*"D:\\projects\\TencentDB-Agent-Memory-task1-r05-runtime-gate-repro-v1"/u);
     expect(r04Runbook).toMatch(/历史 checkpoint/u);

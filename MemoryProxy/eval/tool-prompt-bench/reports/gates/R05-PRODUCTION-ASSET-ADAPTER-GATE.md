@@ -8,7 +8,7 @@ R05 已补齐正式实验前缺失的生产资产恢复、真实接口回读、p
 
 **R05 blank-stack preflight：尚未执行。** 它固定为 0 模型的 restore、逐 run inspect 和 12 份六项 `ready=true` receipt；不能与随后 12 次 Luna 的 **E01/R04 V0 runtime smoke** 混称。
 
-当前 support 分支从冻结 R05 `c86b154` 派生，只增加 `run-r05-runtime-preflight.ps1`、独立 TypeScript 合同 CLI、离线合同测试以及本 Gate/手册修正。它只跑离线 85/85、parser 和 fail-closed dry-run，不在自身 worktree 运行 live Gate。最终 Measurement-v2 integration provisional common-base non-squash 纳入 support+M0/M1/M2+R02、重跑 D0 42/42 后，才以其干净 worktree 执行一次 live R05 blank-stack preflight；通过后冻结 Measurement-v2/Selection Contract 并打 candidate-base tag。
+当前 support 分支从冻结 R05 `c86b154` 派生，只增加 `run-r05-runtime-preflight.ps1`、独立 TypeScript 合同 CLI、离线合同测试以及本 Gate/手册修正。它只跑离线 85/85、parser 和 fail-closed dry-run，不在自身 worktree 运行 live Gate。最终 Measurement-v2 integration provisional common-base non-squash 纳入 support+M0/M1/M2+R02、重跑 D0 42/42，并提交无 TBD 的 Selection Contract/freeze manifest 后，才以该精确提交执行一次 live R05 blank-stack preflight；通过后不修改 HEAD，直接给同一提交打 Measurement-v2/candidate-base tag。
 
 ## 冻结边界
 
@@ -123,9 +123,9 @@ git log --oneline --reverse 92da207..c86b154
 ## 下一步
 
 1. 保持冻结 R05 与 support 分支独立；support worktree 只完成离线 85/85，不运行 live Gate。
-2. 构建最终 Measurement-v2 integration provisional common-base，纳入 support+M0/M1/M2+R02 最终 tip并重跑 D0 42/42。
+2. 构建最终 Measurement-v2 integration provisional common-base，纳入 support+M0/M1/M2+R02 最终 tip，重跑 D0 42/42，并提交无 TBD 的 Selection Contract 与 freeze manifest。
 3. 以该干净 integration worktree 启动专用空白 `server_team` 栈；先运行 `run-r05-runtime-preflight.ps1 -DryRun`，再去掉 `-DryRun` 完成一次 live R05 blank-stack preflight。summary 前必须复核代码/数据 worktree clean、两个 HEAD 和 annotated tag object/peeled commit 未漂移。
-4. 12/12 `ready=true` 后冻结 Measurement-v2/Selection Contract 并打 candidate-base tag，再执行 E01/R04 V0 runtime smoke（12 次 Luna）和完整 Dev。
+4. 12/12 `ready=true` 后不得修改受测 HEAD；给同一提交打 Measurement-v2/candidate-base tag，再执行 E01/R04 V0 runtime smoke（12 次 Luna）和完整 Dev。
 5. 普通 Prompt 方法从该 tag 建独立后代，只创建新 run/Session/result，不重跑公共 Gate；只有 adapter/runner/scorer/restore/preflight 基础设施变化才重跑。
 
 ## R02 审计交接边界

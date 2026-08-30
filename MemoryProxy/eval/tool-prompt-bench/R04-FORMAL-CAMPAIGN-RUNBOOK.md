@@ -1,6 +1,6 @@
 # R04 正式 Campaign 操作手册
 
-> 本文件中的 R04 branch/worktree 是**历史 checkpoint**，只说明 runner 能力的来源，不再是任何 live 执行路径。统一使用 `ExecutionRoot`：R05 blank-stack preflight 在最终 Measurement-v2 integration provisional common-base 上执行；通过后冻结 Measurement-v2/Selection Contract 并打 tag；**E01/R04 V0 runtime smoke**（12 次 Luna）与正式 V0–V3 使用 tagged candidate-base，各 Prompt 方法使用该 tag 的各自后代。
+> 本文件中的 R04 branch/worktree 是**历史 checkpoint**，只说明 runner 能力的来源，不再是任何 live 执行路径。统一使用 `ExecutionRoot`：最终 Measurement-v2 integration provisional common-base 必须先提交无 TBD 的 Selection Contract 与 freeze manifest，再在该精确提交上执行 R05 blank-stack preflight；通过后不再修改 HEAD，只给同一提交打 Measurement-v2/candidate-base tag。**E01/R04 V0 runtime smoke**（12 次 Luna）与正式 V0–V3 使用 tagged candidate-base，各 Prompt 方法使用该 tag 的各自后代。
 
 ## 当前结论
 
@@ -239,7 +239,7 @@ providerCollection.formalCampaignEligible == true
 
 ## 九、推荐实际顺序
 
-1. provisional common-base 先完成 0 模型 R05 blank-stack preflight；通过后冻结 Measurement-v2/Selection Contract 并打 candidate-base tag。
+1. provisional common-base 先提交无 TBD 的 Measurement-v2 freeze manifest 与 Selection Contract，再在该精确提交上完成 0 模型 R05 blank-stack preflight；通过后不得修改 HEAD，只给同一提交打 Measurement-v2/candidate-base tag。
 2. tagged candidate-base 先跑 E01/R04 V0 runtime smoke（12 次 Luna）。
 3. runtime smoke 全部可收集且正式 eligible 后，跑 240 条 Dev V0。
 4. 分别用新 Campaign 跑 V0-C、V1a、V1、V2、V3；同一 Variant 内 case/Pair 固定，跨 Variant 用离线 case id 配对。

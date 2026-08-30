@@ -29,7 +29,7 @@ R05 只补齐正式模型执行前的生产资产链路，不运行 Luna，也�
 严格分成两阶段：
 
 1. **Support 离线阶段**：support worktree 只做离线 15-file / 85/85、双 PowerShell parser、合同 CLI 和 fail-closed dry-run；不得在该分支上跑 live blank-stack preflight。
-2. **Integration live 阶段**：先建立最终 **Measurement-v2 integration provisional common-base**，non-squash 纳入本 support、M0/M1/M2 和 R02 最终 tip，并在 R05-compatible scorer 上得到真实 D0 42/42。然后才以该干净 worktree 作为 `RepositoryRoot` 跑一次 live R05 blank-stack preflight；通过后才冻结 Measurement-v2、Selection Contract 并打 candidate-base tag。
+2. **Integration live 阶段**：先建立最终 **Measurement-v2 integration provisional common-base**，non-squash 纳入本 support、M0/M1/M2 和 R02 最终 tip，在 R05-compatible scorer 上得到真实 D0 42/42，并提交无 TBD 的 Selection Contract 与 freeze manifest。然后以该精确、干净提交作为 `RepositoryRoot` 跑一次 live R05 blank-stack preflight；通过后不得再修改 HEAD，只给同一提交打 Measurement-v2 与 candidate-base tag。
 
 离线 support 检查示例只使用 `$SupportRoot`：
 
@@ -338,7 +338,7 @@ $PreflightPath = Join-Path $ArtifactRoot "preflight\<run-id>.json"
 
 ## 12. 公共准备链到后续方法分支的交接
 
-12 条 preflight selection 全部得到 create-new `ready=true` receipt、final Git locks 通过且 summary 已生成后，R05 blank-stack preflight 才通过。随后冻结 Measurement-v2/Selection Contract，并在同一通过提交上打 candidate-base tag；之后才执行 **E01/R04 V0 runtime smoke**（12 次 Luna）和完整 Dev。
+12 条 preflight selection 全部得到 create-new `ready=true` receipt、final Git locks 通过且 summary 已生成后，R05 blank-stack preflight 才通过。此时 Selection Contract 与 freeze manifest 已经存在于受测提交；不得再修改 HEAD，只给该精确提交打 Measurement-v2/candidate-base tag。之后才执行 **E01/R04 V0 runtime smoke**（12 次 Luna）和完整 Dev。
 
 普通 Prompt 设计或措辞变化不重跑公共 Gate：它们从 tagged candidate-base 建立各自的后代 branch/worktree，为自己的 commit/config/profile 创建全新的 prepared run、Session、run-specific receipt 和结果证据。只有修改 adapter、runner、scorer、restore 或 preflight 基础设施时，公共 Gate 才必须在新的 provisional common-base 上重跑。不得复用其他方法已消费的 Session/result。
 
