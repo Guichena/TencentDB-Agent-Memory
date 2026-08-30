@@ -21,11 +21,15 @@ import { hasAnalyseMarker, hasCostGuardMarker } from "./routes/whitelist.js";
 import { tryActivateStorage, tryActivateRedis } from "./injection/index.js";
 import { getEffectiveBackend } from "./storage/factory.js";
 import { fingerprintProxyConfigForExperiment } from "./experiment-config-fingerprint.js";
-import type { BridgeEntryObserver } from "./bridge-entry-observer.js";
+import type {
+  BridgeCompletionObserver,
+  BridgeEntryObserver,
+} from "./bridge-entry-observer.js";
 import type { ProxyConfig } from "./types.js";
 
 export interface CreateAppDeps {
   bridgeEntryObserver?: BridgeEntryObserver;
+  bridgeCompletionObserver?: BridgeCompletionObserver;
   /** Deterministic test seam; production instances receive a fresh UUID. */
   serverInstanceId?: string;
   /** Deterministic test seam; production instances use their creation time. */
@@ -169,6 +173,7 @@ export function createApp(config: ProxyConfig, deps: CreateAppDeps = {}): Hono {
   // MUST be registered before the agent-prefixed `/:agent/v1/*` routes below.
   const bridgeHandler = createSkillBridgeHandler(config, {
     bridgeEntryObserver: deps.bridgeEntryObserver,
+    bridgeCompletionObserver: deps.bridgeCompletionObserver,
   });
   app.post("/skill-bridge/*", (c) => bridgeHandler(c));
 
@@ -176,6 +181,7 @@ export function createApp(config: ProxyConfig, deps: CreateAppDeps = {}): Hono {
   // 让 LLM 用 Bash 调 <proxy>/memory-bridge/v3/atomic/search 等，proxy 注入身份。
   const memoryBridgeHandler = createMemoryBridgeHandler(config, {
     bridgeEntryObserver: deps.bridgeEntryObserver,
+    bridgeCompletionObserver: deps.bridgeCompletionObserver,
   });
   app.post("/memory-bridge/*", (c) => memoryBridgeHandler(c));
 

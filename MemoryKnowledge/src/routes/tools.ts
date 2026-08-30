@@ -20,7 +20,8 @@ import { executeTool as executeCodeTool } from "../engines/code/index.js";
 import { wrapOk, wrapError, isValidIdSegment } from "../api-helpers.js";
 import { isWikiId, isCodeGraphId } from "../store/ids.js";
 import {
-  observeKnowledgeToolsEntry,
+  observeKnowledgeToolsExecution,
+  type KnowledgeToolsCompletionObserver,
   type KnowledgeToolsEntryObserver,
 } from "../tools-entry-observer.js";
 
@@ -30,6 +31,7 @@ export interface ToolsRouteDeps {
   cgService: CodeGraphService;
   instancePool: CodeGraphInstancePool;
   toolsEntryObserver?: KnowledgeToolsEntryObserver;
+  toolsCompletionObserver?: KnowledgeToolsCompletionObserver;
 }
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -194,10 +196,17 @@ export function createToolsRoutes(deps: ToolsRouteDeps): Hono {
   const app = new Hono();
   const { wikiService, wikiMgr, cgService, instancePool } = deps;
 
+  const observeExecution = async (
+    request: Request,
+    execute: () => Promise<Response>,
+  ): Promise<Response> => observeKnowledgeToolsExecution(request, execute, {
+    entryObserver: deps.toolsEntryObserver,
+    completionObserver: deps.toolsCompletionObserver,
+  });
+
   // ── POST /tools/list ──
 
-  app.post("/list", async (c) => {
-    await observeKnowledgeToolsEntry(c.req.raw, deps.toolsEntryObserver);
+  app.post("/list", async (c) => observeExecution(c.req.raw, async () => {
     const body = await c.req.json<Record<string, unknown>>();
     const serviceId = c.req.header("x-tdai-service-id");
     if (!isValidIdSegment(serviceId)) {
@@ -246,12 +255,11 @@ export function createToolsRoutes(deps: ToolsRouteDeps): Hono {
         params: t.params,
       })),
     }));
-  });
+  }));
 
   // ── POST /tools/call ──
 
-  app.post("/call", async (c) => {
-    await observeKnowledgeToolsEntry(c.req.raw, deps.toolsEntryObserver);
+  app.post("/call", async (c) => observeExecution(c.req.raw, async () => {
     const body = await c.req.json<Record<string, unknown>>();
     const serviceId = c.req.header("x-tdai-service-id");
     if (!isValidIdSegment(serviceId)) {
@@ -297,7 +305,7 @@ export function createToolsRoutes(deps: ToolsRouteDeps): Hono {
     }
 
     return c.json(wrapError(400, `invalid knowledge_id format: ${knowledgeId}`), 400);
-  });
+  }));
 
   return app;
 }

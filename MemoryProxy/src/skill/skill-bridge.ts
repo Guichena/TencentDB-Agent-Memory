@@ -32,7 +32,11 @@ import { KvVersionPinRepo } from "./kv-version-pin-repo.js";
 import { getProxyStorage } from "../storage/factory.js";
 import { getMetadataClient } from "../meta/client.js";
 import type { ProxyConfig } from "../types.js";
-import { observeBridgeEntry, type BridgeEntryObserver } from "../bridge-entry-observer.js";
+import {
+  observeBridgeExecution,
+  type BridgeCompletionObserver,
+  type BridgeEntryObserver,
+} from "../bridge-entry-observer.js";
 import { isExtractionAllowed } from "../extraction-gate.js";
 import { emitBridgeToolCallTelemetry, emitBridgeRejectTelemetry, agentSourceFromSessionKey } from "../memory/bridge-telemetry.js";
 import { getCoreSkillClient, type CoreSkillClient } from "./core-client.js";
@@ -385,6 +389,7 @@ export interface SkillBridgeDeps {
    */
   coreClient?: CoreSkillClient;
   bridgeEntryObserver?: BridgeEntryObserver;
+  bridgeCompletionObserver?: BridgeCompletionObserver;
 }
 
 /**
@@ -454,8 +459,7 @@ export function createSkillBridgeHandler(
 ): (c: Context) => Promise<Response> {
   const fetcher = deps.fetcher ?? globalThis.fetch.bind(globalThis);
 
-  return async (c: Context): Promise<Response> => {
-    await observeBridgeEntry(c.req.raw, "skill", deps.bridgeEntryObserver);
+  const execute = async (c: Context): Promise<Response> => {
     const t0 = (deps.now ?? Date.now)();
 
     const path = new URL(c.req.url).pathname;
@@ -974,6 +978,17 @@ export function createSkillBridgeHandler(
       },
     });
   };
+
+  return (c: Context): Promise<Response> => observeBridgeExecution(
+    c.req.raw,
+    "skill",
+    () => execute(c),
+    {
+      entryObserver: deps.bridgeEntryObserver,
+      completionObserver: deps.bridgeCompletionObserver,
+      now: deps.now,
+    },
+  );
 }
 
 /**

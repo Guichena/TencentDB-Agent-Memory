@@ -28,7 +28,11 @@ import { getMetadataClient } from "../meta/client.js";
 import type { AgentContext } from "../injection/types.js";
 import { resolveFixedAssetCtxs, type FixedAssetCtx } from "../injection/injectors/tdai-fixed-asset.js";
 import type { TdaiIdentity } from "../tdai/types.js";
-import { observeBridgeEntry, type BridgeEntryObserver } from "../bridge-entry-observer.js";
+import {
+  observeBridgeExecution,
+  type BridgeCompletionObserver,
+  type BridgeEntryObserver,
+} from "../bridge-entry-observer.js";
 import { emitBridgeToolCallTelemetry, emitBridgeRejectTelemetry, agentSourceFromSessionKey } from "./bridge-telemetry.js";
 
 const TAG = "[memory-bridge]";
@@ -249,6 +253,7 @@ export interface MemoryBridgeDeps {
   fetcher?: typeof fetch;
   now?: () => number;
   bridgeEntryObserver?: BridgeEntryObserver;
+  bridgeCompletionObserver?: BridgeCompletionObserver;
 }
 
 export function createMemoryBridgeHandler(
@@ -257,8 +262,7 @@ export function createMemoryBridgeHandler(
 ): (c: Context) => Promise<Response> {
   const fetcher = deps.fetcher ?? globalThis.fetch.bind(globalThis);
 
-  return async (c: Context): Promise<Response> => {
-    await observeBridgeEntry(c.req.raw, "memory", deps.bridgeEntryObserver);
+  const execute = async (c: Context): Promise<Response> => {
     const t0 = (deps.now ?? Date.now)();
 
     const path = new URL(c.req.url).pathname;
@@ -508,4 +512,15 @@ export function createMemoryBridgeHandler(
       },
     });
   };
+
+  return (c: Context): Promise<Response> => observeBridgeExecution(
+    c.req.raw,
+    "memory",
+    () => execute(c),
+    {
+      entryObserver: deps.bridgeEntryObserver,
+      completionObserver: deps.bridgeCompletionObserver,
+      now: deps.now,
+    },
+  );
 }
