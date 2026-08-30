@@ -1,0 +1,20 @@
+--- a/plugins/database-design/skills/postgresql/SKILL.md
++++ b/adapted/postgresql-table-design/SKILL.md
+@@ -5,0 +5,17 @@
++
++
++## TDAI Host Routing
++
++Load this package with `skill_view`. If the manifest points to a supporting file, read that file with `skill_files_read`; do not install or execute source-repository dependencies for Task 1.
++
++Use when:
++- Designing PostgreSQL-specific schemas
++- Reviewing types, constraints, indexes, or partitions
++- Balancing read paths with write-heavy workloads
++
++Do not use when:
++- Do not use for a database engine with different semantics
++- Do not denormalize without measured benefit
++- Do not add indexes unrelated to real access paths
++
++The upstream technical workflow below is preserved unchanged.

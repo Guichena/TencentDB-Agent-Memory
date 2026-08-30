@@ -1,0 +1,1764 @@
+{
+  "schema_version": "task1.team_memory_assets.v2",
+  "team_id": "T18",
+  "l0Conversations": [
+    {
+      "assetId": "T18-L0-01",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L0-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "sessionId": "session-task1-t18-quartz-capacity-01",
+      "messages": [
+        {
+          "messageId": "T18-L0-01-M01",
+          "role": "user",
+          "content": "Quartz 要建立线上同步查询的容量基线，先对齐地域和实例规格。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T08:00:00+08:00",
+          "contentHash": "b661b6dc22d234dc6e8e4bd502f1bde67701c0632155f267947625892229afe9"
+        },
+        {
+          "messageId": "T18-L0-01-M02",
+          "role": "assistant",
+          "content": "我整理了发布前稳定窗口的 p50、p95、p99 和 CPU 曲线。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "8e0a636a8022395de715f356b8b58c951b446447924433a7f26bd9539dfa0b6f"
+        },
+        {
+          "messageId": "T18-L0-01-M03",
+          "role": "user",
+          "content": "冷缓存样本先单独标记，不能混入稳定基线。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T10:00:00+08:00",
+          "contentHash": "4dcd88f883cb3cbc0024bdb444729492af4273466f541d706eca1eaec03c7317"
+        },
+        {
+          "messageId": "T18-L0-01-M04",
+          "role": "assistant",
+          "content": "已把冷启动和批处理请求从主样本集中排除。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T11:00:00+08:00",
+          "contentHash": "871472924883555e8974007a6d11c263a37638e705fa0e121c7c8de5b379aa94"
+        },
+        {
+          "messageId": "T18-L0-01-M05",
+          "role": "user",
+          "content": "一次尖峰只作为注释，不改变容量结论。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T12:00:00+08:00",
+          "contentHash": "e3f06b728747ec89c0b520f3a0d8f26cdd23b6fa7d26266938bec68f97c29b04"
+        },
+        {
+          "messageId": "T18-L0-01-M06",
+          "role": "assistant",
+          "content": "告警面板会展示连续窗口而不是单点峰值。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T13:00:00+08:00",
+          "contentHash": "ad333480d21fb0990ac1459b6959dca9fa98bd7a100617090127b1d5edefa410"
+        },
+        {
+          "messageId": "T18-L0-01-M07",
+          "role": "user",
+          "content": "Quartz profiling 的配置另有历史记录，不要在这里覆盖。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T14:00:00+08:00",
+          "contentHash": "43998d796c9e8105848ca15aadbf059b483a9eb720f92e6c31d298b117d7c984"
+        },
+        {
+          "messageId": "T18-L0-01-M08",
+          "role": "assistant",
+          "content": "收到，本会话只冻结请求基线与观测边界。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T15:00:00+08:00",
+          "contentHash": "8610cc9e89809d96759ec36854432da4d4fd8faf4eb9a63f54dce5a18d0c5006"
+        },
+        {
+          "messageId": "T18-L0-01-M09",
+          "role": "user",
+          "content": "复盘需要能按相同地域和规格重现。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T16:00:00+08:00",
+          "contentHash": "680a9544f4948199dd1bd4f303c73bb418cf5535a0bc709a0abcd3a74a9916d0"
+        },
+        {
+          "messageId": "T18-L0-01-M10",
+          "role": "assistant",
+          "content": "我补充了缓存预热完成和稳定窗口起止条件。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T17:00:00+08:00",
+          "contentHash": "1174833bb04830c8079291a64cdc187f26cab9a8b93b3870d77037040792a5a5"
+        },
+        {
+          "messageId": "T18-L0-01-M11",
+          "role": "user",
+          "content": "CPU 是伴随维度，不单独触发回归。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T08:00:00+08:00",
+          "contentHash": "1da7a3aa6cbe77fc1b73060ac4e0aeb2bc55e72f3f6d0301a54e336c8ccf8057"
+        },
+        {
+          "messageId": "T18-L0-01-M12",
+          "role": "assistant",
+          "content": "基线说明已提交评审，等待性能负责人确认。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "6e9b15650ede4add468c373c506a1b077fab2f002891ddb3705cc314204976ef"
+        }
+      ],
+      "contentHash": "fd5fd698d0f5a246633b8953b5ce48be7bda05d0d8e40627eeb8d0a599bdd1d0"
+    },
+    {
+      "assetId": "T18-L0-02",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L0-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "sessionId": "session-task1-t18-ironclad-worker-pool-incident",
+      "messages": [
+        {
+          "messageId": "T18-L0-02-M01",
+          "role": "user",
+          "content": "Ironclad 线上 worker pool 事故表现为任务积压和 worker 迟迟不退出。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T08:00:00+08:00",
+          "contentHash": "cd546af8d48f8a85f632c5520a8ceaea9c67f1afb4f09fde02b454596b86525f"
+        },
+        {
+          "messageId": "T18-L0-02-M02",
+          "role": "assistant",
+          "content": "我先怀疑下游变慢导致队列排空速度下降。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T09:00:00+08:00",
+          "contentHash": "f510dee67298879f7b94f230a419262508755d2dad444b163a6a5ec19abcadd5"
+        },
+        {
+          "messageId": "T18-L0-02-M03",
+          "role": "user",
+          "content": "隔离测试没有复现单个下游依赖假设，背压路径仍可独立复现。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T10:00:00+08:00",
+          "contentHash": "76c25fe331fb821b0743b066ec9acb677ae486c6509150e602a564573986d901"
+        },
+        {
+          "messageId": "T18-L0-02-M04",
+          "role": "assistant",
+          "content": "第二次实验把取消信号和新任务到达并行化，出现相同现象。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T11:00:00+08:00",
+          "contentHash": "adeda83c908a0905cfbd72c2bf2b7a14434b1d09ba49192687c181c13f576d73"
+        },
+        {
+          "messageId": "T18-L0-02-M05",
+          "role": "user",
+          "content": "网络重试、流量尖峰和单个节点故障都已经排除。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T12:00:00+08:00",
+          "contentHash": "87959b43c03b164d9f48a5d83caf3703a81fe2107dcd72eb2b8b65eabdcf0ea2"
+        },
+        {
+          "messageId": "T18-L0-02-M06",
+          "role": "assistant",
+          "content": "范围锁定在取消传播、任务接收和空闲退出的竞态。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T13:00:00+08:00",
+          "contentHash": "bce1f06414f1895439d64d4407080c8aebc22dc4a5a369fed6534cb525be5a98"
+        },
+        {
+          "messageId": "T18-L0-02-M07",
+          "role": "user",
+          "content": "评审不要接受‘并发问题’这种泛化表述。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T14:00:00+08:00",
+          "contentHash": "c2075c706aa046889a196abaf1476066500924e5550bd6d448170d6cd873f6c7"
+        },
+        {
+          "messageId": "T18-L0-02-M08",
+          "role": "assistant",
+          "content": "我准备了两版诊断措辞，都会标明背压计数的影响。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T15:00:00+08:00",
+          "contentHash": "a5add9a9f36bb811f7fbe98f1a9b05062f7b9cec4cbe7d379d75578340a39bdf"
+        },
+        {
+          "messageId": "T18-L0-02-M09",
+          "role": "user",
+          "content": "改口：需要把资源泄漏与队列堆积一起写进批准句。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T16:00:00+08:00",
+          "contentHash": "5c908e284052f756b8055aa61dae69a862f47f1a4c1b083175c98c8417ce3c40"
+        },
+        {
+          "messageId": "T18-L0-02-M10",
+          "role": "assistant",
+          "content": "批准的原句是：worker pool 在取消信号传播前继续接收任务，背压计数因此失真并阻止空闲 worker 退出，最终造成队列堆积与资源泄漏。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T17:00:00+08:00",
+          "contentHash": "172aa42b8b5e42699bd67501336d540506db59e00e83f380f8fe2fab5487128c"
+        },
+        {
+          "messageId": "T18-L0-02-M11",
+          "role": "user",
+          "content": "这句固定进事故记录，与通用 worker pool 指南分开。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T08:00:00+08:00",
+          "contentHash": "204fd9c1625d5119b0635323fe0e937ff82e0fa4439f846f203dab79c9ce3ecd"
+        },
+        {
+          "messageId": "T18-L0-02-M12",
+          "role": "assistant",
+          "content": "已记录复现条件和批准版本，后续修复先做小批灰度。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T09:00:00+08:00",
+          "contentHash": "1ad83d264d5f260d00f751d4b6304674872fdadd66b4dfe3bd35452be5ea4c29"
+        }
+      ],
+      "contentHash": "ae9b84a9730c4f042d4b0d9873fc3c04f01f806f6c85bfc9265c07ae4eadbbdc"
+    },
+    {
+      "assetId": "T18-L0-03",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L0-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "sessionId": "session-task1-t18-quartz-profiling-02",
+      "messages": [
+        {
+          "messageId": "T18-L0-03-M01",
+          "role": "user",
+          "content": "Quartz 需要整理 CPU profiling 的历史保留配置，先锁定事件类型。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T08:00:00+08:00",
+          "contentHash": "b8a4e3e8095576e844ea1d33fe43dd300c39e660651e546f67d916ace0490f3d"
+        },
+        {
+          "messageId": "T18-L0-03-M02",
+          "role": "assistant",
+          "content": "当前默认策略混合了 instruction 和采样摘要，不能直接用于历史复盘。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "65042ca42da6ce7811604d2502efa8a0999e8dbac4e99ddd9be71ee9a20de687"
+        },
+        {
+          "messageId": "T18-L0-03-M03",
+          "role": "user",
+          "content": "我们先列出各时间窗的配置版本和采集路径。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T10:00:00+08:00",
+          "contentHash": "1bd3ebbcdd961086742168c69c6243c9c063f0f724cd2445f0e7acf55750fab6"
+        },
+        {
+          "messageId": "T18-L0-03-M04",
+          "role": "assistant",
+          "content": "线上同步查询和批处理路径在表里分成两列。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T11:00:00+08:00",
+          "contentHash": "6de10b6c9fe5e651d2e257ae8e063f438131c4a85f7dd591d6d1ecf068194454"
+        },
+        {
+          "messageId": "T18-L0-03-M05",
+          "role": "user",
+          "content": "一次提议保留所有 profile，存储压力太大而撤回。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "c045e1ec4b5bd5940b9f7b972d70318ebefe7f1d4856a9e77de6e26d4250c013"
+        },
+        {
+          "messageId": "T18-L0-03-M06",
+          "role": "assistant",
+          "content": "改为只保留能用于指令级热点核对的记录。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T13:00:00+08:00",
+          "contentHash": "51b1ea6ddd6796e37da05199988f22a2f59163fea4d54679b65f248e2cfce619"
+        },
+        {
+          "messageId": "T18-L0-03-M07",
+          "role": "user",
+          "content": "指定历史窗口的精确值另存，不要用今天的默认值。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T14:00:00+08:00",
+          "contentHash": "64d807f17b5472a2c5fdaf06e84e2a8f116848246d615b21c62989b3dddc85d3"
+        },
+        {
+          "messageId": "T18-L0-03-M08",
+          "role": "assistant",
+          "content": "我把窗口起止日期和保留天数列为必填项。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T15:00:00+08:00",
+          "contentHash": "0ac231493c257f6a9bb4163151664fb0ad5901e1b442472082b439d0ba1d1fe3"
+        },
+        {
+          "messageId": "T18-L0-03-M09",
+          "role": "user",
+          "content": "Quartz p99 阈值是另一条记忆，避免合并成 profiling 规则。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T16:00:00+08:00",
+          "contentHash": "ed61e15b17087adc834726cec53ac49ac29c30723f7871b2203d46cc7a14b532"
+        },
+        {
+          "messageId": "T18-L0-03-M10",
+          "role": "assistant",
+          "content": "已拆开记录；本会话只维护 CPU profile 的筛选和生命周期。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T17:00:00+08:00",
+          "contentHash": "dea6ff8ee0bac4995ab385e21e8a8f1bc7c4ec4f90e3ce52c7222b0e598752ac"
+        },
+        {
+          "messageId": "T18-L0-03-M11",
+          "role": "user",
+          "content": "评审还要能按请求路径筛选。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T08:00:00+08:00",
+          "contentHash": "331dfb466e5d5c32e109817052c4b09f25760f681be484524330810378d86e8a"
+        },
+        {
+          "messageId": "T18-L0-03-M12",
+          "role": "assistant",
+          "content": "配置草案已交给可观测性负责人复核。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "3877427e476bded95f18562ec2a235449fb11f93e356075c3eb47719b4b63789"
+        }
+      ],
+      "contentHash": "1b911a5cb26dfc2bbc988c6a3ae3e4af22c9bc4ed41d753387f6c00e5009eed6"
+    },
+    {
+      "assetId": "T18-L0-04",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L0-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "sessionId": "session-task1-t18-cascade-skew-01",
+      "messages": [
+        {
+          "messageId": "T18-L0-04-M01",
+          "role": "user",
+          "content": "Cascade 的 Spark 批处理有少数热点分区拖慢整个作业。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T08:00:00+08:00",
+          "contentHash": "d678ee57d0b0452df68d93a5b9012d71453b557251222949d09072145e16e923"
+        },
+        {
+          "messageId": "T18-L0-04-M02",
+          "role": "assistant",
+          "content": "初步统计显示热点键集中，均匀重分区没有消除长尾。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T09:00:00+08:00",
+          "contentHash": "a81e962b0cd955d813642ad01ae528f20a762e084f5fe538c74854c4cd7ff934"
+        },
+        {
+          "messageId": "T18-L0-04-M03",
+          "role": "user",
+          "content": "提高并行度后小分区变多，下游数据库连接数反而上升。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "7643b5200a62c7df8917ee1bf02fbe844282dd3dfefa1596846f5fdc0e15b204"
+        },
+        {
+          "messageId": "T18-L0-04-M04",
+          "role": "assistant",
+          "content": "我们开始比较热点键加盐和保留原键两种路径。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T11:00:00+08:00",
+          "contentHash": "5c8a4ae52a5223473435236d5d53aac6f5c7c836411a5b64835b7a0c21b85a33"
+        },
+        {
+          "messageId": "T18-L0-04-M05",
+          "role": "user",
+          "content": "低基数键不应因为通用规则被无谓拆分。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T12:00:00+08:00",
+          "contentHash": "dfbcb8418b7b31cd509fe0db46c555b15338413361df2f1f398c0aae4aad3066"
+        },
+        {
+          "messageId": "T18-L0-04-M06",
+          "role": "assistant",
+          "content": "但高基数热点仍需要加盐来摊平任务时长。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T13:00:00+08:00",
+          "contentHash": "27a439071d3fe4a98241d83b98324c108575a3f172a4b44d43f269199f23ba41"
+        },
+        {
+          "messageId": "T18-L0-04-M07",
+          "role": "user",
+          "content": "下游 direct consumer 的合并能力是例外判断的关键。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T14:00:00+08:00",
+          "contentHash": "ac71bf0582435b280565fe86b94a07714d71a990b7c1a7ae6386ef2a23bbb15c"
+        },
+        {
+          "messageId": "T18-L0-04-M08",
+          "role": "assistant",
+          "content": "我补了 consumer 数量和原键合并测试。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T15:00:00+08:00",
+          "contentHash": "6ec00660197367501da973dba3005c9fa58e5a85e8f6182ef41ee39a608f6585"
+        },
+        {
+          "messageId": "T18-L0-04-M09",
+          "role": "user",
+          "content": "不要把 Cascade 的例外和普通数据库索引建议混在一起。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T16:00:00+08:00",
+          "contentHash": "7b9391a12f90cc57970b5244ba879595045e1fc1db5a9ee8cdfab26db81ae780"
+        },
+        {
+          "messageId": "T18-L0-04-M10",
+          "role": "assistant",
+          "content": "已将 Spark 分区决策与 SQL 计划讨论分开归档。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T17:00:00+08:00",
+          "contentHash": "d869ce2b7987e556904925ebdee9e888bbe18d793cd8bc70252a15e2747f6f3d"
+        },
+        {
+          "messageId": "T18-L0-04-M11",
+          "role": "user",
+          "content": "评审要冻结默认策略和少数例外。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T08:00:00+08:00",
+          "contentHash": "05adbaacb22e29a8a481666711303db7fda626a5ba33c928f254c6a03302ad50"
+        },
+        {
+          "messageId": "T18-L0-04-M12",
+          "role": "assistant",
+          "content": "规则草案等待吞吐负责人批准。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T09:00:00+08:00",
+          "contentHash": "0c4e3e79c17d312c58d494698efb717b5e82b7da33ef31d901f517a523b3740c"
+        }
+      ],
+      "contentHash": "bb69e851da4211d4c60befc2dffb820f8795fe76f8d6449acdc63e7ae82cbfc9"
+    },
+    {
+      "assetId": "T18-L0-05",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L0-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "sessionId": "session-task1-t18-ironclad-backpressure-02",
+      "messages": [
+        {
+          "messageId": "T18-L0-05-M01",
+          "role": "user",
+          "content": "Ironclad 另一次压测关注队列背压和 worker 生命周期边界。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T08:00:00+08:00",
+          "contentHash": "efbc193555aba21f1c14f08b87d06af46d0f57422ef5b629e4625e7576429620"
+        },
+        {
+          "messageId": "T18-L0-05-M02",
+          "role": "assistant",
+          "content": "初版让生产者一直写入，队列达到上限后延迟失控。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T09:00:00+08:00",
+          "contentHash": "7fcd35494778e493d11d380f7e97ea1525ab183d1566d5d315fe460f2822d4e9"
+        },
+        {
+          "messageId": "T18-L0-05-M03",
+          "role": "user",
+          "content": "我们加了取消传播，但有些 worker 仍卡在取任务。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T10:00:00+08:00",
+          "contentHash": "99e2a2199cf056b0b641952d9ae7fef0936fe272ffb4298698be38718497d33b"
+        },
+        {
+          "messageId": "T18-L0-05-M04",
+          "role": "assistant",
+          "content": "问题集中在关闭顺序和等待组计数不一致。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "f2b14f784915049206ad1460476f3e15ec438fd0a99b929eaec78beaf24743d7"
+        },
+        {
+          "messageId": "T18-L0-05-M05",
+          "role": "user",
+          "content": "一次全局强制关闭误伤了仍在提交结果的任务。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T12:00:00+08:00",
+          "contentHash": "2436b43d18a95d68fb961816609e85fdc45d3d25d528bb0b48a09e657360b94e"
+        },
+        {
+          "messageId": "T18-L0-05-M06",
+          "role": "assistant",
+          "content": "撤回后改成先停止接收、再等待在途任务、最后释放资源。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T13:00:00+08:00",
+          "contentHash": "65a71990fbbfbb436f3c05b33c95c2406bc313d90f4203bc2e8597e9f02bc2ec"
+        },
+        {
+          "messageId": "T18-L0-05-M07",
+          "role": "user",
+          "content": "事故复盘的批准原句在另一会话，不能在此重写。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T14:00:00+08:00",
+          "contentHash": "c3e242e6ac47b1529420de4d6b28d81c09b6099a1f0d9784498f80990e3846f5"
+        },
+        {
+          "messageId": "T18-L0-05-M08",
+          "role": "assistant",
+          "content": "收到，本会话只保留通用生命周期实验。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T15:00:00+08:00",
+          "contentHash": "cebc38a1072f98cd04d3b81f9bcd2270dc5fe4c958a0590060b339c21dc3593d"
+        },
+        {
+          "messageId": "T18-L0-05-M09",
+          "role": "user",
+          "content": "指标同时看队列深度、取消延迟和 goroutine 数。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T16:00:00+08:00",
+          "contentHash": "a4f237e09a098b7d344f51507815d885667ab28146d46f1caf0a1cfda113d765"
+        },
+        {
+          "messageId": "T18-L0-05-M10",
+          "role": "assistant",
+          "content": "我加入了停止条件和资源回收观测。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T17:00:00+08:00",
+          "contentHash": "d4f2fd20dddacd62df6265ce174e97f3c8179acafee0b2eb5af2aed31ad711f8"
+        },
+        {
+          "messageId": "T18-L0-05-M11",
+          "role": "user",
+          "content": "灰度按 worker 数量分层。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T08:00:00+08:00",
+          "contentHash": "20f415954a2f39d030beec8c4ec12190ba0cc6926e8d7305daefcc9752a0638a"
+        },
+        {
+          "messageId": "T18-L0-05-M12",
+          "role": "assistant",
+          "content": "压测记录已归档，等待运行时负责人复核。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T09:00:00+08:00",
+          "contentHash": "3ff8dd0dcd73b223ff14a89f30a1c228fb1465626a589e2dd6efd318d9806a29"
+        }
+      ],
+      "contentHash": "e1deb9750c120068cbea3014cf68d97e0ba8c55e75e6a1d3db07b309b1bb943f"
+    },
+    {
+      "assetId": "T18-L0-06",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L0-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "sessionId": "session-task1-t18-cascade-query-plan-02",
+      "messages": [
+        {
+          "messageId": "T18-L0-06-M01",
+          "role": "user",
+          "content": "Cascade 下游数据库计划在批处理高峰出现长尾，先核对连接和扫描。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T08:00:00+08:00",
+          "contentHash": "ab8094dba5bde37a659195ac24e9184f3c632438b39d23746b1ae77a01222f40"
+        },
+        {
+          "messageId": "T18-L0-06-M02",
+          "role": "assistant",
+          "content": "有一版计划强制索引，低选择性过滤反而更慢。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T09:00:00+08:00",
+          "contentHash": "9a28f74139403874e2c98446af3821bf89e3e1015f922e8b5e64df1282b6380e"
+        },
+        {
+          "messageId": "T18-L0-06-M03",
+          "role": "user",
+          "content": "我们撤回强制索引，改看分区输出与查询谓词是否匹配。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T10:00:00+08:00",
+          "contentHash": "d32a1c96b45ed309ec3ff1de7a2c764bafb0574ef6a8eb9bf1b722c7cff61348"
+        },
+        {
+          "messageId": "T18-L0-06-M04",
+          "role": "assistant",
+          "content": "对比显示少量大分区造成单连接工作时间过长。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T11:00:00+08:00",
+          "contentHash": "d4c737781355f0398a1bf0f7a0f73a3b597a0cb0a8fb52facc9c18268754c43e"
+        },
+        {
+          "messageId": "T18-L0-06-M05",
+          "role": "user",
+          "content": "这和 Spark 热点键加盐是关联问题，但结论要分开。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "5a2c62a82ab7fba1c8e6dd79f3e4ce61815f7dc3fcd249a010a63e453b25bf85"
+        },
+        {
+          "messageId": "T18-L0-06-M06",
+          "role": "assistant",
+          "content": "我在计划记录里标注输入分区大小与执行计划版本。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T13:00:00+08:00",
+          "contentHash": "a37e48249807265a2c0b48ac08d8fbd0487f7d615c965afe281195dd4e1cd1cf"
+        },
+        {
+          "messageId": "T18-L0-06-M07",
+          "role": "user",
+          "content": "评审要求保留失败的强制索引实验。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T14:00:00+08:00",
+          "contentHash": "0056a5ecc9f7bac98cf0e73c5aa33fafbdda27594ea01cbcb60bc28f4dfbe107"
+        },
+        {
+          "messageId": "T18-L0-06-M08",
+          "role": "assistant",
+          "content": "失败原因和回滚时间已补入时间线。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T15:00:00+08:00",
+          "contentHash": "f045ebf59683f594d9136fe33b2afc8e26b784e92d65befce8545a772593d197"
+        },
+        {
+          "messageId": "T18-L0-06-M09",
+          "role": "user",
+          "content": "批处理和在线查询不要共用阈值。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T16:00:00+08:00",
+          "contentHash": "4cbaa192d6be35424942a7891db9bc9bc8a4dbb4195de290ee3980618e1fc4e3"
+        },
+        {
+          "messageId": "T18-L0-06-M10",
+          "role": "assistant",
+          "content": "已拆成两套基线并分别观察。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T17:00:00+08:00",
+          "contentHash": "fba54f8474490b397f91517e7b80f911ffacca2fb8872741a701d6d04a78cb8d"
+        },
+        {
+          "messageId": "T18-L0-06-M11",
+          "role": "user",
+          "content": "下一步验证直连消费者的合并成本。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T08:00:00+08:00",
+          "contentHash": "1b2615796d3d72ab3b122214d02e0c87d865fcee92ae171bdb8d5a0f1f7b1a87"
+        },
+        {
+          "messageId": "T18-L0-06-M12",
+          "role": "assistant",
+          "content": "计划实验和监控负责人已经分配。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T09:00:00+08:00",
+          "contentHash": "01fb79d73f37f2667b2e4e1028e13fa5feb34e07b50583029c16962159c3ec1f"
+        }
+      ],
+      "contentHash": "9458ff9479ebc43a916c982905cfdbdfa83321fe88c3c079ea95b779b5463a5b"
+    },
+    {
+      "assetId": "T18-L0-07",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L0-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "sessionId": "session-task1-t18-sentinel-slo-01",
+      "messages": [
+        {
+          "messageId": "T18-L0-07-M01",
+          "role": "user",
+          "content": "Sentinel 要重新梳理性能 SLI 和 SLO，先区分错误请求与慢请求。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T08:00:00+08:00",
+          "contentHash": "b781ab906b065f7d2568c810cf877e7d5c50a2f7e7b79b9d19d1af8770f013fe"
+        },
+        {
+          "messageId": "T18-L0-07-M02",
+          "role": "assistant",
+          "content": "初版把所有 trace 都纳入延迟分位数，采样变化导致曲线不稳定。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T09:00:00+08:00",
+          "contentHash": "0c206e7668cd916684a3f6b6bf3e00076df6c72a48d9c4ae7277117ef5dcc32e"
+        },
+        {
+          "messageId": "T18-L0-07-M03",
+          "role": "user",
+          "content": "我们改按请求类型和地域分层。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T10:00:00+08:00",
+          "contentHash": "1f01d7e26466704342e02c01a0f56275f0f4df09a6c546c040f8de7bab25bd3f"
+        },
+        {
+          "messageId": "T18-L0-07-M04",
+          "role": "assistant",
+          "content": "线上同步查询与批处理流量现在分别计算。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T11:00:00+08:00",
+          "contentHash": "e05ebfea4e1dbc78e08f575822d6e3fccd0e5b59ab65a0a906c7a2b7f0b46c64"
+        },
+        {
+          "messageId": "T18-L0-07-M05",
+          "role": "user",
+          "content": "一次短时存储故障只做事件标注，不直接修改 SLO。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T12:00:00+08:00",
+          "contentHash": "2a7e6a52db771f8c93e850fd37975b9628a2eb104fc4092b579b4f3b6f22a7b0"
+        },
+        {
+          "messageId": "T18-L0-07-M06",
+          "role": "assistant",
+          "content": "已把异常窗口和稳定窗口的处理写进说明。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T13:00:00+08:00",
+          "contentHash": "9fed271b14a90f0aa6fec2fcfad15b916233a881cee71d15692f1aa08e287dc3"
+        },
+        {
+          "messageId": "T18-L0-07-M07",
+          "role": "user",
+          "content": "trace sampling 回滚顺序在另一场会话，别用 SLO 记录代替。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T14:00:00+08:00",
+          "contentHash": "d49e9bfe1db05019bbc02443c556e7278df45e7597671c5d626b2632416e9fb1"
+        },
+        {
+          "messageId": "T18-L0-07-M08",
+          "role": "assistant",
+          "content": "明白，本会话只维护指标定义和窗口聚合。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T15:00:00+08:00",
+          "contentHash": "7d68ef5eb531ffeb1de09f37d63dfc95adf179f885c02f4f85221cff4112da52"
+        },
+        {
+          "messageId": "T18-L0-07-M09",
+          "role": "user",
+          "content": "告警需要指向可行动的负责人。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T16:00:00+08:00",
+          "contentHash": "7df56f0d5cf127e4a122f1da4af6b5d0f6f704bce080007257966f578fca6366"
+        },
+        {
+          "messageId": "T18-L0-07-M10",
+          "role": "assistant",
+          "content": "每个 SLI 都补上阈值说明、窗口和升级路径。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T17:00:00+08:00",
+          "contentHash": "57304634cbc0af9f057427c9152894f8c97898a29e818707c0067097a5d359a3"
+        },
+        {
+          "messageId": "T18-L0-07-M11",
+          "role": "user",
+          "content": "评审要求能回放采样版本变化。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T08:00:00+08:00",
+          "contentHash": "f5231763ba67ac86cb1ccf5a5cc7607f8063ea329d14c9ea1b8b1ae0867ad245"
+        },
+        {
+          "messageId": "T18-L0-07-M12",
+          "role": "assistant",
+          "content": "版本标签和部署时间已加入指标元数据。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T09:00:00+08:00",
+          "contentHash": "1fb300ec0b0646cf52a51622d1d4fa13e80d7e102f85bddd59c2e12f580ee213"
+        }
+      ],
+      "contentHash": "e9ff545f56b602a8570eea705f93980658b5259ff4250ee5734f944eca04eb38"
+    },
+    {
+      "assetId": "T18-L0-08",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L0-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "sessionId": "session-task1-t18-sentinel-sampling-rollback",
+      "messages": [
+        {
+          "messageId": "T18-L0-08-M01",
+          "role": "user",
+          "content": "Sentinel 提高 trace sampling 后存储成本上升，慢请求线索却没有稳定改善。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T08:00:00+08:00",
+          "contentHash": "b09129fa667b7ea088243b52c3c29d3351a4d9828576377e8c7b149fbacfa333"
+        },
+        {
+          "messageId": "T18-L0-08-M02",
+          "role": "assistant",
+          "content": "第一步扩大 head sampling，随后发现尾部错误请求被稀释。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T09:00:00+08:00",
+          "contentHash": "8b864dffa7605dc8f895e9e082a45cf5c22624b6d7983f2e75329a2dfd32dbad"
+        },
+        {
+          "messageId": "T18-L0-08-M03",
+          "role": "user",
+          "content": "我们保留了实验数据，准备回到上一版保守策略。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T10:00:00+08:00",
+          "contentHash": "cf4fdd2aa80261308fc3b052445f1d720670c59a334853259fa91c5773b93b36"
+        },
+        {
+          "messageId": "T18-L0-08-M04",
+          "role": "assistant",
+          "content": "tail sampling 规则先冻结，不再追加新条件。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T11:00:00+08:00",
+          "contentHash": "441ae17fd2f23703c812cfe0bff310a11df58ad12f0d9912b4e054508d94e3d9"
+        },
+        {
+          "messageId": "T18-L0-08-M05",
+          "role": "user",
+          "content": "评审强调回滚必须按讨论原顺序执行。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T12:00:00+08:00",
+          "contentHash": "91f5c036ef60a176ad0ffaf402909d28881e99821c2d89cb229d5300ee40e233"
+        },
+        {
+          "messageId": "T18-L0-08-M06",
+          "role": "assistant",
+          "content": "我列出关闭开关、恢复配置、删除规则和核对指标四步。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T13:00:00+08:00",
+          "contentHash": "bb390d160cfdddf7538af850c4eabaded7aeebae9707a6f717594b7454b9c98e"
+        },
+        {
+          "messageId": "T18-L0-08-M07",
+          "role": "user",
+          "content": "不要把后来的 SLO 重算插进这条原始时间线。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T14:00:00+08:00",
+          "contentHash": "c12d238895728ee36b407364d67ad74f5eea56babdf6831ad10358d3dc90f2c0"
+        },
+        {
+          "messageId": "T18-L0-08-M08",
+          "role": "assistant",
+          "content": "已将 SLO 复核标为后续工作。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T15:00:00+08:00",
+          "contentHash": "fc491abd85b144f427a28ce05fe18b0fba94837155fe5d2fa3b789bced49d084"
+        },
+        {
+          "messageId": "T18-L0-08-M09",
+          "role": "user",
+          "content": "改口：批准句要说明先关扩大策略，再恢复保守版本。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T16:00:00+08:00",
+          "contentHash": "3b6161af77384224b0973db7c474baae6471bfd1e7770bb6a3b8bf041be79780"
+        },
+        {
+          "messageId": "T18-L0-08-M10",
+          "role": "assistant",
+          "content": "评审保留的原始顺序是：先关闭扩大的 head sampling 开关；再恢复上一版保守采样配置；最后删除 tail sampling 实验规则并核对采集量与错误请求覆盖。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T17:00:00+08:00",
+          "contentHash": "062f7d74028acfbd8924f265ef8d2a6b60f32d27e38d2a072584e049db3e6e0f"
+        },
+        {
+          "messageId": "T18-L0-08-M11",
+          "role": "user",
+          "content": "这条顺序固定进回滚记录，并与 Quartz 性能阈值分开。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T08:00:00+08:00",
+          "contentHash": "ec661e5cf80501258bdd875de920575a117da557a3d4060699a50b061c7bde87"
+        },
+        {
+          "messageId": "T18-L0-08-M12",
+          "role": "assistant",
+          "content": "已归档原始讨论和对应的验证窗口。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T09:00:00+08:00",
+          "contentHash": "9b9eb5dc11a1271e83e9247cb5bd140079fc224002ed53394e8b3e6b7a414d5e"
+        }
+      ],
+      "contentHash": "32917355f02204b83dc66954fbccab9ff3c3f448df7221e912af1de172f68399"
+    },
+    {
+      "assetId": "T18-L0-09",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L0-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "sessionId": "session-task1-t18-forge-cache-degradation",
+      "messages": [
+        {
+          "messageId": "T18-L0-09-M01",
+          "role": "user",
+          "content": "Forge 远程缓存退化后命中率下降，远程执行排队变长。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T08:00:00+08:00",
+          "contentHash": "c66d285ac298d6cdae68a9511061e3dfdaa544641c6b1d5c961c92aedbf0b065"
+        },
+        {
+          "messageId": "T18-L0-09-M02",
+          "role": "assistant",
+          "content": "开发者开始频繁切回本地构建，失败样本集中在几个大型目标。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T09:00:00+08:00",
+          "contentHash": "2db056e0761c71089261da044c3e78b05b5079787cc39e1252095f1bf0b4c897"
+        },
+        {
+          "messageId": "T18-L0-09-M03",
+          "role": "user",
+          "content": "第一版只增加远端重试，排队反而进一步放大。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T10:00:00+08:00",
+          "contentHash": "c78b13c6bdb6ce6c65eeac3ff90175cfcad3f0b9c41eab8b058d8cb88a98e723"
+        },
+        {
+          "messageId": "T18-L0-09-M04",
+          "role": "assistant",
+          "content": "我们决定把重试、限流和回退拆成阶段。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T11:00:00+08:00",
+          "contentHash": "1897626d488e1674bda05491af755bd3d7cbe85820661438be7687ae712a6e40"
+        },
+        {
+          "messageId": "T18-L0-09-M05",
+          "role": "user",
+          "content": "缓存键、执行节点和仓库并发都列为待核对项。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T12:00:00+08:00",
+          "contentHash": "b57cfd0625a5126cd29890766ba98fbaadc8d47c19a1e17b2d4fbb5f7f3bfe6f"
+        },
+        {
+          "messageId": "T18-L0-09-M06",
+          "role": "assistant",
+          "content": "场景文档会记录每项检查和停止条件。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T13:00:00+08:00",
+          "contentHash": "5276da05e4e2676a2db1b91ef248345497b5cb70da22afb5363218508b6075e7"
+        },
+        {
+          "messageId": "T18-L0-09-M07",
+          "role": "user",
+          "content": "相邻的远程执行规则讨论不能替代退化处置流程。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T14:00:00+08:00",
+          "contentHash": "124883b42e4177885574df9f00b6d9da9de4a5f786a18da364c52bfe7a1fb0a2"
+        },
+        {
+          "messageId": "T18-L0-09-M08",
+          "role": "assistant",
+          "content": "已分开两个场景，避免把规则说明当作故障清单。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T15:00:00+08:00",
+          "contentHash": "fa589a0bc392a5a45bbe0f22a3f31ff93e8df64b2e8515f694f25e4fc5f285c7"
+        },
+        {
+          "messageId": "T18-L0-09-M09",
+          "role": "user",
+          "content": "恢复前需要小批目标验证命中率和排队。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T16:00:00+08:00",
+          "contentHash": "c353c94d3690c1ac18382b54ec0a5d4f81bd29165b530eb94464bcebc5816144"
+        },
+        {
+          "messageId": "T18-L0-09-M10",
+          "role": "assistant",
+          "content": "连续稳定窗口是逐步恢复的前置条件。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T17:00:00+08:00",
+          "contentHash": "d8f4655256ae796967bc9731b4eb4d6efd6d6cec1fe4ca62584e93aa9355ce21"
+        },
+        {
+          "messageId": "T18-L0-09-M11",
+          "role": "user",
+          "content": "请保留原始阶段顺序和负责人记录。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T08:00:00+08:00",
+          "contentHash": "7babed46e2611fcabfe494bd4e3fc0786ca59f19d185d4f208fbee6e0779af33"
+        },
+        {
+          "messageId": "T18-L0-09-M12",
+          "role": "assistant",
+          "content": "完整阶段清单已进入 Forge 场景正文。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T09:00:00+08:00",
+          "contentHash": "955cdd1c652ac16a513a56eef11cf45a4badb3a523f57e94fd058b149e77d001"
+        }
+      ],
+      "contentHash": "e78803b26faf9bc2618414770aab5e8ed365ea2aedf6027a40960535b80db42a"
+    },
+    {
+      "assetId": "T18-L0-10",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L0-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "sessionId": "session-task1-t18-forge-remote-execution-02",
+      "messages": [
+        {
+          "messageId": "T18-L0-10-M01",
+          "role": "user",
+          "content": "Forge 远程执行控制需要区分仓库并发、队列上限和本地回退。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T08:00:00+08:00",
+          "contentHash": "2f37dde99648cd03dd6ea3c0aa2137880bae0e5e7a5b74a35663bc65cb0f4545"
+        },
+        {
+          "messageId": "T18-L0-10-M02",
+          "role": "assistant",
+          "content": "初版把所有仓库共用一个并发上限，导致小仓库被大型构建占满。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T09:00:00+08:00",
+          "contentHash": "d5a96dbbcf6be19018c600b95dafe850d307f7db227558e7852605800579d440"
+        },
+        {
+          "messageId": "T18-L0-10-M03",
+          "role": "user",
+          "content": "失败后改为按仓库分层，并为队列设置独立上限。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T10:00:00+08:00",
+          "contentHash": "a72131a05a7bd4c868637c5420e13403ff5db583cefbea2761fc9164a5a4b75d"
+        },
+        {
+          "messageId": "T18-L0-10-M04",
+          "role": "assistant",
+          "content": "本地回退只对受影响目标开启，不改变其他目标的远程路径。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T11:00:00+08:00",
+          "contentHash": "41b128021bef6770a15456193e59574189f7e2d9a75aa52a39a0effda8c719d6"
+        },
+        {
+          "messageId": "T18-L0-10-M05",
+          "role": "user",
+          "content": "缓存退化场景会引用这些控制，但正文阶段仍要单独读取。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T12:00:00+08:00",
+          "contentHash": "a7f20ec5d7f8cd1d5cf30d4d79c8e1ac219ea6ea975bcd512e0990e16b5a2ee5"
+        },
+        {
+          "messageId": "T18-L0-10-M06",
+          "role": "assistant",
+          "content": "我在控制文档里只记录参数语义，不复制故障清单。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T13:00:00+08:00",
+          "contentHash": "3796c0f71cda33f7d459629f2ade17af6783860ea2ccae400be740fd60dab425"
+        },
+        {
+          "messageId": "T18-L0-10-M07",
+          "role": "user",
+          "content": "评审要求每次限制变更带有观测窗口。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T14:00:00+08:00",
+          "contentHash": "d8aad1e2cf4b1449d990a1b04fc880abf4b85a626375265add559aac7bd3263f"
+        },
+        {
+          "messageId": "T18-L0-10-M08",
+          "role": "assistant",
+          "content": "命中率、排队和失败率会作为三项共同指标。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T15:00:00+08:00",
+          "contentHash": "7ee993bc3a511fc19decceb6991dc40ba4b263df45ecb6e15bbf5d8ae3ad3b94"
+        },
+        {
+          "messageId": "T18-L0-10-M09",
+          "role": "user",
+          "content": "恢复时按仓库逐层放开。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T16:00:00+08:00",
+          "contentHash": "acad4f3585096ece25a0c330f220bd03a8339503ced2a98e29fdf8a8115f839a"
+        },
+        {
+          "messageId": "T18-L0-10-M10",
+          "role": "assistant",
+          "content": "每层保留回退开关和明确负责人。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T17:00:00+08:00",
+          "contentHash": "5e285baaf2397cf9b9cd723aac781f472574ed810fd642a8ce11e713d51ab0c4"
+        },
+        {
+          "messageId": "T18-L0-10-M11",
+          "role": "user",
+          "content": "远程缓存退化的完整阶段清单不要在此重复。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T08:00:00+08:00",
+          "contentHash": "d55414e5d9d0f0ab7f9d748e688b1441a7c1eeb66551e5d5f9bf204d64cdf9f5"
+        },
+        {
+          "messageId": "T18-L0-10-M12",
+          "role": "assistant",
+          "content": "已添加链接但保持两个记录的边界。",
+          "sourceEvidenceIds": [
+            "T18-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T09:00:00+08:00",
+          "contentHash": "c6e03b34fe856949fa9992455be0f27130ec8deaaa4100c3a26bec4e1dfeefe9"
+        }
+      ],
+      "contentHash": "6cd03bc59f04cf624169f4cb294ed59bb9fd3502850d3484f927e9d854abb617"
+    }
+  ],
+  "l1Memories": [
+    {
+      "assetId": "T18-L1-01",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Quartz 容量基线只覆盖缓存已预热、同地域同实例规格稳定窗口内的线上同步查询；冷启动、冷缓存、批处理和不同规格样本单独处理。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T18-L0-01-M09",
+        "T18-L0-01-M10",
+        "T18-L0-01-M11",
+        "T18-L0-01-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "d9925895156f26340eb1503b289c09932bbfa5c5049b1a7b0153706ab312d509"
+    },
+    {
+      "assetId": "T18-L1-02",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Ironclad worker 生命周期收敛顺序为停止接收新任务、等待在途任务完成、再释放资源；强制全局关闭会误伤结果提交。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T18-L0-02-M09",
+        "T18-L0-02-M10",
+        "T18-L0-02-M11",
+        "T18-L0-02-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "432c4229474b44459a0d9b80a337fd059129ada8f3d803a82a6cb6826fac1b32"
+    },
+    {
+      "assetId": "T18-L1-03",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "当同步查询路径的 p99 达到发布前同地域同规格稳定基线的 1.8 倍或更高，并在连续 3 个 5 分钟窗口保持时，才判为该回归根因门槛；该门槛只适用于缓存已预热、稳定窗口内的线上同步查询，冷启动、冷缓存、批处理接口、单次尖峰及不同实例规格样本不适用，CPU 仅作为伴随信号而不是单独触发条件。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T18-L0-03-M09",
+        "T18-L0-03-M10",
+        "T18-L0-03-M11",
+        "T18-L0-03-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "a1e376b91231f0eb7c18e4b801a8eac199a1780ac16b04a30f2ac82683bd7c4d"
+    },
+    {
+      "assetId": "T18-L1-04",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Cascade 对热点键默认加盐并观察分区长尾；提高并行度不能替代热点拆分，低基数路径需单独评审。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T18-L0-06-M09",
+        "T18-L0-06-M10",
+        "T18-L0-06-M11",
+        "T18-L0-06-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "716bbbb03ee75794243fe20b15ccbaabe139e1d499ba134afc71808882be7394"
+    },
+    {
+      "assetId": "T18-L1-05",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Ironclad 背压验证同时观察队列深度、取消延迟和 goroutine 数，并按 worker 数量分层灰度。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T18-L0-05-M09",
+        "T18-L0-05-M10",
+        "T18-L0-05-M11",
+        "T18-L0-05-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "b23ee05cbcd1d6ced2fd7cd3c565bbdd6d4e37b63675d870726628eac3b4b13a"
+    },
+    {
+      "assetId": "T18-L1-06",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Sentinel SLI/SLO 按请求类型和地域分层，稳定窗口与异常窗口分开聚合，采样版本作为可回放元数据保留。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T18-L0-08-M09",
+        "T18-L0-08-M10",
+        "T18-L0-08-M11",
+        "T18-L0-08-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "2a9bfe1ab96c32b8066be3635f6d05f57419cfa5f84296fc38de6fe7028ca03d"
+    },
+    {
+      "assetId": "T18-L1-07",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Ironclad worker pool 事故排除了单个下游依赖、网络重试、流量尖峰和单节点故障，复现集中在取消传播与任务接收竞态。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T18-L0-02-M09",
+        "T18-L0-02-M10",
+        "T18-L0-02-M11",
+        "T18-L0-02-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "521a94cb69b489d91d966e84be80a0a6fd578c02328b2a2a6d0330cb1f65b33f"
+    },
+    {
+      "assetId": "T18-L1-08",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Cascade 将 Spark 分区倾斜与下游数据库计划分开记录，批处理和在线查询不共用阈值。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T18-L0-06-M09",
+        "T18-L0-06-M10",
+        "T18-L0-06-M11",
+        "T18-L0-06-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "ed12120698761df95d7b444b757d853b06f17bfd8dab86913d00423f6efb194c"
+    },
+    {
+      "assetId": "T18-L1-09",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Quartz CPU profiling 复盘必须按历史窗口和事件类型读取，不能用今天的默认配置替代封存版本。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T18-L0-01-M09",
+        "T18-L0-01-M10",
+        "T18-L0-01-M11",
+        "T18-L0-01-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "4388b5d53a95fca5cdf818171cc8ae1b9a79e28b9c8051395a85b9d566ea5298"
+    },
+    {
+      "assetId": "T18-L1-10",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Forge 远程执行恢复按仓库逐层放开，每层保留本地回退开关，并共同观察命中率、排队和失败率。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T18-L0-10-M09",
+        "T18-L0-10-M10",
+        "T18-L0-10-M11",
+        "T18-L0-10-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "5623a6cbb1684f916fc1abf568b5945ec6d57afb571f5fa357b04c42242eb63d"
+    },
+    {
+      "assetId": "T18-L1-11",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "例外规则是：热点键默认加盐；只有当该键的 direct consumer 不超过 2 个、且每个 consumer 都能在下游按原键合并时，才允许保留原键并跳过加盐。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T18-L0-06-M09",
+        "T18-L0-06-M10",
+        "T18-L0-06-M11",
+        "T18-L0-06-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "eb9294bb990fbfd90238302e7a770a5cc44d869e212a867b30199d555720d8de"
+    },
+    {
+      "assetId": "T18-L1-12",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Sentinel sampling 实验要求冻结 tail 规则、保留实验样本，并把回滚后的指标核对与后续 SLO 重算分开。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T18-L0-07-M09",
+        "T18-L0-07-M10",
+        "T18-L0-07-M11",
+        "T18-L0-07-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "1def379de60f1448cc9db99b950e5796f6be16f722ae3ac34fb163418f999ad9"
+    },
+    {
+      "assetId": "T18-L1-13",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Forge 缓存退化时不能用无界远端重试缓解排队；重试、限流和本地回退必须作为分离的控制阶段。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T18-L0-10-M09",
+        "T18-L0-10-M10",
+        "T18-L0-10-M11",
+        "T18-L0-10-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "f71e9222a0f7ee795d0482697621826e4a52a16318429186cc80ae6267e9bd33"
+    },
+    {
+      "assetId": "T18-L1-14",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Sentinel 采样验证要同时核对采集量和错误请求覆盖，避免提高 head sampling 后尾部错误被稀释。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T18-L0-07-M09",
+        "T18-L0-07-M10",
+        "T18-L0-07-M11",
+        "T18-L0-07-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "2efac02a2a2c685387882019972e39f69ce01e43bf19ef491883227a454df4ad"
+    },
+    {
+      "assetId": "T18-L1-15",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "记录的时间窗是 2026-08-19 至 2026-08-23；仅保留 type=instruction 的 CPU profile，单条保留 14 天，并只纳入线上同步查询路径。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T18-L0-01-M09",
+        "T18-L0-01-M10",
+        "T18-L0-01-M11",
+        "T18-L0-01-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "8c7131a30bd20c097f7edf8290a9e6578c6a96f0060d0168473a56659a0c5c6f"
+    },
+    {
+      "assetId": "T18-L1-16",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Forge 远程缓存退化处置场景与远程执行控制文档分开维护；前者保留阶段顺序，后者只定义参数语义。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T18-L0-10-M09",
+        "T18-L0-10-M10",
+        "T18-L0-10-M11",
+        "T18-L0-10-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "96037280e1ef95fcd42a12837176e2d03f5e60102109d0654527a3ab785ec3f3"
+    }
+  ],
+  "l2Scenes": [
+    {
+      "assetId": "T18-L2-01",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L2-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "path": "projects/quartz/p99-regression-review.md",
+      "summary": "记录 Quartz 稳定基线、profiling 与回归复盘背景；具体阈值和历史配置留在关联记忆中。",
+      "content": "场景正文：团队比较同地域同规格稳定窗口、线上同步查询与排除样本，分别维护 p99 回归判断和 CPU profiling 时间窗。",
+      "injected": true,
+      "supportingSessionIds": [
+        "session-task1-t18-quartz-capacity-01",
+        "session-task1-t18-quartz-profiling-02"
+      ],
+      "contentHash": "6a2f27da694a44c655103adc642b91c83047312bdb525cf4238f152c44f3d521"
+    },
+    {
+      "assetId": "T18-L2-02",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L2-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "path": "projects/ironclad/worker-pool-incident.md",
+      "summary": "记录 worker pool 事故的背压、取消传播与生命周期背景；批准措辞留在关联会话中核对。",
+      "content": "场景正文：复盘比较下游变慢、取消竞态和退出泄漏假设，保留事故时间线、验证实验与灰度修复边界。",
+      "injected": true,
+      "supportingSessionIds": [
+        "session-task1-t18-ironclad-worker-pool-incident",
+        "session-task1-t18-ironclad-backpressure-02"
+      ],
+      "contentHash": "100c0e3c701e68a1571c12e9817e69a08362d10e85ffe367cb9a02776ff57dba"
+    },
+    {
+      "assetId": "T18-L2-03",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L2-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "path": "projects/cascade/spark-skew-review.md",
+      "summary": "记录 Spark 热点分区、下游计划和缓解方案演化；精确例外数字留在关联记忆中。",
+      "content": "场景正文：团队从均匀重分区和提高并行度的失败尝试转向热点键处理，并独立核对 direct consumer 的合并能力与数据库计划。",
+      "injected": true,
+      "supportingSessionIds": [
+        "session-task1-t18-cascade-skew-01",
+        "session-task1-t18-cascade-query-plan-02"
+      ],
+      "contentHash": "c2dd420a85ee73020a8e7238fbd4592e603ab83e3b9fb2b4dfd0d47f1c81e108"
+    },
+    {
+      "assetId": "T18-L2-04",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L2-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "path": "projects/forge/remote-cache-degradation.md",
+      "summary": "记录 Forge 远程缓存退化的背景、阶段化处置和恢复验证范围；完整阶段条目需读取场景正文确认。",
+      "content": "场景正文：阶段顺序为：确认——核对命中率、远程执行排队、失败率和本地基线；限流——暂停无界重试并按仓库与队列设置并发上限；回退——对受影响目标切回本地执行并保留远端失败样本；修复验证——修正缓存键或执行节点后，用小批目标验证命中率、排队和失败率恢复；恢复推广——连续两个稳定窗口后逐步恢复远程执行，记录阈值、负责人和复盘链接。",
+      "injected": true,
+      "supportingSessionIds": [
+        "session-task1-t18-forge-cache-degradation",
+        "session-task1-t18-forge-remote-execution-02"
+      ],
+      "contentHash": "e798fe3811f40073d815457d544e7a135dd6224dffb407d7ab2859e759e06dd8"
+    },
+    {
+      "assetId": "T18-L2-05",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L2-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "path": "projects/sentinel/sampling-rollback-review.md",
+      "summary": "记录 Sentinel sampling 实验、回滚和指标复核背景；原始操作顺序留在关联会话中核对。",
+      "content": "场景正文：团队比较扩大 head sampling、tail 规则和保守配置，区分原始回滚时间线与后续 SLO 重算，并保留采集量及错误覆盖验证。",
+      "injected": true,
+      "supportingSessionIds": [
+        "session-task1-t18-sentinel-slo-01",
+        "session-task1-t18-sentinel-sampling-rollback"
+      ],
+      "contentHash": "a2bec225ec8d91f78739a99ee827b9d05c939c0da98d17a67e32e370d741f1ea"
+    }
+  ],
+  "l3Profiles": [
+    {
+      "assetId": "T18-L3-01",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-MEMORY-L3-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "content": "用户偏好先记录失败尝试和改口，再冻结可引用的决定；跨项目引用要保持边界，性能变更采用小批灰度、连续观测、明确停止条件与可回退流程。",
+      "stability": "team",
+      "contentHash": "ea69e15cd324d849c986b5da6e5ab6964edbe2f5b79e7711e0882155e9f21e60"
+    }
+  ]
+}

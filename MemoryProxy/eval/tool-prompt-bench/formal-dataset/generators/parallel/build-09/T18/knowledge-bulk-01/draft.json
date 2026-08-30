@@ -1,0 +1,141 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T18-KNW-BULK-01",
+  "stage": "DS03",
+  "team_id": "T18",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T18-KNW-02",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们在同一工程空间核对 Cascade 数据吞吐项目的一项分区决策，工作区保持冻结，不做代码修改。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前面板显示三项状态均为 ready 的只读知识资源，名称分别是 Quartz performance decisions、Cascade throughput decisions、Forge build performance decisions。"
+        },
+        {
+          "role": "user",
+          "content": "Quartz 条目的 about 是 Quartz 延迟、profiling 与容量决策索引；Cascade 条目的 about 是 Cascade Spark、数据库与批处理吞吐决策索引；Forge 条目的 about 是 Forge 远程执行、缓存与构建性能决策索引。"
+        },
+        {
+          "role": "assistant",
+          "content": "本次问题属于 Cascade 的 Spark 分区与吞吐流程，只能依据当前冻结快照作答，不能把邻近工程的记录混入。"
+        },
+        {
+          "role": "user",
+          "content": "请给出简短结论，并保留函数名称与调用关系的语义边界。"
+        },
+        {
+          "role": "assistant",
+          "content": "现有上下文说明了资源身份和问题范围，但不包含未展示的决定正文。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "rebalancePartitions direct consumers",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "本次需核对 rebalancePartitions 的直接使用方；当前对话没有列出调用关系，请在冻结范围内查证后回答。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "Cascade throughput decisions 中 rebalancePartitions 的 direct consumers 未出现在当前上下文，需要从 T18-KNW-02 获取最小调用关系条目。",
+          "route": "knowledge",
+          "target_asset_ids": ["T18-KNW-02"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "先列出知识资源可用工具，再使用返回的 search 工具，以 knowledge_id=T18-KNW-02、tool_name=search、params={query:\"rebalancePartitions direct consumers\"} 调用一次；得到直接使用方条目后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充当前调用关系：rebalancePartitions 的直接使用方是 buildShufflePlan 与 executePartitionRebalance；前者生成分区重平衡计划，后者在批处理执行阶段应用该计划。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经给出 rebalancePartitions 的两个直接使用方及其职责，当前上下文足以直接回答，无需检索。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T18-KNW-01", "T18-KNW-03"],
+      "controlled_delta_note": "Positive 与 Negative 仅在追加消息中改变 rebalancePartitions 的直接使用方信息；共享上下文与查询完全相同。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "确认 Cascade 条目的 about 在三项同屏资源中唯一匹配本题范围。",
+        "确认负例追加消息只补足直接使用方及职责，没有引入新的任务要求。",
+        "确认正例按列出工具后调用 search 的顺序执行一次，且 provider-visible 文本没有内部标识。"
+      ]
+    },
+    {
+      "draft_pair_id": "T18-KNW-03",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们在同一工程空间核对 Forge 构建效率项目的一项执行策略，工作区保持冻结，不做代码修改。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前面板显示三项状态均为 ready 的只读知识资源，名称分别是 Quartz performance decisions、Cascade throughput decisions、Forge build performance decisions。"
+        },
+        {
+          "role": "user",
+          "content": "Quartz 条目的 about 是 Quartz 延迟、profiling 与容量决策索引；Cascade 条目的 about 是 Cascade Spark、数据库与批处理吞吐决策索引；Forge 条目的 about 是 Forge 远程执行、缓存与构建性能决策索引。"
+        },
+        {
+          "role": "assistant",
+          "content": "本次问题属于 Forge 的远程执行与构建性能流程，只能依据当前冻结快照作答，不能把邻近工程的记录混入。"
+        },
+        {
+          "role": "user",
+          "content": "请给出简短结论，并保留触发条件、处置边界和设计理由的语义。"
+        },
+        {
+          "role": "assistant",
+          "content": "现有上下文说明了资源身份和问题范围，但不包含未展示的决定正文。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "remote execution fallback rationale",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "本次需核对 remote execution fallback 的设计理由；当前对话没有给出触发条件、处置边界或理由，请在冻结范围内查证后回答。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "Forge build performance decisions 中 remote execution fallback 的触发条件、边界与 rationale 未出现在当前上下文，需要从 T18-KNW-03 获取最小决定条目。",
+          "route": "knowledge",
+          "target_asset_ids": ["T18-KNW-03"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "先列出知识资源可用工具，再使用返回的 search 工具，以 knowledge_id=T18-KNW-03、tool_name=search、params={query:\"remote execution fallback rationale\"} 调用一次；得到 fallback 决定条目后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充当前决定：远程执行服务不可用或排队超过 30 秒时允许回退到本地执行；本地执行仍复用相同的 hermetic 输入与 action digest，但结果不视为远程缓存命中。这样既避免远程队列阻塞开发反馈，也保持输入与产物关系可复现；回退仅适用于允许本地执行的动作，受策略禁止的动作仍直接失败。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经完整给出远程执行回退的触发条件、本地执行边界、缓存语义和可复现性理由，当前上下文足以直接回答，无需检索。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T18-KNW-01", "T18-KNW-02"],
+      "controlled_delta_note": "Positive 与 Negative 仅在追加消息中改变 remote execution fallback 的触发条件、处置边界和设计理由；共享上下文与查询完全相同。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "确认 Forge 条目的 about 在三项同屏资源中唯一匹配本题范围。",
+        "确认负例追加消息覆盖不可用、排队超时、本地输入、缓存语义和策略边界。",
+        "确认正例按列出工具后调用 search 的顺序执行一次，且 provider-visible 文本没有内部标识。"
+      ]
+    }
+  ]
+}

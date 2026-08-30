@@ -1,0 +1,117 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T18-TRIAL-SKL-01",
+  "stage": "DS03",
+  "team_id": "T18",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T18-TRIAL-SKL-01-P001",
+      "external_source_ids": [
+        "T18-SKL-01"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们在 Quartz 请求性能项目里准备处理一个 Python 服务的延迟回归，现有请求路径包含计算、内存分配和外部 I/O，先做诊断方案，不改仓库代码。"
+        },
+        {
+          "role": "assistant",
+          "content": "我先把这轮工作限定为可复现的性能诊断：需要区分 CPU、内存和 I/O 的贡献，再根据证据安排优化，不凭直觉改实现。"
+        },
+        {
+          "role": "user",
+          "content": "目前只知道平均响应时间变长，尚未确认是少数热点函数、对象分配、算法复杂度，还是重复的外部调用造成的。"
+        },
+        {
+          "role": "assistant",
+          "content": "这些可能性需要分别测量并记录峰值和平均表现；在选定优化方向前，我不会把延迟变化归因于某一种资源。"
+        },
+        {
+          "role": "user",
+          "content": "团队希望先得到从测量到优化验证的执行顺序，后续可能涉及批量 I/O、缓存、生成器或更合适的数据结构。"
+        },
+        {
+          "role": "assistant",
+          "content": "我可以先整理一份可执行的排查清单，但还缺少一套统一涵盖剖析粒度、指标记录和优化取舍的实践依据。"
+        },
+        {
+          "role": "user",
+          "content": "这次只要确定诊断和验证的步骤、记录哪些指标以及常见的优化检查点，暂时不要提交代码或更改配置。"
+        },
+        {
+          "role": "assistant",
+          "content": "明白；在补齐那份实践依据前，我只保留待确认的步骤，不假定某个函数或资源已经是根因。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请基于当前 Python 服务的延迟回归情况，给出从性能诊断、热点定位到优化验证的可执行下一步和检查点，暂时不要修改代码。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我还缺一份可以直接照做的 Python 性能优化实践正文，尤其是 CPU、内存、逐行和调用关系等剖析方式，执行时间、内存、CPU 利用率与 I/O 等指标，算法与数据结构、实现、并行、缓存和原生扩展等优化方向，以及何时先测量、聚焦热点、批量 I/O、使用生成器和避免过早优化。请先阅读团队已有的性能优化实践，再概述到可以开始诊断的位置，暂时不要改代码。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结 Python 性能优化实践中关于 CPU、内存、逐行与调用关系剖析，执行时间/内存/CPU/I-O 指标，算法与数据结构、实现、并行、缓存、原生扩展策略，以及先测量、聚焦热点、批量 I/O、生成器和避免过早优化的可执行顺序。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T18-SKL-01"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_view"
+            ]
+          ],
+          "stop_after_candidate": "阅读性能优化实践正文并概述诊断起点后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把执行清单补全：先分别用 CPU、内存、逐行和调用关系剖析定位热点，再记录执行时间、峰值与平均内存、CPU 利用率和 I/O 等指标；确认热点后优先检查算法复杂度与数据结构，再检查实现细节，并按需要评估并行化、缓存和原生扩展。大数据集优先考虑生成器，批量 I/O 以减少系统调用，查找应使用合适的数据结构和内置函数，昂贵计算可缓存；先测量再优化，聚焦高频热点，避免为罕见路径过度优化，也要检查不必要的数据复制、数据库连接池和内存使用。每次改动都用同一基准重新测量，暂时不要修改代码。请据此给出诊断、优化和验证清单。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已具体给出四类剖析、四项性能指标、优化策略及验证顺序，并覆盖实践中的主要检查点，足以直接回答 query，无需阅读性能优化资产。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T18-SKL-02",
+        "T18-SKL-03",
+        "T18-SKL-06",
+        "T18-SKL-08"
+      ],
+      "controlled_delta_note": "Positive 只保留 Python 性能优化实践正文这一信息缺口；Negative 仅在追加消息中补齐剖析方式、性能指标、优化策略、常见检查点和基准验证顺序，shared context 与 query 完全相同。",
+      "source_fact_map": [
+        {
+          "claim": "正文区分 CPU、内存、逐行和调用关系四类剖析，并以执行时间、内存使用、CPU 利用率和 I/O 等待作为性能指标。",
+          "source_id": "T18-SKL-01",
+          "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/python-development/skills/python-performance-optimization/SKILL.md#Profiling Types; #Performance Metrics"
+        },
+        {
+          "claim": "正文的优化策略覆盖算法、实现、并行化、缓存和原生扩展，并强调先剖析再优化、聚焦热点、使用合适数据结构、内置函数、缓存和批量 I/O。",
+          "source_id": "T18-SKL-01",
+          "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/python-development/skills/python-performance-optimization/SKILL.md#Optimization Strategies; #Best Practices"
+        },
+        {
+          "claim": "正文的最佳实践还包括为大数据集使用生成器、考虑 NumPy、在生产代码中剖析，并列出不必要复制、连接池、算法复杂度和内存使用等常见陷阱。",
+          "source_id": "T18-SKL-01",
+          "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/python-development/skills/python-performance-optimization/SKILL.md#Best Practices; #Common Pitfalls"
+        }
+      ],
+      "sol_review_questions": [
+        "确认 Positive 的唯一缺口是 Python 性能优化实践正文，首动作严格为 skill_view。",
+        "确认 Negative 只追加了剖析类型、性能指标、优化策略、最佳实践和常见陷阱摘要，已足以直接继续。",
+        "确认 provider-visible 文本未泄漏工具名、资产标识、Gold 或评测元语言；同域近义干扰仅保留在 author-only 字段。"
+      ]
+    }
+  ]
+}
