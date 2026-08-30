@@ -1,0 +1,216 @@
+<skill_tools>
+以下是云端 skill 操作工具。
+
+endpoint-base: http://127.0.0.1:8096/skill-bridge/v3/skill
+headers: x-tdai-service-id: space-c00; x-conversation-id: session-c00
+
+可用工具：
+
+  <tool name="skill_search">
+    purpose: Find reusable team workflows by query.
+    use when: Reusable guidance is needed and its skill name or id is unknown.
+    limitations: None.
+    contrast: (skill.search-vs-view-name) vs skill_view: Choose this when the name is unknown; choose name view for a known current-agent skill name. | (skill.search-vs-view-id) vs skill_view_by_id: Choose this to discover a skill id; choose id view when the id is already known.
+    required inputs: query
+    returns: Matching team skill ids, names, and versions.
+    execution: method=POST; path=/search; headers=content-type,x-tdai-service-id,x-conversation-id; body={"query": "描述你要找什么 skill 的关键词（必填，>=1字符）"}; response=json
+  </tool>
+
+  <tool name="skill_view">
+    purpose: Open a current-agent skill by name.
+    use when: The current agent owns a skill with a known name and its content or manifest is needed.
+    limitations: None.
+    contrast: (skill.search-vs-view-name) vs skill_search: Choose this for a known current-agent name; choose search when the name is unknown. | (skill.view-name-vs-id) vs skill_view_by_id: Choose this for a current-agent name; choose id view for a skill id or team search result.
+    required inputs: skill_name
+    returns: Skill content, manifest, id, and version.
+    execution: method=POST; path=/get-by-name; headers=content-type,x-tdai-service-id,x-conversation-id; body={"skill_name": "<skill 名字>", "include_content": true, "include_manifest": true}; response=json
+  </tool>
+
+  <tool name="skill_view_by_id">
+    purpose: Open a skill by exact id.
+    use when: A skill id is known directly or from a team search result.
+    limitations: None.
+    contrast: (skill.search-vs-view-id) vs skill_search: Choose this when the id is known; choose search to discover a skill id. | (skill.view-name-vs-id) vs skill_view: Choose this for a skill id or team result; choose name view for a current-agent skill name.
+    required inputs: skill_id
+    returns: Skill content, manifest, id, and version.
+    execution: method=POST; path=/get; headers=content-type,x-tdai-service-id,x-conversation-id; body={"skill_id": "skl-xxx", "version": 3, "include_content": true, "include_manifest": true}; response=json
+  </tool>
+
+  <tool name="skill_files_read">
+    purpose: Read one skill resource into context.
+    use when: A viewed manifest supplies a skill id and resource path whose content is needed in context.
+    limitations: The skill id and path come from a viewed manifest.
+    contrast: (skill.file-read-vs-download) vs skill_files_download: Choose this for JSON-wrapped content in context; choose download for raw bytes written locally.
+    required inputs: skill_id, path
+    returns: JSON-wrapped resource content and encoding.
+    execution: method=POST; path=/files/read; headers=content-type,x-tdai-service-id,x-conversation-id; body={"skill_id": "skl-xxx", "path": "scripts/run.sh", "encoding": "utf-8|base64"}; response=json
+  </tool>
+
+  <tool name="skill_files_download">
+    purpose: Download one skill resource as raw bytes.
+    use when: A viewed manifest supplies a skill id and path whose bytes are needed locally.
+    limitations: The skill id and path come from a viewed manifest.
+    contrast: (skill.file-read-vs-download) vs skill_files_read: Choose this for raw bytes written locally; choose file read for JSON-wrapped content in context.
+    required inputs: skill_id, path
+    returns: Raw resource bytes.
+    execution: method=POST; path=/files/download; headers=content-type,x-tdai-service-id,x-conversation-id; body={"skill_id": "skl-xxx", "version": 3, "path": "scripts/run.sh", "encoding": "utf-8|base64"}; response=bytes
+  </tool>
+
+注意：当前仅开放只读操作。如需创建/修改 skill 请联系管理员。
+</skill_tools>
+## Available skills
+These are optional cloud workflow assets for the current agent. Open one only when its description clearly matches missing task guidance; keyword overlap or availability alone is insufficient.
+Use `skill_search` only when a reusable team workflow is needed and no listed skill matches.
+
+**重要：这些 skill 在云端，不能用 read_file / tool_use 访问；按统一协议调用 `<skill_tools>`。**
+<available_skills>
+- task1-review: Review proxy prompt contracts and evidence
+- typescript-tests: Run deterministic TypeScript contract tests
+</available_skills>
+
+<knowledge_tools>
+## 已绑定资源
+<knowledge type="wiki" id="wiki-c00"
+  url="http://127.0.0.1:8421/v3"
+  name="Task 1 architecture"
+  about="Frozen design decisions for proxy prompt injection" />
+
+## 知识库专用流程
+endpoint-base: 使用目标 `<knowledge>` 的 `url`；knowledge_id 只放 body，不拼进 URL。
+headers: x-tdai-service-id: space-c00; x-conversation-id: session-c00; x-tdai-user-id: user-c00; x-tdai-team-id: team-c00; x-tdai-agent-id: agent-c00; x-tdai-agent-source: codex; x-tdai-space-id: space-c00
+
+  <tool name="knowledge_tools_list">
+    purpose: Discover a knowledge resource's tool schemas.
+    use when: The matching resource's tool name and parameter schema are not yet known in this session.
+    limitations: None.
+    contrast: (knowledge.list-vs-call) vs knowledge_tools_call: Choose this to discover names and schemas; choose tools call after that schema is known.
+    required inputs: knowledge_id
+    returns: Tool names, descriptions, and parameter schemas.
+    execution: method=POST; path=/tools/list; headers=content-type,x-tdai-service-id; body={"knowledge_id":"<知识id>"}; response=dynamic-schema
+  </tool>
+
+  <tool name="knowledge_tools_call">
+    purpose: Execute one discovered knowledge tool.
+    use when: A tool name and parameter schema from tools list are available for the same resource.
+    limitations: The tool name and parameters come from that resource's tools list result.
+    contrast: (knowledge.list-vs-call) vs knowledge_tools_list: Choose this to execute a known schema; choose tools list when names or parameters are unknown.
+    required inputs: knowledge_id, tool_name, params
+    returns: The selected knowledge tool's result.
+    execution: method=POST; path=/tools/call; headers=content-type,x-tdai-service-id; body={"knowledge_id":"<知识id>","tool_name":"<list 返回的 name>","params":{}}; response=dynamic-schema
+  </tool>
+
+## 约定
+
+- 找文件名用 explore（query 支持文件名，如 "session-manager.ts"）；search 只按符号名定位，files 只用于一次性总览目录结构，每个资源每会话最多一次。
+- wiki 先 search 命中再 read_page，不要全量 list_pages。
+- 多个资源可并行发起，无需串行等待。同一调用连续失败 2 次即放弃，回退本地检索。
+
+</knowledge_tools>
+
+<tdai_memory_tools>
+## 统一工具调用协议
+适用于当前已启用的 memory / skill / knowledge 工具；这些条目不是宿主原生函数，需要时用 Bash 发 HTTP 请求。
+- method 固定为 POST；公共 headers: content-type, x-tdai-service-id。每个 family 的 `headers:` 只列运行时值和额外 header。
+- endpoint = 当前 family 的 `endpoint-base` + 工具 `path`；knowledge 使用目标资源的 `url` + `path`。
+- `body` 必须是 JSON object，只传工具卡列出的业务字段；memory / skill 身份由 proxy 从 session 注入，除工具卡明确列出外不传 user_id / team_id / agent_id / task_id。
+- memory / skill 调用必须带当前 session 的 x-conversation-id；其余 family 按自己的 headers 行。
+- JSON 响应按 `{code, message, data}` 处理，只有 code=0 才成功；HTTP 或业务错误先看 message 和字段，不把错误信封当结果。
+- 仅 response=bytes 的工具返回原始字节；需要落盘时才给 curl 加 `-o <path>`。
+canonical form: `curl -sSk -X POST '<endpoint>' -H 'content-type: application/json' <按 headers: 逐项加 -H> -d '<body>'`
+
+## Tool / no-tool gate
+Call an injected tool only when required information is missing from current context and supplied by an enabled persistent asset, or when a supported asset lifecycle/write action matches a tool card.
+Do not call for pure or self-contained coding, general knowledge, current-context answers, or exact/current local-source work.
+Choose the needed family before choosing a tool:
+- memory: missing user history, preferences, prior decisions, exact past wording, or a known L2 scene body; injected L3 and the L2 index already count as current context.
+- skill: missing reusable workflow instructions clearly matched by a listed/team skill; keyword overlap or availability alone is insufficient.
+- knowledge: a matching resource is needed for cross-file structure or design rationale; reject mismatched repository indexes and use local source for exact/current code.
+Choose the narrowest card by `when`; obey `avoid` and `contrast`. Use multiple families only when each supplies distinct missing information.
+
+
+endpoint-base: http://127.0.0.1:8096/memory-bridge/v3
+headers: x-tdai-service-id: space-c00; x-conversation-id: session-c00
+
+  <tool name="tdai_memory_search">
+    purpose: Find semantically related atomic memories.
+    use when: A distilled preference, conclusion, instruction, or fact is missing from current context.
+    limitations: None.
+    contrast: (memory.atomic-vs-conversation-search) vs tdai_conversation_search: Choose this for distilled memory; choose conversation search for message wording or timeline evidence. | (memory.atomic-search-vs-query) vs tdai_atomic_query: Choose this for semantic similarity; choose atomic query for filters and pagination without a search phrase.
+    required inputs: query
+    returns: Matching atomic memory items.
+    execution: method=POST; path=/atomic/search; headers=content-type,x-tdai-service-id,x-conversation-id; body={"query": "<text>", "limit": 5}; response=json
+  </tool>
+
+  <tool name="tdai_atomic_query">
+    purpose: List atomic memories by filters and page.
+    use when: Type, time, offset, or limit determines the requested atomic memories.
+    limitations: None.
+    contrast: (memory.atomic-search-vs-query) vs tdai_memory_search: Choose this for filters and pagination; choose atomic search for semantic similarity to a phrase.
+    required inputs: none
+    returns: Filtered atomic memory items and total count.
+    execution: method=POST; path=/atomic/query; headers=content-type,x-tdai-service-id,x-conversation-id; body={"type": "?episodic|persona|instruction", "limit": 20, "offset": 0, "time_start": "?ISO", "time_end": "?ISO"}; response=json
+  </tool>
+
+  <tool name="tdai_conversation_search">
+    purpose: Find semantically related historical messages.
+    use when: Exact wording, quotations, or timeline evidence is missing from current context.
+    limitations: None.
+    contrast: (memory.atomic-vs-conversation-search) vs tdai_memory_search: Choose this for message wording or timeline evidence; choose atomic search for distilled memory. | (memory.conversation-search-vs-query) vs tdai_conversation_query: Choose this for semantic similarity; choose conversation query for chronological messages from a known session.
+    required inputs: query
+    returns: Matching historical messages.
+    execution: method=POST; path=/conversation/search; headers=content-type,x-tdai-service-id,x-conversation-id; body={"query": "<text>", "limit": 5, "session_id": "?<sid>"}; response=json
+  </tool>
+
+  <tool name="tdai_conversation_query">
+    purpose: List historical messages by session and page.
+    use when: Chronological messages from a known session are needed.
+    limitations: None.
+    contrast: (memory.conversation-search-vs-query) vs tdai_conversation_search: Choose this for chronological messages from a known session; choose conversation search for semantic similarity.
+    required inputs: none
+    returns: Chronological messages and total count.
+    execution: method=POST; path=/conversation/query; headers=content-type,x-tdai-service-id,x-conversation-id; body={"session_id": "<sid>", "limit": 50, "offset": 0}; response=json
+  </tool>
+
+  <tool name="tdai_scenario_ls">
+    purpose: List available scene paths.
+    use when: The scene index is absent, stale, or needs a path-prefix filter.
+    limitations: None.
+    contrast: (memory.scene-list-vs-read) vs tdai_read_scene: Choose this to discover paths; choose scene read when a known path's full body is needed.
+    required inputs: none
+    returns: Scene path entries and total count.
+    execution: method=POST; path=/scenario/ls; headers=content-type,x-tdai-service-id,x-conversation-id; body={"path_prefix": "?可选前缀"}; response=json
+  </tool>
+
+  <tool name="tdai_read_scene">
+    purpose: Read the full body of one scene.
+    use when: A scene path is known and its full body is needed.
+    limitations: The path comes from current context or a scenario listing.
+    contrast: (memory.scene-list-vs-read) vs tdai_scenario_ls: Choose this for a known path's full body; choose scenario list to discover paths.
+    required inputs: path
+    returns: Scene content and version metadata.
+    execution: method=POST; path=/scenario/read; headers=content-type,x-tdai-service-id,x-conversation-id; body={"path": "<scene path>", "agent_id": "?来自 <agent agent_id=...>，读取 imported 记忆时传"}; response=json
+  </tool>
+
+## 调用约束
+- 这些是只读工具；要修改 L1/L2/L3 必须用主链路（agent_id 自动归属）。
+- 失败重试：HTTP 5xx 可一次性 retry；HTTP 4xx 不要重试。
+
+</tdai_memory_tools>
+<tdai_profile_memory>
+以下是 TDAI 为当前 agent 维护的长期工作记忆（自有 + 借入分段；L2 仅给索引，按需用工具读全文）：
+<agent name="task1-agent" role="self" agent_id="agent-c00">
+<l3_core_memory>
+Prefers evidence-backed prompt changes.
+</l3_core_memory>
+<l2_scene_index>
+- `task1/compiler.md` — Compiler implementation decisions
+</l2_scene_index>
+</agent>
+</tdai_profile_memory>
+
+<memory-tools-guide>
+## Memory constraints
+- `tdai_memory_search` + `tdai_conversation_search` total ≤ 3 calls per turn.
+- If retrieval is empty, say the memory was not found; do not invent it.
+- Do not read the same L2 path twice in one turn.
+</memory-tools-guide>

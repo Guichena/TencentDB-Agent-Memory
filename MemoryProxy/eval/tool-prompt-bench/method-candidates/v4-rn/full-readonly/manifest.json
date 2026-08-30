@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "candidate": "V4-RN",
+  "profile": "neutral-symmetric",
+  "parentProfile": "capability-pruned",
+  "sourceCommit": "0373227c4b345c77f79ace5b0c19eb98e0fc50df",
+  "generatedAt": "2026-08-30T22:51:47+08:00",
+  "rendererVersion": "v4-rn.1",
+  "capabilitySignature": "memory=1;skill=1;knowledge=1;wiki=1;code_graph=1;skill_write=0;skill_extract=0",
+  "tokenizer": "o200k_base",
+  "componentMask": {
+    "purpose": true,
+    "use-when": true,
+    "limitations": true,
+    "contrast": true,
+    "required-inputs": true,
+    "returns": true,
+    "execution": true
+  },
+  "onlyExperimentalFactor": "neutral, symmetric, componentized decision-card presentation",
+  "unchanged": {
+    "toolSet": true,
+    "runtimeContracts": true,
+    "canonicalOrder": true,
+    "capabilityProjection": true,
+    "data": true,
+    "scorer": true
+  },
+  "cacheIdentity": "candidate-capture-tp-neutral-symmetric-9df3f77da589",
+  "parentCacheIdentity": "candidate-capture-tp-capability-pruned-9df3f77da589",
+  "frozenV3": {
+    "byteIdentical": true,
+    "injectionTokens": 2224,
+    "injectionSha256": "625dba5f8a74df608c3fcabd92b9cc9aea191e4c1d14c89df70d28767587f607",
+    "providerPromptSha256": "ce4fe51c20b815e0288c3b54bcd355b9003f93f48539479f3d1a06d2bb762e70"
+  },
+  "candidateCapture": {
+    "fullInjectionTokens": 3463,
+    "deltaVsV3": 1239,
+    "injectionSha256Run1": "23284f3cef62f2a7e451f6656ddec449986399c6ccd7ec07cc3927b67fd8d21f",
+    "injectionSha256Run2": "23284f3cef62f2a7e451f6656ddec449986399c6ccd7ec07cc3927b67fd8d21f",
+    "providerPromptSha256Run1": "bfded7df2c5234f7458309856df5dbb139d3a2e8b36571e07d9294427f69d3e9",
+    "providerPromptSha256Run2": "bfded7df2c5234f7458309856df5dbb139d3a2e8b36571e07d9294427f69d3e9",
+    "identical": true
+  },
+  "contractIds": [
+    "skill_search",
+    "skill_view",
+    "skill_view_by_id",
+    "skill_files_read",
+    "skill_files_download",
+    "knowledge_tools_list",
+    "knowledge_tools_call",
+    "tdai_memory_search",
+    "tdai_atomic_query",
+    "tdai_conversation_search",
+    "tdai_conversation_query",
+    "tdai_scenario_ls",
+    "tdai_read_scene"
+  ],
+  "toolIds": [
+    "skill_search",
+    "skill_view",
+    "skill_view_by_id",
+    "skill_files_read",
+    "skill_files_download",
+    "knowledge_tools_list",
+    "knowledge_tools_call",
+    "tdai_memory_search",
+    "tdai_atomic_query",
+    "tdai_conversation_search",
+    "tdai_conversation_query",
+    "tdai_scenario_ls",
+    "tdai_read_scene"
+  ]
+}

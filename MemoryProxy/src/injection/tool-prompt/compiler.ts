@@ -5,6 +5,7 @@ import { applyProtocolCompaction } from "./protocol-compact.js";
 import { applySelectionCalibration } from "./selection-calibrated.js";
 import { applySemanticCompaction } from "./semantic-compact.js";
 import { getToolPromptProfileDefinition, getToolPromptProfileLineage } from "./profiles.js";
+import { applyNeutralSymmetricToolCards } from "./neutral-symmetric.js";
 import { getRuntimeToolContracts } from "./runtime-contract.js";
 import { KNOWLEDGE_TOOL_PROMPT_SPECS } from "./specs/knowledge.js";
 import { MEMORY_TOOL_PROMPT_SPECS } from "./specs/memory.js";
@@ -106,6 +107,7 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
     || definition.renderer === "semantic-compact"
     || definition.renderer === "selection-calibrated"
     || definition.renderer === "capability-pruned"
+    || definition.renderer === "neutral-symmetric"
     ? applyProtocolCompaction({
         family: input.family,
         surface: input.surface,
@@ -117,10 +119,12 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
   const semanticUnits = definition.renderer === "semantic-compact"
     || definition.renderer === "selection-calibrated"
     || definition.renderer === "capability-pruned"
+    || definition.renderer === "neutral-symmetric"
     ? applySemanticCompaction(input.surface, protocolUnits)
     : protocolUnits;
   const selectionUnits = definition.renderer === "selection-calibrated"
     || definition.renderer === "capability-pruned"
+    || definition.renderer === "neutral-symmetric"
     ? applySelectionCalibration({
         family: input.family,
         surface: input.surface,
@@ -131,6 +135,7 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
       })
     : semanticUnits;
   const capabilityResult = definition.renderer === "capability-pruned"
+    || definition.renderer === "neutral-symmetric"
     ? applyCapabilityPruning({
         family: input.family,
         surface: input.surface,
@@ -139,7 +144,17 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
         units: selectionUnits,
       })
     : null;
-  const units = capabilityResult?.units ?? selectionUnits;
+  const units = definition.renderer === "neutral-symmetric"
+    ? applyNeutralSymmetricToolCards({
+        family: input.family,
+        surface: input.surface,
+        contracts,
+        visibleContractIds: capabilityResult?.visibleContractIds
+          ?? contracts.map((contract) => contract.id),
+        specs,
+        units: capabilityResult?.units ?? selectionUnits,
+      })
+    : capabilityResult?.units ?? selectionUnits;
   const content = units.map((unit) => unit.content).join("");
   if (content.length === 0) {
     throw new Error(`cannot compile empty ${input.surface} prompt content`);

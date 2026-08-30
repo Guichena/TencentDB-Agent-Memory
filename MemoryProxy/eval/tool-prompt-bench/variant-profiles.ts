@@ -7,6 +7,7 @@ export const TOOL_PROMPT_VARIANT_PROFILES = {
   V1: "compact",
   V2: "selection-calibrated",
   V3: "capability-pruned",
+  "V4-RN": "neutral-symmetric",
 } as const satisfies Record<string, ToolPromptProfile>;
 
 export type ToolPromptVariant = keyof typeof TOOL_PROMPT_VARIANT_PROFILES;

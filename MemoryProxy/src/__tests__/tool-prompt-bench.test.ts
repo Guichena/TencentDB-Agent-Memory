@@ -221,6 +221,7 @@ describe("TDAI-ToolPromptBench dataset", () => {
       V1: "compact",
       V2: "selection-calibrated",
       V3: "capability-pruned",
+      "V4-RN": "neutral-symmetric",
     });
     expect(() => resolveToolPromptVariant("latest")).toThrow(/unsupported tool prompt variant/);
 
@@ -247,13 +248,15 @@ describe("TDAI-ToolPromptBench dataset", () => {
     );
     const byVariant = new Map(rendered);
 
-    expect(new Set(rendered.map(([, result]) => result.promptSha256)).size).toBe(6);
+    expect(new Set(rendered.map(([, result]) => result.promptSha256)).size).toBe(7);
     expect(byVariant.get("V0")?.prompt).toContain("## Skills (mandatory)");
     expect(byVariant.get("V1a")?.prompt).toContain("## 统一工具调用协议");
     expect(byVariant.get("V2")?.prompt).toContain("## Tool / no-tool gate");
     expect(byVariant.get("V2")?.prompt).toContain('<tool name="skill_extract">');
     expect(byVariant.get("V3")?.prompt).not.toContain('<tool name="skill_extract">');
     expect(byVariant.get("V3")?.capabilitySignature).toContain("skill_extract=0");
+    expect(byVariant.get("V4-RN")?.prompt).toContain("    purpose: ");
+    expect(byVariant.get("V4-RN")?.prompt).not.toContain('<tool name="skill_extract">');
   });
 
   it("safely executes an allowed curl intent and correlates it with the bridge call", async () => {

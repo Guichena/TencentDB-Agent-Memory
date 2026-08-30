@@ -19,6 +19,7 @@ export const TOOL_PROMPT_PROFILES = [
   "compact",
   "selection-calibrated",
   "capability-pruned",
+  "neutral-symmetric",
 ] as const;
 
 export type ToolPromptProfile = (typeof TOOL_PROMPT_PROFILES)[number];
@@ -47,13 +48,48 @@ export interface RuntimeToolContract {
 export interface ToolPromptSpec {
   id: string;
   contractId: string;
+  /** Stable V4-RN decision components. V0-V3 continue to use when/avoid/contrasts. */
+  neutralPurpose: string;
+  neutralWhen: string;
+  neutralLimitations?: string;
   when: string;
   avoid?: string;
   contrasts?: readonly {
     otherTool: string;
     cue: string;
   }[];
+  neutralContrasts?: readonly {
+    confusionEdgeId: string;
+    otherTool: string;
+    cue: string;
+  }[];
   responseHints?: readonly string[];
+}
+
+export const TOOL_CARD_COMPONENTS = [
+  "purpose",
+  "use-when",
+  "limitations",
+  "contrast",
+  "required-inputs",
+  "returns",
+  "execution",
+] as const;
+
+export type ToolCardComponent = (typeof TOOL_CARD_COMPONENTS)[number];
+export type ToolCardComponentMask = Readonly<Record<ToolCardComponent, boolean>>;
+
+export interface NeutralToolCardComponent {
+  kind: ToolCardComponent;
+  content: string;
+  sourceSpecIds: readonly string[];
+  sourceRefs: readonly string[];
+}
+
+export interface NeutralToolCard {
+  family: ToolPromptFamily;
+  toolId: string;
+  components: readonly NeutralToolCardComponent[];
 }
 
 export type PromptUnitKind =

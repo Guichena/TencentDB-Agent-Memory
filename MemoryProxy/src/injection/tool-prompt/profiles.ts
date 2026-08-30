@@ -14,7 +14,8 @@ export interface ToolPromptProfileDefinition {
     | "protocol-compact"
     | "semantic-compact"
     | "selection-calibrated"
-    | "capability-pruned";
+    | "capability-pruned"
+    | "neutral-symmetric";
 }
 
 const DEFINITIONS: Record<ToolPromptProfile, ToolPromptProfileDefinition> = {
@@ -43,6 +44,11 @@ const DEFINITIONS: Record<ToolPromptProfile, ToolPromptProfileDefinition> = {
     id: "capability-pruned",
     parent: "selection-calibrated",
     renderer: "capability-pruned",
+  },
+  "neutral-symmetric": {
+    id: "neutral-symmetric",
+    parent: "capability-pruned",
+    renderer: "neutral-symmetric",
   },
 };
 
@@ -86,4 +92,10 @@ export function toolPromptCacheIdentity(
     .digest("hex")
     .slice(0, 12);
   return `${hookId}-tp-${profile}-${capabilityHash}`;
+}
+
+export function toolPromptProfileUsesCapabilityPruning(
+  profile: ToolPromptProfile,
+): boolean {
+  return profile === "capability-pruned" || profile === "neutral-symmetric";
 }

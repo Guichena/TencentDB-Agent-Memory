@@ -16,8 +16,23 @@ export {
   getToolPromptProfileLineage,
   parseToolPromptProfile,
   toolPromptCacheIdentity,
+  toolPromptProfileUsesCapabilityPruning,
   type ToolPromptProfileDefinition,
 } from "./profiles.js";
+export {
+  applyNeutralSymmetricToolCards,
+  CANONICAL_NEUTRAL_TOOL_CARD_MASK,
+  CONFUSION_EDGE_AXES,
+  lintNeutralContrastVisibility,
+  lintNeutralFieldSkeleton,
+  lintNeutralSymmetricCatalog,
+  lintNeutralToolCards,
+  NEUTRAL_TOOL_CARD_FIELD_LABELS,
+  renderNeutralToolCard,
+  V4_RN_RENDERER_VERSION,
+  type NeutralBiasException,
+  type NeutralSymmetricToolCardInput,
+} from "./neutral-symmetric.js";
 export {
   PROTOCOL_COMPACTION_INVENTORY,
 } from "./protocol-compact.js";
@@ -45,6 +60,7 @@ export {
 } from "./surface-coordinator.js";
 export {
   TOOL_PROMPT_FAMILIES,
+  TOOL_CARD_COMPONENTS,
   TOOL_PROMPT_PROFILES,
   TOOL_PROMPT_SURFACES,
   type CompiledToolPrompt,
@@ -53,6 +69,10 @@ export {
   type PromptUnit,
   type PromptUnitInput,
   type RuntimeToolContract,
+  type NeutralToolCard,
+  type NeutralToolCardComponent,
+  type ToolCardComponent,
+  type ToolCardComponentMask,
   type ToolPromptCapabilityState,
   type ToolPromptFamily,
   type ToolPromptProfile,

@@ -40,7 +40,10 @@ import type {
 import { HOOK_PRIORITY } from "../types.js";
 import { compileToolPrompt } from "../tool-prompt/compiler.js";
 import { resolveSessionCapabilitySignature } from "../tool-prompt/capability-pruned.js";
-import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
+import {
+  toolPromptCacheIdentity,
+  toolPromptProfileUsesCapabilityPruning,
+} from "../tool-prompt/profiles.js";
 import type { ToolPromptProfile } from "../tool-prompt/types.js";
 import {
   buildCompiledPromptProductionSources,
@@ -366,7 +369,7 @@ export class SkillToolsInjector implements InjectionHook {
 
     const profile = this.config.toolPromptProfile ?? "legacy";
     const baseSignature = this.config.capabilitySignature ?? "unconfigured";
-    const capabilitySignature = profile === "capability-pruned"
+    const capabilitySignature = toolPromptProfileUsesCapabilityPruning(profile)
       ? resolveSessionCapabilitySignature(baseSignature, assetCapabilities)
       : baseSignature;
     const artifact = renderSkillToolsPromptArtifact({
@@ -385,7 +388,7 @@ export class SkillToolsInjector implements InjectionHook {
         productionPromptSources: artifact.productionSources,
         // Stable cache-dedup key — varies by allowLlmWrite to avoid stale cache
         cacheKey: `skill-tools-injector:catalog:${allowLlmWrite ? "rw" : "ro"}`
-          + (profile === "capability-pruned" ? `:${capabilitySignature}` : ""),
+          + (toolPromptProfileUsesCapabilityPruning(profile) ? `:${capabilitySignature}` : ""),
       },
     }];
   }

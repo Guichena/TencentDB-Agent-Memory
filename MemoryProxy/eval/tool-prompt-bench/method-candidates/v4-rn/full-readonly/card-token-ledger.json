@@ -1,0 +1,379 @@
+[
+  {
+    "family": "skill",
+    "tool": "skill_search",
+    "v3CardTokens": 60,
+    "v4RnCardTokens": 183,
+    "componentMask": [
+      "purpose",
+      "use-when",
+      "limitations",
+      "contrast",
+      "required-inputs",
+      "returns",
+      "execution"
+    ],
+    "componentTokens": {
+      "purpose": 10,
+      "use-when": 18,
+      "limitations": 5,
+      "contrast": 67,
+      "required-inputs": 5,
+      "returns": 13,
+      "execution": 51
+    },
+    "decisionTokens": 85,
+    "contractTokens": 59,
+    "contractOnlyLengthException": "no",
+    "biasLint": "pass",
+    "symmetryLint": "pass"
+  },
+  {
+    "family": "skill",
+    "tool": "skill_view",
+    "v3CardTokens": 69,
+    "v4RnCardTokens": 190,
+    "componentMask": [
+      "purpose",
+      "use-when",
+      "limitations",
+      "contrast",
+      "required-inputs",
+      "returns",
+      "execution"
+    ],
+    "componentTokens": {
+      "purpose": 11,
+      "use-when": 22,
+      "limitations": 5,
+      "contrast": 67,
+      "required-inputs": 6,
+      "returns": 13,
+      "execution": 52
+    },
+    "decisionTokens": 91,
+    "contractTokens": 61,
+    "contractOnlyLengthException": "no",
+    "biasLint": "pass",
+    "symmetryLint": "pass"
+  },
+  {
+    "family": "skill",
+    "tool": "skill_view_by_id",
+    "v3CardTokens": 75,
+    "v4RnCardTokens": 188,
+    "componentMask": [
+      "purpose",
+      "use-when",
+      "limitations",
+      "contrast",
+      "required-inputs",
+      "returns",
+      "execution"
+    ],
+    "componentTokens": {
+      "purpose": 10,
+      "use-when": 17,
+      "limitations": 5,
+      "contrast": 64,
+      "required-inputs": 6,
+      "returns": 13,
+      "execution": 57
+    },
+    "decisionTokens": 82,
+    "contractTokens": 66,
+    "contractOnlyLengthException": "no",
+    "biasLint": "pass",
+    "symmetryLint": "pass"
+  },
+  {
+    "family": "skill",
+    "tool": "skill_files_read",
+    "v3CardTokens": 82,
+    "v4RnCardTokens": 173,
+    "componentMask": [
+      "purpose",
+      "use-when",
+      "limitations",
+      "contrast",
+      "required-inputs",
+      "returns",
+      "execution"
+    ],
+    "componentTokens": {
+      "purpose": 10,
+      "use-when": 21,
+      "limitations": 14,
+      "contrast": 34,
+      "required-inputs": 8,
+      "returns": 11,
+      "execution": 60
+    },
+    "decisionTokens": 65,
+    "contractTokens": 69,
+    "contractOnlyLengthException": "no",
+    "biasLint": "pass",
+    "symmetryLint": "pass"
+  },
+  {
+    "family": "skill",
+    "tool": "skill_files_download",
+    "v3CardTokens": 94,
+    "v4RnCardTokens": 176,
+    "componentMask": [
+      "purpose",
+      "use-when",
+      "limitations",
+      "contrast",
+      "required-inputs",
+      "returns",
+      "execution"
+    ],
+    "componentTokens": {
+      "purpose": 11,
+      "use-when": 19,
+      "limitations": 14,
+      "contrast": 35,
+      "required-inputs": 8,
+      "returns": 7,
+      "execution": 67
+    },
+    "decisionTokens": 65,
+    "contractTokens": 72,
+    "contractOnlyLengthException": "no",
+    "biasLint": "pass",
+    "symmetryLint": "pass"
+  },
+  {
+    "family": "knowledge",
+    "tool": "knowledge_tools_list",
+    "v3CardTokens": 55,
+    "v4RnCardTokens": 140,
+    "componentMask": [
+      "purpose",
+      "use-when",
+      "limitations",
+      "contrast",
+      "required-inputs",
+      "returns",
+      "execution"
+    ],
+    "componentTokens": {
+      "purpose": 11,
+      "use-when": 21,
+      "limitations": 5,
+      "contrast": 32,
+      "required-inputs": 6,
+      "returns": 12,
+      "execution": 38
+    },
+    "decisionTokens": 56,
+    "contractTokens": 46,
+    "contractOnlyLengthException": "no",
+    "biasLint": "pass",
+    "symmetryLint": "pass"
+  },
+  {
+    "family": "knowledge",
+    "tool": "knowledge_tools_call",
+    "v3CardTokens": 81,
+    "v4RnCardTokens": 168,
+    "componentMask": [
+      "purpose",
+      "use-when",
+      "limitations",
+      "contrast",
+      "required-inputs",
+      "returns",
+      "execution"
+    ],
+    "componentTokens": {
+      "purpose": 9,
+      "use-when": 20,
+      "limitations": 17,
+      "contrast": 33,
+      "required-inputs": 11,
+      "returns": 10,
+      "execution": 53
+    },
+    "decisionTokens": 66,
+    "contractTokens": 64,
+    "contractOnlyLengthException": "no",
+    "biasLint": "pass",
+    "symmetryLint": "pass"
+  },
+  {
+    "family": "memory",
+    "tool": "tdai_memory_search",
+    "v3CardTokens": 76,
+    "v4RnCardTokens": 174,
+    "componentMask": [
+      "purpose",
+      "use-when",
+      "limitations",
+      "contrast",
+      "required-inputs",
+      "returns",
+      "execution"
+    ],
+    "componentTokens": {
+      "purpose": 10,
+      "use-when": 20,
+      "limitations": 5,
+      "contrast": 68,
+      "required-inputs": 5,
+      "returns": 8,
+      "execution": 42
+    },
+    "decisionTokens": 89,
+    "contractTokens": 45,
+    "contractOnlyLengthException": "no",
+    "biasLint": "pass",
+    "symmetryLint": "pass"
+  },
+  {
+    "family": "memory",
+    "tool": "tdai_atomic_query",
+    "v3CardTokens": 84,
+    "v4RnCardTokens": 170,
+    "componentMask": [
+      "purpose",
+      "use-when",
+      "limitations",
+      "contrast",
+      "required-inputs",
+      "returns",
+      "execution"
+    ],
+    "componentTokens": {
+      "purpose": 11,
+      "use-when": 18,
+      "limitations": 5,
+      "contrast": 34,
+      "required-inputs": 5,
+      "returns": 12,
+      "execution": 69
+    },
+    "decisionTokens": 54,
+    "contractTokens": 75,
+    "contractOnlyLengthException": "no",
+    "biasLint": "pass",
+    "symmetryLint": "pass"
+  },
+  {
+    "family": "memory",
+    "tool": "tdai_conversation_search",
+    "v3CardTokens": 85,
+    "v4RnCardTokens": 182,
+    "componentMask": [
+      "purpose",
+      "use-when",
+      "limitations",
+      "contrast",
+      "required-inputs",
+      "returns",
+      "execution"
+    ],
+    "componentTokens": {
+      "purpose": 10,
+      "use-when": 18,
+      "limitations": 5,
+      "contrast": 68,
+      "required-inputs": 5,
+      "returns": 7,
+      "execution": 52
+    },
+    "decisionTokens": 87,
+    "contractTokens": 54,
+    "contractOnlyLengthException": "no",
+    "biasLint": "pass",
+    "symmetryLint": "pass"
+  },
+  {
+    "family": "memory",
+    "tool": "tdai_conversation_query",
+    "v3CardTokens": 58,
+    "v4RnCardTokens": 147,
+    "componentMask": [
+      "purpose",
+      "use-when",
+      "limitations",
+      "contrast",
+      "required-inputs",
+      "returns",
+      "execution"
+    ],
+    "componentTokens": {
+      "purpose": 11,
+      "use-when": 14,
+      "limitations": 5,
+      "contrast": 36,
+      "required-inputs": 5,
+      "returns": 10,
+      "execution": 49
+    },
+    "decisionTokens": 52,
+    "contractTokens": 54,
+    "contractOnlyLengthException": "no",
+    "biasLint": "pass",
+    "symmetryLint": "pass"
+  },
+  {
+    "family": "memory",
+    "tool": "tdai_scenario_ls",
+    "v3CardTokens": 57,
+    "v4RnCardTokens": 143,
+    "componentMask": [
+      "purpose",
+      "use-when",
+      "limitations",
+      "contrast",
+      "required-inputs",
+      "returns",
+      "execution"
+    ],
+    "componentTokens": {
+      "purpose": 8,
+      "use-when": 19,
+      "limitations": 5,
+      "contrast": 36,
+      "required-inputs": 5,
+      "returns": 10,
+      "execution": 43
+    },
+    "decisionTokens": 54,
+    "contractTokens": 48,
+    "contractOnlyLengthException": "no",
+    "biasLint": "pass",
+    "symmetryLint": "pass"
+  },
+  {
+    "family": "memory",
+    "tool": "tdai_read_scene",
+    "v3CardTokens": 85,
+    "v4RnCardTokens": 166,
+    "componentMask": [
+      "purpose",
+      "use-when",
+      "limitations",
+      "contrast",
+      "required-inputs",
+      "returns",
+      "execution"
+    ],
+    "componentTokens": {
+      "purpose": 11,
+      "use-when": 16,
+      "limitations": 14,
+      "contrast": 35,
+      "required-inputs": 5,
+      "returns": 9,
+      "execution": 60
+    },
+    "decisionTokens": 62,
+    "contractTokens": 64,
+    "contractOnlyLengthException": "no",
+    "biasLint": "pass",
+    "symmetryLint": "pass"
+  }
+]

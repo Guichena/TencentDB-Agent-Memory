@@ -60,10 +60,15 @@ function gitBlobAt(repoRoot: string, revisionAndPath: string): Buffer {
 }
 
 function assertProfileMapping(): void {
-  const mappedProfiles = Object.values(TOOL_PROMPT_VARIANT_PROFILES);
-  if (JSON.stringify(mappedProfiles) !== JSON.stringify(TOOL_PROMPT_PROFILES)) {
+  const mappedProfiles = Object.entries(TOOL_PROMPT_VARIANT_PROFILES)
+    .filter(([variant]) => variant !== "V4-RN")
+    .map(([, profile]) => profile);
+  const frozenProfiles = TOOL_PROMPT_PROFILES.filter(
+    (profile) => profile !== "neutral-symmetric",
+  );
+  if (JSON.stringify(mappedProfiles) !== JSON.stringify(frozenProfiles)) {
     throw new Error(
-      `runner variant mapping drift: expected ${TOOL_PROMPT_PROFILES.join(",")}; got ${mappedProfiles.join(",")}`,
+      `runner variant mapping drift: expected ${frozenProfiles.join(",")}; got ${mappedProfiles.join(",")}`,
     );
   }
   if (DEFAULT_CONFIG.injection.toolPromptProfile !== "legacy") {
@@ -72,41 +77,43 @@ function assertProfileMapping(): void {
 }
 
 function captureProfileInventory(): Array<Record<string, unknown>> {
-  return Object.entries(TOOL_PROMPT_VARIANT_PROFILES).map(([variant, profile]) => {
-    const directory = resolve(FINAL_VARIANT_ROOT, profile, "full-readonly");
-    const manifestPath = resolve(directory, "manifest.json");
-    const promptPath = resolve(directory, "prompt.txt");
-    const injectionPath = resolve(directory, "injection.txt");
-    for (const path of [manifestPath, promptPath, injectionPath]) {
-      if (!existsSync(path)) throw new Error(`missing frozen profile artifact ${path}`);
-    }
-    const manifest = readJson(manifestPath);
-    const prompt = readFileSync(promptPath);
-    const injection = readFileSync(injectionPath);
-    if (sha256(prompt) !== manifest.effectiveSystemSha256) {
-      throw new Error(`${profile} prompt.txt hash does not match its manifest`);
-    }
-    if (sha256(injection) !== manifest.totalInjectionSha256) {
-      throw new Error(`${profile} injection.txt hash does not match its manifest`);
-    }
-    return {
-      variant,
-      profile,
-      compilerVersion: manifest.compilerVersion,
-      sourceCommit: manifest.sourceCommit,
-      capabilitySignature: manifest.capabilitySignature,
-      totalInjectionCharacters: manifest.totalInjectionCharacters,
-      totalInjectionBytes: manifest.totalInjectionBytes,
-      totalInjectionTokensO200k: manifest.totalInjectionTokens,
-      totalInjectionSha256: manifest.totalInjectionSha256,
-      effectiveSystemBytes: manifest.effectiveSystemBytes,
-      effectiveSystemTokensO200k: manifest.effectiveSystemTokens,
-      effectiveSystemSha256: manifest.effectiveSystemSha256,
-      stablePrefixBytesFromParent: manifest.stablePrefixBytes,
-      firstChangedByteFromParent: manifest.firstChangedByteFromParent,
-      blocks: manifest.blocks,
-    };
-  });
+  return Object.entries(TOOL_PROMPT_VARIANT_PROFILES)
+    .filter(([variant]) => variant !== "V4-RN")
+    .map(([variant, profile]) => {
+      const directory = resolve(FINAL_VARIANT_ROOT, profile, "full-readonly");
+      const manifestPath = resolve(directory, "manifest.json");
+      const promptPath = resolve(directory, "prompt.txt");
+      const injectionPath = resolve(directory, "injection.txt");
+      for (const path of [manifestPath, promptPath, injectionPath]) {
+        if (!existsSync(path)) throw new Error(`missing frozen profile artifact ${path}`);
+      }
+      const manifest = readJson(manifestPath);
+      const prompt = readFileSync(promptPath);
+      const injection = readFileSync(injectionPath);
+      if (sha256(prompt) !== manifest.effectiveSystemSha256) {
+        throw new Error(`${profile} prompt.txt hash does not match its manifest`);
+      }
+      if (sha256(injection) !== manifest.totalInjectionSha256) {
+        throw new Error(`${profile} injection.txt hash does not match its manifest`);
+      }
+      return {
+        variant,
+        profile,
+        compilerVersion: manifest.compilerVersion,
+        sourceCommit: manifest.sourceCommit,
+        capabilitySignature: manifest.capabilitySignature,
+        totalInjectionCharacters: manifest.totalInjectionCharacters,
+        totalInjectionBytes: manifest.totalInjectionBytes,
+        totalInjectionTokensO200k: manifest.totalInjectionTokens,
+        totalInjectionSha256: manifest.totalInjectionSha256,
+        effectiveSystemBytes: manifest.effectiveSystemBytes,
+        effectiveSystemTokensO200k: manifest.effectiveSystemTokens,
+        effectiveSystemSha256: manifest.effectiveSystemSha256,
+        stablePrefixBytesFromParent: manifest.stablePrefixBytes,
+        firstChangedByteFromParent: manifest.firstChangedByteFromParent,
+        blocks: manifest.blocks,
+      };
+    });
 }
 
 export function captureStageInventory(repoRoot = REPO_ROOT): Array<Record<string, unknown>> {

@@ -1,0 +1,215 @@
+[
+  {
+    "family": "skill",
+    "tool": "skill_search",
+    "canonicalOrder": 0,
+    "fields": [
+      "path",
+      "body",
+      "when"
+    ],
+    "characters": 192,
+    "tokensO200k": 60,
+    "biasMarkers": [],
+    "contrasts": []
+  },
+  {
+    "family": "skill",
+    "tool": "skill_view",
+    "canonicalOrder": 1,
+    "fields": [
+      "path",
+      "body",
+      "when"
+    ],
+    "characters": 269,
+    "tokensO200k": 69,
+    "biasMarkers": [
+      "must"
+    ],
+    "contrasts": []
+  },
+  {
+    "family": "skill",
+    "tool": "skill_view_by_id",
+    "canonicalOrder": 2,
+    "fields": [
+      "path",
+      "body",
+      "when"
+    ],
+    "characters": 259,
+    "tokensO200k": 75,
+    "biasMarkers": [
+      "must"
+    ],
+    "contrasts": []
+  },
+  {
+    "family": "skill",
+    "tool": "skill_files_read",
+    "canonicalOrder": 3,
+    "fields": [
+      "path",
+      "body",
+      "when",
+      "avoid"
+    ],
+    "characters": 296,
+    "tokensO200k": 82,
+    "biasMarkers": [
+      "must"
+    ],
+    "contrasts": []
+  },
+  {
+    "family": "skill",
+    "tool": "skill_files_download",
+    "canonicalOrder": 4,
+    "fields": [
+      "path",
+      "body",
+      "response",
+      "when",
+      "avoid"
+    ],
+    "characters": 344,
+    "tokensO200k": 94,
+    "biasMarkers": [
+      "must"
+    ],
+    "contrasts": []
+  },
+  {
+    "family": "knowledge",
+    "tool": "knowledge_tools_list",
+    "canonicalOrder": 5,
+    "fields": [
+      "path",
+      "body",
+      "when"
+    ],
+    "characters": 233,
+    "tokensO200k": 55,
+    "biasMarkers": [],
+    "contrasts": []
+  },
+  {
+    "family": "knowledge",
+    "tool": "knowledge_tools_call",
+    "canonicalOrder": 6,
+    "fields": [
+      "path",
+      "body",
+      "when",
+      "avoid"
+    ],
+    "characters": 325,
+    "tokensO200k": 81,
+    "biasMarkers": [
+      "must"
+    ],
+    "contrasts": []
+  },
+  {
+    "family": "memory",
+    "tool": "tdai_memory_search",
+    "canonicalOrder": 7,
+    "fields": [
+      "path",
+      "body",
+      "when",
+      "contrast[tdai_conversation_search]"
+    ],
+    "characters": 316,
+    "tokensO200k": 76,
+    "biasMarkers": [],
+    "contrasts": [
+      {
+        "otherTool": "tdai_conversation_search",
+        "cue": "Use conversation search for exact message text or timeline details."
+      }
+    ]
+  },
+  {
+    "family": "memory",
+    "tool": "tdai_atomic_query",
+    "canonicalOrder": 8,
+    "fields": [
+      "path",
+      "body",
+      "when"
+    ],
+    "characters": 302,
+    "tokensO200k": 84,
+    "biasMarkers": [],
+    "contrasts": []
+  },
+  {
+    "family": "memory",
+    "tool": "tdai_conversation_search",
+    "canonicalOrder": 9,
+    "fields": [
+      "path",
+      "body",
+      "when",
+      "contrast[tdai_memory_search]"
+    ],
+    "characters": 361,
+    "tokensO200k": 85,
+    "biasMarkers": [],
+    "contrasts": [
+      {
+        "otherTool": "tdai_memory_search",
+        "cue": "Use atomic search for distilled preferences and conclusions."
+      }
+    ]
+  },
+  {
+    "family": "memory",
+    "tool": "tdai_conversation_query",
+    "canonicalOrder": 10,
+    "fields": [
+      "path",
+      "body",
+      "when"
+    ],
+    "characters": 205,
+    "tokensO200k": 58,
+    "biasMarkers": [
+      "must"
+    ],
+    "contrasts": []
+  },
+  {
+    "family": "memory",
+    "tool": "tdai_scenario_ls",
+    "canonicalOrder": 11,
+    "fields": [
+      "path",
+      "body",
+      "when"
+    ],
+    "characters": 189,
+    "tokensO200k": 57,
+    "biasMarkers": [
+      "must"
+    ],
+    "contrasts": []
+  },
+  {
+    "family": "memory",
+    "tool": "tdai_read_scene",
+    "canonicalOrder": 12,
+    "fields": [
+      "path",
+      "body",
+      "when",
+      "avoid"
+    ],
+    "characters": 304,
+    "tokensO200k": 85,
+    "biasMarkers": [],
+    "contrasts": []
+  }
+]

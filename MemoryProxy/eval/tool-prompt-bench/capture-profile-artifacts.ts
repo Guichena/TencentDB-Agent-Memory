@@ -76,6 +76,9 @@ const CAPABILITY_SIGNATURE = buildCapabilitySignature({
 
 const CAPABILITY_DIR = "full-readonly";
 const OUTPUT_ROOT = resolve(`eval/tool-prompt-bench/variants/${STAGE_DIR}`);
+const FROZEN_STAGE_PROFILES = TOOL_PROMPT_PROFILES.filter(
+  (profile) => profile !== "neutral-symmetric",
+);
 const encoding = get_encoding("o200k_base");
 
 function sha256(content: string | Uint8Array): string {
@@ -404,7 +407,7 @@ function writeC01DiffArtifacts(sourceCommit: string, generatedAt: string): void 
   if (legacy.totalInjectionSha256 === corrected.totalInjectionSha256) {
     throw new Error("C01 contract-corrected output unexpectedly equals legacy");
   }
-  for (const profile of TOOL_PROMPT_PROFILES.slice(2)) {
+  for (const profile of FROZEN_STAGE_PROFILES.slice(2)) {
     const inherited = readManifest(profile);
     if (
       inherited.totalInjectionSha256 !== corrected.totalInjectionSha256
@@ -490,7 +493,7 @@ function writeC02DiffArtifacts(sourceCommit: string, generatedAt: string): void 
   if (parent.totalInjectionSha256 === current.totalInjectionSha256) {
     throw new Error("C02 protocol-compact output unexpectedly equals contract-corrected");
   }
-  for (const profile of TOOL_PROMPT_PROFILES.slice(3)) {
+  for (const profile of FROZEN_STAGE_PROFILES.slice(3)) {
     const inherited = readManifest(profile);
     if (
       inherited.totalInjectionSha256 !== current.totalInjectionSha256
@@ -567,7 +570,7 @@ function writeC03DiffArtifacts(sourceCommit: string, generatedAt: string): void 
   if (current.totalInjectionTokens >= parent.totalInjectionTokens) {
     throw new Error("C03 compact output does not reduce total injection tokens");
   }
-  for (const profile of TOOL_PROMPT_PROFILES.slice(4)) {
+  for (const profile of FROZEN_STAGE_PROFILES.slice(4)) {
     const inherited = readManifest(profile);
     if (
       inherited.totalInjectionSha256 !== current.totalInjectionSha256
@@ -1041,7 +1044,7 @@ async function main(): Promise<void> {
     encoding: "utf8",
   }).trim();
   let parentPrompt: string | null = null;
-  for (const profile of TOOL_PROMPT_PROFILES) {
+  for (const profile of FROZEN_STAGE_PROFILES) {
     const rendered = await renderProfile(profile);
     const promptBytes = Buffer.from(rendered.providerSystem, "utf8");
     const injectionBytes = Buffer.from(rendered.injection, "utf8");
@@ -1056,7 +1059,7 @@ async function main(): Promise<void> {
       profile,
       parentProfile: parentPrompt === null
         ? null
-        : TOOL_PROMPT_PROFILES[TOOL_PROMPT_PROFILES.indexOf(profile) - 1],
+        : FROZEN_STAGE_PROFILES[FROZEN_STAGE_PROFILES.indexOf(profile) - 1],
       sourceCommit,
       compilerVersion: TOOL_PROMPT_COMPILER_VERSION,
       capabilitySignature: CAPABILITY_SIGNATURE,

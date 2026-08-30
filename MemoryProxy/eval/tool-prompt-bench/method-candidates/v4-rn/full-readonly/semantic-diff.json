@@ -1,0 +1,579 @@
+{
+  "schemaVersion": 1,
+  "parent": "V3",
+  "candidate": "V4-RN",
+  "singleFactor": "neutral, symmetric, componentized decision-card presentation",
+  "canonicalOrderUnchanged": true,
+  "contractIdsUnchanged": true,
+  "execution": [
+    {
+      "family": "skill",
+      "tool": "skill_search",
+      "runtimeContract": {
+        "requiredHeaders": [
+          "content-type",
+          "x-tdai-service-id",
+          "x-conversation-id"
+        ],
+        "requiredArgs": [
+          "query"
+        ],
+        "optionalArgs": [],
+        "forbiddenArgs": [
+          "user_id",
+          "team_id",
+          "agent_id",
+          "task_id",
+          "top_k",
+          "mode"
+        ],
+        "responseKind": "json",
+        "sourceRefs": [
+          "MemoryProxy/src/skill/skill-bridge.ts#SKILL_BRIDGE_ALLOWED_SUBPATHS",
+          "MemoryCore/src/gateway/skill-schemas.ts#searchRequestSchema"
+        ]
+      },
+      "before": {
+        "method": "POST",
+        "path": "/search",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"query\": \"描述你要找什么 skill 的关键词（必填，>=1字符）\"}",
+        "response": "json"
+      },
+      "after": {
+        "method": "POST",
+        "path": "/search",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"query\": \"描述你要找什么 skill 的关键词（必填，>=1字符）\"}",
+        "response": "json"
+      },
+      "unchanged": true
+    },
+    {
+      "family": "skill",
+      "tool": "skill_view",
+      "runtimeContract": {
+        "requiredHeaders": [
+          "content-type",
+          "x-tdai-service-id",
+          "x-conversation-id"
+        ],
+        "requiredArgs": [
+          "skill_name"
+        ],
+        "optionalArgs": [
+          "version",
+          "include_content",
+          "include_manifest"
+        ],
+        "forbiddenArgs": [
+          "user_id",
+          "team_id",
+          "agent_id",
+          "task_id"
+        ],
+        "responseKind": "json",
+        "sourceRefs": [
+          "MemoryProxy/src/skill/skill-bridge.ts#SKILL_BRIDGE_ALLOWED_SUBPATHS",
+          "MemoryCore/src/gateway/skill-schemas.ts#getByNameRequestSchema"
+        ]
+      },
+      "before": {
+        "method": "POST",
+        "path": "/get-by-name",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"skill_name\": \"<skill 名字>\", \"include_content\": true, \"include_manifest\": true}",
+        "response": "json"
+      },
+      "after": {
+        "method": "POST",
+        "path": "/get-by-name",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"skill_name\": \"<skill 名字>\", \"include_content\": true, \"include_manifest\": true}",
+        "response": "json"
+      },
+      "unchanged": true
+    },
+    {
+      "family": "skill",
+      "tool": "skill_view_by_id",
+      "runtimeContract": {
+        "requiredHeaders": [
+          "content-type",
+          "x-tdai-service-id",
+          "x-conversation-id"
+        ],
+        "requiredArgs": [
+          "skill_id"
+        ],
+        "optionalArgs": [
+          "version",
+          "include_content",
+          "include_manifest"
+        ],
+        "forbiddenArgs": [
+          "user_id",
+          "team_id",
+          "agent_id",
+          "task_id"
+        ],
+        "responseKind": "json",
+        "sourceRefs": [
+          "MemoryProxy/src/skill/skill-bridge.ts#SKILL_BRIDGE_ALLOWED_SUBPATHS",
+          "MemoryCore/src/gateway/skill-schemas.ts#getRequestSchema"
+        ]
+      },
+      "before": {
+        "method": "POST",
+        "path": "/get",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"skill_id\": \"skl-xxx\", \"version\": 3, \"include_content\": true, \"include_manifest\": true}",
+        "response": "json"
+      },
+      "after": {
+        "method": "POST",
+        "path": "/get",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"skill_id\": \"skl-xxx\", \"version\": 3, \"include_content\": true, \"include_manifest\": true}",
+        "response": "json"
+      },
+      "unchanged": true
+    },
+    {
+      "family": "skill",
+      "tool": "skill_files_read",
+      "runtimeContract": {
+        "requiredHeaders": [
+          "content-type",
+          "x-tdai-service-id",
+          "x-conversation-id"
+        ],
+        "requiredArgs": [
+          "skill_id",
+          "path"
+        ],
+        "optionalArgs": [
+          "version",
+          "encoding"
+        ],
+        "forbiddenArgs": [
+          "user_id",
+          "team_id",
+          "agent_id",
+          "task_id"
+        ],
+        "responseKind": "json",
+        "sourceRefs": [
+          "MemoryProxy/src/skill/skill-bridge.ts#SKILL_BRIDGE_ALLOWED_SUBPATHS",
+          "MemoryCore/src/gateway/skill-schemas.ts#filesReadRequestSchema"
+        ]
+      },
+      "before": {
+        "method": "POST",
+        "path": "/files/read",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"skill_id\": \"skl-xxx\", \"path\": \"scripts/run.sh\", \"encoding\": \"utf-8|base64\"}",
+        "response": "json"
+      },
+      "after": {
+        "method": "POST",
+        "path": "/files/read",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"skill_id\": \"skl-xxx\", \"path\": \"scripts/run.sh\", \"encoding\": \"utf-8|base64\"}",
+        "response": "json"
+      },
+      "unchanged": true
+    },
+    {
+      "family": "skill",
+      "tool": "skill_files_download",
+      "runtimeContract": {
+        "requiredHeaders": [
+          "content-type",
+          "x-tdai-service-id",
+          "x-conversation-id"
+        ],
+        "requiredArgs": [
+          "skill_id",
+          "path"
+        ],
+        "optionalArgs": [
+          "version",
+          "encoding"
+        ],
+        "forbiddenArgs": [
+          "user_id",
+          "team_id",
+          "agent_id",
+          "task_id"
+        ],
+        "responseKind": "bytes",
+        "sourceRefs": [
+          "MemoryProxy/src/skill/skill-bridge.ts#files/download",
+          "MemoryCore/src/gateway/skill-schemas.ts#filesReadRequestSchema"
+        ]
+      },
+      "before": {
+        "method": "POST",
+        "path": "/files/download",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"skill_id\": \"skl-xxx\", \"version\": 3, \"path\": \"scripts/run.sh\", \"encoding\": \"utf-8|base64\"}",
+        "response": "bytes"
+      },
+      "after": {
+        "method": "POST",
+        "path": "/files/download",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"skill_id\": \"skl-xxx\", \"version\": 3, \"path\": \"scripts/run.sh\", \"encoding\": \"utf-8|base64\"}",
+        "response": "bytes"
+      },
+      "unchanged": true
+    },
+    {
+      "family": "knowledge",
+      "tool": "knowledge_tools_list",
+      "runtimeContract": {
+        "requiredHeaders": [
+          "content-type",
+          "x-tdai-service-id"
+        ],
+        "requiredArgs": [
+          "knowledge_id"
+        ],
+        "optionalArgs": [],
+        "forbiddenArgs": [],
+        "responseKind": "dynamic-schema",
+        "sourceRefs": [
+          "MemoryKnowledge/src/routes/tools.ts#app.post(/list)"
+        ]
+      },
+      "before": {
+        "method": "POST",
+        "path": "/tools/list",
+        "headers": "content-type,x-tdai-service-id",
+        "body": "{\"knowledge_id\":\"<知识id>\"}",
+        "response": "dynamic-schema"
+      },
+      "after": {
+        "method": "POST",
+        "path": "/tools/list",
+        "headers": "content-type,x-tdai-service-id",
+        "body": "{\"knowledge_id\":\"<知识id>\"}",
+        "response": "dynamic-schema"
+      },
+      "unchanged": true
+    },
+    {
+      "family": "knowledge",
+      "tool": "knowledge_tools_call",
+      "runtimeContract": {
+        "requiredHeaders": [
+          "content-type",
+          "x-tdai-service-id"
+        ],
+        "requiredArgs": [
+          "knowledge_id",
+          "tool_name",
+          "params"
+        ],
+        "optionalArgs": [],
+        "forbiddenArgs": [],
+        "responseKind": "dynamic-schema",
+        "sourceRefs": [
+          "MemoryKnowledge/src/routes/tools.ts#app.post(/call)"
+        ]
+      },
+      "before": {
+        "method": "POST",
+        "path": "/tools/call",
+        "headers": "content-type,x-tdai-service-id",
+        "body": "{\"knowledge_id\":\"<知识id>\",\"tool_name\":\"<list 返回的 name>\",\"params\":{}}",
+        "response": "dynamic-schema"
+      },
+      "after": {
+        "method": "POST",
+        "path": "/tools/call",
+        "headers": "content-type,x-tdai-service-id",
+        "body": "{\"knowledge_id\":\"<知识id>\",\"tool_name\":\"<list 返回的 name>\",\"params\":{}}",
+        "response": "dynamic-schema"
+      },
+      "unchanged": true
+    },
+    {
+      "family": "memory",
+      "tool": "tdai_memory_search",
+      "runtimeContract": {
+        "requiredHeaders": [
+          "content-type",
+          "x-tdai-service-id",
+          "x-conversation-id"
+        ],
+        "requiredArgs": [
+          "query"
+        ],
+        "optionalArgs": [
+          "limit",
+          "type",
+          "time_start",
+          "time_end"
+        ],
+        "forbiddenArgs": [
+          "user_id",
+          "team_id",
+          "agent_id",
+          "task_id"
+        ],
+        "responseKind": "json",
+        "sourceRefs": [
+          "MemoryProxy/src/memory/memory-bridge.ts#MEMORY_BRIDGE_ALLOWED_SUBPATHS",
+          "MemoryCore/src/gateway/generated/schemas.ts#atomicSearchRequestSchema"
+        ]
+      },
+      "before": {
+        "method": "POST",
+        "path": "/atomic/search",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"query\": \"<text>\", \"limit\": 5}",
+        "response": "json"
+      },
+      "after": {
+        "method": "POST",
+        "path": "/atomic/search",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"query\": \"<text>\", \"limit\": 5}",
+        "response": "json"
+      },
+      "unchanged": true
+    },
+    {
+      "family": "memory",
+      "tool": "tdai_atomic_query",
+      "runtimeContract": {
+        "requiredHeaders": [
+          "content-type",
+          "x-tdai-service-id",
+          "x-conversation-id"
+        ],
+        "requiredArgs": [],
+        "optionalArgs": [
+          "type",
+          "limit",
+          "offset",
+          "time_start",
+          "time_end"
+        ],
+        "forbiddenArgs": [
+          "user_id",
+          "team_id",
+          "agent_id",
+          "task_id"
+        ],
+        "responseKind": "json",
+        "sourceRefs": [
+          "MemoryProxy/src/memory/memory-bridge.ts#MEMORY_BRIDGE_ALLOWED_SUBPATHS",
+          "MemoryCore/src/gateway/generated/schemas.ts#atomicQueryRequestSchema"
+        ]
+      },
+      "before": {
+        "method": "POST",
+        "path": "/atomic/query",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"type\": \"?episodic|persona|instruction\", \"limit\": 20, \"offset\": 0, \"time_start\": \"?ISO\", \"time_end\": \"?ISO\"}",
+        "response": "json"
+      },
+      "after": {
+        "method": "POST",
+        "path": "/atomic/query",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"type\": \"?episodic|persona|instruction\", \"limit\": 20, \"offset\": 0, \"time_start\": \"?ISO\", \"time_end\": \"?ISO\"}",
+        "response": "json"
+      },
+      "unchanged": true
+    },
+    {
+      "family": "memory",
+      "tool": "tdai_conversation_search",
+      "runtimeContract": {
+        "requiredHeaders": [
+          "content-type",
+          "x-tdai-service-id",
+          "x-conversation-id"
+        ],
+        "requiredArgs": [
+          "query"
+        ],
+        "optionalArgs": [
+          "limit",
+          "session_id",
+          "time_start",
+          "time_end"
+        ],
+        "forbiddenArgs": [
+          "user_id",
+          "team_id",
+          "agent_id",
+          "task_id"
+        ],
+        "responseKind": "json",
+        "sourceRefs": [
+          "MemoryProxy/src/memory/memory-bridge.ts#MEMORY_BRIDGE_ALLOWED_SUBPATHS",
+          "MemoryCore/src/gateway/generated/schemas.ts#conversationSearchRequestSchema"
+        ]
+      },
+      "before": {
+        "method": "POST",
+        "path": "/conversation/search",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"query\": \"<text>\", \"limit\": 5, \"session_id\": \"?<sid>\"}",
+        "response": "json"
+      },
+      "after": {
+        "method": "POST",
+        "path": "/conversation/search",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"query\": \"<text>\", \"limit\": 5, \"session_id\": \"?<sid>\"}",
+        "response": "json"
+      },
+      "unchanged": true
+    },
+    {
+      "family": "memory",
+      "tool": "tdai_conversation_query",
+      "runtimeContract": {
+        "requiredHeaders": [
+          "content-type",
+          "x-tdai-service-id",
+          "x-conversation-id"
+        ],
+        "requiredArgs": [],
+        "optionalArgs": [
+          "session_id",
+          "limit",
+          "offset",
+          "time_start",
+          "time_end"
+        ],
+        "forbiddenArgs": [
+          "user_id",
+          "team_id",
+          "agent_id",
+          "task_id"
+        ],
+        "responseKind": "json",
+        "sourceRefs": [
+          "MemoryProxy/src/memory/memory-bridge.ts#MEMORY_BRIDGE_ALLOWED_SUBPATHS",
+          "MemoryCore/src/gateway/generated/schemas.ts#conversationQueryRequestSchema"
+        ]
+      },
+      "before": {
+        "method": "POST",
+        "path": "/conversation/query",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"session_id\": \"<sid>\", \"limit\": 50, \"offset\": 0}",
+        "response": "json"
+      },
+      "after": {
+        "method": "POST",
+        "path": "/conversation/query",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"session_id\": \"<sid>\", \"limit\": 50, \"offset\": 0}",
+        "response": "json"
+      },
+      "unchanged": true
+    },
+    {
+      "family": "memory",
+      "tool": "tdai_scenario_ls",
+      "runtimeContract": {
+        "requiredHeaders": [
+          "content-type",
+          "x-tdai-service-id",
+          "x-conversation-id"
+        ],
+        "requiredArgs": [],
+        "optionalArgs": [
+          "path_prefix"
+        ],
+        "forbiddenArgs": [
+          "user_id",
+          "team_id",
+          "agent_id",
+          "task_id"
+        ],
+        "responseKind": "json",
+        "sourceRefs": [
+          "MemoryProxy/src/memory/memory-bridge.ts#MEMORY_BRIDGE_ALLOWED_SUBPATHS",
+          "MemoryCore/src/gateway/generated/schemas.ts#scenarioListRequestSchema"
+        ]
+      },
+      "before": {
+        "method": "POST",
+        "path": "/scenario/ls",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"path_prefix\": \"?可选前缀\"}",
+        "response": "json"
+      },
+      "after": {
+        "method": "POST",
+        "path": "/scenario/ls",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"path_prefix\": \"?可选前缀\"}",
+        "response": "json"
+      },
+      "unchanged": true
+    },
+    {
+      "family": "memory",
+      "tool": "tdai_read_scene",
+      "runtimeContract": {
+        "requiredHeaders": [
+          "content-type",
+          "x-tdai-service-id",
+          "x-conversation-id"
+        ],
+        "requiredArgs": [
+          "path"
+        ],
+        "optionalArgs": [
+          "agent_id",
+          "version"
+        ],
+        "forbiddenArgs": [
+          "user_id",
+          "team_id",
+          "task_id"
+        ],
+        "responseKind": "json",
+        "sourceRefs": [
+          "MemoryProxy/src/memory/memory-bridge.ts#MEMORY_BRIDGE_ALLOWED_SUBPATHS",
+          "MemoryCore/src/gateway/generated/schemas.ts#scenarioReadRequestSchema"
+        ]
+      },
+      "before": {
+        "method": "POST",
+        "path": "/scenario/read",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"path\": \"<scene path>\", \"agent_id\": \"?来自 <agent agent_id=...>，读取 imported 记忆时传\"}",
+        "response": "json"
+      },
+      "after": {
+        "method": "POST",
+        "path": "/scenario/read",
+        "headers": "content-type,x-tdai-service-id,x-conversation-id",
+        "body": "{\"path\": \"<scene path>\", \"agent_id\": \"?来自 <agent agent_id=...>，读取 imported 记忆时传\"}",
+        "response": "json"
+      },
+      "unchanged": true
+    }
+  ],
+  "dynamicBlocks": [
+    {
+      "blockId": "available_skills",
+      "unchanged": true
+    },
+    {
+      "blockId": "tdai_profile_memory",
+      "unchanged": true
+    }
+  ]
+}

@@ -26,6 +26,7 @@ import { HookRegistryImpl } from "../injection/registry.js";
 import type { AnchorTarget, InjectionPoint, Protocol } from "../injection/types.js";
 import {
   buildCapabilitySignature,
+  CANONICAL_NEUTRAL_TOOL_CARD_MASK,
   CAPABILITY_PRUNING_INVENTORY,
   compileToolPrompt,
   constrainCapabilitySignature,
@@ -37,19 +38,26 @@ import {
   getVisibleRuntimeToolContracts,
   lintCapabilityPrunedSurface,
   lintDuplicateSemanticUnits,
+  lintNeutralContrastVisibility,
+  lintNeutralFieldSkeleton,
+  lintNeutralSymmetricCatalog,
+  lintNeutralToolCards,
   lintSelectionPolicy,
   parseToolPromptProfile,
   parseCapabilitySignature,
   resolveSessionCapabilitySignature,
+  renderNeutralToolCard,
   SELECTION_POLICY_INVENTORY,
   SEMANTIC_UNIT_INVENTORY,
   toolPromptCacheIdentity,
   TOOL_PROMPT_PROFILES,
   type CompiledToolPromptProfile,
   type CapabilitySurfaceBundle,
+  type NeutralToolCard,
   type SelectionSurfaceBundle,
   type ToolPromptCapabilityState,
 } from "../injection/tool-prompt/index.js";
+import { MEMORY_TOOL_PROMPT_SPECS } from "../injection/tool-prompt/specs/memory.js";
 
 const CAPABILITY_SIGNATURE = buildCapabilitySignature({
   memory: true,
@@ -289,6 +297,15 @@ describe("tool prompt compiler C00-C05", () => {
       "selection-calibrated",
       "capability-pruned",
     ]);
+    expect(getToolPromptProfileLineage("neutral-symmetric")).toEqual([
+      "legacy",
+      "contract-corrected",
+      "protocol-compact",
+      "compact",
+      "selection-calibrated",
+      "capability-pruned",
+      "neutral-symmetric",
+    ]);
   });
 
   it("keeps completed ancestors frozen and isolates the C01 through C05 renderer boundaries", () => {
@@ -298,6 +315,7 @@ describe("tool prompt compiler C00-C05", () => {
     const semanticByFamily = new Map<string, string>();
     const selectionByFamily = new Map<string, string>();
     const capabilityByFamily = new Map<string, string>();
+    const neutralByFamily = new Map<string, string>();
 
     for (const profile of COMPILED_PROFILES) {
       for (const [family, content] of Object.entries(blocks) as Array<
@@ -343,13 +361,23 @@ describe("tool prompt compiler C00-C05", () => {
           selectionByFamily.set(family, compiled.content);
           expect(compiled.content).not.toBe(semanticByFamily.get(family));
           expect(compiled.units).toHaveLength(family === "memory" ? 4 : 1);
-        } else {
+        } else if (profile === "capability-pruned") {
           capabilityByFamily.set(family, compiled.content);
           if (family === "knowledge") {
             expect(compiled.content).toBe(selectionByFamily.get(family));
           } else {
             expect(compiled.content).not.toBe(selectionByFamily.get(family));
           }
+          expect(compiled.units).toHaveLength(family === "memory" ? 4 : 1);
+          expect(compiled.contractIds).toEqual(
+            getVisibleRuntimeToolContracts(CAPABILITY_SIGNATURE, family).map(
+              (contract) => contract.id,
+            ),
+          );
+          expect(compiled.specIds).toEqual(compiled.contractIds);
+        } else {
+          neutralByFamily.set(family, compiled.content);
+          expect(compiled.content).not.toBe(capabilityByFamily.get(family));
           expect(compiled.units).toHaveLength(family === "memory" ? 4 : 1);
           expect(compiled.contractIds).toEqual(
             getVisibleRuntimeToolContracts(CAPABILITY_SIGNATURE, family).map(
@@ -431,6 +459,16 @@ describe("tool prompt compiler C00-C05", () => {
     expect(capabilityByFamily.get("memory")).toContain(
       "- skill: missing reusable workflow instructions clearly matched by a listed/team skill;",
     );
+    for (const content of neutralByFamily.values()) {
+      expect(content).toContain("    purpose: ");
+      expect(content).toContain("    use when: ");
+      expect(content).toContain("    limitations: ");
+      expect(content).toContain("    contrast: ");
+      expect(content).toContain("    required inputs: ");
+      expect(content).toContain("    returns: ");
+      expect(content).toContain("    execution: method=POST; path=");
+      expect(content).not.toContain("    when: ");
+    }
   });
 
   it("assigns every C03 duplicate semantic unit to exactly one retained owner", () => {
@@ -1000,6 +1038,112 @@ describe("tool prompt compiler C00-C05", () => {
       .toBe(toolPromptCacheIdentity("skill-tools-injector", "compact", CAPABILITY_SIGNATURE));
     expect(toolPromptCacheIdentity("skill-tools-injector", "compact", CAPABILITY_SIGNATURE))
       .not.toBe(toolPromptCacheIdentity("skill-tools-injector", "selection-calibrated", CAPABILITY_SIGNATURE));
+    expect(toolPromptCacheIdentity("skill-tools-injector", "neutral-symmetric", CAPABILITY_SIGNATURE))
+      .not.toBe(toolPromptCacheIdentity("skill-tools-injector", "capability-pruned", CAPABILITY_SIGNATURE));
+  });
+
+  it("enforces the V4-RN skeleton, component switches, neutral wording, and symmetric edges", () => {
+    const components = [
+      { kind: "purpose", content: "Inspect one fixture.", sourceSpecIds: ["fixture"], sourceRefs: ["fixture#purpose"] },
+      { kind: "use-when", content: "A fixture is selected.", sourceSpecIds: ["fixture"], sourceRefs: ["fixture#when"] },
+      { kind: "limitations", content: "None beyond the use condition and execution contract.", sourceSpecIds: ["fixture"], sourceRefs: ["fixture#limits"] },
+      { kind: "contrast", content: "None.", sourceSpecIds: ["fixture"], sourceRefs: ["fixture#contrast"] },
+      { kind: "required-inputs", content: "fixture_id", sourceSpecIds: ["fixture"], sourceRefs: ["fixture#args"] },
+      { kind: "returns", content: "Fixture data.", sourceSpecIds: ["fixture"], sourceRefs: ["fixture#returns"] },
+      { kind: "execution", content: "method=POST; path=/fixture; headers=content-type; body={\"fixture_id\":\"x\"}; response=json", sourceSpecIds: ["fixture"], sourceRefs: ["fixture#contract"] },
+    ] as const;
+    const card: NeutralToolCard = { family: "memory", toolId: "fixture", components };
+    const rendered = renderNeutralToolCard(card);
+    expect(() => lintNeutralFieldSkeleton(rendered)).not.toThrow();
+    expect(() => lintNeutralToolCards([card])).not.toThrow();
+
+    const purposeOff = { ...CANONICAL_NEUTRAL_TOOL_CARD_MASK, purpose: false };
+    const ablated = renderNeutralToolCard(card, purposeOff);
+    expect(ablated).not.toContain("    purpose: ");
+    expect(() => lintNeutralFieldSkeleton(ablated, purposeOff)).not.toThrow();
+
+    const biased: NeutralToolCard = {
+      ...card,
+      components: components.map((component) => component.kind === "purpose"
+        ? { ...component, content: "Always inspect one fixture." }
+        : component),
+    };
+    expect(() => lintNeutralToolCards([biased])).toThrow(/unreferenced bias term always/);
+    expect(() => lintNeutralToolCards([biased], [{ term: "always", sourceRefs: ["fixture#contract"] }]))
+      .not.toThrow();
+
+    expect(() => lintNeutralSymmetricCatalog(
+      "memory",
+      getRuntimeToolContracts("memory"),
+      MEMORY_TOOL_PROMPT_SPECS,
+    )).not.toThrow();
+    const broken = MEMORY_TOOL_PROMPT_SPECS.map((spec) => spec.id === "tdai_atomic_query"
+      ? { ...spec, neutralContrasts: [] }
+      : spec);
+    expect(() => lintNeutralSymmetricCatalog("memory", getRuntimeToolContracts("memory"), broken))
+      .toThrow(/must have two directions/);
+  });
+
+  it("keeps V4-RN tool order and execution facts equal to V3 after capability pruning", () => {
+    const blocks = renderProductionFamilyBlocks(true);
+    for (const [family, legacyContent] of Object.entries(blocks) as Array<
+      ["memory" | "skill" | "knowledge", string]
+    >) {
+      const surface = family === "memory"
+        ? "memory-tools"
+        : family === "skill"
+          ? "skill-tools"
+          : "knowledge-tools";
+      const compile = (profile: "capability-pruned" | "neutral-symmetric") => compileToolPrompt({
+        profile,
+        family,
+        surface,
+        legacyUnits: [{ id: `${surface}.${profile}`, kind: "legacy-body", content: legacyContent }],
+        capabilitySignature: CAPABILITY_SIGNATURE,
+      }).content;
+      const v3 = compile("capability-pruned");
+      const v4 = compile("neutral-symmetric");
+      const v3Cards = [...v3.matchAll(
+        /<tool name="([^"]+)">\n\s+path: (.+)\n\s+body: (.+)$/gm,
+      )].map((match) => ({ tool: match[1], path: match[2], body: match[3] }));
+      const v4Cards = [...v4.matchAll(
+        /<tool name="([^"]+)">[\s\S]*?execution: method=POST; path=([^;]+); headers=[^;]+; body=(.+); response=[^\n]+/g,
+      )].map((match) => ({ tool: match[1], path: match[2], body: match[3] }));
+      expect(v4Cards).toEqual(v3Cards);
+      expect(() => lintNeutralContrastVisibility(v4, v4Cards.map((card) => card.tool))).not.toThrow();
+    }
+  });
+
+  it("renders and lints every capability-visible V4-RN Skill card", () => {
+    const signature = buildCapabilitySignature({
+      memory: false,
+      skill: true,
+      knowledge: false,
+      wiki: false,
+      codeGraph: false,
+      skillWrite: true,
+      skillExtract: true,
+    });
+    const content = compileToolPrompt({
+      profile: "neutral-symmetric",
+      family: "skill",
+      surface: "skill-tools",
+      legacyUnits: [{
+        id: "skill-tools.full-write-extract",
+        kind: "legacy-body",
+        content: renderSkillToolsBlock(
+          "http://127.0.0.1:8096",
+          true,
+          "session-parity",
+          "space-parity",
+        ),
+      }],
+      capabilitySignature: signature,
+    }).content;
+    const toolIds = [...content.matchAll(/<tool name="([^"]+)">/g)].map((match) => match[1]);
+    expect(toolIds).toEqual(getRuntimeToolContracts("skill").map((contract) => contract.id));
+    expect(() => lintNeutralFieldSkeleton(content)).not.toThrow();
+    expect(() => lintNeutralContrastVisibility(content, toolIds)).not.toThrow();
   });
 
   it("selects one deterministic existing family block as the shared surface host", () => {

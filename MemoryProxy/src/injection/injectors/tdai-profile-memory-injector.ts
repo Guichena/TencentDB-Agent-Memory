@@ -8,7 +8,10 @@ import { getMetadataClient } from "../../meta/client.js";
 import { resolveFixedAssetCtxs, type FixedAssetCtx } from "./tdai-fixed-asset.js";
 import { compileToolPrompt } from "../tool-prompt/compiler.js";
 import { resolveSessionCapabilitySignature } from "../tool-prompt/capability-pruned.js";
-import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
+import {
+  toolPromptCacheIdentity,
+  toolPromptProfileUsesCapabilityPruning,
+} from "../tool-prompt/profiles.js";
 import type { ToolPromptProfile } from "../tool-prompt/types.js";
 import {
   buildCompiledPromptProductionSources,
@@ -99,7 +102,7 @@ export class TdaiProfileMemoryInjector implements InjectionHook {
     const assetCapabilities = ctx.metadata.custom?.assetCapabilities as
       | AssetCapabilityFlags
       | undefined;
-    const capabilitySignature = this.toolPromptProfile === "capability-pruned"
+    const capabilitySignature = toolPromptProfileUsesCapabilityPruning(this.toolPromptProfile)
       ? resolveSessionCapabilitySignature(this.capabilitySignature, assetCapabilities)
       : this.capabilitySignature;
     const compiledGuide = this.toolPromptProfile === "legacy"
@@ -134,7 +137,7 @@ export class TdaiProfileMemoryInjector implements InjectionHook {
       l3Content: group.l3?.content,
       l2Entries: group.l2Entries,
     })), guide, guideProductionSources);
-    if (this.toolPromptProfile === "capability-pruned") {
+    if (toolPromptProfileUsesCapabilityPruning(this.toolPromptProfile)) {
       block.metadata = {
         ...block.metadata,
         cacheKey: `tdai-profile-memory-injector:${capabilitySignature}`,
