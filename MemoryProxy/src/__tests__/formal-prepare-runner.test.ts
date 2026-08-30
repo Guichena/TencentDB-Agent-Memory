@@ -13,7 +13,12 @@ import {
   type FormalPrepareCase,
   type FormalPrepareDataSource,
   type FormalPreparePublicStatus,
+  type PreparedFormalRun,
 } from "../../eval/tool-prompt-bench/formal-prepare-runner.js";
+import type { FormalExecutionPreflightReceipt } from "../../eval/tool-prompt-bench/formal-execution-preflight.js";
+import {
+  executePreparedFormalRun,
+} from "../../eval/tool-prompt-bench/formal-execution-runner.js";
 
 const SHA_A = "a".repeat(64);
 const SHA_B = "b".repeat(64);
@@ -136,6 +141,45 @@ function baseInput(outputRoot: string, source: FormalPrepareDataSource) {
     codeCommit: "2".repeat(40),
     promptFreezeCommit: "3".repeat(40),
     createdAt: "2026-08-30T01:02:03.000Z",
+  };
+}
+
+function makeExecutionPreflightReceipt(
+  run: PreparedFormalRun,
+): FormalExecutionPreflightReceipt {
+  const expected = run.command.executionRequiredGates.identityBinding.expected;
+  return {
+    schemaVersion: "task1.formal-execution-preflight-receipt.v1",
+    ready: true,
+    logicalIdentity: {
+      datasetUserId: expected.datasetUserId,
+      spaceId: expected.spaceId,
+      teamId: expected.teamId,
+      agentId: expected.agentId,
+      taskId: expected.taskId!,
+    },
+    runtimeIdentity: {
+      resolvedAuthUserId: "runtime-user-formal",
+      spaceId: expected.spaceId,
+      teamId: expected.teamId,
+      agentId: expected.agentId,
+      taskId: expected.taskId!,
+    },
+    sessionId: run.manifest.session_id,
+    agentSource: "codex",
+    visibleAssetSetSha256: run.manifest.visible_asset_set_sha256,
+    visibleAssetCount: 9,
+    identityMappingSourceSha256: SHA_A,
+    effectiveConfigSha256: run.manifest.proxy_config_sha256,
+    assetReadBackReceipts: [{ receiptSha256: SHA_B, contentSha256: SHA_C }],
+    checks: [
+      { id: "auth-user-mapping", status: "pass" },
+      { id: "metadata-identity", status: "pass" },
+      { id: "session-identity", status: "pass" },
+      { id: "visible-assets", status: "pass" },
+      { id: "write-side-disabled", status: "pass" },
+      { id: "fresh-session-namespace", status: "pass" },
+    ],
   };
 }
 
@@ -493,5 +537,154 @@ describe("R02 PrepareOnly formal runner", () => {
     const noOverwriteInput = baseInput(outputRoot, makeSource());
     await prepareFormalCampaign(noOverwriteInput);
     await expect(prepareFormalCampaign(noOverwriteInput)).rejects.toThrow(/refuses to overwrite existing campaign root/i);
+  });
+});
+
+describe("R04 Gold-blind formal execution runner", () => {
+  it("executes the frozen command only after public runtime gates and persists raw evidence", async () => {
+    const outputRoot = await mkdtemp(join(tmpdir(), "task1-r04-execute-"));
+    const campaign = await prepareFormalCampaign(baseInput(outputRoot, makeSource()));
+    const run = campaign.runs[0]!;
+    const processCalls: Array<Record<string, unknown>> = [];
+    const preflightReceipt = makeExecutionPreflightReceipt(run);
+    const instants = [
+      "2026-08-30T03:00:00.000Z",
+      "2026-08-30T03:00:01.000Z",
+    ];
+    const micros = ["3000000", "4000000"];
+    const codexStdout = [
+      JSON.stringify({ type: "item.completed", item: { type: "agent_message", text: "done" } }),
+      JSON.stringify({
+        type: "turn.completed",
+        usage: {
+          input_tokens: 500,
+          cached_input_tokens: 300,
+          cache_write_input_tokens: 20,
+          output_tokens: 40,
+          reasoning_output_tokens: 12,
+        },
+      }),
+      "",
+    ].join("\n");
+
+    const receipt = await executePreparedFormalRun({
+      run,
+      environmentSource: {
+        CODEX_HOME: "D:/authenticated/codex-home",
+        TDAI_EVAL_USER_KEY: "must-not-be-persisted",
+        PATH: process.env.PATH,
+      },
+      preflightReceipt,
+      knowledgeHealthUrl: "http://127.0.0.1:8790/health",
+      expectedKnowledgeInstanceId: "knowledge-instance-r04",
+      codeFreeze: {
+        executionCodeCommit: run.manifest.code_commit,
+        promptFreezeCommit: run.manifest.prompt_freeze_commit,
+        promptFreezeIsAncestor: true,
+      },
+      timeoutMs: 120_000,
+    }, {
+      fetchJson: async (url) => {
+        if (url === run.command.preflight.healthUrl) {
+          return structuredClone(run.command.preflight.expected);
+        }
+        if (url === "http://127.0.0.1:8790/health") {
+          return { status: "ok", serverInstanceId: "knowledge-instance-r04" };
+        }
+        throw new Error(`unexpected health URL ${url}`);
+      },
+      executeProcess: async (input) => {
+        processCalls.push(input);
+        return {
+          exitCode: 0,
+          timedOut: false,
+          stdout: codexStdout,
+          stderr: "",
+        };
+      },
+      nowIso: () => instants.shift()!,
+      wallTimeUnixMicros: () => micros.shift()!,
+    });
+
+    expect(processCalls).toHaveLength(1);
+    expect(processCalls[0]).toMatchObject({
+      executable: run.command.executable,
+      args: run.command.args,
+      cwd: run.command.workspacePolicy.path,
+      timeoutMs: 120_000,
+    });
+    expect(processCalls[0]?.stdin).toContain("final query 1");
+    expect((processCalls[0]?.environment as NodeJS.ProcessEnv).CODEX_HOME)
+      .toBe("D:/authenticated/codex-home");
+    expect((processCalls[0]?.environment as NodeJS.ProcessEnv).HOME)
+      .toBe(run.command.environmentPolicy.isolatedHome);
+    expect(receipt).toMatchObject({
+      schemaVersion: "task1.formal-execution-receipt.v1",
+      formalMetricEligible: false,
+      runId: run.manifest.run_id,
+      caseId: run.manifest.case_id,
+      startedAt: "2026-08-30T03:00:00.000Z",
+      finishedAt: "2026-08-30T03:00:01.000Z",
+      startedWallTimeUnixMicros: "3000000",
+      finishedWallTimeUnixMicros: "4000000",
+      traceCollectionState: "pending-campaign-seal",
+      process: { exitCode: 0, timedOut: false, infrastructureError: null },
+      clientUsage: {
+        inputTokens: 500,
+        cachedInputTokens: 300,
+        cacheWriteInputTokens: 20,
+        outputTokens: 40,
+        reasoningOutputTokens: 12,
+      },
+    });
+    const names = (await readdir(run.directory)).sort();
+    expect(names).toEqual([
+      "client-usage.json",
+      "codex-events.jsonl",
+      "codex-stderr.log",
+      "formal-execution-receipt.json",
+      "prepare-command.json",
+      "provider-prompt.json",
+      "run-manifest.json",
+    ]);
+    expect(await readFile(join(run.directory, "codex-events.jsonl"), "utf8"))
+      .toBe(codexStdout);
+    const serialized = await readFile(join(run.directory, "formal-execution-receipt.json"), "utf8");
+    expect(serialized).not.toContain("must-not-be-persisted");
+    expect(serialized).not.toMatch(/privateGold|expectedTool|terminal|pairId/i);
+  });
+
+  it("refuses mismatched service identity before materializing or invoking Codex", async () => {
+    const outputRoot = await mkdtemp(join(tmpdir(), "task1-r04-refuse-"));
+    const campaign = await prepareFormalCampaign(baseInput(outputRoot, makeSource()));
+    const run = campaign.runs[0]!;
+    let processCalls = 0;
+
+    await expect(executePreparedFormalRun({
+      run,
+      environmentSource: {
+        CODEX_HOME: "D:/authenticated/codex-home",
+        TDAI_EVAL_USER_KEY: "not-persisted",
+      },
+      preflightReceipt: makeExecutionPreflightReceipt(run),
+      knowledgeHealthUrl: "http://127.0.0.1:8790/health",
+      expectedKnowledgeInstanceId: "knowledge-instance-r04",
+      codeFreeze: {
+        executionCodeCommit: run.manifest.code_commit,
+        promptFreezeCommit: run.manifest.prompt_freeze_commit,
+        promptFreezeIsAncestor: true,
+      },
+    }, {
+      fetchJson: async (url) => (
+        url === run.command.preflight.healthUrl
+          ? { ...run.command.preflight.expected, serverInstanceId: "wrong-proxy" }
+          : { status: "ok", serverInstanceId: "knowledge-instance-r04" }
+      ),
+      executeProcess: async () => {
+        processCalls += 1;
+        throw new Error("must not run");
+      },
+    })).rejects.toThrow(/MemoryProxy health mismatch.*serverInstanceId/i);
+    expect(processCalls).toBe(0);
   });
 });

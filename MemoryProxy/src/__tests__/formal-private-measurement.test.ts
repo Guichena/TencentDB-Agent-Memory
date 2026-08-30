@@ -66,6 +66,7 @@ describe("Task 1 private Measurement boundary", () => {
       resolve(benchRoot, "formal-runtime", "case-bindings.ts"),
       resolve(benchRoot, "codex-runner.ts"),
       resolve(benchRoot, "formal-prepare-runner.ts"),
+      resolve(benchRoot, "formal-execution-runner.ts"),
     ].filter((path) => existsSync(path));
 
     for (const path of publicFiles) {

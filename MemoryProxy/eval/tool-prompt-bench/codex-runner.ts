@@ -109,6 +109,22 @@ export interface ParsedCodexJsonlRecord {
   parseError?: string;
 }
 
+export interface CodexProcessExecutionInput {
+  readonly executable: string;
+  readonly args: readonly string[];
+  readonly cwd: string;
+  readonly environment: NodeJS.ProcessEnv;
+  readonly stdin: string;
+  readonly timeoutMs: number;
+}
+
+export interface CodexProcessExecutionResult {
+  readonly exitCode: number | null;
+  readonly stdout: string;
+  readonly stderr: string;
+  readonly timedOut: boolean;
+}
+
 /**
  * Lossless, pure JSONL parsing seam for real-chain event reconciliation.
  * Blank lines are ignored; malformed non-blank lines remain in the result.
@@ -409,6 +425,20 @@ function runChild(
     });
     child.stdin.end(stdin);
   });
+}
+
+/** Execution seam shared by Pilot and the Gold-blind formal runner. */
+export function executeCodexProcess(
+  input: CodexProcessExecutionInput,
+): Promise<CodexProcessExecutionResult> {
+  return runChild(
+    input.executable,
+    [...input.args],
+    input.cwd,
+    input.environment,
+    input.stdin,
+    input.timeoutMs,
+  );
 }
 
 export async function runCodexCase(options: CodexRunOptions): Promise<Record<string, unknown>> {
