@@ -1,0 +1,1024 @@
+{
+  "schema_version": "task1.team_knowledge_assets.v1",
+  "team_id": "T20",
+  "knowledge": [
+    {
+      "assetId": "T20-KNOW-WIKI-REINDEX-RUNBOOK",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-KNOW-REINDEX-WIKI"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "wiki",
+      "name": "ReindexRail 内部切换手册",
+      "snapshotSha256": "78ef59c2e81032c1446f560f160d4e3efdc7bb4f6cd57b0d4a81308a7bc44f37",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t20-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "1dcfc0c9b9e79e801932b1fdfd8a34bc070facb59ba555753bee7e68acd10bb8"
+    },
+    {
+      "assetId": "T20-KNOW-CG-SEARCH-PIPELINE",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-KNOW-CODE-GRAPH"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "code_graph",
+      "name": "生产搜索管线代码图谱",
+      "snapshotSha256": "11385ef6ef26d88510931031376f4d07ccf63fe11bafef3175750e5cdad49819",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t20-general",
+          "visibility": "fixed"
+        }
+      ],
+      "repoUrl": "https://github.com/TencentCloud/TencentDB-Agent-Memory.git",
+      "repoCommit": "ffa1fe18085d47ed4da6b2306240152cc8590a86",
+      "indexVersion": "t20-code-lock-v1",
+      "contentHash": "afc158f97d15511ec6d0ad849566e8686aafdc2152a2cd410e0c37897b30ae82"
+    },
+    {
+      "assetId": "T20-KNOW-WIKI-RANK-QUALITY",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-KNOW-RANK-WIKI"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "wiki",
+      "name": "RankLab 相关性评估手册",
+      "snapshotSha256": "cdaf649219d10cfd834c2d7f63637b728776706626322595f7ffeb7c0f7e55c9",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t20-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "3035cdce5177cbb0575184fab3bf3c9c22901daaa5983707bd84d718056459ec"
+    }
+  ],
+  "fixtures": [
+    {
+      "asset_id": "T20-KNOW-WIKI-REINDEX-RUNBOOK",
+      "status": "ready",
+      "name": "ReindexRail 内部切换手册",
+      "type": "wiki",
+      "service_url": "https://knowledge.synthetic.invalid/reindexrail-runbook",
+      "workspace_match": "TencentDB-Agent-Memory/ReindexRail",
+      "about": "增量索引重建、首批观察、异常中止和读别名保留的内部流程记录。",
+      "summary": "用于选择与 ReindexRail 重建切换和读后写一致性主题匹配的内部 wiki；摘要不包含比例、阈值或处置正文。",
+      "tools": [
+        {
+          "name": "get_info",
+          "params": {}
+        },
+        {
+          "name": "search",
+          "params": {
+            "query": "string",
+            "limit": "integer"
+          }
+        },
+        {
+          "name": "list_pages",
+          "params": {}
+        },
+        {
+          "name": "read_page",
+          "params": {
+            "refs": "array"
+          }
+        },
+        {
+          "name": "get_graph",
+          "params": {}
+        },
+        {
+          "name": "list_raw",
+          "params": {}
+        },
+        {
+          "name": "read_raw",
+          "params": {
+            "filenames": "array"
+          }
+        }
+      ],
+      "tool_listing_fixture": {
+        "tool_name": "tools/list",
+        "result": {
+          "knowledge_id": "T20-KNOW-WIKI-REINDEX-RUNBOOK",
+          "type": "wiki",
+          "name": "ReindexRail 内部切换手册",
+          "status": "ready",
+          "tools": [
+            {
+              "name": "get_info",
+              "params": {}
+            },
+            {
+              "name": "search",
+              "params": {
+                "query": {
+                  "type": "string",
+                  "required": true
+                },
+                "limit": {
+                  "type": "integer",
+                  "required": false,
+                  "default": 20
+                }
+              }
+            },
+            {
+              "name": "list_pages",
+              "params": {}
+            },
+            {
+              "name": "read_page",
+              "params": {
+                "refs": {
+                  "type": "array",
+                  "required": true
+                }
+              }
+            },
+            {
+              "name": "get_graph",
+              "params": {}
+            },
+            {
+              "name": "list_raw",
+              "params": {}
+            },
+            {
+              "name": "read_raw",
+              "params": {
+                "filenames": {
+                  "type": "array",
+                  "required": true
+                }
+              }
+            }
+          ]
+        }
+      },
+      "tool_call_fixtures": [
+        {
+          "tool_name": "get_info",
+          "params": {},
+          "result": {
+            "title": "ReindexRail 内部切换手册",
+            "type": "wiki",
+            "status": "ready",
+            "page_count": 1
+          }
+        },
+        {
+          "tool_name": "search",
+          "params": {
+            "query": "ReindexRail first cohort baseline read-after-write indexing lag alias",
+            "limit": 20
+          },
+          "result": {
+            "matches": [
+              {
+                "ref": "reindexrail/cutover-gate",
+                "title": "首批观察与异常中止",
+                "snippet": "记录首批 cohort、baseline、读后写命中、索引延迟与旧读别名处置。",
+                "first_cohort": "15%",
+                "baseline": "20-minute",
+                "read_after_write_abort": "0.7% for 5 minutes",
+                "indexing_lag_abort": "above 90 seconds for 10 minutes",
+                "on_abort": [
+                  "freeze expansion",
+                  "keep the prior alias",
+                  "page on-call"
+                ],
+                "rule_text": "先以 15% 作为首批 cohort，完成 20-minute baseline；若 read-after-write miss rate reaches 0.7% for 5 minutes，或 indexing lag exceeds 90 seconds for 10 minutes，则 abort expansion，freeze expansion，keep the prior alias，并 page on-call。"
+              }
+            ]
+          }
+        },
+        {
+          "tool_name": "list_pages",
+          "params": {},
+          "result": {
+            "pages": [
+              {
+                "ref": "reindexrail/cutover-gate",
+                "title": "首批观察与异常中止"
+              }
+            ]
+          }
+        },
+        {
+          "tool_name": "read_page",
+          "params": {
+            "refs": [
+              "reindexrail/cutover-gate"
+            ]
+          },
+          "result": {
+            "title": "首批观察与异常中止",
+            "rule_text": "内部切换手册的固定判定是：先以 15% 作为首批 cohort，完成 20-minute baseline；只有观察通过才扩大。若 read-after-write miss rate reaches 0.7% for 5 minutes，或 indexing lag exceeds 90 seconds for 10 minutes，则 abort expansion，freeze expansion，keep the prior alias，并 page on-call。",
+            "first_cohort": "15%",
+            "baseline": "20-minute",
+            "read_after_write_abort": "0.7% for 5 minutes",
+            "indexing_lag_abort": "above 90 seconds for 10 minutes",
+            "on_abort": [
+              "freeze expansion",
+              "keep the prior alias",
+              "page on-call"
+            ]
+          }
+        },
+        {
+          "tool_name": "get_graph",
+          "params": {},
+          "result": {
+            "nodes": [
+              "reindexrail/cutover-gate"
+            ],
+            "edges": []
+          }
+        },
+        {
+          "tool_name": "list_raw",
+          "params": {},
+          "result": {
+            "files": [
+              "reindexrail-cutover-gate.md"
+            ]
+          }
+        },
+        {
+          "tool_name": "read_raw",
+          "params": {
+            "filenames": [
+              "reindexrail-cutover-gate.md"
+            ]
+          },
+          "result": {
+            "files": [
+              {
+                "filename": "reindexrail-cutover-gate.md",
+                "content_ref": "reindexrail/cutover-gate"
+              }
+            ]
+          }
+        }
+      ],
+      "minimal_synthetic_query_result": {
+        "tool_listing": {
+          "tool_name": "tools/list",
+          "result": {
+            "type": "wiki",
+            "status": "ready",
+            "tools": [
+              {
+                "name": "search",
+                "params": {
+                  "query": {
+                    "type": "string",
+                    "required": true
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "successful_query": {
+          "tool_name": "search",
+          "params": {
+            "query": "ReindexRail first cohort baseline read-after-write indexing lag alias"
+          },
+          "result": {
+            "title": "首批观察与异常中止",
+            "first_cohort": "15%",
+            "baseline": "20-minute",
+            "read_after_write_abort": "0.7% for 5 minutes",
+            "indexing_lag_abort": "above 90 seconds for 10 minutes",
+            "on_abort": [
+              "freeze expansion",
+              "keep the prior alias",
+              "page on-call"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "asset_id": "T20-KNOW-CG-SEARCH-PIPELINE",
+      "status": "ready",
+      "name": "生产搜索管线代码图谱",
+      "type": "code_graph",
+      "service_url": "https://knowledge.synthetic.invalid/search-pipeline-graph",
+      "workspace_match": "TencentDB-Agent-Memory",
+      "about": "搜索入口、候选合并和只读桥接路径的代码关系索引。",
+      "summary": "用于选择与当前仓库搜索管线主题匹配的代码图谱；仅提供锁定版本的结构导航。",
+      "grounding_lock": {
+        "path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T20/workspace-code-lock.json",
+        "sha256": "bb60bf471ae5debad27485d4555793f9dd4f4764a0be9ebbb660b8cadda7f8b7",
+        "revision": "ffa1fe18085d47ed4da6b2306240152cc8590a86"
+      },
+      "tools": [
+        {
+          "name": "get_info",
+          "params": {}
+        },
+        {
+          "name": "search",
+          "params": {
+            "query": "string",
+            "kind": "string",
+            "limit": "integer"
+          }
+        },
+        {
+          "name": "explore",
+          "params": {
+            "query": "string",
+            "maxFiles": "integer"
+          }
+        },
+        {
+          "name": "callers",
+          "params": {
+            "symbol": "string",
+            "limit": "integer"
+          }
+        },
+        {
+          "name": "callees",
+          "params": {
+            "symbol": "string",
+            "limit": "integer"
+          }
+        },
+        {
+          "name": "impact",
+          "params": {
+            "symbol": "string",
+            "depth": "integer"
+          }
+        },
+        {
+          "name": "node",
+          "params": {
+            "symbol": "string",
+            "includeCode": "boolean"
+          }
+        },
+        {
+          "name": "status",
+          "params": {}
+        },
+        {
+          "name": "files",
+          "params": {
+            "path": "string",
+            "pattern": "string",
+            "format": "string"
+          }
+        }
+      ],
+      "tool_listing_fixture": {
+        "tool_name": "tools/list",
+        "result": {
+          "type": "code-graph",
+          "status": "ready",
+          "revision": "ffa1fe18085d47ed4da6b2306240152cc8590a86",
+          "locked_files": [
+            "MemoryCore/src/core/tools/memory-search.ts",
+            "MemoryCore/src/core/tools/conversation-search.ts",
+            "MemoryCore/src/core/store/search-utils.ts",
+            "MemoryProxy/src/memory/memory-bridge.ts"
+          ],
+          "tools": [
+            {
+              "name": "get_info",
+              "params": {}
+            },
+            {
+              "name": "search",
+              "params": {
+                "query": {
+                  "type": "string",
+                  "required": true
+                },
+                "kind": {
+                  "type": "string",
+                  "required": false
+                },
+                "limit": {
+                  "type": "integer",
+                  "required": false,
+                  "default": 20
+                }
+              }
+            },
+            {
+              "name": "explore",
+              "params": {
+                "query": {
+                  "type": "string",
+                  "required": true
+                },
+                "maxFiles": {
+                  "type": "integer",
+                  "required": false,
+                  "default": 20
+                }
+              }
+            },
+            {
+              "name": "callers",
+              "params": {
+                "symbol": {
+                  "type": "string",
+                  "required": true
+                },
+                "limit": {
+                  "type": "integer",
+                  "required": false,
+                  "default": 20
+                }
+              }
+            },
+            {
+              "name": "callees",
+              "params": {
+                "symbol": {
+                  "type": "string",
+                  "required": true
+                },
+                "limit": {
+                  "type": "integer",
+                  "required": false,
+                  "default": 20
+                }
+              }
+            },
+            {
+              "name": "impact",
+              "params": {
+                "symbol": {
+                  "type": "string",
+                  "required": true
+                },
+                "depth": {
+                  "type": "integer",
+                  "required": false,
+                  "default": 2
+                }
+              }
+            },
+            {
+              "name": "node",
+              "params": {
+                "symbol": {
+                  "type": "string",
+                  "required": true
+                },
+                "includeCode": {
+                  "type": "boolean",
+                  "required": false,
+                  "default": false
+                }
+              }
+            },
+            {
+              "name": "status",
+              "params": {}
+            },
+            {
+              "name": "files",
+              "params": {
+                "path": {
+                  "type": "string",
+                  "required": false
+                },
+                "pattern": {
+                  "type": "string",
+                  "required": false
+                },
+                "format": {
+                  "type": "string",
+                  "required": false,
+                  "default": "summary"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "tool_call_fixtures": [
+        {
+          "tool_name": "get_info",
+          "params": {},
+          "result": {
+            "type": "code-graph",
+            "status": "ready",
+            "revision": "ffa1fe18085d47ed4da6b2306240152cc8590a86",
+            "locked_file_count": 4
+          }
+        },
+        {
+          "tool_name": "search",
+          "params": {
+            "query": "search pipeline",
+            "kind": "symbol",
+            "limit": 20
+          },
+          "result": {
+            "symbols": [
+              {
+                "symbol": "executeMemorySearch",
+                "file": "MemoryCore/src/core/tools/memory-search.ts"
+              },
+              {
+                "symbol": "executeConversationSearch",
+                "file": "MemoryCore/src/core/tools/conversation-search.ts"
+              },
+              {
+                "symbol": "rrfMergeL1",
+                "file": "MemoryCore/src/core/tools/memory-search.ts"
+              },
+              {
+                "symbol": "rrfMergeL0",
+                "file": "MemoryCore/src/core/tools/conversation-search.ts"
+              },
+              {
+                "symbol": "createMemoryBridgeHandler",
+                "file": "MemoryProxy/src/memory/memory-bridge.ts"
+              }
+            ]
+          }
+        },
+        {
+          "tool_name": "explore",
+          "params": {
+            "query": "search pipeline",
+            "maxFiles": 20
+          },
+          "result": {
+            "summary": "锁定搜索管线由两个独立搜索入口组成：原子记忆入口在 FTS 与向量候选路径后调用本文件内的 rrfMergeL1，对话入口对应调用本文件内的 rrfMergeL0；两者都使用 RRF_K=60。search-utils.ts 的通用 rrfMerge 是独立导出，锁定文件中没有从这两个入口指向它的调用边。memory bridge 仅允许六个只读子路径。",
+            "files": [
+              "MemoryCore/src/core/tools/memory-search.ts",
+              "MemoryCore/src/core/tools/conversation-search.ts",
+              "MemoryCore/src/core/store/search-utils.ts",
+              "MemoryProxy/src/memory/memory-bridge.ts"
+            ],
+            "symbols": [
+              "executeMemorySearch",
+              "executeConversationSearch",
+              "rrfMergeL1",
+              "rrfMergeL0",
+              "rrfMerge",
+              "createMemoryBridgeHandler"
+            ]
+          }
+        },
+        {
+          "tool_name": "callers",
+          "params": {
+            "symbol": "rrfMergeL1",
+            "limit": 20
+          },
+          "result": {
+            "callers": [
+              {
+                "symbol": "executeMemorySearch",
+                "file": "MemoryCore/src/core/tools/memory-search.ts",
+                "relation": "calls"
+              }
+            ]
+          }
+        },
+        {
+          "tool_name": "callees",
+          "params": {
+            "symbol": "executeMemorySearch",
+            "limit": 20
+          },
+          "result": {
+            "callees": [
+              {
+                "symbol": "buildFtsQuery",
+                "file": "MemoryCore/src/core/store/sqlite.ts",
+                "relation": "calls"
+              },
+              {
+                "symbol": "rrfMergeL1",
+                "file": "MemoryCore/src/core/tools/memory-search.ts",
+                "relation": "calls"
+              },
+              {
+                "symbol": "searchL1Hybrid/searchL1Fts/searchL1Vector",
+                "file": "IMemoryStore",
+                "relation": "invokes available store method"
+              }
+            ],
+            "note": "The sqlite.ts implementation is outside the four-file graph lock; only the referenced symbol is reported."
+          }
+        },
+        {
+          "tool_name": "impact",
+          "params": {
+            "symbol": "executeConversationSearch",
+            "depth": 2
+          },
+          "result": {
+            "root": "executeConversationSearch",
+            "depth": 2,
+            "nodes": [
+              {
+                "symbol": "executeConversationSearch",
+                "file": "MemoryCore/src/core/tools/conversation-search.ts"
+              },
+              {
+                "symbol": "rrfMergeL0",
+                "file": "MemoryCore/src/core/tools/conversation-search.ts"
+              },
+              {
+                "symbol": "formatConversationSearchResponse",
+                "file": "MemoryCore/src/core/tools/conversation-search.ts"
+              }
+            ],
+            "edges": [
+              {
+                "from": "executeConversationSearch",
+                "to": "rrfMergeL0",
+                "relation": "calls"
+              }
+            ]
+          }
+        },
+        {
+          "tool_name": "node",
+          "params": {
+            "symbol": "createMemoryBridgeHandler",
+            "includeCode": false
+          },
+          "result": {
+            "symbol": "createMemoryBridgeHandler",
+            "file": "MemoryProxy/src/memory/memory-bridge.ts",
+            "kind": "exported function",
+            "behavior": {
+              "method": "POST",
+              "path_prefix": "/memory-bridge/v3/",
+              "read_only_subpaths": [
+                "atomic/search",
+                "atomic/query",
+                "conversation/search",
+                "conversation/query",
+                "scenario/ls",
+                "scenario/read"
+              ],
+              "identity": "session-derived fields override inbound identity fields"
+            }
+          }
+        },
+        {
+          "tool_name": "status",
+          "params": {},
+          "result": {
+            "status": "ready",
+            "revision": "ffa1fe18085d47ed4da6b2306240152cc8590a86",
+            "locked_files": 4,
+            "grounding": "workspace-code-lock"
+          }
+        },
+        {
+          "tool_name": "files",
+          "params": {
+            "path": "",
+            "pattern": "*search*|*memory-bridge*",
+            "format": "summary"
+          },
+          "result": {
+            "files": [
+              {
+                "path": "MemoryCore/src/core/tools/memory-search.ts",
+                "sha256": "328957384623f5c73c4bdfae0d9d37837da879ebeac4a2274a6b9fca593f35c8"
+              },
+              {
+                "path": "MemoryCore/src/core/tools/conversation-search.ts",
+                "sha256": "5d12240f359f9d5f38aa78c203f5713b5f8a06e6175980fdbea7631771055ec2"
+              },
+              {
+                "path": "MemoryProxy/src/memory/memory-bridge.ts",
+                "sha256": "8abe3c841ef224e38357be8da0cf2fc19bde2d146bf7636bf306174e8460cab2"
+              }
+            ]
+          }
+        }
+      ],
+      "minimal_synthetic_query_result": {
+        "tool_listing": {
+          "tool_name": "tools/list",
+          "result": {
+            "type": "code-graph",
+            "status": "ready",
+            "tools": [
+              {
+                "name": "search",
+                "params": {
+                  "query": {
+                    "type": "string",
+                    "required": true
+                  }
+                }
+              },
+              {
+                "name": "explore",
+                "params": {
+                  "query": {
+                    "type": "string",
+                    "required": true
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "successful_query": {
+          "tool_name": "explore",
+          "params": {
+            "query": "search pipeline"
+          },
+          "result": {
+            "summary": "返回锁定搜索管线的结构导航摘要。"
+          }
+        }
+      }
+    },
+    {
+      "asset_id": "T20-KNOW-WIKI-RANK-QUALITY",
+      "status": "ready",
+      "name": "RankLab 相关性评估手册",
+      "type": "wiki",
+      "service_url": "https://knowledge.synthetic.invalid/ranklab-quality",
+      "workspace_match": "TencentDB-Agent-Memory/RankLab",
+      "about": "相关性评估、排序回归和实验复盘的内部文档。",
+      "summary": "用于选择与 RankLab 相关性评估主题匹配的内部 wiki；摘要不包含指标门槛或回滚结论。",
+      "tools": [
+        {
+          "name": "get_info",
+          "params": {}
+        },
+        {
+          "name": "search",
+          "params": {
+            "query": "string",
+            "limit": "integer"
+          }
+        },
+        {
+          "name": "list_pages",
+          "params": {}
+        },
+        {
+          "name": "read_page",
+          "params": {
+            "refs": "array"
+          }
+        },
+        {
+          "name": "get_graph",
+          "params": {}
+        },
+        {
+          "name": "list_raw",
+          "params": {}
+        },
+        {
+          "name": "read_raw",
+          "params": {
+            "filenames": "array"
+          }
+        }
+      ],
+      "tool_listing_fixture": {
+        "tool_name": "tools/list",
+        "result": {
+          "knowledge_id": "T20-KNOW-WIKI-RANK-QUALITY",
+          "type": "wiki",
+          "name": "RankLab 相关性评估手册",
+          "status": "ready",
+          "tools": [
+            {
+              "name": "get_info",
+              "params": {}
+            },
+            {
+              "name": "search",
+              "params": {
+                "query": {
+                  "type": "string",
+                  "required": true
+                },
+                "limit": {
+                  "type": "integer",
+                  "required": false,
+                  "default": 20
+                }
+              }
+            },
+            {
+              "name": "list_pages",
+              "params": {}
+            },
+            {
+              "name": "read_page",
+              "params": {
+                "refs": {
+                  "type": "array",
+                  "required": true
+                }
+              }
+            },
+            {
+              "name": "get_graph",
+              "params": {}
+            },
+            {
+              "name": "list_raw",
+              "params": {}
+            },
+            {
+              "name": "read_raw",
+              "params": {
+                "filenames": {
+                  "type": "array",
+                  "required": true
+                }
+              }
+            }
+          ]
+        }
+      },
+      "tool_call_fixtures": [
+        {
+          "tool_name": "get_info",
+          "params": {},
+          "result": {
+            "title": "RankLab 相关性评估手册",
+            "type": "wiki",
+            "status": "ready",
+            "page_count": 1
+          }
+        },
+        {
+          "tool_name": "search",
+          "params": {
+            "query": "RankLab ranking regression metric gate comparison window rollback trigger",
+            "limit": 20
+          },
+          "result": {
+            "matches": [
+              {
+                "ref": "ranklab/quality-gate",
+                "title": "排序回归评估闸门",
+                "snippet": "记录 NDCG@10 门槛、固定比较窗口和连续窗口回滚条件。",
+                "metric_gate": "NDCG@10 >= 0.82",
+                "comparison_window": "fixed recent 7-day evaluation window",
+                "baseline_comparison": "compare with the prior stable version's same 7-day window",
+                "rollback_trigger": "NDCG@10 drops by more than 0.03 versus baseline for two consecutive evaluation windows",
+                "rollback_action": "restore the prior stable ranking version and pause rollout"
+              }
+            ]
+          }
+        },
+        {
+          "tool_name": "list_pages",
+          "params": {},
+          "result": {
+            "pages": [
+              {
+                "ref": "ranklab/quality-gate",
+                "title": "排序回归评估闸门"
+              }
+            ]
+          }
+        },
+        {
+          "tool_name": "read_page",
+          "params": {
+            "refs": [
+              "ranklab/quality-gate"
+            ]
+          },
+          "result": {
+            "title": "排序回归评估闸门",
+            "metric_gate": "NDCG@10 >= 0.82",
+            "comparison_window": "fixed recent 7-day evaluation window compared with the prior stable version's same window",
+            "rollback_trigger": "NDCG@10 drops by more than 0.03 versus baseline for two consecutive evaluation windows",
+            "rollback_action": "restore the prior stable ranking version and pause rollout"
+          }
+        },
+        {
+          "tool_name": "get_graph",
+          "params": {},
+          "result": {
+            "nodes": [
+              "ranklab/quality-gate"
+            ],
+            "edges": []
+          }
+        },
+        {
+          "tool_name": "list_raw",
+          "params": {},
+          "result": {
+            "files": [
+              "ranklab-quality-gate.md"
+            ]
+          }
+        },
+        {
+          "tool_name": "read_raw",
+          "params": {
+            "filenames": [
+              "ranklab-quality-gate.md"
+            ]
+          },
+          "result": {
+            "files": [
+              {
+                "filename": "ranklab-quality-gate.md",
+                "content_ref": "ranklab/quality-gate"
+              }
+            ]
+          }
+        }
+      ],
+      "minimal_synthetic_query_result": {
+        "tool_listing": {
+          "tool_name": "tools/list",
+          "result": {
+            "type": "wiki",
+            "status": "ready",
+            "tools": [
+              {
+                "name": "search",
+                "params": {
+                  "query": {
+                    "type": "string",
+                    "required": true
+                  }
+                }
+              },
+              {
+                "name": "read_page",
+                "params": {
+                  "refs": {
+                    "type": "array",
+                    "required": true
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "successful_query": {
+          "tool_name": "search",
+          "params": {
+            "query": "ranking regression"
+          },
+          "result": {
+            "summary": "返回 RankLab 相关性评估主题的页面摘要。"
+          }
+        }
+      }
+    }
+  ],
+  "workspaceCodeImport": {
+    "repository": "https://github.com/TencentCloud/TencentDB-Agent-Memory.git",
+    "commit": "ffa1fe18085d47ed4da6b2306240152cc8590a86",
+    "license": "MIT",
+    "lockSha256": "bb60bf471ae5debad27485d4555793f9dd4f4764a0be9ebbb660b8cadda7f8b7",
+    "files": [
+      {
+        "path": "MemoryCore/src/core/tools/memory-search.ts",
+        "sha256": "328957384623f5c73c4bdfae0d9d37837da879ebeac4a2274a6b9fca593f35c8"
+      },
+      {
+        "path": "MemoryCore/src/core/tools/conversation-search.ts",
+        "sha256": "5d12240f359f9d5f38aa78c203f5713b5f8a06e6175980fdbea7631771055ec2"
+      },
+      {
+        "path": "MemoryCore/src/core/store/search-utils.ts",
+        "sha256": "02b073516cc0a501bc9f9b9407d7ef10c7ccb4126042346a3cd53de279774b14"
+      },
+      {
+        "path": "MemoryProxy/src/memory/memory-bridge.ts",
+        "sha256": "8abe3c841ef224e38357be8da0cf2fc19bde2d146bf7636bf306174e8460cab2"
+      }
+    ]
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "stage": "DS05",
+  "team_id": "T20",
+  "family": "knowledge",
+  "batch_id": "T20-DS05-knowledge-main-01",
+  "pairs": [
+    {
+      "draft_pair_id": "T20-PAIR-K02",
+      "language": "zh",
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "AtlasSearch 正在复核当前搜索入口与候选合并的行为，重点是跨文件调用关系。"},
+        {"role": "assistant", "content": "我先按请求入口、关键词路径和向量路径整理了检查范围，但还没有把各文件中的具体调用连起来。"},
+        {"role": "user", "content": "这次要同时覆盖原子记忆搜索和对话搜索，不能把两类结果的字段或排序语义混在一起。"},
+        {"role": "assistant", "content": "上一轮只看到了搜索结果格式，遗漏了候选合并前的降级分支，因此结论暂不采纳。"},
+        {"role": "user", "content": "还需要确认只读桥接允许哪些原子、对话和场景子路径，以及搜索请求是否会跨固定的可见上下文。"},
+        {"role": "assistant", "content": "RankLab 会复核排序回归，CursorFlow 会复核分页；它们是相邻主题，不应替代这里的源码证据。"},
+        {"role": "user", "content": "请给出入口函数、候选路径、合并函数和桥接只读范围，并明确每条关系对应的锁定文件。"},
+        {"role": "assistant", "content": "当前上下文只有检查目标，没有足够的源码关系证据；需要查询当前仓库的结构记录后再下结论。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请梳理 AtlasSearch 当前搜索入口、候选合并和只读桥接的跨文件调用关系，并指出排序合并所用的具体函数。",
+      "visible_distractor_ids_author_only": [
+        "T20-KNOW-WIKI-REINDEX-RUNBOOK",
+        "T20-KNOW-WIKI-RANK-QUALITY"
+      ],
+      "positive": {
+        "delta_message": {
+          "role": "assistant",
+          "content": "现有材料还不能证明入口、候选路径、合并函数和只读范围之间的关系；请先查当前仓库的结构记录，再按文件逐项说明。"
+        },
+        "private_proposal": {
+          "route": "knowledge",
+          "target_asset_ids": ["T20-KNOW-CG-SEARCH-PIPELINE"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "unique_information_gap": "锁定 revision 中的 executeMemorySearch/executeConversationSearch、各自本地 rrfMergeL1/rrfMergeL0、buildFtsQuery、向量/FTS 分支，以及 memory bridge 只读子路径和调用关系不在当前上下文；不能把 search-utils.ts 的通用 rrfMerge 当作两条入口的共享调用。",
+          "stop_after_candidate": "tools/list 返回代码图谱工具清单后，使用清单返回的探索工具及其参数完成一次搜索管线查询并停止。",
+          "followup_parameter_sources": "第一步返回的工具清单提供第二步的精确工具名和 query 参数；query 使用当前 AtlasSearch 语境中的 search entry、FTS、vector、RRF、bridge 和 read-only 词汇。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "assistant",
+          "content": "锁定代码显示：原子记忆入口是 executeMemorySearch，对话入口是 executeConversationSearch；两者分别在各自文件中并行处理 FTS 与向量候选，混合结果分别调用本地 rrfMergeL1 与 rrfMergeL0，二者都使用 RRF_K=60 的排名倒数累加。search-utils.ts 另有导出的通用 rrfMerge，但这两条入口没有被证实调用它。memory bridge 的只读范围是 atomic/search、atomic/query、conversation/search、conversation/query、scenario/ls 和 scenario/read；写入子路径不在该 allow-list 中。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息完整给出了锁定入口、各自本地合并函数、FTS/向量行为、RRF 常量、通用 helper 的非调用关系和桥接只读范围，因此无需查询代码图谱。"
+        }
+      },
+      "source_fact_map": [
+        {
+          "asset_id": "T20-KNOW-CG-SEARCH-PIPELINE",
+          "fact": "At revision ffa1fe18085d47ed4da6b2306240152cc8590a86, executeMemorySearch in memory-search.ts calls local rrfMergeL1 and executeConversationSearch in conversation-search.ts calls local rrfMergeL0 after FTS/vector candidate paths; both local helpers use RRF_K=60. search-utils.ts exports rrfMerge separately, with no locked-file call edge from either search entry."
+        },
+        {
+          "asset_id": "T20-KNOW-CG-SEARCH-PIPELINE",
+          "fact": "memory-bridge.ts exposes atomic/search, atomic/query, conversation/search, conversation/query, scenario/ls, and scenario/read as read-only allow-listed subpaths."
+        }
+      ],
+      "sol_review_questions": []
+    },
+    {
+      "draft_pair_id": "T20-PAIR-K03",
+      "language": "zh",
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "RankLab 正在复盘一轮排序回归，想决定当前候选是否可以继续保留。"},
+        {"role": "assistant", "content": "我已把问题归到相关性评估，并对照了最近一次实验的查询集和线上观察。"},
+        {"role": "user", "content": "AtlasSearch 负责字段与词法行为，VectorBlend 负责混合召回；这两条线的结果只能作为背景。"},
+        {"role": "assistant", "content": "第一次比较只看单日曲线，波动太大，后来改成固定窗口后才继续记录。"},
+        {"role": "user", "content": "当前候选的离线结果已整理，但还没从内部评估记录确认通过门槛的写法。"},
+        {"role": "assistant", "content": "我们也没有把回滚条件写进当前任务说明，避免把临时观察误当成正式处置。"},
+        {"role": "user", "content": "请查清这次回归使用的指标门槛、比较窗口，以及什么情况下必须回滚。"},
+        {"role": "assistant", "content": "这些数值和处置边界不在当前上下文；需要读取已绑定的相关性评估记录。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请说明 RankLab 这次排序回归的 metric gate、comparison window 和 rollback trigger。",
+      "visible_distractor_ids_author_only": [
+        "T20-KNOW-WIKI-REINDEX-RUNBOOK",
+        "T20-KNOW-CG-SEARCH-PIPELINE"
+      ],
+      "positive": {
+        "delta_message": {
+          "role": "assistant",
+          "content": "当前上下文没有这次回归的 metric gate、comparison window 或 rollback trigger；请读取相关性评估记录后再给出可执行结论。"
+        },
+        "private_proposal": {
+          "route": "knowledge",
+          "target_asset_ids": ["T20-KNOW-WIKI-RANK-QUALITY"],
+          "allowed_sequence_candidates": [["knowledge_tools_call"]],
+          "unique_information_gap": "RankLab 相关性评估手册中的 NDCG@10 门槛、7-day comparison window 和连续两窗回滚触发条件不在当前上下文。",
+          "stop_after_candidate": "使用固定绑定已经预热的 wiki 搜索工具，以公开 RankLab 排序回归词汇查询一次并停止。",
+          "followup_parameter_sources": "固定绑定的工具清单提供精确工具名和 query schema；query 参数来自当前可见的 RankLab regression 语境，不猜测资源标识。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "assistant",
+          "content": "这次 RankLab 评估的 metric gate 是 NDCG@10 不低于 0.82；comparison window 使用最近 7 天的固定评估窗口，并与上一稳定版本的同窗口结果比较；若 NDCG@10 相对基线下降超过 0.03，且连续两个评估窗口都满足该下降条件，就触发 rollback，恢复上一稳定排序版本并暂停继续放量。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息完整给出 metric gate、比较窗口、基线比较方式和连续窗口 rollback trigger，因此不需要读取相关性评估记录。"
+        }
+      },
+      "source_fact_map": [
+        {
+          "asset_id": "T20-KNOW-WIKI-RANK-QUALITY",
+          "fact": "RankLab quality wiki: metric gate NDCG@10 >= 0.82; compare a fixed recent 7-day window with the prior stable version's same window; rollback when NDCG@10 drops by more than 0.03 versus baseline for two consecutive evaluation windows, restore the prior stable ranking version, and pause rollout."
+        }
+      ],
+      "sol_review_questions": []
+    }
+  ]
+}

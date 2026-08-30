@@ -1,0 +1,264 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T20-DS05-SKILL-MAIN-01",
+  "stage": "DS05",
+  "team_id": "T20",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T20-PAIR-S02",
+      "external_source_ids": ["T20-SRC-OPENSEARCH-LAUNCHPAD"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "long_12_to_18",
+      "shared_context_messages": [
+        {"role": "user", "content": "ReindexRail 正在准备一次搜索架构调整，既要保留现有索引的连续可用性，也要为后续的检索策略演进留出空间。"},
+        {"role": "assistant", "content": "我会先把现状、样例数据、架构选项和执行边界分开记录，避免在没有证据时直接改动索引。"},
+        {"role": "user", "content": "这次输入同时包含结构化记录和一批文档，团队还没有决定采用关键词、语义、向量、混合还是代理式检索。"},
+        {"role": "assistant", "content": "搜索策略需要结合数据形态、用户意图和质量目标来选，不能把一次实验结果当成默认方案。"},
+        {"role": "user", "content": "我们希望搭建一套从数据准备到可用搜索界面的完整流程，并在每个阶段保留可审阅的中间结果。"},
+        {"role": "assistant", "content": "我会把样例检查、策略选择、目标环境、方案评审和执行验证安排成有先后关系的阶段。"},
+        {"role": "user", "content": "AtlasSearch 的映射讨论可以提供字段方面的参考，RankLab 的评估记录也会影响质量检查，但它们不是这次改造的全部答案。"},
+        {"role": "assistant", "content": "我会只借用相关的背景约束，把索引、检索策略和质量评估分开处理，并记录每个取舍的理由。"},
+        {"role": "user", "content": "部署目标可能是本地环境，也可能是托管环境；在确认环境前不要假设已有集群或凭空选择认证方式。"},
+        {"role": "assistant", "content": "目标环境应在收集数据和讨论方案后单独确认，执行前还需要让使用者看到架构提案。"},
+        {"role": "user", "content": "上次尝试把索引变更和检索策略一起推进，结果难以判断问题来自数据、映射还是运行环境。"},
+        {"role": "assistant", "content": "这次会保留阶段边界：先确认输入和约束，再逐项提出选择，最后按顺序执行并在失败时停下来。"},
+        {"role": "user", "content": "请给出开始这次端到端搭建前应遵循的工作方法，尤其关注第一步、样例数据和后续阶段的次序。"},
+        {"role": "assistant", "content": "目前缺少一份能把这些阶段串起来的搭建指引；先找到适用的指导，再决定如何落地。"}
+      ],
+      "changed_message_index": 14,
+      "query": "请说明 ReindexRail 进行端到端搜索搭建时的第一步、样例数据与策略/目标选择顺序，以及经典 Serverless 的容量表述边界。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前上下文还没有端到端搭建的完整工作方法。请先在团队可用能力中查找最匹配的指导，再依据返回的匹配标识打开一次；拿到匹配内容后停止继续查找。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结搭建文件规定的首个预检步骤、样例收集、逐项选择、方案批准与有序执行，以及经典 Serverless 容量边界。",
+          "route": "skill",
+          "target_asset_ids": ["T20-SKILL-OPENSEARCH-LAUNCHPAD"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "skill_search 返回目标 skill id/name 后，只使用该返回值打开一次目标 Skill，并立即停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充已确认的工作边界：任何创建索引、加载数据或集群操作前都先完成预检；随后收集并检查样例数据。策略和目标要一次只询问一个，提出架构方案并等待批准，再按阶段顺序执行。经典 Serverless 始终保有最低容量，不能表述为缩容到零；只有 NextGen 类型支持缩容到零。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "负例追加消息完整补齐了首步、样例、逐项选择、批准、执行顺序及经典 Serverless 容量边界，无需检索。"}
+      },
+      "visible_distractor_ids_author_only": ["opensearch-skills", "opensearch-search", "opensearch-ingest"],
+      "controlled_delta_note": "正负例共享全部上下文与 query；仅 changed_message_index=14 的追加消息在缺少与补齐搭建顺序及容量边界事实之间变化。",
+      "source_fact_map": [
+        {"claim": "搭建前必须先做预检，不能先创建索引、加载数据或执行集群操作。", "source_id": "T20-SRC-OPENSEARCH-LAUNCHPAD", "locator": "SKILL.md § Critical Rules; § Phase 0"},
+        {"claim": "预检后收集样例数据；策略和目标逐项询问，先展示方案并等待批准，再按阶段顺序执行。", "source_id": "T20-SRC-OPENSEARCH-LAUNCHPAD", "locator": "SKILL.md § Key Rules; § Workflow Phases"},
+        {"claim": "经典 Serverless 保持最低 OCU 容量，NextGen 才支持缩容到零。", "source_id": "T20-SRC-OPENSEARCH-LAUNCHPAD", "locator": "SKILL.md § Critical Rules 3"}
+      ],
+      "sol_review_questions": [
+        "正例是否目标不在预热 listing、先发现再使用上一步返回标识打开一次，并立即停止？",
+        "负例 delta 是否只补齐冻结搭建文件明确支持的步骤顺序和容量边界？",
+        "公开 query/context 是否没有工具名、来源、资产、团队、配对或评分泄漏？"
+      ]
+    },
+    {
+      "draft_pair_id": "T20-PAIR-S03",
+      "external_source_ids": ["T20-SRC-NEMO-RETRIEVER"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "long_12_to_18",
+      "shared_context_messages": [
+        {"role": "user", "content": "VectorBlend 要对一批混合格式资料做检索评估，语料里既有 PDF，也有扫描图片、Office 文件、网页文本和多媒体文件。"},
+        {"role": "assistant", "content": "我会先确认语料组成和问题类型，再决定索引准备、检索和结果引用的边界。"},
+        {"role": "user", "content": "团队希望按自然语言提问，并能在命中后继续做筛选、摘录或聚合，不想为每种格式写一套不同的临时脚本。"},
+        {"role": "assistant", "content": "统一的文档检索流程会比为每种格式拼接独立处理更容易复现，也能减少格式差异带来的遗漏。"},
+        {"role": "user", "content": "资料目录还在变化，当前没有固定的单文件路径，也没有完成首次索引。"},
+        {"role": "assistant", "content": "首次处理和后续提问应区分开；我会避免把尚未确认的目录状态当成已完成准备。"},
+        {"role": "user", "content": "RankLab 会比较召回质量，ReindexRail 会关心索引切换，但这次先聚焦混合语料如何被检索。"},
+        {"role": "assistant", "content": "相关性和索引切换可以作为后续验证项，当前先明确格式覆盖、准备阶段和查询阶段的工作边界。"},
+        {"role": "user", "content": "有人建议直接用本地文本读取方式逐个处理文件，另一个建议是使用一条统一的专用检索路径。"},
+        {"role": "assistant", "content": "需要依据语料是否多文件、是否包含非 PDF 格式来判断路径，不能只按最熟悉的单文件做法决定。"},
+        {"role": "user", "content": "我们还需要把设置和提问的资源开销限制写清楚，避免查询阶段重复做准备工作。"},
+        {"role": "assistant", "content": "我会将设置阶段与查询阶段的操作次数和停止条件分开记录，保持每轮动作可审计。"},
+        {"role": "user", "content": "请给出这类混合多文件语料应该采用的检索流程，以及首次准备和后续查询的调用边界。"},
+        {"role": "assistant", "content": "目前只知道需要一份针对多格式语料的统一指导，具体规则仍需从已列出的指导内容中确认。"}
+      ],
+      "changed_message_index": 14,
+      "query": "请说明 VectorBlend 混合多文件语料的格式覆盖、应优先采用哪种检索方式，以及设置回合和查询回合的调用次数边界。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "这份指导已经在当前可用列表中。请按已列出的名称打开它一次，并同时带上正文和清单信息；拿到内容后停止继续查找。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结文档检索文件支持的格式范围、混合多文件时的优先路径、一次设置命令与查询回合最多两次命令调用。",
+          "route": "skill",
+          "target_asset_ids": ["T20-SKILL-NEMO-RETRIEVER"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "对绑定 listing 中的精确 skill 名称执行一次带正文和 manifest 的打开操作后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充已确认的流程规则：该检索指导覆盖 PDF、扫描图片、Office、HTML/TXT、音频和视频；多文件或非 PDF 语料优先使用统一的专用检索程序，而不是通用的原生文件读取方式。首次设置只执行一条命令并在索引落地后停止；后续查询回合最多两次命令调用（一次查询，另一次仅在需要时做定向文本提取）。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "负例 delta 完整补齐格式范围、优先方式及设置/查询调用限制，可直接回答。"}
+      },
+      "visible_distractor_ids_author_only": ["nemotron-retrieval-recipes", "rag-eval", "vss-search-archive"],
+      "controlled_delta_note": "正负例共享全部上下文与 query；仅 changed_message_index=14 的追加消息在缺少与补齐多格式检索规则之间变化。",
+      "source_fact_map": [
+        {"claim": "指导覆盖 PDF、图片、Office、HTML/TXT、音频和视频。", "source_id": "T20-SRC-NEMO-RETRIEVER", "locator": "SKILL.md front matter description; § Beyond PDFs"},
+        {"claim": "多文件或非 PDF 语料优先使用专用检索 CLI，不使用原生 Read/Grep。", "source_id": "T20-SRC-NEMO-RETRIEVER", "locator": "SKILL.md opening paragraphs; § Hard limits"},
+        {"claim": "设置回合一条 shell 命令后停止；查询回合最多两次 Bash 调用。", "source_id": "T20-SRC-NEMO-RETRIEVER", "locator": "SKILL.md § Hard limits"}
+      ],
+      "sol_review_questions": [
+        "正例是否直接使用 bound listing 的精确名称打开一次，并包含正文与 manifest？",
+        "负例 delta 是否没有引入冻结文件之外的格式或调用规则？",
+        "公开文本是否没有工具名、来源、资产、团队、配对或评分泄漏？"
+      ]
+    },
+    {
+      "draft_pair_id": "T20-PAIR-S04",
+      "external_source_ids": ["T20-SRC-RAG-BLUEPRINT"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "long_12_to_18",
+      "shared_context_messages": [
+        {"role": "user", "content": "RankLab 正在排查一个检索增强部署的配置问题，涉及搜索、过滤、重排和 topK，但当前还没有确定应该走哪个处理分支。"},
+        {"role": "assistant", "content": "我会先把请求的动作和具体功能拆开，避免把部署、配置和故障处理混成一个步骤。"},
+        {"role": "user", "content": "有人把启动、启用、修改、调试和停机都写成了同一类任务，导致执行前没有清晰的路由。"},
+        {"role": "assistant", "content": "动作词应先映射到对应的操作流程，再读取该流程的具体说明；不同动作不能互相替代。"},
+        {"role": "user", "content": "这次主要关心检索质量和运行配置，可能还需要看过滤条件、混合检索和结果重排。"},
+        {"role": "assistant", "content": "我会把搜索与检索功能归入同一配置范围，同时保留部署状态和故障处理作为独立判断。"},
+        {"role": "user", "content": "VectorBlend 的实验会提供权重和评估背景，但不能直接代替部署侧的配置说明。"},
+        {"role": "assistant", "content": "相关性实验只作为背景；具体路由仍应由当前请求的动作和功能关键词决定。"},
+        {"role": "user", "content": "如果服务没有运行，直接进入配置可能会掩盖真正的问题；但如果只是改参数，也不应误走停机流程。"},
+        {"role": "assistant", "content": "我会先判断部署是否存在，再区分配置、排障和关闭等意图，避免无关的破坏性动作。"},
+        {"role": "user", "content": "团队希望得到一份短而确定的意图路由表，能覆盖部署、配置、排障和关闭，并指向搜索相关部分。"},
+        {"role": "assistant", "content": "当前还缺少那份路由表的精确关键词边界，我会先找到适用指导再回答。"},
+        {"role": "user", "content": "请给出动作词和搜索/检索相关关键词分别对应的处理分支。"},
+        {"role": "assistant", "content": "需要一份专门的部署管理指导来确认这些路由，不能凭常见运维习惯补写。"}
+      ],
+      "changed_message_index": 14,
+      "query": "请为 RankLab 的检索增强部署整理动作路由：部署/安装/启动、配置/启用/修改、排障/调试/修复、停止/关闭/拆除分别走哪里，搜索与检索相关设置又走哪一支。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "上下文还没有精确路由表。请先在团队可用能力中查找最匹配的指导，再依据返回的匹配标识打开一次；拿到匹配内容后停止继续查找。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结部署指导中四类动作的路由词，以及搜索、过滤、混合检索、重排、topK、准确率和性能的配置分支。",
+          "route": "skill",
+          "target_asset_ids": ["T20-SKILL-RAG-BLUEPRINT"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "skill_search 返回目标 skill id/name 后，只使用该返回值打开一次目标 Skill，并立即停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充已确认的路由：deploy/install/start 进入 deploy；configure/enable/change/toggle 进入 Configure；troubleshoot/debug/fix/error/unhealthy 进入 troubleshoot；stop/shutdown/tear down/clean up 进入 shutdown。search、retrieval、hybrid search、filters、reranking、topK、accuracy/performance 等关键词进入 Configure 下的 search-and-retrieval 配置。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "负例 delta 完整补齐四类动作和搜索检索功能的路由，可直接回答而无需检索。"}
+      },
+      "visible_distractor_ids_author_only": ["rag-eval", "rag-perf", "nemotron-retrieval-recipes"],
+      "controlled_delta_note": "正负例共享全部上下文与 query；仅 changed_message_index=14 的追加消息在缺少与补齐意图路由事实之间变化。",
+      "source_fact_map": [
+        {"claim": "deploy/install/start 路由到 deploy，configure/enable/change/toggle 路由到 Configure。", "source_id": "T20-SRC-RAG-BLUEPRINT", "locator": "SKILL.md § Intent Detection"},
+        {"claim": "troubleshoot/debug/fix/error/unhealthy 路由到 troubleshoot，stop/shutdown/tear down/clean up 路由到 shutdown。", "source_id": "T20-SRC-RAG-BLUEPRINT", "locator": "SKILL.md § Intent Detection"},
+        {"claim": "搜索、检索、混合检索、过滤、重排、topK、准确率和性能路由到 search-and-retrieval 配置。", "source_id": "T20-SRC-RAG-BLUEPRINT", "locator": "SKILL.md § Configure feature table"}
+      ],
+      "sol_review_questions": [
+        "正例是否目标缺失、先发现再使用返回标识打开一次，并立即停止？",
+        "负例是否仅补齐冻结路由表中的词和搜索检索分支？",
+        "公开 query/context 是否没有工具名、来源、资产、团队、配对或评分泄漏？"
+      ]
+    },
+    {
+      "draft_pair_id": "T20-PAIR-S05",
+      "external_source_ids": ["T20-SRC-VSS-SEARCH-ARCHIVE"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "long_12_to_18",
+      "shared_context_messages": [
+        {"role": "user", "content": "VectorBlend 需要在归档视频中按自然语言查找动作和对象，输入可能来自文件，也可能来自实时流。"},
+        {"role": "assistant", "content": "我会先确认运行环境和来源状态，再判断检索请求能否安全进入搜索阶段。"},
+        {"role": "user", "content": "目前只知道要查找某个仓库区域的车辆活动，具体来源名称和服务地址还没有写进任务。"},
+        {"role": "assistant", "content": "来源和服务地址都是必要前提，在它们明确前不能假设已有可搜索内容。"},
+        {"role": "user", "content": "有人建议把视频直接上传到存储后就开始查询，另一个建议是先走统一的接入流程。"},
+        {"role": "assistant", "content": "需要确认哪条流程会同时完成来源登记和检索准备，不能只依据文件已经存在就认为可查。"},
+        {"role": "user", "content": "RankLab 的相关性评估只负责比较结果，ReindexRail 的切换规则也不应改变视频来源的前置检查。"},
+        {"role": "assistant", "content": "我会把来源解析、接入、向量准备和自然语言查询分开记录，再将结果验证放在最后。"},
+        {"role": "user", "content": "查询希望覆盖对象、动作和时间上下文，但我们不打算手工构造复杂的结构化请求。"},
+        {"role": "assistant", "content": "如果前置条件满足，优先使用自然语言表达查询；来源筛选仍要以已确认的登记信息为准。"},
+        {"role": "user", "content": "还要明确哪些操作会导致来源虽可访问却没有可用于搜索的表示。"},
+        {"role": "assistant", "content": "我会把存储可见性和可检索性当成两个不同状态，避免用上传成功推断检索准备完成。"},
+        {"role": "user", "content": "请说明归档视频自然语言检索开始前的地址、来源和接入前置条件，以及正确的查询方式。"},
+        {"role": "assistant", "content": "当前缺少一份针对归档视频检索的前置条件说明，需要先读取已绑定的指导。"}
+      ],
+      "changed_message_index": 14,
+      "query": "请为 VectorBlend 的归档视频自然语言检索列出服务地址与来源确认、接入完成和开始查询之间的硬性边界，并说明应采用的查询形式。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "这份视频检索指导已经在当前可用列表中。请按已列出的名称打开它一次，并同时带上正文和清单信息；拿到内容后停止继续查找。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结视频检索文件规定的显式地址、来源解析、代理接入完成后才可搜索以及不得走裸存储上传捷径的前置条件。",
+          "route": "skill",
+          "target_asset_ids": ["T20-SKILL-VSS-SEARCH-ARCHIVE"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "对绑定 listing 中的精确 skill 名称执行一次带正文和 manifest 的打开操作后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充已确认的边界：必须由用户明确提供服务地址；开始搜索前先确认指定来源已登记，未登记就停止并请求选择或接入。新来源必须经统一的代理接入流程完成登记、处理和可搜索表示生成后才能查询；仅把文件放进底层存储的捷径不会生成可检索表示。满足前置条件后使用自然语言查询。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "负例 delta 完整补齐地址、来源确认、代理接入、禁止裸上传和自然语言查询边界，可直接回答。"}
+      },
+      "visible_distractor_ids_author_only": ["nemo-retriever", "rag-blueprint", "opensearch-managed-ingestion"],
+      "controlled_delta_note": "正负例共享全部上下文与 query；仅 changed_message_index=14 的追加消息在缺少与补齐视频检索前置条件之间变化。",
+      "source_fact_map": [
+        {"claim": "没有用户明确提供服务地址时必须停止，不能猜测本地主机或其他地址。", "source_id": "T20-SRC-VSS-SEARCH-ARCHIVE", "locator": "SKILL.md § Mandatory workflow; § Input resolution"},
+        {"claim": "搜索前必须确认来源已登记；缺失来源时停止，不得用搜索请求探测。", "source_id": "T20-SRC-VSS-SEARCH-ARCHIVE", "locator": "SKILL.md § Mandatory workflow step 2"},
+        {"claim": "来源必须通过代理接入流程完成处理和表示生成；裸存储上传不会使其可搜索。", "source_id": "T20-SRC-VSS-SEARCH-ARCHIVE", "locator": "SKILL.md § Ingestion prerequisite"}
+      ],
+      "sol_review_questions": [
+        "正例是否直接使用 bound listing 的精确名称打开一次，并包含正文与 manifest？",
+        "负例是否完整补齐地址、来源、接入和查询前置条件而未添加冻结文件外的流程？",
+        "公开文本是否没有工具名、来源、资产、团队、配对或评分泄漏？"
+      ]
+    },
+    {
+      "draft_pair_id": "T20-PAIR-S06",
+      "external_source_ids": ["T20-SRC-OPENSEARCH-INGEST"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "long_12_to_18",
+      "shared_context_messages": [
+        {"role": "user", "content": "ReindexRail 正在设计增量索引流程，数据来源既有结构化记录，也有需要先处理的非结构化文档。"},
+        {"role": "assistant", "content": "我会先区分数据进入索引前的处理阶段与索引切换阶段，避免把两种风险混在一起。"},
+        {"role": "user", "content": "当前争论集中在如何把材料变成可检索内容，以及何时把结果交给后面的索引流程。"},
+        {"role": "assistant", "content": "需要一份面向文档处理的类别指引，明确它覆盖的输入范围和与其他导入路径的边界。"},
+        {"role": "user", "content": "AtlasSearch 会关注字段映射，RankLab 会关注排序质量；这次先不要把它们当成文档处理步骤。"},
+        {"role": "assistant", "content": "我会把文档处理、字段映射和质量评估分开记录，先确认材料如何准备，再交给后续索引流程。"},
+        {"role": "user", "content": "有一批 PDF、DOCX 和 PPTX 材料要准备，团队想知道应该先读哪类指导。"},
+        {"role": "assistant", "content": "这些输入属于非结构化材料，适用的处理方式和输出形态需要从冻结指导中确认。"},
+        {"role": "user", "content": "上次把日志传输的配置当成文档处理方案，结果虽然能看到运行状态，却没有得到可用于后续搜索的材料。"},
+        {"role": "assistant", "content": "日志/指标传输与文档处理是不同范围；这次只判断材料处理流程，不延伸到观测配置。"},
+        {"role": "user", "content": "本次还要知道云端大规模导入、结构化批量接口和索引内置处理器是否属于同一类指导。"},
+        {"role": "assistant", "content": "这些边界必须按指导文件原文确认，不能凭名称推断哪些流程包含在内。"},
+        {"role": "user", "content": "请为 ReindexRail 的增量索引准备，说明 PDF/DOCX/PPTX 等非结构化文档应采用哪类处理方式、要读取哪一个子指导，并列出该类目明确不覆盖的几类流程。"},
+        {"role": "assistant", "content": "目前缺少文档处理类别文件的准确适用范围和排除项；先补齐这一个事实再回答。"}
+      ],
+      "changed_message_index": 14,
+      "query": "请为 ReindexRail 的增量索引准备，说明 PDF/DOCX/PPTX 等非结构化文档应采用哪类处理方式、要读取哪一个子指导，并列出该类目明确不覆盖的几类流程。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前上下文缺少导入类目的明确边界。请先在团队可用能力中查找最匹配的指导，再依据返回的匹配标识打开一次；拿到匹配内容后停止继续查找。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结导入类目文件明确支持的 PDF/DOCX/PPTX 等非结构化文档、Docling 到 search-ready JSONL chunks 的处理方式、document-processing 子 Skill 路由，以及其排除的云端 OSIS、结构化 _bulk、索引内置处理器和日志/指标传输边界。",
+          "route": "skill",
+          "target_asset_ids": ["T20-SKILL-OPENSEARCH-INGEST"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "skill_search 返回目标 skill id/name 后，只使用该返回值打开一次目标 Skill，并立即停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充已确认的类别边界：该类目把 PDF、DOCX、PPTX 等非结构化文档通过 Docling 处理为 search-ready JSONL chunks，并要求读取 document-processing 子 Skill。它不覆盖云端大规模导入管线、结构化 _bulk、索引内置处理器管线，也不覆盖日志/指标传输；这些属于该类目之外的流程。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "负例 delta 完整补齐冻结文件明确支持的文档格式、Docling/JSONL 输出、子 Skill 路由和排除项，无需检索。"}
+      },
+      "visible_distractor_ids_author_only": ["opensearch-observability", "opensearch-search", "rag-perf"],
+      "controlled_delta_note": "正负例共享全部上下文与 query；仅 changed_message_index=14 的追加消息在缺少与补齐文档处理类别事实之间变化。",
+      "source_fact_map": [
+        {"claim": "该类目处理 PDF、DOCX、PPTX 等非结构化文档，并将其处理为 search-ready JSONL chunks。", "source_id": "T20-SRC-OPENSEARCH-INGEST", "locator": "SKILL.md description; § Not Covered"},
+        {"claim": "涉及文档处理、切分或 Docling 时阅读 document-processing 子 Skill。", "source_id": "T20-SRC-OPENSEARCH-INGEST", "locator": "SKILL.md § When to Use"},
+        {"claim": "不覆盖云端大规模 OSIS、结构化 _bulk、OpenSearch ingest processor 管线或日志/指标传输。", "source_id": "T20-SRC-OPENSEARCH-INGEST", "locator": "SKILL.md § Not Covered"}
+      ],
+      "sol_review_questions": [
+        "正例是否目标缺失、先发现再使用返回标识打开一次，并立即停止？",
+        "负例 delta 是否只补齐冻结文件明确支持的文档处理事实和排除项？",
+        "公开 query/context 是否没有工具名、来源、资产、团队、配对或评分泄漏？"
+      ]
+    }
+  ]
+}

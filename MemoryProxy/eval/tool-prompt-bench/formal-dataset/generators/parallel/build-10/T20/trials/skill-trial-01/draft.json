@@ -1,0 +1,136 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T20-DS05-SKILL-TRIAL-01",
+  "stage": "DS05",
+  "team_id": "T20",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T20-PAIR-S01",
+      "external_source_ids": [
+        "T20-SRC-OPENSEARCH-SEARCH"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "long_12_to_18",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "AtlasSearch 正在整理一套面向内部知识库的应用搜索方案，当前重点是索引映射、分析器和字段类型。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会先把数据形状、字段语义和查询目标分开记录，确保映射决策不会被后续的相关性实验混淆。"
+        },
+        {
+          "role": "user",
+          "content": "第一版只覆盖标题、正文、标签和时间字段，既要支持精确约束，也要允许用户用自然语言寻找相关内容。"
+        },
+        {
+          "role": "assistant",
+          "content": "索引设计需要同时考虑词项检索和语义召回的边界，并明确哪些字段用于过滤、排序或展示。"
+        },
+        {
+          "role": "user",
+          "content": "团队讨论过 BM25、稠密向量、稀疏向量和混合检索，但还没有把选择过程整理成可复用的工作方法。"
+        },
+        {
+          "role": "assistant",
+          "content": "这些选择应由样例数据、用户意图和质量目标共同约束，不能只凭单次离线结果决定架构。"
+        },
+        {
+          "role": "user",
+          "content": "最近一次词法回归暴露出字段分析方式与查询习惯之间有偏差，我们准备补充一组有代表性的查询和文档。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把样例准备、索引配置、查询策略和质量检查视为相互关联的阶段，并保留回滚和对比的记录。"
+        },
+        {
+          "role": "user",
+          "content": "数据团队还会交付 PDF 和 DOCX 材料，文档预处理会影响切分、字段抽取和最终可检索性。"
+        },
+        {
+          "role": "assistant",
+          "content": "文档处理应纳入搜索方案的边界，先确认输入形态和处理结果，再判断索引字段是否足够表达内容。"
+        },
+        {
+          "role": "user",
+          "content": "RankLab 的相关性实验和 VectorBlend 的向量对比会提供参考，但 AtlasSearch 这次需要一套能从索引开始落地的统一指引。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会区分本项目的索引与搜索架构问题、相关性评估问题以及向量实验问题，避免把局部结论当成完整流程。"
+        },
+        {
+          "role": "user",
+          "content": "请在现有背景下整理下一步：我们要怎样选择搜索策略、准备索引，并确定是否需要语义或混合能力。"
+        },
+        {
+          "role": "assistant",
+          "content": "目前还缺少一份针对这类搜索应用的端到端方法说明；先补齐适用的工作指引，再据此安排评估和实现。"
+        }
+      ],
+      "changed_message_index": 14,
+      "query": "请给出 AtlasSearch 构建应用搜索的适用方法：覆盖索引设置、搜索架构、语义/向量/混合策略、质量评估与文档处理，并说明端到端搭建应转向哪一类后续指引。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "当前上下文还没有这类搜索应用的完整方法说明。请先在团队可用能力中查找最匹配的指导，再依据返回的匹配标识打开一次；拿到匹配内容后停止继续查找。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结搜索类目文件中关于适用范围及端到端搭建转向 launchpad 子流程的路由事实；该事实不在预热 listing 或当前上下文中。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T20-SKILL-OPENSEARCH-SEARCH"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_search",
+              "skill_view_by_id"
+            ]
+          ],
+          "stop_after_candidate": "skill_search 返回目标 skill id/name 后，只使用该返回值打开一次目标 Skill，并立即停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充已确认的指导边界：构建应用搜索、设置索引、设计搜索架构，以及选择语义、向量、混合或 agentic 搜索、评估搜索质量和处理文档时，都应采用搜索类目的统一流程；若任务要求端到端搭建，则转到 launchpad 子流程。不要凭空扩写该子流程未提供的具体步骤。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "负例 delta 已完整补齐搜索类目的适用范围以及端到端搭建的 launchpad 路由，足以直接回答查询，无需再检索。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "opensearch-skills",
+        "opensearch-ingest",
+        "rag-blueprint"
+      ],
+      "controlled_delta_note": "正负例共享全部上下文与 query；仅 changed_message_index=14 的追加消息在缺少与补齐搜索类目适用范围及后续路由事实之间变化。",
+      "source_fact_map": [
+        {
+          "claim": "搜索类目用于搜索应用、索引设置和搜索架构，并覆盖 semantic/vector/hybrid/agentic search、质量评估与文档处理等相关主题。",
+          "source_id": "T20-SRC-OPENSEARCH-SEARCH",
+          "locator": "SKILL.md front matter description; § When to Use"
+        },
+        {
+          "claim": "端到端搜索应用搭建应阅读 launchpad 子流程。",
+          "source_id": "T20-SRC-OPENSEARCH-SEARCH",
+          "locator": "SKILL.md § Skills and § When to Use / Build a new search application"
+        }
+      ],
+      "sol_review_questions": [
+        "正例是否保持目标能力缺失、仅先发现再使用上一步返回的标识打开一次，并且目标不在预热 listing？",
+        "负例 delta 是否只补齐冻结搜索文件明确支持的适用范围与 launchpad 路由，没有扩写未读取的端到端细节？",
+        "公开 query/context 是否没有工具名、端点、来源、资产、团队、配对或 Gold 泄漏？"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T20-DS05-MEMORY-MAIN-01",
+  "stage": "DS05",
+  "team_id": "T20",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T20-PAIR-M02",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"RankLab 最近在复盘搜索评分，先把候选召回、分数计算和最终排序拆开。"},
+        {"role":"assistant","content":"第一次直接提高新信号权重，离线曲线变好但长尾查询的顺序不稳定，方案先回退。"},
+        {"role":"user","content":"第二次只改并列处理，局部样本通过但和已有排序回归不一致。"},
+        {"role":"assistant","content":"当前要区分被拒绝的评分改动、保留下来的比较口径，以及曾经回滚的边界；不要凭平均分重新设计规则。"},
+        {"role":"user","content":"AtlasSearch 的字段变化和 CursorFlow 的分页问题会出现在同一份周报里，但都不是本次实验的结论。"},
+        {"role":"assistant","content":"我会只沿 RankLab 的实验时间线整理失败尝试、比较结果和回滚原因，并把相邻项目作为干扰单独标记。"},
+        {"role":"user","content":"旧交接只说分数曲线后来恢复，缺少实验先后顺序和最终接受边界。"},
+        {"role":"assistant","content":"需要找回当时的完整评分实验记录，不能用当前代码状态倒推历史决定。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请找回 RankLab 之前的评分实验：哪种改动被拒绝、哪种比较被接受、为什么曾回滚，以及最终应保留的边界是什么？",
+      "positive": {
+        "delta_message": {"role":"assistant","content":"当前交接仍缺少实验记录的完整先后关系；请根据已有讨论恢复那次评分试验的结论。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少 T20-L0-RANK-SCORE-EXPERIMENT 中的失败评分尝试、接受的比较、一次回滚及其边界；当前上下文仅给出症状。",
+          "route": "memory",
+          "target_asset_ids": ["T20-L0-RANK-SCORE-EXPERIMENT"],
+          "allowed_sequence_candidates": [["tdai_conversation_search"]],
+          "stop_after_candidate": "返回包含失败尝试、接受比较和回滚边界的 RankLab 会话后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"assistant","content":"交接补全了历史决定：直接提高新信号权重的方案因长尾排序不稳定被拒绝；接受的是在固定查询集合上比较分数变化并保留稳定并列处理；一次回滚发生在局部离线改善与线上回归冲突时，最终边界是不把平均分提升当作可单独发布的排序规则。"},
+        "private_proposal": {"route":"none","why_current_context_is_sufficient":"追加内容完整提供了被拒绝改动、接受比较、回滚触发和最终边界，当前上下文足以回答。"}
+      },
+      "visible_distractor_ids_author_only": ["T20-L1-RANK-TIE-BREAK","T20-L1-RANK-BOOST-BOUNDARY","T20-L0-RANK-NDCG-REVIEW"],
+      "controlled_delta_note": "正负例共享八条 RankLab 背景和同一 query；仅追加消息不同，正例保留实验结论缺口，负例一次性补足同一实验事实。",
+      "source_fact_map": [],
+      "sol_review_questions": ["正例是否必须恢复历史实验而不能从当前分数猜测？","负例是否只补足拒绝、接受、回滚和边界？","公开文本是否没有暴露工具、资产、团队或记忆层级名称？"]
+    },
+    {
+      "draft_pair_id": "T20-PAIR-M03",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"CursorFlow 的深分页调查要同时考虑稳定排序、固定读取视图和游标边界。"},
+        {"role":"assistant","content":"第一次沿用 offset，浅页看起来正确，深页出现重复和遗漏，方案已撤回。"},
+        {"role":"user","content":"第二次只增加一个排序字段，重复减少但跨页仍会受并列项影响。"},
+        {"role":"assistant","content":"需要把排序稳定性、并列处理和读取视图放回同一条调查时间线，不能只看单次请求。"},
+        {"role":"user","content":"RankLab 的相关性实验和 ReindexRail 的切换窗口也在同一周发生，属于相邻排查项。"},
+        {"role":"assistant","content":"本次只追 CursorFlow 的分页调查；当前摘要没有保留场景入口或最后确认的边界。"}
+      ],
+      "changed_message_index": 6,
+      "query": "请读取 CursorFlow 深分页调查场景，说明最终采用的稳定排序和游标边界，以及为什么不再依赖 offset。",
+      "positive": {
+        "delta_message": {"role":"assistant","content":"目前只有失败现象和排查范围，场景正文尚未回到当前讨论；请先定位对应调查记录。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少 T20-L2-CURSOR-PAGINATION 的场景路径及稳定排序/游标边界；路径必须由首步场景列表返回，不能猜测。",
+          "route": "memory",
+          "target_asset_ids": ["T20-L2-CURSOR-PAGINATION"],
+          "allowed_sequence_candidates": [["tdai_scenario_ls","tdai_read_scene"]],
+          "stop_after_candidate": "scenario_ls 返回 CursorFlow 场景的 path 后，以该返回值读取正文并停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"assistant","content":"调查记录补回了决定：使用固定读取视图上的稳定排序元组，并以该元组作为 search-after 游标边界；offset 在深页会因数据变化和并列项造成重复/遗漏，因此不再作为回退方案。"},
+        "private_proposal": {"route":"none","why_current_context_is_sufficient":"追加内容同时给出稳定排序、游标边界及放弃 offset 的理由，无需读取历史场景。"}
+      },
+      "visible_distractor_ids_author_only": ["T20-L1-CURSOR-SEARCH-AFTER","T20-L1-CURSOR-STABLE-SORT","T20-L1-CURSOR-POINT-IN-TIME"],
+      "controlled_delta_note": "共享上下文与 query 不变；正例只保留定位缺口，负例补足场景事实，正例路径参数只能来自 scenario_ls 返回。",
+      "source_fact_map": [],
+      "sol_review_questions": ["首步是否严格为场景列表且第二步 path 来自首步？","负例是否只补足稳定排序、游标边界和 offset 原因？","场景摘要与公开文本是否不泄露工具名或私有资产 ID？"]
+    },
+    {
+      "draft_pair_id": "T20-PAIR-M04",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "memory", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role":"user","content":"ReindexRail 正在准备一次索引重建切换，先确认写入、校验、读取和回退的边界。"},
+        {"role":"assistant","content":"旧的切换草案把删除旧索引放得太早，已撤回；当前只需要查已批准的决定。"},
+        {"role":"user","content":"请求语境已经明确是 ReindexRail 当前的别名切换决定；查询只需使用 type=decision，其他项目流不纳入。"},
+        {"role":"assistant","content":"请按这些已知条件找回别名切换顺序，不要把 CursorFlow 的分页或延迟事故混进来。"}
+      ],
+      "changed_message_index": 4,
+      "query": "请在 ReindexRail 的当前切换语境中检索 type=decision，给出别名切换决定及旧索引何时可删除。",
+      "positive": {
+        "delta_message": {"role":"assistant","content":"上述筛选条件已知，但决定正文没有保留在当前交接；请恢复已批准的切换顺序。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少 T20-L1-REINDEX-ALIAS-SWAP 的原子记忆：写新索引、校验、原子读别名切换，以及删除旧索引前的回退边界；公开请求仅提供受支持的 type=decision。",
+          "route": "memory",
+          "target_asset_ids": ["T20-L1-REINDEX-ALIAS-SWAP"],
+          "allowed_sequence_candidates": [["tdai_atomic_query"]],
+          "stop_after_candidate": "原子查询以公开的 type=decision 参数返回目标决定后立即停止；ReindexRail 仅作为自然语言定位语境。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"assistant","content":"决定记录明确：先写入新索引并完成校验，再原子切换读别名；旧索引在回退窗口结束前不得删除，若切换异常先回退到旧别名。"},
+        "private_proposal": {"route":"none","why_current_context_is_sufficient":"追加消息完整给出了切换顺序、删除边界和回退动作，已知筛选条件下无需检索。"}
+      },
+      "visible_distractor_ids_author_only": ["T20-L1-REINDEX-CHECKPOINT","T20-L0-REINDEX-LAG-INCIDENT","T20-L1-DSL-FILTER-ORDER"],
+      "controlled_delta_note": "两例身份、type=decision 查询、项目语境、背景和 query 相同；仅 delta 是否提供别名顺序与删除回退边界不同。",
+      "source_fact_map": [],
+      "sol_review_questions": ["direct query 是否只使用生产契约支持的 type=decision 参数，并将 ReindexRail 保留为自然语言语境？","负例是否未引入延迟事故或分页事实？","公开文本是否没有工具名和私有资产标识？"]
+    },
+    {
+      "draft_pair_id": "T20-PAIR-M05",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"VectorBlend 的回归会话需要复盘一次 embedding 版本变化，先把向量生成、融合和评测分开。"},
+        {"role":"assistant","content":"第一次只重跑融合权重，离线结果短暂变好但回归仍在，方向已停止。"},
+        {"role":"user","content":"第二次怀疑索引延迟，调整刷新观察后仍无法解释同一批文本的向量差异。"},
+        {"role":"assistant","content":"需要回到那次会话的版本诊断和修复边界，不要从现有配置猜测原因。"},
+        {"role":"user","content":"公开任务上下文给出的 session_id 是 t20-session-vector-embedding-010；这个会话与混合权重消融记录要区分。"},
+        {"role":"assistant","content":"读取时只使用给定会话标识，RankLab 的评分回归与同域混合实验仅作旁支。"}
+      ],
+      "changed_message_index": 6,
+      "query": "请读取 session_id=t20-session-vector-embedding-010 的 VectorBlend 回归会话，说明 embedding 版本根因、被拒绝的临时方案和最终修复边界。",
+      "positive": {
+        "delta_message": {"role":"assistant","content":"该会话标识已知，但版本回归的诊断细节和修复结论不在当前交接；请恢复原会话。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少 T20-L0-VECTOR-EMBEDDING-REGRESSION 会话中的 embedding 版本根因、失败 workaround 和接受的修复边界。",
+          "route": "memory",
+          "target_asset_ids": ["T20-L0-VECTOR-EMBEDDING-REGRESSION"],
+          "allowed_sequence_candidates": [["tdai_conversation_query"]],
+          "stop_after_candidate": "按公开给定的 session_id 返回目标会话后停止，不搜索其他会话。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"assistant","content":"会话结论补回：回归根因是生成端切换到未与既有索引对齐的 embedding 版本；仅调整融合权重的 workaround 被拒绝；最终修复边界是恢复索引对应版本并重建受影响向量，再以同一版本锁定后续评测。"},
+        "private_proposal": {"route":"none","why_current_context_is_sufficient":"追加消息给出了版本根因、被拒绝方案和最终修复边界，目标会话无需再读取。"}
+      },
+      "visible_distractor_ids_author_only": ["T20-L1-VECTOR-EMBEDDING-VERSION","T20-L1-VECTOR-HYBRID-WEIGHT","T20-L0-VECTOR-HYBRID-ABLACTION"],
+      "controlled_delta_note": "两例共享同一 session_id、VectorBlend 背景和 query；正例未提供回归细节，负例只补足该会话的三个结论。",
+      "source_fact_map": [],
+      "sol_review_questions": ["direct conversation_query 是否只使用公开给出的 session_id？","负例是否没有混入融合权重实验的事实？","公开文本是否避免工具、资产、团队和记忆级别泄漏？"]
+    },
+    {
+      "draft_pair_id": "T20-PAIR-M06",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "memory", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"VectorBlend 正在整理混合召回实验，先分清词法候选、向量候选、融合和质量评估。"},
+        {"role":"assistant","content":"第一次把词法分数直接相加，热门词查询被放大，方案没有继续。"},
+        {"role":"user","content":"第二次换了归一化方式，离线质量有所改善，但还缺少固定评估边界。"},
+        {"role":"assistant","content":"当前只知道实验比较过多个方向，不能从趋势推断团队最终采用的权重。"},
+        {"role":"user","content":"AtlasSearch 的 analyzer 和 RankLab 的 rerank 记录是同域干扰；本次只追 VectorBlend 的融合决定。"},
+        {"role":"assistant","content":"旧交接只留下‘质量达标后收敛’，具体权重和停止条件仍需从历史记忆恢复。"}
+      ],
+      "changed_message_index": 6,
+      "query": "请找回 VectorBlend 混合融合实验最终采用的权重、比较过的备选值，以及结束实验的质量边界。",
+      "positive": {
+        "delta_message": {"role":"assistant","content":"当前记录没有保留最后的数值选择和评估边界；请从既有实验记忆中恢复结论。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少 T20-L1-VECTOR-HYBRID-WEIGHT 的 accepted weight、比较的备选权重及停止实验的质量阈值。",
+          "route": "memory",
+          "target_asset_ids": ["T20-L1-VECTOR-HYBRID-WEIGHT"],
+          "allowed_sequence_candidates": [["tdai_memory_search"]],
+          "stop_after_candidate": "返回包含 accepted weight、备选值和质量边界的目标记忆后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"assistant","content":"实验记忆补全：最终采用词法占 0.35、向量占 0.65 的融合权重；比较过 0.50/0.50 与 0.25/0.75，固定评估集上的 nDCG@10 达到至少 0.72 后结束调参并冻结该权重。"},
+        "private_proposal": {"route":"none","why_current_context_is_sufficient":"追加内容同时提供最终权重、备选值和质量停止边界，无需历史检索。"}
+      },
+      "visible_distractor_ids_author_only": ["T20-L1-ATLAS-ANALYZER-LOWERCASE","T20-L1-RANK-RERANK-SCOPE","T20-L0-VECTOR-HYBRID-ABLACTION"],
+      "controlled_delta_note": "正负例共享 VectorBlend 实验背景、同域干扰和 query；正例保留数值缺口，负例完整补足一次融合决定。",
+      "source_fact_map": [],
+      "sol_review_questions": ["正例是否不能从质量趋势自行推断权重？","负例是否只给出权重、备选和停止阈值？","公开 query/context 是否未泄露工具、provider、资产或层级信息？"]
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "schema_version": "task1.knowledge_asset_candidates.v1",
+  "stage": "DS05",
+  "team_id": "T20",
+  "synthetic": true,
+  "candidates": [
+    {
+      "asset_id": "T20-KNOW-WIKI-REINDEX-RUNBOOK",
+      "status": "ready",
+      "name": "ReindexRail 内部切换手册",
+      "type": "wiki",
+      "service_url": "https://knowledge.synthetic.invalid/reindexrail-runbook",
+      "workspace_match": "TencentDB-Agent-Memory/ReindexRail",
+      "about": "增量索引重建、首批观察、异常中止和读别名保留的内部流程记录。",
+      "summary": "用于选择与 ReindexRail 重建切换和读后写一致性主题匹配的内部 wiki；摘要不包含比例、阈值或处置正文。",
+      "tools": [
+        {"name": "get_info", "params": {}},
+        {"name": "search", "params": {"query": "string", "limit": "integer"}},
+        {"name": "list_pages", "params": {}},
+        {"name": "read_page", "params": {"refs": "array"}},
+        {"name": "get_graph", "params": {}},
+        {"name": "list_raw", "params": {}},
+        {"name": "read_raw", "params": {"filenames": "array"}}
+      ],
+      "minimal_synthetic_query_result": {
+        "tool_listing": {
+          "tool_name": "tools/list",
+          "result": {
+            "knowledge_id": "T20-KNOW-WIKI-REINDEX-RUNBOOK",
+            "type": "wiki",
+            "name": "ReindexRail 内部切换手册",
+            "status": "ready",
+            "tools": [
+              {"name": "get_info", "params": {}},
+              {"name": "search", "params": {"query": {"type": "string", "required": true}, "limit": {"type": "integer", "required": false, "default": 20}}},
+              {"name": "list_pages", "params": {}},
+              {"name": "read_page", "params": {"refs": {"type": "array", "required": true}}},
+              {"name": "get_graph", "params": {}},
+              {"name": "list_raw", "params": {}},
+              {"name": "read_raw", "params": {"filenames": {"type": "array", "required": true}}}
+            ]
+          }
+        },
+        "successful_query": {
+          "tool_name": "search",
+          "params": {"query": "ReindexRail first cohort baseline read-after-write indexing lag alias"},
+          "result": {
+            "title": "ReindexRail 内部切换手册",
+            "rule_text": "内部切换手册的固定判定是：先以 15% 作为首批 cohort，完成 20-minute baseline；只有观察通过才扩大。若 read-after-write miss rate reaches 0.7% for 5 minutes，或 indexing lag exceeds 90 seconds for 10 minutes，则 abort expansion，freeze expansion，keep the prior alias，并 page on-call。",
+            "first_cohort": "15%",
+            "baseline": "20-minute",
+            "read_after_write_abort": "0.7% for 5 minutes",
+            "indexing_lag_abort": "above 90 seconds for 10 minutes",
+            "on_abort": ["freeze expansion", "keep the prior alias", "page on-call"]
+          }
+        }
+      }
+    },
+    {
+      "asset_id": "T20-KNOW-CG-SEARCH-PIPELINE",
+      "status": "ready",
+      "name": "生产搜索管线代码图谱",
+      "type": "code_graph",
+      "service_url": "https://knowledge.synthetic.invalid/search-pipeline-graph",
+      "workspace_match": "TencentDB-Agent-Memory",
+      "about": "搜索入口、候选合并和只读桥接路径的代码关系索引。",
+      "summary": "用于选择与当前仓库搜索管线主题匹配的代码图谱；仅提供锁定版本的结构导航。",
+      "tools": [
+        {"name": "get_info", "params": {}},
+        {"name": "search", "params": {"query": "string", "kind": "string", "limit": "integer"}},
+        {"name": "explore", "params": {"query": "string", "maxFiles": "integer"}},
+        {"name": "callers", "params": {"symbol": "string", "limit": "integer"}},
+        {"name": "callees", "params": {"symbol": "string", "limit": "integer"}},
+        {"name": "impact", "params": {"symbol": "string", "depth": "integer"}},
+        {"name": "node", "params": {"symbol": "string", "includeCode": "boolean"}},
+        {"name": "status", "params": {}},
+        {"name": "files", "params": {"path": "string", "pattern": "string", "format": "string"}}
+      ],
+      "minimal_synthetic_query_result": {
+        "tool_listing": {"tool_name": "tools/list", "result": {"type": "code-graph", "status": "ready", "tools": [{"name": "search", "params": {"query": {"type": "string", "required": true}}}, {"name": "explore", "params": {"query": {"type": "string", "required": true}}}]}},
+        "successful_query": {"tool_name": "explore", "params": {"query": "search pipeline"}, "result": {"summary": "返回锁定搜索管线的结构导航摘要。"}}
+      }
+    },
+    {
+      "asset_id": "T20-KNOW-WIKI-RANK-QUALITY",
+      "status": "ready",
+      "name": "RankLab 相关性评估手册",
+      "type": "wiki",
+      "service_url": "https://knowledge.synthetic.invalid/ranklab-quality",
+      "workspace_match": "TencentDB-Agent-Memory/RankLab",
+      "about": "相关性评估、排序回归和实验复盘的内部文档。",
+      "summary": "用于选择与 RankLab 相关性评估主题匹配的内部 wiki；摘要不包含指标门槛或回滚结论。",
+      "tools": [
+        {"name": "get_info", "params": {}},
+        {"name": "search", "params": {"query": "string", "limit": "integer"}},
+        {"name": "list_pages", "params": {}},
+        {"name": "read_page", "params": {"refs": "array"}},
+        {"name": "get_graph", "params": {}},
+        {"name": "list_raw", "params": {}},
+        {"name": "read_raw", "params": {"filenames": "array"}}
+      ],
+      "minimal_synthetic_query_result": {
+        "tool_listing": {"tool_name": "tools/list", "result": {"type": "wiki", "status": "ready", "tools": [{"name": "search", "params": {"query": {"type": "string", "required": true}}}, {"name": "read_page", "params": {"refs": {"type": "array", "required": true}}}]}},
+        "successful_query": {"tool_name": "search", "params": {"query": "ranking regression"}, "result": {"summary": "返回 RankLab 相关性评估主题的页面摘要。"}}
+      }
+    }
+  ]
+}
