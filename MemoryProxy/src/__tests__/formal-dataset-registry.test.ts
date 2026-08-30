@@ -45,6 +45,7 @@ describe("Task 1 DS00 identity registry", () => {
 
   it("keeps construction and freeze entry points explicit", () => {
     expect(readdirSync(resolve(root, "scripts")).sort()).toEqual([
+      "build-formal-restore-plan.ts",
       "build-measurement-v2-overlay.ts",
       "compile-formal-dataset.ts",
       "inspect-formal-snapshot.ts",
@@ -53,6 +54,18 @@ describe("Task 1 DS00 identity registry", () => {
       "restore-formal-snapshot.ts",
       "validate-formal-dataset.ts",
     ]);
+  });
+
+  it("requires explicit create-new evidence outputs for the R05 production CLIs", () => {
+    for (const script of [
+      "build-formal-restore-plan.ts",
+      "restore-formal-snapshot.ts",
+      "inspect-formal-snapshot.ts",
+    ]) {
+      const source = readFileSync(resolve(root, "scripts", script), "utf8");
+      expect(source).toContain('option("--output")');
+      expect(source).toContain('flag: "wx"');
+    }
   });
 });
 
