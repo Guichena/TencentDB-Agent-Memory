@@ -17,6 +17,7 @@ import type {
 describe("formal preflight receipt CLI", () => {
   it("requires explicit hidden-test authorization", () => {
     const common = [
+      "--run-dir", "D:/runs/case-a/V0/1",
       "--plan", "D:/runs/restore-plan.json",
       "--inspect-observations", "D:/runs/inspect.json",
       "--split", "hidden_test",
@@ -30,7 +31,17 @@ describe("formal preflight receipt CLI", () => {
 
   it("validates the pinned plan and inspection envelope before evaluating adapter observations", () => {
     const plan = { planSha256: "a".repeat(64) } as FormalAssetRestorePlan;
-    const preflightInput = { expected: { sessionId: "session-a" } } as FormalExecutionPreflightInput;
+    const expected = {
+      datasetUserId: "user-a",
+      spaceId: "space-a",
+      teamId: "team-a",
+      agentId: "agent-a",
+      taskId: "task-a",
+      sessionId: "session-a",
+      agentSource: "codex",
+      visibleAssetSetSha256: "b".repeat(64),
+    } as const;
+    const preflightInput = { expected } as FormalExecutionPreflightInput;
     const inspected = {
       operation: "inspect",
       unverifiedObservations: preflightInput,
@@ -43,6 +54,7 @@ describe("formal preflight receipt CLI", () => {
     expect(createFormalExecutionPreflightReceipt({
       rawPlan: { unsafe: "caller input" },
       rawInspectObservations: { ready: true },
+      expected,
       split: "dev",
     }, { parsePlan, parseObservations, evaluate })).toBe(receipt);
     expect(parseObservations).toHaveBeenCalledWith(
@@ -54,6 +66,26 @@ describe("formal preflight receipt CLI", () => {
       }),
     );
     expect(evaluate).toHaveBeenCalledWith(preflightInput);
+  });
+
+  it("rejects an inspector-provided expected binding that differs from the prepared run", () => {
+    const expected = {
+      datasetUserId: "user-a", spaceId: "space-a", teamId: "team-a",
+      agentId: "agent-a", taskId: "task-a", sessionId: "session-a",
+      agentSource: "codex", visibleAssetSetSha256: "b".repeat(64),
+    } as const;
+    expect(() => createFormalExecutionPreflightReceipt({
+      rawPlan: {},
+      rawInspectObservations: {},
+      expected,
+      split: "dev",
+    }, {
+      parsePlan: () => ({ planSha256: "a".repeat(64) }) as FormalAssetRestorePlan,
+      parseObservations: () => ({
+        unverifiedObservations: { expected: { ...expected, sessionId: "wrong-session" } },
+      }) as FormalAssetRuntimeObservations,
+      evaluate: () => ({ ready: true }) as FormalExecutionPreflightReceipt,
+    })).toThrow(/does not match the prepared run/i);
   });
 
   it("keeps the wrapper manual and free of service or config mutation", async () => {

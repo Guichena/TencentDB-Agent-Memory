@@ -13,11 +13,16 @@ import type {
 } from "./formal-assets/restore-plan-contract.js";
 import {
   evaluateFormalExecutionPreflight,
+  type FormalExpectedExecutionBinding,
   type FormalExecutionPreflightInput,
   type FormalExecutionPreflightReceipt,
 } from "./formal-execution-preflight.js";
+import { loadPreparedFormalRunDirectory } from "./formal-execution-cli.js";
+import type { PreparedFormalRun } from "./formal-prepare-runner.js";
+import { canonicalSha256 } from "./formal-runtime/canonical.js";
 
 export interface FormalPreflightReceiptCliOptions {
+  readonly runDirectory: string;
   readonly planPath: string;
   readonly inspectObservationsPath: string;
   readonly split: FormalAssetRestoreSplit;
@@ -28,6 +33,7 @@ export interface FormalPreflightReceiptCliOptions {
 export interface CreateFormalExecutionPreflightReceiptInput {
   readonly rawPlan: unknown;
   readonly rawInspectObservations: unknown;
+  readonly expected: FormalExpectedExecutionBinding;
   readonly split: FormalAssetRestoreSplit;
   readonly allowHiddenTest?: true;
 }
@@ -44,6 +50,7 @@ export function parseFormalPreflightReceiptCliArguments(
   const booleanFlags = new Set(["--allow-hidden-test"]);
   const valueFlags = new Set([
     "--plan",
+    "--run-dir",
     "--inspect-observations",
     "--split",
     "--output",
@@ -72,6 +79,7 @@ export function parseFormalPreflightReceiptCliArguments(
     throw new Error("hidden_test preflight requires --allow-hidden-test");
   }
   return {
+    runDirectory: resolve(required(values, "--run-dir")),
     planPath: resolve(required(values, "--plan")),
     inspectObservationsPath: resolve(required(values, "--inspect-observations")),
     split,
@@ -105,7 +113,14 @@ export function createFormalExecutionPreflightReceipt(
     expectedPlanSha256: plan.planSha256,
     ...authorization,
   }) as FormalAssetRuntimeObservations;
-  return evaluate(inspected.unverifiedObservations as FormalExecutionPreflightInput);
+  const observations = record(
+    "inspect unverifiedObservations",
+    inspected.unverifiedObservations,
+  ) as unknown as FormalExecutionPreflightInput;
+  if (canonicalSha256(observations.expected) !== canonicalSha256(input.expected)) {
+    throw new Error("formal inspect expected binding does not match the prepared run");
+  }
+  return evaluate({ ...observations, expected: input.expected });
 }
 
 export async function runFormalPreflightReceiptCli(
@@ -116,13 +131,15 @@ export async function runFormalPreflightReceiptCli(
   if (options.split === "hidden_test" && options.allowHiddenTest !== true) {
     throw new Error("hidden_test preflight requires --allow-hidden-test");
   }
-  const [rawPlan, rawInspectObservations] = await Promise.all([
+  const [run, rawPlan, rawInspectObservations] = await Promise.all([
+    loadPreparedFormalRunDirectory(options.runDirectory),
     readJson(options.planPath, "formal restore plan"),
     readJson(options.inspectObservationsPath, "formal inspect observations"),
   ]);
   const receipt = createFormalExecutionPreflightReceipt({
     rawPlan,
     rawInspectObservations,
+    expected: expectedBindingFromPreparedRun(run),
     split: options.split,
     ...(options.allowHiddenTest ? { allowHiddenTest: true as const } : {}),
   });
@@ -141,6 +158,26 @@ export async function runFormalPreflightReceiptCli(
   }, null, 2)}\n`);
 }
 
+export function expectedBindingFromPreparedRun(
+  run: PreparedFormalRun,
+): FormalExpectedExecutionBinding {
+  const expected = run.command.executionRequiredGates.identityBinding.expected;
+  const taskId = requiredValue("prepared run taskId", expected.taskId);
+  return Object.freeze({
+    datasetUserId: requiredValue("prepared run datasetUserId", expected.datasetUserId),
+    spaceId: requiredValue("prepared run spaceId", expected.spaceId),
+    teamId: requiredValue("prepared run teamId", expected.teamId),
+    agentId: requiredValue("prepared run agentId", expected.agentId),
+    taskId,
+    sessionId: requiredValue("prepared run sessionId", run.manifest.session_id),
+    agentSource: "codex",
+    visibleAssetSetSha256: requiredValue(
+      "prepared run visibleAssetSetSha256",
+      expected.visibleAssetSetSha256,
+    ),
+  });
+}
+
 async function readJson(path: string, label: string): Promise<unknown> {
   try {
     return JSON.parse(await readFile(path, "utf8")) as unknown;
@@ -153,6 +190,18 @@ function required(values: ReadonlyMap<string, string>, flag: string): string {
   const value = values.get(flag)?.trim();
   if (!value) throw new Error(`${flag} is required`);
   return value;
+}
+
+function requiredValue(label: string, value: unknown): string {
+  if (typeof value !== "string" || !value.trim()) throw new Error(`${label} must be non-blank`);
+  return value;
+}
+
+function record(label: string, value: unknown): Record<string, unknown> {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new Error(`${label} must be an object`);
+  }
+  return value as Record<string, unknown>;
 }
 
 const invokedPath = process.argv[1] ? resolve(process.argv[1]) : "";
