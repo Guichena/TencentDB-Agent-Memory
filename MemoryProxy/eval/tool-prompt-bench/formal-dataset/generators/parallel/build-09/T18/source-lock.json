@@ -1,0 +1,221 @@
+{
+  "schema_version": "task1.skill_source_lock.v1",
+  "team_id": "T18",
+  "frozen_at": "2026-08-31T23:50:00+08:00",
+  "repositories": {
+    "agents": {
+      "repository": "https://github.com/wshobson/agents",
+      "slug": "wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "committedAt": "2026-08-26T12:14:08Z",
+      "treeSha": "126e6a70b327db3e744797ba952f06bdf67aa5c5",
+      "license": "MIT",
+      "licensePath": "LICENSE",
+      "localDir": "agents",
+      "licenseSha256": "402666abc624142a13aaf2a6fbeb46bd03b9f9dd53f77704991244134fe8169a",
+      "licenseCopiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/licenses/agents-LICENSE"
+    },
+    "claudeSkills": {
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "slug": "jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "committedAt": "2026-08-07T20:19:14Z",
+      "treeSha": "2b301c97991bcf5f838cce82637332bb28ae4b83",
+      "license": "MIT",
+      "licensePath": "LICENSE",
+      "localDir": "claude-skills",
+      "licenseSha256": "b800a52c77c8ac924a16bbd34136fe2877f477efac1eaa1af7af0c36703d8966",
+      "licenseCopiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/licenses/claudeSkills-LICENSE"
+    }
+  },
+  "skills": [
+    {
+      "assetId": "T18-SKL-01",
+      "name": "python-performance-optimization",
+      "listing": "listed",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/python-development/skills/python-performance-optimization/SKILL.md",
+      "rawSha256": "4ddc6570d458bf57a785d43bd356facc27c09f27bdc49f66ae2d68a65656f65c",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/python-development/skills/python-performance-optimization/SKILL.md"
+    },
+    {
+      "assetId": "T18-SKL-02",
+      "name": "go-concurrency-patterns",
+      "listing": "listed",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/systems-programming/skills/go-concurrency-patterns/SKILL.md",
+      "rawSha256": "442f83aa243f82fa887ee05f867a0c80244ed057cf2c0ccc9ab4f3bb4af7b404",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/systems-programming/skills/go-concurrency-patterns/SKILL.md"
+    },
+    {
+      "assetId": "T18-SKL-03",
+      "name": "sql-optimization-patterns",
+      "listing": "listed",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/developer-essentials/skills/sql-optimization-patterns/SKILL.md",
+      "rawSha256": "a91fcbf60a2750518183e71302cdd872f1a84551bd0d384316b65fc3c0aa702c",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/developer-essentials/skills/sql-optimization-patterns/SKILL.md"
+    },
+    {
+      "assetId": "T18-SKL-04",
+      "name": "distributed-tracing",
+      "listing": "listed",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/observability-monitoring/skills/distributed-tracing/SKILL.md",
+      "rawSha256": "67c5f613c6dce5d98d6f7afbdad28d24b8dbc1e680303910f39f434a556dee3b",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/observability-monitoring/skills/distributed-tracing/SKILL.md"
+    },
+    {
+      "assetId": "T18-SKL-05",
+      "name": "slo-implementation",
+      "listing": "listed",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/observability-monitoring/skills/slo-implementation/SKILL.md",
+      "rawSha256": "7ff8792b074bebc1d6dec8fd2bc07bb0c5ea5a47d202ffe09ada53576bea56db",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/observability-monitoring/skills/slo-implementation/SKILL.md"
+    },
+    {
+      "assetId": "T18-SKL-06",
+      "name": "spark-optimization",
+      "listing": "listed",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/data-engineering/skills/spark-optimization/SKILL.md",
+      "rawSha256": "350c3ade985461fdf5c7b389626b67689e6cc11e695ccb04395136f9424cab6b",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/data-engineering/skills/spark-optimization/SKILL.md"
+    },
+    {
+      "assetId": "T18-SKL-07",
+      "name": "postgresql-table-design",
+      "listing": "searchable",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/database-design/skills/postgresql/SKILL.md",
+      "rawSha256": "b4b19384e3a4b377f6eb1e0e9b96589e73e18515d3714e93300f4f6b3aa8e194",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/database-design/skills/postgresql/SKILL.md"
+    },
+    {
+      "assetId": "T18-SKL-08",
+      "name": "prometheus-configuration",
+      "listing": "searchable",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/observability-monitoring/skills/prometheus-configuration/SKILL.md",
+      "rawSha256": "92ae3937bc10f15f05613da5ef3811241a821ec4dafde7269e74ac34de930e34",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/observability-monitoring/skills/prometheus-configuration/SKILL.md"
+    },
+    {
+      "assetId": "T18-SKL-09",
+      "name": "service-mesh-observability",
+      "listing": "searchable",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/cloud-infrastructure/skills/service-mesh-observability/SKILL.md",
+      "rawSha256": "f4ecd060b4943a7bfea23d25516734a01baa435f3a80b42191cd55e9b58e890e",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/cloud-infrastructure/skills/service-mesh-observability/SKILL.md"
+    },
+    {
+      "assetId": "T18-SKL-10",
+      "name": "bazel-build-optimization",
+      "listing": "searchable",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/developer-essentials/skills/bazel-build-optimization/SKILL.md",
+      "rawSha256": "f07c978dbd6a36ed4196dc088200c99324f909c89d3871f22b9e6fb62f3ee295",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/developer-essentials/skills/bazel-build-optimization/SKILL.md"
+    },
+    {
+      "assetId": "T18-SKL-11",
+      "name": "turborepo-caching",
+      "listing": "searchable",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/developer-essentials/skills/turborepo-caching/SKILL.md",
+      "rawSha256": "dce64f266067eb2687f9b7821f1cf95496dd61e95921dc75b5a94454dfd7e52b",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/developer-essentials/skills/turborepo-caching/SKILL.md"
+    },
+    {
+      "assetId": "T18-SKL-12",
+      "name": "memory-safety-patterns",
+      "listing": "searchable",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/systems-programming/skills/memory-safety-patterns/SKILL.md",
+      "rawSha256": "9e763cd4b60314cfaa9e7bb049664704247c21acc83a96a588ebeeb852dce1d3",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/systems-programming/skills/memory-safety-patterns/SKILL.md"
+    },
+    {
+      "assetId": "T18-SKL-13",
+      "name": "nodejs-backend-patterns",
+      "listing": "searchable",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/javascript-typescript/skills/nodejs-backend-patterns/SKILL.md",
+      "rawSha256": "ca34c53fadceff0ae0d65c85106fd9234ec22f3b905b9b7689a1658d94bf3f61",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/javascript-typescript/skills/nodejs-backend-patterns/SKILL.md"
+    },
+    {
+      "assetId": "T18-SKL-14",
+      "name": "database-optimizer",
+      "listing": "searchable",
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "license": "MIT",
+      "path": "skills/database-optimizer/SKILL.md",
+      "rawSha256": "c6df5bcd1b623ee9f76d43c7bcbfcd7b8cdd187ece43c95748f5edc2c5aed83b",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/claudeSkills/skills/database-optimizer/SKILL.md"
+    },
+    {
+      "assetId": "T18-SKL-15",
+      "name": "golang-pro",
+      "listing": "searchable",
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "license": "MIT",
+      "path": "skills/golang-pro/SKILL.md",
+      "rawSha256": "6ae2c5bfcdee4d14bc2ba25e2d55727d92dff7ec47d2bca113a5a465ac50c1ed",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/claudeSkills/skills/golang-pro/SKILL.md"
+    },
+    {
+      "assetId": "T18-SKL-16",
+      "name": "rust-engineer",
+      "listing": "searchable",
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "license": "MIT",
+      "path": "skills/rust-engineer/SKILL.md",
+      "rawSha256": "261cb535487d45b98d7015348694278799871f1fe524a7df4b643ad1547b1860",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/claudeSkills/skills/rust-engineer/SKILL.md"
+    }
+  ],
+  "resources": [
+    {
+      "assetId": "T18-SKL-02",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/systems-programming/skills/go-concurrency-patterns/references/details.md",
+      "manifestPath": "references/details.md",
+      "rawSha256": "f23009fb1a903855fc7ccce1190935e6f8fd36cb3191eaa4690869b00c8b5e47",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/systems-programming/skills/go-concurrency-patterns/references/details.md"
+    }
+  ]
+}

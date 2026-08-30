@@ -1,0 +1,175 @@
+{
+  "schema_version": "task1.team_knowledge_assets.v2",
+  "team_id": "T18",
+  "knowledge": [
+    {
+      "assetId": "T18-KNW-01",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-KNOWLEDGE-WIKI-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "wiki",
+      "name": "Quartz performance decisions",
+      "summary": "Quartz 延迟、profiling 与容量主题的冻结决策索引，用于在三项资源中唯一选择 Quartz 主题；摘要不包含负责人、调用面或容量边界正文。",
+      "snapshotSha256": "6ea571ad050fcc1e2ded8835a9c02e52e9ff8048bd22522f9cb90ecab9b5d74a",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t18-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "4e52263948bb6d360f2bcdc158f4567daffbbbb32e54754fca93d93b03570552"
+    },
+    {
+      "assetId": "T18-KNW-02",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-KNOWLEDGE-WIKI-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "wiki",
+      "name": "Cascade throughput decisions",
+      "summary": "Cascade Spark、数据库与批处理吞吐主题的冻结决策索引，用于在三项资源中唯一选择 Cascade 主题；摘要不包含函数调用关系正文。",
+      "snapshotSha256": "e874c95a1ef44d82d5991883c406fefcd005f25efc0b8113bf71085d2f608b5d",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t18-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "4eff4019c0ddef65879af62cb1bf57512483a3b29703539657fd39c14c0e0b20"
+    },
+    {
+      "assetId": "T18-KNW-03",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-KNOWLEDGE-WIKI-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "wiki",
+      "name": "Forge build performance decisions",
+      "summary": "Forge 远程执行、缓存与构建性能主题的冻结决策索引，用于在三项资源中唯一选择 Forge 主题；摘要不包含回退触发条件、边界或设计理由正文。",
+      "snapshotSha256": "f459e829eb0a95824edd1110312b6c83f88d587995605935942262151c433498",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t18-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "7e4cf0961073d5ebef35e405cc120ab3dbe4ad4ce82e988b13651a4a3e5bdc2d"
+    }
+  ],
+  "fixtures": [
+    {
+      "assetId": "T18-KNW-01",
+      "name": "Quartz performance decisions",
+      "summary": "Quartz 延迟、profiling 与容量主题的冻结决策索引，用于在三项资源中唯一选择 Quartz 主题；摘要不包含负责人、调用面或容量边界正文。",
+      "tools": [
+        {
+          "name": "search",
+          "requiredParams": [
+            "query"
+          ]
+        },
+        {
+          "name": "read_page",
+          "requiredParams": [
+            "page_id"
+          ]
+        }
+      ],
+      "call": {
+        "toolName": "search",
+        "params": {
+          "query": "SpanBudget p99 ownership impact"
+        },
+        "response": {
+          "decision": "SpanBudget p99 由 Quartz 性能平台团队负责，影响入口是 API gateway、异步任务 worker 和下游 RPC 聚合；容量判断以尾延迟预算在每级调用链的可加总上限为边界，超出预算先归因到持有该级 span 的团队，再调整采样与并发配置。",
+          "owner": "Quartz 性能平台团队",
+          "affected_call_surfaces": [
+            "API gateway",
+            "异步任务 worker",
+            "下游 RPC 聚合"
+          ],
+          "capacity_boundary": "尾延迟预算在每级调用链的可加总上限",
+          "over_budget_action": "先归因到持有该级 span 的团队，再调整采样与并发配置"
+        }
+      }
+    },
+    {
+      "assetId": "T18-KNW-02",
+      "name": "Cascade throughput decisions",
+      "summary": "Cascade Spark、数据库与批处理吞吐主题的冻结决策索引，用于在三项资源中唯一选择 Cascade 主题；摘要不包含函数调用关系正文。",
+      "tools": [
+        {
+          "name": "search",
+          "requiredParams": [
+            "query"
+          ]
+        },
+        {
+          "name": "read_page",
+          "requiredParams": [
+            "page_id"
+          ]
+        }
+      ],
+      "call": {
+        "toolName": "search",
+        "params": {
+          "query": "rebalancePartitions direct consumers"
+        },
+        "response": {
+          "decision": "rebalancePartitions 的直接使用方是 buildShufflePlan 与 executePartitionRebalance；前者生成分区重平衡计划，后者在批处理执行阶段应用该计划。",
+          "symbol": "rebalancePartitions",
+          "direct_consumers": [
+            {
+              "name": "buildShufflePlan",
+              "role": "生成分区重平衡计划"
+            },
+            {
+              "name": "executePartitionRebalance",
+              "role": "在批处理执行阶段应用分区重平衡计划"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "assetId": "T18-KNW-03",
+      "name": "Forge build performance decisions",
+      "summary": "Forge 远程执行、缓存与构建性能主题的冻结决策索引，用于在三项资源中唯一选择 Forge 主题；摘要不包含回退触发条件、边界或设计理由正文。",
+      "tools": [
+        {
+          "name": "search",
+          "requiredParams": [
+            "query"
+          ]
+        },
+        {
+          "name": "read_page",
+          "requiredParams": [
+            "page_id"
+          ]
+        }
+      ],
+      "call": {
+        "toolName": "search",
+        "params": {
+          "query": "remote execution fallback rationale"
+        },
+        "response": {
+          "decision": "远程执行服务不可用或排队超过 30 秒时允许回退到本地执行；本地执行仍复用相同的 hermetic 输入与 action digest，但结果不视为远程缓存命中。这样既避免远程队列阻塞开发反馈，也保持输入与产物关系可复现；回退仅适用于允许本地执行的动作，受策略禁止的动作仍直接失败。",
+          "fallback_triggers": [
+            "远程执行服务不可用",
+            "远程排队超过 30 秒"
+          ],
+          "local_execution_boundary": "仅适用于允许本地执行的动作；受策略禁止的动作直接失败",
+          "cache_semantics": "本地结果不视为远程缓存命中",
+          "rationale": "避免远程队列阻塞开发反馈，同时保持 hermetic 输入、action digest 与产物关系可复现"
+        }
+      }
+    }
+  ]
+}

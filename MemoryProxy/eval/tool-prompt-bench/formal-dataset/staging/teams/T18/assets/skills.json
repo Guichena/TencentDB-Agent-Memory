@@ -1,0 +1,652 @@
+{
+  "schema_version": "task1.team_skill_assets.v2",
+  "team_id": "T18",
+  "skills": [
+    {
+      "assetId": "T18-SKL-01",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-SKILL-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "python-performance-optimization",
+      "version": "1.0.0-t18",
+      "description": "Diagnose and improve Python service performance across CPU, memory, execution time, and I/O. Use when profiling a Python performance regression or selecting measured optimization strategies.",
+      "useWhen": "Profiling Python CPU or memory behavior; Investigating execution-time or I/O regressions; Comparing measured optimization options",
+      "doNotUseWhen": "Do not use for non-Python performance work; Do not optimize without a measured baseline",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "56e5dd53e80683bbe459c00e15497bdf96f507f8936554f5cf5e81d85608cfc0"
+        }
+      ],
+      "contentHash": "189039d282153c3d38ae2c8c19c8a35fb9783bd3febc5cf080f43e6f844eabf6"
+    },
+    {
+      "assetId": "T18-SKL-02",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-SKILL-02"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "go-concurrency-patterns",
+      "version": "1.0.0-t18",
+      "description": "Design Go concurrency with goroutines, channels, synchronization primitives, and context, including worker pools and graceful shutdown.",
+      "useWhen": "Building concurrent Go applications; Implementing worker pools or pipelines; Debugging races or goroutine lifecycle issues",
+      "doNotUseWhen": "Do not use for non-Go concurrency; Do not leave cancellation or goroutine exit paths unspecified",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "331b789ffc80e36741aa2164a5683e02e2c421cccadae08371716542b6bdca31"
+        },
+        {
+          "path": "references/details.md",
+          "sha256": "f23009fb1a903855fc7ccce1190935e6f8fd36cb3191eaa4690869b00c8b5e47"
+        }
+      ],
+      "contentHash": "b1e3dfbbac9ab9aea1523aaedeec94d39b8516551278d077e783049cd95d0e4d"
+    },
+    {
+      "assetId": "T18-SKL-03",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-SKILL-03"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "sql-optimization-patterns",
+      "version": "1.0.0-t18",
+      "description": "Apply SQL optimization patterns for query performance, indexes, execution plans, and scalable database access.",
+      "useWhen": "Analyzing slow SQL queries; Reviewing execution plans and index choices; Improving database access performance",
+      "doNotUseWhen": "Do not use for non-SQL application logic; Do not apply changes without measuring their effect",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "1834b61b382f8346ec4efe5d2c100d6511617206732fda708f3267c2a0d4a7aa"
+        }
+      ],
+      "contentHash": "7803c1a37921b78fb8841414f8da0aee9bc28afda75702b43a7d64b515387c1c"
+    },
+    {
+      "assetId": "T18-SKL-04",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-SKILL-04"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "distributed-tracing",
+      "version": "1.0.0-t18",
+      "description": "Implement distributed tracing to follow requests across microservices, understand dependencies, and identify latency or failure points.",
+      "useWhen": "Debugging distributed latency; Understanding service dependencies; Tracing error propagation and request paths",
+      "doNotUseWhen": "Do not use when the issue has no distributed request path; Do not treat traces as a substitute for service evidence",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "1cf5e78429329b17b7a23262e2b8e7e06effa3d072dc0bdbf94a5f93b11ebc83"
+        }
+      ],
+      "contentHash": "6bfcbe83e922738b04c900498cb3a5f88c94244b0cd8ffd91dadd0afd3fad51a"
+    },
+    {
+      "assetId": "T18-SKL-05",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-SKILL-05"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "slo-implementation",
+      "version": "1.0.0-t18",
+      "description": "Implement service-level objectives and latency-oriented observability practices for performance and reliability work.",
+      "useWhen": "Defining latency or reliability objectives; Connecting service measurements to operational thresholds",
+      "doNotUseWhen": "Do not use for feature implementation without an objective; Do not replace measurements with an unverified target",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "ca6824c7f43a8d2a5b908e86fabe8ae575c185e0a81903d543144c319aaa294d"
+        }
+      ],
+      "contentHash": "d617808aa911f3cfe2719ebfdf2058888eb347540381180a9aa1664cec65d410"
+    },
+    {
+      "assetId": "T18-SKL-06",
+      "ownerAgentId": "agent-task1-t18-general",
+      "sourceEvidenceIds": [
+        "T18-SRC-SKILL-06"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "spark-optimization",
+      "version": "1.0.0-t18",
+      "description": "Optimize Spark workloads through partitioning, shuffle, and throughput-oriented processing practices.",
+      "useWhen": "Diagnosing Spark throughput or partition imbalance; Reviewing shuffle and batch-processing performance",
+      "doNotUseWhen": "Do not use for non-Spark data processing; Do not tune partitioning without workload evidence",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "97b7f33f592ba65205969ce5d35db23bd93a9d72d6ffcd4f2657ad96b10a38ee"
+        }
+      ],
+      "contentHash": "9d0d34d027cee58aaeb000be2d00fd0588ff06bc0b5108a3c4fc4a2a341dd890"
+    },
+    {
+      "assetId": "T18-SKL-07",
+      "ownerAgentId": "agent-task1-t18-assets-a",
+      "sourceEvidenceIds": [
+        "T18-SRC-SKILL-07"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "postgresql-table-design",
+      "version": "1.0.0-t18",
+      "description": "Design and review PostgreSQL tables with appropriate data types, constraints, indexes, partitioning, and performance patterns.",
+      "useWhen": "Designing PostgreSQL-specific schemas; Reviewing types, constraints, indexes, or partitions; Balancing read paths with write-heavy workloads",
+      "doNotUseWhen": "Do not use for a database engine with different semantics; Do not denormalize without measured benefit; Do not add indexes unrelated to real access paths",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "e495d2e66167a8b9e3bb9f1cb955fc61ecbce406b5537605ad9b60315699ea32"
+        }
+      ],
+      "contentHash": "fdfd0f8881230d5f0549a48030845efdf018616f851187c2524da48623e1bb32"
+    },
+    {
+      "assetId": "T18-SKL-08",
+      "ownerAgentId": "agent-task1-t18-assets-a",
+      "sourceEvidenceIds": [
+        "T18-SRC-SKILL-08"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "prometheus-configuration",
+      "version": "1.0.0-t18",
+      "description": "Configure Prometheus collection and monitoring for service performance and operational signals.",
+      "useWhen": "Setting up Prometheus monitoring; Reviewing collection and metric configuration",
+      "doNotUseWhen": "Do not use for tracing-only investigations; Do not change monitoring configuration without checking service impact",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "d2fe757f7ad229b2ed934e1b8736342c415248d4d09f40398fee6af7d580b7e7"
+        }
+      ],
+      "contentHash": "8b4d26cba44c19e46ebe67723ff3dc470a1a3fb672eccd7d70819e10606effef"
+    },
+    {
+      "assetId": "T18-SKL-09",
+      "ownerAgentId": "agent-task1-t18-assets-a",
+      "sourceEvidenceIds": [
+        "T18-SRC-SKILL-09"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "service-mesh-observability",
+      "version": "1.0.0-t18",
+      "description": "Observe service-mesh traffic and dependencies for distributed performance and reliability investigations.",
+      "useWhen": "Investigating service-mesh request behavior; Reviewing cross-service traffic and dependency signals",
+      "doNotUseWhen": "Do not use when no service mesh is involved; Do not infer application causes from mesh signals alone",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "9f6ef0c92747341a0a2ea0152a1e19da7935a7f5875d7531e8d80019a0a8bdc8"
+        }
+      ],
+      "contentHash": "a185f0a27a2655bd770c5f4b10ce29d5d925d6a9d70ffeb0ccea5777031d19ea"
+    },
+    {
+      "assetId": "T18-SKL-10",
+      "ownerAgentId": "agent-task1-t18-assets-a",
+      "sourceEvidenceIds": [
+        "T18-SRC-SKILL-10"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "bazel-build-optimization",
+      "version": "1.0.0-t18",
+      "description": "Optimize Bazel builds for large monorepos with target boundaries, dependency discipline, remote caching or execution, and build governance.",
+      "useWhen": "Setting up Bazel in a monorepo; Optimizing build times; Configuring remote caching or execution",
+      "doNotUseWhen": "Do not use for non-Bazel build systems; Do not hide dependencies behind broad globs; Do not ignore build warnings or generated directories",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "12b75d65ec1a0145c6639c893f3a832b87dc7b4243b15b110c46078aa8367235"
+        }
+      ],
+      "contentHash": "f3912c2e9bd0cc4da77090da577ea865a28fb65c63598038187ef2d68029f04b"
+    },
+    {
+      "assetId": "T18-SKL-11",
+      "ownerAgentId": "agent-task1-t18-assets-a",
+      "sourceEvidenceIds": [
+        "T18-SRC-SKILL-11"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "turborepo-caching",
+      "version": "1.0.0-t18",
+      "description": "Improve Turborepo caching and task orchestration for repository build performance.",
+      "useWhen": "Reviewing Turborepo cache behavior; Optimizing monorepo task execution",
+      "doNotUseWhen": "Do not use for repositories without Turborepo; Do not change task boundaries without checking dependency behavior",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "370e707874eef7ce8b7817c0406feef15450b421f8a80aba7624eca2e7f89400"
+        }
+      ],
+      "contentHash": "dc19292b72e33b4850dbccb60646dcec426f6575693afe9a9bcdb72354c71d43"
+    },
+    {
+      "assetId": "T18-SKL-12",
+      "ownerAgentId": "agent-task1-t18-assets-b",
+      "sourceEvidenceIds": [
+        "T18-SRC-SKILL-12"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "memory-safety-patterns",
+      "version": "1.0.0-t18",
+      "description": "Apply memory-safety patterns for systems programming and resource-sensitive implementations.",
+      "useWhen": "Reviewing memory-safety risks in systems code; Investigating resource lifetime concerns",
+      "doNotUseWhen": "Do not use for unrelated performance symptoms; Do not infer a memory-safety issue without code evidence",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "57ce39caecdb0fb38e7d18cccce2e3c1ee1b616d72fba7be9e2f36f700b13e2c"
+        }
+      ],
+      "contentHash": "f436be4db3b57d60b3c1d58f35a84ce9fa3d2ea42ce50c3643679c26c39c5a90"
+    },
+    {
+      "assetId": "T18-SKL-13",
+      "ownerAgentId": "agent-task1-t18-assets-b",
+      "sourceEvidenceIds": [
+        "T18-SRC-SKILL-13"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "nodejs-backend-patterns",
+      "version": "1.0.0-t18",
+      "description": "Apply Node.js backend patterns for service implementation, runtime behavior, and maintainable request handling.",
+      "useWhen": "Designing or reviewing Node.js backend services; Investigating Node.js request or runtime behavior",
+      "doNotUseWhen": "Do not use for non-Node.js backends; Do not apply backend patterns without confirming the runtime",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "78974b8ff661c71a7478a6d9dfb50fd7f22ecf75131c13ced66d8aa6186cca8e"
+        }
+      ],
+      "contentHash": "75ab8dd6acad7eaf5e5268215b152f6c03ca86988821217f5f11e22b3a50caa8"
+    },
+    {
+      "assetId": "T18-SKL-14",
+      "ownerAgentId": "agent-task1-t18-assets-b",
+      "sourceEvidenceIds": [
+        "T18-SRC-SKILL-14"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "database-optimizer",
+      "version": "1.0.0-t18",
+      "description": "Optimize PostgreSQL and MySQL database performance through measured query analysis, index design, tuning, and validation.",
+      "useWhen": "Analyzing slow queries and execution plans; Designing indexes or query rewrites; Tuning database performance and lock behavior",
+      "doNotUseWhen": "Do not use without a measured baseline; Do not apply multiple performance changes at once; Do not ignore write or replication impact",
+      "repoCommit": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "36202393e6eb48642c7796485ebf0517124828a724268ce8cb29769cb8de6b3d"
+        }
+      ],
+      "contentHash": "56f16ccc4747c4ac7fe673af0e554bfd31a908cb0bb331e70625d3a0dbd1599a"
+    },
+    {
+      "assetId": "T18-SKL-15",
+      "ownerAgentId": "agent-task1-t18-assets-b",
+      "sourceEvidenceIds": [
+        "T18-SRC-SKILL-15"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "golang-pro",
+      "version": "1.0.0-t18",
+      "description": "Develop and review production Go services with concurrency, error handling, testing, and maintainability practices.",
+      "useWhen": "Building Go services; Reviewing Go concurrency or error-handling design",
+      "doNotUseWhen": "Do not use for non-Go services; Do not replace focused concurrency guidance when a specific pattern is required",
+      "repoCommit": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "80f28eeb418463b9d2480196da4777751a5f5d5077811eefac222aa9cf0e70c9"
+        }
+      ],
+      "contentHash": "2704e636f4902c58cdd1ca2cbb86b91f37c0f4ed8f7d6f6578d23285f9daf96c"
+    },
+    {
+      "assetId": "T18-SKL-16",
+      "ownerAgentId": "agent-task1-t18-assets-b",
+      "sourceEvidenceIds": [
+        "T18-SRC-SKILL-16"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "rust-engineer",
+      "version": "1.0.0-t18",
+      "description": "Engineer Rust systems with ownership, concurrency, performance, and safe resource-management practices.",
+      "useWhen": "Designing or reviewing Rust systems code; Investigating Rust concurrency or performance concerns",
+      "doNotUseWhen": "Do not use for non-Rust code; Do not infer Rust-specific behavior for another language",
+      "repoCommit": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "3298e95979b48f9c5ce092a696b55a3cf45c70262b7aa77ff6f28a0c8f28f775"
+        }
+      ],
+      "contentHash": "4dda1547190b92a83dc1c5fa8de08f18b3d127a7723b90bc306d8f7f1a26d99b"
+    }
+  ],
+  "adaptationAudit": [
+    {
+      "assetId": "T18-SKL-01",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/python-development/skills/python-performance-optimization/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/python-development/skills/python-performance-optimization/SKILL.md",
+      "rawSha256": "4ddc6570d458bf57a785d43bd356facc27c09f27bdc49f66ae2d68a65656f65c",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/adapted/python-performance-optimization/SKILL.md",
+      "adaptedSha256": "56e5dd53e80683bbe459c00e15497bdf96f507f8936554f5cf5e81d85608cfc0",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/diffs/python-performance-optimization.patch",
+      "diffSha256": "d3124c03961972ac62c53576258a51c7bd5c4f4c8a030068d5fd20e507a56d21",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T18-SKL-02",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/systems-programming/skills/go-concurrency-patterns/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/systems-programming/skills/go-concurrency-patterns/SKILL.md",
+      "rawSha256": "442f83aa243f82fa887ee05f867a0c80244ed057cf2c0ccc9ab4f3bb4af7b404",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/adapted/go-concurrency-patterns/SKILL.md",
+      "adaptedSha256": "331b789ffc80e36741aa2164a5683e02e2c421cccadae08371716542b6bdca31",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/diffs/go-concurrency-patterns.patch",
+      "diffSha256": "53604b11889a1e5b86e4504e7257b5136a79ace308094a0e647b0f5238c27e15",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T18-SKL-03",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/developer-essentials/skills/sql-optimization-patterns/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/developer-essentials/skills/sql-optimization-patterns/SKILL.md",
+      "rawSha256": "a91fcbf60a2750518183e71302cdd872f1a84551bd0d384316b65fc3c0aa702c",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/adapted/sql-optimization-patterns/SKILL.md",
+      "adaptedSha256": "1834b61b382f8346ec4efe5d2c100d6511617206732fda708f3267c2a0d4a7aa",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/diffs/sql-optimization-patterns.patch",
+      "diffSha256": "5e87fe428fbfb8e4a231a2c9fb99ae2e50b51459eec64002dc8896d9bd29a873",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T18-SKL-04",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/observability-monitoring/skills/distributed-tracing/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/observability-monitoring/skills/distributed-tracing/SKILL.md",
+      "rawSha256": "67c5f613c6dce5d98d6f7afbdad28d24b8dbc1e680303910f39f434a556dee3b",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/adapted/distributed-tracing/SKILL.md",
+      "adaptedSha256": "1cf5e78429329b17b7a23262e2b8e7e06effa3d072dc0bdbf94a5f93b11ebc83",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/diffs/distributed-tracing.patch",
+      "diffSha256": "66172c2c3dda02151715dee6139d463f674227f811ae9c0f98a3fd559d40b6d6",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T18-SKL-05",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/observability-monitoring/skills/slo-implementation/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/observability-monitoring/skills/slo-implementation/SKILL.md",
+      "rawSha256": "7ff8792b074bebc1d6dec8fd2bc07bb0c5ea5a47d202ffe09ada53576bea56db",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/adapted/slo-implementation/SKILL.md",
+      "adaptedSha256": "ca6824c7f43a8d2a5b908e86fabe8ae575c185e0a81903d543144c319aaa294d",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/diffs/slo-implementation.patch",
+      "diffSha256": "2cdd80f26d246c0299e1a561ce4334727f0316f3da6808e14d9bcba350e2adc0",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T18-SKL-06",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/data-engineering/skills/spark-optimization/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/data-engineering/skills/spark-optimization/SKILL.md",
+      "rawSha256": "350c3ade985461fdf5c7b389626b67689e6cc11e695ccb04395136f9424cab6b",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/adapted/spark-optimization/SKILL.md",
+      "adaptedSha256": "97b7f33f592ba65205969ce5d35db23bd93a9d72d6ffcd4f2657ad96b10a38ee",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/diffs/spark-optimization.patch",
+      "diffSha256": "d5885192dd82a50f5dfc0e193d42ac450c07b300ff8df736dfaea1de79461ff6",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T18-SKL-07",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/database-design/skills/postgresql/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/database-design/skills/postgresql/SKILL.md",
+      "rawSha256": "b4b19384e3a4b377f6eb1e0e9b96589e73e18515d3714e93300f4f6b3aa8e194",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/adapted/postgresql-table-design/SKILL.md",
+      "adaptedSha256": "e495d2e66167a8b9e3bb9f1cb955fc61ecbce406b5537605ad9b60315699ea32",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/diffs/postgresql-table-design.patch",
+      "diffSha256": "846e601ae218db176db58d38d64e8441d5987e57605a3587033d69fe52471cec",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T18-SKL-08",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/observability-monitoring/skills/prometheus-configuration/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/observability-monitoring/skills/prometheus-configuration/SKILL.md",
+      "rawSha256": "92ae3937bc10f15f05613da5ef3811241a821ec4dafde7269e74ac34de930e34",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/adapted/prometheus-configuration/SKILL.md",
+      "adaptedSha256": "d2fe757f7ad229b2ed934e1b8736342c415248d4d09f40398fee6af7d580b7e7",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/diffs/prometheus-configuration.patch",
+      "diffSha256": "3b3239ef6f8972f6114851bf785e5ac707ecb55108a41e77b50f6ef19d69bfb7",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T18-SKL-09",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/cloud-infrastructure/skills/service-mesh-observability/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/cloud-infrastructure/skills/service-mesh-observability/SKILL.md",
+      "rawSha256": "f4ecd060b4943a7bfea23d25516734a01baa435f3a80b42191cd55e9b58e890e",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/adapted/service-mesh-observability/SKILL.md",
+      "adaptedSha256": "9f6ef0c92747341a0a2ea0152a1e19da7935a7f5875d7531e8d80019a0a8bdc8",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/diffs/service-mesh-observability.patch",
+      "diffSha256": "5f2a42922e76565cf6f8c3ff460dd1e2abf6cb9c209e1869dcec4a7a4c6b967f",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T18-SKL-10",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/developer-essentials/skills/bazel-build-optimization/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/developer-essentials/skills/bazel-build-optimization/SKILL.md",
+      "rawSha256": "f07c978dbd6a36ed4196dc088200c99324f909c89d3871f22b9e6fb62f3ee295",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/adapted/bazel-build-optimization/SKILL.md",
+      "adaptedSha256": "12b75d65ec1a0145c6639c893f3a832b87dc7b4243b15b110c46078aa8367235",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/diffs/bazel-build-optimization.patch",
+      "diffSha256": "ae1dcf4f50f899d37da7d06fce6c014475fa8f827ddb22a01bbc054809102899",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T18-SKL-11",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/developer-essentials/skills/turborepo-caching/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/developer-essentials/skills/turborepo-caching/SKILL.md",
+      "rawSha256": "dce64f266067eb2687f9b7821f1cf95496dd61e95921dc75b5a94454dfd7e52b",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/adapted/turborepo-caching/SKILL.md",
+      "adaptedSha256": "370e707874eef7ce8b7817c0406feef15450b421f8a80aba7624eca2e7f89400",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/diffs/turborepo-caching.patch",
+      "diffSha256": "f5a1728303a2e16202fc7d20e6dd0ab5fdc17702356f3c89b83a1cf29f9d9e96",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T18-SKL-12",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/systems-programming/skills/memory-safety-patterns/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/systems-programming/skills/memory-safety-patterns/SKILL.md",
+      "rawSha256": "9e763cd4b60314cfaa9e7bb049664704247c21acc83a96a588ebeeb852dce1d3",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/adapted/memory-safety-patterns/SKILL.md",
+      "adaptedSha256": "57ce39caecdb0fb38e7d18cccce2e3c1ee1b616d72fba7be9e2f36f700b13e2c",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/diffs/memory-safety-patterns.patch",
+      "diffSha256": "09a89789959403a8c1d9aca4677da78682f9e78a935f2d9fc14057702a0f1819",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T18-SKL-13",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/javascript-typescript/skills/nodejs-backend-patterns/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/agents/plugins/javascript-typescript/skills/nodejs-backend-patterns/SKILL.md",
+      "rawSha256": "ca34c53fadceff0ae0d65c85106fd9234ec22f3b905b9b7689a1658d94bf3f61",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/adapted/nodejs-backend-patterns/SKILL.md",
+      "adaptedSha256": "78974b8ff661c71a7478a6d9dfb50fd7f22ecf75131c13ced66d8aa6186cca8e",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/diffs/nodejs-backend-patterns.patch",
+      "diffSha256": "bbe491527a6a014d3a88daea748877880a334309fe0161ff02c921f353cc5c91",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T18-SKL-14",
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "license": "MIT",
+      "upstreamPath": "skills/database-optimizer/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/claudeSkills/skills/database-optimizer/SKILL.md",
+      "rawSha256": "c6df5bcd1b623ee9f76d43c7bcbfcd7b8cdd187ece43c95748f5edc2c5aed83b",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/adapted/database-optimizer/SKILL.md",
+      "adaptedSha256": "36202393e6eb48642c7796485ebf0517124828a724268ce8cb29769cb8de6b3d",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/diffs/database-optimizer.patch",
+      "diffSha256": "1132100ba5d4320e851d775f5a4d4827f457250f3a9cfebf2143ae262aaa169e",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T18-SKL-15",
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "license": "MIT",
+      "upstreamPath": "skills/golang-pro/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/claudeSkills/skills/golang-pro/SKILL.md",
+      "rawSha256": "6ae2c5bfcdee4d14bc2ba25e2d55727d92dff7ec47d2bca113a5a465ac50c1ed",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/adapted/golang-pro/SKILL.md",
+      "adaptedSha256": "80f28eeb418463b9d2480196da4777751a5f5d5077811eefac222aa9cf0e70c9",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/diffs/golang-pro.patch",
+      "diffSha256": "53b5f2d73d0d4316866b1b0e59a5aeb95075673c8802f07ee720564209201309",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T18-SKL-16",
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "license": "MIT",
+      "upstreamPath": "skills/rust-engineer/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/raw/claudeSkills/skills/rust-engineer/SKILL.md",
+      "rawSha256": "261cb535487d45b98d7015348694278799871f1fe524a7df4b643ad1547b1860",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/adapted/rust-engineer/SKILL.md",
+      "adaptedSha256": "3298e95979b48f9c5ce092a696b55a3cf45c70262b7aa77ff6f28a0c8f28f775",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/diffs/rust-engineer.patch",
+      "diffSha256": "289a2cab2f5a7002f573ecbbe65ef7a3cc6564d3bd081f32b8c792ff0fce84ed",
+      "coreStepsPreserved": true
+    }
+  ]
+}

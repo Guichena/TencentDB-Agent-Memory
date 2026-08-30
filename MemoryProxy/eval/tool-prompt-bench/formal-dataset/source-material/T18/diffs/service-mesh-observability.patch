@@ -1,0 +1,18 @@
+--- a/plugins/cloud-infrastructure/skills/service-mesh-observability/SKILL.md
++++ b/adapted/service-mesh-observability/SKILL.md
+@@ -5,0 +5,15 @@
++
++
++## TDAI Host Routing
++
++Load this package with `skill_view`. If the manifest points to a supporting file, read that file with `skill_files_read`; do not install or execute source-repository dependencies for Task 1.
++
++Use when:
++- Investigating service-mesh request behavior
++- Reviewing cross-service traffic and dependency signals
++
++Do not use when:
++- Do not use when no service mesh is involved
++- Do not infer application causes from mesh signals alone
++
++The upstream technical workflow below is preserved unchanged.

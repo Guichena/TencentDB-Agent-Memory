@@ -1,0 +1,19 @@
+--- a/plugins/systems-programming/skills/go-concurrency-patterns/SKILL.md
++++ b/adapted/go-concurrency-patterns/SKILL.md
+@@ -5,0 +5,16 @@
++
++
++## TDAI Host Routing
++
++Load this package with `skill_view`. If the manifest points to a supporting file, read that file with `skill_files_read`; do not install or execute source-repository dependencies for Task 1.
++
++Use when:
++- Building concurrent Go applications
++- Implementing worker pools or pipelines
++- Debugging races or goroutine lifecycle issues
++
++Do not use when:
++- Do not use for non-Go concurrency
++- Do not leave cancellation or goroutine exit paths unspecified
++
++The upstream technical workflow below is preserved unchanged.

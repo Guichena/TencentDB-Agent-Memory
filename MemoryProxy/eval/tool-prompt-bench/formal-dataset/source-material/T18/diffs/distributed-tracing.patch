@@ -1,0 +1,19 @@
+--- a/plugins/observability-monitoring/skills/distributed-tracing/SKILL.md
++++ b/adapted/distributed-tracing/SKILL.md
+@@ -5,0 +5,16 @@
++
++
++## TDAI Host Routing
++
++Load this package with `skill_view`. If the manifest points to a supporting file, read that file with `skill_files_read`; do not install or execute source-repository dependencies for Task 1.
++
++Use when:
++- Debugging distributed latency
++- Understanding service dependencies
++- Tracing error propagation and request paths
++
++Do not use when:
++- Do not use when the issue has no distributed request path
++- Do not treat traces as a substitute for service evidence
++
++The upstream technical workflow below is preserved unchanged.
