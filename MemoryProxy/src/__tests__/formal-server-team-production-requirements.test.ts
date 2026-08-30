@@ -193,6 +193,11 @@ describe("server_team production requirements", () => {
       sourceFrontmatterName: "demo",
       runtimeFrontmatterName: "demo",
       frontmatterNameNormalized: false,
+      sourceDescriptionLength: 4,
+      runtimeDescriptionLength: 4,
+      sourceDescriptionSha256: sha256("demo"),
+      runtimeDescriptionSha256: sha256("demo"),
+      frontmatterDescriptionNormalized: false,
     });
     expect(JSON.stringify(result.evidence)).not.toContain(entry);
     expect(JSON.stringify(result.evidence)).not.toContain(resource);
@@ -232,11 +237,52 @@ describe("server_team production requirements", () => {
     }));
   });
 
+  it("uses the frozen concise description only when verified upstream frontmatter exceeds the API limit", async () => {
+    const packageRoot = await mkdtemp(join(tmpdir(), "task1-skill-description-"));
+    tempRoots.push(packageRoot);
+    const sourceDescription = "x".repeat(1025);
+    const runtimeDescription = "concise dataset description";
+    const sourceEntry = `---\nname: source-name\ndescription: ${sourceDescription}\n---\n# Body\n`;
+    await writeFile(join(packageRoot, "SKILL.md"), sourceEntry, "utf8");
+
+    const resolver = createServerTeamRequirementResolver({
+      serviceIdsByDatasetSpaceId: {},
+      authUserIdsByDatasetUserId: {},
+      skillPackageRoots: [packageRoot],
+      runtimeSkillNamesByFormalAssetId: { "SKILL-DESCRIPTION": "source-name" },
+      runtimeSkillDescriptionsByFormalAssetId: {
+        "SKILL-DESCRIPTION": runtimeDescription,
+      },
+      importMemoryL1: vi.fn(),
+      importMemoryL2: vi.fn(),
+    });
+    const result = await resolver(requirement(
+      "req-skill-description",
+      "skill_package_bytes",
+      {
+        formalAssetId: "SKILL-DESCRIPTION",
+        manifest: [{ path: "SKILL.md", sha256: sha256(sourceEntry) }],
+      },
+    ), { resolve: (value) => value });
+
+    expect(result.values.verified_skill_entry_content).toContain(
+      `description: ${runtimeDescription}`,
+    );
+    expect(result.values.verified_skill_entry_content).toMatch(/---\n# Body\n$/u);
+    expect(result.evidence).toEqual(expect.objectContaining({
+      sourceDescriptionLength: 1025,
+      runtimeDescriptionLength: runtimeDescription.length,
+      sourceDescriptionSha256: sha256(sourceDescription),
+      runtimeDescriptionSha256: sha256(runtimeDescription),
+      frontmatterDescriptionNormalized: true,
+    }));
+  });
+
   it("reconstructs manifest-exact UTF-8 line endings from a normalized checkout", async () => {
     const packageRoot = await mkdtemp(join(tmpdir(), "task1-skill-package-eol-"));
     tempRoots.push(packageRoot);
-    const checkoutEntry = "---\nname: demo\n---\n# Demo\n";
-    const frozenEntry = "---\r\nname: demo\n---\r\n# Demo\r\n";
+    const checkoutEntry = "---\nname: demo\ndescription: demo\n---\n# Demo\n";
+    const frozenEntry = "---\r\nname: demo\ndescription: demo\r\n---\r\n# Demo\r\n";
     await writeFile(join(packageRoot, "SKILL.md"), checkoutEntry, "utf8");
 
     const resolver = createServerTeamRequirementResolver({

@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { isUtf8 } from "node:buffer";
 import { readFile, readdir } from "node:fs/promises";
 import { isAbsolute, join, relative, resolve, sep } from "node:path";
+import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 
 import { canonicalSha256 } from "../formal-runtime/canonical.js";
 import type {
@@ -53,6 +54,8 @@ export interface ServerTeamRequirementResolverConfig {
   readonly skillPackageRoots: readonly string[];
   /** Dataset-visible aliases already frozen in the restore plan, keyed by formal asset id. */
   readonly runtimeSkillNamesByFormalAssetId?: Readonly<Record<string, string>>;
+  /** Concise dataset descriptions used only when verified upstream frontmatter exceeds API limits. */
+  readonly runtimeSkillDescriptionsByFormalAssetId?: Readonly<Record<string, string>>;
   readonly importMemoryL1: ServerTeamMemoryImportHook;
   readonly importMemoryL2: ServerTeamMemoryImportHook;
 }
@@ -203,6 +206,7 @@ async function loadMatchingSkillPackage(
   requirement: RestorePlanRequirement,
   roots: readonly string[],
   runtimeSkillNamesByFormalAssetId: Readonly<Record<string, string>>,
+  runtimeSkillDescriptionsByFormalAssetId: Readonly<Record<string, string>>,
 ): Promise<Readonly<{
   values: Readonly<Record<string, unknown>>;
   evidence: unknown;
@@ -280,13 +284,41 @@ async function loadMatchingSkillPackage(
         `runtime Skill name is not a lowercase hyphenated identifier`,
       );
     }
-    const runtimeEntry = runtimeFrontmatterName === sourceFrontmatterName
+    const parsedFrontmatter = parseYaml(frontmatter[1]!) as Record<string, unknown> | null;
+    const sourceDescription = typeof parsedFrontmatter?.description === "string"
+      ? parsedFrontmatter.description
+      : "";
+    if (!sourceDescription) {
+      return error("SKILL_PACKAGE_INVALID", requirement, "SKILL.md frontmatter has no description");
+    }
+    const descriptionNeedsNormalization = sourceDescription.length > 1024;
+    const runtimeDescription = descriptionNeedsNormalization
+      ? runtimeSkillDescriptionsByFormalAssetId[requirement.formalAssetId]
+      : sourceDescription;
+    if (!runtimeDescription || runtimeDescription.length > 1024) {
+      return error(
+        "SKILL_PACKAGE_INVALID",
+        requirement,
+        "runtime Skill description must contain 1..1024 characters",
+      );
+    }
+    const nameNormalizedEntry = runtimeFrontmatterName === sourceFrontmatterName
       ? sourceEntry
       : `${frontmatter[0].replace(
           namePattern,
           (_line, prefix: string, _value: string, ending: string) =>
             `${prefix}${runtimeFrontmatterName}${ending}`,
         )}${sourceEntry.slice(frontmatter[0].length)}`;
+    let runtimeEntry = nameNormalizedEntry;
+    if (descriptionNeedsNormalization) {
+      const runtimeFrontmatter = {
+        ...(parsedFrontmatter ?? {}),
+        name: runtimeFrontmatterName,
+        description: runtimeDescription,
+      };
+      const runtimeYaml = stringifyYaml(runtimeFrontmatter).replace(/\n+$/u, "");
+      runtimeEntry = `---\n${runtimeYaml}\n---\n${sourceEntry.slice(frontmatter[0].length)}`;
+    }
     const resources = files
       .filter((file) => file.path !== "SKILL.md")
       .map((file) => isUtf8(file.bytes)
@@ -315,6 +347,11 @@ async function loadMatchingSkillPackage(
         sourceFrontmatterName,
         runtimeFrontmatterName,
         frontmatterNameNormalized: sourceFrontmatterName !== runtimeFrontmatterName,
+        sourceDescriptionLength: sourceDescription.length,
+        runtimeDescriptionLength: runtimeDescription.length,
+        sourceDescriptionSha256: sha256(Buffer.from(sourceDescription, "utf8")),
+        runtimeDescriptionSha256: sha256(Buffer.from(runtimeDescription, "utf8")),
+        frontmatterDescriptionNormalized: descriptionNeedsNormalization,
       },
     };
   }
@@ -386,6 +423,7 @@ export function createServerTeamRequirementResolver(
         requirement,
         config.skillPackageRoots,
         config.runtimeSkillNamesByFormalAssetId ?? {},
+        config.runtimeSkillDescriptionsByFormalAssetId ?? {},
       );
     }
     if (requirement.kind === "memory_l1_import") {

@@ -81,10 +81,14 @@ function runtimeBindings(
   };
 }
 
-function runtimeSkillNames(
+function runtimeSkillMetadata(
   plan: FormalAssetRestorePlan,
-): Readonly<Record<string, string>> {
+): Readonly<{
+  names: Readonly<Record<string, string>>;
+  descriptions: Readonly<Record<string, string>>;
+}> {
   const names: Record<string, string> = {};
+  const descriptions: Record<string, string> = {};
   for (const action of plan.actions) {
     if (action.endpoint !== "/v3/skill/create") continue;
     const body = action.body as Readonly<Record<string, unknown>>;
@@ -92,21 +96,30 @@ function runtimeSkillNames(
     const formalAssetId = metadata && typeof metadata === "object" && !Array.isArray(metadata)
       ? (metadata as Readonly<Record<string, unknown>>).formalAssetId
       : undefined;
+    const description = metadata && typeof metadata === "object" && !Array.isArray(metadata)
+      ? (metadata as Readonly<Record<string, unknown>>).description
+      : undefined;
     const name = body.name;
     if (typeof formalAssetId !== "string" || !formalAssetId.trim()
-      || typeof name !== "string" || !name.trim()) {
+      || typeof name !== "string" || !name.trim()
+      || typeof description !== "string" || !description.trim()) {
       throw new ServerTeamProductionAdapterConfigError(
-        `Skill action ${action.actionId} has no formal asset id or runtime name`,
+        `Skill action ${action.actionId} has no formal asset id, runtime name, or description`,
       );
     }
-    if (names[formalAssetId] && names[formalAssetId] !== name) {
+    if ((names[formalAssetId] && names[formalAssetId] !== name)
+      || (descriptions[formalAssetId] && descriptions[formalAssetId] !== description)) {
       throw new ServerTeamProductionAdapterConfigError(
-        `Skill ${formalAssetId} has conflicting runtime names`,
+        `Skill ${formalAssetId} has conflicting runtime metadata`,
       );
     }
     names[formalAssetId] = name;
+    descriptions[formalAssetId] = description;
   }
-  return Object.freeze(names);
+  return Object.freeze({
+    names: Object.freeze(names),
+    descriptions: Object.freeze(descriptions),
+  });
 }
 
 /** Compose and execute restore without starting either service or running a model. */
@@ -116,6 +129,7 @@ export async function executeServerTeamProductionRestore(
 ): Promise<ProductionAssetRestoreReceipt> {
   const config = runtimeConfig(options.env);
   const bindings = runtimeBindings(plan, config);
+  const skillMetadata = runtimeSkillMetadata(plan);
   const skillPackageRoots = await discoverFrozenSkillPackageRoots(config.frozenDataRoot);
   const transport = createServerTeamProductionTransport({
     memoryCoreBaseUrl: config.memoryCoreBaseUrl,
@@ -135,7 +149,8 @@ export async function executeServerTeamProductionRestore(
     serviceIdsByDatasetSpaceId: bindings.serviceIdsByDatasetSpaceId,
     authUserIdsByDatasetUserId: bindings.authUserIdsByDatasetUserId,
     skillPackageRoots,
-    runtimeSkillNamesByFormalAssetId: runtimeSkillNames(plan),
+    runtimeSkillNamesByFormalAssetId: skillMetadata.names,
+    runtimeSkillDescriptionsByFormalAssetId: skillMetadata.descriptions,
     importMemoryL1: memoryHooks.importMemoryL1,
     importMemoryL2: memoryHooks.importMemoryL2,
   });
