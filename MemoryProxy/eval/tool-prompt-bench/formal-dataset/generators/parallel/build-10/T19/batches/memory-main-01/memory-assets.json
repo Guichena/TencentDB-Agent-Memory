@@ -1,0 +1,247 @@
+{
+  "schema_version": "task1.memory_assets.v1",
+  "team_id": "T19",
+  "stage": "DS05",
+  "world_as_of": "2026-08-31T00:00:00+08:00",
+  "owners": {
+    "agent-task1-t19-general": "T19 通用业务 Agent",
+    "agent-task1-t19-identity-platform": "身份平台 Agent",
+    "agent-task1-t19-policy-assurance": "授权保障 Agent"
+  },
+  "l0_conversations": [
+    {
+      "asset_id": "T19-L0-ATLAS-LOGIN-CUTOVER",
+      "session_id": "t19-session-atlas-login-001",
+      "project": "AtlasGate",
+      "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"},
+      "messages": [
+        {"message_id": "t19-msg-atlas-login-001", "role": "user", "content": "AtlasGate 要把登录回调切到新的边界，先盘点旧域名、状态校验和浏览器会话。"},
+        {"message_id": "t19-msg-atlas-login-002", "role": "assistant", "content": "我会把回调、cookie 和刷新交换分开验证，并给每条线建立回滚观察项。"},
+        {"message_id": "t19-msg-atlas-login-003", "role": "user", "content": "第一次只改回调地址，移动端正常，桌面浏览器仍有旧状态被接受。"},
+        {"message_id": "t19-msg-atlas-login-004", "role": "assistant", "content": "先暂停扩展，补做状态与回调来源的成对校验；TokenForge 的令牌告警先不归因到这里。"},
+        {"message_id": "t19-msg-atlas-login-005", "role": "user", "content": "第二次增加状态校验后，部分用户在重定向循环里丢失了原会话。"},
+        {"message_id": "t19-msg-atlas-login-006", "role": "assistant", "content": "修正为保留一次性过渡状态，并记录首次失败的回调来源，避免无限重试。"},
+        {"message_id": "t19-msg-atlas-login-007", "role": "user", "content": "身份平台同事提醒，cookie 切换的兼容窗口与回调切换必须同批观察。"},
+        {"message_id": "t19-msg-atlas-login-008", "role": "assistant", "content": "已把两者纳入同一发布清单，PermitMesh 的租户拒绝只作为旁路指标。"},
+        {"message_id": "t19-msg-atlas-login-009", "role": "user", "content": "跨会话复盘还发现旧回调的告警会掩盖新回调的真实失败。"},
+        {"message_id": "t19-msg-atlas-login-010", "role": "assistant", "content": "我会按回调版本拆分指标，并将旧路径告警标成迁移观察而非新路径失败。"},
+        {"message_id": "t19-msg-atlas-login-011", "role": "user", "content": "最终验收需要覆盖成功登录、状态不匹配、回调超时和浏览器返回四类场景。"},
+        {"message_id": "t19-msg-atlas-login-012", "role": "assistant", "content": "这四类都已进入验收表，后续任何扩展先满足观测窗口再推进。"}
+      ]
+    },
+    {
+      "asset_id": "T19-L0-ATLAS-COOKIE-FALLBACK",
+      "session_id": "t19-session-atlas-cookie-002",
+      "project": "AtlasGate",
+      "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"},
+      "messages": [
+        {"message_id": "t19-msg-atlas-cookie-001", "role": "user", "content": "AtlasGate 的 cookie 标志切换出现少量跨站回退，先看 SameSite、Secure 和过期时间。"},
+        {"message_id": "t19-msg-atlas-cookie-002", "role": "assistant", "content": "我会先复现浏览器差异，再检查服务端是否把旧 cookie 和新 cookie 同时写出。"},
+        {"message_id": "t19-msg-atlas-cookie-003", "role": "user", "content": "初版把所有 cookie 都设为严格模式，登录回调在嵌入式浏览器里失败。"},
+        {"message_id": "t19-msg-atlas-cookie-004", "role": "assistant", "content": "撤回全局修改，只对会话 cookie 按回调场景设置，并保留安全传输约束。"},
+        {"message_id": "t19-msg-atlas-cookie-005", "role": "user", "content": "第二版只写新名称，旧名称没有清理，导致客户端持续带两个值。"},
+        {"message_id": "t19-msg-atlas-cookie-006", "role": "assistant", "content": "加上旧名称的定向失效，并把清理动作限制在成功完成新会话之后。"},
+        {"message_id": "t19-msg-atlas-cookie-007", "role": "user", "content": "TokenForge 的刷新失败曲线与这次回退同日出现，但请求链路不同。"},
+        {"message_id": "t19-msg-atlas-cookie-008", "role": "assistant", "content": "复盘中将它们标成并行项目，cookie 发布只引用浏览器会话指标。"},
+        {"message_id": "t19-msg-atlas-cookie-009", "role": "user", "content": "跨会话测试要求覆盖首次登录、旧会话续期、跨站回调和退出。"},
+        {"message_id": "t19-msg-atlas-cookie-010", "role": "assistant", "content": "我补了四组夹具，并在失败时输出 cookie 名称而不是敏感值。"},
+        {"message_id": "t19-msg-atlas-cookie-011", "role": "user", "content": "当前发布说明只允许在新会话成功率稳定后扩大人群。"},
+        {"message_id": "t19-msg-atlas-cookie-012", "role": "assistant", "content": "已记录：扩大前必须完成稳定观察，并保留旧路径可恢复的开关。"}
+      ]
+    },
+    {
+      "asset_id": "T19-L0-TOKEN-ROTATION-INCIDENT",
+      "session_id": "t19-session-token-incident-003",
+      "project": "TokenForge",
+      "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"},
+      "messages": [
+        {"message_id": "t19-msg-token-incident-001", "role": "user", "content": "TokenForge 昨晚网关短暂超时，客户端随后出现重复刷新和偶发 invalid_grant。"},
+        {"message_id": "t19-msg-token-incident-002", "role": "assistant", "content": "我先分离网关结果、刷新交换和签名验证，避免把 JWKS 延迟当成同一根因。"},
+        {"message_id": "t19-msg-token-incident-003", "role": "user", "content": "第一轮实验沿用了旧的 ALLOW_REFRESH_TOKEN_AUTH 路径，超时重试时会把同一令牌再次送入交换。"},
+        {"message_id": "t19-msg-token-incident-004", "role": "assistant", "content": "这条路径无法区分服务端已成功但响应丢失的情况，重复提交会制造无效授权错误。"},
+        {"message_id": "t19-msg-token-incident-005", "role": "user", "content": "第二轮只把重试次数调小，仍会在边界时刻重复提交，失败率没有稳定下降。"},
+        {"message_id": "t19-msg-token-incident-006", "role": "assistant", "content": "因此不再靠次数掩盖不确定结果，改为选用明确的交换接口并更新客户端状态。"},
+        {"message_id": "t19-msg-token-incident-007", "role": "user", "content": "最终复盘确认使用 OAuth refresh_token 授权或 GetTokensFromRefreshToken 完成交换。"},
+        {"message_id": "t19-msg-token-incident-008", "role": "assistant", "content": "每次返回的新刷新令牌都必须持久化，旧值不能在成功响应后继续复用。"},
+        {"message_id": "t19-msg-token-incident-009", "role": "user", "content": "JWKS 重叠观察正常，但验证缓存的延迟仍要单独跟踪。"},
+        {"message_id": "t19-msg-token-incident-010", "role": "assistant", "content": "已把 JWKS 作为旁路指标，不再用它解释刷新交换选择。"},
+        {"message_id": "t19-msg-token-incident-011", "role": "user", "content": "跨会话复盘要求把旧路径失败和替代路径写成可审计的决策演进。"},
+        {"message_id": "t19-msg-token-incident-012", "role": "assistant", "content": "已保留两次失败尝试、修正理由和最终交换方式，供后续回归引用。"}
+      ]
+    },
+    {
+      "asset_id": "T19-L0-TOKEN-JWKS-OVERLAP",
+      "session_id": "t19-session-token-jwks-004",
+      "project": "TokenForge",
+      "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"},
+      "messages": [
+        {"message_id": "t19-msg-token-jwks-001", "role": "user", "content": "TokenForge 的 JWKS 轮换观察有短暂缓存滞后，需要判断是否影响新旧令牌验证。"},
+        {"message_id": "t19-msg-token-jwks-002", "role": "assistant", "content": "我会按签发时间和验证节点比对缓存命中，先不改刷新交换逻辑。"},
+        {"message_id": "t19-msg-token-jwks-003", "role": "user", "content": "第一次强制所有节点立即拉取，峰值期间反而触发上游限流。"},
+        {"message_id": "t19-msg-token-jwks-004", "role": "assistant", "content": "撤回全量拉取，改为保留旧键并让节点按退避刷新。"},
+        {"message_id": "t19-msg-token-jwks-005", "role": "user", "content": "第二次把缓存时间压到很短，验证错误下降但请求量明显上升。"},
+        {"message_id": "t19-msg-token-jwks-006", "role": "assistant", "content": "恢复合理缓存并增加重叠观察，令牌验证与刷新交换分别出指标。"},
+        {"message_id": "t19-msg-token-jwks-007", "role": "user", "content": "AtlasGate 同期有登录回调迁移，不能把浏览器失败样本混入 JWKS。"},
+        {"message_id": "t19-msg-token-jwks-008", "role": "assistant", "content": "已按项目和验证端点切分样本，保留跨项目时间线供复盘。"},
+        {"message_id": "t19-msg-token-jwks-009", "role": "user", "content": "跨会话记录显示新键签发后旧键仍需短时可验证。"},
+        {"message_id": "t19-msg-token-jwks-010", "role": "assistant", "content": "这只决定验证重叠，不改变刷新令牌的轮换契约。"},
+        {"message_id": "t19-msg-token-jwks-011", "role": "user", "content": "最终验收覆盖缓存滞后、限流和旧键退出三个阶段。"},
+        {"message_id": "t19-msg-token-jwks-012", "role": "assistant", "content": "验收完成后再缩短重叠，任何异常先恢复上一组键。"}
+      ]
+    },
+    {
+      "asset_id": "T19-L0-PERMIT-TENANT-DENY",
+      "session_id": "t19-session-permit-deny-005",
+      "project": "PermitMesh",
+      "owner": {"agent_id": "agent-task1-t19-policy-assurance", "name": "授权保障 Agent"},
+      "messages": [
+        {"message_id": "t19-msg-permit-deny-001", "role": "user", "content": "PermitMesh 发现一个跨租户读取样本没有按预期拒绝，先核对主体租户和资源归属。"},
+        {"message_id": "t19-msg-permit-deny-002", "role": "assistant", "content": "我会保留请求租户、主体属性和资源租户三个维度，并给每次拒绝写原因。"},
+        {"message_id": "t19-msg-permit-deny-003", "role": "user", "content": "初版只看角色名称，同名角色在两个租户都能读到资源。"},
+        {"message_id": "t19-msg-permit-deny-004", "role": "assistant", "content": "先撤回角色直通逻辑，强制把租户边界纳入决策输入。"},
+        {"message_id": "t19-msg-permit-deny-005", "role": "user", "content": "第二版先做资源判断再做主体判断，审计上无法说明拒绝层次。"},
+        {"message_id": "t19-msg-permit-deny-006", "role": "assistant", "content": "把决策分层并输出稳定原因码，同时将平台运维例外单独标记。"},
+        {"message_id": "t19-msg-permit-deny-007", "role": "user", "content": "WorkloadTrust 的服务身份错误也会看起来像租户拒绝。"},
+        {"message_id": "t19-msg-permit-deny-008", "role": "assistant", "content": "测试先确认身份来源，再进入 PermitMesh 决策，避免两类失败互相覆盖。"},
+        {"message_id": "t19-msg-permit-deny-009", "role": "user", "content": "跨会话夹具覆盖缺少租户、错误租户、资源不存在和角色过期。"},
+        {"message_id": "t19-msg-permit-deny-010", "role": "assistant", "content": "这四种输入都加入回归，并要求拒绝原因可追溯到一层。"},
+        {"message_id": "t19-msg-permit-deny-011", "role": "user", "content": "上线前还要检查例外工单是否具备审计上下文。"},
+        {"message_id": "t19-msg-permit-deny-012", "role": "assistant", "content": "没有审计上下文的跨租户请求继续拒绝，例外不得扩散成通用角色能力。"}
+      ]
+    },
+    {
+      "asset_id": "T19-L0-PERMIT-ROLE-REGRESSION",
+      "session_id": "t19-session-permit-role-006",
+      "project": "PermitMesh",
+      "owner": {"agent_id": "agent-task1-t19-policy-assurance", "name": "授权保障 Agent"},
+      "messages": [
+        {"message_id": "t19-msg-permit-role-001", "role": "user", "content": "PermitMesh 新增角色条件后出现权限回归，现象集中在资源标签和旧角色组合。"},
+        {"message_id": "t19-msg-permit-role-002", "role": "assistant", "content": "我会先固定旧角色行为，再逐项打开资源标签和主体属性。"},
+        {"message_id": "t19-msg-permit-role-003", "role": "user", "content": "第一次把标签缺失当成通配，导致没有标签的资源被放行。"},
+        {"message_id": "t19-msg-permit-role-004", "role": "assistant", "content": "纠正为缺失即不满足条件，并增加拒绝样本。"},
+        {"message_id": "t19-msg-permit-role-005", "role": "user", "content": "第二次只修了读取路径，写入路径仍复用旧的宽松判断。"},
+        {"message_id": "t19-msg-permit-role-006", "role": "assistant", "content": "把读写动作拆成独立策略，禁止读取修复自动影响写入。"},
+        {"message_id": "t19-msg-permit-role-007", "role": "user", "content": "KeyTurn 的权限回归同周发生，但它只涉及键读取，不涉及资源策略。"},
+        {"message_id": "t19-msg-permit-role-008", "role": "assistant", "content": "两项回归分别保留，并在报告中按资源类型和动作维度分组。"},
+        {"message_id": "t19-msg-permit-role-009", "role": "user", "content": "跨会话验证还发现旧角色的默认租户来自缓存。"},
+        {"message_id": "t19-msg-permit-role-010", "role": "assistant", "content": "禁止用缓存默认值补齐缺失租户，要求调用方明确提供。"},
+        {"message_id": "t19-msg-permit-role-011", "role": "user", "content": "最终夹具需要覆盖旧角色、新角色、标签缺失和跨租户四组。"},
+        {"message_id": "t19-msg-permit-role-012", "role": "assistant", "content": "四组夹具均通过，授权保障会持续观察拒绝原因分布。"}
+      ]
+    },
+    {
+      "asset_id": "T19-L0-WORKLOAD-FEDERATION",
+      "session_id": "t19-session-workload-federation-007",
+      "project": "WorkloadTrust",
+      "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"},
+      "messages": [
+        {"message_id": "t19-msg-workload-fed-001", "role": "user", "content": "WorkloadTrust 要把部署身份从长期凭证切到短时联邦交换，先看来源、受众和租户映射。"},
+        {"message_id": "t19-msg-workload-fed-002", "role": "assistant", "content": "我会把外部声明验证、服务身份绑定和最终令牌交换分成三个阶段。"},
+        {"message_id": "t19-msg-workload-fed-003", "role": "user", "content": "第一轮只验证调用方名称，跨环境请求仍能进入交换。"},
+        {"message_id": "t19-msg-workload-fed-004", "role": "assistant", "content": "撤回名称直通，要求声明来源和环境上下文都匹配。"},
+        {"message_id": "t19-msg-workload-fed-005", "role": "user", "content": "第二轮把 audience 放宽为资源前缀，测试通过但边界过大。"},
+        {"message_id": "t19-msg-workload-fed-006", "role": "assistant", "content": "改成精确契约，并把不接受的租户后缀加入负例。"},
+        {"message_id": "t19-msg-workload-fed-007", "role": "user", "content": "mTLS 证书轮换在另一会话中失败过，不能把证书过期误判成交换策略问题。"},
+        {"message_id": "t19-msg-workload-fed-008", "role": "assistant", "content": "先在入口确认证书链，再检查交换断言，两个错误各自告警。"},
+        {"message_id": "t19-msg-workload-fed-009", "role": "user", "content": "跨会话回归还包含错误租户和错误受众两个样本。"},
+        {"message_id": "t19-msg-workload-fed-010", "role": "assistant", "content": "这两个样本都必须拒绝，并输出不泄露令牌内容的原因。"},
+        {"message_id": "t19-msg-workload-fed-011", "role": "user", "content": "发布前要去掉部署脚本里的长期密钥。"},
+        {"message_id": "t19-msg-workload-fed-012", "role": "assistant", "content": "已将短时交换设为唯一新路径，旧凭证只保留受控回退窗口。"}
+      ]
+    },
+    {
+      "asset_id": "T19-L0-WORKLOAD-MTLS",
+      "session_id": "t19-session-workload-mtls-008",
+      "project": "WorkloadTrust",
+      "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"},
+      "messages": [
+        {"message_id": "t19-msg-workload-mtls-001", "role": "user", "content": "WorkloadTrust 的 mTLS 轮换演练有节点仍使用旧证书，先看身份绑定和连接复用。"},
+        {"message_id": "t19-msg-workload-mtls-002", "role": "assistant", "content": "我会按证书链、连接池和服务身份三层排查，不先改令牌交换契约。"},
+        {"message_id": "t19-msg-workload-mtls-003", "role": "user", "content": "第一次只替换文件，长连接继续使用旧证书。"},
+        {"message_id": "t19-msg-workload-mtls-004", "role": "assistant", "content": "增加连接池轮换信号，确保新连接重新完成身份证明。"},
+        {"message_id": "t19-msg-workload-mtls-005", "role": "user", "content": "第二次在全量节点同时断开连接，短时间内把流量推向少数节点。"},
+        {"message_id": "t19-msg-workload-mtls-006", "role": "assistant", "content": "改为分批排空和重连，保留旧证书只到该批次稳定为止。"},
+        {"message_id": "t19-msg-workload-mtls-007", "role": "user", "content": "TokenForge 的验证缓存观察显示新身份声明传播也可能延迟。"},
+        {"message_id": "t19-msg-workload-mtls-008", "role": "assistant", "content": "将声明传播作为旁路指标，并确保 mTLS 失败先在连接层结束。"},
+        {"message_id": "t19-msg-workload-mtls-009", "role": "user", "content": "跨会话回归覆盖旧证书、新证书、连接复用和节点重启。"},
+        {"message_id": "t19-msg-workload-mtls-010", "role": "assistant", "content": "四个阶段均加入验收，任何证书链错误都不进入策略决策。"},
+        {"message_id": "t19-msg-workload-mtls-011", "role": "user", "content": "当前运行手册要求分批完成后再缩短兼容观察。"},
+        {"message_id": "t19-msg-workload-mtls-012", "role": "assistant", "content": "我会按批次记录完成时间和回退点，保留最小必要的旧证书窗口。"}
+      ]
+    },
+    {
+      "asset_id": "T19-L0-KEY-ROTATION-CEREMONY",
+      "session_id": "t19-session-key-ceremony-009",
+      "project": "KeyTurn",
+      "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"},
+      "messages": [
+        {"message_id": "t19-msg-key-ceremony-001", "role": "user", "content": "KeyTurn 要进行签名键轮换演练，先排列准备、重叠、切换和回退步骤。"},
+        {"message_id": "t19-msg-key-ceremony-002", "role": "assistant", "content": "我会把发布新键、验证读取、切换签发和撤回旧键分别记录。"},
+        {"message_id": "t19-msg-key-ceremony-003", "role": "user", "content": "第一次先撤旧键再发新键，验证节点立刻出现失败。"},
+        {"message_id": "t19-msg-key-ceremony-004", "role": "assistant", "content": "修正为先发布新键并观察读取，再切换签发，最后才撤旧键。"},
+        {"message_id": "t19-msg-key-ceremony-005", "role": "user", "content": "第二次步骤顺序正确，但读取角色在部分节点没有新键权限。"},
+        {"message_id": "t19-msg-key-ceremony-006", "role": "assistant", "content": "把读取权限检查提前到演练门槛，拒绝把写入权限作为临时补丁。"},
+        {"message_id": "t19-msg-key-ceremony-007", "role": "user", "content": "WorkloadTrust 的服务身份刷新会同时发生，需要单独标注调用来源。"},
+        {"message_id": "t19-msg-key-ceremony-008", "role": "assistant", "content": "已把服务身份刷新作为并行观察，不改变键轮换步骤。"},
+        {"message_id": "t19-msg-key-ceremony-009", "role": "user", "content": "跨会话演练要求每个阶段有可检查的进入和退出条件。"},
+        {"message_id": "t19-msg-key-ceremony-010", "role": "assistant", "content": "每一阶段都增加双人确认和可回退开关。"},
+        {"message_id": "t19-msg-key-ceremony-011", "role": "user", "content": "最终复盘要保留失败步骤与修正理由。"},
+        {"message_id": "t19-msg-key-ceremony-012", "role": "assistant", "content": "演练记录已包含失败尝试、权限检查和回退演示，供后续轮换复用。"}
+      ]
+    },
+    {
+      "asset_id": "T19-L0-KEY-PERMISSION-REGRESSION",
+      "session_id": "t19-session-key-permission-010",
+      "project": "KeyTurn",
+      "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"},
+      "messages": [
+        {"message_id": "t19-msg-key-perm-001", "role": "user", "content": "KeyTurn 的权限回归阻塞轮换，读取新旧键的服务在一小段时间内得到不同结果。"},
+        {"message_id": "t19-msg-key-perm-002", "role": "assistant", "content": "我会分别核对重叠窗口、读取角色和租户绑定，避免用时间参数掩盖权限问题。"},
+        {"message_id": "t19-msg-key-perm-003", "role": "user", "content": "第一次只延长重叠窗口，错误仍在；第二次临时给所有服务写权限，测试虽绿但不合规。"},
+        {"message_id": "t19-msg-key-perm-004", "role": "assistant", "content": "两次尝试都撤回，保留最小权限原则并追查读取角色的绑定。"},
+        {"message_id": "t19-msg-key-perm-005", "role": "user", "content": "复现只发生在轮换读取角色，普通验证角色和写入角色不受影响。"},
+        {"message_id": "t19-msg-key-perm-006", "role": "assistant", "content": "范围已收窄到该读取角色与两把轮换键的权限关系。"},
+        {"message_id": "t19-msg-key-perm-007", "role": "user", "content": "TokenForge 的 JWKS 观察再次出现，但只涉及缓存状态。"},
+        {"message_id": "t19-msg-key-perm-008", "role": "assistant", "content": "把缓存观察留在旁路报告，不把它当作 KeyTurn 授权根因。"},
+        {"message_id": "t19-msg-key-perm-009", "role": "user", "content": "最后一次修复只给读取角色补齐新旧键读取授权，并保持写入拒绝。"},
+        {"message_id": "t19-msg-key-perm-010", "role": "assistant", "content": "回归已覆盖旧键、新键、轮换中途和回滚，最小修复在四个阶段都稳定。"},
+        {"message_id": "t19-msg-key-perm-011", "role": "user", "content": "复盘标题需要明确根因不是窗口长度。"},
+        {"message_id": "t19-msg-key-perm-012", "role": "assistant", "content": "已在复盘中保留根因、权限边界和拒绝写入的修复约束。"}
+      ]
+    }
+  ],
+  "l1_memories": [
+    {"asset_id": "T19-L1-ATLAS-REDIRECT-CANONICAL", "status": "confirmed", "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"}, "content": "AtlasGate 的规范回调地址只允许当前发布批次登记的来源；旧来源仅在过渡观测期间保留，状态参数必须与一次性会话绑定。", "support_links": [{"asset_id": "T19-L0-ATLAS-LOGIN-CUTOVER", "message_ids": ["t19-msg-atlas-login-002", "t19-msg-atlas-login-006"]}]},
+    {"asset_id": "T19-L1-ATLAS-SESSION-CUTOVER", "status": "active", "owner": {"agent_id": "agent-task1-t19-identity-platform", "name": "身份平台 Agent"}, "content": "当前 AtlasGate 会话切换 cohort 是低风险租户中 25% 的活跃浏览器会话，先保持双回调观测；若新会话成功率连续 10 分钟低于 99.5% 或旧 cookie 回退率超过 0.8%，立即停止扩展并恢复旧回调路径。", "support_links": [{"asset_id": "T19-L0-ATLAS-LOGIN-CUTOVER", "message_ids": ["t19-msg-atlas-login-007", "t19-msg-atlas-login-010"]}, {"asset_id": "T19-L0-ATLAS-COOKIE-FALLBACK", "message_ids": ["t19-msg-atlas-cookie-011", "t19-msg-atlas-cookie-012"]}]},
+    {"asset_id": "T19-L1-ATLAS-COOKIE-SAMESITE", "status": "confirmed", "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"}, "content": "会话 cookie 的跨站兼容只覆盖必要回调场景，必须启用安全传输并在新会话成功后定向失效旧名称，禁止全局放宽或长期双写。", "support_links": [{"asset_id": "T19-L0-ATLAS-COOKIE-FALLBACK", "message_ids": ["t19-msg-atlas-cookie-003", "t19-msg-atlas-cookie-006"]}]},
+    {"asset_id": "T19-L1-TOKEN-ROTATION-GRACE", "status": "confirmed", "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"}, "content": "TokenForge retry grace is 90 seconds, only for idempotent retry of the same refresh token after an ambiguous gateway-timeout outcome; after the window, do not replay. The rationale is to cover the client/gateway retry ceiling while tightly limiting reuse exposure.", "support_links": [{"asset_id": "T19-L0-TOKEN-ROTATION-INCIDENT", "message_ids": ["t19-msg-token-incident-001", "t19-msg-token-incident-005"]}]},
+    {"asset_id": "T19-L1-TOKEN-REVOCATION-SCOPE", "status": "confirmed", "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"}, "content": "刷新令牌撤销按客户端与会话范围执行；确认服务端已完成交换后，旧值不得再次提交，其他会话不会因单一会话撤销而被误伤。", "support_links": [{"asset_id": "T19-L0-TOKEN-ROTATION-INCIDENT", "message_ids": ["t19-msg-token-incident-007", "t19-msg-token-incident-008"]}]},
+    {"asset_id": "T19-L1-TOKEN-JWKS-OVERLAP", "status": "active", "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"}, "content": "TokenForge 的 JWKS 观察需要保留新旧键的短时验证重叠，节点按退避刷新；它只约束验证缓存，不改变刷新交换方式。", "support_links": [{"asset_id": "T19-L0-TOKEN-JWKS-OVERLAP", "message_ids": ["t19-msg-token-jwks-004", "t19-msg-token-jwks-010"]}]},
+    {"asset_id": "T19-L1-TOKEN-ROLLBACK-BOUNDARY", "status": "confirmed", "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"}, "content": "令牌轮换异常时冻结扩展、恢复上一组验证配置并保留必要的键重叠；不得通过无限重试或全量刷新来掩盖不确定结果。", "support_links": [{"asset_id": "T19-L0-TOKEN-JWKS-OVERLAP", "message_ids": ["t19-msg-token-jwks-003", "t19-msg-token-jwks-012"]}, {"asset_id": "T19-L0-TOKEN-ROTATION-INCIDENT", "message_ids": ["t19-msg-token-incident-005", "t19-msg-token-incident-010"]}]},
+    {"asset_id": "T19-L1-PERMIT-TENANT-DENY", "status": "confirmed", "owner": {"agent_id": "agent-task1-t19-policy-assurance", "name": "授权保障 Agent"}, "content": "PermitMesh 对缺少租户、错误租户、资源不存在和角色过期的请求保持拒绝，并为拒绝记录稳定的分层原因；跨租户处理必须有受审计的运维工单上下文。", "support_links": [{"asset_id": "T19-L0-PERMIT-TENANT-DENY", "message_ids": ["t19-msg-permit-deny-006", "t19-msg-permit-deny-010"]}]},
+    {"asset_id": "T19-L1-PERMIT-SUBJECT-ATTRIBUTES", "status": "active", "owner": {"agent_id": "agent-task1-t19-policy-assurance", "name": "授权保障 Agent"}, "content": "授权主体必须显式携带请求租户、主体属性和资源归属；不能用角色名称或缓存默认值补齐缺失租户，也不能让登录来源替代租户边界。", "support_links": [{"asset_id": "T19-L0-PERMIT-TENANT-DENY", "message_ids": ["t19-msg-permit-deny-003", "t19-msg-permit-deny-008"]}]},
+    {"asset_id": "T19-L1-PERMIT-REGRESSION-FIXTURE", "status": "confirmed", "owner": {"agent_id": "agent-task1-t19-policy-assurance", "name": "授权保障 Agent"}, "content": "PermitMesh 回归夹具覆盖旧角色、新角色、标签缺失和跨租户四组，并将读取和写入动作分开断言；缺失标签不视为通配。", "support_links": [{"asset_id": "T19-L0-PERMIT-ROLE-REGRESSION", "message_ids": ["t19-msg-permit-role-003", "t19-msg-permit-role-006", "t19-msg-permit-role-011"]}]},
+    {"asset_id": "T19-L1-WORKLOAD-AUDIENCE", "status": "confirmed", "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"}, "content": "WorkloadTrust token exchange 必须精确接受 audience `urn:workloadtrust:token-exchange` 并绑定调用方服务身份；环境后缀、租户名和宽泛资源前缀均不接受。", "support_links": [{"asset_id": "T19-L0-WORKLOAD-FEDERATION", "message_ids": ["t19-msg-workload-fed-005", "t19-msg-workload-fed-006"]}]},
+    {"asset_id": "T19-L1-WORKLOAD-TOKEN-EXCHANGE", "status": "active", "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"}, "content": "服务间交换按声明来源、服务身份、精确受众三步校验，错误租户或错误受众在交换入口拒绝，短时令牌替代部署脚本中的长期凭证。", "support_links": [{"asset_id": "T19-L0-WORKLOAD-FEDERATION", "message_ids": ["t19-msg-workload-fed-002", "t19-msg-workload-fed-010"]}]},
+    {"asset_id": "T19-L1-WORKLOAD-MTLS-IDENTITY", "status": "confirmed", "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"}, "content": "mTLS 轮换先完成证书链和连接池重连，再进入服务身份与令牌策略判断；分批排空连接，避免全量断开造成流量尖峰。", "support_links": [{"asset_id": "T19-L0-WORKLOAD-MTLS", "message_ids": ["t19-msg-workload-mtls-004", "t19-msg-workload-mtls-006"]}]},
+    {"asset_id": "T19-L1-KEY-OVERLAP-WINDOW", "status": "active", "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"}, "content": "KeyTurn 轮换顺序是先发布新键并确认读取，再切换签发，最后撤旧键；兼容观察结束前不得撤回仍被验证节点使用的旧键。", "support_links": [{"asset_id": "T19-L0-KEY-ROTATION-CEREMONY", "message_ids": ["t19-msg-key-ceremony-003", "t19-msg-key-ceremony-004"]}]},
+    {"asset_id": "T19-L1-KEY-READER-PERMISSION", "status": "confirmed", "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"}, "content": "轮换读取角色只获得新旧键的读取授权，不能以临时写权限代替；权限门槛必须在演练进入前通过。", "support_links": [{"asset_id": "T19-L0-KEY-ROTATION-CEREMONY", "message_ids": ["t19-msg-key-ceremony-005", "t19-msg-key-ceremony-006"]}]},
+    {"asset_id": "T19-L1-KEY-ROLLBACK-TRIGGER", "status": "confirmed", "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"}, "content": "KeyTurn 任一阶段出现验证失败或读取权限缺失时，停止推进并恢复上一组签发配置；回退保留读取重叠，不授予通用写权限。", "support_links": [{"asset_id": "T19-L0-KEY-ROTATION-CEREMONY", "message_ids": ["t19-msg-key-ceremony-009", "t19-msg-key-ceremony-010"]}, {"asset_id": "T19-L0-KEY-PERMISSION-REGRESSION", "message_ids": ["t19-msg-key-perm-009", "t19-msg-key-perm-010"]}]}
+  ],
+  "l2_scenes": [
+    {"asset_id": "T19-L2-ATLAS-CUTOVER", "path": "t19/atlasgate/session-cutover", "summary": "AtlasGate 会话切换场景，记录处于分批观测阶段。", "owner": {"agent_id": "agent-task1-t19-identity-platform", "name": "身份平台 Agent"}, "content": "场景记录包含切换前后会话建立、双回调观测、cookie 回退监测、失败样本分组和发布暂停动作。它将浏览器状态问题与令牌交换问题分开，并要求每个批次在扩大前完成稳定观察。"},
+    {"asset_id": "T19-L2-TOKEN-LIFECYCLE", "path": "t19/tokenforge/lifecycle", "summary": "TokenForge 令牌生命周期调查场景，记录轮换与验证的联动状态。", "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"}, "content": "场景内容对比刷新交换、令牌撤销、JWKS 缓存和回退观察的边界，保留网关超时后的失败实验与修正过程，但不把验证缓存现象当作刷新路径选择。"},
+    {"asset_id": "T19-L2-PERMIT-DECISION", "path": "t19/permitmesh/decision-contract", "summary": "PermitMesh 租户授权契约场景，记录决策实现与审计状态。", "owner": {"agent_id": "agent-task1-t19-policy-assurance", "name": "授权保障 Agent"}, "content": "场景的正式决策顺序是：先确认主体身份与请求租户一致，再检查资源归属，随后评估角色和上下文策略，最后记录拒绝原因。只有平台运维主体在受审计的工单上下文中可跨租户处理，普通租户主体不得走这条例外。所有拒绝都保留分层原因。"},
+    {"asset_id": "T19-L2-WORKLOAD-IDENTITY", "path": "t19/workloadtrust/federation", "summary": "WorkloadTrust 联邦身份场景，记录服务间交换的推进状态。", "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"}, "content": "场景内容串联声明来源、mTLS 证书链、服务身份绑定和短时令牌交换的失败样本，展示从宽泛约束到精确契约的修正过程，并区分错误受众与证书过期。"},
+    {"asset_id": "T19-L2-KEY-ROTATION", "path": "t19/keyturn/rotation", "summary": "KeyTurn 轮换准备场景，记录轮换处于可回退的准备状态。", "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"}, "content": "场景内容包括新旧键读取、签发切换、权限门槛、验证观测和回退演练，强调最小读取权限与失败即暂停的操作边界，并将 JWKS 旁路观察单独记账。"}
+  ],
+  "l3_profile": {
+    "asset_id": "T19-L3-ENGINEERING-PREFERENCES",
+    "status": "stable",
+    "owner": {"agent_id": "agent-task1-t19-general", "name": "T19 通用业务 Agent"},
+    "content": {
+      "long_lived_preferences": ["偏好先拆分身份、授权、会话和令牌边界，再讨论实现。", "偏好保留失败尝试、修正理由和可回退点。", "偏好用可审计的分层原因说明安全决策。"],
+      "general_constraints": ["遵循最小权限和默认拒绝。", "变更采用分批观察并保留可逆路径。", "测试不得记录秘密值，跨项目指标需明确分组。"]
+    }
+  }
+}

@@ -1,0 +1,1 @@
+No open Sol decisions remain. The five skill pairs are S02–S06 from the T19 input pack; each positive has one target-only gap and each negative delta supplies that same fact completely. The six bound-owned and twelve team-visible adapted skill assets follow the input-pack visibility contract.

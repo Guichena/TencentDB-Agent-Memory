@@ -1,0 +1,143 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T19-DS05-SKILL-TRIAL-01",
+  "stage": "DS05",
+  "team_id": "T19",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T19-PAIR-S01",
+      "external_source_ids": [
+        "T19-SRC-AWS-AUTH",
+        "T19-SRC-AWS-AUTH-TOKENS-SESSIONS"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "long_12_to_18",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "TokenForge is migrating its Cognito app client from legacy session handling to refresh-token rotation. The same client serves a browser application and a small backend-for-frontend."
+        },
+        {
+          "role": "assistant",
+          "content": "I will keep the migration scoped to the existing client and preserve its registered callbacks, scopes, token lifetimes, and authentication choices unless the migration requires a documented change."
+        },
+        {
+          "role": "user",
+          "content": "The rollout proposal uses a 30-second retry grace period and enables token revocation. Browser tokens are moving to the safer cookie-backed store."
+        },
+        {
+          "role": "assistant",
+          "content": "The rollout should account for concurrent browser retries, replacement-token persistence, and the difference between an individual sign-out and a full account lockout."
+        },
+        {
+          "role": "user",
+          "content": "The client already has OAuth callback and sign-out URLs, custom scopes, explicit authentication flows, and non-default token validity settings."
+        },
+        {
+          "role": "assistant",
+          "content": "Treat those existing settings as part of the configuration contract. A migration command must not accidentally discard fields that are unrelated to rotation."
+        },
+        {
+          "role": "user",
+          "content": "Our deployment code currently serializes the client configuration as one generated document, so an apparently small flag change can affect the whole document."
+        },
+        {
+          "role": "assistant",
+          "content": "The change should therefore begin with an authoritative read of the live client and produce a complete, reviewed configuration update."
+        },
+        {
+          "role": "user",
+          "content": "During a canary, a browser retry sometimes sees the previous session value after a successful refresh, and a later request is rejected."
+        },
+        {
+          "role": "assistant",
+          "content": "The client-side retry path must atomically adopt the replacement session value returned by a successful refresh and avoid reusing a value that has already been rotated out."
+        },
+        {
+          "role": "user",
+          "content": "The backend has a helper inherited from the pre-migration flow. We have not yet settled whether it remains compatible once rotation is enabled."
+        },
+        {
+          "role": "assistant",
+          "content": "That compatibility question is the remaining implementation risk. Validate it against the authentication guidance and cover both the browser retry and backend refresh paths."
+        },
+        {
+          "role": "user",
+          "content": "Please prepare the implementation plan for the TokenForge client migration, including the configuration update, the supported refresh operation, and the tests needed for the canary."
+        },
+        {
+          "role": "assistant",
+          "content": "I will return a concrete, reviewable plan that preserves existing OAuth settings, addresses the replacement-session race, and calls out any flow incompatibility explicitly."
+        }
+      ],
+      "changed_message_index": 14,
+      "query": "Prepare the concrete implementation plan for the TokenForge client migration. State the rotation/configuration compatibility rule, the safe update procedure, and the exact refresh path the application should use, including what to do with the replacement token. Keep the scope to this client and its existing OAuth settings.",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "Use the authentication guidance available to you to settle the remaining compatibility question before writing the plan. Keep the existing rollout constraints and do not broaden the change into a new sign-in or session-termination design."
+        },
+        "private_proposal": {
+          "unique_information_gap": "The source-grounded rule that refresh-token rotation cannot coexist with the legacy refresh-auth flow, the required read-modify-write configuration procedure, and the dedicated refresh path that returns and requires persistence of a new refresh token.",
+          "route": "skill",
+          "target_asset_ids": [
+            "T19-SKILL-AWS-AUTH"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_search",
+              "skill_view_by_id",
+              "skill_files_read"
+            ]
+          ],
+          "stop_after_candidate": "After the overview and its token/session reference are read, stop and use only their relevant rotation and refresh guidance."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "For this migration, refresh-token rotation and the legacy refresh-auth flow cannot be combined: rotation disables the REFRESH_TOKEN_AUTH flow at runtime, so ALLOW_REFRESH_TOKEN_AUTH must be omitted from the client's explicit authentication flows. Because the client update is a full replacement, first read the current client configuration and resend every existing field together with the rotation setting; do not submit only the rotation flag. After rotation is enabled, refresh with GetTokensFromRefreshToken or the OAuth token endpoint using grant_type=refresh_token, and persist the newest refresh token returned by each successful refresh. Do not use InitiateAuth or AdminInitiateAuth with REFRESH_TOKEN_AUTH."
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "The appended implementation note supplies the complete rotation compatibility rule, full-replacement update procedure, and correct refresh operation including replacement-token persistence."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T19-L0-TOKEN-ROTATION-INCIDENT",
+        "T19-L1-TOKEN-JWKS-OVERLAP",
+        "T19-L2-TOKEN-LIFECYCLE"
+      ],
+      "controlled_delta_note": "The shared context and query are identical. The positive leaves the compatibility and refresh details unresolved for source lookup; the negative supplies exactly those details in one implementation note.",
+      "source_fact_map": [
+        {
+          "claim": "Enabling refresh-token rotation disables the REFRESH_TOKEN_AUTH flow; omit ALLOW_REFRESH_TOKEN_AUTH when rotation is enabled.",
+          "source_id": "T19-SRC-AWS-AUTH-TOKENS-SESSIONS",
+          "locator": "Refresh token rotation, lines 70-74"
+        },
+        {
+          "claim": "update-user-pool-client is a full replacement, so read the existing client and resend all existing fields with the rotation setting.",
+          "source_id": "T19-SRC-AWS-AUTH",
+          "locator": "Critical Warnings: update-user-pool-client full-replace warning"
+        },
+        {
+          "claim": "Use GetTokensFromRefreshToken or the token endpoint with grant_type=refresh_token, and store the new refresh token returned by rotation.",
+          "source_id": "T19-SRC-AWS-AUTH-TOKENS-SESSIONS",
+          "locator": "Refresh token rotation, lines 67-74"
+        }
+      ],
+      "sol_review_questions": [
+        "Does the positive require lookup of both pinned files while keeping the compatibility rule absent from provider-visible context?",
+        "Does the negative delta provide the incompatibility, full-replacement update procedure, supported refresh path, and replacement-token persistence without adding an unrelated design decision?",
+        "Are the existing OAuth settings preserved and all provider-visible benchmark route and asset identifiers absent?"
+      ]
+    }
+  ]
+}

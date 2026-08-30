@@ -1,0 +1,208 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T19-memory-main-01",
+  "stage": "DS05",
+  "team_id": "T19",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T19-PAIR-M02",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "TokenForge 的刷新交换事故今天要收尾了。昨晚网关短暂超时后，客户端出现了重复刷新和偶发 invalid_grant。"},
+        {"role": "assistant", "content": "我先把登录回调、令牌缓存和轮换并行排查，避免把 AtlasGate 的浏览器会话问题混进来。"},
+        {"role": "user", "content": "第一轮实验沿用了旧的刷新接口，超时重试时会把同一令牌再次送入交换；单测没有覆盖网关只返回超时而服务端实际已完成的情形。"},
+        {"role": "assistant", "content": "这解释了为什么观测里既有成功交换又有 invalid_grant。KeyTurn 的密钥重叠检查正常，暂时排除签名键轮换。"},
+        {"role": "user", "content": "我在另一轮 TokenForge 回归中看到 JWKS 缓存也有延迟，但它只影响新签发令牌验证，不应改变刷新请求的选择。"},
+        {"role": "assistant", "content": "同意。我们会把 JWKS 重叠和刷新交换分成两个检查点，并在跨会话记录中标记这次网关超时假设。"},
+        {"role": "user", "content": "现在请给出事故复盘里的最终刷新处理建议，并说明之前尝试为何不可靠。"}
+      ],
+      "changed_message_index": 7,
+      "query": "请根据已有记录确认应采用哪条刷新路径，以及它解决了什么失败模式。",
+      "positive": {
+        "delta_message": {"role": "assistant", "content": "我会先核对历史复盘中的失败尝试和最终修正，再给出一条可执行的处理建议。"},
+        "private_proposal": {
+          "unique_information_gap": "which attempted refresh path failed and the accepted replacement",
+          "route": "memory",
+          "target_asset_ids": ["T19-L0-TOKEN-ROTATION-INCIDENT"],
+          "allowed_sequence_candidates": [["tdai_conversation_search"]],
+          "stop_after_candidate": "Stop after the conversation result identifies the failed path and accepted replacement."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "assistant", "content": "补充复盘结论：旧的 ALLOW_REFRESH_TOKEN_AUTH 路径在网关超时后的重复提交中失败；接受的替代方案是使用 OAuth refresh_token 授权或 GetTokensFromRefreshToken 完成交换，并持久化每次返回的最新刷新令牌。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "The appended incident conclusion names the failed path and the accepted replacement completely."
+        }
+      },
+      "visible_distractor_ids_author_only": ["T19-L0-TOKEN-JWKS-OVERLAP", "T19-L0-ATLAS-LOGIN-CUTOVER"],
+      "controlled_delta_note": "Positive keeps the incident's failed-path and replacement fact absent; negative appends only that fact.",
+      "source_fact_map": [],
+      "sol_review_questions": ["Does the positive require historical incident retrieval rather than inference from the JWKS distractor?", "Does the negative delta add exactly the failed path and accepted replacement?"]
+    },
+    {
+      "draft_pair_id": "T19-PAIR-M03",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "long_12_to_18",
+      "shared_context_messages": [
+        {"role": "user", "content": "PermitMesh 的租户授权决策要与新审计字段一起上线。当前故障单把跨租户读取和角色回归放在同一条时间线上。"},
+        {"role": "assistant", "content": "我会先区分请求上下文、主体属性和策略匹配，避免把 WorkloadTrust 的服务身份交换误判成授权漏洞。"},
+        {"role": "user", "content": "早期实现只看角色名称，导致同名角色在不同租户之间被误用；第一次修补又先做资源判断，审计日志看不出拒绝发生在哪一层。"},
+        {"role": "assistant", "content": "这两次尝试都留下了可复现样例。AtlasGate 的登录回调是上游身份来源，但不应替代租户边界判断。"},
+        {"role": "user", "content": "第二轮把租户字段加入主体对象，仍有一个例外场景：平台运维主体需要处理跨租户工单，但普通租户主体不能获得同样路径。"},
+        {"role": "assistant", "content": "我记下这个边界，并把 PermitMesh 的拒绝指标和 KeyTurn 的权限回归分开观察。"},
+        {"role": "user", "content": "跨会话记录显示，测试夹具覆盖了缺少租户、错误租户、资源不存在和角色过期四种输入；尚未在上线说明中写清决策层次。"},
+        {"role": "assistant", "content": "那份上线说明还需要明确哪些条件先判定，哪些结果允许平台运维例外，并保留逐层审计原因。"},
+        {"role": "user", "content": "请从场景记录中补齐授权决策的正式顺序和例外边界，供我更新上线说明。"}
+      ],
+      "changed_message_index": 9,
+      "query": "请确认这套租户授权决策应按什么顺序执行，以及例外应在哪个边界被记录。",
+      "positive": {
+        "delta_message": {"role": "assistant", "content": "我会查阅这条授权场景的完整记录，核对正式顺序与例外边界后再修改说明。"},
+        "private_proposal": {
+          "unique_information_gap": "the tenant authorization evaluation order and recorded exception boundary",
+          "route": "memory",
+          "target_asset_ids": ["T19-L2-PERMIT-DECISION"],
+          "allowed_sequence_candidates": [["tdai_scenario_ls", "tdai_read_scene"]],
+          "stop_after_candidate": "Stop after the scene content supplies the ordered checks and exception boundary."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "assistant", "content": "补充场景结论：先确认主体身份与请求租户一致，再检查资源归属，随后评估角色和上下文策略，最后记录拒绝原因；只有平台运维主体在受审计的工单上下文中可跨租户处理，普通租户主体不得走这条例外。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "The appended scene conclusion supplies the complete evaluation order and exception boundary."
+        }
+      },
+      "visible_distractor_ids_author_only": ["T19-L0-PERMIT-ROLE-REGRESSION", "T19-L2-WORKLOAD-IDENTITY"],
+      "controlled_delta_note": "Positive withholds only the scene's ordered checks and exception boundary; negative appends those two linked facts.",
+      "source_fact_map": [],
+      "sol_review_questions": ["Is the scene needed because context mentions only partial implementation history?", "Does the appended delta avoid adding unrelated policy values?"]
+    },
+    {
+      "draft_pair_id": "T19-PAIR-M04",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "WorkloadTrust 正在收紧服务间令牌交换。最近一次回归把 audience 校验、mTLS 身份和租户授权混在了一个失败样本里。"},
+        {"role": "assistant", "content": "我先把服务身份建立、令牌交换和 PermitMesh 的策略决策拆开。这样能看出失败是在凭证来源还是在受众约束。"},
+        {"role": "user", "content": "最初的实现接受了一个过于宽泛的受众字符串；改动后又只检查调用方名称，导致跨环境调用没有被拒绝。"},
+        {"role": "assistant", "content": "KeyTurn 的签名键轮换没有异常，不能用它解释这个受众问题。我们需要一份稳定的交换契约供测试和运行时共同使用。"},
+        {"role": "user", "content": "跨会话回归已经覆盖了 mTLS 证书轮换和错误租户，但测试断言仍只说‘受众不匹配’，没有固定接受值。"},
+        {"role": "assistant", "content": "我会保持回归范围不变，补上契约级断言，并确保 AtlasGate 的浏览器登录不被当成服务间交换。"},
+        {"role": "user", "content": "请直接确认当前采用的 token exchange audience 契约，便于我锁定测试夹具。"}
+      ],
+      "changed_message_index": 7,
+      "query": "请给出 token exchange 应接受的精确 audience 契约。",
+      "positive": {
+        "delta_message": {"role": "assistant", "content": "我会核对当前工作流中已经确认的契约，再把精确值写进测试夹具。"},
+        "private_proposal": {
+          "unique_information_gap": "the exact accepted audience contract for token exchange",
+          "route": "memory",
+          "target_asset_ids": ["T19-L1-WORKLOAD-AUDIENCE"],
+          "allowed_sequence_candidates": [["tdai_atomic_query"]],
+          "stop_after_candidate": "Stop after the exact accepted audience contract is returned."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "assistant", "content": "补充已确认的契约：交换请求的 audience 必须精确等于 `urn:workloadtrust:token-exchange`，并同时绑定调用方服务身份；任意环境后缀、租户名或宽泛资源前缀都不接受。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "The appended contract includes the exact accepted audience and disallowed variants needed for the test fixture."
+        }
+      },
+      "visible_distractor_ids_author_only": ["T19-L1-WORKLOAD-MTLS-IDENTITY", "T19-L1-PERMIT-SUBJECT-ATTRIBUTES"],
+      "controlled_delta_note": "Positive leaves the exact audience contract absent; negative appends exactly the accepted value and its boundary.",
+      "source_fact_map": [],
+      "sol_review_questions": ["Is this direct query scoped to the active agent's own workload memory?", "Does the negative provide one exact audience contract rather than implementation advice?"]
+    },
+    {
+      "draft_pair_id": "T19-PAIR-M05",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "long_12_to_18",
+      "shared_context_messages": [
+        {"role": "user", "content": "KeyTurn 的权限回归阻塞了签名键轮换演练。现象是读取新旧键的服务在一小段时间内得到不同结果。"},
+        {"role": "assistant", "content": "我会把密钥重叠窗口、读取者权限和 WorkloadTrust 的身份映射分别核对。"},
+        {"role": "user", "content": "第一次修复只延长了重叠时间，问题仍在；第二次把所有服务临时提升为写入者，虽然绿了测试，却违反最小权限。"},
+        {"role": "assistant", "content": "这说明故障更可能在读取权限边界，而不是时间窗口本身。PermitMesh 的拒绝日志可以帮助区分缺权限和错误租户。"},
+        {"role": "user", "content": "另一个会话提到 TokenForge 的 JWKS 观察，但那只说明验证缓存状态，不能解释 KeyTurn 的读取授权。"},
+        {"role": "assistant", "content": "我会保留该观察作为干扰项，并追踪最后一次能稳定复现的权限断言。"},
+        {"role": "user", "content": "回归夹具现在覆盖旧键、新键、轮换中途和回滚四个阶段；还需要把最终修复限制到正确的读取边界。"},
+        {"role": "assistant", "content": "明白。修复说明应同时写出根因、允许的读取范围和不应授予的写入权限。"},
+        {"role": "user", "content": "请从最近一次权限回归对话中确认根因和修复边界。"}
+      ],
+      "changed_message_index": 9,
+      "query": "请确认这次权限回归最后认定的原因，以及修复应停在哪个权限边界。",
+      "positive": {
+        "delta_message": {"role": "assistant", "content": "我会查看最近的回归对话，核对最终根因与最小修复范围。"},
+        "private_proposal": {
+          "unique_information_gap": "the last confirmed permission regression cause and repair boundary",
+          "route": "memory",
+          "target_asset_ids": ["T19-L0-KEY-PERMISSION-REGRESSION"],
+          "allowed_sequence_candidates": [["tdai_conversation_query"]],
+          "stop_after_candidate": "Stop after the regression dialogue confirms cause and repair boundary."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "assistant", "content": "补充最终回归结论：根因是轮换读取角色缺少新旧键的只读权限绑定，修复只在该角色上补齐两把键的读取授权并保留写入拒绝，不延长窗口也不授予通用写权限。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "The appended conclusion fully states the confirmed cause and the least-privilege repair boundary."
+        }
+      },
+      "visible_distractor_ids_author_only": ["T19-L1-KEY-OVERLAP-WINDOW", "T19-L0-TOKEN-JWKS-OVERLAP"],
+      "controlled_delta_note": "Positive omits the confirmed cause and repair boundary; negative appends only those facts.",
+      "source_fact_map": [],
+      "sol_review_questions": ["Does the positive avoid inferring a permission cause from the overlap distractor?", "Does the negative preserve the least-privilege boundary exactly?"]
+    },
+    {
+      "draft_pair_id": "T19-PAIR-M06",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "AtlasGate 的浏览器会话切换进入最后一轮。旧回调域、cookie 失效和 TokenForge 的刷新告警同时出现在看板上。"},
+        {"role": "assistant", "content": "我先按会话建立、cookie 发送和刷新交换三条线拆开，避免把浏览器回退误当成令牌轮换事故。"},
+        {"role": "user", "content": "第一轮只切了回调地址，部分用户仍在旧会话里；第二轮增加了 cookie 兼容处理，但观测窗口太短。"},
+        {"role": "assistant", "content": "这两次尝试说明需要一个明确的切换队列和可回退条件。PermitMesh 的租户拒绝数据只作为旁路观察。"},
+        {"role": "user", "content": "身份平台的同事在跨会话记录里维护了最新状态，里面区分了已切换、待观察和需要回退的用户群。"},
+        {"role": "assistant", "content": "我会以那份记录为准，并把当前状态和回退触发条件一起写进发布说明。"},
+        {"role": "user", "content": "请确认现在的切换 cohort，以及什么情况会触发 fallback。"}
+      ],
+      "changed_message_index": 7,
+      "query": "请给出当前会话切换的 cohort 和 fallback 条件。",
+      "positive": {
+        "delta_message": {"role": "assistant", "content": "我会查找身份平台同事维护的最新会话状态记录，再汇总 cohort 与回退条件。"},
+        "private_proposal": {
+          "unique_information_gap": "the current cutover cohort and fallback condition recorded by an imported teammate",
+          "route": "memory",
+          "target_asset_ids": ["T19-L1-ATLAS-SESSION-CUTOVER"],
+          "allowed_sequence_candidates": [["tdai_memory_search"]],
+          "stop_after_candidate": "Stop after the imported teammate's memory gives the current cohort and fallback condition."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "assistant", "content": "补充身份平台记录：当前 cohort 是低风险租户中 25% 的活跃浏览器会话，先保持双回调观测；若新会话成功率连续 10 分钟低于 99.5% 或旧 cookie 回退率超过 0.8%，立即停止扩展并恢复旧回调路径。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "The appended imported-teammate record supplies the current cohort and both fallback triggers completely."
+        }
+      },
+      "visible_distractor_ids_author_only": ["T19-L1-ATLAS-REDIRECT-CANONICAL", "T19-L1-ATLAS-COOKIE-SAMESITE", "T19-L0-TOKEN-ROTATION-INCIDENT"],
+      "controlled_delta_note": "Positive requires visibility to an imported identity-platform memory; negative appends only its cohort and fallback condition.",
+      "source_fact_map": [],
+      "sol_review_questions": ["Is the target owned by the imported identity-platform agent and therefore search-dependent?", "Does the negative delta contain exactly the cohort and fallback condition without adding route hints?"]
+    }
+  ]
+}

@@ -1,0 +1,218 @@
+{
+  "schema_version": "task1.team_input_pack.v1",
+  "team_id": "T19",
+  "stage": "DS05",
+  "split": "hidden_test",
+  "topic": "身份与访问控制",
+  "world_as_of": "2026-08-31T23:59:59+08:00",
+  "source_lock": {
+    "path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T19/source-lock.json",
+    "sha256": "2dc736c17349fa0a11af6e36f17b8cafaf246e306d58ed963d1b5e48194f51f9",
+    "adopted_skill_count": 18
+  },
+  "workspace_anchor": {
+    "repository": "https://github.com/TencentCloud/TencentDB-Agent-Memory.git",
+    "commit": "ffa1fe18085d47ed4da6b2306240152cc8590a86",
+    "license": "MIT",
+    "note": "The benchmark workspace anchor is the real launch revision. Synthetic project history must not claim an external repository, revision, license, path, or hash."
+  },
+  "identity": {
+    "space_id": "space-task1-engineering",
+    "team_id": "T19",
+    "user_id": "user-task1-benchmark",
+    "active_agent": {
+      "agent_id": "agent-task1-t19-general",
+      "name": "T19 通用业务 Agent"
+    },
+    "imported_memory_agents": [
+      { "agent_id": "agent-task1-t19-identity-platform", "name": "身份平台 Agent" },
+      { "agent_id": "agent-task1-t19-policy-assurance", "name": "授权保障 Agent" }
+    ],
+    "visibility_contract": {
+      "memory_search": "active agent plus the two fixed imported memory agents",
+      "non_search_memory": "active agent only unless an imported agent_id is explicitly available",
+      "skill_search": "current-agent owned skills plus team-visible skills; fail closed",
+      "skill_listing": "only the active agent's bound/owned listing is prewarmed",
+      "knowledge": "three fixed resources bound to the active agent"
+    }
+  },
+  "project_streams": [
+    {
+      "project_id": "T19-PROJ-ATLASGATE",
+      "name": "AtlasGate",
+      "scope": "OAuth/OIDC login, browser sessions, callback and cookie cutover",
+      "cross_stream_distractors": ["TokenForge", "PermitMesh"]
+    },
+    {
+      "project_id": "T19-PROJ-TOKENFORGE",
+      "name": "TokenForge",
+      "scope": "access/refresh token lifecycle, revocation, JWKS overlap and rollback",
+      "cross_stream_distractors": ["AtlasGate", "KeyTurn"]
+    },
+    {
+      "project_id": "T19-PROJ-PERMITMESH",
+      "name": "PermitMesh",
+      "scope": "RBAC/ABAC, tenant isolation, policy decisions and permission regressions",
+      "cross_stream_distractors": ["WorkloadTrust", "AtlasGate"]
+    },
+    {
+      "project_id": "T19-PROJ-WORKLOADTRUST",
+      "name": "WorkloadTrust",
+      "scope": "service identity, workload federation, mTLS and token exchange",
+      "cross_stream_distractors": ["PermitMesh", "KeyTurn"]
+    },
+    {
+      "project_id": "T19-PROJ-KEYTURN",
+      "name": "KeyTurn",
+      "scope": "secret and signing-key rotation, staged overlap and permission regression",
+      "cross_stream_distractors": ["TokenForge", "WorkloadTrust"]
+    }
+  ],
+  "asset_ids": {
+    "l0_conversations": [
+      "T19-L0-ATLAS-LOGIN-CUTOVER",
+      "T19-L0-ATLAS-COOKIE-FALLBACK",
+      "T19-L0-TOKEN-ROTATION-INCIDENT",
+      "T19-L0-TOKEN-JWKS-OVERLAP",
+      "T19-L0-PERMIT-TENANT-DENY",
+      "T19-L0-PERMIT-ROLE-REGRESSION",
+      "T19-L0-WORKLOAD-FEDERATION",
+      "T19-L0-WORKLOAD-MTLS",
+      "T19-L0-KEY-ROTATION-CEREMONY",
+      "T19-L0-KEY-PERMISSION-REGRESSION"
+    ],
+    "l1_memories": [
+      "T19-L1-ATLAS-REDIRECT-CANONICAL",
+      "T19-L1-ATLAS-SESSION-CUTOVER",
+      "T19-L1-ATLAS-COOKIE-SAMESITE",
+      "T19-L1-TOKEN-ROTATION-GRACE",
+      "T19-L1-TOKEN-REVOCATION-SCOPE",
+      "T19-L1-TOKEN-JWKS-OVERLAP",
+      "T19-L1-TOKEN-ROLLBACK-BOUNDARY",
+      "T19-L1-PERMIT-TENANT-DENY",
+      "T19-L1-PERMIT-SUBJECT-ATTRIBUTES",
+      "T19-L1-PERMIT-REGRESSION-FIXTURE",
+      "T19-L1-WORKLOAD-AUDIENCE",
+      "T19-L1-WORKLOAD-TOKEN-EXCHANGE",
+      "T19-L1-WORKLOAD-MTLS-IDENTITY",
+      "T19-L1-KEY-OVERLAP-WINDOW",
+      "T19-L1-KEY-READER-PERMISSION",
+      "T19-L1-KEY-ROLLBACK-TRIGGER"
+    ],
+    "l2_scenes": [
+      { "asset_id": "T19-L2-ATLAS-CUTOVER", "path": "t19/atlasgate/session-cutover", "summary_rule": "Name the rollout area and status, never the missing value or decision." },
+      { "asset_id": "T19-L2-TOKEN-LIFECYCLE", "path": "t19/tokenforge/lifecycle", "summary_rule": "Mention token lifecycle investigation only; do not reveal grace, API, or rollback values." },
+      { "asset_id": "T19-L2-PERMIT-DECISION", "path": "t19/permitmesh/decision-contract", "summary_rule": "Mention tenant authorization contract only; do not reveal evaluation order or exception." },
+      { "asset_id": "T19-L2-WORKLOAD-IDENTITY", "path": "t19/workloadtrust/federation", "summary_rule": "Mention workload federation status only; do not reveal audience or mapping." },
+      { "asset_id": "T19-L2-KEY-ROTATION", "path": "t19/keyturn/rotation", "summary_rule": "Mention rotation readiness only; do not reveal overlap or permission fix." }
+    ],
+    "l3_profile": "T19-L3-ENGINEERING-PREFERENCES",
+    "knowledge": [
+      { "asset_id": "T19-KNOW-WIKI-TOKEN-RUNBOOK", "type": "wiki", "name": "TokenForge 内部运行手册" },
+      { "asset_id": "T19-KNOW-CG-PERMIT-SERVICE", "type": "code_graph", "name": "PermitMesh 授权服务图谱", "grounding_lock": { "path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T19/workspace-code-lock.json", "sha256": "0902d1e085b405a9ecebd4bae89e783e6848607ac2d9a0d1e21e236607d11595" } },
+      { "asset_id": "T19-KNOW-WIKI-KEY-CEREMONY", "type": "wiki", "name": "KeyTurn 轮换仪式手册" }
+    ]
+  },
+  "skill_visibility": {
+    "bound_owned_listing": [
+      "aws-auth",
+      "aws-iam",
+      "access-control-policy-design",
+      "local-oidc-provider",
+      "secrets-management",
+      "zero-trust"
+    ],
+    "team_visible_searchable": [
+      "network-security",
+      "aws-security",
+      "signing-in-to-aws",
+      "iam-access-management",
+      "policy-as-code",
+      "compliance-as-code",
+      "kubernetes-security",
+      "pipeline-security",
+      "zoom-oauth",
+      "zoom-rest-api",
+      "stubidp",
+      "auth-implementation-patterns"
+    ],
+    "resource_files": {
+      "aws-auth": ["SKILL.md", "references/tokens-and-sessions.md"]
+    }
+  },
+  "route_distribution": {
+    "memory": { "positive_count": 6, "discovery": 4, "direct": 2 },
+    "skill": { "positive_count": 6, "discovery": 4, "direct": 2 },
+    "knowledge": { "positive_count": 3, "discovery": 2, "direct": 1 },
+    "paired_no_tool": 15,
+    "natural_no_tool": 10,
+    "discovery_total": 10,
+    "direct_total": 5
+  },
+  "pair_blueprints": [
+    { "id": "T19-PAIR-M01", "family": "memory", "mode": "discovery", "project": "TokenForge", "target_asset_ids": ["T19-L1-TOKEN-ROTATION-GRACE"], "allowed_sequences": [["tdai_memory_search"]], "gap_brief": "the team-specific retry grace value and rollout rationale" },
+    { "id": "T19-PAIR-M02", "family": "memory", "mode": "discovery", "project": "TokenForge", "target_asset_ids": ["T19-L0-TOKEN-ROTATION-INCIDENT"], "allowed_sequences": [["tdai_conversation_search"]], "gap_brief": "which attempted refresh path failed and the accepted replacement" },
+    { "id": "T19-PAIR-M03", "family": "memory", "mode": "discovery", "project": "PermitMesh", "target_asset_ids": ["T19-L2-PERMIT-DECISION"], "allowed_sequences": [["tdai_scenario_ls", "tdai_read_scene"]], "gap_brief": "the tenant authorization evaluation order and recorded exception boundary" },
+    { "id": "T19-PAIR-M04", "family": "memory", "mode": "direct", "project": "WorkloadTrust", "target_asset_ids": ["T19-L1-WORKLOAD-AUDIENCE"], "allowed_sequences": [["tdai_atomic_query"]], "gap_brief": "the exact accepted audience contract for token exchange" },
+    { "id": "T19-PAIR-M05", "family": "memory", "mode": "direct", "project": "KeyTurn", "target_asset_ids": ["T19-L0-KEY-PERMISSION-REGRESSION"], "allowed_sequences": [["tdai_conversation_query"]], "gap_brief": "the last confirmed permission regression cause and repair boundary" },
+    { "id": "T19-PAIR-M06", "family": "memory", "mode": "discovery", "project": "AtlasGate", "target_asset_ids": ["T19-L1-ATLAS-SESSION-CUTOVER"], "allowed_sequences": [["tdai_memory_search"]], "gap_brief": "the current cutover cohort and fallback condition recorded by an imported teammate" },
+    { "id": "T19-PAIR-S01", "family": "skill", "mode": "discovery", "project": "TokenForge", "target_asset_ids": ["T19-SKILL-AWS-AUTH"], "allowed_sequences": [["skill_search", "skill_view_by_id", "skill_files_read"]], "gap_brief": "the source-grounded refresh-rotation compatibility rule and correct refresh path", "source_keys": ["aws-auth", "aws-auth-tokens-sessions"] },
+    { "id": "T19-PAIR-S02", "family": "skill", "mode": "direct", "project": "PermitMesh", "target_asset_ids": ["T19-SKILL-ACCESS-CONTROL-POLICY-DESIGN"], "allowed_sequences": [["skill_view"]], "gap_brief": "the appropriate layered authorization model for a multi-tenant contextual decision", "source_keys": ["access-control-policy-design"] },
+    { "id": "T19-PAIR-S03", "family": "skill", "mode": "discovery", "project": "AtlasGate", "target_asset_ids": ["T19-SKILL-LOCAL-OIDC-PROVIDER"], "allowed_sequences": [["skill_search", "skill_view_by_id"]], "gap_brief": "the exact local OIDC first-run wiring constraints for a public client", "source_keys": ["local-oidc-provider"] },
+    { "id": "T19-PAIR-S04", "family": "skill", "mode": "discovery", "project": "AtlasGate", "target_asset_ids": ["T19-SKILL-ZOOM-OAUTH"], "allowed_sequences": [["skill_search", "skill_view_by_id"]], "gap_brief": "the provider-specific token refresh behavior needed for the integration", "source_keys": ["zoom-oauth"] },
+    { "id": "T19-PAIR-S05", "family": "skill", "mode": "direct", "project": "WorkloadTrust", "target_asset_ids": ["T19-SKILL-AWS-IAM"], "allowed_sequences": [["skill_view"]], "gap_brief": "the trust-policy safety condition and read-modify-write workflow needed for the role change", "source_keys": ["aws-iam"] },
+    { "id": "T19-PAIR-S06", "family": "skill", "mode": "discovery", "project": "WorkloadTrust", "target_asset_ids": ["T19-SKILL-PIPELINE-SECURITY"], "allowed_sequences": [["skill_search", "skill_view_by_id"]], "gap_brief": "the CI workload identity approach that removes a long-lived deploy key", "source_keys": ["pipeline-security"] },
+    { "id": "T19-PAIR-K01", "family": "knowledge", "mode": "discovery", "project": "TokenForge", "target_asset_ids": ["T19-KNOW-WIKI-TOKEN-RUNBOOK"], "allowed_sequences": [["knowledge_tools_list", "knowledge_tools_call"]], "gap_brief": "the internal rollout cohort and abort metrics stored in the runbook" },
+    { "id": "T19-PAIR-K02", "family": "knowledge", "mode": "discovery", "project": "PermitMesh", "target_asset_ids": ["T19-KNOW-CG-PERMIT-SERVICE"], "allowed_sequences": [["knowledge_tools_list", "knowledge_tools_call"]], "gap_brief": "the real launch-revision call site and execution ordering affected by a filterTeamSearchResponse signature change: createSkillBridgeHandler calls it before lazy pinning; the graph must use only workspace-code-lock facts" },
+    { "id": "T19-PAIR-K03", "family": "knowledge", "mode": "direct", "project": "KeyTurn", "target_asset_ids": ["T19-KNOW-WIKI-KEY-CEREMONY"], "allowed_sequences": [["knowledge_tools_call"]], "gap_brief": "the internal key-rotation verification sequence and rollback trigger" }
+  ],
+  "natural_negative_blueprints": [
+    { "id": "T19-NAT-01", "project": "AtlasGate", "task": "implement a supplied callback allow-list change from complete local requirements" },
+    { "id": "T19-NAT-02", "project": "AtlasGate", "task": "add supplied secure cookie flags to an existing middleware snippet" },
+    { "id": "T19-NAT-03", "project": "TokenForge", "task": "write unit tests for a fully specified token expiry boundary" },
+    { "id": "T19-NAT-04", "project": "TokenForge", "task": "refactor a provided JWKS cache helper without changing behavior" },
+    { "id": "T19-NAT-05", "project": "PermitMesh", "task": "add a supplied tenant_id field through a request DTO" },
+    { "id": "T19-NAT-06", "project": "PermitMesh", "task": "implement a completely specified deny-by-default branch" },
+    { "id": "T19-NAT-07", "project": "WorkloadTrust", "task": "rename a service identity enum and update exhaustive matches" },
+    { "id": "T19-NAT-08", "project": "WorkloadTrust", "task": "add a fully specified audience validation test fixture" },
+    { "id": "T19-NAT-09", "project": "KeyTurn", "task": "extract a provided key-id parser into a pure helper" },
+    { "id": "T19-NAT-10", "project": "KeyTurn", "task": "add logging fields whose names and values are already supplied" }
+  ],
+  "trial_assignments": {
+    "memory": ["T19-PAIR-M01"],
+    "skill": ["T19-PAIR-S01"],
+    "knowledge": ["T19-PAIR-K01"]
+  },
+  "accepted_trial_contracts": {
+    "T19-PAIR-M01": {
+      "target_fact": "TokenForge retry grace is 90 seconds, only for idempotent retry of the same refresh token after an ambiguous gateway-timeout outcome; after the window, do not replay. The rationale is to cover the client/gateway retry ceiling while tightly limiting reuse exposure.",
+      "review": "approved after removing a no-retrieval fallback from the query"
+    },
+    "T19-PAIR-S01": {
+      "target_fact": "With Cognito refresh-token rotation, omit ALLOW_REFRESH_TOKEN_AUTH; read-modify-write the full app-client configuration; refresh through GetTokensFromRefreshToken or the OAuth refresh_token grant and persist the newest returned refresh token.",
+      "review": "approved against the frozen aws-auth overview and tokens-and-sessions resource"
+    },
+    "T19-PAIR-K01": {
+      "target_fact": "The first cohort is 12% of low-risk tenants using stratified sampling after a 30-minute baseline. Abort on refresh exchange 5xx >=1.0% over 5 minutes, invalid_grant/invalid_token >0.8% over 5 minutes, or refresh p95 >450 ms for 10 minutes; freeze expansion, restore the previous verifier, keep key overlap, and notify on-call.",
+      "review": "approved as a synthetic internal-wiki fixture"
+    }
+  },
+  "generation_rules": {
+    "model": "gpt-5.6-luna",
+    "reasoning_effort": "high",
+    "fork_turns": "none",
+    "pair_delta": "shared context, final query, identity, snapshot and workspace are identical; append one positive or negative delta at changed_message_index",
+    "provider_leakage_forbidden": [
+      "tool names",
+      "asset ids",
+      "team ids",
+      "Gold or scoring language",
+      "Memory levels",
+      "author-only route or target hints"
+    ],
+    "context_length": "2 to 18 provider-visible context messages before the delta; retain realistic decision evolution and same-domain distractors",
+    "positive_gap": "exactly one necessary fact absent from provider-visible context and available only from the target asset",
+    "negative_sufficiency": "the sole appended delta supplies that same fact completely",
+    "synthetic_provenance": "never invent repository, revision, license, external path or external hash"
+  }
+}

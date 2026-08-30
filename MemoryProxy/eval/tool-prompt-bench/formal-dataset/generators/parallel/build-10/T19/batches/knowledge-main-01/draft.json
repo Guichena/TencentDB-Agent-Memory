@@ -1,0 +1,161 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T19-knowledge-main-01",
+  "stage": "DS05",
+  "team_id": "T19",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T19-PAIR-K02",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "PermitMesh 这周把团队可见技能搜索的响应处理做了收敛，审查重点转到了过滤与延迟固定的兼容性。"
+        },
+        {
+          "role": "assistant",
+          "content": "我先按技能搜索这一条链路核对现有入口，避免把相邻的登录或密钥改动混进来。"
+        },
+        {
+          "role": "user",
+          "content": "审查意见说响应过滤函数的调用约束有变化，但当前工作记录只标了服务层改动，没有列出真实调用位置。"
+        },
+        {
+          "role": "assistant",
+          "content": "目前能确认的是搜索响应需要经过统一过滤；我还没有把过滤函数的调用位置和它与后续延迟固定的先后顺序对上。"
+        },
+        {
+          "role": "user",
+          "content": "请把这次响应处理收敛和回归检查放在同一个影响面里看，跨项目的登录和密钥轮换记录先不要纳入。"
+        },
+        {
+          "role": "assistant",
+          "content": "好的，我会沿真实技能搜索实现核对过滤函数的调用位置，并把它和后续延迟固定的顺序写清楚。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "请指出响应过滤函数的真实调用点，并说明它与延迟固定之间的执行顺序和必要的处理约束。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我只确认到团队可见技能搜索现在需要统一处理响应，但还没核对真实代码中的过滤函数调用点。请补齐它的调用位置、与延迟固定的执行顺序，以及过滤结果需要保持的约束；不要凭经验猜。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "需要从 launch revision 的技能可见性代码图谱确认 filterTeamSearchResponse 的真实调用点、与 lazy pinning 的顺序，以及过滤函数保留的结果约束。",
+          "route": "knowledge",
+          "target_asset_ids": ["T19-KNOW-CG-PERMIT-SERVICE"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "先列出绑定资源和可用操作；从列表确认 code graph 支持 search，再用 provider-visible query filterTeamSearchResponse 调用 search(query=filterTeamSearchResponse, kind=symbol, limit=10)，用搜索响应直接返回的真实调用点、执行顺序和过滤约束完成回答。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "已核对完：真实调用点是 createSkillBridgeHandler；它先调用 filterTeamSearchResponse，再进行 lazy pinning。过滤函数按 skill_id 过滤 data.items，并截回原始 top-k，其他顺序和约束不要自行推断。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息完整给出了真实调用点、与 lazy pinning 的顺序以及过滤结果约束，因此无需检索内部代码图谱。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T19-KNOW-WIKI-TOKEN-RUNBOOK", "T19-KNOW-WIKI-KEY-CEREMONY"],
+      "controlled_delta_note": "Positive leaves the graph-derived call site, execution order, and response-filtering constraints absent; Negative supplies exactly those launch-revision facts.",
+      "source_fact_map": [
+        {
+          "claim": "createSkillBridgeHandler is the real call site for filterTeamSearchResponse.",
+          "source_id": "T19-KNOW-CG-PERMIT-SERVICE",
+          "locator": "MemoryProxy/src/skill/skill-bridge.ts"
+        },
+        {
+          "claim": "createSkillBridgeHandler calls filterTeamSearchResponse before lazy pinning; the filter selects data.items by skill_id and slices to the original top-k.",
+          "source_id": "T19-KNOW-CG-PERMIT-SERVICE",
+          "locator": "MemoryProxy/src/skill/skill-bridge.ts"
+        }
+      ],
+      "sol_review_questions": [
+        "Does the positive use a provider-visible search query after listing capabilities, without relying on a recommended symbol from the listing?",
+        "Does the negative delta provide only the real call site, order, and filtering constraints without inventing source paths or symbols?"
+      ]
+    },
+    {
+      "draft_pair_id": "T19-PAIR-K03",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "KeyTurn 的签名密钥轮换已经进入收尾，旧密钥和新密钥在演练期间会有一段重叠。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把存量令牌、新签发令牌和撤旧后的拒绝路径分开验证，确保轮换结果不是只看签发成功。"
+        },
+        {
+          "role": "user",
+          "content": "这次重点是上线前的验证门槛和出了问题时的停机边界，密钥生成仪式本身已经完成。"
+        },
+        {
+          "role": "assistant",
+          "content": "明白，我只整理验证与回退判定，不重复生成或分发密钥的步骤。"
+        },
+        {
+          "role": "user",
+          "content": "请把轮换完成前必须留下的检查记录和可执行的回退信号放在一起，方便值班同学照着操作。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会核对内部仪式手册中的顺序和阈值，再给出一份短的上线前检查清单。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "请给出签名密钥轮换完成前的验证顺序，以及明确的回退触发条件。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "演练记录了新旧签名密钥同时在线，但我还缺少最后的验证顺序和需要触发回退的条件。请从内部手册补齐这两点。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "需要读取 KeyTurn 轮换仪式手册中固定的验证顺序和回退阈值。",
+          "route": "knowledge",
+          "target_asset_ids": ["T19-KNOW-WIKI-KEY-CEREMONY"],
+          "allowed_sequence_candidates": [["knowledge_tools_call"]],
+          "stop_after_candidate": "使用当前绑定的 KeyTurn wiki 资源直接调用 search(query=验证顺序, limit=5)；该绑定已提供知识资源标识与精确搜索操作，搜索响应直接返回验证顺序和回退触发条件。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "已补齐：先用旧密钥验证存量令牌，再用新密钥签发并验证新令牌，随后撤掉旧密钥并重验一次拒绝路径；若撤旧后的存量令牌验证错误率在 10 分钟内超过 0.5%，立即冻结轮换并恢复旧密钥。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息完整给出了验证顺序和带时间窗口的回退触发阈值，因此无需读取内部手册。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T19-KNOW-WIKI-TOKEN-RUNBOOK", "T19-KNOW-CG-PERMIT-SERVICE"],
+      "controlled_delta_note": "Positive leaves the ordered verification checks and rollback threshold absent; Negative supplies exactly those two operational facts.",
+      "source_fact_map": [
+        {
+          "claim": "Verification proceeds from old-key validation of existing tokens, to new-key issuance and validation, to post-removal rejection-path revalidation.",
+          "source_id": "T19-KNOW-WIKI-KEY-CEREMONY",
+          "locator": "rotation/verification-and-rollback"
+        },
+        {
+          "claim": "Freeze rotation and restore the old key when post-removal existing-token validation errors exceed 0.5% for 10 minutes.",
+          "source_id": "T19-KNOW-WIKI-KEY-CEREMONY",
+          "locator": "rotation/verification-and-rollback"
+        }
+      ],
+      "sol_review_questions": [
+        "Does the positive delta leave both the sequence and threshold unavailable from context?",
+        "Does the negative delta add only the required sequence and rollback trigger?"
+      ]
+    }
+  ]
+}

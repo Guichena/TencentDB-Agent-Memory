@@ -1,0 +1,76 @@
+{
+  "schema_version": "task1.synthetic_knowledge_asset_candidates.v1",
+  "team_id": "T19",
+  "stage": "DS05",
+  "candidates": [
+    {
+      "asset_id": "T19-KNOW-WIKI-TOKEN-RUNBOOK",
+      "type": "wiki",
+      "name": "TokenForge 内部运行手册",
+      "synthetic": true,
+      "provider": "internal-wiki",
+      "root_ref": "wiki:tokenforge:runbook:refresh-rotation",
+      "description": "TokenForge 访问令牌与刷新令牌轮换的内部发布、灰度观测和回滚手册。",
+      "dynamic_operations": [
+        {"name": "get_info", "arguments": {"required": [], "optional": []}, "returns": "知识源名称、类型、根引用和可用页面统计"},
+        {"name": "search", "arguments": {"required": ["query"], "optional": ["limit"]}, "returns": "按标题和正文匹配的页面引用、标题和摘要"},
+        {"name": "list_pages", "arguments": {"required": [], "optional": ["parent_ref", "limit"]}, "returns": "页面引用树中的页面条目"},
+        {"name": "read_page", "arguments": {"required": ["refs"], "optional": []}, "returns": "一个或多个页面引用的标题、章节和正文"},
+        {"name": "get_graph", "arguments": {"required": [], "optional": ["ref"]}, "returns": "页面、章节和相关操作之间的引用关系"},
+        {"name": "list_raw", "arguments": {"required": [], "optional": ["prefix", "limit"]}, "returns": "原始条目引用和内容类型"},
+        {"name": "read_raw", "arguments": {"required": ["refs"], "optional": []}, "returns": "指定原始条目的完整内容"}
+      ],
+      "tool_listing_fixture": {
+        "tools": ["get_info", "search", "list_pages", "read_page", "get_graph", "list_raw", "read_raw"],
+        "default_limit": 20
+      },
+      "pages": [
+        {
+          "ref": "wiki:tokenforge:runbook:refresh-rotation",
+          "page_id": "tf-runbook-refresh-rotation",
+          "kind": "page",
+          "title": "刷新令牌轮换灰度运行手册",
+          "parent_ref": "wiki:tokenforge:runbooks",
+          "updated_at": "2026-08-28T16:40:00+08:00",
+          "labels": ["TokenForge", "令牌轮换", "灰度", "回滚"],
+          "sections": [
+            {"ref": "wiki:tokenforge:runbook:refresh-rotation#rollout-cohort", "heading": "首批灰度范围", "body": "首批灰度覆盖低风险租户集合中的 12%，按租户规模分层抽样。扩大范围前须先完成连续 30 分钟基线观测。"},
+            {"ref": "wiki:tokenforge:runbook:refresh-rotation#abort-metrics", "heading": "停止扩展指标", "body": "灰度期间，刷新令牌交换接口的 5xx 比例在滚动 5 分钟内达到或超过 1.0%，或 invalid_grant/invalid_token 比例在滚动 5 分钟内超过 0.8%，即停止扩展。"},
+            {"ref": "wiki:tokenforge:runbook:refresh-rotation#latency-window", "heading": "延迟观察窗口", "body": "刷新请求 p95 延迟连续 10 分钟超过 450 ms 时停止扩展。"},
+            {"ref": "wiki:tokenforge:runbook:refresh-rotation#abort-and-rollback", "heading": "停止与回滚动作", "body": "任一停止条件成立后冻结扩容，切回上一版本验证器并保留密钥重叠，同时通知值班人员。"}
+          ],
+          "related_refs": ["wiki:tokenforge:runbook:refresh-rotation#preflight", "wiki:tokenforge:runbook:refresh-rotation#abort-metrics", "wiki:tokenforge:runbook:refresh-rotation#abort-and-rollback"]
+        },
+        {
+          "ref": "wiki:tokenforge:runbook:refresh-rotation#preflight",
+          "page_id": "tf-runbook-refresh-rotation-preflight",
+          "kind": "section",
+          "title": "发布前检查",
+          "parent_ref": "wiki:tokenforge:runbook:refresh-rotation",
+          "updated_at": "2026-08-27T11:20:00+08:00",
+          "labels": ["发布前", "JWKS", "撤销"],
+          "body": "确认签名密钥重叠、JWKS 缓存刷新和旧刷新令牌撤销边界；灰度前完成回滚入口演练。"
+        }
+      ],
+      "raw_entries": [
+        {
+          "ref": "raw:tokenforge:runbook:refresh-rotation:release-checklist",
+          "content_type": "text/markdown",
+          "title": "轮换发布检查单",
+          "content": "发布前确认密钥重叠与缓存刷新；灰度观察首批范围、错误率、无效令牌率和刷新延迟；触发任一停止条件后冻结扩容并执行回滚。",
+          "linked_page_refs": ["wiki:tokenforge:runbook:refresh-rotation"]
+        }
+      ],
+      "graph": {
+        "nodes": ["wiki:tokenforge:runbook:refresh-rotation", "wiki:tokenforge:runbook:refresh-rotation#rollout-cohort", "wiki:tokenforge:runbook:refresh-rotation#abort-metrics", "wiki:tokenforge:runbook:refresh-rotation#latency-window", "wiki:tokenforge:runbook:refresh-rotation#abort-and-rollback", "raw:tokenforge:runbook:refresh-rotation:release-checklist"],
+        "edges": [
+          ["wiki:tokenforge:runbook:refresh-rotation", "contains", "wiki:tokenforge:runbook:refresh-rotation#rollout-cohort"],
+          ["wiki:tokenforge:runbook:refresh-rotation", "contains", "wiki:tokenforge:runbook:refresh-rotation#abort-metrics"],
+          ["wiki:tokenforge:runbook:refresh-rotation", "contains", "wiki:tokenforge:runbook:refresh-rotation#latency-window"],
+          ["wiki:tokenforge:runbook:refresh-rotation", "contains", "wiki:tokenforge:runbook:refresh-rotation#abort-and-rollback"],
+          ["raw:tokenforge:runbook:refresh-rotation:release-checklist", "summarizes", "wiki:tokenforge:runbook:refresh-rotation"]
+        ]
+      }
+    }
+  ]
+}
