@@ -37,6 +37,7 @@ import type {
   KnowledgeToolsCompletionObserver,
   KnowledgeToolsEntryObserver,
 } from "./tools-entry-observer.js";
+import { createToolExecutionTraceSinkFromEnv } from "./tool-execution-trace-sink.js";
 
 const log = createLogger("server");
 
@@ -125,7 +126,15 @@ export function createApp(deps: CreateAppDeps = {}) {
 }
 
 async function startServer(): Promise<void> {
-  const { app, config, knowledgeTelemetry } = createApp();
+  const toolExecutionTraceSink = createToolExecutionTraceSinkFromEnv(process.env);
+  const { app, config, knowledgeTelemetry } = createApp({
+    ...(toolExecutionTraceSink.enabled
+      ? {
+        toolsEntryObserver: toolExecutionTraceSink.entryObserver,
+        toolsCompletionObserver: toolExecutionTraceSink.completionObserver,
+      }
+      : {}),
+  });
   await knowledgeTelemetry.initialize();
 
   log.info(`Starting knowledge service on port ${config.port}`);
@@ -135,6 +144,7 @@ async function startServer(): Promise<void> {
   log.info(`ClickHouse telemetry: ${config.clickhouse.enabled ? "enabled" : "disabled"}`);
 
   const server = serve({ fetch: app.fetch, port: config.port }, (info) => {
+    toolExecutionTraceSink.markReady();
     log.info(`Knowledge service listening on http://localhost:${info.port}`);
   });
 

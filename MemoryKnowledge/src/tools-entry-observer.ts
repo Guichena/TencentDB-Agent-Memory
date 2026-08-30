@@ -1,6 +1,6 @@
 import { createHash, randomUUID } from "node:crypto";
 
-const KNOWLEDGE_CORRELATION_HEADER_NAMES = [
+export const KNOWLEDGE_CORRELATION_HEADER_NAMES = [
   "x-conversation-id",
   "x-session-id",
   "x-chat-id",

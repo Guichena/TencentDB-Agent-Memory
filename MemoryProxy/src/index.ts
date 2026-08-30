@@ -36,6 +36,7 @@ import { initSystemUsers } from "./systemUser.js";
 import { checkConnectivity } from "./connectivity.js";
 import { initProxyStorage, getEffectiveBackend } from "./storage/factory.js";
 import { flushPendingWrites, pendingWriteCount } from "./tdai/pending-writes.js";
+import { createToolExecutionTraceSinkFromEnv } from "./tool-execution-trace-sink.js";
 
 const overrides = parseArgv(process.argv);
 const configFilePath = resolve(overrides.configFile || "config.yaml");
@@ -125,7 +126,17 @@ if (isRequestPrepareActive(config)) {
   });
 }
 
-const app = createApp(config, { experimentConfigFileSha256 });
+const toolExecutionTraceSink = createToolExecutionTraceSinkFromEnv(process.env);
+const app = createApp(config, {
+  experimentConfigFileSha256,
+  ...(toolExecutionTraceSink.enabled
+    ? {
+      serverInstanceId: toolExecutionTraceSink.processInstanceId,
+      bridgeEntryObserver: toolExecutionTraceSink.entryObserver,
+      bridgeCompletionObserver: toolExecutionTraceSink.completionObserver,
+    }
+    : {}),
+});
 
 log.info("server.starting", {
   host: config.server.host,
@@ -160,6 +171,7 @@ serve(
     port: config.server.port,
   },
   ({ address, port }) => {
+    toolExecutionTraceSink.markReady();
     log.info("server.listening", { address, port });
 
     // ── Startup connectivity check (fire-and-forget, never blocks) ───────
