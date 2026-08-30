@@ -5,7 +5,9 @@
 ```yaml
 candidate_id: M1
 kind: measurement
+infrastructure_ancestor: task1-c07-pass@2dc7bc8b57442d2beae62efd5d570a83955b374d
 parent: task1-c07-pass^{commit}
+behavior_parent: not_applicable
 depends_on: [shared-observation-gold-v2-interface, M0-outcome-at-integration]
 branch_group: measurement
 branch: codex/task1-measure-m1-pair-schema-v2

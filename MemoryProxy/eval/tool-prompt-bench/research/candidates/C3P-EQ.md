@@ -5,8 +5,10 @@
 ```yaml
 candidate_id: C-3P-EQ
 kind: compiler-parity
-git_parent: task1-candidate-base-v1^{commit}
-engineering_preparation_parent: c86b154f9f597da0788592c66b93d574fd3f10f9
+infrastructure_ancestor: R05@c86b154f9f597da0788592c66b93d574fd3f10f9
+structural_git_parent: c86b154f9f597da0788592c66b93d574fd3f10f9
+formal_merge_parents: [C3P-structural-preparation@d80ce4d, task1-candidate-base-v1^{commit}]
+formal_merge_policy: non-squash-two-parent-merge-on-the-same-C3P-branch
 behavior_parent_variant: <STATIC-PARENT-MANIFEST.variantId>
 behavior_parent_prompt_sha256: <STATIC-PARENT-MANIFEST.promptSha256>
 depends_on_for_formal_parent: [task1-measurement-v2, Stage-1-static-parent]
@@ -14,17 +16,21 @@ branch_group: compiler-parity
 branch: codex/task1-method-c3p-eq
 worktree: D:\projects\TencentDB-Agent-Memory-task1-method-c3p-eq
 formal_model_runs: 0
+structural_preparation_gate: d80ce4d
+semantic_ownership_attested: false
 ```
 
-`static_parent` 由 V0 至 V3 正式 Dev 和 Selection Contract 决定。它是行为父 Variant 和冻结 Prompt artifact，不一定是独立 Git 提交。正式候选仍从共同 candidate-base commit 认定行为父输入，V3 只是先验默认，不能在本卡硬编码。
+`static_parent` 由 V0 至 V3 正式 Dev 和 Selection Contract 决定。它是行为父 Variant 和冻结 Prompt artifact，不一定是独立 Git 提交。V3 只是先验默认，不能在本卡硬编码。
 
-为不让完整 Compiler 工程被人工模型运行阻塞，允许从 R05 pass commit `c86b154` 先建立同名工程预备分支，但必须同时对全部冻结 V0、V0-C、V1a、V1、V2、V3 profile 做 byte/metadata parity。该分支没有行为父 Variant、不能生成新 Variant、不能运行模型，也不能替代尚未冻结的 candidate-base；Stage 1 选出 `static_parent` 后仍要用其精确 artifact 再过一次 parity Gate。
+为不让完整 Compiler 工程被人工模型运行阻塞，已从 R05 pass commit `c86b154` 建立同名工程预备分支。C-3P-0 `e06e66e` 建 conservative membership inventory，结构 C-3P-1 `27b0188` 验证 UTF-8 byte coverage，Gate `d80ce4d` 明确固定 `semanticOwnershipAttested=false`。该分支没有行为父 Variant、不能生成新 Variant、不能运行模型，也不能替代尚未冻结的 candidate-base。
+
+Stage 1 产生 `task1-candidate-base-v1^{commit}` 和 `static_parent` 后，不重建准备阶段、不改名、不 rebase、不 squash，也不把准备提交 cherry-pick 到另一条隐藏线。应在同一个 C-3P 分支创建一次显式 two-parent merge：第一父为当前 C-3P structural tip，第二父为冻结 candidate-base。该 merge commit 同时继承准备成果和正式 Measurement/R05 底座，成为完整 C-3P 阶段的即时 Git 父；随后针对精确 `static_parent` artifact 完成语义 catalog、renderer 和全量 parity Gate。
 
 ## 进入条件
 
 正式候选进入条件不变：`task1-candidate-base-v1`、Measurement-v2、Selection Contract 和 `STATIC-PARENT-MANIFEST.json` 均已冻结；所有父 Prompt snapshot/hash 可重现；本节点有明确工程时间预算。
 
-工程预备态的较窄进入条件为：R05 代码 Gate 已通过且工作树干净；V0–V3 冻结 fixture/hash 可重现；改动严格限制在内部 ownership/source-map/parity seam；测试先证明全部 profile 的 bytes、metadata、tool order 和 token/hash 不变。任一条件失败就停止，不以“语义等价”放宽。
+工程预备态的较窄进入条件已经满足：R05 代码 Gate 已通过且工作树干净；改动严格限制在 detached candidate-membership/source-map seam；五个生产 surface × 五个 compiled profile 的 inventory 证明 compiler content/hash/unit order 不变。它尚未证明完整 injection、metadata、tool schema/order 或语义 ownership parity，不能以“结构覆盖”放宽这些正式条件。
 
 ## 目标和非目标
 
@@ -62,17 +68,19 @@ formal_model_runs: 0
 
 ## Gate
 
-1. 每个 PromptUnit 恰好属于一个 plane，来源可追踪。
-2. 动态值不得进入 Decision/Execution；稳定合同不得进入 Runtime Binding。
-3. 全部 fixture byte parity、contract lint、capability pruning 和 snapshots 通过。
-4. metadata 从 parse、rebuild 到 serialize 保真。
-5. diff 只落在内部类型/编译 seam allowlist。
-6. 正式模型调用数为 0。
+1. C-3P-0 为每个现有 PromptUnit 建立非空、可追踪的 conservative possible-plane membership；含多个 plane 的 unit 必须标为 mixed，`exactOwnership=false`。
+2. 结构 C-3P-1 把 mixed unit 的候选 spans 限制为连续、UTF-8 合法且无重叠/无空洞；它只允许声明 `structuralCoverageExact=true`，固定 `semanticOwnershipAttested=false`。
+3. 完整 C-3P-EQ 必须用经审校的 per-unit/per-anchor catalog 证明最终每个 provider-visible byte span 恰好属于一个语义 plane，按原序连接与冻结父 bytes 完全一致。
+4. 动态值不得进入 Decision/Execution；稳定合同不得进入 Runtime Binding。
+5. 全部 fixture byte parity、contract lint、capability pruning 和 snapshots 通过。
+6. metadata 从 parse、rebuild 到 serialize 保真。
+7. diff 只落在内部类型/编译 seam allowlist。
+8. 正式模型调用数为 0。
 
 ## 接受与停止
 
-全部 parity Gate 通过才接受。任一 provider-visible byte、工具集合、contract、capability、metadata 或 dynamic ownership 变化都立即停止。失败分支和 parity 报告保留，但不得成为 V4-G、TSCG 或 V4-L 的隐藏父节点；这些方法改从 frozen `static_parent` 建最小独立 seam。
+结构准备 Gate 已接受并独立保存，但完整 C-3P-EQ 只有全部正式 parity Gate 通过后才接受。任一 provider-visible byte、工具集合、contract、capability、metadata 或 dynamic ownership 变化都立即停止。当前 structural pass 不得成为 V4-G、TSCG 或 V4-L 的隐藏父节点；完整 parity 未通过时，这些方法从 frozen `static_parent` 建最小独立 seam。
 
 ## 产物
 
-保存 parent manifest、plane ownership、source map、byte/metadata parity、snapshot manifest、Gate 报告、首差异定位和 decision。通过后冻结 pass commit，后续方法从它平行分叉。
+保存 parent manifest、plane ownership、source map、byte/metadata parity、snapshot manifest、Gate 报告、首差异定位和 decision。只有完整 C-3P-EQ Gate 通过后才冻结可继承的 pass commit；structural preparation commit 只作为同一方法的内部递进检查点。

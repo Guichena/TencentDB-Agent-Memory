@@ -2,7 +2,7 @@
 
 > 状态：研究计划已由 `task1-research-plan-v1` 冻结；代码推进后的现状与 C-3P-EQ 启动复核见 [`TASK1-CURRENT-STATE-AND-METHOD-START-AUDIT.md`](./TASK1-CURRENT-STATE-AND-METHOD-START-AUDIT.md)，2026-08-30。
 >
-> 本文记录三轮只读审核的共同结论、仍未满足的 Gate，以及后续分支和 worktree 的唯一命名。它只管理 Task 1 的测量基础和 Prompt 候选，不改变 V0 至 V3，不授权在正式数据冻结前运行模型。
+> 本文记录多轮只读审核的共同结论、仍未满足的 Gate，以及后续分支和 worktree 的唯一命名。它只管理 Task 1 的测量基础和 Prompt 候选，不改变 V0 至 V3，不授权在正式运行 Gate 前运行模型。
 
 ## 1. 当前权威状态
 
@@ -16,9 +16,19 @@
 
 本节记录的是 `task1-research-plan-v1` 冻结时的历史状态。当前 `task1-data-formal-v1.1`、M0/M1/M2、R01–R05 代码 Gate 和 `evaluationSchemaVersion: 2` 已有实现；但 `task1-measurement-v2`、`task1-candidate-base-v1`、`SELECTION-CONTRACT.json`、`STATIC-PARENT-MANIFEST.json` 以及正式 Luna 行为数据仍未冻结。以后续增补文档为当前状态依据。
 
+R 链的当前证据必须逐级陈述，不能用一个笼统的“R01–R05 全部运行通过”代替：
+
+| 节点 | 分支 / 提交 | 已证明 | 尚未证明 |
+|---|---|---|---|
+| R01 | `codex/task1-real-chain-adapter-v1` / `b7944f2` | 真实链路 Adapter 代码 Gate | — |
+| R02 | `codex/task1-experiment-integration-v1` / `41bce09` | Loader、PrepareOnly、冻结合同代码 Gate | — |
+| R03 | `codex/task1-experiment-r03-assets-v1` / `7bd98fe` | 资产恢复计划与隔离代码 Gate | — |
+| R04 | `codex/task1-experiment-r04-runner-v1` / `92da207` | scorer、trace、usage、Gold-blind Runner 代码 Gate | — |
+| R05 | `codex/task1-experiment-r05-production-assets-v1` / `c86b154` | restore/read-back/preflight 代码 Gate | 真实空白栈上的 12 条 V0 Smoke runtime Gate |
+
 现有工作树不能复用：根 checkout 和 `task1-code` 都有未提交内容，其他多个旧实验或数据 worktree 也有各自任务。研究稿已复制到新的审核 worktree，原文件不移动、不删除、不提交到原分支。
 
-## 2. 三轮审核如何分工
+## 2. 多轮审核如何分工
 
 ### 审核 A：任务边界与过度设计
 
@@ -43,7 +53,7 @@
 - terminal 后行为不进入 Task 1；失败正例和 no-tool 仍计到冻结 evaluation horizon。
 - fresh session 只证明会话和本地状态隔离，不等于 cache cold。
 - OpenAI 和 Anthropic usage 分别归一化；本地组件 token 不重复计入 provider total。
-- Hidden 默认只运行一个 Dev Final，避免在 Hidden 上二次选优。
+- Hidden 默认只运行 V0、V0-C 和一个 Dev 预注册冻结 Final，避免在 Hidden 上二次选优。
 
 ### 审核 C：源码 seam 与 Git 隔离
 
@@ -56,7 +66,7 @@
 - C-3P-EQ 只有 byte-identical 时才能作为内部共同 seam。
 - V4-RN 的措辞和组件 mask 分开；V4-CP 的 LOO 从同一完整父候选平行生成。
 - V4-L 的顺序和 cache marker 分开；TSCG 的 CFO 另依赖审校 relation catalog。
-- 架构轨使用新的 sealed revision，不能复用已经打开的 formal-v1 Hidden。
+- 架构轨使用新的 sealed revision，不能复用已经打开的 `task1-data-formal-v1.1` Hidden。
 
 ## 3. 排序是部分序，不是完整排行榜
 
@@ -64,8 +74,8 @@
 
 | 层级 | 节点 | 当前结论 |
 |---|---|---|
-| P0 测量 | M0、M1、M2 | 现在可以做 no-model 实现；三支保留，集成后才能正式评测 |
-| P1 基线实验 | V0、V0-C、V1a、V1、V2、V3 | 等 formal-v1 与真实链路 Gate 后运行，决定共同 `static_parent` |
+| P0 测量 | M0、M1、M2 | 三支 no-model pass 已独立保留；等统一 Measurement-v2 Integration/Tag |
+| P1 基线实验 | V0、V0-C、V1a、V1、V2、V3 | 等 `task1-data-formal-v1.1`、R05 runtime Smoke 与 Measurement-v2 后运行，决定共同 `static_parent` |
 | P2 静态兄弟候选 | V4-G、RN-R、RN-M、V4-CP、TSCG-lite、V4-L、V4-A | 只进入与对应错误簇一致的一条；可独立准备，不能混合首次评测 |
 | P3 组合 | G+RN、RN+CP、semantic winner+L | 只有两个单项分别通过后才建新组合分支 |
 | P4 自动搜索 | O-P | 真实 trace、独立 folds 和预算足够后再启动 |
@@ -79,7 +89,8 @@ task1-c07-pass
   ├─ M1 pair schema/validator ──────┼─> Measurement-v2 integration
   └─ M2 usage/state isolation ──────┘          │
                                                 ├─ no-model Gate
-formal-v1 + R01-R04 ───────────────────────────┤
+task1-data-formal-v1.1 + R01→R02→R03→R04→R05 ─┤
+R05 runtime Smoke + Selection Contract ────────┤
                                                 ▼
                               task1-candidate-base-v1 commit
                                                 │
@@ -106,15 +117,29 @@ formal-v1 + R01-R04 ────────────────────
                        freeze one Dev Final
                               │
                               ▼
-                    formal-v1 Hidden, one time
+             task1-data-formal-v1.1 Hidden, one time
                               │
                               ▼
                   architecture track on new sealed data
 ```
 
-`V4-A*` 只有预冻结四态 Gold overlay 时可以使用 formal-v1，否则进入 formal-v2。
+`V4-A*` 只有预冻结四态 Gold overlay 时可以使用 `task1-data-formal-v1.1`，否则进入 formal-v2。
 
 `direct G/T/L**` 只在 C-3P-EQ 无法 byte-identical 时使用。此时 V4-G、TSCG 和 V4-L 的 Git 分支都从 `task1-candidate-base-v1^{commit}` 创建，并通过 `STATIC-PARENT-MANIFEST.json` 读取同一个行为父 Variant，再各自建立最小 relation、Execution 或 renderer seam；不能继承有可见变化的 C-3P。
+
+C-3P 的准备与正式阶段使用同一分支，但保留清楚的双祖先合同：
+
+```text
+R05 c86b154 ──> e06e66e ──> 27b0188 ──> d80ce4d structural tip ─┐
+                                                                 ├─> non-squash two-parent merge
+R05 c86b154 ──> Measurement-v2 ──> task1-candidate-base-v1 ─────┘
+                                                                        │
+                                                     bind static_parent artifact
+                                                                        │
+                                                     full C-3P-EQ parity Gate
+```
+
+不得 rebase/squash 现有准备链，也不得用 `d80ce4d` 解析任何下游卡的 `<FULL-C3P-EQ-PASS-COMMIT>`。
 
 ## 5. 测量分支与 worktree
 
@@ -133,18 +158,20 @@ Integration Gate 通过后，`task1-measurement-v2` 与 `task1-candidate-base-v1
 
 ## 6. 静态方法分支注册表
 
-这些分支在 `static_parent` 冻结后创建。第一代静态方法的 Git 父节点统一为 `task1-candidate-base-v1^{commit}`，行为父输入统一由 `STATIC-PARENT-MANIFEST.json` 指定。C-3P-EQ 通过后，V4-G、TSCG 和 V4-L 可以把其 pass commit 作为工程父节点，但模型可见行为参考仍是相同 `static_parent`。若只是同一实现中的 manifest 组合，不为每个数据点新建 Git 分支，但每个产物仍保存 manifest、Prompt hash 和结果。
+R05 `c86b154` 是所有后续方法共同复用的实验基础设施祖先，不是创新候选。任何方法都在独立 branch/worktree 中实现，不回写 R05。工程预备方法可直接从 R05 分叉；正式行为方法从包含 R05 与 Measurement-v2 的 `task1-candidate-base-v1` 分叉，并共享 `STATIC-PARENT-MANIFEST` 指定的行为父 Prompt。
+
+这些分支在 `static_parent` 冻结后创建。第一代静态方法的 Git 父节点统一为 `task1-candidate-base-v1^{commit}`，行为父输入统一由 `STATIC-PARENT-MANIFEST.json` 指定。只有 semantic ownership 和完整 system/tool/cache metadata parity 均通过并冻结后的 full C-3P-EQ pass commit，才可作为 V4-G、TSCG 或 V4-L 的工程父节点；模型可见行为参考仍是相同 `static_parent`。当前 `d80ce4d` 只有 structural preparation Gate，禁止充当或解析该 full-pass parent；完整阶段尚未完成、未冻结或失败时统一从 candidate-base fallback。若只是同一实现中的 manifest 组合，不为每个数据点新建 Git 分支，但每个产物仍保存 manifest、Prompt hash 和结果。
 
 | 方法 | 规范分支 | worktree | 关系 |
 |---|---|---|---|
-| C-3P-EQ | `codex/task1-method-c3p-eq` | `D:\projects\TencentDB-Agent-Memory-task1-method-c3p-eq` | 从共同父候选平行分叉；byte-identical 后才能当内部父节点 |
-| V4-G1 | `codex/task1-method-v4g-g1` | `D:\projects\TencentDB-Agent-Memory-task1-method-v4g-g1` | 从通过的 C-3P-EQ 递进；只增加 dependency graph |
+| C-3P-EQ | `codex/task1-method-c3p-eq` | `D:\projects\TencentDB-Agent-Memory-task1-method-c3p-eq` | structural preparation 从 R05 分叉；完整阶段再绑定 candidate-base 与 `static_parent`，全量 byte/metadata parity 后才能当内部父节点 |
+| V4-G1 | `codex/task1-method-v4g-g1` | `D:\projects\TencentDB-Agent-Memory-task1-method-v4g-g1` | 从 full C-3P-EQ pass 递进，或在其未完成/失败时从 candidate-base fallback；只增加 dependency graph |
 | V4-G2 | `codex/task1-method-v4g-g2` | `D:\projects\TencentDB-Agent-Memory-task1-method-v4g-g2` | 从 G1 递进；只删除图已覆盖的重复 prose |
 | RN-R | `codex/task1-method-v4rn-rhetoric` | `D:\projects\TencentDB-Agent-Memory-task1-method-v4rn-r` | 从共同父候选平行分叉；只改客观对称措辞 |
 | RN-M | `codex/task1-method-v4rn-mask` | `D:\projects\TencentDB-Agent-Memory-task1-method-v4rn-m` | 从共同父候选平行分叉；只改组件 mask |
 | RN-RM | `codex/task1-combo-v4rn-rm` | `D:\projects\TencentDB-Agent-Memory-task1-combo-v4rn-rm` | RN-R、RN-M 分别通过后新建组合 |
 | V4-CP instrumentation | `codex/task1-method-v4cp-instrument` | `D:\projects\TencentDB-Agent-Memory-task1-method-v4cp` | 从共同父候选分叉；所有 LOO manifest 共用这个完整父节点 |
-| TSCG signature | `codex/task1-method-tscg-signature` | `D:\projects\TencentDB-Agent-Memory-task1-method-tscg-signature` | 从 C-3P Execution IR 递进 |
+| TSCG signature | `codex/task1-method-tscg-signature` | `D:\projects\TencentDB-Agent-Memory-task1-method-tscg-signature` | 从 full C-3P-EQ Execution IR 递进，或从 candidate-base 建独立最小 seam |
 | TSCG SDM | `codex/task1-method-tscg-sdm` | `D:\projects\TencentDB-Agent-Memory-task1-method-tscg-sdm` | 从 signature 递进，解释条件效应 |
 | TSCG DRO | `codex/task1-method-tscg-dro` | `D:\projects\TencentDB-Agent-Memory-task1-method-tscg-dro` | 从 SDM 递进，解释条件效应 |
 | TSCG CFO | `codex/task1-method-tscg-cfo` | `D:\projects\TencentDB-Agent-Memory-task1-method-tscg-cfo` | 从预注册最佳已通过 Execution 节点分叉，另要求 V4-G relation catalog 已通过 |
@@ -164,7 +191,7 @@ V4-CP 的 `minus-cue-X` 和 budgeted set 使用 candidate manifest，不进行�
 | A-IR | `codex/task1-arch-intent-ir` | malformed/transport 已成为主要失败簇 |
 | A-CF | `codex/task1-arch-conformal-gate` | 有独立 calibration、固定 K 和可接受成本 |
 
-这些分支互相平行，不进入静态 Prompt 主 PR。formal-v1 Hidden 一旦打开，它们只能用 formal-v2 或预留的 sealed architecture slice 形成正式指标。每个新 sealed revision 都必须在同一 case/order/model/reasoning 下重跑冻结 static Final control 与一个预注册架构候选，不能跨 revision 直接比较 formal-v1 数字。
+这些分支互相平行，不进入静态 Prompt 主 PR。`task1-data-formal-v1.1` Hidden 一旦打开，它们只能用 formal-v2 或预留的 sealed architecture slice 形成正式指标。每个新 sealed revision 都必须在同一 case/order/model/reasoning 下重跑冻结 static Final control 与一个预注册架构候选，不能跨 revision 直接比较 `task1-data-formal-v1.1` 结果。
 
 ## 8. 每个分支的创建 Gate
 
@@ -175,7 +202,7 @@ V4-CP 的 `minus-cue-X` 和 budgeted set 使用 candidate manifest，不进行�
 3. 父 worktree 干净；`.git` 没有 merge、rebase、cherry-pick 或 lock。
 4. 候选执行卡已经写明单一因素、允许文件、禁止文件、指标假设、entry/accept/stop condition。
 5. 新 worktree 创建后，HEAD 等于预期父提交、分支名正确、`git status --porcelain` 为空。
-6. M0/M1/M2 可以在 formal-v1 前做 no-model 实现；正式模型运行仍受 Stage -1、R01 至 R04、Selection Contract 和 Measurement-v2 阻断。
+6. M0/M1/M2 已在模型运行前完成独立 no-model pass；正式模型运行仍受 Stage -1、R05 runtime Smoke、Selection Contract 和 Measurement-v2 阻断。
 7. 静态候选只有 `static_parent` 与错误簇冻结后才建立正式 Variant。提前写的通用 IR 必须 byte-identical，不能偷偷成为实验因素。
 
 ## 9. 每个分支的保存规则
@@ -192,7 +219,7 @@ V4-CP 的 `minus-cue-X` 和 budgeted set 使用 candidate manifest，不进行�
 | 项目 | 状态 | 说明 |
 |---|---|---|
 | 三份研究稿复制到独立 worktree | `DONE` | 原 `task1-code` 工作树未移动、未删除 |
-| 多轮任务/指标/源码/Git 审核 | `DONE` | 本文吸收三轮共同结论 |
+| 多轮任务/指标/源码/Git 审核 | `DONE` | 本文吸收任务边界、指标、公平性、源码、分支与文档一致性复核结论 |
 | 研究总案修订 | `DONE` | 指标、任务边界、依赖 DAG、执行卡、链接和格式一致性 Gate 已通过，待提交并打 Tag |
 | 独立候选执行卡 | `DONE` | M0/M1/M2、静态方法、优化器和四条架构轨均已分别保存 |
 | M0/M1/M2 worktree | `DONE` | 三支独立实现与 pass Tag 已保留；R04 已接入等价运行合同 |
@@ -200,7 +227,7 @@ V4-CP 的 `minus-cue-X` 和 budgeted set 使用 candidate manifest，不进行�
 | R01–R05 代码 Gate | `DONE` | R05 HEAD `c86b154`；R05 真实空白栈运行 Gate 尚未执行 |
 | `task1-measurement-v2` | `NOT_TAGGED` | 运行代码已进入 R04/R05，但统一冻结 Tag 与 Selection Contract 未闭合 |
 | 正式 V0 至 V3 Dev | `BLOCKED` | 等 R05 的 12 条 V0 Smoke 和人工 Luna campaign |
-| C-3P-EQ | `ENGINEERING_ONLY_READY` | 可对全部冻结 V0–V3 做 no-model byte parity；不能自选 `static_parent` 或成为模型 Variant |
+| C-3P-EQ | `STRUCTURAL_PREPARATION_PASS` | `d80ce4d` 仅证明 detached inventory 与 UTF-8 structural coverage；`semanticOwnershipAttested=false`，不能成为模型可见候选的 pass parent |
 | 其他 V4 及架构候选 | `DEFERRED` | 等 `static_parent`、错误矩阵和各自 entry condition |
 
-当前代码线下一项允许的独立实现是 C-3P-EQ 的工程预备态：从 R05 pass commit 建立专用 worktree，对全部冻结 profile 证明 provider-visible bytes 与 metadata 完全不变。它仍只运行 no-model 单元测试和静态 Gate，不启动 Luna，不接触用户当前 Codex 配置。任何模型可见 V4 仍须等待正式 Dev 错误矩阵。
+当前 C-3P 工程预备态已从 R05 建立专用 worktree并完成 structural Gate；它只运行 no-model 单元测试和静态检查，不启动 Luna，不接触用户当前 Codex 配置。下一项运行工作仍是用户执行 R05 的 12 条 V0 Smoke；任何模型可见 V4 继续等待正式 Dev 错误矩阵。

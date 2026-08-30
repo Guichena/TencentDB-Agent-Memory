@@ -4,13 +4,15 @@
 
 ```yaml
 kind: integration
-parent: <formal-data-and-R04-integration-commit>
-depends_on: [task1-research-plan-v1, task1-data-formal-v1, R01-R04, M0, M1, M2]
+infrastructure_ancestor: R05@c86b154f9f597da0788592c66b93d574fd3f10f9
+parent: c86b154f9f597da0788592c66b93d574fd3f10f9
+behavior_parent: not_applicable
+depends_on: [task1-research-plan-v1, task1-data-formal-v1.1, R01-R05-code-chain, R05-runtime-smoke, M0, M1, M2]
 branch_group: measurement-integration
 branch: codex/task1-measurement-v2-integration
 worktree: D:\projects\TencentDB-Agent-Memory-task1-measurement-v2
 required_sources: [M0, M1, M2]
-required_external_gates: [task1-data-formal-v1, R01, R02, R03, R04]
+required_external_gates: [task1-data-formal-v1.1, R01, R02, R03, R04, R05-code, R05-runtime-smoke]
 model_runs: 0
 ```
 
@@ -18,9 +20,9 @@ model_runs: 0
 
 ## 创建时机与父提交
 
-M0/M1/M2 的本地 no-model 实现可以提前并行完成。Integration 只有在以下对象都存在后创建：研究计划 Tag、formal data Tag/hash、真实链路 R01 至 R04 pass commit、三个测量源分支 pass commit。
+M0/M1/M2 的本地 no-model 实现可以提前并行完成。Integration 只有在以下对象都存在后创建：研究计划 Tag、`task1-data-formal-v1.1` Tag/hash、R01 至 R05 code chain、R05 runtime Smoke 证据、三个测量源分支 pass commit。
 
-父提交必须是包含正式数据接口与 R01 至 R04 的不可变集成点，且以 `task1-c07-pass` 和 `task1-code-freeze` 为祖先。不能使用脏 worktree 或旧 pilot/real-chain 分支的浮动 tip。
+父提交固定为 R05 `c86b154`，它已包含 R01 至 R05 的递进代码链，并以 `task1-c07-pass` 和 `task1-code-freeze` 为祖先。R05 只作为公共只读基础设施底座；Integration 在自己的 branch/worktree 汇合 M0/M1/M2，不回写 R05。不能使用脏 worktree 或旧 pilot/real-chain 分支的浮动 tip。
 
 ## 集成顺序
 
@@ -45,7 +47,7 @@ M0、M1、M2 可以在本地并行开发，并不代表它们是三个实验基�
 - 三个源提交和 merge commit 均可追溯，没有 squash。
 - Gold 支持 per-sequence typed predicates。
 - Pair contract 具备 invariant/minimality/independence 字段。
-- M0/M1/M2 focused tests 和 R01 至 R04 全通过。
+- M0/M1/M2 focused tests、R01 至 R05 code chain 和 R05 runtime Smoke 全通过。
 - V0 至 V3 Prompt freeze 完全一致。
 - mock-contract 永不正式 eligible。
 - scorer 不从候选 Prompt/Compiler 推导 Gold。
@@ -60,7 +62,7 @@ Formal-ready Gate 全部通过、三源语义无 merge-time 重写、Selection C
 
 ## 停止条件
 
-formal data、R01 至 R04、typed Gold、pair contract、usage/isolation 或 Selection Contract 任一未闭合时，不创建 candidate-base Tag。合并需要改变 Prompt、数据、Gold 或测量语义时，返回责任分支，不在 Integration 修补。
+`task1-data-formal-v1.1`、R01 至 R05 code chain、R05 runtime Smoke、typed Gold、pair contract、usage/isolation 或 Selection Contract 任一未闭合时，不创建 candidate-base Tag。合并需要改变 Prompt、数据、Gold 或测量语义时，返回责任分支，不在 Integration 修补。
 
 ## 产物
 

@@ -5,7 +5,9 @@
 ```yaml
 candidate_id: O-P
 kind: offline-optimizer
+infrastructure_ancestor: R05@c86b154f9f597da0788592c66b93d574fd3f10f9
 parent: <independently-proven-static-winner>
+behavior_parent: <independently-proven-static-winner.variantId/promptSha256>
 depends_on: [real-traces, independent-folds, machine-lint, fixed-search-budget]
 branch: codex/task1-method-op-candidate-pool
 worktree: D:\projects\TencentDB-Agent-Memory-task1-method-op

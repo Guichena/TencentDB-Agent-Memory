@@ -25,7 +25,7 @@
 | P3 | **O-P：GEPA/JTPRO/CAPO-lite 受约束 prompt pool** | 离线提案器；最终产物仍是冻结静态 Variant | 中；数据足够时才值得 | 中高：MIPRO/GEPA/JTPRO 为正式/广泛来源；Constraint-Aware Capo 是 2026-08 最新 v1 | 高模型预算；racing 可削减 | 自适应选择偏差高，必须 semantic folds + sealed Hidden | threshold feasibility、pool frontier、迁移/鲁棒性、搜索调用预算 | 先有真实 trace、机器 lint、足够训练/验证数据；Hidden 不参与搜索 | 只在开发 fold 获益、违反任一硬约束、随机搜索等预算不差 |
 | Stretch | **A-IR：Intent IR/typed dispatcher/grammar envelope** | 架构改写；模型从 curl 降为受限 `op+args` | 对可维护性高，对 Task 1 行为净收益未知 | 间接：PDL/APPL/RestGPT/structured outputs；非当前桥接形态直接证据 | 很高；dispatcher、ACL、schema、审计、迁移 | 与 V0–V3 不可视为同一自变量 | syntax validity、semantic routing、ACL reject、累计成本/terminal | malformed/transport 占主要错误，或产品本就计划原生 tool API | 形成 god-tool、ACL 变弱、语义选择无增益或迁移成本过高 |
 
-当前项目事实来自 [`EXPERIMENT-DESIGN.md`](../EXPERIMENT-DESIGN.md)、[`TASK1-POST-DATA-EXECUTION-PLAN.md`](../TASK1-POST-DATA-EXECUTION-PLAN.md)、[`cases/dev.jsonl`](../cases/dev.jsonl) 与 [`code-freeze-manifest.json`](../variants/code-freeze/code-freeze-manifest.json)：主模型冻结为 `gpt-5.6-luna` / high reasoning；仓库当前 pilot 为 Dev 60 + 旧 Test 40，而后数据计划要求正式 Dev 160、Hidden 240；两者不能混称。C00 canonical fixture 上，V3 完整注入总量为 2,224 token、静态工具组件为 2,027，V0 对应为 4,863 / 4,579；完整总量下降 54.3%，但尚无正式行为数据。现有 runner 没有 hidden state 或 tool-action logprob。**因此顺序是先冻结 P0 测量，跑完 V0–V3 正式 Dev，再由真实错误边触发 P1/P2；三平面 IR 有工程价值，但若现有候选已满足目标，不阻塞 Task 1 交付。**
+当前项目事实来自 [`EXPERIMENT-DESIGN.md`](../EXPERIMENT-DESIGN.md)、[`TASK1-POST-DATA-EXECUTION-PLAN.md`](../TASK1-POST-DATA-EXECUTION-PLAN.md)、[`cases/dev.jsonl`](../cases/dev.jsonl) 与 [`code-freeze-manifest.json`](../variants/code-freeze/code-freeze-manifest.json)：主模型冻结为 `gpt-5.6-luna` / high reasoning；仓库 pilot 为 Dev 60 + 旧 Test 40，而当前权威 annotated Tag `task1-data-formal-v1.1` 为 Dev 240、Hidden 400、total 640，两者不能混称。C00 canonical fixture 上，V3 完整注入总量为 2,224 token、静态工具组件为 2,027，V0 对应为 4,863 / 4,579；完整总量下降 54.3%，但尚无正式行为数据。**因此顺序是先冻结 P0 测量，跑完 V0–V3 正式 Dev，再由真实错误边触发 P1/P2；三平面 IR 有工程价值，但若现有候选已满足目标，不阻塞 Task 1 交付。**
 
 ---
 
@@ -350,7 +350,7 @@ pair 生成器能证明除一个字段外 world/query/capability 相同；同源
 - 可承受 `K` 倍模型推理；
 - 决策标签与 error event 在冻结前写清楚。
 
-当前 checked-in pilot 只有 60 条；后数据计划虽目标 Dev 160、Hidden 240，但 160 还要供 Variant 开发、fold 验证使用，不能再把 Hidden 拿来反复校准。因此当前不具备强 conformal 声明的独立 calibration 设计；应另外预留/扩充 calibration cases。
+当前 checked-in pilot 只有 60 条；正式数据虽已有 Dev 240、Hidden 400，但 Dev 还要供 Variant 开发、fold 验证使用，Hidden 不能拿来反复校准。因此当前仍不具备强 conformal 声明所需的独立 calibration 设计；应另外预留/扩充 calibration cases。
 
 **复杂度**
 
@@ -511,7 +511,7 @@ time_to_first_action / time_to_terminal / actual billed cost
 
 | 方法 | 来源事实 | 与 Task 1 的关系 |
 |---|---|---|
-| [MIPRO / MIPROv2 paper](https://arxiv.org/abs/2406.11695)（EMNLP 2024）与 [DSPy 官方文档/源码](https://github.com/stanfordnlp/dspy/blob/main/docs/docs/api/optimizers/MIPROv2.md) | 同时生成/搜索 instructions 与 few-shot demonstrations；用 program/data-aware proposal、stochastic minibatch 与 Bayesian optimization/代理模型搜索组合。DSPy 文档把 40+ trials、约 200+ examples 作为长优化的经验建议。 | checked-in pilot 60 与正式计划 Dev 160 都低于该长跑经验数，且分到 leaf/fold 后更稀疏；Task 1 又不希望用大量 few-shot 换 token。MIPROv2 可作 instruction-only baseline，但不是当前首选。 |
+| [MIPRO / MIPROv2 paper](https://arxiv.org/abs/2406.11695)（EMNLP 2024）与 [DSPy 官方文档/源码](https://github.com/stanfordnlp/dspy/blob/main/docs/docs/api/optimizers/MIPROv2.md) | 同时生成/搜索 instructions 与 few-shot demonstrations；用 program/data-aware proposal、stochastic minibatch 与 Bayesian optimization/代理模型搜索组合。DSPy 文档把 40+ trials、约 200+ examples 作为长优化的经验建议。 | 当前正式 Dev 240 总量虽超过该经验数，但按 leaf/pair/source cluster/fold 后的有效独立样本更少；Task 1 又不希望用大量 few-shot 换 token。MIPROv2 可作 instruction-only baseline，但不是当前首选。 |
 | [GEPA paper](https://arxiv.org/abs/2507.19457)（2025；ICLR 2026）与 [作者开源实现](https://github.com/gepa-ai/gepa) | 读取完整 execution traces 与 textual feedback，反思失败、定向改写；从按实例/目标维护的 Pareto frontier 选择父候选，并支持 merge。论文报告在六项任务上相对 GRPO 的 rollout 效率与相对 MIPROv2 的结果；源码暴露 `max_metric_calls`、`max_reflection_cost`、instance/objective/hybrid frontier。 | Task 1 scorer 能提供非常具体的 ASI：漏调、错 family、错 endpoint、forbidden call、token/prefix delta。GEPA 很适合“根据失败簇修改 `when/avoid/contrast`”，但也最容易读到 Dev 标签后记忆 case 文案，必须锁定可编辑面与跨组验证。 |
 | [JTPRO](https://aclanthology.org/2026.findings-acl.2017/)（Findings ACL 2026） | rollout-driven reflection 联合优化 global instruction 与 per-tool schema/argument descriptions；在 124–1,138 工具的多基准上，论文报告相对 GEPA 等强基线 5%–20% **相对** OSR 增益，并显示 joint 优于只改一层。 | 支持 Decision/Execution 组件分层与 tool-local cue；不支持把其大 inventory 效果量外推到当前约十几个工具，也不能把 exact runtime contract 交给 editor。 |
 | [VGCO](https://arxiv.org/html/2512.13860)（2025 v1）与 [TRAS](https://proceedings.mlr.press/v318/davari26a.html)（PMLR 2026） | VGCO 用 retrieval/tool/parameter 三层 verification signal 只编辑责任层；TRAS 从失败生成 correction，也从成功生成 textual regularizer 以减轻 drift。 | 可映射为 `no-tool gate / family / tool / args+transport` blame tree，并把成功路径作为不可删 cue 证据；VGCO 是 v1 且主要面向 30–100 工具，TRAS 不是工具专属。 |
@@ -569,7 +569,7 @@ GEPA 的优势是把 trace 与文本反馈变成定向改写；Cost-Aware CAPO �
 **适用门槛**
 
 - 先有真实 V0–V3 behavior trace，确认错误确实来自 Prompt 决策而非 scorer/Bridge；
-- Dev 数量足以支撑优化集、验证 fold 与独立 calibration；formal Dev 160 也不等于 160 个相互独立的 leaf/error cluster，不能自动视为足够；
+- Dev 数量足以支撑优化集、验证 fold 与独立 calibration；formal Dev 240 也不等于 240 个相互独立的 leaf/error cluster，不能自动视为足够；
 - 所有合同字段有机器 lint/byte diff；
 - 搜索预算、候选数与停止条件预注册。
 
@@ -800,8 +800,8 @@ Intent IR 也可以先只作为**内部 compiler IR**，不要求模型显式输
 
 1. **P0-A，冻结最短链与 token ledger。** Gold 允许一个或多个最短充分序列；正确 terminal + prerequisite/handoff + 无 forbidden/unexpected/duplicate 即成功。累计成本到 terminal 即止，不评分 asset 内容或最终答案。
 2. **P0-B，冻结 E-CF 鲁棒性评测。** 最小 act/abstain 对、Pair Accuracy、固定 order/paraphrase replicas、rhetorical-neutrality lint；同源 pair 同 split。
-3. **P0-C，做三平面等价 IR 与 cache metadata 保真。** 先不改变 V3 可见文本；验证 `pipeline.ts` 重建不会吞 marker。完成后才做 S0/S1/S2/S3 layout probe。
-4. **跑冻结 V0–V3 formal Dev 160。** 先获得真实 gate/family/tool/args/terminal/cache 错误分层；不得用 Hidden 240 做候选搜索。
+3. **P0-C，做三平面等价 IR 与 cache metadata 保真。** 先不改变 V3 可见文本；验证 `pipeline.ts` 重建不会吞 marker。只有 semantic ownership 与完整 system/tool/cache metadata parity 的 full C-3P-EQ Gate 通过后，才允许以它为父做 S0/S1/S2/S3 layout probe；`d80ce4d` structural preparation 不能解析该父节点。
+4. **跑冻结 V0–V3 formal Dev 240。** 先获得真实 gate/family/tool/args/terminal/cache 错误分层；不得用 Hidden 400 做候选搜索。
 5. **按错误类型只开一条 P1。** 多步/terminal/handoff 错 → V4-G；稳定 confusion edge/token 压力 → V4-CP；跨 session cache 损失 → V4-L。每次只改一个因子，先 Smoke/racing，再完整 Dev fold。
 6. **P2 commit gate。** 只有 FCR、缺参/能力不足对明显失败时，才引入四态；先做 prompt-only gate，再讨论高成本 consistency/conformal。
 7. **P3 自动搜索。** 先跑 deterministic LOO/budgeted cue compiler；数据和机器约束足够后，才做 GEPA/JTPRO editor + CAPO-lite pool/threshold。MIPROv2 instruction-only 与等预算 random/rule search 作 baseline。

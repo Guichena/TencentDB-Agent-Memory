@@ -88,7 +88,7 @@ Runtime Binding Plane：session/space/resource/skill 等动态值，确定性后
 - 真实 provider `cache_control`/breakpoint 的端到端保真保证；
 - 与 Task 1 一致的最短充分链和严格成对评分。
 
-数据状态也要分清：仓库当前 pilot fixture 合计 100 条，其中 pilot Dev 60、旧 Test 40；它们只适合 plumbing 和回归，旧 Test 也不是 sealed formal Hidden。最新正式计划目标是 Dev 160、Hidden 240、合计 400。当前少量 pilot pair 不能给 V0–V3 排名，也不能支持 conformal 或大规模自动 Prompt 搜索声明。
+数据状态也要分清：仓库当前 pilot fixture 合计 100 条，其中 pilot Dev 60、旧 Test 40；它们只适合 plumbing 和回归，旧 Test 也不是 sealed formal Hidden。当前权威正式数据是 annotated Tag `task1-data-formal-v1.1`：Dev 240、Hidden 400、合计 640，包含 240 个 pair；数据已冻结但正式模型行为尚未运行。pilot 不能给 V0–V3 排名，正式 Dev 也不能在没有独立 calibration/fold 设计时自动支持 conformal 或大规模自适应 Prompt 搜索声明。
 
 ## 3. 研究证据如何使用
 
@@ -452,13 +452,15 @@ V0–V3 只有六个冻结候选，先穷举即可。不要为了搜索六个点
 
 #### 实施边界
 
-Stage 1 先按 `SELECTION-CONTRACT.json` 冻结共同 `static_parent`，并保存 `STATIC-PARENT-MANIFEST.json`，其中包含 Variant ID、Prompt hash、artifact hash 和选择依据。它是行为父输入，不一定是独立 Git commit；候选 Git 分支统一从 `task1-candidate-base-v1^{commit}` 创建。V3 只是默认先验，不是硬编码父节点。C-3P-EQ 把该父候选解析为三平面，再渲染回 byte-identical 内容，证明所有 contract、cue、binding 有来源和 hash。它只建立内部 seam，不改变文本、空白、顺序、注入点或 cache marker；所有物理换位和缓存布局实验归 V4-L。
+R05 `c86b154` 是所有方法共同复用的只读实验基础设施祖先，不是创新候选，也不为每个创新重新建设。工程预备方法可直接从 R05 建独立 branch/worktree；正式行为方法从包含 R05 与 Measurement-v2 的 `task1-candidate-base-v1^{commit}` 独立分叉，绝不回写 R05。C-3P 是唯一已启动的分阶段工程 seam：它保留现有 R05→`d80ce4d` 准备历史，candidate-base 产生后在同一分支做显式 non-squash two-parent merge，不重建、不 rebase、不 squash。
+
+Stage 1 先按 `SELECTION-CONTRACT.json` 冻结共同 `static_parent`，并保存 `STATIC-PARENT-MANIFEST.json`，其中包含 Variant ID、Prompt hash、artifact hash 和选择依据。它是行为父输入，不一定是独立 Git commit；候选 Git 分支统一从 `task1-candidate-base-v1^{commit}` 创建。V3 只是默认先验，不是硬编码父节点。完整 C-3P-EQ 把该父候选解析为三平面，再渲染回 byte-identical 内容，证明所有 contract、cue、binding 有来源和 hash。它只建立内部 seam，不改变文本、空白、顺序、注入点或 cache marker；所有物理换位和缓存布局实验归 V4-L。当前 `d80ce4d` 只通过 structural preparation Gate，`semanticOwnershipAttested=false`，不能冒充完整 C-3P-EQ。
 
 #### Gate
 
 - `static_parent` 的全部 snapshot、token、hash 和 contract lint 全通过。
 - exact tool name/path/body/header/capability 没有改变。
-- 每个 PromptUnit 只能归属一个明确 plane。
+- 最终每个 provider-visible byte span 只能归属一个经审校的明确 plane；C-3P-0 先给现有 PromptUnit 建 conservative candidate membership inventory，含多平面的旧 monolithic unit 必须显式标为 mixed，不能伪装成唯一 ownership。结构 source map 只能证明 UTF-8 coverage，不能自动证明 semantic ownership。
 - 任何动态值不得渗入稳定 plane。
 - 所有冻结 capability fixture 的输出 bytes 必须完全一致。
 
@@ -685,7 +687,7 @@ UNSUPPORTED  当前授权工具面不具备所需能力
 
 这不是为了让 Agent 更通用，而是为了准确区分 Task 1 的误调用原因。所需新指标只有四态混淆矩阵、CALL recall、DIRECT/CLARIFY/UNSUPPORTED precision、PairExact 和额外轮数。若 CALL 正例被大量推向 CLARIFY，FCR_attempt 虽下降但 ECR 同时明显下降，候选失败。
 
-四态标签不能在查看 formal-v1 Dev 结果后回写到已冻结 Gold。若数据冻结前已经把四态 overlay 作为不参与初始主指标的辅助 Gold 一并审校，V4-A 可以使用该 overlay；否则 V4-A 移到 formal-v2 独立轨，不进入 formal-v1 Hidden。formal-v2 必须在同一 case/order/model/reasoning 下同时重跑冻结的 control/static Final 与一个预注册 V4-A，不能把 formal-v1 数字当跨 revision 非劣对照。原二元 Gold 保留，四态指标单列。
+四态标签不能在查看 `task1-data-formal-v1.1` Dev 结果后回写到已冻结 Gold。若数据冻结前已经把四态 overlay 作为不参与初始主指标的辅助 Gold 一并审校，V4-A 可以使用该 overlay；否则 V4-A 移到 formal-v2 独立轨，不进入 `task1-data-formal-v1.1` Hidden。formal-v2 必须在同一 case/order/model/reasoning 下同时重跑冻结的 control/static Final 与一个预注册 V4-A，不能把 `task1-data-formal-v1.1` 结果当跨 revision 非劣对照。原二元 Gold 保留，四态指标单列。
 
 不使用自由 CoT。最多试一个短的结构化 commit 规则：先判断缺口与 capability，再选 family，再确认 prerequisite，最后才发 terminal；不要求输出长 rationale，不把 reasoning token 增长当“免费”。
 
@@ -734,7 +736,7 @@ BoR 只在未来真实 retrieval shortlist 中评价“Gold 是否进入候选�
 
 - 当前 V0–V3 只有六个冻结候选，直接枚举更透明。
 - 正式数据仍在建设/冻结，checked-in pilot 太小。
-- Dev 160 还要按 family、no-tool、pair、来源簇和 fold 分层，独立样本远少于 160。
+- Dev 240 还要按 family、no-tool、pair、来源簇和 fold 分层，独立样本远少于 240。
 - 自动优化会做大量自适应比较，最容易记住 Dev query 或错误地把 Gold 词写入 Prompt。
 - Task 1 不需要大量 few-shot，也不应拿 Hidden/Test 反复调 Prompt。
 
@@ -818,9 +820,9 @@ Anthropic 官方给出的考虑信号是约 10 个以上工具、超过 10k defi
 
 在任何正式 Luna 指标前，必须先完成原执行计划的阻断项：
 
-- formal-v1 数据集冻结为 Dev 160 / Hidden 240，记录 annotated Tag、provider dataset SHA、private Gold SHA、snapshot SHA 和 compiler/validator revision。
+- `task1-data-formal-v1.1` 已冻结为 Dev 240 / Hidden 400 / total 640，记录 annotated Tag、provider dataset SHA、private Gold SHA、snapshot SHA 和 compiler/validator revision。
 - Hidden Query/Gold 与 Prompt 开发会话隔离；Dev/Hidden 只通过冻结 manifest 与 hash 交接。
-- R01–R04 的真实 Adapter、资产恢复、Session Init、生产 InjectionPipeline 和真实 MemoryProxy 链路 no-model Gate 通过。
+- R01–R05 code chain 已闭合；R05 专用空白栈 restore/read-back/preflight 与 12 条 V0 Smoke runtime Gate 仍须通过后才允许正式模型运行。
 - 每个 case/Variant 使用唯一 run/session namespace；资产 snapshot 在运行前恢复，运行后不把模型调用写回下一个 case 可见的 Memory/Skill/Knowledge、本地历史或会话状态。
 - Mock Bridge 只验证协议，不进入正式指标；正式 run 必须标记 `formalMetricEligible=true`。
 - `freshSession`、资产隔离和 cache lane 分开验证；fresh session 不能替代 snapshot/hash/真实 cache usage 证据。
@@ -928,7 +930,7 @@ Hidden 只运行 V0、V0-C，以及 Dev 按预登记规则选出的一个冻结 
 
 ### Stage 6：架构轨（可选）
 
-只有静态 Final 仍有可复现规模/多步瓶颈时，单独启动 A-F/A-D/A-IR。报告中与静态 Prompt 主表分栏，使用累计 token/成本和 terminal 行为，不宣称它们是 V3 的普通文字压缩。formal-v1 Hidden 一旦打开，Stage 6 不得复用；架构轨必须使用新的 formal-v2，或事先保留且从未打开的 architecture Hidden slice。每个新 sealed revision 都要冻结 Dev/Hidden，并在同一 case/order/model/reasoning 上同时运行冻结 control/static Final 与一个预注册架构候选；不能拿 formal-v1 数字作为跨 revision 因果对照。没有新 sealed 数据时只能做 Dev 探索，不能给正式最终指标。
+只有静态 Final 仍有可复现规模/多步瓶颈时，单独启动 A-F/A-D/A-IR。报告中与静态 Prompt 主表分栏，使用累计 token/成本和 terminal 行为，不宣称它们是 V3 的普通文字压缩。`task1-data-formal-v1.1` Hidden 一旦打开，Stage 6 不得复用；架构轨必须使用新的 formal-v2，或事先保留且从未打开的 architecture Hidden slice。每个新 sealed revision 都要冻结 Dev/Hidden，并在同一 case/order/model/reasoning 上同时运行冻结 control/static Final 与一个预注册架构候选；不能拿 `task1-data-formal-v1.1` 结果作为跨 revision 因果对照。没有新 sealed 数据时只能做 Dev 探索，不能给正式最终指标。
 
 ## 12. 每个候选必须填写的实验卡
 

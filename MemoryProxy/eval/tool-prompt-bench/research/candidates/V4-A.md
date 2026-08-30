@@ -4,6 +4,7 @@
 
 ```yaml
 candidate_id: V4-A
+infrastructure_ancestor: R05@c86b154f9f597da0788592c66b93d574fd3f10f9
 git_parent: task1-candidate-base-v1^{commit}
 behavior_parent: <STATIC-PARENT-MANIFEST.variantId/promptSha256>
 depends_on: [task1-measurement-v2, pre-frozen-four-state-overlay-or-formal-v2]
@@ -12,13 +13,13 @@ worktree: D:\projects\TencentDB-Agent-Memory-task1-method-v4a
 branch_group: decision-sibling
 ```
 
-V4-A 只有两种合法数据来源：formal-v1 冻结前已经审校并一同 hash 的辅助四态 Gold overlay，或独立 formal-v2。不能在查看 formal-v1 Dev 后回写四态标签。
+V4-A 只有两种合法数据来源：`task1-data-formal-v1.1` 冻结前已经审校并一同 hash 的辅助四态 Gold overlay，或独立 formal-v2。不能在查看 `task1-data-formal-v1.1` Dev 后回写四态标签。
 
 ## 进入条件
 
 正式错误矩阵必须证明 DIRECT、缺必要 binding 的 CLARIFY、授权工具面不支持的 UNSUPPORTED 与真正 CALL 之间存在稳定误调簇。普通 no-tool 与 coding negative 不足以自动触发本方法。
 
-若使用 formal-v2，必须在同一 revision、case order、模型和 reasoning 下同时运行冻结 control/static Final 与一个预注册 V4-A。不能拿 formal-v1 数字作为跨 revision 非劣对照。
+若使用 formal-v2，必须在同一 revision、case order、模型和 reasoning 下同时运行冻结 control/static Final 与一个预注册 V4-A。不能拿 `task1-data-formal-v1.1` 结果作为跨 revision 非劣对照。
 
 ## 单因子
 

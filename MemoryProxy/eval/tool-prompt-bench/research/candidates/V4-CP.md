@@ -4,6 +4,7 @@
 
 ```yaml
 candidate_id: V4-CP
+infrastructure_ancestor: R05@c86b154f9f597da0788592c66b93d574fd3f10f9
 git_parent: task1-candidate-base-v1^{commit}
 behavior_parent: <STATIC-PARENT-MANIFEST.variantId/promptSha256>
 depends_on: [task1-measurement-v2, stable-confusion-edge, cue-trace]

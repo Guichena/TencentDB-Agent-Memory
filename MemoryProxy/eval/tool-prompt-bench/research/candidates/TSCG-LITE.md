@@ -3,7 +3,7 @@
 ## 身份与阶梯
 
 ```text
-C-3P-EQ Execution IR
+full C-3P-EQ Execution IR after semantic ownership and full parity
 └─ SIG typed signature
    └─ SDM semantic de-filler
       └─ DRO delimiter/field layout
@@ -13,11 +13,15 @@ pre-registered best passing Execution node + audited relation catalog
 ```
 
 ```yaml
-git_parent: C-3P-EQ pass, or task1-candidate-base-v1^{commit} when parity fails
+infrastructure_ancestor: R05@c86b154f9f597da0788592c66b93d574fd3f10f9
+git_parent: <FULL-C3P-EQ-PASS-COMMIT after semantic ownership + full system/tool/cache metadata parity>, otherwise task1-candidate-base-v1^{commit}
+structural_preparation_gate_is_not_valid_parent: d80ce4d
 behavior_parent: <STATIC-PARENT-MANIFEST.variantId/promptSha256>
 depends_on: [task1-measurement-v2, execution-error-cluster, C-3P-Execution-IR]
 branch_group: execution-sibling
 ```
+
+完整 C-3P-EQ 尚未完成、未冻结或 parity 未通过时使用 candidate-base fallback。`d80ce4d` 只是 structural preparation，禁止用它解析 `<FULL-C3P-EQ-PASS-COMMIT>` 占位符。
 
 | 节点 | 分支 | worktree |
 |---|---|---|

@@ -4,7 +4,9 @@
 
 ```yaml
 candidate_id: V4-L
-git_parent: C-3P-EQ pass, or task1-candidate-base-v1^{commit} when parity fails
+infrastructure_ancestor: R05@c86b154f9f597da0788592c66b93d574fd3f10f9
+git_parent: <FULL-C3P-EQ-PASS-COMMIT after semantic ownership + full system/tool/cache metadata parity>, otherwise task1-candidate-base-v1^{commit}
+structural_preparation_gate_is_not_valid_parent: d80ce4d
 behavior_parent: <STATIC-PARENT-MANIFEST.variantId/promptSha256>
 depends_on: [M2, real-provider-cache-telemetry]
 branch: codex/task1-method-v4l-probe
@@ -12,7 +14,7 @@ worktree: D:\projects\TencentDB-Agent-Memory-task1-method-v4l-probe
 branch_group: layout
 ```
 
-本卡不把 order 与 cache marker 混成一次变化。C-3P-EQ 只是 Git 工程 seam，行为父输入仍是同一个 `static_parent` artifact。最小矩阵是：
+本卡不把 order 与 cache marker 混成一次变化。只有完整 C-3P-EQ pass 才能作为 Git 工程 seam；完整阶段尚未完成、未冻结或 parity 未通过时使用 candidate-base fallback。`d80ce4d` structural preparation 不是合法父节点，禁止用它解析 `<FULL-C3P-EQ-PASS-COMMIT>`。行为父输入仍是同一个 `static_parent` artifact。最小矩阵是：
 
 - L-order：只换 S0/S1/S2/S3 完整 unit 的顺序。
 - L-cache：在相同文本和相同顺序下，只换 provider metadata marker。
