@@ -26,8 +26,28 @@ import type {
   WorldSnapshot,
 } from "../worlds/formal-schema.js";
 import { assertFormalWorldContract } from "../worlds/formal-schema.js";
-import { canonicalJson, canonicalSha256 } from "../worlds/formal-snapshot.js";
+import { canonicalJson, canonicalSha256 } from "../formal-runtime/canonical.js";
 import type { FormalCaseBinding } from "../formal-runtime/build-case-bindings.js";
+import type {
+  FormalAssetRestorePlan,
+  FormalDataRevisionReceipt,
+  PlannedRestoreAsset,
+  RestorePlanAction,
+  RestorePlanRequirement,
+  RuntimeValueRef,
+} from "./restore-plan-contract.js";
+
+export type {
+  FormalAssetRestorePlan,
+  FormalDataRevisionReceipt,
+  FormalRestoreRuntimePolicy,
+  FormalRestoreVisibleAssetSet,
+  ParseFormalAssetRestorePlanOptions,
+  PlannedRestoreAsset,
+  RestorePlanAction,
+  RestorePlanRequirement,
+  RuntimeValueRef,
+} from "./restore-plan-contract.js";
 
 const SELECTION_BRAND: unique symbol = Symbol("formal-asset-restore-selection");
 
@@ -36,14 +56,6 @@ export interface FormalAssetRestoreSelection {
   readonly hiddenAuthorized: boolean;
   readonly [SELECTION_BRAND]: true;
 }
-
-export type FormalDataRevisionReceipt = Readonly<{
-  tag: string;
-  tagObject: string;
-  commit: string;
-  contractCanonicalSha256: string;
-  snapshotCanonicalSha256: string;
-}>;
 
 type SafeWorld = Readonly<{
   worldId: string;
@@ -84,141 +96,6 @@ export interface FormalAssetRestoreSource {
     knowledge: readonly SafeKnowledge[];
   }>;
   readonly sourceProjectionSha256: string;
-}
-
-export type RuntimeValueRef = Readonly<{
-  $runtimeRef: string;
-  logicalId?: string;
-  actionId?: string;
-}>;
-
-export interface RestorePlanAction {
-  readonly order: number;
-  readonly actionId: string;
-  readonly phase: "identity" | "memory" | "skill" | "knowledge" | "binding";
-  readonly serviceBoundary: "memory_core" | "memory_knowledge";
-  readonly service:
-    | "metadata"
-    | "memory-data"
-    | "skill-data"
-    | "knowledge-metadata"
-    | "knowledge-resource";
-  readonly method: "POST";
-  readonly endpoint: string;
-  readonly dependsOn: readonly string[];
-  readonly blockedByRequirements?: readonly string[];
-  readonly executionIdentity: Readonly<{
-    datasetSpaceId: string;
-    datasetUserId: string;
-    datasetTeamId?: string;
-    datasetAgentId?: string;
-  }>;
-  readonly correlationHeaders?: Readonly<Record<string, RuntimeValueRef>>;
-  readonly body: Readonly<Record<string, unknown>>;
-  readonly captures: Readonly<Record<string, string>>;
-}
-
-export interface RestorePlanRequirement {
-  readonly requirementId: string;
-  readonly kind:
-    | "space_service_mapping"
-    | "auth_user_mapping"
-    | "skill_package_bytes"
-    | "knowledge_snapshot_import"
-    | "memory_l1_import"
-    | "memory_l2_import";
-  readonly blocking: true;
-  readonly formalAssetId?: string;
-  readonly logicalLocator?: string;
-  readonly runtimeLocator?: string;
-  /** Receipts that must exist before this importer/materializer step runs. */
-  readonly dependsOnActions?: readonly string[];
-  readonly runtimeAssetRef?: RuntimeValueRef;
-  readonly expectedSha256?: string;
-  /** Formal asset-object hash; distinct from a raw payload hash. */
-  readonly expectedAssetContentHash?: string;
-  readonly manifest?: readonly Readonly<{ path: string; sha256: string }>[];
-  readonly sourcePin?: Readonly<{
-    repoUrl?: string;
-    repoCommit?: string;
-    indexVersion?: string;
-  }>;
-  readonly runtimeIsolation?: Readonly<{
-    team_id: RuntimeValueRef;
-    user_id: RuntimeValueRef;
-    agent_id: RuntimeValueRef;
-  }>;
-  /** Safe, source-backed payload for a future local importer; never provider text. */
-  readonly importPayload?: Readonly<Record<string, unknown>>;
-  readonly reason: string;
-}
-
-type PlannedAsset = Readonly<{
-  formalAssetId: string;
-  family: "memory" | "skill" | "knowledge";
-  subtype: "l0" | "l1" | "l2" | "l3" | "skill" | "wiki" | "code_graph";
-  ownerAgentId: string;
-  contentHash: string;
-  receipt:
-    | Readonly<{
-      kind: "conversation";
-      actionId: string;
-      requestedSessionId: string;
-      formalMessageIds: readonly string[];
-      runtimeMessageIdsPath: string;
-      mapping: "ordered-response";
-    }>
-    | Readonly<{ kind: "core-scope"; actionId: string; contentHash: string }>
-    | Readonly<{ kind: "unresolved-import"; requirementId: string }>
-    | Readonly<{ kind: "runtime-asset-id" | "explicit-id" | "scenario-path"; actionId: string }>;
-}>;
-
-export interface FormalAssetRestorePlan {
-  readonly schemaVersion: "task1.formal-asset-restore-plan.v1";
-  readonly split: FormalSplit;
-  readonly revision: FormalDataRevisionReceipt;
-  readonly snapshot: Readonly<{
-    snapshotId: string;
-    sourcePackSha256: string;
-    snapshotContentHash: string;
-    sourceProjectionSha256: string;
-  }>;
-  readonly runtimePolicy: Readonly<{
-    policy: FormalWorldContract["world"]["runtimePolicy"];
-    sha256: string;
-  }>;
-  readonly executable: false;
-  readonly formalMetricEligible: false;
-  readonly credentialPolicy: "execution-time user key only; no credential value is serialized";
-  readonly identityMappings: Readonly<{
-    space: Readonly<{
-      datasetSpaceId: string;
-      runtimeServiceId: Readonly<{ state: "unresolved"; requiredGate: "space-service-mapping" }>;
-    }>;
-    users: readonly Readonly<{
-      datasetUserId: string;
-      resolvedAuthUserId: Readonly<{ state: "unresolved"; requiredGate: "auth-user-mapping" }>;
-    }>[];
-    teams: readonly Readonly<{
-      datasetTeamId: string;
-      runtimeTeamId: Readonly<{ state: "from-action-receipt"; actionId: string }>;
-    }>[];
-    agents: readonly Readonly<{
-      datasetAgentId: string;
-      runtimeAgentId: Readonly<{ state: "from-action-receipt"; actionId: string }>;
-    }>[];
-    tasks: readonly Readonly<{
-      datasetTaskId: string;
-      transportTaskId: string;
-      runtimeTaskId: Readonly<{ state: "from-action-receipt"; actionId: string }>;
-    }>[];
-  }>;
-  readonly selectedVisibleAssetSets: readonly Readonly<VisibleAssetSet>[];
-  readonly assets: readonly PlannedAsset[];
-  readonly requirements: readonly RestorePlanRequirement[];
-  readonly actions: readonly RestorePlanAction[];
-  readonly excludedUnreferencedAssetCount: number;
-  readonly planSha256: string;
 }
 
 function deepFreeze<T>(value: T): T {
@@ -391,7 +268,7 @@ type AnySafeAsset = SafeL0 | SafeL1 | SafeL2 | SafeL3 | SafeSkill | SafeKnowledg
 type CatalogEntry = {
   asset: AnySafeAsset;
   family: "memory" | "skill" | "knowledge";
-  subtype: PlannedAsset["subtype"];
+  subtype: PlannedRestoreAsset["subtype"];
 };
 
 function assetCatalog(source: FormalAssetRestoreSource): Map<string, CatalogEntry> {
@@ -519,7 +396,7 @@ export function compileFormalAssetRestorePlan(input: {
     kind: "space_service_mapping",
     blocking: true,
     reason: `Resolve dataset Space ${input.source.world.spaceId} to the actual runtime service id; equality must not be assumed.`,
-  }, ...selectedUsers.map((datasetUserId) => ({
+  }, ...selectedUsers.map<RestorePlanRequirement>((datasetUserId) => ({
     requirementId: actionId("require-auth-user", datasetUserId),
     kind: "auth_user_mapping",
     blocking: true,
@@ -858,13 +735,13 @@ export function compileFormalAssetRestorePlan(input: {
   }
 
   const orderedActions: RestorePlanAction[] = actions.map((action, index) => ({ ...action, order: index + 1 }));
-  const planAssets: PlannedAsset[] = selectedAssets.map((entry) => {
+  const planAssets: PlannedRestoreAsset[] = selectedAssets.map((entry) => {
     const id = entry.asset.assetId;
     const action = assetActionById.get(id);
     if (entry.subtype !== "l1" && entry.subtype !== "l2" && !action) {
       throw new Error(`Formal asset restore: asset ${id} has no receipt action`);
     }
-    const receipt: PlannedAsset["receipt"] = entry.subtype === "l1" || entry.subtype === "l2"
+    const receipt: PlannedRestoreAsset["receipt"] = entry.subtype === "l1" || entry.subtype === "l2"
       ? { kind: "unresolved-import", requirementId: actionId(`require-memory-${entry.subtype}-import`, id) }
       : entry.subtype === "l0"
       ? {
