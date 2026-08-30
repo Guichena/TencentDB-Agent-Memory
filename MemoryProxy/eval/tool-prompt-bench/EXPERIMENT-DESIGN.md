@@ -2,7 +2,7 @@
 
 | 项目 | 当前设置 |
 |---|---|
-| 状态 | Formal v1.1 数据已冻结；R04 Measurement/Runner Integration 进行中 |
+| 状态 | Formal v1.1 数据已冻结；R04 Measurement/Runner Integration 代码已收口，等待生产资产 adapter 后人工 Smoke |
 | 当前分支 | `codex/task1-experiment-r04-runner-v1` |
 | 数据合同 | annotated tag `task1-data-formal-v1.1`（640 case，私有 Gold/Pair 与 provider 输入隔离） |
 | 代码冻结 | `task1-code-freeze`；V0、V0-C、V1a、V1、V2、V3 已具备生产 profile |
@@ -14,7 +14,7 @@
 
 2026-08-28 刷新远端后，生产 V0 基线冻结为 `origin/feat/server_team` 的 `5299c00`。此前 P01 Harness 的历史基点 `c0cf94f` 仅用于解释已有提交，不能继续代表当前生产 Prompt。`5299c00` 新增 header identity 冷启动修复、无 Task 注册和 Pi AgentProfile，代码与正式评测都必须包含这些生产事实。
 
-当前实现已经完成 R01 真实入口观测 seam、R02 Formal PrepareOnly/冻结输入和 R03 资产恢复计划；R04 已集成 M0 scorer，并增加 Gold-blind 的生产 begin/completion trace projector。尚未完成的正式开跑阻断项是：生产 observer 事件持久化、Formal runner 接线、逐请求 usage/cache evidence、eligibility 过滤及精简后的 Pair 汇总。本阶段仍不运行模型。
+当前实现已经完成 R01 真实入口观测 seam、R02 Formal PrepareOnly/冻结输入、R03 资产恢复计划，以及 R04 的 M0 scorer、生产 trace/provider evidence 持久化、Gold-blind runner、逐请求 usage、eligibility、Pair 汇总、Prompt cache 结构 Gate 和人工执行/收集命令。R04 没有运行模型。正式开跑仍有一个外部阻断项：需要针对当前本地 `server_team` 数据栈实现生产 asset restore/inspect adapter，产出可由独立 preflight evaluator 验证的真实 read-back observations；在该 adapter 缺失时不得伪造 `ready` receipt，也不得把 Pilot 数字写入正式结果。逐步操作和边界见 [R04 正式 Campaign 操作手册](./R04-FORMAL-CAMPAIGN-RUNBOOK.md)。
 
 ## 实验只比较系统提示词变体
 
@@ -347,7 +347,7 @@ Codex JSONL 的 `input_tokens`、`cached_input_tokens`、`cache_write_input_toke
 | `dynamicAssetSha256` | Profile、Listing 和 Knowledge 资源 |
 | `effectiveSystemSha256` | 实际发给 Provider 的完整字节 |
 
-还要记录稳定前缀首次变化的字节位置、字符位置和估算 Token 位置。候选可以修改计划内的注入块，不能把动态内容提前到原本稳定的公共前缀。Cache 结构 Gate 同时要求：同一 Variant 在相同规范化输入下 `staticTemplateSha256` 完全确定；跨 Variant 的首次变化位置不得早于预登记可变区域。Provider 返回的 `cachedInputTokens` 是运行事实，但服务端命中会受时间影响，只作辅助诊断，不能单独证明 Prompt cache 结构稳定。
+还要记录稳定前缀首次变化的字节位置、字符位置和估算 Token 位置。候选可以修改计划内的注入块，不能把动态内容提前到原本稳定的公共前缀。正式 Cache 结构 Gate 绑定不可变 `task1-code-freeze`：所有 run 必须使用该 tag 解引用 commit，执行 commit 到该 freeze 之间的 Prompt 所属源码不得变化；tag 内 C06 清单必须完整保存六个 Variant 的 `staticTemplateSha256`、唯一 cache namespace、静态注入 Token、完整 Prompt hash 和相邻稳定前缀位置。Provider 返回的 `cachedInputTokens` 是运行事实，但服务端命中会受时间影响，只作辅助诊断，不能单独证明 Prompt cache 结构稳定。
 
 Campaign 汇总至少给出：
 
