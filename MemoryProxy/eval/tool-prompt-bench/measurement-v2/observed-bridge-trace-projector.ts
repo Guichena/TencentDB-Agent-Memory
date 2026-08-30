@@ -122,16 +122,7 @@ export function projectObservedBridgeTrace(
     if (visitedCorrelationIds.has(entry.correlationId)) continue;
     visitedCorrelationIds.add(entry.correlationId);
     if ((entriesByCorrelationId.get(entry.correlationId)?.length ?? 0) !== 1) continue;
-    if (readCorrelationHeader(entry.correlationHeaders, "x-conversation-id") !== input.activeSessionId) {
-      const issue: RawInfrastructureFailureV2 = {
-        kind: "other",
-        message: "Observed bridge entry does not belong to the active session",
-        code: "cross_session",
-      };
-      issues.push(issue);
-      observationFailures.push(issue);
-      continue;
-    }
+    const sessionCorrelationMatched = belongsToActiveSession(entry, input.activeSessionId);
 
     const matchingCompletions = completionsByCorrelationId.get(entry.correlationId) ?? [];
     let completion: ObservedToolCompletion | undefined;
@@ -172,14 +163,19 @@ export function projectObservedBridgeTrace(
       endpoint: contract?.canonicalEndpoint ?? entry.endpoint,
       method: entry.method,
       ...(requestBody ? { arguments: requestBody } : {}),
+      ...(!sessionCorrelationMatched
+        ? { malformedReason: "session_correlation_header_mismatch" }
+        : {}),
       ...(infrastructureFailure
         ? { infrastructureFailure }
-        : {
-            ...(completion?.status !== null && completion?.status !== undefined
-              ? { status: completion.status }
-              : {}),
-            ...(responseBody !== undefined ? { response: responseBody } : {}),
-          }),
+        : sessionCorrelationMatched
+          ? {
+              ...(completion?.status !== null && completion?.status !== undefined
+                ? { status: completion.status }
+                : {}),
+              ...(responseBody !== undefined ? { response: responseBody } : {}),
+            }
+          : {}),
     });
   }
   const observation: RawTraceObservationV2 = {
@@ -305,6 +301,17 @@ function readCorrelationHeader(
 ): string | undefined {
   const entry = Object.entries(headers).find(([name]) => name.toLowerCase() === expectedName);
   return entry?.[1];
+}
+
+function belongsToActiveSession(entry: ObservedToolEntry, activeSessionId: string): boolean {
+  const observedSessionId = readCorrelationHeader(
+    entry.correlationHeaders,
+    "x-conversation-id",
+  );
+  if (observedSessionId === activeSessionId) return true;
+  if (entry.family !== "knowledge") return false;
+  return readCorrelationHeader(entry.correlationHeaders, "x-tdai-agent-source") === "codex"
+    && observedSessionId === `codex:${activeSessionId}`;
 }
 
 const SAFE_CORRELATION_HEADERS = new Set<string>(BRIDGE_CORRELATION_HEADER_NAMES);

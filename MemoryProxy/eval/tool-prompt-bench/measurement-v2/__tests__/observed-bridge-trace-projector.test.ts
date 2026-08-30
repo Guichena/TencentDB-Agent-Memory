@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { projectObservedBridgeTrace } from "../observed-bridge-trace-projector.js";
+import {
+  projectObservedBridgeTrace,
+  type ObservedToolEntry,
+} from "../observed-bridge-trace-projector.js";
 
 describe("projectObservedBridgeTrace", () => {
   it("projects one completed Memory 2xx entry from production observer facts", () => {
@@ -143,7 +146,10 @@ describe("projectObservedBridgeTrace", () => {
         method: "POST",
         requestBody: { knowledge_id: "wiki-runtime-1" },
         requestBodyCapture: { outcome: "captured", rawBodySha256: "e".repeat(64) },
-        correlationHeaders: { "x-conversation-id": "session-knowledge-canonical" },
+        correlationHeaders: {
+          "x-conversation-id": "codex:session-knowledge-canonical",
+          "x-tdai-agent-source": "codex",
+        },
       }, {
         correlationId: "knowledge-call",
         family: "knowledge",
@@ -155,7 +161,10 @@ describe("projectObservedBridgeTrace", () => {
           params: { query: "rollback" },
         },
         requestBodyCapture: { outcome: "captured", rawBodySha256: "f".repeat(64) },
-        correlationHeaders: { "x-conversation-id": "session-knowledge-canonical" },
+        correlationHeaders: {
+          "x-conversation-id": "codex:session-knowledge-canonical",
+          "x-tdai-agent-source": "codex",
+        },
       }],
       completions: [{
         schemaVersion: "task1.tool-execution-completion.v1",
@@ -315,7 +324,7 @@ describe("projectObservedBridgeTrace", () => {
     expect(result.observation.attempts[0]).not.toHaveProperty("response");
   });
 
-  it("fails correlation integrity closed for missing, orphan, duplicate, and cross-session facts", () => {
+  it("fails correlation integrity closed for missing, orphan, and duplicate facts", () => {
     const baseEntry = {
       correlationId: "correlation-integrity",
       family: "memory" as const,
@@ -392,19 +401,68 @@ describe("projectObservedBridgeTrace", () => {
     });
     expect(duplicateCompletion.observation.attempts[0]).not.toHaveProperty("status");
 
-    const crossSession = projectObservedBridgeTrace({
-      ...common,
-      entries: [{
-        ...baseEntry,
-        correlationHeaders: { "x-conversation-id": "session-other" },
-      }],
-      completions: [baseCompletion],
-    });
-    expect(crossSession.observation).toMatchObject({ rawTraceStatus: "partial", attempts: [] });
-    expect(crossSession.rawEvidence.issues).toContainEqual(expect.objectContaining({
-      kind: "other",
-      code: "cross_session",
+  });
+
+  it("keeps window-associated wrong or missing session headers as failed model attempts", () => {
+    const entries: ObservedToolEntry[] = [{
+      correlationId: "wrong-session",
+      family: "memory" as const,
+      endpoint: "/memory-bridge/v3/atomic/search",
+      method: "POST",
+      requestBody: { query: "wrong session" },
+      requestBodyCapture: { outcome: "captured" as const, rawBodySha256: "6".repeat(64) },
+      correlationHeaders: { "x-conversation-id": "session-other" },
+    }, {
+      correlationId: "missing-session",
+      family: "skill" as const,
+      endpoint: "/skill-bridge/v3/skill/search",
+      method: "POST",
+      requestBody: { query: "missing session" },
+      requestBodyCapture: { outcome: "captured" as const, rawBodySha256: "7".repeat(64) },
+      correlationHeaders: {},
+    }];
+    const completions = entries.map((entry, index) => ({
+      schemaVersion: "task1.tool-execution-completion.v1" as const,
+      correlationId: entry.correlationId,
+      family: entry.family,
+      endpoint: entry.endpoint,
+      method: entry.method,
+      outcome: "response" as const,
+      status: index === 0 ? 200 : 401,
+      responseBody: { ignored: true },
+      durationMs: 1,
     }));
+
+    const result = projectObservedBridgeTrace({
+      runId: "run-session-header-model-error",
+      caseId: "case-session-header-model-error",
+      variantId: "V2",
+      activeSessionId: "session-active",
+      turnCompletion: { outcome: "completed" },
+      entries,
+      completions,
+    });
+
+    expect(result.observation.rawTraceStatus).toBe("complete");
+    expect(result.observation.attempts).toMatchObject([{
+      attemptId: "wrong-session",
+      executorBound: true,
+      tool: "tdai_memory_search",
+      arguments: { query: "wrong session" },
+      malformedReason: "session_correlation_header_mismatch",
+    }, {
+      attemptId: "missing-session",
+      executorBound: true,
+      tool: "skill_search",
+      arguments: { query: "missing session" },
+      malformedReason: "session_correlation_header_mismatch",
+    }]);
+    for (const attempt of result.observation.attempts) {
+      expect(attempt).not.toHaveProperty("status");
+      expect(attempt).not.toHaveProperty("response");
+      expect(attempt).not.toHaveProperty("infrastructureFailure");
+    }
+    expect(result.rawEvidence.issues).toEqual([]);
   });
 
   it("requires an independent completed turn before an empty trace is clean no-tool", () => {
