@@ -61,6 +61,8 @@ export interface FormalAssetLocatorMapping {
   readonly logicalAssetId: string;
   readonly family: FormalAssetFamily;
   readonly subtype: string;
+  /** Actual Agent scope used to read this asset; defaults to the selected Agent. */
+  readonly sourceAgentId?: string;
   readonly runtimeLocator: FormalRuntimeAssetLocator;
   readonly readBackReceiptSha256: string;
 }
@@ -288,6 +290,7 @@ function isActualReadBackPath(
   }
   if (family === "skill") {
     return requestPath === "/v3/skill/listing"
+      || requestPath === "/v3/skill/search"
       || requestPath === "/v3/skill/get"
       || requestPath === "/v3/skill/get-by-name";
   }
@@ -354,6 +357,9 @@ function validateStructure(input: FormalExecutionPreflightInput): void {
       throw new Error(`identityMapping.assetLocators[${index}].family is unsupported`);
     }
     requireNonBlank(`identityMapping.assetLocators[${index}].subtype`, mapping.subtype);
+    if (mapping.sourceAgentId !== undefined) {
+      requireNonBlank(`identityMapping.assetLocators[${index}].sourceAgentId`, mapping.sourceAgentId);
+    }
     validateRuntimeLocator(`identityMapping.assetLocators[${index}].runtimeLocator`, mapping.runtimeLocator);
     requireSha256(
       `identityMapping.assetLocators[${index}].readBackReceiptSha256`,
@@ -488,8 +494,7 @@ export function evaluateFormalExecutionPreflight(
     observedReceiptHashes.push(source.receiptSha256.toLowerCase());
     if (source.serviceId !== mappedRuntime.spaceId
       || source.resolvedUserId !== mappedRuntime.resolvedAuthUserId
-      || source.teamId !== mappedRuntime.teamId
-      || source.agentId !== mappedRuntime.agentId) {
+      || source.teamId !== mappedRuntime.teamId) {
       inventorySourcesPass = false;
     }
     const sourcePasses = source.httpStatus === 200 && source.envelopeCode === 0;
@@ -502,6 +507,7 @@ export function evaluateFormalExecutionPreflight(
         source.receiptSha256.toLowerCase(),
         source.family,
         item.subtype,
+        source.agentId,
         locatorKey(item.runtimeLocator),
       ].join("\u001f");
       observedKeys.push(key);
@@ -518,6 +524,7 @@ export function evaluateFormalExecutionPreflight(
     mapping.readBackReceiptSha256.toLowerCase(),
     mapping.family,
     mapping.subtype,
+    mapping.sourceAgentId ?? mappedRuntime.agentId,
     locatorKey(mapping.runtimeLocator),
   ].join("\u001f"));
   if (new Set(mappingKeys).size !== mappingKeys.length) inventorySourcesPass = false;
@@ -528,11 +535,13 @@ export function evaluateFormalExecutionPreflight(
     inventorySourcesPass = false;
   }
   for (const mapping of locatorMappings) {
+    const sourceAgentId = mapping.sourceAgentId ?? mappedRuntime.agentId;
+    if (!selectedTeam?.agentIds.includes(sourceAgentId)) inventorySourcesPass = false;
     if (mapping.runtimeLocator.kind === "core-scope"
       && (mapping.runtimeLocator.spaceId !== mappedRuntime.spaceId
         || mapping.runtimeLocator.teamId !== mappedRuntime.teamId
         || mapping.runtimeLocator.userId !== mappedRuntime.resolvedAuthUserId
-        || mapping.runtimeLocator.agentId !== mappedRuntime.agentId)) {
+        || mapping.runtimeLocator.agentId !== sourceAgentId)) {
       inventorySourcesPass = false;
     }
   }

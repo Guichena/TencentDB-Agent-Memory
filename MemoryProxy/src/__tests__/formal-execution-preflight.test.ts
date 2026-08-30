@@ -298,6 +298,51 @@ describe("formal execution identity and asset preflight", () => {
     expect(receipt.checks.every(Object.isFrozen)).toBe(true);
   });
 
+  it("accepts imported Memory only when its explicit source Agent is in the selected Team", () => {
+    const input = validInput();
+    const importedAgentId = "agent-runtime-distractor";
+    const imported = evaluateFormalExecutionPreflight({
+      ...input,
+      identityMapping: {
+        ...input.identityMapping,
+        assetLocators: input.identityMapping.assetLocators.map((mapping) => (
+          mapping.logicalAssetId === "memory-l1-a"
+            ? { ...mapping, sourceAgentId: importedAgentId }
+            : mapping
+        )),
+      },
+      assetInventory: {
+        sources: input.assetInventory.sources.map((source) => (
+          source.receiptSha256 === L1_READ_BACK_SHA256
+            ? { ...source, agentId: importedAgentId }
+            : source
+        )),
+      },
+    });
+    expect(imported.ready).toBe(true);
+
+    const foreign = evaluateFormalExecutionPreflight({
+      ...input,
+      identityMapping: {
+        ...input.identityMapping,
+        assetLocators: input.identityMapping.assetLocators.map((mapping) => (
+          mapping.logicalAssetId === "memory-l1-a"
+            ? { ...mapping, sourceAgentId: "agent-runtime-foreign" }
+            : mapping
+        )),
+      },
+      assetInventory: {
+        sources: input.assetInventory.sources.map((source) => (
+          source.receiptSha256 === L1_READ_BACK_SHA256
+            ? { ...source, agentId: "agent-runtime-foreign" }
+            : source
+        )),
+      },
+    });
+    expect(foreign.ready).toBe(false);
+    expect(foreign.checks).toContainEqual({ id: "visible-assets", status: "fail" });
+  });
+
   it.each([
     {
       name: "an unexpected extra asset",
