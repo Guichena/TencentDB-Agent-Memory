@@ -1,0 +1,87 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "stage": "DS05",
+  "team_id": "T20",
+  "family": "knowledge",
+  "batch_id": "T20-DS05-knowledge-trial-01",
+  "pairs": [
+    {
+      "draft_pair_id": "T20-PAIR-K01",
+      "language": "zh",
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "ReindexRail 正在准备一次增量索引重建，目标是控制读后写一致性风险。"
+        },
+        {
+          "role": "assistant",
+          "content": "我先核对了索引映射和现行读写别名，旧别名仍被线上读取路径使用。"
+        },
+        {
+          "role": "user",
+          "content": "AtlasSearch 的字段映射已经由另一条线复核；这里要关注切换时的观察窗口和回退边界。"
+        },
+        {
+          "role": "assistant",
+          "content": "第一次尝试按固定批次直接推进，因为缺少分阶段观测依据而暂停了。"
+        },
+        {
+          "role": "user",
+          "content": "我们改为先做低风险小范围试运行，并把指标分为读后写命中和索引处理延迟。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前已经准备好观测面板、回退脚本和切换演练，但还没有扩大范围。"
+        },
+        {
+          "role": "user",
+          "content": "RankLab 只会看排序回归，CursorFlow 负责深分页检查；这两项不是本次放量闸门。"
+        },
+        {
+          "role": "assistant",
+          "content": "现在只差内部切换手册中首批比例、基线时长、两项中止阈值以及中止后的处置动作。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请基于可用记录，说明 ReindexRail 本次重建何时可以扩大范围，以及触发异常后应如何处置。",
+      "visible_distractor_ids_author_only": [
+        "T20-KNOW-WIKI-REINDEX-RUNBOOK",
+        "T20-KNOW-CG-SEARCH-PIPELINE",
+        "T20-KNOW-WIKI-RANK-QUALITY"
+      ],
+      "positive": {
+        "delta_message": {
+          "role": "assistant",
+          "content": "现有审查材料仍没有确认首批比例、基线窗口、两项中止阈值和异常后的处置动作；请先查内部记录再决定放量。"
+        },
+        "private_proposal": {
+          "route": "knowledge",
+          "target_asset_ids": ["T20-KNOW-WIKI-REINDEX-RUNBOOK"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "unique_information_gap": "首批 15% cohort、20-minute baseline、0.7%/5-minute read-after-write miss-rate 阈值、90-second/10-minute indexing-lag 阈值，以及 freeze/keep prior alias/page on-call 处置仅存在于内部切换手册。",
+          "stop_after_candidate": "tools/list 返回的目标 wiki 工具清单后，使用清单返回的 search 名称与 query 参数完成一次成功查询并停止。",
+          "followup_parameter_sources": "第一步返回的 tools 数组提供第二步的精确工具名 search 及其必需 query 参数；query 使用当前 ReindexRail 语境中的首批、baseline、read-after-write、indexing lag 和 alias 词汇。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "assistant",
+          "content": "内部切换手册的固定判定是：先以 15% 作为首批 cohort，完成 20-minute baseline；只有观察通过才扩大。若 read-after-write miss rate reaches 0.7% for 5 minutes，或 indexing lag exceeds 90 seconds for 10 minutes，则 abort expansion，freeze expansion，keep the prior alias，并 page on-call。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加的唯一消息已经完整给出首批比例、基线窗口、两项中止阈值和冻结扩容、保留 prior alias、通知 on-call 的处置动作，因此无需查询内部记录。"
+        }
+      },
+      "source_fact_map": [
+        {
+          "asset_id": "T20-KNOW-WIKI-REINDEX-RUNBOOK",
+          "fact": "15% first cohort after a 20-minute baseline; abort at 0.7% for 5 minutes or lag above 90 seconds for 10 minutes; freeze, keep prior alias, and page on-call."
+        }
+      ],
+      "sol_review_questions": []
+    }
+  ]
+}

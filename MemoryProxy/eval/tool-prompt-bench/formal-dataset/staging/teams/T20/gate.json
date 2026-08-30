@@ -1,0 +1,95 @@
+{
+  "schema_version": "task1.team_gate.v1",
+  "team_id": "T20",
+  "valid": true,
+  "errors": [],
+  "formal_validation": {
+    "valid": true,
+    "case_count": 40,
+    "pair_count": 15,
+    "provider_leakage_count": 0,
+    "invalid_sequence_count": 0,
+    "missing_source_ref_count": 0,
+    "provider_sha256": "bdf2118a1d9dc545e8622189bc53cd02839f9600f833f259ae2a54287f3f2ad0"
+  },
+  "counts": {
+    "cases": 40,
+    "pairs": 15,
+    "memoryPositive": 6,
+    "skillPositive": 6,
+    "knowledgePositive": 3,
+    "pairedNegative": 15,
+    "naturalNegative": 10,
+    "discovery": 10,
+    "direct": 5
+  },
+  "assets": {
+    "l0": 10,
+    "l1": 16,
+    "l2": 5,
+    "l3": 1,
+    "skills": 16,
+    "knowledge": 3
+  },
+  "batches": [
+    {
+      "batchId": "T20-DS05-MEMORY-TRIAL-01",
+      "model": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "actualCount": 1
+    },
+    {
+      "batchId": "T20-DS05-SKILL-TRIAL-01",
+      "model": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "actualCount": 1
+    },
+    {
+      "batchId": "T20-DS05-knowledge-trial-01",
+      "model": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "actualCount": 1
+    },
+    {
+      "batchId": "T20-DS05-MEMORY-MAIN-01",
+      "model": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "actualCount": 5
+    },
+    {
+      "batchId": "T20-DS05-SKILL-MAIN-01",
+      "model": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "actualCount": 5
+    },
+    {
+      "batchId": "T20-DS05-knowledge-main-01",
+      "model": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "actualCount": 2
+    },
+    {
+      "batchId": "T20-DS05-NATURAL-MAIN-01",
+      "model": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "actualCount": 10
+    }
+  ],
+  "source_review": {
+    "adopted_skills": 16,
+    "source_files": 16,
+    "repository_count": 2,
+    "raw_hash_mismatches": 0,
+    "adapted_hash_mismatches": 0
+  },
+  "old_set_hash_only_comparison": {
+    "exact_query_copies": 0,
+    "exact_context_copies": 0,
+    "high_order_ngram_copies": 0,
+    "max_ngram_jaccard": 0
+  },
+  "git": {
+    "diff_check": true,
+    "allowed_paths_only": true
+  }
+}

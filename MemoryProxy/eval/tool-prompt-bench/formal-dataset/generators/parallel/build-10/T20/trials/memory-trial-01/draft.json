@@ -1,0 +1,52 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T20-DS05-MEMORY-TRIAL-01",
+  "stage": "DS05",
+  "team_id": "T20",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T20-PAIR-M01",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "AtlasSearch 最近的词法回归暴露出用户输入大小写不一致的问题；我们先梳理字段映射和分析器候选，暂不改线上配置。"},
+        {"role": "assistant", "content": "初步尝试把规范化放在查询侧，但回归结果并不稳定；同时要把精确约束字段与可分析文本字段的边界分开。"},
+        {"role": "user", "content": "上次映射评审提到现有 keyword 字段的兼容性，本次仍需沿用既有索引结构，避免无必要的重建和切换风险。"},
+        {"role": "assistant", "content": "RankLab 的评分实验和 CursorFlow 的分页约束先作为背景，当前只收敛 AtlasSearch 的映射决定，并保留可回退的变更边界。"}
+      ],
+      "changed_message_index": 4,
+      "query": "请确认 AtlasSearch 对用户输入搜索词的规范化决定，以及该决定与现有 keyword 字段的兼容边界和理由。",
+      "positive": {
+        "delta_message": {"role": "assistant", "content": "当前上下文只保留了处理方向和兼容性约束，没有留下映射评审的最终措辞；请从既有讨论中找回已接受的决定及其适用边界。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少 T20-L1-ATLAS-ANALYZER-LOWERCASE 中记录的确切 lowercase 规范化分析器选择及其对现有 keyword 字段的兼容性理由；当前上下文只给出问题范围，不能据此推断最终选择。",
+          "route": "memory",
+          "target_asset_ids": ["T20-L1-ATLAS-ANALYZER-LOWERCASE"],
+          "allowed_sequence_candidates": [["tdai_memory_search"]],
+          "stop_after_candidate": "返回承载该分析器决定和兼容性边界的目标记忆后立即停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "assistant", "content": "映射评审已确认：对用户输入搜索词采用 lowercase 规范化分析器；兼容性边界是保留现有 keyword 字段的类型与既有字段契约，因此可在不改变字段类型的前提下安全接入。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息完整给出了 lowercase 规范化分析器选择、保留现有 keyword 字段类型与契约的兼容性边界及安全理由，查询无需再检索历史。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T20-L0-ATLAS-LEXICAL-REGRESSION", "T20-L1-ATLAS-KEYWORD-FIELD", "T20-L1-ATLAS-MAPPING-REBUILD", "T20-L2-ATLAS-MAPPING-REVIEW"],
+      "controlled_delta_note": "正负例共享相同的四条项目背景消息和 query；仅追加消息改变是否已给出 lowercase 分析器决定及 keyword 字段兼容边界。",
+      "source_fact_map": [
+        {"claim": "目标记忆记录 lowercase 规范化分析器选择及其对现有 keyword 字段的兼容性边界。", "source_id": "T20-EV-SYN-MEMORY-ATLAS", "locator": "T20-L1-ATLAS-ANALYZER-LOWERCASE"},
+        {"claim": "AtlasSearch 映射决策来自合成的团队历史与评审演进。", "source_id": "T20-EV-SYN-HISTORY-ATLAS", "locator": "AtlasSearch mapping-review history"}
+      ],
+      "sol_review_questions": [
+        "正例是否只留下规范化方向与兼容性约束，而没有泄露最终分析器选择？",
+        "负例追加消息是否完整补足 lowercase 分析器与 keyword 字段兼容边界，且没有改变 query 或共享上下文？",
+        "公开文本是否没有 provider、tool、asset、team、Gold 或 Memory 层级名称泄漏？"
+      ]
+    }
+  ]
+}

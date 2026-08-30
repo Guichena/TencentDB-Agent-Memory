@@ -1,0 +1,600 @@
+{
+  "schema_version": "task1.team_skill_assets.v1",
+  "team_id": "T20",
+  "skills": [
+    {
+      "assetId": "T20-SKILL-OPENSEARCH-SKILLS",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-SKILL-OPENSEARCH-SKILLS"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "opensearch-skills",
+      "version": "1",
+      "description": "OpenSearch 顶层类别路由，覆盖搜索应用、索引、文档处理、日志分析和可观测性，并将请求分派到相应子流程。",
+      "useWhen": "需要判断搜索、索引、文档处理、日志或追踪请求应进入哪个类别。",
+      "doNotUseWhen": "任务只涉及与搜索和可观测性无关的通用业务逻辑。",
+      "repoCommit": "5076c03d24fdd61d9b06fa4e451c900023ad00da",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/opensearch-skills/SKILL.md",
+          "sha256": "d687897eb1d7e177b1c6d3e24fb0e5027af141290c9f106d9d9c3e1f1b360c1c"
+        }
+      ],
+      "contentHash": "710a1d894507a348d239f6b1c99c8057183589c382b1f62abc9c0b57c7ded2dd"
+    },
+    {
+      "assetId": "T20-SKILL-OPENSEARCH-INGEST",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-SKILL-OPENSEARCH-INGEST"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "opensearch-ingest",
+      "version": "1",
+      "description": "将 PDF、DOCX、PPTX 等非结构化文档通过 Docling 处理为 search-ready JSONL chunks 的类别指导。",
+      "useWhen": "需要处理 PDF/文档、切分、Docling 或评估分块质量。",
+      "doNotUseWhen": "需要云端 OSIS、大规模导入、结构化 bulk indexing、ingest processor 或日志/指标传输。",
+      "repoCommit": "5076c03d24fdd61d9b06fa4e451c900023ad00da",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/opensearch-skills/ingest/SKILL.md",
+          "sha256": "07492aec507772967fac73208a2d380b6161d1b84bf1dac16f1c845c1ffecffd"
+        }
+      ],
+      "contentHash": "100ea1bc53bf0530fdae87b59d6ddc1c4fa0535f9669af738956d87b4d6965a3"
+    },
+    {
+      "assetId": "T20-SKILL-OPENSEARCH-DOCUMENT-PROCESSING",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-SKILL-OPENSEARCH-DOCUMENT-PROCESSING"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "opensearch-document-processing",
+      "version": "1",
+      "description": "使用 Docling 在本地将 PDF、DOCX、PPTX 和 XLSX 转为可搜索 JSONL 分块。",
+      "useWhen": "需要准备文档、切分文件、评估分块质量或把 PDF 转成可搜索文本。",
+      "doNotUseWhen": "需要云端处理、非文档数据导入或部署运行时服务。",
+      "repoCommit": "5076c03d24fdd61d9b06fa4e451c900023ad00da",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/opensearch-skills/ingest/document-processing/SKILL.md",
+          "sha256": "570a4af3109e1e3490bb5f9176a47281ad4b125f7ba96ac2ca255bedc8b4e27a"
+        }
+      ],
+      "contentHash": "52052543f5e0a30f9bb8d7fa0b4e2b03295bdd37ae686caa938b0c2e978dc24d"
+    },
+    {
+      "assetId": "T20-SKILL-OPENSEARCH-OBSERVABILITY",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-SKILL-OPENSEARCH-OBSERVABILITY"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "opensearch-observability",
+      "version": "1",
+      "description": "日志分析和分布式追踪的可观测性类别路由。",
+      "useWhen": "需要查日志、分析错误、调查追踪、检查健康或处理可观测性任务。",
+      "doNotUseWhen": "问题只涉及文档导入、索引架构或结果相关性。",
+      "repoCommit": "5076c03d24fdd61d9b06fa4e451c900023ad00da",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/opensearch-skills/observability/SKILL.md",
+          "sha256": "cf0eb0bf1e0d3979a6e9b9fcd97519f3b5245bbe4261c118c7c8a83d8a1e65ab"
+        }
+      ],
+      "contentHash": "921c216aaa010f56b711d362ee046d653560ea24f980954950e35230e652292c"
+    },
+    {
+      "assetId": "T20-SKILL-OPENSEARCH-LOG-ANALYTICS",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-SKILL-OPENSEARCH-LOG-ANALYTICS"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "opensearch-log-analytics",
+      "version": "1",
+      "description": "使用 PPL 和 Query DSL 查询、分析和发现日志模式。",
+      "useWhen": "需要查询日志、分析错误模式、错误率、异常或日志量。",
+      "doNotUseWhen": "需要分布式追踪、文档导入或纯搜索架构设计。",
+      "repoCommit": "5076c03d24fdd61d9b06fa4e451c900023ad00da",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/opensearch-skills/observability/log-analytics/SKILL.md",
+          "sha256": "bc8f96e2c17f14a2c5f845d75393b373411bc71d759cd83953fa9587accf87fb"
+        }
+      ],
+      "contentHash": "1d319b7f1368b40d7cf536a4140ea9a8828ee9fc26594f36262ae27b1fa03c46"
+    },
+    {
+      "assetId": "T20-SKILL-OPENSEARCH-TRACE-ANALYTICS",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-SKILL-OPENSEARCH-TRACE-ANALYTICS"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "opensearch-trace-analytics",
+      "version": "1",
+      "description": "调查分布式追踪、慢跨度、错误跨度、服务图和代理调用。",
+      "useWhen": "需要追踪调查、跨度调试、延迟、服务依赖或 traceId 相关分析。",
+      "doNotUseWhen": "需要日志查询、文档导入或检索策略选择。",
+      "repoCommit": "5076c03d24fdd61d9b06fa4e451c900023ad00da",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/opensearch-skills/observability/trace-analytics/SKILL.md",
+          "sha256": "ce593f5de36e466d897260f8730f4a815744cbbbd46dfa58fa13902b438b874f"
+        }
+      ],
+      "contentHash": "1f274050740de36a7aa66671fb7f3bd4aeeddb8c9f6b6f05c99a9a8da950793b"
+    },
+    {
+      "assetId": "T20-SKILL-OPENSEARCH-SEARCH",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-SKILL-OPENSEARCH-SEARCH"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "opensearch-search",
+      "version": "1",
+      "description": "构建应用搜索的类别指引，覆盖索引设置、搜索架构、语义/向量/混合与代理式策略、质量评估和文档处理，并指向端到端搭建后续流程。",
+      "useWhen": "需要构建搜索应用、设置索引、选择搜索架构或检索策略、评估质量或处理搜索文档。",
+      "doNotUseWhen": "任务与搜索应用无关，或要求该类别文件未支持的具体部署细节。",
+      "repoCommit": "5076c03d24fdd61d9b06fa4e451c900023ad00da",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/opensearch-skills/search/SKILL.md",
+          "sha256": "c02706065e05a8d1087ebd5837c8dbbd6b431e67ae8a3f8a175cfaab4fbf974d"
+        }
+      ],
+      "contentHash": "f61fba349384f05aa39577015a55ba0228ddc73a66e34098b0058eb598b6dc2d"
+    },
+    {
+      "assetId": "T20-SKILL-OPENSEARCH-LAUNCHPAD",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-SKILL-OPENSEARCH-LAUNCHPAD"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "opensearch-launchpad",
+      "version": "1",
+      "description": "从需求到运行中搜索设置的端到端搭建流程。",
+      "useWhen": "需要从零构建搜索应用、设置索引、选择策略、准备数据或评估搜索。",
+      "doNotUseWhen": "只需日志/追踪分析，或任务要求跳过前置检查和方案批准。",
+      "repoCommit": "5076c03d24fdd61d9b06fa4e451c900023ad00da",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/opensearch-skills/search/opensearch-launchpad/SKILL.md",
+          "sha256": "5bfedb5ffcd9f08b1327b323c155957d37549b013a6105038904d5f1f4930f28"
+        }
+      ],
+      "contentHash": "dbd3fb0dcb887b4038588cdee31d1bc4060516b539eec78f480bc5d300fe03e6"
+    },
+    {
+      "assetId": "T20-SKILL-OPENSEARCH-MANAGED-INGESTION",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-SKILL-OPENSEARCH-MANAGED-INGESTION"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "opensearch-managed-ingestion",
+      "version": "1",
+      "description": "通过 OSIS 管线把预生成 JSONL 分块从 S3 导入 Amazon OpenSearch，可选语义增强。",
+      "useWhen": "需要云端大规模文档导入、OSIS 管线、S3 导入或云处理。",
+      "doNotUseWhen": "只需本地文档分块、结构化 bulk API 或日志/指标传输。",
+      "repoCommit": "5076c03d24fdd61d9b06fa4e451c900023ad00da",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/opensearch-skills/cloud/managed-ingestion-service/SKILL.md",
+          "sha256": "3ff189a3d3bf5e16a9118946c111f3ae05b674ad245f9721e16a2898a87a9c11"
+        }
+      ],
+      "contentHash": "adf97c608f651a00cec04566524645411fda7f1670daa7e80a40cc8fc6b9b1f4"
+    },
+    {
+      "assetId": "T20-SKILL-NEMO-RETRIEVER",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-SKILL-NEMO-RETRIEVER"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "nemo-retriever",
+      "version": "1",
+      "description": "跨 PDF、图片、Office、HTML/TXT、音频和视频语料的文档检索流程。",
+      "useWhen": "需要对多文件或非 PDF 语料搜索、提问、摘录、转录、筛选或聚合。",
+      "doNotUseWhen": "需要编辑文件、网页浏览、单文件纯文本查找或微调。",
+      "repoCommit": "73a7813441fe714f9cfcb84755cf9ad4bb8e8cae",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/nemo-retriever/SKILL.md",
+          "sha256": "14192c989e1e4bae65cd7d2f099ad291b3ff721b874c5e3d9e11b0d7ed758882"
+        }
+      ],
+      "contentHash": "d1e231f270ab583cb56cb822238c137748bb8fc2e8f37c748a6791010b6630c9"
+    },
+    {
+      "assetId": "T20-SKILL-NEMOTRON-RETRIEVAL-RECIPES",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-SKILL-NEMOTRON-RETRIEVAL-RECIPES"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "nemotron-retrieval-recipes",
+      "version": "1",
+      "description": "用于公开 Nemotron embed/rerank 检索配方的规划、调试、调优、评估、导出和部署。",
+      "useWhen": "任务明确针对 Nemotron 检索配方或其 embedding/rerank 流程。",
+      "doNotUseWhen": "任务是通用多格式文档检索、RAG 部署路由或仅做服务性能压测。",
+      "repoCommit": "73a7813441fe714f9cfcb84755cf9ad4bb8e8cae",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/nemotron-retrieval-recipes/SKILL.md",
+          "sha256": "5a4c2b4d1663c0ad7d07122caae172544d4eda6825cdf0b9ee89643756455b28"
+        }
+      ],
+      "contentHash": "3d2cd31378d18610ee39ae3c32f8b86bc00e606273fa4c663d212e9e05b6ecad"
+    },
+    {
+      "assetId": "T20-SKILL-RAG-BLUEPRINT",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-SKILL-RAG-BLUEPRINT"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "rag-blueprint",
+      "version": "1",
+      "description": "RAG Blueprint 的部署、配置、排障和关闭路由及功能配置表。",
+      "useWhen": "需要部署、配置、排障、关闭或管理 RAG 功能。",
+      "doNotUseWhen": "只需准确率基准、性能压测而不涉及运行配置或部署管理。",
+      "repoCommit": "73a7813441fe714f9cfcb84755cf9ad4bb8e8cae",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/rag-blueprint/SKILL.md",
+          "sha256": "7167ef6b9d4f30ffe47b698ae7fdf9f0beafe4ea9a75752a056d0e4f03d6e51b"
+        }
+      ],
+      "contentHash": "144ef1095672e1755b090524c402d4d4455f695cb75aec01961d0768d761042e"
+    },
+    {
+      "assetId": "T20-SKILL-RAG-EVAL",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-SKILL-RAG-EVAL"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "rag-eval",
+      "version": "1",
+      "description": "针对固定 filesystem RAG 布局运行 RAGAS 质量基准。",
+      "useWhen": "仓库具有 corpus/、train.json 和 evaluate_rag.py，需要离线质量评估。",
+      "doNotUseWhen": "生产监控、延迟/吞吐基准或部署/修复服务。",
+      "repoCommit": "73a7813441fe714f9cfcb84755cf9ad4bb8e8cae",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/rag-eval/SKILL.md",
+          "sha256": "572126a6a3e15989ba62f90fe5856b6d8eda11c9097b86889db2c6eddd612a73"
+        }
+      ],
+      "contentHash": "202f37a659dfcfbadb7d8a78ea1d11b3803688c61c37ae9a6047f9a71e55c4b4"
+    },
+    {
+      "assetId": "T20-SKILL-RAG-PERF",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-SKILL-RAG-PERF"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "rag-perf",
+      "version": "1",
+      "description": "对已部署 RAG Blueprint 服务做 profiling 和 aiperf 压测。",
+      "useWhen": "需要部署后性能、延迟、吞吐或负载基准。",
+      "doNotUseWhen": "需要 RAGAS 准确率评估、部署服务或修复配置。",
+      "repoCommit": "73a7813441fe714f9cfcb84755cf9ad4bb8e8cae",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/rag-perf/SKILL.md",
+          "sha256": "81f1d3a07186d9bfe3be54ae90fdb0addfef7c23b8845affd981c9e04a57fe54"
+        }
+      ],
+      "contentHash": "8ea787494f429e3c17ccfb9d7bddd04e1163d3f657f1435a66e52c036746535d"
+    },
+    {
+      "assetId": "T20-SKILL-VSS-SEARCH-ARCHIVE",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-SKILL-VSS-SEARCH-ARCHIVE"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "vss-search-archive",
+      "version": "1",
+      "description": "归档视频自然语言融合检索及视频/RTSP 接入流程。",
+      "useWhen": "需要在归档视频中自然语言搜索，或接入/删除用于搜索的文件与实时流。",
+      "doNotUseWhen": "需要临时视觉问答、实时字幕或视频总结报告。",
+      "repoCommit": "73a7813441fe714f9cfcb84755cf9ad4bb8e8cae",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/vss-search-archive/SKILL.md",
+          "sha256": "6232f0b77a785c2f409747228801fa3ce6961b4f3c6b41ebb379b978a146c8e5"
+        }
+      ],
+      "contentHash": "8701d84bf8e198a6636daf716fd2f4c5c1435330068dafe37057cdf8db8fa680"
+    },
+    {
+      "assetId": "T20-SKILL-AIQ-RESEARCH",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-SKILL-AIQ-RESEARCH"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "aiq-research",
+      "version": "1",
+      "description": "通过可达的本地 AI-Q Blueprint 后端执行深度研究。",
+      "useWhen": "明确请求 deep research、AI-Q research 或向 AI-Q 提问。",
+      "doNotUseWhen": "需要安装、部署、启动、停止、UI、CLI 或故障排查。",
+      "repoCommit": "73a7813441fe714f9cfcb84755cf9ad4bb8e8cae",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "skills/aiq-research/SKILL.md",
+          "sha256": "2fac59742c3d288ca43245981bacbdd9c0b769b53e4513d4fe87b13d2304e1b7"
+        }
+      ],
+      "contentHash": "5a91a9bfac7fccda7ba97c79aa399104315ac743f612defc3bd5136944de9f19"
+    }
+  ],
+  "externalImports": [
+    {
+      "sourceId": "T20-SRC-OPENSEARCH-SKILLS",
+      "skillKey": "opensearch-skills",
+      "kind": "skill",
+      "repository": "https://github.com/opensearch-project/opensearch-agent-skills",
+      "commit": "5076c03d24fdd61d9b06fa4e451c900023ad00da",
+      "license": "Apache-2.0",
+      "path": "skills/opensearch-skills/SKILL.md",
+      "rawSha256": "d687897eb1d7e177b1c6d3e24fb0e5027af141290c9f106d9d9c3e1f1b360c1c",
+      "adaptedSha256": "8af99ed928b7ff8f18740baf224200eae22d7bab98bb0717bd1ef0d6665bd77f"
+    },
+    {
+      "sourceId": "T20-SRC-OPENSEARCH-INGEST",
+      "skillKey": "opensearch-ingest",
+      "kind": "skill",
+      "repository": "https://github.com/opensearch-project/opensearch-agent-skills",
+      "commit": "5076c03d24fdd61d9b06fa4e451c900023ad00da",
+      "license": "Apache-2.0",
+      "path": "skills/opensearch-skills/ingest/SKILL.md",
+      "rawSha256": "07492aec507772967fac73208a2d380b6161d1b84bf1dac16f1c845c1ffecffd",
+      "adaptedSha256": "68c31d273b501d4a061fe9cf70fed608c5458cf185ea19f913373b5ea267ac26"
+    },
+    {
+      "sourceId": "T20-SRC-OPENSEARCH-DOCUMENT-PROCESSING",
+      "skillKey": "opensearch-document-processing",
+      "kind": "skill",
+      "repository": "https://github.com/opensearch-project/opensearch-agent-skills",
+      "commit": "5076c03d24fdd61d9b06fa4e451c900023ad00da",
+      "license": "Apache-2.0",
+      "path": "skills/opensearch-skills/ingest/document-processing/SKILL.md",
+      "rawSha256": "570a4af3109e1e3490bb5f9176a47281ad4b125f7ba96ac2ca255bedc8b4e27a",
+      "adaptedSha256": "61eb2cefdffd0ba0e0df3b19c30d13949bec5060bc031785c5a5e3065efa0da8"
+    },
+    {
+      "sourceId": "T20-SRC-OPENSEARCH-OBSERVABILITY",
+      "skillKey": "opensearch-observability",
+      "kind": "skill",
+      "repository": "https://github.com/opensearch-project/opensearch-agent-skills",
+      "commit": "5076c03d24fdd61d9b06fa4e451c900023ad00da",
+      "license": "Apache-2.0",
+      "path": "skills/opensearch-skills/observability/SKILL.md",
+      "rawSha256": "cf0eb0bf1e0d3979a6e9b9fcd97519f3b5245bbe4261c118c7c8a83d8a1e65ab",
+      "adaptedSha256": "403e6ee0ae9c3227234c513728be88b24b1eaa10b0b97db638c1387c6eb2e74c"
+    },
+    {
+      "sourceId": "T20-SRC-OPENSEARCH-LOG-ANALYTICS",
+      "skillKey": "opensearch-log-analytics",
+      "kind": "skill",
+      "repository": "https://github.com/opensearch-project/opensearch-agent-skills",
+      "commit": "5076c03d24fdd61d9b06fa4e451c900023ad00da",
+      "license": "Apache-2.0",
+      "path": "skills/opensearch-skills/observability/log-analytics/SKILL.md",
+      "rawSha256": "bc8f96e2c17f14a2c5f845d75393b373411bc71d759cd83953fa9587accf87fb",
+      "adaptedSha256": "30c55fe0f59b14e723d7d9288d2da35d080c8e918e926fb48738321e238ebea6"
+    },
+    {
+      "sourceId": "T20-SRC-OPENSEARCH-TRACE-ANALYTICS",
+      "skillKey": "opensearch-trace-analytics",
+      "kind": "skill",
+      "repository": "https://github.com/opensearch-project/opensearch-agent-skills",
+      "commit": "5076c03d24fdd61d9b06fa4e451c900023ad00da",
+      "license": "Apache-2.0",
+      "path": "skills/opensearch-skills/observability/trace-analytics/SKILL.md",
+      "rawSha256": "ce593f5de36e466d897260f8730f4a815744cbbbd46dfa58fa13902b438b874f",
+      "adaptedSha256": "f1f4561b01ec98139e17a6651f14a362292bf50e1fb737afc0f8e329b2a6dd81"
+    },
+    {
+      "sourceId": "T20-SRC-OPENSEARCH-SEARCH",
+      "skillKey": "opensearch-search",
+      "kind": "skill",
+      "repository": "https://github.com/opensearch-project/opensearch-agent-skills",
+      "commit": "5076c03d24fdd61d9b06fa4e451c900023ad00da",
+      "license": "Apache-2.0",
+      "path": "skills/opensearch-skills/search/SKILL.md",
+      "rawSha256": "c02706065e05a8d1087ebd5837c8dbbd6b431e67ae8a3f8a175cfaab4fbf974d",
+      "adaptedSha256": "0c9d94c5fcd1ee2557bc55940e59ca9fa63f0f87691901bcc7967077f8e7a8ee"
+    },
+    {
+      "sourceId": "T20-SRC-OPENSEARCH-LAUNCHPAD",
+      "skillKey": "opensearch-launchpad",
+      "kind": "skill",
+      "repository": "https://github.com/opensearch-project/opensearch-agent-skills",
+      "commit": "5076c03d24fdd61d9b06fa4e451c900023ad00da",
+      "license": "Apache-2.0",
+      "path": "skills/opensearch-skills/search/opensearch-launchpad/SKILL.md",
+      "rawSha256": "5bfedb5ffcd9f08b1327b323c155957d37549b013a6105038904d5f1f4930f28",
+      "adaptedSha256": "6da249cd93bf7c600deba511de7c57389acc5823aae80d4f6fa30d2732a474ac"
+    },
+    {
+      "sourceId": "T20-SRC-OPENSEARCH-MANAGED-INGESTION",
+      "skillKey": "opensearch-managed-ingestion",
+      "kind": "skill",
+      "repository": "https://github.com/opensearch-project/opensearch-agent-skills",
+      "commit": "5076c03d24fdd61d9b06fa4e451c900023ad00da",
+      "license": "Apache-2.0",
+      "path": "skills/opensearch-skills/cloud/managed-ingestion-service/SKILL.md",
+      "rawSha256": "3ff189a3d3bf5e16a9118946c111f3ae05b674ad245f9721e16a2898a87a9c11",
+      "adaptedSha256": "5a33cb1672c3d8b254d164ebf1a2bd114c6b10e1598c386e68e82d625e713c42"
+    },
+    {
+      "sourceId": "T20-SRC-NEMO-RETRIEVER",
+      "skillKey": "nemo-retriever",
+      "kind": "skill",
+      "repository": "https://github.com/NVIDIA/skills",
+      "commit": "73a7813441fe714f9cfcb84755cf9ad4bb8e8cae",
+      "license": "CC-BY-4.0",
+      "path": "skills/nemo-retriever/SKILL.md",
+      "rawSha256": "14192c989e1e4bae65cd7d2f099ad291b3ff721b874c5e3d9e11b0d7ed758882",
+      "adaptedSha256": "589ed0c1e773ddc8ee82e34108de50274b49a9f7942adb0475039b85e1ed6c1c"
+    },
+    {
+      "sourceId": "T20-SRC-NEMOTRON-RETRIEVAL-RECIPES",
+      "skillKey": "nemotron-retrieval-recipes",
+      "kind": "skill",
+      "repository": "https://github.com/NVIDIA/skills",
+      "commit": "73a7813441fe714f9cfcb84755cf9ad4bb8e8cae",
+      "license": "CC-BY-4.0",
+      "path": "skills/nemotron-retrieval-recipes/SKILL.md",
+      "rawSha256": "5a4c2b4d1663c0ad7d07122caae172544d4eda6825cdf0b9ee89643756455b28",
+      "adaptedSha256": "5ede55b973468bb8cabb506d415ef292eaba833c3dc93753be4d409dcb7b1b0a"
+    },
+    {
+      "sourceId": "T20-SRC-RAG-BLUEPRINT",
+      "skillKey": "rag-blueprint",
+      "kind": "skill",
+      "repository": "https://github.com/NVIDIA/skills",
+      "commit": "73a7813441fe714f9cfcb84755cf9ad4bb8e8cae",
+      "license": "CC-BY-4.0",
+      "path": "skills/rag-blueprint/SKILL.md",
+      "rawSha256": "7167ef6b9d4f30ffe47b698ae7fdf9f0beafe4ea9a75752a056d0e4f03d6e51b",
+      "adaptedSha256": "82e60254c46ea2843a2cbb193e6da4cdb26266c8311409638f8b3b472a1f2d06"
+    },
+    {
+      "sourceId": "T20-SRC-RAG-EVAL",
+      "skillKey": "rag-eval",
+      "kind": "skill",
+      "repository": "https://github.com/NVIDIA/skills",
+      "commit": "73a7813441fe714f9cfcb84755cf9ad4bb8e8cae",
+      "license": "CC-BY-4.0",
+      "path": "skills/rag-eval/SKILL.md",
+      "rawSha256": "572126a6a3e15989ba62f90fe5856b6d8eda11c9097b86889db2c6eddd612a73",
+      "adaptedSha256": "e56d70d3d122fb6cbdbc73390efa10789230dc5a229055df4623396d5f6425e3"
+    },
+    {
+      "sourceId": "T20-SRC-RAG-PERF",
+      "skillKey": "rag-perf",
+      "kind": "skill",
+      "repository": "https://github.com/NVIDIA/skills",
+      "commit": "73a7813441fe714f9cfcb84755cf9ad4bb8e8cae",
+      "license": "CC-BY-4.0",
+      "path": "skills/rag-perf/SKILL.md",
+      "rawSha256": "81f1d3a07186d9bfe3be54ae90fdb0addfef7c23b8845affd981c9e04a57fe54",
+      "adaptedSha256": "7a69cccf4e10608cab2f63584e287af5dcda8d247a277be78572b61abc42c35a"
+    },
+    {
+      "sourceId": "T20-SRC-VSS-SEARCH-ARCHIVE",
+      "skillKey": "vss-search-archive",
+      "kind": "skill",
+      "repository": "https://github.com/NVIDIA/skills",
+      "commit": "73a7813441fe714f9cfcb84755cf9ad4bb8e8cae",
+      "license": "CC-BY-4.0",
+      "path": "skills/vss-search-archive/SKILL.md",
+      "rawSha256": "337ae027bfa4de55716a0ee0c7ba4f22d2c965aa863191d0337ec1eb957f331b",
+      "adaptedSha256": "a9693256a6fd272d10495997cb7fe80ad7cea68eef502cd0dd3ffd7a45e9d804"
+    },
+    {
+      "sourceId": "T20-SRC-AIQ-RESEARCH",
+      "skillKey": "aiq-research",
+      "kind": "skill",
+      "repository": "https://github.com/NVIDIA/skills",
+      "commit": "73a7813441fe714f9cfcb84755cf9ad4bb8e8cae",
+      "license": "CC-BY-4.0",
+      "path": "skills/aiq-research/SKILL.md",
+      "rawSha256": "2fac59742c3d288ca43245981bacbdd9c0b769b53e4513d4fe87b13d2304e1b7",
+      "adaptedSha256": "5803bc87e472ad03b4a563970bc50a98e0490997606a43e052c2db68b6dbe90a"
+    }
+  ]
+}

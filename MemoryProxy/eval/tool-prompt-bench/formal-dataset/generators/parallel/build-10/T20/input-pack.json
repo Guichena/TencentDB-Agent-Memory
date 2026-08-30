@@ -1,0 +1,497 @@
+{
+  "schema_version": "task1.team_input_pack.v1",
+  "team_id": "T20",
+  "stage": "DS05",
+  "split": "hidden_test",
+  "topic": "搜索与检索系统",
+  "world_as_of": "2026-08-31T23:59:59+08:00",
+  "source_lock": {
+    "path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T20/source-lock.json",
+    "sha256": "ed54e080650021b2b435b8f3ed54d6ee24792626f8a85705a0509369150f7670",
+    "adopted_skill_count": 16
+  },
+  "workspace_code_lock": {
+    "path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T20/workspace-code-lock.json",
+    "sha256": "bb60bf471ae5debad27485d4555793f9dd4f4764a0be9ebbb660b8cadda7f8b7",
+    "revision": "ffa1fe18085d47ed4da6b2306240152cc8590a86",
+    "locked_files": [
+      "MemoryCore/src/core/tools/memory-search.ts",
+      "MemoryCore/src/core/tools/conversation-search.ts",
+      "MemoryCore/src/core/store/search-utils.ts",
+      "MemoryProxy/src/memory/memory-bridge.ts"
+    ],
+    "grounding_rule": "The production code-graph fixture may state only symbols, call edges, endpoints, and search behavior evidenced by these four locked files; do not infer implementation facts from filenames or from any other revision."
+  },
+  "workspace_anchor": {
+    "repository": "https://github.com/TencentCloud/TencentDB-Agent-Memory.git",
+    "commit": "ffa1fe18085d47ed4da6b2306240152cc8590a86",
+    "license": "MIT",
+    "note": "The benchmark workspace anchor is the real launch revision. Synthetic project history must not claim an external repository, revision, license, path, or hash."
+  },
+  "identity": {
+    "space_id": "space-task1-engineering",
+    "team_id": "T20",
+    "user_id": "user-task1-benchmark",
+    "active_agent": {
+      "agent_id": "agent-task1-t20-general",
+      "name": "T20 通用业务 Agent"
+    },
+    "imported_memory_agents": [
+      { "agent_id": "agent-task1-t20-indexing", "name": "索引与一致性 Agent" },
+      { "agent_id": "agent-task1-t20-relevance", "name": "相关性与向量 Agent" }
+    ],
+    "visibility_contract": {
+      "memory_search": "active agent plus the two fixed imported memory agents",
+      "non_search_memory": "active agent only unless an imported agent_id is explicitly available",
+      "skill_search": "current-agent owned skills plus team-visible skills; fail closed",
+      "skill_listing": "only the active agent's bound/owned listing is prewarmed",
+      "knowledge": "three fixed resources bound to the active agent"
+    }
+  },
+  "project_streams": [
+    {
+      "project_id": "T20-PROJ-ATLASSEARCH",
+      "name": "AtlasSearch",
+      "scope": "index mapping, analyzers, field typing, and lexical query behavior",
+      "cross_stream_distractors": ["RankLab", "CursorFlow"]
+    },
+    {
+      "project_id": "T20-PROJ-RANKLAB",
+      "name": "RankLab",
+      "scope": "relevance tuning, scoring, ranking experiments, and search-quality regression",
+      "cross_stream_distractors": ["AtlasSearch", "VectorBlend"]
+    },
+    {
+      "project_id": "T20-PROJ-CURSORFLOW",
+      "name": "CursorFlow",
+      "scope": "Query DSL, stable sort, cursor pagination, and deep-page correctness",
+      "cross_stream_distractors": ["AtlasSearch", "ReindexRail"]
+    },
+    {
+      "project_id": "T20-PROJ-REINDEXRAIL",
+      "name": "ReindexRail",
+      "scope": "incremental indexing, rebuild cutovers, aliases, and read-after-write consistency",
+      "cross_stream_distractors": ["CursorFlow", "VectorBlend"]
+    },
+    {
+      "project_id": "T20-PROJ-VECTORBLEND",
+      "name": "VectorBlend",
+      "scope": "dense, sparse, hybrid retrieval, reranking, and vector-search evaluation",
+      "cross_stream_distractors": ["RankLab", "ReindexRail"]
+    }
+  ],
+  "asset_plan": {
+    "l0_conversations": {
+      "count": 10,
+      "message_count_each": "12-20",
+      "ids": [
+        "T20-L0-ATLAS-MAPPING-ANALYZER",
+        "T20-L0-ATLAS-LEXICAL-REGRESSION",
+        "T20-L0-RANK-SCORE-EXPERIMENT",
+        "T20-L0-RANK-NDCG-REVIEW",
+        "T20-L0-CURSOR-POINT-IN-TIME",
+        "T20-L0-CURSOR-SORT-TIE",
+        "T20-L0-REINDEX-ALIAS-CUTOVER",
+        "T20-L0-REINDEX-LAG-INCIDENT",
+        "T20-L0-VECTOR-HYBRID-ABLACTION",
+        "T20-L0-VECTOR-EMBEDDING-REGRESSION"
+      ],
+      "content_requirements": "Each session must contain decision evolution, at least one failed attempt or changed direction, a cross-session reference, and same-domain distractor discussion; no provider/tool names or private asset IDs in provider-visible messages."
+    },
+    "l1_memories": {
+      "count": 16,
+      "ids": [
+        "T20-L1-ATLAS-ANALYZER-LOWERCASE",
+        "T20-L1-ATLAS-KEYWORD-FIELD",
+        "T20-L1-ATLAS-MAPPING-REBUILD",
+        "T20-L1-ATLAS-NULL-VALUE",
+        "T20-L1-RANK-TIE-BREAK",
+        "T20-L1-RANK-BOOST-BOUNDARY",
+        "T20-L1-RANK-NDCG-CUTOFF",
+        "T20-L1-RANK-RERANK-SCOPE",
+        "T20-L1-CURSOR-SEARCH-AFTER",
+        "T20-L1-CURSOR-STABLE-SORT",
+        "T20-L1-CURSOR-POINT-IN-TIME",
+        "T20-L1-DSL-FILTER-ORDER",
+        "T20-L1-REINDEX-ALIAS-SWAP",
+        "T20-L1-REINDEX-CHECKPOINT",
+        "T20-L1-VECTOR-HYBRID-WEIGHT",
+        "T20-L1-VECTOR-EMBEDDING-VERSION"
+      ]
+    },
+    "l2_scenes": [
+      { "asset_id": "T20-L2-ATLAS-MAPPING-REVIEW", "path": "t20/atlassearch/mapping-review", "summary_rule": "Name the mapping review and status only; never reveal the missing analyzer, field type, or chosen value." },
+      { "asset_id": "T20-L2-RANK-QUALITY-REVIEW", "path": "t20/ranklab/quality-review", "summary_rule": "Mention relevance evaluation only; do not reveal the metric threshold, tie-break, or accepted weight." },
+      { "asset_id": "T20-L2-CURSOR-PAGINATION", "path": "t20/cursorflow/pagination", "summary_rule": "Mention cursor pagination investigation only; do not reveal the exact sort tuple or cursor boundary." },
+      { "asset_id": "T20-L2-REINDEX-CUTOVER", "path": "t20/reindexrail/cutover", "summary_rule": "Mention rebuild/cutover status only; do not reveal alias order, checkpoint, or consistency window." },
+      { "asset_id": "T20-L2-VECTOR-HYBRID", "path": "t20/vectorblend/hybrid", "summary_rule": "Mention hybrid retrieval experiment only; do not reveal embedding version, fusion weight, or accepted result." }
+    ],
+    "l3_profile": "T20-L3-SEARCH-ENGINEERING-PREFERENCES",
+    "knowledge": [
+      { "asset_id": "T20-KNOW-WIKI-REINDEX-RUNBOOK", "type": "wiki", "name": "ReindexRail 内部切换手册", "provenance": "synthetic wiki" },
+      { "asset_id": "T20-KNOW-CG-SEARCH-PIPELINE", "type": "code_graph", "name": "生产搜索管线代码图谱", "grounding_lock": { "path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T20/workspace-code-lock.json", "sha256": "bb60bf471ae5debad27485d4555793f9dd4f4764a0be9ebbb660b8cadda7f8b7" } },
+      { "asset_id": "T20-KNOW-WIKI-RANK-QUALITY", "type": "wiki", "name": "RankLab 相关性评估手册", "provenance": "benchmark-owned usable wiki" }
+    ]
+  },
+  "injection_contract": {
+    "l0": "Ten full conversations are retrievable but never directly injected.",
+    "l1": "Sixteen atomic memories are retrievable but never directly injected.",
+    "l2": "Only each scene path and a non-answer summary are injected; scene content is read only after the path is obtained through the registered route.",
+    "l3": "The single profile contains stable search-engineering preferences and generic constraints only; it must not contain any target fact, exact parameter, incident disposition, Skill procedure, or Knowledge answer.",
+    "skills": "Only the six bound-owned entries are prewarmed in the available listing; the ten team-visible entries remain searchable and are not listed for discovery cases.",
+    "knowledge": "All three fixed resources expose metadata and a deterministic tools/list response; K01 synthetic wiki, K02 locked production code graph, and K03 usable wiki must remain distinguishable by workspace/project fit without putting target answers in metadata."
+  },
+  "skill_visibility": {
+    "bound_owned_listing": [
+      "opensearch-skills",
+      "opensearch-document-processing",
+      "opensearch-observability",
+      "nemo-retriever",
+      "vss-search-archive",
+      "rag-perf"
+    ],
+    "team_visible_searchable": [
+      "opensearch-search",
+      "opensearch-launchpad",
+      "opensearch-ingest",
+      "opensearch-managed-ingestion",
+      "opensearch-log-analytics",
+      "opensearch-trace-analytics",
+      "nemotron-retrieval-recipes",
+      "rag-blueprint",
+      "rag-eval",
+      "aiq-research"
+    ],
+    "frozen_skill_sources": [
+      { "skill_key": "opensearch-skills", "source_id": "T20-SRC-OPENSEARCH-SKILLS", "visibility": "bound" },
+      { "skill_key": "opensearch-ingest", "source_id": "T20-SRC-OPENSEARCH-INGEST", "visibility": "team" },
+      { "skill_key": "opensearch-document-processing", "source_id": "T20-SRC-OPENSEARCH-DOCUMENT-PROCESSING", "visibility": "bound" },
+      { "skill_key": "opensearch-observability", "source_id": "T20-SRC-OPENSEARCH-OBSERVABILITY", "visibility": "bound" },
+      { "skill_key": "opensearch-log-analytics", "source_id": "T20-SRC-OPENSEARCH-LOG-ANALYTICS", "visibility": "team" },
+      { "skill_key": "opensearch-trace-analytics", "source_id": "T20-SRC-OPENSEARCH-TRACE-ANALYTICS", "visibility": "team" },
+      { "skill_key": "opensearch-search", "source_id": "T20-SRC-OPENSEARCH-SEARCH", "visibility": "team" },
+      { "skill_key": "opensearch-launchpad", "source_id": "T20-SRC-OPENSEARCH-LAUNCHPAD", "visibility": "team" },
+      { "skill_key": "opensearch-managed-ingestion", "source_id": "T20-SRC-OPENSEARCH-MANAGED-INGESTION", "visibility": "team" },
+      { "skill_key": "nemo-retriever", "source_id": "T20-SRC-NEMO-RETRIEVER", "visibility": "bound" },
+      { "skill_key": "nemotron-retrieval-recipes", "source_id": "T20-SRC-NEMOTRON-RETRIEVAL-RECIPES", "visibility": "team" },
+      { "skill_key": "rag-blueprint", "source_id": "T20-SRC-RAG-BLUEPRINT", "visibility": "team" },
+      { "skill_key": "rag-eval", "source_id": "T20-SRC-RAG-EVAL", "visibility": "team" },
+      { "skill_key": "rag-perf", "source_id": "T20-SRC-RAG-PERF", "visibility": "bound" },
+      { "skill_key": "vss-search-archive", "source_id": "T20-SRC-VSS-SEARCH-ARCHIVE", "visibility": "bound" },
+      { "skill_key": "aiq-research", "source_id": "T20-SRC-AIQ-RESEARCH", "visibility": "team" }
+    ],
+    "target_listing_rule": "For Skill discovery positives, target skill is absent from the prewarmed listing but present in the same-Team searchable pool. Direct Skill positives name a bound skill and use its listing entry. Do not expose source repository, provider, source ID, or asset ID in public query/context."
+  },
+  "route_distribution": {
+    "memory": { "positive_count": 6, "discovery": 4, "direct": 2 },
+    "skill": { "positive_count": 6, "discovery": 4, "direct": 2 },
+    "knowledge": { "positive_count": 3, "discovery": 2, "direct": 1 },
+    "paired_no_tool": 15,
+    "natural_no_tool": 10,
+    "discovery_total": 10,
+    "direct_total": 5
+  },
+  "pair_contract": {
+    "count": 15,
+    "identity_workspace_query_snapshot_rule": "Each positive and its negative have identical space_id, team_id, user_id, agent_id, task_id, workspace, snapshot_id, language, query, and shared context. sessionId may differ only as the runtime-session field required by fresh-session execution.",
+    "delta_rule": "Only one registered context delta is appended at changed_message_index in the negative; it supplies the complete missing fact. No query, workspace, identity, snapshot, or other shared message may change.",
+    "public_leakage_rule": "Provider-visible query/context contains no tool name, endpoint, asset ID, team ID, pair ID, Gold/scoring language, memory level, author-only route hint, repository URL, provider name, knowledge ID, or private target hint."
+  },
+  "pair_blueprints": [
+    {
+      "id": "T20-PAIR-M01",
+      "family": "memory",
+      "mode": "discovery",
+      "project": "AtlasSearch",
+      "target_asset_ids": ["T20-L1-ATLAS-ANALYZER-LOWERCASE"],
+      "retrieval_goal": "Find the team decision for normalization of user-entered search terms.",
+      "unique_gap": "The exact lowercase-normalization analyzer choice and its compatibility rationale.",
+      "target_fact": "The decision records the analyzer's lowercase normalization and the compatibility boundary that makes it safe for the existing keyword field.",
+      "allowed_first_actions": ["tdai_memory_search"],
+      "allowed_sequences": [["tdai_memory_search"]],
+      "followup_parameter_sources": "The search query uses visible AtlasSearch vocabulary; no follow-up parameters are needed.",
+      "source_evidence": ["T20-EV-SYN-HISTORY-ATLAS", "T20-EV-SYN-MEMORY-ATLAS"],
+      "counterfactual_kind": "answer_in_current_context"
+    },
+    {
+      "id": "T20-PAIR-M02",
+      "family": "memory",
+      "mode": "discovery",
+      "project": "RankLab",
+      "target_asset_ids": ["T20-L0-RANK-SCORE-EXPERIMENT"],
+      "retrieval_goal": "Recover the exact result of the earlier scoring experiment before changing ranking code.",
+      "unique_gap": "Which scoring change was rejected, which was accepted, and why the experiment was rolled back once.",
+      "target_fact": "The conversation contains the experiment's failed scoring attempt, accepted comparison, and rollback boundary; do not synthesize a new ranking rule.",
+      "allowed_first_actions": ["tdai_conversation_search"],
+      "allowed_sequences": [["tdai_conversation_search"]],
+      "followup_parameter_sources": "The search query supplies distinctive RankLab experiment terms; the returned message is the stop point.",
+      "source_evidence": ["T20-EV-SYN-HISTORY-RANK", "T20-EV-SYN-CONVERSATION-RANK"],
+      "counterfactual_kind": "answer_in_current_context"
+    },
+    {
+      "id": "T20-PAIR-M03",
+      "family": "memory",
+      "mode": "discovery",
+      "project": "CursorFlow",
+      "target_asset_ids": ["T20-L2-CURSOR-PAGINATION"],
+      "retrieval_goal": "Read the pagination scene that contains the stable cursor design decision.",
+      "unique_gap": "The scene path and its recorded stable-sort/cursor boundary are not present in the current context.",
+      "target_fact": "The scene records a stable sort tuple and cursor boundary for deep pagination, without relying on an offset fallback.",
+      "allowed_first_actions": ["tdai_scenario_ls"],
+      "allowed_sequences": [["tdai_scenario_ls", "tdai_read_scene"]],
+      "followup_parameter_sources": "The path_prefix is the visible CursorFlow project prefix; the exact scene path for tdai_read_scene must come from the scenario-list response.",
+      "source_evidence": ["T20-EV-SYN-SCENE-CURSOR", "T20-EV-SYN-HISTORY-CURSOR"],
+      "counterfactual_kind": "answer_in_current_context"
+    },
+    {
+      "id": "T20-PAIR-M04",
+      "family": "memory",
+      "mode": "direct",
+      "project": "ReindexRail",
+      "target_asset_ids": ["T20-L1-REINDEX-ALIAS-SWAP"],
+      "retrieval_goal": "Retrieve the current alias-swap decision under the known decision type, using only registered atomic-query fields.",
+      "unique_gap": "The exact alias cutover order and read/write boundary are available only in the atomic memory.",
+      "target_fact": "The active decision specifies write-to-new-index, validation, then atomic read-alias swap, with rollback before deleting the old index.",
+      "allowed_first_actions": ["tdai_atomic_query"],
+      "allowed_sequences": [["tdai_atomic_query"]],
+      "followup_parameter_sources": "The supported type filter is given in the visible request; ReindexRail remains natural-language context, not a project/status/scene tool argument. The response is the stop point.",
+      "source_evidence": ["T20-EV-SYN-MEMORY-REINDEX"],
+      "counterfactual_kind": "answer_in_current_context"
+    },
+    {
+      "id": "T20-PAIR-M05",
+      "family": "memory",
+      "mode": "direct",
+      "project": "VectorBlend",
+      "target_asset_ids": ["T20-L0-VECTOR-EMBEDDING-REGRESSION"],
+      "retrieval_goal": "Read the known VectorBlend regression session after its session identifier is supplied.",
+      "unique_gap": "The specific embedding-version regression cause and repair boundary are absent from the current context.",
+      "target_fact": "The identified session contains the embedding-version regression diagnosis, the rejected workaround, and the accepted repair boundary.",
+      "allowed_first_actions": ["tdai_conversation_query"],
+      "allowed_sequences": [["tdai_conversation_query"]],
+      "followup_parameter_sources": "The exact session_id is included in the visible task context; no guessed session or search is allowed.",
+      "source_evidence": ["T20-EV-SYN-HISTORY-VECTOR", "T20-EV-SYN-CONVERSATION-VECTOR"],
+      "counterfactual_kind": "answer_in_current_context"
+    },
+    {
+      "id": "T20-PAIR-M06",
+      "family": "memory",
+      "mode": "discovery",
+      "project": "VectorBlend",
+      "target_asset_ids": ["T20-L1-VECTOR-HYBRID-WEIGHT"],
+      "retrieval_goal": "Find the settled hybrid-fusion weight used by the current experiment.",
+      "unique_gap": "The accepted fusion-weight value and its evaluation boundary are missing.",
+      "target_fact": "The memory records one accepted hybrid fusion weight, the compared alternatives, and the quality threshold that ended the experiment.",
+      "allowed_first_actions": ["tdai_memory_search"],
+      "allowed_sequences": [["tdai_memory_search"]],
+      "followup_parameter_sources": "The query terms come from the visible VectorBlend experiment description; the first matching memory response ends the chain.",
+      "source_evidence": ["T20-EV-SYN-MEMORY-VECTOR"],
+      "counterfactual_kind": "answer_in_current_context"
+    },
+    {
+      "id": "T20-PAIR-S01",
+      "family": "skill",
+      "mode": "discovery",
+      "project": "AtlasSearch",
+      "target_asset_ids": ["T20-SKILL-OPENSEARCH-SEARCH"],
+      "source_keys": ["opensearch-search"],
+      "retrieval_goal": "Select the source-grounded procedure for building an application search index and choosing a search strategy.",
+      "unique_gap": "The applicable category procedure and its routing to the end-to-end search builder are not in the prewarmed listing.",
+      "target_fact": "The frozen Skill says to use the category procedure for search applications, index setup, search architecture, semantic/vector/hybrid choices, quality evaluation, and document processing, and to read the launchpad procedure for end-to-end setup.",
+      "allowed_first_actions": ["skill_search"],
+      "allowed_sequences": [["skill_search", "skill_view_by_id"]],
+      "followup_parameter_sources": "The search response supplies the target Skill id/name used by skill_view_by_id; stop after the target Skill is returned.",
+      "source_evidence": ["T20-SRC-OPENSEARCH-SEARCH"],
+      "counterfactual_kind": "answer_in_current_context"
+    },
+    {
+      "id": "T20-PAIR-S02",
+      "family": "skill",
+      "mode": "discovery",
+      "project": "ReindexRail",
+      "target_asset_ids": ["T20-SKILL-OPENSEARCH-LAUNCHPAD"],
+      "source_keys": ["opensearch-launchpad"],
+      "retrieval_goal": "Retrieve the end-to-end search setup procedure before a ReindexRail architecture change.",
+      "unique_gap": "The source procedure's mandatory first preflight step and phase ordering are not available in the current prompt.",
+      "target_fact": "The frozen Skill requires preflight-check as the first action, then sample-data collection, one-at-a-time strategy/target choices, plan approval, and ordered execution; classic Serverless must not be described as scaling to zero.",
+      "allowed_first_actions": ["skill_search"],
+      "allowed_sequences": [["skill_search", "skill_view_by_id"]],
+      "followup_parameter_sources": "skill_search returns the exact target id/name; skill_view_by_id uses that returned value and no guessed identifier.",
+      "source_evidence": ["T20-SRC-OPENSEARCH-LAUNCHPAD"],
+      "counterfactual_kind": "answer_in_current_context"
+    },
+    {
+      "id": "T20-PAIR-S03",
+      "family": "skill",
+      "mode": "direct",
+      "project": "VectorBlend",
+      "target_asset_ids": ["T20-SKILL-NEMO-RETRIEVER"],
+      "source_keys": ["nemo-retriever"],
+      "retrieval_goal": "Use the listed document-retrieval procedure for a mixed multi-file corpus.",
+      "unique_gap": "The exact rule preferring the retriever workflow over native file tools and its setup/query turn limits are absent.",
+      "target_fact": "The frozen Skill covers PDF, image, Office, HTML/TXT, audio, and video retrieval; it prefers the retriever CLI over native Read/Grep for multi-file or non-PDF corpora, with one setup command and at most two Bash calls on a query turn.",
+      "allowed_first_actions": ["skill_view"],
+      "allowed_sequences": [["skill_view"]],
+      "followup_parameter_sources": "The bound listing supplies the exact skill name; include_content and include_manifest must be true.",
+      "source_evidence": ["T20-SRC-NEMO-RETRIEVER"],
+      "counterfactual_kind": "answer_in_current_context"
+    },
+    {
+      "id": "T20-PAIR-S04",
+      "family": "skill",
+      "mode": "discovery",
+      "project": "RankLab",
+      "target_asset_ids": ["T20-SKILL-RAG-BLUEPRINT"],
+      "source_keys": ["rag-blueprint"],
+      "retrieval_goal": "Retrieve the procedure for configuring or troubleshooting a retrieval-backed RAG deployment.",
+      "unique_gap": "The source routing table for deploy/configure/troubleshoot/shutdown and the search-and-retrieval feature route are missing.",
+      "target_fact": "The frozen Skill routes deploy/install/start to deploy, configure/enable/change to Configure, troubleshoot/debug/fix to troubleshoot, and stop/shutdown/tear down to shutdown; search, retrieval, hybrid search, filters, reranking, topK, and accuracy/performance route to search-and-retrieval configuration.",
+      "allowed_first_actions": ["skill_search"],
+      "allowed_sequences": [["skill_search", "skill_view_by_id"]],
+      "followup_parameter_sources": "The skill_search response supplies the id/name for skill_view_by_id.",
+      "source_evidence": ["T20-SRC-RAG-BLUEPRINT"],
+      "counterfactual_kind": "answer_in_current_context"
+    },
+    {
+      "id": "T20-PAIR-S05",
+      "family": "skill",
+      "mode": "direct",
+      "project": "VectorBlend",
+      "target_asset_ids": ["T20-SKILL-VSS-SEARCH-ARCHIVE"],
+      "source_keys": ["vss-search-archive"],
+      "retrieval_goal": "Use the listed procedure for natural-language search over archived video sources.",
+      "unique_gap": "The mandatory endpoint/source-resolution preconditions and ingest-before-search rule are absent.",
+      "target_fact": "The frozen Skill requires an explicitly supplied host endpoint, source verification before any search request, agent-backed ingestion before a source becomes searchable, and no bare storage upload shortcut; search then uses the natural-language workflow.",
+      "allowed_first_actions": ["skill_view"],
+      "allowed_sequences": [["skill_view"]],
+      "followup_parameter_sources": "The bound listing supplies the exact skill name; include_content and include_manifest must be true.",
+      "source_evidence": ["T20-SRC-VSS-SEARCH-ARCHIVE"],
+      "counterfactual_kind": "answer_in_current_context"
+    },
+    {
+      "id": "T20-PAIR-S06",
+      "family": "skill",
+      "mode": "discovery",
+      "project": "ReindexRail",
+      "target_asset_ids": ["T20-SKILL-OPENSEARCH-INGEST"],
+      "source_keys": ["opensearch-ingest"],
+      "retrieval_goal": "Retrieve the source-grounded local document-processing workflow before preparing search-ready chunks.",
+      "unique_gap": "The frozen category's supported input/output boundary, child-procedure route, and explicit exclusions are not listed.",
+      "target_fact": "The frozen ingest Skill covers local PDF/DOCX/PPTX document processing into search-ready JSONL chunks via Docling and routes to document-processing; it excludes cloud-scale OSIS, structured bulk indexing, OpenSearch ingest processors, and log/metric shipping.",
+      "allowed_first_actions": ["skill_search"],
+      "allowed_sequences": [["skill_search", "skill_view_by_id"]],
+      "followup_parameter_sources": "The search result supplies the exact target id/name for skill_view_by_id.",
+      "source_evidence": ["T20-SRC-OPENSEARCH-INGEST"],
+      "counterfactual_kind": "answer_in_current_context"
+    },
+    {
+      "id": "T20-PAIR-K01",
+      "family": "knowledge",
+      "mode": "discovery",
+      "project": "ReindexRail",
+      "target_asset_ids": ["T20-KNOW-WIKI-REINDEX-RUNBOOK"],
+      "retrieval_goal": "Find the internal cutover runbook entry that decides whether to expand a rebuild after the first cohort.",
+      "unique_gap": "The cohort size, observation window, and abort thresholds are available only in the internal runbook.",
+      "target_fact": "The synthetic wiki records a 15% first cohort after a 20-minute baseline; abort expansion when read-after-write miss rate reaches 0.7% for 5 minutes or indexing lag exceeds 90 seconds for 10 minutes, then freeze, keep the prior alias, and page on-call.",
+      "allowed_first_actions": ["knowledge_tools_list"],
+      "allowed_sequences": [["knowledge_tools_list", "knowledge_tools_call"]],
+      "followup_parameter_sources": "knowledge_tools_list returns the resource's exact search/read tool name and parameter schema; knowledge_tools_call must use those returned values and the visible ReindexRail terms.",
+      "source_evidence": ["T20-EV-SYN-WIKI-REINDEX"],
+      "counterfactual_kind": "answer_in_current_context"
+    },
+    {
+      "id": "T20-PAIR-K02",
+      "family": "knowledge",
+      "mode": "discovery",
+      "project": "AtlasSearch",
+      "target_asset_ids": ["T20-KNOW-CG-SEARCH-PIPELINE"],
+      "retrieval_goal": "Use the production code graph to identify the locked search path and how ranking candidates are merged.",
+      "unique_gap": "The call-edge relationship among the L1/L0 search entry points, shared RRF helper, and read-only bridge allow-list is absent from the current context.",
+      "target_fact": "Only workspace-code-lock facts may be returned: the two search tools use FTS/vector paths and merge ranked results with the shared RRF utility; the proxy bridge exposes read-only atomic and conversation search/query subpaths. Do not add symbols or behavior from another revision.",
+      "allowed_first_actions": ["knowledge_tools_list"],
+      "allowed_sequences": [["knowledge_tools_list", "knowledge_tools_call"]],
+      "followup_parameter_sources": "knowledge_tools_list supplies the graph exploration tool name and parameter schema; the call uses a symbol/file query derived from the visible AtlasSearch request and the returned schema.",
+      "source_evidence": ["T20-EV-REPO-CODEGRAPH"],
+      "counterfactual_kind": "answer_in_current_context"
+    },
+    {
+      "id": "T20-PAIR-K03",
+      "family": "knowledge",
+      "mode": "direct",
+      "project": "RankLab",
+      "target_asset_ids": ["T20-KNOW-WIKI-RANK-QUALITY"],
+      "retrieval_goal": "Read the known relevance-review entry for a supplied ranking regression.",
+      "unique_gap": "The internal metric gate and accepted regression disposition are absent from the context.",
+      "target_fact": "The usable wiki records the RankLab evaluation metric gate, the required comparison window, and the rollback trigger for a ranking regression.",
+      "allowed_first_actions": ["knowledge_tools_call"],
+      "allowed_sequences": [["knowledge_tools_call"]],
+      "followup_parameter_sources": "The fixed binding's prewarmed listing supplies the exact knowledge tool name and schema; the visible RankLab incident supplies the query parameter.",
+      "source_evidence": ["T20-EV-SYN-WIKI-RANK"],
+      "counterfactual_kind": "answer_in_current_context"
+    }
+  ],
+  "natural_negative_blueprints": [
+    { "id": "T20-NAT-01", "project": "AtlasSearch", "task": "apply a supplied analyzer and field mapping change from complete local requirements" },
+    { "id": "T20-NAT-02", "project": "AtlasSearch", "task": "add unit coverage for a fully specified lexical query parser" },
+    { "id": "T20-NAT-03", "project": "RankLab", "task": "implement a supplied score tie-break with exact examples and expected order" },
+    { "id": "T20-NAT-04", "project": "RankLab", "task": "rename a ranking metric field and update exhaustive references" },
+    { "id": "T20-NAT-05", "project": "CursorFlow", "task": "add the provided search-after tuple to an existing request DTO" },
+    { "id": "T20-NAT-06", "project": "CursorFlow", "task": "write tests for a completely specified stable-sort cursor boundary" },
+    { "id": "T20-NAT-07", "project": "ReindexRail", "task": "extract a supplied alias-swap helper without changing behavior" },
+    { "id": "T20-NAT-08", "project": "ReindexRail", "task": "add logging fields whose names and values are already supplied" },
+    { "id": "T20-NAT-09", "project": "VectorBlend", "task": "wire a supplied embedding version through an existing configuration object" },
+    { "id": "T20-NAT-10", "project": "VectorBlend", "task": "refactor a provided hybrid-score calculation while preserving exact outputs" }
+  ],
+  "trial_assignments": {
+    "memory": ["T20-PAIR-M01"],
+    "skill": ["T20-PAIR-S01"],
+    "knowledge": ["T20-PAIR-K01"]
+  },
+  "accepted_trial_contracts": {
+    "T20-PAIR-M01": {
+      "target_fact": "The AtlasSearch memory records the accepted lowercase-normalization analyzer decision and the compatibility boundary for the keyword field; the paired delta supplies that fact completely.",
+      "review": "Must remain a retrieval-required query: no current context, L2 summary, or L3 text may contain the analyzer choice."
+    },
+    "T20-PAIR-S01": {
+      "target_fact": "The frozen opensearch-search Skill routes search-app/index/strategy/quality questions to the category procedure and points end-to-end setup to opensearch-launchpad; Luna must preserve the source procedure rather than inventing a different search workflow.",
+      "review": "Approved only when the target is absent from the prewarmed listing, discoverable in the same-Team pool, and the second-step id comes from the search response."
+    },
+    "T20-PAIR-K01": {
+      "target_fact": "The synthetic ReindexRail wiki says 15% first cohort after a 20-minute baseline; abort at read-after-write miss rate 0.7% for 5 minutes or indexing lag above 90 seconds for 10 minutes, freeze expansion, keep the prior alias, and page on-call.",
+      "review": "Approved as a synthetic internal-wiki fixture only; tools/list must precede the call and returned tool name/parameters must be used."
+    }
+  },
+  "generation_batches": [
+    { "batch_id": "memory-trial-01", "family": "memory", "case_count": 1, "pair_count": 1, "model": "gpt-5.6-luna", "reasoningEffort": "high", "fork_turns": "none", "input_pairs": ["T20-PAIR-M01"] },
+    { "batch_id": "memory-main-01", "family": "memory", "case_count": 5, "pair_count": 5, "model": "gpt-5.6-luna", "reasoningEffort": "high", "fork_turns": "none", "input_pairs": ["T20-PAIR-M02", "T20-PAIR-M03", "T20-PAIR-M04", "T20-PAIR-M05", "T20-PAIR-M06"] },
+    { "batch_id": "skill-trial-01", "family": "skill", "case_count": 1, "pair_count": 1, "model": "gpt-5.6-luna", "reasoningEffort": "high", "fork_turns": "none", "input_pairs": ["T20-PAIR-S01"] },
+    { "batch_id": "skill-main-01", "family": "skill", "case_count": 5, "pair_count": 5, "model": "gpt-5.6-luna", "reasoningEffort": "high", "fork_turns": "none", "input_pairs": ["T20-PAIR-S02", "T20-PAIR-S03", "T20-PAIR-S04", "T20-PAIR-S05", "T20-PAIR-S06"] },
+    { "batch_id": "knowledge-trial-01", "family": "knowledge", "case_count": 1, "pair_count": 1, "model": "gpt-5.6-luna", "reasoningEffort": "high", "fork_turns": "none", "input_pairs": ["T20-PAIR-K01"] },
+    { "batch_id": "knowledge-main-01", "family": "knowledge", "case_count": 2, "pair_count": 2, "model": "gpt-5.6-luna", "reasoningEffort": "high", "fork_turns": "none", "input_pairs": ["T20-PAIR-K02", "T20-PAIR-K03"] },
+    { "batch_id": "natural-main-01", "family": "natural_negative", "case_count": 10, "pair_count": 0, "model": "gpt-5.6-luna", "reasoningEffort": "high", "fork_turns": "none", "input_pairs": [] }
+  ],
+  "generation_rules": {
+    "model": "gpt-5.6-luna",
+    "reasoning_effort": "high",
+    "fork_turns": "none",
+    "pair_delta": "shared context, final query, identity, snapshot and workspace are identical; append one positive or negative delta at changed_message_index",
+    "provider_leakage_forbidden": [
+      "tool names",
+      "endpoints",
+      "asset ids",
+      "team ids",
+      "knowledge ids",
+      "provider or repository names unless the user task genuinely requires the product name",
+      "Gold or scoring language",
+      "Memory levels",
+      "author-only route or target hints",
+      "pair identifiers"
+    ],
+    "context_length": "2 to 18 provider-visible context messages before the delta; retain realistic decision evolution and same-domain distractors",
+    "positive_gap": "exactly one necessary fact absent from provider-visible context and available only from the target asset",
+    "negative_sufficiency": "the sole appended delta supplies that same fact completely",
+    "synthetic_provenance": "never invent repository, revision, license, external path or external hash",
+    "skill_provenance": "Use only the frozen source-lock files and preserve source-grounded facts; Skill questions cannot require facts absent from the frozen file.",
+    "knowledge_provenance": "K01 and K03 are synthetic wiki fixtures; K02 is a production code graph strictly grounded by workspace-code-lock."
+  }
+}

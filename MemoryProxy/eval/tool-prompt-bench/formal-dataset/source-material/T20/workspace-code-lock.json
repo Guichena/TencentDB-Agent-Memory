@@ -1,0 +1,25 @@
+{
+  "schema_version": "task1.workspace_code_lock.v1",
+  "team_id": "T20",
+  "repository": "TencentDB-Agent-Memory",
+  "revision": "ffa1fe18085d47ed4da6b2306240152cc8590a86",
+  "purpose": "Ground the T20 Knowledge code-graph provider in the production search and retrieval implementation.",
+  "files": [
+    {
+      "path": "MemoryCore/src/core/tools/memory-search.ts",
+      "sha256": "328957384623f5c73c4bdfae0d9d37837da879ebeac4a2274a6b9fca593f35c8"
+    },
+    {
+      "path": "MemoryCore/src/core/tools/conversation-search.ts",
+      "sha256": "5d12240f359f9d5f38aa78c203f5713b5f8a06e6175980fdbea7631771055ec2"
+    },
+    {
+      "path": "MemoryCore/src/core/store/search-utils.ts",
+      "sha256": "02b073516cc0a501bc9f9b9407d7ef10c7ccb4126042346a3cd53de279774b14"
+    },
+    {
+      "path": "MemoryProxy/src/memory/memory-bridge.ts",
+      "sha256": "8abe3c841ef224e38357be8da0cf2fc19bde2d146bf7636bf306174e8460cab2"
+    }
+  ]
+}
