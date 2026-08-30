@@ -6,20 +6,25 @@
 candidate_id: C-3P-EQ
 kind: compiler-parity
 git_parent: task1-candidate-base-v1^{commit}
+engineering_preparation_parent: c86b154f9f597da0788592c66b93d574fd3f10f9
 behavior_parent_variant: <STATIC-PARENT-MANIFEST.variantId>
 behavior_parent_prompt_sha256: <STATIC-PARENT-MANIFEST.promptSha256>
-depends_on: [task1-measurement-v2, Stage-1-static-parent]
+depends_on_for_formal_parent: [task1-measurement-v2, Stage-1-static-parent]
 branch_group: compiler-parity
 branch: codex/task1-method-c3p-eq
 worktree: D:\projects\TencentDB-Agent-Memory-task1-method-c3p-eq
 formal_model_runs: 0
 ```
 
-`static_parent` 由 V0 至 V3 正式 Dev 和 Selection Contract 决定。它是行为父 Variant 和冻结 Prompt artifact，不一定是独立 Git 提交。Git 分支从共同 candidate-base commit 创建，再由 manifest 指向该 Variant。V3 只是先验默认，不能在本卡硬编码。
+`static_parent` 由 V0 至 V3 正式 Dev 和 Selection Contract 决定。它是行为父 Variant 和冻结 Prompt artifact，不一定是独立 Git 提交。正式候选仍从共同 candidate-base commit 认定行为父输入，V3 只是先验默认，不能在本卡硬编码。
+
+为不让完整 Compiler 工程被人工模型运行阻塞，允许从 R05 pass commit `c86b154` 先建立同名工程预备分支，但必须同时对全部冻结 V0、V0-C、V1a、V1、V2、V3 profile 做 byte/metadata parity。该分支没有行为父 Variant、不能生成新 Variant、不能运行模型，也不能替代尚未冻结的 candidate-base；Stage 1 选出 `static_parent` 后仍要用其精确 artifact 再过一次 parity Gate。
 
 ## 进入条件
 
-`task1-candidate-base-v1`、Measurement-v2、Selection Contract 和 `STATIC-PARENT-MANIFEST.json` 均已冻结；所有父 Prompt snapshot/hash 可重现；本节点有明确工程时间预算。缺任一项时不创建正式实现分支。
+正式候选进入条件不变：`task1-candidate-base-v1`、Measurement-v2、Selection Contract 和 `STATIC-PARENT-MANIFEST.json` 均已冻结；所有父 Prompt snapshot/hash 可重现；本节点有明确工程时间预算。
+
+工程预备态的较窄进入条件为：R05 代码 Gate 已通过且工作树干净；V0–V3 冻结 fixture/hash 可重现；改动严格限制在内部 ownership/source-map/parity seam；测试先证明全部 profile 的 bytes、metadata、tool order 和 token/hash 不变。任一条件失败就停止，不以“语义等价”放宽。
 
 ## 目标和非目标
 

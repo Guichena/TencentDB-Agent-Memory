@@ -6,6 +6,8 @@
 >
 > 两份保留的证据详稿：[`TASK1-EXTERNAL-EVIDENCE.md`](./TASK1-EXTERNAL-EVIDENCE.md) 与 [`TASK1-NOVEL-DESIGN-RADAR.md`](./TASK1-NOVEL-DESIGN-RADAR.md)。本文给出项目决策、优先级和执行 Gate；详稿保留来源推导与反证细节。
 
+> 2026-08-30 代码推进后的权威状态见 [`TASK1-CURRENT-STATE-AND-METHOD-START-AUDIT.md`](./TASK1-CURRENT-STATE-AND-METHOD-START-AUDIT.md)。该增补覆盖本文中“尚未创建”的历史状态，但不改变本文的任务边界、指标定义、候选依赖和单因素纪律。
+
 ## 0. 最终判断
 
 现有 `V0 → V0-C → V1a → V1 → V2 → V3` 方向正确，不应推倒重来：它已经依次完成合同纠错、共享协议压缩、语义去重、选择校准和能力裁剪。在 code-freeze manifest 的 C00 canonical fixture 上，**完整注入总量**从 V0 的 4,863 token 降到 V3 的 2,224 token，减少 54.3%；其中 `staticToolTokens` 组件诊断值从 4,579 降到 2,027，减少 55.7%。前一组总量还包含动态资产与 runtime binding，不能称为纯静态工具描述。两组数字都只是冻结 render 的 token 证据，**尚不能证明 V3 的模型行为优于 V0**，因为正式 Luna 行为评测还没有完成。

@@ -1,6 +1,6 @@
 # Task 1 多轮审核结论与隔离分支 DAG
 
-> 状态：多轮只读审核与修订后 PASS，待本分支提交并创建 annotated Tag，2026-08-30。
+> 状态：研究计划已由 `task1-research-plan-v1` 冻结；代码推进后的现状与 C-3P-EQ 启动复核见 [`TASK1-CURRENT-STATE-AND-METHOD-START-AUDIT.md`](./TASK1-CURRENT-STATE-AND-METHOD-START-AUDIT.md)，2026-08-30。
 >
 > 本文记录三轮只读审核的共同结论、仍未满足的 Gate，以及后续分支和 worktree 的唯一命名。它只管理 Task 1 的测量基础和 Prompt 候选，不改变 V0 至 V3，不授权在正式数据冻结前运行模型。
 
@@ -14,7 +14,7 @@
 | 后数据计划 | `8117c9597c3f25786e17b3f8541fd13cbf6b3ebb` | 比 C07 多一份执行计划，不含源码变化 |
 | 研究审核线 | `codex/task1-research-audit-v1` | 本文与研究稿的独立冻结线 |
 
-截至本文建立时，`task1-data-formal-v1`、`task1-measurement-v2`、`task1-candidate-base-v1` 都不存在。`SELECTION-CONTRACT.json` 和 `evaluationSchemaVersion: 2` 仍是设计合同，尚未成为运行代码。任何正式行为数据都要等这些对象和 R01 至 R04 Gate 完成。
+本节记录的是 `task1-research-plan-v1` 冻结时的历史状态。当前 `task1-data-formal-v1.1`、M0/M1/M2、R01–R05 代码 Gate 和 `evaluationSchemaVersion: 2` 已有实现；但 `task1-measurement-v2`、`task1-candidate-base-v1`、`SELECTION-CONTRACT.json`、`STATIC-PARENT-MANIFEST.json` 以及正式 Luna 行为数据仍未冻结。以后续增补文档为当前状态依据。
 
 现有工作树不能复用：根 checkout 和 `task1-code` 都有未提交内容，其他多个旧实验或数据 worktree 也有各自任务。研究稿已复制到新的审核 worktree，原文件不移动、不删除、不提交到原分支。
 
@@ -195,10 +195,12 @@ V4-CP 的 `minus-cue-X` 和 budgeted set 使用 candidate manifest，不进行�
 | 多轮任务/指标/源码/Git 审核 | `DONE` | 本文吸收三轮共同结论 |
 | 研究总案修订 | `DONE` | 指标、任务边界、依赖 DAG、执行卡、链接和格式一致性 Gate 已通过，待提交并打 Tag |
 | 独立候选执行卡 | `DONE` | M0/M1/M2、静态方法、优化器和四条架构轨均已分别保存 |
-| M0/M1/M2 worktree | `NOT_CREATED` | 研究计划冻结后从 `task1-c07-pass` 创建 |
-| `task1-data-formal-v1` | `MISSING` | 数据线任务负责 |
-| `task1-measurement-v2` | `MISSING` | M0/M1/M2 集成通过后创建 |
-| 正式 V0 至 V3 Dev | `BLOCKED` | 等 formal-v1、R01 至 R04 和 Measurement-v2 |
-| V4 及架构候选 | `DEFERRED` | 等 `static_parent`、错误矩阵和各自 entry condition |
+| M0/M1/M2 worktree | `DONE` | 三支独立实现与 pass Tag 已保留；R04 已接入等价运行合同 |
+| `task1-data-formal-v1.1` | `DONE` | 正式数据 annotated Tag 已存在 |
+| R01–R05 代码 Gate | `DONE` | R05 HEAD `c86b154`；R05 真实空白栈运行 Gate 尚未执行 |
+| `task1-measurement-v2` | `NOT_TAGGED` | 运行代码已进入 R04/R05，但统一冻结 Tag 与 Selection Contract 未闭合 |
+| 正式 V0 至 V3 Dev | `BLOCKED` | 等 R05 的 12 条 V0 Smoke 和人工 Luna campaign |
+| C-3P-EQ | `ENGINEERING_ONLY_READY` | 可对全部冻结 V0–V3 做 no-model byte parity；不能自选 `static_parent` 或成为模型 Variant |
+| 其他 V4 及架构候选 | `DEFERRED` | 等 `static_parent`、错误矩阵和各自 entry condition |
 
-研究计划冻结后，代码线先建立 M0、M1、M2 三个 worktree。它们只运行 no-model 单元测试和静态 Gate，不启动 Luna，不接触用户当前 Codex 配置。
+当前代码线下一项允许的独立实现是 C-3P-EQ 的工程预备态：从 R05 pass commit 建立专用 worktree，对全部冻结 profile 证明 provider-visible bytes 与 metadata 完全不变。它仍只运行 no-model 单元测试和静态 Gate，不启动 Luna，不接触用户当前 Codex 配置。任何模型可见 V4 仍须等待正式 Dev 错误矩阵。
