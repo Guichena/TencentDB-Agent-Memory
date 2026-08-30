@@ -25,6 +25,10 @@ import {
 import type { HookCacheRepo } from "../db/hookCacheRepo.js";
 import type { InjectionObserver, HookResult } from "./observer.js";
 import { NoopInjectionObserver } from "./observer.js";
+import {
+  InjectionInfrastructureError,
+  isInjectionInfrastructureError,
+} from "./errors.js";
 
 /** Optional pipeline behaviors (agent detection, etc.). */
 export interface InjectionPipelineOptions {
@@ -230,7 +234,8 @@ export class InjectionPipeline {
           const durationMs = Date.now() - hookStartMs;
           const error = err instanceof Error ? err : new Error(String(err));
 
-          // Hook failure is non-fatal — log and continue
+          // Ordinary hook failures are non-fatal; typed infrastructure
+          // failures are rethrown after observer evidence is recorded below.
           console.error(
             `[injection] Hook "${hook.id}" failed at point "${point}":`,
             error.message,
@@ -247,6 +252,11 @@ export class InjectionPipeline {
             error: error.message,
             cacheStrategy: hook.cacheStrategy ?? "none",
           });
+
+          // Ordinary hook failures remain best-effort for backward
+          // compatibility. Infrastructure failures mean that continuing would
+          // send a provider request with a silently changed injection contract.
+          if (isInjectionInfrastructureError(error)) throw error;
         }
       }
     }
@@ -364,9 +374,16 @@ export class InjectionPipeline {
             { key, relation: hook.anchor.relation },
             text,
           );
+          const rebuiltText = profile.rebuild(newSegments);
           // The system message text is authoritative — replace its blocks with
-          // the rebuilt prompt so later hooks see the updated text.
-          sysMsg.blocks = [{ type: "text", content: profile.rebuild(newSegments) }];
+          // the rebuilt prompt so later hooks see the updated text. Provider
+          // metadata remains on its original ordered block. Unsupported
+          // in-block rewrites raise a typed infrastructure failure instead of
+          // silently moving cache breakpoints or forwarding without injection.
+          sysMsg.blocks = rebuildSystemTextBlocksPreservingMetadata(
+            sysMsg.blocks,
+            rebuiltText,
+          );
           return; // anchor hit — done
         }
         // Slot unresolved / structure missing → fall through to `point` (warn).
@@ -499,6 +516,97 @@ export class InjectionPipeline {
       }
     }
   }
+}
+
+/**
+ * Retain ordered provider metadata blocks across an insertion-only rebuild.
+ *
+ * A single text block can carry its metadata directly. With multiple blocks,
+ * every original block must remain an exact ordered substring and each block
+ * boundary must retain the newline used by getMessageText(). Unsupported
+ * shapes are refused so cache breakpoints are never silently collapsed.
+ */
+function rebuildSystemTextBlocksPreservingMetadata(
+  originalBlocks: ContextBlock[],
+  rebuiltText: string,
+): ContextBlock[] {
+  const hasProviderMetadata = originalBlocks.some(
+    (block) => block.metadata !== undefined && Object.keys(block.metadata).length > 0,
+  );
+  if (!hasProviderMetadata) return [{ type: "text", content: rebuiltText }];
+  if (originalBlocks.some((block) => block.type !== "text")) {
+    throw metadataParityFailure(
+      "cannot preserve system metadata across an anchor rebuild with non-text blocks",
+    );
+  }
+
+  const textBlocks = originalBlocks as Array<ContextBlock & { type: "text" }>;
+  if (textBlocks.length === 1) {
+    return [{
+      type: "text",
+      content: rebuiltText,
+      ...(textBlocks[0].metadata === undefined
+        ? {}
+        : { metadata: { ...textBlocks[0].metadata } }),
+    }];
+  }
+  if (textBlocks.some((block) => block.content.length === 0)) {
+    throw metadataParityFailure(
+      "cannot preserve system metadata across an anchor rebuild with empty text blocks",
+    );
+  }
+
+  const positions: Array<{ start: number; end: number }> = [];
+  let searchFrom = 0;
+  for (const block of textBlocks) {
+    const start = rebuiltText.indexOf(block.content, searchFrom);
+    if (start < 0) {
+      throw metadataParityFailure(
+        "cannot preserve system metadata: anchor rewrote text inside a metadata block",
+      );
+    }
+    const end = start + block.content.length;
+    positions.push({ start, end });
+    searchFrom = end;
+  }
+
+  const rebuiltBlocks: ContextBlock[] = [];
+  for (let index = 0; index < textBlocks.length; index++) {
+    const original = textBlocks[index];
+    let content: string;
+    if (index === 0) {
+      content = rebuiltText.slice(0, positions[index].end);
+    } else {
+      const gap = rebuiltText.slice(positions[index - 1].end, positions[index].start);
+      if (!gap.startsWith("\n")) {
+        throw metadataParityFailure(
+          "cannot preserve system metadata: inter-block newline boundary changed",
+        );
+      }
+      content = gap.slice(1) + original.content;
+    }
+    if (index === textBlocks.length - 1) {
+      content += rebuiltText.slice(positions[index].end);
+    }
+    rebuiltBlocks.push({
+      type: "text",
+      content,
+      ...(original.metadata === undefined
+        ? {}
+        : { metadata: { ...original.metadata } }),
+    });
+  }
+
+  if (getMessageText({ role: "system", blocks: rebuiltBlocks }) !== rebuiltText) {
+    throw metadataParityFailure(
+      "cannot preserve system metadata without changing rebuilt prompt text",
+    );
+  }
+  return rebuiltBlocks;
+}
+
+function metadataParityFailure(message: string): InjectionInfrastructureError {
+  return new InjectionInfrastructureError("INJECTION_METADATA_PARITY_FAILURE", message);
 }
 
 /**

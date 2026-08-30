@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import * as publicApi from "../index.js";
+import * as publicApi from "../m0-index.js";
 import {
   MEMORY_SEARCH_GOLD,
   MEMORY_SEARCH_SUCCESS_TRACE,
@@ -109,7 +109,7 @@ describe("Measurement v2 M0 frozen artifacts", () => {
     expect(manifest).toMatchObject({
       candidateId: "M0",
       evaluationSchemaVersion: 2,
-      publicEntrypoint: "index.ts",
+      publicEntrypoint: "m0-index.ts",
       ownsFormalMetricEligible: false,
       formalDataStatus: "FORMAL_DATA_V1_1_AVAILABLE_METRIC_INELIGIBLE",
       modelRuns: 0,

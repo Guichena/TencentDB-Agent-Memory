@@ -12,7 +12,7 @@
 
 ## Public seam and ownership
 
-All case behavior is tested through `scoreCaseChain({ observation, gold, runtimeContracts })` from `index.ts`. M0 consumes a raw trace observation, independent per-sequence typed private Gold, and frozen runtime contracts. It returns trace facts and decision outcomes only. The same entrypoint validates schema/case alignment, typed sequence/terminal/binding invariants, and exact referenced runtime-contract identity/operation before scoring; bad data throws instead of becoming a model outcome.
+All case behavior is tested through `scoreCaseChain({ observation, gold, runtimeContracts })`. The original M0 branch exposed it from `index.ts`; the integrated Measurement-v2 tree preserves that exact two-function surface at `m0-index.ts`, while `index.ts` additionally exposes the independently reviewed M2 usage and isolation contracts. M0 consumes a raw trace observation, independent per-sequence typed private Gold, and frozen runtime contracts. It returns trace facts and decision outcomes only. The same entrypoint validates schema/case alignment, typed sequence/terminal/binding invariants, and exact referenced runtime-contract identity/operation before scoring; bad data throws instead of becoming a model outcome.
 
 `aggregateCaseChainFacts(CaseChainScoreV2[])` is a second frozen public seam. `interface-manifest.json` records separate input/output signatures and fields for the case scorer and the provided-trace-facts aggregate.
 

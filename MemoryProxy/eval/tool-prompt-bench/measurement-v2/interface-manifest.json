@@ -2,7 +2,7 @@
   "manifestSchemaVersion": 1,
   "candidateId": "M0",
   "evaluationSchemaVersion": 2,
-  "publicEntrypoint": "index.ts",
+  "publicEntrypoint": "m0-index.ts",
   "publicFunctions": [
     "scoreCaseChain",
     "aggregateCaseChainFacts"

@@ -57,6 +57,7 @@ import {
   isRateLimitExceededError,
   recordInputTokenUsage,
 } from "./rate-limit/guard.js";
+import { isInjectionInfrastructureError } from "./injection/errors.js";
 
 const SKIP_REQUEST_HEADERS = new Set([
   "host",
@@ -1185,6 +1186,7 @@ export async function handleAnthropicMessages(
       messages = Array.isArray(injectedBody.messages) ? injectedBody.messages : messages;
       hasTools = Array.isArray(body.tools) && body.tools.length > 0;
     } catch (err: unknown) {
+      if (isInjectionInfrastructureError(err)) throw err;
       console.error("[injection] anthropic pipeline error:", err instanceof Error ? err.message : String(err));
     }
   } else if (skipInjection) {

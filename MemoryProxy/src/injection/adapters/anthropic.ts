@@ -197,8 +197,13 @@ export class AnthropicAdapter implements ProtocolAdapter {
 
   private serializeSystemMessage(msg: ContextMessage): unknown {
     const textBlocks = msg.blocks.filter((b) => b.type === "text");
-    if (textBlocks.length === 1) {
-      return textBlocks[0].content;
+    const onlyTextBlock = msg.blocks.length === 1 && textBlocks.length === 1
+      ? textBlocks[0]
+      : null;
+    const hasMetadata = onlyTextBlock?.metadata !== undefined
+      && Object.keys(onlyTextBlock.metadata).length > 0;
+    if (onlyTextBlock && !hasMetadata) {
+      return onlyTextBlock.content;
     }
     // Multiple blocks → use array format
     return msg.blocks.map((b) => this.serializeContentBlock(b));
