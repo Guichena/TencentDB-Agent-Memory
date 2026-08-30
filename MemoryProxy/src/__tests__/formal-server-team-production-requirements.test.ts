@@ -193,6 +193,35 @@ describe("server_team production requirements", () => {
     expect(JSON.stringify(result.evidence)).not.toContain(resource);
   });
 
+  it("reconstructs manifest-exact UTF-8 line endings from a normalized checkout", async () => {
+    const packageRoot = await mkdtemp(join(tmpdir(), "task1-skill-package-eol-"));
+    tempRoots.push(packageRoot);
+    const checkoutEntry = "---\nname: demo\n---\n# Demo\n";
+    const frozenEntry = "---\r\nname: demo\n---\r\n# Demo\r\n";
+    await writeFile(join(packageRoot, "SKILL.md"), checkoutEntry, "utf8");
+
+    const resolver = createServerTeamRequirementResolver({
+      serviceIdsByDatasetSpaceId: {},
+      authUserIdsByDatasetUserId: {},
+      skillPackageRoots: [packageRoot],
+      importMemoryL1: vi.fn(),
+      importMemoryL2: vi.fn(),
+    });
+    const result = await resolver(requirement("req-skill-eol", "skill_package_bytes", {
+      formalAssetId: "SKILL-EOL",
+      manifest: [{ path: "SKILL.md", sha256: sha256(frozenEntry) }],
+    }), { resolve: (value) => value });
+
+    expect(result.values).toEqual({
+      verified_skill_entry_content: frozenEntry,
+      verified_skill_resources: [],
+    });
+    expect(result.evidence).toEqual(expect.objectContaining({
+      formalAssetId: "SKILL-EOL",
+      manifestEntries: 1,
+    }));
+  });
+
   it("fails closed when Skill bytes do not match or an obsolete Knowledge snapshot requirement appears", async () => {
     const packageRoot = await mkdtemp(join(tmpdir(), "task1-skill-package-"));
     tempRoots.push(packageRoot);
@@ -219,7 +248,7 @@ describe("server_team production requirements", () => {
     ), { resolve: (value) => value })).rejects.toBeInstanceOf(ServerTeamRequirementError);
   });
 
-  it("discovers only adapted Skill package roots from a frozen data checkout", async () => {
+  it("discovers adapted and direct final Skill roots while excluding raw copies", async () => {
     const dataRoot = await mkdtemp(join(tmpdir(), "task1-data-root-"));
     tempRoots.push(dataRoot);
     const adapted = join(
@@ -246,11 +275,26 @@ describe("server_team production requirements", () => {
       "demo",
       "raw",
     );
+    const direct = join(
+      dataRoot,
+      "MemoryProxy",
+      "eval",
+      "tool-prompt-bench",
+      "formal-dataset",
+      "source-material",
+      "T12",
+      "skills",
+      "direct-final-package",
+    );
     await mkdir(adapted, { recursive: true });
     await mkdir(raw, { recursive: true });
+    await mkdir(direct, { recursive: true });
     await writeFile(join(adapted, "SKILL.md"), "adapted", "utf8");
     await writeFile(join(raw, "SKILL.md"), "raw", "utf8");
+    await writeFile(join(direct, "SKILL.md"), "direct", "utf8");
 
-    await expect(discoverFrozenSkillPackageRoots(dataRoot)).resolves.toEqual([adapted]);
+    await expect(discoverFrozenSkillPackageRoots(dataRoot)).resolves.toEqual(
+      [adapted, direct].sort((left, right) => left.localeCompare(right)),
+    );
   });
 });

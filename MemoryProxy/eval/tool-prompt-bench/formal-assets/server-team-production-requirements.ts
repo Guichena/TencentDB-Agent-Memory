@@ -57,8 +57,10 @@ export interface ServerTeamRequirementResolverConfig {
 
 /**
  * Locate package roots in a separate checkout of the frozen data tag.
- * Raw upstream copies are intentionally ignored; the Formal manifest hashes
- * refer to the adapted package bytes used by the benchmark.
+ * Raw upstream copies are intentionally ignored. Some Team builders store the
+ * reviewed package directly while others use an adapted/ child directory, so
+ * final packages are identified by excluding raw/ rather than requiring one
+ * specific authoring layout. Exact manifest verification remains authoritative.
  */
 export async function discoverFrozenSkillPackageRoots(
   frozenDataCheckoutRoot: string,
@@ -78,7 +80,7 @@ export async function discoverFrozenSkillPackageRoots(
       .sort((left, right) => left.name.localeCompare(right.name));
     if (entries.some((entry) => entry.isFile() && entry.name === "SKILL.md")) {
       const segments = relative(sourceRoot, directory).split(sep);
-      if (segments.includes("adapted")) roots.push(directory);
+      if (!segments.includes("raw")) roots.push(directory);
     }
     for (const entry of entries) {
       if (entry.isDirectory()) await walk(join(directory, entry.name));
@@ -116,6 +118,43 @@ function error(
 
 function sha256(value: Uint8Array): string {
   return createHash("sha256").update(value).digest("hex");
+}
+
+function manifestMatchedBytes(
+  checkoutBytes: Buffer,
+  expectedSha256: string,
+  allowSingleMixedNewline: boolean,
+): Buffer | undefined {
+  if (sha256(checkoutBytes) === expectedSha256) return checkoutBytes;
+  if (!isUtf8(checkoutBytes)) return undefined;
+
+  const normalized = checkoutBytes.toString("utf8").replace(/\r\n|\r/gu, "\n");
+  const lf = Buffer.from(normalized, "utf8");
+  if (sha256(lf) === expectedSha256) return lf;
+  const crlf = Buffer.from(normalized.replace(/\n/gu, "\r\n"), "utf8");
+  if (sha256(crlf) === expectedSha256) return crlf;
+  if (!allowSingleMixedNewline || !normalized.includes("\n")) return undefined;
+
+  const lines = normalized.split("\n");
+  const newlineCount = lines.length - 1;
+  for (let loneIndex = 0; loneIndex < newlineCount; loneIndex += 1) {
+    let mostlyCrlf = "";
+    let mostlyLf = "";
+    for (let lineIndex = 0; lineIndex < lines.length; lineIndex += 1) {
+      const line = lines[lineIndex]!;
+      mostlyCrlf += line;
+      mostlyLf += line;
+      if (lineIndex < newlineCount) {
+        mostlyCrlf += lineIndex === loneIndex ? "\n" : "\r\n";
+        mostlyLf += lineIndex === loneIndex ? "\r\n" : "\n";
+      }
+    }
+    const mostlyCrlfBytes = Buffer.from(mostlyCrlf, "utf8");
+    if (sha256(mostlyCrlfBytes) === expectedSha256) return mostlyCrlfBytes;
+    const mostlyLfBytes = Buffer.from(mostlyLf, "utf8");
+    if (sha256(mostlyLfBytes) === expectedSha256) return mostlyLfBytes;
+  }
+  return undefined;
 }
 
 function requirementActionId(prefix: string, logicalId: string): string {
@@ -172,25 +211,43 @@ async function loadMatchingSkillPackage(
   const entry = manifest.find((item) => item.path === "SKILL.md");
   if (!entry) return error("SKILL_PACKAGE_INVALID", requirement, "manifest must contain SKILL.md");
 
-  for (let rootIndex = 0; rootIndex < roots.length; rootIndex += 1) {
-    const root = roots[rootIndex]!;
-    const files: Array<{ path: string; bytes: Buffer }> = [];
-    let matched = true;
-    for (const item of manifest) {
-      try {
-        const bytes = await readFile(safeManifestPath(requirement, root, item.path));
-        if (sha256(bytes) !== item.sha256) {
+  const findPackage = async (allowSingleMixedNewline: boolean): Promise<Readonly<{
+    rootIndex: number;
+    files: readonly Readonly<{ path: string; bytes: Buffer }>[];
+  }> | undefined> => {
+    for (let rootIndex = 0; rootIndex < roots.length; rootIndex += 1) {
+      const root = roots[rootIndex]!;
+      const files: Array<{ path: string; bytes: Buffer }> = [];
+      let matched = true;
+      for (const item of manifest) {
+        try {
+          const checkoutBytes = await readFile(safeManifestPath(requirement, root, item.path));
+          const bytes = manifestMatchedBytes(
+            checkoutBytes,
+            item.sha256,
+            allowSingleMixedNewline,
+          );
+          if (!bytes) {
+            matched = false;
+            break;
+          }
+          files.push({ path: item.path, bytes });
+        } catch (cause) {
+          if (cause instanceof ServerTeamRequirementError) throw cause;
           matched = false;
           break;
         }
-        files.push({ path: item.path, bytes });
-      } catch (cause) {
-        if (cause instanceof ServerTeamRequirementError) throw cause;
-        matched = false;
-        break;
       }
+      if (matched) return { rootIndex, files };
     }
-    if (!matched) continue;
+    return undefined;
+  };
+
+  // Uniform LF/CRLF covers normal Git checkout conversion. The second pass is
+  // only for an authoring worktree that froze one opposite newline in a file.
+  const matchedPackage = await findPackage(false) ?? await findPackage(true);
+  if (matchedPackage) {
+    const { rootIndex, files } = matchedPackage;
 
     const entryFile = files.find((file) => file.path === "SKILL.md")!;
     if (!isUtf8(entryFile.bytes)) {
