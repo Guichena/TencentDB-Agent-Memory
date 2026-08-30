@@ -13,12 +13,34 @@ const KNOWLEDGE_CORRELATION_HEADER_NAMES = [
   "x-tdai-space-id",
 ] as const;
 
+const SAFE_ERROR_NAMES = new Set([
+  "Error",
+  "TypeError",
+  "RangeError",
+  "ReferenceError",
+  "SyntaxError",
+  "URIError",
+  "EvalError",
+  "AggregateError",
+  "AbortError",
+  "DataCloneError",
+]);
+
+export type KnowledgeRequestBodyCapture =
+  | Readonly<{ outcome: "captured"; rawBodySha256: string }>
+  | Readonly<{ outcome: "empty" }>
+  | Readonly<{
+    outcome: "failed";
+    failure: Readonly<{ stage: "request_body_clone"; name: string }>;
+  }>;
+
 export interface ObservedKnowledgeToolsEntry {
   correlationId: string;
   family: "knowledge";
   endpoint: string;
   method: string;
   requestBody?: unknown;
+  requestBodyCapture: KnowledgeRequestBodyCapture;
   correlationHeaders: Readonly<Record<string, string>>;
 }
 
@@ -121,6 +143,7 @@ async function captureKnowledgeToolsEntry(
   }
 
   let requestBody: unknown;
+  let requestBodyCapture: KnowledgeRequestBodyCapture;
   try {
     const rawBody = await request.clone().text();
     if (rawBody) {
@@ -129,9 +152,21 @@ async function captureKnowledgeToolsEntry(
       } catch {
         requestBody = rawBody;
       }
+      requestBodyCapture = {
+        outcome: "captured",
+        rawBodySha256: createHash("sha256").update(rawBody, "utf8").digest("hex"),
+      };
+    } else {
+      requestBodyCapture = { outcome: "empty" };
     }
-  } catch {
-    // Observation must never consume or fail the production request.
+  } catch (error) {
+    requestBodyCapture = {
+      outcome: "failed",
+      failure: {
+        stage: "request_body_clone",
+        name: safeErrorName(error),
+      },
+    };
   }
 
   return deepFreeze({
@@ -140,8 +175,15 @@ async function captureKnowledgeToolsEntry(
     endpoint: new URL(request.url).pathname,
     method: request.method,
     ...(requestBody !== undefined ? { requestBody } : {}),
+    requestBodyCapture,
     correlationHeaders,
   });
+}
+
+function safeErrorName(error: unknown): string {
+  return error instanceof Error && SAFE_ERROR_NAMES.has(error.name)
+    ? error.name
+    : "Error";
 }
 
 async function captureResponseCompletion(

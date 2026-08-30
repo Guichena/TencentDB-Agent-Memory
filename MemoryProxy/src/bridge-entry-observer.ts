@@ -2,6 +2,27 @@ import { createHash, randomUUID } from "node:crypto";
 
 export type BridgeEntryFamily = "memory" | "skill";
 
+const SAFE_ERROR_NAMES = new Set([
+  "Error",
+  "TypeError",
+  "RangeError",
+  "ReferenceError",
+  "SyntaxError",
+  "URIError",
+  "EvalError",
+  "AggregateError",
+  "AbortError",
+  "DataCloneError",
+]);
+
+export type RequestBodyCapture =
+  | Readonly<{ outcome: "captured"; rawBodySha256: string }>
+  | Readonly<{ outcome: "empty" }>
+  | Readonly<{
+    outcome: "failed";
+    failure: Readonly<{ stage: "request_body_clone"; name: string }>;
+  }>;
+
 /** Non-secret request headers that may be copied into evaluation evidence. */
 export const BRIDGE_CORRELATION_HEADER_NAMES = [
   "x-conversation-id",
@@ -22,6 +43,7 @@ export interface ObservedBridgeEntry {
   endpoint: string;
   method: string;
   requestBody?: unknown;
+  requestBodyCapture: RequestBodyCapture;
   correlationHeaders: Readonly<Record<string, string>>;
 }
 
@@ -130,6 +152,7 @@ async function captureBridgeEntry(
   }
 
   let requestBody: unknown;
+  let requestBodyCapture: RequestBodyCapture;
   try {
     const rawBody = await request.clone().text();
     if (rawBody) {
@@ -138,9 +161,21 @@ async function captureBridgeEntry(
       } catch {
         requestBody = rawBody;
       }
+      requestBodyCapture = {
+        outcome: "captured",
+        rawBodySha256: createHash("sha256").update(rawBody, "utf8").digest("hex"),
+      };
+    } else {
+      requestBodyCapture = { outcome: "empty" };
     }
-  } catch {
-    // Observation must never consume or fail the production request.
+  } catch (error) {
+    requestBodyCapture = {
+      outcome: "failed",
+      failure: {
+        stage: "request_body_clone",
+        name: safeErrorName(error),
+      },
+    };
   }
 
   return deepFreeze({
@@ -149,8 +184,15 @@ async function captureBridgeEntry(
     endpoint: new URL(request.url).pathname,
     method: request.method,
     ...(requestBody !== undefined ? { requestBody } : {}),
+    requestBodyCapture,
     correlationHeaders,
   });
+}
+
+function safeErrorName(error: unknown): string {
+  return error instanceof Error && SAFE_ERROR_NAMES.has(error.name)
+    ? error.name
+    : "Error";
 }
 
 async function captureResponseCompletion(

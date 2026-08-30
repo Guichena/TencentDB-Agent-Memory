@@ -11,6 +11,7 @@ import { createMemoryBridgeHandler } from "../memory/memory-bridge.js";
 import { createSkillBridgeHandler } from "../skill/skill-bridge.js";
 import type { ProxyConfig } from "../types.js";
 import {
+  observeKnowledgeToolsExecution,
   type ObservedKnowledgeToolsCompletion,
   type ObservedKnowledgeToolsEntry,
 } from "../../../MemoryKnowledge/src/tools-entry-observer.js";
@@ -60,6 +61,13 @@ describe("tool execution completion observation", () => {
 
     expect(await response.json()).toEqual({ code: 0, data: { ok: true } });
     expect(entries).toHaveLength(1);
+    expect(entries[0]).toMatchObject({
+      requestBodyCapture: {
+        outcome: "captured",
+        rawBodySha256: "63a882b91f9854c062af93f587a30ae6bbc67ad44ffd4448e170a808e8c0fdd0",
+      },
+    });
+    expect(Object.isFrozen(entries[0].requestBodyCapture)).toBe(true);
     expect(completions).toEqual([{
       schemaVersion: "task1.tool-execution-completion.v1",
       correlationId: entries[0].correlationId,
@@ -102,6 +110,8 @@ describe("tool execution completion observation", () => {
     )).rejects.toBe(expectedError);
 
     expect(entries).toHaveLength(1);
+    expect(entries[0].requestBodyCapture).toEqual({ outcome: "empty" });
+    expect(Object.isFrozen(entries[0].requestBodyCapture)).toBe(true);
     expect(completions).toEqual([{
       schemaVersion: "task1.tool-execution-completion.v1",
       correlationId: entries[0].correlationId,
@@ -124,8 +134,10 @@ describe("tool execution completion observation", () => {
       method: "POST",
       body: JSON.stringify({ query: "clone failure" }),
     });
+    const requestCloneError = new Error("request clone unavailable Bearer request-clone-secret");
+    requestCloneError.name = "BearerRequestCloneNameSecret";
     Object.defineProperty(request, "clone", {
-      value: () => { throw new Error("request clone unavailable"); },
+      value: () => { throw requestCloneError; },
     });
     const originalResponse = new Response("production-response", { status: 202 });
     Object.defineProperty(originalResponse, "clone", {
@@ -147,12 +159,24 @@ describe("tool execution completion observation", () => {
     expect(await returned.text()).toBe("production-response");
     expect(entries).toHaveLength(1);
     expect(entries[0]).not.toHaveProperty("requestBody");
+    expect(entries[0].requestBodyCapture).toEqual({
+      outcome: "failed",
+      failure: { stage: "request_body_clone", name: "Error" },
+    });
+    expect(Object.isFrozen(entries[0].requestBodyCapture)).toBe(true);
+    expect(Object.isFrozen(
+      entries[0].requestBodyCapture.outcome === "failed"
+        ? entries[0].requestBodyCapture.failure
+        : undefined,
+    )).toBe(true);
     expect(completions).toEqual([expect.objectContaining({
       correlationId: entries[0].correlationId,
       outcome: "failure",
       status: 202,
       failure: { name: "Error", message: "response clone unavailable" },
     })]);
+    expect(JSON.stringify({ entries, completions })).not.toContain("request-clone-secret");
+    expect(JSON.stringify({ entries, completions })).not.toContain("RequestCloneNameSecret");
   });
 
   it("records a normally returned 5xx response as a response completion", async () => {
@@ -176,6 +200,47 @@ describe("tool execution completion observation", () => {
       responseBody: { code: 50301, message: "upstream unavailable" },
       responseBodySha256: expect.stringMatching(/^[a-f0-9]{64}$/),
     })]);
+  });
+
+  it("distinguishes captured, empty, and failed Knowledge request-body observation", async () => {
+    const entries: ObservedKnowledgeToolsEntry[] = [];
+    const observe = (request: Request) => observeKnowledgeToolsExecution(
+      request,
+      () => Promise.resolve(new Response(null, { status: 204 })),
+      { entryObserver: (entry) => entries.push(entry) },
+    );
+
+    const failedRequest = new Request("http://knowledge.test/v3/tools/list", { method: "POST" });
+    Object.defineProperty(failedRequest, "clone", {
+      value: () => { throw new TypeError("Bearer knowledge-request-clone-secret"); },
+    });
+
+    await observe(new Request("http://knowledge.test/v3/tools/list", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ knowledge_id: "wiki-abc12345" }),
+    }));
+    await observe(new Request("http://knowledge.test/v3/tools/list", { method: "POST" }));
+    await observe(failedRequest);
+
+    expect(entries.map((entry) => entry.requestBodyCapture)).toEqual([
+      {
+        outcome: "captured",
+        rawBodySha256: "f7fb02819499f1eaf8768a7ad0178187abbe1e9059d1321fdd12f1be81fd928e",
+      },
+      { outcome: "empty" },
+      {
+        outcome: "failed",
+        failure: { stage: "request_body_clone", name: "TypeError" },
+      },
+    ]);
+    expect(entries.every((entry) => Object.isFrozen(entry.requestBodyCapture))).toBe(true);
+    expect(Object.isFrozen(
+      entries[2].requestBodyCapture.outcome === "failed"
+        ? entries[2].requestBodyCapture.failure
+        : undefined,
+    )).toBe(true);
+    expect(JSON.stringify(entries)).not.toContain("knowledge-request-clone-secret");
   });
 
   it("wraps Memory and Skill outer handlers so early 4xx returns complete exactly once", async () => {
@@ -219,6 +284,14 @@ describe("tool execution completion observation", () => {
     expect(memoryCompletions).toHaveLength(1);
     expect(skillEntries).toHaveLength(1);
     expect(skillCompletions).toHaveLength(1);
+    expect(memoryEntries[0].requestBodyCapture).toEqual({
+      outcome: "captured",
+      rawBodySha256: "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    });
+    expect(skillEntries[0].requestBodyCapture).toEqual({
+      outcome: "captured",
+      rawBodySha256: "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    });
     expect(memoryCompletions[0]).toMatchObject({
       correlationId: memoryEntries[0].correlationId,
       family: "memory",
@@ -293,6 +366,14 @@ describe("tool execution completion observation", () => {
     expect(rejected.status).toBe(400);
     expect(entries).toHaveLength(2);
     expect(completions).toHaveLength(2);
+    expect(entries[0].requestBodyCapture).toEqual({
+      outcome: "captured",
+      rawBodySha256: "f7fb02819499f1eaf8768a7ad0178187abbe1e9059d1321fdd12f1be81fd928e",
+    });
+    expect(entries[1].requestBodyCapture).toEqual({
+      outcome: "captured",
+      rawBodySha256: "64a76967b016825a49c2814bb80c5d78a85e53eb28aa948d8f2906b25a80860f",
+    });
     expect(completions.map((completion) => ({
       correlationId: completion.correlationId,
       endpoint: completion.endpoint,
