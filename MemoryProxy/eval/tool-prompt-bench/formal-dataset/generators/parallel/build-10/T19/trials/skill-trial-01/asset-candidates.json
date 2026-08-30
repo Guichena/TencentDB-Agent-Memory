@@ -1,0 +1,51 @@
+{
+  "schema_version": "task1.skill_asset_candidate.v1",
+  "asset_key": "T19-SKILL-AWS-AUTH",
+  "adaptation_proposal": {
+    "source_ids": [
+      "T19-SRC-AWS-AUTH",
+      "T19-SRC-AWS-AUTH-TOKENS-SESSIONS"
+    ],
+    "listing_description": "Application-level Amazon Cognito authentication and client-session guidance covering user-pool flows, OAuth/OIDC, token selection, refresh-token rotation, revocation, safe storage, and authorizer integration.",
+    "use_when": [
+      "A browser or mobile client needs Cognito sign-in, OAuth/OIDC, or token lifecycle guidance.",
+      "A configured Cognito app client is being migrated to refresh-token rotation or revocation.",
+      "A team needs to choose the correct token and refresh operation for an existing Cognito user pool client."
+    ],
+    "do_not_use_when": [
+      "The task is Amplify Gen2 backend definition work.",
+      "The task is IAM, STS, IAM Identity Center, or trust-policy authoring.",
+      "The task is API Gateway route/integration or Lambda implementation beyond Cognito authorizer behavior."
+    ],
+    "two_file_manifest_intent": {
+      "SKILL.md": "Use as the top-level selector and safety boundary: distinguish user pools from identity pools, identify public versus confidential clients, and enforce full-replacement read-modify-write for client updates.",
+      "references/tokens-and-sessions.md": "Use for the detailed token lifecycle procedure: rotation compatibility, retry grace, replacement-token persistence, supported refresh APIs, revocation reach, and storage/session nuances."
+    },
+    "source_grounded_procedure": [
+      {
+        "step": 1,
+        "procedure": "Read the current app-client configuration before changing it because the client update operation is a full replacement; preserve and resend every existing field.",
+        "source_id": "T19-SRC-AWS-AUTH",
+        "locator": "Critical Warnings: update-user-pool-client full-replace warning"
+      },
+      {
+        "step": 2,
+        "procedure": "Enable refresh-token rotation with the chosen retry grace period while retaining the existing OAuth, token-validity, scope, and flow settings that remain compatible.",
+        "source_id": "T19-SRC-AWS-AUTH-TOKENS-SESSIONS",
+        "locator": "Refresh token rotation, lines 49-68"
+      },
+      {
+        "step": 3,
+        "procedure": "Remove ALLOW_REFRESH_TOKEN_AUTH from explicit authentication flows when rotation is enabled; the legacy REFRESH_TOKEN_AUTH path is rejected at runtime under rotation.",
+        "source_id": "T19-SRC-AWS-AUTH-TOKENS-SESSIONS",
+        "locator": "Refresh token rotation, lines 70-74"
+      },
+      {
+        "step": 4,
+        "procedure": "Refresh through GetTokensFromRefreshToken or the OAuth token endpoint with grant_type=refresh_token, then atomically store and use the newest refresh token returned by each successful refresh.",
+        "source_id": "T19-SRC-AWS-AUTH-TOKENS-SESSIONS",
+        "locator": "Refresh token rotation, lines 67-74 and Common Errors, lines 193-199"
+      }
+    ]
+  }
+}

@@ -1,0 +1,1739 @@
+{
+  "schema_version": "task1.team_memory_assets.v1",
+  "team_id": "T19",
+  "l0Conversations": [
+    {
+      "assetId": "T19-L0-ATLAS-LOGIN-CUTOVER",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "sessionId": "t19-session-atlas-login-001",
+      "messages": [
+        {
+          "messageId": "t19-msg-atlas-login-001",
+          "role": "user",
+          "content": "AtlasGate 要把登录回调切到新的边界，先盘点旧域名、状态校验和浏览器会话。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "2cb1eb8559c6f16ce674e732f009ff3c30a8e1e158ba4de08eac4d6fb514ef57"
+        },
+        {
+          "messageId": "t19-msg-atlas-login-002",
+          "role": "assistant",
+          "content": "我会把回调、cookie 和刷新交换分开验证，并给每条线建立回滚观察项。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "ad0f86b0d2fef7308b1d40a428d1ab80c7418b028c53ffb4fbf75b55ab56dfe5"
+        },
+        {
+          "messageId": "t19-msg-atlas-login-003",
+          "role": "user",
+          "content": "第一次只改回调地址，移动端正常，桌面浏览器仍有旧状态被接受。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "6550250854a937dca3f199e38abbd2f11da712bfd0be5cb01a9872f8243d0acf"
+        },
+        {
+          "messageId": "t19-msg-atlas-login-004",
+          "role": "assistant",
+          "content": "先暂停扩展，补做状态与回调来源的成对校验；TokenForge 的令牌告警先不归因到这里。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "34b8b0ab6a22b0f1d66fd0305712328d90b75f1837c095773f2b20e46e7d8fe3"
+        },
+        {
+          "messageId": "t19-msg-atlas-login-005",
+          "role": "user",
+          "content": "第二次增加状态校验后，部分用户在重定向循环里丢失了原会话。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "1719473113ce3ebc6b9881b946bcaa8fcfcd279ec9c0c1ec206ec69f702902d9"
+        },
+        {
+          "messageId": "t19-msg-atlas-login-006",
+          "role": "assistant",
+          "content": "修正为保留一次性过渡状态，并记录首次失败的回调来源，避免无限重试。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "4d41cc4b95b0ad3040d85c5729ee85d76f337c879cb14a870549ecfb465c249a"
+        },
+        {
+          "messageId": "t19-msg-atlas-login-007",
+          "role": "user",
+          "content": "身份平台同事提醒，cookie 切换的兼容窗口与回调切换必须同批观察。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "7118ba9fc7bb61c2890fee514c11b889d574cdb7ca6b5b3cf79407022d47d3dc"
+        },
+        {
+          "messageId": "t19-msg-atlas-login-008",
+          "role": "assistant",
+          "content": "已把两者纳入同一发布清单，PermitMesh 的租户拒绝只作为旁路指标。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "2babd10eaad3de842a3e9dad07135b57d4a7eade4e1d71ac0be73ef7bfdab34b"
+        },
+        {
+          "messageId": "t19-msg-atlas-login-009",
+          "role": "user",
+          "content": "跨会话复盘还发现旧回调的告警会掩盖新回调的真实失败。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "ea001a7d8b2874790eebaae51bcede8bf5196b49a7ad6aa032c8e66efc46ae6f"
+        },
+        {
+          "messageId": "t19-msg-atlas-login-010",
+          "role": "assistant",
+          "content": "我会按回调版本拆分指标，并将旧路径告警标成迁移观察而非新路径失败。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "842e79507903bc80b722823e84265064866f93255ab58bf4ae152d5de000aae5"
+        },
+        {
+          "messageId": "t19-msg-atlas-login-011",
+          "role": "user",
+          "content": "最终验收需要覆盖成功登录、状态不匹配、回调超时和浏览器返回四类场景。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "7ea9bf61372a6bf39bf79263d0c5edaf9d74728883d0cbe06bfadccba20671ce"
+        },
+        {
+          "messageId": "t19-msg-atlas-login-012",
+          "role": "assistant",
+          "content": "这四类都已进入验收表，后续任何扩展先满足观测窗口再推进。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "ee4d383008a822df81906c2563ad0bc539fe43cd26fd7235fd5710bbf511331a"
+        }
+      ],
+      "contentHash": "fc2a18341a3753652c48d74e487461e7e1e157203f2916a88fef35511c6a0958"
+    },
+    {
+      "assetId": "T19-L0-ATLAS-COOKIE-FALLBACK",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "sessionId": "t19-session-atlas-cookie-002",
+      "messages": [
+        {
+          "messageId": "t19-msg-atlas-cookie-001",
+          "role": "user",
+          "content": "AtlasGate 的 cookie 标志切换出现少量跨站回退，先看 SameSite、Secure 和过期时间。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "3c77b455241b1da61712a647ced308533f39a49dc96416c9169521b9c8864598"
+        },
+        {
+          "messageId": "t19-msg-atlas-cookie-002",
+          "role": "assistant",
+          "content": "我会先复现浏览器差异，再检查服务端是否把旧 cookie 和新 cookie 同时写出。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "8199e00854e61858fdfbe3fe04515a49fc55ff362b3950a7fbc6503c93ccedef"
+        },
+        {
+          "messageId": "t19-msg-atlas-cookie-003",
+          "role": "user",
+          "content": "初版把所有 cookie 都设为严格模式，登录回调在嵌入式浏览器里失败。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "ab42da7fa619557f5543a3858a22b0629a9c2c3d2943fe464e445d29b4d0807e"
+        },
+        {
+          "messageId": "t19-msg-atlas-cookie-004",
+          "role": "assistant",
+          "content": "撤回全局修改，只对会话 cookie 按回调场景设置，并保留安全传输约束。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "e2e2eab11a70ead076087cb7da4a8fe279a689875a65a73a96395ff51a178b4a"
+        },
+        {
+          "messageId": "t19-msg-atlas-cookie-005",
+          "role": "user",
+          "content": "第二版只写新名称，旧名称没有清理，导致客户端持续带两个值。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "b0aa00d09ac4c9a77acf0aae212ddf5c28681f7b30150a41303a71ec8904a477"
+        },
+        {
+          "messageId": "t19-msg-atlas-cookie-006",
+          "role": "assistant",
+          "content": "加上旧名称的定向失效，并把清理动作限制在成功完成新会话之后。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "eb916458c6cb2ae87b470f14a0797836a7f3d432298d160a9add045b29d54518"
+        },
+        {
+          "messageId": "t19-msg-atlas-cookie-007",
+          "role": "user",
+          "content": "TokenForge 的刷新失败曲线与这次回退同日出现，但请求链路不同。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "47c6094bf811db7a03b382b0f4b923c2b134e73ad2a862266f3bef57495f8a53"
+        },
+        {
+          "messageId": "t19-msg-atlas-cookie-008",
+          "role": "assistant",
+          "content": "复盘中将它们标成并行项目，cookie 发布只引用浏览器会话指标。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "61c6176ad386bd14ff023bd8767f0028de6ea614ad528d09d0922ed9b0b1a23a"
+        },
+        {
+          "messageId": "t19-msg-atlas-cookie-009",
+          "role": "user",
+          "content": "跨会话测试要求覆盖首次登录、旧会话续期、跨站回调和退出。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "36de58b60ee1d55b12b67b49a45167ce8c9268950403009fac39a7cc574b493a"
+        },
+        {
+          "messageId": "t19-msg-atlas-cookie-010",
+          "role": "assistant",
+          "content": "我补了四组夹具，并在失败时输出 cookie 名称而不是敏感值。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "670ccba920698fbc78179becf4b3fab496b7b8593cf83480351a99c0fe84f2f3"
+        },
+        {
+          "messageId": "t19-msg-atlas-cookie-011",
+          "role": "user",
+          "content": "当前发布说明只允许在新会话成功率稳定后扩大人群。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "eb71ea1767281e10d2646fa24994d57976364aa49f28b697d2f3376774fcdac1"
+        },
+        {
+          "messageId": "t19-msg-atlas-cookie-012",
+          "role": "assistant",
+          "content": "已记录：扩大前必须完成稳定观察，并保留旧路径可恢复的开关。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "f79e60cc2ed2ba680f99ab343dd0df2471aa3b072afc09afaa409c01b5447ea2"
+        }
+      ],
+      "contentHash": "aacdcc897371067a5f5e55b8f2a94a5a79f73e8c78893f6b93f69d732cee9d2c"
+    },
+    {
+      "assetId": "T19-L0-TOKEN-ROTATION-INCIDENT",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "sessionId": "t19-session-token-incident-003",
+      "messages": [
+        {
+          "messageId": "t19-msg-token-incident-001",
+          "role": "user",
+          "content": "TokenForge 昨晚网关短暂超时，客户端随后出现重复刷新和偶发 invalid_grant。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "566930d70af98199fb3250310b931491e58608e70303cbf22bcb396953426252"
+        },
+        {
+          "messageId": "t19-msg-token-incident-002",
+          "role": "assistant",
+          "content": "我先分离网关结果、刷新交换和签名验证，避免把 JWKS 延迟当成同一根因。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "4f82a6c107ff110b82d880d0cfc47c3c7f1b29b5a5b71c13bdf3ffb486cc56ec"
+        },
+        {
+          "messageId": "t19-msg-token-incident-003",
+          "role": "user",
+          "content": "第一轮实验沿用了旧的 ALLOW_REFRESH_TOKEN_AUTH 路径，超时重试时会把同一令牌再次送入交换。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "f1207da06ac41e58456d7fabc0ea516887b98b409112bebdb0f0b1c82ec2cb73"
+        },
+        {
+          "messageId": "t19-msg-token-incident-004",
+          "role": "assistant",
+          "content": "这条路径无法区分服务端已成功但响应丢失的情况，重复提交会制造无效授权错误。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "4094577a784a40570403feb3f778604942385509fd3c3d841fb3938fa078468d"
+        },
+        {
+          "messageId": "t19-msg-token-incident-005",
+          "role": "user",
+          "content": "第二轮只把重试次数调小，仍会在边界时刻重复提交，失败率没有稳定下降。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "f404fd5fb68cf3d3112ebf4a062c00c17ace4a150a345a1c856af2d432883ef5"
+        },
+        {
+          "messageId": "t19-msg-token-incident-006",
+          "role": "assistant",
+          "content": "因此不再靠次数掩盖不确定结果，改为选用明确的交换接口并更新客户端状态。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "3c7ff68f4c63050ef698a667bfdb07648d4ed3b9c8175f64662e43fb101e2996"
+        },
+        {
+          "messageId": "t19-msg-token-incident-007",
+          "role": "user",
+          "content": "最终复盘确认使用 OAuth refresh_token 授权或 GetTokensFromRefreshToken 完成交换。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "ef3dfe5fe5d9712df4e6516a09e7ebd5fdd197696be0f93f7ab7d43d90ee3d9b"
+        },
+        {
+          "messageId": "t19-msg-token-incident-008",
+          "role": "assistant",
+          "content": "每次返回的新刷新令牌都必须持久化，旧值不能在成功响应后继续复用。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "b8321789f4965e5cabc78d36c07c5395f6ac712b4da2b71a55b9ac77fa20759b"
+        },
+        {
+          "messageId": "t19-msg-token-incident-009",
+          "role": "user",
+          "content": "JWKS 重叠观察正常，但验证缓存的延迟仍要单独跟踪。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "e4f3e4c4c2960eb5112274b130ba176693efe07ab99fab51c0a4fd5de0a4bbee"
+        },
+        {
+          "messageId": "t19-msg-token-incident-010",
+          "role": "assistant",
+          "content": "已把 JWKS 作为旁路指标，不再用它解释刷新交换选择。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "7f5e5d1ca881b6aab2650b52e4f651513ec7551d8060af913ef6328171191028"
+        },
+        {
+          "messageId": "t19-msg-token-incident-011",
+          "role": "user",
+          "content": "跨会话复盘要求把旧路径失败和替代路径写成可审计的决策演进。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "b62e6323df08424ef48b25bb6103704061ba66b21c763c3bc9fb78a180e117ad"
+        },
+        {
+          "messageId": "t19-msg-token-incident-012",
+          "role": "assistant",
+          "content": "已保留两次失败尝试、修正理由和最终交换方式，供后续回归引用。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "7262425962fa941c0546d55c1046dbb8b0ca975f3cbbe4912d490a8296318aca"
+        }
+      ],
+      "contentHash": "3a282ebd1aa9570fa383e2773bcc1bdc4bd4470d7f1164b978c66c09e45b9e0e"
+    },
+    {
+      "assetId": "T19-L0-TOKEN-JWKS-OVERLAP",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "sessionId": "t19-session-token-jwks-004",
+      "messages": [
+        {
+          "messageId": "t19-msg-token-jwks-001",
+          "role": "user",
+          "content": "TokenForge 的 JWKS 轮换观察有短暂缓存滞后，需要判断是否影响新旧令牌验证。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "18d0b1fc45da2af3af0fa88342ca3a3240b3cad8dc698a868c6cd573d10d786d"
+        },
+        {
+          "messageId": "t19-msg-token-jwks-002",
+          "role": "assistant",
+          "content": "我会按签发时间和验证节点比对缓存命中，先不改刷新交换逻辑。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "697a9cb5f2bbeff9c77f690cc3ee36d3e06f8f865335d0db636f33e1ace291b9"
+        },
+        {
+          "messageId": "t19-msg-token-jwks-003",
+          "role": "user",
+          "content": "第一次强制所有节点立即拉取，峰值期间反而触发上游限流。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "246869435dbd8a44c99983be3620a844d71fad764bca5d8a0ce5d6a00e356559"
+        },
+        {
+          "messageId": "t19-msg-token-jwks-004",
+          "role": "assistant",
+          "content": "撤回全量拉取，改为保留旧键并让节点按退避刷新。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "81627dce922f44e379c0c0fa7b04e67b37aa32fef330049cf4f653eb93b6269c"
+        },
+        {
+          "messageId": "t19-msg-token-jwks-005",
+          "role": "user",
+          "content": "第二次把缓存时间压到很短，验证错误下降但请求量明显上升。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "45ac555015d74a06ed2967197eee1e656d243d6f4424930515a590a6c943d194"
+        },
+        {
+          "messageId": "t19-msg-token-jwks-006",
+          "role": "assistant",
+          "content": "恢复合理缓存并增加重叠观察，令牌验证与刷新交换分别出指标。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "9a599321a7e806f38563694bca62bb63c8f8e86c183d93f90d9660fe3428f5ad"
+        },
+        {
+          "messageId": "t19-msg-token-jwks-007",
+          "role": "user",
+          "content": "AtlasGate 同期有登录回调迁移，不能把浏览器失败样本混入 JWKS。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "0e3063c70c0c3a2de07b0359a9d8da596bd42470072b8903adced44940719bff"
+        },
+        {
+          "messageId": "t19-msg-token-jwks-008",
+          "role": "assistant",
+          "content": "已按项目和验证端点切分样本，保留跨项目时间线供复盘。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "7583f9c92bf40d537b87f8fe54446bb4520e6822fd5d27086d2dd7b5737aeff4"
+        },
+        {
+          "messageId": "t19-msg-token-jwks-009",
+          "role": "user",
+          "content": "跨会话记录显示新键签发后旧键仍需短时可验证。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "f9c98da0a2946d9f4de0bf294e701255fd89394c37fe1fca27cbaf3d6befed17"
+        },
+        {
+          "messageId": "t19-msg-token-jwks-010",
+          "role": "assistant",
+          "content": "这只决定验证重叠，不改变刷新令牌的轮换契约。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "d480db8f1ae785e73c4ebc8f092152578d45532b25a1459581598a8349cf36fc"
+        },
+        {
+          "messageId": "t19-msg-token-jwks-011",
+          "role": "user",
+          "content": "最终验收覆盖缓存滞后、限流和旧键退出三个阶段。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "3f866355dc1ef121cf9368e5576d2798d67429a02a11fc3e4631589fb2c1b4d9"
+        },
+        {
+          "messageId": "t19-msg-token-jwks-012",
+          "role": "assistant",
+          "content": "验收完成后再缩短重叠，任何异常先恢复上一组键。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "1f56a0a08a3bb96036ddd574924891f5ff1069cfcdae0f1151d39ad5aa9a6297"
+        }
+      ],
+      "contentHash": "17c35efd267897818f5337d101a6a82145652173ff0826b8555d26ff944c2452"
+    },
+    {
+      "assetId": "T19-L0-PERMIT-TENANT-DENY",
+      "ownerAgentId": "agent-task1-t19-policy-assurance",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "sessionId": "t19-session-permit-deny-005",
+      "messages": [
+        {
+          "messageId": "t19-msg-permit-deny-001",
+          "role": "user",
+          "content": "PermitMesh 发现一个跨租户读取样本没有按预期拒绝，先核对主体租户和资源归属。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "aba814ff9ebf55e5896e8671ec7baa6e8b0ceab89b16c15a75442f472132b726"
+        },
+        {
+          "messageId": "t19-msg-permit-deny-002",
+          "role": "assistant",
+          "content": "我会保留请求租户、主体属性和资源租户三个维度，并给每次拒绝写原因。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "79c478d161233ca38ae250aa83f5c25040f88a2254062c37374019ae8a271e38"
+        },
+        {
+          "messageId": "t19-msg-permit-deny-003",
+          "role": "user",
+          "content": "初版只看角色名称，同名角色在两个租户都能读到资源。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "936958b126a1917731bc2b7274c806d871ca45c9e44087ecbf20ce2318c15011"
+        },
+        {
+          "messageId": "t19-msg-permit-deny-004",
+          "role": "assistant",
+          "content": "先撤回角色直通逻辑，强制把租户边界纳入决策输入。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "834269e5eefcdbcfdae60a362c6310980bb208eee8e9370b862334597ff22ba3"
+        },
+        {
+          "messageId": "t19-msg-permit-deny-005",
+          "role": "user",
+          "content": "第二版先做资源判断再做主体判断，审计上无法说明拒绝层次。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "8892f5f1eda36942c678ecf4283df11a87d9d982c687bfc8610cf43db97aec68"
+        },
+        {
+          "messageId": "t19-msg-permit-deny-006",
+          "role": "assistant",
+          "content": "把决策分层并输出稳定原因码，同时将平台运维例外单独标记。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "36a3e925dcbc9271a6f3cba8013bf29c08d941b10180edb61eca0d0376fe12bb"
+        },
+        {
+          "messageId": "t19-msg-permit-deny-007",
+          "role": "user",
+          "content": "WorkloadTrust 的服务身份错误也会看起来像租户拒绝。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "1acb04333071f7439878e1fa0ab0cf93dd315dd488eec20a1a0d027c1fd676cc"
+        },
+        {
+          "messageId": "t19-msg-permit-deny-008",
+          "role": "assistant",
+          "content": "测试先确认身份来源，再进入 PermitMesh 决策，避免两类失败互相覆盖。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "8e90de23b056e87cb03ee9e057dfacdc618e69c63265fdb101ba5cabda7b151f"
+        },
+        {
+          "messageId": "t19-msg-permit-deny-009",
+          "role": "user",
+          "content": "跨会话夹具覆盖缺少租户、错误租户、资源不存在和角色过期。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "0737ebbc18bb9db40baa5a45888ed1814c51a92c306bbc57a455bedb85b7fdc2"
+        },
+        {
+          "messageId": "t19-msg-permit-deny-010",
+          "role": "assistant",
+          "content": "这四种输入都加入回归，并要求拒绝原因可追溯到一层。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "9994f73cb29a6c2f5dc482ce766b2029f27ffc29139e703d697a1deb2c7c3819"
+        },
+        {
+          "messageId": "t19-msg-permit-deny-011",
+          "role": "user",
+          "content": "上线前还要检查例外工单是否具备审计上下文。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "373251f8422e1a4e214ae3ee86d9bba63887b1178d400a65c2333bbc2c618e11"
+        },
+        {
+          "messageId": "t19-msg-permit-deny-012",
+          "role": "assistant",
+          "content": "没有审计上下文的跨租户请求继续拒绝，例外不得扩散成通用角色能力。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "4ae130141e9306650e60aab8b331bb6922f04154ec56ba7341e773b1ef467ebd"
+        }
+      ],
+      "contentHash": "0d389b3b5bae446c3b070affd1323a0d30df261dcee8e15db391962a053fd01c"
+    },
+    {
+      "assetId": "T19-L0-PERMIT-ROLE-REGRESSION",
+      "ownerAgentId": "agent-task1-t19-policy-assurance",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "sessionId": "t19-session-permit-role-006",
+      "messages": [
+        {
+          "messageId": "t19-msg-permit-role-001",
+          "role": "user",
+          "content": "PermitMesh 新增角色条件后出现权限回归，现象集中在资源标签和旧角色组合。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "f91a162b304d3613b99e936f21ec85ae4b1cf72e00958a105a75e352ee0150ad"
+        },
+        {
+          "messageId": "t19-msg-permit-role-002",
+          "role": "assistant",
+          "content": "我会先固定旧角色行为，再逐项打开资源标签和主体属性。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "0b50893b1e8a2f4c09234d2b6005ff00e08c7e4fcdc6a2feccd72299baabddeb"
+        },
+        {
+          "messageId": "t19-msg-permit-role-003",
+          "role": "user",
+          "content": "第一次把标签缺失当成通配，导致没有标签的资源被放行。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "5b35dfc6bcf311a0b6015b41e50fc7c96d59b856bbfb250d7bfdfaa0aac85267"
+        },
+        {
+          "messageId": "t19-msg-permit-role-004",
+          "role": "assistant",
+          "content": "纠正为缺失即不满足条件，并增加拒绝样本。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "1a37b639a278739d4154b99d27ad3df5af884f96e38f93425c83ef7003649bf0"
+        },
+        {
+          "messageId": "t19-msg-permit-role-005",
+          "role": "user",
+          "content": "第二次只修了读取路径，写入路径仍复用旧的宽松判断。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "e679611eb976742e27c6fae32970086a6d32c46349f5c44ed0e3d997f9cffaaf"
+        },
+        {
+          "messageId": "t19-msg-permit-role-006",
+          "role": "assistant",
+          "content": "把读写动作拆成独立策略，禁止读取修复自动影响写入。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "d7ce99c007d249799fb3a8b45945cc4dda0eb2fabfc4424b18d2f1683b050e3c"
+        },
+        {
+          "messageId": "t19-msg-permit-role-007",
+          "role": "user",
+          "content": "KeyTurn 的权限回归同周发生，但它只涉及键读取，不涉及资源策略。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "a2c6ddefc50bd3721ea2167ff2cbdc59c3e977c5b06e9e5f5e26e2d189989078"
+        },
+        {
+          "messageId": "t19-msg-permit-role-008",
+          "role": "assistant",
+          "content": "两项回归分别保留，并在报告中按资源类型和动作维度分组。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "a9f063028f7058aa385838d252574c6234df45b0702c4ea0af0350122f2ff921"
+        },
+        {
+          "messageId": "t19-msg-permit-role-009",
+          "role": "user",
+          "content": "跨会话验证还发现旧角色的默认租户来自缓存。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "87596c57cdc01fcb72f3156e40d5a595b8d5d43f41215e36a2812a585d847fc2"
+        },
+        {
+          "messageId": "t19-msg-permit-role-010",
+          "role": "assistant",
+          "content": "禁止用缓存默认值补齐缺失租户，要求调用方明确提供。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "0c658b1c965e4eec3d356d3120a70134c7053de09691ec947a542ab3cfe9b7f7"
+        },
+        {
+          "messageId": "t19-msg-permit-role-011",
+          "role": "user",
+          "content": "最终夹具需要覆盖旧角色、新角色、标签缺失和跨租户四组。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "eaf38fe687ec34ee337d3f55747723eed4e18dac6ebae482c71e21f33813bf03"
+        },
+        {
+          "messageId": "t19-msg-permit-role-012",
+          "role": "assistant",
+          "content": "四组夹具均通过，授权保障会持续观察拒绝原因分布。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "b4f5a36f99fd3ee342eac29eff0fce0de63ca4a8f5a3941b6e9d554a749e681e"
+        }
+      ],
+      "contentHash": "91e73760fb05829127c1347431d892d41a2b7b2c115afe5362c4cbec2691e7b0"
+    },
+    {
+      "assetId": "T19-L0-WORKLOAD-FEDERATION",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "sessionId": "t19-session-workload-federation-007",
+      "messages": [
+        {
+          "messageId": "t19-msg-workload-fed-001",
+          "role": "user",
+          "content": "WorkloadTrust 要把部署身份从长期凭证切到短时联邦交换，先看来源、受众和租户映射。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "ac538081e502b8cd50159b1be64877d4c4db181a1253df6e7682b317c52b9843"
+        },
+        {
+          "messageId": "t19-msg-workload-fed-002",
+          "role": "assistant",
+          "content": "我会把外部声明验证、服务身份绑定和最终令牌交换分成三个阶段。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "1510cefed50d1edb969aa6eb1954a1c7bf5ff831a1f0785ed7bb0ca5a2636414"
+        },
+        {
+          "messageId": "t19-msg-workload-fed-003",
+          "role": "user",
+          "content": "第一轮只验证调用方名称，跨环境请求仍能进入交换。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "baefa0883608940b70e52403d19943d94b62734fe80fe860540ac0fa85b136a8"
+        },
+        {
+          "messageId": "t19-msg-workload-fed-004",
+          "role": "assistant",
+          "content": "撤回名称直通，要求声明来源和环境上下文都匹配。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "016d2cdeef4972a2cf91fe6b962626c7c0b0b96a9dee8803e28e39327ee2221c"
+        },
+        {
+          "messageId": "t19-msg-workload-fed-005",
+          "role": "user",
+          "content": "第二轮把 audience 放宽为资源前缀，测试通过但边界过大。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "b0362aeae72aab4360a1c4e7d4f1b573dad0dee8eb45a57d2e98e63d88c76a63"
+        },
+        {
+          "messageId": "t19-msg-workload-fed-006",
+          "role": "assistant",
+          "content": "改成精确契约，并把不接受的租户后缀加入负例。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "f8e0e80303e202c3b7e783fb9c506d5830cca1b9612336b92770938756aef0e3"
+        },
+        {
+          "messageId": "t19-msg-workload-fed-007",
+          "role": "user",
+          "content": "mTLS 证书轮换在另一会话中失败过，不能把证书过期误判成交换策略问题。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "5dfc60ba98365fff2ac08749b015d6e4964f68130cb718789567cf9ff26b6843"
+        },
+        {
+          "messageId": "t19-msg-workload-fed-008",
+          "role": "assistant",
+          "content": "先在入口确认证书链，再检查交换断言，两个错误各自告警。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "9dcac36a0927729d40ce07c800fe775556c5d648fa23661bb05f2e5eb76d7bb9"
+        },
+        {
+          "messageId": "t19-msg-workload-fed-009",
+          "role": "user",
+          "content": "跨会话回归还包含错误租户和错误受众两个样本。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "d1ca2a7d064e8bb677168688f358326702bc3c181cc6c70461e2e67255b42510"
+        },
+        {
+          "messageId": "t19-msg-workload-fed-010",
+          "role": "assistant",
+          "content": "这两个样本都必须拒绝，并输出不泄露令牌内容的原因。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "ec8c85466741dc6888817e2dae34280105809116d2a80f3c32d07c5df5689a3d"
+        },
+        {
+          "messageId": "t19-msg-workload-fed-011",
+          "role": "user",
+          "content": "发布前要去掉部署脚本里的长期密钥。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "e8978cf409991a5d4fee8ead6adf17dbd76d55330bc5593f6f2dbabfce65c95e"
+        },
+        {
+          "messageId": "t19-msg-workload-fed-012",
+          "role": "assistant",
+          "content": "已将短时交换设为唯一新路径，旧凭证只保留受控回退窗口。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "fe6354a5bef7c1557777b4253072a344ac6185fe07df9a30e177351fa7e4e917"
+        }
+      ],
+      "contentHash": "b36cec239892d92d281fb971d0806546c91a9eda9a80303ffd841a2cd1f3c2b6"
+    },
+    {
+      "assetId": "T19-L0-WORKLOAD-MTLS",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "sessionId": "t19-session-workload-mtls-008",
+      "messages": [
+        {
+          "messageId": "t19-msg-workload-mtls-001",
+          "role": "user",
+          "content": "WorkloadTrust 的 mTLS 轮换演练有节点仍使用旧证书，先看身份绑定和连接复用。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "987bebb11ce970eb8172fde4403a555c5b41b0990fce84a774d5cc0eda75e582"
+        },
+        {
+          "messageId": "t19-msg-workload-mtls-002",
+          "role": "assistant",
+          "content": "我会按证书链、连接池和服务身份三层排查，不先改令牌交换契约。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "b2949afbd0f6b62aa7497b146fa53da3d1e3b6ba9079fcd42479bc1fd6ad4591"
+        },
+        {
+          "messageId": "t19-msg-workload-mtls-003",
+          "role": "user",
+          "content": "第一次只替换文件，长连接继续使用旧证书。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "796b219c3d23ad41bca4bba55b5938180ef9075649f3df7d590e08d3911cb573"
+        },
+        {
+          "messageId": "t19-msg-workload-mtls-004",
+          "role": "assistant",
+          "content": "增加连接池轮换信号，确保新连接重新完成身份证明。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "3a3d60ba490586d5edafd8e733b87d3e0893e045e8463ff49ee87279771a4701"
+        },
+        {
+          "messageId": "t19-msg-workload-mtls-005",
+          "role": "user",
+          "content": "第二次在全量节点同时断开连接，短时间内把流量推向少数节点。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "23acc2f15f2b6c05c410d3fc2340ae5d57c3708bc99e2a196c79390bf71da322"
+        },
+        {
+          "messageId": "t19-msg-workload-mtls-006",
+          "role": "assistant",
+          "content": "改为分批排空和重连，保留旧证书只到该批次稳定为止。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "156262a2577d6fcf960ed793aa13f6b39947adc74f84822b9717527b6b884ec8"
+        },
+        {
+          "messageId": "t19-msg-workload-mtls-007",
+          "role": "user",
+          "content": "TokenForge 的验证缓存观察显示新身份声明传播也可能延迟。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "1ad4936bc485816d855ffba5021f4f58e5f6e406cc90787f9da4e43675c1d64e"
+        },
+        {
+          "messageId": "t19-msg-workload-mtls-008",
+          "role": "assistant",
+          "content": "将声明传播作为旁路指标，并确保 mTLS 失败先在连接层结束。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "34113c624603a4e78d4963f41a5ba48f880c73ab0bf9baec2b3c8d6b6b009b93"
+        },
+        {
+          "messageId": "t19-msg-workload-mtls-009",
+          "role": "user",
+          "content": "跨会话回归覆盖旧证书、新证书、连接复用和节点重启。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "827945241430bf2599a0bca324268a673303b5707209d2bae2eb06936e7a7100"
+        },
+        {
+          "messageId": "t19-msg-workload-mtls-010",
+          "role": "assistant",
+          "content": "四个阶段均加入验收，任何证书链错误都不进入策略决策。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "3fc564dc213bb5f9b20eb33770b18af0cd417dce7c5bac05f0a47f0db4e26843"
+        },
+        {
+          "messageId": "t19-msg-workload-mtls-011",
+          "role": "user",
+          "content": "当前运行手册要求分批完成后再缩短兼容观察。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "d7309ba1ce5235286aa3c9597695e03603cdd0678aed552badd30500f6d2e646"
+        },
+        {
+          "messageId": "t19-msg-workload-mtls-012",
+          "role": "assistant",
+          "content": "我会按批次记录完成时间和回退点，保留最小必要的旧证书窗口。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "f4f2bdb288e98a2a7300430ca920699d4aac5709557eef928143e26b03390de2"
+        }
+      ],
+      "contentHash": "45df96903331ac6ed3817876694240fdcbd73449b0f129a72a012da96ca10974"
+    },
+    {
+      "assetId": "T19-L0-KEY-ROTATION-CEREMONY",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "sessionId": "t19-session-key-ceremony-009",
+      "messages": [
+        {
+          "messageId": "t19-msg-key-ceremony-001",
+          "role": "user",
+          "content": "KeyTurn 要进行签名键轮换演练，先排列准备、重叠、切换和回退步骤。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "2c5aeb4be744e1ea2c2d7ba9482ac99839d7a33392c1a17cc366438eb9b98cb7"
+        },
+        {
+          "messageId": "t19-msg-key-ceremony-002",
+          "role": "assistant",
+          "content": "我会把发布新键、验证读取、切换签发和撤回旧键分别记录。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "d5e03e195dce9af6963913dd567098a3952df17db468a89d9240a26d2b3a5f0b"
+        },
+        {
+          "messageId": "t19-msg-key-ceremony-003",
+          "role": "user",
+          "content": "第一次先撤旧键再发新键，验证节点立刻出现失败。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "cb076b60a57448f259755a5312f3c81ecce0052115254c00fc1d0cda21a9cb2c"
+        },
+        {
+          "messageId": "t19-msg-key-ceremony-004",
+          "role": "assistant",
+          "content": "修正为先发布新键并观察读取，再切换签发，最后才撤旧键。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "04f4740a74c2bc34c78bab15a5424c83ce507bf7f3ec6b9649a5b08a5bca09a8"
+        },
+        {
+          "messageId": "t19-msg-key-ceremony-005",
+          "role": "user",
+          "content": "第二次步骤顺序正确，但读取角色在部分节点没有新键权限。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "c049fd32061c04a372cd6fb9e95a3ee65266dddebbc8dc5196ba902ac0524713"
+        },
+        {
+          "messageId": "t19-msg-key-ceremony-006",
+          "role": "assistant",
+          "content": "把读取权限检查提前到演练门槛，拒绝把写入权限作为临时补丁。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "cdfdd5f0ea71375879a9bae540b16207f3cd834bdba192a62a58ce3025c6eafe"
+        },
+        {
+          "messageId": "t19-msg-key-ceremony-007",
+          "role": "user",
+          "content": "WorkloadTrust 的服务身份刷新会同时发生，需要单独标注调用来源。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "b7fad470ba21069ce74e72092806ed22e1f61d97d3f69b389381240a14c17e04"
+        },
+        {
+          "messageId": "t19-msg-key-ceremony-008",
+          "role": "assistant",
+          "content": "已把服务身份刷新作为并行观察，不改变键轮换步骤。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "192ce21a0e449f80d0b316cb63d5634ccfd2d405d09a628de09e0c789b54b8be"
+        },
+        {
+          "messageId": "t19-msg-key-ceremony-009",
+          "role": "user",
+          "content": "跨会话演练要求每个阶段有可检查的进入和退出条件。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "5284550184d9b8362f0f312c75910b3d00b977ce480e711f7d1d28a65d9e2f0b"
+        },
+        {
+          "messageId": "t19-msg-key-ceremony-010",
+          "role": "assistant",
+          "content": "每一阶段都增加双人确认和可回退开关。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "c973746e538fc13f66e22a9c35346c114886b2acda7f45bb51092da5f46266d4"
+        },
+        {
+          "messageId": "t19-msg-key-ceremony-011",
+          "role": "user",
+          "content": "最终复盘要保留失败步骤与修正理由。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "92cc20d0356592dc2c5d707f18dec8c9f48dc09895cd4961b6924122749f053e"
+        },
+        {
+          "messageId": "t19-msg-key-ceremony-012",
+          "role": "assistant",
+          "content": "演练记录已包含失败尝试、权限检查和回退演示，供后续轮换复用。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "36240befcf8ec0f74164c002d7b3d36e92048583615da1fe7b4ecb43b5f46835"
+        }
+      ],
+      "contentHash": "254303de4835f069ca5d8f328dae7c78af9089e9d7d16bc1f2abd8374d1ca428"
+    },
+    {
+      "assetId": "T19-L0-KEY-PERMISSION-REGRESSION",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "sessionId": "t19-session-key-permission-010",
+      "messages": [
+        {
+          "messageId": "t19-msg-key-perm-001",
+          "role": "user",
+          "content": "KeyTurn 的权限回归阻塞轮换，读取新旧键的服务在一小段时间内得到不同结果。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "3635d52d0caf1db8e2137a0fd20105736cf4c2cda7595b10581c857504048981"
+        },
+        {
+          "messageId": "t19-msg-key-perm-002",
+          "role": "assistant",
+          "content": "我会分别核对重叠窗口、读取角色和租户绑定，避免用时间参数掩盖权限问题。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "338f2cb88bf743b9424cca6eda1f4d5dae2ff4bdf7bc6d675085d89db13f8d43"
+        },
+        {
+          "messageId": "t19-msg-key-perm-003",
+          "role": "user",
+          "content": "第一次只延长重叠窗口，错误仍在；第二次临时给所有服务写权限，测试虽绿但不合规。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "2d318e41f2a46a629a785217651adf47c9083f0932be75f338fb48bb68bb91e7"
+        },
+        {
+          "messageId": "t19-msg-key-perm-004",
+          "role": "assistant",
+          "content": "两次尝试都撤回，保留最小权限原则并追查读取角色的绑定。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "00bef5ad93d8b3c2b13bfdaa1be69442aaf78f889cd51b71a9cbcc1845735470"
+        },
+        {
+          "messageId": "t19-msg-key-perm-005",
+          "role": "user",
+          "content": "复现只发生在轮换读取角色，普通验证角色和写入角色不受影响。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "58353b25cc492429bad31505f89d50f9251f5888482b6b7ffadb16d44d234893"
+        },
+        {
+          "messageId": "t19-msg-key-perm-006",
+          "role": "assistant",
+          "content": "范围已收窄到该读取角色与两把轮换键的权限关系。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "7c24962a2b3fd9e3ab45acdaff79e3589c5e6a5159108d2a2d0f2c3de3f9b9db"
+        },
+        {
+          "messageId": "t19-msg-key-perm-007",
+          "role": "user",
+          "content": "TokenForge 的 JWKS 观察再次出现，但只涉及缓存状态。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "0d0d8389e143fc0d5aacbb94a24be3d7aef638dc22c18bbd6549e672b50557f1"
+        },
+        {
+          "messageId": "t19-msg-key-perm-008",
+          "role": "assistant",
+          "content": "把缓存观察留在旁路报告，不把它当作 KeyTurn 授权根因。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "2078f981e05dc55244cf134074b1fd59bc8344767b8b24b2a1c9867aab901917"
+        },
+        {
+          "messageId": "t19-msg-key-perm-009",
+          "role": "user",
+          "content": "最后一次修复只给读取角色补齐新旧键读取授权，并保持写入拒绝。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "75542b7ed3909a4f2e8cfb7b3a5f8ff9c3fff91ae70f66294aa5f4cc02f664b9"
+        },
+        {
+          "messageId": "t19-msg-key-perm-010",
+          "role": "assistant",
+          "content": "回归已覆盖旧键、新键、轮换中途和回滚，最小修复在四个阶段都稳定。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "29373c6862e074ebc55199d39c71f4958f99f7d5a37062bd504b076030d113fb"
+        },
+        {
+          "messageId": "t19-msg-key-perm-011",
+          "role": "user",
+          "content": "复盘标题需要明确根因不是窗口长度。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "2b948c1956fa82ee689d64ba537a813005da39358243075503881f1bfeec0486"
+        },
+        {
+          "messageId": "t19-msg-key-perm-012",
+          "role": "assistant",
+          "content": "已在复盘中保留根因、权限边界和拒绝写入的修复约束。",
+          "sourceEvidenceIds": [
+            "T19-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "f505e109e61a1f2b6ed564416e0ff17b29083a132b1dc071e11530cd382173e0"
+        }
+      ],
+      "contentHash": "4dff87f3b0af569c71f014a333b50671be595424024ad96eb446d3d2b27bc601"
+    }
+  ],
+  "l1Memories": [
+    {
+      "assetId": "T19-L1-ATLAS-REDIRECT-CANONICAL",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "AtlasGate 的规范回调地址只允许当前发布批次登记的来源；旧来源仅在过渡观测期间保留，状态参数必须与一次性会话绑定。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t19-msg-atlas-login-002",
+        "t19-msg-atlas-login-006"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "171560264edcbf04a933d1db43de43d7dba41ca0c4baa64add2921f3e21f1948"
+    },
+    {
+      "assetId": "T19-L1-ATLAS-SESSION-CUTOVER",
+      "ownerAgentId": "agent-task1-t19-identity-platform",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "decision",
+      "content": "当前 AtlasGate 会话切换 cohort 是低风险租户中 25% 的活跃浏览器会话，先保持双回调观测；若新会话成功率连续 10 分钟低于 99.5% 或旧 cookie 回退率超过 0.8%，立即停止扩展并恢复旧回调路径。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t19-msg-atlas-login-007",
+        "t19-msg-atlas-login-010",
+        "t19-msg-atlas-cookie-011",
+        "t19-msg-atlas-cookie-012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "031de58bba4b2944c20068b13df0997609a3b03892ee8f9e3e59cd343117ee99"
+    },
+    {
+      "assetId": "T19-L1-ATLAS-COOKIE-SAMESITE",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "会话 cookie 的跨站兼容只覆盖必要回调场景，必须启用安全传输并在新会话成功后定向失效旧名称，禁止全局放宽或长期双写。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t19-msg-atlas-cookie-003",
+        "t19-msg-atlas-cookie-006"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "834e44ac013b70072673a5515be350924c25b92bc9c182bbb90eeabbfc381535"
+    },
+    {
+      "assetId": "T19-L1-TOKEN-ROTATION-GRACE",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "TokenForge retry grace is 90 seconds, only for idempotent retry of the same refresh token after an ambiguous gateway-timeout outcome; after the window, do not replay. The rationale is to cover the client/gateway retry ceiling while tightly limiting reuse exposure.",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t19-msg-token-incident-001",
+        "t19-msg-token-incident-005"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "1852adfb3aa8d79c01452d826e00c62328e4c7e2430b439372e1ee2ce3bd89d9"
+    },
+    {
+      "assetId": "T19-L1-TOKEN-REVOCATION-SCOPE",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "刷新令牌撤销按客户端与会话范围执行；确认服务端已完成交换后，旧值不得再次提交，其他会话不会因单一会话撤销而被误伤。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t19-msg-token-incident-007",
+        "t19-msg-token-incident-008"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "dc1beb7f61e78b55a47bc181baffd3636445d31dce948e66df8566c895c1b14c"
+    },
+    {
+      "assetId": "T19-L1-TOKEN-JWKS-OVERLAP",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "decision",
+      "content": "TokenForge 的 JWKS 观察需要保留新旧键的短时验证重叠，节点按退避刷新；它只约束验证缓存，不改变刷新交换方式。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t19-msg-token-jwks-004",
+        "t19-msg-token-jwks-010"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "64db9c3f517246e5342b29132f416651651898db82425d86b559ff617f43ead6"
+    },
+    {
+      "assetId": "T19-L1-TOKEN-ROLLBACK-BOUNDARY",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "decision",
+      "content": "令牌轮换异常时冻结扩展、恢复上一组验证配置并保留必要的键重叠；不得通过无限重试或全量刷新来掩盖不确定结果。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t19-msg-token-jwks-003",
+        "t19-msg-token-jwks-012",
+        "t19-msg-token-incident-005",
+        "t19-msg-token-incident-010"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "7143c14cc9395b6ad19ba18822b6acbf2c5ba1d3c11dcb78144b1164dfc92496"
+    },
+    {
+      "assetId": "T19-L1-PERMIT-TENANT-DENY",
+      "ownerAgentId": "agent-task1-t19-policy-assurance",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "PermitMesh 对缺少租户、错误租户、资源不存在和角色过期的请求保持拒绝，并为拒绝记录稳定的分层原因；跨租户处理必须有受审计的运维工单上下文。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t19-msg-permit-deny-006",
+        "t19-msg-permit-deny-010"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "e1e4725e4b2aa2ba543aaf04d0bbde32ebd303326d98ec301924c02f7ad8379b"
+    },
+    {
+      "assetId": "T19-L1-PERMIT-SUBJECT-ATTRIBUTES",
+      "ownerAgentId": "agent-task1-t19-policy-assurance",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "授权主体必须显式携带请求租户、主体属性和资源归属；不能用角色名称或缓存默认值补齐缺失租户，也不能让登录来源替代租户边界。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t19-msg-permit-deny-003",
+        "t19-msg-permit-deny-008"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "e97b58f8df5ce907e9eecdb0a5dc27d9d42c1dd891ae1c4d10bc9329b1d35edb"
+    },
+    {
+      "assetId": "T19-L1-PERMIT-REGRESSION-FIXTURE",
+      "ownerAgentId": "agent-task1-t19-policy-assurance",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "PermitMesh 回归夹具覆盖旧角色、新角色、标签缺失和跨租户四组，并将读取和写入动作分开断言；缺失标签不视为通配。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t19-msg-permit-role-003",
+        "t19-msg-permit-role-006",
+        "t19-msg-permit-role-011"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "812de175200584a11ad240c9f3e09b4f14c1be066f42ff4f0551a0ef3b526e57"
+    },
+    {
+      "assetId": "T19-L1-WORKLOAD-AUDIENCE",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "WorkloadTrust token exchange 必须精确接受 audience `urn:workloadtrust:token-exchange` 并绑定调用方服务身份；环境后缀、租户名和宽泛资源前缀均不接受。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t19-msg-workload-fed-005",
+        "t19-msg-workload-fed-006"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "432f3985b1323f60a87fa12a2dc0f0bd9a31c0bac0c3dda976a2db7eb96c9935"
+    },
+    {
+      "assetId": "T19-L1-WORKLOAD-TOKEN-EXCHANGE",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "服务间交换按声明来源、服务身份、精确受众三步校验，错误租户或错误受众在交换入口拒绝，短时令牌替代部署脚本中的长期凭证。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t19-msg-workload-fed-002",
+        "t19-msg-workload-fed-010"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "26c1418310458d5322f02335f07c4a0fe581f0df68f4b8cb12e96fc89f7da760"
+    },
+    {
+      "assetId": "T19-L1-WORKLOAD-MTLS-IDENTITY",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "mTLS 轮换先完成证书链和连接池重连，再进入服务身份与令牌策略判断；分批排空连接，避免全量断开造成流量尖峰。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t19-msg-workload-mtls-004",
+        "t19-msg-workload-mtls-006"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "3456659953bda747a7fe8d2949ec394bf5e6287731847b9a0a13650abc76adca"
+    },
+    {
+      "assetId": "T19-L1-KEY-OVERLAP-WINDOW",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "decision",
+      "content": "KeyTurn 轮换顺序是先发布新键并确认读取，再切换签发，最后撤旧键；兼容观察结束前不得撤回仍被验证节点使用的旧键。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t19-msg-key-ceremony-003",
+        "t19-msg-key-ceremony-004"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "5fd2fb3e99af7ffdc7077184317c4ccd41bcf821d07623a492597809f29a65c7"
+    },
+    {
+      "assetId": "T19-L1-KEY-READER-PERMISSION",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "轮换读取角色只获得新旧键的读取授权，不能以临时写权限代替；权限门槛必须在演练进入前通过。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t19-msg-key-ceremony-005",
+        "t19-msg-key-ceremony-006"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "87b7e263d0cd8d1c558cdfac8cf5ade99805c52f288980d72d9588a4902e4834"
+    },
+    {
+      "assetId": "T19-L1-KEY-ROLLBACK-TRIGGER",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "decision",
+      "content": "KeyTurn 任一阶段出现验证失败或读取权限缺失时，停止推进并恢复上一组签发配置；回退保留读取重叠，不授予通用写权限。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t19-msg-key-ceremony-009",
+        "t19-msg-key-ceremony-010",
+        "t19-msg-key-perm-009",
+        "t19-msg-key-perm-010"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "3b2f2b4ad7593bd512ffbd85a97966c12d18bcead9e2623058f09018250ede8f"
+    }
+  ],
+  "l2Scenes": [
+    {
+      "assetId": "T19-L2-ATLAS-CUTOVER",
+      "ownerAgentId": "agent-task1-t19-identity-platform",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "path": "t19/atlasgate/session-cutover",
+      "summary": "AtlasGate 会话切换场景，记录处于分批观测阶段。",
+      "content": "场景记录包含切换前后会话建立、双回调观测、cookie 回退监测、失败样本分组和发布暂停动作。它将浏览器状态问题与令牌交换问题分开，并要求每个批次在扩大前完成稳定观察。",
+      "injected": true,
+      "supportingSessionIds": [
+        "t19-session-atlas-login-001",
+        "t19-session-atlas-cookie-002"
+      ],
+      "contentHash": "578c282c0746f99a4ab4e49b58170ecd74f734e44af818ed0c7f5008bca834ef"
+    },
+    {
+      "assetId": "T19-L2-TOKEN-LIFECYCLE",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "path": "t19/tokenforge/lifecycle",
+      "summary": "TokenForge 令牌生命周期调查场景，记录轮换与验证的联动状态。",
+      "content": "场景内容对比刷新交换、令牌撤销、JWKS 缓存和回退观察的边界，保留网关超时后的失败实验与修正过程，但不把验证缓存现象当作刷新路径选择。",
+      "injected": true,
+      "supportingSessionIds": [
+        "t19-session-token-incident-003",
+        "t19-session-token-jwks-004"
+      ],
+      "contentHash": "758ac5e7a2d54eeb7ba6014a394aed6e96d6cb66ab1d9957aecc7b5a600fdca9"
+    },
+    {
+      "assetId": "T19-L2-PERMIT-DECISION",
+      "ownerAgentId": "agent-task1-t19-policy-assurance",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "path": "t19/permitmesh/decision-contract",
+      "summary": "PermitMesh 租户授权契约场景，记录决策实现与审计状态。",
+      "content": "场景的正式决策顺序是：先确认主体身份与请求租户一致，再检查资源归属，随后评估角色和上下文策略，最后记录拒绝原因。只有平台运维主体在受审计的工单上下文中可跨租户处理，普通租户主体不得走这条例外。所有拒绝都保留分层原因。",
+      "injected": true,
+      "supportingSessionIds": [
+        "t19-session-permit-deny-005",
+        "t19-session-permit-role-006"
+      ],
+      "contentHash": "d79f6e84dfdbe149cd0c93fdf68d1f5d2da3c6128ae6a1e1acfa0868f13670f1"
+    },
+    {
+      "assetId": "T19-L2-WORKLOAD-IDENTITY",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "path": "t19/workloadtrust/federation",
+      "summary": "WorkloadTrust 联邦身份场景，记录服务间交换的推进状态。",
+      "content": "场景内容串联声明来源、mTLS 证书链、服务身份绑定和短时令牌交换的失败样本，展示从宽泛约束到精确契约的修正过程，并区分错误受众与证书过期。",
+      "injected": true,
+      "supportingSessionIds": [
+        "t19-session-workload-federation-007",
+        "t19-session-workload-mtls-008"
+      ],
+      "contentHash": "8a598178f3ed76e97d05d7d135eb5ead8115ffa2d92deaff8aea643d95fabbbb"
+    },
+    {
+      "assetId": "T19-L2-KEY-ROTATION",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "path": "t19/keyturn/rotation",
+      "summary": "KeyTurn 轮换准备场景，记录轮换处于可回退的准备状态。",
+      "content": "场景内容包括新旧键读取、签发切换、权限门槛、验证观测和回退演练，强调最小读取权限与失败即暂停的操作边界，并将 JWKS 旁路观察单独记账。",
+      "injected": true,
+      "supportingSessionIds": [
+        "t19-session-key-ceremony-009",
+        "t19-session-key-permission-010"
+      ],
+      "contentHash": "6efb581d2480567ac7e4019a0ebb3633f243342dc422d2d5e4dcd149c905cdb1"
+    }
+  ],
+  "l3Profiles": [
+    {
+      "assetId": "T19-L3-ENGINEERING-PREFERENCES",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-HISTORY-L3"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "content": "偏好先拆分身份、授权、会话和令牌边界，再讨论实现。\n偏好保留失败尝试、修正理由和可回退点。\n偏好用可审计的分层原因说明安全决策。\n遵循最小权限和默认拒绝。\n变更采用分批观察并保留可逆路径。\n测试不得记录秘密值，跨项目指标需明确分组。",
+      "stability": "team",
+      "contentHash": "93183469f0947493663407cdce062ae2430479b619ab5515e6407bf3e683be03"
+    }
+  ]
+}

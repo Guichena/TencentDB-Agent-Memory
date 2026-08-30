@@ -1,0 +1,13 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "T19-DS05-SKILL-TRIAL-01",
+  "external_source_ids": [
+    "T19-SRC-AWS-AUTH",
+    "T19-SRC-AWS-AUTH-TOKENS-SESSIONS"
+  ],
+  "generated_at": "2026-08-31T12:00:00+08:00",
+  "actual_count": 1
+}

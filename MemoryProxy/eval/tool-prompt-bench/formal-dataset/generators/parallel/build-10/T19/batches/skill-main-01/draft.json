@@ -1,0 +1,222 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T19-skill-main-01",
+  "stage": "DS05",
+  "team_id": "T19",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T19-PAIR-S02",
+      "external_source_ids": ["T19-SRC-ACCESS-CONTROL-POLICY-DESIGN"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "PermitMesh 正在把单租户角色检查扩展到多租户资源。"},
+        {"role": "assistant", "content": "我先把主体、动作、资源和租户边界分开，避免把 UI 上的角色提示当成真正的授权。"},
+        {"role": "user", "content": "已有 Admin、Operator、Viewer 三个稳定角色，但同一动作会随租户、资源标签和请求时间变化。"},
+        {"role": "assistant", "content": "这说明仅靠静态角色可能会把组织结构和运行时条件混在一起；还要考虑策略的治理与审计。"},
+        {"role": "user", "content": "我们希望服务端拒绝默认不允许的请求，并能解释每次允许或拒绝的原因。"},
+        {"role": "assistant", "content": "我会把允许与拒绝都记录下来，并为允许路径和拒绝路径准备测试。"},
+        {"role": "user", "content": "请结合当前多租户上下文，给出下一步的授权模型选择和落地边界。"}
+      ],
+      "changed_message_index": 7,
+      "query": "在不牺牲租户隔离和可审计性的前提下，请给出授权模型从结构到委托的确切层次顺序、每层解决的问题，以及落地时必须同时满足的完整通用门槛。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "这次评审只接受规范规定的逐层顺序和完整通用门槛清单，不接受泛化的模型建议；具体规则会在下一轮补齐。"},
+        "private_proposal": {
+          "unique_information_gap": "需要 access-control-policy-design 规定的六层精确顺序（结构、上下文、治理、关系、精度、委托）以及完整 Universal Rules 门槛（默认拒绝、服务端执行、记录每次决定、最小权限、策略版本化、定期访问审查、同时测试允许与拒绝）；共享上下文只覆盖了其中少数概念，不能推出完整规范答案。",
+          "route": "skill",
+          "target_asset_ids": ["T19-SKILL-ACCESS-CONTROL-POLICY-DESIGN"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "skill_view 返回该 Skill 的核心模型、决策矩阵和通用规则后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "采用以下规范顺序：RBAC 负责结构，ABAC 负责上下文，PBAC 负责治理，ReBAC 负责关系，ACL 负责精度，DAC 负责委托；多租户先落 RBAC+ABAC，需要跨服务治理时再加 PBAC，协作关系和对象例外按需引入 ReBAC/ACL/DAC。落地门槛必须全部满足：默认拒绝、服务端执行、记录每次允许和拒绝（主体/动作/资源/原因/时间）、最小权限、策略版本化并可审查回滚、按季度复核访问，以及同时测试允许和拒绝。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经完整给出六层规范顺序、各层职责、多租户落地顺序和全部通用门槛，不需要外部 Skill。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T19-SKILL-IAM-ACCESS-MANAGEMENT", "T19-SKILL-ZERO-TRUST"],
+      "controlled_delta_note": "Positive leaves the canonical six-layer order and complete universal rollout gates absent; Negative supplies exactly those facts while retaining the shared safe context.",
+      "source_fact_map": [
+        {"claim": "授权运行时问题应表达为主体对资源执行动作是否被允许，并按结构、上下文、治理、关系、精度、委托排列六层模型。", "source_id": "T19-SRC-ACCESS-CONTROL-POLICY-DESIGN", "locator": "SKILL.md §Core Mental Model"},
+        {"claim": "多租户 SaaS 推荐 RBAC + ABAC，Zero Trust 场景推荐 RBAC + ABAC + PBAC。", "source_id": "T19-SRC-ACCESS-CONTROL-POLICY-DESIGN", "locator": "SKILL.md §Quick Decision Matrix"},
+        {"claim": "通用门槛包括默认拒绝、服务端执行、记录每次决定、最小权限、策略版本化、季度访问审查以及同时测试允许和拒绝。", "source_id": "T19-SRC-ACCESS-CONTROL-POLICY-DESIGN", "locator": "SKILL.md §Universal Rules"}
+      ],
+      "sol_review_questions": ["追加的负例是否完整覆盖六层职责、推荐演进顺序和全部 Universal Rules？", "正例是否仍缺少目标 Skill 的精确层次顺序与完整门槛，而不是可由共享上下文泛化推断？"]
+    },
+    {
+      "draft_pair_id": "T19-PAIR-S03",
+      "external_source_ids": ["T19-SRC-LOCAL-OIDC-PROVIDER"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "AtlasGate 要在本地给浏览器登录做首次 OIDC 集成，真实身份提供方的客户端还没批下来。"},
+        {"role": "assistant", "content": "可以先用本地的规范兼容提供方，等真实环境就绪后再替换发行方配置。"},
+        {"role": "user", "content": "应用是公共浏览器客户端，回调由 localhost 上的开发服务器处理。"},
+        {"role": "assistant", "content": "公共客户端不能依赖能保密的凭据；客户端发现配置也应尽量由发行方的发现文档提供。"},
+        {"role": "user", "content": "团队之前在端口、回调路径和容器内外地址不一致时遇到过很难定位的登录失败。"},
+        {"role": "assistant", "content": "首次接线要把回调地址和发行方地址逐字对齐，并记录浏览器与容器各自实际访问的地址。"},
+        {"role": "user", "content": "请给出这次本地首次运行的具体接线约束，确保登录能回到回调端点。"}
+      ],
+      "changed_message_index": 7,
+      "query": "本地 OIDC 提供方和公共客户端首次接线时，启动参数、发现地址、回调地址和凭据策略分别应满足什么约束？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请先核对首次运行所需的约束，再给出最小配置建议；不要假设真实身份平台已经存在。"},
+        "private_proposal": {
+          "unique_information_gap": "需要 local-oidc-provider 中关于首次启动命令、精确 redirect_uri/issuer、公共客户端 PKCE 及发现地址的完整约束；上下文只描述了问题，不含这些具体步骤。",
+          "route": "skill",
+          "target_asset_ids": ["T19-SKILL-LOCAL-OIDC-PROVIDER"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "搜索后按唯一名称查看 local-oidc-provider，获得首次运行约束后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "最小运行可使用 `npx @cerberauth/stubidp --redirect-uri http://localhost:8080/callback`；客户端应指向 `{issuer}/.well-known/openid-configuration`，默认发行方是 `http://localhost:8484`，回调地址必须连端口和路径都精确一致。公共客户端使用无密钥的 PKCE 配置；若容器通过服务名访问提供方，就显式设置发行方以避免与 localhost 地址不一致。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经给出启动命令、默认发行方、发现地址、精确回调匹配、公共客户端 PKCE 和容器地址约束。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T19-SKILL-STUBIDP", "T19-SKILL-AUTH-IMPLEMENTATION-PATTERNS"],
+      "controlled_delta_note": "Positive leaves the first-run wiring facts absent; Negative supplies the complete local public-client wiring contract.",
+      "source_fact_map": [
+        {"claim": "首次运行可用 npx 启动本地提供方，并以 redirect-uri 参数注册回调。", "source_id": "T19-SRC-LOCAL-OIDC-PROVIDER", "locator": "SKILL.md §First run"},
+        {"claim": "OIDC 客户端应使用 issuer/.well-known/openid-configuration，默认 issuer 为 http://localhost:8484。", "source_id": "T19-SRC-LOCAL-OIDC-PROVIDER", "locator": "SKILL.md §First configuration; §Wire the app for the first time"},
+        {"claim": "首次配置必须精确匹配回调地址和 issuer；公共客户端不发 client secret 并使用 PKCE。", "source_id": "T19-SRC-LOCAL-OIDC-PROVIDER", "locator": "SKILL.md §First configuration; §Wire the app for the first time"}
+      ],
+      "sol_review_questions": ["正例是否需要发现才能定位到唯一 Skill？", "负例是否一次性提供了全部启动、issuer、回调和公共客户端约束？"]
+    },
+    {
+      "draft_pair_id": "T19-PAIR-S04",
+      "external_source_ids": ["T19-SRC-ZOOM-OAUTH"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "AtlasGate 还要接入一个视频会议提供方，让用户授权后读取自己的会议数据。"},
+        {"role": "assistant", "content": "这是用户授权场景，不应把代表整个账户的后台授权和用户授权混为一谈。"},
+        {"role": "user", "content": "回调链路已经能拿到授权码，首次换取访问凭证也成功过。"},
+        {"role": "assistant", "content": "接下来重点是凭证生命周期：访问凭证过期时要续期，并安全保存续期后返回的新凭证。"},
+        {"role": "user", "content": "最近一次故障是在服务重启后继续使用旧的续期凭证，用户被迫重新授权。"},
+        {"role": "assistant", "content": "要检查续期响应是否替换了旧值，以及存储层是否原子地提交了最新值。"},
+        {"role": "user", "content": "请针对这个提供方的用户授权集成，给出续期实现和失败回退的关键规则。"}
+      ],
+      "changed_message_index": 7,
+      "query": "用户授权模式下，访问凭证过期后如何续期、保存续期凭证，并在续期凭证失效时恢复登录？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请结合该提供方的实际 OAuth 行为给出关键规则，尤其关注重启后的续期。"},
+        "private_proposal": {
+          "unique_information_gap": "需要 zoom-oauth 对用户授权续期的提供方特定规则：使用 refresh_token、始终保存最新返回值，以及失效时重新走授权；共享上下文只提出故障，没有给出这些规则。",
+          "route": "skill",
+          "target_asset_ids": ["T19-SKILL-ZOOM-OAUTH"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "搜索并查看 zoom-oauth 的用户授权与 Token Lifecycle 内容后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "该提供方的用户授权使用 authorization_code 换取访问凭证；访问凭证约一小时过期，续期请求使用 refresh_token，并且每次响应都可能返回新的 refresh token，必须保存最新值供下一次使用。续期凭证失效时应回到授权地址重新开始用户授权；不要缓存授权码。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已完整给出续期方式、最新值替换、过期回退和授权码不可缓存规则。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T19-SKILL-ZOOM-REST-API", "T19-SKILL-AWS-AUTH"],
+      "controlled_delta_note": "Positive leaves provider-specific refresh behavior absent; Negative supplies exactly the refresh and reauthorization contract.",
+      "source_fact_map": [
+        {"claim": "用户授权流使用 authorization_code，交换后得到 access_token 和 refresh_token。", "source_id": "T19-SRC-ZOOM-OAUTH", "locator": "SKILL.md §User Authorization (Authorization Code Flow)"},
+        {"claim": "访问凭证约一小时过期，续期请求使用 refresh_token，并始终使用最新 refresh token。", "source_id": "T19-SRC-ZOOM-OAUTH", "locator": "SKILL.md §User Authorization (Authorization Code Flow) › Refresh Token"},
+        {"claim": "refresh token 失效时应重新进入授权流程，授权码有效期五分钟且不应缓存。", "source_id": "T19-SRC-ZOOM-OAUTH", "locator": "SKILL.md §Common Error Codes; §Key Learnings"}
+      ],
+      "sol_review_questions": ["正例是否确实需要提供方 Skill，而非仅凭共享故障描述？", "负例是否同时覆盖最新 refresh token、过期回退和授权码时效？"]
+    },
+    {
+      "draft_pair_id": "T19-PAIR-S05",
+      "external_source_ids": ["T19-SRC-AWS-IAM"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "WorkloadTrust 要更新一个服务角色，让它只被指定的云服务调用。"},
+        {"role": "assistant", "content": "先确认调用方服务和受信资源边界，再检查现有角色配置，避免把一次修改变成扩大信任面。"},
+        {"role": "user", "content": "当前角色已经被多个部署流程使用，不能覆盖掉既有的受信主体。"},
+        {"role": "assistant", "content": "因此修改前要保留现有语句和限制，并让新增信任条件只匹配预期账户与资源。"},
+        {"role": "user", "content": "安全评审特别担心服务角色被混淆代理利用，或者变更后意外允许任意账户调用。"},
+        {"role": "assistant", "content": "我会把账户和来源资源绑定到信任条件，并在变更后复核有效策略，而不是只看提交的片段。"},
+        {"role": "user", "content": "请给出本次角色信任策略变更的安全条件和操作顺序。"}
+      ],
+      "changed_message_index": 7,
+      "query": "如何安全地更新该服务角色的信任策略，既保留现有配置，又避免混淆代理和任意账户调用？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请按 AWS IAM 的已验证边界，只指出防混淆代理所需的两个具体条件键及其目的；读改写顺序沿用当前上下文。"},
+        "private_proposal": {
+          "unique_information_gap": "需要 aws-iam 明确给出防混淆代理所需的两个信任条件键 aws:SourceAccount 和 aws:SourceArn 及其用途；共享上下文没有给出这两个精确键名。安全的保留现有配置和读改写步骤属于当前上下文推理，不归因于冻结源文件。",
+          "route": "skill",
+          "target_asset_ids": ["T19-SKILL-AWS-IAM"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "直接查看预热的 aws-iam listing 对应内容，获得信任条件和工作流后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "对服务角色的信任关系同时加入 `aws:SourceAccount` 和 `aws:SourceArn` 条件以约束调用账户与来源资源，防止混淆代理；先读取现有完整信任策略，保留既有主体、语句和限制，只做窄化修改，再写回完整策略并复核最终有效权限。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已给出两个安全条件键、混淆代理目的，以及读取、保留、窄化、完整写回和复核的操作顺序。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T19-SKILL-IAM-ACCESS-MANAGEMENT", "T19-SKILL-AWS-SECURITY"],
+      "controlled_delta_note": "Positive leaves only the frozen source's exact two condition keys and confused-deputy purpose absent; safe preservation steps remain in shared context. Negative supplies the keys plus the same context-driven preservation steps.",
+      "source_fact_map": [
+        {"claim": "AWS 服务角色信任条件应使用 aws:SourceAccount 和 aws:SourceArn 以防混淆代理。", "source_id": "T19-SRC-AWS-IAM", "locator": "SKILL.md §About This Skill; §Service-Specific Roles"}
+      ],
+      "sol_review_questions": ["负例是否给出两个条件键及混淆代理目的，同时把保留既有配置明确留在当前上下文？", "正例是否只把两个键及其目的归因于冻结 aws-iam，而未声称存在未冻结的详细工作流？"]
+    },
+    {
+      "draft_pair_id": "T19-PAIR-S06",
+      "external_source_ids": ["T19-SRC-PIPELINE-SECURITY"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "WorkloadTrust 的 CI 部署作业目前把一个长期云访问密钥放在流水线机密中。"},
+        {"role": "assistant", "content": "先区分测试、构建和部署作业的权限，再决定部署凭证如何只在需要时出现。"},
+        {"role": "user", "content": "测试作业只跑单元测试，构建作业推送制品，部署作业才接触目标环境。"},
+        {"role": "assistant", "content": "这三个作业不应共享同一组高权限凭证；部署身份也应限制到它实际负责的环境。"},
+        {"role": "user", "content": "公共仓库的外部贡献者会创建拉取请求，我们不希望恶意改动读到生产机密。"},
+        {"role": "assistant", "content": "还要把外部贡献者的执行路径和生产凭证隔离，并保证流水线配置本身需要审查。"},
+        {"role": "user", "content": "请提出移除长期部署密钥的 CI 身份方案，并说明作业权限和外部贡献者的边界。"}
+      ],
+      "changed_message_index": 7,
+      "query": "怎样把 CI 部署身份改成短期、按作业和环境限定的方式，同时防止外部贡献者的流水线读取生产机密？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请结合安全流水线的成熟做法给出迁移方案，重点是身份联邦和机密暴露边界。"},
+        "private_proposal": {
+          "unique_information_gap": "需要 pipeline-security 的 OIDC 联邦、按作业最小权限、分环境凭证和 fork PR 机密隔离规则；上下文只有需求，没有给出该 Skill 的具体方案。",
+          "route": "skill",
+          "target_asset_ids": ["T19-SKILL-PIPELINE-SECURITY"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "搜索并查看 pipeline-security 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "改用 OIDC 联邦，让每次部署作业按仓库和工作流声明换取短期凭证，不再保存长期云密钥；测试作业不给云凭证，构建作业只给制品仓库权限，部署作业只给单一目标环境权限。默认不向来自 fork 的拉取请求注入生产机密，并对日志做掩码。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已完整提供 OIDC 短期凭证、三类作业权限边界、fork PR 隔离和日志掩码要求。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T19-SKILL-AWS-IAM", "T19-SKILL-SECRETS-MANAGEMENT"],
+      "controlled_delta_note": "Positive leaves the CI identity migration and secret boundary absent; Negative supplies the complete implementation contract.",
+      "source_fact_map": [
+        {"claim": "OIDC 联邦按作业签发短期、范围受限凭证，取代长期静态云凭证。", "source_id": "T19-SRC-PIPELINE-SECURITY", "locator": "SKILL.md §2. Use OIDC federation instead of long-lived static credentials"},
+        {"claim": "测试、构建和部署作业分别应无云权限、仅有制品推送权限、以及限定到单一环境的部署权限。", "source_id": "T19-SRC-PIPELINE-SECURITY", "locator": "SKILL.md §1. Give runners the least privilege the job actually needs"},
+        {"claim": "默认不向 fork 触发的拉取请求工作流授予生产机密，并掩码且不记录机密值。", "source_id": "T19-SRC-PIPELINE-SECURITY", "locator": "SKILL.md §3. Protect secrets from both exposure and exfiltration"}
+      ],
+      "sol_review_questions": ["正例是否只能由 pipeline-security 的 OIDC 和 fork PR 规则补足？", "负例是否完整涵盖凭证生命周期、作业最小权限和机密保护？"]
+    }
+  ]
+}

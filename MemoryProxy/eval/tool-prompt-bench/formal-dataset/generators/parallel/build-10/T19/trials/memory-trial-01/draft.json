@@ -1,0 +1,87 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T19-memory-trial-01",
+  "stage": "DS05",
+  "team_id": "T19",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T19-PAIR-M01",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们正在准备 TokenForge 的访问/刷新令牌轮换灰度。先把已经确认的约束对齐一下：这次改动不能破坏现有会话撤销语义，也不能让客户端在网络抖动时无意中重复完成一次轮换。"
+        },
+        {
+          "role": "assistant",
+          "content": "目前能确认的是：访问令牌仍按现有短时效策略签发，刷新令牌保持单次使用语义；撤销检查按主体和会话边界执行。灰度期间应同时观察刷新成功率、重复使用拒绝率和撤销传播延迟。"
+        },
+        {
+          "role": "user",
+          "content": "上次预演里有一类麻烦：客户端先收到网关超时，随后发现原请求其实可能已经被接受。我们需要避免它把这次不确定性当成一次全新的轮换。"
+        },
+        {
+          "role": "assistant",
+          "content": "这类情况应按幂等重试来处理，而不是放宽令牌单次使用规则。客户端重试时必须带上同一请求关联信息，服务端也要能区分可接受的重试与真正的重复使用。"
+        },
+        {
+          "role": "user",
+          "content": "我会把灰度检查项分成客户端行为、服务端判定和回滚信号三组。密钥重叠期间的验证也要继续，但不要把密钥轮换窗口和刷新重试处理混在一起。"
+        },
+        {
+          "role": "assistant",
+          "content": "同意。密钥重叠只解决验证方在切换期间识别新旧签名的问题；刷新重试则属于令牌轮换的一致性边界。两者都应有独立的监控和回滚记录。"
+        },
+        {
+          "role": "user",
+          "content": "我看到一条旧的团队讨论提到过‘短暂窗口’，但那条摘要没有把参数和决策背景带过来。我们先不要从经验值猜一个数字写进发布清单。"
+        },
+        {
+          "role": "assistant",
+          "content": "可以先保留待确认项：窗口必须足以覆盖一次正常的超时后重试，又要把旧令牌可被再次接受的暴露面限制在很短范围内。发布前需要补上有依据的具体约束和适用边界。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "我要完成 TokenForge 的 rollout checklist。请给出团队约定的具体 retry grace 时长、它针对的故障或客户端行为，以及采用该值的理由；回答必须包含这三个团队批准的具体要点。",
+      "positive": {
+        "delta_message": {
+          "role": "assistant",
+          "content": "补充一下灰度背景：对于瞬时网络错误，客户端会在原请求结果不确定时尝试重试；服务端要求这种重试保持幂等，并在超过约定边界后按普通的已完成或已失效请求处理。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "The exact retry-grace duration, the failure/client behavior it is intended to cover, and the rollout rationale are absent from the provider-visible context; they are available in the target team memory.",
+          "route": "memory",
+          "target_asset_ids": ["T19-L1-TOKEN-ROTATION-GRACE"],
+          "allowed_sequence_candidates": [["tdai_memory_search"]],
+          "stop_after_candidate": "Stop after the target memory candidate clearly provides the duration, covered retry condition, and rationale."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "assistant",
+          "content": "补充完整记录：TokenForge 将 retry grace 定为 90 秒，只覆盖瞬时网络错误下同一 refresh token 的幂等重试，用来处理请求已被接受但响应在网关超时中丢失的情形；超过 90 秒就按轮换已完成或令牌已失效处理，不再重放。采用 90 秒是因为它覆盖客户端与网关的重试/超时上界，同时把旧令牌可再次使用的风险限制在短窗口内。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "The appended record supplies the exact duration, its sole retry scope, the ambiguous-outcome failure mode, the post-window boundary, and the rationale; no retrieval is necessary."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T19-L1-TOKEN-REVOCATION-SCOPE",
+        "T19-L1-TOKEN-JWKS-OVERLAP",
+        "T19-L1-TOKEN-ROLLBACK-BOUNDARY"
+      ],
+      "controlled_delta_note": "The shared discussion and final query are byte-for-byte identical across the pair. The eighth appended message is the only change: the positive keeps the exact policy fact unresolved, while the negative supplies the complete policy fact and rationale.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Does the positive require recovering one specific team policy rather than guessing a generic retry timeout?",
+        "Does the negative delta provide the duration, covered behavior, boundary, and rationale without adding an unrelated TokenForge decision?",
+        "Are the nearby revocation, key-overlap, and rollback memories plausible distractors that cannot answer the requested grace policy?"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,258 @@
+{
+  "schema_version": "task1.luna_natural_negative_draft.v1",
+  "batch_id": "T19-natural-main-01",
+  "stage": "DS05",
+  "team_id": "T19",
+  "cases": [
+    {
+      "draft_case_id": "T19-NAT-01",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "AtlasGate 的回调校验要改成固定 allow-list。完整要求是：只接受 https://app.example.com/callback 和 https://console.example.com/callback；origin 必须逐字匹配，不能做前缀或通配符匹配；缺失或不匹配时返回 400；保留合法回调 URL 的 query 部分。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会在现有 callback middleware 中加入精确匹配和 400 分支，并补上两个允许值、缺失值、相似前缀和带 query 的测试。"
+        },
+        {
+          "role": "user",
+          "content": "当前实现是 `if (allowedOrigins.some((item) => candidate.startsWith(item))) next(); else res.status(400).end();`。请把它改成上述规则，保持 middleware 的入参、出参和合法 URL 的 query 不变。"
+        }
+      ],
+      "query": "请实现这次回调 allow-list 校验变更，并补齐覆盖所有给定边界的单元测试。",
+      "why_current_context_is_sufficient": "The context supplies the complete allow-list, exact comparison semantics, error behavior, query-preservation requirement, current implementation, and test boundaries.",
+      "visible_distractor_ids_author_only": ["T19-PROJ-TOKENFORGE", "T19-PROJ-KEYTURN"],
+      "sol_review_questions": [
+        "Are both accepted URLs, exact matching, the 400 response, and query preservation explicit?",
+        "Can implementation and tests be completed without historical or external facts?"
+      ]
+    },
+    {
+      "draft_case_id": "T19-NAT-02",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "AtlasGate 的现有 session middleware 需要统一安全 cookie 属性。要求固定为 `httpOnly: true`、`secure: true`、`sameSite: \"lax\"`、`path: \"/\"`，session 和 refresh 两个 cookie 都必须使用这组属性。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把属性集中成不可变配置，分别应用到两个 cookie 的写入点，并保留现有 cookie 名称、值、maxAge 和 domain。"
+        },
+        {
+          "role": "user",
+          "content": "当前代码在两个分支分别调用 `res.cookie('session', value, opts)` 和 `res.cookie('refresh', value, opts)`，其中 opts 只有 `httpOnly: true`。请直接按给定属性更新实现，并添加断言验证两个写入点。"
+        }
+      ],
+      "query": "请按完整要求更新 session middleware 的两个 cookie 写入点，并补充测试。",
+      "why_current_context_is_sufficient": "The supplied flags, affected cookies, preserved options, current calls, and required assertions fully specify the change.",
+      "visible_distractor_ids_author_only": ["T19-PROJ-WORKLOADTRUST", "T19-PROJ-KEYTURN"],
+      "sol_review_questions": [
+        "Are all four cookie flags and both cookie names explicit?",
+        "Does the request define what existing behavior must remain unchanged?"
+      ]
+    },
+    {
+      "draft_case_id": "T19-NAT-03",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "TokenForge 的 access-token expiry helper 约定：`issuedAt` 和 `expiresAt` 都是 Unix seconds；有效期判定使用 `now < expiresAt`；`now === expiresAt` 必须视为过期；任何 `now > expiresAt` 也视为过期。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会围绕有效、恰好到期、超过到期、以及 issuedAt 早于 expiresAt 的输入写单元测试，并保持 helper 的纯函数接口。"
+        },
+        {
+          "role": "user",
+          "content": "待测函数签名是 `isAccessTokenValid(now: number, issuedAt: number, expiresAt: number): boolean`。测试不需要模拟时钟；请使用 now 分别为 1700000000、1700003600、1700003601，issuedAt 固定为 1699999900，expiresAt 固定为 1700003600。"
+        }
+      ],
+      "query": "请为这个 expiry helper 编写覆盖边界的单元测试。",
+      "why_current_context_is_sufficient": "The context gives the time unit, exact predicate, function signature, all test timestamps, and the no-clock-mocking constraint.",
+      "visible_distractor_ids_author_only": ["T19-PROJ-ATLASGATE", "T19-PROJ-PERMITMESH"],
+      "sol_review_questions": [
+        "Are equality and greater-than expiry boundaries both tested?",
+        "Is the requested test data sufficient to avoid retrieving any token policy?"
+      ]
+    },
+    {
+      "draft_case_id": "T19-NAT-04",
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "TokenForge 的 JWKS cache helper 只需要重构结构，行为必须完全不变：缓存键是 issuer，成功响应缓存 10 分钟；命中时不发网络请求；网络错误直接向上抛出且不写入缓存；同一 issuer 的并发 miss 共享一个 in-flight promise。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把缓存读写和 in-flight 去重拆成小的纯职责函数，先锁定现有行为测试，再做重构。"
+        },
+        {
+          "role": "user",
+          "content": "现有接口是 `getJwks(issuer, fetcher)`，fetcher 返回 `Promise<Jwks>`, cache 由模块内部持有。请只做等价重构，不改变 10 分钟 TTL、错误传播、失败不缓存、issuer 隔离或并发共享，并保留原导出。"
+        }
+      ],
+      "query": "请在不改变行为的前提下重构 JWKS cache helper，并保留或补齐相应测试。",
+      "why_current_context_is_sufficient": "The request completely specifies the public API, cache key and TTL, hit/miss behavior, error semantics, concurrency rule, module state, and compatibility constraints.",
+      "visible_distractor_ids_author_only": ["T19-PROJ-ATLASGATE", "T19-PROJ-WORKLOADTRUST"],
+      "sol_review_questions": [
+        "Are all observable cache and error behaviors explicitly constrained?",
+        "Does preserving the original export remove the need for repository history?"
+      ]
+    },
+    {
+      "draft_case_id": "T19-NAT-05",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "PermitMesh 的授权请求 DTO 需要把 `tenant_id` 从路由参数传到服务层。字段名必须保持 snake_case，类型为非空 string；缺失或空字符串返回 400，其他字段和错误格式不变。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会在 DTO 中加入必填字段，在请求映射处从 `params.tenant_id` 复制它，并增加缺失、空值和正常值测试。"
+        },
+        {
+          "role": "user",
+          "content": "当前 DTO 是 `{ subject: string, action: string, resource: string }`，handler 已经有 `params` 对象，服务层方法签名改为接收 `{ tenant_id, subject, action, resource }`。请完成类型、映射、400 校验和测试，不改动 subject、action、resource 的语义。"
+        }
+      ],
+      "query": "请把 tenant_id 按给定契约贯穿 DTO、handler 映射和服务调用，并补齐测试。",
+      "why_current_context_is_sufficient": "The field name, type, validation, source parameter, target service signature, current DTO, error response, and preservation constraints are all supplied.",
+      "visible_distractor_ids_author_only": ["T19-PROJ-ATLASGATE", "T19-PROJ-TOKENFORGE"],
+      "sol_review_questions": [
+        "Is tenant_id's source, type, validation, and destination explicit?",
+        "Are unaffected DTO fields and error formatting protected?"
+      ]
+    },
+    {
+      "draft_case_id": "T19-NAT-06",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "PermitMesh 的授权分支必须 deny-by-default。规则完整定义为：只有 `decision === \"allow\"` 时返回 200 和 `{ allowed: true }`；`deny`、缺失 decision、未知字符串、策略异常都返回 403 和 `{ allowed: false }`。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会先把 allow 分支写成唯一成功路径，其他输入统一走 403，并让策略异常在边界层转成相同的拒绝响应。"
+        },
+        {
+          "role": "user",
+          "content": "当前 handler 是 `if (result.decision) return res.json({ allowed: true }); return res.status(403).json({ allowed: false });`，并且策略调用可能抛错。请按上述精确条件修正实现，保留响应 JSON 字段名。"
+        }
+      ],
+      "query": "请实现这个完整的 deny-by-default 分支，并覆盖所有列出的输入和异常测试。",
+      "why_current_context_is_sufficient": "The success predicate, response bodies and statuses, failure categories, current bug, and exception behavior are fully specified in context.",
+      "visible_distractor_ids_author_only": ["T19-PROJ-WORKLOADTRUST", "T19-PROJ-KEYTURN"],
+      "sol_review_questions": [
+        "Does only the exact allow value produce success?",
+        "Are missing, unknown, deny, and exception cases all explicitly covered?"
+      ]
+    },
+    {
+      "draft_case_id": "T19-NAT-07",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "WorkloadTrust 要把服务身份枚举中的 `LEGACY_AGENT` 重命名为 `BOOTSTRAP_AGENT`。这是纯重命名：序列化字符串从 `legacy_agent` 改为 `bootstrap_agent`，所有 exhaustive match 都必须更新，其他枚举值和运行逻辑不变。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会修改枚举成员和序列化映射，搜索所有 match 分支与 fixture，确保没有遗漏，并保留其余身份值的字符串。"
+        },
+        {
+          "role": "user",
+          "content": "当前定义为 `enum ServiceIdentity { LEGACY_AGENT = 'legacy_agent', WORKER = 'worker', SCHEDULER = 'scheduler' }`，编译器会检查穷尽匹配。请完成重命名、更新穷尽分支和对应断言，不新增别名或兼容值。"
+        }
+      ],
+      "query": "请完成服务身份枚举的纯重命名，并更新所有穷尽匹配和测试。",
+      "why_current_context_is_sufficient": "The old and new member names, serialized values, exhaustive-match requirement, unaffected members, and no-alias constraint are explicit.",
+      "visible_distractor_ids_author_only": ["T19-PROJ-PERMITMESH", "T19-PROJ-ATLASGATE"],
+      "sol_review_questions": [
+        "Are both the enum member and serialized string changes unambiguous?",
+        "Does the no-alias requirement prevent accidental compatibility behavior?"
+      ]
+    },
+    {
+      "draft_case_id": "T19-NAT-08",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "WorkloadTrust 的 audience 校验测试 fixture 要完全固定：服务身份为 `orders-worker`，期望 audience 为 `urn:workload:orders`；一个 token 的 aud 正好等于该值应通过，aud 为 `urn:workload:billing`、缺失 aud、以及 aud 数组中不包含该值都应拒绝。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会建立四个最小 token fixture，只改变 aud 情况，断言通过用例和三个拒绝用例的结果，不引入真实签名或网络依赖。"
+        },
+        {
+          "role": "user",
+          "content": "测试 helper 接收 `{ serviceIdentity, claims }`，claims 只需包含 `aud`。请固定 `serviceIdentity` 为 `orders-worker`，并让数组案例使用 `[\"urn:workload:billing\", \"urn:workload:inventory\"]`；不要改变校验器的接口。"
+        }
+      ],
+      "query": "请添加这个完全指定的 audience validation 测试 fixture 和四个断言用例。",
+      "why_current_context_is_sufficient": "The service identity, expected audience, all pass/fail cases, exact array contents, helper input, and no-network constraint are provided.",
+      "visible_distractor_ids_author_only": ["T19-PROJ-PERMITMESH", "T19-PROJ-KEYTURN"],
+      "sol_review_questions": [
+        "Are the scalar, wrong, missing, and array audience cases explicit?",
+        "Does the fixture avoid requiring signing keys or external service state?"
+      ]
+    },
+    {
+      "draft_case_id": "T19-NAT-09",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "KeyTurn 要把 key-id 解析逻辑抽成纯 helper。输入格式固定为 `kid:<provider>:<name>:<version>`；返回 `{ provider, name, version }`。provider、name、version 都必须非空；格式错误、字段缺失或多余字段都返回 `null`，不得抛异常。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会先抽出无副作用的 parser，严格检查前缀、分隔字段数量和非空字段，再让现有调用点使用它。"
+        },
+        {
+          "role": "user",
+          "content": "请保持输入字符串中的字段原样，不做 trim、大小写转换或 URL 解码。测试至少覆盖 `kid:aws:signing:7`、错误前缀、少一个字段、多一个字段和空字段，并断言失败返回 null。"
+        }
+      ],
+      "query": "请将 key-id 解析器抽成纯函数，并实现给定格式和完整边界测试。",
+      "why_current_context_is_sufficient": "The grammar, output shape, validation, failure result, purity requirements, no-normalization rule, and required examples are complete.",
+      "visible_distractor_ids_author_only": ["T19-PROJ-TOKENFORGE", "T19-PROJ-WORKLOADTRUST"],
+      "sol_review_questions": [
+        "Are field count and empty-field failures distinguished from valid parsing?",
+        "Is the no-trim/no-normalization behavior explicit enough for deterministic tests?"
+      ]
+    },
+    {
+      "draft_case_id": "T19-NAT-10",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "KeyTurn 的轮换审计日志需要增加三个字段，名称和值都已固定：`rotation_id` 使用当前请求的 `ctx.rotationId`，`key_phase` 使用 `ctx.phase`，`verification_result` 使用验证函数返回的 `result`。字段必须出现在每条 rotation_completed 日志中。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会在 rotation_completed 的统一日志构造处加入三个字段，保持现有 message、level 和其他字段不变，并用固定上下文断言日志对象。"
+        },
+        {
+          "role": "user",
+          "content": "当前日志是 `logger.info({ event: 'rotation_completed', keyId, durationMs })`，验证函数返回字符串 `passed` 或 `failed`。请按给定映射更新日志并添加两种结果的测试；不要把值改成布尔值或重新命名字段。"
+        }
+      ],
+      "query": "请为 rotation_completed 日志加入三个已指定字段，并补充 passed/failed 两种结果的测试。",
+      "why_current_context_is_sufficient": "The exact field names, value expressions, affected event, preserved fields, result domain, and test cases are all supplied.",
+      "visible_distractor_ids_author_only": ["T19-PROJ-ATLASGATE", "T19-PROJ-PERMITMESH"],
+      "sol_review_questions": [
+        "Are all three field-to-value mappings and the event scope explicit?",
+        "Does the request forbid changing the result representation or existing log fields?"
+      ]
+    }
+  ]
+}

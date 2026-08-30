@@ -1,0 +1,279 @@
+{
+  "schema_version": "task1.knowledge_asset_fixtures.v1",
+  "batch_id": "T19-knowledge-main-01",
+  "generated_at": "2026-08-31T00:00:00+08:00",
+  "assets": [
+    {
+      "asset_id": "T19-KNOW-WIKI-TOKEN-RUNBOOK",
+      "knowledge_id": "T19-KNOW-WIKI-TOKEN-RUNBOOK",
+      "type": "wiki",
+      "name": "TokenForge 内部运行手册",
+      "description": "TokenForge refresh-token rollout runbook with cohort selection, baseline, abort metrics, and recovery actions.",
+      "operations": [
+        { "name": "get_info", "parameters": {} },
+        { "name": "search", "parameters": { "query": "string", "limit": "integer" } },
+        { "name": "list_pages", "parameters": {} },
+        { "name": "read_page", "parameters": { "refs": "string[]" } },
+        { "name": "get_graph", "parameters": {} },
+        { "name": "list_raw", "parameters": {} },
+        { "name": "read_raw", "parameters": { "refs": "string[]" } }
+      ],
+      "get_info": {
+        "knowledge_id": "T19-KNOW-WIKI-TOKEN-RUNBOOK",
+        "type": "wiki",
+        "title": "TokenForge 内部运行手册",
+        "page_count": 3,
+        "default_search_limit": 10
+      },
+      "pages": [
+        {
+          "ref": "runbook/cohort-and-baseline",
+          "title": "首批租户与基线",
+          "updated_at": "2026-08-20T09:30:00+08:00",
+          "content": "首批只纳入低风险租户，采用分层抽样，覆盖总低风险租户的 12%。扩容前先保持现状 30 分钟，完成基线采样并记录 refresh exchange 成功率、错误率和延迟分位数。基线通过后才允许进入首批。"
+        },
+        {
+          "ref": "runbook/abort-metrics-and-recovery",
+          "title": "中止指标与恢复动作",
+          "updated_at": "2026-08-20T09:45:00+08:00",
+          "content": "连续 5 分钟内 refresh exchange 5xx 达到或超过 1.0% 时中止；invalid_grant 或 invalid_token 合计超过 0.8% 时中止。refresh p95 连续 10 分钟高于 450 ms 时也中止。中止后冻结扩容、恢复上一版 verifier、保持密钥重叠，并通知 on-call。"
+        },
+        {
+          "ref": "runbook/rollout-checklist",
+          "title": "扩容检查清单",
+          "updated_at": "2026-08-20T10:00:00+08:00",
+          "content": "值班人员确认分层样本、30 分钟基线、首批比例和三项中止指标均已记录，再观察 refresh exchange、令牌错误和 refresh 延迟。任何中止信号出现时，按恢复章节执行并暂停下一批。"
+        }
+      ],
+      "search_results": [
+        {
+          "query": "rollout cohort abort metrics",
+          "results": [
+            { "ref": "runbook/cohort-and-baseline", "title": "首批租户与基线", "snippet": "低风险租户、分层抽样、12%、30 分钟基线" },
+            { "ref": "runbook/abort-metrics-and-recovery", "title": "中止指标与恢复动作", "snippet": "5xx、令牌错误、refresh p95 与恢复动作" }
+          ]
+        }
+      ],
+      "graph": {
+        "edges": [
+          { "from": "runbook/cohort-and-baseline", "to": "runbook/abort-metrics-and-recovery", "relation": "gates" },
+          { "from": "runbook/abort-metrics-and-recovery", "to": "runbook/rollout-checklist", "relation": "operationalizes" }
+        ]
+      },
+      "raw_records": [
+        { "ref": "raw/tokenforge-rollout-2026-08-20", "title": "TokenForge rollout decision", "content": "首批为低风险租户的 12%，分层抽样，先做 30 分钟基线。中止阈值：refresh exchange 5xx >=1.0%/5m，invalid_grant 或 invalid_token >0.8%/5m，或 refresh p95 >450 ms/10m。中止后冻结扩容、恢复上一版 verifier、保持密钥重叠并通知 on-call。" }
+      ]
+    },
+    {
+      "asset_id": "T19-KNOW-CG-PERMIT-SERVICE",
+      "knowledge_id": "T19-KNOW-CG-PERMIT-SERVICE",
+      "type": "code_graph",
+      "name": "PermitMesh 授权服务图谱",
+      "description": "Launch-revision code graph for the skill visibility implementation used by team-wide skill search.",
+      "grounding": {
+        "repository": "https://github.com/TencentCloud/TencentDB-Agent-Memory.git",
+        "commit": "ffa1fe18085d47ed4da6b2306240152cc8590a86",
+        "license": "MIT",
+        "lock_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T19/workspace-code-lock.json",
+        "lock_sha256": "0902d1e085b405a9ecebd4bae89e783e6848607ac2d9a0d1e21e236607d11595",
+        "files": [
+          {
+            "path": "MemoryProxy/src/skill/skill-bridge.ts",
+            "sha256": "600b834c5948202e0be130c3d9a1fc133f2d9582dca9730aa2d75da840f07991",
+            "facts": [
+              "createSkillBridgeHandler composes the team-visible and current-owner skill whitelist and fails closed when visibility resolution fails.",
+              "createSkillBridgeHandler calls filterTeamSearchResponse before lazy pinning.",
+              "filterTeamSearchResponse filters data.items by skill_id and slices to the original top-k."
+            ]
+          },
+          {
+            "path": "MemoryProxy/src/meta/client.ts",
+            "sha256": "70ba7317c1ac2d1d21bbd8efd9aceeac6f8b8a3062a8b93b592ca1dbda3e6b69",
+            "facts": ["The meta client exposes the server-side visibility listing used by team-wide skill search."]
+          },
+          {
+            "path": "MemoryCore/src/gateway/skill-schemas.ts",
+            "sha256": "a0f1936413baf09872080afda06239e32232112b9a48d8f20bcfd5a66f5e431f",
+            "facts": ["The search input schema defines team scope behavior for the gateway."]
+          },
+          {
+            "path": "MemoryCore/src/gateway/skill-handlers.ts",
+            "sha256": "c5b0e1d2e93ea9fa11f5bc5117de6cfea993fcab5b91b67165251cb0e3a40bae",
+            "facts": ["The gateway handler strips agent_id for team-scoped search before calling the store."]
+          }
+        ]
+      },
+      "operations": [
+        { "name": "get_info", "parameters": {} },
+        { "name": "search", "parameters": { "query": "string", "kind": "string", "limit": "integer" } },
+        { "name": "explore", "parameters": { "query": "string", "maxFiles": "integer" } },
+        { "name": "callers", "parameters": { "symbol": "string", "limit": "integer" } },
+        { "name": "callees", "parameters": { "symbol": "string", "limit": "integer" } },
+        { "name": "impact", "parameters": { "symbol": "string", "depth": "integer" } },
+        { "name": "node", "parameters": { "symbol": "string", "includeCode": "boolean", "file": "string?", "line": "integer?" } },
+        { "name": "status", "parameters": {} },
+        { "name": "files", "parameters": { "path": "string", "pattern": "string", "format": "string" } }
+      ],
+      "get_info": {
+        "knowledge_id": "T19-KNOW-CG-PERMIT-SERVICE",
+        "type": "code_graph",
+        "title": "PermitMesh 授权服务图谱",
+        "grounded_commit": "ffa1fe18085d47ed4da6b2306240152cc8590a86",
+        "available_search_kind": "symbol"
+      },
+      "listing": {
+        "resources": [
+          {
+            "knowledge_id": "T19-KNOW-CG-PERMIT-SERVICE",
+            "type": "code_graph",
+            "operations": ["get_info", "search", "explore", "callers", "callees", "impact", "node", "status", "files"]
+          }
+        ]
+      },
+      "search_results": [
+        {
+          "query": "filterTeamSearchResponse",
+          "kind": "symbol",
+          "results": [
+            {
+              "symbol": "createSkillBridgeHandler",
+              "kind": "function",
+              "file": "MemoryProxy/src/skill/skill-bridge.ts",
+              "facts": [
+                "createSkillBridgeHandler calls filterTeamSearchResponse before lazy pinning.",
+                "filterTeamSearchResponse filters data.items by skill_id and slices to the original top-k."
+              ]
+            },
+            {
+              "symbol": "filterTeamSearchResponse",
+              "kind": "function",
+              "file": "MemoryProxy/src/skill/skill-bridge.ts",
+              "facts": ["Filters data.items by skill_id and slices to the original top-k."]
+            }
+          ]
+        }
+      ],
+      "nodes": [
+        {
+          "symbol": "createSkillBridgeHandler",
+          "kind": "function",
+          "file": "MemoryProxy/src/skill/skill-bridge.ts",
+          "facts": [
+            "Composes the team-visible and current-owner skill whitelist and fails closed when visibility resolution fails.",
+            "Calls filterTeamSearchResponse before lazy pinning."
+          ],
+          "code_excerpt": "createSkillBridgeHandler calls filterTeamSearchResponse before lazy pinning."
+        },
+        {
+          "symbol": "filterTeamSearchResponse",
+          "kind": "function",
+          "file": "MemoryProxy/src/skill/skill-bridge.ts",
+          "facts": ["Filters data.items by skill_id and slices to the original top-k."],
+          "code_excerpt": "filterTeamSearchResponse filters data.items by skill_id and slices to the original top-k."
+        }
+      ],
+      "call_results": [
+        {
+          "operation": "search",
+          "parameters": { "query": "filterTeamSearchResponse", "kind": "symbol", "limit": 10 },
+          "result": {
+            "results": [
+              {
+                "symbol": "createSkillBridgeHandler",
+                "file": "MemoryProxy/src/skill/skill-bridge.ts",
+                "facts": [
+                  "createSkillBridgeHandler calls filterTeamSearchResponse before lazy pinning.",
+                  "filterTeamSearchResponse filters data.items by skill_id and slices to the original top-k."
+                ]
+              },
+              {
+                "symbol": "filterTeamSearchResponse",
+                "file": "MemoryProxy/src/skill/skill-bridge.ts",
+                "facts": ["Filters data.items by skill_id and slices to the original top-k."]
+              }
+            ]
+          }
+        }
+      ],
+      "status": { "state": "locked", "commit": "ffa1fe18085d47ed4da6b2306240152cc8590a86" },
+      "files_results": [
+        { "path": "MemoryProxy/src/skill/skill-bridge.ts", "pattern": "*", "format": "paths" },
+        { "path": "MemoryProxy/src/meta/client.ts", "pattern": "*", "format": "paths" },
+        { "path": "MemoryCore/src/gateway/skill-schemas.ts", "pattern": "*", "format": "paths" },
+        { "path": "MemoryCore/src/gateway/skill-handlers.ts", "pattern": "*", "format": "paths" }
+      ]
+    },
+    {
+      "asset_id": "T19-KNOW-WIKI-KEY-CEREMONY",
+      "knowledge_id": "T19-KNOW-WIKI-KEY-CEREMONY",
+      "type": "wiki",
+      "name": "KeyTurn 轮换仪式手册",
+      "description": "KeyTurn signing-key rotation ceremony with overlap verification and rollback criteria.",
+      "operations": [
+        { "name": "get_info", "parameters": {} },
+        { "name": "search", "parameters": { "query": "string", "limit": "integer" } },
+        { "name": "list_pages", "parameters": {} },
+        { "name": "read_page", "parameters": { "refs": "string[]" } },
+        { "name": "get_graph", "parameters": {} },
+        { "name": "list_raw", "parameters": {} },
+        { "name": "read_raw", "parameters": { "refs": "string[]" } }
+      ],
+      "fixed_binding": {
+        "direct_operation": "search",
+        "query": "验证顺序",
+        "limit": 5
+      },
+      "get_info": {
+        "knowledge_id": "T19-KNOW-WIKI-KEY-CEREMONY",
+        "type": "wiki",
+        "title": "KeyTurn 轮换仪式手册",
+        "page_count": 3
+      },
+      "pages": [
+        {
+          "ref": "rotation/ceremony-overview",
+          "title": "轮换仪式总览",
+          "updated_at": "2026-08-18T14:00:00+08:00",
+          "content": "轮换期间保持新旧签名密钥同时在线，先完成验证记录，再执行撤旧。每一步都要记录验证对象、结果和操作者。"
+        },
+        {
+          "ref": "rotation/verification-and-rollback",
+          "title": "验证顺序与回退",
+          "updated_at": "2026-08-18T14:20:00+08:00",
+          "content": "完成轮换前按以下顺序验证：先用旧密钥验证存量令牌；再用新密钥签发并验证新令牌；随后撤掉旧密钥，并重验一次拒绝路径。若撤旧后的存量令牌验证错误率在 10 分钟内超过 0.5%，立即冻结轮换并恢复旧密钥。"
+        },
+        {
+          "ref": "rotation/closeout-record",
+          "title": "收尾记录",
+          "updated_at": "2026-08-18T14:40:00+08:00",
+          "content": "收尾记录必须包含旧密钥存量令牌验证、新密钥签发验证、撤旧后的拒绝路径复验，以及错误率窗口和是否触发回退。"
+        }
+      ],
+      "search_results": [
+        {
+          "query": "验证顺序",
+          "results": [
+            {
+              "ref": "rotation/verification-and-rollback",
+              "title": "验证顺序与回退",
+              "snippet": "存量令牌、新令牌、撤旧拒绝路径与 10 分钟错误率阈值",
+              "facts": [
+                "先用旧密钥验证存量令牌，再用新密钥签发并验证新令牌，随后撤掉旧密钥并重验一次拒绝路径。",
+                "若撤旧后的存量令牌验证错误率在 10 分钟内超过 0.5%，立即冻结轮换并恢复旧密钥。"
+              ]
+            }
+          ]
+        }
+      ],
+      "graph": {
+        "edges": [
+          { "from": "rotation/ceremony-overview", "to": "rotation/verification-and-rollback", "relation": "precedes" },
+          { "from": "rotation/verification-and-rollback", "to": "rotation/closeout-record", "relation": "records" }
+        ]
+      },
+      "raw_records": [
+        { "ref": "raw/keyturn-ceremony-2026-08-18", "title": "KeyTurn rotation closeout", "content": "旧密钥验证存量令牌，新密钥签发并验证新令牌，撤旧后复验拒绝路径；撤旧后存量令牌验证错误率超过 0.5% 且持续窗口为 10 分钟时冻结轮换并恢复旧密钥。" }
+      ]
+    }
+  ]
+}
