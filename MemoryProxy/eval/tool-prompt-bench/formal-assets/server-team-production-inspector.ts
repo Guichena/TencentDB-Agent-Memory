@@ -292,7 +292,12 @@ function resolveRuntimeIdentity(
   }
   const team = plan.identityMappings.teams.find((item) => item.datasetTeamId === expected.teamId);
   const agent = plan.identityMappings.agents.find((item) => item.datasetAgentId === expected.agentId);
-  const task = plan.identityMappings.tasks.find((item) => item.datasetTaskId === expected.taskId);
+  // Prepared-run bindings carry the provider-safe transport Task id. The
+  // restore plan retains both that id and the original dataset id so either
+  // representation can be inspected without weakening the identity check.
+  const task = plan.identityMappings.tasks.find(
+    (item) => item.datasetTaskId === expected.taskId || item.transportTaskId === expected.taskId,
+  );
   const user = plan.identityMappings.users.find((item) => item.datasetUserId === expected.datasetUserId);
   if (!team || !agent || !task || !user) return fail("prepared run identity is absent from the restore plan");
   return {

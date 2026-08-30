@@ -23,6 +23,7 @@ const DATASET = {
   agent: "dataset-agent",
   task: "dataset-task",
 } as const;
+const TRANSPORT_TASK = "task-provider-safe";
 const RUNTIME = {
   space: "runtime-space",
   user: "runtime-user",
@@ -40,7 +41,7 @@ const expected: FormalExpectedExecutionBinding = {
   spaceId: DATASET.space,
   teamId: DATASET.team,
   agentId: DATASET.agent,
-  taskId: DATASET.task,
+  taskId: TRANSPORT_TASK,
   sessionId: "formal-session-opaque",
   agentSource: "codex",
   visibleAssetSetSha256: canonicalSha256({
@@ -62,7 +63,11 @@ function plan(): FormalAssetRestorePlan {
         { datasetAgentId: DATASET.agent, runtimeAgentId: { actionId: "agent-create" } },
         { datasetAgentId: DATASET_IMPORTED_AGENT, runtimeAgentId: { actionId: "agent-imported-create" } },
       ],
-      tasks: [{ datasetTaskId: DATASET.task, runtimeTaskId: { actionId: "task-create" } }],
+      tasks: [{
+        datasetTaskId: DATASET.task,
+        transportTaskId: TRANSPORT_TASK,
+        runtimeTaskId: { actionId: "task-create" },
+      }],
     },
     selectedVisibleAssetSets: [{
       teamId: DATASET.team,
