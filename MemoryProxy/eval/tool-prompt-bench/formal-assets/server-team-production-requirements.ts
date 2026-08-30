@@ -51,6 +51,8 @@ export interface ServerTeamRequirementResolverConfig {
   readonly authUserIdsByDatasetUserId: Readonly<Record<string, string>>;
   /** Candidate directories whose root contains the manifest's SKILL.md. */
   readonly skillPackageRoots: readonly string[];
+  /** Dataset-visible aliases already frozen in the restore plan, keyed by formal asset id. */
+  readonly runtimeSkillNamesByFormalAssetId?: Readonly<Record<string, string>>;
   readonly importMemoryL1: ServerTeamMemoryImportHook;
   readonly importMemoryL2: ServerTeamMemoryImportHook;
 }
@@ -200,6 +202,7 @@ function safeManifestPath(
 async function loadMatchingSkillPackage(
   requirement: RestorePlanRequirement,
   roots: readonly string[],
+  runtimeSkillNamesByFormalAssetId: Readonly<Record<string, string>>,
 ): Promise<Readonly<{
   values: Readonly<Record<string, unknown>>;
   evidence: unknown;
@@ -253,6 +256,37 @@ async function loadMatchingSkillPackage(
     if (!isUtf8(entryFile.bytes)) {
       return error("SKILL_PACKAGE_INVALID", requirement, "SKILL.md must be UTF-8");
     }
+    const sourceEntry = entryFile.bytes.toString("utf8");
+    const frontmatter = /^---(?:\r\n|\n|\r)([\s\S]*?)(?:\r\n|\n|\r)---(?:\r\n|\n|\r|$)/u.exec(sourceEntry);
+    if (!frontmatter) {
+      return error("SKILL_PACKAGE_INVALID", requirement, "SKILL.md must start with YAML frontmatter");
+    }
+    const namePattern = /^(name:[ \t]*)([^\r\n]*)(\r\n|\n|\r|$)/gmu;
+    const nameMatches = [...frontmatter[1]!.matchAll(namePattern)];
+    if (nameMatches.length !== 1) {
+      return error("SKILL_PACKAGE_INVALID", requirement, "SKILL.md frontmatter must contain exactly one name");
+    }
+    const sourceNameValue = nameMatches[0]![2]!.trim();
+    const sourceFrontmatterName = (
+      (sourceNameValue.startsWith('"') && sourceNameValue.endsWith('"'))
+      || (sourceNameValue.startsWith("'") && sourceNameValue.endsWith("'"))
+    ) ? sourceNameValue.slice(1, -1) : sourceNameValue;
+    const runtimeFrontmatterName = runtimeSkillNamesByFormalAssetId[requirement.formalAssetId]
+      ?? sourceFrontmatterName;
+    if (!/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/u.test(runtimeFrontmatterName)) {
+      return error(
+        "SKILL_PACKAGE_INVALID",
+        requirement,
+        `runtime Skill name is not a lowercase hyphenated identifier`,
+      );
+    }
+    const runtimeEntry = runtimeFrontmatterName === sourceFrontmatterName
+      ? sourceEntry
+      : `${frontmatter[0].replace(
+          namePattern,
+          (_line, prefix: string, _value: string, ending: string) =>
+            `${prefix}${runtimeFrontmatterName}${ending}`,
+        )}${sourceEntry.slice(frontmatter[0].length)}`;
     const resources = files
       .filter((file) => file.path !== "SKILL.md")
       .map((file) => isUtf8(file.bytes)
@@ -268,7 +302,7 @@ async function loadMatchingSkillPackage(
         });
     return {
       values: {
-        verified_skill_entry_content: entryFile.bytes.toString("utf8"),
+        verified_skill_entry_content: runtimeEntry,
         verified_skill_resources: resources,
       },
       evidence: {
@@ -276,6 +310,11 @@ async function loadMatchingSkillPackage(
         manifestEntries: manifest.length,
         matchedRootIndex: rootIndex,
         manifestSha256: canonicalSha256(manifest),
+        sourceEntrySha256: sha256(entryFile.bytes),
+        runtimeEntrySha256: sha256(Buffer.from(runtimeEntry, "utf8")),
+        sourceFrontmatterName,
+        runtimeFrontmatterName,
+        frontmatterNameNormalized: sourceFrontmatterName !== runtimeFrontmatterName,
       },
     };
   }
@@ -343,7 +382,11 @@ export function createServerTeamRequirementResolver(
       };
     }
     if (requirement.kind === "skill_package_bytes") {
-      return loadMatchingSkillPackage(requirement, config.skillPackageRoots);
+      return loadMatchingSkillPackage(
+        requirement,
+        config.skillPackageRoots,
+        config.runtimeSkillNamesByFormalAssetId ?? {},
+      );
     }
     if (requirement.kind === "memory_l1_import") {
       return {

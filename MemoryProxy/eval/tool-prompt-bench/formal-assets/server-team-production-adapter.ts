@@ -81,6 +81,34 @@ function runtimeBindings(
   };
 }
 
+function runtimeSkillNames(
+  plan: FormalAssetRestorePlan,
+): Readonly<Record<string, string>> {
+  const names: Record<string, string> = {};
+  for (const action of plan.actions) {
+    if (action.endpoint !== "/v3/skill/create") continue;
+    const body = action.body as Readonly<Record<string, unknown>>;
+    const metadata = body.metadata;
+    const formalAssetId = metadata && typeof metadata === "object" && !Array.isArray(metadata)
+      ? (metadata as Readonly<Record<string, unknown>>).formalAssetId
+      : undefined;
+    const name = body.name;
+    if (typeof formalAssetId !== "string" || !formalAssetId.trim()
+      || typeof name !== "string" || !name.trim()) {
+      throw new ServerTeamProductionAdapterConfigError(
+        `Skill action ${action.actionId} has no formal asset id or runtime name`,
+      );
+    }
+    if (names[formalAssetId] && names[formalAssetId] !== name) {
+      throw new ServerTeamProductionAdapterConfigError(
+        `Skill ${formalAssetId} has conflicting runtime names`,
+      );
+    }
+    names[formalAssetId] = name;
+  }
+  return Object.freeze(names);
+}
+
 /** Compose and execute restore without starting either service or running a model. */
 export async function executeServerTeamProductionRestore(
   plan: FormalAssetRestorePlan,
@@ -107,6 +135,7 @@ export async function executeServerTeamProductionRestore(
     serviceIdsByDatasetSpaceId: bindings.serviceIdsByDatasetSpaceId,
     authUserIdsByDatasetUserId: bindings.authUserIdsByDatasetUserId,
     skillPackageRoots,
+    runtimeSkillNamesByFormalAssetId: runtimeSkillNames(plan),
     importMemoryL1: memoryHooks.importMemoryL1,
     importMemoryL2: memoryHooks.importMemoryL2,
   });

@@ -92,6 +92,7 @@ git -C $ExecutionRoot rev-parse 'task1-data-formal-v1.1^{}'
 - `TDAI_INSTANCE_ID` 必须与 actual MemoryProxy config 中的 `tdai.serviceId`、`skill.serviceId`、`knowledge.serviceId` 完全相同。standalone SkillCore 的资产联动钩子使用该默认实例解析 Metadata；若省略为 `default`，Skill 本体虽可创建，随后绑定到正式 Team/Agent 时会因跨实例查找而失败。
 - `TDAI_FORMAL_ASSET_IMPORT_ENABLED=1` 必须在 MemoryCore 进程启动前设置；源码在构造 gateway dependencies 时读取它。冻结 L0/L1/L2 都通过这个默认关闭的 seam 直接 seed，L0 不走公开 `/conversation/add`，因此不会触发 embedding、quota、`notifyPipeline` 或后台 L1/L2/L3 派生。
 - `TDAI_SKILL_ENABLED=true` 必须在 MemoryCore 进程启动前设置。standalone 配置默认关闭可选 Skill 模块；未显式开启时 `/v3/skill/create` 虽已注册，但会按生产合同返回 `404 Skill module not enabled`。本开关只启用正式数据所需的本地 Skill 存储与查询，不启用 Skill 抽取，也不调用模型。
+- Skill package 先按冻结 manifest 严格校验 `SKILL.md` 与全部 resources。若数据集为构造近邻干扰而给 Skill 指定的可见名称与上游 frontmatter `name` 不同，adapter 只把运行时 frontmatter 的该字段确定性改成 restore plan 已冻结的名称；正文和 resources 不变，receipt 同时记录 source/runtime entry hash、两侧名称和是否发生规范化。这样生产 API 的名称一致性与冻结 Gold 使用同一别名，且所有 Prompt Variant 共享相同资产状态。
 - MemoryKnowledge 必须以 `KNOWLEDGE_AUTO_SYNC_ENABLED=false` 和 `TDAI_FORMAL_PREFLIGHT_ENABLED=1` 启动。R05 通过默认关闭的 formal-ready shell 模式只恢复任务一需要的 Code Graph 元数据与可见性，不 clone/index 仓库正文；同 Team、同仓库的不同冻结 Knowledge 资产仍使用 formal asset id 保持为不同 runtime shell。`Restore` 成功后会停在 `wait-for-knowledge-ready`；用户确认全部可见 code-graph 已为 `ready` 后，在同一服务实例、同一数据栈和同一 RunRoot 上执行 `Inspect`。
 - `TDAI_FORMAL_PREFLIGHT_ENABLED=1` 必须在 MemoryProxy 进程启动前设置；preflight route 的默认依赖在模块加载时读取它。
 - MemoryProxy 必须以实际 config、`--tool-prompt-profile legacy --experiment-read-only` 启动。

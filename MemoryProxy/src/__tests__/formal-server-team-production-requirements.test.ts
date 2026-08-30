@@ -188,9 +188,48 @@ describe("server_team production requirements", () => {
       manifestEntries: 2,
       matchedRootIndex: 0,
       manifestSha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
+      sourceEntrySha256: sha256(entry),
+      runtimeEntrySha256: sha256(entry),
+      sourceFrontmatterName: "demo",
+      runtimeFrontmatterName: "demo",
+      frontmatterNameNormalized: false,
     });
     expect(JSON.stringify(result.evidence)).not.toContain(entry);
     expect(JSON.stringify(result.evidence)).not.toContain(resource);
+  });
+
+  it("normalizes only a verified Skill frontmatter name to its frozen runtime alias", async () => {
+    const packageRoot = await mkdtemp(join(tmpdir(), "task1-skill-alias-"));
+    tempRoots.push(packageRoot);
+    const sourceEntry = "---\r\nname: upstream-name\r\ndescription: keep me\r\n---\r\n# Upstream\r\n";
+    const runtimeEntry = "---\r\nname: dataset-alias\r\ndescription: keep me\r\n---\r\n# Upstream\r\n";
+    await writeFile(join(packageRoot, "SKILL.md"), sourceEntry, "utf8");
+
+    const resolver = createServerTeamRequirementResolver({
+      serviceIdsByDatasetSpaceId: {},
+      authUserIdsByDatasetUserId: {},
+      skillPackageRoots: [packageRoot],
+      runtimeSkillNamesByFormalAssetId: { "SKILL-ALIAS": "dataset-alias" },
+      importMemoryL1: vi.fn(),
+      importMemoryL2: vi.fn(),
+    });
+    const result = await resolver(requirement("req-skill-alias", "skill_package_bytes", {
+      formalAssetId: "SKILL-ALIAS",
+      manifest: [{ path: "SKILL.md", sha256: sha256(sourceEntry) }],
+    }), { resolve: (value) => value });
+
+    expect(result.values).toEqual({
+      verified_skill_entry_content: runtimeEntry,
+      verified_skill_resources: [],
+    });
+    expect(result.evidence).toEqual(expect.objectContaining({
+      formalAssetId: "SKILL-ALIAS",
+      sourceEntrySha256: sha256(sourceEntry),
+      runtimeEntrySha256: sha256(runtimeEntry),
+      sourceFrontmatterName: "upstream-name",
+      runtimeFrontmatterName: "dataset-alias",
+      frontmatterNameNormalized: true,
+    }));
   });
 
   it("reconstructs manifest-exact UTF-8 line endings from a normalized checkout", async () => {
