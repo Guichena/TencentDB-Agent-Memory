@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import type { FormalExecutionPreflightReceipt } from "./formal-execution-preflight.js";
+import { FORMAL_PROMPT_FREEZE_TAG } from "./formal-cache-structure-gate.js";
 import {
   executePreparedFormalRun,
   type FormalCodeFreezeReceipt,
@@ -111,6 +112,20 @@ export async function inspectFormalCodeFreeze(
     throw new Error("formal execution worktree is not clean");
   }
   const promptFreezeCommit = run.manifest.prompt_freeze_commit;
+  const frozenPromptResult = await runGit([
+    "rev-parse",
+    `${FORMAL_PROMPT_FREEZE_TAG}^{}`,
+  ], cwd);
+  if (frozenPromptResult.exitCode !== 0) {
+    throw new Error(`unable to resolve ${FORMAL_PROMPT_FREEZE_TAG}: ${frozenPromptResult.stderr.trim()}`);
+  }
+  const frozenPromptCommit = frozenPromptResult.stdout.trim().toLowerCase();
+  if (!/^[a-f0-9]{40}$/u.test(frozenPromptCommit)) {
+    throw new Error(`${FORMAL_PROMPT_FREEZE_TAG} does not resolve to a 40-character Git commit`);
+  }
+  if (promptFreezeCommit !== frozenPromptCommit) {
+    throw new Error(`prepared run does not use ${FORMAL_PROMPT_FREEZE_TAG}`);
+  }
   const ancestorResult = await runGit([
     "merge-base",
     "--is-ancestor",

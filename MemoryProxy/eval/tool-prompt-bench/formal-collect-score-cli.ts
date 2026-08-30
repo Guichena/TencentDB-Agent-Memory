@@ -3,6 +3,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import type { FormalExecutionReceipt } from "./formal-execution-runner.js";
+import { inspectFormalCacheStructureFreeze } from "./formal-cache-structure-gate.js";
 import { resolveFormalDataFreeze } from "./formal-runtime/index.js";
 import { loadPrivateMeasurementSplit } from "./formal-runtime/private-loader.js";
 import {
@@ -109,6 +110,10 @@ export async function runFormalCollectScoreCli(
     runs: windows,
     providerJsonl,
   });
+  const cacheStructureGate = await inspectFormalCacheStructureFreeze({
+    repositoryRoot: options.repositoryRoot,
+    executions,
+  });
   const freeze = resolveFormalDataFreeze({ repositoryRoot: options.repositoryRoot });
   const privateMeasurement = loadPrivateMeasurementSplit({
     freeze,
@@ -132,6 +137,7 @@ export async function runFormalCollectScoreCli(
     },
     toolCollection: toolCampaign,
     providerCollection: providerCampaign,
+    cacheStructureGate,
     measurement,
   } as const;
   await mkdir(dirname(options.outputPath), { recursive: true });

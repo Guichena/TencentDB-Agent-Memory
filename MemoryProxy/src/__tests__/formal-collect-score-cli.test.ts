@@ -1,6 +1,6 @@
-import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import {
@@ -44,5 +44,18 @@ describe("formal collect/score CLI", () => {
     const receipts = await discoverExecutionReceipts(root);
     expect(receipts.map((receipt) => `${receipt.caseId}:${receipt.repeat}`))
       .toEqual(["case-a:1", "case-a:2", "case-b:1"]);
+  });
+
+  it("binds the result bundle to the immutable cache structure Gate before private scoring", async () => {
+    const source = await readFile(resolve(
+      process.cwd(),
+      "eval",
+      "tool-prompt-bench",
+      "formal-collect-score-cli.ts",
+    ), "utf8");
+    expect(source).toContain("inspectFormalCacheStructureFreeze");
+    expect(source.indexOf("inspectFormalCacheStructureFreeze"))
+      .toBeLessThan(source.indexOf("loadPrivateMeasurementSplit"));
+    expect(source).toContain("cacheStructureGate,");
   });
 });

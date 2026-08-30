@@ -40,7 +40,12 @@ describe("formal execution CLI", () => {
     const calls: string[][] = [];
     const receipt = await inspectFormalCodeFreeze("D:/repo", run, async (args) => {
       calls.push([...args]);
-      if (args[0] === "rev-parse") return { exitCode: 0, stdout: `${"1".repeat(40)}\n`, stderr: "" };
+      if (args.join(" ") === "rev-parse HEAD") {
+        return { exitCode: 0, stdout: `${"1".repeat(40)}\n`, stderr: "" };
+      }
+      if (args.join(" ") === "rev-parse task1-code-freeze^{}") {
+        return { exitCode: 0, stdout: `${"2".repeat(40)}\n`, stderr: "" };
+      }
       if (args[0] === "status") return { exitCode: 0, stdout: "", stderr: "" };
       return { exitCode: 0, stdout: "", stderr: "" };
     });
@@ -53,6 +58,7 @@ describe("formal execution CLI", () => {
     expect(calls).toEqual([
       ["rev-parse", "HEAD"],
       ["status", "--porcelain=v1"],
+      ["rev-parse", "task1-code-freeze^{}"],
       ["merge-base", "--is-ancestor", "2".repeat(40), "1".repeat(40)],
     ]);
   });
@@ -62,6 +68,18 @@ describe("formal execution CLI", () => {
       if (args[0] === "rev-parse") return { exitCode: 0, stdout: `${"1".repeat(40)}\n`, stderr: "" };
       return { exitCode: 0, stdout: " M MemoryProxy/src/injection/pipeline.ts\n", stderr: "" };
     })).rejects.toThrow(/worktree is not clean/i);
+  });
+
+  it("refuses a prepared run that names an ancestor other than the frozen Prompt tag", async () => {
+    await expect(inspectFormalCodeFreeze("D:/repo", run, async (args) => {
+      if (args.join(" ") === "rev-parse HEAD") {
+        return { exitCode: 0, stdout: `${"1".repeat(40)}\n`, stderr: "" };
+      }
+      if (args.join(" ") === "rev-parse task1-code-freeze^{}") {
+        return { exitCode: 0, stdout: `${"3".repeat(40)}\n`, stderr: "" };
+      }
+      return { exitCode: 0, stdout: "", stderr: "" };
+    })).rejects.toThrow(/does not use task1-code-freeze/i);
   });
 
   it("keeps the PowerShell wrapper manual and free of service/config mutation", async () => {
