@@ -20,7 +20,19 @@ import type {
 } from "./types.js";
 
 export type ObservedToolEntry = ObservedBridgeEntry | ObservedKnowledgeToolsEntry;
-export type ObservedToolCompletion = ObservedBridgeCompletion | ObservedKnowledgeToolsCompletion;
+type LiveObservedToolCompletion = ObservedBridgeCompletion | ObservedKnowledgeToolsCompletion;
+type CompletionWithoutFailure<T> = T extends unknown ? Omit<T, "failure"> : never;
+
+/** Completion shape read back from the secret-safe production JSONL sink. */
+export type PersistedObservedToolCompletion = CompletionWithoutFailure<LiveObservedToolCompletion>
+  & Readonly<{
+    failure?: Readonly<{
+      name: string;
+      messageSha256: string;
+    }>;
+  }>;
+
+export type ObservedToolCompletion = LiveObservedToolCompletion | PersistedObservedToolCompletion;
 
 export type TurnCompletionFact =
   | Readonly<{ outcome: "completed" }>
@@ -372,7 +384,7 @@ function safeCompletionEvidence(
 ): SafeObservedCompletionEvidence {
   const responseBody = asJsonValue(completion.responseBody);
   const failureName = safeErrorName(completion.failure?.name);
-  const failureMessage = completion.failure?.message ?? "";
+  const failureMessageSha256 = persistedFailureMessageSha256(completion.failure);
   return {
     correlationId: completion.correlationId,
     family: completion.family,
@@ -390,11 +402,21 @@ function safeCompletionEvidence(
           failure: {
             name: failureName,
             category: "observer_failure" as const,
-            messageSha256: createHash("sha256").update(failureMessage, "utf8").digest("hex"),
+            messageSha256: failureMessageSha256,
           },
         }
       : {}),
   };
+}
+
+function persistedFailureMessageSha256(
+  failure: ObservedToolCompletion["failure"],
+): string {
+  if (failure && "messageSha256" in failure && /^[a-f0-9]{64}$/.test(failure.messageSha256)) {
+    return failure.messageSha256;
+  }
+  const message = failure && "message" in failure ? failure.message : "";
+  return createHash("sha256").update(message, "utf8").digest("hex");
 }
 
 const SAFE_ERROR_NAMES = new Set([
