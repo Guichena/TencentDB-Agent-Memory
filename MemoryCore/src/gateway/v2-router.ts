@@ -28,6 +28,7 @@ import { executeMemorySearch } from "../core/tools/memory-search.js";
 import { executeConversationSearch } from "../core/tools/conversation-search.js";
 import type { MemoryRecord } from "../core/record/l1-writer.js";
 import { reportRecallMetrics } from "../core/report/metric-tracking-recall.js";
+import { importFormalBenchmarkMemory } from "./formal-benchmark-memory-import.js";
 
 // ── Zod schemas (validated types + defaults) ──
 import {
@@ -169,6 +170,7 @@ const V3_ALLOWED_SUBPATHS = new Set<string>([
   "/core/read",
   "/core/write",
   "/core/count",
+  "/formal-bench/import-memory",
 ]);
 
 /**
@@ -305,6 +307,8 @@ export interface V2RouterDeps {
    * `/v3/skill/*` is always exempt.
    */
   v3StrictIsolation?: boolean;
+  /** Disabled by default; enables the Task 1 deterministic L1/L2 seed seam. */
+  formalAssetImportEnabled?: boolean;
   /** Resolved isolation context for the current request (set by dispatch). */
   requestIsolation?: { teamId?: string; userId: string; agentId: string; sessionId: string; taskId?: string };
   /** When isolation could not be resolved AND legacy_compat_mode is off, the missing fields. */
@@ -431,6 +435,30 @@ const DATAPLANE_HANDLERS: Record<string, RouteHandler> = {
   "/core/count": handleCoreCount,
 };
 
+async function handleFormalBenchmarkMemoryImport(
+  body: unknown,
+  _auth: V2AuthContext,
+  requestId: string,
+  deps: V2RouterDeps,
+): Promise<ApiResponseEnvelope> {
+  const result = await importFormalBenchmarkMemory(body, {
+    enabled: deps.formalAssetImportEnabled === true,
+    store: deps.getStore(),
+    storage: deps.getStorage(),
+    isolation: deps.requestIsolation && deps.requestIsolation.teamId
+      ? {
+        teamId: deps.requestIsolation.teamId,
+        userId: deps.requestIsolation.userId,
+        agentId: deps.requestIsolation.agentId,
+        sessionId: deps.requestIsolation.sessionId,
+      }
+      : undefined,
+  });
+  return result.ok
+    ? successEnvelope(result.data, requestId)
+    : errorEnvelope(result.code, result.message, requestId);
+}
+
 const routeTable: Record<string, RouteHandler> = {
   // L0–L3 数据面：历史读写接口保留 /v2 与 /v3 双入口；count 仅按 sdk-v3.yaml 暴露 /v3。
   ...Object.fromEntries(
@@ -440,6 +468,7 @@ const routeTable: Record<string, RouteHandler> = {
       return [[`${V2_PREFIX}${sub}`, h] as const, v3Route];
     }),
   ),
+  "/v3/formal-bench/import-memory": handleFormalBenchmarkMemoryImport,
   // ──────────────────────────────────────────────────────────────────────────
   // @deprecated v2 entity 路由（team/user/agent/task，16 条）。仅 /v2。
   // 元数据已由 v3 `/v3/meta/*`（规范化 meta_* 表 + MetadataService）接管，control

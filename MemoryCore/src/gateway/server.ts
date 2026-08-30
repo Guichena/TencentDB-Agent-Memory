@@ -914,6 +914,7 @@ export class TdaiGateway {
         // `V3_STRICT_ISOLATION` controls only /v3 L0–L3 memory data-plane
         // strictness. Default OFF for local/integration; production should set it.
         v3StrictIsolation: resolveV3StrictIsolation(),
+        formalAssetImportEnabled: process.env.TDAI_FORMAL_ASSET_IMPORT_ENABLED === "1",
         // handleConversationAdd 用它自动登记 chat_memory 资产（team+agent 粒度）
         // 并绑定到 agent。首次写入触发 create + bind；后续同 (team, agent) 走
         // MetadataService 的进程内 LRU 短路。
