@@ -15,6 +15,7 @@ import {
   FORMAL_DATA_TAG,
   FORMAL_DATA_TAG_OBJECT,
 } from "../formal-runtime/freeze.js";
+import type { FormalExpectedExecutionBinding } from "../formal-execution-preflight.js";
 
 export type FormalAssetRuntimeOperation = "restore" | "inspect";
 
@@ -37,8 +38,13 @@ export type FormalAssetInspectionAdapter = Readonly<{
   inspectFormalAssetRestorePlan(
     plan: FormalAssetRestorePlan,
     restoreObservations: FormalAssetRuntimeObservations,
+    context: FormalAssetInspectionContext,
   ): Promise<unknown>;
 }>;
+
+export interface FormalAssetInspectionContext {
+  readonly expectedBinding: FormalExpectedExecutionBinding;
+}
 
 export type FormalAssetAdapterLoader = () => Promise<unknown>;
 
@@ -51,6 +57,7 @@ export interface ExecuteFormalAssetRestorePlanInput {
 
 export interface InspectFormalAssetRestorePlanInput extends ExecuteFormalAssetRestorePlanInput {
   readonly rawRestoreObservations: unknown;
+  readonly expectedBinding: FormalExpectedExecutionBinding;
 }
 
 type JsonRecord = Record<string, unknown>;
@@ -95,6 +102,27 @@ function exactKeys(value: JsonRecord, keys: readonly string[], label: string): v
 function falseLiteral(value: unknown, label: string): false {
   if (value !== false) invalid(`${label} must be false`);
   return false;
+}
+
+function nonBlankString(value: unknown, label: string): string {
+  if (typeof value !== "string" || !value.trim()) invalid(`${label} must be a non-blank string`);
+  return value;
+}
+
+function parseInspectionContext(raw: unknown): FormalAssetInspectionContext {
+  const value = record(detached(raw, "inspection context"), "inspection context");
+  exactKeys(value, ["expectedBinding"], "inspection context");
+  const expected = record(value.expectedBinding, "inspection context expectedBinding");
+  const keys = [
+    "datasetUserId", "spaceId", "teamId", "agentId", "taskId", "sessionId",
+    "agentSource", "visibleAssetSetSha256",
+  ] as const;
+  exactKeys(expected, keys, "inspection context expectedBinding");
+  for (const key of keys) nonBlankString(expected[key], `inspection context expectedBinding ${key}`);
+  if (!SHA256.test(expected.visibleAssetSetSha256 as string)) {
+    invalid("inspection context expectedBinding visibleAssetSetSha256 must be a lowercase SHA-256");
+  }
+  return deepFreeze(value) as unknown as FormalAssetInspectionContext;
 }
 
 function assertPinnedRevision(plan: FormalAssetRestorePlan): void {
@@ -212,11 +240,12 @@ export async function inspectFormalAssetRestorePlanWithLoader(
       ...(input.allowHiddenTest === true ? { allowHiddenTest: true as const } : {}),
     },
   );
+  const context = parseInspectionContext({ expectedBinding: input.expectedBinding });
   const module = adapterModule(await input.loadAdapter(), "inspectFormalAssetRestorePlan");
   const inspect = module.inspectFormalAssetRestorePlan as FormalAssetInspectionAdapter["inspectFormalAssetRestorePlan"];
   return wrapUnverifiedObservations(
     "inspect",
     plan,
-    await inspect(plan, restoreObservations),
+    await inspect(plan, restoreObservations, context),
   );
 }

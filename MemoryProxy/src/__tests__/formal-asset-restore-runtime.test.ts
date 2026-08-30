@@ -101,17 +101,33 @@ describe("formal asset restore runtime boundary", () => {
       }),
     });
     let receivedPlan: FormalAssetRestorePlan | undefined;
+    const expectedBinding = {
+      datasetUserId: "user-t01",
+      spaceId: "space-task1",
+      teamId: "team-t01",
+      agentId: "agent-t01",
+      taskId: "task-t01",
+      sessionId: "formal-session-t01",
+      agentSource: "codex",
+      visibleAssetSetSha256: "a".repeat(64),
+    } as const;
     const inspected = await inspectFormalAssetRestorePlanWithLoader({
       rawPlan: plan,
       rawRestoreObservations: restore,
+      expectedBinding,
       expectedSplit: "dev",
       loadAdapter: async () => ({
         inspectFormalAssetRestorePlan: async (
           safePlan: FormalAssetRestorePlan,
           safeRestore: unknown,
+          safeContext: { expectedBinding: typeof expectedBinding },
         ) => {
           receivedPlan = safePlan;
           expect(Object.isFrozen(safeRestore)).toBe(true);
+          expect(safeContext).toEqual({ expectedBinding });
+          expect(safeContext.expectedBinding).not.toBe(expectedBinding);
+          expect(Object.isFrozen(safeContext)).toBe(true);
+          expect(Object.isFrozen(safeContext.expectedBinding)).toBe(true);
           return { ready: true, inspected: 17 };
         },
       }),
@@ -124,6 +140,39 @@ describe("formal asset restore runtime boundary", () => {
       formalMetricEligible: false,
       readyForFormalMeasurement: false,
     }));
+  });
+
+  it("rejects an invalid prepared-run binding before loading the inspector", async () => {
+    const plan = validPlan();
+    const restore = await executeFormalAssetRestorePlanWithLoader({
+      rawPlan: plan,
+      expectedSplit: "dev",
+      loadAdapter: async () => ({
+        executeFormalAssetRestorePlan: async () => ({ restored: 17 }),
+      }),
+    });
+    let loaded = false;
+
+    await expect(inspectFormalAssetRestorePlanWithLoader({
+      rawPlan: plan,
+      rawRestoreObservations: restore,
+      expectedSplit: "dev",
+      expectedBinding: {
+        datasetUserId: "user-t01",
+        spaceId: "space-task1",
+        teamId: "team-t01",
+        agentId: "agent-t01",
+        taskId: "task-t01",
+        sessionId: "formal-session-t01",
+        agentSource: "codex",
+        visibleAssetSetSha256: "not-a-sha",
+      },
+      loadAdapter: async () => {
+        loaded = true;
+        return { inspectFormalAssetRestorePlan: async () => ({}) };
+      },
+    })).rejects.toThrow(/visibleAssetSetSha256/u);
+    expect(loaded).toBe(false);
   });
 
   it("keeps runtime and legacy CLI sources clear of private authoring inputs", () => {
