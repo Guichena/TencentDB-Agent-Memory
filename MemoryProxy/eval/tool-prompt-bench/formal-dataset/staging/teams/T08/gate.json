@@ -1,0 +1,154 @@
+{
+  "schema_version": "task1.team_gate.v1",
+  "team_id": "T08",
+  "build_id": "build-04",
+  "status": "passed",
+  "counts": {
+    "cases": 40,
+    "positives": 15,
+    "paired_negatives": 15,
+    "natural_negatives": 10,
+    "pairs": 15,
+    "memory_positive": 6,
+    "skill_positive": 6,
+    "knowledge_positive": 3
+  },
+  "assets": {
+    "l0_sessions": 10,
+    "l1_memories": 16,
+    "l2_scenes": 4,
+    "l3_profiles": 1,
+    "skills": 16,
+    "bound_skills": 6,
+    "knowledge": 3,
+    "visible_assets": 50
+  },
+  "route_distribution": {
+    "tdai_atomic_query": 1,
+    "tdai_conversation_search": 2,
+    "tdai_scenario_ls": 1,
+    "tdai_memory_search": 1,
+    "tdai_read_scene": 1,
+    "skill_view": 3,
+    "skill_search": 3,
+    "knowledge_tools_list": 3
+  },
+  "context_buckets": {
+    "medium_6_to_10": 9,
+    "short_2_to_4": 3,
+    "long_12_to_18": 3
+  },
+  "generator_batches": [
+    {
+      "batchId": "T08-memory-trial-01",
+      "path": "formal-dataset/generators/parallel/build-04/T08/memory/memory-trial-01",
+      "draftSha256": "a115bfaed1a8b6f4911d86c704fcb300b64f4135e84fd27eaf5c1ed9e69f30de",
+      "manifestSha256": "0a399778eeb7bec596d2b0ff7027f9a113b87d4877f9d713e8e370e799fb27e3",
+      "count": 1,
+      "reviewStatus": "reviewed_by_sol"
+    },
+    {
+      "batchId": "T08-memory-expansion-01",
+      "path": "formal-dataset/generators/parallel/build-04/T08/memory/memory-expansion-01",
+      "draftSha256": "b8a0813f1e42786afcdc2bb909d2d8898bcf135430a38c3e230a796033a513c7",
+      "manifestSha256": "c1fbd93f49934f017811cdb79e9078ece3ba48cfdf565629ec640693340a5185",
+      "count": 5,
+      "reviewStatus": "reviewed_by_sol"
+    },
+    {
+      "batchId": "T08-DS05-SKILL-TRIAL-01",
+      "path": "formal-dataset/generators/parallel/build-04/T08/skill/skill-trial-01",
+      "draftSha256": "d6f090c3fcff582470b0b28ced0b4e40b0d99828f3506328baf95621132bd11e",
+      "manifestSha256": "6f3bd9f9a60f130e3693703ffb74a4a5db45eea4c9ad35d9c8d2a4e30ba4639e",
+      "count": 1,
+      "reviewStatus": "reviewed_by_sol"
+    },
+    {
+      "batchId": "T08-DS05-SKILL-EXPANSION-01",
+      "path": "formal-dataset/generators/parallel/build-04/T08/skill/skill-expansion-01",
+      "draftSha256": "67c025c2c06cc54a426437e619d16fb1ec7b388f68a7d7d05a05194465e82ae3",
+      "manifestSha256": "9091038786501f6716ed6695ea9883c90f5ed38ecf13ed1314533c1c3cf284aa",
+      "count": 5,
+      "reviewStatus": "reviewed_by_sol"
+    },
+    {
+      "batchId": "build-04-T08-knowledge-trial-01",
+      "path": "formal-dataset/generators/parallel/build-04/T08/knowledge/knowledge-trial-01",
+      "draftSha256": "1a52b8a36b8bd326a1798c5cc2f38faae587408cfda0ef6a575b25730fd6a280",
+      "manifestSha256": "0e075efee598dcfed1a9f7abd1f1101729f89dd56f347189b103c69c828e0873",
+      "count": 1,
+      "reviewStatus": "reviewed_by_sol"
+    },
+    {
+      "batchId": "build-04-T08-knowledge-expansion-01",
+      "path": "formal-dataset/generators/parallel/build-04/T08/knowledge/knowledge-expansion-01",
+      "draftSha256": "cf5e7ec6058131a7a9ef2e83629c3f9bcc97ccd10dcab66b1c9a739b721daaa8",
+      "manifestSha256": "bf0d23e357ee18ee11b844660c8354483f05106e649f69ffbef629fc27e112bd",
+      "count": 2,
+      "reviewStatus": "reviewed_by_sol"
+    },
+    {
+      "batchId": "build-04-T08-natural-negative-01",
+      "path": "formal-dataset/generators/parallel/build-04/T08/natural-negative/natural-negative-01",
+      "draftSha256": "79b199e0aec6d9161fb31c5d31dbca875982207e58fed8a41cfdb1923b06a002",
+      "manifestSha256": "db1b4fb70194de145f27e712d4a36a2298b86e6306795b0f6cbbede4696b2962",
+      "count": 10,
+      "reviewStatus": "reviewed_by_sol"
+    }
+  ],
+  "external_imports": {
+    "count": 16,
+    "sources": [
+      {
+        "sourcePolicyId": "awesome-copilot",
+        "repositoryUrl": "https://github.com/github/awesome-copilot",
+        "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+        "license": "MIT",
+        "licensePath": "_licenses/awesome-copilot-MIT.txt",
+        "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+        "importCount": 15
+      },
+      {
+        "sourcePolicyId": "skillsbench",
+        "repositoryUrl": "https://github.com/benchflow-ai/skillsbench",
+        "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+        "license": "Apache-2.0",
+        "licensePath": "_licenses/skillsbench-Apache-2.0.txt",
+        "licenseSha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "importCount": 1
+      }
+    ]
+  },
+  "checks": {
+    "luna_batch_format": "passed",
+    "sol_gold_review": "passed",
+    "minimal_chain_review": "passed",
+    "pair_single_delta": "passed",
+    "provider_leakage": 0,
+    "visibility": "passed",
+    "source_and_license": "passed",
+    "raw_hashes": "passed",
+    "local_fragment_counts": "passed",
+    "formal_gate_contract": "passed",
+    "cross_team_duplicate_gate": "pending_integration"
+  },
+  "fragment_sha256": "552986dd027b2f3eb459447912d328abc396e50aa0305d867cd9e7110419fd06",
+  "validation": {
+    "setup_command": "node MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-04/T08/build-gate-contract.mjs",
+    "command": "npx --yes tsx MemoryProxy/eval/tool-prompt-bench/formal-dataset/scripts/validate-formal-dataset.ts --contract MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-04/T08/gate-contract.json --split hidden_test --report MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-04/T08/formal-validation.json",
+    "report_sha256": "125f1fa6920d59b29807b07dadee1f21729b0d1db0056d83c90dbe6a3e39ffdd",
+    "gate_contract_sha256": "7f71aa178a05cf496fac63d3e9521cf4c9c29ee09124f6f200874cbe14bc3bdc",
+    "fragment_file_sha256": "824020b9ec02788db7a820d99d52dbc586f8a3b5054e615f5bc69eff6ffd97ef",
+    "cases": 40,
+    "pairs": 15,
+    "pair_integrity_errors": 0,
+    "provider_leakage": 0,
+    "invalid_sequences": 0,
+    "missing_source_refs": 0,
+    "local_tests": {
+      "source_tools_python_unittest": "passed: 19 tests",
+      "host_vitest": "not run: isolated worktree has no host node_modules; no out-of-scope dependency/link was added"
+    },
+    "gate_contract_artifact": "ephemeral; hash recorded above and file removed after validation"
+  }
+}

@@ -7,6 +7,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { get_encoding } from "tiktoken";
 import { DEFAULT_CONFIG } from "../../src/config.js";
 import { toolPromptCacheIdentity } from "../../src/injection/tool-prompt/profiles.js";
@@ -48,6 +49,14 @@ function readJson(path: string): Record<string, unknown> {
 
 function git(...args: string[]): string {
   return execFileSync("git", args, { cwd: REPO_ROOT, encoding: "utf8" }).trim();
+}
+
+function gitAt(repoRoot: string, ...args: string[]): string {
+  return execFileSync("git", args, { cwd: repoRoot, encoding: "utf8" }).trim();
+}
+
+function gitBlobAt(repoRoot: string, revisionAndPath: string): Buffer {
+  return execFileSync("git", ["show", revisionAndPath], { cwd: repoRoot });
 }
 
 function assertProfileMapping(): void {
@@ -100,18 +109,20 @@ function captureProfileInventory(): Array<Record<string, unknown>> {
   });
 }
 
-function captureStageInventory(): Array<Record<string, unknown>> {
+export function captureStageInventory(repoRoot = REPO_ROOT): Array<Record<string, unknown>> {
   return Array.from({ length: 6 }, (_, index) => {
     const stage = `C0${index}`;
     const tag = `task1-c0${index}-pass`;
-    const gatePath = resolve(`eval/tool-prompt-bench/reports/gates/${stage}-gate.md`);
-    if (!existsSync(gatePath)) throw new Error(`missing ${stage} gate report`);
-    const gate = readFileSync(gatePath, "utf8");
-    if (!gate.includes("- status: `PASSED`")) throw new Error(`${stage} gate is not PASSED`);
+    const tagCommit = gitAt(repoRoot, "rev-list", "-1", tag);
+    const gatePath = `MemoryProxy/eval/tool-prompt-bench/reports/gates/${stage}-gate.md`;
+    const gate = gitBlobAt(repoRoot, `${tagCommit}:${gatePath}`);
+    if (!gate.toString("utf8").includes("- status: `PASSED`")) {
+      throw new Error(`${stage} gate is not PASSED at ${tagCommit}`);
+    }
     return {
       stage,
       tag,
-      tagCommit: git("rev-list", "-1", tag),
+      tagCommit,
       gateSha256: sha256(gate),
     };
   });
@@ -232,4 +243,5 @@ async function main(): Promise<void> {
   console.log(`captured C06 code-freeze manifest in ${OUTPUT_ROOT}`);
 }
 
-await main();
+const isMain = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (isMain) await main();

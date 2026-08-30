@@ -11,6 +11,7 @@ import { initTelemetry } from "./telemetry.js";
 initTelemetry();
 
 import { Hono } from "hono";
+import { randomUUID } from "node:crypto";
 import { serve } from "@hono/node-server";
 import { swaggerUI } from "@hono/swagger-ui";
 import { readFileSync } from "node:fs";
@@ -33,11 +34,26 @@ import {
   createKnowledgeTelemetry,
   createKnowledgeTelemetryMiddleware,
 } from "./clickhouse-telemetry.js";
+import type {
+  KnowledgeToolsCompletionObserver,
+  KnowledgeToolsEntryObserver,
+} from "./tools-entry-observer.js";
+import {
+  closeServerAndSealTrace,
+  createToolExecutionTraceSinkFromEnv,
+} from "./tool-execution-trace-sink.js";
 
 const log = createLogger("server");
 
-export function createApp() {
+export interface CreateAppDeps {
+  toolsEntryObserver?: KnowledgeToolsEntryObserver;
+  toolsCompletionObserver?: KnowledgeToolsCompletionObserver;
+  serverInstanceId?: string;
+}
+
+export function createApp(deps: CreateAppDeps = {}) {
   const config = loadConfig();
+  const serverInstanceId = deps.serverInstanceId ?? randomUUID();
   const knowledgeTelemetry = createKnowledgeTelemetry(config.clickhouse);
 
   // Initialize DB + knowledge module
@@ -57,7 +73,7 @@ export function createApp() {
   app.onError(errorHandler);
 
   // Health (no prefix)
-  app.route("/", createHealthRoutes());
+  app.route("/", createHealthRoutes({ serverInstanceId }));
 
   // /v3 prefix applied once here — routes define paths without prefix
   const api = new Hono();
@@ -80,6 +96,8 @@ export function createApp() {
     wikiMgr: knowledgeModule.wikiMgr,
     cgService: knowledgeModule.cgService,
     instancePool: knowledgeModule.instancePool,
+    toolsEntryObserver: deps.toolsEntryObserver,
+    toolsCompletionObserver: deps.toolsCompletionObserver,
   }));
 
   // internal/* — control-plane endpoints (TMC / operator). Per-instance LLM routing.
@@ -114,7 +132,16 @@ export function createApp() {
 }
 
 async function startServer(): Promise<void> {
-  const { app, config, knowledgeTelemetry } = createApp();
+  const toolExecutionTraceSink = createToolExecutionTraceSinkFromEnv(process.env);
+  const { app, config, knowledgeTelemetry } = createApp({
+    ...(toolExecutionTraceSink.enabled
+      ? {
+        toolsEntryObserver: toolExecutionTraceSink.entryObserver,
+        toolsCompletionObserver: toolExecutionTraceSink.completionObserver,
+        serverInstanceId: toolExecutionTraceSink.processInstanceId,
+      }
+      : {}),
+  });
   await knowledgeTelemetry.initialize();
 
   log.info(`Starting knowledge service on port ${config.port}`);
@@ -124,6 +151,7 @@ async function startServer(): Promise<void> {
   log.info(`ClickHouse telemetry: ${config.clickhouse.enabled ? "enabled" : "disabled"}`);
 
   const server = serve({ fetch: app.fetch, port: config.port }, (info) => {
+    toolExecutionTraceSink.markReady();
     log.info(`Knowledge service listening on http://localhost:${info.port}`);
   });
 
@@ -132,8 +160,16 @@ async function startServer(): Promise<void> {
     if (shuttingDown) return;
     shuttingDown = true;
     log.info(`Received ${signal}, shutting down`);
+    try {
+      await closeServerAndSealTrace(server, toolExecutionTraceSink);
+    } catch (error) {
+      // Do not seal a trace when requests may still be in flight.
+      log.warn("Knowledge HTTP drain failed; trace remains unsealed", {
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
     await knowledgeTelemetry.shutdown();
-    server.close(() => process.exit(0));
+    process.exit(0);
   };
   process.once("SIGTERM", () => void shutdown("SIGTERM"));
   process.once("SIGINT", () => void shutdown("SIGINT"));

@@ -37,7 +37,11 @@ export interface ResolveCodexInvocationOptions {
 }
 
 export interface CodexProfileInput {
-  developerInstructions: string;
+  /**
+   * Mock-contract compatibility only. Real-chain runs leave this undefined so
+   * MemoryProxy remains the sole owner of TDAI system-prompt injection.
+   */
+  developerInstructions?: string;
   providerBaseUrl?: string;
   providerHeaders?: Record<string, string>;
   /** Provider header -> environment variable name. Secret values never enter CLI args. */
@@ -96,6 +100,61 @@ export interface CodexUsage {
   cacheWriteInputTokens: number;
   outputTokens: number;
   reasoningOutputTokens: number;
+}
+
+export interface ParsedCodexJsonlRecord {
+  lineNumber: number;
+  raw: string;
+  event: Record<string, unknown> | null;
+  parseError?: string;
+}
+
+export interface CodexProcessExecutionInput {
+  readonly executable: string;
+  readonly args: readonly string[];
+  readonly cwd: string;
+  readonly environment: NodeJS.ProcessEnv;
+  readonly stdin: string;
+  readonly timeoutMs: number;
+}
+
+export interface CodexProcessExecutionResult {
+  readonly exitCode: number | null;
+  readonly stdout: string;
+  readonly stderr: string;
+  readonly timedOut: boolean;
+}
+
+/**
+ * Lossless, pure JSONL parsing seam for real-chain event reconciliation.
+ * Blank lines are ignored; malformed non-blank lines remain in the result.
+ */
+export function parseCodexJsonlEvents(eventsJsonl: string): ParsedCodexJsonlRecord[] {
+  const records: ParsedCodexJsonlRecord[] = [];
+  eventsJsonl.split(/\r?\n/).forEach((raw, index) => {
+    if (!raw.trim()) return;
+    try {
+      const parsed = JSON.parse(raw) as unknown;
+      if (!parsed || Array.isArray(parsed) || typeof parsed !== "object") {
+        records.push({
+          lineNumber: index + 1,
+          raw,
+          event: null,
+          parseError: "Codex JSONL event must be an object",
+        });
+        return;
+      }
+      records.push({ lineNumber: index + 1, raw, event: parsed as Record<string, unknown> });
+    } catch (err) {
+      records.push({
+        lineNumber: index + 1,
+        raw,
+        event: null,
+        parseError: err instanceof Error ? err.message : String(err),
+      });
+    }
+  });
+  return records;
 }
 
 export function codexRunInfrastructureError(
@@ -269,7 +328,6 @@ export function isolateCodexEnvironment(
 /** Convert the benchmark-only profile into invocation-scoped CLI overrides. */
 export function buildCodexConfigArgs(input: CodexProfileInput): string[] {
   const values = [
-    `developer_instructions=${JSON.stringify(input.developerInstructions)}`,
     'approval_policy="never"',
     `model_reasoning_effort=${JSON.stringify(input.reasoningEffort)}`,
     `model_verbosity=${JSON.stringify(input.verbosity)}`,
@@ -280,6 +338,9 @@ export function buildCodexConfigArgs(input: CodexProfileInput): string[] {
     "skills.include_instructions=false",
     "sandbox_workspace_write.network_access=true",
   ];
+  if (input.developerInstructions !== undefined) {
+    values.unshift(`developer_instructions=${JSON.stringify(input.developerInstructions)}`);
+  }
   if (input.providerBaseUrl) {
     values.push(
       'model_provider="custom"',
@@ -364,6 +425,20 @@ function runChild(
     });
     child.stdin.end(stdin);
   });
+}
+
+/** Execution seam shared by Pilot and the Gold-blind formal runner. */
+export function executeCodexProcess(
+  input: CodexProcessExecutionInput,
+): Promise<CodexProcessExecutionResult> {
+  return runChild(
+    input.executable,
+    [...input.args],
+    input.cwd,
+    input.environment,
+    input.stdin,
+    input.timeoutMs,
+  );
 }
 
 export async function runCodexCase(options: CodexRunOptions): Promise<Record<string, unknown>> {

@@ -1,0 +1,139 @@
+import { isDeepStrictEqual } from "node:util";
+
+import {
+  canonicalSha256,
+  loadFormalDatasetMetadata,
+  loadFormalRuntimeFreezeManifest,
+  loadFormalSmokePreregistration,
+  openFormalProviderSplit,
+  type FormalDataFreeze,
+  type FormalDatasetMetadata,
+  type FormalReadText,
+  type FormalRuntimeFreezeManifest,
+} from "./formal-runtime/index.js";
+import type {
+  FormalPrepareDataSource,
+  FormalPreparePublicStatus,
+  FormalSplit,
+} from "./formal-prepare-runner.js";
+
+export interface CreateFormalPrepareDataSourceInput {
+  readonly freeze: FormalDataFreeze;
+  /** Read seam for no-I/O ordering tests; production leaves it undefined. */
+  readonly readText?: FormalReadText;
+}
+
+interface PublicFreezeContext {
+  readonly metadata: FormalDatasetMetadata;
+  readonly manifest: FormalRuntimeFreezeManifest;
+  readonly smokeCaseIds: readonly string[];
+}
+
+function assertPublicFreeze(
+  metadata: FormalDatasetMetadata,
+  manifest: FormalRuntimeFreezeManifest,
+): void {
+  if (!isDeepStrictEqual(manifest.dataFreeze, metadata.dataFreeze)
+    || manifest.datasetContractRevision !== metadata.datasetContractRevision
+    || !isDeepStrictEqual(manifest.sources.contract, metadata.contractHashes)
+    || !isDeepStrictEqual(manifest.sources.provider, metadata.providerHashes)
+    || !isDeepStrictEqual(manifest.sources.snapshots, metadata.snapshotHashes)
+    || manifest.measurementV2.manifestCanonicalSha256
+      !== metadata.privateArtifactHashes.measurementV2ManifestCanonicalSha256
+    || manifest.measurementV2.gold.fullCanonicalSha256
+      !== metadata.privateArtifactHashes.goldV2FullCanonicalSha256
+    || manifest.measurementV2.pairs.fullCanonicalSha256
+      !== metadata.privateArtifactHashes.pairV2FullCanonicalSha256
+    || manifest.measurementV2.runtimeContractsCanonicalSha256
+      !== metadata.privateArtifactHashes.runtimeContractsV2CanonicalSha256) {
+    throw new Error("formal public runtime freeze does not match the corrected data Tag/status");
+  }
+}
+
+/**
+ * Adapts R02-B's public, Gold-blind loaders to the PrepareOnly deep module.
+ * Its dependency graph has no private loader. Hidden authorization remains an
+ * explicit per-open capability and is forwarded unchanged to both B loaders.
+ */
+export function createFormalPrepareDataSource(
+  input: CreateFormalPrepareDataSourceInput,
+): FormalPrepareDataSource {
+  let cached: PublicFreezeContext | undefined;
+
+  const publicFreeze = (): PublicFreezeContext => {
+    if (cached) return cached;
+    const metadata = loadFormalDatasetMetadata({ freeze: input.freeze, readText: input.readText });
+    const manifest = loadFormalRuntimeFreezeManifest({ freeze: input.freeze, readText: input.readText });
+    assertPublicFreeze(metadata, manifest);
+    const smoke = loadFormalSmokePreregistration({ freeze: input.freeze, readText: input.readText });
+    if (smoke.sha256 !== manifest.artifacts.devSmokePreregistration.selectionCanonicalSha256) {
+      throw new Error("formal smoke preregistration does not match runtime freeze manifest");
+    }
+    cached = Object.freeze({ metadata, manifest, smokeCaseIds: smoke.caseIds });
+    return cached;
+  };
+
+  return Object.freeze({
+    async readPublicStatus(): Promise<FormalPreparePublicStatus> {
+      const { metadata, manifest, smokeCaseIds } = publicFreeze();
+      return Object.freeze({
+        datasetRevision: metadata.datasetContractRevision,
+        datasetTag: input.freeze.tag,
+        datasetTagObject: input.freeze.tagObject,
+        datasetCommit: input.freeze.commit,
+        contractSha256: metadata.contractHashes.canonicalSha256,
+        preregisteredSmokeCaseIds: smokeCaseIds,
+        splits: Object.freeze({
+          dev: Object.freeze({
+            expectedCaseCount: metadata.counts.dev,
+            providerInputSha256: metadata.providerHashes.devCanonicalSha256,
+            privateGoldSha256: manifest.measurementV2.gold.devCanonicalSha256,
+            privateGoldHashScope: "measurement-v2-split-canonical" as const,
+            pairContractSha256: manifest.measurementV2.pairs.devCanonicalSha256,
+            pairContractHashScope: "measurement-v2-split-canonical" as const,
+            snapshotSha256: metadata.snapshotHashes.devCanonicalSha256,
+          }),
+          hidden_test: Object.freeze({
+            expectedCaseCount: metadata.counts.hiddenTest,
+            providerInputSha256: metadata.providerHashes.hiddenCanonicalSha256,
+            privateGoldSha256: manifest.measurementV2.gold.hiddenCanonicalSha256,
+            privateGoldHashScope: "measurement-v2-split-canonical" as const,
+            pairContractSha256: manifest.measurementV2.pairs.hiddenCanonicalSha256,
+            pairContractHashScope: "measurement-v2-split-canonical" as const,
+            snapshotSha256: metadata.snapshotHashes.hiddenCanonicalSha256,
+          }),
+        }),
+        formalMetricEligible: false as const,
+      });
+    },
+
+    async openProviderSplit(
+      split: FormalSplit,
+      options?: { readonly allowHiddenTest?: true },
+    ) {
+      if (split === "hidden_test" && options?.allowHiddenTest !== true) {
+        throw new Error("hidden_test Prepare datasource access is not authorized");
+      }
+      const { manifest } = publicFreeze();
+      const loaded = openFormalProviderSplit({
+        freeze: input.freeze,
+        split,
+        allowHiddenTest: options?.allowHiddenTest,
+        readText: input.readText,
+      });
+      const cases = loaded.cases.map((item) => Object.freeze({
+        split: item.binding.split as FormalSplit,
+        providerRecord: item.provider,
+        binding: item.binding,
+      }));
+      return Object.freeze({
+        cases: Object.freeze(cases),
+        caseBindingsFileSha256: manifest.artifacts.caseBindings.fileSha256,
+      });
+    },
+
+    canonicalProviderInputSha256(value: unknown): string {
+      return canonicalSha256(value);
+    },
+  });
+}

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "stage": "C06",
-  "sourceCommit": "f440ac63c6d27d3cd62ea21834dbcd38bcecad47",
-  "generatedAt": "2026-08-28T17:38:05+08:00",
+  "sourceCommit": "b88f464682cd88bb268305fb92b5157e6bb94f78",
+  "generatedAt": "2026-08-30T06:28:45+08:00",
   "baselineCommit": "5299c00aaf65481703c180fd69df066d11254eb7",
   "defaultProductionProfile": "legacy",
   "canonicalCapabilitySignature": "memory=1;skill=1;knowledge=1;wiki=1;code_graph=1;skill_write=0;skill_extract=0",
@@ -636,37 +636,37 @@
       "stage": "C00",
       "tag": "task1-c00-pass",
       "tagCommit": "bc904285eba817beda3bd2b35ecccf9f1d607451",
-      "gateSha256": "47e4e67093fc7f9f20b8e0125f69b6b8bd9e11ea862f7957c6fcec941152b47d"
+      "gateSha256": "d0271c39d56685380001ac6085c4090d901124089975295e3c70a04c1f80478e"
     },
     {
       "stage": "C01",
       "tag": "task1-c01-pass",
       "tagCommit": "ff8815b63e6afb6f4579d8dbc324f290d9bef0b1",
-      "gateSha256": "521f5339cb6f44a9f64a1409547008c3069ba06974f9250263a9dd618039b562"
+      "gateSha256": "54d81617c22e9436251357c9b1d33f14f6a290fbf956bd9dee6fb1442869d6c2"
     },
     {
       "stage": "C02",
       "tag": "task1-c02-pass",
       "tagCommit": "13b523f2cc421a41a912254e6c6c6b5e42508c79",
-      "gateSha256": "6dce24903a64003631a658098a661307a2168c23efe1545ea08f13e54ce43e81"
+      "gateSha256": "6542a5bd36bacf2bbd8b157b1fa1b55c9b511b1439d50e58e9010bdbc60f7132"
     },
     {
       "stage": "C03",
       "tag": "task1-c03-pass",
       "tagCommit": "93381f712365fa26836f85c80e33c1e3bf8437aa",
-      "gateSha256": "2844d3c7a21e4fe233b5daa3389de3486f9ac516b491015a04602079d840f926"
+      "gateSha256": "5925c395ce0aae9da84d3523389af8bcaabacd8f1c4924e907cdbe74a0b22531"
     },
     {
       "stage": "C04",
       "tag": "task1-c04-pass",
       "tagCommit": "37aeea09d7813b117998f317a998099d6ff56253",
-      "gateSha256": "f9f19e96048fc5d77d6ed39a1fb51a2822ddc638dd8c5eec59146f037905dbcb"
+      "gateSha256": "3f586b9cdd16569710bbbce4f0835694820619160dfcc9459d8ed901de872c7a"
     },
     {
       "stage": "C05",
       "tag": "task1-c05-pass",
       "tagCommit": "bb72333f4fe260737dabfb5fe8ed45fc7606c763",
-      "gateSha256": "0541def060e48e977833314d790a8bd7fbc7ab55e775a3dd6530981b88e76628"
+      "gateSha256": "1ec931bde71d46580137cb4290f30f96385f7041205e334b3ad98134c7b221d6"
     }
   ],
   "adjacentDiffs": [

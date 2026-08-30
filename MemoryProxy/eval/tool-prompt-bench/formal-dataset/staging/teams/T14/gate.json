@@ -1,0 +1,4000 @@
+{
+  "schema_version": "task1.team_gate.v1",
+  "team_id": "T14",
+  "build_id": "build-07",
+  "passed": true,
+  "checked_by": "sol-build-07",
+  "counts": {
+    "total_cases": 40,
+    "memory_positive": 6,
+    "skill_positive": 6,
+    "knowledge_positive": 3,
+    "paired_no_tool_negative": 15,
+    "natural_coding_negative": 10,
+    "pairs": 15,
+    "search_or_discovery_positive": 10,
+    "direct_positive": 5
+  },
+  "context_buckets": {
+    "short": 20,
+    "medium": 16,
+    "long": 4
+  },
+  "gold_chain_distribution": {
+    "knowledge_tools_list -> knowledge_tools_call": 3,
+    "skill_search -> skill_view_by_id": 3,
+    "skill_view": 2,
+    "skill_view -> skill_files_read": 1,
+    "tdai_atomic_query": 1,
+    "tdai_conversation_search": 1,
+    "tdai_conversation_search -> tdai_conversation_query": 1,
+    "tdai_memory_search": 2,
+    "tdai_read_scene": 1
+  },
+  "luna_batches": [
+    {
+      "batchId": "T14-pilot-memory-01",
+      "valid": true,
+      "count": 1,
+      "sha256": "4974440ed1159b9402635de83fe8121706c8f77b2cca1256a06a8f1f3dbfe4fe"
+    },
+    {
+      "batchId": "T14-expand-memory-01",
+      "valid": true,
+      "count": 5,
+      "sha256": "aa2cce5f2be7d197932a6c48233a7866cfb63c16c64523d27ca43fd6c088c0a3"
+    },
+    {
+      "batchId": "build-07-T14-pilot-skill-01",
+      "valid": true,
+      "count": 1,
+      "sha256": "9301487aca95e882ed9bbf62c95b1556df2306eb95e4d851ba4ae058b56b57d9"
+    },
+    {
+      "batchId": "build-07-T14-expand-skill-01",
+      "valid": true,
+      "count": 5,
+      "sha256": "75326dc69d14e036f2335daceb1b9330a176532100db5f5fb7a65f91a7658cc7"
+    },
+    {
+      "batchId": "t14-pilot-knowledge-01",
+      "valid": true,
+      "count": 1,
+      "sha256": "35029aca8d98b0a12186a51406c82c19c8e2fdee8b8b996599639b18b579dd4a"
+    },
+    {
+      "batchId": "t14-expand-knowledge-01",
+      "valid": true,
+      "count": 2,
+      "sha256": "bb5e05726fc71fa51d86896754e6ebcfaf3728b89be4f5fd9f4744560218bbf0"
+    },
+    {
+      "batchId": "build-07-T14-natural-negative-01",
+      "valid": true,
+      "count": 10,
+      "sha256": "d6db221229cb616041a3982eb0a2c9cc43630567edfb108116502179f3ed4761"
+    }
+  ],
+  "source_repositories": [
+    {
+      "id": "aidas-k8s-agent-skills",
+      "url": "https://github.com/Aidas-dev/k8s-agent-skills",
+      "commit": "077702b44a5367fde0496db6a91b015f1416312a",
+      "license": "MIT"
+    },
+    {
+      "id": "fluxcd-agent-skills",
+      "url": "https://github.com/fluxcd/agent-skills",
+      "commit": "e7e95ef1648a72f5276db6f98b799c5974ea846f",
+      "license": "Apache-2.0"
+    }
+  ],
+  "source_files": {
+    "skill_files": 16,
+    "resource_files": 1,
+    "body_transform": "byte_identical"
+  },
+  "checks": [
+    {
+      "name": "required:team-fragment.json",
+      "passed": true,
+      "detail": "required staging artifact must exist"
+    },
+    {
+      "name": "required:assets/memory.json",
+      "passed": true,
+      "detail": "required staging artifact must exist"
+    },
+    {
+      "name": "required:assets/skills.json",
+      "passed": true,
+      "detail": "required staging artifact must exist"
+    },
+    {
+      "name": "required:assets/knowledge.json",
+      "passed": true,
+      "detail": "required staging artifact must exist"
+    },
+    {
+      "name": "required:review.md",
+      "passed": true,
+      "detail": "required staging artifact must exist"
+    },
+    {
+      "name": "fragment.identity",
+      "passed": true,
+      "detail": "team fragment identity and split must be frozen"
+    },
+    {
+      "name": "case.total",
+      "passed": true,
+      "detail": "expected 40 public cases and 40 private annotations"
+    },
+    {
+      "name": "pair.total",
+      "passed": true,
+      "detail": "expected 15 formal pairs"
+    },
+    {
+      "name": "category.memory_positive",
+      "passed": true,
+      "detail": "expected six Memory Positive cases"
+    },
+    {
+      "name": "category.skill_positive",
+      "passed": true,
+      "detail": "expected six Skill Positive cases"
+    },
+    {
+      "name": "category.knowledge_positive",
+      "passed": true,
+      "detail": "expected three Knowledge Positive cases"
+    },
+    {
+      "name": "category.paired_negative",
+      "passed": true,
+      "detail": "expected fifteen paired No-tool Negative cases"
+    },
+    {
+      "name": "category.natural_negative",
+      "passed": true,
+      "detail": "expected ten natural Coding Negative cases"
+    },
+    {
+      "name": "category.no_tool_total",
+      "passed": true,
+      "detail": "expected twenty-five no-tool cases"
+    },
+    {
+      "name": "pair:T14-MEM-001:exists",
+      "passed": true,
+      "detail": "both public cases and private annotations must exist"
+    },
+    {
+      "name": "pair:T14-MEM-001:identity",
+      "passed": true,
+      "detail": "pair identity, snapshot and workspace must match exactly"
+    },
+    {
+      "name": "pair:T14-MEM-001:query",
+      "passed": true,
+      "detail": "pair query must be identical"
+    },
+    {
+      "name": "pair:T14-MEM-001:single_variable",
+      "passed": true,
+      "detail": "only the appended delta message may differ"
+    },
+    {
+      "name": "pair:T14-MEM-001:roles",
+      "passed": true,
+      "detail": "pair annotations must preserve roles"
+    },
+    {
+      "name": "pair:T14-MEM-001:gold",
+      "passed": true,
+      "detail": "Positive must need a tool and paired Negative must not"
+    },
+    {
+      "name": "pair:T14-MEM-001:delta_hash",
+      "passed": true,
+      "detail": "controlled delta hash must match the formal dataset contract"
+    },
+    {
+      "name": "pair:T14-MEM-002:exists",
+      "passed": true,
+      "detail": "both public cases and private annotations must exist"
+    },
+    {
+      "name": "pair:T14-MEM-002:identity",
+      "passed": true,
+      "detail": "pair identity, snapshot and workspace must match exactly"
+    },
+    {
+      "name": "pair:T14-MEM-002:query",
+      "passed": true,
+      "detail": "pair query must be identical"
+    },
+    {
+      "name": "pair:T14-MEM-002:single_variable",
+      "passed": true,
+      "detail": "only the appended delta message may differ"
+    },
+    {
+      "name": "pair:T14-MEM-002:roles",
+      "passed": true,
+      "detail": "pair annotations must preserve roles"
+    },
+    {
+      "name": "pair:T14-MEM-002:gold",
+      "passed": true,
+      "detail": "Positive must need a tool and paired Negative must not"
+    },
+    {
+      "name": "pair:T14-MEM-002:delta_hash",
+      "passed": true,
+      "detail": "controlled delta hash must match the formal dataset contract"
+    },
+    {
+      "name": "pair:T14-MEM-003:exists",
+      "passed": true,
+      "detail": "both public cases and private annotations must exist"
+    },
+    {
+      "name": "pair:T14-MEM-003:identity",
+      "passed": true,
+      "detail": "pair identity, snapshot and workspace must match exactly"
+    },
+    {
+      "name": "pair:T14-MEM-003:query",
+      "passed": true,
+      "detail": "pair query must be identical"
+    },
+    {
+      "name": "pair:T14-MEM-003:single_variable",
+      "passed": true,
+      "detail": "only the appended delta message may differ"
+    },
+    {
+      "name": "pair:T14-MEM-003:roles",
+      "passed": true,
+      "detail": "pair annotations must preserve roles"
+    },
+    {
+      "name": "pair:T14-MEM-003:gold",
+      "passed": true,
+      "detail": "Positive must need a tool and paired Negative must not"
+    },
+    {
+      "name": "pair:T14-MEM-003:delta_hash",
+      "passed": true,
+      "detail": "controlled delta hash must match the formal dataset contract"
+    },
+    {
+      "name": "pair:T14-MEM-004:exists",
+      "passed": true,
+      "detail": "both public cases and private annotations must exist"
+    },
+    {
+      "name": "pair:T14-MEM-004:identity",
+      "passed": true,
+      "detail": "pair identity, snapshot and workspace must match exactly"
+    },
+    {
+      "name": "pair:T14-MEM-004:query",
+      "passed": true,
+      "detail": "pair query must be identical"
+    },
+    {
+      "name": "pair:T14-MEM-004:single_variable",
+      "passed": true,
+      "detail": "only the appended delta message may differ"
+    },
+    {
+      "name": "pair:T14-MEM-004:roles",
+      "passed": true,
+      "detail": "pair annotations must preserve roles"
+    },
+    {
+      "name": "pair:T14-MEM-004:gold",
+      "passed": true,
+      "detail": "Positive must need a tool and paired Negative must not"
+    },
+    {
+      "name": "pair:T14-MEM-004:delta_hash",
+      "passed": true,
+      "detail": "controlled delta hash must match the formal dataset contract"
+    },
+    {
+      "name": "pair:T14-MEM-005:exists",
+      "passed": true,
+      "detail": "both public cases and private annotations must exist"
+    },
+    {
+      "name": "pair:T14-MEM-005:identity",
+      "passed": true,
+      "detail": "pair identity, snapshot and workspace must match exactly"
+    },
+    {
+      "name": "pair:T14-MEM-005:query",
+      "passed": true,
+      "detail": "pair query must be identical"
+    },
+    {
+      "name": "pair:T14-MEM-005:single_variable",
+      "passed": true,
+      "detail": "only the appended delta message may differ"
+    },
+    {
+      "name": "pair:T14-MEM-005:roles",
+      "passed": true,
+      "detail": "pair annotations must preserve roles"
+    },
+    {
+      "name": "pair:T14-MEM-005:gold",
+      "passed": true,
+      "detail": "Positive must need a tool and paired Negative must not"
+    },
+    {
+      "name": "pair:T14-MEM-005:delta_hash",
+      "passed": true,
+      "detail": "controlled delta hash must match the formal dataset contract"
+    },
+    {
+      "name": "pair:T14-MEM-006:exists",
+      "passed": true,
+      "detail": "both public cases and private annotations must exist"
+    },
+    {
+      "name": "pair:T14-MEM-006:identity",
+      "passed": true,
+      "detail": "pair identity, snapshot and workspace must match exactly"
+    },
+    {
+      "name": "pair:T14-MEM-006:query",
+      "passed": true,
+      "detail": "pair query must be identical"
+    },
+    {
+      "name": "pair:T14-MEM-006:single_variable",
+      "passed": true,
+      "detail": "only the appended delta message may differ"
+    },
+    {
+      "name": "pair:T14-MEM-006:roles",
+      "passed": true,
+      "detail": "pair annotations must preserve roles"
+    },
+    {
+      "name": "pair:T14-MEM-006:gold",
+      "passed": true,
+      "detail": "Positive must need a tool and paired Negative must not"
+    },
+    {
+      "name": "pair:T14-MEM-006:delta_hash",
+      "passed": true,
+      "detail": "controlled delta hash must match the formal dataset contract"
+    },
+    {
+      "name": "pair:T14-SKL-001:exists",
+      "passed": true,
+      "detail": "both public cases and private annotations must exist"
+    },
+    {
+      "name": "pair:T14-SKL-001:identity",
+      "passed": true,
+      "detail": "pair identity, snapshot and workspace must match exactly"
+    },
+    {
+      "name": "pair:T14-SKL-001:query",
+      "passed": true,
+      "detail": "pair query must be identical"
+    },
+    {
+      "name": "pair:T14-SKL-001:single_variable",
+      "passed": true,
+      "detail": "only the appended delta message may differ"
+    },
+    {
+      "name": "pair:T14-SKL-001:roles",
+      "passed": true,
+      "detail": "pair annotations must preserve roles"
+    },
+    {
+      "name": "pair:T14-SKL-001:gold",
+      "passed": true,
+      "detail": "Positive must need a tool and paired Negative must not"
+    },
+    {
+      "name": "pair:T14-SKL-001:delta_hash",
+      "passed": true,
+      "detail": "controlled delta hash must match the formal dataset contract"
+    },
+    {
+      "name": "pair:T14-SKL-002:exists",
+      "passed": true,
+      "detail": "both public cases and private annotations must exist"
+    },
+    {
+      "name": "pair:T14-SKL-002:identity",
+      "passed": true,
+      "detail": "pair identity, snapshot and workspace must match exactly"
+    },
+    {
+      "name": "pair:T14-SKL-002:query",
+      "passed": true,
+      "detail": "pair query must be identical"
+    },
+    {
+      "name": "pair:T14-SKL-002:single_variable",
+      "passed": true,
+      "detail": "only the appended delta message may differ"
+    },
+    {
+      "name": "pair:T14-SKL-002:roles",
+      "passed": true,
+      "detail": "pair annotations must preserve roles"
+    },
+    {
+      "name": "pair:T14-SKL-002:gold",
+      "passed": true,
+      "detail": "Positive must need a tool and paired Negative must not"
+    },
+    {
+      "name": "pair:T14-SKL-002:delta_hash",
+      "passed": true,
+      "detail": "controlled delta hash must match the formal dataset contract"
+    },
+    {
+      "name": "pair:T14-SKL-003:exists",
+      "passed": true,
+      "detail": "both public cases and private annotations must exist"
+    },
+    {
+      "name": "pair:T14-SKL-003:identity",
+      "passed": true,
+      "detail": "pair identity, snapshot and workspace must match exactly"
+    },
+    {
+      "name": "pair:T14-SKL-003:query",
+      "passed": true,
+      "detail": "pair query must be identical"
+    },
+    {
+      "name": "pair:T14-SKL-003:single_variable",
+      "passed": true,
+      "detail": "only the appended delta message may differ"
+    },
+    {
+      "name": "pair:T14-SKL-003:roles",
+      "passed": true,
+      "detail": "pair annotations must preserve roles"
+    },
+    {
+      "name": "pair:T14-SKL-003:gold",
+      "passed": true,
+      "detail": "Positive must need a tool and paired Negative must not"
+    },
+    {
+      "name": "pair:T14-SKL-003:delta_hash",
+      "passed": true,
+      "detail": "controlled delta hash must match the formal dataset contract"
+    },
+    {
+      "name": "pair:T14-SKL-004:exists",
+      "passed": true,
+      "detail": "both public cases and private annotations must exist"
+    },
+    {
+      "name": "pair:T14-SKL-004:identity",
+      "passed": true,
+      "detail": "pair identity, snapshot and workspace must match exactly"
+    },
+    {
+      "name": "pair:T14-SKL-004:query",
+      "passed": true,
+      "detail": "pair query must be identical"
+    },
+    {
+      "name": "pair:T14-SKL-004:single_variable",
+      "passed": true,
+      "detail": "only the appended delta message may differ"
+    },
+    {
+      "name": "pair:T14-SKL-004:roles",
+      "passed": true,
+      "detail": "pair annotations must preserve roles"
+    },
+    {
+      "name": "pair:T14-SKL-004:gold",
+      "passed": true,
+      "detail": "Positive must need a tool and paired Negative must not"
+    },
+    {
+      "name": "pair:T14-SKL-004:delta_hash",
+      "passed": true,
+      "detail": "controlled delta hash must match the formal dataset contract"
+    },
+    {
+      "name": "pair:T14-SKL-005:exists",
+      "passed": true,
+      "detail": "both public cases and private annotations must exist"
+    },
+    {
+      "name": "pair:T14-SKL-005:identity",
+      "passed": true,
+      "detail": "pair identity, snapshot and workspace must match exactly"
+    },
+    {
+      "name": "pair:T14-SKL-005:query",
+      "passed": true,
+      "detail": "pair query must be identical"
+    },
+    {
+      "name": "pair:T14-SKL-005:single_variable",
+      "passed": true,
+      "detail": "only the appended delta message may differ"
+    },
+    {
+      "name": "pair:T14-SKL-005:roles",
+      "passed": true,
+      "detail": "pair annotations must preserve roles"
+    },
+    {
+      "name": "pair:T14-SKL-005:gold",
+      "passed": true,
+      "detail": "Positive must need a tool and paired Negative must not"
+    },
+    {
+      "name": "pair:T14-SKL-005:delta_hash",
+      "passed": true,
+      "detail": "controlled delta hash must match the formal dataset contract"
+    },
+    {
+      "name": "pair:T14-SKL-006:exists",
+      "passed": true,
+      "detail": "both public cases and private annotations must exist"
+    },
+    {
+      "name": "pair:T14-SKL-006:identity",
+      "passed": true,
+      "detail": "pair identity, snapshot and workspace must match exactly"
+    },
+    {
+      "name": "pair:T14-SKL-006:query",
+      "passed": true,
+      "detail": "pair query must be identical"
+    },
+    {
+      "name": "pair:T14-SKL-006:single_variable",
+      "passed": true,
+      "detail": "only the appended delta message may differ"
+    },
+    {
+      "name": "pair:T14-SKL-006:roles",
+      "passed": true,
+      "detail": "pair annotations must preserve roles"
+    },
+    {
+      "name": "pair:T14-SKL-006:gold",
+      "passed": true,
+      "detail": "Positive must need a tool and paired Negative must not"
+    },
+    {
+      "name": "pair:T14-SKL-006:delta_hash",
+      "passed": true,
+      "detail": "controlled delta hash must match the formal dataset contract"
+    },
+    {
+      "name": "pair:T14-KNW-001:exists",
+      "passed": true,
+      "detail": "both public cases and private annotations must exist"
+    },
+    {
+      "name": "pair:T14-KNW-001:identity",
+      "passed": true,
+      "detail": "pair identity, snapshot and workspace must match exactly"
+    },
+    {
+      "name": "pair:T14-KNW-001:query",
+      "passed": true,
+      "detail": "pair query must be identical"
+    },
+    {
+      "name": "pair:T14-KNW-001:single_variable",
+      "passed": true,
+      "detail": "only the appended delta message may differ"
+    },
+    {
+      "name": "pair:T14-KNW-001:roles",
+      "passed": true,
+      "detail": "pair annotations must preserve roles"
+    },
+    {
+      "name": "pair:T14-KNW-001:gold",
+      "passed": true,
+      "detail": "Positive must need a tool and paired Negative must not"
+    },
+    {
+      "name": "pair:T14-KNW-001:delta_hash",
+      "passed": true,
+      "detail": "controlled delta hash must match the formal dataset contract"
+    },
+    {
+      "name": "pair:T14-KNW-002:exists",
+      "passed": true,
+      "detail": "both public cases and private annotations must exist"
+    },
+    {
+      "name": "pair:T14-KNW-002:identity",
+      "passed": true,
+      "detail": "pair identity, snapshot and workspace must match exactly"
+    },
+    {
+      "name": "pair:T14-KNW-002:query",
+      "passed": true,
+      "detail": "pair query must be identical"
+    },
+    {
+      "name": "pair:T14-KNW-002:single_variable",
+      "passed": true,
+      "detail": "only the appended delta message may differ"
+    },
+    {
+      "name": "pair:T14-KNW-002:roles",
+      "passed": true,
+      "detail": "pair annotations must preserve roles"
+    },
+    {
+      "name": "pair:T14-KNW-002:gold",
+      "passed": true,
+      "detail": "Positive must need a tool and paired Negative must not"
+    },
+    {
+      "name": "pair:T14-KNW-002:delta_hash",
+      "passed": true,
+      "detail": "controlled delta hash must match the formal dataset contract"
+    },
+    {
+      "name": "pair:T14-KNW-003:exists",
+      "passed": true,
+      "detail": "both public cases and private annotations must exist"
+    },
+    {
+      "name": "pair:T14-KNW-003:identity",
+      "passed": true,
+      "detail": "pair identity, snapshot and workspace must match exactly"
+    },
+    {
+      "name": "pair:T14-KNW-003:query",
+      "passed": true,
+      "detail": "pair query must be identical"
+    },
+    {
+      "name": "pair:T14-KNW-003:single_variable",
+      "passed": true,
+      "detail": "only the appended delta message may differ"
+    },
+    {
+      "name": "pair:T14-KNW-003:roles",
+      "passed": true,
+      "detail": "pair annotations must preserve roles"
+    },
+    {
+      "name": "pair:T14-KNW-003:gold",
+      "passed": true,
+      "detail": "Positive must need a tool and paired Negative must not"
+    },
+    {
+      "name": "pair:T14-KNW-003:delta_hash",
+      "passed": true,
+      "detail": "controlled delta hash must match the formal dataset contract"
+    },
+    {
+      "name": "snapshot.asset_ids_unique",
+      "passed": true,
+      "detail": "snapshot asset ids must be unique"
+    },
+    {
+      "name": "snapshot.identity_aware_hash",
+      "passed": true,
+      "detail": "all Cases must use the production identity-aware visible asset hash"
+    },
+    {
+      "name": "visibility:T14-MEM-001-P",
+      "passed": true,
+      "detail": "every Gold target must be visible in the team snapshot"
+    },
+    {
+      "name": "gold:T14-MEM-001-P:minimal",
+      "passed": true,
+      "detail": "maxTdaiCalls must equal the shortest complete allowed sequence"
+    },
+    {
+      "name": "gold:T14-MEM-001-P:complete",
+      "passed": true,
+      "detail": "positive Gold must include first action, sequence, gap, stop point and ablation evidence"
+    },
+    {
+      "name": "gold:T14-MEM-001-P:first_action",
+      "passed": true,
+      "detail": "allowed sequence must start with allowedFirstActions"
+    },
+    {
+      "name": "visibility:T14-MEM-002-P",
+      "passed": true,
+      "detail": "every Gold target must be visible in the team snapshot"
+    },
+    {
+      "name": "gold:T14-MEM-002-P:minimal",
+      "passed": true,
+      "detail": "maxTdaiCalls must equal the shortest complete allowed sequence"
+    },
+    {
+      "name": "gold:T14-MEM-002-P:complete",
+      "passed": true,
+      "detail": "positive Gold must include first action, sequence, gap, stop point and ablation evidence"
+    },
+    {
+      "name": "gold:T14-MEM-002-P:first_action",
+      "passed": true,
+      "detail": "allowed sequence must start with allowedFirstActions"
+    },
+    {
+      "name": "visibility:T14-MEM-003-P",
+      "passed": true,
+      "detail": "every Gold target must be visible in the team snapshot"
+    },
+    {
+      "name": "gold:T14-MEM-003-P:minimal",
+      "passed": true,
+      "detail": "maxTdaiCalls must equal the shortest complete allowed sequence"
+    },
+    {
+      "name": "gold:T14-MEM-003-P:complete",
+      "passed": true,
+      "detail": "positive Gold must include first action, sequence, gap, stop point and ablation evidence"
+    },
+    {
+      "name": "gold:T14-MEM-003-P:first_action",
+      "passed": true,
+      "detail": "allowed sequence must start with allowedFirstActions"
+    },
+    {
+      "name": "gold:T14-MEM-003-P:followups",
+      "passed": true,
+      "detail": "follow-up actions must match sequence"
+    },
+    {
+      "name": "visibility:T14-MEM-004-P",
+      "passed": true,
+      "detail": "every Gold target must be visible in the team snapshot"
+    },
+    {
+      "name": "gold:T14-MEM-004-P:minimal",
+      "passed": true,
+      "detail": "maxTdaiCalls must equal the shortest complete allowed sequence"
+    },
+    {
+      "name": "gold:T14-MEM-004-P:complete",
+      "passed": true,
+      "detail": "positive Gold must include first action, sequence, gap, stop point and ablation evidence"
+    },
+    {
+      "name": "gold:T14-MEM-004-P:first_action",
+      "passed": true,
+      "detail": "allowed sequence must start with allowedFirstActions"
+    },
+    {
+      "name": "visibility:T14-MEM-005-P",
+      "passed": true,
+      "detail": "every Gold target must be visible in the team snapshot"
+    },
+    {
+      "name": "gold:T14-MEM-005-P:minimal",
+      "passed": true,
+      "detail": "maxTdaiCalls must equal the shortest complete allowed sequence"
+    },
+    {
+      "name": "gold:T14-MEM-005-P:complete",
+      "passed": true,
+      "detail": "positive Gold must include first action, sequence, gap, stop point and ablation evidence"
+    },
+    {
+      "name": "gold:T14-MEM-005-P:first_action",
+      "passed": true,
+      "detail": "allowed sequence must start with allowedFirstActions"
+    },
+    {
+      "name": "visibility:T14-MEM-006-P",
+      "passed": true,
+      "detail": "every Gold target must be visible in the team snapshot"
+    },
+    {
+      "name": "gold:T14-MEM-006-P:minimal",
+      "passed": true,
+      "detail": "maxTdaiCalls must equal the shortest complete allowed sequence"
+    },
+    {
+      "name": "gold:T14-MEM-006-P:complete",
+      "passed": true,
+      "detail": "positive Gold must include first action, sequence, gap, stop point and ablation evidence"
+    },
+    {
+      "name": "gold:T14-MEM-006-P:first_action",
+      "passed": true,
+      "detail": "allowed sequence must start with allowedFirstActions"
+    },
+    {
+      "name": "visibility:T14-SKL-001-P",
+      "passed": true,
+      "detail": "every Gold target must be visible in the team snapshot"
+    },
+    {
+      "name": "gold:T14-SKL-001-P:minimal",
+      "passed": true,
+      "detail": "maxTdaiCalls must equal the shortest complete allowed sequence"
+    },
+    {
+      "name": "gold:T14-SKL-001-P:complete",
+      "passed": true,
+      "detail": "positive Gold must include first action, sequence, gap, stop point and ablation evidence"
+    },
+    {
+      "name": "gold:T14-SKL-001-P:first_action",
+      "passed": true,
+      "detail": "allowed sequence must start with allowedFirstActions"
+    },
+    {
+      "name": "visibility:T14-SKL-002-P",
+      "passed": true,
+      "detail": "every Gold target must be visible in the team snapshot"
+    },
+    {
+      "name": "gold:T14-SKL-002-P:minimal",
+      "passed": true,
+      "detail": "maxTdaiCalls must equal the shortest complete allowed sequence"
+    },
+    {
+      "name": "gold:T14-SKL-002-P:complete",
+      "passed": true,
+      "detail": "positive Gold must include first action, sequence, gap, stop point and ablation evidence"
+    },
+    {
+      "name": "gold:T14-SKL-002-P:first_action",
+      "passed": true,
+      "detail": "allowed sequence must start with allowedFirstActions"
+    },
+    {
+      "name": "visibility:T14-SKL-003-P",
+      "passed": true,
+      "detail": "every Gold target must be visible in the team snapshot"
+    },
+    {
+      "name": "gold:T14-SKL-003-P:minimal",
+      "passed": true,
+      "detail": "maxTdaiCalls must equal the shortest complete allowed sequence"
+    },
+    {
+      "name": "gold:T14-SKL-003-P:complete",
+      "passed": true,
+      "detail": "positive Gold must include first action, sequence, gap, stop point and ablation evidence"
+    },
+    {
+      "name": "gold:T14-SKL-003-P:first_action",
+      "passed": true,
+      "detail": "allowed sequence must start with allowedFirstActions"
+    },
+    {
+      "name": "gold:T14-SKL-003-P:followups",
+      "passed": true,
+      "detail": "follow-up actions must match sequence"
+    },
+    {
+      "name": "visibility:T14-SKL-004-P",
+      "passed": true,
+      "detail": "every Gold target must be visible in the team snapshot"
+    },
+    {
+      "name": "gold:T14-SKL-004-P:minimal",
+      "passed": true,
+      "detail": "maxTdaiCalls must equal the shortest complete allowed sequence"
+    },
+    {
+      "name": "gold:T14-SKL-004-P:complete",
+      "passed": true,
+      "detail": "positive Gold must include first action, sequence, gap, stop point and ablation evidence"
+    },
+    {
+      "name": "gold:T14-SKL-004-P:first_action",
+      "passed": true,
+      "detail": "allowed sequence must start with allowedFirstActions"
+    },
+    {
+      "name": "gold:T14-SKL-004-P:followups",
+      "passed": true,
+      "detail": "follow-up actions must match sequence"
+    },
+    {
+      "name": "visibility:T14-SKL-005-P",
+      "passed": true,
+      "detail": "every Gold target must be visible in the team snapshot"
+    },
+    {
+      "name": "gold:T14-SKL-005-P:minimal",
+      "passed": true,
+      "detail": "maxTdaiCalls must equal the shortest complete allowed sequence"
+    },
+    {
+      "name": "gold:T14-SKL-005-P:complete",
+      "passed": true,
+      "detail": "positive Gold must include first action, sequence, gap, stop point and ablation evidence"
+    },
+    {
+      "name": "gold:T14-SKL-005-P:first_action",
+      "passed": true,
+      "detail": "allowed sequence must start with allowedFirstActions"
+    },
+    {
+      "name": "gold:T14-SKL-005-P:followups",
+      "passed": true,
+      "detail": "follow-up actions must match sequence"
+    },
+    {
+      "name": "visibility:T14-SKL-006-P",
+      "passed": true,
+      "detail": "every Gold target must be visible in the team snapshot"
+    },
+    {
+      "name": "gold:T14-SKL-006-P:minimal",
+      "passed": true,
+      "detail": "maxTdaiCalls must equal the shortest complete allowed sequence"
+    },
+    {
+      "name": "gold:T14-SKL-006-P:complete",
+      "passed": true,
+      "detail": "positive Gold must include first action, sequence, gap, stop point and ablation evidence"
+    },
+    {
+      "name": "gold:T14-SKL-006-P:first_action",
+      "passed": true,
+      "detail": "allowed sequence must start with allowedFirstActions"
+    },
+    {
+      "name": "gold:T14-SKL-006-P:followups",
+      "passed": true,
+      "detail": "follow-up actions must match sequence"
+    },
+    {
+      "name": "visibility:T14-KNW-001-P",
+      "passed": true,
+      "detail": "every Gold target must be visible in the team snapshot"
+    },
+    {
+      "name": "gold:T14-KNW-001-P:minimal",
+      "passed": true,
+      "detail": "maxTdaiCalls must equal the shortest complete allowed sequence"
+    },
+    {
+      "name": "gold:T14-KNW-001-P:complete",
+      "passed": true,
+      "detail": "positive Gold must include first action, sequence, gap, stop point and ablation evidence"
+    },
+    {
+      "name": "gold:T14-KNW-001-P:first_action",
+      "passed": true,
+      "detail": "allowed sequence must start with allowedFirstActions"
+    },
+    {
+      "name": "gold:T14-KNW-001-P:knowledge_followup",
+      "passed": true,
+      "detail": "Knowledge follow-up expectations must cover every /tools/call"
+    },
+    {
+      "name": "visibility:T14-KNW-002-P",
+      "passed": true,
+      "detail": "every Gold target must be visible in the team snapshot"
+    },
+    {
+      "name": "gold:T14-KNW-002-P:minimal",
+      "passed": true,
+      "detail": "maxTdaiCalls must equal the shortest complete allowed sequence"
+    },
+    {
+      "name": "gold:T14-KNW-002-P:complete",
+      "passed": true,
+      "detail": "positive Gold must include first action, sequence, gap, stop point and ablation evidence"
+    },
+    {
+      "name": "gold:T14-KNW-002-P:first_action",
+      "passed": true,
+      "detail": "allowed sequence must start with allowedFirstActions"
+    },
+    {
+      "name": "gold:T14-KNW-002-P:knowledge_followup",
+      "passed": true,
+      "detail": "Knowledge follow-up expectations must cover every /tools/call"
+    },
+    {
+      "name": "visibility:T14-KNW-003-P",
+      "passed": true,
+      "detail": "every Gold target must be visible in the team snapshot"
+    },
+    {
+      "name": "gold:T14-KNW-003-P:minimal",
+      "passed": true,
+      "detail": "maxTdaiCalls must equal the shortest complete allowed sequence"
+    },
+    {
+      "name": "gold:T14-KNW-003-P:complete",
+      "passed": true,
+      "detail": "positive Gold must include first action, sequence, gap, stop point and ablation evidence"
+    },
+    {
+      "name": "gold:T14-KNW-003-P:first_action",
+      "passed": true,
+      "detail": "allowed sequence must start with allowedFirstActions"
+    },
+    {
+      "name": "gold:T14-KNW-003-P:knowledge_followup",
+      "passed": true,
+      "detail": "Knowledge follow-up expectations must cover every /tools/call"
+    },
+    {
+      "name": "gold:T14-MEM-001-N:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-MEM-002-N:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-MEM-003-N:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-MEM-004-N:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-MEM-005-N:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-MEM-006-N:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-SKL-001-N:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-SKL-002-N:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-SKL-003-N:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-SKL-004-N:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-SKL-005-N:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-SKL-006-N:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-KNW-001-N:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-KNW-002-N:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-KNW-003-N:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-COD-001:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-COD-002:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-COD-003:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-COD-004:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-COD-005:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-COD-006:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-COD-007:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-COD-008:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-COD-009:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold:T14-COD-010:no_tool",
+      "passed": true,
+      "detail": "no-tool Gold must be complete and empty of tool actions"
+    },
+    {
+      "name": "gold.discovery_distribution",
+      "passed": true,
+      "detail": "frozen routes must contain ten search/discovery Positive cases"
+    },
+    {
+      "name": "gold.direct_distribution",
+      "passed": true,
+      "detail": "remaining five Positive cases must be direct calls"
+    },
+    {
+      "name": "route.endpoint:/memory-bridge/v3/atomic/search",
+      "passed": true,
+      "detail": "production route endpoint must be represented by frozen Gold"
+    },
+    {
+      "name": "route.endpoint:/memory-bridge/v3/atomic/query",
+      "passed": true,
+      "detail": "production route endpoint must be represented by frozen Gold"
+    },
+    {
+      "name": "route.endpoint:/memory-bridge/v3/conversation/search",
+      "passed": true,
+      "detail": "production route endpoint must be represented by frozen Gold"
+    },
+    {
+      "name": "route.endpoint:/memory-bridge/v3/conversation/query",
+      "passed": true,
+      "detail": "production route endpoint must be represented by frozen Gold"
+    },
+    {
+      "name": "route.endpoint:/memory-bridge/v3/scenario/read",
+      "passed": true,
+      "detail": "production route endpoint must be represented by frozen Gold"
+    },
+    {
+      "name": "route.endpoint:/skill-bridge/v3/skill/search",
+      "passed": true,
+      "detail": "production route endpoint must be represented by frozen Gold"
+    },
+    {
+      "name": "route.endpoint:/skill-bridge/v3/skill/get-by-name",
+      "passed": true,
+      "detail": "production route endpoint must be represented by frozen Gold"
+    },
+    {
+      "name": "route.endpoint:/skill-bridge/v3/skill/get",
+      "passed": true,
+      "detail": "production route endpoint must be represented by frozen Gold"
+    },
+    {
+      "name": "route.endpoint:/skill-bridge/v3/skill/files/read",
+      "passed": true,
+      "detail": "production route endpoint must be represented by frozen Gold"
+    },
+    {
+      "name": "route.endpoint:/tools/list",
+      "passed": true,
+      "detail": "production route endpoint must be represented by frozen Gold"
+    },
+    {
+      "name": "assets.memory.counts",
+      "passed": true,
+      "detail": "Memory asset counts must be 10/16/5/1"
+    },
+    {
+      "name": "assets.memory.l0_depth",
+      "passed": true,
+      "detail": "every L0 conversation must contain 12-20 messages"
+    },
+    {
+      "name": "assets.memory.injection",
+      "passed": true,
+      "detail": "injection boundary must match production"
+    },
+    {
+      "name": "assets.memory.l2_complete",
+      "passed": true,
+      "detail": "every L2 scene must have path, hidden full content and supporting session"
+    },
+    {
+      "name": "memory.closure.mem001",
+      "passed": true,
+      "detail": "MEM001 target L1 must contain the complete Helm pause and rollback decision"
+    },
+    {
+      "name": "memory.closure.mem002",
+      "passed": true,
+      "detail": "MEM002 target L0 must contain the complete multi-architecture provenance gate"
+    },
+    {
+      "name": "memory.closure.mem003",
+      "passed": true,
+      "detail": "MEM003 target L0 must contain the complete GitOps drift-exception boundary"
+    },
+    {
+      "name": "memory.closure.mem004",
+      "passed": true,
+      "detail": "MEM004 target L1 must contain the complete canary analysis decision"
+    },
+    {
+      "name": "memory.closure.mem005",
+      "passed": true,
+      "detail": "MEM005 target L1 must contain the complete configuration rollout guardrail"
+    },
+    {
+      "name": "memory.closure.mem006",
+      "passed": true,
+      "detail": "MEM006 L2 must hide operational facts from summary but expose the complete rollback procedure through read_scene content"
+    },
+    {
+      "name": "assets.skill.count",
+      "passed": true,
+      "detail": "expected sixteen Skill assets"
+    },
+    {
+      "name": "assets.skill.listing",
+      "passed": true,
+      "detail": "native listing must contain six own Skills and three Positive routes must require discovery"
+    },
+    {
+      "name": "assets.skill.real_distractors",
+      "passed": true,
+      "detail": "every search route must retain at least three real visible Skill distractors"
+    },
+    {
+      "name": "source.freeze.aidas",
+      "passed": true,
+      "detail": "Aidas Skill repository, commit and license must remain frozen"
+    },
+    {
+      "name": "source.freeze.flux",
+      "passed": true,
+      "detail": "Flux Skill repository, commit and license must remain frozen"
+    },
+    {
+      "name": "source.license:aidas-k8s-agent-skills",
+      "passed": true,
+      "detail": "frozen repository license must match its recorded sha256"
+    },
+    {
+      "name": "source.license:fluxcd-agent-skills",
+      "passed": true,
+      "detail": "frozen repository license must match its recorded sha256"
+    },
+    {
+      "name": "source.raw:T14-SRC-HELM-CHART",
+      "passed": true,
+      "detail": "raw source file must match frozen sha256"
+    },
+    {
+      "name": "source.raw:T14-SRC-HELM-OPS",
+      "passed": true,
+      "detail": "raw source file must match frozen sha256"
+    },
+    {
+      "name": "source.raw:T14-SRC-FLAGGER",
+      "passed": true,
+      "detail": "raw source file must match frozen sha256"
+    },
+    {
+      "name": "source.raw:T14-SRC-SEALED-SECRETS",
+      "passed": true,
+      "detail": "raw source file must match frozen sha256"
+    },
+    {
+      "name": "source.raw:T14-SRC-RELOADER",
+      "passed": true,
+      "detail": "raw source file must match frozen sha256"
+    },
+    {
+      "name": "source.raw:T14-SRC-TEKTON-PIPELINES",
+      "passed": true,
+      "detail": "raw source file must match frozen sha256"
+    },
+    {
+      "name": "source.raw:T14-SRC-TEKTON-PAC",
+      "passed": true,
+      "detail": "raw source file must match frozen sha256"
+    },
+    {
+      "name": "source.raw:T14-SRC-GITEA-REGISTRY",
+      "passed": true,
+      "detail": "raw source file must match frozen sha256"
+    },
+    {
+      "name": "source.raw:T14-SRC-HARBOR-API",
+      "passed": true,
+      "detail": "raw source file must match frozen sha256"
+    },
+    {
+      "name": "source.raw:T14-SRC-HARBOR-HELM",
+      "passed": true,
+      "detail": "raw source file must match frozen sha256"
+    },
+    {
+      "name": "source.raw:T14-SRC-EXTERNAL-SECRETS",
+      "passed": true,
+      "detail": "raw source file must match frozen sha256"
+    },
+    {
+      "name": "source.raw:T14-SRC-CILIUM-GATEWAY",
+      "passed": true,
+      "detail": "raw source file must match frozen sha256"
+    },
+    {
+      "name": "source.raw:T14-SRC-TUPPR",
+      "passed": true,
+      "detail": "raw source file must match frozen sha256"
+    },
+    {
+      "name": "source.raw:T14-SRC-FLUX-KNOWLEDGE",
+      "passed": true,
+      "detail": "raw source file must match frozen sha256"
+    },
+    {
+      "name": "source.raw:T14-SRC-FLUX-AUDIT",
+      "passed": true,
+      "detail": "raw source file must match frozen sha256"
+    },
+    {
+      "name": "source.raw:T14-SRC-FLUX-DEBUG",
+      "passed": true,
+      "detail": "raw source file must match frozen sha256"
+    },
+    {
+      "name": "source.raw:T14-SRC-FLUX-IMAGE-AUTOMATION",
+      "passed": true,
+      "detail": "raw source file must match frozen sha256"
+    },
+    {
+      "name": "source.adapted:T14-SRC-HELM-CHART",
+      "passed": true,
+      "detail": "adapted technical body must be byte-identical to frozen raw source"
+    },
+    {
+      "name": "source.adapted:T14-SRC-TEKTON-PIPELINES",
+      "passed": true,
+      "detail": "adapted technical body must be byte-identical to frozen raw source"
+    },
+    {
+      "name": "source.adapted:T14-SRC-FLUX-KNOWLEDGE",
+      "passed": true,
+      "detail": "adapted technical body must be byte-identical to frozen raw source"
+    },
+    {
+      "name": "source.adapted:T14-SRC-HARBOR-HELM",
+      "passed": true,
+      "detail": "adapted technical body must be byte-identical to frozen raw source"
+    },
+    {
+      "name": "source.adapted:T14-SRC-EXTERNAL-SECRETS",
+      "passed": true,
+      "detail": "adapted technical body must be byte-identical to frozen raw source"
+    },
+    {
+      "name": "source.adapted:T14-SRC-CILIUM-GATEWAY",
+      "passed": true,
+      "detail": "adapted technical body must be byte-identical to frozen raw source"
+    },
+    {
+      "name": "source.adapted:T14-SRC-HELM-OPS",
+      "passed": true,
+      "detail": "adapted technical body must be byte-identical to frozen raw source"
+    },
+    {
+      "name": "source.adapted:T14-SRC-FLAGGER",
+      "passed": true,
+      "detail": "adapted technical body must be byte-identical to frozen raw source"
+    },
+    {
+      "name": "source.adapted:T14-SRC-SEALED-SECRETS",
+      "passed": true,
+      "detail": "adapted technical body must be byte-identical to frozen raw source"
+    },
+    {
+      "name": "source.adapted:T14-SRC-RELOADER",
+      "passed": true,
+      "detail": "adapted technical body must be byte-identical to frozen raw source"
+    },
+    {
+      "name": "source.adapted:T14-SRC-TEKTON-PAC",
+      "passed": true,
+      "detail": "adapted technical body must be byte-identical to frozen raw source"
+    },
+    {
+      "name": "source.adapted:T14-SRC-GITEA-REGISTRY",
+      "passed": true,
+      "detail": "adapted technical body must be byte-identical to frozen raw source"
+    },
+    {
+      "name": "source.adapted:T14-SRC-HARBOR-API",
+      "passed": true,
+      "detail": "adapted technical body must be byte-identical to frozen raw source"
+    },
+    {
+      "name": "source.adapted:T14-SRC-TUPPR",
+      "passed": true,
+      "detail": "adapted technical body must be byte-identical to frozen raw source"
+    },
+    {
+      "name": "source.adapted:T14-SRC-FLUX-AUDIT",
+      "passed": true,
+      "detail": "adapted technical body must be byte-identical to frozen raw source"
+    },
+    {
+      "name": "source.adapted:T14-SRC-FLUX-DEBUG",
+      "passed": true,
+      "detail": "adapted technical body must be byte-identical to frozen raw source"
+    },
+    {
+      "name": "source.adapted:T14-SRC-FLUX-IMAGE-AUTOMATION",
+      "passed": true,
+      "detail": "adapted technical body must be byte-identical to frozen raw source"
+    },
+    {
+      "name": "assets.knowledge.count",
+      "passed": true,
+      "detail": "expected three ready Knowledge resources and tool lists"
+    },
+    {
+      "name": "assets.knowledge.binding",
+      "passed": true,
+      "detail": "every Knowledge asset must be fixed-bound to the active agent"
+    },
+    {
+      "name": "assets.knowledge.fixtures",
+      "passed": true,
+      "detail": "every Knowledge resource must expose fixed tools and a target fixture"
+    },
+    {
+      "name": "assets.knowledge.real_distractors",
+      "passed": true,
+      "detail": "every Knowledge route must retain at least two distinct visible same-domain resources as distractors"
+    },
+    {
+      "name": "provider:T14-MEM-001-P:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-MEM-001-P:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-MEM-001-N:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-MEM-001-N:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-MEM-002-P:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-MEM-002-P:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-MEM-002-N:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-MEM-002-N:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-MEM-003-P:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-MEM-003-P:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-MEM-003-N:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-MEM-003-N:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-MEM-004-P:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-MEM-004-P:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-MEM-004-N:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-MEM-004-N:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-MEM-005-P:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-MEM-005-P:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-MEM-005-N:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-MEM-005-N:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-MEM-006-P:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-MEM-006-P:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-MEM-006-N:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-MEM-006-N:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-SKL-001-P:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-SKL-001-P:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-SKL-001-N:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-SKL-001-N:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-SKL-002-P:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-SKL-002-P:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-SKL-002-N:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-SKL-002-N:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-SKL-003-P:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-SKL-003-P:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-SKL-003-N:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-SKL-003-N:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-SKL-004-P:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-SKL-004-P:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-SKL-004-N:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-SKL-004-N:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-SKL-005-P:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-SKL-005-P:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-SKL-005-N:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-SKL-005-N:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-SKL-006-P:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-SKL-006-P:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-SKL-006-N:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-SKL-006-N:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-KNW-001-P:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-KNW-001-P:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-KNW-001-N:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-KNW-001-N:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-KNW-002-P:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-KNW-002-P:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-KNW-002-N:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-KNW-002-N:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-KNW-003-P:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-KNW-003-P:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-KNW-003-N:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-KNW-003-N:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-COD-001:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-COD-001:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-COD-002:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-COD-002:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-COD-003:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-COD-003:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-COD-004:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-COD-004:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-COD-005:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-COD-005:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-COD-006:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-COD-006:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-COD-007:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-COD-007:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-COD-008:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-COD-008:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-COD-009:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-COD-009:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "provider:T14-COD-010:shape",
+      "passed": true,
+      "detail": "provider object must contain only the four safe fields"
+    },
+    {
+      "name": "provider:T14-COD-010:leakage",
+      "passed": true,
+      "detail": "provider-visible text must not contain tool, asset, pair or Gold internals"
+    },
+    {
+      "name": "injection.answer_not_in_l3",
+      "passed": true,
+      "detail": "L3 injection must not reveal Positive answers"
+    },
+    {
+      "name": "injection.answer_not_in_l2_summary",
+      "passed": true,
+      "detail": "L2 path+summary injection must not reveal Positive answers"
+    },
+    {
+      "name": "batch:T14-pilot-memory-01",
+      "passed": true,
+      "detail": "Luna batch validator must pass at its frozen expected count"
+    },
+    {
+      "name": "batch:T14-expand-memory-01",
+      "passed": true,
+      "detail": "Luna batch validator must pass at its frozen expected count"
+    },
+    {
+      "name": "batch:build-07-T14-pilot-skill-01",
+      "passed": true,
+      "detail": "Luna batch validator must pass at its frozen expected count"
+    },
+    {
+      "name": "batch:build-07-T14-expand-skill-01",
+      "passed": true,
+      "detail": "Luna batch validator must pass at its frozen expected count"
+    },
+    {
+      "name": "batch:t14-pilot-knowledge-01",
+      "passed": true,
+      "detail": "Luna batch validator must pass at its frozen expected count"
+    },
+    {
+      "name": "batch:t14-expand-knowledge-01",
+      "passed": true,
+      "detail": "Luna batch validator must pass at its frozen expected count"
+    },
+    {
+      "name": "batch:build-07-T14-natural-negative-01",
+      "passed": true,
+      "detail": "Luna batch validator must pass at its frozen expected count"
+    },
+    {
+      "name": "batch.model",
+      "passed": true,
+      "detail": "all seven batch manifests must record gpt-5.6-luna/high"
+    },
+    {
+      "name": "batch.provenance",
+      "passed": true,
+      "detail": "every Luna batch reference must retain its raw sha256 plus validator and Sol review flags"
+    },
+    {
+      "name": "source.external_imports",
+      "passed": true,
+      "detail": "every frozen Skill file and resource must have a complete external import record"
+    },
+    {
+      "name": "sourceEvidence[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[3].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[4].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[5].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[6].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[7].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[8].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[9].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[10].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[11].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[12].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[13].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[14].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[15].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[16].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[17].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[18].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[19].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[20].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[21].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[22].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[23].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[24].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[25].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[26].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[27].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[28].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[29].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "sourceEvidence[30].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "teams[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "businessAgents[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "businessAgents[0].agentDetail.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "businessAgents[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "businessAgents[1].agentDetail.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "businessAgents[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "businessAgents[2].agentDetail.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "tasks[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "tasks[0].projectRef.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "tasks[0].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "tasks[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "tasks[1].projectRef.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "tasks[1].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "tasks[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "tasks[2].projectRef.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "tasks[2].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "tasks[3].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "tasks[3].projectRef.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "tasks[3].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "tasks[4].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "tasks[4].projectRef.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "tasks[4].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[0].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[1].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[2].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[3].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[3].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[4].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[4].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[5].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[5].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[6].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[6].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[7].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[7].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[8].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[8].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[9].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[9].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[10].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[10].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[11].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[11].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[12].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[12].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[13].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[13].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[14].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[14].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[15].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[15].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[16].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[16].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[17].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[17].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[18].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[18].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[19].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[19].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[20].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[20].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[21].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[21].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[22].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[22].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[23].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[23].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[24].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[24].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[25].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[25].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[26].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[26].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[27].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[27].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[28].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[28].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[29].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[29].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[30].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[30].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[31].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[31].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[32].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[32].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[33].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[33].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[34].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[34].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[35].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[35].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[36].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[36].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[37].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[37].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[38].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[38].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[39].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "publicCases[39].workspace.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[0].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[1].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[2].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[3].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[3].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[4].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[4].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[5].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[5].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[6].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[6].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[7].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[7].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[8].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[8].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[9].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[9].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[10].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[10].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[11].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[11].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[12].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[12].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[13].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[13].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[14].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[14].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[15].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[15].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[16].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[16].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[17].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[17].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[18].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[18].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[19].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[19].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[20].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[20].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[21].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[21].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[22].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[22].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[23].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[23].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[24].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[24].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[25].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[25].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[26].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[26].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[27].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[27].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[28].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[28].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[29].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[29].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[30].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[30].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[31].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[31].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[32].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[32].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[33].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[33].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[34].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[34].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[35].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[35].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[36].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[36].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[37].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[37].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[38].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[38].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[39].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "privateAnnotations[39].gold.contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "pairs[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "pairs[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "pairs[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "pairs[3].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "pairs[4].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "pairs[5].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "pairs[6].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "pairs[7].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "pairs[8].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "pairs[9].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "pairs[10].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "pairs[11].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "pairs[12].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "pairs[13].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "pairs[14].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[0].messages[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[0].messages[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[0].messages[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[0].messages[3].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[0].messages[4].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[0].messages[5].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[0].messages[6].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[0].messages[7].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[0].messages[8].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[0].messages[9].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[0].messages[10].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[0].messages[11].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[1].messages[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[1].messages[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[1].messages[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[1].messages[3].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[1].messages[4].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[1].messages[5].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[1].messages[6].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[1].messages[7].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[1].messages[8].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[1].messages[9].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[1].messages[10].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[1].messages[11].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[2].messages[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[2].messages[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[2].messages[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[2].messages[3].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[2].messages[4].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[2].messages[5].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[2].messages[6].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[2].messages[7].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[2].messages[8].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[2].messages[9].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[2].messages[10].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[2].messages[11].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[3].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[3].messages[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[3].messages[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[3].messages[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[3].messages[3].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[3].messages[4].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[3].messages[5].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[3].messages[6].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[3].messages[7].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[3].messages[8].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[3].messages[9].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[3].messages[10].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[3].messages[11].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[4].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[4].messages[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[4].messages[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[4].messages[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[4].messages[3].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[4].messages[4].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[4].messages[5].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[4].messages[6].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[4].messages[7].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[4].messages[8].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[4].messages[9].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[4].messages[10].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[4].messages[11].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[5].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[5].messages[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[5].messages[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[5].messages[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[5].messages[3].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[5].messages[4].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[5].messages[5].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[5].messages[6].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[5].messages[7].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[5].messages[8].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[5].messages[9].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[5].messages[10].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[5].messages[11].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[6].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[6].messages[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[6].messages[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[6].messages[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[6].messages[3].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[6].messages[4].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[6].messages[5].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[6].messages[6].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[6].messages[7].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[6].messages[8].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[6].messages[9].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[6].messages[10].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[6].messages[11].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[7].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[7].messages[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[7].messages[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[7].messages[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[7].messages[3].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[7].messages[4].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[7].messages[5].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[7].messages[6].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[7].messages[7].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[7].messages[8].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[7].messages[9].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[7].messages[10].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[7].messages[11].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[8].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[8].messages[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[8].messages[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[8].messages[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[8].messages[3].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[8].messages[4].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[8].messages[5].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[8].messages[6].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[8].messages[7].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[8].messages[8].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[8].messages[9].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[8].messages[10].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[8].messages[11].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[9].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[9].messages[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[9].messages[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[9].messages[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[9].messages[3].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[9].messages[4].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[9].messages[5].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[9].messages[6].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[9].messages[7].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[9].messages[8].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[9].messages[9].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[9].messages[10].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l0[9].messages[11].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l1[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l1[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l1[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l1[3].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l1[4].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l1[5].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l1[6].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l1[7].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l1[8].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l1[9].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l1[10].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l1[11].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l1[12].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l1[13].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l1[14].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l1[15].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l2[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l2[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l2[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l2[3].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l2[4].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.l3[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.skill[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.skill[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.skill[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.skill[3].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.skill[4].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.skill[5].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.skill[6].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.skill[7].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.skill[8].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.skill[9].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.skill[10].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.skill[11].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.skill[12].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.skill[13].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.skill[14].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.skill[15].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.knowledge[0].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.knowledge[1].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "assets.knowledge[2].contentHash",
+      "passed": true,
+      "detail": "contentHash must match canonical object without contentHash"
+    },
+    {
+      "name": "context.distribution",
+      "passed": true,
+      "detail": "final Team must contain short, medium and long contexts"
+    },
+    {
+      "name": "query.duplicate_policy",
+      "passed": true,
+      "detail": "only the fifteen controlled pairs may share a query"
+    },
+    {
+      "name": "git.branch",
+      "passed": true,
+      "detail": "must remain on the dedicated task branch"
+    },
+    {
+      "name": "git.schema_baseline",
+      "passed": true,
+      "detail": "schema tag must resolve to the frozen commit"
+    },
+    {
+      "name": "git.ancestor:10486818",
+      "passed": true,
+      "detail": "baseline must remain an ancestor of HEAD"
+    },
+    {
+      "name": "git.ancestor:960021e4",
+      "passed": true,
+      "detail": "baseline must remain an ancestor of HEAD"
+    },
+    {
+      "name": "git.launch_resolved",
+      "passed": true,
+      "detail": "launch tag must remain resolvable"
+    },
+    {
+      "name": "git.write_scope",
+      "passed": true,
+      "detail": "all changed paths must remain inside the three T14 write roots"
+    }
+  ],
+  "errors": []
+}

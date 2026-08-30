@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "task1.data-overlay-contract-report.v1.1",
+  "stage": "DS06_data_overlay_contract",
+  "status": "passed",
+  "scope": "private data contract only; not Measurement-v2 Integration or a formal campaign",
+  "tagRelationship": {
+    "dataCore": {
+      "tag": "task1-data-core-formal-v1",
+      "tagObject": "fe761f4adc384bc9eb8d7b7430996d9593c19b6d",
+      "commit": "418ecd102fa2019c139da9eebf88b163eca5a208",
+      "eligibility": "immutable audit-only data core"
+    },
+    "legacyOverlay": {
+      "tag": "task1-data-formal-v1",
+      "tagObject": "41d179254022bb2918a8373899c8cd519ea711a2",
+      "commit": "363c433b6c2f77de7e2cac4bee1e1e25727991ed",
+      "eligibility": "immutable audit point; forbidden as a future Integration input"
+    },
+    "correctedOverlay": {
+      "tag": "task1-data-formal-v1.1",
+      "target": "this report's DCO-signed containing commit",
+      "eligibility": "corrected data-contract input after annotated Tag creation"
+    }
+  },
+  "counts": {
+    "goldV2": 640,
+    "goldV2Dev": 240,
+    "goldV2Hidden": 400,
+    "pairV2": 240,
+    "pairV2Dev": 90,
+    "pairV2Hidden": 150,
+    "runtimeContracts": 21,
+    "knowledgeTerminalCases": 48
+  },
+  "canonicalContracts": {
+    "dataCore": {
+      "id": "task1.formal-snapshot.canonical-json.v1",
+      "sourceBlob": "e17398492cf0f1515ad1cc78806053df800260ad",
+      "providerFullCanonicalSha256": "b50febf784e0c6dc2156c4e7853067556e1dd500d46d29ad3dbe718564c8dd52",
+      "snapshotDevCanonicalSha256": "3a82d0ad8241ff3e2173555efbdb65dfb367a0a38c9998203c5b4754611a4783",
+      "snapshotHiddenCanonicalSha256": "23fe7b47d13c950765fa9557da918e1d102b7ab4558171cb15a8444d1cbd9c9e"
+    },
+    "privateOverlay": {
+      "id": "task1.measurement-v2.canonical-json.v2.1",
+      "sourceBlob": "a9fe41894fab2d5cb997a703ff11af5d99181655",
+      "sharedTestBlob": "6d10c5476956a310b6e800c6f2549dac477d4a8e",
+      "m1TagCommit": "6bb57979d6a6c81b4d800995b36b4cd718be1ab5",
+      "m2TagCommit": "6dfb0756c864fc470f85575965304c35a5892eca"
+    }
+  },
+  "schemaAndValidatorRevision": {
+    "overlaySchemaSource": "scripts/measurement-v2-overlay-schema.ts",
+    "overlaySchemaBlob": "096d75dc8180f9d83cb9c835d57debf2e75eed37",
+    "builderValidatorSource": "scripts/build-measurement-v2-overlay.ts",
+    "builderValidatorBlob": "c184aae2813f31387f63b0535ebf5fec891c2dc6"
+  },
+  "canonicalSha256": {
+    "legacyGoldV2Full": "f083f2d4c4cfa8fd083d265004c0447c81f713fd5beadf26a6aaf0fdcf9be0e2",
+    "correctedGoldV2Full": "7b08420acc04894b2a9aa6f56a17994bc79f2d1913032eebb94a17ace332e3a8",
+    "legacyPairV2Full": "518162d5a19ceb55061690a5ce328541f483913c24832efe707a97b37aa6c7bc",
+    "correctedPairV2Full": "79f531d3cef550c390c167444f9f97d656b78d95c5392a4962a2a65a94c10652",
+    "runtimeContracts": "42c1f5847fe88ed70ec9ce35217dcd8cfdc90fa8a7dd9a53e45b50481204b96e",
+    "legacyManifest": "c3f14cece54664d11897702be4dea7e12e7e72af66d900517b60bedcec8aade9",
+    "correctedManifest": "ff5384e0386079a1e16464063247520eae7ea4964b43c6b7a9972e38b2ba7da9",
+    "pairApprovalLedger": "d1638c40ff677cc295f5d3d29e0e18774ee665e77f60f59e2e13e9c1198e8ec4",
+    "memoryFollowupAudit": "fa223ad798042076155b4b4b7d651b0ce230c8e31a275550d182c0ce53a8b8b3"
+  },
+  "memoryFollowupAudit": {
+    "auditedCases": 15,
+    "conversationSearchTerminalDowngrades": 9,
+    "scenarioPathTypedBindings": 6,
+    "negativeBindingTests": 6,
+    "errors": 0,
+    "productionResponseContractSource": "MemoryCore/src/gateway/v2-router.ts",
+    "productionResponseContractCommit": "6382e8a6e5c76c13d31d9ae9d21f5824de7d3036",
+    "productionResponseContractFileSha256": "c51d842c440af5cebb50d28e3ebfb91c8c25a16cdf7d0107222eb528d8448220",
+    "strictCanonicalSha256": "fa223ad798042076155b4b4b7d651b0ce230c8e31a275550d182c0ce53a8b8b3",
+    "fullEvidence": "measurement-v2/private/manifest.private.json#memoryFollowupContract"
+  },
+  "pairContract": {
+    "singleChangedPointerPairs": 240,
+    "causalFactorPairs": 240,
+    "independenceUnit": "team",
+    "devClusters": 6,
+    "hiddenClusters": 10,
+    "pairsPerCluster": 15,
+    "minimalityApprovedPairs": 240,
+    "approvalLedger": "measurement-v2/private/approvals/pair-minimality-approval-ledger.json",
+    "approvalLedgerFileSha256": "c831b22508c2e2077f258de2cc9a0670c7a409c809c01cb8c574cc43e84213f6",
+    "approvalLedgerCanonicalSha256": "d1638c40ff677cc295f5d3d29e0e18774ee665e77f60f59e2e13e9c1198e8ec4"
+  },
+  "frozenM0Validation": {
+    "tag": "task1-measure-m0-v2-pass",
+    "commit": "a5f7e1a908b9104e8542506c9238bd3e6e5e0074",
+    "scorerSourceBlob": "d0c03836c2e46acbea02dbd509716ddc7bcfd1cf",
+    "typesSourceBlob": "4f9795d80a1f6b9a66272765ba3704412d8d252c",
+    "jsonPathSourceBlob": "c18db95853ff866c85aba070cdcc6a8f50e1dee9",
+    "normalizerSourceBlob": "ca9533cfb859da4a4ef594e68e01378c8ecd0c75",
+    "goldValidated": 640,
+    "goldValidationErrors": 0,
+    "negativeBindingTests": 6,
+    "negativeBindingErrors": 0
+  },
+  "gates": {
+    "DS06-G01_private_gold_v2": "passed",
+    "DS06-G02_pair_v2": "passed",
+    "DS06-G03_overlay_validator": "passed",
+    "DS06-G04_provider_exclusion_and_schema_shape": "passed",
+    "providerLeakageCount": 0
+  },
+  "verification": {
+    "deterministicRebuild": "7/7 byte-identical outputs across two consecutive builds",
+    "d0Vitest": "42/42",
+    "sourceToolsPython": "19/19",
+    "toolPromptContract": "30/30",
+    "fullTypecheck": "failed on existing errors outside the changed overlay/canonical files; no error referenced a corrected source file",
+    "gitDiffCheck": "required before correction commit",
+    "dco": "required before task1-data-formal-v1.1 Tag creation"
+  },
+  "readiness": {
+    "dataContractReady": true,
+    "realChainR01R04Status": "pending",
+    "measurementIntegrationReady": false,
+    "formalCampaignReady": false,
+    "formalMetricEligible": false
+  },
+  "provenance": {
+    "historicalCoreCommitSignedOffBy": false,
+    "historicalLegacyOverlayCommitSignedOffBy": false,
+    "historyRewrite": false,
+    "correctionCommitRequirement": "Signed-off-by present; verified before task1-data-formal-v1.1 Tag creation"
+  },
+  "pending": [
+    "R01 real-chain Adapter",
+    "R02 formal Runner and Measurement-v2 Integration",
+    "R03 real asset restoration",
+    "R04 real MemoryProxy no-model Gate",
+    "M0/M1/M2 Integration evidence",
+    "formal model campaign evidence"
+  ]
+}

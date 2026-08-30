@@ -1,0 +1,8 @@
+{
+  "schema_version": "task1.team_registry.v1",
+  "space_id": "space-task1-engineering",
+  "team_id": "T06",
+  "topic": "客户端与 CLI",
+  "split": "hidden_test",
+  "active_agent": { "agent_id": "agent-task1-t06-general", "name": "T06 通用业务 Agent" }
+}
