@@ -82,7 +82,7 @@ initLangfuse(config).catch((err: unknown) => {
 });
 
 // ── Initialize auth client (user_key verification + user_id resolution) ──────
-initAuth(config.auth);
+initAuth(config.auth, config.tdai.apiKey);
 
 // ── Register internal service accounts (bypass whole pipeline on match) ──────
 initSystemUsers(config.systemUsers);

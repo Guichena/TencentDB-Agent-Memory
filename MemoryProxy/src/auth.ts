@@ -26,22 +26,26 @@ export interface VerifyUserResult {
 // ── Module state ──────────────────────────────────────────────────────────────
 
 let config: AuthConfig | null = null;
+let serviceToken = "";
 
 /**
  * Initialize the auth client.
  * Must be called once at startup. Idempotent.
  */
-export function initAuth(cfg: AuthConfig): void {
+export function initAuth(cfg: AuthConfig, coreServiceToken = ""): void {
   if (!cfg.enabled) {
     config = null;
+    serviceToken = "";
     return;
   }
   if (!cfg.url) {
     log.warn("auth.init.skipped", { reason: "empty url" });
     config = null;
+    serviceToken = "";
     return;
   }
   config = cfg;
+  serviceToken = coreServiceToken.trim();
   log.info("auth.init", { url: cfg.url });
 }
 
@@ -78,6 +82,7 @@ export async function verifyUserKey(userKey: string, serviceId: string): Promise
       headers: {
         "content-type": "application/json",
         "x-tdai-service-id": serviceId,
+        ...(serviceToken ? { authorization: `Bearer ${serviceToken}` } : {}),
       },
       body: JSON.stringify({ user_key: userKey }),
     };
