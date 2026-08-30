@@ -1,0 +1,139 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T17-KNW-BULK-01",
+  "stage": "DS03",
+  "team_id": "T17",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T17-KNW-02",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们在同一工程空间核对一个渲染决策，当前工作区保持冻结，不做代码修改。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前面板显示三项状态均为 ready 的只读知识资源，名称分别是 Aurora UI code graph、Helios rendering decisions、Foundry web build graph。"
+        },
+        {
+          "role": "user",
+          "content": "Aurora 条目的匹配字段是 internal/aurora-ui；Helios 条目的 about 是 Helios SSR、streaming 与 hydration 设计决策索引；Foundry 条目的匹配字段是 internal/foundry-web-build。"
+        },
+        {
+          "role": "assistant",
+          "content": "本次问题属于 Helios SSR 与 hydration 流程，只能依据当前冻结快照作答，不能把邻近工程的记录混入。"
+        },
+        {
+          "role": "user",
+          "content": "请给出可复核的简短结论，并保留项目术语和边界归属的语义。"
+        },
+        {
+          "role": "assistant",
+          "content": "现有上下文说明了资源身份和问题范围，但不包含未展示的决定正文。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "hydration boundary ownership rationale",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "本次需核对 hydration boundary 的 ownership rationale；当前对话没有给出这条决定的依据，请在冻结范围内查证后回答。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "Helios hydration boundary 的 ownership rationale 未出现在当前上下文，需要从匹配的渲染决策条目补足。",
+          "route": "knowledge",
+          "target_asset_ids": ["T17-KNW-02"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "获得包含 hydration boundary ownership rationale 的最小条目后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充当前决定：该决定由 SSR platform team 负责 hydration boundary，因为该团队同时控制 server stream checkpoints 与 client hydration handoff，可避免跨团队变更造成边界不一致。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经完整给出 ownership rationale，当前上下文足以直接回答，无需外部检索。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T17-KNW-01", "T17-KNW-03"],
+      "controlled_delta_note": "Positive 与 Negative 仅在追加消息中改变 Helios hydration boundary 的具体归属依据；查询与共享上下文保持不变。",
+      "sol_review_questions": [
+        "Helios 条目的 about 是否在三项同屏资源中唯一匹配本题范围？",
+        "Negative 追加消息是否只补足 ownership rationale 而没有引入新的任务要求？",
+        "Positive 与 Negative 的 provider-visible 文本是否未暴露资源标识或内部路由名？"
+      ]
+    },
+    {
+      "draft_pair_id": "T17-KNW-03",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们在同一工程空间核对 Foundry 的构建模块边界，当前工作区保持冻结，不做代码修改。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前面板显示三项状态均为 ready 的只读知识资源，名称分别是 Aurora UI code graph、Helios rendering decisions、Foundry web build graph。"
+        },
+        {
+          "role": "user",
+          "content": "Aurora 条目的匹配字段是 internal/aurora-ui；Helios 条目的 about 是 Helios SSR、streaming 与 hydration 设计决策索引；Foundry 条目的匹配字段是 internal/foundry-web-build。"
+        },
+        {
+          "role": "assistant",
+          "content": "本次问题属于 Foundry 构建、chunk 与模块边界，只能依据匹配当前工作区的冻结快照作答，不能把邻近工程的记录混入。"
+        },
+        {
+          "role": "user",
+          "content": "请给出可复核的简短结论，并保留符号、调用关系和路径的语义。"
+        },
+        {
+          "role": "assistant",
+          "content": "现有上下文说明了资源身份和问题范围，但不包含未展示的调用关系正文。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "createChunkPlan callers",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "本次需核对 createChunkPlan 的直接调用者；当前对话没有列出调用关系，请在冻结范围内查证后回答。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "Foundry createChunkPlan 的直接 callers 未出现在当前上下文，需要从匹配的构建图谱补足。",
+          "route": "knowledge",
+          "target_asset_ids": ["T17-KNW-03"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "获得 createChunkPlan 的最小直接调用者结果后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充当前调用关系：createChunkPlan 的直接调用者是 emitAsyncChunk（packages/foundry/chunks/emitter.ts）和 planEntryChunks（packages/foundry/chunks/entry.ts）。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经列出 createChunkPlan 的直接调用者及其路径，当前上下文足以直接回答，无需外部检索。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T17-KNW-01", "T17-KNW-02"],
+      "controlled_delta_note": "Positive 与 Negative 仅在追加消息中改变 Foundry createChunkPlan 的直接调用者事实；查询与共享上下文保持不变。",
+      "sol_review_questions": [
+        "Foundry 条目的 match 是否在三项同屏资源中唯一匹配本题工作区？",
+        "Negative 追加消息是否只补足 callers 及路径而没有引入新的任务要求？",
+        "Positive 与 Negative 的 provider-visible 文本是否未暴露资源标识或内部路由名？"
+      ]
+    }
+  ]
+}

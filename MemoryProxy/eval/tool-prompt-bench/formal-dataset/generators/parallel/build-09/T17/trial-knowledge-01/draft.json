@@ -1,0 +1,72 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T17-TRIAL-KNW-01",
+  "stage": "DS03",
+  "team_id": "T17",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T17-TRIAL-KNW-01-PAIR-01",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Aurora 组件与设计系统正在调整 token 注册中心，目标是让主题 token 在组件、文档预览和构建产物之间保持一致。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前讨论只确认了注册中心负责维护 token 定义并驱动主题生成，尚未列出它在仓库中的跨文件消费者。"
+        },
+        {
+          "role": "user",
+          "content": "我需要评估这次注册中心改动的范围，尤其是哪些入口、生成产物和测试会受到影响。"
+        },
+        {
+          "role": "assistant",
+          "content": "现有上下文没有给出完整的调用关系或跨文件影响清单，因此还不能可靠地判断改动风险和验证范围。"
+        }
+      ],
+      "changed_message_index": 4,
+      "query": "请确认 Aurora token 注册中心变更的跨文件影响面，并说明受影响入口、生成产物和测试范围。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "当前上下文仍缺少具体的跨文件影响清单；请先定位能提供调用关系的内部结构资料，再据此回答。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "当前上下文唯一缺少 TokenRegistry 的跨文件影响面，需要从 T17-KNW-01 获取入口、消费者、生成产物与测试关联。",
+          "route": "knowledge",
+          "target_asset_ids": ["T17-KNW-01"],
+          "allowed_sequence_candidates": [
+            ["knowledge_tools_list", "knowledge_tools_call"]
+          ],
+          "stop_after_candidate": "列出可用工具后，使用返回的 impact 工具以 symbol=TokenRegistry 查询一次；成功得到影响清单后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充当前已确认的影响清单：注册定义位于 packages/tokens/src/registry.ts，主题装配入口 packages/theme/src/createTheme.ts 直接读取注册结果；组件侧 packages/components/src/Button/styles.ts、packages/components/src/Input/styles.ts 和 packages/components/src/Select/styles.ts 会随 token 变更重新生成样式；构建侧 packages/tokens/dist/aurora.css 是发布产物，apps/docs/src/theme/preview.tsx 是文档预览入口；验证范围包括 packages/tokens/test/registry.test.ts、packages/theme/test/createTheme.test.ts 和 packages/components/test/token-contract.test.ts。修改注册接口时需同步检查这些消费者、生成产物与测试。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经给出注册定义文件、主题装配入口、三个组件样式消费者、发布 CSS 产物、文档预览入口以及三组测试文件，并说明了接口变更时的同步检查范围，足以直接回答查询。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T17-KNW-02",
+        "T17-KNW-03"
+      ],
+      "controlled_delta_note": "Positive 只保留 Aurora token 注册中心跨文件影响面的信息缺口；Negative 仅在追加消息中补足具体入口、消费者、生成产物和测试清单，其他共享上下文与查询完全相同。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "确认 provider-visible 文本未出现工具名、资源标识、knowledge_id、Gold 或 TokenRegistry 私有参数名。",
+        "确认正例仅缺少跨文件影响清单，并按内部结构资料的发现后调用顺序执行一次查询。",
+        "确认负例追加消息单独提供了足够具体的入口、消费者、产物和测试清单，无需查询资源。"
+      ]
+    }
+  ]
+}

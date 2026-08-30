@@ -1,0 +1,14 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "t17-knowledge-replacement-01",
+  "stage": "DS03",
+  "team_id": "T17",
+  "external_source_ids": [],
+  "generated_at": "2026-08-31T10:00:00+08:00",
+  "raw_output_file": "draft.json",
+  "raw_output_sha256": "05ea48049eb5bd53c056439fe76e0cf5c82b7a678acc813ed9ad3fb2df11699c",
+  "actual_count": 3
+}

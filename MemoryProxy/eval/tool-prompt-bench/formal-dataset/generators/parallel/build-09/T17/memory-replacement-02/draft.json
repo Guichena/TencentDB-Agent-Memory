@@ -1,0 +1,63 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "stage": "DS03",
+  "team_id": "T17",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T17-MEM-05-replacement-02",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们正在整理 Aurora 组件与设计系统的浏览器兼容约束。请沿用当前任务上下文处理这项核对。"
+        },
+        {
+          "role": "user",
+          "content": "当前上下文已明确结构化筛选条件：time_start=2026-08-12T00:00:00Z、time_end=2026-08-19T00:00:00Z、type=instruction。筛选结果只缺 Chromium、Firefox、Safari、Edge 四个版本值，除此之外没有待补充字段。"
+        }
+      ],
+      "changed_message_index": 2,
+      "query": "请给出该时间窗内 instruction 类型浏览器兼容下限的完整版本要求。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充消息：当前唯一缺口是四个浏览器版本值。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "结构化条件已经完整，唯一缺口是目标 instruction 记录中 Chromium、Firefox、Safari、Edge 四个兼容下限版本值。",
+          "route": "memory",
+          "target_asset_ids": [
+            "T17-L1-15"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_atomic_query"
+            ]
+          ],
+          "stop_after_candidate": "执行结构化筛选并返回该记录的四个浏览器版本值。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充消息：Chromium 124、Firefox 125、Safari 17.5、Edge 124。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息直接补齐了 Chromium 124、Firefox 125、Safari 17.5、Edge 124 四个正确版本值，查询所需信息已完整，无需进一步检索。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T17-L1-09",
+        "T17-L1-14",
+        "T17-L0-01"
+      ],
+      "source_fact_map": [
+        {
+          "source_id": "T17-L1-15",
+          "fact": "指定时间窗 2026-08-12 至 2026-08-18 内，instruction 类型的浏览器兼容下限为 Chromium 124、Firefox 125、Safari 17.5、Edge 124。"
+        }
+      ]
+    }
+  ]
+}

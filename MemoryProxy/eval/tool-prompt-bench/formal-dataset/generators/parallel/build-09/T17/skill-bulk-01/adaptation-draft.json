@@ -1,0 +1,135 @@
+{
+  "schema_version": "task1.skill_adaptation_draft.v1",
+  "batch_id": "T17-SKL-BULK-01",
+  "team_id": "T17",
+  "adaptations": [
+    {
+      "asset_id": "T17-SKL-01",
+      "listing_description": "Test web applications with screen readers including VoiceOver, NVDA, and JAWS. Use when validating screen reader compatibility, debugging accessibility issues, or ensuring assistive technology support.",
+      "use_when": ["Validating screen reader compatibility", "Testing ARIA implementations", "Debugging assistive technology issues", "Verifying form accessibility", "Testing dynamic content announcements", "Ensuring navigation accessibility"],
+      "do_not_use_when": ["Don't assume one screen reader is enough", "Don't ignore mobile", "Don't test only the happy path", "Don't skip dynamic content", "Don't rely on visual testing"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主使用边界；保留原始屏幕阅读器设置、导航命令、测试脚本、场景和最佳实践。"
+    },
+    {
+      "asset_id": "T17-SKL-02",
+      "listing_description": "Conduct WCAG 2.2 accessibility audits with automated testing, manual verification, and remediation guidance. Use when auditing websites for accessibility, fixing WCAG violations, or implementing accessible design patterns.",
+      "use_when": ["Conducting accessibility audits", "Fixing WCAG violations", "Implementing accessible components", "Preparing for accessibility lawsuits", "Meeting ADA/Section 508 requirements", "Achieving VPAT compliance"],
+      "do_not_use_when": ["Don't rely only on automated testing", "Don't use ARIA as the first solution", "Don't hide focus outlines", "Don't disable zoom", "Don't use color alone"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主使用边界；保留原始 WCAG 审计、自动与人工核验、资源引用和修复模式。"
+    },
+    {
+      "asset_id": "T17-SKL-03",
+      "listing_description": "Upgrade React applications to latest versions, migrate from class components to hooks, and adopt concurrent features. Use when modernizing React codebases, migrating to React Hooks, or upgrading to latest React versions.",
+      "use_when": ["Upgrading React applications to latest versions", "Migrating class components to functional components with hooks", "Adopting concurrent React features (Suspense, transitions)", "Applying codemods for automated refactoring", "Modernizing state management patterns", "Updating to TypeScript", "Improving performance with React 18+ features"],
+      "do_not_use_when": ["Do not use when no React modernization, hooks migration, version upgrade, or concurrent-feature work is involved", "Do not use for unrelated backend-only changes"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主使用边界；保留原始版本升级、class 到 hooks、并发特性和 codemod 流程。"
+    },
+    {
+      "asset_id": "T17-SKL-04",
+      "listing_description": "Master Next.js 14+ App Router with Server Components, streaming, parallel routes, and advanced data fetching. Use when building Next.js applications, implementing SSR/SSG, or optimizing React Server Components.",
+      "use_when": ["Building new Next.js applications with App Router", "Migrating from Pages Router to App Router", "Implementing Server Components and streaming", "Setting up parallel and intercepting routes", "Optimizing data fetching and caching", "Building full-stack features with Server Actions"],
+      "do_not_use_when": ["Do not use hooks in Server Components", "Do not fetch in Client Components", "Do not over-nest layouts", "Do not ignore loading states", "Do not pass non-serializable data across the Server-to-Client boundary"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主使用边界；保留原始 App Router 文件约定、渲染模式、数据获取、Suspense 和 Server Actions 内容。"
+    },
+    {
+      "asset_id": "T17-SKL-05",
+      "listing_description": "Master modern React state management with Redux Toolkit, Zustand, Jotai, and React Query. Use when setting up global state, managing server state, or choosing between state management solutions.",
+      "use_when": ["Setting up global state management in a React app", "Choosing between Redux Toolkit, Zustand, or Jotai", "Managing server state with React Query or SWR", "Implementing optimistic updates", "Debugging state-related issues", "Migrating from legacy Redux to modern patterns"],
+      "do_not_use_when": ["Don't over-globalize", "Don't duplicate server state", "Don't mutate directly", "Don't store derived data", "Don't mix paradigms"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主使用边界；保留原始状态分类、方案选择、selectors、不可变更新和迁移指南。"
+    },
+    {
+      "asset_id": "T17-SKL-06",
+      "listing_description": "Build scalable design systems with Tailwind CSS v4, design tokens, component libraries, and responsive patterns. Use when creating component libraries, implementing design systems, or standardizing UI patterns.",
+      "use_when": ["Creating a component library with Tailwind v4", "Implementing design tokens and theming with CSS-first configuration", "Building responsive and accessible components", "Standardizing UI patterns across a codebase", "Migrating from Tailwind v3 to v4", "Setting up dark mode with native CSS features"],
+      "do_not_use_when": ["Do not use when the task is unrelated to Tailwind CSS, design tokens, component libraries, responsive patterns, or UI standardization"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主使用边界；保留原始 Tailwind v4 变化、token、组件库、响应式与主题内容。"
+    },
+    {
+      "asset_id": "T17-SKL-07",
+      "listing_description": "Build scalable design systems with design tokens, theming infrastructure, and component architecture patterns. Use when creating design tokens, implementing theme switching, building component libraries, or establishing design system foundations.",
+      "use_when": ["Creating design tokens for colors, typography, spacing, and shadows", "Implementing light/dark theme switching with CSS custom properties", "Building multi-brand theming systems", "Architecting component libraries with consistent APIs", "Establishing design-to-code workflows with Figma tokens", "Creating semantic token hierarchies (primitive, semantic, component)", "Setting up design system documentation and guidelines"],
+      "do_not_use_when": ["Do not use when the task is unrelated to tokens, theming, component architecture, design-to-code workflows, or design-system documentation"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主使用边界；保留原始 token 层次、主题切换、组件架构、转换和常见问题内容。"
+    },
+    {
+      "asset_id": "T17-SKL-08",
+      "listing_description": "Implement modern responsive layouts using container queries, fluid typography, CSS Grid, and mobile-first breakpoint strategies. Use when building adaptive interfaces, implementing fluid layouts, or creating component-level responsive behavior.",
+      "use_when": ["Implementing mobile-first responsive layouts", "Using container queries for component-based responsiveness", "Creating fluid typography and spacing scales", "Building complex layouts with CSS Grid and Flexbox", "Designing breakpoint strategies for design systems", "Implementing responsive images and media", "Creating adaptive navigation patterns", "Building responsive tables and data displays"],
+      "do_not_use_when": ["Do not use when the task has no adaptive layout, fluid value, breakpoint, responsive media, navigation, table, or component-level responsive requirement"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主使用边界；保留原始 mobile-first、内容断点、容器查询、流式值、设备测试和触控建议。"
+    },
+    {
+      "asset_id": "T17-SKL-09",
+      "listing_description": "Master React, Vue, and Svelte component patterns including CSS-in-JS, composition strategies, and reusable component architecture. Use when building UI component libraries, designing component APIs, or implementing frontend design systems.",
+      "use_when": ["Designing reusable component libraries or design systems", "Implementing complex component composition patterns", "Choosing and applying CSS-in-JS solutions", "Building accessible, responsive UI components", "Creating consistent component APIs across a codebase", "Refactoring legacy components into modern patterns", "Implementing compound components or render props"],
+      "do_not_use_when": ["Do not use when the task is unrelated to reusable components, composition, component APIs, CSS-in-JS, or frontend design systems"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主使用边界；保留原始跨框架组件模式、组合策略、可复用架构和常见问题内容。"
+    },
+    {
+      "asset_id": "T17-SKL-10",
+      "listing_description": "Implement WCAG 2.2 compliant interfaces with mobile accessibility, inclusive design patterns, and assistive technology support. Use when auditing accessibility, implementing ARIA patterns, building for screen readers, or ensuring inclusive user experiences.",
+      "use_when": ["Implementing WCAG 2.2 Level AA or AAA compliance", "Building screen reader accessible interfaces", "Adding keyboard navigation to interactive components", "Implementing focus management and focus trapping", "Creating accessible forms with proper labeling", "Supporting reduced motion and high contrast preferences", "Building mobile accessibility features (iOS VoiceOver, Android TalkBack)", "Conducting accessibility audits and fixing violations"],
+      "do_not_use_when": ["Do not use when the task has no accessibility, inclusive-design, ARIA, keyboard, focus, form-labeling, mobile-assistive-technology, or audit requirement"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主使用边界；保留原始语义 HTML、键盘优先、焦点、文本替代、偏好支持和测试工具内容。"
+    },
+    {
+      "asset_id": "T17-SKL-11",
+      "listing_description": "Master end-to-end testing with Playwright and Cypress to build reliable test suites that catch bugs, improve confidence, and enable fast deployment. Use when implementing E2E tests, debugging flaky tests, or establishing testing standards.",
+      "use_when": ["Implementing end-to-end test automation", "Debugging flaky or unreliable tests", "Testing critical user workflows", "Setting up CI/CD test pipelines", "Testing across multiple browsers", "Validating accessibility requirements", "Testing responsive designs", "Establishing E2E testing standards"],
+      "do_not_use_when": ["Do not use E2E tests for unit-level logic", "Do not use E2E tests as API-contract integration tests", "Do not use E2E tests for every edge case when the case is too slow", "Do not test internal implementation details"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主使用边界；保留原始用户旅程、独立确定性测试、选择器、并行和清理流程。"
+    },
+    {
+      "asset_id": "T17-SKL-12",
+      "listing_description": "Implement comprehensive testing strategies using Jest, Vitest, and Testing Library for unit tests, integration tests, and end-to-end testing with mocking, fixtures, and test-driven development. Use when writing JavaScript/TypeScript tests, setting up test infrastructure, or implementing TDD/BDD workflows.",
+      "use_when": ["Setting up test infrastructure for new projects", "Writing unit tests for functions and classes", "Creating integration tests for APIs and services", "Implementing end-to-end tests for user flows", "Mocking external dependencies and APIs", "Testing React, Vue, or other frontend components", "Implementing test-driven development (TDD)", "Setting up continuous testing in CI/CD pipelines"],
+      "do_not_use_when": ["Do not use when there is no JavaScript/TypeScript testing, test infrastructure, mocking, fixtures, or TDD/BDD requirement"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主使用边界；保留原始测试层次、框架、mock、fixtures、前端测试和 TDD 内容。"
+    },
+    {
+      "asset_id": "T17-SKL-13",
+      "listing_description": "Use when building React 18+ applications in .jsx or .tsx files, Next.js App Router projects, or create-react-app setups. Creates components, implements custom hooks, debugs rendering issues, migrates class components to functional, and implements state management. Invoke for Server Components, Suspense boundaries, useActionState forms, performance optimization, or React 19 features.",
+      "use_when": ["Building new React components or features", "Implementing state management (local, Context, Redux, Zustand)", "Optimizing React performance", "Setting up React project architecture", "Working with React 19 Server Components", "Implementing forms with React 19 actions", "Data fetching patterns with TanStack Query or use()"],
+      "do_not_use_when": ["Do not mutate state directly", "Do not use array index as key for dynamic lists", "Do not create functions inside JSX when avoidable", "Do not forget useEffect cleanup", "Do not ignore React strict mode warnings", "Do not skip error boundaries in production"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主使用边界；保留原始 React 组件、hooks、状态、Server Components、Suspense 和性能流程。"
+    },
+    {
+      "asset_id": "T17-SKL-14",
+      "listing_description": "Use when building Next.js 14+ applications with App Router, server components, or server actions. Invoke to configure route handlers, implement middleware, set up API routes, add streaming SSR, write generateMetadata for SEO, scaffold loading.tsx/error.tsx boundaries, or deploy to Vercel. Triggers on: Next.js, Next.js 14, App Router, RSC, use server, Server Components, Server Actions, React Server Components, generateMetadata, loading.tsx, Next.js deployment, Vercel, Next.js performance.",
+      "use_when": ["Building Next.js 14+ App Router applications", "Configuring route handlers, middleware, API routes, streaming SSR, metadata, loading/error boundaries, or deployment"],
+      "do_not_use_when": ["Do not use Pages Router", "Do not convert components to Client Components just to access data", "Do not skip loading.tsx or error.tsx boundaries on async route segments", "Do not deploy without running next build"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主使用边界；保留原始 App Router、服务端组件、显式缓存、SEO、边界和构建验证约束。"
+    },
+    {
+      "asset_id": "T17-SKL-15",
+      "listing_description": "Use when writing E2E tests with Playwright, setting up test infrastructure, or debugging flaky browser tests. Invoke to write test scripts, create page objects, configure test fixtures, set up reporters, add CI integration, implement API mocking, or perform visual regression testing. Trigger terms: Playwright, E2E test, end-to-end, browser testing, automation, UI testing, visual testing, Page Object Model, test flakiness.",
+      "use_when": ["Writing E2E tests with Playwright", "Setting up browser-test infrastructure, page objects, fixtures, reporters, CI integration, API mocking, or visual regression testing", "Debugging flaky browser tests"],
+      "do_not_use_when": ["Do not use waitForTimeout() when proper waits are available", "Do not rely on CSS class selectors", "Do not share state between tests", "Do not ignore flaky tests", "Do not use first() or nth() without good reason"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主使用边界；保留原始角色定位器、自动等待、独立测试、页面对象、trace 与并行流程。"
+    },
+    {
+      "asset_id": "T17-SKL-16",
+      "listing_description": "Implements advanced TypeScript type systems, creates custom type guards, utility types, and branded types, and configures tRPC for end-to-end type safety. Use when building TypeScript applications requiring advanced generics, conditional or mapped types, discriminated unions, monorepo setup, or full-stack type safety with tRPC.",
+      "use_when": ["Building TypeScript applications requiring advanced generics, conditional or mapped types, discriminated unions, monorepo setup, or full-stack type safety with tRPC"],
+      "do_not_use_when": ["Do not use explicit any without justification", "Do not skip type coverage for public APIs", "Do not mix type-only and value imports", "Do not disable strict null checks", "Do not use as assertions without necessity", "Do not ignore compiler performance warnings", "Do not skip declaration file generation", "Do not use enums when const objects with as const are appropriate"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主使用边界；保留原始类型架构、类型优先 API、类型守卫、编译检查、类型覆盖和声明生成流程。"
+    }
+  ]
+}

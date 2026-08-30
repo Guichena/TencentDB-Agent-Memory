@@ -1,0 +1,119 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T17-TRIAL-SKL-01",
+  "stage": "DS03",
+  "team_id": "T17",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T17-TRIAL-SKL-01-P001",
+      "external_source_ids": [
+        "T17-SKL-07"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们在 Aurora 组件与设计系统项目里准备整理下一版组件库，现有按钮、卡片和表单控件的样式值散落在各处，先做架构梳理，不改仓库代码。"
+        },
+        {
+          "role": "assistant",
+          "content": "我先把这轮工作限定为可复用的设计基础：值的来源、语义用途、组件接口和主题变化都要能被单独审计，再安排实现。"
+        },
+        {
+          "role": "user",
+          "content": "现在既有颜色和间距等原始值，也有一些写着用途的变量，但命名和引用关系不一致，暗色主题还需要重新核对。"
+        },
+        {
+          "role": "assistant",
+          "content": "这里需要先分清原始、语义和组件级别的责任，避免组件直接依赖视觉值；主题切换也应当与组件 API 的边界一起设计。"
+        },
+        {
+          "role": "user",
+          "content": "团队还没有统一复合组件、插槽、变体和尺寸属性的约定，设计稿里的变量如何同步到多端产物也没有写进现行清单。"
+        },
+        {
+          "role": "assistant",
+          "content": "我可以先列出评审维度，但目前缺少一份涵盖主题、组件组合和变量流水线先后关系的具体实践正文，不能把实现级检查点臆测出来。"
+        },
+        {
+          "role": "user",
+          "content": "这次只要确定从盘点到验收的执行顺序和每一步的检查点，暂时不要提交代码或改动现有组件。"
+        },
+        {
+          "role": "assistant",
+          "content": "明白；在补齐那份流程依据前，我只会保留问题清单，不会假定某种命名、主题持久化或组件组合方案已经被团队采纳。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请基于当前 Aurora 组件库的情况，给出从设计基础盘点、主题与组件架构到多端同步的可执行下一步和验收检查点，暂时不要修改代码。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我还缺一份可以直接照做的设计系统流程正文，尤其是原始值、语义值、组件值的分层，基于 CSS 自定义属性的主题基础设施，复合与插槽式组件的边界，以及设计稿变量同步、格式转换和持续集成之间的先后与验收。请先查找并阅读团队已有的设计系统实践，再概述到可以开始审计的位置，暂时不要改代码。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结设计系统实践中关于 primitive、semantic、component token 层级，主题上下文与模式覆盖，compound/polymorphic/variant/size/slot/headless 组件架构，以及变量同步、转换和 CI 流水线的完整可执行顺序。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T17-SKL-07"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_search",
+              "skill_view"
+            ]
+          ],
+          "stop_after_candidate": "阅读设计系统实践正文并概述审计起点后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把执行清单补全：先盘点颜色、尺寸、字号、间距和阴影等原始值并统一命名，再建立按用途命名的语义值去引用原始值，最后建立只服务具体组件的组件值；组件里不要再写裸的视觉值。用 CSS 自定义属性承载主题，提供 React 上下文负责切换，读取系统偏好并持久化选择，同时覆盖减弱动效和高对比模式；每个主题都要跑完整的组件组合检查。组件接口以复合和插槽式组合为基础，必要时提供多态元素入口，统一变体与尺寸，并明确哪些状态和响应式变体属于组件边界。把设计稿变量同步到转换流水线，生成 Web、iOS 和 Android 产物并接入持续集成；变量变更按语义化版本管理，废弃时给出迁移路径，验收时检查循环引用、命名一致性、主题组合和各平台覆盖。请据此给出审计清单与下一步，仍不要修改代码。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已具体给出三层 token 顺序、主题上下文与模式覆盖、组件组合边界、跨平台转换和持续集成、版本与验收检查点，足以直接回答 query，无需读取设计系统资产。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T17-SKL-06",
+        "T17-SKL-08",
+        "T17-SKL-09",
+        "T17-SKL-10"
+      ],
+      "controlled_delta_note": "Positive 只保留设计系统流程正文这一信息缺口；Negative 仅在追加消息中补齐可执行的分层、主题、组件边界、流水线和验收摘要，shared context 与 query 完全相同。",
+      "source_fact_map": [
+        {
+          "claim": "正文将 token 分为 primitive、semantic 和 component 层，并要求按用途命名、维护层级和记录使用方式。",
+          "source_id": "T17-SKL-07",
+          "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/ui-design/skills/design-system-patterns/SKILL.md#Core Capabilities; #Best Practices"
+        },
+        {
+          "claim": "正文的主题基础设施包含 CSS 自定义属性、React 主题上下文、系统偏好检测、持久化选择、减弱动效和高对比模式，并要求验证主题与组件组合。",
+          "source_id": "T17-SKL-07",
+          "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/ui-design/skills/design-system-patterns/SKILL.md#Theming Infrastructure; #Best Practices"
+        },
+        {
+          "claim": "正文的组件架构涵盖复合、多态、变体与尺寸、插槽和 headless 模式，变量流水线涵盖设计稿同步、转换、格式化和 CI/CD。",
+          "source_id": "T17-SKL-07",
+          "locator": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/ui-design/skills/design-system-patterns/SKILL.md#Component Architecture; #Token Pipeline"
+        }
+      ],
+      "sol_review_questions": [
+        "确认 Positive 的唯一缺口是设计系统 token、主题基础设施、组件边界和变量流水线的冻结实践正文，首动作严格为 skill_search 后 skill_view。",
+        "确认 Negative 只追加了三层 token、主题模式、组件组合、跨平台转换、版本迁移和验收检查的具体摘要，已足以直接继续。",
+        "确认 provider-visible 文本未泄漏工具名、资产标识、冻结 name 或评分元语言；同域近义干扰仅保留在 author-only 字段。"
+      ]
+    }
+  ]
+}
+

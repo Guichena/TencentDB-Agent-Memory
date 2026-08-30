@@ -1,0 +1,529 @@
+{
+  "schema_version": "task1.formal_v2_team_input.v1",
+  "dataset_revision": "formal-v2",
+  "build_id": "build-09",
+  "team_id": "T17",
+  "split": "dev",
+  "identity": {
+    "space_id": "space-task1-engineering",
+    "team_id": "T17",
+    "active_agent_id": "agent-task1-t17-general",
+    "asset_agents": [
+      "agent-task1-t17-assets-a",
+      "agent-task1-t17-assets-b"
+    ],
+    "user_id": "user-task1-t17-eval",
+    "snapshot_id": "snapshot-task1-formal-v2-dev"
+  },
+  "workspace": {
+    "workspace_id": "workspace-task1-t17-launch",
+    "repo_slug": "TencentCloud/TencentDB-Agent-Memory",
+    "repo_url": "https://github.com/TencentCloud/TencentDB-Agent-Memory.git",
+    "base_commit": "ffa1fe18085d47ed4da6b2306240152cc8590a86",
+    "source_repo_license": "MIT",
+    "tree_sha256": "819412c17b9b4d51e8be79bbdccdd6de18414f6728815f0d92d6ee3ab3f946ef",
+    "file_manifest_sha256": "904141f87058ae409067df37bb0f9e3cfce997923ea666ed9cd47e7f6bd7b91f",
+    "state": "clean"
+  },
+  "project_streams": [
+    {
+      "id": "T17-PROJ-AURORA",
+      "name": "Aurora 组件与设计系统",
+      "scope": "组件契约、token、可访问性与跨浏览器样式"
+    },
+    {
+      "id": "T17-PROJ-ATLAS",
+      "name": "Atlas 状态与数据缓存",
+      "scope": "客户端状态边界、查询缓存、乐观更新与失效策略"
+    },
+    {
+      "id": "T17-PROJ-HELIOS",
+      "name": "Helios SSR 与 hydration",
+      "scope": "服务端渲染、流式边界、hydration 一致性与 RSC"
+    },
+    {
+      "id": "T17-PROJ-FOUNDRY",
+      "name": "Foundry 构建与模块边界",
+      "scope": "bundle 分包、模块所有权、monorepo 边界与兼容目标"
+    },
+    {
+      "id": "T17-PROJ-PULSE",
+      "name": "Pulse Web 性能",
+      "scope": "Core Web Vitals、长任务、渲染抖动与资源优先级"
+    }
+  ],
+  "asset_contract": {
+    "l0_sessions": 10,
+    "l0_messages_each": "12-20",
+    "l1_memories": 16,
+    "l2_scenes": 5,
+    "l3_profiles": 1,
+    "skills": 16,
+    "listed_skills": 6,
+    "searchable_skills": 10,
+    "knowledge_resources": 3
+  },
+  "frozen_asset_plan": {
+    "memory_positive_routes": [
+      {
+        "slot": "MEM-01",
+        "target": "T17-L1-03",
+        "sequence": [
+          "tdai_memory_search"
+        ],
+        "fact": "Atlas 查询缓存对跨租户 mutation 的最终失效边界"
+      },
+      {
+        "slot": "MEM-02",
+        "target": "T17-L0-02",
+        "sequence": [
+          "tdai_conversation_search"
+        ],
+        "fact": "Helios hydration 事故复盘中批准的精确诊断措辞"
+      },
+      {
+        "slot": "MEM-03",
+        "target": "T17-L1-11",
+        "sequence": [
+          "tdai_memory_search"
+        ],
+        "fact": "Foundry 异步 chunk 的冻结体积预算及例外条件"
+      },
+      {
+        "slot": "MEM-04",
+        "target": "T17-L0-08",
+        "sequence": [
+          "tdai_conversation_search"
+        ],
+        "fact": "Aurora combobox 屏幕阅读器兼容讨论中的原始回退顺序"
+      },
+      {
+        "slot": "MEM-05",
+        "target": "T17-L1-15",
+        "sequence": [
+          "tdai_atomic_query"
+        ],
+        "fact": "指定时间窗内 instruction 类型的浏览器兼容下限"
+      },
+      {
+        "slot": "MEM-06",
+        "target": "T17-L2-04",
+        "sequence": [
+          "tdai_read_scene"
+        ],
+        "injected_path": "projects/helios/streaming-hydration-rollout.md",
+        "fact": "流式边界分批启用的完整检查清单"
+      }
+    ],
+    "skill_positive_routes": [
+      {
+        "slot": "SKL-01",
+        "target": "T17-SKL-04",
+        "sequence": [
+          "skill_view"
+        ]
+      },
+      {
+        "slot": "SKL-02",
+        "target": "T17-SKL-05",
+        "sequence": [
+          "skill_view"
+        ]
+      },
+      {
+        "slot": "SKL-03",
+        "target": "T17-SKL-07",
+        "sequence": [
+          "skill_search",
+          "skill_view_by_id"
+        ]
+      },
+      {
+        "slot": "SKL-04",
+        "target": "T17-SKL-08",
+        "sequence": [
+          "skill_search",
+          "skill_view_by_id"
+        ]
+      },
+      {
+        "slot": "SKL-05",
+        "target": "T17-SKL-10",
+        "sequence": [
+          "skill_search",
+          "skill_view_by_id"
+        ]
+      },
+      {
+        "slot": "SKL-06",
+        "target": "T17-SKL-02",
+        "sequence": [
+          "skill_view",
+          "skill_files_read"
+        ],
+        "resource_path": "references/details.md"
+      }
+    ],
+    "knowledge_resources": [
+      {
+        "asset_id": "T17-KNW-01",
+        "type": "wiki",
+        "name": "Aurora architecture decisions",
+        "about": "Aurora token、组件与可访问性架构决策索引。",
+        "tools": [
+          "search",
+          "read_page"
+        ]
+      },
+      {
+        "asset_id": "T17-KNW-02",
+        "type": "wiki",
+        "name": "Helios rendering decisions",
+        "about": "Helios SSR、streaming 与 hydration 设计决策索引。",
+        "tools": [
+          "search",
+          "read_page"
+        ]
+      },
+      {
+        "asset_id": "T17-KNW-03",
+        "type": "wiki",
+        "name": "Foundry build decisions",
+        "about": "Foundry chunk、模块边界与构建决策索引。",
+        "tools": [
+          "search",
+          "read_page"
+        ]
+      }
+    ],
+    "knowledge_positive_routes": [
+      {
+        "slot": "KNW-01",
+        "target": "T17-KNW-01",
+        "sequence": [
+          "knowledge_tools_list",
+          "knowledge_tools_call"
+        ],
+        "tool_name": "search",
+        "params": {
+          "query": "TokenRegistry impact inventory"
+        }
+      },
+      {
+        "slot": "KNW-02",
+        "target": "T17-KNW-02",
+        "sequence": [
+          "knowledge_tools_list",
+          "knowledge_tools_call"
+        ],
+        "tool_name": "search",
+        "params": {
+          "query": "hydration boundary ownership rationale"
+        }
+      },
+      {
+        "slot": "KNW-03",
+        "target": "T17-KNW-03",
+        "sequence": [
+          "knowledge_tools_list",
+          "knowledge_tools_call"
+        ],
+        "tool_name": "search",
+        "params": {
+          "query": "createChunkPlan direct callers"
+        }
+      }
+    ]
+  },
+  "case_contract": {
+    "memory_positive": 6,
+    "skill_positive": 6,
+    "knowledge_positive": 3,
+    "paired_no_tool_negative": 15,
+    "natural_coding_negative": 10,
+    "pairs": 15,
+    "discovery_positive": 10,
+    "direct_positive": 5
+  },
+  "route_contract": {
+    "memory": {
+      "search": [
+        {
+          "tool": "tdai_memory_search",
+          "endpoint": "/memory-bridge/v3/atomic/search",
+          "required": [
+            "query"
+          ]
+        },
+        {
+          "tool": "tdai_conversation_search",
+          "endpoint": "/memory-bridge/v3/conversation/search",
+          "required": [
+            "query"
+          ]
+        }
+      ],
+      "direct": [
+        {
+          "tool": "tdai_atomic_query",
+          "endpoint": "/memory-bridge/v3/atomic/query",
+          "required": []
+        },
+        {
+          "tool": "tdai_read_scene",
+          "endpoint": "/memory-bridge/v3/scenario/read",
+          "required": [
+            "path"
+          ]
+        }
+      ],
+      "injected": {
+        "l3": "full",
+        "l2": "path+summary",
+        "l0": "none",
+        "l1": "none"
+      }
+    },
+    "skill": {
+      "listed": [
+        "skill_view"
+      ],
+      "search": [
+        "skill_search",
+        "skill_view_by_id"
+      ],
+      "resource": [
+        "skill_view",
+        "skill_files_read"
+      ],
+      "endpoints": {
+        "skill_search": "/skill-bridge/v3/skill/search",
+        "skill_view": "/skill-bridge/v3/skill/get-by-name",
+        "skill_view_by_id": "/skill-bridge/v3/skill/get",
+        "skill_files_read": "/skill-bridge/v3/skill/files/read"
+      },
+      "source_decision": "Current production search returns skill_id and the formal runbook freezes search -> skill_view_by_id so the follow-up id is obtained from the previous response. Listed Skills continue to use skill_view by injected name."
+    },
+    "knowledge": {
+      "sequence": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "endpoints": [
+        "/tools/list",
+        "/tools/call"
+      ],
+      "list_required": [
+        "knowledge_id"
+      ],
+      "call_required": [
+        "knowledge_id",
+        "tool_name",
+        "params"
+      ]
+    }
+  },
+  "leakage_forbidden_provider_fields": [
+    "gold",
+    "target",
+    "expected",
+    "pairId",
+    "pair_id",
+    "informationGap",
+    "information_gap",
+    "knowledge_id",
+    "assetId",
+    "allowedSequences",
+    "allowedFirstActions"
+  ],
+  "skill_sources": [
+    {
+      "assetId": "T17-SKL-01",
+      "name": "screen-reader-testing",
+      "listing": "listed",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/accessibility-compliance/skills/screen-reader-testing/SKILL.md",
+      "rawSha256": "591c7ff80f40ed866071920f723c1d22a6ceb096c0794aeec1cf9562865119d8",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/accessibility-compliance/skills/screen-reader-testing/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-02",
+      "name": "wcag-audit-patterns",
+      "listing": "listed",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/accessibility-compliance/skills/wcag-audit-patterns/SKILL.md",
+      "rawSha256": "db263a3405deb95a63175f33da4a9d82d8595599fbee4a81979059b35a7cec40",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/accessibility-compliance/skills/wcag-audit-patterns/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-03",
+      "name": "react-modernization",
+      "listing": "listed",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/framework-migration/skills/react-modernization/SKILL.md",
+      "rawSha256": "7787e2435f53744559f1c48a0769f17ffba48cb1e2ca4fe207cbb81b800055f1",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/framework-migration/skills/react-modernization/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-04",
+      "name": "nextjs-app-router-patterns",
+      "listing": "listed",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/frontend-mobile-development/skills/nextjs-app-router-patterns/SKILL.md",
+      "rawSha256": "8de4ab196350d6bb2d191260e13d1645822b7ec1bae205a2018a24cdc3f9b26c",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/frontend-mobile-development/skills/nextjs-app-router-patterns/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-05",
+      "name": "react-state-management",
+      "listing": "listed",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/frontend-mobile-development/skills/react-state-management/SKILL.md",
+      "rawSha256": "71abf349b19fe5cef64f4e4f2dd4a89011a5e947d8ce278d53a489292f508032",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/frontend-mobile-development/skills/react-state-management/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-06",
+      "name": "tailwind-design-system",
+      "listing": "listed",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/frontend-mobile-development/skills/tailwind-design-system/SKILL.md",
+      "rawSha256": "b6577edb7b7f71a6954f68b80c7eea1748ccdf31862759f864bce558fb2bcf83",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/frontend-mobile-development/skills/tailwind-design-system/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-07",
+      "name": "design-system-patterns",
+      "listing": "searchable",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/ui-design/skills/design-system-patterns/SKILL.md",
+      "rawSha256": "618355f0e6c6ba8ca5d231035c9da18302fe6894aedce565743e9181b6c928ee",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/ui-design/skills/design-system-patterns/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-08",
+      "name": "responsive-design",
+      "listing": "searchable",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/ui-design/skills/responsive-design/SKILL.md",
+      "rawSha256": "c8bd56f8fc0f122c4ff392b02617f0e6bb4a353b2d0189235c6ee77cdcfe8690",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/ui-design/skills/responsive-design/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-09",
+      "name": "web-component-design",
+      "listing": "searchable",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/ui-design/skills/web-component-design/SKILL.md",
+      "rawSha256": "a7978f5e9e3fa7129cf3eb8d607cedece4e207011321893d9a3c5dd92cf32603",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/ui-design/skills/web-component-design/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-10",
+      "name": "accessibility-compliance",
+      "listing": "searchable",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/ui-design/skills/accessibility-compliance/SKILL.md",
+      "rawSha256": "3ad0fbcb0a69b69e70652641a8eeb59f168cceb4bc9d9b9c8b47154072b9e1a2",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/ui-design/skills/accessibility-compliance/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-11",
+      "name": "e2e-testing-patterns",
+      "listing": "searchable",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/developer-essentials/skills/e2e-testing-patterns/SKILL.md",
+      "rawSha256": "1653690dde9eeca6dcb66086277791c2a3ccc2b37eaab6ec9b627a10adfb94be",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/developer-essentials/skills/e2e-testing-patterns/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-12",
+      "name": "javascript-testing-patterns",
+      "listing": "searchable",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/javascript-typescript/skills/javascript-testing-patterns/SKILL.md",
+      "rawSha256": "d99e1d7344ca7b87395c7e49f6c635ea67fe16d57f4698d72c78d405020f5782",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/javascript-typescript/skills/javascript-testing-patterns/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-13",
+      "name": "react-expert",
+      "listing": "searchable",
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "license": "MIT",
+      "path": "skills/react-expert/SKILL.md",
+      "rawSha256": "542b344c6b4c3b801255c77fe93c7685ff37a4a1c2d04ecaaa81f3f5aa15dc0a",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/claudeSkills/skills/react-expert/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-14",
+      "name": "nextjs-developer",
+      "listing": "searchable",
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "license": "MIT",
+      "path": "skills/nextjs-developer/SKILL.md",
+      "rawSha256": "a8631cf7789732d8f9924ec763d5f9b99ddb35b793929a2d067a72088c96de70",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/claudeSkills/skills/nextjs-developer/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-15",
+      "name": "playwright-expert",
+      "listing": "searchable",
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "license": "MIT",
+      "path": "skills/playwright-expert/SKILL.md",
+      "rawSha256": "d6c5c04e570659a902e7c212067116131743e588af16406672fab58f0f62d8e1",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/claudeSkills/skills/playwright-expert/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-16",
+      "name": "typescript-pro",
+      "listing": "searchable",
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "license": "MIT",
+      "path": "skills/typescript-pro/SKILL.md",
+      "rawSha256": "5f5bc47c167f0485c01a3b5a14b9999141b1e7c54e7775aecf73ad16f114c066",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/claudeSkills/skills/typescript-pro/SKILL.md"
+    }
+  ],
+  "skill_resource_sources": [
+    {
+      "assetId": "T17-SKL-02",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/accessibility-compliance/skills/wcag-audit-patterns/references/details.md",
+      "manifestPath": "references/details.md",
+      "rawSha256": "0a61237ccb4e1b2cba4291f83e0747ad64ac9ba81b37427ee0e648537c9c78d6",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/accessibility-compliance/skills/wcag-audit-patterns/references/details.md"
+    }
+  ]
+}

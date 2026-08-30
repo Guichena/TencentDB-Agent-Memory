@@ -1,0 +1,22 @@
+--- a/plugins/ui-design/skills/web-component-design/SKILL.md
++++ b/adapted/web-component-design/SKILL.md
+@@ -5,0 +5,19 @@
++
++
++## TDAI Host Routing
++
++Load this package with `skill_view`. If the manifest points to a supporting file, read that file with `skill_files_read`; do not install or execute source-repository dependencies for Task 1.
++
++Use when:
++- Designing reusable component libraries or design systems
++- Implementing complex component composition patterns
++- Choosing and applying CSS-in-JS solutions
++- Building accessible, responsive UI components
++- Creating consistent component APIs across a codebase
++- Refactoring legacy components into modern patterns
++- Implementing compound components or render props
++
++Do not use when:
++- Do not use when the task is unrelated to reusable components, composition, component APIs, CSS-in-JS, or frontend design systems
++
++The upstream technical workflow below is preserved unchanged.
