@@ -51,6 +51,7 @@ describe("MemoryKnowledge tool execution trace sink", () => {
       responseBodySha256: "c".repeat(64),
       durationMs: 2,
     });
+    sink.markFinished();
 
     const events = readFileSync(sink.filePath!, "utf8")
       .trim()
@@ -60,6 +61,7 @@ describe("MemoryKnowledge tool execution trace sink", () => {
       ["ready", "memory-knowledge", 0],
       ["begin", "memory-knowledge", 1],
       ["completion", "memory-knowledge", 2],
+      ["seal", "memory-knowledge", 3],
     ]);
     expect(events[1]?.event).toMatchObject({
       correlationHeaders: {
@@ -88,6 +90,7 @@ describe("MemoryKnowledge tool execution trace sink", () => {
       responseBodySha256: "d".repeat(64),
       durationMs: 2,
     });
+    sink.markFinished();
 
     const raw = readFileSync(sink.filePath!, "utf8");
     const events = raw.trim().split("\n").map((line) => JSON.parse(line) as Record<string, unknown>);

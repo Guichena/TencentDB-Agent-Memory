@@ -153,6 +153,7 @@ async function startServer(): Promise<void> {
     if (shuttingDown) return;
     shuttingDown = true;
     log.info(`Received ${signal}, shutting down`);
+    toolExecutionTraceSink.markFinished();
     await knowledgeTelemetry.shutdown();
     server.close(() => process.exit(0));
   };

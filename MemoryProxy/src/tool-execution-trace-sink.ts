@@ -51,6 +51,7 @@ export interface ToolExecutionTraceSink {
   readonly entryObserver?: BridgeEntryObserver;
   readonly completionObserver?: BridgeCompletionObserver;
   markReady(): void;
+  markFinished(): void;
 }
 
 export interface ToolExecutionTraceSinkDependencies {
@@ -97,8 +98,12 @@ export function createToolExecutionTraceSinkFromEnv(
   let sequence = 0;
   let active = true;
   let ready = false;
+  let sealed = false;
 
-  const writeEvent = (kind: "ready" | "begin" | "completion", event?: unknown): boolean => {
+  const writeEvent = (
+    kind: "ready" | "begin" | "completion" | "seal",
+    event?: unknown,
+  ): boolean => {
     if (!active) return false;
     const envelope = {
       schemaVersion: TOOL_OBSERVER_EVENT_SCHEMA,
@@ -134,14 +139,23 @@ export function createToolExecutionTraceSinkFromEnv(
       writeEvent("completion", sanitizeCompletion(completion));
     }) satisfies BridgeCompletionObserver,
     markReady: () => {
-      if (ready || !active) return;
+      if (ready || sealed || !active) return;
       ready = writeEvent("ready");
+    },
+    markFinished: () => {
+      if (!ready || sealed || !active) return;
+      sealed = writeEvent("seal", { lastDataSequence: sequence - 1 });
+      if (sealed) active = false;
     },
   });
 }
 
 function disabledSink(): ToolExecutionTraceSink {
-  return Object.freeze({ enabled: false, markReady: () => undefined });
+  return Object.freeze({
+    enabled: false,
+    markReady: () => undefined,
+    markFinished: () => undefined,
+  });
 }
 
 function sanitizeEntry(entry: Readonly<ObservedBridgeEntry>): Record<string, unknown> {

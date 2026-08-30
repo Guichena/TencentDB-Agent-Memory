@@ -88,6 +88,16 @@ describe("MemoryProxy tool execution trace sink", () => {
       durationMs: 3,
       failure: { name: "TypeError", message: "upstream Bearer completion-secret" },
     });
+    sink.markFinished();
+    sink.markFinished();
+    sink.entryObserver?.({
+      correlationId: "memory-bridge:after-seal",
+      family: "memory",
+      endpoint: "/memory-bridge/v3/atomic/search",
+      method: "POST",
+      requestBodyCapture: { outcome: "empty" },
+      correlationHeaders: {},
+    });
 
     const raw = readFileSync(sink.filePath!, "utf8");
     const events = readJsonl(sink.filePath!);
@@ -127,6 +137,15 @@ describe("MemoryProxy tool execution trace sink", () => {
         observedAt: "2026-08-30T01:00:00.002Z",
         wallTimeUnixMicros: "1002000",
       },
+      {
+        schemaVersion: TOOL_OBSERVER_EVENT_SCHEMA,
+        kind: "seal",
+        source: "memory-proxy",
+        processInstanceId: "proxy-instance-a",
+        sequence: 3,
+        observedAt: "2026-08-30T01:00:00.002Z",
+        wallTimeUnixMicros: "1002000",
+      },
     ]);
     expect(events[1]?.event).toMatchObject({
       correlationHeaders: { "x-conversation-id": "session-a" },
@@ -157,6 +176,7 @@ describe("MemoryProxy tool execution trace sink", () => {
       randomId: () => "first-instance",
     });
     first.markReady();
+    first.markFinished();
     const before = readFileSync(first.filePath!, "utf8");
 
     const second = createToolExecutionTraceSinkFromEnv(env, {
