@@ -1,0 +1,1815 @@
+import { createHash } from "node:crypto";
+import { describe, expect, it } from "vitest";
+import interfaceManifest from "../../eval/tool-prompt-bench/measurement-v2/M1-SCHEMA-INTERFACE-MANIFEST.json";
+import syntheticFixture from "../../eval/tool-prompt-bench/measurement-v2/fixtures/m1-pair-v2.synthetic.json";
+import {
+  canonicalJsonV2,
+  sha256CanonicalJsonV2,
+} from "../../eval/tool-prompt-bench/measurement-v2/canonical-json.js";
+import {
+  buildFrozenPairIdentityManifestV2,
+  buildFrozenPairSlotManifestV2,
+  computeFrozenPairSlotManifestSha256V2,
+  computePairContractCanonicalSha256V2,
+  validateFrozenPairSlotManifestV2,
+  validateFrozenPairIdentityManifestV2,
+  validatePairContractV2,
+  type PairCaseProjectionV2,
+  type PairContractV2,
+} from "../../eval/tool-prompt-bench/measurement-v2/pair-contract.js";
+import {
+  computeExpectedPairMembershipSha256V2,
+  computePairScoringPolicySha256V2,
+  scorePairV2,
+  summarizePairScoresV2,
+  validatePairCaseOutcomeV2,
+  type IntegratedCaseOutcomeForPairV2,
+  type PairScoreV2,
+  type PairSummaryCampaignV2,
+} from "../../eval/tool-prompt-bench/measurement-v2/pair-scorer.js";
+
+const POSITIVE_CASE: PairCaseProjectionV2 = {
+  caseId: "pair-skill-positive",
+  split: "dev",
+  comparisonDocument: {
+    query: "Use the saved team formatter for this log output.",
+    context: { team: "payments", language: "ts" },
+    capabilities: { memory: true, skill: true },
+    gold: { needTdaiTool: true },
+  },
+};
+
+const NEGATIVE_CASE: PairCaseProjectionV2 = {
+  caseId: "pair-skill-negative",
+  split: "dev",
+  comparisonDocument: {
+    query: "Use the formatter already shown above for this log output.",
+    context: { team: "payments", language: "ts" },
+    capabilities: { memory: true, skill: true },
+    gold: { needTdaiTool: false },
+  },
+};
+
+const CONTRACT: PairContractV2 = {
+  schemaVersion: "2",
+  pairId: "pair-skill-boundary-001",
+  positiveCaseId: POSITIVE_CASE.caseId,
+  negativeCaseId: NEGATIVE_CASE.caseId,
+  causalFactorId: "answer-source-saved-vs-present",
+  allowedChangedPointers: ["/gold/needTdaiTool", "/query"],
+  invariantProjectionSchemaVersion: "pair-invariant-projection-v2",
+  invariantFieldsSha256: "bea7821895ab65d5ca0c55ad67980d9fe3eb1c16247ec90a59d016e99c789d40",
+  changedPointerCount: 2,
+  minimalityReviewStatus: "approved",
+  independenceKey: "team-payments-source-formatter",
+  split: "dev",
+};
+
+function evidenceForPair(
+  pairId: string,
+  repeatId: string,
+  side: "positive" | "negative",
+) {
+  const rawEvidenceArtifactRef = `artifact://${pairId}/${side}/${repeatId}`;
+  return {
+    rawEvidenceArtifactRef,
+    rawEvidenceArtifactSha256: createHash("sha256").update(rawEvidenceArtifactRef).digest("hex"),
+    runId: `${pairId}:${side}:${repeatId}:run`,
+  };
+}
+
+const POSITIVE_OUTCOME: IntegratedCaseOutcomeForPairV2 = {
+  caseId: POSITIVE_CASE.caseId,
+  repeatId: "repeat-01",
+  variantId: "V3",
+  model: "gpt-5.6-luna",
+  reasoningEffort: "high",
+  provider: "openai",
+  apiProtocol: "responses-v1",
+  adapterVersion: "memory-proxy-openai-v1",
+  executionIdentitySha256: "e".repeat(64),
+  assetSnapshotSha256: "a".repeat(64),
+  ...evidenceForPair(CONTRACT.pairId, "repeat-01", "positive"),
+  sessionId: "positive-session-01",
+  localStateId: "positive-state-01",
+  integrationEligible: true,
+  traceComplete: true,
+  completeChainSuccess: true,
+  strictChainExact: true,
+  executorBoundAttempt: true,
+  malformedTdaiDispatchIntent: false,
+};
+
+const NEGATIVE_OUTCOME: IntegratedCaseOutcomeForPairV2 = {
+  caseId: NEGATIVE_CASE.caseId,
+  repeatId: "repeat-01",
+  variantId: "V3",
+  model: "gpt-5.6-luna",
+  reasoningEffort: "high",
+  provider: "openai",
+  apiProtocol: "responses-v1",
+  adapterVersion: "memory-proxy-openai-v1",
+  executionIdentitySha256: "e".repeat(64),
+  assetSnapshotSha256: "a".repeat(64),
+  ...evidenceForPair(CONTRACT.pairId, "repeat-01", "negative"),
+  sessionId: "negative-session-01",
+  localStateId: "negative-state-01",
+  integrationEligible: true,
+  traceComplete: true,
+  completeChainSuccess: false,
+  executorBoundAttempt: false,
+  malformedTdaiDispatchIntent: false,
+};
+
+function withPairEvidence(
+  outcome: IntegratedCaseOutcomeForPairV2,
+  pairId: string,
+  side: "positive" | "negative",
+): IntegratedCaseOutcomeForPairV2 {
+  return {
+    ...outcome,
+    ...evidenceForPair(pairId, outcome.repeatId, side),
+  };
+}
+
+function validatedContract(
+  contract: PairContractV2 = CONTRACT,
+  positiveCase: PairCaseProjectionV2 = POSITIVE_CASE,
+  negativeCase: PairCaseProjectionV2 = NEGATIVE_CASE,
+) {
+  const validation = validatePairContractV2(contract, positiveCase, negativeCase);
+  if (!validation.ok) throw new Error("test Pair Contract must be valid");
+  return validation.value;
+}
+
+function summaryCampaign(
+  expectedPairIds: readonly string[] = [CONTRACT.pairId],
+  expectedRepeatIds: readonly string[] = [POSITIVE_OUTCOME.repeatId],
+  strictPairExactEnabled = false,
+  validatedPairs = expectedPairIds.map((pairId) => validatedContract({ ...CONTRACT, pairId })),
+): PairSummaryCampaignV2 {
+  const frozenPairSetRevision = "synthetic-pair-set-v2";
+  const frozenPairSetSha256 = "d".repeat(64);
+  const frozenPairSlotManifest = buildFrozenPairSlotManifestV2(
+    validatedPairs.map((validatedPair) => ({
+      validatedPair,
+      repeats: expectedRepeatIds.map((repeatId) => ({
+        repeatId,
+        positive: evidenceForPair(validatedPair.contract.pairId, repeatId, "positive"),
+        negative: evidenceForPair(validatedPair.contract.pairId, repeatId, "negative"),
+      })),
+    })),
+    { revision: frozenPairSetRevision, sha256: frozenPairSetSha256 },
+  );
+  const campaign = {
+    schemaVersion: "pair-summary-campaign-v2" as const,
+    split: CONTRACT.split,
+    variantId: POSITIVE_OUTCOME.variantId,
+    model: POSITIVE_OUTCOME.model,
+    reasoningEffort: POSITIVE_OUTCOME.reasoningEffort,
+    provider: POSITIVE_OUTCOME.provider,
+    apiProtocol: POSITIVE_OUTCOME.apiProtocol,
+    adapterVersion: POSITIVE_OUTCOME.adapterVersion,
+    executionIdentitySha256: POSITIVE_OUTCOME.executionIdentitySha256,
+    assetSnapshotSha256: POSITIVE_OUTCOME.assetSnapshotSha256,
+    expectedPairIds,
+    expectedRepeatIds,
+    frozenPairSetRevision,
+    frozenPairSetSha256,
+    frozenPairSlotManifest,
+    frozenPairSlotEvidenceRootSha256: frozenPairSlotManifest.canonicalSha256,
+    strictPairExactEnabled,
+    scoringPolicySha256: computePairScoringPolicySha256V2(strictPairExactEnabled),
+  };
+  return {
+    ...campaign,
+    expectedPairIdsSha256: computeExpectedPairMembershipSha256V2(campaign),
+  };
+}
+
+function canonicalJson(value: unknown): string {
+  if (value === null || typeof value !== "object") return JSON.stringify(value);
+  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(",")}]`;
+  const record = value as Record<string, unknown>;
+  return `{${Object.keys(record)
+    .sort()
+    .map((key) => `${JSON.stringify(key)}:${canonicalJson(record[key])}`)
+    .join(",")}}`;
+}
+
+function clonePairScore(score: PairScoreV2): PairScoreV2 {
+  return JSON.parse(JSON.stringify(score)) as PairScoreV2;
+}
+
+describe("Canonical JSON v2", () => {
+  it("accepts finite JSON scalars, dense arrays, and both plain-record prototypes", () => {
+    const nullPrototypeRecord = Object.create(null) as Record<string, unknown>;
+    Object.defineProperty(nullPrototypeRecord, "value", {
+      enumerable: true,
+      value: [null, true, 1, "text"],
+    });
+
+    expect(canonicalJsonV2({ nullPrototypeRecord })).toBe(
+      "{\"nullPrototypeRecord\":{\"value\":[null,true,1,\"text\"]}}",
+    );
+  });
+
+  const invalidValues: ReadonlyArray<readonly [string, () => unknown]> = [
+    ["sparse array", () => Array(1)],
+    ["decorated array", () => Object.assign([], { extra: true })],
+    ["non-plain array prototype", () => Object.setPrototypeOf([1], null)],
+    ["Date", () => new Date(0)],
+    ["Map", () => new Map([["key", "value"]])],
+    ["Set", () => new Set(["value"])],
+    ["class instance", () => new (class RuntimeRecord { readonly value = 1; })()],
+    ["accessor", () => Object.defineProperty({}, "value", { enumerable: true, get: () => 1 })],
+    ["symbol-keyed record", () => ({ [Symbol("value")]: 1 })],
+    ["undefined", () => undefined],
+    ["function", () => () => true],
+    ["symbol", () => Symbol("value")],
+    ["bigint", () => 1n],
+    ["NaN", () => Number.NaN],
+    ["positive infinity", () => Number.POSITIVE_INFINITY],
+    ["negative zero", () => -0],
+    ["cycle", () => {
+      const value: { self?: unknown } = {};
+      value.self = value;
+      return value;
+    }],
+  ];
+
+  it.each(invalidValues)("fails closed with a typed error for %s", (_label, makeValue) => {
+    let thrown: unknown;
+    try {
+      canonicalJsonV2(makeValue());
+    } catch (error) {
+      thrown = error;
+    }
+
+    expect(thrown).toMatchObject({
+      name: "CanonicalJsonValidationError",
+      code: "INVALID_CANONICAL_JSON_VALUE",
+    });
+  });
+
+  it("preserves own __proto__, constructor, and prototype keys without setter collisions", () => {
+    const reservedKeys = JSON.parse(
+      "{\"__proto__\":{\"x\":1},\"constructor\":\"ctor\",\"prototype\":\"proto\"}",
+    ) as Record<string, unknown>;
+
+    expect(canonicalJsonV2(reservedKeys)).toBe(
+      "{\"__proto__\":{\"x\":1},\"constructor\":\"ctor\",\"prototype\":\"proto\"}",
+    );
+    expect(sha256CanonicalJsonV2(reservedKeys)).not.toBe(sha256CanonicalJsonV2({}));
+  });
+});
+
+describe("Pair Contract v2", () => {
+  it("accepts an approved minimal counterfactual pair with a frozen invariant hash", () => {
+    expect(validatePairContractV2(CONTRACT, POSITIVE_CASE, NEGATIVE_CASE)).toEqual({
+      ok: true,
+      value: {
+        contract: CONTRACT,
+        changedPointers: ["/gold/needTdaiTool", "/query"],
+        computedInvariantFieldsSha256: CONTRACT.invariantFieldsSha256,
+      },
+    });
+  });
+
+  it("rejects a contract whose case identities do not match the compared cases", () => {
+    const result = validatePairContractV2(
+      { ...CONTRACT, positiveCaseId: "some-other-positive" },
+      POSITIVE_CASE,
+      NEGATIVE_CASE,
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.map((error) => error.code)).toContain("CASE_ID_MISMATCH");
+  });
+
+  it("rejects a pair that has not passed minimality review", () => {
+    const result = validatePairContractV2(
+      { ...CONTRACT, minimalityReviewStatus: "pending" },
+      POSITIVE_CASE,
+      NEGATIVE_CASE,
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.map((error) => error.code)).toContain("MINIMALITY_NOT_APPROVED");
+  });
+
+  it("rejects a pair whose cases cross evaluation splits", () => {
+    const result = validatePairContractV2(
+      CONTRACT,
+      POSITIVE_CASE,
+      { ...NEGATIVE_CASE, split: "hidden" },
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.map((error) => error.code)).toContain("SPLIT_MISMATCH");
+  });
+
+  it("rejects a stale changed-pointer count", () => {
+    const result = validatePairContractV2(
+      { ...CONTRACT, changedPointerCount: 1 },
+      POSITIVE_CASE,
+      NEGATIVE_CASE,
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.map((error) => error.code)).toContain("CHANGED_POINTER_COUNT_MISMATCH");
+  });
+
+  it("rejects an allowed pointer that does not cover a real change", () => {
+    const result = validatePairContractV2(
+      { ...CONTRACT, allowedChangedPointers: [...CONTRACT.allowedChangedPointers, "/context"] },
+      POSITIVE_CASE,
+      NEGATIVE_CASE,
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.map((error) => error.code)).toContain("UNUSED_ALLOWED_POINTER");
+  });
+
+  it("rejects a change outside the frozen allowlist", () => {
+    const result = validatePairContractV2(
+      CONTRACT,
+      POSITIVE_CASE,
+      {
+        ...NEGATIVE_CASE,
+        comparisonDocument: {
+          ...(NEGATIVE_CASE.comparisonDocument as Record<string, PairCaseProjectionV2["comparisonDocument"]>),
+          capabilities: { memory: false, skill: true },
+        },
+      },
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.map((error) => error.code)).toContain("CHANGE_OUTSIDE_ALLOWLIST");
+  });
+
+  it("rejects a tampered invariant projection hash", () => {
+    const result = validatePairContractV2(
+      { ...CONTRACT, invariantFieldsSha256: "0".repeat(64) },
+      POSITIVE_CASE,
+      NEGATIVE_CASE,
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.map((error) => error.code)).toContain("INVARIANT_HASH_MISMATCH");
+  });
+
+  it("fails closed when a required Pair Contract v2 field is blank", () => {
+    const result = validatePairContractV2(
+      { ...CONTRACT, causalFactorId: "" },
+      POSITIVE_CASE,
+      NEGATIVE_CASE,
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.map((error) => error.code)).toContain("MISSING_REQUIRED_FIELD");
+  });
+
+  it("rejects an unsupported schema version at the untrusted runtime boundary", () => {
+    const result = validatePairContractV2(
+      { ...CONTRACT, schemaVersion: "1" } as unknown as PairContractV2,
+      POSITIVE_CASE,
+      NEGATIVE_CASE,
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.map((error) => error.code)).toContain("UNSUPPORTED_SCHEMA_VERSION");
+  });
+
+  it.each([
+    [["query"], "INVALID_JSON_POINTER"],
+    [["/query~2bad"], "INVALID_JSON_POINTER"],
+    [["/"], "ROOT_POINTER_NOT_ALLOWED"],
+  ] as const)("rejects an invalid changed-pointer allowlist %j", (allowedChangedPointers, expectedCode) => {
+    const result = validatePairContractV2(
+      { ...CONTRACT, allowedChangedPointers },
+      POSITIVE_CASE,
+      NEGATIVE_CASE,
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.map((error) => error.code)).toContain(expectedCode);
+  });
+
+  it("rejects duplicate allowlist pointers", () => {
+    const result = validatePairContractV2(
+      { ...CONTRACT, allowedChangedPointers: ["/query", "/query"] },
+      POSITIVE_CASE,
+      NEGATIVE_CASE,
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.map((error) => error.code)).toContain("DUPLICATE_ALLOWED_POINTER");
+  });
+
+  it("rejects overlapping parent and child allowlist pointers", () => {
+    const result = validatePairContractV2(
+      { ...CONTRACT, allowedChangedPointers: ["/gold", "/gold/needTdaiTool", "/query"] },
+      POSITIVE_CASE,
+      NEGATIVE_CASE,
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.map((error) => error.code)).toContain("OVERLAPPING_ALLOWED_POINTERS");
+  });
+
+  it.each([
+    [{ allowedChangedPointers: [] }, "EMPTY_ALLOWED_POINTERS"],
+    [{ invariantFieldsSha256: "not-a-sha" }, "INVALID_SHA256"],
+    [{ changedPointerCount: -1 }, "INVALID_CHANGED_POINTER_COUNT"],
+    [{ invariantProjectionSchemaVersion: "unknown-projection" }, "UNSUPPORTED_INVARIANT_PROJECTION_SCHEMA"],
+    [{ split: "test" }, "INVALID_SPLIT"],
+  ] as const)("fails closed on malformed runtime contract field %j", (change, expectedCode) => {
+    const result = validatePairContractV2(
+      { ...CONTRACT, ...change } as unknown as PairContractV2,
+      POSITIVE_CASE,
+      NEGATIVE_CASE,
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.map((error) => error.code)).toContain(expectedCode);
+  });
+
+  it("returns validation errors instead of throwing for structurally invalid input", () => {
+    const result = validatePairContractV2(
+      { schemaVersion: "2" } as unknown as PairContractV2,
+      null as unknown as PairCaseProjectionV2,
+      NEGATIVE_CASE,
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.map((error) => error.code)).toContain("INVALID_CONTRACT_SHAPE");
+  });
+
+  it.each([
+    ["sparse array", () => Array(1)],
+    ["Date", () => new Date(0)],
+    ["Map", () => new Map([["key", "value"]])],
+    ["Set", () => new Set(["value"])],
+    ["class instance", () => new (class RuntimeDocument { readonly value = 1; })()],
+    ["accessor", () => Object.defineProperty({}, "value", {
+      enumerable: true,
+      get: () => { throw new Error("must not execute an untrusted getter"); },
+    })],
+  ] as const)("rejects a non-JSON %s comparison document without throwing", (_label, makeDocument) => {
+    let result: ReturnType<typeof validatePairContractV2> | undefined;
+    expect(() => {
+      result = validatePairContractV2(
+        CONTRACT,
+        { ...POSITIVE_CASE, comparisonDocument: makeDocument() } as unknown as PairCaseProjectionV2,
+        NEGATIVE_CASE,
+      );
+    }).not.toThrow();
+
+    expect(result?.ok).toBe(false);
+    if (result && !result.ok) {
+      expect(result.errors.map((error) => error.code)).toContain("INVALID_RUNTIME_JSON");
+    }
+  });
+
+  it.each([
+    ["Pair Contract", { ...CONTRACT, unexpected: "field" }, POSITIVE_CASE],
+    ["pair case", CONTRACT, { ...POSITIVE_CASE, unexpected: "field" }],
+  ] as const)("rejects unknown fields in the %s runtime shape", (_label, contract, positiveCase) => {
+    const result = validatePairContractV2(contract, positiveCase, NEGATIVE_CASE);
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.map((error) => error.code)).toContain("UNKNOWN_RUNTIME_FIELD");
+  });
+
+  it("freezes canonical pair identity records from validated Pair Contract v2 inputs", () => {
+    const validated = validatedContract();
+    const pairContractSha256 = createHash("sha256")
+      .update(canonicalJson(CONTRACT))
+      .digest("hex");
+    const expectedRecord = {
+      pairId: CONTRACT.pairId,
+      positiveCaseId: CONTRACT.positiveCaseId,
+      negativeCaseId: CONTRACT.negativeCaseId,
+      independenceKey: CONTRACT.independenceKey,
+      split: CONTRACT.split,
+      pairContractSha256,
+    };
+    const expectedManifestSha256 = createHash("sha256")
+      .update(canonicalJson({
+        schemaVersion: "frozen-pair-identity-manifest-v2",
+        records: [expectedRecord],
+      }))
+      .digest("hex");
+
+    expect(computePairContractCanonicalSha256V2(CONTRACT)).toBe(pairContractSha256);
+    expect(buildFrozenPairIdentityManifestV2([validated])).toEqual({
+      schemaVersion: "frozen-pair-identity-manifest-v2",
+      records: [expectedRecord],
+      canonicalSha256: expectedManifestSha256,
+    });
+  });
+
+  it("rejects tampering with frozen pair identity records or their canonical SHA", () => {
+    const manifest = buildFrozenPairIdentityManifestV2([validatedContract()]);
+    const tamperedRecord = {
+      ...manifest,
+      records: [{ ...manifest.records[0], positiveCaseId: "attacker-case" }],
+    };
+    const tamperedSha = { ...manifest, canonicalSha256: "0".repeat(64) };
+
+    for (const tampered of [tamperedRecord, tamperedSha]) {
+      const result = validateFrozenPairIdentityManifestV2(tampered);
+      expect(result.ok).toBe(false);
+      if (!result.ok) {
+        expect(result.errors.map((error) => error.code)).toContain(
+          "IDENTITY_MANIFEST_SHA256_MISMATCH",
+        );
+      }
+    }
+  });
+
+  it("retains an own __proto__ field in the invariant projection hash", () => {
+    const positiveDocument = JSON.parse(
+      "{\"__proto__\":{\"frozen\":true},\"query\":\"positive\"}",
+    ) as PairCaseProjectionV2["comparisonDocument"];
+    const negativeDocument = JSON.parse(
+      "{\"__proto__\":{\"frozen\":true},\"query\":\"negative\"}",
+    ) as PairCaseProjectionV2["comparisonDocument"];
+    const maskedDocument = JSON.parse(
+      "{\"__proto__\":{\"frozen\":true},\"query\":\"__PAIR_ALLOWED_DELTA__\"}",
+    );
+    const invariantFieldsSha256 = createHash("sha256")
+      .update(canonicalJson({
+        invariantFields: maskedDocument,
+        invariantProjectionSchemaVersion: "pair-invariant-projection-v2",
+      }))
+      .digest("hex");
+    const contract = {
+      ...CONTRACT,
+      allowedChangedPointers: ["/query"],
+      changedPointerCount: 1,
+      invariantFieldsSha256,
+    };
+
+    expect(validatePairContractV2(
+      contract,
+      { ...POSITIVE_CASE, comparisonDocument: positiveDocument },
+      { ...NEGATIVE_CASE, comparisonDocument: negativeDocument },
+    )).toMatchObject({ ok: true });
+  });
+});
+
+describe("Pair scorer v2", () => {
+  it("validates the integrated pair outcome at the untrusted runtime boundary", () => {
+    expect(validatePairCaseOutcomeV2(POSITIVE_OUTCOME)).toEqual({
+      ok: true,
+      value: POSITIVE_OUTCOME,
+    });
+
+    const malformed = {
+      ...NEGATIVE_OUTCOME,
+      executorBoundAttempt: undefined,
+      malformedTdaiDispatchIntent: undefined,
+    };
+    const validation = validatePairCaseOutcomeV2(malformed);
+
+    expect(validation.ok).toBe(false);
+    if (!validation.ok) {
+      expect(validation.errors.map((error) => error.pointer)).toEqual(expect.arrayContaining([
+        "/executorBoundAttempt",
+        "/malformedTdaiDispatchIntent",
+      ]));
+    }
+  });
+
+  it("rejects a strict-chain success that contradicts base chain completion", () => {
+    const result = validatePairCaseOutcomeV2({
+      ...POSITIVE_OUTCOME,
+      completeChainSuccess: false,
+      strictChainExact: true,
+    });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.errors.map((error) => error.code)).toContain("STRICT_CHAIN_INVARIANT_VIOLATION");
+    }
+  });
+
+  it("never turns missing negative intent booleans into a clean no-call", () => {
+    const malformedNegative = { ...NEGATIVE_OUTCOME } as Record<string, unknown>;
+    delete malformedNegative.executorBoundAttempt;
+    delete malformedNegative.malformedTdaiDispatchIntent;
+
+    const result = scorePairV2(
+      validatedContract(),
+      {
+        positive: [POSITIVE_OUTCOME],
+        negative: [malformedNegative as unknown as IntegratedCaseOutcomeForPairV2],
+      },
+    );
+
+    expect(result.eligibility).toBe("incomplete");
+    expect(result.negativePass).toBeNull();
+    expect(result.pairExact).toBeNull();
+    expect(result.incompleteReasons).toContain("NEGATIVE_OUTCOME_INVALID");
+  });
+
+  it("fails closed on blank runtime identity instead of comparing equal blanks", () => {
+    const blankIdentity = {
+      repeatId: "",
+      variantId: "",
+      model: "",
+      reasoningEffort: "",
+      provider: "",
+      apiProtocol: "",
+      adapterVersion: "",
+      executionIdentitySha256: "",
+      assetSnapshotSha256: "",
+    };
+    const result = scorePairV2(
+      validatedContract(),
+      {
+        positive: [{
+          ...POSITIVE_OUTCOME,
+          ...blankIdentity,
+          runId: "",
+          sessionId: " ",
+          localStateId: "  ",
+        }],
+        negative: [{
+          ...NEGATIVE_OUTCOME,
+          ...blankIdentity,
+          runId: "   ",
+          sessionId: "    ",
+          localStateId: "     ",
+        }],
+      },
+    );
+
+    expect(result.eligibility).toBe("incomplete");
+    expect(result.incompleteReasons).toEqual(expect.arrayContaining([
+      "POSITIVE_OUTCOME_INVALID",
+      "NEGATIVE_OUTCOME_INVALID",
+    ]));
+  });
+
+  it.each([
+    ["provider", "anthropic", "PROVIDER_MISMATCH"],
+    ["apiProtocol", "messages-v1", "API_PROTOCOL_MISMATCH"],
+    ["adapterVersion", "memory-proxy-anthropic-v1", "ADAPTER_VERSION_MISMATCH"],
+    ["executionIdentitySha256", "f".repeat(64), "EXECUTION_IDENTITY_MISMATCH"],
+  ] as const)("fails closed when paired outcomes differ by %s", (field, value, expectedReason) => {
+    const result = scorePairV2(
+      validatedContract(),
+      {
+        positive: [POSITIVE_OUTCOME],
+        negative: [{ ...NEGATIVE_OUTCOME, [field]: value }],
+      },
+    );
+
+    expect(result.eligibility).toBe("incomplete");
+    expect(result.incompleteReasons).toContain(expectedReason);
+  });
+
+  it("scores a correct positive chain and a clean negative as an exact boundary switch", () => {
+    expect(scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    )).toMatchObject({
+      pairId: CONTRACT.pairId,
+      independenceKey: CONTRACT.independenceKey,
+      split: CONTRACT.split,
+      eligibility: "eligible",
+      incompleteReasons: [],
+      repeatAggregationPolicyId: "all-repeats-pass-v1",
+      repeatCount: 1,
+      repeatResults: [{
+        repeatId: "repeat-01",
+        pairExact: true,
+        boundarySwitchCorrect: true,
+      }],
+      positivePass: true,
+      negativePass: true,
+      pairExact: true,
+      boundarySwitchCorrect: true,
+      strictPairExact: null,
+      negativeFalseIntentTypes: [],
+      positiveFailureLayers: [],
+      cohort: {
+        variantId: POSITIVE_OUTCOME.variantId,
+        model: POSITIVE_OUTCOME.model,
+        reasoningEffort: POSITIVE_OUTCOME.reasoningEffort,
+        provider: POSITIVE_OUTCOME.provider,
+        apiProtocol: POSITIVE_OUTCOME.apiProtocol,
+        adapterVersion: POSITIVE_OUTCOME.adapterVersion,
+        executionIdentitySha256: POSITIVE_OUTCOME.executionIdentitySha256,
+        assetSnapshotSha256: POSITIVE_OUTCOME.assetSnapshotSha256,
+      },
+      repeatIds: [POSITIVE_OUTCOME.repeatId],
+    });
+  });
+
+  it("marks a pair incomplete when either side fails integration eligibility", () => {
+    const result = scorePairV2(
+      validatedContract(),
+      {
+        positive: [POSITIVE_OUTCOME],
+        negative: [{ ...NEGATIVE_OUTCOME, integrationEligible: false }],
+      },
+    );
+
+    expect(result).toMatchObject({
+      eligibility: "incomplete",
+      pairExact: null,
+      boundarySwitchCorrect: null,
+      positivePass: null,
+      negativePass: null,
+    });
+    expect(result.incompleteReasons).toContain("NEGATIVE_NOT_INTEGRATION_ELIGIBLE");
+  });
+
+  it("keeps an incomplete trace out of the behavior denominator", () => {
+    const result = scorePairV2(
+      validatedContract(),
+      {
+        positive: [POSITIVE_OUTCOME],
+        negative: [{ ...NEGATIVE_OUTCOME, traceComplete: false }],
+      },
+    );
+
+    expect(result.eligibility).toBe("incomplete");
+    expect(result.pairExact).toBeNull();
+    expect(result.incompleteReasons).toContain("NEGATIVE_TRACE_INCOMPLETE");
+  });
+
+  it("fails closed when the two sides share a session", () => {
+    const result = scorePairV2(
+      validatedContract(),
+      {
+        positive: [POSITIVE_OUTCOME],
+        negative: [{ ...NEGATIVE_OUTCOME, sessionId: POSITIVE_OUTCOME.sessionId }],
+      },
+    );
+
+    expect(result.eligibility).toBe("incomplete");
+    expect(result.incompleteReasons).toContain("SESSION_NOT_ISOLATED");
+  });
+
+  it.each([
+    ["variantId", "V2", "VARIANT_MISMATCH"],
+    ["model", "another-model", "MODEL_MISMATCH"],
+    ["reasoningEffort", "medium", "REASONING_MISMATCH"],
+    ["assetSnapshotSha256", "b".repeat(64), "ASSET_SNAPSHOT_MISMATCH"],
+  ] as const)("fails closed when paired outcomes differ by %s", (field, value, expectedReason) => {
+    const result = scorePairV2(
+      validatedContract(),
+      {
+        positive: [POSITIVE_OUTCOME],
+        negative: [{ ...NEGATIVE_OUTCOME, [field]: value }],
+      },
+    );
+
+    expect(result.eligibility).toBe("incomplete");
+    expect(result.incompleteReasons).toContain(expectedReason);
+  });
+
+  it("requires matched repeat ids instead of treating repeats as new pairs", () => {
+    const outcomes = {
+      positive: [POSITIVE_OUTCOME],
+      negative: [{ ...NEGATIVE_OUTCOME, repeatId: "repeat-02" }],
+    };
+    const result = scorePairV2(
+      validatedContract(),
+      outcomes,
+    );
+
+    expect(result.eligibility).toBe("incomplete");
+    expect(result.incompleteReasons).toContain("REPEAT_SET_MISMATCH");
+    expect(result.repeatInputs).toEqual(outcomes);
+  });
+
+  it("keeps BoundarySwitch true when the negative has only an unbound malformed intent", () => {
+    const result = scorePairV2(
+      validatedContract(),
+      {
+        positive: [POSITIVE_OUTCOME],
+        negative: [{ ...NEGATIVE_OUTCOME, malformedTdaiDispatchIntent: true }],
+      },
+    );
+
+    expect(result).toMatchObject({
+      eligibility: "eligible",
+      negativePass: false,
+      pairExact: false,
+      boundarySwitchCorrect: true,
+      negativeFalseIntentTypes: ["malformed_unbound"],
+    });
+  });
+
+  it("fails closed when an outcome case id does not match its pair side", () => {
+    const result = scorePairV2(
+      validatedContract(),
+      {
+        positive: [{ ...POSITIVE_OUTCOME, caseId: NEGATIVE_CASE.caseId }],
+        negative: [NEGATIVE_OUTCOME],
+      },
+    );
+
+    expect(result.eligibility).toBe("incomplete");
+    expect(result.incompleteReasons).toContain("OUTCOME_CASE_ID_MISMATCH");
+  });
+
+  it("aggregates matched repeats inside one pair with an explicit all-repeats policy", () => {
+    const result = scorePairV2(
+      validatedContract(),
+      {
+        positive: [
+          POSITIVE_OUTCOME,
+          {
+            ...POSITIVE_OUTCOME,
+            repeatId: "repeat-02",
+            runId: "positive-run-02",
+            sessionId: "positive-session-02",
+            localStateId: "positive-state-02",
+            completeChainSuccess: false,
+            strictChainExact: false,
+            failureLayer: "terminal_selection",
+          },
+        ],
+        negative: [
+          NEGATIVE_OUTCOME,
+          {
+            ...NEGATIVE_OUTCOME,
+            repeatId: "repeat-02",
+            runId: "negative-run-02",
+            sessionId: "negative-session-02",
+            localStateId: "negative-state-02",
+          },
+        ],
+      },
+    );
+
+    expect(result).toMatchObject({
+      eligibility: "eligible",
+      repeatAggregationPolicyId: "all-repeats-pass-v1",
+      repeatCount: 2,
+      pairExact: false,
+      boundarySwitchCorrect: true,
+      positiveFailureLayers: ["terminal_selection"],
+      repeatResults: [
+        { repeatId: "repeat-01", pairExact: true, boundarySwitchCorrect: true },
+        { repeatId: "repeat-02", pairExact: false, boundarySwitchCorrect: true },
+      ],
+    });
+  });
+
+  it.each([
+    ["positive", { positive: [], negative: [NEGATIVE_OUTCOME] }],
+    ["negative", { positive: [POSITIVE_OUTCOME], negative: [] }],
+    ["both", { positive: [], negative: [] }],
+  ] as const)("fails closed when the %s repeat side is empty", (_side, outcomes) => {
+    const result = scorePairV2(validatedContract(), outcomes);
+
+    expect(result.eligibility).toBe("incomplete");
+    expect(result.incompleteReasons).toContain("REPEAT_SET_EMPTY");
+  });
+
+  it("fails closed when a side repeats the same repeatId", () => {
+    const result = scorePairV2(
+      validatedContract(),
+      {
+        positive: [
+          POSITIVE_OUTCOME,
+          {
+            ...POSITIVE_OUTCOME,
+            runId: "positive-run-duplicate-repeat",
+            sessionId: "positive-session-duplicate-repeat",
+            localStateId: "positive-state-duplicate-repeat",
+          },
+        ],
+        negative: [NEGATIVE_OUTCOME],
+      },
+    );
+
+    expect(result.eligibility).toBe("incomplete");
+    expect(result.incompleteReasons).toContain("REPEAT_ID_DUPLICATE");
+  });
+
+  it("fails closed when repeat counts and id sets differ", () => {
+    const result = scorePairV2(
+      validatedContract(),
+      {
+        positive: [
+          POSITIVE_OUTCOME,
+          {
+            ...POSITIVE_OUTCOME,
+            repeatId: "repeat-02",
+            runId: "positive-run-02",
+            sessionId: "positive-session-02",
+            localStateId: "positive-state-02",
+          },
+        ],
+        negative: [NEGATIVE_OUTCOME],
+      },
+    );
+
+    expect(result.eligibility).toBe("incomplete");
+    expect(result.incompleteReasons).toContain("REPEAT_SET_MISMATCH");
+  });
+
+  it.each([
+    ["runId", POSITIVE_OUTCOME.runId, "RUN_NOT_ISOLATED"],
+    ["localStateId", POSITIVE_OUTCOME.localStateId, "LOCAL_STATE_NOT_ISOLATED"],
+  ] as const)("fails closed when paired outcomes share %s", (field, value, expectedReason) => {
+    const result = scorePairV2(
+      validatedContract(),
+      {
+        positive: [POSITIVE_OUTCOME],
+        negative: [{ ...NEGATIVE_OUTCOME, [field]: value }],
+      },
+    );
+
+    expect(result.eligibility).toBe("incomplete");
+    expect(result.incompleteReasons).toContain(expectedReason);
+  });
+
+  it("makes always-call fail PairExact and BoundarySwitch", () => {
+    const result = scorePairV2(
+      validatedContract(),
+      {
+        positive: [POSITIVE_OUTCOME],
+        negative: [{ ...NEGATIVE_OUTCOME, executorBoundAttempt: true }],
+      },
+    );
+
+    expect(result).toMatchObject({
+      eligibility: "eligible",
+      positivePass: true,
+      negativePass: false,
+      pairExact: false,
+      boundarySwitchCorrect: false,
+      negativeFalseIntentTypes: ["executor_bound"],
+    });
+  });
+
+  it("makes never-call fail PairExact and BoundarySwitch", () => {
+    const result = scorePairV2(
+      validatedContract(),
+      {
+        positive: [{
+          ...POSITIVE_OUTCOME,
+          completeChainSuccess: false,
+          strictChainExact: false,
+          executorBoundAttempt: false,
+          failureLayer: "invocation",
+        }],
+        negative: [NEGATIVE_OUTCOME],
+      },
+    );
+
+    expect(result).toMatchObject({
+      eligibility: "eligible",
+      positivePass: false,
+      negativePass: true,
+      pairExact: false,
+      boundarySwitchCorrect: false,
+      positiveFailureLayers: ["invocation"],
+    });
+  });
+
+  it("keeps BoundarySwitch diagnostic true when positive called but did not reach the terminal", () => {
+    const result = scorePairV2(
+      validatedContract(),
+      {
+        positive: [{
+          ...POSITIVE_OUTCOME,
+          completeChainSuccess: false,
+          strictChainExact: false,
+          failureLayer: "terminal_selection",
+        }],
+        negative: [NEGATIVE_OUTCOME],
+      },
+    );
+
+    expect(result).toMatchObject({
+      pairExact: false,
+      boundarySwitchCorrect: true,
+      positiveFailureLayers: ["terminal_selection"],
+    });
+  });
+
+  it("only enables StrictPairExact when preregistered and M0 supplied strict outcomes", () => {
+    const ordinary = scorePairV2(
+      validatedContract(),
+      {
+        positive: [{ ...POSITIVE_OUTCOME, strictChainExact: false }],
+        negative: [NEGATIVE_OUTCOME],
+      },
+    );
+    const strict = scorePairV2(
+      validatedContract(),
+      {
+        positive: [{ ...POSITIVE_OUTCOME, strictChainExact: false }],
+        negative: [NEGATIVE_OUTCOME],
+      },
+      { includeStrictPairExact: true },
+    );
+
+    expect(ordinary).toMatchObject({ pairExact: true, strictPairExact: null });
+    expect(strict).toMatchObject({ pairExact: true, strictPairExact: false });
+  });
+
+  it("fails closed when StrictPairExact was preregistered but M0 omitted its strict decision", () => {
+    const { strictChainExact: _omitted, ...positiveWithoutStrict } = POSITIVE_OUTCOME;
+    const result = scorePairV2(
+      validatedContract(),
+      { positive: [positiveWithoutStrict], negative: [NEGATIVE_OUTCOME] },
+      { includeStrictPairExact: true },
+    );
+
+    expect(result.eligibility).toBe("incomplete");
+    expect(result.incompleteReasons).toContain("STRICT_OUTCOME_MISSING");
+    expect(result.strictPairExact).toBeNull();
+  });
+
+  it("fails closed instead of allowing StrictPairExact to exceed PairExact", () => {
+    const result = scorePairV2(
+      validatedContract(),
+      {
+        positive: [{
+          ...POSITIVE_OUTCOME,
+          completeChainSuccess: false,
+          strictChainExact: true,
+        }],
+        negative: [NEGATIVE_OUTCOME],
+      },
+      { includeStrictPairExact: true },
+    );
+
+    expect(result).toMatchObject({
+      eligibility: "incomplete",
+      pairExact: null,
+      strictPairExact: null,
+    });
+    expect(result.incompleteReasons).toContain("POSITIVE_OUTCOME_INVALID");
+  });
+});
+
+describe("Pair score summary v2", () => {
+  it("counts frozen, eligible, and incomplete pairs without promoting repeats to pairs", () => {
+    const exact = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const failed = scorePairV2(
+        validatedContract({ ...CONTRACT, pairId: "pair-skill-boundary-002" }),
+        {
+          positive: [withPairEvidence({
+            ...POSITIVE_OUTCOME,
+            completeChainSuccess: false,
+            strictChainExact: false,
+            failureLayer: "terminal_selection",
+          }, "pair-skill-boundary-002", "positive")],
+          negative: [withPairEvidence(NEGATIVE_OUTCOME, "pair-skill-boundary-002", "negative")],
+        },
+      );
+    const incomplete = scorePairV2(
+        validatedContract({ ...CONTRACT, pairId: "pair-skill-boundary-003" }),
+        {
+          positive: [withPairEvidence(POSITIVE_OUTCOME, "pair-skill-boundary-003", "positive")],
+          negative: [withPairEvidence(
+            { ...NEGATIVE_OUTCOME, traceComplete: false },
+            "pair-skill-boundary-003",
+            "negative",
+          )],
+        },
+      );
+
+    const campaign = summaryCampaign([
+      CONTRACT.pairId,
+      "pair-skill-boundary-002",
+      "pair-skill-boundary-003",
+    ]);
+    expect(summarizePairScoresV2([exact, failed, incomplete], { campaign })).toEqual({
+      schemaVersion: "pair-score-summary-v2",
+      campaignEligibility: "incomplete",
+      campaignIncompleteReasons: ["FROZEN_PAIR_EVIDENCE_INCOMPLETE"],
+      cohort: {
+        split: CONTRACT.split,
+        variantId: POSITIVE_OUTCOME.variantId,
+        model: POSITIVE_OUTCOME.model,
+        reasoningEffort: POSITIVE_OUTCOME.reasoningEffort,
+        provider: POSITIVE_OUTCOME.provider,
+        apiProtocol: POSITIVE_OUTCOME.apiProtocol,
+        adapterVersion: POSITIVE_OUTCOME.adapterVersion,
+        executionIdentitySha256: POSITIVE_OUTCOME.executionIdentitySha256,
+        assetSnapshotSha256: POSITIVE_OUTCOME.assetSnapshotSha256,
+      },
+      frozenPairSetSha256: campaign.frozenPairSetSha256,
+      frozenPairSetRevision: campaign.frozenPairSetRevision,
+      frozenPairSlotEvidenceRootSha256: campaign.frozenPairSlotManifest.canonicalSha256,
+      expectedPairIdsSha256: campaign.expectedPairIdsSha256,
+      expectedPairIds: campaign.expectedPairIds,
+      observedPairIds: campaign.expectedPairIds,
+      missingPairIds: [],
+      unexpectedPairIds: [],
+      expectedRepeatIds: campaign.expectedRepeatIds,
+      repeatAggregationPolicyId: "all-repeats-pass-v1",
+      scoringPolicySha256: campaign.scoringPolicySha256,
+      strictPairExactEnabled: false,
+      jFrozen: 3,
+      jObserved: 3,
+      jEligible: 2,
+      jIncomplete: 1,
+      pairExact: { numerator: 1, denominator: 2, value: 0.5 },
+      boundarySwitchAccuracy: { numerator: 2, denominator: 2, value: 1 },
+      strictPairExact: null,
+      independenceClusterCount: 1,
+      clusterBootstrapReady: false,
+      independenceClusters: [{
+        independenceKey: CONTRACT.independenceKey,
+        pairIds: [CONTRACT.pairId, "pair-skill-boundary-002"],
+      }],
+      incompletePairIds: ["pair-skill-boundary-003"],
+      incompleteReasonCounts: { NEGATIVE_TRACE_INCOMPLETE: 1 },
+    });
+  });
+
+  it("rejects duplicate pair ids so repeats cannot inflate J_frozen", () => {
+    const exact = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+
+    expect(() => summarizePairScoresV2(
+      [exact, exact],
+      { campaign: summaryCampaign() },
+    )).toThrow(/duplicate pairId/i);
+  });
+
+  it("throws a typed boundary error when the score collection is not an array", () => {
+    let caught: unknown;
+    try {
+      summarizePairScoresV2(null as unknown as readonly PairScoreV2[], {
+        campaign: summaryCampaign(),
+      });
+    } catch (error) {
+      caught = error;
+    }
+
+    expect(caught).toMatchObject({
+      name: "PairScoreSummaryBoundaryError",
+      code: "INVALID_SCORES_CONTAINER",
+    });
+  });
+
+  it.each([
+    ["null", null],
+    ["undefined", undefined],
+    ["number", 42],
+    ["string", "not-a-score"],
+    ["array", []],
+  ] as const)("fails closed on a malformed serialized %s score row", (_label, malformedRow) => {
+    const summary = summarizePairScoresV2(
+      [malformedRow as unknown as PairScoreV2],
+      { campaign: summaryCampaign() },
+    );
+
+    expect(summary).toMatchObject({
+      campaignEligibility: "incomplete",
+      campaignIncompleteReasons: [
+        "FROZEN_PAIR_SET_INCOMPLETE",
+        "MALFORMED_PAIR_SCORE_ROW",
+      ],
+      jFrozen: 1,
+      jObserved: 0,
+      jEligible: 0,
+      jIncomplete: 1,
+      missingPairIds: [CONTRACT.pairId],
+      incompletePairIds: [CONTRACT.pairId],
+      incompleteReasonCounts: {
+        MALFORMED_PAIR_SCORE_ROW: 1,
+        MISSING_FROZEN_PAIR: 1,
+      },
+    });
+  });
+
+  it("fails closed without executing an accessor on a serialized score row", () => {
+    let accessorReads = 0;
+    const malformedRow = Object.defineProperty({}, "pairId", {
+      enumerable: true,
+      get: () => {
+        accessorReads += 1;
+        throw new Error("untrusted score accessor must not execute");
+      },
+    });
+
+    let summary: ReturnType<typeof summarizePairScoresV2> | undefined;
+    expect(() => {
+      summary = summarizePairScoresV2(
+        [malformedRow as unknown as PairScoreV2],
+        { campaign: summaryCampaign() },
+      );
+    }).not.toThrow();
+    expect(accessorReads).toBe(0);
+    expect(summary).toMatchObject({
+      campaignEligibility: "incomplete",
+      jFrozen: 1,
+      jObserved: 0,
+      jIncomplete: 1,
+      incompleteReasonCounts: {
+        MALFORMED_PAIR_SCORE_ROW: 1,
+        MISSING_FROZEN_PAIR: 1,
+      },
+    });
+  });
+
+  it("reports cluster bootstrap readiness only with at least two independent blocks", () => {
+    const exact = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const otherClusterContract = {
+      ...CONTRACT,
+      pairId: "pair-skill-boundary-004",
+      independenceKey: "team-ledger-source-formatter",
+    };
+    const otherCluster = scorePairV2(
+      validatedContract(otherClusterContract),
+      {
+        positive: [withPairEvidence(POSITIVE_OUTCOME, otherClusterContract.pairId, "positive")],
+        negative: [withPairEvidence(NEGATIVE_OUTCOME, otherClusterContract.pairId, "negative")],
+      },
+    );
+    const campaign = summaryCampaign(
+      [CONTRACT.pairId, otherClusterContract.pairId],
+      [POSITIVE_OUTCOME.repeatId],
+      false,
+      [
+        validatedContract(),
+        validatedContract(otherClusterContract),
+      ],
+    );
+
+    const summary = summarizePairScoresV2(
+      [exact, otherCluster],
+      { campaign },
+    );
+    expect(summary.clusterBootstrapReady).toBe(true);
+    expect(summary.independenceClusters).toEqual([
+      { independenceKey: "team-ledger-source-formatter", pairIds: ["pair-skill-boundary-004"] },
+      { independenceKey: CONTRACT.independenceKey, pairIds: [CONTRACT.pairId] },
+    ]);
+  });
+
+  it("summarizes preregistered StrictPairExact with the same eligible-pair denominator", () => {
+    const strictPass = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+      { includeStrictPairExact: true },
+    );
+    const strictFail = scorePairV2(
+        validatedContract({ ...CONTRACT, pairId: "pair-skill-boundary-005" }),
+        {
+          positive: [withPairEvidence(
+            { ...POSITIVE_OUTCOME, strictChainExact: false },
+            "pair-skill-boundary-005",
+            "positive",
+          )],
+          negative: [withPairEvidence(NEGATIVE_OUTCOME, "pair-skill-boundary-005", "negative")],
+        },
+        { includeStrictPairExact: true },
+      );
+
+    expect(summarizePairScoresV2(
+      [strictPass, strictFail],
+      {
+        campaign: summaryCampaign([CONTRACT.pairId, "pair-skill-boundary-005"], ["repeat-01"], true),
+        includeStrictPairExact: true,
+      },
+    ).strictPairExact).toEqual({ numerator: 1, denominator: 2, value: 0.5 });
+  });
+
+  it("marks a campaign incomplete instead of mixing Variant or model cohorts", () => {
+    const v3Dev = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const otherPairId = "pair-skill-boundary-other-cohort";
+    const v2Other = scorePairV2(
+      validatedContract({ ...CONTRACT, pairId: otherPairId }),
+      {
+        positive: v3Dev.repeatInputs.positive.map((outcome) => ({
+          ...withPairEvidence(outcome, otherPairId, "positive"),
+          variantId: "V2",
+          model: "another-model",
+        })),
+        negative: v3Dev.repeatInputs.negative.map((outcome) => ({
+          ...withPairEvidence(outcome, otherPairId, "negative"),
+          variantId: "V2",
+          model: "another-model",
+        })),
+      },
+    );
+    const campaign = summaryCampaign([CONTRACT.pairId, otherPairId]);
+    const summary = summarizePairScoresV2([v3Dev, v2Other], { campaign });
+
+    expect(summary.campaignEligibility).toBe("incomplete");
+    expect(summary.campaignIncompleteReasons).toEqual(expect.arrayContaining([
+      "SCORE_COHORT_MISMATCH",
+    ]));
+    expect(summary.jFrozen).toBe(2);
+    expect(summary.jEligible).toBe(1);
+    expect(summary.pairExact).toEqual({ numerator: 1, denominator: 1, value: 1 });
+  });
+
+  it("keeps the frozen denominator when an entire pair is missing", () => {
+    const exact = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const missingPairId = "pair-skill-boundary-missing";
+    const summary = summarizePairScoresV2(
+      [exact],
+      { campaign: summaryCampaign([CONTRACT.pairId, missingPairId]) },
+    );
+
+    expect(summary).toMatchObject({
+      campaignEligibility: "incomplete",
+      campaignIncompleteReasons: ["FROZEN_PAIR_SET_INCOMPLETE"],
+      jFrozen: 2,
+      jObserved: 1,
+      jEligible: 1,
+      jIncomplete: 1,
+      missingPairIds: [missingPairId],
+      incompleteReasonCounts: { MISSING_FROZEN_PAIR: 1 },
+    });
+  });
+
+  it("detects when both sides silently omit the same expected repeat", () => {
+    const exact = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const summary = summarizePairScoresV2(
+      [exact],
+      { campaign: summaryCampaign([CONTRACT.pairId], ["repeat-01", "repeat-02"]) },
+    );
+
+    expect(summary.campaignEligibility).toBe("incomplete");
+    expect(summary.campaignIncompleteReasons).toContain("EXPECTED_REPEAT_SET_MISMATCH");
+    expect(summary.incompleteReasonCounts).toMatchObject({ EXPECTED_REPEAT_SET_MISMATCH: 1 });
+  });
+
+  it("excludes an internally inconsistent serialized PairScore from behavior metrics", () => {
+    const exact = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const forged = {
+      ...exact,
+      repeatCount: 0,
+      repeatInputs: { positive: [], negative: [] },
+      repeatResults: [],
+      positivePass: false,
+      negativePass: false,
+      pairExact: true,
+    };
+    const summary = summarizePairScoresV2(
+      [forged],
+      { campaign: summaryCampaign() },
+    );
+
+    expect(summary).toMatchObject({
+      campaignEligibility: "incomplete",
+      campaignIncompleteReasons: ["PAIR_SCORE_INCONSISTENT"],
+      jFrozen: 1,
+      jEligible: 0,
+      jIncomplete: 1,
+      pairExact: { numerator: 0, denominator: 0, value: null },
+      boundarySwitchAccuracy: { numerator: 0, denominator: 0, value: null },
+      incompletePairIds: [CONTRACT.pairId],
+      incompleteReasonCounts: { PAIR_SCORE_INCONSISTENT: 1 },
+    });
+  });
+
+  it("classifies persisted repeat-policy drift as an inconsistent score row", () => {
+    const exact = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const drifted = {
+      ...exact,
+      repeatAggregationPolicyId: "attacker-controlled-policy",
+    } as unknown as PairScoreV2;
+
+    expect(() => summarizePairScoresV2(
+      [drifted],
+      { campaign: summaryCampaign() },
+    )).not.toThrow();
+    expect(summarizePairScoresV2(
+      [drifted],
+      { campaign: summaryCampaign() },
+    )).toMatchObject({
+      campaignEligibility: "incomplete",
+      campaignIncompleteReasons: ["PAIR_SCORE_INCONSISTENT"],
+      jFrozen: 1,
+      jEligible: 0,
+      jIncomplete: 1,
+      incompleteReasonCounts: { PAIR_SCORE_INCONSISTENT: 1 },
+    });
+  });
+
+  it("uses the frozen pair slot instead of trusting a relabelled serialized score", () => {
+    const exact = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const trustedPositiveCase = { ...POSITIVE_CASE, caseId: "trusted-b-positive" };
+    const trustedNegativeCase = { ...NEGATIVE_CASE, caseId: "trusted-b-negative" };
+    const trustedContract = {
+      ...CONTRACT,
+      pairId: "pair-skill-boundary-002",
+      positiveCaseId: trustedPositiveCase.caseId,
+      negativeCaseId: trustedNegativeCase.caseId,
+      independenceKey: "trusted-b-cluster",
+    };
+    const trustedB = validatedContract(trustedContract, trustedPositiveCase, trustedNegativeCase);
+    const forged = clonePairScore(exact) as unknown as Record<string, unknown>;
+    forged.pairId = trustedContract.pairId;
+    forged.positiveCaseId = "forged-positive";
+    forged.negativeCaseId = "forged-negative";
+    forged.independenceKey = "forged-cluster";
+    const repeatInputs = forged.repeatInputs as {
+      positive: Array<Record<string, unknown>>;
+      negative: Array<Record<string, unknown>>;
+    };
+    repeatInputs.positive[0].caseId = "forged-positive";
+    repeatInputs.negative[0].caseId = "forged-negative";
+    const campaign = summaryCampaign(
+      [CONTRACT.pairId, trustedContract.pairId],
+      [POSITIVE_OUTCOME.repeatId],
+      false,
+      [
+        validatedContract(),
+        trustedB,
+      ],
+    );
+
+    expect(summarizePairScoresV2(
+      [exact, forged as unknown as PairScoreV2],
+      { campaign },
+    )).toMatchObject({
+      campaignEligibility: "incomplete",
+      campaignIncompleteReasons: ["PAIR_SCORE_IDENTITY_BINDING_MISMATCH"],
+      jFrozen: 2,
+      jEligible: 1,
+      jIncomplete: 1,
+      pairExact: { numerator: 1, denominator: 1, value: 1 },
+      incompletePairIds: [trustedContract.pairId],
+      incompleteReasonCounts: { PAIR_SCORE_IDENTITY_BINDING_MISMATCH: 1 },
+    });
+  });
+
+  it("rejects a fully relabelled A score that retains A's raw evidence reference", () => {
+    const trustedPositiveCase = { ...POSITIVE_CASE, caseId: "trusted-b-positive" };
+    const trustedNegativeCase = { ...NEGATIVE_CASE, caseId: "trusted-b-negative" };
+    const trustedContract = {
+      ...CONTRACT,
+      pairId: "pair-skill-boundary-evidence-b",
+      positiveCaseId: trustedPositiveCase.caseId,
+      negativeCaseId: trustedNegativeCase.caseId,
+      independenceKey: "trusted-b-cluster",
+    };
+    const trustedB = validatedContract(trustedContract, trustedPositiveCase, trustedNegativeCase);
+    const relabelled = scorePairV2(
+      trustedB,
+      {
+        positive: [{
+          ...POSITIVE_OUTCOME,
+          caseId: trustedPositiveCase.caseId,
+          rawEvidenceArtifactRef: "artifact://pair-a/positive/repeat-01",
+          rawEvidenceArtifactSha256: "1".repeat(64),
+        } as IntegratedCaseOutcomeForPairV2],
+        negative: [{
+          ...NEGATIVE_OUTCOME,
+          caseId: trustedNegativeCase.caseId,
+          rawEvidenceArtifactRef: "artifact://pair-a/negative/repeat-01",
+          rawEvidenceArtifactSha256: "2".repeat(64),
+        } as IntegratedCaseOutcomeForPairV2],
+      },
+    );
+    const campaign = summaryCampaign(
+      [trustedContract.pairId],
+      [POSITIVE_OUTCOME.repeatId],
+      false,
+      [trustedB],
+    );
+    const summary = summarizePairScoresV2(
+      [relabelled],
+      { campaign },
+    );
+
+    expect(summary).toMatchObject({
+      campaignEligibility: "incomplete",
+      campaignIncompleteReasons: ["PAIR_SCORE_IDENTITY_BINDING_MISMATCH"],
+      jFrozen: 1,
+      jEligible: 0,
+      jIncomplete: 1,
+      incompletePairIds: [trustedContract.pairId],
+      incompleteReasonCounts: { PAIR_SCORE_IDENTITY_BINDING_MISMATCH: 1 },
+    });
+  });
+
+  it("keeps J_frozen fixed when two pair rows reuse A's evidence and run references", () => {
+    const pairBId = "pair-skill-boundary-evidence-reuse-b";
+    const scoreA = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const scoreBWithReusedEvidence = scorePairV2(
+      validatedContract({ ...CONTRACT, pairId: pairBId }),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const summary = summarizePairScoresV2(
+      [scoreA, scoreBWithReusedEvidence],
+      { campaign: summaryCampaign([CONTRACT.pairId, pairBId]) },
+    );
+
+    expect(summary).toMatchObject({
+      campaignEligibility: "incomplete",
+      campaignIncompleteReasons: ["PAIR_SCORE_IDENTITY_BINDING_MISMATCH"],
+      jFrozen: 2,
+      jObserved: 2,
+      jEligible: 1,
+      jIncomplete: 1,
+      incompletePairIds: [pairBId],
+      incompleteReasonCounts: { PAIR_SCORE_IDENTITY_BINDING_MISMATCH: 1 },
+    });
+  });
+
+  it("keeps independently bound A and B evidence eligible as the control", () => {
+    const pairBId = "pair-skill-boundary-evidence-control-b";
+    const scoreA = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const scoreB = scorePairV2(
+      validatedContract({ ...CONTRACT, pairId: pairBId }),
+      {
+        positive: [withPairEvidence(POSITIVE_OUTCOME, pairBId, "positive")],
+        negative: [withPairEvidence(NEGATIVE_OUTCOME, pairBId, "negative")],
+      },
+    );
+    const summary = summarizePairScoresV2(
+      [scoreA, scoreB],
+      { campaign: summaryCampaign([CONTRACT.pairId, pairBId]) },
+    );
+
+    expect(summary).toMatchObject({
+      campaignEligibility: "eligible",
+      jFrozen: 2,
+      jEligible: 2,
+      jIncomplete: 0,
+      pairExact: { numerator: 2, denominator: 2, value: 1 },
+    });
+  });
+
+  it("binds rows by trusted slot order instead of looking up slots from score pairId", () => {
+    const pairBId = "pair-skill-boundary-positional-b";
+    const scoreA = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const scoreB = scorePairV2(
+      validatedContract({ ...CONTRACT, pairId: pairBId }),
+      {
+        positive: [withPairEvidence(POSITIVE_OUTCOME, pairBId, "positive")],
+        negative: [withPairEvidence(NEGATIVE_OUTCOME, pairBId, "negative")],
+      },
+    );
+    const summary = summarizePairScoresV2(
+      [scoreB, scoreA],
+      { campaign: summaryCampaign([CONTRACT.pairId, pairBId]) },
+    );
+
+    expect(summary).toMatchObject({
+      campaignEligibility: "incomplete",
+      campaignIncompleteReasons: ["PAIR_SCORE_IDENTITY_BINDING_MISMATCH"],
+      jFrozen: 2,
+      jObserved: 2,
+      jEligible: 0,
+      jIncomplete: 2,
+      incompleteReasonCounts: { PAIR_SCORE_IDENTITY_BINDING_MISMATCH: 2 },
+    });
+  });
+
+  it("hard-fails a coordinated slot-manifest hash whose trusted frozen root no longer matches", () => {
+    const exact = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const campaign = summaryCampaign();
+    const { canonicalSha256: _oldSha, ...oldBody } = campaign.frozenPairSlotManifest;
+    const tamperedBody = { ...oldBody, frozenPairSetSha256: "f".repeat(64) };
+    const tamperedManifest = {
+      ...tamperedBody,
+      canonicalSha256: computeFrozenPairSlotManifestSha256V2(tamperedBody),
+    };
+
+    expect(() => summarizePairScoresV2([exact], {
+      campaign: { ...campaign, frozenPairSlotManifest: tamperedManifest },
+    })).toThrow(/trusted campaign root|trusted frozen-set root/i);
+  });
+
+  it("refuses to freeze duplicate evidence content or run references across pair slots", () => {
+    const pairBId = "pair-skill-boundary-duplicate-evidence-b";
+    const repeatedEvidence = [{
+      repeatId: POSITIVE_OUTCOME.repeatId,
+      positive: evidenceForPair(CONTRACT.pairId, POSITIVE_OUTCOME.repeatId, "positive"),
+      negative: evidenceForPair(CONTRACT.pairId, POSITIVE_OUTCOME.repeatId, "negative"),
+    }];
+
+    expect(() => buildFrozenPairSlotManifestV2([
+      { validatedPair: validatedContract(), repeats: repeatedEvidence },
+      {
+        validatedPair: validatedContract({ ...CONTRACT, pairId: pairBId }),
+        repeats: repeatedEvidence,
+      },
+    ], {
+      revision: "duplicate-evidence-test-v2",
+      sha256: "d".repeat(64),
+    })).toThrow(/must not reuse evidence refs, evidence SHA-256 values, or run IDs/i);
+  });
+
+  it("fails closed when a serialized frozen slot contains a malformed repeat", () => {
+    const manifest = buildFrozenPairSlotManifestV2([{
+      validatedPair: validatedContract(),
+      repeats: [{
+        repeatId: POSITIVE_OUTCOME.repeatId,
+        positive: evidenceForPair(CONTRACT.pairId, POSITIVE_OUTCOME.repeatId, "positive"),
+        negative: evidenceForPair(CONTRACT.pairId, POSITIVE_OUTCOME.repeatId, "negative"),
+      }],
+    }], {
+      revision: "malformed-repeat-test-v2",
+      sha256: "d".repeat(64),
+    });
+    const malformed = JSON.parse(JSON.stringify(manifest)) as Record<string, unknown>;
+    const slots = malformed.slots as Array<Record<string, unknown>>;
+    slots[0].repeats = [null];
+
+    let result: ReturnType<typeof validateFrozenPairSlotManifestV2> | undefined;
+    expect(() => { result = validateFrozenPairSlotManifestV2(malformed); }).not.toThrow();
+    expect(result?.ok).toBe(false);
+    if (result && !result.ok) {
+      expect(result.errors.map((error) => error.code)).toContain("INVALID_SLOT_EVIDENCE");
+    }
+  });
+
+  it.each([
+    ["integration eligibility", (score: PairScoreV2) => {
+      (score.repeatInputs.positive[0] as { integrationEligible: boolean }).integrationEligible = false;
+    }],
+    ["trace completeness", (score: PairScoreV2) => {
+      (score.repeatInputs.negative[0] as { traceComplete: boolean }).traceComplete = false;
+    }],
+    ["Variant identity", (score: PairScoreV2) => {
+      (score.repeatInputs.positive[0] as { variantId: string }).variantId = "V2";
+    }],
+    ["execution identity", (score: PairScoreV2) => {
+      (score.repeatInputs.positive[0] as { executionIdentitySha256: string }).executionIdentitySha256 = "f".repeat(64);
+    }],
+    ["session isolation", (score: PairScoreV2) => {
+      const sessionId = score.repeatInputs.positive[0].sessionId;
+      (score.repeatInputs.negative[0] as { sessionId: string }).sessionId = sessionId;
+      (score.repeatResults[0] as { negativeSessionId: string }).negativeSessionId = sessionId;
+    }],
+    ["local-state isolation", (score: PairScoreV2) => {
+      const localStateId = score.repeatInputs.positive[0].localStateId;
+      (score.repeatInputs.negative[0] as { localStateId: string }).localStateId = localStateId;
+      (score.repeatResults[0] as { negativeLocalStateId: string }).negativeLocalStateId = localStateId;
+    }],
+    ["case identity", (score: PairScoreV2) => {
+      (score.repeatInputs.negative[0] as { caseId: string }).caseId = "another-negative-case";
+    }],
+  ] as const)("revalidates %s from serialized repeat inputs", (_label, mutate) => {
+    const exact = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const tampered = clonePairScore(exact);
+    mutate(tampered);
+
+    const summary = summarizePairScoresV2(
+      [tampered],
+      { campaign: summaryCampaign() },
+    );
+    expect(summary).toMatchObject({
+      campaignEligibility: "incomplete",
+      campaignIncompleteReasons: ["PAIR_SCORE_INCONSISTENT"],
+      jEligible: 0,
+      pairExact: { numerator: 0, denominator: 0, value: null },
+      incompleteReasonCounts: { PAIR_SCORE_INCONSISTENT: 1 },
+    });
+  });
+
+  it.each([
+    ["repeatIds", (score: Record<string, unknown>) => { score.repeatIds = false; }],
+    ["aggregate false-intent types", (score: Record<string, unknown>) => {
+      score.negativeFalseIntentTypes = false;
+    }],
+    ["repeat false-intent types", (score: Record<string, unknown>) => {
+      const repeats = score.repeatResults as Array<Record<string, unknown>>;
+      repeats[0].negativeFalseIntentTypes = false;
+    }],
+    ["incomplete reasons", (score: Record<string, unknown>) => { score.incompleteReasons = null; }],
+  ] as const)("fails closed without a TypeError for malformed serialized %s", (_label, mutate) => {
+    const exact = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const tampered = clonePairScore(exact) as unknown as Record<string, unknown>;
+    mutate(tampered);
+
+    expect(() => summarizePairScoresV2(
+      [tampered as unknown as PairScoreV2],
+      { campaign: summaryCampaign() },
+    )).not.toThrow();
+    expect(summarizePairScoresV2(
+      [tampered as unknown as PairScoreV2],
+      { campaign: summaryCampaign() },
+    )).toMatchObject({
+      campaignEligibility: "incomplete",
+      jEligible: 0,
+      incompleteReasonCounts: { PAIR_SCORE_INCONSISTENT: 1 },
+    });
+  });
+
+  it("rejects a tampered expected-pair membership hash before computing a formal summary", () => {
+    const exact = scorePairV2(
+      validatedContract(),
+      { positive: [POSITIVE_OUTCOME], negative: [NEGATIVE_OUTCOME] },
+    );
+    const campaign = { ...summaryCampaign(), expectedPairIdsSha256: "0".repeat(64) };
+
+    expect(() => summarizePairScoresV2([exact], { campaign })).toThrow(/membership hash/i);
+  });
+
+  it("keeps frozen pair membership identity independent from Variant and execution cohort", () => {
+    const campaign = summaryCampaign([CONTRACT.pairId, "pair-skill-boundary-002"]);
+    expect(computeExpectedPairMembershipSha256V2({
+      ...campaign,
+      variantId: "V0",
+      model: "another-model",
+      reasoningEffort: "medium",
+      provider: "anthropic",
+      apiProtocol: "messages-v1",
+      adapterVersion: "another-adapter",
+      executionIdentitySha256: "f".repeat(64),
+      assetSnapshotSha256: "b".repeat(64),
+    })).toBe(campaign.expectedPairIdsSha256);
+  });
+});
+
+describe("M1 frozen interface artifacts", () => {
+  it("pins the synthetic fixture canonical SHA and explicit formal-data block", () => {
+    const canonicalSha256 = createHash("sha256")
+      .update(canonicalJson(syntheticFixture))
+      .digest("hex");
+
+    expect(syntheticFixture.contract).toEqual(CONTRACT);
+    expect(syntheticFixture.positiveCase).toEqual(POSITIVE_CASE);
+    expect(syntheticFixture.negativeCase).toEqual(NEGATIVE_CASE);
+    expect(interfaceManifest.syntheticFixture.canonicalSha256).toBe(canonicalSha256);
+    expect(interfaceManifest.formalDataStatus).toBe("FORMAL_DATA_BLOCKED");
+    expect(interfaceManifest.repeatAggregation.policyId).toBe("all-repeats-pass-v1");
+    expect(interfaceManifest.integratedOutcomeSeam.recomputesEcr).toBe(false);
+    const fixtureCampaign = syntheticFixture.summaryCampaign as unknown as PairSummaryCampaignV2;
+    expect(validateFrozenPairSlotManifestV2(
+      fixtureCampaign.frozenPairSlotManifest,
+    )).toEqual({
+      ok: true,
+      value: fixtureCampaign.frozenPairSlotManifest,
+    });
+    expect(fixtureCampaign.frozenPairSlotEvidenceRootSha256).toBe(
+      fixtureCampaign.frozenPairSlotManifest.canonicalSha256,
+    );
+    expect(fixtureCampaign.expectedPairIdsSha256).toBe(
+      computeExpectedPairMembershipSha256V2(fixtureCampaign),
+    );
+    expect(fixtureCampaign.scoringPolicySha256).toBe(
+      computePairScoringPolicySha256V2(fixtureCampaign.strictPairExactEnabled),
+    );
+    expect(interfaceManifest.publicApis).toEqual(expect.arrayContaining([
+      "buildFrozenPairIdentityManifestV2",
+      "validateFrozenPairIdentityManifestV2",
+      "computePairContractCanonicalSha256V2",
+      "buildFrozenPairSlotManifestV2",
+      "validateFrozenPairSlotManifestV2",
+      "computeFrozenPairSlotManifestSha256V2",
+    ]));
+    expect(interfaceManifest.pairScoreIdentityFields).toContain("pairContractSha256");
+    expect(JSON.stringify(interfaceManifest)).not.toContain("formalMetricEligible");
+  });
+});
