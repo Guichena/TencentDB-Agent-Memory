@@ -16,8 +16,17 @@ export {
   getToolPromptProfileLineage,
   parseToolPromptProfile,
   toolPromptCacheIdentity,
+  usesCapabilityPruning,
   type ToolPromptProfileDefinition,
 } from "./profiles.js";
+export {
+  applyTypedActionGraph,
+  buildToolActionGraph,
+  lintToolActionGraph,
+  renderToolActionGraph,
+  TYPED_ACTION_GRAPH_DEDUPLICATIONS,
+  TYPED_ACTION_GRAPH_VERSION,
+} from "./typed-action-graph.js";
 export {
   PROTOCOL_COMPACTION_INVENTORY,
 } from "./protocol-compact.js";
@@ -45,14 +54,22 @@ export {
 } from "./surface-coordinator.js";
 export {
   TOOL_PROMPT_FAMILIES,
+  TOOL_PROMPT_CANDIDATE_PROFILES,
+  TOOL_PROMPT_PROFILE_IDS,
   TOOL_PROMPT_PROFILES,
   TOOL_PROMPT_SURFACES,
   type CompiledToolPrompt,
+  type ActionHandoff,
+  type BindingSource,
   type CompiledToolPromptProfile,
   type CompileToolPromptInput,
   type PromptUnit,
   type PromptUnitInput,
   type RuntimeToolContract,
+  type ToolActionGraph,
+  type ToolActionInput,
+  type ToolActionOutput,
+  type ToolActionStep,
   type ToolPromptCapabilityState,
   type ToolPromptFamily,
   type ToolPromptProfile,

@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "baselineCommit": "0373227c4b345c77f79ace5b0c19eb98e0fc50df",
+  "capabilitySignature": "memory=1;skill=1;knowledge=1;wiki=1;code_graph=1;skill_write=0;skill_extract=0",
+  "tokenizer": "o200k_base",
+  "modelRuns": 0,
+  "behaviorMetrics": null,
+  "historicalProfileParity": {
+    "legacy": true,
+    "contract-corrected": true,
+    "protocol-compact": true,
+    "compact": true,
+    "selection-calibrated": true,
+    "capability-pruned": true
+  },
+  "rows": [
+    {
+      "candidate": "V3",
+      "parent": "selection-calibrated",
+      "profile": "capability-pruned",
+      "fullInjectionTokens": 2224,
+      "staticToolTokens": 2027,
+      "deltaVsV3": 0,
+      "sha256": "625dba5f8a74df608c3fcabd92b9cc9aea191e4c1d14c89df70d28767587f607",
+      "deterministicRerun": true,
+      "frozenC05Parity": true
+    },
+    {
+      "candidate": "V4-G1",
+      "parent": "V3",
+      "profile": "typed-action-graph",
+      "fullInjectionTokens": 3662,
+      "staticToolTokens": 3465,
+      "deltaVsV3": 1438,
+      "staticDeltaVsV3": 1438,
+      "sha256": "ab26f4b22703124f71765d4b7867c7a4d9de9112ad16c7bf7402fdc949131dfd",
+      "deterministicRerun": true,
+      "frozenC05Parity": null
+    },
+    {
+      "candidate": "V4-G2",
+      "parent": "V4-G1",
+      "profile": "typed-action-graph-deduplicated",
+      "fullInjectionTokens": 3626,
+      "staticToolTokens": 3429,
+      "deltaVsV3": 1402,
+      "staticDeltaVsV3": 1402,
+      "sha256": "5d88b15dfb7ea50a7a57d0644b7d1844864c0355ff1654379c07bed10a21c0c2",
+      "deterministicRerun": true,
+      "frozenC05Parity": null
+    }
+  ]
+}

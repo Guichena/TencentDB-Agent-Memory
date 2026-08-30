@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import {
-  TOOL_PROMPT_PROFILES,
+  TOOL_PROMPT_PROFILE_IDS,
   type CompiledToolPromptProfile,
   type ToolPromptProfile,
 } from "./types.js";
@@ -14,7 +14,9 @@ export interface ToolPromptProfileDefinition {
     | "protocol-compact"
     | "semantic-compact"
     | "selection-calibrated"
-    | "capability-pruned";
+    | "capability-pruned"
+    | "typed-action-graph"
+    | "typed-action-graph-deduplicated";
 }
 
 const DEFINITIONS: Record<ToolPromptProfile, ToolPromptProfileDefinition> = {
@@ -44,16 +46,26 @@ const DEFINITIONS: Record<ToolPromptProfile, ToolPromptProfileDefinition> = {
     parent: "selection-calibrated",
     renderer: "capability-pruned",
   },
+  "typed-action-graph": {
+    id: "typed-action-graph",
+    parent: "capability-pruned",
+    renderer: "typed-action-graph",
+  },
+  "typed-action-graph-deduplicated": {
+    id: "typed-action-graph-deduplicated",
+    parent: "typed-action-graph",
+    renderer: "typed-action-graph-deduplicated",
+  },
 };
 
-const PROFILE_SET = new Set<string>(TOOL_PROMPT_PROFILES);
+const PROFILE_SET = new Set<string>(TOOL_PROMPT_PROFILE_IDS);
 
 export function parseToolPromptProfile(value: unknown): ToolPromptProfile {
   if (typeof value === "string" && PROFILE_SET.has(value)) {
     return value as ToolPromptProfile;
   }
   throw new Error(
-    `invalid injection.toolPromptProfile ${JSON.stringify(value)}; expected one of ${TOOL_PROMPT_PROFILES.join(", ")}`,
+    `invalid injection.toolPromptProfile ${JSON.stringify(value)}; expected one of ${TOOL_PROMPT_PROFILE_IDS.join(", ")}`,
   );
 }
 
@@ -87,3 +99,12 @@ export function toolPromptCacheIdentity(
     .slice(0, 12);
   return `${hookId}-tp-${profile}-${capabilityHash}`;
 }
+
+/** Profiles at and after V3 must use Session-effective capability facts. */
+export function usesCapabilityPruning(profile: ToolPromptProfile): boolean {
+  return profile === "capability-pruned"
+    || profile === "typed-action-graph"
+    || profile === "typed-action-graph-deduplicated";
+}
+
+export type { ToolPromptProfile } from "./types.js";

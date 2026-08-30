@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "method": "V4-G Typed Action Graph",
+  "candidate": "V4-G2",
+  "profile": "typed-action-graph-deduplicated",
+  "parent": "typed-action-graph",
+  "profileLineage": [
+    "legacy",
+    "contract-corrected",
+    "protocol-compact",
+    "compact",
+    "selection-calibrated",
+    "capability-pruned",
+    "typed-action-graph",
+    "typed-action-graph-deduplicated"
+  ],
+  "baselineCommit": "0373227c4b345c77f79ace5b0c19eb98e0fc50df",
+  "compilerVersion": "c05.1",
+  "actionGraphVersion": "v4-g.1",
+  "capabilitySignature": "memory=1;skill=1;knowledge=1;wiki=1;code_graph=1;skill_write=0;skill_extract=0",
+  "tokenizer": "o200k_base",
+  "componentTokenAccounting": "staticToolTokens is diagnostic and non-additive; totalInjectionTokens is authoritative.",
+  "totalInjectionTokens": 3626,
+  "totalInjectionSha256": "5d88b15dfb7ea50a7a57d0644b7d1844864c0355ff1654379c07bed10a21c0c2",
+  "staticToolTokens": 3429,
+  "deltaVsV3": {
+    "totalInjectionTokens": 1402,
+    "staticToolTokens": 1402
+  },
+  "cacheIdentity": "tool-prompt-bench-v4-g-tp-typed-action-graph-deduplicated-9df3f77da589",
+  "deterministicRerun": true,
+  "blockSha256": {
+    "skill_tools": "07c18139869b1ee00693573c9cfcd6237d04bcf7546927fa7c3cf61b3998b965",
+    "available_skills": "e098e9968c2d6aa03524923fb71d530363b4c7d69c6646401ecdb338fa751d94",
+    "knowledge_tools": "77d5f53733e4318dcefa76eba8b63cce49371722930ee4d9e7bf6e284f62a081",
+    "tdai_memory_tools": "e9d3e1745253d46cfa8eec7930b7a160c0b6c2c92acd18d56708d77d40b65242",
+    "tdai_profile_memory": "3330b79dd199bad69b065ecb0c32dbaca14107259c309336347c7a68b1d862c6"
+  }
+}

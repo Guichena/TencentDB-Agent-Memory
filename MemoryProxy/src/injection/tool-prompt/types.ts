@@ -21,7 +21,18 @@ export const TOOL_PROMPT_PROFILES = [
   "capability-pruned",
 ] as const;
 
-export type ToolPromptProfile = (typeof TOOL_PROMPT_PROFILES)[number];
+/** Isolated method candidates; historical V0-V3 iterators stay byte-for-byte scoped. */
+export const TOOL_PROMPT_CANDIDATE_PROFILES = [
+  "typed-action-graph",
+  "typed-action-graph-deduplicated",
+] as const;
+
+export const TOOL_PROMPT_PROFILE_IDS = [
+  ...TOOL_PROMPT_PROFILES,
+  ...TOOL_PROMPT_CANDIDATE_PROFILES,
+] as const;
+
+export type ToolPromptProfile = (typeof TOOL_PROMPT_PROFILE_IDS)[number];
 export type CompiledToolPromptProfile = Exclude<ToolPromptProfile, "legacy">;
 
 export type ToolPromptPhase = "read" | "lifecycle" | "write";
@@ -61,7 +72,49 @@ export type PromptUnitKind =
   | "policy"
   | "execution-grammar"
   | "tool-card"
+  | "action-graph"
   | "dynamic-assets";
+
+export type BindingSource = "user" | "injected_asset" | "prior_tool_output";
+
+export interface ToolActionInput {
+  name: string;
+  valueType: string;
+  anyOfSources: readonly BindingSource[];
+  producerActionIds?: readonly string[];
+}
+
+export interface ToolActionOutput {
+  name: string;
+  valueType: string;
+}
+
+/** A typed decision step. Exact endpoint and required arguments come from RuntimeToolContract. */
+export interface ToolActionStep {
+  actionId: string;
+  toolId: string;
+  endpoint: string;
+  operationPredicate?: string;
+  requiredInputs: readonly ToolActionInput[];
+  produces: readonly ToolActionOutput[];
+  effects: readonly string[];
+  terminalIntentClasses: readonly string[];
+}
+
+export interface ActionHandoff {
+  fromActionId: string;
+  output: string;
+  toActionId: string;
+  input: string;
+  condition?: string;
+}
+
+export interface ToolActionGraph {
+  family: ToolPromptFamily;
+  actions: readonly ToolActionStep[];
+  handoffs: readonly ActionHandoff[];
+  supportedIntentClasses: readonly string[];
+}
 
 export interface PromptUnit {
   id: string;

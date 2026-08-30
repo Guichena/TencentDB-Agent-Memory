@@ -25,6 +25,7 @@ const SOURCE_KIND_TO_COMPONENT: Readonly<Record<TokenLedgerSourceKind, TokenLedg
     policy: "staticTemplate",
     "execution-grammar": "executionContract",
     "tool-card": "staticTemplate",
+    "action-graph": "staticTemplate",
     "dynamic-assets": "dynamicAsset",
     "runtime-binding": "runtimeBinding",
   });

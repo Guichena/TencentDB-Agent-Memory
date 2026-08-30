@@ -46,7 +46,7 @@ import { HOOK_PRIORITY } from "../types.js";
 import { getTdaiIdentity } from "../../tdai/identity.js";
 import { compileToolPrompt } from "../tool-prompt/compiler.js";
 import { resolveSessionCapabilitySignature } from "../tool-prompt/capability-pruned.js";
-import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
+import { toolPromptCacheIdentity, usesCapabilityPruning } from "../tool-prompt/profiles.js";
 import type { ToolPromptProfile } from "../tool-prompt/types.js";
 import {
   buildCompiledPromptProductionSources,
@@ -302,7 +302,7 @@ export class TdaiMemoryToolsInjector implements InjectionHook {
   ): ContextBlock[] {
     const profile = this.cfg.toolPromptProfile ?? "legacy";
     const baseSignature = this.cfg.capabilitySignature ?? "unconfigured";
-    const capabilitySignature = profile === "capability-pruned"
+    const capabilitySignature = usesCapabilityPruning(profile)
       ? resolveSessionCapabilitySignature(baseSignature, assetCapabilities)
       : baseSignature;
     const artifact = renderTdaiMemoryToolsPromptArtifact({
@@ -320,7 +320,7 @@ export class TdaiMemoryToolsInjector implements InjectionHook {
         productionPromptSources: artifact.productionSources,
         sessionId,
         cacheKey: "tdai-memory-tools-injector:tools"
-          + (profile === "capability-pruned" ? `:${capabilitySignature}` : ""),
+          + (usesCapabilityPruning(profile) ? `:${capabilitySignature}` : ""),
       },
     }];
   }

@@ -26,6 +26,7 @@ import { HookRegistryImpl } from "../injection/registry.js";
 import type { AnchorTarget, InjectionPoint, Protocol } from "../injection/types.js";
 import {
   buildCapabilitySignature,
+  buildToolActionGraph,
   CAPABILITY_PRUNING_INVENTORY,
   compileToolPrompt,
   constrainCapabilitySignature,
@@ -38,6 +39,7 @@ import {
   lintCapabilityPrunedSurface,
   lintDuplicateSemanticUnits,
   lintSelectionPolicy,
+  lintToolActionGraph,
   parseToolPromptProfile,
   parseCapabilitySignature,
   resolveSessionCapabilitySignature,
@@ -45,11 +47,16 @@ import {
   SEMANTIC_UNIT_INVENTORY,
   toolPromptCacheIdentity,
   TOOL_PROMPT_PROFILES,
+  TYPED_ACTION_GRAPH_VERSION,
   type CompiledToolPromptProfile,
   type CapabilitySurfaceBundle,
   type SelectionSurfaceBundle,
   type ToolPromptCapabilityState,
+  type ToolActionGraph,
 } from "../injection/tool-prompt/index.js";
+import { KNOWLEDGE_TOOL_PROMPT_SPECS } from "../injection/tool-prompt/specs/knowledge.js";
+import { MEMORY_TOOL_PROMPT_SPECS } from "../injection/tool-prompt/specs/memory.js";
+import { SKILL_TOOL_PROMPT_SPECS } from "../injection/tool-prompt/specs/skill.js";
 
 const CAPABILITY_SIGNATURE = buildCapabilitySignature({
   memory: true,
@@ -277,6 +284,9 @@ describe("tool prompt compiler C00-C05", () => {
   it("keeps legacy as the default and rejects unknown profile names", () => {
     expect(DEFAULT_CONFIG.injection.toolPromptProfile).toBe("legacy");
     expect(parseToolPromptProfile("capability-pruned")).toBe("capability-pruned");
+    expect(parseToolPromptProfile("typed-action-graph")).toBe("typed-action-graph");
+    expect(parseToolPromptProfile("typed-action-graph-deduplicated"))
+      .toBe("typed-action-graph-deduplicated");
     expect(() => parseToolPromptProfile("minimal")).toThrow(/invalid injection\.toolPromptProfile/);
   });
 
@@ -288,6 +298,16 @@ describe("tool prompt compiler C00-C05", () => {
       "compact",
       "selection-calibrated",
       "capability-pruned",
+    ]);
+    expect(getToolPromptProfileLineage("typed-action-graph-deduplicated")).toEqual([
+      "legacy",
+      "contract-corrected",
+      "protocol-compact",
+      "compact",
+      "selection-calibrated",
+      "capability-pruned",
+      "typed-action-graph",
+      "typed-action-graph-deduplicated",
     ]);
   });
 
@@ -431,6 +451,119 @@ describe("tool prompt compiler C00-C05", () => {
     expect(capabilityByFamily.get("memory")).toContain(
       "- skill: missing reusable workflow instructions clearly matched by a listed/team skill;",
     );
+  });
+
+  it("builds typed actions from runtime contracts with validated conditional handoffs", () => {
+    const specs = {
+      memory: MEMORY_TOOL_PROMPT_SPECS,
+      skill: SKILL_TOOL_PROMPT_SPECS,
+      knowledge: KNOWLEDGE_TOOL_PROMPT_SPECS,
+    } as const;
+    const graphs = (["memory", "skill", "knowledge"] as const).map((family) =>
+      buildToolActionGraph(family, getRuntimeToolContracts(family), specs[family])
+    );
+    for (const graph of graphs) {
+      expect(() => lintToolActionGraph(graph, getRuntimeToolContracts(graph.family)))
+        .not.toThrow();
+      for (const action of graph.actions) {
+        const contract = getRuntimeToolContracts(graph.family)
+          .find((candidate) => candidate.id === action.toolId);
+        expect(action.endpoint).toBe(contract?.path);
+        expect(action.requiredInputs.map((input) => input.name)).toEqual(contract?.requiredArgs);
+      }
+    }
+
+    const skill = graphs.find((graph) => graph.family === "skill")!;
+    expect(skill.handoffs).toContainEqual(expect.objectContaining({
+      fromActionId: "skill.skill_search",
+      output: "data.items[].skill_id",
+      toActionId: "skill.skill_view_by_id",
+      input: "skill_id",
+    }));
+    expect(skill.actions.find((action) => action.toolId === "skill_search")
+      ?.terminalIntentClasses).not.toContain("skill.instructions.read");
+    expect(skill.actions.find((action) => action.toolId === "skill_view_by_id")
+      ?.terminalIntentClasses).toContain("skill.instructions.read");
+    expect(skill.actions.find((action) => action.toolId === "skill_view_by_id")
+      ?.requiredInputs[0].anyOfSources).toEqual([
+        "user",
+        "injected_asset",
+        "prior_tool_output",
+      ]);
+
+    const memory = graphs.find((graph) => graph.family === "memory")!;
+    expect(memory.handoffs).toHaveLength(1);
+    expect(memory.handoffs[0]).toMatchObject({
+      fromActionId: "memory.tdai_scenario_ls",
+      toActionId: "memory.tdai_read_scene",
+    });
+    expect(memory.actions.find((action) => action.toolId === "tdai_memory_search")
+      ?.requiredInputs[0].producerActionIds).toBeUndefined();
+
+    const knowledge = graphs.find((graph) => graph.family === "knowledge")!;
+    expect(knowledge.actions.find((action) => action.toolId === "knowledge_tools_call")
+      ?.operationPredicate).toContain("action identity includes tool_name");
+    expect(knowledge.handoffs).toContainEqual(expect.objectContaining({
+      fromActionId: "knowledge.knowledge_tools_call",
+      toActionId: "knowledge.knowledge_tools_call",
+      condition: expect.stringContaining("different listed operation"),
+    }));
+  });
+
+  it("rejects incompatible handoffs and removes capability-hidden graph actions", () => {
+    const full = buildToolActionGraph(
+      "skill",
+      getRuntimeToolContracts("skill"),
+      SKILL_TOOL_PROMPT_SPECS,
+    );
+    const broken = {
+      ...full,
+      actions: full.actions.map((action) => action.toolId === "skill_view_by_id"
+        ? {
+            ...action,
+            requiredInputs: action.requiredInputs.map((input) => input.name === "skill_id"
+              ? { ...input, valueType: "wrong-type" }
+              : input),
+          }
+        : action),
+    } satisfies ToolActionGraph;
+    expect(() => lintToolActionGraph(broken, getRuntimeToolContracts("skill")))
+      .toThrow(/incompatible typed handoff/);
+
+    const readonlyContracts = getVisibleRuntimeToolContracts(CAPABILITY_SIGNATURE, "skill");
+    const readonly = buildToolActionGraph("skill", readonlyContracts, SKILL_TOOL_PROMPT_SPECS);
+    expect(readonly.actions.map((action) => action.toolId)).not.toContain("skill_create");
+    expect(readonly.handoffs.every((handoff) => (
+      readonly.actions.some((action) => action.actionId === handoff.fromActionId)
+      && readonly.actions.some((action) => action.actionId === handoff.toActionId)
+    ))).toBe(true);
+  });
+
+  it("keeps G1 additive, makes G2 only deduplicate covered handoffs, and renders deterministically", () => {
+    const blocks = renderProductionFamilyBlocks();
+    const compile = (profile: "capability-pruned" | "typed-action-graph" | "typed-action-graph-deduplicated") =>
+      compileToolPrompt({
+        profile,
+        family: "skill",
+        surface: "skill-tools",
+        legacyUnits: [{ id: "skill.fixture", kind: "legacy-body", content: blocks.skill }],
+        capabilitySignature: CAPABILITY_SIGNATURE,
+      });
+    const v3 = compile("capability-pruned");
+    const g1 = compile("typed-action-graph");
+    const g2 = compile("typed-action-graph-deduplicated");
+    expect(v3.content).not.toContain("<typed_action_graph");
+    expect(g1.content.startsWith(v3.content)).toBe(true);
+    expect(g1.content).toContain("A team skill returned by skill_search");
+    expect(g2.content).not.toContain("A team skill returned by skill_search");
+    expect(g2.content).toContain("A skill known by exact skill_id must be opened.");
+    expect(g1.units.at(-1)?.kind).toBe("action-graph");
+    expect(g2.units.at(-1)?.content).toBe(g1.units.at(-1)?.content);
+    expect(g1.content).toContain(`version="${TYPED_ACTION_GRAPH_VERSION}"`);
+    expect(compile("typed-action-graph")).toEqual(g1);
+    expect(g1.units.at(-1)?.content).not.toContain("session-parity");
+    expect(g1.units.at(-1)?.content).not.toContain("space-parity");
+    expect(g1.units.at(-1)?.content).not.toContain("knowledge_tools_call");
   });
 
   it("assigns every C03 duplicate semantic unit to exactly one retained owner", () => {
@@ -1000,6 +1133,16 @@ describe("tool prompt compiler C00-C05", () => {
       .toBe(toolPromptCacheIdentity("skill-tools-injector", "compact", CAPABILITY_SIGNATURE));
     expect(toolPromptCacheIdentity("skill-tools-injector", "compact", CAPABILITY_SIGNATURE))
       .not.toBe(toolPromptCacheIdentity("skill-tools-injector", "selection-calibrated", CAPABILITY_SIGNATURE));
+    const graphIdentities = [
+      toolPromptCacheIdentity("skill-tools-injector", "capability-pruned", CAPABILITY_SIGNATURE),
+      toolPromptCacheIdentity("skill-tools-injector", "typed-action-graph", CAPABILITY_SIGNATURE),
+      toolPromptCacheIdentity(
+        "skill-tools-injector",
+        "typed-action-graph-deduplicated",
+        CAPABILITY_SIGNATURE,
+      ),
+    ];
+    expect(new Set(graphIdentities).size).toBe(3);
   });
 
   it("selects one deterministic existing family block as the shared surface host", () => {

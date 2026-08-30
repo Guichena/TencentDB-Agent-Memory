@@ -5,6 +5,7 @@ import { applyProtocolCompaction } from "./protocol-compact.js";
 import { applySelectionCalibration } from "./selection-calibrated.js";
 import { applySemanticCompaction } from "./semantic-compact.js";
 import { getToolPromptProfileDefinition, getToolPromptProfileLineage } from "./profiles.js";
+import { applyTypedActionGraph } from "./typed-action-graph.js";
 import { getRuntimeToolContracts } from "./runtime-contract.js";
 import { KNOWLEDGE_TOOL_PROMPT_SPECS } from "./specs/knowledge.js";
 import { MEMORY_TOOL_PROMPT_SPECS } from "./specs/memory.js";
@@ -102,10 +103,29 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
   const correctedUnits = definition.renderer === "frozen-compatibility"
     ? compatibilityUnits
     : applyContractCorrections(input.surface, compatibilityUnits);
-  const protocolUnits = definition.renderer === "protocol-compact"
+  const usesProtocol = definition.renderer === "protocol-compact"
     || definition.renderer === "semantic-compact"
     || definition.renderer === "selection-calibrated"
     || definition.renderer === "capability-pruned"
+    || definition.renderer === "typed-action-graph"
+    || definition.renderer === "typed-action-graph-deduplicated";
+  const usesSemantic = definition.renderer === "semantic-compact"
+    || definition.renderer === "selection-calibrated"
+    || definition.renderer === "capability-pruned"
+    || definition.renderer === "typed-action-graph"
+    || definition.renderer === "typed-action-graph-deduplicated";
+  const usesSelection = definition.renderer === "selection-calibrated"
+    || definition.renderer === "capability-pruned"
+    || definition.renderer === "typed-action-graph"
+    || definition.renderer === "typed-action-graph-deduplicated";
+  const usesCapability = definition.renderer === "capability-pruned"
+    || definition.renderer === "typed-action-graph"
+    || definition.renderer === "typed-action-graph-deduplicated";
+  const actionGraphProfile = definition.renderer === "typed-action-graph"
+    || definition.renderer === "typed-action-graph-deduplicated"
+    ? definition.renderer
+    : null;
+  const protocolUnits = usesProtocol
     ? applyProtocolCompaction({
         family: input.family,
         surface: input.surface,
@@ -114,13 +134,10 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
         units: correctedUnits,
       })
     : correctedUnits;
-  const semanticUnits = definition.renderer === "semantic-compact"
-    || definition.renderer === "selection-calibrated"
-    || definition.renderer === "capability-pruned"
+  const semanticUnits = usesSemantic
     ? applySemanticCompaction(input.surface, protocolUnits)
     : protocolUnits;
-  const selectionUnits = definition.renderer === "selection-calibrated"
-    || definition.renderer === "capability-pruned"
+  const selectionUnits = usesSelection
     ? applySelectionCalibration({
         family: input.family,
         surface: input.surface,
@@ -130,16 +147,32 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
         units: semanticUnits,
       })
     : semanticUnits;
-  const capabilityResult = definition.renderer === "capability-pruned"
+  const capabilityResult = usesCapability
     ? applyCapabilityPruning({
         family: input.family,
         surface: input.surface,
         capabilitySignature: input.capabilitySignature,
         contracts,
         units: selectionUnits,
-      })
+    })
     : null;
-  const units = capabilityResult?.units ?? selectionUnits;
+  const capabilityUnits = capabilityResult?.units ?? selectionUnits;
+  const visibleContracts = capabilityResult
+    ? contracts.filter((contract) => capabilityResult.visibleContractIds.includes(contract.id))
+    : contracts;
+  const visibleSpecs = capabilityResult
+    ? specs.filter((spec) => capabilityResult.visibleContractIds.includes(spec.contractId))
+    : specs;
+  const units = actionGraphProfile
+    ? applyTypedActionGraph(
+        actionGraphProfile,
+        input.family,
+        input.surface,
+        visibleContracts,
+        visibleSpecs,
+        capabilityUnits,
+      )
+    : capabilityUnits;
   const content = units.map((unit) => unit.content).join("");
   if (content.length === 0) {
     throw new Error(`cannot compile empty ${input.surface} prompt content`);
@@ -157,10 +190,6 @@ export function compileToolPrompt(input: CompileToolPromptInput): CompiledToolPr
     units,
     contractIds: capabilityResult?.visibleContractIds
       ?? contracts.map((contract) => contract.id),
-    specIds: capabilityResult
-      ? specs
-          .filter((spec) => capabilityResult.visibleContractIds.includes(spec.contractId))
-          .map((spec) => spec.id)
-      : specs.map((spec) => spec.id),
+    specIds: visibleSpecs.map((spec) => spec.id),
   };
 }

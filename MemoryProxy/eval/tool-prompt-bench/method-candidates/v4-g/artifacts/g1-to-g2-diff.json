@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "parent": "V4-G1",
+  "candidate": "V4-G2",
+  "invariant": "typed action graph bytes are unchanged; only listed covered prose is replaced",
+  "replacements": [
+    {
+      "family": "skill",
+      "from": "A team skill returned by skill_search, or any skill known by exact skill_id, must be opened.",
+      "to": "A skill known by exact skill_id must be opened."
+    },
+    {
+      "family": "skill",
+      "from": "A specific resource path from a viewed skill manifest must be read into context.",
+      "to": "A specific skill resource must be read into context."
+    },
+    {
+      "family": "skill",
+      "from": "A specific resource path from a viewed skill manifest must be downloaded as raw bytes.",
+      "to": "A specific skill resource must be downloaded as raw bytes."
+    },
+    {
+      "family": "knowledge",
+      "from": "A tool name and parameter schema returned by tools/list must be executed against the same knowledge resource.",
+      "to": "A selected typed operation must be executed against its knowledge resource."
+    },
+    {
+      "family": "memory",
+      "from": "A scene path is known from the injected index or scenario listing and its full body is required.",
+      "to": "The full body of a known scene is required."
+    }
+  ],
+  "fullInjectionTokenDelta": -36,
+  "staticToolTokenDelta": -36,
+  "parentSha256": "ab26f4b22703124f71765d4b7867c7a4d9de9112ad16c7bf7402fdc949131dfd",
+  "candidateSha256": "5d88b15dfb7ea50a7a57d0644b7d1844864c0355ff1654379c07bed10a21c0c2"
+}

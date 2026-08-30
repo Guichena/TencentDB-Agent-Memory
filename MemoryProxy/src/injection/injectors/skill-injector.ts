@@ -39,7 +39,7 @@ import {
 import type { CoreSkillConfig } from "../../types.js";
 import { compileToolPrompt } from "../tool-prompt/compiler.js";
 import { resolveSessionCapabilitySignature } from "../tool-prompt/capability-pruned.js";
-import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
+import { toolPromptCacheIdentity, usesCapabilityPruning } from "../tool-prompt/profiles.js";
 import type { ToolPromptProfile } from "../tool-prompt/types.js";
 import {
   buildCompiledPromptProductionSources,
@@ -382,7 +382,7 @@ export class SkillInjector implements InjectionHook {
 
     const profile = this.config.toolPromptProfile ?? "legacy";
     const baseSignature = this.config.capabilitySignature ?? "unconfigured";
-    const capabilitySignature = profile === "capability-pruned"
+    const capabilitySignature = usesCapabilityPruning(profile)
       ? resolveSessionCapabilitySignature(baseSignature, assetCapabilities)
       : baseSignature;
     const artifact = renderAvailableSkillsPromptArtifact(
@@ -401,7 +401,7 @@ export class SkillInjector implements InjectionHook {
         // Shared cache key across prewarm + execute so pipeline self-heal
         // writes replace, not fragment, the prewarmed entry.
         cacheKey: "skill-injector:catalog"
-          + (profile === "capability-pruned" ? `:${capabilitySignature}` : ""),
+          + (usesCapabilityPruning(profile) ? `:${capabilitySignature}` : ""),
       },
     }];
   }
