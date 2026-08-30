@@ -581,6 +581,7 @@ describe("R04 Gold-blind formal execution runner", () => {
         executionCodeCommit: run.manifest.code_commit,
         promptFreezeCommit: run.manifest.prompt_freeze_commit,
         promptFreezeIsAncestor: true,
+        workingTreeClean: true,
       },
       timeoutMs: 120_000,
     }, {
@@ -673,6 +674,7 @@ describe("R04 Gold-blind formal execution runner", () => {
         executionCodeCommit: run.manifest.code_commit,
         promptFreezeCommit: run.manifest.prompt_freeze_commit,
         promptFreezeIsAncestor: true,
+        workingTreeClean: true,
       },
     }, {
       fetchJson: async (url) => (

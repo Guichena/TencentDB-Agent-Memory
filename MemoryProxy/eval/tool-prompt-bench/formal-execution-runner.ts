@@ -28,6 +28,7 @@ export interface FormalCodeFreezeReceipt {
   readonly executionCodeCommit: string;
   readonly promptFreezeCommit: string;
   readonly promptFreezeIsAncestor: boolean;
+  readonly workingTreeClean: true;
 }
 
 export interface ExecutePreparedFormalRunInput {
@@ -227,6 +228,9 @@ function validateCodeFreeze(
   }
   if (receipt.promptFreezeIsAncestor !== true) {
     throw new Error("prompt freeze commit must be an ancestor of the execution code commit");
+  }
+  if (receipt.workingTreeClean !== true) {
+    throw new Error("formal execution worktree must be clean");
   }
 }
 

@@ -34,6 +34,7 @@ function execution(
       executionCodeCommit: "1".repeat(40),
       promptFreezeCommit: "2".repeat(40),
       promptFreezeIsAncestor: true,
+      workingTreeClean: true,
     },
     startedAt: "2026-08-30T05:00:00.000Z",
     finishedAt: "2026-08-30T05:00:01.000Z",
