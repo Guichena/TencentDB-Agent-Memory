@@ -1,0 +1,5 @@
+[
+  {"instance_id": "task-1", "trajectory_id": "traj-1", "messages": [{"role": "system", "content": "harness"}, {"role": "user", "content": "one"}, {"role": "assistant", "content": "two"}]},
+  {"instance_id": "task-amb", "trajectory_id": "traj-amb", "messages": [{"role": "user", "content": "ambiguous"}]},
+  {"trajectory_id": "traj-missing", "messages": [{"role": "user", "content": "<pr_description>same text</pr_description>"}]}
+]

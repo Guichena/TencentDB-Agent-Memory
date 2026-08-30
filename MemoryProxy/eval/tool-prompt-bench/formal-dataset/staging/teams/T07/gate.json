@@ -1,0 +1,137 @@
+{
+  "schema_version": "task1.team_gate.v1",
+  "team_id": "T07",
+  "build_id": "build-04",
+  "status": "passed",
+  "counts": {
+    "cases": 40,
+    "positives": 15,
+    "paired_negatives": 15,
+    "natural_negatives": 10,
+    "pairs": 15,
+    "memory_positive": 6,
+    "skill_positive": 6,
+    "knowledge_positive": 3
+  },
+  "assets": {
+    "l0_sessions": 10,
+    "l1_memories": 16,
+    "l2_scenes": 4,
+    "l3_profiles": 1,
+    "skills": 16,
+    "bound_skills": 6,
+    "knowledge": 3,
+    "visible_assets": 50
+  },
+  "route_distribution": {
+    "tdai_conversation_search": 2,
+    "tdai_memory_search": 1,
+    "tdai_scenario_ls": 1,
+    "tdai_atomic_query": 1,
+    "tdai_read_scene": 1,
+    "skill_view": 3,
+    "skill_search": 3,
+    "knowledge_tools_list": 3
+  },
+  "context_buckets": {
+    "long_12_to_18": 3,
+    "short_2_to_4": 3,
+    "medium_6_to_10": 9
+  },
+  "generator_batches": [
+    {
+      "batchId": "T07-memory-trial-01",
+      "path": "formal-dataset/generators/parallel/build-04/T07/memory/memory-trial-01",
+      "draftSha256": "db884f6bdb5e151e3087ef7012f81bba528b78d3430dad76c6f2868f3df0f070",
+      "manifestSha256": "d5b0015500980d6cb67d23cf69d26122c9ca276061f37f7ae79cfb6b35e36d9c",
+      "count": 1,
+      "reviewStatus": "reviewed_by_sol"
+    },
+    {
+      "batchId": "T07-memory-expansion-01",
+      "path": "formal-dataset/generators/parallel/build-04/T07/memory/memory-expansion-01",
+      "draftSha256": "5df40ab95eb2942f732c6791e2aebeec5e047d3fecdc9da617d33e6a2811b1b3",
+      "manifestSha256": "86a53b78fc4fab745e36f35b37dff96ee003566e657d243c1352ebfbea6af682",
+      "count": 5,
+      "reviewStatus": "reviewed_by_sol"
+    },
+    {
+      "batchId": "T07-skill-trial-01",
+      "path": "formal-dataset/generators/parallel/build-04/T07/skill/skill-trial-01",
+      "draftSha256": "6d3e062b26faca508f8a5877f858e5c69d262c0652d509bee9a0f1020bc0e150",
+      "manifestSha256": "6267992ba56322c2ebf7965454125641166c38b0e18f5b87a8d6e0bd0a2d2589",
+      "count": 1,
+      "reviewStatus": "reviewed_by_sol"
+    },
+    {
+      "batchId": "T07-skill-expansion-01",
+      "path": "formal-dataset/generators/parallel/build-04/T07/skill/skill-expansion-01",
+      "draftSha256": "831e9b75925e577b99ba7d6e115ae95ce048b46be6700bd4bf99d06eca2168cf",
+      "manifestSha256": "051d3a4b0ffb49e6aed10b7d02919b3152503bbaa6b8e4c2f49bd74498150f63",
+      "count": 5,
+      "reviewStatus": "reviewed_by_sol"
+    },
+    {
+      "batchId": "t07-knowledge-trial-01",
+      "path": "formal-dataset/generators/parallel/build-04/T07/knowledge/knowledge-trial-01",
+      "draftSha256": "75ea17389b1c1ac8bb66e39745a194487831bd8ea7aaf8046b78b89d0cc09f3f",
+      "manifestSha256": "b1ddc5462eace5566b666554065c7e227af5dc14725cda3a40098fd7bdfb2fbb",
+      "count": 1,
+      "reviewStatus": "reviewed_by_sol"
+    },
+    {
+      "batchId": "t07-knowledge-expansion-01",
+      "path": "formal-dataset/generators/parallel/build-04/T07/knowledge/knowledge-expansion-01",
+      "draftSha256": "03d4ac97226ab31caa841e6bdf9f69ec2c7e204bc2052453feaccde029d91d0e",
+      "manifestSha256": "006ffacff674bf6d96a26628b1f6e5d61d872c3fd8f6f09b004939d884e91ec6",
+      "count": 2,
+      "reviewStatus": "reviewed_by_sol"
+    },
+    {
+      "batchId": "build-04-T07-natural-negative-01",
+      "path": "formal-dataset/generators/parallel/build-04/T07/natural-negative/natural-negative-01",
+      "draftSha256": "cadd0e095df90d75ae289f7a3d7d13fed5eeb8279c38ef60ae4e39759ec2e540",
+      "manifestSha256": "97045f22ef0f595f125b94fbfacac6692ed8c9ab4768a416e31a116033ed55c4",
+      "count": 10,
+      "reviewStatus": "reviewed_by_sol"
+    }
+  ],
+  "external_imports": {
+    "count": 16,
+    "repository": "https://github.com/github/awesome-copilot",
+    "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+    "license": "MIT"
+  },
+  "checks": {
+    "luna_batch_format": "passed",
+    "sol_gold_review": "passed",
+    "minimal_chain_review": "passed",
+    "pair_single_delta": "passed",
+    "provider_leakage": 0,
+    "visibility": "passed",
+    "source_and_license": "passed",
+    "raw_hashes": "passed",
+    "local_fragment_counts": "passed",
+    "formal_gate_contract": "passed",
+    "cross_team_duplicate_gate": "pending_integration"
+  },
+  "fragment_sha256": "fa69fd327c7873f990b63b6b080a0a50ba9f226da732ec04a67d26fca1d6e046",
+  "validation": {
+    "setup_command": "node MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-04/T07/build-gate-contract.mjs",
+    "command": "npx --yes tsx MemoryProxy/eval/tool-prompt-bench/formal-dataset/scripts/validate-formal-dataset.ts --contract MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-04/T07/gate-contract.json --split hidden_test --report MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-04/T07/formal-validation.json",
+    "report_sha256": "201aa413fbe9d61f1af8585ca836b414c1112f1a72deaaee3c1ef4b45981c937",
+    "gate_contract_sha256": "fb054b3a8312340e104eff2122d93a5b93727600a6e09aa5d6628b26496c087b",
+    "fragment_file_sha256": "43fb027113ad6e9f763d862925eb937b431187e6e05aa31de63afcc0ee31d726",
+    "cases": 40,
+    "pairs": 15,
+    "pair_integrity_errors": 0,
+    "provider_leakage": 0,
+    "invalid_sequences": 0,
+    "missing_source_refs": 0,
+    "local_tests": {
+      "source_tools_python_unittest": "passed: 19 tests",
+      "host_vitest": "not run: isolated worktree has no host node_modules; no out-of-scope dependency/link was added"
+    },
+    "gate_contract_artifact": "ephemeral; hash recorded above and file removed after validation"
+  }
+}

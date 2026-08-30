@@ -5,7 +5,7 @@
 - Parent: `2dc7bc8b57442d2beae62efd5d570a83955b374d` (`task1-c07-pass`)
 - Evaluation schema: `2`
 - Gate status: `SYNTHETIC_GATE_PASSED`
-- Formal data status: `FORMAL_DATA_BLOCKED`
+- Formal data status: `FORMAL_DATA_V1_1_AVAILABLE_METRIC_INELIGIBLE`
 - Model runs: `0`
 - Network calls: `0`
 - Dependency installs: `0`
@@ -46,8 +46,8 @@ The capture command rewrote only historical gate-document SHA values because of 
 
 - Operation selector RED: focused scorer run exited `1`; all five present non-string selector cases (`42`, `null`, object, array, boolean) failed because they incorrectly produced TSR/ECR/Strict success. Missing-selector and pure-none controls passed.
 - Operation selector GREEN: the same focused scorer suite passed `55/55` after present non-string selectors became an explicit invalid normalization state.
-- Prerequisite retry RED: focused scorer run exited `1`; two exact cases failed because corrected prerequisite args/binding retries incorrectly produced ECR success, non-zero ToolSPL, and no failure layer.
-- Prerequisite retry GREEN: the same focused scorer suite passed `57/57` after complete matches with the earliest same-sequence prerequisite args/binding failure at the accepted terminal horizon were blocked while Qi remained true.
+- Prerequisite repair RED: focused scorer run exited `1`; two exact cases failed because corrected prerequisite arguments/bindings before the accepted terminal were incorrectly blocked, producing ECR failure and zero ToolSPL.
+- Prerequisite repair GREEN: the same focused scorer suite passed `57/57` after a corrected prerequisite before the accepted terminal could complete the chain; the first accepted terminal still freezes the evaluation horizon, so retries after it cannot repair the result.
 
 ## Synthetic behavior coverage
 
@@ -59,7 +59,7 @@ The capture command rewrote only historical gate-document SHA values because of 
 - A second legal Knowledge sequence with branch-local operation, argument, and binding predicates.
 - Earliest binding-valid terminal and branch-order-independent matching, including overlapping exact legal sequences.
 - ECR/Strict separation for pre-terminal duplicate/unexpected/over-budget attempts.
-- A terminal call whose own args/binding are invalid can be repaired, but the first terminal with valid own args/binding and exact contract acceptance freezes the horizon; prerequisite args/binding failures and their earliest failure layer cannot be washed out by a later complete retry before or after that terminal.
+- A terminal call whose own args/binding are invalid can be repaired. A prerequisite argument/binding failure can also be repaired before the first accepted terminal, with Strict/ShortestExact/positive-overcall/ToolSPL retaining the extra-attempt penalty. The first accepted terminal freezes the horizon, so retries after it cannot repair the result.
 - Forbidden wrong-family and typed wrong-terminal barriers; a genuinely premature accepted terminal cannot be repaired later, while a later barrier cannot erase an already-reached Qi terminal.
 - `terminalAttemptIndex` identifies the accepted terminal horizon (including when an earlier Qi terminal was contract-rejected), otherwise the scored complete/Qi terminal, and never points beyond a failed evaluation horizon.
 - Attempt indexes use executor-bound ordinals even when unbound raw facts precede a bound attempt; normalizer and scorer share one JSON-path implementation.
@@ -69,15 +69,11 @@ The capture command rewrote only historical gate-document SHA values because of 
 - Raw trace incompleteness/infrastructure facts, CTA zero denominator, ToolSPL success/failure, ShortestExact, and failure-layer aggregation.
 - Public input-invariant rejection plus independently pinned public exports, score/aggregate output fields, blocker text, fixture bytes, and fixture SHA.
 
-## FORMAL_DATA_BLOCKED
+## FORMAL_DATA_V1_1_AVAILABLE_METRIC_INELIGIBLE
 
-Formal-ready Gate is intentionally stopped. Frozen formal data still cannot represent the interface required by M0:
+The original M0 branch was created before formal Gold v2 was available. The current R04 integration now carries the exact annotated `task1-data-formal-v1.1` freeze, typed private Gold v2, Pair v2, RuntimeToolContract v2, and frozen public runtime artifacts.
 
-1. `schema.ts:69` stores `allowedSequences` as `string[][]`, not per-sequence typed predicates.
-2. `schema.ts:71` and `schema.ts:73` store shared `expectedFollowupActions` / `expectedKnowledgeCalls`, so branch-local follow-up conditions cannot be expressed safely.
-3. This branch has no new formal Gold v2 revision/tag and no closed production contract decision for `skill_view` versus `skill_view_by_id`.
-
-The implementation therefore scores only explicit synthetic typed Gold. It does not adapt v1 formal data, does not read `allowedSequences[0]`, and does not guess a terminal, operation, binding, or Gold predicate. Formal integration must wait for a new data revision/tag and the closed RuntimeToolContract.
+This availability does not change M0 ownership: `scoreCaseChain` consumes explicitly supplied typed Gold and contracts but does not open private data, resolve the formal freeze, or emit `formalMetricEligible`. Formal eligibility remains an R04 Integration decision that must combine scorer facts with the real-chain runtime, usage, isolation, and infrastructure evidence.
 
 ## Isolation
 

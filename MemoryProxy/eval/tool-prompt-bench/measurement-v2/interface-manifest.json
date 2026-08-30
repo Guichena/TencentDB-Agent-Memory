@@ -88,18 +88,16 @@
     "Operation normalization distinguishes none, value, conflict, and invalid results; a present non-string argument selector is invalid, and conflict or invalid operations never match a Gold none/exact operation.",
     "Unexpected, duplicate, or over-budget attempts can preserve completeChainSuccess but make strictChainExact false, positiveOvercall true, and ToolSPL smaller.",
     "A forbidden wrong-family, typed wrong-terminal, or genuinely premature accepted terminal before a correct terminal prevents later repair from creating terminalSelectionCorrect or completeChainSuccess.",
-    "The evaluation prefix stops at the earliest Gold terminal whose own arguments, binding, and exact referenced RuntimeToolContract acceptance are valid; prerequisite argument or binding failures at that horizon cannot be washed out by a later retry before or after that terminal.",
+    "The evaluation prefix stops at the earliest Gold terminal whose own arguments, binding, and exact referenced RuntimeToolContract acceptance are valid; a corrected prerequisite before that horizon may complete the chain, while a retry after the horizon cannot repair it.",
     "Without a terminal horizon, failed positives stop at budget or turn completion.",
     "terminalAttemptIndex is an executor-bound ordinal identifying the horizon/complete terminal, otherwise the Qi match, otherwise an in-prefix raw terminal candidate.",
     "Post-terminal behavior does not change decision metrics, but raw trace and infrastructure facts remain preserved for Integration.",
     "M0 never produces final formal metric eligibility."
   ],
   "ownsFormalMetricEligible": false,
-  "formalDataStatus": "FORMAL_DATA_BLOCKED",
+  "formalDataStatus": "FORMAL_DATA_V1_1_AVAILABLE_METRIC_INELIGIBLE",
   "formalDataBlockers": [
-    "The frozen v1 ToolPromptEvalCase schema still represents allowedSequences as string[][] rather than per-sequence typed predicates.",
-    "The frozen v1 schema still shares expectedFollowupActions and expectedKnowledgeCalls across branches.",
-    "No formal Gold v2 revision/tag or closed skill_view versus skill_view_by_id RuntimeToolContract is available in this branch."
+    "The exact task1-data-formal-v1.1 freeze is available, but M0 alone cannot make a run formalMetricEligible; R04 Integration must combine scorer facts with runtime, usage, isolation, and infrastructure evidence."
   ],
   "syntheticFixture": {
     "path": "synthetic-fixtures.ts",

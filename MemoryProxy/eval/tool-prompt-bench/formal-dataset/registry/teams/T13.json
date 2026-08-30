@@ -1,0 +1,8 @@
+{
+  "schema_version": "task1.team_registry.v1",
+  "space_id": "space-task1-engineering",
+  "team_id": "T13",
+  "topic": "可观测性与故障定位",
+  "split": "hidden_test",
+  "active_agent": { "agent_id": "agent-task1-t13-general", "name": "T13 通用业务 Agent" }
+}

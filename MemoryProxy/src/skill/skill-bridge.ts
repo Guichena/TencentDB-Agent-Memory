@@ -32,6 +32,12 @@ import { KvVersionPinRepo } from "./kv-version-pin-repo.js";
 import { getProxyStorage } from "../storage/factory.js";
 import { getMetadataClient } from "../meta/client.js";
 import type { ProxyConfig } from "../types.js";
+import {
+  observeBridgeExecution,
+  type BridgeCompletionObserver,
+  type BridgeEntryObserver,
+} from "../bridge-entry-observer.js";
+import { isExtractionAllowed } from "../extraction-gate.js";
 import { emitBridgeToolCallTelemetry, emitBridgeRejectTelemetry, agentSourceFromSessionKey } from "../memory/bridge-telemetry.js";
 import { getCoreSkillClient, type CoreSkillClient } from "./core-client.js";
 
@@ -382,6 +388,8 @@ export interface SkillBridgeDeps {
    * (B) and already-injected skills (C) — see whitelist composition below.
    */
   coreClient?: CoreSkillClient;
+  bridgeEntryObserver?: BridgeEntryObserver;
+  bridgeCompletionObserver?: BridgeCompletionObserver;
 }
 
 /**
@@ -451,7 +459,7 @@ export function createSkillBridgeHandler(
 ): (c: Context) => Promise<Response> {
   const fetcher = deps.fetcher ?? globalThis.fetch.bind(globalThis);
 
-  return async (c: Context): Promise<Response> => {
+  const execute = async (c: Context): Promise<Response> => {
     const t0 = (deps.now ?? Date.now)();
 
     const path = new URL(c.req.url).pathname;
@@ -544,6 +552,16 @@ export function createSkillBridgeHandler(
         agentId: ids.agent_id, agentSource: ids.agent_source,
       });
       return envelope(40302, `${TAG} LLM write access to skill is disabled (skillRuntime.allowLlmWrite=false)`, 403);
+    }
+    if (sub === "extract" && !isExtractionAllowed(config, "skill")) {
+      emitBridgeRejectTelemetry({
+        sessionKey, bridgeSource: "skill-bridge",
+        rejectReason: "extract_ops_disabled", httpStatus: 403,
+        executedEndpoint: sub,
+        spaceId: ids.space_id, userId: ids.user_id, teamId: ids.team_id,
+        agentId: ids.agent_id, agentSource: ids.agent_source,
+      });
+      return envelope(40303, `${TAG} skill extraction is disabled (extraction.enabled=false)`, 403);
     }
 
     // Parse body. Empty body → {}. Malformed → 400.
@@ -960,6 +978,17 @@ export function createSkillBridgeHandler(
       },
     });
   };
+
+  return (c: Context): Promise<Response> => observeBridgeExecution(
+    c.req.raw,
+    "skill",
+    () => execute(c),
+    {
+      entryObserver: deps.bridgeEntryObserver,
+      completionObserver: deps.bridgeCompletionObserver,
+      now: deps.now,
+    },
+  );
 }
 
 /**

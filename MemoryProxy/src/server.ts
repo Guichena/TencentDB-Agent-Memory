@@ -1,5 +1,6 @@
 /** Hono app factory — registers all routes. */
 
+import { randomUUID } from "node:crypto";
 import { Hono } from "hono";
 import { handleChatCompletions } from "./handler.js";
 import { handleAnthropicMessages } from "./anthropicHandler.js";
@@ -19,10 +20,36 @@ import { createRateLimitHandlers } from "./routes/rate-limits.js";
 import { hasAnalyseMarker, hasCostGuardMarker } from "./routes/whitelist.js";
 import { tryActivateStorage, tryActivateRedis } from "./injection/index.js";
 import { getEffectiveBackend } from "./storage/factory.js";
+import { fingerprintProxyConfigForExperiment } from "./experiment-config-fingerprint.js";
+import type {
+  BridgeCompletionObserver,
+  BridgeEntryObserver,
+} from "./bridge-entry-observer.js";
+import type { ProviderRequestObserver } from "./provider-request-trace-sink.js";
 import type { ProxyConfig } from "./types.js";
 
-export function createApp(config: ProxyConfig): Hono {
+export interface CreateAppDeps {
+  bridgeEntryObserver?: BridgeEntryObserver;
+  bridgeCompletionObserver?: BridgeCompletionObserver;
+  providerRequestObserver?: ProviderRequestObserver;
+  /** Deterministic test seam; production instances receive a fresh UUID. */
+  serverInstanceId?: string;
+  /** Deterministic test seam; production instances use their creation time. */
+  serverStartedAt?: string;
+  /** Exact SHA-256 of the YAML bytes read by the production startup entry. */
+  experimentConfigFileSha256?: string;
+}
+
+export function createApp(config: ProxyConfig, deps: CreateAppDeps = {}): Hono {
   const app = new Hono();
+  const serverInstanceId = deps.serverInstanceId ?? randomUUID();
+  const serverStartedAt = deps.serverStartedAt ?? new Date().toISOString();
+  const experimentConfigFingerprint = fingerprintProxyConfigForExperiment(config);
+  const codexHandler = (c: Parameters<typeof handleCodexEndpoint>[0]) => (
+    handleCodexEndpoint(c, config, {
+      providerRequestObserver: deps.providerRequestObserver,
+    })
+  );
 
   // Eagerly activate storage/bindingRepo so bridge-only requests (no main
   // /v1/messages hits yet) can still recover session state via L2 fallthrough
@@ -89,19 +116,37 @@ export function createApp(config: ProxyConfig): Hono {
   app.get("/health", (c) => {
     const eff = getEffectiveBackend();
     const codexUpstream = resolveCodexUpstream(config);
+    const toolPromptDiagnosticEnabled = isToolPromptDiagnosticEnabled();
     const wantsShared = config.storage?.enabled && eff.requested === "cos";
     const degraded = wantsShared && eff.effective !== eff.requested;
+    const experimentReadOnly = {
+      extractionDisabled: !config.extraction.enabled && config.extraction.extractors.length === 0,
+      tdaiL0WriteDisabled: !config.tdai.memory.writeL0,
+      skillLlmWriteDisabled: !config.skillRuntime.allowLlmWrite,
+      analyseMarkerDisabled: !config.injection.assetReflection?.markerOptIn,
+      toolPromptDiagnosticDisabled: !toolPromptDiagnosticEnabled,
+    };
     const body = {
       status: degraded ? "degraded" : "ok",
       version: "0.2.0",
+      serverInstanceId,
+      serverStartedAt,
       upstream: config.upstream.url,
       codexUpstream: codexUpstream.url,
       codexUpstreamAuth: codexUpstream.authMode,
       tdaiAuth: isAuthEnabled() ? "enabled" : "disabled",
+      injectionEnabled: config.injection.enabled,
+      toolPromptProfile: config.injection.toolPromptProfile,
+      experimentConfigFingerprint,
+      experimentConfigFileSha256: deps.experimentConfigFileSha256 ?? null,
+      experimentReadOnly: {
+        ...experimentReadOnly,
+        ready: Object.values(experimentReadOnly).every(Boolean),
+      },
       opik: config.opik.enabled ? config.opik.url : "disabled",
       costGuard: config.costGuard.enabled ? "enabled" : "disabled",
       rateLimit: config.rateLimit.tpm > 0 || config.rateLimit.qpm > 0 ? "enabled" : "disabled",
-      toolPromptDiagnostic: isToolPromptDiagnosticEnabled() ? "mock-contract-enabled" : "disabled",
+      toolPromptDiagnostic: toolPromptDiagnosticEnabled ? "mock-contract-enabled" : "disabled",
       storage: {
         enabled: !!config.storage?.enabled,
         requested: eff.requested,
@@ -133,12 +178,18 @@ export function createApp(config: ProxyConfig): Hono {
 
 // Skill bridge: LLM curls land here, proxy injects auth + identity, forwards to core.
   // MUST be registered before the agent-prefixed `/:agent/v1/*` routes below.
-  const bridgeHandler = createSkillBridgeHandler(config);
+  const bridgeHandler = createSkillBridgeHandler(config, {
+    bridgeEntryObserver: deps.bridgeEntryObserver,
+    bridgeCompletionObserver: deps.bridgeCompletionObserver,
+  });
   app.post("/skill-bridge/*", (c) => bridgeHandler(c));
 
   // Memory bridge: 同样模式但反代 tdai L0/L1/L2/L3 只读接口。
   // 让 LLM 用 Bash 调 <proxy>/memory-bridge/v3/atomic/search 等，proxy 注入身份。
-  const memoryBridgeHandler = createMemoryBridgeHandler(config);
+  const memoryBridgeHandler = createMemoryBridgeHandler(config, {
+    bridgeEntryObserver: deps.bridgeEntryObserver,
+    bridgeCompletionObserver: deps.bridgeCompletionObserver,
+  });
   app.post("/memory-bridge/*", (c) => memoryBridgeHandler(c));
 
   // ── Ops endpoint（在 catch-all `POST /*` 之前注册） ───────────────────────
@@ -162,6 +213,12 @@ export function createApp(config: ProxyConfig): Hono {
   app.post("/v3/session/force-archive-skill", (c) => {
     return import("./routes/session-force-archive.js").then(({ createSessionForceArchiveHandler }) =>
       createSessionForceArchiveHandler(config)(c),
+    );
+  });
+  app.post("/v3/formal-bench/preflight-session", (c) => {
+    return import("./routes/formal-benchmark-preflight-session.js").then(
+      ({ createFormalBenchmarkPreflightSessionHandler }) =>
+        createFormalBenchmarkPreflightSessionHandler(config)(c),
     );
   });
 
@@ -228,15 +285,15 @@ export function createApp(config: ProxyConfig): Hono {
   //   /codex/<spaceId>/v1/responses  ← codex 客户端 base 自带 v1 时命中
   //   /codex/<spaceId>/responses     ← codex 客户端 base 不带 v1 时命中（对齐 CC/CB 用法）
   // 两条路径全部映射到 handleCodexEndpoint，行为完全一致。
-  app.post("/codex/:spaceId/v1/responses/compact", (c) => handleCodexEndpoint(c, config));
-  app.post("/codex/:spaceId/v1/memories/trace_summarize", (c) => handleCodexEndpoint(c, config));
-  app.post("/codex/:spaceId/v1/realtime/calls", (c) => handleCodexEndpoint(c, config));
-  app.post("/codex/:spaceId/v1/responses", (c) => handleCodexEndpoint(c, config));
+  app.post("/codex/:spaceId/v1/responses/compact", codexHandler);
+  app.post("/codex/:spaceId/v1/memories/trace_summarize", codexHandler);
+  app.post("/codex/:spaceId/v1/realtime/calls", codexHandler);
+  app.post("/codex/:spaceId/v1/responses", codexHandler);
   // 兼容 base_url 不带 /v1 的写法（对齐 CC/CB 的用户体验）
-  app.post("/codex/:spaceId/responses/compact", (c) => handleCodexEndpoint(c, config));
-  app.post("/codex/:spaceId/memories/trace_summarize", (c) => handleCodexEndpoint(c, config));
-  app.post("/codex/:spaceId/realtime/calls", (c) => handleCodexEndpoint(c, config));
-  app.post("/codex/:spaceId/responses", (c) => handleCodexEndpoint(c, config));
+  app.post("/codex/:spaceId/responses/compact", codexHandler);
+  app.post("/codex/:spaceId/memories/trace_summarize", codexHandler);
+  app.post("/codex/:spaceId/realtime/calls", codexHandler);
+  app.post("/codex/:spaceId/responses", codexHandler);
 
   // ── Workbuddy endpoints (must precede generic /:agent/:spaceId routes) ────
   // WorkBuddy CLI/Desktop 客户端走 OpenAI Responses API（与 Codex 同协议），
@@ -273,12 +330,12 @@ export function createApp(config: ProxyConfig): Hono {
   //   传给注入 pipeline（见 codexHandler.ts injection 段落中 `requestPath:
   //   c.req.path`），路由一注册 `/analyse` marker 立即对 codex 生效。
   if (config.costGuard.markerOptIn) {
-    app.post("/codex/:spaceId/cost-guard/v1/responses", (c) => handleCodexEndpoint(c, config));
-    app.post("/codex/:spaceId/cost-guard/responses", (c) => handleCodexEndpoint(c, config));
+    app.post("/codex/:spaceId/cost-guard/v1/responses", codexHandler);
+    app.post("/codex/:spaceId/cost-guard/responses", codexHandler);
   }
   if (config.injection?.assetReflection?.markerOptIn) {
-    app.post("/codex/:spaceId/analyse/v1/responses", (c) => handleCodexEndpoint(c, config));
-    app.post("/codex/:spaceId/analyse/responses", (c) => handleCodexEndpoint(c, config));
+    app.post("/codex/:spaceId/analyse/v1/responses", codexHandler);
+    app.post("/codex/:spaceId/analyse/responses", codexHandler);
   }
 
   // ── deepseek-harness (dsh) endpoints ──────────────────────────────────────

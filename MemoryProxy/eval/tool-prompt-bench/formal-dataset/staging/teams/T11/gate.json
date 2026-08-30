@@ -1,0 +1,73 @@
+{
+  "schema_version": "task1.team_gate.v1",
+  "team_id": "T11",
+  "build_id": "build-06",
+  "status": "passed",
+  "checked_at": "2026-08-29T18:39:30.289Z",
+  "counts": {
+    "cases": 40,
+    "pairs": 15,
+    "memoryPositive": 6,
+    "skillPositive": 6,
+    "knowledgePositive": 3,
+    "pairedNegative": 15,
+    "naturalNegative": 10
+  },
+  "discovery_positive_count": 10,
+  "schema_validation": {
+    "valid": true,
+    "errors": []
+  },
+  "provider_leakage_count": 0,
+  "asset_density": {
+    "l0": 8,
+    "l0MinMessages": 12,
+    "l1": 12,
+    "l2": 4,
+    "l3": 1,
+    "skills": 14,
+    "listedSkills": 5,
+    "searchableSkills": 9
+  },
+  "skill_search_interference": [
+    {
+      "caseId": "T11-SKILL-007-P",
+      "targetAssetId": "T11-SKILL-PROFILER",
+      "searchableCompetitorCount": 8
+    },
+    {
+      "caseId": "T11-SKILL-008-P",
+      "targetAssetId": "T11-SKILL-PROFILER",
+      "searchableCompetitorCount": 8
+    },
+    {
+      "caseId": "T11-SKILL-009-P",
+      "targetAssetId": "T11-SKILL-PROFILER",
+      "searchableCompetitorCount": 8
+    }
+  ],
+  "duplicate_query_count_from_pairs": 15,
+  "duplicate_provider_payload_count": 0,
+  "project_stream_count": 5,
+  "external_skill_source_count": 14,
+  "checks": [
+    "formal schema",
+    "recursive content hashes",
+    "fixed counts",
+    "formal memory density and L0 depth",
+    "L3 content length and stability",
+    "Skill listing/search visibility counts",
+    "three same-team searchable competitors per skill_search",
+    "3..6 project streams and task coverage",
+    "pair single-variable and controlled hash",
+    "provider payload uniqueness",
+    "complete minimal chain",
+    "target visibility",
+    "Skill listing visibility",
+    "provider leakage",
+    "discovery pressure",
+    "accepted Luna manifests and draft raw SHA",
+    "external skill provenance, stored Skill hashes, and license hashes"
+  ],
+  "errors": []
+}

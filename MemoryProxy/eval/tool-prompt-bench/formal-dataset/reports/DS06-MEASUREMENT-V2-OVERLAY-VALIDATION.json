@@ -1,0 +1,143 @@
+{
+  "schemaVersion": "task1.measurement-v2-overlay-validation.v1",
+  "valid": true,
+  "errors": [],
+  "coreTag": "task1-data-core-formal-v1",
+  "coreCommit": "418ecd102fa2019c139da9eebf88b163eca5a208",
+  "canonicalContract": {
+    "canonicalContractId": "task1.measurement-v2.canonical-json.v2.1",
+    "sourcePath": "MemoryProxy/eval/tool-prompt-bench/measurement-v2/canonical-json.ts",
+    "sourceBlob": "a9fe41894fab2d5cb997a703ff11af5d99181655",
+    "sharedTestPath": "MemoryProxy/src/__tests__/tool-prompt-canonical-json-shared.test.ts",
+    "sharedTestBlob": "6d10c5476956a310b6e800c6f2549dac477d4a8e",
+    "m1V2_1": {
+      "tag": "task1-measure-m1-v2.1-pass",
+      "commit": "6bb57979d6a6c81b4d800995b36b4cd718be1ab5"
+    },
+    "m2V2_1": {
+      "tag": "task1-measure-m2-v2.1-pass",
+      "commit": "6dfb0756c864fc470f85575965304c35a5892eca"
+    }
+  },
+  "counts": {
+    "goldV2": 640,
+    "goldV2Dev": 240,
+    "goldV2Hidden": 400,
+    "pairV2": 240,
+    "pairV2Dev": 90,
+    "pairV2Hidden": 150,
+    "runtimeContracts": 21
+  },
+  "canonicalSha256": {
+    "goldV2Full": "7b08420acc04894b2a9aa6f56a17994bc79f2d1913032eebb94a17ace332e3a8",
+    "pairV2Full": "79f531d3cef550c390c167444f9f97d656b78d95c5392a4962a2a65a94c10652",
+    "runtimeContracts": "42c1f5847fe88ed70ec9ce35217dcd8cfdc90fa8a7dd9a53e45b50481204b96e",
+    "manifest": "ff5384e0386079a1e16464063247520eae7ea4964b43c6b7a9972e38b2ba7da9"
+  },
+  "providerLeakageCount": 0,
+  "pairValidationErrorCount": 0,
+  "pairClusterAudit": {
+    "clusterUnit": "team",
+    "devClusterCount": 6,
+    "hiddenClusterCount": 10,
+    "totalClusterCount": 16,
+    "pairsPerCluster": {
+      "dev:T01": 15,
+      "dev:T02": 15,
+      "dev:T03": 15,
+      "dev:T04": 15,
+      "dev:T11": 15,
+      "dev:T12": 15,
+      "hidden:T05": 15,
+      "hidden:T06": 15,
+      "hidden:T07": 15,
+      "hidden:T08": 15,
+      "hidden:T09": 15,
+      "hidden:T10": 15,
+      "hidden:T13": 15,
+      "hidden:T14": 15,
+      "hidden:T15": 15,
+      "hidden:T16": 15
+    },
+    "errors": []
+  },
+  "pairMinimalityApprovalAudit": {
+    "ledgerPath": "measurement-v2/private/approvals/pair-minimality-approval-ledger.json",
+    "ledgerFileSha256": "c831b22508c2e2077f258de2cc9a0670c7a409c809c01cb8c574cc43e84213f6",
+    "ledgerCanonicalSha256": "d1638c40ff677cc295f5d3d29e0e18774ee665e77f60f59e2e13e9c1198e8ec4",
+    "approvedTeamCount": 16,
+    "approvedPairCount": 240,
+    "evidenceFileCount": 16,
+    "errors": []
+  },
+  "goldValidationErrorCount": 0,
+  "frozenM0GoldValidation": {
+    "scorerTag": "task1-measure-m0-v2-pass",
+    "scorerCommit": "a5f7e1a908b9104e8542506c9238bd3e6e5e0074",
+    "scorerSourceBlob": "d0c03836c2e46acbea02dbd509716ddc7bcfd1cf",
+    "typesSourceBlob": "4f9795d80a1f6b9a66272765ba3704412d8d252c",
+    "jsonPathSourceBlob": "c18db95853ff866c85aba070cdcc6a8f50e1dee9",
+    "normalizerSourceBlob": "ca9533cfb859da4a4ef594e68e01378c8ecd0c75",
+    "validatedGoldCount": 640,
+    "negativeBindingTestCount": 6,
+    "errors": []
+  },
+  "memoryFollowupAudit": {
+    "schemaVersion": "task1.memory-followup-audit.v1",
+    "auditedCaseCount": 15,
+    "conversationTerminalDowngradeCount": 9,
+    "scenarioTypedBindingCount": 6,
+    "negativeBindingTestCount": 6,
+    "conversationTerminalDowngradeCases": [
+      "T03-MEM-003-P",
+      "T04-MEM-003-P",
+      "T05-DS05-MEM-PAIR-02-POS",
+      "T06-MEM-BP-02-POS",
+      "T09-MEM-003-P",
+      "T10-MEM-001-P",
+      "T10-MEM-004-P",
+      "T13-MEM-003-P",
+      "T14-MEM-003-P"
+    ],
+    "scenarioTypedBindingCases": [
+      "T07-PAIR-M04-P",
+      "T08-PAIR-M03-P",
+      "T11-MEMORY-003-P",
+      "T11-MEMORY-004-P",
+      "T12-MEMORY-003-P",
+      "T12-MEMORY-005-P"
+    ],
+    "scenarioResponsePath": "data.entries.0.path",
+    "conversationSearchSessionIdResponsePath": null,
+    "errors": [],
+    "reasons": {
+      "conversationTerminalDowngrade": "The production conversation_search response exposes id/role/content/timestamp/score but no session_id/session_key; Task 1 therefore treats the matching search result as the sufficient terminal.",
+      "scenarioTypedBinding": "The production scenario_ls response exposes data.entries[].path, so read_scene.path is bound to data.entries.0.path."
+    },
+    "productionResponseEvidence": {
+      "sourcePath": "MemoryCore/src/gateway/v2-router.ts",
+      "sourceCommit": "6382e8a6e5c76c13d31d9ae9d21f5824de7d3036",
+      "sourceFileSha256": "c51d842c440af5cebb50d28e3ebfb91c8c25a16cdf7d0107222eb528d8448220",
+      "conversationSearch": "data.messages[] omits session_id/session_key; search is terminal for 9 cases",
+      "scenarioList": "data.entries.0.path binds to read_scene.path for 6 prefix-filtered cases"
+    },
+    "strictCanonicalSha256": "fa223ad798042076155b4b4b7d651b0ce230c8e31a275550d182c0ce53a8b8b3"
+  },
+  "contractCoverage": {
+    "runtimeContracts": 21,
+    "knowledgeTerminalCases": 48,
+    "pairSingleChangedPointer": 240,
+    "pairCausalFactor": 240
+  },
+  "dataOverlayGates": {
+    "DS06-G01_private_gold_v2": "passed",
+    "DS06-G02_pair_v2": "passed",
+    "DS06-G03_overlay_validator": "passed",
+    "DS06-G04_provider_exclusion_and_schema_shape": "passed"
+  },
+  "dataContractReady": true,
+  "realChainR01R04Status": "pending",
+  "measurementIntegrationReady": false,
+  "formalCampaignReady": false,
+  "formalMetricEligible": false
+}

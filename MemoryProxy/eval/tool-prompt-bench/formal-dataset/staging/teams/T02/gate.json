@@ -1,0 +1,784 @@
+{
+  "schema_version": "task1.team_gate.v1",
+  "team_id": "T02",
+  "split": "dev",
+  "status": "pass",
+  "launch_commit": "ef2ca4bd84e529c6c7d8a8df661520cbc3bf4bb0",
+  "branch": "codex/task1-data-build-v2-t01-t02",
+  "counts": {
+    "cases": 40,
+    "pairs": 15,
+    "natural_negatives": 10,
+    "positive_families": {
+      "memory": 6,
+      "skill": 6,
+      "knowledge": 3
+    },
+    "l0": 10,
+    "l0_messages": 120,
+    "l1": 15,
+    "l2": 4,
+    "l3": 1,
+    "skills": 15,
+    "listed_skills": 5,
+    "knowledge": 3,
+    "github_skill_sources": 15,
+    "github_project_sources": 4,
+    "sources": 33
+  },
+  "formal_validation": {
+    "valid": true,
+    "case_count": 80,
+    "team_case_count": 40,
+    "pair_count": 30,
+    "team_pair_count": 15,
+    "pair_integrity_error_count": 0,
+    "provider_leakage_count": 0,
+    "invalid_sequence_count": 0,
+    "missing_source_ref_count": 0,
+    "report": "../../../generators/parallel/build-01/T02/formal-validation-report.json"
+  },
+  "luna_batches": [
+    {
+      "batch_id": "t02-asset-world-batch-01",
+      "count": 33
+    },
+    {
+      "batch_id": "t02-memory-trial-01",
+      "count": 1
+    },
+    {
+      "batch_id": "t02-skill-trial-01",
+      "count": 1
+    },
+    {
+      "batch_id": "t02-knowledge-trial-01",
+      "count": 1
+    },
+    {
+      "batch_id": "t02-memory-expansion-batch-01",
+      "count": 5
+    },
+    {
+      "batch_id": "t02-skill-expansion-batch-01",
+      "count": 5
+    },
+    {
+      "batch_id": "t02-knowledge-expansion-batch-01",
+      "count": 2
+    },
+    {
+      "batch_id": "t02-natural-negative-batch-01",
+      "count": 10
+    }
+  ],
+  "github_skill_source_count": 15,
+  "github_project_source_count": 4,
+  "checks": [
+    {
+      "name": "dedicated branch",
+      "passed": true,
+      "detail": "codex/task1-data-build-v2-t01-t02"
+    },
+    {
+      "name": "launch tag commit",
+      "passed": true,
+      "detail": "ef2ca4bd84e529c6c7d8a8df661520cbc3bf4bb0"
+    },
+    {
+      "name": "schema baseline ancestor",
+      "passed": true
+    },
+    {
+      "name": "content baseline ancestor",
+      "passed": true
+    },
+    {
+      "name": "write scope",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "team fragment keys",
+      "passed": true,
+      "detail": [
+        "build_id",
+        "businessAgents",
+        "externalImports",
+        "generatorBatchRefs",
+        "pairs",
+        "privateAnnotations",
+        "publicCases",
+        "schema_version",
+        "snapshotAssetIds",
+        "sourceEvidence",
+        "split",
+        "tasks",
+        "team_id",
+        "teams"
+      ]
+    },
+    {
+      "name": "team fragment identity",
+      "passed": true
+    },
+    {
+      "name": "formal schema preview",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "formal case count",
+      "passed": true,
+      "detail": {
+        "T03": 0,
+        "T04": 0,
+        "T05": 0,
+        "T06": 0,
+        "T07": 0,
+        "T08": 0,
+        "T09": 0,
+        "T10": 0,
+        "T01": 40,
+        "T02": 40
+      }
+    },
+    {
+      "name": "formal pair count",
+      "passed": true,
+      "detail": {
+        "T03": 0,
+        "T04": 0,
+        "T05": 0,
+        "T06": 0,
+        "T07": 0,
+        "T08": 0,
+        "T09": 0,
+        "T10": 0,
+        "T01": 15,
+        "T02": 15
+      }
+    },
+    {
+      "name": "formal pair integrity",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "formal provider leakage",
+      "passed": true,
+      "detail": 0
+    },
+    {
+      "name": "formal sequence validity",
+      "passed": true,
+      "detail": 0
+    },
+    {
+      "name": "formal source refs",
+      "passed": true,
+      "detail": 0
+    },
+    {
+      "name": "public cases",
+      "passed": true,
+      "detail": 40
+    },
+    {
+      "name": "private annotations",
+      "passed": true,
+      "detail": 40
+    },
+    {
+      "name": "pairs",
+      "passed": true,
+      "detail": 15
+    },
+    {
+      "name": "paired roles",
+      "passed": true,
+      "detail": {
+        "positive": 15,
+        "negative": 15
+      }
+    },
+    {
+      "name": "natural negatives",
+      "passed": true,
+      "detail": 10
+    },
+    {
+      "name": "positive family quota",
+      "passed": true,
+      "detail": {
+        "knowledge": 3,
+        "memory": 6,
+        "skill": 6
+      }
+    },
+    {
+      "name": "all negatives no-tool",
+      "passed": true
+    },
+    {
+      "name": "positive task assignments",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "T02-PAIR-001 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T02-PAIR-001 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "905c888974179011ac231a9b26407fff57cde97c5d348fadb3a4fef501bf6ae8",
+        "actual": "905c888974179011ac231a9b26407fff57cde97c5d348fadb3a4fef501bf6ae8"
+      }
+    },
+    {
+      "name": "T02-PAIR-001 roles",
+      "passed": true
+    },
+    {
+      "name": "T02-PAIR-002 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T02-PAIR-002 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "58486f76071db53aa49b521e8d071ba29c6b0b1361d90a1ae6c60756e71a1ed8",
+        "actual": "58486f76071db53aa49b521e8d071ba29c6b0b1361d90a1ae6c60756e71a1ed8"
+      }
+    },
+    {
+      "name": "T02-PAIR-002 roles",
+      "passed": true
+    },
+    {
+      "name": "T02-PAIR-003 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T02-PAIR-003 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "030895ab6c9066cbf44fd809a5e913686507d561be08236b22db12de0cd863c3",
+        "actual": "030895ab6c9066cbf44fd809a5e913686507d561be08236b22db12de0cd863c3"
+      }
+    },
+    {
+      "name": "T02-PAIR-003 roles",
+      "passed": true
+    },
+    {
+      "name": "T02-PAIR-004 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T02-PAIR-004 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "f667b19f4ac5e7ca879a752894b928166454cc705bc3d3f8af747f26ed8bf30a",
+        "actual": "f667b19f4ac5e7ca879a752894b928166454cc705bc3d3f8af747f26ed8bf30a"
+      }
+    },
+    {
+      "name": "T02-PAIR-004 roles",
+      "passed": true
+    },
+    {
+      "name": "T02-PAIR-005 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T02-PAIR-005 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "0bcb11face51d69be174bccb98998e82d4318ce6193650effb85116f4317dea1",
+        "actual": "0bcb11face51d69be174bccb98998e82d4318ce6193650effb85116f4317dea1"
+      }
+    },
+    {
+      "name": "T02-PAIR-005 roles",
+      "passed": true
+    },
+    {
+      "name": "T02-PAIR-006 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T02-PAIR-006 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "d50551456866bacce9879d190054e40a1bcf15c6bf5260e36c5729e7f16624c3",
+        "actual": "d50551456866bacce9879d190054e40a1bcf15c6bf5260e36c5729e7f16624c3"
+      }
+    },
+    {
+      "name": "T02-PAIR-006 roles",
+      "passed": true
+    },
+    {
+      "name": "T02-PAIR-007 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T02-PAIR-007 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "1297a3aa5e87f5763a877ec84221889883dd3949df60b4565fda6f5ba66c94e1",
+        "actual": "1297a3aa5e87f5763a877ec84221889883dd3949df60b4565fda6f5ba66c94e1"
+      }
+    },
+    {
+      "name": "T02-PAIR-007 roles",
+      "passed": true
+    },
+    {
+      "name": "T02-PAIR-008 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T02-PAIR-008 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "d4b851555342a1ea6bc86b3cb3a90c2ac2d06972dd4efbc3ee754f241e58eb8a",
+        "actual": "d4b851555342a1ea6bc86b3cb3a90c2ac2d06972dd4efbc3ee754f241e58eb8a"
+      }
+    },
+    {
+      "name": "T02-PAIR-008 roles",
+      "passed": true
+    },
+    {
+      "name": "T02-PAIR-009 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T02-PAIR-009 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "11e298e63609113367ecb42266e25266226d23f1fc277fa650f16b2851f5bf6e",
+        "actual": "11e298e63609113367ecb42266e25266226d23f1fc277fa650f16b2851f5bf6e"
+      }
+    },
+    {
+      "name": "T02-PAIR-009 roles",
+      "passed": true
+    },
+    {
+      "name": "T02-PAIR-010 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T02-PAIR-010 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "2f5a53105088a8b899cf28023b6924ee86d6eb2ba8b9aa9383d8148e8a77db43",
+        "actual": "2f5a53105088a8b899cf28023b6924ee86d6eb2ba8b9aa9383d8148e8a77db43"
+      }
+    },
+    {
+      "name": "T02-PAIR-010 roles",
+      "passed": true
+    },
+    {
+      "name": "T02-PAIR-011 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T02-PAIR-011 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "466d2e7210ac8b7f3f4e2c8b7405f0b72f7ef1bfea5aa7b93b4308c0ebe4db2e",
+        "actual": "466d2e7210ac8b7f3f4e2c8b7405f0b72f7ef1bfea5aa7b93b4308c0ebe4db2e"
+      }
+    },
+    {
+      "name": "T02-PAIR-011 roles",
+      "passed": true
+    },
+    {
+      "name": "T02-PAIR-012 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T02-PAIR-012 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "bcf69175010496ee956b717db9b8c22e5003c36e274f1e6b0b638393a759d982",
+        "actual": "bcf69175010496ee956b717db9b8c22e5003c36e274f1e6b0b638393a759d982"
+      }
+    },
+    {
+      "name": "T02-PAIR-012 roles",
+      "passed": true
+    },
+    {
+      "name": "T02-PAIR-013 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T02-PAIR-013 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "fa88103238f8a367cab3f7c6242765ea7f69d88541fb8bed7eadd833da566052",
+        "actual": "fa88103238f8a367cab3f7c6242765ea7f69d88541fb8bed7eadd833da566052"
+      }
+    },
+    {
+      "name": "T02-PAIR-013 roles",
+      "passed": true
+    },
+    {
+      "name": "T02-PAIR-014 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T02-PAIR-014 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "7ec2c65387add47be3af97fc6dd4b707bebe9e1f3cc7b678ccd100114f48ca40",
+        "actual": "7ec2c65387add47be3af97fc6dd4b707bebe9e1f3cc7b678ccd100114f48ca40"
+      }
+    },
+    {
+      "name": "T02-PAIR-014 roles",
+      "passed": true
+    },
+    {
+      "name": "T02-PAIR-015 one message delta",
+      "passed": true,
+      "detail": [
+        8
+      ]
+    },
+    {
+      "name": "T02-PAIR-015 delta hash",
+      "passed": true,
+      "detail": {
+        "expected": "57d00d8bf12ec72c6564e1613f29056526bc7bb47aee63ec5eb61536d52f3bf9",
+        "actual": "57d00d8bf12ec72c6564e1613f29056526bc7bb47aee63ec5eb61536d52f3bf9"
+      }
+    },
+    {
+      "name": "T02-PAIR-015 roles",
+      "passed": true
+    },
+    {
+      "name": "provider leakage scan",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "no duplicate provider case",
+      "passed": true
+    },
+    {
+      "name": "memory asset quota",
+      "passed": true,
+      "detail": {
+        "cases": 40,
+        "pairs": 15,
+        "natural_negatives": 10,
+        "positive_families": {
+          "memory": 6,
+          "skill": 6,
+          "knowledge": 3
+        },
+        "l0": 10,
+        "l0_messages": 120,
+        "l1": 15,
+        "l2": 4,
+        "l3": 1,
+        "skills": 15,
+        "listed_skills": 5,
+        "knowledge": 3,
+        "github_skill_sources": 15,
+        "github_project_sources": 4,
+        "sources": 33
+      }
+    },
+    {
+      "name": "runtime instruction mappings",
+      "passed": true
+    },
+    {
+      "name": "superseded memory link",
+      "passed": true
+    },
+    {
+      "name": "memory route distribution",
+      "passed": true,
+      "detail": {
+        "tdai_atomic_query": 1,
+        "tdai_conversation_search": 2,
+        "tdai_memory_search": 2,
+        "tdai_read_scene": 1
+      }
+    },
+    {
+      "name": "skill route distribution",
+      "passed": true,
+      "detail": {
+        "skill_search->skill_view_by_id": 3,
+        "skill_view": 2,
+        "skill_view->skill_files_read": 1
+      }
+    },
+    {
+      "name": "knowledge route distribution",
+      "passed": true,
+      "detail": [
+        "knowledge_tools_list->knowledge_tools_call",
+        "knowledge_tools_list->knowledge_tools_call",
+        "knowledge_tools_list->knowledge_tools_call"
+      ]
+    },
+    {
+      "name": "production endpoints",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "skill counts",
+      "passed": true,
+      "detail": {
+        "total": 15,
+        "listed": 5
+      }
+    },
+    {
+      "name": "knowledge count",
+      "passed": true,
+      "detail": 3
+    },
+    {
+      "name": "snapshot asset ids",
+      "passed": true,
+      "detail": 48
+    },
+    {
+      "name": "fragment Luna batch refs",
+      "passed": true,
+      "detail": [
+        {
+          "batchId": "t02-asset-world-batch-01",
+          "path": "formal-dataset/generators/parallel/build-01/T02/asset-world/asset-world-batch-01",
+          "family": "asset-world",
+          "count": 33,
+          "generatorModel": "gpt-5.6-luna",
+          "reasoningEffort": "high",
+          "promptVersion": "task1.t02-asset-world.v1",
+          "draftSha256": "7673cfc3a7048aad3fddbc52e614eeca8868bc64e1a65ec9b3149871a14d5435",
+          "solReview": "approved"
+        },
+        {
+          "batchId": "t02-memory-trial-01",
+          "path": "formal-dataset/generators/parallel/build-01/T02/trials/memory-trial-01",
+          "family": "memory",
+          "count": 1,
+          "generatorModel": "gpt-5.6-luna",
+          "reasoningEffort": "high",
+          "promptVersion": "task1.luna-batch.v1",
+          "draftSha256": "d3c68614c06244fb2b13c4d5b0995b0d208fd2a5b7cbe127add3a9e75bcdf008",
+          "solReview": "approved"
+        },
+        {
+          "batchId": "t02-skill-trial-01",
+          "path": "formal-dataset/generators/parallel/build-01/T02/trials/skill-trial-01",
+          "family": "skill",
+          "count": 1,
+          "generatorModel": "gpt-5.6-luna",
+          "reasoningEffort": "high",
+          "promptVersion": "task1.luna-batch.v1",
+          "draftSha256": "486f590ff56e6eec279986e803dfd4d7f6f6f83db0a35d9956f2216e9cb2c014",
+          "solReview": "approved"
+        },
+        {
+          "batchId": "t02-knowledge-trial-01",
+          "path": "formal-dataset/generators/parallel/build-01/T02/trials/knowledge-trial-01",
+          "family": "knowledge",
+          "count": 1,
+          "generatorModel": "gpt-5.6-luna",
+          "reasoningEffort": "high",
+          "promptVersion": "task1.luna-batch.v1",
+          "draftSha256": "ebf8f4eb727ac65137264a4af7df3132c0fa13fb761d51871cf483f4b856e85e",
+          "solReview": "approved"
+        },
+        {
+          "batchId": "t02-memory-expansion-batch-01",
+          "path": "formal-dataset/generators/parallel/build-01/T02/expansion/memory-batch-01",
+          "family": "memory",
+          "count": 5,
+          "generatorModel": "gpt-5.6-luna",
+          "reasoningEffort": "high",
+          "promptVersion": "task1.luna-batch.v1",
+          "draftSha256": "9353204cd9baffcf8f40d590c89f9db940a503dd597ca1b1dc5c190a3ea1e79f",
+          "solReview": "approved"
+        },
+        {
+          "batchId": "t02-skill-expansion-batch-01",
+          "path": "formal-dataset/generators/parallel/build-01/T02/expansion/skill-batch-01",
+          "family": "skill",
+          "count": 5,
+          "generatorModel": "gpt-5.6-luna",
+          "reasoningEffort": "high",
+          "promptVersion": "task1.luna-batch.v1",
+          "draftSha256": "c57fd21bfe9c8d582d0c1405882b92a5c36ce8cb9608da1f3460a1dcfad95007",
+          "solReview": "approved"
+        },
+        {
+          "batchId": "t02-knowledge-expansion-batch-01",
+          "path": "formal-dataset/generators/parallel/build-01/T02/expansion/knowledge-batch-01",
+          "family": "knowledge",
+          "count": 2,
+          "generatorModel": "gpt-5.6-luna",
+          "reasoningEffort": "high",
+          "promptVersion": "task1.luna-batch.v1",
+          "draftSha256": "11b4558d9aee5a3bbb998d438c8cd96e69dc8227edeb560d6bd435930670b07e",
+          "solReview": "approved"
+        },
+        {
+          "batchId": "t02-natural-negative-batch-01",
+          "path": "formal-dataset/generators/parallel/build-01/T02/expansion/natural-negative-batch-01",
+          "family": "natural-negative",
+          "count": 10,
+          "generatorModel": "gpt-5.6-luna",
+          "reasoningEffort": "high",
+          "promptVersion": "task1.luna-batch.v1",
+          "draftSha256": "820c3daa58272cc6a70fa57ed46e3940640d534b2ba092167070c6ff0b183ddf",
+          "solReview": "approved"
+        }
+      ]
+    },
+    {
+      "name": "fragment external imports",
+      "passed": true,
+      "detail": 15
+    },
+    {
+      "name": "project/task counts",
+      "passed": true,
+      "detail": {
+        "projects": 4,
+        "tasks": 4
+      }
+    },
+    {
+      "name": "GitHub Skill source packages",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "GitHub project source packages",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "frozen input pack",
+      "passed": true,
+      "detail": "f190ede8852d94441c7da26d3737158dfced230bab8996d446cd99f0abb2c8cc"
+    },
+    {
+      "name": "frozen source pack",
+      "passed": true,
+      "detail": {
+        "schema_version": "task1.source_pack_lock.v1",
+        "team_id": "T02",
+        "stage": "DS03",
+        "input_pack_sha256": "f190ede8852d94441c7da26d3737158dfced230bab8996d446cd99f0abb2c8cc",
+        "skill_sources_sha256": "be77f6fdfa5523ea027c6b53296d8a32c10a8de77392addb4041bb6b5f34fc57",
+        "project_sources_sha256": "1aa33c0934dd7df151ee5e5bc657f8365ecc71efb5ffb0a239354e1ff4dd1f66",
+        "skill_source_count": 15,
+        "project_source_count": 4,
+        "frozen": true
+      }
+    },
+    {
+      "name": "Luna batches",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "review present",
+      "passed": true
+    },
+    {
+      "name": "build summary consistency",
+      "passed": true,
+      "detail": {
+        "cases": 40,
+        "pairs": 15,
+        "natural_negatives": 10,
+        "positive_families": {
+          "memory": 6,
+          "skill": 6,
+          "knowledge": 3
+        },
+        "l0": 10,
+        "l0_messages": 120,
+        "l1": 15,
+        "l2": 4,
+        "l3": 1,
+        "skills": 15,
+        "listed_skills": 5,
+        "knowledge": 3,
+        "github_skill_sources": 15,
+        "github_project_sources": 4,
+        "sources": 33
+      }
+    }
+  ],
+  "error_count": 0,
+  "errors": [],
+  "integration_issues": [
+    "The global integrator must preserve the explicit formal decision -> runtime instruction mappings, especially the dated direct atomic-query target, when materializing production Memory fixtures.",
+    "The global integrator must regenerate global snapshots and cross-Team hashes; this Team fragment intentionally does not write contract, snapshot, provider, or status files."
+  ]
+}

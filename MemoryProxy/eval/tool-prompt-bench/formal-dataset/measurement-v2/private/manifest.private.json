@@ -1,0 +1,198 @@
+{
+  "schemaVersion": "task1.measurement-v2-overlay-manifest.v1",
+  "evaluationSchemaVersion": 2,
+  "visibility": "private_never_provider_visible",
+  "canonicalContract": {
+    "canonicalContractId": "task1.measurement-v2.canonical-json.v2.1",
+    "sourcePath": "MemoryProxy/eval/tool-prompt-bench/measurement-v2/canonical-json.ts",
+    "sourceBlob": "a9fe41894fab2d5cb997a703ff11af5d99181655",
+    "sharedTestPath": "MemoryProxy/src/__tests__/tool-prompt-canonical-json-shared.test.ts",
+    "sharedTestBlob": "6d10c5476956a310b6e800c6f2549dac477d4a8e",
+    "m1V2_1": {
+      "tag": "task1-measure-m1-v2.1-pass",
+      "commit": "6bb57979d6a6c81b4d800995b36b4cd718be1ab5"
+    },
+    "m2V2_1": {
+      "tag": "task1-measure-m2-v2.1-pass",
+      "commit": "6dfb0756c864fc470f85575965304c35a5892eca"
+    }
+  },
+  "dataCore": {
+    "tag": "task1-data-core-formal-v1",
+    "commit": "418ecd102fa2019c139da9eebf88b163eca5a208",
+    "canonicalContract": {
+      "canonicalContractId": "task1.formal-snapshot.canonical-json.v1",
+      "sourcePath": "MemoryProxy/eval/tool-prompt-bench/worlds/formal-snapshot.ts",
+      "sourceBlob": "e17398492cf0f1515ad1cc78806053df800260ad"
+    },
+    "contractPath": "registry/contracts/formal-v1.json",
+    "contractFileSha256": "991ff87255019c0d4b64deba16b76b144bd3c63138be355c747865329e83da44",
+    "contractCanonicalSha256": "4fc62c1829301fe9f2410f6be40698d7b3d09ec90dde3bfe294452f7ef152d41",
+    "provider": {
+      "devCanonicalSha256": "ab1842aa1cc6d36a79bd8c232f2d66fd0d097c50eea4c2c09c4b4c8393e6308a",
+      "hiddenCanonicalSha256": "fc2d655011681cf63c38e5b71e92790ebeb601ec77ed5cf2ac42784aa73e212b",
+      "fullCanonicalSha256": "b50febf784e0c6dc2156c4e7853067556e1dd500d46d29ad3dbe718564c8dd52"
+    },
+    "privateAnnotations": {
+      "devCanonicalSha256": "b32d2c37d80baaa1359dde86211745241bc9f4f4d937aa16dc2dda64357c3cfe",
+      "hiddenCanonicalSha256": "1384bf8bfa30faab1d85e99700d4a8f9adddd577a14029809712a3633fc87790",
+      "fullCanonicalSha256": "6b1cdf62c618757be2c20fd414cf9b0302ab463a9feecbd6cbb4c592ede5287d"
+    },
+    "pairsCanonicalSha256": "6be4b917a3a0d5a5efb346efd61741daeacf32a9ec6b95dac7759cb3a8410642",
+    "snapshots": {
+      "devCanonicalSha256": "3a82d0ad8241ff3e2173555efbdb65dfb367a0a38c9998203c5b4754611a4783",
+      "hiddenCanonicalSha256": "23fe7b47d13c950765fa9557da918e1d102b7ab4558171cb15a8444d1cbd9c9e"
+    },
+    "caseIdsSha256": "b02ae7c84ef08a1d7e60d51964a47bf5edb3ce644531b0a919399c449c8d7b37",
+    "pairIdsSha256": "80bd2d43445c760eaf4b10cffb2f5d7212252852a4319e2a36bb77bce8479150"
+  },
+  "runtimeContractEvidence": {
+    "sourcePath": "MemoryProxy/src/injection/tool-prompt/runtime-contract.ts",
+    "sourceCommit": "3962bf45953eff692540a495f5bfe35592f446e5",
+    "sourceFileSha256": "2bd66e9d763f412fb351440e84d6395baf5fbaa51911ceeaf48be0d7cc76c33f",
+    "adaptedRuntimeContractsCanonicalSha256": "42c1f5847fe88ed70ec9ce35217dcd8cfdc90fa8a7dd9a53e45b50481204b96e",
+    "successfulHttpStatusEvidence": [
+      "MemoryProxy/src/__tests__/formal-evaluator-contract.test.ts",
+      "MemoryProxy/src/injection/tool-prompt/runtime-contract.ts"
+    ]
+  },
+  "memoryFollowupContract": {
+    "schemaVersion": "task1.memory-followup-audit.v1",
+    "auditedCaseCount": 15,
+    "conversationTerminalDowngradeCount": 9,
+    "scenarioTypedBindingCount": 6,
+    "negativeBindingTestCount": 6,
+    "conversationTerminalDowngradeCases": [
+      "T03-MEM-003-P",
+      "T04-MEM-003-P",
+      "T05-DS05-MEM-PAIR-02-POS",
+      "T06-MEM-BP-02-POS",
+      "T09-MEM-003-P",
+      "T10-MEM-001-P",
+      "T10-MEM-004-P",
+      "T13-MEM-003-P",
+      "T14-MEM-003-P"
+    ],
+    "scenarioTypedBindingCases": [
+      "T07-PAIR-M04-P",
+      "T08-PAIR-M03-P",
+      "T11-MEMORY-003-P",
+      "T11-MEMORY-004-P",
+      "T12-MEMORY-003-P",
+      "T12-MEMORY-005-P"
+    ],
+    "scenarioResponsePath": "data.entries.0.path",
+    "conversationSearchSessionIdResponsePath": null,
+    "errors": [],
+    "reasons": {
+      "conversationTerminalDowngrade": "The production conversation_search response exposes id/role/content/timestamp/score but no session_id/session_key; Task 1 therefore treats the matching search result as the sufficient terminal.",
+      "scenarioTypedBinding": "The production scenario_ls response exposes data.entries[].path, so read_scene.path is bound to data.entries.0.path."
+    },
+    "productionResponseEvidence": {
+      "sourcePath": "MemoryCore/src/gateway/v2-router.ts",
+      "sourceCommit": "6382e8a6e5c76c13d31d9ae9d21f5824de7d3036",
+      "sourceFileSha256": "c51d842c440af5cebb50d28e3ebfb91c8c25a16cdf7d0107222eb528d8448220",
+      "conversationSearch": "data.messages[] omits session_id/session_key; search is terminal for 9 cases",
+      "scenarioList": "data.entries.0.path binds to read_scene.path for 6 prefix-filtered cases"
+    },
+    "strictCanonicalSha256": "fa223ad798042076155b4b4b7d651b0ce230c8e31a275550d182c0ce53a8b8b3"
+  },
+  "frozenM0GoldValidation": {
+    "scorerTag": "task1-measure-m0-v2-pass",
+    "scorerCommit": "a5f7e1a908b9104e8542506c9238bd3e6e5e0074",
+    "scorerSourceBlob": "d0c03836c2e46acbea02dbd509716ddc7bcfd1cf",
+    "typesSourceBlob": "4f9795d80a1f6b9a66272765ba3704412d8d252c",
+    "jsonPathSourceBlob": "c18db95853ff866c85aba070cdcc6a8f50e1dee9",
+    "normalizerSourceBlob": "ca9533cfb859da4a4ef594e68e01378c8ecd0c75",
+    "validatedGoldCount": 640,
+    "negativeBindingTestCount": 6,
+    "errors": []
+  },
+  "pairMinimalityApprovalContract": {
+    "ledgerPath": "measurement-v2/private/approvals/pair-minimality-approval-ledger.json",
+    "ledgerFileSha256": "c831b22508c2e2077f258de2cc9a0670c7a409c809c01cb8c574cc43e84213f6",
+    "ledgerCanonicalSha256": "d1638c40ff677cc295f5d3d29e0e18774ee665e77f60f59e2e13e9c1198e8ec4",
+    "approvedTeamCount": 16,
+    "approvedPairCount": 240,
+    "evidenceFileCount": 16,
+    "errors": []
+  },
+  "pairClusterContract": {
+    "clusterUnit": "team",
+    "devClusterCount": 6,
+    "hiddenClusterCount": 10,
+    "totalClusterCount": 16,
+    "pairsPerCluster": {
+      "dev:T01": 15,
+      "dev:T02": 15,
+      "dev:T03": 15,
+      "dev:T04": 15,
+      "dev:T11": 15,
+      "dev:T12": 15,
+      "hidden:T05": 15,
+      "hidden:T06": 15,
+      "hidden:T07": 15,
+      "hidden:T08": 15,
+      "hidden:T09": 15,
+      "hidden:T10": 15,
+      "hidden:T13": 15,
+      "hidden:T14": 15,
+      "hidden:T15": 15,
+      "hidden:T16": 15
+    }
+  },
+  "overlays": {
+    "goldDev": {
+      "path": "measurement-v2/private/gold/dev.private.jsonl",
+      "count": 240,
+      "fileSha256": "96500ea7ef648f2044405b53813ca328fda4cbd1cc7de0928559c8040a7ce773",
+      "canonicalSha256": "8cfffec5c06b37b92b41cf95ee0d70333e9a2a7f6063145100b20ce753fe58c5"
+    },
+    "goldHidden": {
+      "path": "measurement-v2/private/gold/hidden.private.jsonl",
+      "count": 400,
+      "fileSha256": "10f97adbd1f173eba2b70b2fc0e4e8ed04c48e6a086a95731d8ebc40cb3515cc",
+      "canonicalSha256": "fdcbfbce3ada6b274cdfb6a9444c3f151af004b6186ca5e0186fe7e16d3c883f"
+    },
+    "pairDev": {
+      "path": "measurement-v2/private/pairs/dev.private.jsonl",
+      "count": 90,
+      "fileSha256": "7959ad22b4ffffdfb892e3d0f8583f7af2b6f54f36709705a8f6fe13f18b233e",
+      "canonicalSha256": "72def9ee92733ad5b2bc33f40ff500a75abf748ccdf4703f6b8464678e508c31"
+    },
+    "pairHidden": {
+      "path": "measurement-v2/private/pairs/hidden.private.jsonl",
+      "count": 150,
+      "fileSha256": "0ac5153ee332ca68aa2884d6394715cbd9583f398147bdd772fc75306ef9bb39",
+      "canonicalSha256": "9195cf6dc6fbec5dca2f1824c93763f50d42cb3f00f06339f7431dde239b42b8"
+    },
+    "runtimeContracts": {
+      "path": "measurement-v2/private/runtime-contracts.private.json",
+      "count": 21,
+      "fileSha256": "cae2371307be3ffbdfee0227d2de21b6f7b936ac1557f550f92b7a9391e822e8",
+      "canonicalSha256": "42c1f5847fe88ed70ec9ce35217dcd8cfdc90fa8a7dd9a53e45b50481204b96e"
+    }
+  },
+  "counts": {
+    "goldV2": 640,
+    "goldV2Dev": 240,
+    "goldV2Hidden": 400,
+    "pairV2": 240,
+    "pairV2Dev": 90,
+    "pairV2Hidden": 150,
+    "runtimeContracts": 21
+  },
+  "providerExclusion": {
+    "overlayRoot": "measurement-v2/private",
+    "providerCompilerImportsOverlay": false,
+    "providerLeakageCount": 0,
+    "providerDevFileSha256": "8018bb65160eb1cac13e489ae54f258f2369dc4af058f09a3e1dc432961bc1f3",
+    "providerHiddenFileSha256": "743b2ee051572c81aec8b4db6b581a77143ed283ee136448b095e8576e0d5799"
+  },
+  "dataContractReady": true,
+  "dataOverlayGateStatus": "passed",
+  "realChainR01R04Status": "pending",
+  "measurementIntegrationReady": false,
+  "formalCampaignReady": false,
+  "formalMetricEligible": false
+}

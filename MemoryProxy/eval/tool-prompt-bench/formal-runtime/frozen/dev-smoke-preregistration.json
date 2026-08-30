@@ -1,0 +1,59 @@
+{
+  "caseIds": [
+    "T01-MEMORY-006-P",
+    "T01-MEMORY-006-N",
+    "T02-MEMORY-001-P",
+    "T02-NATURAL-001",
+    "T03-SKILL-001-P",
+    "T03-SKILL-001-N",
+    "T04-SKILL-001-P",
+    "T04-NAT-001",
+    "T11-KNOWLEDGE-013-P",
+    "T11-KNOWLEDGE-013-N",
+    "T12-KNOWLEDGE-013-P",
+    "T12-NATURAL-001-N"
+  ],
+  "selectionContract": {
+    "schemaVersion": "task1.formal-dev-smoke-preregistration.v1",
+    "split": "dev",
+    "totalCases": 12,
+    "casesPerTeam": 2,
+    "teamRules": [
+      {
+        "teamId": "T01",
+        "positiveFamily": "memory",
+        "noToolKind": "paired_counterpart"
+      },
+      {
+        "teamId": "T02",
+        "positiveFamily": "memory",
+        "noToolKind": "natural"
+      },
+      {
+        "teamId": "T03",
+        "positiveFamily": "skill",
+        "noToolKind": "paired_counterpart"
+      },
+      {
+        "teamId": "T04",
+        "positiveFamily": "skill",
+        "noToolKind": "natural"
+      },
+      {
+        "teamId": "T11",
+        "positiveFamily": "knowledge",
+        "noToolKind": "paired_counterpart"
+      },
+      {
+        "teamId": "T12",
+        "positiveFamily": "knowledge",
+        "noToolKind": "natural"
+      }
+    ],
+    "positiveSelection": "lexicographically_first_tool_case_in_required_family",
+    "pairedNoToolSelection": "pair_v2_negative_counterpart_of_selected_positive",
+    "naturalNoToolSelection": "lexicographically_first_no_tool_case_outside_pair_v2_negatives",
+    "ordering": "team_rule_order_positive_then_no_tool"
+  },
+  "sha256": "f300079fc408878cf2bf5921a9e6b3004ce9e5fa3034857221554c00a9a101ec"
+}

@@ -929,7 +929,7 @@ describe("Measurement v2 public case-chain scorer", () => {
     });
   });
 
-  it("stops at the first accepted Gold terminal when a prerequisite has invalid arguments", () => {
+  it("does not let a corrected argument retry after the first accepted terminal repair the chain", () => {
     const score = scoreCaseChain({
       observation: {
         ...MEMORY_MULTI_STEP_SUCCESS_TRACE,
@@ -960,11 +960,12 @@ describe("Measurement v2 public case-chain scorer", () => {
       positiveOvercall: false,
       matchedSequenceId: null,
       toolSplContribution: 0,
+      shortestExact: false,
       failureLayer: "arguments",
     });
   });
 
-  it("does not let a corrected prerequisite wash out earlier invalid arguments before the accepted terminal", () => {
+  it("lets corrected prerequisite arguments repair the chain before the accepted terminal", () => {
     const [prerequisite, terminal] = MEMORY_MULTI_STEP_SUCCESS_TRACE.attempts;
     const score = scoreCaseChain({
       observation: {
@@ -988,12 +989,13 @@ describe("Measurement v2 public case-chain scorer", () => {
       evaluationPrefixAttemptCount: 3,
       terminalAttemptIndex: 2,
       terminalSelectionCorrect: true,
-      completeChainSuccess: false,
+      completeChainSuccess: true,
       strictChainExact: false,
       positiveOvercall: true,
-      matchedSequenceId: null,
-      toolSplContribution: 0,
-      failureLayer: "arguments",
+      matchedSequenceId: "scenario-list-then-read",
+      toolSplContribution: 2 / 3,
+      shortestExact: false,
+      failureLayer: null,
     });
   });
 
@@ -1039,7 +1041,7 @@ describe("Measurement v2 public case-chain scorer", () => {
     });
   });
 
-  it("reports the earliest prerequisite binding failure at the accepted terminal horizon", () => {
+  it("does not let a corrected prior-output binding retry after the first accepted terminal repair the chain", () => {
     const [list, readBridge, readPrerequisite, terminal] = (
       MEMORY_PREREQUISITE_CHAIN_SUCCESS_TRACE.attempts
     );
@@ -1078,11 +1080,12 @@ describe("Measurement v2 public case-chain scorer", () => {
       positiveOvercall: false,
       matchedSequenceId: null,
       toolSplContribution: 0,
+      shortestExact: false,
       failureLayer: "binding",
     });
   });
 
-  it("does not let a corrected prerequisite wash out an earlier binding failure before the accepted terminal", () => {
+  it("lets a corrected prior-output binding repair the chain before the accepted terminal", () => {
     const [list, readBridge, readPrerequisite, terminal] = (
       MEMORY_PREREQUISITE_CHAIN_SUCCESS_TRACE.attempts
     );
@@ -1111,12 +1114,13 @@ describe("Measurement v2 public case-chain scorer", () => {
       evaluationPrefixAttemptCount: 5,
       terminalAttemptIndex: 4,
       terminalSelectionCorrect: true,
-      completeChainSuccess: false,
+      completeChainSuccess: true,
       strictChainExact: false,
       positiveOvercall: true,
-      matchedSequenceId: null,
-      toolSplContribution: 0,
-      failureLayer: "binding",
+      matchedSequenceId: "scenario-list-read-validate-read",
+      toolSplContribution: 4 / 5,
+      shortestExact: false,
+      failureLayer: null,
     });
   });
 

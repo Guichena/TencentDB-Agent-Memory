@@ -1,5 +1,9 @@
 /** Entry point: parse config, start server. */
 
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
 if (!process.version.startsWith("v22.")) {
   console.error(`\x1b[31m[ERROR] Node.js version check failed!\x1b[0m`);
   console.error(`\x1b[31m[ERROR] Required Node.js version: v22.x\x1b[0m`);
@@ -32,9 +36,31 @@ import { initSystemUsers } from "./systemUser.js";
 import { checkConnectivity } from "./connectivity.js";
 import { initProxyStorage, getEffectiveBackend } from "./storage/factory.js";
 import { flushPendingWrites, pendingWriteCount } from "./tdai/pending-writes.js";
+import {
+  closeServerAndSealTrace,
+  createToolExecutionTraceSinkFromEnv,
+} from "./tool-execution-trace-sink.js";
+import { createProviderRequestTraceSinkFromEnv } from "./provider-request-trace-sink.js";
 
 const overrides = parseArgv(process.argv);
+const configFilePath = resolve(overrides.configFile || "config.yaml");
+const readConfigFileSha256 = (): string | undefined => {
+  try {
+    return createHash("sha256").update(readFileSync(configFilePath)).digest("hex");
+  } catch {
+    return undefined;
+  }
+};
+const configFileSha256BeforeLoad = readConfigFileSha256();
 const config = buildConfig(overrides);
+const configFileSha256AfterLoad = readConfigFileSha256();
+if (configFileSha256BeforeLoad !== configFileSha256AfterLoad) {
+  throw new Error("Config file changed while MemoryProxy was loading it; refusing an ambiguous startup receipt");
+}
+// Normal production startup historically allows a missing default config.
+// Formal experiments require an explicit receipt and fail closed in their
+// health preflight when this value is absent.
+const experimentConfigFileSha256 = configFileSha256AfterLoad;
 
 // ── Initialize structured logging system ─────────────────────────────────────
 initLogger({
@@ -104,7 +130,24 @@ if (isRequestPrepareActive(config)) {
   });
 }
 
-const app = createApp(config);
+const toolExecutionTraceSink = createToolExecutionTraceSinkFromEnv(process.env);
+const providerRequestTraceSink = createProviderRequestTraceSinkFromEnv(
+  process.env,
+  { processInstanceId: toolExecutionTraceSink.processInstanceId ?? "" },
+);
+const app = createApp(config, {
+  experimentConfigFileSha256,
+  ...(toolExecutionTraceSink.enabled
+    ? {
+      serverInstanceId: toolExecutionTraceSink.processInstanceId,
+      bridgeEntryObserver: toolExecutionTraceSink.entryObserver,
+      bridgeCompletionObserver: toolExecutionTraceSink.completionObserver,
+    }
+    : {}),
+  ...(providerRequestTraceSink.enabled
+    ? { providerRequestObserver: providerRequestTraceSink }
+    : {}),
+});
 
 log.info("server.starting", {
   host: config.server.host,
@@ -132,13 +175,15 @@ log.info("server.starting", {
     : "disabled",
 });
 
-serve(
+const server = serve(
   {
     fetch: app.fetch,
     hostname: config.server.host,
     port: config.server.port,
   },
   ({ address, port }) => {
+    toolExecutionTraceSink.markReady();
+    providerRequestTraceSink.markReady();
     log.info("server.listening", { address, port });
 
     // ── Startup connectivity check (fire-and-forget, never blocks) ───────
@@ -155,6 +200,19 @@ serve(
 // k8s 默认 terminationGracePeriodSeconds=30s，10s 留出充足余量。
 async function gracefulShutdown(signal: "SIGTERM" | "SIGINT"): Promise<void> {
   log.info("server.shutdown", { signal });
+  try {
+    await closeServerAndSealTrace(server, {
+      markFinished: async () => {
+        await Promise.all([
+          toolExecutionTraceSink.markFinished(),
+          providerRequestTraceSink.markFinished(),
+        ]);
+      },
+    });
+  } catch (error) {
+    // A failed drain must not produce a misleading complete trace seal.
+    log.warn("server.shutdown.http_drain_failed", { error: String(error) });
+  }
   const pending = pendingWriteCount();
   if (pending > 0) {
     log.info("server.shutdown.flush_l0", { pending });

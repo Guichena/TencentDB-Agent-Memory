@@ -60,10 +60,10 @@ const AGGREGATE_OUTPUT_FIELDS = [
   "rawInfrastructureFailureCaseCount",
   "failureLayerCounts",
 ] as const;
+const PREREQUISITE_REPAIR_INVARIANT =
+  "The evaluation prefix stops at the earliest Gold terminal whose own arguments, binding, and exact referenced RuntimeToolContract acceptance are valid; a corrected prerequisite before that horizon may complete the chain, while a retry after the horizon cannot repair it.";
 const FORMAL_DATA_BLOCKERS = [
-  "The frozen v1 ToolPromptEvalCase schema still represents allowedSequences as string[][] rather than per-sequence typed predicates.",
-  "The frozen v1 schema still shares expectedFollowupActions and expectedKnowledgeCalls across branches.",
-  "No formal Gold v2 revision/tag or closed skill_view versus skill_view_by_id RuntimeToolContract is available in this branch.",
+  "The exact task1-data-formal-v1.1 freeze is available, but M0 alone cannot make a run formalMetricEligible; R04 Integration must combine scorer facts with runtime, usage, isolation, and infrastructure evidence.",
 ] as const;
 
 interface PublicSignature {
@@ -80,6 +80,7 @@ interface InterfaceManifest {
   publicFunctions: string[];
   publicSignatures: PublicSignature[];
   inputPreconditions: string[];
+  semanticInvariants: string[];
   ownsFormalMetricEligible: boolean;
   formalDataStatus: string;
   formalDataBlockers: string[];
@@ -110,7 +111,7 @@ describe("Measurement v2 M0 frozen artifacts", () => {
       evaluationSchemaVersion: 2,
       publicEntrypoint: "index.ts",
       ownsFormalMetricEligible: false,
-      formalDataStatus: "FORMAL_DATA_BLOCKED",
+      formalDataStatus: "FORMAL_DATA_V1_1_AVAILABLE_METRIC_INELIGIBLE",
       modelRuns: 0,
     });
     expect(Object.keys(publicApi).sort()).toEqual([
@@ -141,6 +142,7 @@ describe("Measurement v2 M0 frozen artifacts", () => {
     expect(score).not.toHaveProperty("formalMetricEligible");
     expect(aggregate).not.toHaveProperty("formalMetricEligible");
     expect(manifest.inputPreconditions.length).toBeGreaterThan(0);
+    expect(manifest.semanticInvariants).toContain(PREREQUISITE_REPAIR_INVARIANT);
     expect(manifest.formalDataBlockers).toEqual([...FORMAL_DATA_BLOCKERS]);
     expect(manifest.syntheticFixture.bytes).toBe(FROZEN_FIXTURE_BYTES);
     expect(fixture.byteLength).toBe(FROZEN_FIXTURE_BYTES);

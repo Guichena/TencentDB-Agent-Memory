@@ -1,0 +1,145 @@
+{
+  "schema_version": "task1.team_gate.v1",
+  "build_id": "build-08",
+  "team_id": "T15",
+  "split": "hidden_test",
+  "status": "passed",
+  "counts": {
+    "total": 40,
+    "memoryPositive": 6,
+    "skillPositive": 6,
+    "knowledgePositive": 3,
+    "pairedNoToolNegative": 15,
+    "naturalCodingNegative": 10,
+    "pairs": 15
+  },
+  "discoveryPositiveCount": 10,
+  "directPositiveCount": 5,
+  "chainDistribution": {
+    "knowledge_tools_list -> knowledge_tools_call": 3,
+    "skill_search -> skill_view_by_id": 3,
+    "skill_view": 2,
+    "skill_view -> skill_files_read": 1,
+    "tdai_atomic_query": 1,
+    "tdai_conversation_search": 2,
+    "tdai_memory_search": 2,
+    "tdai_read_scene": 1
+  },
+  "lunaBatches": [
+    {
+      "batchId": "build-08-T15-memory-trial-01",
+      "path": "generators/parallel/build-08/T15/trials/memory-trial-01",
+      "family": "memory",
+      "stage": "DS05",
+      "generatorModel": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "promptVersion": "task1.luna-batch.v1",
+      "recordCount": 1,
+      "draftSha256": "dd77229f9fdcb77c5d826900bb5494a811bdaf719c6d17a938b54e057dbce3f0",
+      "validatorPassed": true
+    },
+    {
+      "batchId": "build-08-T15-DS05-skill-trial-01",
+      "path": "generators/parallel/build-08/T15/trials/skill-trial-01",
+      "family": "skill",
+      "stage": "DS05",
+      "generatorModel": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "promptVersion": "task1.luna-batch.v1",
+      "recordCount": 1,
+      "draftSha256": "233d33a8801c8c865952f2cc53ef2525c5b74259e18105d58816152b6e0e393e",
+      "validatorPassed": true
+    },
+    {
+      "batchId": "T15-DS05-knowledge-trial-01",
+      "path": "generators/parallel/build-08/T15/trials/knowledge-trial-01",
+      "family": "knowledge",
+      "stage": "DS05",
+      "generatorModel": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "promptVersion": "task1.luna-batch.v1",
+      "recordCount": 1,
+      "draftSha256": "6f384d8732aa79d71c32b8157845895ea0085df0a962f323a07e4d025353765e",
+      "validatorPassed": true
+    },
+    {
+      "batchId": "build-08-T15-memory-expansion-01",
+      "path": "generators/parallel/build-08/T15/batches/memory-expansion-01",
+      "family": "memory",
+      "stage": "DS05",
+      "generatorModel": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "promptVersion": "task1.luna-batch.v1",
+      "recordCount": 5,
+      "draftSha256": "aeec6180010851328d6b1339a05d9f5e7cdfb22f7584cec44f017381eaf48c76",
+      "validatorPassed": true
+    },
+    {
+      "batchId": "build-08-T15-DS05-skill-expansion-01",
+      "path": "generators/parallel/build-08/T15/batches/skill-expansion-01",
+      "family": "skill",
+      "stage": "DS05",
+      "generatorModel": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "promptVersion": "task1.luna-batch.v1",
+      "recordCount": 5,
+      "draftSha256": "447a18b8c411e7513560f4a70e473b72b49c1ac584d3782b7bb4f1a776e83c60",
+      "validatorPassed": true
+    },
+    {
+      "batchId": "T15-DS05-knowledge-expansion-01",
+      "path": "generators/parallel/build-08/T15/batches/knowledge-expansion-01",
+      "family": "knowledge",
+      "stage": "DS05",
+      "generatorModel": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "promptVersion": "task1.luna-batch.v1",
+      "recordCount": 2,
+      "draftSha256": "13664e4f735737ac467ee41e55780b7dac5a53eb52b462ddbbd38d5ae8cd5636",
+      "validatorPassed": true
+    },
+    {
+      "batchId": "T15-DS05-natural-negative-01",
+      "path": "generators/parallel/build-08/T15/batches/natural-negative-01",
+      "family": "natural-negative",
+      "stage": "DS05",
+      "generatorModel": "gpt-5.6-luna",
+      "reasoningEffort": "high",
+      "promptVersion": "task1.luna-batch.v1",
+      "recordCount": 10,
+      "draftSha256": "8a7f9f4e5cfc253d6d31bee47ff048bcffdefe59453ab9ee09fb9a667a7f4bcc",
+      "validatorPassed": true
+    }
+  ],
+  "externalSkillSources": {
+    "repositoryUrl": "https://github.com/github/awesome-copilot",
+    "commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+    "license": "MIT",
+    "skillFiles": 18,
+    "resourceFiles": 1
+  },
+  "assetCounts": {
+    "l0": 12,
+    "l1": 16,
+    "l2": 5,
+    "l3": 1,
+    "skills": 18,
+    "knowledge": 3
+  },
+  "solChecks": {
+    "uniqueInformationGap": "passed",
+    "completeMinimalChains": "passed",
+    "pairSingleVariable": "passed",
+    "assetVisibility": "passed",
+    "realSkillDistractors": "passed",
+    "retrievalPressure": "passed",
+    "providerLeakage": "passed",
+    "sourceHashesAndLicense": "passed"
+  },
+  "prohibitedValidation": {
+    "officialPatchUsed": false,
+    "upstreamDependenciesInstalled": false,
+    "upstreamTestsRun": false,
+    "formalModelEvaluationRun": false
+  }
+}
