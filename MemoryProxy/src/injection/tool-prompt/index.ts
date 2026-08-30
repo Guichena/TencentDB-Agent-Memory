@@ -44,11 +44,16 @@ export {
   type ToolPromptSurfacePlan,
 } from "./surface-coordinator.js";
 export {
+  buildToolPromptPlaneSourceMap,
   buildToolPromptPlaneInventory,
   TOOL_PROMPT_PLANES,
+  type PromptPlaneByteSpan,
+  type PromptPlaneByteSpanInput,
   type PromptUnitPlaneMembership,
+  type PromptUnitPlanePartition,
   type ToolPromptPlane,
   type ToolPromptPlaneInventory,
+  type ToolPromptPlaneSourceMap,
 } from "./three-plane.js";
 export {
   TOOL_PROMPT_FAMILIES,
