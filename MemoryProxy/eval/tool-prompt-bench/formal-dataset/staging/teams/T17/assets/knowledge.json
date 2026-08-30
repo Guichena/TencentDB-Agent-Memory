@@ -1,0 +1,149 @@
+{
+  "schema_version": "task1.team_knowledge_assets.v2",
+  "team_id": "T17",
+  "knowledge": [
+    {
+      "assetId": "T17-KNW-01",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-KNOWLEDGE-WIKI-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "wiki",
+      "name": "Aurora architecture decisions",
+      "summary": "Aurora token、组件与可访问性架构决策索引；摘要不包含目标影响清单。",
+      "snapshotSha256": "c0a6d4852d8b991801e92e5cac40187ed674b9b6a0f83171fdfa46f85941a52c",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t17-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "81d5223c2a798b442d42d24cf6cee4fd21400d9f27676d8e796f32a7a7688816"
+    },
+    {
+      "assetId": "T17-KNW-02",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-KNOWLEDGE-WIKI-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "wiki",
+      "name": "Helios rendering decisions",
+      "summary": "Helios SSR、streaming 与 hydration 设计决策索引；摘要不包含具体归属依据。",
+      "snapshotSha256": "439f3662a23d39b1031fd3a37e11a168fcac70100978e5859a3dd26acca7954c",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t17-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "d30df14d733fa8401848cc61b2dcf8a0639591fdcdf95439c514abac057fe549"
+    },
+    {
+      "assetId": "T17-KNW-03",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-KNOWLEDGE-WIKI-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "wiki",
+      "name": "Foundry build decisions",
+      "summary": "Foundry chunk、模块边界与构建决策索引；摘要不包含目标调用关系。",
+      "snapshotSha256": "d17760d9526e6f23cb4edf0ffe2687e671d8b80dfc484af94c56d568dfce2c4a",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t17-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "e1574f742dd64741c614a60b9b85bc1016240c62520ce6092f94c9b405e98404"
+    }
+  ],
+  "fixtures": [
+    {
+      "assetId": "T17-KNW-01",
+      "name": "Aurora architecture decisions",
+      "summary": "Aurora token、组件与可访问性架构决策索引；摘要不包含目标影响清单。",
+      "tools": [
+        {
+          "name": "search",
+          "requiredParams": [
+            "query"
+          ]
+        },
+        {
+          "name": "read_page",
+          "requiredParams": [
+            "page_id"
+          ]
+        }
+      ],
+      "call": {
+        "toolName": "search",
+        "params": {
+          "query": "TokenRegistry impact inventory"
+        },
+        "response": {
+          "ruleText": "TokenRegistry 注册定义位于 packages/tokens/src/registry.ts；主题装配入口 packages/theme/src/createTheme.ts；组件消费者为 packages/components/src/Button/styles.ts、packages/components/src/Input/styles.ts、packages/components/src/Select/styles.ts；发布产物为 packages/tokens/dist/aurora.css；文档预览入口为 apps/docs/src/theme/preview.tsx；验证范围包括 packages/tokens/test/registry.test.ts、packages/theme/test/createTheme.test.ts、packages/components/test/token-contract.test.ts。"
+        }
+      }
+    },
+    {
+      "assetId": "T17-KNW-02",
+      "name": "Helios rendering decisions",
+      "summary": "Helios SSR、streaming 与 hydration 设计决策索引；摘要不包含具体归属依据。",
+      "tools": [
+        {
+          "name": "search",
+          "requiredParams": [
+            "query"
+          ]
+        },
+        {
+          "name": "read_page",
+          "requiredParams": [
+            "page_id"
+          ]
+        }
+      ],
+      "call": {
+        "toolName": "search",
+        "params": {
+          "query": "hydration boundary ownership rationale"
+        },
+        "response": {
+          "ruleText": "SSR platform team 负责 hydration boundary，因为该团队同时控制 server stream checkpoints 与 client hydration handoff，可避免跨团队变更造成边界不一致。"
+        }
+      }
+    },
+    {
+      "assetId": "T17-KNW-03",
+      "name": "Foundry build decisions",
+      "summary": "Foundry chunk、模块边界与构建决策索引；摘要不包含目标调用关系。",
+      "tools": [
+        {
+          "name": "search",
+          "requiredParams": [
+            "query"
+          ]
+        },
+        {
+          "name": "read_page",
+          "requiredParams": [
+            "page_id"
+          ]
+        }
+      ],
+      "call": {
+        "toolName": "search",
+        "params": {
+          "query": "createChunkPlan direct callers"
+        },
+        "response": {
+          "ruleText": "createChunkPlan 的直接调用者是 emitAsyncChunk（packages/foundry/chunks/emitter.ts）和 planEntryChunks（packages/foundry/chunks/entry.ts）。"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+--- a/plugins/accessibility-compliance/skills/screen-reader-testing/SKILL.md
++++ b/adapted/screen-reader-testing/SKILL.md
+@@ -5,0 +5,22 @@
++
++
++## TDAI Host Routing
++
++Load this package with `skill_view`. If the manifest points to a supporting file, read that file with `skill_files_read`; do not install or execute source-repository dependencies for Task 1.
++
++Use when:
++- Validating screen reader compatibility
++- Testing ARIA implementations
++- Debugging assistive technology issues
++- Verifying form accessibility
++- Testing dynamic content announcements
++- Ensuring navigation accessibility
++
++Do not use when:
++- Don't assume one screen reader is enough
++- Don't ignore mobile
++- Don't test only the happy path
++- Don't skip dynamic content
++- Don't rely on visual testing
++
++The upstream technical workflow below is preserved unchanged.

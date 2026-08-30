@@ -1,0 +1,128 @@
+{
+  "schema_version": "task1.knowledge_assets_draft.v1",
+  "team_id": "T17",
+  "generated_at": "2026-08-31T12:30:00+08:00",
+  "resources": [
+    {
+      "asset_id": "T17-KNW-01",
+      "status": "ready",
+      "type": "code_graph",
+      "name": "Aurora UI code graph",
+      "match": "internal/aurora-ui",
+      "summary": "Aurora 组件与 token 仓库的冻结结构索引；摘要不包含目标符号的影响范围。",
+      "tools": ["search", "explore", "node", "callers", "callees", "impact"],
+      "tool_list": [
+        {"name": "search", "required_params": ["query"]},
+        {"name": "explore", "required_params": ["path"]},
+        {"name": "node", "required_params": ["symbol"]},
+        {"name": "callers", "required_params": ["symbol"]},
+        {"name": "callees", "required_params": ["symbol"]},
+        {"name": "impact", "required_params": ["symbol"]}
+      ],
+      "tool_fixtures": [
+        {
+          "tool_name": "impact",
+          "request": {"symbol": "TokenRegistry"},
+          "response": {"rule_text": "TokenRegistry 的影响范围限于 Aurora token 注册与组件导出关系。"}
+        }
+      ],
+      "distractor_content": {
+        "title": "Aurora token registration note",
+        "content": "该图谱的邻近记录只说明 token 注册与组件导出关系，不包含 Helios hydration 归属或 Foundry chunk 调用关系。"
+      },
+      "minimal_synthetic_query_result": {
+        "successful_query": {
+          "tool_name": "impact",
+          "params": {"symbol": "TokenRegistry"},
+          "result": {"rule_text": "TokenRegistry 的影响范围限于 Aurora token 注册与组件导出关系。"}
+        },
+        "same_domain_distractor": {
+          "title": "Aurora token registration note",
+          "content": "该图谱的邻近记录只说明 token 注册与组件导出关系。"
+        }
+      }
+    },
+    {
+      "asset_id": "T17-KNW-02",
+      "status": "ready",
+      "type": "wiki",
+      "name": "Helios rendering decisions",
+      "about": "Helios SSR、streaming 与 hydration 设计决策索引。",
+      "summary": "Helios 渲染边界与决策的只读条目；摘要不包含具体归属依据。",
+      "tools": ["search", "read_page"],
+      "tool_list": [
+        {"name": "search", "required_params": ["query"]},
+        {"name": "read_page", "required_params": ["page_id"]}
+      ],
+      "tool_fixtures": [
+        {
+          "tool_name": "search",
+          "request": {"query": "hydration boundary ownership rationale"},
+          "response": {
+            "rule_text": "补充当前决定：该决定由 SSR platform team 负责 hydration boundary，因为该团队同时控制 server stream checkpoints 与 client hydration handoff，可避免跨团队变更造成边界不一致。"
+          }
+        }
+      ],
+      "distractor_content": {
+        "title": "Helios fallback shell note",
+        "content": "同域另一条记录只说明 streaming fallback shell 的观察窗口，不包含 hydration boundary 的归属依据。"
+      },
+      "minimal_synthetic_query_result": {
+        "successful_query": {
+          "tool_name": "search",
+          "params": {"query": "hydration boundary ownership rationale"},
+          "result": {
+            "rule_text": "补充当前决定：该决定由 SSR platform team 负责 hydration boundary，因为该团队同时控制 server stream checkpoints 与 client hydration handoff，可避免跨团队变更造成边界不一致。"
+          }
+        },
+        "same_domain_distractor": {
+          "title": "Helios fallback shell note",
+          "content": "同域另一条记录只说明 streaming fallback shell 的观察窗口。"
+        }
+      }
+    },
+    {
+      "asset_id": "T17-KNW-03",
+      "status": "ready",
+      "type": "code_graph",
+      "name": "Foundry web build graph",
+      "match": "internal/foundry-web-build",
+      "summary": "Foundry 构建、chunk 与模块边界的冻结结构索引；摘要不包含符号调用关系。",
+      "tools": ["search", "explore", "node", "callers", "callees", "impact"],
+      "tool_list": [
+        {"name": "search", "required_params": ["query"]},
+        {"name": "explore", "required_params": ["path"]},
+        {"name": "node", "required_params": ["symbol"]},
+        {"name": "callers", "required_params": ["symbol"]},
+        {"name": "callees", "required_params": ["symbol"]},
+        {"name": "impact", "required_params": ["symbol"]}
+      ],
+      "tool_fixtures": [
+        {
+          "tool_name": "callers",
+          "request": {"symbol": "createChunkPlan"},
+          "response": {
+            "rule_text": "补充当前调用关系：createChunkPlan 的直接调用者是 emitAsyncChunk（packages/foundry/chunks/emitter.ts）和 planEntryChunks（packages/foundry/chunks/entry.ts）。"
+          }
+        }
+      ],
+      "distractor_content": {
+        "title": "Foundry chunk naming note",
+        "content": "同域另一条记录只说明 chunk 命名规则与入口排序，不包含 createChunkPlan 的调用关系。"
+      },
+      "minimal_synthetic_query_result": {
+        "successful_query": {
+          "tool_name": "callers",
+          "params": {"symbol": "createChunkPlan"},
+          "result": {
+            "rule_text": "补充当前调用关系：createChunkPlan 的直接调用者是 emitAsyncChunk（packages/foundry/chunks/emitter.ts）和 planEntryChunks（packages/foundry/chunks/entry.ts）。"
+          }
+        },
+        "same_domain_distractor": {
+          "title": "Foundry chunk naming note",
+          "content": "同域另一条记录只说明 chunk 命名规则与入口排序。"
+        }
+      }
+    }
+  ]
+}

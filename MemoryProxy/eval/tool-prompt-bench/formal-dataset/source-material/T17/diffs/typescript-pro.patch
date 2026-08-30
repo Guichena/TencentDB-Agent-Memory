@@ -1,0 +1,23 @@
+--- a/skills/typescript-pro/SKILL.md
++++ b/adapted/typescript-pro/SKILL.md
+@@ -15,0 +15,20 @@
++
++
++## TDAI Host Routing
++
++Load this package with `skill_view`. If the manifest points to a supporting file, read that file with `skill_files_read`; do not install or execute source-repository dependencies for Task 1.
++
++Use when:
++- Building TypeScript applications requiring advanced generics, conditional or mapped types, discriminated unions, monorepo setup, or full-stack type safety with tRPC
++
++Do not use when:
++- Do not use explicit any without justification
++- Do not skip type coverage for public APIs
++- Do not mix type-only and value imports
++- Do not disable strict null checks
++- Do not use as assertions without necessity
++- Do not ignore compiler performance warnings
++- Do not skip declaration file generation
++- Do not use enums when const objects with as const are appropriate
++
++The upstream technical workflow below is preserved unchanged.

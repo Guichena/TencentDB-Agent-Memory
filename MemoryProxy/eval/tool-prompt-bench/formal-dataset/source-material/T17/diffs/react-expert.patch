@@ -1,0 +1,27 @@
+--- a/skills/react-expert/SKILL.md
++++ b/adapted/react-expert/SKILL.md
+@@ -15,0 +15,24 @@
++
++
++## TDAI Host Routing
++
++Load this package with `skill_view`. If the manifest points to a supporting file, read that file with `skill_files_read`; do not install or execute source-repository dependencies for Task 1.
++
++Use when:
++- Building new React components or features
++- Implementing state management (local, Context, Redux, Zustand)
++- Optimizing React performance
++- Setting up React project architecture
++- Working with React 19 Server Components
++- Implementing forms with React 19 actions
++- Data fetching patterns with TanStack Query or use()
++
++Do not use when:
++- Do not mutate state directly
++- Do not use array index as key for dynamic lists
++- Do not create functions inside JSX when avoidable
++- Do not forget useEffect cleanup
++- Do not ignore React strict mode warnings
++- Do not skip error boundaries in production
++
++The upstream technical workflow below is preserved unchanged.

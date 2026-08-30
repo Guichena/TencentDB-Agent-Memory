@@ -1,0 +1,108 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T17-MEM-BULK-01",
+  "stage": "DS03",
+  "team_id": "T17",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T17-MEM-BULK-02",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"我们在 Helios 的流式渲染事故后要整理复盘记录，重点是服务端输出与浏览器接管之间的边界。"},
+        {"role":"assistant","content":"初步看过日志：首段 HTML 能显示，但接管阶段会出现组件树短暂不一致。"},
+        {"role":"user","content":"第一次排查怀疑是缓存把旧的序列化状态混进了响应。"},
+        {"role":"assistant","content":"后来复现实验没有支持缓存假设，问题只在第二段流到达时的顺序变化。"},
+        {"role":"user","content":"我们也排除了浏览器扩展和网络重试，事故时间线已经按批次补齐。"},
+        {"role":"assistant","content":"评审人要求最终记录采用批准过的、可以直接引用的诊断措辞，而不是泛化描述。"},
+        {"role":"user","content":"这和 Helios 的另一个 RSC 边界讨论容易混淆，后者没有发生线上事故。"},
+        {"role":"assistant","content":"明白，当前要找的是事故复盘里最后批准的那一句精确表述。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请找出 Helios hydration 事故复盘中最终批准的精确诊断措辞。",
+      "positive": {"delta_message":{"role":"user","content":"我只记得结论与流式边界有关，无法复述原句；请从历史讨论中找回原话。"},"private_proposal":{"unique_information_gap":"事故复盘最后批准的精确诊断句不在当前上下文","route":"memory","target_asset_ids":["T17-L0-02"],"allowed_sequence_candidates":[["tdai_conversation_search"]],"stop_after_candidate":"命中事故复盘的批准原句后停止"}},
+      "negative": {"delta_message":{"role":"assistant","content":"复盘批准的原句是：根因不是服务端 HTML 缺失，而是客户端在流式边界到达前读取了未稳定的序列化状态，导致 hydration 在第二段 payload 上发生顺序漂移。"},"private_proposal":{"route":"none","why_current_context_is_sufficient":"追加消息已给出要求的完整批准措辞"}},
+      "visible_distractor_ids_author_only":["T17-L0-06","T17-L0-09","T17-L1-07"],
+      "controlled_delta_note":"两侧共享同一事故背景；正例只表达记忆缺口，负例仅追加批准原句。",
+      "source_fact_map":[{"claim":"Helios hydration 事故复盘的批准诊断措辞","source_id":"T17-L0-02","locator":"事故复盘会话的结论消息"}],
+      "sol_review_questions":["正例是否只缺原句而不缺事故主题？","负例是否仅由追加消息补足同一原句？"]
+    },
+    {
+      "draft_pair_id":"T17-MEM-BULK-03",
+      "external_source_ids":[],"synthetic_scope":["team","project","history"],"difficulty":"hard","context_bucket":"medium_6_to_10",
+      "shared_context_messages":[
+        {"role":"user","content":"Foundry 最近在收敛异步 chunk 的体积预算，构建图里有几个近似的数字。"},
+        {"role":"assistant","content":"早期提案把所有异步 chunk 都限制在同一个较小上限，导致本地化入口的拆分失败。"},
+        {"role":"user","content":"我们随后将普通业务 chunk 和只含 locale 的 chunk 分开讨论。"},
+        {"role":"assistant","content":"评审同意保留冻结预算，同时给极少数不重复加载路由的本地化 chunk 留例外。"},
+        {"role":"user","content":"不要把 Foundry 与 Pulse 的资源优先级实验混在一起；那是性能项目。"},
+        {"role":"assistant","content":"好的，这里只关心异步 chunk 的 gzip 体积门槛和例外条件。"},
+        {"role":"user","content":"我记得最终数字写在一次记忆里，但当前讨论没有列出数字。"},
+        {"role":"assistant","content":"需要精确的冻结值，不能用早期提案的数字代替。"}
+      ],
+      "changed_message_index":8,"query":"请回忆 Foundry 异步 chunk 的冻结体积预算，以及允许例外的完整条件。",
+      "positive":{"delta_message":{"role":"user","content":"我只记得有 locale 例外，具体 gzip 数字和不重复加载的条件想不起来了。"},"private_proposal":{"unique_information_gap":"冻结体积值与唯一例外条件缺失","route":"memory","target_asset_ids":["T17-L1-11"],"allowed_sequence_candidates":[["tdai_memory_search"]],"stop_after_candidate":"返回 Foundry chunk 冻结规则后停止"}},
+      "negative":{"delta_message":{"role":"assistant","content":"冻结规则是：每个异步 chunk 不超过 42 KB gzip；仅 locale-only chunk 在确认不会复制任何 eager route 依赖时可放宽到 56 KB。"},"private_proposal":{"route":"none","why_current_context_is_sufficient":"追加消息同时给出预算和唯一例外条件"}},
+      "visible_distractor_ids_author_only":["T17-L0-04","T17-L1-05","T17-L1-13"],"controlled_delta_note":"保留同一 Foundry 构建演化与跨项目干扰，只改变是否提供冻结数值。","source_fact_map":[{"claim":"Foundry 异步 chunk 冻结预算与 locale-only 例外","source_id":"T17-L1-11","locator":"构建边界决策记忆"}],"sol_review_questions":["是否同时保留 42 KB 与 56 KB 两个精确值？","例外是否限定为不复制 eager route 依赖？"]
+    },
+    {
+      "draft_pair_id":"T17-MEM-BULK-04",
+      "external_source_ids":[],"synthetic_scope":["team","project","conversation","history"],"difficulty":"hard","context_bucket":"medium_6_to_10",
+      "shared_context_messages":[
+        {"role":"user","content":"Aurora combobox 的屏幕阅读器兼容性讨论有过几次改口，我在整理 fallback 行为。"},
+        {"role":"assistant","content":"最初有人建议直接依赖 live region，但测试显示焦点移动时会重复播报。"},
+        {"role":"user","content":"后来提案改成 aria-activedescendant，并为旧实现准备回退。"},
+        {"role":"assistant","content":"有一版把 roving tabindex 放在首位，评审认为那不是默认路径。"},
+        {"role":"user","content":"另一个 token 兼容会话只讨论颜色，不要和 combobox 的读屏顺序混淆。"},
+        {"role":"assistant","content":"当前寻找的是兼容讨论中原始、经评审保留的回退顺序。"},
+        {"role":"user","content":"我记得 live region 仍然被提到，但不是首选方案。"},
+        {"role":"assistant","content":"对，需要找回三层顺序及 live region 的位置。"}
+      ],
+      "changed_message_index":8,"query":"Aurora combobox 的屏幕阅读器兼容讨论最终保留的原始回退顺序是什么？",
+      "positive":{"delta_message":{"role":"user","content":"我只能确认 live region 不是主路径，具体三层顺序需要找历史原话。"},"private_proposal":{"unique_information_gap":"combobox 兼容讨论的精确回退顺序缺失","route":"memory","target_asset_ids":["T17-L0-08"],"allowed_sequence_candidates":[["tdai_conversation_search"]],"stop_after_candidate":"找到兼容讨论的原始顺序后停止"}},
+      "negative":{"delta_message":{"role":"assistant","content":"评审保留的顺序是：先使用 aria-activedescendant；失效时回退到 roving tabindex；最后才使用静态列表文本，live region 不作为主回退。"},"private_proposal":{"route":"none","why_current_context_is_sufficient":"追加消息给出完整三层顺序及 live region 限制"}},
+      "visible_distractor_ids_author_only":["T17-L0-01","T17-L0-05","T17-L1-02"],"controlled_delta_note":"同一 Aurora 讨论含早期建议与改口；负例仅添加最终顺序。","source_fact_map":[{"claim":"Aurora combobox 屏幕阅读器回退顺序","source_id":"T17-L0-08","locator":"可访问性兼容讨论的评审结论"}],"sol_review_questions":["是否明确 live region 不是主回退？","是否保留 aria-activedescendant、roving tabindex、静态文本的顺序？"]
+    },
+    {
+      "draft_pair_id":"T17-MEM-BULK-05",
+      "external_source_ids":[],"synthetic_scope":["team","project","history"],"difficulty":"hard","context_bucket":"short_2_to_4",
+      "shared_context_messages":[
+        {"role":"user","content":"我们要核对一段时间窗内 instruction 类型的浏览器兼容下限。"},
+        {"role":"assistant","content":"这项核对属于 Aurora 的跨浏览器契约，不是 Pulse 的性能门槛。"},
+        {"role":"user","content":"之前有人把较新的浏览器版本写进表格，后来评审要求按指定时间窗的实际下限。"},
+        {"role":"assistant","content":"当前上下文没有日期和四个浏览器的精确版本。"},
+        {"role":"user","content":"请不要用今天的浏览器版本推断那次记录。"},
+        {"role":"assistant","content":"需要找到时间窗对应的 instruction 兼容下限原始记录。"}
+      ],
+      "changed_message_index":6,"query":"指定时间窗内，instruction 类型支持的浏览器兼容下限分别是什么？",
+      "positive":{"delta_message":{"role":"user","content":"我只知道这是历史窗口的下限，日期和版本号都缺失，请核对原记录。"},"private_proposal":{"unique_information_gap":"指定时间窗及 instruction 四浏览器版本下限缺失","route":"memory","target_asset_ids":["T17-L1-15"],"allowed_sequence_candidates":[["tdai_atomic_query"]],"stop_after_candidate":"返回时间窗和兼容下限后停止"}},
+      "negative":{"delta_message":{"role":"assistant","content":"记录的时间窗是 2026-08-12 至 2026-08-18；instruction 的兼容下限为 Chromium 124、Firefox 125、Safari 17.5、Edge 124。"},"private_proposal":{"route":"none","why_current_context_is_sufficient":"追加消息同时补足时间窗和所有版本下限"}},
+      "visible_distractor_ids_author_only":["T17-L1-04","T17-L1-09","T17-L0-03"],"controlled_delta_note":"同一浏览器契约核对仅缺时间窗与精确版本，负例只补齐它们。","source_fact_map":[{"claim":"instruction 类型历史浏览器兼容下限","source_id":"T17-L1-15","locator":"指定时间窗兼容记忆"}],"sol_review_questions":["日期是否精确为 2026-08-12 至 2026-08-18？","四个浏览器版本是否完整且未混入当前版本？"]
+    },
+    {
+      "draft_pair_id":"T17-MEM-BULK-06",
+      "external_source_ids":[],"synthetic_scope":["team","project","history"],"difficulty":"hard","context_bucket":"long_12_to_18",
+      "shared_context_messages":[
+        {"role":"user","content":"Helios 准备分批打开流式边界，想先把 rollout 检查流程整理出来。"},
+        {"role":"assistant","content":"第一版计划把所有边界一次性打开，后来因为 hydration 风险撤回。"},
+        {"role":"user","content":"第二版改成按路由分批，并要求每批有独立观测窗口。"},
+        {"role":"assistant","content":"发布前需要同时核对服务端标记、客户端版本和回退开关。"},
+        {"role":"user","content":"这次不是要事故原句，而是 rollout 场景文档里的完整检查清单。"},
+        {"role":"assistant","content":"场景摘要只说明分批启用和风险控制，具体条目没有出现在当前上下文。"},
+        {"role":"user","content":"相邻的 RSC ownership 记录也提到边界，但它没有 rollout 清单。"},
+        {"role":"assistant","content":"要按指定场景路径读取正文，不能用摘要推演缺失条目。"},
+        {"role":"user","content":"检查项应覆盖预检、灰度、监控、回退和收尾。"},
+        {"role":"assistant","content":"目前仍没有每一阶段的完整顺序和停止条件。"},
+        {"role":"user","content":"请保持这次查询与 Helios streaming rollout 文档绑定。"},
+        {"role":"assistant","content":"收到，目标是场景正文中的完整 checklist，而非事故诊断。"}
+      ],
+      "changed_message_index":12,"query":"请给出 Helios 流式边界分批启用的完整检查清单，并保持原有阶段顺序。",
+      "positive":{"delta_message":{"role":"user","content":"我知道需要分批、观测和回退，但正文中的逐项清单仍缺失；请核对场景记录。"},"private_proposal":{"unique_information_gap":"分批 rollout 场景正文的完整检查项缺失","route":"memory","target_asset_ids":["T17-L2-04"],"allowed_sequence_candidates":[["tdai_read_scene"]],"stop_after_candidate":"读取指定 rollout 场景正文并得到完整清单后停止"}},
+      "negative":{"delta_message":{"role":"assistant","content":"清单顺序为：预检——确认服务端标记、客户端版本、回退开关和指标基线；灰度——每批只开一组路由并保留旧路径；观测——连续观察两个窗口，核对 hydration mismatch、错误率和延迟；回退——任一指标越线立即关闭开关、清空该批缓存并记录原因；收尾——通过两轮窗口后扩大下一批，并在全量后归档边界名单与复盘链接。"},"private_proposal":{"route":"none","why_current_context_is_sufficient":"追加消息完整提供五阶段清单及顺序"}},
+      "visible_distractor_ids_author_only":["T17-L2-01","T17-L0-02","T17-L1-12"],"controlled_delta_note":"正负共享相同 rollout 演化和路径假设；负例仅追加正文清单。","source_fact_map":[{"claim":"Helios streaming hydration rollout 完整检查清单","source_id":"T17-L2-04","locator":"projects/helios/streaming-hydration-rollout.md 正文"}],"sol_review_questions":["负例是否覆盖预检、灰度、观测、回退、收尾五阶段？","摘要是否不提前泄露具体条目？"]
+    }
+  ]
+}

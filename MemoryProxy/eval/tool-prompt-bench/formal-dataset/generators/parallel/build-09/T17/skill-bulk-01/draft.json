@@ -1,0 +1,204 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T17-SKL-BULK-01",
+  "stage": "DS03",
+  "team_id": "T17",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T17-SKL-01",
+      "external_source_ids": ["T17-SKL-04"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "medium",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Helios 正在把商品详情页迁到 App Router 的服务端渲染路由。"},
+        {"role": "assistant", "content": "页面包含慢速商品数据、少量交互按钮，而且当前没有统一的加载占位。"},
+        {"role": "user", "content": "我们希望先确定组件边界和数据获取位置，再处理渐进式输出。"}
+      ],
+      "changed_message_index": 3,
+      "query": "现在应按什么顺序落地这页，并避免哪些组件边界和加载状态错误？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请给出这类路由的实施要点；我缺少默认组件类型、数据获取放置、慢数据的渐进输出和加载状态安排。"},
+        "private_proposal": {
+          "unique_information_gap": "需要该路由指南中关于默认服务端组件、就地获取数据、Suspense 流式输出、加载边界及客户端叶子边界的完整流程。",
+          "route": "skill",
+          "target_asset_ids": ["T17-SKL-04"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "skill_view 返回完整指南后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充已确认的流程：默认先采用服务端组件；在使用处就地获取数据；慢数据用 Suspense 边界实现流式输出；为异步路由提供 loading.tsx 或 Suspense 加载状态；只有需要交互、hooks 或浏览器 API 时才在叶子边界加入客户端组件。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经逐项给出组件默认值、数据获取位置、流式边界、加载状态和客户端边界，因此不需要外部技能指导。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T17-SKL-03", "T17-SKL-06", "T17-SKL-13"],
+      "controlled_delta_note": "Positive 只指出 App Router 实施信息缺口；Negative 仅追加原文的组件、数据获取、Suspense 与加载状态流程，query 保持不变。",
+      "source_fact_map": [
+        {"claim": "指南适用于 App Router、服务端组件、streaming 与数据获取。", "source_id": "T17-SKL-04", "locator": "frontmatter.description; When to Use This Skill"},
+        {"claim": "默认从服务端组件开始，并仅在需要时添加客户端边界。", "source_id": "T17-SKL-04", "locator": "Best Practices > Do's"},
+        {"claim": "应就地获取数据、使用 Suspense，并提供 loading.tsx 或 Suspense 加载状态。", "source_id": "T17-SKL-04", "locator": "Best Practices > Do's and Don'ts"}
+      ],
+      "sol_review_questions": []
+    },
+    {
+      "draft_pair_id": "T17-SKL-02",
+      "external_source_ids": ["T17-SKL-05"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "medium",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Atlas 的筛选面板同时维护本地输入、跨页面用户偏好和远端结果缓存。"},
+        {"role": "assistant", "content": "当前实现把远端结果复制进全局对象，筛选变化还会让无关组件重复渲染。"},
+        {"role": "user", "content": "这次要重新划分状态边界，并保留乐观更新的可回滚性。"}
+      ],
+      "changed_message_index": 3,
+      "query": "请给出状态分类、方案选择和更新实现的落地顺序？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请给出实施方案；我缺少本地、全局、服务端和 URL 状态的分类规则，也缺少选择存储方案、避免重复缓存和减少重渲染的具体原则。"},
+        "private_proposal": {
+          "unique_information_gap": "需要状态管理指南中对状态类别、方案选择、就近放置、选择器、不可变更新及服务端状态分离的完整建议。",
+          "route": "skill",
+          "target_asset_ids": ["T17-SKL-05"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "skill_view 返回完整指南后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充已确认的原则：组件专属 UI 状态留在就近位置；跨组件共享状态可选 Redux Toolkit、Zustand 或 Jotai；远端数据与缓存交给 React Query、SWR 或 RTK Query；服务端交互重时采用 React Query 加轻量客户端状态；用选择器减少无关重渲染，扁平化数据、使用不可变更新，不重复存储服务端状态，也不把派生数据存起来。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经给出状态分类对应的方案、边界放置和更新原则，足以完成重构决策。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T17-SKL-03", "T17-SKL-13", "T17-SKL-16"],
+      "controlled_delta_note": "Positive 只留下状态分类与选型缺口；Negative 仅追加原文的分类、方案选择、selector、不可变更新和服务端状态分离内容，query 保持不变。",
+      "source_fact_map": [
+        {"claim": "指南覆盖 Redux Toolkit、Zustand、Jotai、React Query 及状态同步。", "source_id": "T17-SKL-05", "locator": "frontmatter.description; When to Use This Skill"},
+        {"claim": "本地、全局、服务端、URL 和表单状态有不同类别与方案。", "source_id": "T17-SKL-05", "locator": "Core Concepts > State Categories"},
+        {"claim": "应就近放置、使用 selectors、不可变更新，并分离服务端与客户端状态。", "source_id": "T17-SKL-05", "locator": "Best Practices"}
+      ],
+      "sol_review_questions": []
+    },
+    {
+      "draft_pair_id": "T17-SKL-04",
+      "external_source_ids": ["T17-SKL-08"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Aurora 的数据卡片在窄屏出现横向溢出，宽屏调整字号后又破坏了卡片内部层次。"},
+        {"role": "assistant", "content": "同一组件会被放进不同宽度的面板，移动端按钮也常常难以准确点击。"},
+        {"role": "user", "content": "请先定布局策略，再确定断点、文字间距和媒体处理方式。"}
+      ],
+      "changed_message_index": 3,
+      "query": "这次响应式改造应采用什么设计顺序和检查重点？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "我缺少从移动端起步、按内容定断点、组件级适配、流式排版、真实设备验证和触控尺寸检查的完整流程，请补齐。"},
+        "private_proposal": {
+          "unique_information_gap": "需要响应式布局指南中关于 mobile-first、content breakpoints、container queries、fluid values、真实设备、性能、触控目标和逻辑属性的流程。",
+          "route": "skill",
+          "target_asset_ids": ["T17-SKL-08"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view"]],
+          "stop_after_candidate": "skill_view 返回完整指南后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充已确认的流程：先写移动端样式，再按内容变化设置断点；组件级变化使用容器查询；字号和间距优先使用流式值；在真实设备上测试；优化图片并懒加载屏外内容；移动端触控目标至少 44x44px；国际化布局使用 inline/block 逻辑属性；同时检查横向溢出、固定宽度、移动浏览器视口高度、文字过小、图片变形和覆盖层堆叠。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已完整给出布局顺序、断点策略、组件适配、性能、触控与常见问题检查项。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T17-SKL-06", "T17-SKL-07", "T17-SKL-09"],
+      "controlled_delta_note": "Positive 只指出响应式流程缺口；Negative 仅追加原文的 mobile-first、内容断点、容器查询、流式值、设备测试与常见问题内容，query 保持不变。",
+      "source_fact_map": [
+        {"claim": "指南覆盖容器查询、流式排版、CSS Grid 与 mobile-first 断点。", "source_id": "T17-SKL-08", "locator": "frontmatter.description"},
+        {"claim": "应从移动端开始并按内容而非设备设置断点。", "source_id": "T17-SKL-08", "locator": "Best Practices 1-2"},
+        {"claim": "应使用流式值、容器查询、真实设备测试、图片优化、44x44px 触控目标和逻辑属性。", "source_id": "T17-SKL-08", "locator": "Best Practices 3-8"}
+      ],
+      "sol_review_questions": []
+    },
+    {
+      "draft_pair_id": "T17-SKL-05",
+      "external_source_ids": ["T17-SKL-10"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Aurora 要上线一个包含自定义下拉框、表单错误和动态通知的设置页。"},
+        {"role": "assistant", "content": "视觉稿已完成，但键盘用户无法稳定操作，放大后部分内容也会被截断。"},
+        {"role": "user", "content": "我们需要一套从实现到人工和自动检查的可访问性方案。"}
+      ],
+      "changed_message_index": 3,
+      "query": "请按优先级列出实现和验证步骤，确保这个页面对辅助技术可用？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请补齐方案；我缺少语义元素、键盘优先、焦点、文本替代、缩放、动态播报、用户偏好和多种验证方式的完整检查顺序。"},
+        "private_proposal": {
+          "unique_information_gap": "需要可访问性实施指南中从语义 HTML、键盘交互、焦点、文本替代、缩放、live regions、偏好支持到自动/人工测试的流程。",
+          "route": "skill",
+          "target_asset_ids": ["T17-SKL-10"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view"]],
+          "stop_after_candidate": "skill_view 返回完整指南后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充已确认的流程：优先使用语义 HTML；先按键盘设计并保留可见焦点；为所有非文本内容提供文字替代；支持 200% 缩放；用 live regions 播报动态变化；尊重 prefers-reduced-motion 和 prefers-contrast；移动端覆盖 VoiceOver 与 TalkBack；自定义控件要处理键盘和焦点；结合 axe DevTools、WAVE、Lighthouse 与人工辅助技术测试，并检查 alt 文本、对比度、键盘陷阱、表单标签、跳过链接和焦点顺序。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经给出实现优先级、偏好支持、移动端覆盖、测试方式和主要问题清单。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T17-SKL-01", "T17-SKL-02", "T17-SKL-11"],
+      "controlled_delta_note": "Positive 只指出可访问性实现与验证缺口；Negative 仅追加原文的语义、键盘、焦点、替代文本、偏好和测试内容，query 保持不变。",
+      "source_fact_map": [
+        {"claim": "指南覆盖 WCAG 2.2、移动端可访问性、ARIA 与辅助技术支持。", "source_id": "T17-SKL-10", "locator": "frontmatter.description"},
+        {"claim": "应优先使用语义 HTML、键盘优先设计、可见焦点和文本替代。", "source_id": "T17-SKL-10", "locator": "Best Practices 1-5"},
+        {"claim": "应支持缩放、动态播报、用户偏好并用自动与人工工具测试。", "source_id": "T17-SKL-10", "locator": "Best Practices 6-8; Testing Tools"}
+      ],
+      "sol_review_questions": []
+    },
+    {
+      "draft_pair_id": "T17-SKL-06",
+      "external_source_ids": ["T17-SKL-02"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Aurora 在发布前要审计一个包含图片、表格、表单和自定义控件的网站页面。"},
+        {"role": "assistant", "content": "初步自动检查发现若干问题，但团队还没有把人工核对、对比度、重排和错误修复串成清单。"},
+        {"role": "user", "content": "请给出一套可复核的 WCAG 2.2 审计与修复流程，并说明哪些细节需要展开查阅。"}
+      ],
+      "changed_message_index": 3,
+      "query": "应如何组织这次审计、人工核对和修复验证，才能避免漏项？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "我知道要做自动和人工审计，但缺少按 POUR 组织的逐项检查，尤其是文本替代、媒体、结构、对比度、键盘、焦点、表单错误、ARIA 状态和状态消息的详细核对与修复示例。"},
+        "private_proposal": {
+          "unique_information_gap": "需要先查看审计指南，再展开其 references/details.md 资源，以获得 POUR 清单、WCAG 数值门槛、自动测试和修复代码示例。",
+          "route": "skill",
+          "target_asset_ids": ["T17-SKL-02"],
+          "allowed_sequence_candidates": [["skill_view", "skill_files_read"]],
+          "stop_after_candidate": "读取指南及 references/details.md 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充详细清单：按 Perceivable、Operable、Understandable、Robust 四类核对图片 alt、装饰图 alt=空字符串、复杂图长描述、字幕与音频描述；标题、列表、表头、表单标签和 landmarks；阅读与焦点顺序、颜色不应是唯一信息、文字对比度 4.5:1、大字 3:1、组件 3:1、200% 缩放与 320px 重排；键盘可达、无键盘陷阱、模态焦点返回、跳过链接、页面标题、链接目的和可见焦点；页面语言、输入错误说明与修正建议；自定义控件的名称/角色/值及 status/live region。自动化可用 axe-core 检查 WCAG 标签，随后用人工测试复核；修复时为输入补可见 label 或 aria-label，为错误补 aria-invalid、aria-describedby 和 alert，为自定义下拉框补 tabindex、combobox、展开状态及 Enter、空格、Escape、上下箭头行为。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已提供资源中的 POUR 审计清单、数值门槛、自动与人工验证以及表单和自定义控件修复示例。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T17-SKL-01", "T17-SKL-10", "T17-SKL-11"],
+      "controlled_delta_note": "Positive 只保留详细审计资源的流程缺口；Negative 仅追加 references/details.md 中的审计清单、阈值、验证和修复正文，query 保持不变。",
+      "source_fact_map": [
+        {"claim": "指南覆盖 WCAG 2.2 自动测试、人工核验和修复指导。", "source_id": "T17-SKL-02", "locator": "frontmatter.description; When to Use This Skill"},
+        {"claim": "详细模式在 references/details.md，导航层不足时应读取该资源。", "source_id": "T17-SKL-02", "locator": "Detailed patterns and worked examples"},
+        {"claim": "资源给出 POUR 审计清单、对比度/缩放门槛、axe-core 测试及表单和键盘修复模式。", "source_id": "T17-SKL-02", "locator": "references/details.md > Audit Checklist; Automated Testing; Remediation Patterns"}
+      ],
+      "sol_review_questions": []
+    }
+  ]
+}

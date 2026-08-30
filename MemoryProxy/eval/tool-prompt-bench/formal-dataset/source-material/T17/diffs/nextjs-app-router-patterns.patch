@@ -1,0 +1,25 @@
+--- a/plugins/frontend-mobile-development/skills/nextjs-app-router-patterns/SKILL.md
++++ b/adapted/nextjs-app-router-patterns/SKILL.md
+@@ -5,0 +5,22 @@
++
++
++## TDAI Host Routing
++
++Load this package with `skill_view`. If the manifest points to a supporting file, read that file with `skill_files_read`; do not install or execute source-repository dependencies for Task 1.
++
++Use when:
++- Building new Next.js applications with App Router
++- Migrating from Pages Router to App Router
++- Implementing Server Components and streaming
++- Setting up parallel and intercepting routes
++- Optimizing data fetching and caching
++- Building full-stack features with Server Actions
++
++Do not use when:
++- Do not use hooks in Server Components
++- Do not fetch in Client Components
++- Do not over-nest layouts
++- Do not ignore loading states
++- Do not pass non-serializable data across the Server-to-Client boundary
++
++The upstream technical workflow below is preserved unchanged.

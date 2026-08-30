@@ -1,0 +1,66 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T17-MEM-REPL-01",
+  "stage": "DS03",
+  "team_id": "T17",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T17-MEM-REPL-01-P01",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "medium",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Aurora 组件团队正在整理下一轮 Web 发布的兼容性基线。请沿用当前项目的发布口径，只查历史工程记录，不要把临时试验结果混入结论。"
+        },
+        {
+          "role": "assistant",
+          "content": "明白。我会把结果限定为正式兼容性约束，并保留每个浏览器的最低支持版本，便于直接更新矩阵。"
+        },
+        {
+          "role": "user",
+          "content": "请限定时间范围为 time_start=2026-08-12T00:00:00Z、time_end=2026-08-19T00:00:00Z（覆盖 8 月 12 日至 18 日），并把 type=instruction 作为自然语言筛选条件：只纳入类型标记为 instruction 的记录。"
+        },
+        {
+          "role": "assistant",
+          "content": "收到筛选范围。输出时请逐项列出 Chromium、Firefox、Safari 和 Edge 的最低版本，版本号按记录中的写法保留。"
+        }
+      ],
+      "changed_message_index": 4,
+      "query": "在上述时间范围内，类型为 instruction 的兼容性记录规定了 Chromium、Firefox、Safari 和 Edge 各自的最低支持版本是多少？",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "当前讨论还没有四个浏览器的版本下限；请补齐 Chromium、Firefox、Safari、Edge 的最低支持版本。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "The current context has the exact time window and the natural-language type=instruction condition, but none of the four browser lower bounds; the target memory supplies those four values.",
+          "route": "memory",
+          "target_asset_ids": ["T17-L1-15"],
+          "allowed_sequence_candidates": [["tdai_atomic_query"]],
+          "stop_after_candidate": "Stop after the atomic query returns the instruction record and its Chromium, Firefox, Safari, and Edge minimum versions."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充四项最低版本：Chromium 120、Firefox 121、Safari 17、Edge 120。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "The appended delta supplies all four requested lower bounds while preserving the same time window, type condition, identity assumptions, workspace, and query."
+        }
+      },
+      "visible_distractor_ids_author_only": [],
+      "controlled_delta_note": "Positive and Negative share the same four-message engineering session and identical query. The Positive delta leaves only the four browser lower bounds unresolved; the Negative appended delta adds exactly those four values and no other retrieval-relevant fact.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "确认正负 delta 是否只在四个浏览器的最低版本信息上有差异。",
+        "确认首步查询可直接使用上下文中的 time_start、time_end 与 type=instruction 条件。"
+      ]
+    }
+  ]
+}
