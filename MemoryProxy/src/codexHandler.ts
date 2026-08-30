@@ -25,6 +25,7 @@
  * See docs/2026-08-07-codex-integration-plan.md.
  */
 
+import { createHash } from "node:crypto";
 import type { Context } from "hono";
 import type { ProxyConfig } from "./types.js";
 import { apiKeyToKeyId, extractBearerToken, uuidv7 } from "./opik.js";
@@ -54,6 +55,10 @@ import { trackWrite, withL0Retry } from "./tdai/pending-writes.js";
 import type { TdaiIdentity, TdaiMessage } from "./tdai/types.js";
 import { triggerSkillExtractIfReady } from "./skill/handler-glue.js";
 import { isExtractionAllowed, logExtractionSkipped } from "./extraction-gate.js";
+import {
+  extractCompletedResponseUsage,
+  type ProviderRequestObserver,
+} from "./provider-request-trace-sink.js";
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
@@ -330,6 +335,7 @@ function filterResponseHeaders(source: Headers): Headers {
 export async function handleCodexEndpoint(
   c: Context,
   config: ProxyConfig,
+  dependencies: { providerRequestObserver?: ProviderRequestObserver } = {},
 ): Promise<Response> {
   const traceId = uuidv7();
   const startTime = new Date().toISOString();
@@ -395,7 +401,7 @@ export async function handleCodexEndpoint(
   if (isAuxiliary) {
     pipe.info("CODEX_AUX", `auxiliary request → passthrough (path=${path})`);
     // aux 不上报 langfuse（跟 CC/CB 对齐——sidequery/fork 类 aux 不算真对话轮）
-    return forwardToUpstream(c, config, body, traceId, startTime, keyId, modelId, pipe, null);
+    return forwardToUpstream(c, config, body, traceId, startTime, keyId, modelId, pipe, null, null, dependencies.providerRequestObserver);
   }
 
   // ── 6. Session ID extraction ───────────────────────────────────────────────
@@ -436,7 +442,7 @@ export async function handleCodexEndpoint(
   // even the pilot comparison. Formal Task 1 runs must not use this bypass.
   if (isToolPromptMockContractRequest(headers, spaceId)) {
     pipe.info("CODEX_TOOL_PROMPT_DIAGNOSTIC", "mock-contract request -> forwarding without Session Init or injection");
-    return forwardToUpstream(c, config, body, traceId, startTime, keyId, modelId, pipe, lf, null);
+    return forwardToUpstream(c, config, body, traceId, startTime, keyId, modelId, pipe, lf, null, dependencies.providerRequestObserver);
   }
 
   // ── 7. Session-init state machine ──────────────────────────────────────────
@@ -994,7 +1000,7 @@ export async function handleCodexEndpoint(
   });
 
   // ── 11. Forward to upstream ────────────────────────────────────────────────
-  return forwardToUpstream(c, config, body, traceId, startTime, keyId, modelId, pipe, lf, archiveCtx);
+  return forwardToUpstream(c, config, body, traceId, startTime, keyId, modelId, pipe, lf, archiveCtx, dependencies.providerRequestObserver);
 }
 
 // ── Archive context (skill/conversation/add + TDAI L0 write) ─────────────────
@@ -1138,6 +1144,7 @@ async function forwardToUpstream(
   pipe: ReturnType<typeof createPipeline>,
   lf: LangfuseTurnContext | null,
   archiveCtx: CodexArchiveCtx | null = null,
+  providerRequestObserver?: ProviderRequestObserver,
 ): Promise<Response> {
   // Per-agent upstream override (upstream.agents.codex.url) 优先于全局 url。
   // 对齐 anthropicHandler.ts:1029 的解析姿势。codex 通常需要单独指向支持
@@ -1147,6 +1154,22 @@ async function forwardToUpstream(
   const upstreamUrl = joinUrl(upstream.url, c.req.path);
   const upstreamHeaders = buildCodexUpstreamHeaders(c.req.raw.headers, upstream.apiKeyOverride);
   upstreamHeaders["content-type"] = "application/json";
+  const serializedBody = JSON.stringify(body);
+
+  safelyObserveProviderRequest(providerRequestObserver, {
+    correlationId: traceId,
+    method: "POST",
+    path: c.req.path,
+    rawBody: serializedBody,
+    body: JSON.parse(serializedBody) as Record<string, unknown>,
+    correlationHeaders: selectSafeHeaders(c.req.raw.headers, new Set([
+      "session-id",
+      "x-agent-id",
+      "x-conversation-id",
+      "x-task-id",
+      "x-team-id",
+    ])),
+  });
 
   pipe.forwardStart(upstreamUrl);
 
@@ -1155,9 +1178,15 @@ async function forwardToUpstream(
     upstreamResp = await fetch(upstreamUrl, {
       method: "POST",
       headers: upstreamHeaders,
-      body: JSON.stringify(body),
+      body: serializedBody,
     });
   } catch (err: unknown) {
+    safelyObserveProviderCompletion(providerRequestObserver, {
+      correlationId: traceId,
+      status: null,
+      responseHeaders: {},
+      failureMessage: err instanceof Error ? err.message : String(err),
+    });
     pipe.error("CODEX_FORWARD", err instanceof Error ? err : new Error(String(err)));
     // 上报 langfuse 失败（转发异常 —— 上游未回响应体，只有本地 fetch 抛错）
     if (lf) {
@@ -1201,6 +1230,15 @@ async function forwardToUpstream(
   if (upstreamResp.status >= 400) {
     // 4xx/5xx 通常返 JSON error（很小），完整读出来带进 langfuse 便于排查
     const errText = await upstreamResp.text();
+    safelyObserveProviderCompletion(providerRequestObserver, {
+      correlationId: traceId,
+      status: upstreamResp.status,
+      responseHeaders: selectSafeHeaders(upstreamResp.headers, new Set([
+        "openai-processing-ms",
+        "x-request-id",
+      ])),
+      responseBodySha256: sha256Utf8(errText),
+    });
     if (lf) {
       try {
         langfuseReportFailure({
@@ -1227,15 +1265,41 @@ async function forwardToUpstream(
   // 2xx: aux 场景 (lf=null && archiveCtx=null) 直接透传不 tap; 主对话场景 tap
   // 一份用于 langfuse 上报 + skill/L0 归档 hook (P1-P2 gap 修复)。
   // 只要有 lf 或 archiveCtx 任一非空就必须 tee 一份 tap 流。
+  let clientBody = upstreamResp.body;
+  if (providerRequestObserver && clientBody) {
+    const [passBody, evidenceBody] = clientBody.tee();
+    clientBody = passBody;
+    const evidenceTask = consumeProviderResponseEvidence(
+      evidenceBody,
+      traceId,
+      upstreamResp.status,
+      selectSafeHeaders(upstreamResp.headers, new Set([
+        "openai-processing-ms",
+        "x-request-id",
+      ])),
+      providerRequestObserver,
+    );
+    safelyTrackProviderTask(providerRequestObserver, evidenceTask);
+  } else if (providerRequestObserver) {
+    safelyObserveProviderCompletion(providerRequestObserver, {
+      correlationId: traceId,
+      status: upstreamResp.status,
+      responseHeaders: selectSafeHeaders(upstreamResp.headers, new Set([
+        "openai-processing-ms",
+        "x-request-id",
+      ])),
+    });
+  }
+
   const needTap = Boolean(lf) || Boolean(archiveCtx);
-  if (!needTap || !upstreamResp.body) {
-    return new Response(upstreamResp.body, {
+  if (!needTap || !clientBody) {
+    return new Response(clientBody, {
       status: upstreamResp.status,
       headers: filterResponseHeaders(upstreamResp.headers),
     });
   }
 
-  const [rawClientStream, tapStream] = upstreamResp.body.tee();
+  const [rawClientStream, tapStream] = clientBody.tee();
   consumeCodexStream(tapStream, {
     lf,
     modelId,
@@ -1250,6 +1314,83 @@ async function forwardToUpstream(
     status: upstreamResp.status,
     headers: filterResponseHeaders(upstreamResp.headers),
   });
+}
+
+async function consumeProviderResponseEvidence(
+  stream: ReadableStream<Uint8Array>,
+  correlationId: string,
+  status: number,
+  responseHeaders: Record<string, string>,
+  observer: ProviderRequestObserver,
+): Promise<void> {
+  try {
+    const text = await new Response(stream).text();
+    safelyObserveProviderCompletion(observer, {
+      correlationId,
+      status,
+      responseHeaders,
+      usage: extractCompletedResponseUsage(text),
+      responseBodySha256: sha256Utf8(text),
+    });
+  } catch (error) {
+    safelyObserveProviderCompletion(observer, {
+      correlationId,
+      status,
+      responseHeaders,
+      failureMessage: error instanceof Error ? error.message : String(error),
+    });
+  }
+}
+
+function safelyObserveProviderRequest(
+  observer: ProviderRequestObserver | undefined,
+  evidence: Parameters<ProviderRequestObserver["observeRequest"]>[0],
+): void {
+  if (!observer) return;
+  try {
+    observer.observeRequest(evidence);
+  } catch {
+    // Evaluation evidence must never alter production forwarding.
+  }
+}
+
+function safelyObserveProviderCompletion(
+  observer: ProviderRequestObserver | undefined,
+  evidence: Parameters<ProviderRequestObserver["observeCompletion"]>[0],
+): void {
+  if (!observer) return;
+  try {
+    observer.observeCompletion(evidence);
+  } catch {
+    // Evaluation evidence must never alter production forwarding.
+  }
+}
+
+function safelyTrackProviderTask(
+  observer: ProviderRequestObserver,
+  task: Promise<unknown>,
+): void {
+  try {
+    observer.track(task);
+  } catch {
+    void task.catch(() => undefined);
+  }
+}
+
+function selectSafeHeaders(
+  headers: Headers,
+  allowed: ReadonlySet<string>,
+): Record<string, string> {
+  const selected: Record<string, string> = {};
+  headers.forEach((value, rawName) => {
+    const name = rawName.toLowerCase();
+    if (allowed.has(name) && value.trim()) selected[name] = value;
+  });
+  return selected;
+}
+
+function sha256Utf8(value: string): string {
+  return createHash("sha256").update(value, "utf8").digest("hex");
 }
 
 // ── Langfuse helpers ─────────────────────────────────────────────────────────

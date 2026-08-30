@@ -13,7 +13,7 @@
 | 生产源码基线 | `5299c00aaf65481703c180fd69df066d11254eb7` |
 | 基线上游 | `origin/feat/server_team` |
 
-本文件只管理代码线的分支、任务、检查和交付。数据结构、World、真实资产、模型参数、首调用评分、Token 指标和正式评测顺序仍以 [EXPERIMENT-DESIGN.md](./EXPERIMENT-DESIGN.md) 为准。数据准备由另一会话或另一工作线负责。本会话不会修改其文件，也不会等待数据完成才开始代码开发。
+本文件只管理 Prompt Variant 代码线的分支、任务、检查和交付。数据结构、真实资产、模型参数、最短充分工具决策链评分、Token 指标和正式评测顺序仍以 [EXPERIMENT-DESIGN.md](./EXPERIMENT-DESIGN.md) 为准。数据准备由另一会话或另一工作线负责。本会话不会修改其文件，也不会等待数据完成才开始代码开发。
 
 代码全部完成并冻结以后，才把代码冻结提交交给实验集成线。正式模型评测必须等待代码和数据两边各自通过交接 Gate，再按照 V0、V0-C、V1a、V1、V2、V3 的顺序开展。
 
@@ -23,12 +23,12 @@
 
 | 任务要求 | 代码阶段 | 证明材料 |
 |---|---|---|
-| 应调用时实际调用 | C04 选择规则，后续模型评测验收 | V2 Prompt diff 与 Effective Call Rate |
-| 不应调用时避免误触发 | C03 去重、C04 中性选择边界，C05 只消除不可执行能力的暴露 | False Call Rate 与 Pure Coding 结果 |
-| 调用后选对 Memory、Skill 或 Knowledge 工具 | C04 Family Gate、when/avoid/contrast | Conditional Tool@1 与家族选择正确率 |
+| 应调用时实际完成必要工具决策 | C04 选择规则，后续模型评测验收 | V2 Prompt diff 与 Shortest Sufficient Chain Rate |
+| 不应调用时避免误触发 | C03 去重、C04 中性选择边界，C05 只消除不可执行能力的暴露 | False Call Attempt Rate 与 Pure Coding 结果 |
+| 调用后选对 Memory、Skill 或 Knowledge terminal | C04 Family Gate、when/avoid/contrast | Conditional Terminal Accuracy 与 First Action 诊断 |
 | 尽量减少注入 Token | C02 协议压缩、C03 语义去重，C05 在能力关闭时裁剪 | 逐块静态 Token 和相邻版本差值 |
 | 不破坏 Prompt Cache | C00 确定性与缓存身份，C06 稳定前缀审计 | 四层 Hash、首个变化字节和 Provider usage |
-| 正式指标不被运行器污染 | C07 身份分离、上游预检、Pilot 隔离与完整 usage | `/health` 预检、`formalMetricEligible`、五类 usage 字段 |
+| 正式指标不被运行器污染 | C07 身份分离、上游预检、Pilot 隔离与单次运行 usage | `/health` 预检、Pilot `formalMetricEligible=false`、五类 per-run usage 字段；正式 request ledger、M0 horizon join 与最终 eligibility 由 R04 Integration 完成 |
 | 不评价资产内容质量 | 所有代码阶段保持动态资产加载语义不变 | Static 与 Dynamic 分层产物 |
 | 优化说明、实验报告和代码 PR | C06 交接后由实验与交付阶段完成 | code-freeze commit、Gate 报告和最终结果 |
 
@@ -510,7 +510,7 @@ tool-prompt/
 - Pilot 的预渲染 Prompt 只注入一次；只有显式诊断环境、专用 Space 和专用 Header 同时满足时，MemoryProxy 才跳过第二次 Session Init/注入。
 - 分离官方 Provider Bearer 与 TDAI user key；后者只使用环境映射 Header，禁止转发上游、进入模型 shell、日志或实验产物。
 - 增加 Codex-only invocation override，并从 `/health` 校验实际 URL、client-auth passthrough、TDAI 鉴权和诊断模式，避免旧 YAML 或 per-agent key 偷换上游。
-- 缺失或不完整的模型 usage 一律记为基础设施错误；逐运行和 Campaign 保存 input、cached input、cache-write input、output、reasoning output 与静态注入 Token。
+- 缺失或不完整的模型 usage 一律记为基础设施错误；Pilot 逐运行和 Campaign 保存 input、cached input、cache-write input、output、reasoning output 与静态注入 Token。这里不代表正式逐 request/phase ledger 或 M0 horizon 聚合已经完成。
 - 补齐 V0-C 新增 Skill 读合同的 Mock Bridge 可执行覆盖。
 
 重点检查：
@@ -541,9 +541,9 @@ tool-prompt/
 
 以下内容不在本会话处理：
 
-- 10 个 World 和 200 条正式 case。
+- 1 个 Space、16 个 Team 和 640 条冻结正式 case。
 - 真实 Memory、Skill、Knowledge 资产导入。
-- 数据快照、恢复和 Sealed Test 管理。
+- 数据快照、恢复和 Hidden Test 管理。
 - Luna 调用、重复运行、随机顺序和正式指标计算。
 - Langfuse 观测和最终实验报告数值。
 
@@ -562,8 +562,8 @@ tool-prompt/
 | C03 | `PASSED` | V1 语义去重已冻结 |
 | C04 | `PASSED` | V2 选择校准已冻结 |
 | C05 | `PASSED` | V3 Capability/Lifecycle 裁剪已冻结 |
-| C06 | `PASSED` | 全 profile、Runner 接线与集成主线复跑均已通过 |
-| C07 | `PASSED` | Prompt 零变化；身份、上游、usage、Skill 合同和 Pilot 隔离均已通过门禁 |
+| C06 | `PASSED` | 全 profile、静态产物与集成主线复跑均已通过 |
+| C07 | `PASSED` | Prompt 零变化；身份、上游、per-run usage、Skill 合同和 Pilot 隔离均已通过门禁；不包含正式 request ledger、M0 horizon join 或最终 eligibility |
 | 模型评测 | 不属于本会话 | 等待代码与数据两边冻结 |
 
 ## 本会话代码线结果
@@ -572,7 +572,7 @@ tool-prompt/
 2. 每个阶段均先通过门禁，再以非 squash merge 合入集成分支；提交历史可逐阶段回溯。
 3. 六个 Variant 在同一构建中选择真实生产 Profile，Token、bytes、Hash、稳定前缀、缓存身份与类型诊断基线均已冻结。
 4. C06 集成主线复跑通过，原 Prompt 冻结记录仍由 `task1-c06-pass` 和 `task1-code-freeze` 标识。
-5. C07 只处理运行器与指标正确性，不改变冻结 Prompt；通过后把其提交交给实验集成线。
+5. C07 只处理 Pilot 运行器与指标前置正确性，不改变冻结 Prompt；正式 request ledger、M0 horizon join 与最终 eligibility 在 R04 实验集成线继续完成。
 6. 代码线停止修改 Prompt；等待独立数据线 Gate 完成后再进入模型实验。
 
 这套分支和 Gate 记录保证每一类改造可单独回溯，后续实验能够准确归因到相邻版本差异。

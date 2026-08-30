@@ -2,8 +2,10 @@
 
 | 项目 | 当前设置 |
 |---|---|
-| 状态 | V6.1 合并执行版，已按当前源码结构和实验讨论修订 |
-| 适用分支 | `codex/task1-p01-benchmark-harness` |
+| 状态 | Formal v1.1 数据已冻结；R04 Measurement/Runner Integration 代码已收口，等待生产资产 adapter 后人工 Smoke |
+| 当前分支 | `codex/task1-experiment-r04-runner-v1` |
+| 数据合同 | annotated tag `task1-data-formal-v1.1`（640 case，私有 Gold/Pair 与 provider 输入隔离） |
+| 代码冻结 | `task1-code-freeze`；V0、V0-C、V1a、V1、V2、V3 已具备生产 profile |
 | 主模型 | `gpt-5.6-luna` |
 | 推理强度 | `high` |
 | 输出详细度 | `medium` |
@@ -11,6 +13,8 @@
 本文件统一任务一的实验目标、真实运行链路、数据集、评分、Token 记录、公平性约束和阶段安排。与 `eval/tool-prompt-bench/README.md`、`worlds/README.md` 或旧方案冲突时，正式实验以本文件为准。当前代码中的 Mock Bridge、旧 100 条 case 和已有 3 个 World 仍可用于准备与回归，但不直接代表正式实验结果。
 
 2026-08-28 刷新远端后，生产 V0 基线冻结为 `origin/feat/server_team` 的 `5299c00`。此前 P01 Harness 的历史基点 `c0cf94f` 仅用于解释已有提交，不能继续代表当前生产 Prompt。`5299c00` 新增 header identity 冷启动修复、无 Task 注册和 Pi AgentProfile，代码与正式评测都必须包含这些生产事实。
+
+当前实现已经完成 R01 真实入口观测 seam、R02 Formal PrepareOnly/冻结输入、R03 资产恢复计划，以及 R04 的 M0 scorer、生产 trace/provider evidence 持久化、Gold-blind runner、逐请求 usage、eligibility、Pair 汇总、Prompt cache 结构 Gate 和人工执行/收集命令。R04 没有运行模型。正式开跑仍有一个外部阻断项：需要针对当前本地 `server_team` 数据栈实现生产 asset restore/inspect adapter，产出可由独立 preflight evaluator 验证的真实 read-back observations；在该 adapter 缺失时不得伪造 `ready` receipt，也不得把 Pilot 数字写入正式结果。逐步操作和边界见 [R04 正式 Campaign 操作手册](./R04-FORMAL-CAMPAIGN-RUNBOOK.md)。
 
 ## 实验只比较系统提示词变体
 
@@ -39,11 +43,11 @@ Y = F(M, P, Q, C, A, K, H, R)
 | `K` | Capability 与写入开关 | 固定 |
 | `H` | Codex 的 Bash 工具接口与运行协议 | 固定 |
 | `R` | 真实 Bridge 和 Knowledge 入口合同 | 固定 |
-| `Y` | 是否调用、首个工具、参数、Token 和缓存数据 | 测量结果 |
+| `Y` | 是否调用、完整工具决策链、参数、Token 和缓存数据 | 测量结果 |
 
-主指标仍是有效调用率、误调用率、工具选择正确率和静态工具说明 Token。Prompt cache 是约束和诊断项。任务一不评价资产抽取质量、资产正文质量、工具返回后的最终代码质量，也不要求把多步任务完整做完。
+主指标覆盖最短充分链、误调用、terminal 工具选择和静态工具说明 Token。Prompt cache 是约束和诊断项。任务一不评价资产抽取质量、资产正文质量或工具返回后的最终代码质量。多步 case 的正式评分窗口由离线 M0 scorer 截止在最早 accepted terminal；Gold-blind 运行采集不会据此在线停止。
 
-## 正式评测走到首个真实工具入口
+## 正式评测走到最短充分工具 terminal
 
 正式运行必须走 MemoryProxy 的生产链路，并由生产 `InjectionPipeline` 在请求期间完成注入。评测 runner 不预先拼出最终系统提示词，也不为正式结果实现一套替代注入逻辑。
 
@@ -56,8 +60,9 @@ World 资产写入真实本地数据栈
   → 模型生成 Bash curl
   → MemoryProxy Memory Bridge、Skill Bridge
      或 MemoryKnowledge /tools/list、/tools/call 接收请求
-  → 记录首个 TDAI Attempt、入口请求、参数和 Token
-  → 当前 case 截止评分
+  → 记录每个 TDAI Attempt、真实入口、响应、参数和 Token
+  → Gold-blind runner 运行至自然结束或统一公开的轮次、wall-time 上限
+  → 保留完整原始事实，再按冻结 Gold 离线计算 terminal horizon
 ```
 
 源码中的真实层级是 `Space -> Teams -> 选中的 Team -> Agent + 可选 Task -> 固定资产`。请求路径中的 `spaceId` 会成为 `x-tdai-service-id`，用于内核实例和租户路由。Session Init 在当前 Space 内列出 Team，再列出该 Team 中当前用户拥有的 Agent 和团队 Task，最后绑定 Team、Agent 和可选 Task。生产链路允许无 Task 注册，正式 benchmark 为了明确场景和可复现性仍为每条 case 绑定一个 Task。业务 Agent 是资产身份，不是 Codex、Claude Code 或 Pi 客户端。
@@ -71,7 +76,7 @@ World 资产写入真实本地数据栈
 - 观测 Seam：放在上述真实入口接收请求的位置，只记录并通知 runner，不替代生产实现。
 - 评测 Adapter：负责选择 World、完成 Session Init、准备工作区、发起 Codex 请求和汇总观测结果，不负责手写 Prompt 或模拟资产答案。
 
-模型生成工具命令的一轮已经结束后，才会执行 curl。因此 runner 可以完整保存该轮的输入、缓存输入、输出和推理 Token，再在首个 TDAI Attempt 完成分类后停止后续工具循环。普通的 `rg`、读取文件、构建和测试命令不是 TDAI Attempt，不能让 case 提前截止。
+runner 完整保存每轮输入、缓存输入、输出和推理 Token，并允许模型继续完成必要的后续 TDAI 调用。只有离线 scorer 能依据私有 Gold 确定 terminal；运行时 observer 和 runner 均保持 Gold-blind。runner 的公开轮次与 wall-time 上限在 Campaign 前统一冻结，私有 `attemptBudget` 只用于离线效率计分，绝不能成为在线停止条件。普通的 `rg`、读取文件、构建和测试命令不是 TDAI Attempt，不能让 case 提前截止。
 
 ### 正式评测与合同测试分开
 
@@ -79,10 +84,10 @@ World 资产写入真实本地数据栈
 |---|---|---|---|
 | 纯函数测试 | `render*Block()`、Compiler、Token 统计 | 确认输出、确定性和预算 | 否 |
 | 合同测试 | Safe Parser、Mock Bridge、冻结 Gold 序列 | 确认 endpoint、参数和多步绑定可执行 | 否 |
-| 正式首调用评测 | 真实 MemoryProxy、真实数据栈、官方模型、真实入口 | 测模型是否在正确时机选择首个工具 | 是 |
-| 小型完整链路 smoke | 真实入口继续执行少量代表性序列 | 证明下游合同没有断 | 只作附录 |
+| 正式决策链评测 | 真实 MemoryProxy、真实数据栈、官方模型、真实入口 | 测模型是否在正确时机完成最短充分工具链 | 是 |
+| 完整业务任务 smoke | terminal 后继续执行少量代表性任务 | 证明下游业务链没有断 | 只作附录 |
 
-`mock-bridge.ts` 继续服务单元测试、评分器测试和协议 smoke。它不能作为 V0 与候选版本正式指标的调用终点。正式结果也不要求等待资产正文返回或让模型继续完成最终 coding 任务。
+`mock-bridge.ts` 继续服务单元测试、评分器测试和协议 smoke。它不能作为 V0 与候选版本正式指标的调用终点。正式多步链必须等待形成下一步绑定所必需的真实响应，但不评价响应内容质量，也不要求继续完成最终 coding 任务。
 
 ## 固定运行配置
 
@@ -105,7 +110,7 @@ World 资产写入真实本地数据栈
 | Wiki 与 Code Graph | 开启 |
 | LLM 直接写入 | 关闭 |
 | 自动资产抽取与归档写回 | 关闭 |
-| 主实验重复 | Dev 单次，入围复核和 Test 三次 |
+| 主实验重复 | Dev 单次，入围复核和 Hidden Test 三次 |
 
 Primary Campaign 只用 Luna。若时间和预算允许，可在最终候选冻结后增加第二模型复核，结果单独成表，不能与 Luna 汇总成一个比例。
 
@@ -113,33 +118,30 @@ Primary Campaign 只用 Luna。若时间和预算允许，可在最终候选冻�
 
 Capability Fixture 在 V0、V0-C、V1 和 V2 中保持不变。V3 只根据生产源码已经存在的 Injector、`AssetCapabilityFlags`、Memory、Knowledge、`allowLlmWrite` 和 `isExtractionAllowed()` 等能力事实，对不可执行工具做确定性裁剪。正式 Fixture 关闭自动 Skill 抽取后，V3 移除依赖 conversation buffer 的 `skill_extract`；V0 至 V2 仍保留原 Prompt 暴露面，保证前序版本只比较各自声明的改造。任务一不新增 `allowLlmExtract` 或其他产品能力开关，也不改变 Bridge 权限。此时改变的是 Prompt 暴露面，运行时配置保持原值。
 
-## 正式数据集采用共享 World
+## 正式数据集采用同一 Space 内的多 Team 真实场景
 
-### 当前数据只能作为准备材料
+### 当前冻结数据与旧回归数据分开
 
-仓库中现有两组数据：
+仓库中现有三类数据：
 
 | 数据 | 当前规模 | 后续定位 |
 |---|---:|---|
-| `case-definitions.ts` 生成的冻结数据 | Dev 60，Test 40 | Schema、Parser、Scorer 和 Mock 合同回归 |
-| `worlds/` 中的种子数据 | 3 个 World，48 条 case | 共享世界结构、资产密度和 loader 的 Pilot |
+| `case-definitions.ts` 生成的旧数据 | Dev 60，Test 40 | Schema、Parser、旧 Scorer 和 Mock 合同回归 |
+| `worlds/` 中的种子数据 | 3 个 World，48 条 case | World 结构与 loader 的 Pilot，不进入正式结果 |
+| `formal-dataset/` 冻结数据 | 1 Space、16 Team、640 case | 正式 Dev 与 Hidden Test；以 `task1-data-formal-v1.1` 为数据合同输入 |
 
-旧 100 条 case 大多是一题一个小 fixture，上下文、同类干扰资产和本地工作区不足，不能作为最终 V0 与 Final 的唯一证据。现有 3 个 World 已经被开发过程查看和修改，其中原标记为 test 的 World 也不能继续当 Sealed Test。正式切分时，W01 至 W03 全部归入 Pilot 或 Dev。
+旧 100 条 case 大多是一题一个小 fixture，上下文、同类干扰资产和本地工作区不足，只保留为回归。3 个种子 World 已被开发过程查看和修改，只能作为 Pilot。正式结论仅使用冻结的 640 条 provider case、对应私有 Gold v2、240 个 Pair 合同和两个冻结快照。
 
 ### World 与源码实体的映射
 
-一个 World 对应一个 Space。每个 Space 包含两个 Team，每个 Team 放十个真实编程 Task，共二十条 case。每条 case 在 Session Init 中选择一个 Team、一个中性 Agent 和一个 Task。
+正式数据使用一个工程 Space，包含 16 个按技术主题划分的 Team。每个 Team 固定一个中性业务 Agent，并提供 40 条真实编程场景 case；每条 case 通过冻结 runtime binding 选择 Team、Agent 和 Task。
 
 ```text
-World = Space
-├─ Team A
-│  ├─ General Software Engineering Agent
-│  ├─ 10 个 Task
-│  └─ 多个项目主题的 Memory、Skill、Knowledge
-└─ Team B
-   ├─ General Software Engineering Agent
-   ├─ 10 个 Task
-   └─ 多个项目主题的 Memory、Skill、Knowledge
+Space: space-task1-engineering
+├─ Dev Teams × 6
+│  └─ 每 Team：中性 Agent、40 cases、同 Team Memory/Skill/Knowledge 与强干扰
+└─ Hidden Test Teams × 10
+   └─ 每 Team：中性 Agent、40 cases、独立资产命名与语义
 ```
 
 Session 绑定 Team 后，另一个 Team 的资产不会被该 Session 看到，不能拿它们充当干扰项。强干扰资产必须放在当前活动 Team 内，包括同领域但错误仓库、旧版本流程、相似 Skill 和相关但不足以回答问题的 Knowledge。
@@ -148,23 +150,22 @@ Session 绑定 Team 后，另一个 Team 的资产不会被该 Session 看到，
 
 ### 规模与切分
 
-正式目标是 10 个 Space，共 200 条 case。切分单位是完整 Space，不能把同一 Space 的 case 分到 Dev 和 Test。
+正式冻结规模是 1 个 Space、16 个 Team、640 条 case。切分单位是完整 Team，同一 Team 不能跨 Dev 与 Hidden Test；统计置信区间也以 Team 作为 cluster，而不是把 40 条同 Team case 当作完全独立样本。
 
-| Split | Space | Memory | Skill | Knowledge | No Tool | 合计 |
-|---|---:|---:|---:|---:|---:|---:|
-| Dev | 6 | 30 | 30 | 18 | 42 | 120 |
-| Test | 4 | 20 | 20 | 12 | 28 | 80 |
-| 合计 | 10 | 50 | 50 | 30 | 70 | 200 |
+| Split | Team | Memory Positive | Skill Positive | Knowledge Positive | Paired No-tool | Natural Coding Negative | 合计 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Dev | 6 | 36 | 36 | 18 | 90 | 60 | 240 |
+| Hidden Test | 10 | 60 | 60 | 30 | 150 | 100 | 400 |
+| 合计 | 16 | 96 | 96 | 48 | 240 | 160 | 640 |
 
-每个 Space 固定 20 条，类别分布为 Memory 5、Skill 5、Knowledge 3、No Tool 7。Smoke 从 6 个 Dev Space 中各选 2 条，共 12 条，不增加重复 case。
+每个 Team 固定 40 条：Memory Positive 6、Skill Positive 6、Knowledge Positive 3、配对 No-tool 15、自然 Coding Negative 10。每 Team 的 15 个正负 Pair 在 private Pair v2 中冻结。Smoke 从 6 个 Dev Team 中各选 2 条，共 12 条，不增加重复 case。
 
-建议的编号和使用顺序如下：
+冻结切分如下：
 
-- W01 至 W03：现有 Pilot，修订后进入 Dev。
-- W04 至 W06：新增 Dev World。
-- W07 至 W10：新增 Sealed Test World，只做结构、资产和 Gold 合同验证，不用模型结果调 Prompt。
+- Dev：T01–T04、T11–T12，共 240 条，可用于相邻 Variant 配对和选择候选。
+- Hidden Test：T05–T10、T13–T16，共 400 条；只在 Final 冻结后运行，不用其模型结果调 Prompt。
 
-Dev 与 Test 之间不得复用可识别的 Skill 名、Memory id、session id、L2 路径、Knowledge id、仓库 slug 或原样 Query。题型模板可以一致，具体语义和资产必须独立。
+Dev 与 Hidden Test 之间不得复用可识别的 Skill 名、Memory id、session id、L2 路径、Knowledge id、仓库 slug 或原样 Query。题型模板可以一致，具体语义和资产必须独立。
 
 ### 每个 Team 的资产密度
 
@@ -190,7 +191,7 @@ Dev 与 Test 之间不得复用可识别的 Skill 名、Memory id、session id�
 
 Memory case 覆盖语义记忆搜索、原始会话搜索、已知 session 回放、atomic 条件查询、已知 L2 路径读取和场景发现。Skill case 覆盖已在 Listing 中直接查看、团队库搜索后查看、manifest 后读取资源。Knowledge case 覆盖仓库匹配的 Code Graph 与团队 Wiki。No Tool 覆盖自包含 coding、答案已在当前上下文、本地源码优先、词面重叠和错误资产硬负例。
 
-每条正样本都要让正确首动作唯一，或在 Gold 中显式列出多个允许首动作：
+每条正样本都要让最短充分链唯一，或在 Gold 中显式列出多条允许链：
 
 - Memory 搜索题的答案不能同时出现在当前上下文或 L3。
 - 原始会话题不能把相同答案复制进 Atomic Memory。
@@ -201,33 +202,11 @@ Memory case 覆盖语义记忆搜索、原始会话搜索、已知 session 回�
 - Wiki 内容要与问题实质相关，词面相似不足以成为 Gold。
 - No Tool case 仍加载 Memory、Skill 和 Knowledge 干扰资产，不能用空资产环境降低误调用。
 
-### 数据集中只保存真实输入和隐藏 Gold
+### 公开运行输入与私有评分合同严格分离
 
-建议的 case 结构如下。`worldId`、引用和 Gold 由 loader 与 scorer 使用，不直接写入模型 Prompt。
+正式 loader 只向 runner 返回 `FormalProviderRuntimeCase`：公开 `ProviderVisibleCase` 仅含 `caseId`、语言、历史消息和 Query，冻结 runtime binding 再提供 snapshot、Team、Agent、Task、workspace 与身份引用。runner 通过真实入口传递 `spaceId`，通过 Session Init 选择 Team、Agent 和 Task，再发送历史消息、当前 Query 和工作区。
 
-```ts
-interface WorldEvalCase {
-  caseId: string;
-  split: "dev" | "test";
-  worldId: string;
-  activeTeamRef: string;
-  activeAgentRef: string;
-  activeTaskRef: string;
-  projectRef: string;
-  contextMessages: Array<{ role: "user" | "assistant"; content: string }>;
-  query: string;
-  workspaceRef: string;
-  gold: {
-    needTdaiTool: boolean;
-    family?: "memory" | "skill" | "knowledge";
-    allowedFirstActions?: AllowedAction[];
-    maxTdaiAttempts: number;
-    negativeType?: string;
-  };
-}
-```
-
-运行时只通过真实入口传递 `spaceId`，通过 Session Init 选择 Team、Agent 和 Task，再发送历史消息、当前 Query 和工作区。`family`、`allowedFirstActions`、`negativeType` 等标签只在运行结束后评分。
+私有 scorer 单独读取 `PrivateChainGoldV2`，其中冻结 `expectation`、`attemptBudget`、`allowedSequences` 和可选 `forbiddenBeforeTerminal`。它和 Pair 合同只在模型进程退出后按 `caseId` 离线 join。Gold、Pair 与 evaluation 不得进入模型临时工作区、runner manifest、Provider 请求或模型可见日志；`evaluation.json` 只能在 run 完成后写入模型不可见的产物目录。
 
 ### 资产构造和冻结流程
 
@@ -241,7 +220,7 @@ interface WorldEvalCase {
 
 资产验证看的是能否支持唯一的工具决策，不评价自动抽取算法的质量。若直接上传已经构造好的资产，报告中应明确说明资产是 benchmark-owned snapshot。
 
-## 首调用评分合同
+## 工具决策链评分合同
 
 ### 哪些行为算 TDAI Attempt
 
@@ -255,71 +234,65 @@ interface WorldEvalCase {
 
 普通 Bash、读取本地文件、运行测试、自然语言提到工具、代码块中未执行的 curl 都不算 TDAI Attempt。
 
-每条运行按以下状态分类：
+M0 不把一次运行压成互斥状态，而是从同一完整 trace 产生正交事实：`rawTraceStatus`、`triggeredAttempt`、`firstActionSelectionCorrect`、`terminalSelectionCorrect`、`completeChainSuccess`、`strictChainExact`、`shortestExact`、`falseCallAttempt`、`malformedFalseIntent`、Overcall、ToolSPL 和 infrastructure facts。一条 trace 可以同时出现 malformed、executor-bound 和基础设施事实；Integration 必须先完成正式 eligibility 过滤，再把 eligible scores 交给 aggregate。
 
-| 状态 | 含义 |
+正样本中，首动作正确只是一项诊断；正式结果继续离线观察到允许链的 accepted terminal。没有 executor-bound attempt 是漏调，错误 Family 或工具是选错，malformed intent 单独记录。No Tool 样本出现任何 executor-bound TDAI Attempt 都算误调用，即使真实入口随后拒绝。
+
+事件归并优先使用 family-aware session：Memory/Skill 使用原始 `sessionId`，Knowledge 仅在 `x-tdai-agent-source=codex` 时允许生产事实中的 `codex:<sessionId>`。模型漏写或写错 session header 的真实入口请求不能被丢弃；在严格串行且只落入唯一 `started_at/finished_at` 运行窗口时，它仍归入该 run，作为 executor-bound 但 runtime 未接受的模型行为计分。若运行窗口重叠、事件无法唯一归属或落入多个窗口，才标为 trace/campaign infrastructure blocker。
+
+### 多步 case 评到最短充分 terminal
+
+主实验检查“完成任务一所需的最短充分工具决策链”，不再只检查第一步：
+
+| 任务语义 | 允许的充分链示例 |
 |---|---|
-| `NO_TDAI_ATTEMPT` | 模型完成当前轮，没有尝试 TDAI |
-| `MALFORMED_TDAI_ATTEMPT` | 有明确 TDAI 意图，但命令、路径、请求头或 JSON 无法形成合法请求 |
-| `WRONG_TDAI_CALL` | 合法请求进入真实入口，但 Family、工具、资源或最小参数不符合 Gold |
-| `CORRECT_TDAI_CALL` | 首个合法请求进入正确真实入口，工具和最小参数符合 Gold |
-| `INFRASTRUCTURE_ERROR` | 上游、Proxy、数据栈、认证或 runner 异常，无法观察模型行为 |
+| 先发现再读取 Skill | `skill_search -> skill_view_by_id` |
+| 读取 Skill 包内资源 | `skill_view -> skill_files_read` |
+| 刷新未知场景路径后读取 | `tdai_scenario_ls -> tdai_read_scene` |
+| Knowledge 发现并调用能力 | `knowledge_tools_list -> knowledge_tools_call` |
+| 已知 Skill 或 scene | 直接 `skill_view` 或 `tdai_read_scene` |
 
-正样本中，`CORRECT_TDAI_CALL` 表示任务一的首个有效调用成功。没有调用是漏调，错误 Family 或工具是选错，malformed 单独记录。No Tool 样本出现任何 TDAI Attempt 都算误调用，即使 Safe Parser 或真实入口随后拒绝。
+计分只判断工具决策、真实入口、必要参数、运行时接受状态和跨步绑定，不评价返回资产本身是否优质，也不评价最终代码或自然语言答案。行为窗口在最早合法 terminal 处冻结，但 terminal 后原始事件仍完整保存用于审计。
 
-### 多步 case 只评第一步
-
-主实验保留多步任务语义，但只检查该任务的正确第一步：
-
-| 完整语义 | 正式 Gold 首动作 |
-|---|---|
-| `skill_search -> skill_view -> files_read` | `skill_search`，搜索词需指向目标 Skill |
-| `scenario_ls -> read_scene` | `scenario_ls`，过滤范围需正确 |
-| `conversation_search -> conversation_query` | `conversation_search` |
-| Knowledge `tools/list -> tools/call` | 正确 `knowledge_id` 的 `/tools/list` |
-| 已知 Skill 名直接读取 | `skill_view` |
-| 已知 scene 路径直接读取 | `read_scene` |
-
-完整序列仍保存在合同数据中，由 Mock Bridge 和少量真实链路 smoke 验证。它不进入任务一主表的有效调用率，避免资产返回质量、第二步参数绑定和最终回答能力混入 Prompt 触发效果。
+如果模型在 terminal 之前先给出错误 prerequisite 参数或绑定，随后纠正并完成合法链，则 `completeChainSuccess=true`；由于发生了多余尝试，`strictChainExact=false`、`shortestExact=false`，并由 Overcall 与 ToolSPL 惩罚。错误 Family、禁止的错误 terminal，以及 terminal 之后才发生的修正不能被后续调用洗掉。
 
 ### 指标与公式
 
-基础设施错误单独报告，不进入行为分母。主表同时给出百分比和整数分子、分母。
-
-设 `P` 为有效正样本，`N` 为有效 No Tool 样本：
+设 `P` 为通过 trace、基础设施、身份、隔离和 usage Gate 的正样本，`N` 为通过同一 Gate 的 No Tool 样本。Integration 必须先过滤，`aggregateCaseChainFacts` 只接收最终 eligible scores；M0 scorer 本身不拥有正式 eligibility。主表同时给出百分比、整数分子、分母、排除数和排除原因。
 
 \[
 TriggerRecall = \frac{P\ 中出现任意\ TDAI\ Attempt}{P}
 \]
 
 \[
-EffectiveCallRate = \frac{P\ 中首个调用为\ CORRECT\_TDAI\_CALL}{P}
+CompleteChainSuccessRate = \frac{P\ 中完成任一允许充分链}{P}
 \]
 
 \[
-FalseCallRate = \frac{N\ 中出现任意\ TDAI\ Attempt}{N}
+ShortestSufficientChainRate = \frac{P\ 中严格完成最短允许链}{P}
 \]
 
 \[
-ConditionalToolAt1 = \frac{P\ 中首个\ Attempt\ 选择正确}{P\ 中有\ Attempt\ 的样本}
+FalseCallAttemptRate = \frac{N\ 中出现任意\ executor\mbox{-}bound\ TDAI\ Attempt}{N}
+\]
+
+\[
+ConditionalTerminalAccuracy = \frac{P\ 中 evaluation\ prefix\ 存在允许的\ terminal\ selection\ path}{P\ 中有\ executor\mbox{-}bound\ Attempt\ 的样本}
 \]
 
 | 指标 | 角色 | 说明 |
 |---|---|---|
-| Effective Call Rate | Primary | 应调用时，首个合法请求进入正确入口的比例 |
-| False Call Rate | Primary | 不应调用时出现任意 TDAI Attempt 的比例 |
-| Conditional Tool@1 | Primary | 已经决定调用后，首个 Family、工具和资源选对的比例 |
-| Static Tool Tokens | Primary | 静态工具说明的固定编码 Token |
-| Trigger Recall | Diagnostic | 区分没有触发与触发后选错 |
-| FirstAction@1 | Diagnostic | 全部正样本中首动作语义正确的比例 |
-| Malformed Attempt Rate | Diagnostic | TDAI 意图无法形成合法请求的比例 |
-| Entry FCR | Diagnostic | No Tool 中真正到达 TDAI 入口的比例 |
-| 总输入与输出 Token | Cost | 模型实际 usage，不代替静态注入 Token |
-| 完整序列成功率 | Contract smoke | 不进入主实验结论 |
+| Shortest Sufficient Chain Rate | Primary | 应调用时，严格完成最短充分链的比例 |
+| False Call Attempt Rate | Primary | 不应调用时出现任意真实 TDAI Attempt 的比例 |
+| Conditional Terminal Accuracy | Primary | 已经决定调用后，最终选到正确 terminal 的比例 |
+| Static Tool Tokens | Primary | 生产 InjectionPipeline 实际注入的静态工具说明 Token |
+| Complete Chain Success Rate | Secondary | 最终完成允许链；允许 terminal 前发生可恢复错误 |
+| Trigger Recall | Diagnostic | 正样本是否至少触发一次真实 TDAI Attempt |
+| First Action Selection | Diagnostic | 便于与旧首调用口径对照，不再作为主指标 |
+| ToolSPL / Positive Overcall | Efficiency | 区分最短链与可恢复但冗余的链 |
+| Malformed False Intent | Diagnostic | 识别明确 TDAI 意图但未进入真实入口的情况 |
 
-每次运行必须分别保存静态注入 Token，以及模型返回的 `input_tokens`、`cached_input_tokens`、`cache_write_input_tokens`、`output_tokens`、`reasoning_output_tokens`。任一模型 usage 字段缺失时整条运行记为 `INFRASTRUCTURE_ERROR`，不能用 0 补齐，也不能先聚合再剔除。
-
-如果一个 case 合理允许多个第一步，`allowedFirstActions` 必须在数据冻结前登记。运行结束后不能因为模型选了另一个动作再修改 Gold。
+`ShortestSufficientChainRate` 直接采用 M0 的 `shortestExactRate`。Trigger、FCR 和 Conditional Terminal Accuracy 只把 executor-bound attempt 计入；仅有 malformed/unbound intent 的情况进入 `malformedFalseIntent` 诊断。First Action 从冻结 `allowedSequences[].steps[0]` 派生，不另建第二份 `allowedFirstActions` 真值。
 
 ## Token 与 Prompt Cache 全量保存
 
@@ -359,6 +332,10 @@ Token 统计分成静态工具说明、动态资产、运行时绑定和 Provide
 | 模型输出 | `outputTokens`、`reasoningOutputTokens` |
 | 节省量 | 相对 V0 的绝对 Token 和百分比 |
 
+完整 raw run 必须保存逐 request/phase usage ledger，不能只保留整次合计。M0 离线确定 accepted-terminal horizon 后，再生成 `usageToEvaluationHorizon`；正式 Cost/Cache 比较采用该 horizon 聚合，terminal 后的 Token 只保留为审计数据。静态工具 Token 仍按 Provider-visible 注入块直接计数，不受行为 horizon 改写。
+
+Codex JSONL 的 `input_tokens`、`cached_input_tokens`、`cache_write_input_tokens`、`output_tokens`、`reasoning_output_tokens` 是当前正式 adapter 的 required usage 字段。任一 required 字段缺失或无效时不得补 0：原始 M0 行为事实可保留作诊断，但该 run 是 M2 infrastructure blocker，不进入任何正式行为、Token 或 Cache 分母。
+
 生产 InjectionPipeline 必须导出或观测最终 Provider-visible system/developer 内容。`prompt.txt` 保存实际注入结果，不能保存 runner 自己重建的近似版本。
 
 ### 缓存记录四层 Hash
@@ -370,21 +347,21 @@ Token 统计分成静态工具说明、动态资产、运行时绑定和 Provide
 | `dynamicAssetSha256` | Profile、Listing 和 Knowledge 资源 |
 | `effectiveSystemSha256` | 实际发给 Provider 的完整字节 |
 
-还要记录稳定前缀首次变化的字节位置、字符位置和估算 Token 位置。候选可以修改计划内的注入块，不能把动态内容提前到原本稳定的公共前缀。Provider 返回的 `cachedInputTokens` 是运行事实，但服务端命中会受时间影响，不能单独证明 Prompt cache 结构稳定。
+还要记录稳定前缀首次变化的字节位置、字符位置和估算 Token 位置。候选可以修改计划内的注入块，不能把动态内容提前到原本稳定的公共前缀。正式 Cache 结构 Gate 绑定不可变 `task1-code-freeze`：所有 run 必须使用该 tag 解引用 commit，执行 commit 到该 freeze 之间的 Prompt 所属源码不得变化；tag 内 C06 清单必须完整保存六个 Variant 的 `staticTemplateSha256`、唯一 cache namespace、静态注入 Token、完整 Prompt hash 和相邻稳定前缀位置。Provider 返回的 `cachedInputTokens` 是运行事实，但服务端命中会受时间影响，只作辅助诊断，不能单独证明 Prompt cache 结构稳定。
 
 Campaign 汇总至少给出：
 
 - 每个 Variant 的静态、动态和总注入 Token 分布。
 - 每个 block 相对 V0 的增减。
 - 每个 case 的配对节省量。
-- 总输入、缓存输入、输出和推理 Token。
+- evaluation horizon 内及完整 raw run 的输入、缓存输入、输出和推理 Token。
 - 静态模板 Hash 稳定率和前缀首次变化位置。
 
 ## 公平性与运行隔离
 
 ### 资产和服务状态
 
-每个 World 有一份不可变的真实数据栈快照。正式 Campaign 开始前恢复该快照，关闭 L0 写回、自动 Skill 抽取、自动归档和其他会改变资产的路径。若某项写回无法关闭，则每个 Variant 运行前恢复同一快照副本。
+Dev 与 Hidden Test 各有一份不可变的真实数据栈快照。正式 Campaign 开始前恢复对应快照，关闭 L0 写回、自动 Skill 抽取、自动归档和其他会改变资产的路径。若某项写回无法关闭，则每个 Variant 运行前恢复同一快照副本。
 
 不需要为每条 case 反复导入全部资产。只要所有正式路径只读，可以在一个 Campaign 内复用同一 World 实例，并在开始和结束时核对快照 hash、资产数量和最新更新时间。
 
@@ -443,7 +420,7 @@ Langfuse 只承担请求观察和人工排查。正式真值来自本地的模�
 | V3 | Capability 与生命周期确定性裁剪 | 在 V2 上深入 |
 | V3-A | PromptUnit 分组删除 | 可选深化 |
 
-正式主线按 `V0 -> V0-C -> V1a -> V1b/V1 -> V2 -> V3` 递进。需要单独判断语义去重贡献时，可以增加 Dedup-only 消融，但不为它维护另一条生产演进路线。所有中间产物都要保存，Final 不必是编号最大的版本。如果 V1a 效果最好，它仍可进入最终 Test。
+正式主线按 `V0 -> V0-C -> V1a -> V1b/V1 -> V2 -> V3` 递进。需要单独判断语义去重贡献时，可以增加 Dedup-only 消融，但不为它维护另一条生产演进路线。所有中间产物都要保存，Final 不必是编号最大的版本。如果 V1a 效果最好，它仍可进入最终 Hidden Test。
 
 V0-C 不允许顺便删重复规则、调整触发条件或中立化措辞。V1a 不改变触发语义，V1b 不增加 `avoid/contrast`，V2 不移动注入位置，V3 不根据当前 Query 动态裁剪。跨 Anchor 或注入位置变化只能作为独立 Layout Probe。
 
@@ -482,10 +459,10 @@ Compiler 第一阶段保持现有 Hook id、注入 point、anchor、priority 和
 
 - 冻结当前 commit、dirty state 和 V0 Provider-visible Prompt。
 - 冻结真实 Bridge Allowlist、Core Schema、Capability Signature 和 Host Bash Schema。
-- 确认主指标采用首个真实入口截止，不采用完整序列 ECR。
+- 确认主指标采用最短充分 terminal 链，不再以首个真实入口截止；首动作仅保留为诊断。
 - 冻结模型、Codex CLI、上游、Session Init 路径和 Token 编码。
-- 给 case 增加 `worldId`、`activeTeamRef`、`activeAgentRef`、`activeTaskRef`、`groupId` 和 `allowedFirstActions`。
-- 冻结 Dev/Test World 规划和运行预算。
+- 冻结 provider-visible case、runtime binding、私有 `PrivateChainGoldV2.allowedSequences` 与 Pair 合同的一一绑定。
+- 分开冻结 runner 的公开采集预算与 scorer-only `attemptBudget`，并冻结 Dev/Hidden Team 切分。
 
 Gate：任何人只看冻结清单和一条 case，都能判断哪些内容是独立变量、哪些内容进入 Prompt、何时截止评分。
 
@@ -504,10 +481,10 @@ Gate：任何人只看冻结清单和一条 case，都能判断哪些内容是�
 - 把 Attempt、Malformed Attempt、真实 Entry Call 和 Infrastructure Error 分开。
 - 把历史上下文作为真实 Responses 消息发送，把活动项目文件写入临时工作区。
 - 保留 Mock Bridge 的 100 case 回归和完整 Gold 序列 smoke。
-- 完成 W01 至 W03 Pilot，随后补齐 W04 至 W06 Dev。
-- 创建 W07 至 W10 Test，做结构与合同验证后封存。
+- 完成 6 个 Dev Team、240 条 provider case 及私有 Gold/Pair 合同。
+- 创建并封存 10 个 Hidden Test Team、400 条 case，只做结构、资产和 Gold 合同验证。
 
-Gate：十个 World 都能完成无模型 dry run、Session Init、生产 Prompt 捕获和合同重放。数据与真实资产快照冻结，运行前后资产 hash 不变。模型驱动的 12 条 Smoke 留到 P04，不在数据准备阶段执行。
+Gate：16 个 Team 都通过结构、唯一性、干扰项、provider exclusion 和合同重放；两个真实资产快照可确定恢复，运行前后 hash 不变。模型驱动的 12 条 Smoke 留到 P04，不在数据准备阶段执行。
 
 阶段产物：World manifest、snapshot manifest、真实链路 runner、无模型 dry-run manifest 和合同 trace。
 
@@ -555,34 +532,34 @@ Gate：每个 Variant 只有声明的改造类型发生变化，静态 Prompt di
 
 - 只在 P01 数据 Gate 与 P03 代码 Gate 都通过后建立实验集成分支。
 - 先用 V0 完成 12 条真实链路 Smoke，确认 Session Init、生产 InjectionPipeline、真实入口观测和本地产物完整。
-- 依次完成 V0 对 V0-C、V0-C 对 V1a、V1a 对 V1、V1 对 V2、V2 对 V3 的 120 条 Dev 配对比较。
+- 依次完成 V0 对 V0-C、V0-C 对 V1a、V1a 对 V1、V1 对 V2、V2 对 V3 的 240 条 Dev 配对比较。
 - 每一组完成并做出阶段决定后才运行下一组，同组两个 Variant 按 case 交错。
 - 对 V0-C、V1 和 V2 交错运行固定的 Baseline Sentinel，观察时间漂移。
 - 先应用行为 Gate，再比较 FCR、Static Tool Tokens 和改动范围。
 - 对 V0、V0-C 和最多两个候选各做三次入围复核。
 - 冻结 Final Prompt、Compiler profile、Scorer、数据、快照和运行命令。
 
-硬 Gate：无合同漂移，无 Capability leak，不新增自包含 coding 的误调用；Final 的有效调用正确数和首动作正确数相对 V0-C 的下降，不得超过预登记的整数 case margin；静态工具 Token 低于 V0-C。
+硬 Gate：无合同漂移，无 Capability leak，不新增自包含 coding 的误调用；Final 的最短充分链正确数和 terminal 选择正确数相对 V0-C 的下降，不得超过预登记的整数 case margin；静态工具 Token 低于 V0-C；同一 Variant 的规范化静态模板 hash 确定，跨 Variant 首次变化不早于预登记可变区域。
 
-优秀目标：Pure Coding FCR 为 0，整体 FCR 下降，Conditional Tool@1 不下降，静态工具 Token 至少减少 25%。25% 是目标，不应为了达到数字删除必要触发信息。
+优秀目标：Pure Coding FCR 为 0，整体 FCR 下降，Conditional Terminal Accuracy 不下降，静态工具 Token 至少减少 25%。25% 是目标，不应为了达到数字删除必要触发信息。
 
 阶段产物：12 条 Smoke 报告、各相邻版本配对结果、Pareto 表、候选选择记录和 Final freeze manifest。
 
-### P05：Sealed Test、Cache 和真实链路复核
+### P05：Hidden Test、Cache 和真实链路复核
 
 时间：Day 11 至 Day 12。
 
 工作内容：
 
 - 只运行 V0、V0-C 和 Final，不再修改 Prompt 或 Gold。
-- 在 80 条 Test 上每个 Variant 运行三次，按 case 和 repeat 交错。
+- 在 400 条 Hidden Test 上每个 Variant 运行三次，按 case 和 repeat 交错。
 - 保存完整 Token、Hash、稳定前缀和 Provider usage。
 - 在每个 Family 选少量 case 做完整真实链路 smoke，结果单独报告。
 - 若预算允许，增加第二模型的平衡子集复核，不与 Luna 合并。
 
-Gate：Test 运行期间没有 Prompt、Gold、资产或 scorer 修改。基础设施错误重跑后仍单独列出，所有主指标都有整数分子、分母和配对差异。
+Gate：Hidden Test 运行期间没有 Prompt、Gold、资产或 scorer 修改。基础设施错误重跑后仍单独列出，所有主指标都有整数分子、分母和配对差异；结构 cache Gate 必须通过，Provider cache usage 只作运行事实。
 
-阶段产物：Sealed Luna 结果、Cache 检查、完整链路 smoke、可选第二模型附录。
+阶段产物：Hidden Luna 结果、Cache 检查、完整链路 smoke、可选第二模型附录。
 
 ### P06：统计、实验报告和代码 PR
 
@@ -590,7 +567,7 @@ Gate：Test 运行期间没有 Prompt、Gold、资产或 scorer 修改。基础�
 
 工作内容：
 
-- 汇总 V0、V0-C 和 Final 的四项主指标。
+- 汇总 V0、V0-C 和 Final 的四项主指标：Shortest Sufficient Chain Rate、False Call Attempt Rate、Conditional Terminal Accuracy、Static Tool Tokens。
 - 分开报告静态工具 Token、动态资产 Token 和实际模型 usage。
 - 报告 Attempt FCR、Entry FCR、Malformed Rate 和失败分类。
 - 给出每个 Prompt 改造与失败 Trace 的对应关系。
@@ -634,9 +611,9 @@ eval/tool-prompt-bench/
 | `injection-blocks.json` | 每个注入块的类型、Token、bytes、hash 和注入点 |
 | `codex-events.jsonl` | Codex 原始事件 |
 | `codex-stderr.log` | stderr 和退出信息 |
-| `entry-trace.jsonl` | 真实入口收到的首个 TDAI 请求 |
+| `entry-trace.jsonl` | 真实入口收到的全部 TDAI begin/completion 事实 |
 | `usage.json` | 输入、缓存、输出、推理和注入 Token |
-| `evaluation.json` | 状态、Gold 对照、指标贡献和失败原因 |
+| `evaluation.json` | run 完成后写入模型不可见产物目录的 Gold 对照、指标贡献和失败原因 |
 | `asset-check.json` | 运行前后快照 hash 与资产计数 |
 
 Campaign 至少保存 `campaign-manifest.json`、`scores.jsonl`、`summary.json`、`campaign-usage.json`、`variant-order.json` 和 `infrastructure-errors.jsonl`。任何主表数字都应能回溯到这些原始文件。
@@ -645,15 +622,15 @@ Campaign 至少保存 `campaign-manifest.json`、`scores.jsonl`、`summary.json`
 
 满足以下条件后才采集 V0 正式基线：
 
-- W01 至 W06 共 120 条 Dev case 完成结构、唯一性、干扰项和合同验证。
-- W07 至 W10 共 80 条 Test case 已冻结，未参与 Prompt 调整。
-- 真实本地 MemoryCore、Skill 和 MemoryKnowledge 可以从同一快照恢复。
+- 6 个 Dev Team、240 条 case 完成结构、唯一性、干扰项和合同验证。
+- 10 个 Hidden Test Team、400 条 case 已冻结，未参与 Prompt 调整。
+- 每个 split 都能从对应的冻结 Dev/Hidden snapshot 恢复；同一 split 内所有 Variant 使用同一 snapshot。
 - 自动写回和抽取已关闭，或每个 Variant 前能恢复同一快照。
 - 12 条 Smoke 全部经过正常 Session Init 和生产 InjectionPipeline。
 - runner 没有预渲染正式 Prompt，真实入口观测能区分 Attempt、Malformed 和 Entry Call。
 - 工作区文件和历史消息通过真实 Codex 输入加载。
 - Luna、`high`、`medium`、CLI 版本、官方上游和 MemoryProxy commit 被完整记录。
-- 每个 run 能保存 Provider-visible Prompt、block Token、模型 usage、入口 trace 和评分。
+- 每个 run 能保存 Provider-visible Prompt、block Token、逐 request usage、完整入口 trace、离线 terminal horizon 和评分。
 - 当前官方 Codex 登录态不被复制或修改，运行前后桌面端保持登录。
 
 若这组 Gate 尚未全部通过，可以继续做数据、Compiler、Mock 合同和单 case 诊断，但产生的数字只能叫 Pilot，不能写进任务一正式优化前后对比。

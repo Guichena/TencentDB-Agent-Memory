@@ -1,0 +1,145 @@
+{
+  "schema_version": "task1.team_gate.v1",
+  "team_id": "T10",
+  "split": "hidden_test",
+  "status": "passed",
+  "checked_at": "2026-08-29T16:05:37.153Z",
+  "counts": {
+    "total_cases": 40,
+    "positive_pairs": 15,
+    "paired_negatives": 15,
+    "natural_negatives": 10,
+    "positive_by_family": {
+      "memory": 6,
+      "skill": 6,
+      "knowledge": 3
+    },
+    "search_or_discovery_first": 10,
+    "direct_first": 5,
+    "l0": 10,
+    "l1": 14,
+    "l2": 4,
+    "l3": 1,
+    "skills": 14,
+    "knowledge": 3,
+    "external_imports": 14
+  },
+  "batches": [
+    {
+      "batch_id": "t10-memory-trial-01",
+      "path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-05/T10/trial/memory/memory-trial-01",
+      "family": "memory",
+      "count": 1,
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "draft_sha256": "349613187a2ba85bfdabdccae67e46e9f78063b0c82f63dc9fcd5fda0dc2af9f",
+      "manifest_sha256": "28eba13d89d3fa1b3837f5e608439d90fc3c608c9e8d63c37a3f0e6516a9b8fb",
+      "review_status": "reviewed_by_sol"
+    },
+    {
+      "batch_id": "t10-skill-trial-01",
+      "path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-05/T10/trial/skill/skill-trial-01",
+      "family": "skill",
+      "count": 1,
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "draft_sha256": "041b6ff03e5b9521c4bf9691c9e58a94204d72e357d6d2b1734b3cc6377c38fa",
+      "manifest_sha256": "c2623a9414dfc1bbb2c27c32fbe78a84fcda650be7e433fc56161b3311a438eb",
+      "review_status": "reviewed_by_sol"
+    },
+    {
+      "batch_id": "t10-knowledge-trial-01",
+      "path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-05/T10/trial/knowledge/knowledge-trial-01",
+      "family": "knowledge",
+      "count": 1,
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "draft_sha256": "20496ec59552fe478ada1060ae2bc893dc81ff21d3d681e3984d6b6cc105a901",
+      "manifest_sha256": "5089015075bc7ee748b1058b58be03bf55d01062b8ee4ea436bffc110e125424",
+      "review_status": "reviewed_by_sol"
+    },
+    {
+      "batch_id": "t10-memory-batch-02",
+      "path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-05/T10/expansion/memory/memory-batch-02",
+      "family": "memory",
+      "count": 5,
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "draft_sha256": "965b2561c9ca2618aa99d8bc94855984ca988420e9d3f11844a15c5111fb3944",
+      "manifest_sha256": "d9787ed7ae80bb4f46bc961bd40617d11534f9df691c8adc884ead53720247d6",
+      "review_status": "reviewed_by_sol"
+    },
+    {
+      "batch_id": "t10-skill-batch-02",
+      "path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-05/T10/expansion/skill/skill-batch-02",
+      "family": "skill",
+      "count": 5,
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "draft_sha256": "59cfdefc485965baf4f2cf884a4e28c7269f90234063e042cfd19c1dc274965c",
+      "manifest_sha256": "b41b509d09d83c1aae57e589f093b6c2768b3c6eb54069ed66106176e0b01cbf",
+      "review_status": "reviewed_by_sol"
+    },
+    {
+      "batch_id": "t10-knowledge-batch-02",
+      "path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-05/T10/expansion/knowledge/knowledge-batch-02",
+      "family": "knowledge",
+      "count": 2,
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "draft_sha256": "42a9fc39cf2337670b4ecefd404d1ebad4a7862b8a4e818d8a8a8feb2393b94d",
+      "manifest_sha256": "20439a6d9224824ab8fccab6e9798e876500591b65c9cbd739b141de538a98d3",
+      "review_status": "reviewed_by_sol"
+    },
+    {
+      "batch_id": "t10-natural-negative-batch-01",
+      "path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-05/T10/natural-negative/natural-negative-batch-01",
+      "family": "natural-negative",
+      "count": 10,
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "draft_sha256": "9cc541f18524eb0aa272c3443254d54e10b3b17252259a6fa10bfd0ea945c5e2",
+      "manifest_sha256": "888f2d126083dc45ca14b11f5772571739bae5f0c9d84f3e392c47fa2a735e93",
+      "review_status": "reviewed_by_sol"
+    }
+  ],
+  "checks": {
+    "exact_case_count_40": true,
+    "exact_pair_count_15": true,
+    "exact_family_counts": true,
+    "exact_negative_counts": true,
+    "batch_chronology_valid": true,
+    "search_discovery_10_direct_5": true,
+    "pair_single_variable": true,
+    "provider_leakage_zero": true,
+    "all_targets_visible": true,
+    "minimal_sequences_complete": true,
+    "skill_search_visibility": true,
+    "knowledge_ready_and_bound": true,
+    "memory_density": true,
+    "cross_domain_memory_clean": true,
+    "skill_density": true,
+    "external_imports_complete": true
+  },
+  "diagnostics": {
+    "provider_leaks": [],
+    "pair_integrity_errors": [],
+    "missing_targets": [],
+    "invalid_sequences": []
+  },
+  "sol_corrections": [
+    "Removed a stale cross-domain memory overwrite and verified that frozen T10-L0-01 already records the accepted verify-then-aggregate-install sequence and both rejected skip-stage alternatives required by the full-session Gold.",
+    "Knowledge call fixtures use the production params envelope instead of the Luna candidate's arguments label."
+  ],
+  "commands": [
+    "canonical Luna batch validator for all seven batches",
+    "node generators/parallel/build-05/T10/adapt-skill-packages.mjs",
+    "node generators/parallel/build-05/T10/sol-build-staging.mjs",
+    "formal validator against generators/parallel/build-05/T10/integration-rehearsal.json"
+  ],
+  "deferred_to_integration": [
+    "production prewarm listing capture and listing SHA replacement",
+    "cross-Team Dev/Hidden duplicate and leakage checks",
+    "global snapshot hashes, sealed manifest, provider/private compilation, and real-chain Gate"
+  ]
+}

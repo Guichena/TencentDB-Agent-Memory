@@ -1,0 +1,8 @@
+{
+  "schema_version": "task1.team_registry.v1",
+  "space_id": "space-task1-engineering",
+  "team_id": "T02",
+  "topic": "数据计算",
+  "split": "dev",
+  "active_agent": { "agent_id": "agent-task1-t02-general", "name": "T02 通用业务 Agent" }
+}

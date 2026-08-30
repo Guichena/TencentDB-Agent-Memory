@@ -1,0 +1,5 @@
+[
+  {"instance_id": "task-1", "repo": "getmoto/moto", "base_commit": "a111111111111111111111111111111111111111"},
+  {"instance_id": "task-amb", "repo": "python/mypy", "base_commit": "b222222222222222222222222222222222222222"},
+  {"instance_id": "task-amb", "repo": "python/mypy", "base_commit": "c333333333333333333333333333333333333333"}
+]

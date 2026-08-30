@@ -1,0 +1,145 @@
+{
+  "schema_version": "task1.ds02_retrieval_pressure_fixture.v1",
+  "team_id": "T01",
+  "service_id": "space-task1-engineering",
+  "resources": [
+    {
+      "knowledge_id": "cg-t01ujs01",
+      "type": "code-graph",
+      "name": "ultrajson pinned code graph",
+      "summary": "Pinned symbol and call graph for the ujson reliability workspace.",
+      "status": "ready",
+      "service_url": "http://memoryknowledge.test/v3",
+      "repo_slug": "ultrajson/ultrajson",
+      "repo_url": "https://github.com/ultrajson/ultrajson",
+      "branch": "8f23cce7929c49b9235d2f46ac9a403d051a9c95",
+      "snapshot_sha256": "7f76fa5b242f05fa47539029605fe071dc6059ac81eca1dcae40e59c77eb7022"
+    },
+    {
+      "knowledge_id": "cg-t01mypy1",
+      "type": "code-graph",
+      "name": "mypy pinned code graph",
+      "summary": "Pinned symbol graph for the separate mypy regression workspace.",
+      "status": "ready",
+      "service_url": "http://memoryknowledge.test/v3",
+      "repo_slug": "python/mypy",
+      "repo_url": "https://github.com/python/mypy",
+      "branch": "d7b24514d7301f86031b7d1e2215cf8c2476bec0",
+      "snapshot_sha256": "e99492e3a86dd23a98bce3ea92893171c5027bf56bb8c29ae964aad90830106a"
+    },
+    {
+      "knowledge_id": "wiki-t01rel01",
+      "type": "wiki",
+      "name": "T01 Python reliability evidence policy",
+      "summary": "Why replay facts may or may not be promoted into durable Memory, scene, profile, or Skill assets.",
+      "status": "ready",
+      "service_url": "http://memoryknowledge.test/v3",
+      "snapshot_sha256": "2dd2e39e354c6ee587f489eacebb0487e48345836ac4a58969fbf54b4aef840b"
+    }
+  ],
+  "snapshots": {
+    "cg-t01ujs01": {
+      "schema_version": "task1.code_graph_fixture.v1",
+      "repo_slug": "ultrajson/ultrajson",
+      "repo_commit": "8f23cce7929c49b9235d2f46ac9a403d051a9c95",
+      "nodes": [
+        {
+          "symbol": "ujsonMethods",
+          "kind": "variable",
+          "file": "src/ujson/python/ujson.c",
+          "line": 63
+        },
+        {
+          "symbol": "JSONToObj",
+          "kind": "function",
+          "file": "src/ujson/python/JSONtoObj.c",
+          "line": 163
+        },
+        {
+          "symbol": "JSON_DecodeObject",
+          "kind": "function",
+          "file": "src/ujson/lib/ultrajsondec.c",
+          "line": 790
+        }
+      ],
+      "edges": [
+        {
+          "from": "JSONToObj",
+          "to": "JSON_DecodeObject",
+          "file": "src/ujson/python/JSONtoObj.c",
+          "line": 247
+        }
+      ],
+      "caller_results": {
+        "JSON_DecodeObject": [
+          {
+            "symbol": "JSONToObj",
+            "file": "src/ujson/python/JSONtoObj.c",
+            "line": 247
+          }
+        ]
+      }
+    },
+    "cg-t01mypy1": {
+      "schema_version": "task1.code_graph_fixture.v1",
+      "repo_slug": "python/mypy",
+      "repo_commit": "d7b24514d7301f86031b7d1e2215cf8c2476bec0",
+      "nodes": [
+        {
+          "symbol": "snapshot_definition",
+          "kind": "function",
+          "file": "mypy/server/astdiff.py",
+          "line": 227
+        },
+        {
+          "symbol": "AliasPrinter",
+          "kind": "class",
+          "file": "mypy/stubgen.py",
+          "line": 364
+        }
+      ],
+      "edges": []
+    },
+    "wiki-t01rel01": {
+      "schema_version": "task1.wiki_fixture.v1",
+      "name": "T01 Python reliability evidence policy",
+      "pages": [
+        {
+          "ref": "python-reliability-evidence-policy",
+          "title": "Python reliability evidence promotion policy",
+          "path": "reviews/L0-ASSET-CANDIDATE-REVIEW.md",
+          "content_sha256": "0f3fa098337b8a60f87f5337670b7c0ab311d50843b2a791c929022c4cda0c05",
+          "summary": "Promotion boundaries for replay evidence, atomic memory, scene, profile, and Skill assets."
+        }
+      ]
+    }
+  },
+  "expected_target": {
+    "workspace_repo_slug": "ultrajson/ultrajson",
+    "knowledge_id": "cg-t01ujs01",
+    "list_tool_names": [
+      "get_info",
+      "search",
+      "explore",
+      "callers",
+      "callees",
+      "impact",
+      "node",
+      "status",
+      "files"
+    ],
+    "call": {
+      "tool_name": "callers",
+      "params": {
+        "symbol": "JSON_DecodeObject"
+      }
+    },
+    "result": [
+      {
+        "symbol": "JSONToObj",
+        "file": "src/ujson/python/JSONtoObj.c",
+        "line": 247
+      }
+    ]
+  }
+}

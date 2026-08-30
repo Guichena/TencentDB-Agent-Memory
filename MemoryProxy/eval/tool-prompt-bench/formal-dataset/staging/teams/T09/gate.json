@@ -1,0 +1,143 @@
+{
+  "schema_version": "task1.team_gate.v1",
+  "team_id": "T09",
+  "split": "hidden_test",
+  "status": "passed",
+  "checked_at": "2026-08-29T23:10:00+08:00",
+  "counts": {
+    "total_cases": 40,
+    "positive_pairs": 15,
+    "paired_negatives": 15,
+    "natural_negatives": 10,
+    "positive_by_family": {
+      "memory": 6,
+      "skill": 6,
+      "knowledge": 3
+    },
+    "search_or_discovery_first": 10,
+    "direct_first": 5,
+    "l0": 10,
+    "l1": 14,
+    "l2": 4,
+    "l3": 1,
+    "skills": 14,
+    "knowledge": 3,
+    "external_imports": 14
+  },
+  "batches": [
+    {
+      "batch_id": "t09-memory-trial-01",
+      "path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-05/T09/trial/memory/memory-trial-01",
+      "family": "memory",
+      "count": 1,
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "draft_sha256": "881e786eed0105e739f047feb9942853966cfc296e49828662efbaf797d83bbc",
+      "manifest_sha256": "975a0524a4ab1bb9ff02eec5435b977ac4e5ef039560e05cf49e34388580967f",
+      "review_status": "reviewed_by_sol"
+    },
+    {
+      "batch_id": "t09-skill-trial-01",
+      "path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-05/T09/trial/skill/skill-trial-01",
+      "family": "skill",
+      "count": 1,
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "draft_sha256": "6a6140c137c75140f3403d07a9158f518342bb47290f8813605181e53e70f43a",
+      "manifest_sha256": "80f5d3aa4e2e44b24fe589acf69993317b070ebbc882aab3513e49088ecd07eb",
+      "review_status": "reviewed_by_sol"
+    },
+    {
+      "batch_id": "t09-knowledge-trial-01",
+      "path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-05/T09/trial/knowledge/knowledge-trial-01",
+      "family": "knowledge",
+      "count": 1,
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "draft_sha256": "e38ac47a887627d20a79f40d5c88d9c6dcb411d10b7aa84ba744611bdfd29ace",
+      "manifest_sha256": "f1ffc93c691a8ed584fd7f1c6932f181fb209a2034f2bea4a20c122352c6e4a2",
+      "review_status": "reviewed_by_sol"
+    },
+    {
+      "batch_id": "t09-memory-batch-02",
+      "path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-05/T09/expansion/memory/memory-batch-02",
+      "family": "memory",
+      "count": 5,
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "draft_sha256": "71010800c916c152808e185072682e47c0d78ce62378a27ef5035230561f5565",
+      "manifest_sha256": "339041be4dab5302333baee1ce3b3bc4c1155df83a409d6766a3da786b8f4723",
+      "review_status": "reviewed_by_sol"
+    },
+    {
+      "batch_id": "t09-skill-batch-02",
+      "path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-05/T09/expansion/skill/skill-batch-02",
+      "family": "skill",
+      "count": 5,
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "draft_sha256": "c273d719adbf0de26bd52a4f14f8cde05bb6126626170b8032c99e027e317d2e",
+      "manifest_sha256": "b631589b19cc09ea600b0832369033e555fae2cbae3c22106ebb86946b2daa16",
+      "review_status": "reviewed_by_sol"
+    },
+    {
+      "batch_id": "t09-knowledge-batch-02",
+      "path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-05/T09/expansion/knowledge/knowledge-batch-02",
+      "family": "knowledge",
+      "count": 2,
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "draft_sha256": "bcc2f664df6340db944b81363758c5bc406c7a9b29568bfa8a4c2e1d5f8e2dbb",
+      "manifest_sha256": "c7bda5e0cc11dc6ed708323f60be5cee5c5ad9732a62a0367cf44d8ff24e38df",
+      "review_status": "reviewed_by_sol"
+    },
+    {
+      "batch_id": "t09-natural-negative-batch-01",
+      "path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/generators/parallel/build-05/T09/natural-negative/natural-negative-batch-01",
+      "family": "natural-negative",
+      "count": 10,
+      "generator_model": "gpt-5.6-luna",
+      "reasoning_effort": "high",
+      "draft_sha256": "c37d7fa239fa2f817c166d27e046cbb2d7ea69f69753cfd0ee2c90deb3a56ad8",
+      "manifest_sha256": "d84f6a1e733977f8413be0ac980cbea74f9522e9987de77d9977301d083ab334",
+      "review_status": "reviewed_by_sol"
+    }
+  ],
+  "checks": {
+    "exact_case_count_40": true,
+    "exact_pair_count_15": true,
+    "exact_family_counts": true,
+    "exact_negative_counts": true,
+    "search_discovery_10_direct_5": true,
+    "pair_single_variable": true,
+    "provider_leakage_zero": true,
+    "all_targets_visible": true,
+    "minimal_sequences_complete": true,
+    "skill_search_visibility": true,
+    "knowledge_ready_and_bound": true,
+    "memory_density": true,
+    "skill_density": true,
+    "external_imports_complete": true
+  },
+  "diagnostics": {
+    "provider_leaks": [],
+    "pair_integrity_errors": [],
+    "missing_targets": [],
+    "invalid_sequences": []
+  },
+  "sol_corrections": [
+    "The frozen T09-L0-03 target session explicitly records both rejected CVSS alternatives required by the full-session Gold.",
+    "Knowledge call fixtures use the production params envelope instead of the Luna candidate's arguments label."
+  ],
+  "commands": [
+    "canonical Luna batch validator for all seven batches",
+    "node generators/parallel/build-05/T09/adapt-skill-packages.mjs",
+    "node generators/parallel/build-05/T09/sol-build-staging.mjs",
+    "formal validator against generators/parallel/build-05/T09/integration-rehearsal.json"
+  ],
+  "deferred_to_integration": [
+    "production prewarm listing capture and listing SHA replacement",
+    "cross-Team Dev/Hidden duplicate and leakage checks",
+    "global snapshot hashes, sealed manifest, provider/private compilation, and real-chain Gate"
+  ]
+}
