@@ -81,7 +81,7 @@ git -C $ExecutionRoot rev-parse 'task1-data-formal-v1.1^{}'
 6. 本轮专用 `RuntimeServiceId`（数据集 Space 到真实实例的唯一映射）。
 7. `RuntimeAuthUserId`（本轮 user key 经 MemoryCore `/v3/meta/auth/verify` 解析出的真实 user id）。
 8. 仅存在于当前终端环境的 `TDAI_EVAL_USER_KEY`；脚本不把它写入命令、JSON 或日志。
-9. 仅存在于当前终端环境的 `TDAI_FORMAL_MEMORY_CORE_API_KEY`。它是 MemoryCore gateway 的 Bearer 凭据，与用户 key 是两个独立值，只发给 MemoryCore，不发给 MemoryKnowledge 或 MemoryProxy，也不写入证据。
+9. 本轮专用的 `TDAI_FORMAL_MEMORY_CORE_API_KEY`。它是隔离 blank stack 的 disposable gateway 凭据，与用户 key、Codex provider token 都是不同的值。adapter/inspector 只从当前终端环境读取它；MemoryProxy 当前还需在仓库外的实际 YAML 中用同一值配置 `tdai.apiKey`、`skill.serviceToken` 和 `knowledge.serviceToken`。该 YAML 的 hash 会进入证据，但 key 本身不会进入 R05 JSON 或 Git。
 10. 唯一 `CampaignId`。restore 或身份锁失败后，新的正式尝试必须换 Campaign、RunRoot 和空白数据栈。等待异步 code-graph 变为 `ready` 不算失败，不换栈，也不换 RunRoot。
 
 ## 4. 源码能够证明的 blank-stack 启动合同
@@ -93,7 +93,7 @@ git -C $ExecutionRoot rev-parse 'task1-data-formal-v1.1^{}'
 - MemoryKnowledge 必须以 `KNOWLEDGE_AUTO_SYNC_ENABLED=false` 启动。脚本不轮询、不重试异步建图。`Restore` 成功后会停在 `wait-for-knowledge-ready`；用户确认全部可见 code-graph 已为 `ready` 后，在同一服务实例、同一数据栈和同一 RunRoot 上执行 `Inspect`。
 - `TDAI_FORMAL_PREFLIGHT_ENABLED=1` 必须在 MemoryProxy 进程启动前设置；preflight route 的默认依赖在模块加载时读取它。
 - MemoryProxy 必须以实际 config、`--tool-prompt-profile legacy --experiment-read-only` 启动。
-- MemoryCore `/health` 必须为 `status=ok`，并报告 vector store 与 embedding service 可用；MemoryKnowledge `/health` 必须为 `status=ok`。
+- MemoryCore `/health` 必须为 `status=ok`，并报告 vector store 可用；MemoryKnowledge `/health` 必须为 `status=ok`。R05 不要求 embedding service：正式资产由默认关闭的导入 seam 精确恢复，任务一也不评价向量召回质量。本地推荐配置可保持 `embedding.provider=none`，避免引入无关模型调用或外部服务差异。
 - MemoryProxy `/health` 必须报告 V0 `legacy`、官方 ChatGPT Codex upstream、`client-passthrough`、实际 config hash，以及全部 read-only 开关为真。
 - 三个服务必须指向本轮专用且最初为空的数据库/目录/namespace。具体 SQLite、Redis、COS 或其他后端参数由本地部署决定，不能由评测脚本猜测。
 
@@ -105,11 +105,108 @@ Set-Location (Join-Path $ExecutionRoot "MemoryProxy")
 npm start -- --config $Config --tool-prompt-profile legacy --experiment-read-only
 ```
 
+### 4.1 本任务可直接使用的最小本地配置
+
+仓库内提供 [`r05-v0-read-only.config.example.yaml`](./r05-v0-read-only.config.example.yaml)。它只启用任务一所需的三类注入和 Session Init，使用进程内 ProxyStorage，并关闭 Langfuse、ClickHouse、Redis、rate limit、cost guard、资产反思、抽取和写路径。官方 Codex upstream 固定为 `https://chatgpt.com/backend-api/codex`，`apiKey` 为空，因此仍由客户端透传现有 provider 凭据，不读写 Codex 的 `auth.json`。
+
+实际运行前把模板复制到仓库外，例如 `D:\task1-formal-config\v0-read-only.yaml`，只替换：
+
+- `__TASK1_R05_RUNTIME_SERVICE_ID__`：本轮唯一 Space/Memory instance id；
+- `__TASK1_R05_LOCAL_CORE_KEY__`：本轮 disposable loopback gateway key。它不是 Codex/ChatGPT token，也不是 Memory user key。
+
+这两个值确定后，actual YAML 从 MemoryProxy 启动到 `Inspect` 完成都不得再修改。当前 Proxy loader 不对 `tdai.apiKey`、`skill.serviceToken`、`knowledge.serviceToken` 做环境变量插值，因此不要把未展开的 `${...}` 写入模板，也不要为了隐藏一个本机一次性 key 新增配置框架。
+
+推荐三个独立 PowerShell 终端都只做进程级 PATH 覆盖，不改系统 Node，也不改 Codex 配置：
+
+```powershell
+$Node22Home = "D:\task1-runtimes\node-v22-npm\node_modules\node\bin"
+$Npm22Bin = "D:\task1-runtimes\node-v22-npm\node_modules\.bin"
+$env:Path = "$Node22Home;$Npm22Bin;$env:Path"
+node --version   # 必须为 v22.x
+```
+
+MemoryCore 终端使用独立 StackRoot；注意它不能放在尚未创建的 `$RunRoot` 下面：
+
+```powershell
+$ExecutionRoot = "D:\projects\TencentDB-Agent-Memory-task1-measurement-v2"
+$CampaignId = "task1-r05-candidate-base-r1"
+$StackRoot = "D:\task1-formal-stacks\$CampaignId"
+$RuntimeServiceId = "task1-r05-space-candidate-base-r1"
+$LocalCoreKey = "<本轮 disposable local key>"
+
+$env:TDAI_GATEWAY_CONFIG = Join-Path $ExecutionRoot "MemoryCore\tdai-gateway.standalone.yaml"
+$env:TDAI_DATA_DIR = Join-Path $StackRoot "core"
+$env:TDAI_METADATA_SQLITE_BASE_DIR = Join-Path $StackRoot "core-metadata"
+$env:TDAI_GATEWAY_API_KEY = $LocalCoreKey
+$env:TDAI_FORMAL_ASSET_IMPORT_ENABLED = "1"
+Set-Location (Join-Path $ExecutionRoot "MemoryCore")
+node --import tsx src/gateway/server.ts
+```
+
+MemoryKnowledge 终端：
+
+```powershell
+$ExecutionRoot = "D:\projects\TencentDB-Agent-Memory-task1-measurement-v2"
+$CampaignId = "task1-r05-candidate-base-r1"
+$StackRoot = "D:\task1-formal-stacks\$CampaignId"
+$env:PORT = "8421"
+$env:KNOWLEDGE_DATA_DIR = Join-Path $StackRoot "knowledge"
+$env:KNOWLEDGE_DB_PATH = Join-Path $StackRoot "knowledge\knowledge.db"
+$env:KNOWLEDGE_PUBLIC_BASE_URL = "http://127.0.0.1:8421/v3"
+$env:KNOWLEDGE_AUTO_SYNC_ENABLED = "false"
+$env:KNOWLEDGE_CLICKHOUSE_ENABLED = "false"
+Set-Location (Join-Path $ExecutionRoot "MemoryKnowledge")
+npm run dev
+```
+
+MemoryProxy 终端（`$Config` 已从模板生成并冻结）：
+
+```powershell
+$ExecutionRoot = "D:\projects\TencentDB-Agent-Memory-task1-measurement-v2"
+$Config = "D:\task1-formal-config\v0-read-only.yaml"
+$env:TDAI_FORMAL_PREFLIGHT_ENABLED = "1"
+Remove-Item Env:TDAI_TOOL_PROMPT_DIAGNOSTIC -ErrorAction SilentlyContinue
+Set-Location (Join-Path $ExecutionRoot "MemoryProxy")
+npm start -- --config $Config --tool-prompt-profile legacy --experiment-read-only
+```
+
+MemoryCore 启动后，在第四个终端为本轮 Space 建立 admin，再用 admin 建普通评测用户。正式 R05 和后续模型实验使用普通用户，不使用 system admin；admin 自动生成的默认 Team/Agent 对普通用户不可见，不进入正式可见资产集合：
+
+```powershell
+$CoreBase = "http://127.0.0.1:8420"
+$Headers = @{
+  Authorization = "Bearer $LocalCoreKey"
+  "x-tdai-service-id" = $RuntimeServiceId
+}
+$Admin = Invoke-RestMethod -Method Post `
+  -Uri "$CoreBase/v3/internal/meta/user/init-admin" `
+  -Headers $Headers -ContentType "application/json" `
+  -Body (@{ username = "task1-r05-admin" } | ConvertTo-Json)
+$AdminKey = $Admin.data.user_key
+
+$UserHeaders = $Headers.Clone()
+$UserHeaders["x-tdai-user-key"] = $AdminKey
+$User = Invoke-RestMethod -Method Post `
+  -Uri "$CoreBase/v3/meta/user/create" `
+  -Headers $UserHeaders -ContentType "application/json" `
+  -Body (@{ username = "task1-r05-eval" } | ConvertTo-Json)
+$env:TDAI_EVAL_USER_KEY = $User.data.default_user_key
+
+$Auth = Invoke-RestMethod -Method Post `
+  -Uri "$CoreBase/v3/meta/auth/verify" `
+  -Headers $Headers -ContentType "application/json" `
+  -Body (@{ user_key = $env:TDAI_EVAL_USER_KEY } | ConvertTo-Json)
+$env:TDAI_FORMAL_RUNTIME_AUTH_USER_ID = $Auth.data.user.user_id
+$env:TDAI_FORMAL_MEMORY_CORE_API_KEY = $LocalCoreKey
+```
+
+不要打印或另存 `$AdminKey`、`TDAI_EVAL_USER_KEY`；关闭这个终端即可清除普通用户 key 的进程环境。R05 完成后停止三服务并保留证据目录；StackRoot 是否保留只影响复查，不得在同一 Campaign 中重建或追加正式资产。
+
 MemoryCore 和 MemoryKnowledge 仍按现有本地 `server_team` 方式人工启动。脚本不会运行 Docker、启动/停止服务、安装依赖或修改 config。
 
 ## 5. 一次性运行环境
 
-以下值只在本次服务/命令进程环境中设置。`TDAI_EVAL_USER_KEY` 和 `TDAI_FORMAL_MEMORY_CORE_API_KEY` 不写入 YAML、JSON、日志或 Git。
+以下值只在本次服务/命令进程环境中设置。`TDAI_EVAL_USER_KEY` 不写入 YAML、JSON、日志或 Git。`TDAI_FORMAL_MEMORY_CORE_API_KEY` 对 adapter/inspector 仍只走环境变量；同值作为 MemoryProxy 调用 Core 的服务 token 存在仓库外 actual YAML 中，且只能是本轮 disposable loopback key，不能复用 Codex provider token 或用户 key。
 
 ```powershell
 $CampaignId = "task1-r05-blank-stack-preflight-r1"

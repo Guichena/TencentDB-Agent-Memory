@@ -440,7 +440,6 @@ if ((Get-RequiredProperty "MemoryCore health" $coreHealth "status") -ne "ok") {
 }
 $stores = Get-RequiredProperty "MemoryCore health" $coreHealth "stores"
 Assert-TrueProperty "MemoryCore health.stores" $stores "vectorStore"
-Assert-TrueProperty "MemoryCore health.stores" $stores "embeddingService"
 
 $knowledgeHealth = Invoke-JsonGet "MemoryKnowledge health" "$MemoryKnowledgeBaseUrl/health"
 if ((Get-RequiredProperty "MemoryKnowledge health" $knowledgeHealth "status") -ne "ok") {
@@ -773,7 +772,6 @@ try {
   }
   $finalCoreStores = Get-RequiredProperty "final MemoryCore health" $finalCoreHealth "stores"
   Assert-TrueProperty "final MemoryCore health.stores" $finalCoreStores "vectorStore"
-  Assert-TrueProperty "final MemoryCore health.stores" $finalCoreStores "embeddingService"
   $finalKnowledgeHealth = Invoke-JsonGet "final MemoryKnowledge health" "$MemoryKnowledgeBaseUrl/health"
   if ((Get-RequiredProperty "final MemoryKnowledge health" $finalKnowledgeHealth "status") -ne "ok") {
     throw "Final MemoryKnowledge health.status must be ok."

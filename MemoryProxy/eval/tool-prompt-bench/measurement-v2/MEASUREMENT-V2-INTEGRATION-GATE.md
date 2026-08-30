@@ -23,7 +23,7 @@
 ## 冻结身份
 
 - 分支：`codex/task1-measurement-v2-integration`
-- 本轮修改前 HEAD：`c20ac2aff248eef6cfd7744b74ccdb8a5b72f9f1`
+- 本次 R05 运行准备收口前已推送 HEAD：`68f896465eaca45437776e247cdc414fe64ce857`
 - 正式数据 tag：`task1-data-formal-v1.1`
   - tag object：`6ba3a0e4098786882dd500f884823f2f8dfbb9d3`
   - peeled commit：`02620d8313dcb883b7a57c4c2edc8f4286eb4bc9`
@@ -65,6 +65,10 @@ npm run eval:tool-prompt:integration:gate
 
 冻结清单连续生成两次的文件 SHA-256 均为 `dd771bffe67c500d05bc7ec596a9a17e65790b9c603eb50574ebbfa4278cba79`，字节确定性成立。
 
+本次 R05 运行准备收口再次用 Node.js 22 分三批执行完整 R05 Gate，结果为 `23 + 58 + 9 = 90/90`。同时删除了与任务一无关且和本地推荐配置矛盾的 `embeddingService=true` 条件：`embedding.provider=none` 时 VectorStore/BM25 仍可用，正式资产又由精确 import seam 恢复，因此强制外部 embedding 服务只会增加无关变量。真实 VectorStore、三服务 health、身份映射、资产回读、配置 hash、12 份 receipt 与最终 Git 锁均未放宽。
+
+仓库新增 `r05-v0-read-only.config.example.yaml`，固定官方 Codex upstream/client passthrough、V0 legacy、三类注入、进程内 ProxyStorage 和全部 read-only 开关。实际 YAML 必须复制到仓库外，只填本轮 Runtime Service ID 与 disposable loopback Core key；它不读取、覆盖或改写 Codex 登录配置。
+
 ## 全仓类型检查归因
 
 `npm run typecheck` 在当前仓库结构下仍不是绿色 Gate：HEAD 基线有 111 条错误，当前工作树有 110 条。用同一 tsconfig 和依赖在内存中恢复所有 tracked dirty 文件到 HEAD、排除 untracked 文件后做 multiset 对比：
@@ -83,4 +87,4 @@ npm run eval:tool-prompt:integration:gate
 - 尚未创建 `task1-measurement-v2` 与 `task1-candidate-base-v1` tag。
 - 尚未修改 Codex 登录、认证文件或官方 ChatGPT Codex upstream。
 
-下一步只能先提交并推送当前精确公共基座；随后在 Node.js 22 和三个专用本地空白服务上执行 R05 `Restore` 阶段，等待 Knowledge code-graph ready，再对同一 RunRoot 执行 `Inspect -KnowledgeReadyConfirmed`。只有 12/12 receipt 通过且代码 HEAD/工作树未变化，才能给同一提交创建两个 annotated tag。
+本次收口提交推送后，下一步是在 Node.js 22 和三个专用本地空白服务上执行 R05 `Restore` 阶段，等待 Knowledge code-graph ready，再对同一 RunRoot 执行 `Inspect -KnowledgeReadyConfirmed`。只有 12/12 receipt 通过且代码 HEAD/工作树未变化，才能给同一提交创建两个 annotated tag。

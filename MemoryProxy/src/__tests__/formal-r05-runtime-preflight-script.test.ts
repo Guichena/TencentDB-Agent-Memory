@@ -155,6 +155,9 @@ describe("R05 reusable no-model runtime preflight", () => {
     expect(source).toContain("/health");
     expect(source).toContain("/v3/meta/auth/verify");
     expect(source).toContain("TDAI_FORMAL_MEMORY_CORE_API_KEY");
+    expect(source).toContain('Assert-TrueProperty "MemoryCore health.stores" $stores "vectorStore"');
+    expect(source).not.toContain('Assert-TrueProperty "MemoryCore health.stores" $stores "embeddingService"');
+    expect(source).not.toContain('Assert-TrueProperty "final MemoryCore health.stores" $finalCoreStores "embeddingService"');
     expect(source).toMatch(/Authorization\s*=\s*"Bearer \$CoreApiKey"/u);
     expect(source).toContain("eval:tool-prompt:formal:build-restore-plan");
     expect(source).toContain("eval:tool-prompt:formal:restore-assets");
@@ -190,6 +193,12 @@ describe("R05 reusable no-model runtime preflight", () => {
       "tool-prompt-bench",
       "R04-FORMAL-CAMPAIGN-RUNBOOK.md",
     ), "utf8");
+    const configTemplate = await readFile(resolve(
+      process.cwd(),
+      "eval",
+      "tool-prompt-bench",
+      "r05-v0-read-only.config.example.yaml",
+    ), "utf8");
 
     expect(runbook).toContain("run-r05-runtime-preflight.ps1");
     expect(runbook).toContain("-Stage Restore");
@@ -205,6 +214,15 @@ describe("R05 reusable no-model runtime preflight", () => {
     expect(runbook).toMatch(/Measurement-v2 integration provisional common-base/u);
     expect(runbook).toMatch(/Selection Contract[\s\S]*freeze manifest/u);
     expect(runbook).toMatch(/不得再修改 HEAD/u);
+    expect(runbook).toMatch(/不要求 embedding service[\s\S]*embedding\.provider=none/u);
+    expect(runbook).toContain("r05-v0-read-only.config.example.yaml");
+    expect(configTemplate).toContain('url: "https://chatgpt.com/backend-api/codex"');
+    expect(configTemplate).toContain('apiKey: ""');
+    expect(configTemplate).toContain('backend: "memory"');
+    expect(configTemplate).toContain('injectors: ["skill", "knowledge", "tdai-memory"]');
+    expect(configTemplate).toContain('toolPromptProfile: "legacy"');
+    expect(configTemplate).toContain('apiKey: "__TASK1_R05_LOCAL_CORE_KEY__"');
+    expect(configTemplate).toContain('serviceId: "__TASK1_R05_RUNTIME_SERVICE_ID__"');
     expect(runbook).toMatch(/普通 Prompt[\s\S]*不重跑公共 Gate/u);
     expect(runbook).not.toMatch(/\$R05Root\s*=\s*"D:\\projects\\TencentDB-Agent-Memory-task1-r05-runtime-gate-repro-v1"/u);
     expect(r04Runbook).toMatch(/历史 checkpoint/u);

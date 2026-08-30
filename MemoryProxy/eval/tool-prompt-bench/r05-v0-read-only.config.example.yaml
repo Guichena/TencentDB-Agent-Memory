@@ -1,0 +1,126 @@
+# Task 1 R05/V0 local blank-stack configuration template.
+# Copy this file outside every Git worktree, replace the two __...__ values,
+# and keep the resulting file unchanged from MemoryProxy startup through R05 Inspect.
+
+server:
+  host: "127.0.0.1"
+  port: 8096
+  forwardTimeoutMs: 600000
+
+upstream:
+  url: "https://chatgpt.com/backend-api/codex"
+  apiKey: ""
+  agents: {}
+
+log:
+  file: ""
+  verbose: false
+  level: "info"
+  backend: "console"
+
+opik:
+  enabled: false
+
+langfuse:
+  enabled: false
+
+clickhouse:
+  enabled: false
+
+redis:
+  enabled: false
+
+rateLimit:
+  tpm: 0
+  qpm: 0
+
+storage:
+  enabled: true
+  backend: "memory"
+
+costGuard:
+  enabled: false
+  markerOptIn: false
+
+creditReport:
+  url: ""
+  timeoutMs: 0
+
+creditPricing:
+  models: []
+
+injection:
+  enabled: true
+  injectors: ["skill", "knowledge", "tdai-memory"]
+  toolPromptProfile: "legacy"
+  externalGatewayUrl: "http://127.0.0.1:8096"
+  assetReflection:
+    markerOptIn: false
+
+extraction:
+  enabled: false
+  extractors: []
+
+sessionInit:
+  enabled: true
+  maxRetries: 3
+  injectAgentContext: true
+  injectTaskContext: true
+  defaultTaskId: ""
+  headerAutoSelect:
+    enabled: true
+    teamHeader: "x-team-id"
+    agentHeader: "x-agent-id"
+    taskHeader: "x-task-id"
+    onMismatch: "bypass"
+
+tdai:
+  enabled: true
+  endpoint: "http://127.0.0.1:8420"
+  apiKey: "__TASK1_R05_LOCAL_CORE_KEY__"
+  serviceId: "__TASK1_R05_RUNTIME_SERVICE_ID__"
+  memory:
+    enabled: true
+    inject: true
+    writeL0: false
+    recallL1: true
+    injectL2L3: true
+    l1Limit: 5
+    l2Limit: 3
+    timeoutMs: 5000
+
+skill:
+  endpoint: "http://127.0.0.1:8420"
+  serviceToken: "__TASK1_R05_LOCAL_CORE_KEY__"
+  serviceId: "__TASK1_R05_RUNTIME_SERVICE_ID__"
+  timeoutMs: 5000
+
+knowledge:
+  enabled: true
+  endpoint: "http://127.0.0.1:8420"
+  serviceToken: "__TASK1_R05_LOCAL_CORE_KEY__"
+  serviceId: "__TASK1_R05_RUNTIME_SERVICE_ID__"
+  timeoutMs: 5000
+
+skillRuntime:
+  allowLlmWrite: false
+
+auth:
+  enabled: true
+  url: "http://127.0.0.1:8420"
+  timeoutMs: 5000
+
+systemUsers: []
+
+admin:
+  apiKey: ""
+
+memCommand:
+  enabled: false
+  allowedCommands: []
+
+ccRequestRouting:
+  enabled: true
+
+workbuddyRequestRouting:
+  enabled: true
