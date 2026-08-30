@@ -42,6 +42,7 @@ import {
   closeServerAndSealTrace,
   createToolExecutionTraceSinkFromEnv,
 } from "./tool-execution-trace-sink.js";
+import { isDirectModuleExecution } from "./direct-entry.js";
 
 const log = createLogger("server");
 
@@ -176,7 +177,7 @@ async function startServer(): Promise<void> {
 }
 
 // Start server when run directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isDirectModuleExecution(import.meta.url, process.argv[1])) {
   void startServer().catch((err) => {
     log.error("Knowledge service failed to start", {
       error: err instanceof Error ? err.message : String(err),
