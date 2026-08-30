@@ -1,10 +1,12 @@
 # R04 正式 Campaign 操作手册
 
+> 本文件中的 R04 branch/worktree 是**历史 checkpoint**，只说明 runner 能力的来源，不再是任何 live 执行路径。统一使用 `ExecutionRoot`：R05 blank-stack preflight 在最终 Measurement-v2 integration provisional common-base 上执行；通过后冻结 Measurement-v2/Selection Contract 并打 tag；**E01/R04 V0 runtime smoke**（12 次 Luna）与正式 V0–V3 使用 tagged candidate-base，各 Prompt 方法使用该 tag 的各自后代。
+
 ## 当前结论
 
 | 项目 | 冻结值或状态 |
 |---|---|
-| 独立 worktree | `D:\projects\TencentDB-Agent-Memory-task1-r04-runner-v1` |
+| 历史 R04 worktree | `D:\projects\TencentDB-Agent-Memory-task1-r04-runner-v1`（只读 checkpoint，不作 ExecutionRoot） |
 | 分支 | `codex/task1-experiment-r04-runner-v1` |
 | Prompt freeze | annotated tag `task1-code-freeze`，解引用 commit `d0996809ed63f6cfc67504ad180db0d48ac70475` |
 | 数据 freeze | annotated tag `task1-data-formal-v1.1`，640 case；Dev 240、Hidden 400 |
@@ -12,18 +14,18 @@
 | 推理强度 | `high` |
 | 输出详细度 | `medium` |
 | R04 模型运行 | `0`；本手册生成时没有启动 Codex、MemoryProxy、MemoryKnowledge 或 Docker |
-| 当前阻断项 | 当前本地 `server_team` 部署的生产 asset restore/inspect adapter 尚未实现 |
+| 历史阻断项 | R04 当时尚无生产 adapter；现由 R05 blank-stack preflight 与 integration Gate 接管 |
 
 R04 已经具备生产请求 trace、Provider-visible Prompt 与 usage trace、Gold-blind 执行、正式 eligibility、M0 链评分、Pair 汇总、Prompt cache 结构 Gate，以及人工执行和 sealed collection 命令。它不负责自动启动服务，也不修改持久化 YAML、Codex 登录态或用户配置。
 
-生产资产 adapter 缺失不是模型失败，也不能用手写 JSON 绕过。正式 V0 Smoke 只有在 adapter 通过真实接口完成 restore 和 read-back，并由 `create-formal-preflight-receipt.ps1` 生成 `ready=true` receipt 后才能开始。
+生产资产 Gate 失败不是模型失败，也不能用手写 JSON 绕过。必须先在 provisional common-base 上通过 0 模型的 R05 blank-stack preflight，冻结 candidate-base；之后才允许在 tagged candidate-base 上开始 E01/R04 V0 runtime smoke。
 
 ## 运行边界
 
 1. 一个 Campaign 只运行一个 Variant；Variant 对应的 profile 是 MemoryProxy 进程级设置。
 2. 一个 Campaign 只允许一个 MemoryProxy 实例和一个 MemoryKnowledge 实例，所有 run 严格串行，run wall-time 窗口不得重叠。
 3. `TDAI_EVAL_TRACE_DIR` 是绝对路径，`TDAI_EVAL_CAMPAIGN_ID` 每次唯一。目标 `${TraceRoot}\${CampaignId}` 必须在启动前不存在；trace sink 使用 create-new 语义，复用目录会使观测器 fail-open，最终 Campaign 被拒绝。
-4. Campaign、runtime、trace 和结果目录全部放在 R04 worktree 外。执行 worktree 必须保持完全干净，准备或运行产物不能写进仓库。
+4. Campaign、runtime、trace 和结果目录全部放在 `ExecutionRoot` 外。执行 worktree 必须保持完全干净，准备或运行产物不能写进仓库。
 5. 当前 `CODEX_HOME` 只用于复用官方登录。不得复制或编辑 `auth.json`，不得执行 `codex login`、`codex logout`，不得覆盖桌面 Codex 配置。
 6. `TDAI_EVAL_USER_KEY` 只存在于启动/执行终端的进程环境，不写入命令文件、日志、JSON 或 Git。
 7. 不使用 `start-benchmark-proxy.ps1` 采集正式结果。该文件属于旧 Mock/Pilot 链路，会启用 diagnostic Mock 空间，不满足正式 Campaign Gate。
@@ -34,17 +36,17 @@ R04 已经具备生产请求 trace、Provider-visible Prompt 与 usage trace、G
 以下 PowerShell 变量只是路径示例。路径可调整，但都必须是明确的绝对路径。
 
 ```powershell
-$R04Root = "D:\projects\TencentDB-Agent-Memory-task1-r04-runner-v1"
-$ProxyRoot = Join-Path $R04Root "MemoryProxy"
-$KnowledgeRoot = Join-Path $R04Root "MemoryKnowledge"
+$ExecutionRoot = "<tagged candidate-base 或当前 Prompt 方法后代 worktree 的绝对路径>"
+$ProxyRoot = Join-Path $ExecutionRoot "MemoryProxy"
+$KnowledgeRoot = Join-Path $ExecutionRoot "MemoryKnowledge"
 $BenchRoot = Join-Path $ProxyRoot "eval\tool-prompt-bench"
 
-$CampaignId = "task1-dev-v0-smoke-r1"
+$CampaignId = "task1-e01-v0-runtime-smoke-r1"
 $Variant = "V0"
 $Profile = "legacy"
 $TraceRoot = "D:\task1-formal-traces"
-$CampaignRoot = "D:\task1-formal-runs\task1-dev-v0-smoke-r1"
-$ResultPath = "D:\task1-formal-results\task1-dev-v0-smoke-r1.json"
+$CampaignRoot = "D:\task1-formal-runs\task1-e01-v0-runtime-smoke-r1"
+$ResultPath = "D:\task1-formal-results\task1-e01-v0-runtime-smoke-r1.json"
 $Config = "D:\path\to\the\actual-readonly-formal-config.yaml"
 $ProxyBaseUrl = "http://127.0.0.1:8787"
 $KnowledgeHealthUrl = "http://127.0.0.1:8790/health"
@@ -64,15 +66,15 @@ Variant/Profile 映射固定为：
 在任何服务启动前检查：
 
 ```powershell
-git -C $R04Root status --short --branch
-git -C $R04Root rev-parse 'task1-code-freeze^{}'
-git -C $R04Root rev-parse 'task1-data-formal-v1.1^{}'
+git -C $ExecutionRoot status --short --branch
+git -C $ExecutionRoot rev-parse 'task1-code-freeze^{}'
+git -C $ExecutionRoot rev-parse 'task1-data-formal-v1.1^{}'
 node --version
 codex --version
 Test-Path -LiteralPath (Join-Path $TraceRoot $CampaignId)
 ```
 
-必须满足：worktree 干净；Prompt freeze 解引用为上表 commit；Campaign trace 目录返回 `False`；MemoryProxy 使用项目要求的 Node 22.x。若 Node、Codex CLI、模型 alias 或 R04 HEAD 改变，前后 Campaign 不能合并。
+必须满足：worktree 干净；ExecutionRoot 是 tagged candidate-base（基线）或该 tag 的明确方法后代；Prompt freeze、Selection Contract 和 Measurement-v2 freeze 与该执行提交匹配；Campaign trace 目录返回 `False`；MemoryProxy 使用项目要求的 Node 22.x。若 Node、Codex CLI、模型 alias 或执行 HEAD 改变，前后 Campaign 不能合并。
 
 ## 二、生产资产恢复与 read-back
 
@@ -85,7 +87,7 @@ Test-Path -LiteralPath (Join-Path $TraceRoot $CampaignId)
 - `formal-dataset/scripts/inspect-formal-snapshot.ts`：校验 plan 和 restore observations 后加载生产 inspector。
 - `create-formal-preflight-receipt.ps1`：把 prepared run 的公开身份与 inspect observations 绑定，独立重算六项 Gate。
 
-现有代码没有提供可直接用于当前本地 `server_team` 部署的生产 adapter。下一独立实现任务必须完成以下内容，不能在 R04 中用 Mock 代替：
+R04 历史 checkpoint 当时没有生产 adapter；当前实现由 R05 support 和最终 integration common-base 提供。不要再按本节创建另一个 adapter，也不能用 Mock 代替。live 模型执行前，R05 blank-stack preflight 必须已经完成以下合同：
 
 1. 解析 plan 的运行时 requirements：Space→service、dataset user→auth user、Skill 包 bytes、Knowledge snapshot、Memory L1/L2 import。
 2. 通过现有 MemoryCore/Metadata/Skill/MemoryKnowledge 数据面接口执行 action，保存每个 action 的请求路径、HTTP/envelope 状态、响应 hash 和 capture。
@@ -134,14 +136,14 @@ Invoke-RestMethod $KnowledgeHealthUrl | ConvertTo-Json -Depth 8
 
 ## 四、PrepareOnly
 
-先只准备 12 条 Dev Smoke，不调用模型：
+先为 E01/R04 V0 runtime smoke 准备 12 条 Dev run，不调用模型；下一节才各调用一次 Luna：
 
 ```powershell
 & (Join-Path $BenchRoot "run-formal-prepare.ps1") `
   -Scope smoke `
   -Variant $Variant `
   -Campaign $CampaignId `
-  -RepositoryRoot $R04Root `
+  -RepositoryRoot $ExecutionRoot `
   -Config $Config `
   -OutputRoot $CampaignRoot `
   -ProxyBaseUrl $ProxyBaseUrl `
@@ -180,7 +182,7 @@ $knowledgeHealth = Invoke-RestMethod $KnowledgeHealthUrl
   -PreflightReceipt "<该 run 的 preflight-receipt.json>" `
   -KnowledgeHealthUrl $KnowledgeHealthUrl `
   -KnowledgeInstanceId $knowledgeHealth.serverInstanceId `
-  -RepositoryRoot $R04Root `
+  -RepositoryRoot $ExecutionRoot `
   -TimeoutMs 180000
 ```
 
@@ -209,7 +211,7 @@ $knowledgeHealth = Invoke-RestMethod $KnowledgeHealthUrl
   -CampaignId $CampaignId `
   -CampaignRoot $CampaignRoot `
   -TraceCampaignDirectory (Join-Path $TraceRoot $CampaignId) `
-  -RepositoryRoot $R04Root `
+  -RepositoryRoot $ExecutionRoot `
   -Split dev `
   -OutputPath $ResultPath
 ```
@@ -237,16 +239,18 @@ providerCollection.formalCampaignEligible == true
 
 ## 九、推荐实际顺序
 
-1. 生产 adapter 完成后，V0 只跑 12 条 Dev Smoke。
-2. Smoke 全部可收集且正式 eligible 后，跑 240 条 Dev V0。
-3. 分别用新 Campaign 跑 V0-C、V1a、V1、V2、V3；同一 Variant 内 case/Pair 固定，跨 Variant 用离线 case id 配对。
-4. 先比较相邻版本，保留所有中间版本；效果最好的中间产物可以胜过最终编号。
-5. 只对 V0、V0-C 和最多两个候选做三次复核。
-6. 冻结 Final 后才授权 Hidden Test；Hidden 命令必须显式增加 `-HeldOutAuthorized` 或 `-AllowHiddenTest`，且不再改 Prompt、Gold、scorer 或资产。
+1. provisional common-base 先完成 0 模型 R05 blank-stack preflight；通过后冻结 Measurement-v2/Selection Contract 并打 candidate-base tag。
+2. tagged candidate-base 先跑 E01/R04 V0 runtime smoke（12 次 Luna）。
+3. runtime smoke 全部可收集且正式 eligible 后，跑 240 条 Dev V0。
+4. 分别用新 Campaign 跑 V0-C、V1a、V1、V2、V3；同一 Variant 内 case/Pair 固定，跨 Variant 用离线 case id 配对。
+5. 每个 Prompt 方法从 tagged candidate-base 建独立后代并创建新 run/Session/result；普通 Prompt 改动不重跑公共 blank-stack Gate，只有 adapter/runner/scorer/restore/preflight 基础设施变化才重跑。
+6. 先比较相邻版本，保留所有中间版本；效果最好的中间产物可以胜过最终编号。
+7. 只对 V0、V0-C 和最多两个候选做三次复核。
+8. 冻结 Final 后才授权 Hidden Test；Hidden 命令必须显式增加 `-HeldOutAuthorized` 或 `-AllowHiddenTest`，且不再改 Prompt、Gold、scorer 或资产。
 
 ## R04 完成判定
 
 R04 代码 Gate 与正式模型 Gate 是两件事：
 
 - R04 代码 Gate：本分支测试、类型增量、Prompt freeze、trace seal、Gold-blind 边界、usage、eligibility、M0、Pair、cache Gate 和人工命令全部通过；可以在不运行模型的情况下完成。
-- 正式模型 Gate：必须额外有生产 adapter、真实 restore/read-back、12 条 V0 Smoke、sealed trace 和 `formalCampaignEligible=true` bundle。当前尚未满足，不能宣称已经得到任务一优化结论。
+- 正式模型 Gate：必须额外有已通过的 R05 blank-stack preflight、tagged candidate-base、12 条 E01/R04 V0 runtime smoke、sealed trace 和 `formalCampaignEligible=true` bundle。当前尚未满足，不能宣称已经得到任务一优化结论。
