@@ -44,12 +44,39 @@ function l1Body() {
   };
 }
 
+function l0Body() {
+  return {
+    kind: "l0",
+    formal_asset_id: "MEM-L0",
+    expected_asset_content_hash: "0".repeat(64),
+    team_id: isolation.teamId,
+    user_id: isolation.userId,
+    agent_id: isolation.agentId,
+    payload: {
+      sessionId: "formal-session",
+      messages: [{
+        id: "FORMAL-MSG-1",
+        role: "user",
+        content: "The deployment uses the compatibility flag.",
+        recordedAt: "2026-08-29T09:00:00+08:00",
+      }],
+    },
+  };
+}
+
 describe("Formal benchmark MemoryCore import seam", () => {
   it("is unavailable unless the explicit experiment flag is enabled", async () => {
     const upsertL1 = vi.fn();
+    const upsertL0 = vi.fn();
     const result = await importFormalBenchmarkMemory(l1Body(), {
       enabled: false,
-      store: { upsertL1 } as unknown as IMemoryStore,
+      store: { upsertL1, upsertL0 } as unknown as IMemoryStore,
+      storage: undefined,
+      isolation,
+    });
+    const l0Result = await importFormalBenchmarkMemory(l0Body(), {
+      enabled: false,
+      store: { upsertL1, upsertL0 } as unknown as IMemoryStore,
       storage: undefined,
       isolation,
     });
@@ -60,7 +87,68 @@ describe("Formal benchmark MemoryCore import seam", () => {
       code: 404,
       message: "Formal benchmark import is disabled",
     });
+    expect(l0Result).toEqual(result);
     expect(upsertL1).not.toHaveBeenCalled();
+    expect(upsertL0).not.toHaveBeenCalled();
+  });
+
+  it("writes exact L0 history through the import seam without a pipeline callback", async () => {
+    let stored: Record<string, unknown> | undefined;
+    const store = {
+      upsertL0: vi.fn(async (record: Record<string, unknown>) => {
+        stored = record;
+        return true;
+      }),
+      queryL0Paginated: vi.fn(async () => ({
+        rows: stored ? [{
+          record_id: stored.id,
+          session_key: stored.sessionKey,
+          session_id: stored.sessionId,
+          team_id: stored.teamId,
+          task_id: "",
+          user_id: stored.userId,
+          agent_id: stored.agentId,
+          role: stored.role,
+          message_text: stored.messageText,
+          recorded_at: stored.recordedAt,
+          timestamp: stored.timestamp,
+        }] : [],
+        total: stored ? 1 : 0,
+      })),
+    } as unknown as IMemoryStore;
+
+    const result = await importFormalBenchmarkMemory(l0Body(), {
+      enabled: true,
+      store,
+      storage: undefined,
+      isolation,
+    });
+
+    expect(store.upsertL0).toHaveBeenCalledWith(expect.objectContaining({
+      id: "FORMAL-MSG-1",
+      sessionKey: "formal-session",
+      sessionId: "formal-session",
+      teamId: isolation.teamId,
+      userId: isolation.userId,
+      agentId: isolation.agentId,
+      role: "user",
+      messageText: "The deployment uses the compatibility flag.",
+    }), undefined);
+    expect(result).toEqual({
+      ok: true,
+      data: {
+        kind: "l0",
+        formal_asset_id: "MEM-L0",
+        runtime_locator: {
+          kind: "conversation-message",
+          sessionId: "formal-session",
+          messageIds: ["FORMAL-MSG-1"],
+        },
+        accepted_ids: ["FORMAL-MSG-1"],
+        content_sha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
+        expected_asset_content_hash: "0".repeat(64),
+      },
+    });
   });
 
   it("upserts an exact isolated L1 record and verifies it through the same store", async () => {

@@ -55,7 +55,15 @@ import { trackWrite, withL0Retry } from "./tdai/pending-writes.js";
 import type { TdaiIdentity, TdaiMessage } from "./tdai/types.js";
 import { triggerSkillExtractIfReady } from "./skill/handler-glue.js";
 import { isExtractionAllowed, logExtractionSkipped } from "./extraction-gate.js";
-import { isInjectionInfrastructureError } from "./injection/errors.js";
+import {
+  InjectionInfrastructureError,
+  injectionInfrastructureErrorFromProductionSource,
+  isInjectionInfrastructureError,
+} from "./injection/errors.js";
+import {
+  wrapProductionPromptSourceManifestForCodex,
+  type ProductionPromptSourceManifest,
+} from "./injection/production-source.js";
 import {
   extractCompletedResponseUsage,
   type ProviderRequestObserver,
@@ -909,6 +917,7 @@ export async function handleCodexEndpoint(
   //
   // This reuses 100% of the existing pipeline infrastructure (hook cache,
   // prewarm, all injectors) without writing a third protocol adapter.
+  let productionSourceManifest: ProductionPromptSourceManifest | undefined;
   if (!injectionSkipped && sessionInfo && config.injection?.enabled && (config.injection.injectors?.length ?? 0) > 0) {
     try {
       const { getInjectionPipeline } = await import("./injection/index.js");
@@ -945,7 +954,7 @@ export async function handleCodexEndpoint(
         model: modelId,
       };
 
-      const injectedBody = await pipeline.process(syntheticBody, {
+      const injectionMetadata = {
         protocol: "openai",
         traceId,
         keyId,
@@ -958,10 +967,28 @@ export async function handleCodexEndpoint(
         turnSeq: 0,
         requestPath: c.req.path,
         custom: { session: sessionInfo, userKey: callerUserKey ?? undefined, assetCapabilities },
-      });
+      } as const;
+      const injectedResult = dependencies.providerRequestObserver
+        ? await pipeline.processWithProductionSources(syntheticBody, injectionMetadata, {
+            ...(sessionContextBlock
+              ? {
+                  initialSystemSources: [{
+                    sourceId: "codex-session-context",
+                    sourceKind: "dynamic-asset" as const,
+                    injectionBlockId: "session-context",
+                    text: sessionContextBlock,
+                  }],
+                }
+              : {}),
+          })
+        : {
+            body: await pipeline.process(syntheticBody, injectionMetadata),
+            productionSourceManifest: null,
+          };
 
       // Extract injected content from the synthetic body's system message.
       // The pipeline appends to `messages[0].content` (system message).
+      const injectedBody = injectedResult.body;
       const injectedMessages = injectedBody.messages as Array<Record<string, unknown>> | undefined;
       const sysMsg = injectedMessages?.[0];
       const injectedText = typeof sysMsg?.content === "string" ? sysMsg.content : "";
@@ -974,10 +1001,27 @@ export async function handleCodexEndpoint(
         // 走 raw 模式原样嵌入 <tdai_injections> wrapper 内层——不再套
         // 内层 <available_skills> tag，也不 escape 内容里的 XML tag，
         // 否则模型看到的会是转义字符（`&lt;user_memory&gt;`）读不出结构。
+        if (dependencies.providerRequestObserver) {
+          if (!injectedResult.productionSourceManifest) {
+            throw new InjectionInfrastructureError(
+              "INJECTION_METADATA_PARITY_FAILURE",
+              "formal production injection is missing ContextBlock/PromptUnit source provenance",
+            );
+          }
+          const providerVisibleInjection = buildCodexInjectionBlock({ raw: injectedText }).text;
+          productionSourceManifest = wrapProductionPromptSourceManifestForCodex(
+            providerVisibleInjection,
+            injectedResult.productionSourceManifest,
+          );
+        }
         body = injectCodexAssets(body, { raw: injectedText });
       }
     } catch (err: unknown) {
       if (isInjectionInfrastructureError(err)) throw err;
+      if (dependencies.providerRequestObserver) {
+        const provenanceError = injectionInfrastructureErrorFromProductionSource(err);
+        if (provenanceError) throw provenanceError;
+      }
       console.error("[codex] injection pipeline error:", err instanceof Error ? err.message : String(err));
       // Degrade gracefully: forward without injection
     }
@@ -1002,7 +1046,20 @@ export async function handleCodexEndpoint(
   });
 
   // ── 11. Forward to upstream ────────────────────────────────────────────────
-  return forwardToUpstream(c, config, body, traceId, startTime, keyId, modelId, pipe, lf, archiveCtx, dependencies.providerRequestObserver);
+  return forwardToUpstream(
+    c,
+    config,
+    body,
+    traceId,
+    startTime,
+    keyId,
+    modelId,
+    pipe,
+    lf,
+    archiveCtx,
+    dependencies.providerRequestObserver,
+    productionSourceManifest,
+  );
 }
 
 // ── Archive context (skill/conversation/add + TDAI L0 write) ─────────────────
@@ -1147,6 +1204,7 @@ async function forwardToUpstream(
   lf: LangfuseTurnContext | null,
   archiveCtx: CodexArchiveCtx | null = null,
   providerRequestObserver?: ProviderRequestObserver,
+  productionSourceManifest?: ProductionPromptSourceManifest,
 ): Promise<Response> {
   // Per-agent upstream override (upstream.agents.codex.url) 优先于全局 url。
   // 对齐 anthropicHandler.ts:1029 的解析姿势。codex 通常需要单独指向支持
@@ -1171,6 +1229,7 @@ async function forwardToUpstream(
       "x-task-id",
       "x-team-id",
     ])),
+    ...(productionSourceManifest ? { productionSourceManifest } : {}),
   });
 
   pipe.forwardStart(upstreamUrl);

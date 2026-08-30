@@ -109,12 +109,27 @@ function matchesAction(
     && matchesRules(attempt.body ?? {}, action.argumentRules, fixture, previousResponse);
 }
 
-function expectedActionAt(item: ToolPromptEvalCase, index: number): AllowedToolAction | null {
-  if (index === 0) return item.gold.allowedFirstActions[0] ?? null;
-  if (item.gold.family !== "knowledge") return item.gold.expectedFollowupActions?.[index - 1] ?? null;
+function expectedActionAt(
+  item: ToolPromptEvalCase,
+  expectedSequence: string[],
+  index: number,
+): AllowedToolAction | null {
+  const expectedTool = expectedSequence[index];
+  if (!expectedTool) return null;
+  if (index === 0) {
+    return item.gold.allowedFirstActions.find((action) => action.tool === expectedTool) ?? null;
+  }
+  if (item.gold.family !== "knowledge") {
+    const action = item.gold.expectedFollowupActions?.[index - 1];
+    return action?.tool === expectedTool ? action : null;
+  }
+
+  if (expectedTool !== "knowledge_tools_call") return null;
 
   const expectation = item.gold.expectedKnowledgeCalls?.[index - 1];
-  const knowledgeId = item.gold.allowedFirstActions[0]?.argumentRules?.exactValues?.knowledge_id;
+  const knowledgeId = item.gold.allowedFirstActions.find((action) => (
+    action.tool === expectedSequence[0]
+  ))?.argumentRules?.exactValues?.knowledge_id;
   if (!expectation || typeof knowledgeId !== "string") return null;
   return {
     tool: "knowledge_tools_call",
@@ -130,9 +145,12 @@ function matchesExpectedAt(
   item: ToolPromptEvalCase,
   fixture: EvalFixture,
   attempts: TdaiAttempt[],
+  expectedSequence: string[],
   index: number,
 ): boolean {
-  const action = expectedActionAt(item, index);
+  const expectedTool = expectedSequence[index];
+  if (!expectedTool) return false;
+  const action = expectedActionAt(item, expectedSequence, index);
   const attempt = attempts[index];
   if (!action || !attempt || !matchesAction(attempt, action, fixture, attempts[index - 1]?.response)) return false;
   if (item.gold.family === "knowledge" && index > 0) {
@@ -230,27 +248,45 @@ export function evaluateToolPromptCase(
     && attempts[0].method.toUpperCase() === "POST"
   ));
   const firstSelectionCorrect = firstFamilyCorrect && firstEndpointExpected;
-  const expectedLength = item.gold.allowedSequences[0]?.length ?? 0;
-  const fullSequenceCorrect = expectedLength > 0
-    && attempts.length >= expectedLength
-    && Array.from({ length: expectedLength }, (_, index) => matchesExpectedAt(item, fixture, attempts, index)).every(Boolean);
-  const overcall = attempts.length > item.gold.maxTdaiCalls;
-  const executionValid = fullSequenceCorrect
-    && attempts.slice(0, expectedLength).every((attempt) => (
-      hasValidHeaders(attempt) && typeof attempt.status === "number" && attempt.status >= 200 && attempt.status < 300
+  const completedSequences = item.gold.allowedSequences.filter((sequence) => (
+    sequence.length > 0
+    && attempts.length >= sequence.length
+    && sequence.every((tool, index) => attempts[index]?.tool === tool)
+    && sequence.every((_, index) => matchesExpectedAt(item, fixture, attempts, sequence, index))
+  ));
+  const matchedSequence = completedSequences.find((sequence) => (
+    attempts.length === sequence.length
+  ));
+  const expectedLength = matchedSequence?.length ?? 0;
+  const fullSequenceCorrect = matchedSequence !== undefined;
+  const sequenceExecutionValid = (sequence: string[]): boolean => (
+    attempts.slice(0, sequence.length).every((attempt) => (
+      hasValidHeaders(attempt)
+      && typeof attempt.status === "number"
+      && attempt.status >= 200
+      && attempt.status < 300
+    ))
+  );
+  const overcallAfterCompletedPath = matchedSequence === undefined
+    && completedSequences.some((sequence) => (
+      attempts.length > sequence.length
     ));
+  const overcall = attempts.length > item.gold.maxTdaiCalls || overcallAfterCompletedPath;
+  const executionValid = fullSequenceCorrect
+    && sequenceExecutionValid(matchedSequence);
 
   let state: EvaluationState;
   if (!firstFamilyCorrect) state = "WRONG_FAMILY";
   else if (!firstToolExpected || !firstEndpointExpected) state = "WRONG_ENDPOINT";
-  else if (!firstActionWithValidArgs || !fullSequenceCorrect || !executionValid) state = "CORRECT_ENDPOINT_INVALID_ARGS";
+  else if (overcallAfterCompletedPath) state = "EXTRA_OR_DUPLICATE_CALL";
+  else if (!firstActionWithValidArgs || !fullSequenceCorrect) state = "CORRECT_ENDPOINT_INVALID_ARGS";
   else if (overcall) state = "EXTRA_OR_DUPLICATE_CALL";
   else state = "CORRECT_CALL";
 
   return {
     ...base,
     state,
-    effectiveCall: executionValid,
+    effectiveCall: fullSequenceCorrect && !overcall,
     firstActionCorrect: firstSelectionCorrect,
     conditionalToolCorrect: firstSelectionCorrect,
     argumentValid: fullSequenceCorrect,

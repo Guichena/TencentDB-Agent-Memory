@@ -41,6 +41,13 @@ import { compileToolPrompt } from "../tool-prompt/compiler.js";
 import { resolveSessionCapabilitySignature } from "../tool-prompt/capability-pruned.js";
 import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
 import type { ToolPromptProfile } from "../tool-prompt/types.js";
+import {
+  buildCompiledPromptProductionSources,
+  buildRenderedPromptProductionSources,
+  locateBoundedProductionPromptBindings,
+  type ProductionPromptBinding,
+  type RenderedProductionPromptArtifact,
+} from "../production-source.js";
 
 const TAG = "[knowledge-tools-injector]";
 
@@ -142,6 +149,17 @@ function deriveRepoSlug(repoUrl: string | undefined): string | undefined {
   return slug.length > 0 ? slug : undefined;
 }
 
+function renderKnowledgeResourceTags(resources: readonly KnowledgeItem[]): string {
+  return resources
+    .map((r) => {
+      const matchAttr = attr("match", r.repo_slug ?? deriveRepoSlug(r.repo_url));
+      const branchAttr = attr("branch", r.repo_url ? (r.branch ?? "main") : undefined);
+      const summaryAttr = r.type === "wiki" ? attr("about", r.summary) : "";
+      return `<knowledge type="${r.type}" id="${r.knowledge_id}"\n  url="${r.service_url}"\n  name="${xmlAttrEscape(r.name)}"${matchAttr}${branchAttr}${summaryAttr} />`;
+    })
+    .join("\n\n");
+}
+
 export function renderKnowledgeToolsBlock(
   resources: KnowledgeItem[],
   serviceId: string,
@@ -164,20 +182,9 @@ export function renderKnowledgeToolsBlock(
       .map(([name, value]) => renderHeader(name, value)),
   ];
 
-  const resourceTags = resources
-    .map((r) => {
-      // `match` 是 code-graph 的锚点判定依据：agent 拿它比对当前工作区的 git
-      // remote，命中才调用。优先用后端下发的 repo_slug；缺失时从 repo_url 降级
-      // 提取 `<org>/.../<repo>`。wiki 无 repo，不渲染该属性。
-      const matchAttr = attr("match", r.repo_slug ?? deriveRepoSlug(r.repo_url));
-      const branchAttr = attr("branch", r.repo_url ? (r.branch ?? "main") : undefined);
-      // wiki 的 summary 是 LLM 依据页面标题生成的内容概述，是 agent 判断"该不该
-      // 查这个 wiki"的唯一线索，必须保留。code-graph 的 summary 只是
-      // "N 个文件、M 个符号节点"一类计数，对调用决策无帮助，不注入。
-      const summaryAttr = r.type === "wiki" ? attr("about", r.summary) : "";
-      return `<knowledge type="${r.type}" id="${r.knowledge_id}"\n  url="${r.service_url}"\n  name="${xmlAttrEscape(r.name)}"${matchAttr}${branchAttr}${summaryAttr} />`;
-    })
-    .join("\n\n");
+  // This renderer-owned dynamic slice is also carried as readonly provenance
+  // by renderKnowledgeToolsPromptArtifact; no provider-text parsing is needed.
+  const resourceTags = renderKnowledgeResourceTags(resources);
 
   return [
     "<knowledge_tools>",
@@ -239,6 +246,109 @@ export function renderKnowledgeToolsBlock(
     "- 响应格式统一为 {code, message, data}，code=0 表示成功。",
     "</knowledge_tools>\n",
   ].join("\n");
+}
+
+export interface RenderKnowledgeToolsPromptArtifactInput {
+  resources: KnowledgeItem[];
+  serviceId: string;
+  telemetryContext?: KnowledgeTelemetryContext;
+  profile?: ToolPromptProfile;
+  capabilitySignature?: string;
+}
+
+function locateKnowledgeRuntimeBindings(
+  content: string,
+  input: RenderKnowledgeToolsPromptArtifactInput,
+  resourceTags: string,
+): ProductionPromptBinding[] {
+  const headerBindings = (
+    id: string,
+    headerName: string,
+    value: string | undefined,
+  ): readonly ProductionPromptBinding[] => value
+    ? locateBoundedProductionPromptBindings({
+        text: content,
+        id,
+        value,
+        kind: "runtime-binding",
+        boundaries: [
+          { before: `${headerName}: `, after: "; " },
+          { before: `${headerName}: `, after: "\n" },
+          { before: `${headerName}: `, after: "' \\" },
+          { before: `${headerName}: `, after: "`" },
+        ],
+      })
+    : [];
+  return [
+    ...(resourceTags.length > 0
+      ? locateBoundedProductionPromptBindings({
+          text: content,
+          id: "knowledge-resources",
+          value: resourceTags,
+          kind: "dynamic-asset",
+          boundaries: [
+            { before: "## 已绑定资源\n", after: "\n\n## 调用方式" },
+            { before: "## 已绑定资源\n", after: "\n\n## 知识库专用流程" },
+          ],
+        })
+      : []),
+    ...headerBindings("service-id", "x-tdai-service-id", input.serviceId),
+    ...headerBindings("session-key", "x-conversation-id", input.telemetryContext?.sessionKey),
+    ...headerBindings("user-id", "x-tdai-user-id", input.telemetryContext?.userId),
+    ...headerBindings("team-id", "x-tdai-team-id", input.telemetryContext?.teamId),
+    ...headerBindings("agent-id", "x-tdai-agent-id", input.telemetryContext?.agentId),
+    ...headerBindings("agent-source", "x-tdai-agent-source", input.telemetryContext?.agentSource),
+    ...headerBindings("space-id", "x-tdai-space-id", input.telemetryContext?.spaceId),
+  ];
+}
+
+/** Production renderer plus exact resource/runtime/PromptUnit provenance. */
+export function renderKnowledgeToolsPromptArtifact(
+  input: RenderKnowledgeToolsPromptArtifactInput,
+): RenderedProductionPromptArtifact | null {
+  const telemetryContext = input.telemetryContext ?? {};
+  const legacyContent = renderKnowledgeToolsBlock(
+    input.resources,
+    input.serviceId,
+    telemetryContext,
+  );
+  if (!legacyContent) return null;
+  const resourceTags = renderKnowledgeResourceTags(input.resources);
+  const profile = input.profile ?? "legacy";
+  const capabilitySignature = input.capabilitySignature ?? "unconfigured";
+  if (profile === "legacy") {
+    const bindings = locateKnowledgeRuntimeBindings(legacyContent, input, resourceTags);
+    return {
+      content: legacyContent,
+      productionSources: buildRenderedPromptProductionSources({
+        sourceId: "knowledge-tools:legacy-body",
+        sourceKind: "static-tool",
+        injectionBlockId: "knowledge-tools-injector",
+        text: legacyContent,
+        bindings,
+      }),
+    };
+  }
+  const compiledPrompt = compileToolPrompt({
+    profile,
+    family: "knowledge",
+    surface: "knowledge-tools",
+    legacyUnits: [{
+      id: "knowledge-tools.legacy-body",
+      kind: "legacy-body",
+      content: legacyContent,
+    }],
+    capabilitySignature,
+  });
+  const bindings = locateKnowledgeRuntimeBindings(compiledPrompt.content, input, resourceTags);
+  return {
+    content: compiledPrompt.content,
+    productionSources: buildCompiledPromptProductionSources({
+      injectionBlockId: "knowledge-tools-injector",
+      compiledPrompt,
+      bindings,
+    }),
+  };
 }
 
 /**
@@ -368,31 +478,25 @@ export class KnowledgeToolsInjector implements InjectionHook {
       resources = filterResourcesByCapabilities(resources, assetCapabilities);
       // 注入 prompt 里给 LLM 用的 service-id 也要是 spaceId（LLM 拿它调 KS 的 tools/list|call）。
       const injectionServiceId = spaceId || this.config.coreSkill.serviceId;
-      const legacyContent = renderKnowledgeToolsBlock(resources, injectionServiceId, telemetryContext);
-      if (!legacyContent) return [];
       const profile = this.config.toolPromptProfile ?? "legacy";
       const baseSignature = this.config.capabilitySignature ?? "unconfigured";
       const capabilitySignature = profile === "capability-pruned"
         ? resolveSessionCapabilitySignature(baseSignature, assetCapabilities)
         : baseSignature;
-      const content = profile === "legacy"
-        ? legacyContent
-          : compileToolPrompt({
-              profile,
-              family: "knowledge",
-              surface: "knowledge-tools",
-              legacyUnits: [{
-                id: "knowledge-tools.legacy-body",
-                kind: "legacy-body",
-                content: legacyContent,
-              }],
-              capabilitySignature,
-            }).content;
+      const artifact = renderKnowledgeToolsPromptArtifact({
+        resources,
+        serviceId: injectionServiceId,
+        telemetryContext,
+        profile,
+        capabilitySignature,
+      });
+      if (!artifact) return [];
       return [{
         type: "text",
-        content,
+        content: artifact.content,
         metadata: {
           source: this.id,
+          productionPromptSources: artifact.productionSources,
           cacheKey: `knowledge-tools-injector:${scope}`
             + (profile === "capability-pruned" ? `:${capabilitySignature}` : ""),
         },

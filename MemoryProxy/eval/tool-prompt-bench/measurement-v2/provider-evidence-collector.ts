@@ -1,11 +1,38 @@
+import { createHash } from "node:crypto";
+
 import {
   auditCapturedRealChainRequest,
+  extractCapturedRealChainInjection,
   type CapturedRealChainAudit,
 } from "../real-chain-adapter.js";
 import type { ObservedRunWindow } from "./observed-event-collector.js";
+import {
+  validateProviderPromptSourceEvidence,
+  type ProviderPromptSourceEvidence,
+} from "../../../src/injection/production-source.js";
+import {
+  normalizeProviderUsage,
+  type ProviderUsageNormalizationResult,
+} from "./provider-usage.js";
 
 const EVENT_SCHEMA = "task1.provider-request-event.v1";
 const SOURCE = "memory-proxy-provider";
+
+/** Frozen provider/usage identity shared by collection and campaign sealing. */
+export const FORMAL_PROVIDER_USAGE_CONTRACT = Object.freeze({
+  provider: "openai" as const,
+  schema: "openai.responses" as const,
+  apiVersion: "v1",
+  adapterVersion: "memory-proxy-provider-observer-v1",
+  requiredFields: Object.freeze([
+    "providerTotalInputTokens",
+    "ordinaryInputTokens",
+    "cacheReadInputTokens",
+    "outputTokens",
+    "reasoningOrThinkingTokens",
+  ] as const),
+  unsupportedFields: Object.freeze(["cacheWriteInputTokens"] as const),
+});
 
 type ProviderEventKind = "ready" | "request" | "completion" | "seal";
 
@@ -26,16 +53,23 @@ export interface NormalizedProviderUsage {
 
 export interface CollectedProviderRequest {
   readonly correlationId: string;
-  readonly sequence: number;
-  readonly wallTimeUnixMicros: string;
+  readonly requestSequence: number;
+  readonly requestWallTimeUnixMicros: string;
+  readonly completionSequence: number | null;
+  readonly completionWallTimeUnixMicros: string | null;
+  readonly latencyMs: number | null;
   readonly path: string;
   readonly method: string;
   readonly rawBodySha256: string;
+  readonly providerToolDefinitionCount: number;
   readonly status: number | null;
   readonly upstreamRequestId: string | null;
   readonly responseBodySha256: string | null;
   readonly usage: NormalizedProviderUsage | null;
+  readonly providerUsageNormalization: ProviderUsageNormalizationResult | null;
   readonly injectionAudit: CapturedRealChainAudit | null;
+  readonly providerVisibleInjection: string | null;
+  readonly productionSourceEvidence: ProviderPromptSourceEvidence | null;
 }
 
 export interface CollectedProviderRun {
@@ -73,6 +107,10 @@ export interface CollectProviderEvidenceInput {
   readonly campaignId: string;
   readonly expectedProxyInstanceId: string;
   readonly runs: readonly ObservedRunWindow[];
+  readonly expectedPromptsByRunId: ReadonlyMap<string, Readonly<{
+    readonly userPrompt: string;
+    readonly userPromptSha256: string;
+  }>>;
   readonly providerJsonl: string;
 }
 
@@ -83,6 +121,7 @@ interface ProviderRequestEvent {
   readonly rawBodySha256: string;
   readonly body: Record<string, unknown>;
   readonly correlationHeaders: Record<string, string>;
+  readonly productionSourceEvidence?: ProviderPromptSourceEvidence;
 }
 
 interface ProviderCompletionEvent {
@@ -108,6 +147,8 @@ interface PendingRequest {
   readonly envelope: ProviderEnvelope;
   readonly event: ProviderRequestEvent;
   readonly audit: CapturedRealChainAudit | null;
+  readonly providerVisibleInjection: string | null;
+  readonly productionSourceEvidence: ProviderPromptSourceEvidence | null;
   completion?: ProviderEnvelope;
 }
 
@@ -137,6 +178,7 @@ export function collectProviderEvidence(
   }
   const runs = input.runs.map(parseRun);
   ensureUniqueRuns(runs);
+  const expectedPrompts = validateExpectedPrompts(runs, input.expectedPromptsByRunId);
   const issues: ProviderEvidenceIssue[] = [];
   const unassignedSequences: number[] = [];
   recordLifecycleIssues(runs, envelopes, issues);
@@ -152,8 +194,10 @@ export function collectProviderEvidence(
       const active = runs.filter((run) => (
         run.startedAt <= envelope.wallTime && envelope.wallTime < run.finishedAt
       ));
-      const exactSession = active.filter((run) => (
-        event.correlationHeaders["session-id"] === run.source.sessionId
+      const exactSession = runs.filter((run) => (
+        run.startedAt <= envelope.wallTime
+        && envelope.wallTime <= run.finishedAt
+        && event.correlationHeaders["session-id"] === run.source.sessionId
       ));
       const candidates = exactSession.length === 1 ? exactSession : active;
       if (candidates.length !== 1) {
@@ -191,9 +235,27 @@ export function collectProviderEvidence(
         continue;
       }
       let audit: CapturedRealChainAudit | null = null;
+      let providerVisibleInjection: string | null = null;
+      let productionSourceEvidence: ProviderPromptSourceEvidence | null = null;
       if (isMainResponsesPath(event.path)) {
         try {
-          audit = auditCapturedRealChainRequest(event.body);
+          const expectedPrompt = expectedPrompts.get(run.source.runId)!;
+          audit = auditCapturedRealChainRequest(event.body, expectedPrompt.userPrompt);
+          if (audit.userPromptSha256 !== expectedPrompt.userPromptSha256) {
+            throw new Error("captured real-chain user-plane prompt hash does not match frozen input");
+          }
+          providerVisibleInjection = extractCapturedRealChainInjection(event.body);
+          if (!event.productionSourceEvidence) {
+            throw new Error("provider request is missing production PromptUnit/source evidence");
+          }
+          productionSourceEvidence = validateProviderPromptSourceEvidence(
+            event.productionSourceEvidence,
+            {
+              correlationId: event.correlationId,
+              rawBodySha256: event.rawBodySha256,
+              providerVisibleText: providerVisibleInjection,
+            },
+          );
         } catch (error) {
           addRunIssue(issues, run, {
             code: "provider_prompt_audit_failed",
@@ -203,7 +265,13 @@ export function collectProviderEvidence(
           });
         }
       }
-      const pending: PendingRequest = { envelope, event, audit };
+      const pending: PendingRequest = {
+        envelope,
+        event,
+        audit,
+        providerVisibleInjection,
+        productionSourceEvidence,
+      };
       run.requests.push(pending);
       requestByCorrelationId.set(event.correlationId, pending);
       runByCorrelationId.set(event.correlationId, run);
@@ -222,10 +290,10 @@ export function collectProviderEvidence(
       unassignedSequences.push(envelope.sequence);
       continue;
     }
-    if (!(run.startedAt <= envelope.wallTime && envelope.wallTime < run.finishedAt)) {
+    if (!(run.startedAt <= envelope.wallTime && envelope.wallTime <= run.finishedAt)) {
       addRunIssue(issues, run, {
         code: "provider_completion_outside_run",
-        message: "Provider completion is outside its request run's half-open window",
+        message: "Provider completion is outside its correlation-bound closed run window",
         runIds: [run.source.runId],
         sequence: envelope.sequence,
       });
@@ -254,6 +322,32 @@ export function collectProviderEvidence(
     issues,
     unassignedSequences,
   });
+}
+
+function validateExpectedPrompts(
+  runs: readonly ParsedRun[],
+  expected: CollectProviderEvidenceInput["expectedPromptsByRunId"],
+): ReadonlyMap<string, Readonly<{ userPrompt: string; userPromptSha256: string }>> {
+  if (!(expected instanceof Map) || expected.size !== runs.length) {
+    throw new Error("provider expected prompt set must contain exactly one entry per formal run");
+  }
+  const runIds = new Set(runs.map((run) => run.source.runId));
+  for (const runId of expected.keys()) {
+    if (!runIds.has(runId)) throw new Error(`provider expected prompt contains unknown run: ${runId}`);
+  }
+  for (const run of runs) {
+    const item = expected.get(run.source.runId);
+    if (!item) throw new Error(`provider expected prompt is missing run: ${run.source.runId}`);
+    const userPrompt = nonBlank("expected provider user prompt", item.userPrompt);
+    const userPromptSha256 = sha256(
+      "expected provider user prompt SHA-256",
+      item.userPromptSha256,
+    );
+    if (createHash("sha256").update(userPrompt, "utf8").digest("hex") !== userPromptSha256) {
+      throw new Error(`provider expected prompt hash mismatch for run: ${run.source.runId}`);
+    }
+  }
+  return expected;
 }
 
 function finalizeRun(
@@ -287,7 +381,8 @@ function finalizeRun(
         sequence: request.completion.sequence,
       });
     }
-    if (!normalizeUsage(completion.usage)) {
+    if (!normalizeUsage(completion.usage)
+      || normalizeFormalProviderUsage(completion.usage)?.ok !== true) {
       addRunIssue(campaignIssues, run, {
         code: "provider_usage_missing_or_invalid",
         message: "Provider completion does not contain complete usage evidence",
@@ -316,18 +411,30 @@ function finalizeRun(
 
   const requestFacts = mainRequests.map((request): CollectedProviderRequest => {
     const completion = request.completion?.event as ProviderCompletionEvent | undefined;
+    const completionEnvelope = request.completion;
     return {
       correlationId: request.event.correlationId,
-      sequence: request.envelope.sequence,
-      wallTimeUnixMicros: request.envelope.wallTimeUnixMicros,
+      requestSequence: request.envelope.sequence,
+      requestWallTimeUnixMicros: request.envelope.wallTimeUnixMicros,
+      completionSequence: completionEnvelope?.sequence ?? null,
+      completionWallTimeUnixMicros: completionEnvelope?.wallTimeUnixMicros ?? null,
+      latencyMs: completionEnvelope
+        ? Math.ceil(Number(completionEnvelope.wallTime - request.envelope.wallTime) / 1_000)
+        : null,
       path: request.event.path,
       method: request.event.method,
       rawBodySha256: request.event.rawBodySha256,
+      providerToolDefinitionCount: Array.isArray(request.event.body.tools)
+        ? request.event.body.tools.length
+        : 0,
       status: completion?.status ?? null,
       upstreamRequestId: completion?.responseHeaders["x-request-id"] ?? null,
       responseBodySha256: completion?.responseBodySha256 ?? null,
       usage: normalizeUsage(completion?.usage),
+      providerUsageNormalization: normalizeFormalProviderUsage(completion?.usage),
       injectionAudit: request.audit,
+      providerVisibleInjection: request.providerVisibleInjection,
+      productionSourceEvidence: request.productionSourceEvidence,
     };
   });
   const usages = requestFacts.flatMap((request) => request.usage ? [request.usage] : []);
@@ -353,6 +460,16 @@ function finalizeRun(
     formalProviderEvidenceEligible: run.issues.length === 0,
     issues: run.issues,
   };
+}
+
+function normalizeFormalProviderUsage(
+  value: unknown,
+): ProviderUsageNormalizationResult | null {
+  if (value === undefined) return null;
+  return normalizeProviderUsage({
+    ...FORMAL_PROVIDER_USAGE_CONTRACT,
+    rawUsage: value,
+  });
 }
 
 function normalizeUsage(value: unknown): NormalizedProviderUsage | null {
@@ -440,6 +557,13 @@ function parseEnvelope(
 
 function parseRequest(value: unknown): ProviderRequestEvent {
   const event = record("provider request event", value);
+  let productionSourceEvidence: ProviderPromptSourceEvidence | undefined;
+  if (event.productionSourceEvidence !== undefined) {
+    productionSourceEvidence = record(
+      "provider production source evidence",
+      event.productionSourceEvidence,
+    ) as unknown as ProviderPromptSourceEvidence;
+  }
   return {
     correlationId: nonBlank("provider correlationId", event.correlationId),
     method: nonBlank("provider method", event.method),
@@ -447,6 +571,7 @@ function parseRequest(value: unknown): ProviderRequestEvent {
     rawBodySha256: sha256("provider rawBodySha256", event.rawBodySha256),
     body: record("provider body", event.body),
     correlationHeaders: stringRecord("provider correlationHeaders", event.correlationHeaders),
+    ...(productionSourceEvidence ? { productionSourceEvidence } : {}),
   };
 }
 

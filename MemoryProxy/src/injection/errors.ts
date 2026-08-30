@@ -1,3 +1,5 @@
+import { ProductionPromptSourceError } from "./production-source.js";
+
 export type InjectionInfrastructureErrorCode =
   | "INJECTION_METADATA_PARITY_FAILURE";
 
@@ -22,4 +24,15 @@ export function isInjectionInfrastructureError(
   error: unknown,
 ): error is InjectionInfrastructureError {
   return error instanceof InjectionInfrastructureError;
+}
+
+/** Convert formal production-provenance failures into the pipeline's fail-closed type. */
+export function injectionInfrastructureErrorFromProductionSource(
+  error: unknown,
+): InjectionInfrastructureError | null {
+  if (!(error instanceof ProductionPromptSourceError)) return null;
+  return new InjectionInfrastructureError(
+    "INJECTION_METADATA_PARITY_FAILURE",
+    `production prompt provenance failed (${error.code}): ${error.message}`,
+  );
 }

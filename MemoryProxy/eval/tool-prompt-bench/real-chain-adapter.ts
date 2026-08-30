@@ -362,6 +362,35 @@ export function auditCapturedRealChainRequest(
   };
 }
 
+/** Return only the production-owned provider-visible TDAI wrapper after audit. */
+export function extractCapturedRealChainInjection(body: unknown): string {
+  if (!body || Array.isArray(body) || typeof body !== "object") {
+    throw new Error("captured real-chain body must be a JSON object");
+  }
+  const record = body as Record<string, unknown>;
+  const input = record.input;
+  if (!Array.isArray(input)) throw new Error("captured real-chain body is missing input[]");
+  const instructionTextParts = input.flatMap((item) => {
+    if (!item || typeof item !== "object") return [];
+    const role = (item as Record<string, unknown>).role;
+    return role === "developer" || role === "system" ? extractMessageTexts(item) : [];
+  });
+  if (typeof record.instructions === "string") instructionTextParts.push(record.instructions);
+  const injections = instructionTextParts.filter((text) => text.startsWith("<tdai_injections>"));
+  if (injections.length !== 1) {
+    throw new Error(
+      `captured real-chain request must contain exactly one TDAI wrapper; got ${injections.length}`,
+    );
+  }
+  const runnerOwnedTdaiText = instructionTextParts
+    .filter((text) => !text.startsWith("<tdai_injections>"))
+    .find((text) => /<tdai_memory_tools>|<memory-tools-guide>|<tdai_profile_memory>|<skill_tools>|<available_skills>|<knowledge_tools>/.test(text));
+  if (runnerOwnedTdaiText) {
+    throw new Error("captured real-chain request contains TDAI prompt text outside the production wrapper");
+  }
+  return injections[0];
+}
+
 function extractMessageTexts(item: unknown): string[] {
   if (!item || typeof item !== "object") return [];
   const content = (item as Record<string, unknown>).content;

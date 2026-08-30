@@ -10,6 +10,10 @@ import { compileToolPrompt } from "../tool-prompt/compiler.js";
 import { resolveSessionCapabilitySignature } from "../tool-prompt/capability-pruned.js";
 import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
 import type { ToolPromptProfile } from "../tool-prompt/types.js";
+import {
+  buildCompiledPromptProductionSources,
+  type ProductionPromptSourceInput,
+} from "../production-source.js";
 
 /**
  * L2/L3 注入（按 openclaw / hermes 官方做法重构）：
@@ -98,8 +102,8 @@ export class TdaiProfileMemoryInjector implements InjectionHook {
     const capabilitySignature = this.toolPromptProfile === "capability-pruned"
       ? resolveSessionCapabilitySignature(this.capabilitySignature, assetCapabilities)
       : this.capabilitySignature;
-    const guide = this.toolPromptProfile === "legacy"
-      ? MEMORY_TOOLS_GUIDE
+    const compiledGuide = this.toolPromptProfile === "legacy"
+      ? null
       : compileToolPrompt({
           profile: this.toolPromptProfile,
           family: "memory",
@@ -110,14 +114,26 @@ export class TdaiProfileMemoryInjector implements InjectionHook {
             content: MEMORY_TOOLS_GUIDE,
           }],
           capabilitySignature,
-        }).content;
+        });
+    const guide = compiledGuide?.content ?? MEMORY_TOOLS_GUIDE;
+    const guideProductionSources: readonly ProductionPromptSourceInput[] = compiledGuide
+      ? buildCompiledPromptProductionSources({
+          injectionBlockId: "tdai-profile-memory-injector",
+          compiledPrompt: compiledGuide,
+        })
+      : [{
+          sourceId: "memory-guide:policy",
+          sourceKind: "static-tool",
+          injectionBlockId: "tdai-profile-memory-injector",
+          text: guide,
+        }];
     const block = renderTdaiProfileMemoryBlock(groups.map((group) => ({
       agentName: group.ctx.agentName,
       agentId: group.ctx.agentId,
       isSelf: group.ctx.isSelf,
       l3Content: group.l3?.content,
       l2Entries: group.l2Entries,
-    })), guide);
+    })), guide, guideProductionSources);
     if (this.toolPromptProfile === "capability-pruned") {
       block.metadata = {
         ...block.metadata,
@@ -140,13 +156,29 @@ export interface TdaiProfileRenderGroup {
 export function renderTdaiProfileMemoryBlock(
   groups: TdaiProfileRenderGroup[],
   guide = MEMORY_TOOLS_GUIDE,
+  guideProductionSources: readonly ProductionPromptSourceInput[] = [{
+    sourceId: "memory-guide:policy",
+    sourceKind: "static-tool",
+    injectionBlockId: "tdai-profile-memory-injector",
+    text: guide,
+  }],
 ): ContextBlock {
+  if (guideProductionSources.map((source) => source.text).join("") !== guide) {
+    throw new Error("memory guide PromptUnit provenance does not reconstruct guide text");
+  }
   const populated = groups.filter((group) => group.l3Content || group.l2Entries.length > 0);
   if (populated.length === 0) {
     return {
       type: "text",
       content: guide,
-      metadata: { source: "tdai-profile-memory-injector", agentCount: 0, l3Count: 0, l2Count: 0, mode: "tools-only" },
+      metadata: {
+        source: "tdai-profile-memory-injector",
+        agentCount: 0,
+        l3Count: 0,
+        l2Count: 0,
+        mode: "tools-only",
+        productionPromptSources: guideProductionSources,
+      },
     };
   }
 
@@ -175,16 +207,33 @@ export function renderTdaiProfileMemoryBlock(
     }
     lines.push("</agent>");
   }
-  lines.push("</tdai_profile_memory>", "", guide);
+  lines.push("</tdai_profile_memory>");
+  const profileContent = lines.join("\n");
+  const content = `${profileContent}\n\n${guide}`;
   return {
     type: "text",
-    content: lines.join("\n"),
+    content,
     metadata: {
       source: "tdai-profile-memory-injector",
       agentCount: groups.length,
       l3Count,
       l2IndexCount: l2TotalCount,
       mode: "index+tools",
+      productionPromptSources: [
+        {
+          sourceId: "memory-profile:dynamic-assets",
+          sourceKind: "dynamic-asset",
+          injectionBlockId: "tdai-profile-memory-injector",
+          text: profileContent,
+        },
+        {
+          sourceId: "memory-profile:guide-separator",
+          sourceKind: "static-tool",
+          injectionBlockId: "tdai-profile-memory-injector",
+          text: "\n\n",
+        },
+        ...guideProductionSources,
+      ],
     },
   };
 }

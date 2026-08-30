@@ -38,7 +38,8 @@ export interface RequestUsageRecordInput {
   component: M2PhaseComponent;
   phaseType: M2PhaseType;
   promptSha256: string;
-  candidateActionCount: number;
+  /** Number of provider-visible tool definitions in this request body. */
+  providerToolDefinitionCount: number;
   injectionTokensO200k: number;
   discoveryResultTokens: LocalTokenEstimate | null;
   toolResultContextTokens: LocalTokenEstimate | null;
@@ -339,7 +340,7 @@ export function buildRequestUsageLedger(
     if (!M2_PHASE_TYPES.includes(request.phaseType)) blockers.push("PHASE_TYPE_INVALID");
     if (!isSha256(request.promptSha256)) blockers.push("PROMPT_SHA256_INVALID");
     if (
-      !isNonNegativeInteger(request.candidateActionCount)
+      !isNonNegativeInteger(request.providerToolDefinitionCount)
       || !isNonNegativeInteger(request.injectionTokensO200k)
       || !isNonNegativeInteger(request.latencyMs)
       || !isLocalEstimate(request.discoveryResultTokens)

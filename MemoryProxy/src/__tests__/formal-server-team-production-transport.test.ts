@@ -33,6 +33,7 @@ describe("server_team production transport", () => {
     const transport = createServerTeamProductionTransport({
       memoryCoreBaseUrl: "http://127.0.0.1:8789/",
       memoryKnowledgeBaseUrl: "http://127.0.0.1:8790",
+      memoryCoreApiKey: "secret-core-api-key",
       userKey: "secret-user-key",
       serviceIdsByDatasetSpaceId: { "SPACE-01": "runtime-service" },
       fetchImpl,
@@ -50,6 +51,7 @@ describe("server_team production transport", () => {
         method: "POST",
         headers: {
           "content-type": "application/json",
+          authorization: "Bearer secret-core-api-key",
           "x-tdai-service-id": "runtime-service",
           "x-tdai-user-key": "secret-user-key",
         },
@@ -66,6 +68,7 @@ describe("server_team production transport", () => {
     const transport = createServerTeamProductionTransport({
       memoryCoreBaseUrl: "http://127.0.0.1:8789",
       memoryKnowledgeBaseUrl: "http://127.0.0.1:8790/api/",
+      memoryCoreApiKey: "must-not-leak-core-key",
       userKey: "must-not-leak",
       serviceIdsByDatasetSpaceId: { "SPACE-01": "runtime-service" },
       fetchImpl,
@@ -88,6 +91,7 @@ describe("server_team production transport", () => {
     );
     const init = fetchImpl.mock.calls[0]?.[1] as RequestInit;
     expect(init.headers).not.toHaveProperty("x-tdai-user-key");
+    expect(init.headers).not.toHaveProperty("authorization");
   });
 
   it("rejects missing mappings and a plan/runtime service-id mismatch before fetch", async () => {
@@ -95,6 +99,7 @@ describe("server_team production transport", () => {
     const transport = createServerTeamProductionTransport({
       memoryCoreBaseUrl: "http://127.0.0.1:8789",
       memoryKnowledgeBaseUrl: "http://127.0.0.1:8790",
+      memoryCoreApiKey: "core-secret",
       userKey: "secret",
       serviceIdsByDatasetSpaceId: { "SPACE-01": "runtime-service" },
       fetchImpl,
@@ -122,6 +127,7 @@ describe("server_team production transport", () => {
     const transport = createServerTeamProductionTransport({
       memoryCoreBaseUrl: "http://127.0.0.1:8789",
       memoryKnowledgeBaseUrl: "http://127.0.0.1:8790",
+      memoryCoreApiKey: "core-secret",
       userKey: "secret",
       serviceIdsByDatasetSpaceId: { "SPACE-01": "runtime-service" },
       fetchImpl: async () => new Response(
@@ -140,14 +146,17 @@ describe("server_team production transport", () => {
     expect(() => createServerTeamProductionTransport({
       memoryCoreBaseUrl: "file:///tmp/core",
       memoryKnowledgeBaseUrl: "http://127.0.0.1:8790",
+      memoryCoreApiKey: "core-secret",
       userKey: "secret",
       serviceIdsByDatasetSpaceId: { "SPACE-01": "runtime-service" },
     })).toThrow(/http.*https/iu);
 
     const networkSecret = "network-secret";
+    const networkCoreSecret = "network-core-secret";
     const networkTransport = createServerTeamProductionTransport({
       memoryCoreBaseUrl: "http://127.0.0.1:8789",
       memoryKnowledgeBaseUrl: "http://127.0.0.1:8790",
+      memoryCoreApiKey: networkCoreSecret,
       userKey: networkSecret,
       serviceIdsByDatasetSpaceId: { "SPACE-01": "runtime-service" },
       fetchImpl: async () => {
@@ -163,10 +172,12 @@ describe("server_team production transport", () => {
     expect(networkError).toBeInstanceOf(ServerTeamProductionTransportError);
     expect(networkError).toMatchObject({ code: "FETCH_FAILED", actionId: "action-1" });
     expect(String(networkError)).not.toContain(networkSecret);
+    expect(String(networkError)).not.toContain(networkCoreSecret);
 
     const jsonTransport = createServerTeamProductionTransport({
       memoryCoreBaseUrl: "http://127.0.0.1:8789",
       memoryKnowledgeBaseUrl: "http://127.0.0.1:8790",
+      memoryCoreApiKey: "core-secret",
       userKey: "secret",
       serviceIdsByDatasetSpaceId: { "SPACE-01": "runtime-service" },
       fetchImpl: async () => new Response("not-json", { status: 502 }),

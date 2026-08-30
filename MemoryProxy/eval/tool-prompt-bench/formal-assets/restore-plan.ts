@@ -494,7 +494,7 @@ export function compileFormalAssetRestorePlan(input: {
     if (entry.subtype === "l0") {
       const value = asset as SafeL0;
       if (value.messages.length === 0 || value.messages.length > 100) {
-        throw new Error(`Formal asset restore: L0 ${value.assetId} exceeds /v3/conversation/add batch limits`);
+        throw new Error(`Formal asset restore: L0 ${value.assetId} exceeds Formal import batch limits`);
       }
       for (const message of value.messages) {
         if ((message.role !== "user" && message.role !== "assistant")
@@ -505,13 +505,23 @@ export function compileFormalAssetRestorePlan(input: {
       const id = actionId("memory-l0-add", value.assetId);
       push({
         actionId: id, phase: "memory", serviceBoundary: "memory_core", service: "memory-data",
-        method: "POST", endpoint: "/v3/conversation/add", ...base,
+        method: "POST", endpoint: "/v3/formal-bench/import-memory", ...base,
         body: {
+          kind: "l0",
+          formal_asset_id: value.assetId,
+          expected_asset_content_hash: value.contentHash,
           team_id: runtimeRef("runtime_team_id", owner.teamId, actionId("team-create", owner.teamId)),
           user_id: runtimeRef("resolved_auth_user_id", datasetUserId),
           agent_id: runtimeRef("runtime_agent_id", owner.agentId, actionId("agent-create", owner.agentId)),
-          session_id: value.sessionId,
-          messages: value.messages.map((message) => ({ role: message.role, content: message.content, recorded_at: message.observedAt })),
+          payload: {
+            sessionId: value.sessionId,
+            messages: value.messages.map((message) => ({
+              id: message.messageId,
+              role: message.role,
+              content: message.content,
+              recordedAt: message.observedAt,
+            })),
+          },
         },
         captures: { runtimeMessageIds: "response.data.accepted_ids" },
       });

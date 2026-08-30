@@ -39,7 +39,6 @@ export function aggregateCaseChainFacts(
     wrong_terminal: 0,
     arguments: 0,
     binding: 0,
-    runtime_acceptance: 0,
     infrastructure: 0,
     false_call: 0,
     malformed_intent: 0,
@@ -66,6 +65,10 @@ export function aggregateCaseChainFacts(
     completeChainSuccessRate: ratio(
       positives.filter((score) => score.completeChainSuccess === true).length,
       positives.length,
+    ),
+    runtimeAcceptedChainRate: ratio(
+      positives.filter((score) => score.runtimeAcceptedChain === true).length,
+      positives.filter((score) => score.runtimeAcceptedChain !== null).length,
     ),
     conditionalTerminalAccuracy: ratio(terminalSuccesses, triggeredPositives.length),
     strictChainExactRate: ratio(

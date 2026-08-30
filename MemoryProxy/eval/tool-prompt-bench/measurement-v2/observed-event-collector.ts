@@ -52,8 +52,17 @@ export interface CollectedObservedRun {
   readonly sessionId: string;
   readonly entries: readonly ObservedToolEntry[];
   readonly completions: readonly ObservedToolCompletion[];
+  readonly entryEvidence: readonly TimedObservedEvent<ObservedToolEntry>[];
+  readonly completionEvidence: readonly TimedObservedEvent<ObservedToolCompletion>[];
   readonly formalTraceEligible: boolean;
   readonly issues: readonly ObservedEventCollectorIssue[];
+}
+
+export interface TimedObservedEvent<T> {
+  readonly source: ObserverSource;
+  readonly sequence: number;
+  readonly wallTimeUnixMicros: string;
+  readonly event: T;
 }
 
 export interface CollectedObservedCampaign {
@@ -84,6 +93,8 @@ interface ParsedRun {
   readonly finishedAt: bigint;
   readonly entries: ObservedToolEntry[];
   readonly completions: ObservedToolCompletion[];
+  readonly entryEvidence: TimedObservedEvent<ObservedToolEntry>[];
+  readonly completionEvidence: TimedObservedEvent<ObservedToolCompletion>[];
   readonly issues: ObservedEventCollectorIssue[];
 }
 
@@ -147,7 +158,7 @@ export function collectObservedToolEvents(
     let candidates: ParsedRun[];
     if (envelope.kind === "completion") {
       const beginRuns = [...(eventRunByCorrelationId.get(correlationId) ?? [])]
-        .filter((run) => run.startedAt <= envelope.wallTime && envelope.wallTime < run.finishedAt);
+        .filter((run) => run.startedAt <= envelope.wallTime && envelope.wallTime <= run.finishedAt);
       candidates = beginRuns.length > 0
         ? beginRuns
         : eventRunByCorrelationId.has(correlationId)
@@ -155,7 +166,7 @@ export function collectObservedToolEvents(
           : activeRunsAt(runs, envelope.wallTime);
     } else {
       const active = activeRunsAt(runs, envelope.wallTime);
-      const exactSession = active.filter((run) => entryMatchesSession(
+      const exactSession = closedRunsAt(runs, envelope.wallTime).filter((run) => entryMatchesSession(
         envelope.event as ObservedToolEntry,
         run.source.sessionId,
       ));
@@ -190,12 +201,26 @@ export function collectObservedToolEvents(
     const run = candidates[0];
     assignedRunByEnvelope.set(envelope, run);
     if (envelope.kind === "begin") {
-      run.entries.push(envelope.event as ObservedToolEntry);
+      const entry = envelope.event as ObservedToolEntry;
+      run.entries.push(entry);
+      run.entryEvidence.push({
+        source: envelope.source,
+        sequence: envelope.sequence,
+        wallTimeUnixMicros: envelope.wallTimeUnixMicros,
+        event: entry,
+      });
       const associated = eventRunByCorrelationId.get(correlationId) ?? new Set<ParsedRun>();
       associated.add(run);
       eventRunByCorrelationId.set(correlationId, associated);
     } else {
-      run.completions.push(envelope.event as PersistedObservedToolCompletion);
+      const completion = envelope.event as PersistedObservedToolCompletion;
+      run.completions.push(completion);
+      run.completionEvidence.push({
+        source: envelope.source,
+        sequence: envelope.sequence,
+        wallTimeUnixMicros: envelope.wallTimeUnixMicros,
+        event: completion,
+      });
     }
   }
   recordCrossSourceTimestampTies(events, assignedRunByEnvelope, issues);
@@ -213,6 +238,8 @@ export function collectObservedToolEvents(
       sessionId: run.source.sessionId,
       entries: run.entries,
       completions: run.completions,
+      entryEvidence: run.entryEvidence,
+      completionEvidence: run.completionEvidence,
       formalTraceEligible: run.issues.length === 0,
       issues: run.issues,
     })),
@@ -430,7 +457,16 @@ function parseRunWindow(source: ObservedRunWindow): ParsedRun {
   requireNonBlank(source.variantId, "variantId");
   requireNonBlank(source.sessionId, "sessionId");
   if (finishedAt <= startedAt) throw new Error(`${source.runId} must have a non-empty window`);
-  return { source, startedAt, finishedAt, entries: [], completions: [], issues: [] };
+  return {
+    source,
+    startedAt,
+    finishedAt,
+    entries: [],
+    completions: [],
+    entryEvidence: [],
+    completionEvidence: [],
+    issues: [],
+  };
 }
 
 function ensureUniqueRunIdentity(runs: readonly ParsedRun[]): void {
@@ -464,6 +500,10 @@ function overlappingWindowIssues(runs: readonly ParsedRun[]): ObservedEventColle
 
 function activeRunsAt(runs: readonly ParsedRun[], time: bigint): ParsedRun[] {
   return runs.filter((run) => run.startedAt <= time && time < run.finishedAt);
+}
+
+function closedRunsAt(runs: readonly ParsedRun[], time: bigint): ParsedRun[] {
+  return runs.filter((run) => run.startedAt <= time && time <= run.finishedAt);
 }
 
 function recordLifecycleCoverageIssues(

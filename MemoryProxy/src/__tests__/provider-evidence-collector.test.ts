@@ -1,8 +1,13 @@
+import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
 
 import {
   collectProviderEvidence,
 } from "../../eval/tool-prompt-bench/measurement-v2/provider-evidence-collector.js";
+import {
+  freezeProviderPromptSourceEvidence,
+  sealProductionPromptSourceManifest,
+} from "../injection/production-source.js";
 
 const wrapper = [
   "<tdai_injections>",
@@ -68,13 +73,16 @@ function sealedJsonl(
 }
 
 function requestEvent(sessionId = "session-a"): Record<string, unknown> {
+  const correlationId = "provider-request-a";
+  const rawBodySha256 = "a".repeat(64);
   return {
-    correlationId: "provider-request-a",
+    correlationId,
     method: "POST",
     path: "/codex/space-a/v1/responses",
-    rawBodySha256: "a".repeat(64),
+    rawBodySha256,
     body: providerBody,
     correlationHeaders: { "session-id": sessionId },
+    productionSourceEvidence: productionSourceEvidence(correlationId, rawBodySha256),
   };
 }
 
@@ -103,12 +111,48 @@ const runA = {
   finishedAtUnixMicros: "200",
 };
 
+function productionSourceEvidence(correlationId: string, rawBodySha256: string) {
+  const open = "<tdai_injections>\n";
+  const close = "\n</tdai_injections>";
+  return freezeProviderPromptSourceEvidence({
+    correlationId,
+    rawBodySha256,
+    sourceManifest: sealProductionPromptSourceManifest(wrapper, [
+      {
+        sourceId: "test-wrapper:open",
+        sourceKind: "static-tool",
+        injectionBlockId: "tdai-injections-wrapper",
+        text: open,
+      },
+      {
+        sourceId: "test-tool-guidance",
+        sourceKind: "static-tool",
+        injectionBlockId: "test-tools",
+        text: wrapper.slice(open.length, -close.length),
+      },
+      {
+        sourceId: "test-wrapper:close",
+        sourceKind: "static-tool",
+        injectionBlockId: "tdai-injections-wrapper",
+        text: close,
+      },
+    ]),
+  });
+}
+
+const expectedPrompt = "find the release decision";
+const expectedPromptsByRunId = new Map([[runA.runId, {
+  userPrompt: expectedPrompt,
+  userPromptSha256: createHash("sha256").update(expectedPrompt, "utf8").digest("hex"),
+}]]);
+
 describe("collectProviderEvidence", () => {
   it("joins sealed provider requests and preserves prompt/token/cache facts", () => {
     const result = collectProviderEvidence({
       campaignId: "campaign-r04-provider",
       expectedProxyInstanceId: "proxy-instance-a",
       runs: [runA],
+      expectedPromptsByRunId,
       providerJsonl: sealedJsonl([
         { micros: "110", kind: "request", event: requestEvent() },
         { micros: "120", kind: "completion", event: completionEvent() },
@@ -137,8 +181,31 @@ describe("collectProviderEvidence", () => {
       },
       requests: [{
         correlationId: "provider-request-a",
+        requestSequence: 1,
+        requestWallTimeUnixMicros: "110",
+        completionSequence: 2,
+        completionWallTimeUnixMicros: "120",
+        latencyMs: 1,
+        providerToolDefinitionCount: 0,
         upstreamRequestId: "official-request-a",
         status: 200,
+        providerVisibleInjection: wrapper,
+        productionSourceEvidence: {
+          correlationId: "provider-request-a",
+          rawBodySha256: "a".repeat(64),
+          sourceManifestSha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
+          bindingSha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
+        },
+        providerUsageNormalization: {
+          ok: true,
+          provider: "openai",
+          schema: "openai.responses",
+          apiVersion: "v1",
+          adapterVersion: "memory-proxy-provider-observer-v1",
+          rawUsageCanonicalizationStatus: "ready",
+          rawUsageSha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
+          rawUsageCanonicalClone: completionEvent().usage,
+        },
         usage: {
           inputTokens: 600,
           cachedInputTokens: 400,
@@ -156,6 +223,7 @@ describe("collectProviderEvidence", () => {
       campaignId: "campaign-r04-provider",
       expectedProxyInstanceId: "proxy-instance-a",
       runs: [runA],
+      expectedPromptsByRunId,
       providerJsonl: sealedJsonl([
         { micros: "110", kind: "request", event: requestEvent("wrong-session") },
         { micros: "120", kind: "completion", event: completionEvent() },
@@ -168,22 +236,20 @@ describe("collectProviderEvidence", () => {
     ]);
   });
 
-  it("uses half-open run windows for provider completions", () => {
+  it("keeps a correlation-bound provider completion at the closed run boundary", () => {
     const result = collectProviderEvidence({
       campaignId: "campaign-r04-provider",
       expectedProxyInstanceId: "proxy-instance-a",
       runs: [runA],
+      expectedPromptsByRunId,
       providerJsonl: sealedJsonl([
         { micros: "110", kind: "request", event: requestEvent() },
         { micros: "200", kind: "completion", event: completionEvent() },
       ]),
     });
 
-    expect(result.runs[0]?.formalProviderEvidenceEligible).toBe(false);
-    expect(result.runs[0]?.issues).toEqual(expect.arrayContaining([
-      expect.objectContaining({ code: "provider_completion_outside_run" }),
-      expect.objectContaining({ code: "provider_request_missing_completion" }),
-    ]));
+    expect(result.runs[0]?.formalProviderEvidenceEligible).toBe(true);
+    expect(result.runs[0]?.issues).toEqual([]);
   });
 
   it("rejects an unsealed provider prefix", () => {
@@ -191,7 +257,32 @@ describe("collectProviderEvidence", () => {
       campaignId: "campaign-r04-provider",
       expectedProxyInstanceId: "proxy-instance-a",
       runs: [runA],
+      expectedPromptsByRunId,
       providerJsonl: `${line(0, "90", "ready")}\n`,
     })).toThrow(/end with seal/i);
+  });
+
+  it("rejects a one-character drift from the frozen provider user prompt", () => {
+    const changedBody = structuredClone(providerBody);
+    changedBody.input[1]!.content[0]!.text = "find the release decisioN";
+    const result = collectProviderEvidence({
+      campaignId: "campaign-r04-provider",
+      expectedProxyInstanceId: "proxy-instance-a",
+      runs: [runA],
+      expectedPromptsByRunId,
+      providerJsonl: sealedJsonl([
+        {
+          micros: "110",
+          kind: "request",
+          event: { ...requestEvent(), body: changedBody },
+        },
+        { micros: "120", kind: "completion", event: completionEvent() },
+      ]),
+    });
+
+    expect(result.runs[0]?.formalProviderEvidenceEligible).toBe(false);
+    expect(result.runs[0]?.issues).toEqual(expect.arrayContaining([
+      expect.objectContaining({ code: "provider_prompt_audit_failed" }),
+    ]));
   });
 });

@@ -13,6 +13,7 @@ import type {
   FormalExecutionPreflightInput,
   FormalExecutionPreflightReceipt,
 } from "../../eval/tool-prompt-bench/formal-execution-preflight.js";
+import { canonicalSha256 } from "../../eval/tool-prompt-bench/formal-runtime/canonical.js";
 
 describe("formal preflight receipt CLI", () => {
   it("requires explicit hidden-test authorization", () => {
@@ -30,7 +31,11 @@ describe("formal preflight receipt CLI", () => {
   });
 
   it("validates the pinned plan and inspection envelope before evaluating adapter observations", () => {
-    const plan = { planSha256: "a".repeat(64) } as FormalAssetRestorePlan;
+    const plan = {
+      planSha256: "a".repeat(64),
+      snapshot: { snapshotId: "snapshot-a" },
+      revision: { snapshotCanonicalSha256: "c".repeat(64) },
+    } as FormalAssetRestorePlan;
     const expected = {
       datasetUserId: "user-a",
       spaceId: "space-a",
@@ -51,12 +56,21 @@ describe("formal preflight receipt CLI", () => {
     const parseObservations = vi.fn(() => inspected);
     const evaluate = vi.fn(() => receipt);
 
-    expect(createFormalExecutionPreflightReceipt({
+    const result = createFormalExecutionPreflightReceipt({
       rawPlan: { unsafe: "caller input" },
       rawInspectObservations: { ready: true },
       expected,
       split: "dev",
-    }, { parsePlan, parseObservations, evaluate })).toBe(receipt);
+    }, { parsePlan, parseObservations, evaluate });
+    expect(result).toMatchObject({
+      ready: true,
+      provenance: {
+        restorePlanSha256: "a".repeat(64),
+        snapshotId: "snapshot-a",
+        snapshotCanonicalSha256: "c".repeat(64),
+        inspectEnvelopeCanonicalSha256: canonicalSha256(inspected),
+      },
+    });
     expect(parseObservations).toHaveBeenCalledWith(
       { ready: true },
       expect.objectContaining({

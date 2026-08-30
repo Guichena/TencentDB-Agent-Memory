@@ -106,7 +106,7 @@ describe("formal asset restore plan", () => {
       "/v3/meta/team/create",
       "/v3/meta/agent/create",
       "/v3/meta/task/create",
-      "/v3/conversation/add",
+      "/v3/formal-bench/import-memory",
       "/v3/core/write",
       "/v3/skill/create",
       "/v3/wiki/create",
@@ -141,12 +141,28 @@ describe("formal asset restore plan", () => {
       }));
     }
     for (const action of first.actions.filter((item) =>
-      item.endpoint === "/v3/conversation/add" || item.endpoint === "/v3/core/write"
+      item.endpoint === "/v3/formal-bench/import-memory" || item.endpoint === "/v3/core/write"
     )) {
       expect(action.body).toEqual(expect.objectContaining({
         team_id: expect.objectContaining({ $runtimeRef: "runtime_team_id" }),
         user_id: expect.objectContaining({ $runtimeRef: "resolved_auth_user_id" }),
         agent_id: expect.objectContaining({ $runtimeRef: "runtime_agent_id" }),
+      }));
+    }
+    for (const action of first.actions.filter((item) =>
+      item.endpoint === "/v3/formal-bench/import-memory"
+    )) {
+      expect(action.body).toEqual(expect.objectContaining({
+        kind: "l0",
+        formal_asset_id: expect.any(String),
+        expected_asset_content_hash: expect.stringMatching(/^[a-f0-9]{64}$/u),
+        payload: expect.objectContaining({
+          sessionId: expect.any(String),
+          messages: expect.arrayContaining([expect.objectContaining({
+            id: expect.any(String),
+            recordedAt: expect.any(String),
+          })]),
+        }),
       }));
     }
     expect(first.requirements.some((requirement) => requirement.kind === "skill_package_bytes")).toBe(true);

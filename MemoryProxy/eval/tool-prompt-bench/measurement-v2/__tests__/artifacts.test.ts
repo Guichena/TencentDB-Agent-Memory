@@ -23,6 +23,7 @@ const SCORE_OUTPUT_FIELDS = [
   "firstActionSelectionCorrect",
   "terminalSelectionCorrect",
   "completeChainSuccess",
+  "runtimeAcceptedChain",
   "strictChainExact",
   "falseCallAttempt",
   "falseCallAccepted",
@@ -33,6 +34,7 @@ const SCORE_OUTPUT_FIELDS = [
   "matchedSequenceLength",
   "observedAttemptCount",
   "evaluationPrefixAttemptCount",
+  "behaviorValidTerminalAttemptIndex",
   "terminalAttemptIndex",
   "toolSplContribution",
   "shortestExact",
@@ -48,6 +50,7 @@ const AGGREGATE_OUTPUT_FIELDS = [
   "firstActionSelectionAccuracy",
   "terminalSelectionRate",
   "completeChainSuccessRate",
+  "runtimeAcceptedChainRate",
   "conditionalTerminalAccuracy",
   "strictChainExactRate",
   "positiveOvercallRate",
@@ -61,7 +64,7 @@ const AGGREGATE_OUTPUT_FIELDS = [
   "failureLayerCounts",
 ] as const;
 const PREREQUISITE_REPAIR_INVARIANT =
-  "The evaluation prefix stops at the earliest Gold terminal whose own arguments, binding, and exact referenced RuntimeToolContract acceptance are valid; a corrected prerequisite before that horizon may complete the chain, while a retry after the horizon cannot repair it.";
+  "The evaluation prefix stops at the earliest Gold terminal whose own arguments, binding, and exact referenced RuntimeToolContract identity are valid; a corrected prerequisite before that horizon may complete the chain, while a retry after the horizon cannot repair it.";
 const FORMAL_DATA_BLOCKERS = [
   "The exact task1-data-formal-v1.1 freeze is available, but M0 alone cannot make a run formalMetricEligible; R04 Integration must combine scorer facts with runtime, usage, isolation, and infrastructure evidence.",
 ] as const;

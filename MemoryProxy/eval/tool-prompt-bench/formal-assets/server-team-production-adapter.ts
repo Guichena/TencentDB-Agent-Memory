@@ -32,6 +32,7 @@ export interface ExecuteServerTeamProductionRestoreOptions {
 interface RuntimeConfig {
   readonly memoryCoreBaseUrl: string;
   readonly memoryKnowledgeBaseUrl: string;
+  readonly memoryCoreApiKey: string;
   readonly userKey: string;
   readonly runtimeServiceId: string;
   readonly runtimeAuthUserId: string;
@@ -48,6 +49,7 @@ function runtimeConfig(env: Environment): RuntimeConfig {
   return {
     memoryCoreBaseUrl: required(env, "TDAI_FORMAL_MEMORY_CORE_URL"),
     memoryKnowledgeBaseUrl: required(env, "TDAI_FORMAL_MEMORY_KNOWLEDGE_URL"),
+    memoryCoreApiKey: required(env, "TDAI_FORMAL_MEMORY_CORE_API_KEY"),
     userKey: required(env, "TDAI_EVAL_USER_KEY"),
     runtimeServiceId: required(env, "TDAI_FORMAL_RUNTIME_SERVICE_ID"),
     runtimeAuthUserId: required(env, "TDAI_FORMAL_RUNTIME_AUTH_USER_ID"),
@@ -90,6 +92,7 @@ export async function executeServerTeamProductionRestore(
   const transport = createServerTeamProductionTransport({
     memoryCoreBaseUrl: config.memoryCoreBaseUrl,
     memoryKnowledgeBaseUrl: config.memoryKnowledgeBaseUrl,
+    memoryCoreApiKey: config.memoryCoreApiKey,
     userKey: config.userKey,
     serviceIdsByDatasetSpaceId: bindings.serviceIdsByDatasetSpaceId,
     ...(options.fetchImpl ? { fetchImpl: options.fetchImpl } : {}),

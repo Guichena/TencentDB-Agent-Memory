@@ -856,7 +856,7 @@ describe("TDAI-ToolPromptBench dataset", () => {
     expect(result.state).toBe("CORRECT_ENDPOINT_INVALID_ARGS");
   });
 
-  it("does not count an executable-looking call with a failed response as effective", () => {
+  it("keeps runtime rejection diagnostic separate from an otherwise effective call", () => {
     const item = CASES.find((candidate) => (
       candidate.gold.family === "memory"
       && candidate.gold.allowedFirstActions[0].tool === "tdai_memory_search"
@@ -882,7 +882,7 @@ describe("TDAI-ToolPromptBench dataset", () => {
     }]);
     expect(result.argumentValid).toBe(true);
     expect(result.executionValid).toBe(false);
-    expect(result.effectiveCall).toBe(false);
-    expect(result.state).not.toBe("CORRECT_CALL");
+    expect(result.effectiveCall).toBe(true);
+    expect(result.state).toBe("CORRECT_CALL");
   });
 });

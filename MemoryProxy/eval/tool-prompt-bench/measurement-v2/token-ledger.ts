@@ -5,6 +5,7 @@ import type {
   ToolPromptFamily,
   ToolPromptSurface,
 } from "../../../src/injection/tool-prompt/types.js";
+import { PRODUCTION_PROMPT_SOURCE_SEGMENTER_VERSION } from "../../../src/injection/production-source.js";
 import { canonicalJsonClone, canonicalSha256, utf8Sha256 } from "./canonical-json.js";
 
 export const TOKEN_LEDGER_COMPONENTS = [
@@ -32,7 +33,7 @@ const TOKEN_CLASSIFICATION_CONTRACT_DEFINITION = Object.freeze({
   contractId: "task1.m2.prompt-unit-classification",
   contractVersion: "1",
   compilerVersion: TOOL_PROMPT_COMPILER_VERSION,
-  segmenterVersion: "capture-profile-artifacts.measureBlock-v1",
+  segmenterVersion: PRODUCTION_PROMPT_SOURCE_SEGMENTER_VERSION,
   orderedSourceRule: "zero_based_contiguous_unique_source_id_byte_complete",
   sourceKindToComponent: SOURCE_KIND_TO_COMPONENT,
 });
@@ -66,11 +67,15 @@ export interface TokenLedgerSourceDescriptor {
   compilerSurface: ToolPromptSurface | null;
   provenance:
     | "compiled-tool-prompt-unit"
+    | "frozen-capture-static-tool"
+    | "frozen-capture-execution-contract"
     | "frozen-capture-dynamic-asset"
     | "frozen-capture-runtime-binding";
 }
 
 export type FrozenCaptureSourceProvenance =
+  | "frozen-capture-static-tool"
+  | "frozen-capture-execution-contract"
   | "frozen-capture-dynamic-asset"
   | "frozen-capture-runtime-binding";
 
@@ -109,7 +114,11 @@ export type TokenSourceManifestReference =
       unitId: string;
     }
   | {
-      provenance: "frozen-capture-dynamic-asset" | "frozen-capture-runtime-binding";
+      provenance:
+        | "frozen-capture-static-tool"
+        | "frozen-capture-execution-contract"
+        | "frozen-capture-dynamic-asset"
+        | "frozen-capture-runtime-binding";
       injectionBlockId: string;
       sourceId: string;
     };
@@ -142,6 +151,10 @@ export interface ExpectedTokenSourceAttestation {
   sourceInventorySha256: string;
   orderedSourceManifestSha256: string;
   sourceRootSha256: string;
+  /** Present only after the provider observer sealed an independent manifest. */
+  frozenProviderSourceManifestSha256?: string;
+  /** Binds correlation id + raw provider request hash + source manifest. */
+  providerRequestBindingSha256?: string;
 }
 
 export interface TokenClassificationContractReference {
@@ -188,13 +201,19 @@ export interface TokenLedger {
     expectedSourceAttestation: ExpectedTokenSourceAttestation;
     orderedSources: readonly TokenLedgerSourceDescriptor[];
     sourceKindToComponent: Readonly<Record<TokenLedgerSourceKind, TokenLedgerComponent>>;
-    formalCompilerClosure: {
-      status: "blocked";
-      blocker:
-        | "FORMAL_COMPILER_CAPTURE_CONTRACT_NOT_INTEGRATED"
-        | "SELF_BUILT_SOURCE_ATTESTATION_NOT_FORMAL";
-      owner: "Integration";
-    };
+    formalCompilerClosure:
+      | {
+          status: "ready";
+          blocker: null;
+          owner: "Integration";
+        }
+      | {
+          status: "blocked";
+          blocker:
+            | "SELF_BUILT_SOURCE_ATTESTATION_NOT_FORMAL"
+            | "FORMAL_PROVIDER_SOURCE_ATTESTATION_NOT_FINALIZED";
+          owner: "Integration";
+        };
   };
   componentTokenAccounting: "independently_encoded_non_additive";
   totalInjectionTokens: number;
@@ -299,7 +318,9 @@ export function buildFrozenCaptureSourceManifest(
       || !isIdentity(source.sourceId)
       || !isSha256(source.sourceSha256)
       || (
-        source.provenance !== "frozen-capture-dynamic-asset"
+        source.provenance !== "frozen-capture-static-tool"
+        && source.provenance !== "frozen-capture-execution-contract"
+        && source.provenance !== "frozen-capture-dynamic-asset"
         && source.provenance !== "frozen-capture-runtime-binding"
       )
     ) {
@@ -466,7 +487,9 @@ export function buildTrustedTokenSourceManifest(
       || !isIdentity(source.sourceId)
       || !isSha256(source.sourceSha256)
       || (
-        source.provenance !== "frozen-capture-dynamic-asset"
+        source.provenance !== "frozen-capture-static-tool"
+        && source.provenance !== "frozen-capture-execution-contract"
+        && source.provenance !== "frozen-capture-dynamic-asset"
         && source.provenance !== "frozen-capture-runtime-binding"
       )
     ) {
@@ -475,10 +498,20 @@ export function buildTrustedTokenSourceManifest(
         `frozen capture source order is invalid at order ${captureOrder}`,
       );
     }
-    const sourceKind = source.provenance === "frozen-capture-dynamic-asset"
-      ? "dynamic-assets" as const
-      : "runtime-binding" as const;
-    const sourceKindIdentity = sourceKind === "dynamic-assets" ? "dynamic-asset" : "runtime-binding";
+    const sourceKind = source.provenance === "frozen-capture-static-tool"
+      ? "legacy-body" as const
+      : source.provenance === "frozen-capture-execution-contract"
+        ? "execution-grammar" as const
+      : source.provenance === "frozen-capture-dynamic-asset"
+        ? "dynamic-assets" as const
+        : "runtime-binding" as const;
+    const sourceKindIdentity = sourceKind === "legacy-body"
+      ? "static-tool"
+      : sourceKind === "execution-grammar"
+        ? "execution-contract"
+      : sourceKind === "dynamic-assets"
+        ? "dynamic-asset"
+        : "runtime-binding";
     addSource(referenceKey(source.provenance, source.injectionBlockId, source.sourceId), {
       sourceId: qualified(["capture", source.injectionBlockId, sourceKindIdentity, source.sourceId]),
       sourceLocalId: source.sourceId,
@@ -621,6 +654,14 @@ function validateClassification(input: BuildTokenLedgerInput): void {
       || !isSha256(source.sourceSha256)
       || manifestSourceIds.has(source.sourceId)
       || !Object.prototype.hasOwnProperty.call(SOURCE_KIND_TO_COMPONENT, source.sourceKind)
+      || (
+        source.provenance === "frozen-capture-static-tool"
+        && source.sourceKind !== "legacy-body"
+      )
+      || (
+        source.provenance === "frozen-capture-execution-contract"
+        && source.sourceKind !== "execution-grammar"
+      )
       || (
         source.provenance === "frozen-capture-dynamic-asset"
         && source.sourceKind !== "dynamic-assets"
@@ -777,6 +818,34 @@ function validateClassification(input: BuildTokenLedgerInput): void {
 }
 
 export function buildTokenLedger(input: BuildTokenLedgerInput): TokenLedger {
+  return buildTokenLedgerInternal(input, false);
+}
+
+/**
+ * Integration-only upgrade. A campaign authority string alone is deliberately
+ * insufficient: both independent provider-observer hashes are mandatory.
+ */
+export function buildCampaignIntegratedTokenLedger(
+  input: BuildTokenLedgerInput,
+): TokenLedger {
+  const expected = input.expectedSourceAttestation;
+  if (
+    expected.authority !== "campaign-integration"
+    || !isSha256(expected.frozenProviderSourceManifestSha256)
+    || !isSha256(expected.providerRequestBindingSha256)
+  ) {
+    throw new TokenLedgerInfrastructureError(
+      "EXPECTED_SOURCE_ATTESTATION_MISSING",
+      "campaign Integration requires independently frozen provider-source evidence",
+    );
+  }
+  return buildTokenLedgerInternal(input, true);
+}
+
+function buildTokenLedgerInternal(
+  input: BuildTokenLedgerInput,
+  campaignIntegrated: boolean,
+): TokenLedger {
   if (
     !isIdentity(input.runId)
     || !isIdentity(input.variantId)
@@ -821,6 +890,20 @@ export function buildTokenLedger(input: BuildTokenLedgerInput): TokenLedger {
   const componentMeasurements = Object.fromEntries(
     TOKEN_LEDGER_COMPONENTS.map((component) => [component, measure(componentText[component], input.tokenizer)]),
   ) as Record<TokenLedgerComponent, TokenTextMeasurement>;
+  const formalCompilerClosure: TokenLedger["classification"]["formalCompilerClosure"] =
+    campaignIntegrated
+      ? {
+          status: "ready",
+          blocker: null,
+          owner: "Integration",
+        }
+      : {
+          status: "blocked",
+          blocker: input.expectedSourceAttestation.authority === "synthetic-self-built"
+            ? "SELF_BUILT_SOURCE_ATTESTATION_NOT_FORMAL"
+            : "FORMAL_PROVIDER_SOURCE_ATTESTATION_NOT_FINALIZED",
+          owner: "Integration",
+        };
 
   const withoutCanonicalSha = {
     schemaVersion: 2 as const,
@@ -842,13 +925,7 @@ export function buildTokenLedger(input: BuildTokenLedgerInput): TokenLedger {
       expectedSourceAttestation: input.expectedSourceAttestation,
       orderedSources,
       sourceKindToComponent: SOURCE_KIND_TO_COMPONENT,
-      formalCompilerClosure: {
-        status: "blocked" as const,
-        blocker: input.expectedSourceAttestation.authority === "synthetic-self-built"
-          ? "SELF_BUILT_SOURCE_ATTESTATION_NOT_FORMAL" as const
-          : "FORMAL_COMPILER_CAPTURE_CONTRACT_NOT_INTEGRATED" as const,
-        owner: "Integration" as const,
-      },
+      formalCompilerClosure,
     },
     componentTokenAccounting: "independently_encoded_non_additive" as const,
     totalInjectionTokens: total.tokens,

@@ -4,6 +4,9 @@ param(
   [Parameter(Mandatory = $true)][string]$TraceCampaignDirectory,
   [Parameter(Mandatory = $true)][string]$RepositoryRoot,
   [ValidateSet("dev", "hidden_test")][string]$Split = "dev",
+  [Parameter(Mandatory = $true)]
+  [ValidateSet("dev-discovery", "dev-confirmation", "hidden")]
+  [string]$CampaignPhase,
   [Parameter(Mandatory = $true)][string]$OutputPath,
   [switch]$AllowHiddenTest
 )
@@ -22,6 +25,7 @@ $arguments = @(
   "--trace-campaign-dir", $TraceCampaignDirectory,
   "--repo-root", $RepositoryRoot,
   "--split", $Split,
+  "--campaign-phase", $CampaignPhase,
   "--output", $OutputPath
 )
 if ($AllowHiddenTest) { $arguments += "--allow-hidden-test" }

@@ -141,6 +141,7 @@ describe("Measurement v2 public case-chain scorer", () => {
       matchedSequenceId: null,
       observedAttemptCount: 0,
       evaluationPrefixAttemptCount: 0,
+      behaviorValidTerminalAttemptIndex: null,
       terminalAttemptIndex: null,
       toolSplContribution: 0,
       shortestExact: false,
@@ -169,6 +170,7 @@ describe("Measurement v2 public case-chain scorer", () => {
       matchedSequenceLength: 1,
       observedAttemptCount: 1,
       evaluationPrefixAttemptCount: 1,
+      behaviorValidTerminalAttemptIndex: 0,
       terminalAttemptIndex: 0,
       toolSplContribution: 1,
       shortestExact: true,
@@ -626,6 +628,7 @@ describe("Measurement v2 public case-chain scorer", () => {
       firstActionSelectionCorrect: true,
       terminalSelectionCorrect: true,
       completeChainSuccess: false,
+      runtimeAcceptedChain: null,
       failureLayer: "arguments",
     });
   });
@@ -655,7 +658,7 @@ describe("Measurement v2 public case-chain scorer", () => {
     });
   });
 
-  it("treats a contract 4xx as model-side runtime rejection rather than infrastructure failure", () => {
+  it("keeps a correct tool-decision chain successful when the runtime returns a contract 4xx", () => {
     const score = scoreCaseChain({
       observation: {
         ...MEMORY_SEARCH_SUCCESS_TRACE,
@@ -674,13 +677,14 @@ describe("Measurement v2 public case-chain scorer", () => {
       firstActionSelectionCorrect: true,
       terminalSelectionCorrect: true,
       terminalAttemptIndex: 0,
-      completeChainSuccess: false,
+      completeChainSuccess: true,
+      runtimeAcceptedChain: false,
       rawInfrastructureFailure: [],
-      failureLayer: "runtime_acceptance",
+      failureLayer: null,
     });
   });
 
-  it("requires acceptance by the exact runtime contract referenced from Gold", () => {
+  it("reports exact-contract runtime acceptance independently from behavior success", () => {
     const score = scoreCaseChain({
       observation: {
         ...MEMORY_SEARCH_SUCCESS_TRACE,
@@ -703,8 +707,9 @@ describe("Measurement v2 public case-chain scorer", () => {
 
     expect(score).toMatchObject({
       terminalSelectionCorrect: true,
-      completeChainSuccess: false,
-      failureLayer: "runtime_acceptance",
+      completeChainSuccess: true,
+      runtimeAcceptedChain: false,
+      failureLayer: null,
     });
   });
 
@@ -736,9 +741,10 @@ describe("Measurement v2 public case-chain scorer", () => {
 
     expect(score).toMatchObject({
       terminalSelectionCorrect: true,
-      completeChainSuccess: false,
+      completeChainSuccess: true,
+      runtimeAcceptedChain: false,
       rawInfrastructureFailure: [failure],
-      failureLayer: "infrastructure",
+      failureLayer: null,
     });
     expect(score).not.toHaveProperty("formalMetricEligible");
   });
@@ -769,11 +775,14 @@ describe("Measurement v2 public case-chain scorer", () => {
       completeChainSuccess: true,
       strictChainExact: true,
       matchedSequenceId: "scenario-list-then-read",
+      behaviorValidTerminalAttemptIndex: 1,
       terminalAttemptIndex: 1,
     });
     expect(rejected).toMatchObject({
       terminalSelectionCorrect: true,
       completeChainSuccess: false,
+      behaviorValidTerminalAttemptIndex: null,
+      terminalAttemptIndex: 1,
       failureLayer: "binding",
     });
   });
@@ -929,7 +938,7 @@ describe("Measurement v2 public case-chain scorer", () => {
     });
   });
 
-  it("does not let a corrected argument retry after the first accepted terminal repair the chain", () => {
+  it("does not let a corrected argument retry after the first behavior-valid terminal repair the chain", () => {
     const score = scoreCaseChain({
       observation: {
         ...MEMORY_MULTI_STEP_SUCCESS_TRACE,
@@ -965,7 +974,7 @@ describe("Measurement v2 public case-chain scorer", () => {
     });
   });
 
-  it("lets corrected prerequisite arguments repair the chain before the accepted terminal", () => {
+  it("lets corrected prerequisite arguments repair the chain before the behavior-valid terminal", () => {
     const [prerequisite, terminal] = MEMORY_MULTI_STEP_SUCCESS_TRACE.attempts;
     const score = scoreCaseChain({
       observation: {
@@ -999,7 +1008,7 @@ describe("Measurement v2 public case-chain scorer", () => {
     });
   });
 
-  it("reports the accepted horizon terminal instead of an earlier contract-rejected Qi terminal", () => {
+  it("stops behavior scoring at the first correct terminal call regardless of its HTTP status", () => {
     const score = scoreCaseChain({
       observation: {
         ...MEMORY_MULTI_STEP_SUCCESS_TRACE,
@@ -1030,18 +1039,19 @@ describe("Measurement v2 public case-chain scorer", () => {
 
     expect(score).toMatchObject({
       observedAttemptCount: 5,
-      evaluationPrefixAttemptCount: 3,
-      terminalAttemptIndex: 2,
+      evaluationPrefixAttemptCount: 2,
+      terminalAttemptIndex: 1,
       terminalSelectionCorrect: true,
       completeChainSuccess: false,
       strictChainExact: false,
-      positiveOvercall: true,
+      runtimeAcceptedChain: null,
+      positiveOvercall: false,
       toolSplContribution: 0,
       failureLayer: "arguments",
     });
   });
 
-  it("does not let a corrected prior-output binding retry after the first accepted terminal repair the chain", () => {
+  it("does not let a corrected prior-output binding retry after the first behavior-valid terminal repair the chain", () => {
     const [list, readBridge, readPrerequisite, terminal] = (
       MEMORY_PREREQUISITE_CHAIN_SUCCESS_TRACE.attempts
     );
@@ -1085,7 +1095,7 @@ describe("Measurement v2 public case-chain scorer", () => {
     });
   });
 
-  it("lets a corrected prior-output binding repair the chain before the accepted terminal", () => {
+  it("lets a corrected prior-output binding repair the chain before the behavior-valid terminal", () => {
     const [list, readBridge, readPrerequisite, terminal] = (
       MEMORY_PREREQUISITE_CHAIN_SUCCESS_TRACE.attempts
     );
@@ -1124,7 +1134,7 @@ describe("Measurement v2 public case-chain scorer", () => {
     });
   });
 
-  it("lets a Gold-invalid terminal be corrected before the first jointly accepted terminal", () => {
+  it("lets a Gold-invalid terminal be corrected before the first behavior-valid terminal", () => {
     const score = scoreCaseChain({
       observation: {
         ...MEMORY_SEARCH_SUCCESS_TRACE,
@@ -1142,6 +1152,7 @@ describe("Measurement v2 public case-chain scorer", () => {
     expect(score).toMatchObject({
       observedAttemptCount: 2,
       evaluationPrefixAttemptCount: 2,
+      behaviorValidTerminalAttemptIndex: 1,
       terminalAttemptIndex: 1,
       terminalSelectionCorrect: true,
       completeChainSuccess: true,
@@ -1174,6 +1185,7 @@ describe("Measurement v2 public case-chain scorer", () => {
     expect(score).toMatchObject({
       observedAttemptCount: 3,
       evaluationPrefixAttemptCount: 3,
+      behaviorValidTerminalAttemptIndex: 2,
       terminalAttemptIndex: 2,
       terminalSelectionCorrect: true,
       completeChainSuccess: true,
@@ -1255,12 +1267,14 @@ describe("Measurement v2 public case-chain scorer", () => {
       completeChainSuccess: false,
       strictChainExact: false,
       positiveOvercall: true,
-      terminalAttemptIndex: null,
+      evaluationPrefixAttemptCount: 3,
+      terminalAttemptIndex: 2,
+      behaviorValidTerminalAttemptIndex: 2,
       failureLayer: "wrong_family",
     });
   });
 
-  it("keeps TSR true when the selection terminal precedes a later forbidden attempt", () => {
+  it("ignores a forbidden attempt after the behavior-valid terminal horizon", () => {
     const score = scoreCaseChain({
       observation: {
         ...MEMORY_MULTI_STEP_SUCCESS_TRACE,
@@ -1294,11 +1308,12 @@ describe("Measurement v2 public case-chain scorer", () => {
 
     expect(score).toMatchObject({
       terminalSelectionCorrect: true,
-      completeChainSuccess: false,
-      strictChainExact: false,
-      positiveOvercall: true,
-      evaluationPrefixAttemptCount: 3,
-      failureLayer: "wrong_family",
+      completeChainSuccess: true,
+      runtimeAcceptedChain: false,
+      strictChainExact: true,
+      positiveOvercall: false,
+      evaluationPrefixAttemptCount: 2,
+      failureLayer: null,
     });
   });
 
@@ -1339,12 +1354,14 @@ describe("Measurement v2 public case-chain scorer", () => {
       terminalSelectionCorrect: false,
       completeChainSuccess: false,
       positiveOvercall: true,
-      terminalAttemptIndex: null,
+      evaluationPrefixAttemptCount: 3,
+      behaviorValidTerminalAttemptIndex: 2,
+      terminalAttemptIndex: 2,
       failureLayer: "wrong_terminal",
     });
   });
 
-  it("treats a genuinely premature accepted terminal as a barrier so later repair cannot wash it out", () => {
+  it("treats a genuinely premature behavior-valid terminal as a barrier so later repair cannot wash it out", () => {
     const score = scoreCaseChain({
       observation: {
         ...MEMORY_MULTI_STEP_SUCCESS_TRACE,
@@ -1364,7 +1381,46 @@ describe("Measurement v2 public case-chain scorer", () => {
 
     expect(score).toMatchObject({
       observedAttemptCount: 3,
-      evaluationPrefixAttemptCount: 2,
+      evaluationPrefixAttemptCount: 3,
+      behaviorValidTerminalAttemptIndex: 2,
+      terminalAttemptIndex: 0,
+      terminalSelectionCorrect: false,
+      completeChainSuccess: false,
+      positiveOvercall: true,
+      failureLayer: "wrong_terminal",
+    });
+  });
+
+  it("freezes a genuinely premature behavior-valid unbound terminal as the evaluation horizon", () => {
+    const sequence = MEMORY_MULTI_STEP_GOLD.allowedSequences[0];
+    const terminal = sequence.steps[1];
+    const score = scoreCaseChain({
+      observation: {
+        ...MEMORY_MULTI_STEP_SUCCESS_TRACE,
+        runId: "run-premature-terminal-without-binding",
+        attempts: [
+          {
+            ...MEMORY_MULTI_STEP_SUCCESS_TRACE.attempts[1],
+            attemptId: "attempt-premature-unbound-scene-read",
+          },
+          MEMORY_MULTI_STEP_SUCCESS_TRACE.attempts[0],
+          MEMORY_MULTI_STEP_SUCCESS_TRACE.attempts[1],
+        ],
+      },
+      gold: {
+        ...MEMORY_MULTI_STEP_GOLD,
+        allowedSequences: [{
+          ...sequence,
+          steps: [sequence.steps[0], { ...terminal, bindings: [] }],
+        }],
+      },
+      runtimeContracts: MEMORY_MULTI_STEP_CONTRACTS,
+    });
+
+    expect(score).toMatchObject({
+      observedAttemptCount: 3,
+      evaluationPrefixAttemptCount: 1,
+      behaviorValidTerminalAttemptIndex: 0,
       terminalAttemptIndex: 0,
       terminalSelectionCorrect: false,
       completeChainSuccess: false,

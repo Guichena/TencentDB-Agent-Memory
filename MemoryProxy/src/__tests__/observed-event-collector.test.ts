@@ -152,6 +152,18 @@ describe("collectObservedToolEvents", () => {
       sessionId: "session-a",
       entries: [{ correlationId: "memory-1" }],
       completions: [{ correlationId: "memory-1", status: 200 }],
+      entryEvidence: [{
+        source: "memory-proxy",
+        sequence: 1,
+        wallTimeUnixMicros: "120",
+        event: { correlationId: "memory-1" },
+      }],
+      completionEvidence: [{
+        source: "memory-proxy",
+        sequence: 2,
+        wallTimeUnixMicros: "130",
+        event: { correlationId: "memory-1", status: 200 },
+      }],
       formalTraceEligible: true,
       issues: [],
     });
@@ -353,7 +365,7 @@ describe("collectObservedToolEvents", () => {
     expect(projected.observation.rawTraceStatus).toBe("partial");
   });
 
-  it("does not attach a completion at the half-open run boundary", () => {
+  it("keeps a correlation-bound completion at the closed run boundary", () => {
     const result = collectObservedToolEvents({
       campaignId: "campaign-r04",
       expectedProxyInstanceId: "proxy-instance-a",
@@ -367,14 +379,10 @@ describe("collectObservedToolEvents", () => {
     });
 
     expect(result.runs[0].entries).toHaveLength(1);
-    expect(result.runs[0].completions).toHaveLength(0);
-    expect(result.unassignedEvents).toEqual([
-      expect.objectContaining({ kind: "completion", correlationId: "memory-1" }),
-    ]);
-    expect(result.issues).toEqual(expect.arrayContaining([
-      expect.objectContaining({ code: "unassigned_event_run" }),
-    ]));
-    expect(result.formalCampaignEligible).toBe(false);
+    expect(result.runs[0].completions).toHaveLength(1);
+    expect(result.unassignedEvents).toEqual([]);
+    expect(result.issues).toEqual([]);
+    expect(result.formalCampaignEligible).toBe(true);
   });
 
   it("uses half-open windows so touching serial runs are not ambiguous", () => {

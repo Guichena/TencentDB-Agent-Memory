@@ -32,6 +32,7 @@ describe("Measurement v2 trace-fact aggregation", () => {
       triggerRecall: { numerator: 0, denominator: 1, value: 0 },
       terminalSelectionRate: { numerator: 0, denominator: 1, value: 0 },
       completeChainSuccessRate: { numerator: 0, denominator: 1, value: 0 },
+      runtimeAcceptedChainRate: { numerator: 0, denominator: 0, value: null },
       conditionalTerminalAccuracy: { numerator: 0, denominator: 0, value: null },
     });
     expect(aggregate).not.toHaveProperty("formalMetricEligible");
@@ -95,6 +96,7 @@ describe("Measurement v2 trace-fact aggregation", () => {
       malformedFalseIntentRate: { numerator: 1, denominator: 2, value: 0.5 },
       toolSpl: { sum: 1, denominator: 2, value: 0.5 },
       shortestExactRate: { numerator: 1, denominator: 2, value: 0.5 },
+      runtimeAcceptedChainRate: { numerator: 1, denominator: 1, value: 1 },
     });
   });
 

@@ -441,7 +441,7 @@ async function main(): Promise<void> {
       component: "task_model" as const,
       phaseType: requestOrdinal === 0 ? "initial" as const : "executor" as const,
       promptSha256: requestOrdinal === 0 ? SHA.providerRequest : SHA.providerRequestB,
-      candidateActionCount: requestOrdinal === 0 ? 3 : 1,
+      providerToolDefinitionCount: requestOrdinal === 0 ? 3 : 1,
       injectionTokensO200k: tokenLedger.totalInjectionTokens,
       discoveryResultTokens: null,
       toolResultContextTokens: null,

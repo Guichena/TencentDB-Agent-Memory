@@ -173,8 +173,8 @@ function providerCacheEvidence(usage: ProviderUsageNormalizationResult): Provide
   };
 }
 
-function buildExecutionIdentity(
-  input: BuildRunIsolationEvidenceInput,
+export function buildRunExecutionIdentityEvidence(
+  input: Pick<BuildRunIsolationEvidenceInput, "execution" | "usage">,
 ): RunExecutionIdentityEvidence {
   const withoutSha = {
     modelId: input.execution.modelId,
@@ -260,7 +260,9 @@ export function buildRunIsolationEvidence(input: BuildRunIsolationEvidenceInput)
     comparisonGroupSha256: input.comparisonGroupSha256,
     providerRequestSha256: input.providerRequestSha256,
     staticPromptSha256: input.staticPromptSha256,
-    executionIdentity: executionIdentityReady ? buildExecutionIdentity(input) : null,
+    executionIdentity: executionIdentityReady
+      ? buildRunExecutionIdentityEvidence(input)
+      : null,
     counterfactualRole: input.counterfactualRole,
     session: { ...input.session },
     memoryProxyContext: { ...input.memoryProxyContext },

@@ -41,6 +41,10 @@ import { compileToolPrompt } from "../tool-prompt/compiler.js";
 import { resolveSessionCapabilitySignature } from "../tool-prompt/capability-pruned.js";
 import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
 import type { ToolPromptProfile } from "../tool-prompt/types.js";
+import {
+  buildCompiledPromptProductionSources,
+  type RenderedProductionPromptArtifact,
+} from "../production-source.js";
 
 const TAG = "[skill-injector]";
 
@@ -112,9 +116,47 @@ export function wrapAvailableSkillsBlock(
   profile: ToolPromptProfile = "legacy",
   capabilitySignature = "unconfigured",
 ): string {
-  const legacyContent = `${SKILL_LISTING_PREFIX}${listing}\n${SKILL_LISTING_FOOTER}`;
-  if (profile === "legacy") return legacyContent;
-  return compileToolPrompt({
+  return renderAvailableSkillsPromptArtifact(
+    listing,
+    profile,
+    capabilitySignature,
+  ).content;
+}
+
+/** Production renderer plus readonly PromptUnit provenance for formal capture. */
+export function renderAvailableSkillsPromptArtifact(
+  listing: string,
+  profile: ToolPromptProfile = "legacy",
+  capabilitySignature = "unconfigured",
+): RenderedProductionPromptArtifact {
+  const suffix = `\n${SKILL_LISTING_FOOTER}`;
+  const legacyContent = `${SKILL_LISTING_PREFIX}${listing}${suffix}`;
+  if (profile === "legacy") {
+    return {
+      content: legacyContent,
+      productionSources: [
+        {
+          sourceId: "skill-listing:guidance-prefix",
+          sourceKind: "static-tool",
+          injectionBlockId: "skill-injector",
+          text: SKILL_LISTING_PREFIX,
+        },
+        {
+          sourceId: "skill-listing:dynamic-assets",
+          sourceKind: "dynamic-asset",
+          injectionBlockId: "skill-injector",
+          text: listing,
+        },
+        {
+          sourceId: "skill-listing:guidance-suffix",
+          sourceKind: "static-tool",
+          injectionBlockId: "skill-injector",
+          text: suffix,
+        },
+      ],
+    };
+  }
+  const compiledPrompt = compileToolPrompt({
     profile,
     family: "skill",
     surface: "skill-listing",
@@ -133,11 +175,18 @@ export function wrapAvailableSkillsBlock(
       {
         id: "skill-listing.guidance-suffix",
         kind: "policy",
-        content: `\n${SKILL_LISTING_FOOTER}`,
+        content: suffix,
       },
     ],
     capabilitySignature,
-  }).content;
+  });
+  return {
+    content: compiledPrompt.content,
+    productionSources: buildCompiledPromptProductionSources({
+      injectionBlockId: "skill-injector",
+      compiledPrompt,
+    }),
+  };
 }
 
 /**
@@ -336,16 +385,17 @@ export class SkillInjector implements InjectionHook {
     const capabilitySignature = profile === "capability-pruned"
       ? resolveSessionCapabilitySignature(baseSignature, assetCapabilities)
       : baseSignature;
-    const content = wrapAvailableSkillsBlock(
+    const artifact = renderAvailableSkillsPromptArtifact(
       listing,
       profile,
       capabilitySignature,
     );
     return [{
       type: "text",
-      content,
+      content: artifact.content,
       metadata: {
         source: this.id,
+        productionPromptSources: artifact.productionSources,
         skillCount: result.hits.length,
         mode: result.mode,
         // Shared cache key across prewarm + execute so pipeline self-heal

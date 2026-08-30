@@ -47,7 +47,7 @@ The capture command rewrote only historical gate-document SHA values because of 
 - Operation selector RED: focused scorer run exited `1`; all five present non-string selector cases (`42`, `null`, object, array, boolean) failed because they incorrectly produced TSR/ECR/Strict success. Missing-selector and pure-none controls passed.
 - Operation selector GREEN: the same focused scorer suite passed `55/55` after present non-string selectors became an explicit invalid normalization state.
 - Prerequisite repair RED: focused scorer run exited `1`; two exact cases failed because corrected prerequisite arguments/bindings before the accepted terminal were incorrectly blocked, producing ECR failure and zero ToolSPL.
-- Prerequisite repair GREEN: the same focused scorer suite passed `57/57` after a corrected prerequisite before the accepted terminal could complete the chain; the first accepted terminal still freezes the evaluation horizon, so retries after it cannot repair the result.
+- Prerequisite repair GREEN: the same focused scorer suite passed `58/58` after a corrected prerequisite before the accepted terminal could complete the chain; the first accepted terminal still freezes the evaluation horizon, so retries after it cannot repair the result.
 
 ## Synthetic behavior coverage
 
@@ -59,9 +59,9 @@ The capture command rewrote only historical gate-document SHA values because of 
 - A second legal Knowledge sequence with branch-local operation, argument, and binding predicates.
 - Earliest binding-valid terminal and branch-order-independent matching, including overlapping exact legal sequences.
 - ECR/Strict separation for pre-terminal duplicate/unexpected/over-budget attempts.
-- A terminal call whose own args/binding are invalid can be repaired. A prerequisite argument/binding failure can also be repaired before the first accepted terminal, with Strict/ShortestExact/positive-overcall/ToolSPL retaining the extra-attempt penalty. The first accepted terminal freezes the horizon, so retries after it cannot repair the result.
-- Forbidden wrong-family and typed wrong-terminal barriers; a genuinely premature accepted terminal cannot be repaired later, while a later barrier cannot erase an already-reached Qi terminal.
-- `terminalAttemptIndex` identifies the accepted terminal horizon (including when an earlier Qi terminal was contract-rejected), otherwise the scored complete/Qi terminal, and never points beyond a failed evaluation horizon.
+- A terminal call whose own args/binding are invalid can be repaired. A prerequisite argument/binding failure can also be repaired before the first behavior-valid terminal, with Strict/ShortestExact/positive-overcall/ToolSPL retaining the extra-attempt penalty. The first behavior-valid terminal freezes the horizon independent of HTTP acceptance, so retries after it cannot repair the result.
+- Forbidden wrong-family and typed wrong-terminal barriers; a genuinely premature behavior-valid terminal cannot be repaired later, while a later barrier cannot erase an already-reached Qi terminal.
+- `behaviorValidTerminalAttemptIndex` is the sole evaluation/usage horizon ordinal. `terminalAttemptIndex` remains a diagnostic that may instead identify the scored complete/Qi terminal or an in-prefix raw terminal candidate; it must not drive M2 Token/cache or Integration infrastructure boundaries.
 - Attempt indexes use executor-bound ordinals even when unbound raw facts precede a bound attempt; normalizer and scorer share one JSON-path implementation.
 - Terminal-post behavior is ignored by decision metrics while its raw infrastructure evidence is preserved.
 - No-tool clean, accepted false call, and recognizable unbound malformed intent with or without optional reason metadata.

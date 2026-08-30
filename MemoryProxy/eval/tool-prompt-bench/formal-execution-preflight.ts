@@ -200,6 +200,23 @@ export interface FormalExecutionPreflightReceipt {
   readonly checks: readonly FormalPreflightCheck[];
 }
 
+/**
+ * Provenance added by the offline preflight CLI after both the frozen restore
+ * plan and the sealed inspect envelope have passed their pinned parsers. The
+ * raw evaluator deliberately cannot manufacture this binding on its own.
+ */
+export interface FormalPreflightProvenance {
+  readonly restorePlanSha256: string;
+  readonly snapshotId: string;
+  readonly snapshotCanonicalSha256: string;
+  readonly inspectEnvelopeCanonicalSha256: string;
+}
+
+export interface PinnedFormalExecutionPreflightReceipt
+  extends FormalExecutionPreflightReceipt {
+  readonly provenance: Readonly<FormalPreflightProvenance>;
+}
+
 function requireNonBlank(name: string, value: unknown): string {
   if (typeof value !== "string" || value.trim().length === 0) {
     throw new Error(`${name} must be a non-empty string`);

@@ -31,6 +31,8 @@ type FetchImplementation = (
 export interface ServerTeamProductionTransportConfig {
   readonly memoryCoreBaseUrl: string;
   readonly memoryKnowledgeBaseUrl: string;
+  /** Runtime-only MemoryCore gateway credential. */
+  readonly memoryCoreApiKey: string;
   /** Runtime-only secret. It is never added to MemoryKnowledge requests. */
   readonly userKey: string;
   readonly serviceIdsByDatasetSpaceId: Readonly<Record<string, string>>;
@@ -109,6 +111,7 @@ export function createServerTeamProductionTransport(
     "memoryKnowledgeBaseUrl",
     config.memoryKnowledgeBaseUrl,
   );
+  const memoryCoreApiKey = nonBlank("memoryCoreApiKey", config.memoryCoreApiKey);
   const userKey = nonBlank("userKey", config.userKey);
   const fetchImpl = config.fetchImpl ?? globalThis.fetch.bind(globalThis);
   if (typeof fetchImpl !== "function") return invalidConfig("fetch implementation is unavailable");
@@ -129,7 +132,10 @@ export function createServerTeamProductionTransport(
       "content-type": "application/json",
       ...correlationHeaders(request, runtimeServiceId),
       ...(request.serviceBoundary === "memory_core"
-        ? { "x-tdai-user-key": userKey }
+        ? {
+          authorization: `Bearer ${memoryCoreApiKey}`,
+          "x-tdai-user-key": userKey,
+        }
         : {}),
     };
     const baseUrl = request.serviceBoundary === "memory_core"

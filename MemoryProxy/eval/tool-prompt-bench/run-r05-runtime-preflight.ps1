@@ -13,6 +13,8 @@ param(
   [string]$DataTag = "task1-data-formal-v1.1",
   [string]$CodeRef = "HEAD",
   [string]$PromptFreezeRef = "task1-code-freeze",
+  [ValidateSet("Restore", "Inspect")][string]$Stage = "Restore",
+  [switch]$KnowledgeReadyConfirmed,
   [switch]$DryRun
 )
 
@@ -55,13 +57,19 @@ function Resolve-ExistingFile {
   return (Resolve-Path -LiteralPath $candidate).Path
 }
 
-function Resolve-NewAbsolutePath {
-  param([string]$Name, [string]$Path)
-  $candidate = [System.IO.Path]::GetFullPath((Require-NonBlank $Name $Path))
-  if (Test-Path -LiteralPath $candidate) {
-    throw "$Name must not already exist (create-new policy): $candidate"
+function Resolve-R05RunRoot {
+  param([string]$Path, [string]$Stage)
+  $candidate = [System.IO.Path]::GetFullPath((Require-NonBlank "RunRoot" $Path))
+  if ($Stage -eq "Restore") {
+    if (Test-Path -LiteralPath $candidate) {
+      throw "RunRoot must not already exist for Restore (create-new policy): $candidate"
+    }
+    return $candidate
   }
-  return $candidate
+  if (-not (Test-Path -LiteralPath $candidate -PathType Container)) {
+    throw "RunRoot must already exist for Inspect: $candidate"
+  }
+  return (Resolve-Path -LiteralPath $candidate).Path
 }
 
 function Test-PathWithin {
@@ -182,12 +190,16 @@ function Invoke-JsonGet {
 }
 
 function Invoke-AuthVerify {
-  param([string]$CoreBaseUrl, [string]$ServiceId, [string]$UserKey)
+  param([string]$CoreBaseUrl, [string]$ServiceId, [string]$UserKey, [string]$CoreApiKey)
   $body = @{ user_key = $UserKey } | ConvertTo-Json -Compress
   try {
     return Invoke-RestMethod -Method Post `
       -Uri "$CoreBaseUrl/v3/meta/auth/verify" `
-      -Headers @{ "x-tdai-service-id" = $ServiceId; Accept = "application/json" } `
+      -Headers @{
+        Authorization = "Bearer $CoreApiKey"
+        "x-tdai-service-id" = $ServiceId
+        Accept = "application/json"
+      } `
       -ContentType "application/json" `
       -Body $body `
       -TimeoutSec 15
@@ -290,7 +302,7 @@ function Assert-ProxyHealth {
 $RepositoryRoot = Resolve-ExistingDirectory "RepositoryRoot" $RepositoryRoot
 $FrozenDataRoot = Resolve-ExistingDirectory "FrozenDataRoot" $FrozenDataRoot
 $Config = Resolve-ExistingFile "Config" $Config
-$RunRoot = Resolve-NewAbsolutePath "RunRoot" $RunRoot
+$RunRoot = Resolve-R05RunRoot $RunRoot $Stage
 $MemoryCoreBaseUrl = Resolve-ServiceUrl "MemoryCoreBaseUrl" $MemoryCoreBaseUrl
 $MemoryKnowledgeBaseUrl = Resolve-ServiceUrl "MemoryKnowledgeBaseUrl" $MemoryKnowledgeBaseUrl
 $MemoryProxyBaseUrl = Resolve-ServiceUrl "MemoryProxyBaseUrl" $MemoryProxyBaseUrl
@@ -309,6 +321,18 @@ if ($PromptFreezeRef -ne "task1-code-freeze") {
 }
 if ((Test-PathWithin $RunRoot $RepositoryRoot) -or (Test-PathWithin $RunRoot $FrozenDataRoot)) {
   throw "RunRoot must be outside both Git worktrees."
+}
+
+function Assert-ExactProperty {
+  param([string]$Name, [object]$Object, [string]$Property, [AllowNull()][object]$Expected)
+  $actual = Get-RequiredProperty $Name $Object $Property
+  if ([string]$actual -cne [string]$Expected) {
+    throw "$Name.$Property does not match the frozen restore-stage handoff."
+  }
+  return $actual
+}
+if ($Stage -eq "Inspect" -and -not $DryRun -and -not $KnowledgeReadyConfirmed) {
+  throw "KnowledgeReadyConfirmed is required for Inspect after the user has confirmed all visible code-graphs are ready."
 }
 
 $nodeVersion = (& node --version 2>&1).Trim()
@@ -359,12 +383,14 @@ $planPath = Join-Path $artifactRoot "dev-restore-plan.json"
 $restorePath = Join-Path $artifactRoot "dev-restore-observations.json"
 $inspectRoot = Join-Path $artifactRoot "inspect"
 $receiptRoot = Join-Path $artifactRoot "preflight"
+$restoreStagePath = Join-Path $RunRoot "r05-restore-stage.json"
 $summaryPath = Join-Path $RunRoot "r05-runtime-preflight-summary.json"
 
 if ($DryRun) {
   [pscustomobject]@{
-    schemaVersion = "task1.r05-runtime-preflight-plan.v1"
+    schemaVersion = "task1.r05-runtime-preflight-plan.v2"
     mode = "dry-run"
+    stage = $Stage
     createsFiles = $false
     contactsServices = $false
     invokesModel = $false
@@ -379,22 +405,35 @@ if ($DryRun) {
     configFileSha256 = $configSha256
     runRoot = $RunRoot
     expectedRunCount = $expectedRunCount
-    orderedSteps = @(
-      "MemoryCore/MemoryKnowledge/MemoryProxy health",
-      "MemoryCore auth/verify",
-      "build restore plan",
-      "restore Dev assets once",
-      "prepare the frozen 12-case preflight selection without a model",
-      "inspect each prepared run",
-      "create and verify six-check ready receipt for each run",
-      "recheck config, service identity/health, and auth stability",
-      "recheck clean Git worktrees, code HEAD, data HEAD, and annotated tag locks"
-    )
+    orderedSteps = if ($Stage -eq "Restore") {
+      @(
+        "MemoryCore/MemoryKnowledge/MemoryProxy health",
+        "MemoryCore auth/verify",
+        "build restore plan",
+        "restore Dev assets once",
+        "prepare and validate the frozen 12-case preflight selection without a model",
+        "write create-new restore-stage handoff",
+        "stop at wait-for-knowledge-ready"
+      )
+    } else {
+      @(
+        "validate the existing restore-stage handoff without restoring again",
+        "MemoryCore/MemoryKnowledge/MemoryProxy health and identity",
+        "MemoryCore auth/verify",
+        "inspect each prepared run",
+        "create and verify six-check ready receipt for each run",
+        "recheck config, service identity/health, and Git locks",
+        "write create-new final summary"
+      )
+    }
   } | ConvertTo-Json -Depth 10
   return
 }
 
 $userKey = Require-NonBlank "TDAI_EVAL_USER_KEY environment variable" $env:TDAI_EVAL_USER_KEY
+$memoryCoreApiKey = Require-NonBlank `
+  "TDAI_FORMAL_MEMORY_CORE_API_KEY environment variable" `
+  $env:TDAI_FORMAL_MEMORY_CORE_API_KEY
 $coreHealth = Invoke-JsonGet "MemoryCore health" "$MemoryCoreBaseUrl/health"
 if ((Get-RequiredProperty "MemoryCore health" $coreHealth "status") -ne "ok") {
   throw "MemoryCore health.status must be ok."
@@ -411,7 +450,11 @@ if ((Get-RequiredProperty "MemoryKnowledge health" $knowledgeHealth "status") -n
 $proxyHealth = Invoke-JsonGet "MemoryProxy health" "$MemoryProxyBaseUrl/health"
 Assert-ProxyHealth $proxyHealth $configSha256
 
-$authEnvelope = Invoke-AuthVerify $MemoryCoreBaseUrl $RuntimeServiceId $userKey
+$authEnvelope = Invoke-AuthVerify `
+  $MemoryCoreBaseUrl `
+  $RuntimeServiceId `
+  $userKey `
+  $memoryCoreApiKey
 if ((Get-RequiredProperty "MemoryCore auth envelope" $authEnvelope "code") -ne 0) {
   throw "MemoryCore auth envelope code must be 0."
 }
@@ -437,7 +480,9 @@ foreach ($name in @(
   $previousEnvironment[$name] = [Environment]::GetEnvironmentVariable($name, "Process")
 }
 
-New-Item -ItemType Directory -Path $RunRoot -ErrorAction Stop | Out-Null
+if ($Stage -eq "Restore") {
+  New-Item -ItemType Directory -Path $RunRoot -ErrorAction Stop | Out-Null
+}
 $startedAt = [DateTimeOffset]::UtcNow.ToString("o")
 try {
   $env:TDAI_FORMAL_MEMORY_CORE_URL = $MemoryCoreBaseUrl
@@ -447,52 +492,117 @@ try {
   $env:TDAI_FORMAL_RUNTIME_AUTH_USER_ID = $RuntimeAuthUserId
   $env:TDAI_FORMAL_DATA_ROOT = $FrozenDataRoot
 
-  Invoke-NativeChecked $npmCommand.Source @(
-    "run", "eval:tool-prompt:formal:build-restore-plan", "--",
-    "--repo-root", $RepositoryRoot,
-    "--split", "dev",
-    "--output", $planPath
-  ) $proxyRoot
+  if ($Stage -eq "Restore") {
+    Invoke-NativeChecked $npmCommand.Source @(
+      "run", "eval:tool-prompt:formal:build-restore-plan", "--",
+      "--repo-root", $RepositoryRoot,
+      "--split", "dev",
+      "--output", $planPath
+    ) $proxyRoot
 
-  # This frozen hash/cardinality Gate must pass before the adapter can issue
-  # its first production restore request.
-  $planContract = Invoke-NativeJsonChecked $tsx @(
-    $contractCli,
-    "--mode", "plan",
-    "--input", $planPath
-  ) $proxyRoot
+    # This frozen hash/cardinality Gate must pass before the adapter can issue
+    # its first production restore request.
+    $planContract = Invoke-NativeJsonChecked $tsx @(
+      $contractCli,
+      "--mode", "plan",
+      "--input", $planPath
+    ) $proxyRoot
 
-  Invoke-NativeChecked $npmCommand.Source @(
-    "run", "eval:tool-prompt:formal:restore-assets", "--",
-    "--plan", $planPath,
-    "--split", "dev",
-    "--adapter", $restoreAdapter,
-    "--output", $restorePath
-  ) $proxyRoot
+    Invoke-NativeChecked $npmCommand.Source @(
+      "run", "eval:tool-prompt:formal:restore-assets", "--",
+      "--plan", $planPath,
+      "--split", "dev",
+      "--adapter", $restoreAdapter,
+      "--output", $restorePath
+    ) $proxyRoot
 
-  # The adapter may only describe an unverified complete restore. It cannot
-  # self-attest eligibility or readiness for formal measurement.
-  $restoreContract = Invoke-NativeJsonChecked $tsx @(
-    $contractCli,
-    "--mode", "restore",
-    "--input", $restorePath
-  ) $proxyRoot
+    # The adapter may only describe an unverified complete restore. It cannot
+    # self-attest eligibility or readiness for formal measurement.
+    $restoreContract = Invoke-NativeJsonChecked $tsx @(
+      $contractCli,
+      "--mode", "restore",
+      "--input", $restorePath
+    ) $proxyRoot
 
-  Invoke-NativeChecked $powerShellHost @(
-    "-NoLogo", "-NoProfile", "-File", $prepareScript,
-    "-Scope", "smoke",
-    "-Variant", "V0",
-    "-Campaign", $CampaignId,
-    "-RepositoryRoot", $RepositoryRoot,
-    "-Config", $Config,
-    "-OutputRoot", $campaignOutputRoot,
-    "-ProxyBaseUrl", $MemoryProxyBaseUrl,
-    "-Repeats", "1",
-    "-Model", "gpt-5.6-luna",
-    "-ReasoningEffort", "high",
-    "-CodeRef", $CodeRef,
-    "-PromptFreezeRef", $PromptFreezeRef
-  ) $proxyRoot
+    Invoke-NativeChecked $powerShellHost @(
+      "-NoLogo", "-NoProfile", "-File", $prepareScript,
+      "-Scope", "smoke",
+      "-Variant", "V0",
+      "-Campaign", $CampaignId,
+      "-RepositoryRoot", $RepositoryRoot,
+      "-Config", $Config,
+      "-OutputRoot", $campaignOutputRoot,
+      "-ProxyBaseUrl", $MemoryProxyBaseUrl,
+      "-Repeats", "1",
+      "-Model", "gpt-5.6-luna",
+      "-ReasoningEffort", "high",
+      "-CodeRef", $CodeRef,
+      "-PromptFreezeRef", $PromptFreezeRef
+    ) $proxyRoot
+  } else {
+    $restoreStagePath = Resolve-ExistingFile "Restore-stage handoff" $restoreStagePath
+    foreach ($path in @($summaryPath, $inspectRoot, $receiptRoot)) {
+      if (Test-Path -LiteralPath $path) {
+        throw "Inspect requires create-new evidence paths; already exists: $path"
+      }
+    }
+    $restoreStage = Get-Content -LiteralPath $restoreStagePath -Raw | ConvertFrom-Json
+    Assert-ExactProperty "restore-stage handoff" $restoreStage "schemaVersion" "task1.r05-restore-stage.v1" | Out-Null
+    Assert-ExactProperty "restore-stage handoff" $restoreStage "stage" "wait-for-knowledge-ready" | Out-Null
+    if ((Get-RequiredProperty "restore-stage handoff" $restoreStage "invokesModel") -ne $false) {
+      throw "restore-stage handoff.invokesModel must remain false."
+    }
+    foreach ($binding in @(
+      @("repositoryRoot", $RepositoryRoot),
+      @("codeCommit", $codeCommit),
+      @("dataTag", $DataTag),
+      @("dataTagObject", $dataTagObject),
+      @("dataCommit", $dataCommit),
+      @("frozenDataRoot", $FrozenDataRoot),
+      @("promptFreezeCommit", $promptFreezeCommit),
+      @("configFileSha256", $configSha256),
+      @("campaignId", $CampaignId),
+      @("memoryCoreBaseUrl", $MemoryCoreBaseUrl),
+      @("memoryKnowledgeBaseUrl", $MemoryKnowledgeBaseUrl),
+      @("memoryProxyBaseUrl", $MemoryProxyBaseUrl),
+      @("runtimeServiceId", $RuntimeServiceId),
+      @("runtimeAuthUserId", $RuntimeAuthUserId)
+    )) {
+      Assert-ExactProperty "restore-stage handoff" $restoreStage $binding[0] $binding[1] | Out-Null
+    }
+    Assert-ExactProperty "restore-stage handoff" $restoreStage "memoryKnowledgeServerInstanceId" (
+      Require-NonBlank "MemoryKnowledge health.serverInstanceId" (
+        Get-RequiredProperty "MemoryKnowledge health" $knowledgeHealth "serverInstanceId"
+      )
+    ) | Out-Null
+    foreach ($identityField in @("serverInstanceId", "serverStartedAt")) {
+      Assert-ExactProperty "restore-stage handoff" $restoreStage "memoryProxy$($identityField.Substring(0,1).ToUpperInvariant())$($identityField.Substring(1))" (
+        Get-RequiredProperty "MemoryProxy health" $proxyHealth $identityField
+      ) | Out-Null
+    }
+    $startedAt = Require-NonBlank "restore-stage handoff.startedAt" (
+      Get-RequiredProperty "restore-stage handoff" $restoreStage "startedAt"
+    )
+
+    $planPath = Resolve-ExistingFile "Restore plan" $planPath
+    $restorePath = Resolve-ExistingFile "Restore observations" $restorePath
+    Assert-ExactProperty "restore-stage handoff" $restoreStage "restorePlanFileSha256" (
+      (Get-FileHash -Algorithm SHA256 -LiteralPath $planPath).Hash.ToLowerInvariant()
+    ) | Out-Null
+    Assert-ExactProperty "restore-stage handoff" $restoreStage "restoreObservationsFileSha256" (
+      (Get-FileHash -Algorithm SHA256 -LiteralPath $restorePath).Hash.ToLowerInvariant()
+    ) | Out-Null
+    $planContract = Invoke-NativeJsonChecked $tsx @(
+      $contractCli,
+      "--mode", "plan",
+      "--input", $planPath
+    ) $proxyRoot
+    $restoreContract = Invoke-NativeJsonChecked $tsx @(
+      $contractCli,
+      "--mode", "restore",
+      "--input", $restorePath
+    ) $proxyRoot
+  }
 
   $runManifestFiles = @(
     Get-ChildItem -LiteralPath $campaignOutputRoot -Filter "run-manifest.json" -File -Recurse |
@@ -514,6 +624,80 @@ try {
   # inspect call consumes a fresh Session namespace.
   $preparedContract = Invoke-NativeJsonChecked $tsx $preparedContractArguments $proxyRoot
 
+  if ($Stage -eq "Restore") {
+    $manifestEvidence = @(
+      foreach ($manifestFile in $runManifestFiles) {
+        [ordered]@{
+          path = $manifestFile.FullName
+          sha256 = (Get-FileHash -Algorithm SHA256 -LiteralPath $manifestFile.FullName).Hash.ToLowerInvariant()
+        }
+      }
+    )
+    $restoreStage = [ordered]@{
+      schemaVersion = "task1.r05-restore-stage.v1"
+      stage = "wait-for-knowledge-ready"
+      ready = $false
+      invokesModel = $false
+      startedAt = $startedAt
+      restoreFinishedAt = [DateTimeOffset]::UtcNow.ToString("o")
+      repositoryRoot = $RepositoryRoot
+      codeCommit = $codeCommit
+      dataTag = $DataTag
+      dataTagObject = $dataTagObject
+      dataCommit = $dataCommit
+      frozenDataRoot = $FrozenDataRoot
+      promptFreezeCommit = $promptFreezeCommit
+      configFileSha256 = $configSha256
+      campaignId = $CampaignId
+      memoryCoreBaseUrl = $MemoryCoreBaseUrl
+      memoryKnowledgeBaseUrl = $MemoryKnowledgeBaseUrl
+      memoryProxyBaseUrl = $MemoryProxyBaseUrl
+      runtimeServiceId = $RuntimeServiceId
+      runtimeAuthUserId = $RuntimeAuthUserId
+      memoryKnowledgeServerInstanceId = Require-NonBlank "MemoryKnowledge health.serverInstanceId" (
+        Get-RequiredProperty "MemoryKnowledge health" $knowledgeHealth "serverInstanceId"
+      )
+      memoryProxyServerInstanceId = Get-RequiredProperty "MemoryProxy health" $proxyHealth "serverInstanceId"
+      memoryProxyServerStartedAt = Get-RequiredProperty "MemoryProxy health" $proxyHealth "serverStartedAt"
+      restorePlan = $planPath
+      restorePlanFileSha256 = (Get-FileHash -Algorithm SHA256 -LiteralPath $planPath).Hash.ToLowerInvariant()
+      restorePlanContract = $planContract
+      restoreObservations = $restorePath
+      restoreObservationsFileSha256 = (Get-FileHash -Algorithm SHA256 -LiteralPath $restorePath).Hash.ToLowerInvariant()
+      restoreObservationContract = $restoreContract
+      devSmokeSelectionSha256 = $preparedContract.selectionSha256
+      devSmokeCaseIds = @($preparedContract.caseIds)
+      runManifests = $manifestEvidence
+      finalGitLocks = Assert-FinalGitLocks `
+        $RepositoryRoot `
+        $FrozenDataRoot `
+        $codeCommit `
+        $DataTag `
+        $dataTagObject `
+        $dataCommit
+      nextStage = "Inspect"
+      knowledgeReadyConfirmationRequired = $true
+    }
+    Write-CreateNewJson $restoreStagePath $restoreStage
+    $restoreStage | ConvertTo-Json -Depth 20
+    return
+  }
+
+  $recordedManifests = @(Get-RequiredProperty "restore-stage handoff" $restoreStage "runManifests")
+  if ($recordedManifests.Count -ne $runManifestFiles.Count) {
+    throw "restore-stage handoff run manifest count changed before Inspect."
+  }
+  for ($index = 0; $index -lt $runManifestFiles.Count; $index += 1) {
+    Assert-ExactProperty "restore-stage handoff runManifests[$index]" $recordedManifests[$index] "path" (
+      $runManifestFiles[$index].FullName
+    ) | Out-Null
+    Assert-ExactProperty "restore-stage handoff runManifests[$index]" $recordedManifests[$index] "sha256" (
+      (Get-FileHash -Algorithm SHA256 -LiteralPath $runManifestFiles[$index].FullName).Hash.ToLowerInvariant()
+    ) | Out-Null
+  }
+  Assert-ExactProperty "restore-stage handoff" $restoreStage "devSmokeSelectionSha256" $preparedContract.selectionSha256 | Out-Null
+
+  $inspectStartedAt = [DateTimeOffset]::UtcNow.ToString("o")
   $seenRunIds = @{}
   $readyRunIds = @()
   $readyRunEvidence = @()
@@ -611,7 +795,11 @@ try {
       throw "MemoryProxy $identityField changed during runtime preflight."
     }
   }
-  $finalAuthEnvelope = Invoke-AuthVerify $MemoryCoreBaseUrl $RuntimeServiceId $userKey
+  $finalAuthEnvelope = Invoke-AuthVerify `
+    $MemoryCoreBaseUrl `
+    $RuntimeServiceId `
+    $userKey `
+    $memoryCoreApiKey
   if ((Get-RequiredProperty "final MemoryCore auth envelope" $finalAuthEnvelope "code") -ne 0) {
     throw "Final MemoryCore auth envelope code must be 0."
   }
@@ -642,6 +830,7 @@ try {
     scope = "smoke"
     campaignId = $CampaignId
     startedAt = $startedAt
+    inspectStartedAt = $inspectStartedAt
     finishedAt = [DateTimeOffset]::UtcNow.ToString("o")
     repositoryRoot = $RepositoryRoot
     codeCommit = $codeCommit
@@ -653,8 +842,11 @@ try {
     promptFreezeCommit = $promptFreezeCommit
     configFileSha256 = $configSha256
     memoryProxyServerInstanceId = Get-RequiredProperty "MemoryProxy health" $proxyHealth "serverInstanceId"
+    memoryKnowledgeServerInstanceId = $initialKnowledgeInstanceId
     runtimeServiceId = $RuntimeServiceId
     runtimeAuthUserId = $RuntimeAuthUserId
+    restoreStageHandoff = $restoreStagePath
+    restoreStageHandoffFileSha256 = (Get-FileHash -Algorithm SHA256 -LiteralPath $restoreStagePath).Hash.ToLowerInvariant()
     restorePlan = $planPath
     restorePlanFileSha256 = (Get-FileHash -Algorithm SHA256 -LiteralPath $planPath).Hash.ToLowerInvariant()
     restorePlanContract = $planContract

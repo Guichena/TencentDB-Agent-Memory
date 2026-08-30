@@ -48,6 +48,13 @@ import { compileToolPrompt } from "../tool-prompt/compiler.js";
 import { resolveSessionCapabilitySignature } from "../tool-prompt/capability-pruned.js";
 import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
 import type { ToolPromptProfile } from "../tool-prompt/types.js";
+import {
+  buildCompiledPromptProductionSources,
+  buildRenderedPromptProductionSources,
+  locateBoundedProductionPromptBindings,
+  type ProductionPromptBinding,
+  type RenderedProductionPromptArtifact,
+} from "../production-source.js";
 
 export interface TdaiMemoryToolsInjectorConfig {
   /**
@@ -147,6 +154,107 @@ export function renderTdaiMemoryToolsBlock(
   return lines.join("\n");
 }
 
+export interface RenderTdaiMemoryToolsPromptArtifactInput {
+  proxyBaseUrl: string;
+  sessionId?: string;
+  spaceId?: string;
+  profile?: ToolPromptProfile;
+  capabilitySignature?: string;
+}
+
+function locateMemoryRuntimeBindings(
+  content: string,
+  input: RenderTdaiMemoryToolsPromptArtifactInput,
+): ProductionPromptBinding[] {
+  const bridge = `${input.proxyBaseUrl.replace(/\/$/, "")}/memory-bridge/v3`;
+  return [
+    ...locateBoundedProductionPromptBindings({
+      text: content,
+      id: "memory-bridge",
+      value: bridge,
+      kind: "runtime-binding",
+      boundaries: [
+        { before: "endpoint-base: ", after: "\n" },
+        { before: "    curl: ", after: "/" },
+        { before: "curl -sfk -X POST ", after: "/" },
+      ],
+    }),
+    ...(input.sessionId
+      ? locateBoundedProductionPromptBindings({
+          text: content,
+          id: "session-id",
+          value: input.sessionId,
+          kind: "runtime-binding",
+          boundaries: [
+            { before: "x-conversation-id: ", after: "'" },
+            { before: "x-conversation-id: ", after: "；" },
+            { before: "x-conversation-id: ", after: "\n" },
+          ],
+        })
+      : []),
+    ...(input.spaceId
+      ? locateBoundedProductionPromptBindings({
+          text: content,
+          id: "space-id",
+          value: input.spaceId,
+          kind: "runtime-binding",
+          boundaries: [
+            { before: "x-tdai-service-id: ", after: "'" },
+            { before: "x-tdai-service-id: ", after: "、" },
+            { before: "x-tdai-service-id: ", after: "; " },
+            { before: "x-tdai-service-id: ", after: "\n" },
+          ],
+        })
+      : []),
+  ];
+}
+
+/** Production renderer plus exact PromptUnit/runtime-binding provenance. */
+export function renderTdaiMemoryToolsPromptArtifact(
+  input: RenderTdaiMemoryToolsPromptArtifactInput,
+): RenderedProductionPromptArtifact {
+  const profile = input.profile ?? "legacy";
+  const capabilitySignature = input.capabilitySignature ?? "unconfigured";
+  const legacyContent = renderTdaiMemoryToolsBlock(
+    input.proxyBaseUrl,
+    input.sessionId,
+    input.spaceId,
+  );
+  if (profile === "legacy") {
+    const bindings = locateMemoryRuntimeBindings(legacyContent, input);
+    return {
+      content: legacyContent,
+      productionSources: buildRenderedPromptProductionSources({
+        sourceId: "memory-tools:legacy-body",
+        sourceKind: "static-tool",
+        injectionBlockId: "tdai-memory-tools-injector",
+        text: legacyContent,
+        bindings,
+      }),
+    };
+  }
+  const compiledPrompt = compileToolPrompt({
+    profile,
+    family: "memory",
+    surface: "memory-tools",
+    legacyUnits: [{
+      id: "memory-tools.legacy-body",
+      kind: "legacy-body",
+      content: legacyContent,
+    }],
+    capabilitySignature,
+  });
+  const bindings = locateMemoryRuntimeBindings(compiledPrompt.content, input);
+  return {
+    content: compiledPrompt.content,
+    productionSources: buildCompiledPromptProductionSources({
+      injectionBlockId: "tdai-memory-tools-injector",
+      compiledPrompt,
+      bindings,
+    }),
+  };
+}
+
 export class TdaiMemoryToolsInjector implements InjectionHook {
   id = "tdai-memory-tools-injector";
   point = "system.suffix" as const;
@@ -197,25 +305,19 @@ export class TdaiMemoryToolsInjector implements InjectionHook {
     const capabilitySignature = profile === "capability-pruned"
       ? resolveSessionCapabilitySignature(baseSignature, assetCapabilities)
       : baseSignature;
-    const legacyContent = renderTdaiMemoryToolsBlock(this.cfg.proxyBaseUrl, sessionId, spaceId);
-    const content = profile === "legacy"
-      ? legacyContent
-      : compileToolPrompt({
-          profile,
-          family: "memory",
-          surface: "memory-tools",
-          legacyUnits: [{
-            id: "memory-tools.legacy-body",
-            kind: "legacy-body",
-            content: legacyContent,
-          }],
-          capabilitySignature,
-        }).content;
+    const artifact = renderTdaiMemoryToolsPromptArtifact({
+      proxyBaseUrl: this.cfg.proxyBaseUrl,
+      sessionId,
+      spaceId,
+      profile,
+      capabilitySignature,
+    });
     return [{
       type: "text",
-      content,
+      content: artifact.content,
       metadata: {
         source: this.id,
+        productionPromptSources: artifact.productionSources,
         sessionId,
         cacheKey: "tdai-memory-tools-injector:tools"
           + (profile === "capability-pruned" ? `:${capabilitySignature}` : ""),

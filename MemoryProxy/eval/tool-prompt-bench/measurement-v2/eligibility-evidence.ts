@@ -115,7 +115,10 @@ export function buildM2EligibilityEvidence(
   if (input.tokenLedger.measurementModuleId !== "M2") blockers.push("TOKEN_LEDGER_MODULE_MISMATCH");
   if (input.tokenLedger.runId !== input.runIsolation.runId) blockers.push("TOKEN_LEDGER_RUN_MISMATCH");
   if (input.tokenLedger.variantId !== input.runIsolation.variantId) blockers.push("TOKEN_LEDGER_VARIANT_MISMATCH");
-  blockers.push("TOKEN_CLASSIFICATION_INTEGRATION_BLOCKED");
+  if (input.tokenLedger.classification.formalCompilerClosure.status !== "ready"
+    || input.tokenLedger.classification.formalCompilerClosure.owner !== "Integration") {
+    blockers.push("TOKEN_CLASSIFICATION_INTEGRATION_BLOCKED");
+  }
   if (input.runIsolation.isolationStatus !== "ready") blockers.push("RUN_ISOLATION_BLOCKED");
   if (input.comparison.purpose !== "none") {
     if (input.comparison.evidence.comparisonPurpose !== input.comparison.purpose) {

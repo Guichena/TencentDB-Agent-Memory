@@ -117,6 +117,87 @@ describe("Task 1 complete minimal-chain scoring", () => {
     expect(evaluateToolPromptCase(wrongSequence, fixture, [search, view]).effectiveCall).toBe(false);
   });
 
+  it("matches one complete allowed path and rejects an extra call after a shorter path", () => {
+    const item = skillCase();
+    const shortPath = ["skill_search"];
+    const longPath = ["skill_search", "skill_view_by_id"];
+    const alternateToolNamesWithoutMatchingAction = ["skill_search", "skill_files_read"];
+    item.gold.allowedSequences = [
+      alternateToolNamesWithoutMatchingAction,
+      shortPath,
+      longPath,
+    ];
+    item.gold.maxTdaiCalls = 2;
+
+    const search: TdaiAttempt = {
+      tool: "skill_search",
+      family: "skill",
+      endpoint: "/skill-bridge/v3/skill/search",
+      method: "POST",
+      body: { query: "python fuzz harness" },
+      headers,
+      status: 200,
+      response: { data: { items: [{ skill_id: "skill-fuzzing-harness" }] } },
+    };
+    const view: TdaiAttempt = {
+      tool: "skill_view_by_id",
+      family: "skill",
+      endpoint: "/skill-bridge/v3/skill/get",
+      method: "POST",
+      body: { skill_id: "skill-fuzzing-harness" },
+      headers,
+      status: 200,
+      response: { data: { content: "# Fuzzing harness" } },
+    };
+    const crossPathExtra: TdaiAttempt = {
+      ...view,
+      tool: "skill_files_read",
+      endpoint: "/skill-bridge/v3/skill/files/read",
+      body: { skill_id: "skill-fuzzing-harness", path: "reference.md" },
+    };
+
+    expect(evaluateToolPromptCase(item, fixture, [search])).toMatchObject({
+      effectiveCall: true,
+      overcall: false,
+      state: "CORRECT_CALL",
+    });
+    expect(evaluateToolPromptCase(item, fixture, [search, view])).toMatchObject({
+      effectiveCall: true,
+      overcall: false,
+      state: "CORRECT_CALL",
+    });
+
+    const failedView = { ...view, status: 500 };
+    expect(evaluateToolPromptCase(item, fixture, [search, failedView])).toMatchObject({
+      effectiveCall: true,
+      executionValid: false,
+      state: "CORRECT_CALL",
+    });
+
+    item.gold.maxTdaiCalls = 3;
+    for (const sequences of [
+      [shortPath, longPath, alternateToolNamesWithoutMatchingAction],
+      [longPath, alternateToolNamesWithoutMatchingAction, shortPath],
+    ]) {
+      item.gold.allowedSequences = sequences;
+      expect(evaluateToolPromptCase(item, fixture, [search, crossPathExtra])).toMatchObject({
+        effectiveCall: false,
+        overcall: true,
+        state: "EXTRA_OR_DUPLICATE_CALL",
+      });
+
+      expect(evaluateToolPromptCase(
+        item,
+        fixture,
+        [search, failedView, crossPathExtra],
+      )).toMatchObject({
+        effectiveCall: false,
+        overcall: true,
+        state: "EXTRA_OR_DUPLICATE_CALL",
+      });
+    }
+  });
+
   it("preserves Knowledge tools/list and expectedKnowledgeCalls before counting success", () => {
     const item = skillCase();
     item.caseId = "T01-KNOWLEDGE-001-P";

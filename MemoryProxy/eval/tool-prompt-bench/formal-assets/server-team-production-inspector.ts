@@ -42,7 +42,9 @@ export interface InspectServerTeamProductionOptions {
 
 interface InspectorConfig {
   readonly memoryCoreBaseUrl: URL;
+  readonly memoryKnowledgeBaseUrl: URL;
   readonly memoryProxyBaseUrl: URL;
+  readonly memoryCoreApiKey: string;
   readonly userKey: string;
   readonly runtimeServiceId: string;
 }
@@ -118,9 +120,42 @@ function required(env: Environment, name: string): string {
 function config(env: Environment): InspectorConfig {
   return {
     memoryCoreBaseUrl: baseUrl(required(env, "TDAI_FORMAL_MEMORY_CORE_URL"), "MemoryCore URL"),
+    memoryKnowledgeBaseUrl: baseUrl(
+      required(env, "TDAI_FORMAL_MEMORY_KNOWLEDGE_URL"),
+      "MemoryKnowledge URL",
+    ),
     memoryProxyBaseUrl: baseUrl(required(env, "TDAI_FORMAL_MEMORY_PROXY_URL"), "MemoryProxy URL"),
+    memoryCoreApiKey: required(env, "TDAI_FORMAL_MEMORY_CORE_API_KEY"),
     userKey: required(env, "TDAI_EVAL_USER_KEY"),
     runtimeServiceId: required(env, "TDAI_FORMAL_RUNTIME_SERVICE_ID"),
+  };
+}
+
+async function getJson(
+  fetchImpl: FetchImplementation,
+  base: URL,
+  path: string,
+): Promise<RawExchange> {
+  let response: Response;
+  try {
+    response = await fetchImpl(endpoint(base, path), { method: "GET" });
+  } catch {
+    return fail(`${path} did not receive an HTTP response`);
+  }
+  const text = await response.text();
+  let parsed: JsonRecord;
+  try {
+    parsed = record(JSON.parse(text) as unknown, `${path} response`);
+  } catch {
+    return fail(`${path} response was not JSON`);
+  }
+  return {
+    path,
+    status: response.status,
+    envelopeCode: typeof parsed.code === "number" ? parsed.code : -1,
+    body: parsed,
+    contentSha256: sha256(text),
+    requestBodySha256: sha256(""),
   };
 }
 
@@ -172,6 +207,41 @@ function successful(exchange: RawExchange): JsonRecord {
     return fail(`${exchange.path} failed with HTTP ${exchange.status}, code ${exchange.envelopeCode}`);
   }
   return record(exchange.body.data, `${exchange.path} data`);
+}
+
+/**
+ * Refuse a campaign while Code Graph visibility can still change underneath
+ * paired variants. This is a one-shot correctness check, not a retry layer:
+ * operators wait for the real service to leave pending/processing, then rerun
+ * the zero-model preflight.
+ */
+export async function assertServerTeamKnowledgeStable(input: {
+  readonly memoryKnowledgeBaseUrl: string;
+  readonly runtimeServiceId: string;
+  readonly codeGraphIds: readonly string[];
+  readonly fetchImpl?: FetchImplementation;
+}): Promise<void> {
+  const fetchImpl = input.fetchImpl ?? globalThis.fetch.bind(globalThis);
+  const knowledgeBase = baseUrl(input.memoryKnowledgeBaseUrl, "MemoryKnowledge URL");
+  const autoSync = successful(await getJson(fetchImpl, knowledgeBase, "/v3/auto-sync/status"));
+  const autoSyncConfig = record(autoSync.config, "auto-sync config");
+  if (autoSyncConfig.enabled !== false || autoSync.running !== false
+    || autoSync.scanning !== false || autoSync.activeSyncs !== 0) {
+    return fail("MemoryKnowledge auto-sync must be disabled and idle for a paired campaign");
+  }
+
+  for (const codeGraphId of [...new Set(input.codeGraphIds)].sort()) {
+    const detail = successful(await postJson(
+      fetchImpl,
+      knowledgeBase,
+      "/v3/code-graph/get",
+      { code_graph_id: codeGraphId },
+      { "x-tdai-service-id": input.runtimeServiceId },
+    ));
+    if (detail.status !== "ready") {
+      return fail(`Code Graph ${codeGraphId} is ${String(detail.status)}; formal preflight requires ready`);
+    }
+  }
 }
 
 function restoreReceipt(observations: FormalAssetRuntimeObservations): ProductionAssetRestoreReceipt {
@@ -384,6 +454,7 @@ async function readBackAssets(
   located: readonly LocatedAsset[],
 ): Promise<readonly FormalAssetInventorySourceObservation[]> {
   const headers = {
+    authorization: `Bearer ${cfg.memoryCoreApiKey}`,
     "x-tdai-service-id": cfg.runtimeServiceId,
     "x-tdai-user-key": cfg.userKey,
   };
@@ -477,12 +548,16 @@ export async function inspectServerTeamProductionAssets(
   const cfg = config(options.env);
   const fetchImpl = options.fetchImpl ?? globalThis.fetch.bind(globalThis);
   const coreHeaders = {
+    authorization: `Bearer ${cfg.memoryCoreApiKey}`,
     "x-tdai-service-id": cfg.runtimeServiceId,
     "x-tdai-user-key": cfg.userKey,
   };
   const auth = await postJson(fetchImpl, cfg.memoryCoreBaseUrl, "/v3/meta/auth/verify", {
     user_key: cfg.userKey,
-  }, { "x-tdai-service-id": cfg.runtimeServiceId });
+  }, {
+    authorization: `Bearer ${cfg.memoryCoreApiKey}`,
+    "x-tdai-service-id": cfg.runtimeServiceId,
+  });
   const authData = successful(auth);
   const authUser = record(authData.user, "auth user");
   if (authData.valid !== true) fail("auth/verify did not return valid=true");
@@ -492,6 +567,17 @@ export async function inspectServerTeamProductionAssets(
   const runtime = resolveRuntimeIdentity(plan, receipt, context, resolvedUserId);
   const assets = selectedAssets(plan, context);
   const located = assets.map((asset) => locateAsset(plan, asset, receipt, runtime, cfg.runtimeServiceId));
+
+  await assertServerTeamKnowledgeStable({
+    memoryKnowledgeBaseUrl: cfg.memoryKnowledgeBaseUrl.toString(),
+    runtimeServiceId: cfg.runtimeServiceId,
+    codeGraphIds: located
+      .filter((item) => item.asset.subtype === "code_graph")
+      .map((item) => item.locator.kind === "asset-id"
+        ? item.locator.assetId
+        : fail(`${item.asset.formalAssetId} Code Graph has no runtime asset id`)),
+    fetchImpl,
+  });
 
   const [teamsExchange, agentsExchange, tasksExchange, inventory] = await Promise.all([
     postJson(fetchImpl, cfg.memoryCoreBaseUrl, "/v3/meta/team/list", {

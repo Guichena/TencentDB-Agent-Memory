@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 export const R05_FROZEN_RESTORE_PLAN = Object.freeze({
-  planSha256: "49f9ad8549e293395671af8d17cc8604dcfbe741536855f7773155d8e5c1c3be",
+  planSha256: "487282065c7cea60c98638a2932022dc0d75dc66869f44fec14bbdf955be15fc",
   actionCount: 318,
   requirementCount: 209,
   assetCount: 284,
@@ -233,22 +233,60 @@ export function validateR05PreparedSmoke(
   });
 }
 
-function values(argv: readonly string[], name: string): readonly string[] {
-  const found: string[] = [];
-  for (let index = 0; index < argv.length; index += 1) {
-    if (argv[index] !== name) continue;
-    const value = argv[index + 1];
-    if (!value || value.startsWith("--")) invalid(`${name} requires a value`);
-    found.push(value);
-    index += 1;
+export type R05RuntimePreflightContractCliArguments =
+  | {
+    readonly mode: "plan" | "restore";
+    readonly inputPath: string;
   }
-  return found;
-}
+  | {
+    readonly mode: "prepared";
+    readonly preregistrationPath: string;
+    readonly manifestPaths: readonly string[];
+  };
 
-function required(argv: readonly string[], name: string): string {
-  const found = values(argv, name);
-  if (found.length !== 1) invalid(`${name} must occur exactly once`);
-  return found[0]!;
+export function parseR05RuntimePreflightContractCliArguments(
+  argv: readonly string[],
+): R05RuntimePreflightContractCliArguments {
+  const supported = new Set([
+    "--mode",
+    "--input",
+    "--preregistration",
+    "--manifest",
+  ]);
+  const collected = new Map<string, string[]>();
+  for (let index = 0; index < argv.length; index += 2) {
+    const flag = argv[index];
+    if (!supported.has(flag)) invalid(`unsupported CLI argument ${JSON.stringify(flag)}`);
+    const value = argv[index + 1];
+    if (!value || value.startsWith("--")) invalid(`${flag} requires a value`);
+    const found = collected.get(flag) ?? [];
+    found.push(value);
+    collected.set(flag, found);
+  }
+
+  const exactlyOne = (flag: string): string => {
+    const found = collected.get(flag) ?? [];
+    if (found.length !== 1) invalid(`${flag} must occur exactly once`);
+    return found[0]!;
+  };
+  const mode = exactlyOne("--mode");
+  if (mode === "plan" || mode === "restore") {
+    if (collected.has("--preregistration") || collected.has("--manifest")) {
+      invalid(`unsupported CLI argument for --mode ${mode}`);
+    }
+    return { mode, inputPath: exactlyOne("--input") };
+  }
+  if (mode === "prepared") {
+    if (collected.has("--input")) {
+      invalid("unsupported CLI argument for --mode prepared");
+    }
+    return {
+      mode,
+      preregistrationPath: exactlyOne("--preregistration"),
+      manifestPaths: Object.freeze([...(collected.get("--manifest") ?? [])]),
+    };
+  }
+  return invalid(`unsupported --mode ${JSON.stringify(mode)}`);
 }
 
 async function readJson(path: string, label: string): Promise<unknown> {
@@ -260,26 +298,25 @@ async function readJson(path: string, label: string): Promise<unknown> {
 }
 
 export async function runR05RuntimePreflightContractCli(argv: readonly string[]): Promise<void> {
-  const mode = required(argv, "--mode");
+  const options = parseR05RuntimePreflightContractCliArguments(argv);
   let summary: R05RestorePlanSummary | R05RestoreObservationSummary | R05PreparedSmokeSummary;
-  if (mode === "plan") {
-    summary = validateR05RestorePlan(await readJson(required(argv, "--input"), "restore plan"));
-  } else if (mode === "restore") {
+  if (options.mode === "plan") {
+    summary = validateR05RestorePlan(await readJson(options.inputPath, "restore plan"));
+  } else if (options.mode === "restore") {
     summary = validateR05RestoreObservations(
-      await readJson(required(argv, "--input"), "restore observations"),
-    );
-  } else if (mode === "prepared") {
-    const preregistration = await readJson(
-      required(argv, "--preregistration"),
-      "Dev Smoke preregistration",
-    );
-    const manifestPaths = values(argv, "--manifest");
-    summary = validateR05PreparedSmoke(
-      preregistration,
-      await Promise.all(manifestPaths.map((path) => readJson(path, "prepared run manifest"))),
+      await readJson(options.inputPath, "restore observations"),
     );
   } else {
-    invalid(`unsupported --mode ${JSON.stringify(mode)}`);
+    const preregistration = await readJson(
+      options.preregistrationPath,
+      "Dev Smoke preregistration",
+    );
+    summary = validateR05PreparedSmoke(
+      preregistration,
+      await Promise.all(
+        options.manifestPaths.map((path) => readJson(path, "prepared run manifest")),
+      ),
+    );
   }
   process.stdout.write(`${JSON.stringify(summary)}\n`);
 }

@@ -13,7 +13,7 @@
       "providerUsageContractSha256": "7441461f5b9cd376ca00efc1603dce6de464b4a0947f73bb7b3aefd77362c82e",
       "requests": [
         {
-          "candidateActionCount": 3,
+          "providerToolDefinitionCount": 3,
           "component": "task_model",
           "cumulativeProviderUsage": {
             "cacheReadInputTokens": 40,
@@ -82,7 +82,7 @@
           "traceId": "synthetic-m2-trace"
         },
         {
-          "candidateActionCount": 1,
+          "providerToolDefinitionCount": 1,
           "component": "task_model",
           "cumulativeProviderUsage": {
             "cacheReadInputTokens": 80,

@@ -2,8 +2,8 @@
 
 | 项目 | 当前设置 |
 |---|---|
-| 状态 | Formal v1.1 数据已冻结；R04 Measurement/Runner Integration 代码已收口，等待生产资产 adapter 后人工 Smoke |
-| 当前分支 | `codex/task1-experiment-r04-runner-v1` |
+| 状态 | Formal v1.1 数据已冻结；Measurement-v2 provisional common-base 正在做最终零模型 Gate，等待 R05 blank-stack preflight 后冻结 tag |
+| 当前分支 | `codex/task1-measurement-v2-integration` |
 | 数据合同 | annotated tag `task1-data-formal-v1.1`（640 case，私有 Gold/Pair 与 provider 输入隔离） |
 | 代码冻结 | `task1-code-freeze`；V0、V0-C、V1a、V1、V2、V3 已具备生产 profile |
 | 主模型 | `gpt-5.6-luna` |
@@ -14,7 +14,7 @@
 
 2026-08-28 刷新远端后，生产 V0 基线冻结为 `origin/feat/server_team` 的 `5299c00`。此前 P01 Harness 的历史基点 `c0cf94f` 仅用于解释已有提交，不能继续代表当前生产 Prompt。`5299c00` 新增 header identity 冷启动修复、无 Task 注册和 Pi AgentProfile，代码与正式评测都必须包含这些生产事实。
 
-当前实现已经完成 R01 真实入口观测 seam、R02 Formal PrepareOnly/冻结输入、R03 资产恢复计划，以及 R04 的 M0 scorer、生产 trace/provider evidence 持久化、Gold-blind runner、逐请求 usage、eligibility、Pair 汇总、Prompt cache 结构 Gate 和人工执行/收集命令。R04 没有运行模型。正式开跑仍有一个外部阻断项：需要针对当前本地 `server_team` 数据栈实现生产 asset restore/inspect adapter，产出可由独立 preflight evaluator 验证的真实 read-back observations；在该 adapter 缺失时不得伪造 `ready` receipt，也不得把 Pilot 数字写入正式结果。逐步操作和边界见 [R04 正式 Campaign 操作手册](./R04-FORMAL-CAMPAIGN-RUNBOOK.md)。
+当前实现已经完成 R01 真实入口观测 seam、R02 Formal PrepareOnly/冻结输入、R03 资产恢复计划、R04 的 M0 scorer/生产 trace/provider evidence/Gold-blind runner，以及 R05 的生产 restore/inspect adapter 与两阶段 preflight 命令。尚未运行模型或正式 Case。正式开跑前唯一剩余的 live Gate 是：在 Node.js 22 和专用本地空白数据栈上，对 common-base 的同一精确提交执行 R05 `Restore`，待 Knowledge code graph ready 后执行 `Inspect -KnowledgeReadyConfirmed`；不得用 Mock 或手写 receipt 代替真实 read-back。逐步操作和边界见 [R04 正式 Campaign 操作手册](./R04-FORMAL-CAMPAIGN-RUNBOOK.md)与 [R05 生产资产适配手册](./R05-PRODUCTION-ASSET-ADAPTER-RUNBOOK.md)。
 
 ## 实验只比较系统提示词变体
 
@@ -45,7 +45,7 @@ Y = F(M, P, Q, C, A, K, H, R)
 | `R` | 真实 Bridge 和 Knowledge 入口合同 | 固定 |
 | `Y` | 是否调用、完整工具决策链、参数、Token 和缓存数据 | 测量结果 |
 
-主指标覆盖最短充分链、误调用、terminal 工具选择和静态工具说明 Token。Prompt cache 是约束和诊断项。任务一不评价资产抽取质量、资产正文质量或工具返回后的最终代码质量。多步 case 的正式评分窗口由离线 M0 scorer 截止在最早 accepted terminal；Gold-blind 运行采集不会据此在线停止。
+主指标覆盖任一冻结允许充分链的完成率、误调用、terminal 工具选择、PairExact、正例 overcall 和静态工具说明 Token；最短链只作效率诊断。Prompt cache 是约束和诊断项。任务一不评价资产抽取质量、资产正文质量或工具返回后的最终代码质量。多步 case 的正式评分窗口由离线 M0 scorer 截止在最早 behavior-valid terminal；Gold-blind 运行采集不会据此在线停止。
 
 ## 正式评测走到最短充分工具 terminal
 
@@ -236,7 +236,7 @@ Memory case 覆盖语义记忆搜索、原始会话搜索、已知 session 回�
 
 M0 不把一次运行压成互斥状态，而是从同一完整 trace 产生正交事实：`rawTraceStatus`、`triggeredAttempt`、`firstActionSelectionCorrect`、`terminalSelectionCorrect`、`completeChainSuccess`、`strictChainExact`、`shortestExact`、`falseCallAttempt`、`malformedFalseIntent`、Overcall、ToolSPL 和 infrastructure facts。一条 trace 可以同时出现 malformed、executor-bound 和基础设施事实；Integration 必须先完成正式 eligibility 过滤，再把 eligible scores 交给 aggregate。
 
-正样本中，首动作正确只是一项诊断；正式结果继续离线观察到允许链的 accepted terminal。没有 executor-bound attempt 是漏调，错误 Family 或工具是选错，malformed intent 单独记录。No Tool 样本出现任何 executor-bound TDAI Attempt 都算误调用，即使真实入口随后拒绝。
+正样本中，首动作正确只是一项诊断；正式结果继续离线观察到允许链的 behavior-valid terminal。没有 executor-bound attempt 是漏调，错误 Family 或工具是选错，malformed intent 单独记录。No Tool 样本出现任何 executor-bound TDAI Attempt 都算误调用，即使真实入口随后拒绝。
 
 事件归并优先使用 family-aware session：Memory/Skill 使用原始 `sessionId`，Knowledge 仅在 `x-tdai-agent-source=codex` 时允许生产事实中的 `codex:<sessionId>`。模型漏写或写错 session header 的真实入口请求不能被丢弃；在严格串行且只落入唯一 `started_at/finished_at` 运行窗口时，它仍归入该 run，作为 executor-bound 但 runtime 未接受的模型行为计分。若运行窗口重叠、事件无法唯一归属或落入多个窗口，才标为 trace/campaign infrastructure blocker。
 
@@ -252,7 +252,7 @@ M0 不把一次运行压成互斥状态，而是从同一完整 trace 产生正�
 | Knowledge 发现并调用能力 | `knowledge_tools_list -> knowledge_tools_call` |
 | 已知 Skill 或 scene | 直接 `skill_view` 或 `tdai_read_scene` |
 
-计分只判断工具决策、真实入口、必要参数、运行时接受状态和跨步绑定，不评价返回资产本身是否优质，也不评价最终代码或自然语言答案。行为窗口在最早合法 terminal 处冻结，但 terminal 后原始事件仍完整保存用于审计。
+计分只判断工具决策、真实入口、必要参数和跨步绑定，不用 HTTP 接受状态改变行为分数；运行时接受状态只作诊断。不评价返回资产本身是否优质，也不评价最终代码或自然语言答案。行为窗口在最早 behavior-valid terminal（正确 family/tool/endpoint/operation、必要参数、跨步绑定）处冻结，即使此前错误尝试已使完整链失败；terminal 后原始事件仍完整保存用于审计。
 
 如果模型在 terminal 之前先给出错误 prerequisite 参数或绑定，随后纠正并完成合法链，则 `completeChainSuccess=true`；由于发生了多余尝试，`strictChainExact=false`、`shortestExact=false`，并由 Overcall 与 ToolSPL 惩罚。错误 Family、禁止的错误 terminal，以及 terminal 之后才发生的修正不能被后续调用洗掉。
 
@@ -273,6 +273,10 @@ ShortestSufficientChainRate = \frac{P\ 中严格完成最短允许链}{P}
 \]
 
 \[
+TerminalSelectionRate = \frac{P\ 中到达允许\ terminal\ selection\ 的样本}{P}
+\]
+
+\[
 FalseCallAttemptRate = \frac{N\ 中出现任意\ executor\mbox{-}bound\ TDAI\ Attempt}{N}
 \]
 
@@ -282,17 +286,20 @@ ConditionalTerminalAccuracy = \frac{P\ 中 evaluation\ prefix\ 存在允许的\ 
 
 | 指标 | 角色 | 说明 |
 |---|---|---|
-| Shortest Sufficient Chain Rate | Primary | 应调用时，严格完成最短充分链的比例 |
-| False Call Attempt Rate | Primary | 不应调用时出现任意真实 TDAI Attempt 的比例 |
-| Conditional Terminal Accuracy | Primary | 已经决定调用后，最终选到正确 terminal 的比例 |
-| Static Tool Tokens | Primary | 生产 InjectionPipeline 实际注入的静态工具说明 Token |
-| Complete Chain Success Rate | Secondary | 最终完成允许链；允许 terminal 前发生可恢复错误 |
+| Complete Chain Success Rate / Effective Call Rate | Primary hard Gate | 应调用时完成任一允许充分链的固定分母比例 |
+| False Call Attempt Rate | Primary hard Gate | 不应调用时出现任意真实 TDAI Attempt 的固定分母比例 |
+| Terminal Selection Rate | Primary hard Gate | 在全部正样本上到达允许 terminal selection 的固定分母比例 |
+| PairExact | Primary paired hard Gate | 同一因果边界的正例完成链且配对负例不误调用 |
+| Positive Overcall Rate | Primary efficiency hard Gate | 正例到达充分链之外仍发生多余调用的比例 |
+| Static Tool Tokens | Eligible-candidate objective | 行为 Gate 通过后最小化生产 InjectionPipeline 的静态工具说明 Token |
+| Conditional Terminal Accuracy | Required descriptive companion | 已触发正样本中的 terminal 选择正确率；必须同时报告分子和 Variant 特有分母，不单独用于跨 Variant 淘汰 |
+| Shortest Sufficient Chain Rate | Chain efficiency diagnostic | 严格完成全局最短允许链；合法的较长允许分支不能因此被判行为失败 |
 | Trigger Recall | Diagnostic | 正样本是否至少触发一次真实 TDAI Attempt |
 | First Action Selection | Diagnostic | 便于与旧首调用口径对照，不再作为主指标 |
 | ToolSPL / Positive Overcall | Efficiency | 区分最短链与可恢复但冗余的链 |
 | Malformed False Intent | Diagnostic | 识别明确 TDAI 意图但未进入真实入口的情况 |
 
-`ShortestSufficientChainRate` 直接采用 M0 的 `shortestExactRate`。Trigger、FCR 和 Conditional Terminal Accuracy 只把 executor-bound attempt 计入；仅有 malformed/unbound intent 的情况进入 `malformedFalseIntent` 诊断。First Action 从冻结 `allowedSequences[].steps[0]` 派生，不另建第二份 `allowedFirstActions` 真值。
+`ShortestSufficientChainRate` 直接采用 M0 的 `shortestExactRate`，但不能替代 `CompleteChainSuccessRate`。Conditional Terminal Accuracy 是任务一“工具选择是否正确”的必报视图；由于分母是各 Variant 实际触发的正样本，它只作带分子、分母的描述性伴随指标。跨 Variant 的 terminal 硬 Gate 使用固定正样本分母的 `TerminalSelectionRate`。Trigger、FCR 和这两个 terminal 指标只把 executor-bound attempt 计入；仅有 malformed/unbound intent 的情况进入 `malformedFalseIntent` 诊断。First Action 从冻结 `allowedSequences[].steps[0]` 派生，不另建第二份 `allowedFirstActions` 真值。
 
 ## Token 与 Prompt Cache 全量保存
 
@@ -332,7 +339,7 @@ Token 统计分成静态工具说明、动态资产、运行时绑定和 Provide
 | 模型输出 | `outputTokens`、`reasoningOutputTokens` |
 | 节省量 | 相对 V0 的绝对 Token 和百分比 |
 
-完整 raw run 必须保存逐 request/phase usage ledger，不能只保留整次合计。M0 离线确定 accepted-terminal horizon 后，再生成 `usageToEvaluationHorizon`；正式 Cost/Cache 比较采用该 horizon 聚合，terminal 后的 Token 只保留为审计数据。静态工具 Token 仍按 Provider-visible 注入块直接计数，不受行为 horizon 改写。
+完整 raw run 必须保存逐 request/phase usage ledger，不能只保留整次合计。M0 离线确定 behavior-valid-terminal horizon 后，再生成 `usageToEvaluationHorizon`；正式 Cost/Cache 比较采用该 horizon 聚合，terminal 后的 Token 只保留为审计数据。静态工具 Token 仍按 Provider-visible 注入块直接计数，不受行为 horizon 改写。
 
 Codex JSONL 的 `input_tokens`、`cached_input_tokens`、`cache_write_input_tokens`、`output_tokens`、`reasoning_output_tokens` 是当前正式 adapter 的 required usage 字段。任一 required 字段缺失或无效时不得补 0：原始 M0 行为事实可保留作诊断，但该 run 是 M2 infrastructure blocker，不进入任何正式行为、Token 或 Cache 分母。
 
@@ -347,7 +354,7 @@ Codex JSONL 的 `input_tokens`、`cached_input_tokens`、`cache_write_input_toke
 | `dynamicAssetSha256` | Profile、Listing 和 Knowledge 资源 |
 | `effectiveSystemSha256` | 实际发给 Provider 的完整字节 |
 
-还要记录稳定前缀首次变化的字节位置、字符位置和估算 Token 位置。候选可以修改计划内的注入块，不能把动态内容提前到原本稳定的公共前缀。正式 Cache 结构 Gate 绑定不可变 `task1-code-freeze`：所有 run 必须使用该 tag 解引用 commit，执行 commit 到该 freeze 之间的 Prompt 所属源码不得变化；tag 内 C06 清单必须完整保存六个 Variant 的 `staticTemplateSha256`、唯一 cache namespace、静态注入 Token、完整 Prompt hash 和相邻稳定前缀位置。Provider 返回的 `cachedInputTokens` 是运行事实，但服务端命中会受时间影响，只作辅助诊断，不能单独证明 Prompt cache 结构稳定。
+还要记录同一 Variant 跨 run 的首个全局动态边界、共同前缀与 source layout。生产请求允许在 V0-C 映射块之前存在生产自带的动态 `session-context`；结构 Gate 要求首个全局动态 source 的边界和身份跨 run 一致、保留下来的 V0-C 映射块保持相同的连续子序列，并要求 `static_tool` 块中的动态/runtime source 不越过该块的 stable/execution source；`mixed` 块不虚构其内部稳定字节 seam。正式 Gate 保留不可变 `task1-code-freeze` 作为 V0–V3 baseline 清单和执行祖先，但不禁止候选修改 Prompt 所属源码；每个 run 必须先生成独立的 M2 pre-Gold 证据，再由 Gate 一一核对实际 Provider-visible 注入 SHA、Token、source attestation 与 cache usage。tag 内 C06 清单继续保存六个 baseline Variant 的 `staticTemplateSha256`、唯一 cache namespace、静态注入 Token、完整 Prompt hash 和相邻 Variant 的历史差异位置；候选实际 Token/hash 以当次 M2 报告为准。Provider 返回的 `cachedInputTokens` 是运行事实，服务端命中会受时间影响，不能单独证明 Prompt cache 结构稳定。
 
 Campaign 汇总至少给出：
 
@@ -459,7 +466,7 @@ Compiler 第一阶段保持现有 Hook id、注入 point、anchor、priority 和
 
 - 冻结当前 commit、dirty state 和 V0 Provider-visible Prompt。
 - 冻结真实 Bridge Allowlist、Core Schema、Capability Signature 和 Host Bash Schema。
-- 确认主指标采用最短充分 terminal 链，不再以首个真实入口截止；首动作仅保留为诊断。
+- 确认有效调用主指标采用“完成任一冻结允许充分链”，而不是只看首动作或强制最短路径；首动作和 ShortestExact 仅保留为诊断。
 - 冻结模型、Codex CLI、上游、Session Init 路径和 Token 编码。
 - 冻结 provider-visible case、runtime binding、私有 `PrivateChainGoldV2.allowedSequences` 与 Pair 合同的一一绑定。
 - 分开冻结 runner 的公开采集预算与 scorer-only `attemptBudget`，并冻结 Dev/Hidden Team 切分。
@@ -539,7 +546,7 @@ Gate：每个 Variant 只有声明的改造类型发生变化，静态 Prompt di
 - 对 V0、V0-C 和最多两个候选各做三次入围复核。
 - 冻结 Final Prompt、Compiler profile、Scorer、数据、快照和运行命令。
 
-硬 Gate：无合同漂移，无 Capability leak，不新增自包含 coding 的误调用；Final 的最短充分链正确数和 terminal 选择正确数相对 V0-C 的下降，不得超过预登记的整数 case margin；静态工具 Token 低于 V0-C；同一 Variant 的规范化静态模板 hash 确定，跨 Variant 首次变化不早于预登记可变区域。
+硬 Gate：无合同漂移，无 Capability leak；Final 的 Complete Chain Success、固定分母 Terminal Selection、PairExact 和 Positive Overcall 相对 V0-C 的变化不得越过预登记整数 margin；全部 No Tool 的 False Call Attempt 不得越过预登记 margin，自包含 coding 负例不允许新增误调用；静态工具 Token 低于 V0-C；同一 Variant 的规范化静态模板 hash 确定，首个全局动态 source 边界/身份跨 run 一致，保留的 V0-C block 顺序和 `static_tool` seam 满足结构 Gate。Conditional Terminal Accuracy 必须带分子、分母报告但不单独作淘汰 Gate，ShortestExact 只作链路效率诊断。
 
 优秀目标：Pure Coding FCR 为 0，整体 FCR 下降，Conditional Terminal Accuracy 不下降，静态工具 Token 至少减少 25%。25% 是目标，不应为了达到数字删除必要触发信息。
 
@@ -567,7 +574,8 @@ Gate：Hidden Test 运行期间没有 Prompt、Gold、资产或 scorer 修改。
 
 工作内容：
 
-- 汇总 V0、V0-C 和 Final 的四项主指标：Shortest Sufficient Chain Rate、False Call Attempt Rate、Conditional Terminal Accuracy、Static Tool Tokens。
+- 汇总 V0、V0-C 和 Final 的任务一核心结果：Complete Chain Success / Effective Call、False Call Attempt、固定分母 Terminal Selection、PairExact、Positive Overcall 和 Static Tool Tokens。
+- 同表报告 Conditional Terminal Accuracy 的分子、分母与比例，并把 Shortest Sufficient Chain、Trigger Recall、First Action、ToolSPL 和 malformed intent 作为诊断列。
 - 分开报告静态工具 Token、动态资产 Token 和实际模型 usage。
 - 报告 Attempt FCR、Entry FCR、Malformed Rate 和失败分类。
 - 给出每个 Prompt 改造与失败 Trace 的对应关系。

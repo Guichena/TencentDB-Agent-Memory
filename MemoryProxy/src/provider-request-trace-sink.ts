@@ -6,6 +6,10 @@ import {
   openSync,
 } from "node:fs";
 import { isAbsolute, join } from "node:path";
+import {
+  freezeProviderPromptSourceEvidence,
+  type ProductionPromptSourceManifest,
+} from "./injection/production-source.js";
 
 export const PROVIDER_REQUEST_EVENT_SCHEMA = "task1.provider-request-event.v1" as const;
 
@@ -48,6 +52,8 @@ export interface ProviderRequestEvidence {
   readonly rawBody: string;
   readonly body: Readonly<Record<string, unknown>>;
   readonly correlationHeaders: Readonly<Record<string, string>>;
+  /** Exact production ContextBlock/PromptUnit provenance for this request. */
+  readonly productionSourceManifest?: ProductionPromptSourceManifest;
 }
 
 export interface ProviderCompletionEvidence {
@@ -158,16 +164,25 @@ export function createProviderRequestTraceSinkFromEnv(
     },
     observeRequest: (evidence) => {
       if (!ready || finishing || sealed || !active) return;
+      const rawBodySha256 = sha256(evidence.rawBody);
+      const productionSourceEvidence = evidence.productionSourceManifest
+        ? freezeProviderPromptSourceEvidence({
+            correlationId: evidence.correlationId,
+            rawBodySha256,
+            sourceManifest: evidence.productionSourceManifest,
+          })
+        : undefined;
       writeEvent("request", {
         correlationId: evidence.correlationId,
         method: evidence.method,
         path: evidence.path,
-        rawBodySha256: sha256(evidence.rawBody),
+        rawBodySha256,
         body: redactSensitiveFields(evidence.body),
         correlationHeaders: keepHeaders(
           evidence.correlationHeaders,
           SAFE_CORRELATION_HEADERS,
         ),
+        ...(productionSourceEvidence ? { productionSourceEvidence } : {}),
       });
     },
     observeCompletion: (evidence) => {

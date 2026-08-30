@@ -3,10 +3,12 @@ import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import type { FormalExecutionPreflightReceipt } from "./formal-execution-preflight.js";
-import { FORMAL_PROMPT_FREEZE_TAG } from "./formal-cache-structure-gate.js";
+import type { PinnedFormalExecutionPreflightReceipt } from "./formal-execution-preflight.js";
 import {
   executePreparedFormalRun,
+  FORMAL_PROMPT_FREEZE_COMMIT,
+  FORMAL_PROMPT_FREEZE_TAG,
+  FORMAL_PROMPT_FREEZE_TAG_OBJECT,
   type FormalCodeFreezeReceipt,
 } from "./formal-execution-runner.js";
 import type { PreparedFormalRun } from "./formal-prepare-runner.js";
@@ -112,9 +114,28 @@ export async function inspectFormalCodeFreeze(
     throw new Error("formal execution worktree is not clean");
   }
   const promptFreezeCommit = run.manifest.prompt_freeze_commit;
+  const promptTagTypeResult = await runGit([
+    "cat-file",
+    "-t",
+    `refs/tags/${FORMAL_PROMPT_FREEZE_TAG}`,
+  ], cwd);
+  if (promptTagTypeResult.exitCode !== 0 || promptTagTypeResult.stdout.trim() !== "tag") {
+    throw new Error(`${FORMAL_PROMPT_FREEZE_TAG}: expected annotated tag object`);
+  }
+  const promptTagObjectResult = await runGit([
+    "rev-parse",
+    `refs/tags/${FORMAL_PROMPT_FREEZE_TAG}`,
+  ], cwd);
+  if (promptTagObjectResult.exitCode !== 0) {
+    throw new Error(`unable to resolve ${FORMAL_PROMPT_FREEZE_TAG} tag object: ${promptTagObjectResult.stderr.trim()}`);
+  }
+  const promptTagObject = promptTagObjectResult.stdout.trim().toLowerCase();
+  if (promptTagObject !== FORMAL_PROMPT_FREEZE_TAG_OBJECT) {
+    throw new Error(`Prompt freeze tag object drift: ${promptTagObject}`);
+  }
   const frozenPromptResult = await runGit([
     "rev-parse",
-    `${FORMAL_PROMPT_FREEZE_TAG}^{}`,
+    `${FORMAL_PROMPT_FREEZE_TAG}^{commit}`,
   ], cwd);
   if (frozenPromptResult.exitCode !== 0) {
     throw new Error(`unable to resolve ${FORMAL_PROMPT_FREEZE_TAG}: ${frozenPromptResult.stderr.trim()}`);
@@ -122,6 +143,9 @@ export async function inspectFormalCodeFreeze(
   const frozenPromptCommit = frozenPromptResult.stdout.trim().toLowerCase();
   if (!/^[a-f0-9]{40}$/u.test(frozenPromptCommit)) {
     throw new Error(`${FORMAL_PROMPT_FREEZE_TAG} does not resolve to a 40-character Git commit`);
+  }
+  if (frozenPromptCommit !== FORMAL_PROMPT_FREEZE_COMMIT) {
+    throw new Error(`Prompt freeze commit drift: ${frozenPromptCommit}`);
   }
   if (promptFreezeCommit !== frozenPromptCommit) {
     throw new Error(`prepared run does not use ${FORMAL_PROMPT_FREEZE_TAG}`);
@@ -137,6 +161,7 @@ export async function inspectFormalCodeFreeze(
   }
   return Object.freeze({
     executionCodeCommit,
+    promptFreezeTagObject: FORMAL_PROMPT_FREEZE_TAG_OBJECT,
     promptFreezeCommit,
     promptFreezeIsAncestor: ancestorResult.exitCode === 0,
     workingTreeClean: true as const,
@@ -150,7 +175,7 @@ export async function runFormalExecutionCli(
   const preflightReceipt = await readJson(
     options.preflightReceiptPath,
     "formal execution preflight receipt",
-  ) as unknown as FormalExecutionPreflightReceipt;
+  ) as unknown as PinnedFormalExecutionPreflightReceipt;
   const codeFreeze = await inspectFormalCodeFreeze(options.repositoryRoot, run);
   const receipt = await executePreparedFormalRun({
     run,

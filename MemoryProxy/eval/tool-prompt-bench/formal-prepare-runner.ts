@@ -177,6 +177,7 @@ export interface FormalPrepareRunManifest {
   readonly profile_id: string;
   readonly model_id: string;
   readonly reasoning_effort: CodexReasoningEffort;
+  readonly verbosity: typeof DEFAULT_FORMAL_VERBOSITY;
   readonly case_id: string;
   readonly pair_id: string | null;
   readonly split: FormalSplit;
@@ -197,6 +198,10 @@ export interface PreparedFormalRun {
     readonly autoExecute: false;
     readonly executable: string;
     readonly args: readonly string[];
+    readonly versionProbe: {
+      readonly executable: string;
+      readonly args: readonly string[];
+    };
     readonly stdinSource: "provider-prompt.json#/messages/0/content/0/text";
     readonly requiredEnvironment: readonly [typeof FORMAL_TDAI_USER_KEY_ENV];
     readonly preflight: {
@@ -581,6 +586,10 @@ function buildRun(
     autoExecute: false,
     executable: invocation.executable,
     args: invocation.args,
+    versionProbe: {
+      executable: invocation.executable,
+      args: [...(invocation.commandPrefix ?? []), "--version"],
+    },
     stdinSource: "provider-prompt.json#/messages/0/content/0/text",
     requiredEnvironment: [FORMAL_TDAI_USER_KEY_ENV],
     preflight: {
@@ -758,6 +767,7 @@ function buildRun(
     profile_id: input.proxyInstance.expectedToolPromptProfile,
     model_id: model,
     reasoning_effort: reasoningEffort,
+    verbosity: DEFAULT_FORMAL_VERBOSITY,
     case_id: caseId,
     // Pair membership belongs to the private Measurement overlay. PrepareOnly
     // keeps the required manifest field explicit without importing that data.

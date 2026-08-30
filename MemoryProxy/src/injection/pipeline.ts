@@ -27,8 +27,14 @@ import type { InjectionObserver, HookResult } from "./observer.js";
 import { NoopInjectionObserver } from "./observer.js";
 import {
   InjectionInfrastructureError,
+  injectionInfrastructureErrorFromProductionSource,
   isInjectionInfrastructureError,
 } from "./errors.js";
+import {
+  sealProductionPromptSourceManifest,
+  type ProductionPromptSourceInput,
+  type ProductionPromptSourceManifest,
+} from "./production-source.js";
 
 /** Optional pipeline behaviors (agent detection, etc.). */
 export interface InjectionPipelineOptions {
@@ -51,6 +57,16 @@ export interface InjectionPipelineOptions {
    * If omitted, ALL hooks run as if `cacheStrategy="none"` (legacy behavior).
    */
   hookCacheRepo?: HookCacheRepo;
+}
+
+export interface InjectionPipelineProductionSourceResult {
+  readonly body: Record<string, unknown>;
+  readonly productionSourceManifest: ProductionPromptSourceManifest | null;
+}
+
+export interface InjectionPipelineProductionSourceOptions {
+  /** Exact provenance for the synthetic request's first system text block. */
+  readonly initialSystemSources?: readonly ProductionPromptSourceInput[];
 }
 
 /**
@@ -85,6 +101,40 @@ export class InjectionPipeline {
     body: Record<string, unknown>,
     metadata: AgentContextMetadata,
   ): Promise<Record<string, unknown>> {
+    return (await this.processInternal(body, metadata, false)).body;
+  }
+
+  /**
+   * Formal observer seam. It returns the same serialized body as `process`, plus
+   * a readonly manifest derived from the ContextBlocks actually landed by the
+   * production pipeline. No provider/model-visible byte is added or changed.
+   */
+  async processWithProductionSources(
+    body: Record<string, unknown>,
+    metadata: AgentContextMetadata,
+    options: InjectionPipelineProductionSourceOptions = {},
+  ): Promise<InjectionPipelineProductionSourceResult> {
+    const result = await this.processInternal(
+      body,
+      metadata,
+      true,
+      options.initialSystemSources,
+    );
+    return {
+      body: result.body,
+      productionSourceManifest: result.productionSourceManifest ?? null,
+    };
+  }
+
+  private async processInternal(
+    body: Record<string, unknown>,
+    metadata: AgentContextMetadata,
+    captureProductionSources: boolean,
+    initialSystemSources?: readonly ProductionPromptSourceInput[],
+  ): Promise<{
+    body: Record<string, unknown>;
+    productionSourceManifest?: ProductionPromptSourceManifest;
+  }> {
     const pipelineStartMs = Date.now();
 
     // ── Observer: pipeline start ─────────────────────────────────────────
@@ -101,6 +151,7 @@ export class InjectionPipeline {
 
       // 2. Parse → AgentContext
       const ctx: AgentContext = adapter.parse(body, metadata);
+      const initialSystemBlocks = new Set(getSystemMessage(ctx)?.blocks ?? []);
 
       // 2.5 Detect the agent profile.
       //     Priority: ① agentProfiles lookup by metadata.agentSource (URL path prefix),
@@ -132,7 +183,11 @@ export class InjectionPipeline {
       }
 
       // 3. Execute hooks at each injection point
-      const hookResults: HookResult[] = await this.executeHooks(ctx);
+      const hookResults: HookResult[] = await this.executeHooks(ctx, captureProductionSources);
+
+      const productionSourceManifest = captureProductionSources
+        ? captureSystemProductionSources(ctx, initialSystemBlocks, initialSystemSources)
+        : null;
 
       // 4. Serialize → modified body
       const result = adapter.serialize(ctx);
@@ -141,12 +196,18 @@ export class InjectionPipeline {
       const durationMs = Date.now() - pipelineStartMs;
       safeCall(() => this.observer.onPipelineEnd(metadata, durationMs, hookResults));
 
-      return result;
+      return {
+        body: result,
+        ...(productionSourceManifest === null ? {} : { productionSourceManifest }),
+      };
     } catch (err) {
       // ── Observer: pipeline error ────────────────────────────────────────
-      const error = err instanceof Error ? err : new Error(String(err));
+      const provenanceError = captureProductionSources
+        ? injectionInfrastructureErrorFromProductionSource(err)
+        : null;
+      const error = provenanceError ?? (err instanceof Error ? err : new Error(String(err)));
       safeCall(() => this.observer.onPipelineError(metadata, error));
-      throw err; // re-throw so callers can handle it
+      throw provenanceError ?? err; // re-throw so callers can handle it
     }
   }
 
@@ -165,7 +226,10 @@ export class InjectionPipeline {
    * `sessionId` in metadata, every hook falls back to `"none"` behavior to
    * preserve legacy semantics.
    */
-  private async executeHooks(ctx: AgentContext): Promise<HookResult[]> {
+  private async executeHooks(
+    ctx: AgentContext,
+    captureProductionSources: boolean,
+  ): Promise<HookResult[]> {
     const executionOrder: InjectionPoint[] = [
       "system.prefix",
       "system.before_tools",
@@ -257,6 +321,10 @@ export class InjectionPipeline {
           // compatibility. Infrastructure failures mean that continuing would
           // send a provider request with a silently changed injection contract.
           if (isInjectionInfrastructureError(error)) throw error;
+          if (captureProductionSources) {
+            const provenanceError = injectionInfrastructureErrorFromProductionSource(error);
+            if (provenanceError) throw provenanceError;
+          }
         }
       }
     }
@@ -413,7 +481,7 @@ export class InjectionPipeline {
         // Prepend text blocks at the beginning of system message
         for (let i = blocks.length - 1; i >= 0; i--) {
           if (blocks[i].type === "text") {
-            prependTextToMessage(sysMsg, blocks[i].content);
+            sysMsg.blocks.unshift(cloneContextBlock(blocks[i]));
           }
         }
         break;
@@ -425,7 +493,7 @@ export class InjectionPipeline {
         // Append text blocks at the end of system message
         for (const block of blocks) {
           if (block.type === "text") {
-            appendTextToMessage(sysMsg, block.content);
+            sysMsg.blocks.push(cloneContextBlock(block));
           }
         }
         break;
@@ -444,7 +512,7 @@ export class InjectionPipeline {
         if (!sysMsg) break;
         for (const block of blocks) {
           if (block.type === "text") {
-            appendTextToMessage(sysMsg, block.content);
+            sysMsg.blocks.push(cloneContextBlock(block));
           }
         }
         break;
@@ -516,6 +584,82 @@ export class InjectionPipeline {
       }
     }
   }
+}
+
+function cloneContextBlock(block: ContextBlock): ContextBlock {
+  return {
+    ...block,
+    ...(block.metadata === undefined ? {} : { metadata: { ...block.metadata } }),
+  };
+}
+
+function captureSystemProductionSources(
+  ctx: AgentContext,
+  initialSystemBlocks: ReadonlySet<ContextBlock>,
+  initialSystemSources?: readonly ProductionPromptSourceInput[],
+): ProductionPromptSourceManifest | null {
+  const system = getSystemMessage(ctx);
+  if (!system) return null;
+  const textBlocks = system.blocks.filter((block) => block.type === "text");
+  const providerVisibleText = textBlocks.map((block) => block.content).join("\n");
+  if (providerVisibleText.length === 0) return null;
+
+  const sources: ProductionPromptSourceInput[] = [];
+  let consumedInitialSources = false;
+  for (const [blockIndex, block] of textBlocks.entries()) {
+    if (blockIndex > 0) {
+      sources.push({
+        sourceId: `pipeline:separator:${blockIndex - 1}:${blockIndex}`,
+        sourceKind: "static-tool",
+        injectionBlockId: "pipeline-separator",
+        text: "\n",
+      });
+    }
+    if (block.content.length === 0) continue;
+    if (initialSystemBlocks.has(block) && initialSystemSources !== undefined) {
+      if (consumedInitialSources) {
+        throw metadataParityFailure(
+          "explicit initial system provenance may bind only the first system text block",
+        );
+      }
+      if (initialSystemSources.map((source) => source.text).join("") !== block.content) {
+        throw metadataParityFailure(
+          "explicit initial system provenance does not reconstruct its production text",
+        );
+      }
+      sources.push(...initialSystemSources);
+      consumedInitialSources = true;
+      continue;
+    }
+    const declared = block.metadata?.productionPromptSources;
+    if (Array.isArray(declared)) {
+      const promptSources = declared as unknown as ProductionPromptSourceInput[];
+      if (promptSources.map((source) => source.text).join("") !== block.content) {
+        throw new InjectionInfrastructureError(
+          "INJECTION_METADATA_PARITY_FAILURE",
+          "ContextBlock PromptUnit provenance does not reconstruct its production text",
+        );
+      }
+      sources.push(...promptSources);
+      continue;
+    }
+    if (!initialSystemBlocks.has(block)) {
+      throw new InjectionInfrastructureError(
+        "INJECTION_METADATA_PARITY_FAILURE",
+        "an injected production ContextBlock is missing PromptUnit/source provenance",
+      );
+    }
+    sources.push({
+      sourceId: `pipeline:initial-system:${blockIndex}`,
+      sourceKind: "runtime-binding",
+      injectionBlockId: "initial-system-context",
+      text: block.content,
+    });
+  }
+  if (initialSystemSources !== undefined && !consumedInitialSources) {
+    throw metadataParityFailure("explicit initial system provenance was not consumed");
+  }
+  return sealProductionPromptSourceManifest(providerVisibleText, sources);
 }
 
 /**

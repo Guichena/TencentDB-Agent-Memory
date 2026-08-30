@@ -81,10 +81,12 @@ describe("server_team production adapter", () => {
   it("composes mappings, frozen Skill roots, transport, Memory hooks, and executor from env", async () => {
     const dataRoot = await frozenDataRoot();
     const secret = "runtime-user-key-secret";
+    const coreSecret = "runtime-core-api-key-secret";
     const receipt = await executeServerTeamProductionRestore(plan(), {
       env: {
         TDAI_FORMAL_MEMORY_CORE_URL: "http://127.0.0.1:8789",
         TDAI_FORMAL_MEMORY_KNOWLEDGE_URL: "http://127.0.0.1:8790",
+        TDAI_FORMAL_MEMORY_CORE_API_KEY: coreSecret,
         TDAI_EVAL_USER_KEY: secret,
         TDAI_FORMAL_RUNTIME_SERVICE_ID: "service-runtime",
         TDAI_FORMAL_RUNTIME_AUTH_USER_ID: "user-runtime",
@@ -112,6 +114,7 @@ describe("server_team production adapter", () => {
       }),
     ]);
     expect(JSON.stringify(receipt)).not.toContain(secret);
+    expect(JSON.stringify(receipt)).not.toContain(coreSecret);
     expect(JSON.stringify(receipt)).not.toContain("service-runtime");
     expect(JSON.stringify(receipt)).not.toContain("user-runtime");
   });

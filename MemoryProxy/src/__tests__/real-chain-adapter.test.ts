@@ -17,6 +17,7 @@ import {
 import { parseCodexJsonlEvents } from "../../eval/tool-prompt-bench/codex-runner.js";
 import { initAuth } from "../auth.js";
 import type { ObservedBridgeEntry } from "../bridge-entry-observer.js";
+import { handleCodexEndpoint } from "../codexHandler.js";
 import { DEFAULT_CONFIG } from "../config.js";
 import type {
   ProviderCompletionEvidence,
@@ -24,7 +25,12 @@ import type {
 } from "../provider-request-trace-sink.js";
 import { __resetHookCacheRepoForTests } from "../db/hookCacheRepo.js";
 import { __resetSessionRepoForTests } from "../db/sessionRepo.js";
-import { __resetInjectionPipelineForTests } from "../injection/index.js";
+import {
+  __resetInjectionPipelineForTests,
+  getInjectionPipeline,
+} from "../injection/index.js";
+import { InjectionInfrastructureError } from "../injection/errors.js";
+import { sealProductionPromptSourceManifest } from "../injection/production-source.js";
 import { setCoreKnowledgeClient } from "../knowledge/core-client.js";
 import { setMetadataClient } from "../meta/client.js";
 import { createApp } from "../server.js";
@@ -986,6 +992,131 @@ describe("Task 1 R01 real-chain Adapter", () => {
     expect(capture.bridgeRequests).toHaveLength(0);
   });
 
+  it("rejects a typed injection infrastructure failure before calling the Codex upstream", async () => {
+    const capture = createInMemoryCaptureBoundary();
+    vi.stubGlobal("fetch", capture.fetcher);
+    const config = realChainConfig(capture.baseUrl);
+    await initProxyStorage(config.storage);
+    initAuth(config.auth);
+    const failure = new InjectionInfrastructureError(
+      "INJECTION_METADATA_PARITY_FAILURE",
+      "synthetic handler boundary failure",
+    );
+    const pipeline = getInjectionPipeline(config);
+    const formalCaptureSpy = vi.spyOn(pipeline, "processWithProductionSources");
+    const processSpy = vi.spyOn(pipeline, "process")
+      .mockRejectedValue(failure);
+    let handlerPromise: ReturnType<typeof handleCodexEndpoint> | undefined;
+    const app = new Hono();
+    app.post("/*", (context) => {
+      handlerPromise = handleCodexEndpoint(context, config);
+      return handlerPromise;
+    });
+    app.onError(() => new Response("handler rejected", { status: 500 }));
+    const adapter = new RealChainAdapter({
+      request: (path, init) => Promise.resolve(app.request(`http://memory-proxy.test${path}`, init)),
+    });
+    const input: NormalizedRealChainInput = {
+      identity: {
+        spaceId: "space-eval",
+        sessionId: "session-injection-failure",
+        teamId: "team-alpha",
+        agentId: "agent-general",
+        taskId: "task-prompt-eval",
+      },
+      history: [],
+      finalQuery: "Use the team proxy release workflow.",
+    };
+
+    const result = await adapter.probeProductionChain({
+      input,
+      model: "gpt-5.6-luna",
+      providerAuthorization: "Bearer provider-probe-token",
+      tdaiUserKey: "tdai-probe-user-key",
+    });
+
+    expect(result.status).toBe(500);
+    expect(handlerPromise).toBeDefined();
+    await expect(handlerPromise!).rejects.toBe(failure);
+    expect(processSpy).toHaveBeenCalledOnce();
+    expect(formalCaptureSpy).not.toHaveBeenCalled();
+    expect(capture.upstreamRequests).toHaveLength(0);
+  });
+
+  it("converts a Codex wrapper provenance mismatch and blocks the upstream", async () => {
+    const capture = createInMemoryCaptureBoundary();
+    vi.stubGlobal("fetch", capture.fetcher);
+    const config = realChainConfig(capture.baseUrl);
+    await initProxyStorage(config.storage);
+    initAuth(config.auth);
+    const pipeline = getInjectionPipeline(config);
+    const declaredText = "<declared_production_source />";
+    const declaredManifest = sealProductionPromptSourceManifest(declaredText, [{
+      sourceId: "synthetic-declared-source",
+      sourceKind: "static-tool",
+      injectionBlockId: "synthetic-declared-block",
+      text: declaredText,
+    }]);
+    const formalCaptureSpy = vi.spyOn(pipeline, "processWithProductionSources")
+      .mockImplementation(async (syntheticBody) => {
+        const messages = syntheticBody.messages as Array<Record<string, unknown>>;
+        return {
+          body: {
+            ...syntheticBody,
+            messages: [
+              { ...messages[0], content: "<different_provider_injection />" },
+              ...messages.slice(1),
+            ],
+          },
+          productionSourceManifest: declaredManifest,
+        };
+      });
+    const providerRequestObserver = {
+      observeRequest: vi.fn(),
+      observeCompletion: vi.fn(),
+      track: vi.fn(),
+    };
+    let handlerPromise: ReturnType<typeof handleCodexEndpoint> | undefined;
+    const app = new Hono();
+    app.post("/*", (context) => {
+      handlerPromise = handleCodexEndpoint(context, config, { providerRequestObserver });
+      return handlerPromise;
+    });
+    app.onError(() => new Response("handler rejected", { status: 500 }));
+    const adapter = new RealChainAdapter({
+      request: (path, init) => Promise.resolve(app.request(`http://memory-proxy.test${path}`, init)),
+    });
+    const input: NormalizedRealChainInput = {
+      identity: {
+        spaceId: "space-eval",
+        sessionId: "session-wrapper-provenance-failure",
+        teamId: "team-alpha",
+        agentId: "agent-general",
+        taskId: "task-prompt-eval",
+      },
+      history: [],
+      finalQuery: "Use the team proxy release workflow.",
+    };
+
+    const result = await adapter.probeProductionChain({
+      input,
+      model: "gpt-5.6-luna",
+      providerAuthorization: "Bearer provider-probe-token",
+      tdaiUserKey: "tdai-probe-user-key",
+    });
+
+    expect(result.status).toBe(500);
+    expect(handlerPromise).toBeDefined();
+    await expect(handlerPromise!).rejects.toMatchObject({
+      name: "InjectionInfrastructureError",
+      code: "INJECTION_METADATA_PARITY_FAILURE",
+      message: expect.stringContaining("SOURCE_COVERAGE_MISMATCH"),
+    });
+    expect(formalCaptureSpy).toHaveBeenCalledOnce();
+    expect(providerRequestObserver.observeRequest).not.toHaveBeenCalled();
+    expect(capture.upstreamRequests).toHaveLength(0);
+  });
+
   it("traverses createApp Session Init and InjectionPipeline before replaying real bridge entries", async () => {
     const capture = createInMemoryCaptureBoundary();
     vi.stubGlobal("fetch", capture.fetcher);
@@ -1070,7 +1201,14 @@ describe("Task 1 R01 real-chain Adapter", () => {
       path: "/codex/space-eval/v1/responses",
       body: capture.upstreamRequests[0]?.body,
       correlationHeaders: { "session-id": input.identity.sessionId },
+      productionSourceManifest: {
+        providerVisibleTextSha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
+      },
     });
+    expect(observedProviderRequests[0]?.productionSourceManifest?.sources.some((source) => (
+      source.injectionBlockId === "session-context"
+      && source.sourceKind === "dynamic-asset"
+    ))).toBe(true);
     expect(observedProviderRequests[0]?.rawBody).toBe(JSON.stringify(capture.upstreamRequests[0]?.body));
     expect(capture.metadataPaths.filter((path) => prewarmAssetPaths.has(path)))
       .toEqual(prewarmAssetRequestsAfterFirstRun);

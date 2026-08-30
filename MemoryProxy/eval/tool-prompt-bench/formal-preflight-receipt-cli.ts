@@ -16,6 +16,7 @@ import {
   type FormalExpectedExecutionBinding,
   type FormalExecutionPreflightInput,
   type FormalExecutionPreflightReceipt,
+  type PinnedFormalExecutionPreflightReceipt,
 } from "./formal-execution-preflight.js";
 import { loadPreparedFormalRunDirectory } from "./formal-execution-cli.js";
 import type { PreparedFormalRun } from "./formal-prepare-runner.js";
@@ -96,7 +97,7 @@ export function parseFormalPreflightReceiptCliArguments(
 export function createFormalExecutionPreflightReceipt(
   input: CreateFormalExecutionPreflightReceiptInput,
   dependencies: FormalPreflightReceiptDependencies = {},
-): FormalExecutionPreflightReceipt {
+): PinnedFormalExecutionPreflightReceipt {
   const parsePlan = dependencies.parsePlan ?? parsePinnedFormalAssetRestorePlan;
   const parseObservations = dependencies.parseObservations ?? parseFormalAssetRuntimeObservations;
   const evaluate = dependencies.evaluate ?? evaluateFormalExecutionPreflight;
@@ -120,7 +121,16 @@ export function createFormalExecutionPreflightReceipt(
   if (canonicalSha256(observations.expected) !== canonicalSha256(input.expected)) {
     throw new Error("formal inspect expected binding does not match the prepared run");
   }
-  return evaluate({ ...observations, expected: input.expected });
+  const evaluated = evaluate({ ...observations, expected: input.expected });
+  return Object.freeze({
+    ...evaluated,
+    provenance: Object.freeze({
+      restorePlanSha256: plan.planSha256,
+      snapshotId: plan.snapshot.snapshotId,
+      snapshotCanonicalSha256: plan.revision.snapshotCanonicalSha256,
+      inspectEnvelopeCanonicalSha256: canonicalSha256(inspected),
+    }),
+  });
 }
 
 export async function runFormalPreflightReceiptCli(

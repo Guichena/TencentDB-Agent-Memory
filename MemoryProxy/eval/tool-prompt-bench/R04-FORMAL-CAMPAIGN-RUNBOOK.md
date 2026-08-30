@@ -213,16 +213,19 @@ $knowledgeHealth = Invoke-RestMethod $KnowledgeHealthUrl
   -TraceCampaignDirectory (Join-Path $TraceRoot $CampaignId) `
   -RepositoryRoot $ExecutionRoot `
   -Split dev `
+  -CampaignPhase dev-discovery `
   -OutputPath $ResultPath
 ```
+
+阶段映射固定为：Dev 候选探索用 `-Split dev -CampaignPhase dev-discovery`，Dev 入围确认用 `-Split dev -CampaignPhase dev-confirmation`，Hidden 只能用 `-Split hidden_test -CampaignPhase hidden -AllowHiddenTest`。
 
 collector 依次完成：
 
 1. 发现全部 execution receipt，验证单 Proxy/Knowledge instance 和不重叠 run 窗口。
 2. 解析 sealed MemoryProxy、MemoryKnowledge 和 Provider 日志。
 3. 验证 Provider-visible TDAI wrapper、逐请求 usage、session 归属和注入 hash。
-4. 验证 `task1-code-freeze` tag、Prompt 所属源码未变、六 Variant cache namespace/static-template/prefix/Token 清单。
-5. 最后才打开冻结 private Gold/Pair，按 accepted terminal horizon 计算 M0。
+4. 验证 `task1-code-freeze` tag、候选只修改计划内 Prompt 源码、六个 baseline Variant 清单，以及候选实测的 Provider-visible source attestation、Token、hash 与 cache 结构证据。
+5. 最后才打开冻结 private Gold/Pair，按 behavior-valid terminal horizon 计算 M0。
 6. 以 create-new 方式写一个完整 bundle；不会重跑模型，也不会修改 raw evidence。
 
 结果至少检查：
@@ -235,7 +238,7 @@ toolCollection.formalCampaignEligible == true
 providerCollection.formalCampaignEligible == true
 ```
 
-主表读取 Shortest Sufficient Chain、False Call Attempt、Conditional Terminal Accuracy 和 Static Tool Tokens；Complete Chain、Trigger、First Action、ToolSPL、Overcall、Malformed 与 Provider usage 是次要或诊断指标。不要评价资产正文质量或最终 coding 完成度。
+主表读取 Complete Chain Success、False Call Attempt、固定分母 Terminal Selection、PairExact、Positive Overcall 和 Static Tool Tokens；Conditional Terminal Accuracy 必须带分子/分母报告，但只作工具选择伴随指标。ShortestExact、Trigger、First Action、ToolSPL、Malformed、Runtime HTTP 与 Provider usage 是效率或诊断指标。不要评价资产正文质量或最终 coding 完成度。
 
 ## 九、推荐实际顺序
 

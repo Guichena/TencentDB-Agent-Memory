@@ -1,8 +1,9 @@
 /**
- * Disabled-by-default deterministic L1/L2 seed seam for Task 1 evaluation.
+ * Disabled-by-default deterministic L0/L1/L2 seed seam for Task 1 evaluation.
  *
- * The normal public APIs remain authoritative for read-back. This seam exists
- * only because MemoryCore has no L1 create API and scenario/write is update-only.
+ * The normal public APIs remain authoritative for read-back. This seam avoids
+ * L0 extraction side effects; MemoryCore also has no L1 create API and
+ * scenario/write is update-only.
  */
 import { createHash } from "node:crypto";
 
@@ -11,7 +12,7 @@ import { buildProfileIsolationScope } from "../core/profile/profile-sync.js";
 import { syncSceneIndex } from "../core/scene/scene-index.js";
 import { createScopedStorageAdapter, type StorageAdapter } from "../core/storage/adapter.js";
 import { StoragePaths } from "../core/storage/types.js";
-import type { IMemoryStore } from "../core/store/types.js";
+import type { IMemoryStore, L0Record } from "../core/store/types.js";
 
 export interface FormalBenchmarkImportIsolation {
   readonly teamId: string;
@@ -31,11 +32,13 @@ export type FormalBenchmarkMemoryImportResult =
   | Readonly<{
     ok: true;
     data: Readonly<{
-      kind: "l1" | "l2";
+      kind: "l0" | "l1" | "l2";
       formal_asset_id: string;
       runtime_locator:
+        | Readonly<{ kind: "conversation-message"; sessionId: string; messageIds: readonly string[] }>
         | Readonly<{ kind: "asset-id"; assetId: string }>
         | Readonly<{ kind: "scenario-path"; path: string }>;
+      accepted_ids?: readonly string[];
       content_sha256: string;
       expected_asset_content_hash: string;
     }>;
@@ -91,11 +94,11 @@ function safeScenarioPath(value: unknown): string | undefined {
 
 function validateEnvelope(body: unknown): Readonly<{
   record: JsonRecord;
-  kind: "l1" | "l2";
+  kind: "l0" | "l1" | "l2";
   formalAssetId: string;
   expectedAssetContentHash: string;
 }> | undefined {
-  if (!isRecord(body) || (body.kind !== "l1" && body.kind !== "l2")
+  if (!isRecord(body) || (body.kind !== "l0" && body.kind !== "l1" && body.kind !== "l2")
     || !nonBlank(body.formal_asset_id) || !validSha256(body.expected_asset_content_hash)
     || !nonBlank(body.team_id) || !nonBlank(body.user_id) || !nonBlank(body.agent_id)
     || !isRecord(body.payload)) {
@@ -106,6 +109,93 @@ function validateEnvelope(body: unknown): Readonly<{
     kind: body.kind,
     formalAssetId: body.formal_asset_id,
     expectedAssetContentHash: body.expected_asset_content_hash,
+  };
+}
+
+async function importL0(
+  body: JsonRecord,
+  formalAssetId: string,
+  expectedAssetContentHash: string,
+  deps: FormalBenchmarkMemoryImportDeps & { isolation: FormalBenchmarkImportIsolation },
+): Promise<FormalBenchmarkMemoryImportResult> {
+  if (!deps.store) return fail(503, 503, "Memory store is unavailable");
+  const payload = body.payload as JsonRecord;
+  if (!nonBlank(payload.sessionId) || !Array.isArray(payload.messages)
+    || payload.messages.length === 0 || payload.messages.length > 100) {
+    return fail(400, 400, "Invalid Formal L0 import payload");
+  }
+
+  const records: L0Record[] = [];
+  for (const raw of payload.messages) {
+    if (!isRecord(raw) || !nonBlank(raw.id)
+      || (raw.role !== "user" && raw.role !== "assistant")
+      || !nonBlank(raw.content) || !nonBlank(raw.recordedAt)) {
+      return fail(400, 400, "Invalid Formal L0 message");
+    }
+    const recordedAtMs = Date.parse(raw.recordedAt);
+    if (!Number.isFinite(recordedAtMs)) {
+      return fail(400, 400, "Formal L0 timestamps must be ISO-8601 values");
+    }
+    records.push({
+      id: raw.id,
+      sessionKey: payload.sessionId,
+      sessionId: payload.sessionId,
+      teamId: deps.isolation.teamId,
+      userId: deps.isolation.userId,
+      agentId: deps.isolation.agentId,
+      role: raw.role,
+      messageText: raw.content,
+      recordedAt: new Date(recordedAtMs).toISOString(),
+      timestamp: recordedAtMs,
+    });
+  }
+
+  for (const record of records) {
+    const written = await deps.store.upsertL0(record, undefined);
+    if (!written) return fail(500, 500, "Formal L0 store upsert failed");
+  }
+  const rows = deps.store.queryL0Paginated
+    ? (await deps.store.queryL0Paginated({
+      sessionId: payload.sessionId,
+      teamId: deps.isolation.teamId,
+      userId: deps.isolation.userId,
+      agentId: deps.isolation.agentId,
+      limit: 100,
+      offset: 0,
+    })).rows
+    : await deps.store.queryL0ForL1(payload.sessionId, undefined, 100);
+  const observed = new Map(rows.map((row) => [row.record_id, row]));
+  if (!records.every((record) => {
+    const row = observed.get(record.id);
+    return row?.session_id === record.sessionId
+      && row.team_id === record.teamId
+      && row.user_id === record.userId
+      && row.agent_id === record.agentId
+      && row.role === record.role
+      && row.message_text === record.messageText;
+  })) {
+    return fail(500, 500, "Formal L0 read-back mismatch");
+  }
+  const messageIds = records.map((record) => record.id);
+  return {
+    ok: true,
+    data: {
+      kind: "l0",
+      formal_asset_id: formalAssetId,
+      runtime_locator: {
+        kind: "conversation-message",
+        sessionId: payload.sessionId,
+        messageIds,
+      },
+      accepted_ids: messageIds,
+      content_sha256: sha256(JSON.stringify(records.map((record) => ({
+        id: record.id,
+        role: record.role,
+        content: record.messageText,
+        recordedAt: record.recordedAt,
+      })))),
+      expected_asset_content_hash: expectedAssetContentHash,
+    },
   };
 }
 
@@ -216,7 +306,7 @@ async function importL2(
   };
 }
 
-/** Import one frozen L1/L2 asset into the exact store resolved for the request Space. */
+/** Import one frozen L0/L1/L2 asset without starting extraction or background derivation. */
 export async function importFormalBenchmarkMemory(
   body: unknown,
   deps: FormalBenchmarkMemoryImportDeps,
@@ -227,7 +317,12 @@ export async function importFormalBenchmarkMemory(
   if (!deps.isolation || !isolationMatches(parsed.record, deps.isolation)) {
     return fail(403, 403, "Formal benchmark import isolation mismatch");
   }
-  return parsed.kind === "l1"
+  return parsed.kind === "l0"
+    ? importL0(parsed.record, parsed.formalAssetId, parsed.expectedAssetContentHash, {
+      ...deps,
+      isolation: deps.isolation,
+    })
+    : parsed.kind === "l1"
     ? importL1(parsed.record, parsed.formalAssetId, parsed.expectedAssetContentHash, {
       ...deps,
       isolation: deps.isolation,

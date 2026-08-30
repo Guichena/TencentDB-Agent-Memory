@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  assertServerTeamKnowledgeStable,
   inspectServerTeamProductionAssets,
 } from "../../eval/tool-prompt-bench/formal-assets/server-team-production-inspector.js";
 import type {
@@ -151,10 +152,24 @@ describe("server_team production asset inspector", () => {
     const seen: Array<{ url: string; headers: Headers; body: Record<string, unknown> }> = [];
     const fetchImpl = vi.fn(async (url: string, init: RequestInit) => {
       const path = new URL(url).pathname;
-      const body = JSON.parse(String(init.body)) as Record<string, unknown>;
+      const body = init.body
+        ? JSON.parse(String(init.body)) as Record<string, unknown>
+        : {};
       seen.push({ url, headers: new Headers(init.headers), body });
       if (path === "/v3/meta/auth/verify") {
         return json({ code: 0, data: { valid: true, user: { user_id: RUNTIME.user } } });
+      }
+      if (path === "/v3/auto-sync/status") {
+        expect(init.method).toBe("GET");
+        return json({
+          code: 0,
+          data: {
+            running: false,
+            activeSyncs: 0,
+            scanning: false,
+            config: { enabled: false },
+          },
+        });
       }
       if (path === "/v3/meta/team/list") {
         return json({ code: 0, data: { items: [{ team_id: RUNTIME.team }], total: 1 } });
@@ -219,7 +234,9 @@ describe("server_team production asset inspector", () => {
       {
         env: {
           TDAI_FORMAL_MEMORY_CORE_URL: "http://memory-core.test",
+          TDAI_FORMAL_MEMORY_KNOWLEDGE_URL: "http://memory-knowledge.test",
           TDAI_FORMAL_MEMORY_PROXY_URL: "http://memory-proxy.test",
+          TDAI_FORMAL_MEMORY_CORE_API_KEY: "secret-core-api-key",
           TDAI_EVAL_USER_KEY: "secret-user-key",
           TDAI_FORMAL_RUNTIME_SERVICE_ID: RUNTIME.space,
         },
@@ -240,13 +257,74 @@ describe("server_team production asset inspector", () => {
       "/v3/meta/agent-fixed-asset/list-with-detail",
     ].sort());
     expect(JSON.stringify(observations)).not.toContain("secret-user-key");
+    expect(JSON.stringify(observations)).not.toContain("secret-core-api-key");
     expect(seen.some((entry) => new URL(entry.url).pathname.includes("responses"))).toBe(false);
     expect(seen.filter((entry) => new URL(entry.url).host === "memory-core.test")
       .every((entry) => entry.headers.get("x-tdai-service-id") === RUNTIME.space)).toBe(true);
+    expect(seen.filter((entry) => new URL(entry.url).host === "memory-core.test")
+      .every((entry) => entry.headers.get("authorization") === "Bearer secret-core-api-key"))
+      .toBe(true);
+    expect(seen.filter((entry) => new URL(entry.url).host !== "memory-core.test")
+      .every((entry) => entry.headers.get("authorization") === null)).toBe(true);
     expect(seen.find((entry) => new URL(entry.url).pathname === "/v3/atomic/query")?.body)
       .toMatchObject({ agent_id: RUNTIME.importedAgent });
     expect(seen.find((entry) => new URL(entry.url).pathname === "/v3/skill/search")?.body)
       .toMatchObject({ agent_id: RUNTIME.agent, query: "shared-skill", scope: "team" });
     expect(new URL(seen.at(-1)!.url).pathname).toBe("/v3/formal-bench/preflight-session");
+  });
+
+  it("requires disabled auto-sync and terminal Code Graph states before a campaign", async () => {
+    const stableFetch = vi.fn(async (url: string, init: RequestInit) => {
+      const path = new URL(url).pathname;
+      if (path === "/v3/auto-sync/status") {
+        expect(init.method).toBe("GET");
+        return json({
+          code: 0,
+          data: {
+            running: false,
+            activeSyncs: 0,
+            scanning: false,
+            config: { enabled: false },
+          },
+        });
+      }
+      expect(path).toBe("/v3/code-graph/get");
+      expect(new Headers(init.headers).get("x-tdai-service-id")).toBe(RUNTIME.space);
+      return json({ code: 0, data: { code_graph_id: "cg-runtime", status: "ready" } });
+    });
+    await expect(assertServerTeamKnowledgeStable({
+      memoryKnowledgeBaseUrl: "http://memory-knowledge.test",
+      runtimeServiceId: RUNTIME.space,
+      codeGraphIds: ["cg-runtime"],
+      fetchImpl: stableFetch,
+    })).resolves.toBeUndefined();
+
+    for (const response of [
+      { code: 0, data: { running: true, activeSyncs: 0, scanning: false, config: { enabled: true } } },
+      { code: 0, data: { code_graph_id: "cg-runtime", status: "processing" } },
+      { code: 0, data: { code_graph_id: "cg-runtime", status: "failed" } },
+    ]) {
+      let request = 0;
+      await expect(assertServerTeamKnowledgeStable({
+        memoryKnowledgeBaseUrl: "http://memory-knowledge.test",
+        runtimeServiceId: RUNTIME.space,
+        codeGraphIds: ["cg-runtime"],
+        fetchImpl: async () => {
+          request += 1;
+          if (request === 1 && "status" in response.data) {
+            return json({
+              code: 0,
+              data: {
+                running: false,
+                activeSyncs: 0,
+                scanning: false,
+                config: { enabled: false },
+              },
+            });
+          }
+          return json(response);
+        },
+      })).rejects.toThrow(/auto-sync must be disabled|formal preflight requires ready/u);
+    }
   });
 });

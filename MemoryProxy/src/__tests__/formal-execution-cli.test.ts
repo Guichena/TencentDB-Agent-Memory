@@ -7,12 +7,16 @@ import {
   inspectFormalCodeFreeze,
   parseFormalExecutionCliArguments,
 } from "../../eval/tool-prompt-bench/formal-execution-cli.js";
+import {
+  FORMAL_PROMPT_FREEZE_COMMIT,
+  FORMAL_PROMPT_FREEZE_TAG_OBJECT,
+} from "../../eval/tool-prompt-bench/formal-cache-structure-gate.js";
 import type { PreparedFormalRun } from "../../eval/tool-prompt-bench/formal-prepare-runner.js";
 
 const run = {
   manifest: {
     code_commit: "1".repeat(40),
-    prompt_freeze_commit: "2".repeat(40),
+    prompt_freeze_commit: FORMAL_PROMPT_FREEZE_COMMIT,
   },
 } as PreparedFormalRun;
 
@@ -43,23 +47,32 @@ describe("formal execution CLI", () => {
       if (args.join(" ") === "rev-parse HEAD") {
         return { exitCode: 0, stdout: `${"1".repeat(40)}\n`, stderr: "" };
       }
-      if (args.join(" ") === "rev-parse task1-code-freeze^{}") {
-        return { exitCode: 0, stdout: `${"2".repeat(40)}\n`, stderr: "" };
+      if (args.join(" ") === "cat-file -t refs/tags/task1-code-freeze") {
+        return { exitCode: 0, stdout: "tag\n", stderr: "" };
+      }
+      if (args.join(" ") === "rev-parse refs/tags/task1-code-freeze") {
+        return { exitCode: 0, stdout: `${FORMAL_PROMPT_FREEZE_TAG_OBJECT}\n`, stderr: "" };
+      }
+      if (args.join(" ") === "rev-parse task1-code-freeze^{commit}") {
+        return { exitCode: 0, stdout: `${FORMAL_PROMPT_FREEZE_COMMIT}\n`, stderr: "" };
       }
       if (args[0] === "status") return { exitCode: 0, stdout: "", stderr: "" };
       return { exitCode: 0, stdout: "", stderr: "" };
     });
     expect(receipt).toEqual({
       executionCodeCommit: "1".repeat(40),
-      promptFreezeCommit: "2".repeat(40),
+      promptFreezeTagObject: FORMAL_PROMPT_FREEZE_TAG_OBJECT,
+      promptFreezeCommit: FORMAL_PROMPT_FREEZE_COMMIT,
       promptFreezeIsAncestor: true,
       workingTreeClean: true,
     });
     expect(calls).toEqual([
       ["rev-parse", "HEAD"],
       ["status", "--porcelain=v1"],
-      ["rev-parse", "task1-code-freeze^{}"],
-      ["merge-base", "--is-ancestor", "2".repeat(40), "1".repeat(40)],
+      ["cat-file", "-t", "refs/tags/task1-code-freeze"],
+      ["rev-parse", "refs/tags/task1-code-freeze"],
+      ["rev-parse", "task1-code-freeze^{commit}"],
+      ["merge-base", "--is-ancestor", FORMAL_PROMPT_FREEZE_COMMIT, "1".repeat(40)],
     ]);
   });
 
@@ -70,16 +83,32 @@ describe("formal execution CLI", () => {
     })).rejects.toThrow(/worktree is not clean/i);
   });
 
-  it("refuses a prepared run that names an ancestor other than the frozen Prompt tag", async () => {
+  it("refuses a moved Prompt tag even when its replacement is annotated", async () => {
     await expect(inspectFormalCodeFreeze("D:/repo", run, async (args) => {
       if (args.join(" ") === "rev-parse HEAD") {
         return { exitCode: 0, stdout: `${"1".repeat(40)}\n`, stderr: "" };
       }
-      if (args.join(" ") === "rev-parse task1-code-freeze^{}") {
+      if (args.join(" ") === "cat-file -t refs/tags/task1-code-freeze") {
+        return { exitCode: 0, stdout: "tag\n", stderr: "" };
+      }
+      if (args.join(" ") === "rev-parse refs/tags/task1-code-freeze") {
         return { exitCode: 0, stdout: `${"3".repeat(40)}\n`, stderr: "" };
       }
       return { exitCode: 0, stdout: "", stderr: "" };
-    })).rejects.toThrow(/does not use task1-code-freeze/i);
+    })).rejects.toThrow(/Prompt freeze tag object drift/i);
+  });
+
+  it("refuses a lightweight Prompt freeze tag", async () => {
+    await expect(inspectFormalCodeFreeze("D:/repo", run, async (args) => {
+      if (args.join(" ") === "rev-parse HEAD") {
+        return { exitCode: 0, stdout: `${"1".repeat(40)}\n`, stderr: "" };
+      }
+      if (args[0] === "status") return { exitCode: 0, stdout: "", stderr: "" };
+      if (args.join(" ") === "cat-file -t refs/tags/task1-code-freeze") {
+        return { exitCode: 0, stdout: "commit\n", stderr: "" };
+      }
+      throw new Error(`unexpected Git call: ${args.join(" ")}`);
+    })).rejects.toThrow(/expected annotated tag object/i);
   });
 
   it("keeps the PowerShell wrapper manual and free of service/config mutation", async () => {

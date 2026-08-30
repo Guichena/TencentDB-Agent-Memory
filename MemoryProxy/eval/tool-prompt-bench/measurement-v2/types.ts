@@ -139,7 +139,6 @@ export type ChainFailureLayerV2 =
   | "wrong_terminal"
   | "arguments"
   | "binding"
-  | "runtime_acceptance"
   | "infrastructure"
   | "false_call"
   | "malformed_intent"
@@ -157,6 +156,8 @@ export interface CaseChainScoreV2 {
   firstActionSelectionCorrect: boolean | null;
   terminalSelectionCorrect: boolean | null;
   completeChainSuccess: boolean | null;
+  /** Descriptive only: whether the behavior-valid chain received its frozen accepted statuses. */
+  runtimeAcceptedChain: boolean | null;
   strictChainExact: boolean | null;
   falseCallAttempt: boolean | null;
   falseCallAccepted: boolean | null;
@@ -167,6 +168,8 @@ export interface CaseChainScoreV2 {
   matchedSequenceLength: number | null;
   observedAttemptCount: number;
   evaluationPrefixAttemptCount: number;
+  /** Earliest terminal whose own Gold/runtime identity, args, and prior-output bindings are valid. */
+  behaviorValidTerminalAttemptIndex: number | null;
   terminalAttemptIndex: number | null;
   toolSplContribution: number | null;
   shortestExact: boolean | null;
@@ -201,6 +204,7 @@ export interface CaseChainAggregateV2 {
   firstActionSelectionAccuracy: RatioV2;
   terminalSelectionRate: RatioV2;
   completeChainSuccessRate: RatioV2;
+  runtimeAcceptedChainRate: RatioV2;
   conditionalTerminalAccuracy: RatioV2;
   strictChainExactRate: RatioV2;
   positiveOvercallRate: RatioV2;

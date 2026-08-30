@@ -1,8 +1,9 @@
 import { createHash } from "node:crypto";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { AnthropicAdapter } from "../injection/adapters/anthropic.js";
 import { ClaudeCodeProfile } from "../injection/agents/claude-code/index.js";
 import { InjectionPipeline } from "../injection/pipeline.js";
+import { ProductionPromptSourceError } from "../injection/production-source.js";
 import { HookRegistryImpl } from "../injection/registry.js";
 import { renderSkillToolsBlock } from "../injection/injectors/skill-tools-injector.js";
 import { renderTdaiMemoryToolsBlock } from "../injection/injectors/tdai-tools-injector.js";
@@ -1179,7 +1180,7 @@ describe("Task 1 measurement v2 request and phase usage ledger", () => {
     component: "task_model" as const,
     phaseType: ordinal === 0 ? "initial" as const : "followup" as const,
     promptSha256: String(ordinal + 1).repeat(64),
-    candidateActionCount: 3,
+    providerToolDefinitionCount: 3,
     injectionTokensO200k: 7,
     discoveryResultTokens: null,
     toolResultContextTokens: null,
@@ -2385,7 +2386,7 @@ describe("Task 1 measurement v2 final-eligibility evidence", () => {
       component: "task_model",
       phaseType: "initial",
       promptSha256: "a".repeat(64),
-      candidateActionCount: 3,
+      providerToolDefinitionCount: 3,
       injectionTokensO200k: 7,
       discoveryResultTokens: null,
       toolResultContextTokens: null,
@@ -2658,6 +2659,50 @@ describe("Task 1 measurement v2 final-eligibility evidence", () => {
 });
 
 describe("Task 1 measurement v2 cache metadata parity", () => {
+  it("fails closed on Hook provenance errors only for formal production capture", async () => {
+    const registry = new HookRegistryImpl();
+    registry.register({
+      id: "synthetic-provenance-failure",
+      point: "system.suffix",
+      priority: 1,
+      description: "synthetic production provenance failure",
+      execute: () => {
+        throw new ProductionPromptSourceError(
+          "SOURCE_DUPLICATE",
+          "synthetic duplicate production source",
+        );
+      },
+    });
+    const pipeline = new InjectionPipeline(
+      registry,
+      new Map([["anthropic", new AnthropicAdapter()]]),
+    );
+    const body = {
+      model: "synthetic-model",
+      system: "Stable system prefix",
+      messages: [{ role: "user", content: [{ type: "text", text: "hello" }] }],
+    };
+    const metadata = {
+      protocol: "anthropic" as const,
+      traceId: "synthetic-provenance-failure",
+      keyId: "synthetic",
+      modelId: "synthetic-model",
+      stream: false,
+      agentSource: "claude-code",
+    };
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    try {
+      await expect(pipeline.process(body, metadata)).resolves.toMatchObject(body);
+      await expect(pipeline.processWithProductionSources(body, metadata)).rejects.toMatchObject({
+        name: "InjectionInfrastructureError",
+        code: "INJECTION_METADATA_PARITY_FAILURE",
+        message: expect.stringContaining("SOURCE_DUPLICATE"),
+      });
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
   it("round-trips a single Anthropic system cache breakpoint when no hook runs", async () => {
     const pipeline = new InjectionPipeline(
       new HookRegistryImpl(),

@@ -3,6 +3,8 @@ import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 import {
+  buildCodexConfigArgs,
+  buildCodexInvocation,
   codexProcessInfrastructureError,
   executeCodexProcess,
   extractCodexUsage,
@@ -11,22 +13,33 @@ import {
   type CodexUsage,
 } from "./codex-runner.js";
 import type {
-  FormalExecutionPreflightReceipt,
   FormalPreflightCheckId,
+  PinnedFormalExecutionPreflightReceipt,
 } from "./formal-execution-preflight.js";
 import {
+  FORMAL_TDAI_USER_KEY_ENV,
   materializePreparedRunExecutionContext,
   type PreparedFormalRun,
 } from "./formal-prepare-runner.js";
 import { canonicalSha256 } from "./formal-runtime/canonical.js";
+import {
+  buildMemoryProxyCodexBaseUrl,
+  buildRealChainIdentityHeaders,
+} from "./real-chain-adapter.js";
 
 export const FORMAL_EXECUTION_RECEIPT_SCHEMA =
   "task1.formal-execution-receipt.v1" as const;
+export const FORMAL_PROMPT_FREEZE_TAG = "task1-code-freeze" as const;
+export const FORMAL_PROMPT_FREEZE_TAG_OBJECT =
+  "edbf18309fbf100cdf5b26d64c0fbb6f12c8f3a5" as const;
+export const FORMAL_PROMPT_FREEZE_COMMIT =
+  "d0996809ed63f6cfc67504ad180db0d48ac70475" as const;
 
 const DEFAULT_TIMEOUT_MS = 180_000;
 export interface FormalCodeFreezeReceipt {
   readonly executionCodeCommit: string;
-  readonly promptFreezeCommit: string;
+  readonly promptFreezeTagObject: typeof FORMAL_PROMPT_FREEZE_TAG_OBJECT;
+  readonly promptFreezeCommit: typeof FORMAL_PROMPT_FREEZE_COMMIT;
   readonly promptFreezeIsAncestor: boolean;
   readonly workingTreeClean: true;
 }
@@ -34,7 +47,7 @@ export interface FormalCodeFreezeReceipt {
 export interface ExecutePreparedFormalRunInput {
   readonly run: PreparedFormalRun;
   readonly environmentSource: NodeJS.ProcessEnv;
-  readonly preflightReceipt: FormalExecutionPreflightReceipt;
+  readonly preflightReceipt: PinnedFormalExecutionPreflightReceipt;
   readonly knowledgeHealthUrl: string;
   readonly expectedKnowledgeInstanceId: string;
   readonly codeFreeze: FormalCodeFreezeReceipt;
@@ -48,6 +61,12 @@ export interface FormalExecutionRunnerDependencies {
   ) => Promise<CodexProcessExecutionResult>;
   readonly nowIso?: () => string;
   readonly wallTimeUnixMicros?: () => string;
+  readonly resolveCodexCliVersion?: (input: Readonly<{
+    executable: string;
+    args: readonly string[];
+    cwd: string;
+    environment: NodeJS.ProcessEnv;
+  }>) => Promise<string>;
 }
 
 export interface FormalExecutionReceipt {
@@ -61,7 +80,40 @@ export interface FormalExecutionReceipt {
   readonly proxyInstanceId: string;
   readonly knowledgeInstanceId: string;
   readonly providerPromptSha256: string;
+  readonly visibleAssetSetSha256: string;
   readonly preflightReceiptSha256: string;
+  readonly artifactBindings: {
+    readonly runManifestFileSha256: string;
+    readonly prepareCommandFileSha256: string;
+    readonly providerPromptFileSha256: string;
+    readonly preflightReceiptFileSha256: string;
+  };
+  readonly executionIdentity: {
+    readonly modelId: string;
+    readonly reasoningEffort: string;
+    readonly verbosity: string;
+    readonly codexCliVersion: string;
+  };
+  readonly effectiveInvocation: {
+    readonly canonical: {
+      readonly executable: string;
+      readonly args: readonly string[];
+      readonly cwd: string;
+      readonly runtimeIdentity: PinnedFormalExecutionPreflightReceipt["runtimeIdentity"];
+    };
+    readonly canonicalSha256: string;
+  };
+  readonly preparationBinding: {
+    readonly runManifestCanonicalSha256: string;
+    readonly prepareCommandCanonicalSha256: string;
+    readonly workspacePolicySha256: string;
+    readonly runNamespace: string;
+    readonly memoryProxyContextId: string;
+    readonly localStateId: string;
+    readonly freshLocalState: true;
+    readonly inheritedHistory: false;
+  };
+  readonly snapshotBinding: PinnedFormalExecutionPreflightReceipt["provenance"];
   readonly codeFreeze: FormalCodeFreezeReceipt;
   readonly startedAt: string;
   readonly finishedAt: string;
@@ -92,6 +144,7 @@ export async function executePreparedFormalRun(
   const { run } = input;
   validateCodeFreeze(run, input.codeFreeze);
   validatePreflightReceipt(run, input.preflightReceipt);
+  const effectiveInvocation = buildEffectiveFormalInvocation(run, input.preflightReceipt);
   const timeoutMs = validateTimeout(input.timeoutMs ?? DEFAULT_TIMEOUT_MS);
   const expectedKnowledgeInstanceId = nonBlank(
     "expectedKnowledgeInstanceId",
@@ -113,10 +166,22 @@ export async function executePreparedFormalRun(
     serverInstanceId: expectedKnowledgeInstanceId,
   }, knowledgeHealth);
 
-  const stdin = await readPreparedProviderStdin(run);
+  const preparedArtifacts = await readPreparedExecutionArtifacts(run, input.preflightReceipt);
+  const stdin = preparedArtifacts.stdin;
   const executionContext = await materializePreparedRunExecutionContext(
     run,
     input.environmentSource,
+  );
+  const resolveCodexCliVersion = dependencies.resolveCodexCliVersion
+    ?? resolveCodexCliVersionDefault;
+  const codexCliVersion = nonBlank(
+    "codexCliVersion",
+    await resolveCodexCliVersion({
+      executable: run.command.versionProbe.executable,
+      args: run.command.versionProbe.args,
+      cwd: executionContext.cwd,
+      environment: executionContext.environment,
+    }),
   );
   const nowIso = dependencies.nowIso ?? (() => new Date().toISOString());
   const wallTimeUnixMicros = dependencies.wallTimeUnixMicros
@@ -129,8 +194,8 @@ export async function executePreparedFormalRun(
 
   const executeProcess = dependencies.executeProcess ?? executeCodexProcess;
   const result = await executeProcess({
-    executable: run.command.executable,
-    args: [...run.command.args],
+    executable: effectiveInvocation.canonical.executable,
+    args: [...effectiveInvocation.canonical.args],
     cwd: executionContext.cwd,
     environment: executionContext.environment,
     stdin,
@@ -150,6 +215,7 @@ export async function executePreparedFormalRun(
   // missing client summary usage is diagnostic, not an online infrastructure
   // failure by itself.
   const infrastructureError = codexProcessInfrastructureError(result) ?? null;
+  const isolationIdentity = buildFormalRunIsolationIdentity(run);
   const receipt: FormalExecutionReceipt = Object.freeze({
     schemaVersion: FORMAL_EXECUTION_RECEIPT_SCHEMA,
     formalMetricEligible: false,
@@ -161,7 +227,25 @@ export async function executePreparedFormalRun(
     proxyInstanceId: run.manifest.proxy_instance_id,
     knowledgeInstanceId: expectedKnowledgeInstanceId,
     providerPromptSha256: run.manifest.provider_input_sha256,
+    visibleAssetSetSha256: run.manifest.visible_asset_set_sha256,
     preflightReceiptSha256: canonicalSha256(input.preflightReceipt),
+    artifactBindings: preparedArtifacts.artifactBindings,
+    executionIdentity: Object.freeze({
+      modelId: run.manifest.model_id,
+      reasoningEffort: run.manifest.reasoning_effort,
+      verbosity: run.manifest.verbosity,
+      codexCliVersion,
+    }),
+    effectiveInvocation,
+    preparationBinding: Object.freeze({
+      runManifestCanonicalSha256: canonicalSha256(run.manifest),
+      prepareCommandCanonicalSha256: canonicalSha256(run.command),
+      workspacePolicySha256: canonicalSha256(run.command.workspacePolicy),
+      ...isolationIdentity,
+      freshLocalState: true,
+      inheritedHistory: false,
+    }),
+    snapshotBinding: Object.freeze({ ...input.preflightReceipt.provenance }),
     codeFreeze: Object.freeze({ ...input.codeFreeze }),
     startedAt,
     finishedAt,
@@ -180,13 +264,40 @@ export async function executePreparedFormalRun(
     traceCollectionState: "pending-campaign-seal",
   });
 
-  await writeExecutionArtifacts(run, result, receipt);
+  await writeExecutionArtifacts(run, result, preparedArtifacts.preflightReceiptRaw, receipt);
   return receipt;
 }
 
-async function readPreparedProviderStdin(run: PreparedFormalRun): Promise<string> {
-  const path = join(run.directory, "provider-prompt.json");
-  const raw = await readFile(path, "utf8");
+async function readPreparedExecutionArtifacts(
+  run: PreparedFormalRun,
+  preflightReceipt: PinnedFormalExecutionPreflightReceipt,
+): Promise<Readonly<{
+  stdin: string;
+  preflightReceiptRaw: string;
+  artifactBindings: FormalExecutionReceipt["artifactBindings"];
+}>> {
+  const [runManifestRaw, prepareCommandRaw, providerPromptRaw] = await Promise.all([
+    readFile(join(run.directory, "run-manifest.json"), "utf8"),
+    readFile(join(run.directory, "prepare-command.json"), "utf8"),
+    readFile(join(run.directory, "provider-prompt.json"), "utf8"),
+  ]);
+  assertCanonicalJsonFile("run-manifest.json", runManifestRaw, run.manifest);
+  assertCanonicalJsonFile("prepare-command.json", prepareCommandRaw, run.command);
+  const stdin = parsePreparedProviderStdin(run, providerPromptRaw);
+  const preflightReceiptRaw = json(preflightReceipt);
+  return Object.freeze({
+    stdin,
+    preflightReceiptRaw,
+    artifactBindings: Object.freeze({
+      runManifestFileSha256: sha256(runManifestRaw),
+      prepareCommandFileSha256: sha256(prepareCommandRaw),
+      providerPromptFileSha256: sha256(providerPromptRaw),
+      preflightReceiptFileSha256: sha256(preflightReceiptRaw),
+    }),
+  });
+}
+
+function parsePreparedProviderStdin(run: PreparedFormalRun, raw: string): string {
   let parsed: unknown;
   try {
     parsed = JSON.parse(raw);
@@ -214,6 +325,18 @@ async function readPreparedProviderStdin(run: PreparedFormalRun): Promise<string
   return stdin;
 }
 
+function assertCanonicalJsonFile(label: string, raw: string, expected: unknown): void {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw) as unknown;
+  } catch (error) {
+    throw new Error(`${label} is not valid JSON`, { cause: error });
+  }
+  if (canonicalSha256(parsed) !== canonicalSha256(expected)) {
+    throw new Error(`${label} does not match the prepared run object`);
+  }
+}
+
 function validateCodeFreeze(
   run: PreparedFormalRun,
   receipt: FormalCodeFreezeReceipt,
@@ -223,8 +346,12 @@ function validateCodeFreeze(
     throw new Error("execution code commit does not match prepared manifest");
   }
   if (!/^[a-f0-9]{40}$/iu.test(receipt.promptFreezeCommit)
+    || receipt.promptFreezeCommit !== FORMAL_PROMPT_FREEZE_COMMIT
     || receipt.promptFreezeCommit.toLowerCase() !== run.manifest.prompt_freeze_commit) {
     throw new Error("prompt freeze commit does not match prepared manifest");
+  }
+  if (receipt.promptFreezeTagObject !== FORMAL_PROMPT_FREEZE_TAG_OBJECT) {
+    throw new Error("prompt freeze tag object does not match the immutable Prompt freeze");
   }
   if (receipt.promptFreezeIsAncestor !== true) {
     throw new Error("prompt freeze commit must be an ancestor of the execution code commit");
@@ -234,9 +361,9 @@ function validateCodeFreeze(
   }
 }
 
-function validatePreflightReceipt(
+export function validatePreflightReceipt(
   run: PreparedFormalRun,
-  receipt: FormalExecutionPreflightReceipt,
+  receipt: PinnedFormalExecutionPreflightReceipt,
 ): void {
   if (receipt.schemaVersion !== "task1.formal-execution-preflight-receipt.v1") {
     throw new Error("formal preflight receipt schemaVersion mismatch");
@@ -265,23 +392,120 @@ function validatePreflightReceipt(
     agentId: expected.agentId,
     ...(expected.taskId ? { taskId: expected.taskId } : {}),
   }, receipt.logicalIdentity);
-  assertExpectedSubset("formal preflight runtime identity", {
-    spaceId: expected.spaceId,
-    teamId: expected.teamId,
-    agentId: expected.agentId,
-    ...(expected.taskId ? { taskId: expected.taskId } : {}),
-  }, receipt.runtimeIdentity);
+  for (const field of ["resolvedAuthUserId", "spaceId", "teamId", "agentId", "taskId"] as const) {
+    nonBlank(`formal preflight runtime identity.${field}`, receipt.runtimeIdentity[field]);
+  }
   assertExpectedSubset("formal preflight run binding", {
     sessionId: run.manifest.session_id,
     agentSource: "codex",
     visibleAssetSetSha256: run.manifest.visible_asset_set_sha256,
     effectiveConfigSha256: run.manifest.proxy_config_sha256,
   }, receipt);
+  if (receipt.provenance.snapshotId !== run.manifest.snapshot_id
+    || receipt.provenance.snapshotCanonicalSha256 !== run.manifest.snapshot_sha256) {
+    throw new Error("formal preflight snapshot provenance does not match prepared manifest");
+  }
+}
+
+export function buildEffectiveFormalInvocation(
+  run: PreparedFormalRun,
+  receipt: PinnedFormalExecutionPreflightReceipt,
+): FormalExecutionReceipt["effectiveInvocation"] {
+  const runtimeIdentity = Object.freeze({ ...receipt.runtimeIdentity });
+  const providerIdentity = {
+    spaceId: runtimeIdentity.spaceId,
+    sessionId: run.manifest.session_id,
+    teamId: runtimeIdentity.teamId,
+    agentId: runtimeIdentity.agentId,
+    taskId: runtimeIdentity.taskId,
+  };
+  const invocation = buildCodexInvocation({
+    workspaceDir: run.command.workspacePolicy.path,
+    model: run.manifest.model_id,
+    configArgs: buildCodexConfigArgs({
+      providerBaseUrl: buildMemoryProxyCodexBaseUrl(
+        proxyBaseUrlFromHealthUrl(run.command.preflight.healthUrl),
+        runtimeIdentity.spaceId,
+      ),
+      providerHeaders: buildRealChainIdentityHeaders(providerIdentity),
+      providerEnvHeaders: { "x-tdai-user-key": FORMAL_TDAI_USER_KEY_ENV },
+      reasoningEffort: run.manifest.reasoning_effort,
+      verbosity: run.manifest.verbosity,
+    }),
+  });
+  const canonical = Object.freeze({
+    executable: run.command.executable,
+    args: Object.freeze([...invocation.args]),
+    cwd: run.command.workspacePolicy.path,
+    runtimeIdentity,
+  });
+  return Object.freeze({
+    canonical,
+    canonicalSha256: canonicalSha256(canonical),
+  });
+}
+
+function proxyBaseUrlFromHealthUrl(value: string): string {
+  const url = new URL(value);
+  if (url.search || url.hash || !url.pathname.endsWith("/health")) {
+    throw new Error("prepared MemoryProxy health URL must end with /health");
+  }
+  url.pathname = url.pathname.slice(0, -"/health".length) || "/";
+  return url.toString().replace(/\/$/u, "");
+}
+
+export function buildFormalRunIsolationIdentity(run: PreparedFormalRun): Readonly<{
+  runNamespace: string;
+  memoryProxyContextId: string;
+  localStateId: string;
+}> {
+  const common = {
+    runId: run.manifest.run_id,
+    sessionId: run.manifest.session_id,
+  };
+  return Object.freeze({
+    runNamespace: `run:${canonicalSha256({
+      ...common,
+      executionWorkspacePath: run.manifest.execution_workspace_path,
+    })}`,
+    memoryProxyContextId: `proxy-context:${canonicalSha256({
+      ...common,
+      proxyInstanceId: run.manifest.proxy_instance_id,
+    })}`,
+    localStateId: `local-state:${canonicalSha256({
+      ...common,
+      executionWorkspacePath: run.manifest.execution_workspace_path,
+      isolatedHome: run.command.environmentPolicy.isolatedHome,
+      isolatedCodexSqliteHome: run.command.environmentPolicy.isolatedCodexSqliteHome,
+      workspacePolicySha256: canonicalSha256(run.command.workspacePolicy),
+    })}`,
+  });
+}
+
+async function resolveCodexCliVersionDefault(input: Readonly<{
+  executable: string;
+  args: readonly string[];
+  cwd: string;
+  environment: NodeJS.ProcessEnv;
+}>): Promise<string> {
+  const result = await executeCodexProcess({
+    executable: input.executable,
+    args: [...input.args],
+    cwd: input.cwd,
+    environment: input.environment,
+    stdin: "",
+    timeoutMs: 10_000,
+  });
+  if (result.timedOut || result.exitCode !== 0) {
+    throw new Error(`unable to read Codex version: ${result.stderr.trim() || "unknown error"}`);
+  }
+  return nonBlank("Codex version output", result.stdout.trim());
 }
 
 async function writeExecutionArtifacts(
   run: PreparedFormalRun,
   result: CodexProcessExecutionResult,
+  preflightReceiptRaw: string,
   receipt: FormalExecutionReceipt,
 ): Promise<void> {
   const usage = {
@@ -295,6 +519,10 @@ async function writeExecutionArtifacts(
     writeNew(join(run.directory, "codex-events.jsonl"), result.stdout),
     writeNew(join(run.directory, "codex-stderr.log"), result.stderr),
     writeNew(join(run.directory, "client-usage.json"), json(usage)),
+    writeNew(
+      join(run.directory, "formal-execution-preflight-receipt.json"),
+      preflightReceiptRaw,
+    ),
     writeNew(join(run.directory, "formal-execution-receipt.json"), json(receipt)),
   ]);
 }

@@ -2,6 +2,7 @@ import { mkdtempSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { sealProductionPromptSourceManifest } from "../injection/production-source.js";
 
 import {
   createProviderRequestTraceSinkFromEnv,
@@ -68,12 +69,23 @@ describe("MemoryProxy provider request trace sink", () => {
       input: [{ role: "user", content: "find the release decision" }],
       metadata: { authorization: "Bearer body-secret" },
     });
+    const providerVisibleInjection = "<tdai_memory_tools>search when needed</tdai_memory_tools>";
+    const productionSourceManifest = sealProductionPromptSourceManifest(
+      providerVisibleInjection,
+      [{
+        sourceId: "test-memory-tools",
+        sourceKind: "static-tool",
+        injectionBlockId: "tdai-memory-tools",
+        text: providerVisibleInjection,
+      }],
+    );
     sink.observeRequest({
       correlationId: "request-a",
       method: "POST",
       path: "/codex/space-a/v1/responses",
       rawBody,
       body: JSON.parse(rawBody) as Record<string, unknown>,
+      productionSourceManifest,
       correlationHeaders: {
         "x-conversation-id": "session-a",
         authorization: "Bearer header-secret",
@@ -143,7 +155,17 @@ describe("MemoryProxy provider request trace sink", () => {
         metadata: { authorization: "[REDACTED]" },
       },
       correlationHeaders: { "x-conversation-id": "session-a" },
+      productionSourceEvidence: {
+        correlationId: "request-a",
+        rawBodySha256: expect.stringMatching(/^[a-f0-9]{64}$/),
+        sourceManifestSha256: productionSourceManifest.canonicalSha256,
+        providerVisibleTextSha256: productionSourceManifest.providerVisibleTextSha256,
+        bindingSha256: expect.stringMatching(/^[a-f0-9]{64}$/),
+      },
     });
+    const requestEvent = events[1]?.event as Record<string, unknown>;
+    const sourceEvidence = requestEvent.productionSourceEvidence as Record<string, unknown>;
+    expect(sourceEvidence.rawBodySha256).toBe(requestEvent.rawBodySha256);
     expect(events[2]?.event).toMatchObject({
       status: 200,
       responseHeaders: { "x-request-id": "upstream-request-a" },

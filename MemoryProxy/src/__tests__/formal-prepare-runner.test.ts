@@ -15,10 +15,16 @@ import {
   type FormalPreparePublicStatus,
   type PreparedFormalRun,
 } from "../../eval/tool-prompt-bench/formal-prepare-runner.js";
-import type { FormalExecutionPreflightReceipt } from "../../eval/tool-prompt-bench/formal-execution-preflight.js";
+import type { PinnedFormalExecutionPreflightReceipt } from "../../eval/tool-prompt-bench/formal-execution-preflight.js";
+import { canonicalSha256 } from "../../eval/tool-prompt-bench/formal-runtime/canonical.js";
 import {
   executePreparedFormalRun,
 } from "../../eval/tool-prompt-bench/formal-execution-runner.js";
+import {
+  FORMAL_PROMPT_FREEZE_COMMIT,
+  FORMAL_PROMPT_FREEZE_TAG_OBJECT,
+} from "../../eval/tool-prompt-bench/formal-cache-structure-gate.js";
+import type { CodexProcessExecutionInput } from "../../eval/tool-prompt-bench/codex-runner.js";
 
 const SHA_A = "a".repeat(64);
 const SHA_B = "b".repeat(64);
@@ -139,14 +145,14 @@ function baseInput(outputRoot: string, source: FormalPrepareDataSource) {
     },
     repeats: 1,
     codeCommit: "2".repeat(40),
-    promptFreezeCommit: "3".repeat(40),
+    promptFreezeCommit: FORMAL_PROMPT_FREEZE_COMMIT,
     createdAt: "2026-08-30T01:02:03.000Z",
   };
 }
 
 function makeExecutionPreflightReceipt(
   run: PreparedFormalRun,
-): FormalExecutionPreflightReceipt {
+): PinnedFormalExecutionPreflightReceipt {
   const expected = run.command.executionRequiredGates.identityBinding.expected;
   return {
     schemaVersion: "task1.formal-execution-preflight-receipt.v1",
@@ -160,10 +166,10 @@ function makeExecutionPreflightReceipt(
     },
     runtimeIdentity: {
       resolvedAuthUserId: "runtime-user-formal",
-      spaceId: expected.spaceId,
-      teamId: expected.teamId,
-      agentId: expected.agentId,
-      taskId: expected.taskId!,
+      spaceId: "runtime-space-42",
+      teamId: "runtime-team-42",
+      agentId: "runtime-agent-42",
+      taskId: "runtime-task-42",
     },
     sessionId: run.manifest.session_id,
     agentSource: "codex",
@@ -172,6 +178,12 @@ function makeExecutionPreflightReceipt(
     identityMappingSourceSha256: SHA_A,
     effectiveConfigSha256: run.manifest.proxy_config_sha256,
     assetReadBackReceipts: [{ receiptSha256: SHA_B, contentSha256: SHA_C }],
+    provenance: {
+      restorePlanSha256: SHA_D,
+      snapshotId: run.manifest.snapshot_id,
+      snapshotCanonicalSha256: run.manifest.snapshot_sha256,
+      inspectEnvelopeCanonicalSha256: SHA_E,
+    },
     checks: [
       { id: "auth-user-mapping", status: "pass" },
       { id: "metadata-identity", status: "pass" },
@@ -545,7 +557,7 @@ describe("R04 Gold-blind formal execution runner", () => {
     const outputRoot = await mkdtemp(join(tmpdir(), "task1-r04-execute-"));
     const campaign = await prepareFormalCampaign(baseInput(outputRoot, makeSource()));
     const run = campaign.runs[0]!;
-    const processCalls: Array<Record<string, unknown>> = [];
+    const processCalls: CodexProcessExecutionInput[] = [];
     const preflightReceipt = makeExecutionPreflightReceipt(run);
     const instants = [
       "2026-08-30T03:00:00.000Z",
@@ -579,7 +591,8 @@ describe("R04 Gold-blind formal execution runner", () => {
       expectedKnowledgeInstanceId: "knowledge-instance-r04",
       codeFreeze: {
         executionCodeCommit: run.manifest.code_commit,
-        promptFreezeCommit: run.manifest.prompt_freeze_commit,
+        promptFreezeTagObject: FORMAL_PROMPT_FREEZE_TAG_OBJECT,
+        promptFreezeCommit: FORMAL_PROMPT_FREEZE_COMMIT,
         promptFreezeIsAncestor: true,
         workingTreeClean: true,
       },
@@ -603,6 +616,11 @@ describe("R04 Gold-blind formal execution runner", () => {
           stderr: "",
         };
       },
+      resolveCodexCliVersion: async (input) => {
+        expect(input.executable).toBe(run.command.versionProbe.executable);
+        expect(input.args).toEqual(run.command.versionProbe.args);
+        return "codex-cli 1.2.3";
+      },
       nowIso: () => instants.shift()!,
       wallTimeUnixMicros: () => micros.shift()!,
     });
@@ -610,10 +628,21 @@ describe("R04 Gold-blind formal execution runner", () => {
     expect(processCalls).toHaveLength(1);
     expect(processCalls[0]).toMatchObject({
       executable: run.command.executable,
-      args: run.command.args,
       cwd: run.command.workspacePolicy.path,
       timeoutMs: 120_000,
     });
+    const effectiveArgs = processCalls[0]!.args;
+    expect(effectiveArgs).toContain(
+      'model_providers.custom.base_url="http://127.0.0.1:8787/codex/runtime-space-42/v1"',
+    );
+    expect(effectiveArgs).toContain(
+      'model_providers.custom.http_headers={ "session-id" = '
+        + `${JSON.stringify(run.manifest.session_id)}, "x-agent-id" = "runtime-agent-42", `
+        + '"x-task-id" = "runtime-task-42", "x-team-id" = "runtime-team-42" }',
+    );
+    expect(effectiveArgs).not.toContain(
+      'model_providers.custom.base_url="http://127.0.0.1:8787/codex/space-formal/v1"',
+    );
     expect(processCalls[0]?.stdin).toContain("final query 1");
     expect((processCalls[0]?.environment as NodeJS.ProcessEnv).CODEX_HOME)
       .toBe("D:/authenticated/codex-home");
@@ -637,12 +666,46 @@ describe("R04 Gold-blind formal execution runner", () => {
         outputTokens: 40,
         reasoningOutputTokens: 12,
       },
+      executionIdentity: {
+        modelId: run.manifest.model_id,
+        reasoningEffort: run.manifest.reasoning_effort,
+        verbosity: run.manifest.verbosity,
+        codexCliVersion: "codex-cli 1.2.3",
+      },
+      effectiveInvocation: {
+        canonical: {
+          executable: run.command.executable,
+          args: effectiveArgs,
+          cwd: run.command.workspacePolicy.path,
+          runtimeIdentity: preflightReceipt.runtimeIdentity,
+        },
+        canonicalSha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
+      },
+      preparationBinding: {
+        runManifestCanonicalSha256: canonicalSha256(run.manifest),
+        prepareCommandCanonicalSha256: canonicalSha256(run.command),
+        workspacePolicySha256: canonicalSha256(run.command.workspacePolicy),
+        runNamespace: expect.stringMatching(/^run:[a-f0-9]{64}$/u),
+        memoryProxyContextId: expect.stringMatching(/^proxy-context:[a-f0-9]{64}$/u),
+        localStateId: expect.stringMatching(/^local-state:[a-f0-9]{64}$/u),
+        freshLocalState: true,
+        inheritedHistory: false,
+      },
+      snapshotBinding: {
+        restorePlanSha256: SHA_D,
+        snapshotId: run.manifest.snapshot_id,
+        snapshotCanonicalSha256: run.manifest.snapshot_sha256,
+        inspectEnvelopeCanonicalSha256: SHA_E,
+      },
     });
+    expect(receipt.effectiveInvocation.canonicalSha256)
+      .toBe(canonicalSha256(receipt.effectiveInvocation.canonical));
     const names = (await readdir(run.directory)).sort();
     expect(names).toEqual([
       "client-usage.json",
       "codex-events.jsonl",
       "codex-stderr.log",
+      "formal-execution-preflight-receipt.json",
       "formal-execution-receipt.json",
       "prepare-command.json",
       "provider-prompt.json",
@@ -650,6 +713,21 @@ describe("R04 Gold-blind formal execution runner", () => {
     ]);
     expect(await readFile(join(run.directory, "codex-events.jsonl"), "utf8"))
       .toBe(codexStdout);
+    const rawArtifactSha256 = async (name: string) => createHash("sha256")
+      .update(await readFile(join(run.directory, name), "utf8"), "utf8")
+      .digest("hex");
+    expect(receipt.artifactBindings).toEqual({
+      runManifestFileSha256: await rawArtifactSha256("run-manifest.json"),
+      prepareCommandFileSha256: await rawArtifactSha256("prepare-command.json"),
+      providerPromptFileSha256: await rawArtifactSha256("provider-prompt.json"),
+      preflightReceiptFileSha256: await rawArtifactSha256(
+        "formal-execution-preflight-receipt.json",
+      ),
+    });
+    expect(JSON.parse(await readFile(
+      join(run.directory, "formal-execution-preflight-receipt.json"),
+      "utf8",
+    ))).toEqual(preflightReceipt);
     const serialized = await readFile(join(run.directory, "formal-execution-receipt.json"), "utf8");
     expect(serialized).not.toContain("must-not-be-persisted");
     expect(serialized).not.toMatch(/privateGold|expectedTool|terminal|pairId/i);
@@ -672,7 +750,8 @@ describe("R04 Gold-blind formal execution runner", () => {
       expectedKnowledgeInstanceId: "knowledge-instance-r04",
       codeFreeze: {
         executionCodeCommit: run.manifest.code_commit,
-        promptFreezeCommit: run.manifest.prompt_freeze_commit,
+        promptFreezeTagObject: FORMAL_PROMPT_FREEZE_TAG_OBJECT,
+        promptFreezeCommit: FORMAL_PROMPT_FREEZE_COMMIT,
         promptFreezeIsAncestor: true,
         workingTreeClean: true,
       },
@@ -687,6 +766,51 @@ describe("R04 Gold-blind formal execution runner", () => {
         throw new Error("must not run");
       },
     })).rejects.toThrow(/MemoryProxy health mismatch.*serverInstanceId/i);
+    expect(processCalls).toBe(0);
+  });
+
+  it("refuses an invalid pinned runtime mapping before health checks or Codex", async () => {
+    const outputRoot = await mkdtemp(join(tmpdir(), "task1-r04-runtime-map-"));
+    const campaign = await prepareFormalCampaign(baseInput(outputRoot, makeSource()));
+    const run = campaign.runs[0]!;
+    const validReceipt = makeExecutionPreflightReceipt(run);
+    const invalidReceipt: PinnedFormalExecutionPreflightReceipt = {
+      ...validReceipt,
+      runtimeIdentity: {
+        ...validReceipt.runtimeIdentity,
+        agentId: "",
+      },
+    };
+    let healthCalls = 0;
+    let processCalls = 0;
+
+    await expect(executePreparedFormalRun({
+      run,
+      environmentSource: {
+        CODEX_HOME: "D:/authenticated/codex-home",
+        TDAI_EVAL_USER_KEY: "not-persisted",
+      },
+      preflightReceipt: invalidReceipt,
+      knowledgeHealthUrl: "http://127.0.0.1:8790/health",
+      expectedKnowledgeInstanceId: "knowledge-instance-r04",
+      codeFreeze: {
+        executionCodeCommit: run.manifest.code_commit,
+        promptFreezeTagObject: FORMAL_PROMPT_FREEZE_TAG_OBJECT,
+        promptFreezeCommit: FORMAL_PROMPT_FREEZE_COMMIT,
+        promptFreezeIsAncestor: true,
+        workingTreeClean: true,
+      },
+    }, {
+      fetchJson: async () => {
+        healthCalls += 1;
+        throw new Error("must not check health");
+      },
+      executeProcess: async () => {
+        processCalls += 1;
+        throw new Error("must not run");
+      },
+    })).rejects.toThrow(/runtime identity\.agentId must be a non-empty string/i);
+    expect(healthCalls).toBe(0);
     expect(processCalls).toBe(0);
   });
 });

@@ -42,6 +42,13 @@ import { compileToolPrompt } from "../tool-prompt/compiler.js";
 import { resolveSessionCapabilitySignature } from "../tool-prompt/capability-pruned.js";
 import { toolPromptCacheIdentity } from "../tool-prompt/profiles.js";
 import type { ToolPromptProfile } from "../tool-prompt/types.js";
+import {
+  buildCompiledPromptProductionSources,
+  buildRenderedPromptProductionSources,
+  locateBoundedProductionPromptBindings,
+  type ProductionPromptBinding,
+  type RenderedProductionPromptArtifact,
+} from "../production-source.js";
 
 export interface SkillToolsInjectorConfig {
   /**
@@ -189,6 +196,108 @@ export function renderSkillToolsBlock(
   ].join("\n");
 }
 
+export interface RenderSkillToolsPromptArtifactInput {
+  proxyBaseUrl: string;
+  allowLlmWrite?: boolean;
+  sessionId?: string;
+  spaceId?: string;
+  profile?: ToolPromptProfile;
+  capabilitySignature?: string;
+}
+
+function locateSkillRuntimeBindings(
+  content: string,
+  input: RenderSkillToolsPromptArtifactInput,
+): ProductionPromptBinding[] {
+  const bridge = `${input.proxyBaseUrl.replace(/\/$/, "")}/skill-bridge/v3/skill`;
+  return [
+    ...locateBoundedProductionPromptBindings({
+      text: content,
+      id: "skill-bridge",
+      value: bridge,
+      kind: "runtime-binding",
+      boundaries: [
+        { before: "endpoint-base: ", after: "\n" },
+        { before: "    path: ", after: "/" },
+        { before: "  其中 <bridge> = ", after: "\n" },
+      ],
+    }),
+    ...(input.sessionId
+      ? locateBoundedProductionPromptBindings({
+          text: content,
+          id: "session-id",
+          value: input.sessionId,
+          kind: "runtime-binding",
+          boundaries: [
+            { before: "x-conversation-id: ", after: "'" },
+            { before: "x-conversation-id: ", after: "\n" },
+          ],
+        })
+      : []),
+    ...(input.spaceId
+      ? locateBoundedProductionPromptBindings({
+          text: content,
+          id: "space-id",
+          value: input.spaceId,
+          kind: "runtime-binding",
+          boundaries: [
+            { before: "x-tdai-service-id: ", after: "'" },
+            { before: "x-tdai-service-id: ", after: "; " },
+            { before: "x-tdai-service-id: ", after: "\n" },
+          ],
+        })
+      : []),
+  ];
+}
+
+/** Production renderer plus readonly PromptUnit/runtime-binding provenance. */
+export function renderSkillToolsPromptArtifact(
+  input: RenderSkillToolsPromptArtifactInput,
+): RenderedProductionPromptArtifact {
+  const allowLlmWrite = input.allowLlmWrite ?? true;
+  const profile = input.profile ?? "legacy";
+  const capabilitySignature = input.capabilitySignature ?? "unconfigured";
+  const legacyContent = renderSkillToolsBlock(
+    input.proxyBaseUrl,
+    allowLlmWrite,
+    input.sessionId,
+    input.spaceId,
+  );
+  if (profile === "legacy") {
+    const bindings = locateSkillRuntimeBindings(legacyContent, input);
+    return {
+      content: legacyContent,
+      productionSources: buildRenderedPromptProductionSources({
+        sourceId: "skill-tools:legacy-body",
+        sourceKind: "static-tool",
+        injectionBlockId: "skill-tools-injector",
+        text: legacyContent,
+        bindings,
+      }),
+    };
+  }
+  const compiledPrompt = compileToolPrompt({
+    profile,
+    family: "skill",
+    surface: "skill-tools",
+    legacyUnits: [{
+      id: "skill-tools.legacy-body",
+      kind: "legacy-body",
+      content: legacyContent,
+    }],
+    capabilitySignature,
+  });
+  const bindings = locateSkillRuntimeBindings(compiledPrompt.content, input);
+  return {
+    content: compiledPrompt.content,
+    productionSources: buildCompiledPromptProductionSources({
+      injectionBlockId: "skill-tools-injector",
+      compiledPrompt,
+      bindings,
+    }),
+  };
+}
+
 /**
  * Skill tools injector.
  *
@@ -260,25 +369,20 @@ export class SkillToolsInjector implements InjectionHook {
     const capabilitySignature = profile === "capability-pruned"
       ? resolveSessionCapabilitySignature(baseSignature, assetCapabilities)
       : baseSignature;
-    const legacyContent = renderSkillToolsBlock(this.config.proxyBaseUrl, allowLlmWrite, sessionId, spaceId);
-    const content = profile === "legacy"
-      ? legacyContent
-      : compileToolPrompt({
-          profile,
-          family: "skill",
-          surface: "skill-tools",
-          legacyUnits: [{
-            id: "skill-tools.legacy-body",
-            kind: "legacy-body",
-            content: legacyContent,
-          }],
-          capabilitySignature,
-        }).content;
+    const artifact = renderSkillToolsPromptArtifact({
+      proxyBaseUrl: this.config.proxyBaseUrl,
+      allowLlmWrite,
+      sessionId,
+      spaceId,
+      profile,
+      capabilitySignature,
+    });
     return [{
       type: "text",
-      content,
+      content: artifact.content,
       metadata: {
         source: this.id,
+        productionPromptSources: artifact.productionSources,
         // Stable cache-dedup key — varies by allowLlmWrite to avoid stale cache
         cacheKey: `skill-tools-injector:catalog:${allowLlmWrite ? "rw" : "ro"}`
           + (profile === "capability-pruned" ? `:${capabilitySignature}` : ""),

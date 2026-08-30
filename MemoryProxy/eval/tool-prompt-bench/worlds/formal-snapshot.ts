@@ -8,6 +8,12 @@ export type CanonicalValue = null | boolean | number | string | CanonicalValue[]
 /** Formal runs are read-only and must start from a restored state. */
 export interface FormalRuntimePolicy extends RuntimePolicy {
   freshSessionPerCase: true;
+  /**
+   * Frozen field name retained for data/tag compatibility. In Task 1 runtime
+   * this resets only the case-local Session/local overlay namespace; the
+   * persisted Memory/Skill/Knowledge asset database is restored once per
+   * campaign and is never restored between cases.
+   */
   resetSnapshotBeforeCase: true;
 }
 
@@ -104,6 +110,8 @@ export function assertFormalReadOnlyRuntimePolicy(policy: FormalRuntimePolicy): 
   if (policy.writeL0 !== false) throw new Error("Formal snapshot policy requires writeL0=false");
   if (policy.archiveWriteBack !== false) throw new Error("Formal snapshot policy requires archiveWriteBack=false");
   if (policy.freshSessionPerCase !== true) throw new Error("Formal snapshot policy requires freshSessionPerCase=true");
+  // Legacy frozen name: this is a case-local overlay reset, not a persisted
+  // asset database restore. Do not reinterpret it as per-case R05 restore.
   if (policy.resetSnapshotBeforeCase !== true) throw new Error("Formal snapshot policy requires resetSnapshotBeforeCase=true");
 }
 
