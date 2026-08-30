@@ -59,7 +59,7 @@ function entryInput(): PrepareFormalCampaignEntryInput {
     variant: "V0",
     proxyBaseUrl: "http://127.0.0.1:8787",
     codeRef: "HEAD",
-    promptFreezeRef: "HEAD",
+    promptFreezeRef: "task1-code-freeze",
     writeArtifacts: false,
   };
 }
@@ -87,7 +87,7 @@ describe("R02 formal PrepareOnly source factory", () => {
 
     expect(configReads).toEqual([resolve(process.cwd(), "config.formal.yaml")]);
     expect(healthReads).toEqual(["http://127.0.0.1:8787/health"]);
-    expect(gitReads).toEqual(["HEAD", "HEAD"]);
+    expect(gitReads).toEqual(["HEAD", "task1-code-freeze"]);
     expect(result.runs).toHaveLength(1);
     const run = result.runs[0]!;
     expect(run.manifest).toMatchObject({
@@ -98,7 +98,7 @@ describe("R02 formal PrepareOnly source factory", () => {
       proxy_base_config_sha256: SHA_A,
       proxy_config_sha256: SHA_B,
       code_commit: "7".repeat(40),
-      prompt_freeze_commit: "7".repeat(40),
+      prompt_freeze_commit: "8".repeat(40),
       formalMetricEligible: false,
     });
     expect(run.command.preflight.expected).toMatchObject({
@@ -250,6 +250,21 @@ describe("R02 formal PrepareOnly source factory", () => {
     ])).toThrow(/unsupported formal PrepareOnly argument: --runtime-root/i);
   });
 
+  it("rejects a Prompt freeze ref that does not resolve to task1-code-freeze", async () => {
+    await expect(prepareFormalCampaignFromSources({
+      ...entryInput(),
+      promptFreezeRef: "other-ancestor",
+    }, {
+      async readConfigFile() { return CONFIG_BYTES; },
+      async readHealth() { return health(); },
+      resolveGitCommit(_root, ref) {
+        if (ref === "HEAD") return "7".repeat(40);
+        if (ref === "task1-code-freeze") return "8".repeat(40);
+        return "9".repeat(40);
+      },
+    })).rejects.toThrow(/must resolve to task1-code-freeze/i);
+  });
+
   it("keeps the PowerShell wrapper thin and PrepareOnly", async () => {
     const wrapper = await readFile(
       resolve(process.cwd(), "eval/tool-prompt-bench/run-formal-prepare.ps1"),
@@ -258,6 +273,7 @@ describe("R02 formal PrepareOnly source factory", () => {
     expect(wrapper).toContain("--prepare-only");
     expect(wrapper).toContain("formal-prepare-cli.ts");
     expect(wrapper).toContain("node_modules/.bin/tsx.cmd");
+    expect(wrapper).toContain('[string]$PromptFreezeRef = "task1-code-freeze"');
     expect(wrapper).not.toMatch(/\bnpx\b/i);
     expect(wrapper).not.toMatch(/codex exec|docker|MemoryProxy\/src\/index|auth\.json/i);
   });

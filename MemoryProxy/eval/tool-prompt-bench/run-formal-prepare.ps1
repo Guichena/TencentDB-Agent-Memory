@@ -12,7 +12,7 @@ param(
   [string]$Model = "gpt-5.6-luna",
   [string]$ReasoningEffort = "high",
   [string]$CodeRef = "HEAD",
-  [string]$PromptFreezeRef = "HEAD",
+  [string]$PromptFreezeRef = "task1-code-freeze",
   [switch]$HeldOutAuthorized
 )
 

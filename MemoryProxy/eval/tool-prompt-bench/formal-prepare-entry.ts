@@ -21,6 +21,7 @@ import {
 } from "./formal-runtime/index.js";
 import { resolveToolPromptVariant, type ToolPromptVariant } from "./variant-profiles.js";
 import type { CodexReasoningEffort } from "./codex-runner.js";
+import { FORMAL_PROMPT_FREEZE_TAG } from "./formal-cache-structure-gate.js";
 
 const FORMAL_RUNTIME_NAMESPACE = "tdai-task1-formal-runtime-v1";
 
@@ -245,10 +246,20 @@ export async function prepareFormalCampaignFromSources(
   )))(freeze);
   const gitCommit = dependencies.resolveGitCommit ?? resolveGitCommit;
   const codeCommit = commit("codeRef", gitCommit(repositoryRoot, input.codeRef ?? "HEAD"));
+  const promptFreezeRef = input.promptFreezeRef ?? FORMAL_PROMPT_FREEZE_TAG;
   const promptFreezeCommit = commit(
     "promptFreezeRef",
-    gitCommit(repositoryRoot, input.promptFreezeRef ?? "HEAD"),
+    gitCommit(repositoryRoot, promptFreezeRef),
   );
+  if (promptFreezeRef !== FORMAL_PROMPT_FREEZE_TAG) {
+    const canonicalPromptFreezeCommit = commit(
+      FORMAL_PROMPT_FREEZE_TAG,
+      gitCommit(repositoryRoot, FORMAL_PROMPT_FREEZE_TAG),
+    );
+    if (promptFreezeCommit !== canonicalPromptFreezeCommit) {
+      throw new Error(`promptFreezeRef must resolve to ${FORMAL_PROMPT_FREEZE_TAG}`);
+    }
+  }
 
   return prepareFormalCampaign({
     source,
