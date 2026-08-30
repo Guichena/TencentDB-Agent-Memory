@@ -190,7 +190,16 @@ export function createCodeGraphRoutes(deps: CodeGraphRouteDeps): Hono {
     const branch = typeof body.branch === "string" && body.branch ? body.branch : "main";
     const repoName = typeof body.repo_name === "string" ? body.repo_name : undefined;
 
-    const { row, existed } = cgService.create({
+    const formalReady = body.formal_ready === true;
+    const formalAssetId = body.formal_asset_id;
+    if (formalReady && process.env.TDAI_FORMAL_PREFLIGHT_ENABLED !== "1") {
+      return c.json(wrapError(403, "formal preflight Code Graph shells are disabled"), 403);
+    }
+    if (formalReady && !isValidIdSegment(formalAssetId)) {
+      return c.json(wrapError(400, "formal_asset_id is required for a formal preflight shell"), 400);
+    }
+
+    const createInput = {
       service_id: idFields.service_id,
       team_id: idFields.team_id,
       repo_url: repoUrl,
@@ -200,7 +209,10 @@ export function createCodeGraphRoutes(deps: CodeGraphRouteDeps): Hono {
       user_id: idFields.user_id,
       agent_id: idFields.agent_id,
       task_id: idFields.task_id,
-    });
+    };
+    const { row, existed } = formalReady
+      ? cgService.createFormalReadyShell(createInput, formalAssetId as string)
+      : cgService.create(createInput);
 
     // Persist service_url (tools self-discovery base; resource selected via
     // knowledge_id in request body, so the URL is service-level, not

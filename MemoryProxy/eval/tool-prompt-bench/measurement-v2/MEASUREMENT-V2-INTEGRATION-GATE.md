@@ -33,7 +33,7 @@
 - Selection Contract canonical SHA-256：`4c4cad017f8326ed3f57b7bf571a8df97b973a3bf8e94f242779fc0fc6cc763c`
 - Provisional manifest canonical SHA-256：`348c14b20082b56566ac9829a8b56b49771954fd4c3c6d278e2159826a3f293c`
 - Provisional manifest file SHA-256：`dd771bffe67c500d05bc7ec596a9a17e65790b9c603eb50574ebbfa4278cba79`
-- Dev restore plan canonical SHA-256：`487282065c7cea60c98638a2932022dc0d75dc66869f44fec14bbdf955be15fc`
+- Dev restore plan canonical SHA-256：`6a15b1981ecf506c9650e2dd9d918bc63cf18b39c79f3da0849d279d61c24b0d`
   - actions：318
   - requirements：209
   - visible assets：284

@@ -90,7 +90,7 @@ git -C $ExecutionRoot rev-parse 'task1-data-formal-v1.1^{}'
 
 - Node.js 必须是 22；脚本在任何写操作或服务数据调用前校验。
 - `TDAI_FORMAL_ASSET_IMPORT_ENABLED=1` 必须在 MemoryCore 进程启动前设置；源码在构造 gateway dependencies 时读取它。冻结 L0/L1/L2 都通过这个默认关闭的 seam 直接 seed，L0 不走公开 `/conversation/add`，因此不会触发 embedding、quota、`notifyPipeline` 或后台 L1/L2/L3 派生。
-- MemoryKnowledge 必须以 `KNOWLEDGE_AUTO_SYNC_ENABLED=false` 启动。脚本不轮询、不重试异步建图。`Restore` 成功后会停在 `wait-for-knowledge-ready`；用户确认全部可见 code-graph 已为 `ready` 后，在同一服务实例、同一数据栈和同一 RunRoot 上执行 `Inspect`。
+- MemoryKnowledge 必须以 `KNOWLEDGE_AUTO_SYNC_ENABLED=false` 和 `TDAI_FORMAL_PREFLIGHT_ENABLED=1` 启动。R05 通过默认关闭的 formal-ready shell 模式只恢复任务一需要的 Code Graph 元数据与可见性，不 clone/index 仓库正文；同 Team、同仓库的不同冻结 Knowledge 资产仍使用 formal asset id 保持为不同 runtime shell。`Restore` 成功后会停在 `wait-for-knowledge-ready`；用户确认全部可见 code-graph 已为 `ready` 后，在同一服务实例、同一数据栈和同一 RunRoot 上执行 `Inspect`。
 - `TDAI_FORMAL_PREFLIGHT_ENABLED=1` 必须在 MemoryProxy 进程启动前设置；preflight route 的默认依赖在模块加载时读取它。
 - MemoryProxy 必须以实际 config、`--tool-prompt-profile legacy --experiment-read-only` 启动。
 - MemoryCore `/health` 必须为 `status=ok`，并报告 vector store 可用；MemoryKnowledge `/health` 必须为 `status=ok`。R05 不要求 embedding service：正式资产由默认关闭的导入 seam 精确恢复，任务一也不评价向量召回质量。本地推荐配置可保持 `embedding.provider=none`，避免引入无关模型调用或外部服务差异。
@@ -155,6 +155,7 @@ $env:KNOWLEDGE_DB_PATH = Join-Path $StackRoot "knowledge\knowledge.db"
 $env:KNOWLEDGE_PUBLIC_BASE_URL = "http://127.0.0.1:8421/v3"
 $env:KNOWLEDGE_AUTO_SYNC_ENABLED = "false"
 $env:KNOWLEDGE_CLICKHOUSE_ENABLED = "false"
+$env:TDAI_FORMAL_PREFLIGHT_ENABLED = "1"
 Set-Location (Join-Path $ExecutionRoot "MemoryKnowledge")
 npm run dev
 ```
@@ -233,7 +234,7 @@ $env:TDAI_EVAL_USER_KEY = "<仅在当前终端输入>"
 服务启动时必须额外满足：
 
 - MemoryCore：`TDAI_FORMAL_ASSET_IMPORT_ENABLED=1`，仅开放 R05 的 L0/L1/L2 seed seam。
-- MemoryKnowledge：`KNOWLEDGE_AUTO_SYNC_ENABLED=false`；preflight 要求 scheduler disabled/idle，并逐个确认可见 code-graph 为 `ready`。
+- MemoryKnowledge：`KNOWLEDGE_AUTO_SYNC_ENABLED=false`、`TDAI_FORMAL_PREFLIGHT_ENABLED=1`；preflight 要求 scheduler disabled/idle，并逐个确认 formal-ready shell 为 `ready`。该模式不恢复或评价 Knowledge 正文。
 - MemoryProxy：`TDAI_FORMAL_PREFLIGHT_ENABLED=1`，并用 `--experiment-read-only` 启动。
 - MemoryProxy health：`extractionDisabled=true`、`tdaiL0WriteDisabled=true`、`skillLlmWriteDisabled=true`、`analyseMarkerDisabled=true`、`ready=true`。
 - MemoryProxy 仍使用现有官方 ChatGPT Codex endpoint 和 client-passthrough 登录；不改 `auth.json`，不 login/logout。
@@ -287,7 +288,7 @@ $env:TDAI_EVAL_USER_KEY = "<只在当前终端输入>"
 
 1. Node 22、代码/数据 worktree clean、annotated data tag、冻结 checkout、config/本地依赖。
 2. 三服务 health 与 MemoryCore auth 映射；这些检查在创建输出目录、恢复资产之前完成。
-3. create-new restore plan；在 restore 前独立断言 canonical `planSha256=487282065c7cea60c98638a2932022dc0d75dc66869f44fec14bbdf955be15fc`、318 actions、209 requirements、284 assets，然后只恢复一次 Dev 资产。
+3. create-new restore plan；在 restore 前独立断言 canonical `planSha256=6a15b1981ecf506c9650e2dd9d918bc63cf18b39c79f3da0849d279d61c24b0d`、318 actions、209 requirements、284 assets，然后只恢复一次 Dev 资产。
 4. restore 后独立断言外层 `operation=restore`、`verification=unverified`、`formalMetricEligible=false`、`readyForFormalMeasurement=false`，以及内层 receipt `complete=true`、318 actions、209 requirements；adapter 不能自我授信。
 5. `Restore` 只生成冻结登记表中的 12 条 V0 Smoke PrepareOnly；在退出前断言精确 case 集合、`repeat=1`、非空且唯一的 `run_id`/`session_id`，不执行任何模型命令。
 6. `Restore` 写 create-new handoff 并停在 `wait-for-knowledge-ready`。等待期间不运行脚本，不重复 restore。
@@ -328,7 +329,7 @@ npm run eval:tool-prompt:formal:build-restore-plan -- `
 成功输出必须精确等于：
 
 ```text
-planSha256    487282065c7cea60c98638a2932022dc0d75dc66869f44fec14bbdf955be15fc
+planSha256    6a15b1981ecf506c9650e2dd9d918bc63cf18b39c79f3da0849d279d61c24b0d
 actions       318
 requirements  209
 assets         284
@@ -354,7 +355,7 @@ restore 顺序由冻结 plan 决定；不重试、不回滚、不启动模型。
 
 ```text
 operation = restore
-planSha256 = 487282065c7cea60c98638a2932022dc0d75dc66869f44fec14bbdf955be15fc
+planSha256 = 6a15b1981ecf506c9650e2dd9d918bc63cf18b39c79f3da0849d279d61c24b0d
 verification = unverified
 formalMetricEligible = false
 readyForFormalMeasurement = false

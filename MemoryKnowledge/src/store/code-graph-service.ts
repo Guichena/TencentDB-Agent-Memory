@@ -138,6 +138,37 @@ export class CodeGraphService {
     return { row, existed };
   }
 
+  /**
+   * Create a metadata-only Code Graph shell for the formal tool-routing bench.
+   *
+   * Task 1 stops after the model reaches the correct Knowledge tool, so cloning
+   * and indexing repository content would add an unrelated network/build input.
+   * The formal asset id is used only as a deterministic uniqueness key; the
+   * original repository URL and display name remain intact for prompt rendering.
+   * The HTTP route exposing this method is disabled unless the dedicated formal
+   * preflight environment flag was present when the service was started.
+   */
+  createFormalReadyShell(
+    params: CreateCodeGraphParams,
+    formalAssetId: string,
+  ): { row: CodeGraphRow; existed: boolean } {
+    const { row, existed } = this.store.createCodeGraph({
+      ...params,
+      branch: `task1-formal/${formalAssetId}`,
+    });
+    if (!existed) {
+      this.store.updateCodeGraphStatus(row.service_id, row.code_graph_id, {
+        status: "ready",
+        internal_status: null,
+        sync_error: null,
+      });
+    }
+    return {
+      row: this.store.getCodeGraphById(row.service_id, row.code_graph_id) ?? row,
+      existed,
+    };
+  }
+
   /** Persist service_url for a code-graph. Returns updated row or null. */
   updateServiceUrl(serviceId: string, codeGraphId: string, serviceUrl: string): CodeGraphRow | null {
     this.store.updateCodeGraphStatus(serviceId, codeGraphId, { service_url: serviceUrl });

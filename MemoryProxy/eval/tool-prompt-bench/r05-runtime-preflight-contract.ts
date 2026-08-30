@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 export const R05_FROZEN_RESTORE_PLAN = Object.freeze({
-  planSha256: "487282065c7cea60c98638a2932022dc0d75dc66869f44fec14bbdf955be15fc",
+  planSha256: "6a15b1981ecf506c9650e2dd9d918bc63cf18b39c79f3da0849d279d61c24b0d",
   actionCount: 318,
   requirementCount: 209,
   assetCount: 284,

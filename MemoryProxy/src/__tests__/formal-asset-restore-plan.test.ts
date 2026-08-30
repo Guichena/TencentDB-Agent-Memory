@@ -121,6 +121,17 @@ describe("formal asset restore plan", () => {
     expect(endpoints.has("/v3/meta/team-member/add")).toBe(false);
     expect(endpoints.has("/v3/meta/team-member/get")).toBe(true);
 
+    const codeGraphCreates = first.actions.filter((action) => action.endpoint === "/v3/code-graph/create");
+    expect(codeGraphCreates.length).toBeGreaterThan(0);
+    expect(codeGraphCreates.every((action) => action.body.formal_ready === true)).toBe(true);
+    expect(codeGraphCreates.map((action) => action.body.formal_asset_id)).toEqual(
+      expect.arrayContaining(
+        first.assets
+          .filter((asset) => asset.family === "knowledge" && asset.subtype === "code_graph")
+          .map((asset) => asset.formalAssetId),
+      ),
+    );
+
     expect(first.requirements.some((requirement) => requirement.kind === "space_service_mapping")).toBe(true);
     expect(first.requirements.some((requirement) => requirement.kind === "memory_l1_import")).toBe(true);
     expect(first.requirements.some((requirement) => requirement.kind === "memory_l2_import")).toBe(true);

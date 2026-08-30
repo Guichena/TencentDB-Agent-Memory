@@ -645,7 +645,12 @@ export function compileFormalAssetRestorePlan(input: {
           agent_id: runtimeRef("runtime_agent_id", owner.agentId, actionId("agent-create", owner.agentId)),
           ...(value.type === "wiki"
             ? { name: value.name }
-            : { repo_url: value.repoUrl, repo_name: value.name }),
+            : {
+              repo_url: value.repoUrl,
+              repo_name: value.name,
+              formal_ready: true,
+              formal_asset_id: value.assetId,
+            }),
         },
         captures: {
           runtimeAssetId: value.type === "wiki" ? "response.data.wiki_id" : "response.data.code_graph_id",
