@@ -3,9 +3,30 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { createToolExecutionTraceSinkFromEnv } from "./tool-execution-trace-sink.js";
+import {
+  closeServerAndSealTrace,
+  createToolExecutionTraceSinkFromEnv,
+} from "./tool-execution-trace-sink.js";
 
 describe("MemoryKnowledge tool execution trace sink", () => {
+  it("does not seal until the Knowledge HTTP server has drained", async () => {
+    const order: string[] = [];
+    let finishClose: ((error?: Error) => void) | undefined;
+    const closing = closeServerAndSealTrace({
+      close: (callback) => {
+        order.push("close-started");
+        finishClose = callback;
+      },
+    }, {
+      markFinished: () => order.push("sealed"),
+    });
+
+    expect(order).toEqual(["close-started"]);
+    finishClose?.();
+    await closing;
+    expect(order).toEqual(["close-started", "sealed"]);
+  });
+
   it("uses its own file and the same ready/begin/completion contract", () => {
     const traceRoot = mkdtempSync(join(tmpdir(), "task1-knowledge-trace-"));
     const sink = createToolExecutionTraceSinkFromEnv(

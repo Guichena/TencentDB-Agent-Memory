@@ -11,6 +11,7 @@ import { initTelemetry } from "./telemetry.js";
 initTelemetry();
 
 import { Hono } from "hono";
+import { randomUUID } from "node:crypto";
 import { serve } from "@hono/node-server";
 import { swaggerUI } from "@hono/swagger-ui";
 import { readFileSync } from "node:fs";
@@ -37,17 +38,22 @@ import type {
   KnowledgeToolsCompletionObserver,
   KnowledgeToolsEntryObserver,
 } from "./tools-entry-observer.js";
-import { createToolExecutionTraceSinkFromEnv } from "./tool-execution-trace-sink.js";
+import {
+  closeServerAndSealTrace,
+  createToolExecutionTraceSinkFromEnv,
+} from "./tool-execution-trace-sink.js";
 
 const log = createLogger("server");
 
 export interface CreateAppDeps {
   toolsEntryObserver?: KnowledgeToolsEntryObserver;
   toolsCompletionObserver?: KnowledgeToolsCompletionObserver;
+  serverInstanceId?: string;
 }
 
 export function createApp(deps: CreateAppDeps = {}) {
   const config = loadConfig();
+  const serverInstanceId = deps.serverInstanceId ?? randomUUID();
   const knowledgeTelemetry = createKnowledgeTelemetry(config.clickhouse);
 
   // Initialize DB + knowledge module
@@ -67,7 +73,7 @@ export function createApp(deps: CreateAppDeps = {}) {
   app.onError(errorHandler);
 
   // Health (no prefix)
-  app.route("/", createHealthRoutes());
+  app.route("/", createHealthRoutes({ serverInstanceId }));
 
   // /v3 prefix applied once here — routes define paths without prefix
   const api = new Hono();
@@ -132,6 +138,7 @@ async function startServer(): Promise<void> {
       ? {
         toolsEntryObserver: toolExecutionTraceSink.entryObserver,
         toolsCompletionObserver: toolExecutionTraceSink.completionObserver,
+        serverInstanceId: toolExecutionTraceSink.processInstanceId,
       }
       : {}),
   });
@@ -153,9 +160,16 @@ async function startServer(): Promise<void> {
     if (shuttingDown) return;
     shuttingDown = true;
     log.info(`Received ${signal}, shutting down`);
-    toolExecutionTraceSink.markFinished();
+    try {
+      await closeServerAndSealTrace(server, toolExecutionTraceSink);
+    } catch (error) {
+      // Do not seal a trace when requests may still be in flight.
+      log.warn("Knowledge HTTP drain failed; trace remains unsealed", {
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
     await knowledgeTelemetry.shutdown();
-    server.close(() => process.exit(0));
+    process.exit(0);
   };
   process.once("SIGTERM", () => void shutdown("SIGTERM"));
   process.once("SIGINT", () => void shutdown("SIGINT"));

@@ -36,7 +36,10 @@ import { initSystemUsers } from "./systemUser.js";
 import { checkConnectivity } from "./connectivity.js";
 import { initProxyStorage, getEffectiveBackend } from "./storage/factory.js";
 import { flushPendingWrites, pendingWriteCount } from "./tdai/pending-writes.js";
-import { createToolExecutionTraceSinkFromEnv } from "./tool-execution-trace-sink.js";
+import {
+  closeServerAndSealTrace,
+  createToolExecutionTraceSinkFromEnv,
+} from "./tool-execution-trace-sink.js";
 
 const overrides = parseArgv(process.argv);
 const configFilePath = resolve(overrides.configFile || "config.yaml");
@@ -164,7 +167,7 @@ log.info("server.starting", {
     : "disabled",
 });
 
-serve(
+const server = serve(
   {
     fetch: app.fetch,
     hostname: config.server.host,
@@ -188,7 +191,12 @@ serve(
 // k8s 默认 terminationGracePeriodSeconds=30s，10s 留出充足余量。
 async function gracefulShutdown(signal: "SIGTERM" | "SIGINT"): Promise<void> {
   log.info("server.shutdown", { signal });
-  toolExecutionTraceSink.markFinished();
+  try {
+    await closeServerAndSealTrace(server, toolExecutionTraceSink);
+  } catch (error) {
+    // A failed drain must not produce a misleading complete trace seal.
+    log.warn("server.shutdown.http_drain_failed", { error: String(error) });
+  }
   const pending = pendingWriteCount();
   if (pending > 0) {
     log.info("server.shutdown.flush_l0", { pending });

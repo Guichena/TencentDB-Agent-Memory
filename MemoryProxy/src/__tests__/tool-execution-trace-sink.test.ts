@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import {
+  closeServerAndSealTrace,
   createToolExecutionTraceSinkFromEnv,
   TOOL_OBSERVER_EVENT_SCHEMA,
 } from "../tool-execution-trace-sink.js";
@@ -17,6 +18,24 @@ function readJsonl(filePath: string): Array<Record<string, unknown>> {
 }
 
 describe("MemoryProxy tool execution trace sink", () => {
+  it("waits for the HTTP server to drain before writing the final seal", async () => {
+    const order: string[] = [];
+    let finishClose: ((error?: Error) => void) | undefined;
+    const closing = closeServerAndSealTrace({
+      close: (callback) => {
+        order.push("close-started");
+        finishClose = callback;
+      },
+    }, {
+      markFinished: () => order.push("sealed"),
+    });
+
+    expect(order).toEqual(["close-started"]);
+    finishClose?.();
+    await closing;
+    expect(order).toEqual(["close-started", "sealed"]);
+  });
+
   it("is completely disabled unless both formal trace variables are present", () => {
     const traceRoot = mkdtempSync(join(tmpdir(), "task1-proxy-trace-disabled-"));
     const sink = createToolExecutionTraceSinkFromEnv({

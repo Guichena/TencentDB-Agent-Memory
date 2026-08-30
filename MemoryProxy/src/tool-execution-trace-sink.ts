@@ -61,6 +61,28 @@ export interface ToolExecutionTraceSinkDependencies {
   appendLine?: (filePath: string, line: string) => void;
 }
 
+export interface DrainingHttpServer {
+  close(callback: (error?: Error) => void): unknown;
+}
+
+/** Stop new HTTP work and wait for in-flight observers before sealing JSONL. */
+export async function closeServerAndSealTrace(
+  server: DrainingHttpServer,
+  sink: Pick<ToolExecutionTraceSink, "markFinished">,
+): Promise<void> {
+  await new Promise<void>((resolve, reject) => {
+    try {
+      server.close((error?: Error) => {
+        if (error) reject(error);
+        else resolve();
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+  sink.markFinished();
+}
+
 /**
  * Optional formal-evaluation evidence sink. Production stays untouched unless
  * both environment variables are set. Every failure is fail-open and leaves a
