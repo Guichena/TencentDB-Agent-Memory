@@ -8,6 +8,7 @@ MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/adapted/**
 MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/diffs/** text eol=lf
 MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T18/licenses/** -text
 MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T19/** text eol=lf
+MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T19/repos/tan-yong-sheng__ai-vision-mcp/.claude/skills/access-control-policy-design/SKILL.md -text
 MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T20/** text eol=lf
 MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T19/**/*.gz -text
 MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T20/**/*.gz -text
