@@ -71,7 +71,7 @@ describe("Task 1 formal-v2 integrated contract", () => {
     expect(contract.publicCases).toHaveLength(800);
     expect(contract.privateAnnotations).toHaveLength(800);
     expect(contract.pairs).toHaveLength(300);
-  }, 30_000);
+  }, 120_000);
 
   it("rejects formal-v2 count drift directly", () => {
     const contract = JSON.parse(readFileSync(resolve(root, "registry/contracts/formal-v2.json"), "utf8")) as FormalWorldContract;
@@ -81,7 +81,7 @@ describe("Task 1 formal-v2 integrated contract", () => {
     expect(validateFormalV2Freeze(drifted)).toEqual(
       expect.arrayContaining([expect.stringMatching(/Cases expected/)]),
     );
-  }, 30_000);
+  }, 120_000);
 });
 
 describe("Task 1 formal-v1 integrated contract", () => {

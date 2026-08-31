@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { compileFormalProvenanceSummary, compileFormalSplitInputs } from "../../worlds/formal-compile.js";
 import {
@@ -324,6 +324,7 @@ function firstText(item: Record<string, unknown>, keys: readonly string[]): stri
 async function validateStagedFreeze(datasetRoot: string, teamIds: readonly string[]): Promise<string[]> {
   const errors: string[] = [];
   const batchOwners = new Map<string, string>();
+  const repositoryRoot = resolve(datasetRoot, "../../../..");
   for (const teamId of teamIds) {
     const path = resolve(datasetRoot, "staging", "teams", teamId, "team-fragment.json");
     let fragment: StagedFragment;
@@ -353,11 +354,26 @@ async function validateStagedFreeze(datasetRoot: string, teamIds: readonly strin
       const sourcePath = firstText(item, ["path", "upstreamPath", "sourcePath"]);
       const license = firstText(item, ["license", "license_spdx"]);
       const hash = firstText(item, ["rawSha256", "raw_sha256", "rawFileSha256", "sha256"]);
+      const localPath = firstText(item, ["localPath", "rawPath", "copiedTo"]);
       if (!repository) errors.push(`${prefix}: repository is required`);
       if (!revision || !GIT_COMMIT.test(revision)) errors.push(`${prefix}: pinned 40-char revision is required`);
       if (!sourcePath) errors.push(`${prefix}: source path is required`);
       if (!license) errors.push(`${prefix}: license is required`);
       if (!hash || !SHA256.test(hash)) errors.push(`${prefix}: source file sha256 is required`);
+      if (localPath && hash && SHA256.test(hash)) {
+        const absolutePath = resolve(repositoryRoot, localPath);
+        const repositoryRelative = relative(repositoryRoot, absolutePath);
+        if (repositoryRelative.startsWith("..") || resolve(repositoryRoot, repositoryRelative) !== absolutePath) {
+          errors.push(`${prefix}: local source path escapes repository root`);
+        } else {
+          try {
+            const actual = createHash("sha256").update(await readFile(absolutePath)).digest("hex");
+            if (actual !== hash) errors.push(`${prefix}: local source sha256 mismatch`);
+          } catch (error) {
+            errors.push(`${prefix}: cannot read local source: ${String(error)}`);
+          }
+        }
+      }
     }
   }
   return errors;
