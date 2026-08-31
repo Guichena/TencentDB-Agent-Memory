@@ -1024,10 +1024,10 @@
     "Task 1 stops after acquiring the target asset and does not execute or score the requested coding work."
   ],
   "artifact_sha256": {
-    "team_fragment": "625ccc2999ab18e4cc32682ef9acabdb2a28afce8cad5b92fe7231e8e20ae837",
-    "memory": "98a239d1caac4888e9de3aba5ffbfa542c6945f2d45a6337123f46c9e502650f",
-    "skills": "4c4574fcc485917a223b19f23bc8b85c7c3981d3cec5c6f472684c6c300331c8",
-    "knowledge": "d3e0b299ed4c2fc4a9c041bd51fe2e7b282e89882816907720d504d1e9ebe903",
-    "review": "9dbed424d6bd10342a49db7fa995034a3a0dd529ad9c95305ee6962febc81aef"
+    "team_fragment": "a4b33640856141424a62d825e9a7a3d0f33e9bfd19f5df424f7879e3c38400ea",
+    "memory": "b53cae4964dacbd184a4fd57664a054c050cadbb63ed24dbf628b38be444d49e",
+    "skills": "099bd85892a7c7bcf8945c15c28ade6e82b863cbc584bec658d24b37c1ce68e3",
+    "knowledge": "31747481cd4728fa58775d6ef4e8551bd8342908a418fa54217c2175a0d663a1",
+    "review": "b93015c0d3f97b16cc332024e31e44c7a74812b6da315b7792aa05fe9021ed6c"
   }
 }
