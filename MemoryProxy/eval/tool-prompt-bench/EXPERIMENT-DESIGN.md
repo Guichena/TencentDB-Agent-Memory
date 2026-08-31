@@ -2,7 +2,7 @@
 
 | 项目 | 当前设置 |
 |---|---|
-| 状态 | Formal v2.1 数据已冻结；800 例 Measurement-v2 common-base 正在完成最终零模型 Gate，随后等待用户执行 R05 blank-stack preflight |
+| 状态 | Formal v2.1 数据与 800 例 Measurement-v2 common-base 的最终零模型 Gate 已通过；等待用户在同一提交上执行 R05 blank-stack preflight |
 | 当前分支 | `codex/task1-common-base-formal-v2.1` |
 | 数据合同 | annotated tag `task1-data-formal-v2.1`（800 case，私有 Gold/Pair 与 provider 输入隔离） |
 | 代码冻结 | `task1-code-freeze`；V0、V0-C、V1a、V1、V2、V3 已具备生产 profile |

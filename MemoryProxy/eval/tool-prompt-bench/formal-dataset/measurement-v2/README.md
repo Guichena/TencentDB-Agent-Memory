@@ -120,6 +120,12 @@ formalCampaignReady=false
 formalMetricEligible=false
 ```
 
+These values are the stage-local output of the data-only DS06 builder and are
+kept as provenance; they do not describe the later common-base integration
+status. The current cross-stage decision is recorded in
+`../../reports/gates/STAGE-B2-800-RUNTIME-FREEZE-GATE.md` and
+`../../reports/TASK1-STAGE-ABC-AUDIT-20260831.md`.
+
 Tag eligibility is explicit:
 
 - `task1-data-core-formal-v1`: immutable data-core audit point.

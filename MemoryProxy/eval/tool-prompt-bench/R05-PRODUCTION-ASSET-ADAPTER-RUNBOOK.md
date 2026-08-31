@@ -301,7 +301,7 @@ $env:TDAI_EVAL_USER_KEY = "<只在当前终端输入>"
 8. 独立 evaluator 生成六项全 pass 的 create-new receipt。
 9. 再次校验 config hash、三服务 health、auth mapping，以及 MemoryProxy/MemoryKnowledge 实例没有漂移。
 10. 写 summary 前再次断言 `RepositoryRoot`/`FrozenDataRoot` clean、代码 HEAD、数据 HEAD、annotated tag object 和 peeled commit 均与 Restore 阶段一致。
-11. 只有 12/12 receipt 为 `ready=true` 才以 `FileMode.CreateNew` 写 `r05-runtime-preflight-summary.json`；summary 保存 handoff、plan/restore 合同、plan/restore/manifest/inspect/receipt 文件 hash、冻结 Dev Smoke selection hash、12 个 case ID 和 final Git locks。
+11. 只有 40/40 receipt 为 `ready=true` 才以 `FileMode.CreateNew` 写 `r05-runtime-preflight-summary.json`；summary 保存 handoff、plan/restore 合同、plan/restore/manifest/inspect/receipt 文件 hash、冻结 Dev Smoke selection hash、40 个 case ID 和 final Git locks。
 
 输出结构固定为：
 
@@ -311,9 +311,9 @@ $env:TDAI_EVAL_USER_KEY = "<只在当前终端输入>"
 ├── evidence/
 │   ├── dev-restore-plan.json
 │   ├── dev-restore-observations.json
-│   ├── inspect/<run-id>.json          # 12
-│   └── preflight/<run-id>.json        # 12
-├── prepared/<dataset>/<campaign>/.../run-manifest.json  # 12
+│   ├── inspect/<run-id>.json          # 40
+│   └── preflight/<run-id>.json        # 40
+├── prepared/<dataset>/<campaign>/.../run-manifest.json  # 40
 └── r05-runtime-preflight-summary.json
 ```
 
