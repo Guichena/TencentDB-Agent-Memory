@@ -2,7 +2,7 @@
   "schema_version": "task1.formal_v2_1_freeze_report.v1",
   "status": "passed",
   "dataset_revision": "formal-v2.1",
-  "dataset_content_commit": "6db143f770f78fd98925cb1395cba1909d971fcb",
+  "dataset_content_commit": "0bae5053b1910a66b026dcb1b63a93c32abfe502",
   "freeze_tag": "task1-data-formal-v2.1",
   "base_revision": "formal-v2",
   "scope": "source packaging, checkout byte reproducibility, and fail-closed local source hash validation; dataset semantics unchanged",
