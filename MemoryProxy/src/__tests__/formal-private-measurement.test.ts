@@ -11,20 +11,20 @@ import {
 } from "../../eval/tool-prompt-bench/formal-runtime/index.js";
 
 describe("Task 1 private Measurement boundary", () => {
-  it("loads only Measurement-v2 Gold, Pair, and the 21 runtime contracts", () => {
+  it("loads only Measurement-v2 Gold, Pair, and the 22 runtime contracts", () => {
     const freeze = resolveFormalDataFreeze({ repositoryRoot: process.cwd() });
     const data = loadPrivateMeasurementSplit({ freeze, split: "dev" });
 
     expect(data).toMatchObject({
       split: "dev",
-      goldCount: 240,
-      pairCount: 90,
-      runtimeContractCount: 21,
+      goldCount: 320,
+      pairCount: 120,
+      runtimeContractCount: 22,
       hashes: {
-        manifestCanonicalSha256: "ff5384e0386079a1e16464063247520eae7ea4964b43c6b7a9972e38b2ba7da9",
-        goldCanonicalSha256: "8cfffec5c06b37b92b41cf95ee0d70333e9a2a7f6063145100b20ce753fe58c5",
-        pairCanonicalSha256: "72def9ee92733ad5b2bc33f40ff500a75abf748ccdf4703f6b8464678e508c31",
-        runtimeContractsCanonicalSha256: "42c1f5847fe88ed70ec9ce35217dcd8cfdc90fa8a7dd9a53e45b50481204b96e",
+        manifestCanonicalSha256: "a9756066d59ea2a972fb48910bf8099fd218a4541bf8451393114cd5feeb13bc",
+        goldCanonicalSha256: "720d5ee06bebb6edb5b15698d605590bf917998eedf6f448692b1fdf16bb3657",
+        pairCanonicalSha256: "a5a5e1e8b2db77c309110cca514024a67cbbf66f15d9744002fc2e5886dc5e9d",
+        runtimeContractsCanonicalSha256: "3bd16cf3563711ce08df9da9d71d52db8dffdc200715265b6812961d63dc73d1",
       },
       formalMetricEligible: false,
     });

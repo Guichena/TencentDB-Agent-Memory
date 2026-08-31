@@ -12,7 +12,7 @@ import { buildFormalPairEvidenceV2 } from "../formal-pair-evidence-builder.js";
 
 const REPOSITORY_ROOT = fileURLToPath(new URL("../../../../../", import.meta.url));
 const FORMAL_CONTRACT_PATH = fileURLToPath(new URL(
-  "../../formal-dataset/registry/contracts/formal-v1.json",
+  "../../formal-dataset/registry/contracts/formal-v2.json",
   import.meta.url,
 ));
 
@@ -63,17 +63,17 @@ describe("buildFormalPairEvidenceV2", () => {
       provider: "openai",
       apiProtocol: "responses-v1",
       adapterVersion: "memory-proxy-provider-observer-v1",
-      assetSnapshotSha256: "739013b732af88ff3df1ba5e24b21ce7e03f259e8acc3c4bc40ab707121bef69",
+      assetSnapshotSha256: "61223e7e3623f511c05ecb29faed67d577d468bfb20c14e3780b51b4621a94ab",
       expectedRepeatIds: ["r01"],
-      frozenPairSetRevision: "task1-data-formal-v1.1",
+      frozenPairSetRevision: "task1-data-formal-v2.1",
       frozenPairSetSha256: input.privateMeasurement.hashes.pairCanonicalSha256,
       strictPairExactEnabled: false,
       scoringPolicySha256: "abd2448c425839fcc812f2e335acd86b1bfc22515366f40b8ae16e8e94fb7153",
     });
-    expect(result.validatedPairs).toHaveLength(90);
-    expect(result.campaign.expectedPairIds).toHaveLength(90);
-    expect(result.campaign.frozenPairSlotManifest.slots).toHaveLength(90);
-    expect(result.runEvidence).toHaveLength(240);
+    expect(result.validatedPairs).toHaveLength(120);
+    expect(result.campaign.expectedPairIds).toHaveLength(120);
+    expect(result.campaign.frozenPairSlotManifest.slots).toHaveLength(120);
+    expect(result.runEvidence).toHaveLength(320);
     expect(result.campaign.frozenPairSlotEvidenceRootSha256)
       .toBe(result.campaign.frozenPairSlotManifest.canonicalSha256);
   });
@@ -260,10 +260,10 @@ describe("buildFormalPairEvidenceV2", () => {
       expectedRepeatIds: ["r01", "r02", "r03"],
       expectedPairIds: expect.any(Array),
     });
-    expect(result.validatedPairs).toHaveLength(150);
-    expect(result.campaign.expectedPairIds).toHaveLength(150);
-    expect(result.campaign.frozenPairSlotManifest.slots).toHaveLength(150);
-    expect(result.runEvidence).toHaveLength(1_200);
+    expect(result.validatedPairs).toHaveLength(180);
+    expect(result.campaign.expectedPairIds).toHaveLength(180);
+    expect(result.campaign.frozenPairSlotManifest.slots).toHaveLength(180);
+    expect(result.runEvidence).toHaveLength(1_440);
   });
 
   it("produces one canonical Pair input regardless of sealed run discovery order", () => {

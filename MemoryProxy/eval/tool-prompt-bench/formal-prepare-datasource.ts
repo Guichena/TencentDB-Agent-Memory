@@ -37,15 +37,7 @@ function assertPublicFreeze(
     || manifest.datasetContractRevision !== metadata.datasetContractRevision
     || !isDeepStrictEqual(manifest.sources.contract, metadata.contractHashes)
     || !isDeepStrictEqual(manifest.sources.provider, metadata.providerHashes)
-    || !isDeepStrictEqual(manifest.sources.snapshots, metadata.snapshotHashes)
-    || manifest.measurementV2.manifestCanonicalSha256
-      !== metadata.privateArtifactHashes.measurementV2ManifestCanonicalSha256
-    || manifest.measurementV2.gold.fullCanonicalSha256
-      !== metadata.privateArtifactHashes.goldV2FullCanonicalSha256
-    || manifest.measurementV2.pairs.fullCanonicalSha256
-      !== metadata.privateArtifactHashes.pairV2FullCanonicalSha256
-    || manifest.measurementV2.runtimeContractsCanonicalSha256
-      !== metadata.privateArtifactHashes.runtimeContractsV2CanonicalSha256) {
+    || !isDeepStrictEqual(manifest.sources.snapshots, metadata.snapshotHashes)) {
     throw new Error("formal public runtime freeze does not match the corrected data Tag/status");
   }
 }

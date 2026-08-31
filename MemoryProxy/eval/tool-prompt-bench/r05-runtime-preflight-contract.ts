@@ -3,29 +3,59 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 export const R05_FROZEN_RESTORE_PLAN = Object.freeze({
-  planSha256: "6a15b1981ecf506c9650e2dd9d918bc63cf18b39c79f3da0849d279d61c24b0d",
-  actionCount: 318,
-  requirementCount: 209,
-  assetCount: 284,
+  planSha256: "e8babf994edb93fbbc71f5e3ef8450536df3367b17003d279a11a7d5619c4bb4",
+  actionCount: 432,
+  requirementCount: 285,
+  assetCount: 386,
 } as const);
 
 export const R05_FROZEN_DEV_SMOKE = Object.freeze({
-  selectionSha256: "f300079fc408878cf2bf5921a9e6b3004ce9e5fa3034857221554c00a9a101ec",
+  selectionSha256: "523788fad4c50750049ea8efb53e9c4ce43d43d0b05de8696fd403e7efd68bee",
   caseIds: Object.freeze([
     "T01-MEMORY-006-P",
+    "T01-SKILL-010-P",
+    "T01-KNOWLEDGE-DECODER-005-P",
     "T01-MEMORY-006-N",
+    "T01-NATURAL-004",
     "T02-MEMORY-001-P",
-    "T02-NATURAL-001",
+    "T02-SKILL-007-P",
+    "T02-KNOWLEDGE-013-P",
+    "T02-SKILL-007-N",
+    "T02-NATURAL-009",
+    "T03-MEM-001-P",
     "T03-SKILL-001-P",
-    "T03-SKILL-001-N",
+    "T03-KNOW-001-P",
+    "T03-KNOW-001-N",
+    "T03-NAT-002",
+    "T04-MEM-001-P",
     "T04-SKILL-001-P",
-    "T04-NAT-001",
+    "T04-KNOW-001-P",
+    "T04-MEM-001-N",
+    "T04-NAT-006",
+    "T11-MEMORY-003-P",
+    "T11-SKILL-007-P",
     "T11-KNOWLEDGE-013-P",
-    "T11-KNOWLEDGE-013-N",
-    "T12-KNOWLEDGE-013-P",
-    "T12-NATURAL-001-N",
+    "T11-SKILL-007-N",
+    "T11-NATURAL-001-N",
+    "T12-MEMORY-006-P",
+    "T12-SKILL-007-P",
+    "T12-KNOWLEDGE-014-P",
+    "T12-KNOWLEDGE-014-N",
+    "T12-NATURAL-006-N",
+    "T17-MEM-01-P",
+    "T17-SKL-01-P",
+    "T17-KNW-01-P",
+    "T17-MEM-01-N",
+    "T17-NAT-02",
+    "T18-MEM-05-P",
+    "T18-SKL-06-P",
+    "T18-KNW-01-P",
+    "T18-SKL-06-N",
+    "T18-NAT-10",
   ] as const),
 } as const);
+
+const R05_DEV_SMOKE_COUNT = R05_FROZEN_DEV_SMOKE.caseIds.length;
 
 export interface R05RestorePlanSummary {
   readonly planSha256: typeof R05_FROZEN_RESTORE_PLAN.planSha256;
@@ -183,7 +213,7 @@ export function validateR05PreparedSmoke(
   const preregistration = record(rawPreregistration, "Dev Smoke preregistration");
   const caseIds = requireCount(
     preregistration.caseIds,
-    12,
+    R05_DEV_SMOKE_COUNT,
     "Dev Smoke preregistration caseIds",
   ).map((value, index) => nonBlank(value, `Dev Smoke caseIds[${index}]`));
   if (new Set(caseIds).size !== caseIds.length) {
@@ -194,17 +224,27 @@ export function validateR05PreparedSmoke(
     "Dev Smoke preregistration selectionContract",
   );
   requireLiteral(selection.split, "dev", "Dev Smoke preregistration split");
-  requireLiteral(selection.totalCases, 12, "Dev Smoke preregistration totalCases");
+  requireLiteral(
+    selection.totalCases,
+    R05_DEV_SMOKE_COUNT,
+    "Dev Smoke preregistration totalCases",
+  );
   requireLiteral(
     preregistration.sha256,
     R05_FROZEN_DEV_SMOKE.selectionSha256,
     "Dev Smoke preregistration sha256",
   );
   if (caseIds.some((caseId, index) => caseId !== R05_FROZEN_DEV_SMOKE.caseIds[index])) {
-    invalid("Dev Smoke preregistration must equal the exact frozen 12-case ordered set");
+    invalid(
+      `Dev Smoke preregistration must equal the exact frozen ${R05_DEV_SMOKE_COUNT}-case ordered set`,
+    );
   }
 
-  const manifests = requireCount(rawManifests, 12, "prepared Smoke manifests")
+  const manifests = requireCount(
+    rawManifests,
+    R05_DEV_SMOKE_COUNT,
+    "prepared Smoke manifests",
+  )
     .map((value, index) => record(value, `prepared Smoke manifest[${index}]`));
   const byCaseId = new Map<string, { runId: string; sessionId: string }>();
   const runIds = new Set<string>();
@@ -235,7 +275,11 @@ export function validateR05PreparedSmoke(
 
 export type R05RuntimePreflightContractCliArguments =
   | {
-    readonly mode: "plan" | "restore";
+    readonly mode: "plan";
+    readonly inputPath: string;
+  }
+  | {
+    readonly mode: "restore";
     readonly inputPath: string;
   }
   | {

@@ -40,13 +40,6 @@ export interface FormalDatasetMetadata {
     readonly hiddenFileSha256: string;
     readonly hiddenCanonicalSha256: string;
   };
-  /** Hashes copied from public status. Loading them never opens a private artifact. */
-  readonly privateArtifactHashes: {
-    readonly measurementV2ManifestCanonicalSha256: string;
-    readonly goldV2FullCanonicalSha256: string;
-    readonly pairV2FullCanonicalSha256: string;
-    readonly runtimeContractsV2CanonicalSha256: string;
-  };
   readonly formalMetricEligible: false;
 }
 
@@ -88,11 +81,11 @@ export function loadFormalDatasetMetadata(input: LoadFormalDatasetMetadataInput)
     throw new Error("dataset status must remain formalMetricEligible=false before Measurement");
   }
   const counts = record(status.target_counts, "dataset status.target_counts");
-  const artifacts = record(status.artifacts, "dataset status.artifacts");
+  const artifacts = record(status.formal_v2_artifacts, "dataset status.formal_v2_artifacts");
   const tagEligibility = record(status.tag_eligibility, "dataset status.tag_eligibility");
-  if (typeof tagEligibility[input.freeze.tag] !== "string"
-    || !(tagEligibility[input.freeze.tag] as string).startsWith("approved_data_contract_input")) {
-    throw new Error("dataset status does not approve the frozen v1.1 Tag");
+  if (tagEligibility[input.freeze.tag]
+    !== "approved_20_team_data_contract_input_with_verified_packaged_source_bytes") {
+    throw new Error("dataset status does not approve the frozen formal-v2.1 Tag");
   }
   return Object.freeze({
     datasetContractRevision: text(status.dataset_revision, "dataset status.dataset_revision"),
@@ -111,24 +104,18 @@ export function loadFormalDatasetMetadata(input: LoadFormalDatasetMetadataInput)
       pairs: count(counts.pairs, "target_counts.pairs"),
     }),
     contractHashes: Object.freeze({
-      fileSha256: hash(artifacts.contract_file_sha256, "artifacts.contract_file_sha256"),
-      canonicalSha256: hash(artifacts.contract_canonical_sha256, "artifacts.contract_canonical_sha256"),
+      fileSha256: hash(artifacts.contract_file_sha256, "formal_v2_artifacts.contract_file_sha256"),
+      canonicalSha256: hash(artifacts.contract_canonical_sha256, "formal_v2_artifacts.contract_canonical_sha256"),
     }),
     snapshotHashes: Object.freeze({
-      devCanonicalSha256: hash(artifacts.snapshot_dev_canonical_sha256, "artifacts.snapshot_dev_canonical_sha256"),
-      hiddenCanonicalSha256: hash(artifacts.snapshot_hidden_canonical_sha256, "artifacts.snapshot_hidden_canonical_sha256"),
+      devCanonicalSha256: hash(artifacts.snapshot_dev_canonical_sha256, "formal_v2_artifacts.snapshot_dev_canonical_sha256"),
+      hiddenCanonicalSha256: hash(artifacts.snapshot_hidden_canonical_sha256, "formal_v2_artifacts.snapshot_hidden_canonical_sha256"),
     }),
     providerHashes: Object.freeze({
-      devFileSha256: hash(artifacts.provider_dev_file_sha256, "artifacts.provider_dev_file_sha256"),
-      devCanonicalSha256: hash(artifacts.provider_dev_canonical_sha256, "artifacts.provider_dev_canonical_sha256"),
-      hiddenFileSha256: hash(artifacts.provider_hidden_file_sha256, "artifacts.provider_hidden_file_sha256"),
-      hiddenCanonicalSha256: hash(artifacts.provider_hidden_canonical_sha256, "artifacts.provider_hidden_canonical_sha256"),
-    }),
-    privateArtifactHashes: Object.freeze({
-      measurementV2ManifestCanonicalSha256: hash(artifacts.measurement_v2_manifest_canonical_sha256, "artifacts.measurement_v2_manifest_canonical_sha256"),
-      goldV2FullCanonicalSha256: hash(artifacts.gold_v2_full_canonical_sha256, "artifacts.gold_v2_full_canonical_sha256"),
-      pairV2FullCanonicalSha256: hash(artifacts.pair_v2_full_canonical_sha256, "artifacts.pair_v2_full_canonical_sha256"),
-      runtimeContractsV2CanonicalSha256: hash(artifacts.runtime_contracts_v2_canonical_sha256, "artifacts.runtime_contracts_v2_canonical_sha256"),
+      devFileSha256: hash(artifacts.provider_dev_file_sha256, "formal_v2_artifacts.provider_dev_file_sha256"),
+      devCanonicalSha256: hash(artifacts.provider_dev_canonical_sha256, "formal_v2_artifacts.provider_dev_canonical_sha256"),
+      hiddenFileSha256: hash(artifacts.provider_hidden_file_sha256, "formal_v2_artifacts.provider_hidden_file_sha256"),
+      hiddenCanonicalSha256: hash(artifacts.provider_hidden_canonical_sha256, "formal_v2_artifacts.provider_hidden_canonical_sha256"),
     }),
     formalMetricEligible: false as const,
   });

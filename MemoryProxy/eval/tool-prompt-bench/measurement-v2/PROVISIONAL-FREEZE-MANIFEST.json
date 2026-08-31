@@ -2,9 +2,9 @@
   "schemaVersion": "task1.candidate-base.v1",
   "status": "awaiting-r05",
   "formalData": {
-    "tag": "task1-data-formal-v1.1",
-    "tagObject": "6ba3a0e4098786882dd500f884823f2f8dfbb9d3",
-    "peeledCommit": "02620d8313dcb883b7a57c4c2edc8f4286eb4bc9"
+    "tag": "task1-data-formal-v2.1",
+    "tagObject": "6dcb766b0d9d831fe06cd45176da4d8d59cd0a78",
+    "peeledCommit": "a8ae02e376f07ea7baa6a13f66aa4fb560b95ce6"
   },
   "promptBaseline": {
     "tag": "task1-code-freeze",
@@ -13,7 +13,7 @@
   },
   "selectionContract": {
     "path": "MemoryProxy/eval/tool-prompt-bench/measurement-v2/SELECTION-CONTRACT.json",
-    "canonicalSha256": "4c4cad017f8326ed3f57b7bf571a8df97b973a3bf8e94f242779fc0fc6cc763c"
+    "canonicalSha256": "5dca2bf5df8cf0f1d6de1284934ed6c754ba4ff980ce7d59fc9ec576f25314f9"
   },
   "executionCohort": {
     "model": "gpt-5.6-luna",
@@ -35,5 +35,5 @@
     "runtimeConfigFileSha256": null
   },
   "modelRunsAtFreeze": 0,
-  "canonicalSha256": "348c14b20082b56566ac9829a8b56b49771954fd4c3c6d278e2159826a3f293c"
+  "canonicalSha256": "8967296f3c21b43b092e5d9e1c0b3b4749842baff2f8a4d170632cb890b7d21e"
 }

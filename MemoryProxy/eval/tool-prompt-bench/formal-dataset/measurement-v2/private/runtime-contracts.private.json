@@ -15,6 +15,21 @@
     ]
   },
   {
+    "contractId": "knowledge_tools_call:explore",
+    "family": "knowledge",
+    "tool": "knowledge_tools_call",
+    "endpoint": "/tools/call",
+    "method": "POST",
+    "operation": {
+      "kind": "argument",
+      "path": "tool_name",
+      "value": "explore"
+    },
+    "acceptedStatusCodes": [
+      200
+    ]
+  },
+  {
     "contractId": "knowledge_tools_call:find_callers",
     "family": "knowledge",
     "tool": "knowledge_tools_call",

@@ -147,13 +147,13 @@ describe("Task 1 frozen Selection Contract", () => {
       reference: "V0-C",
       maxCorrectCaseRegressionPerFamilyPerRepeat: 1,
       families: {
-        memory: { devDenominatorPerRepeat: 36 },
-        skill: { devDenominatorPerRepeat: 36 },
-        knowledge: { devDenominatorPerRepeat: 18 },
+        memory: { devDenominatorPerRepeat: familyCounts.memory },
+        skill: { devDenominatorPerRepeat: familyCounts.skill },
+        knowledge: { devDenominatorPerRepeat: familyCounts.knowledge },
       },
     });
     expect(contract.naturalCodingNegativeGate).toMatchObject({
-      devDenominatorPerRepeat: 60,
+      devDenominatorPerRepeat: noTool.length - pairs.length,
       maxFalseCallIncreasePerRepeat: 0,
     });
   });

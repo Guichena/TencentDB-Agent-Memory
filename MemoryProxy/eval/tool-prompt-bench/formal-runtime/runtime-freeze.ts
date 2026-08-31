@@ -6,8 +6,8 @@ import { canonicalSha256, exactUtf8Sha256 } from "./canonical.js";
 import type { FormalDataFreeze } from "./freeze.js";
 import type { FormalReadText } from "./provider-loader.js";
 
-export const FORMAL_RUNTIME_FREEZE_FILE_SHA256 = "eb759933bf57ac158682c12cc794020f2d13078b6c929127d930302b0fe83e3c" as const;
-export const FORMAL_RUNTIME_FREEZE_CANONICAL_SHA256 = "6aab76908f0806d0a71d5975866a850f946e66dc96a0dc8023f4e71645be98db" as const;
+export const FORMAL_RUNTIME_FREEZE_FILE_SHA256 = "69480e56ae6281711c926fda743a38c7ff9d76874f94e19a0e430b5d9a9596e4" as const;
+export const FORMAL_RUNTIME_FREEZE_CANONICAL_SHA256 = "64c86aa6743714514b4e27384308bd3afc8e073be93c2fd23c11e1d600317854" as const;
 
 export interface LoadFormalRuntimeFreezeManifestInput {
   readonly freeze: FormalDataFreeze;
@@ -72,7 +72,7 @@ export function loadFormalRuntimeFreezeManifest(
     "formalMetricEligible",
   ], "runtime freeze manifest");
   if (root.schemaVersion !== "task1.formal-runtime-freeze.v1"
-    || root.datasetContractRevision !== "formal-v1"
+    || root.datasetContractRevision !== "formal-v2.1"
     || root.formalMetricEligible !== false) {
     throw new Error("runtime freeze manifest identity/eligibility is invalid");
   }
@@ -94,8 +94,8 @@ export function loadFormalRuntimeFreezeManifest(
 
   const counts = record(root.counts, "runtime freeze counts");
   exactKeys(counts, ["total", "dev", "hiddenTest"], "runtime freeze counts");
-  if (counts.total !== 640 || counts.dev !== 240 || counts.hiddenTest !== 400) {
-    throw new Error("runtime freeze counts must be 640/240/400");
+  if (counts.total !== 800 || counts.dev !== 320 || counts.hiddenTest !== 480) {
+    throw new Error("runtime freeze counts must be 800/320/480");
   }
   const sources = record(root.sources, "runtime freeze sources");
   exactKeys(sources, ["contract", "provider", "snapshots"], "runtime freeze sources");
@@ -119,16 +119,16 @@ export function loadFormalRuntimeFreezeManifest(
     "path", "count", "devCount", "hiddenTestCount", "fileSha256", "canonicalSha256",
   ], "runtime freeze case bindings");
   if (bindings.path !== "formal-runtime/frozen/case-bindings.jsonl"
-    || bindings.count !== 640
-    || bindings.devCount !== 240
-    || bindings.hiddenTestCount !== 400) {
+    || bindings.count !== 800
+    || bindings.devCount !== 320
+    || bindings.hiddenTestCount !== 480) {
     throw new Error("runtime freeze case binding contract is invalid");
   }
   hash(bindings.fileSha256, "runtime freeze caseBindings.fileSha256");
   hash(bindings.canonicalSha256, "runtime freeze caseBindings.canonicalSha256");
   const smoke = record(artifacts.devSmokePreregistration, "runtime freeze smoke");
   exactKeys(smoke, ["path", "count", "fileSha256", "selectionCanonicalSha256"], "runtime freeze smoke");
-  if (smoke.path !== "formal-runtime/frozen/dev-smoke-preregistration.json" || smoke.count !== 12) {
+  if (smoke.path !== "formal-runtime/frozen/dev-smoke-preregistration.json" || smoke.count !== 40) {
     throw new Error("runtime freeze smoke contract is invalid");
   }
   hash(smoke.fileSha256, "runtime freeze smoke.fileSha256");

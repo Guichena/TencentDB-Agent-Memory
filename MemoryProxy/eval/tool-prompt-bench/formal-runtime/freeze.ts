@@ -2,11 +2,11 @@ import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { resolve } from "node:path";
 
-export const FORMAL_DATA_TAG = "task1-data-formal-v1.1" as const;
-export const FORMAL_DATA_TAG_OBJECT = "6ba3a0e4098786882dd500f884823f2f8dfbb9d3" as const;
-export const FORMAL_DATA_COMMIT = "02620d8313dcb883b7a57c4c2edc8f4286eb4bc9" as const;
-export const FORMAL_STATUS_TAG_BLOB = "6e1f9324b0f2a5cce645340701ad9624f3683c21" as const;
-export const FORMAL_STATUS_FILE_SHA256 = "94c447322c8c204403b44a4abf6f691480b8902c3300caa09224ac11fe3f1267" as const;
+export const FORMAL_DATA_TAG = "task1-data-formal-v2.1" as const;
+export const FORMAL_DATA_TAG_OBJECT = "6dcb766b0d9d831fe06cd45176da4d8d59cd0a78" as const;
+export const FORMAL_DATA_COMMIT = "a8ae02e376f07ea7baa6a13f66aa4fb560b95ce6" as const;
+export const FORMAL_STATUS_TAG_BLOB = "7a262b13836fd843637e74312ca5b6c9b7e43396" as const;
+export const FORMAL_STATUS_FILE_SHA256 = "acd98947d3892047c9479287325bb502a0a892c2710c5e248c86968c0dcf22cc" as const;
 
 const STATUS_REPOSITORY_PATH = "MemoryProxy/eval/tool-prompt-bench/formal-dataset/DATASET-BUILD-STATUS.json";
 

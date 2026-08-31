@@ -2,8 +2,8 @@
   "schemaVersion": "task1.measurement-v2-overlay-validation.v1",
   "valid": true,
   "errors": [],
-  "coreTag": "task1-data-core-formal-v1",
-  "coreCommit": "418ecd102fa2019c139da9eebf88b163eca5a208",
+  "dataTag": "task1-data-formal-v2.1",
+  "dataCommit": "a8ae02e376f07ea7baa6a13f66aa4fb560b95ce6",
   "canonicalContract": {
     "canonicalContractId": "task1.measurement-v2.canonical-json.v2.1",
     "sourcePath": "MemoryProxy/eval/tool-prompt-bench/measurement-v2/canonical-json.ts",
@@ -20,27 +20,27 @@
     }
   },
   "counts": {
-    "goldV2": 640,
-    "goldV2Dev": 240,
-    "goldV2Hidden": 400,
-    "pairV2": 240,
-    "pairV2Dev": 90,
-    "pairV2Hidden": 150,
-    "runtimeContracts": 21
+    "goldV2": 800,
+    "goldV2Dev": 320,
+    "goldV2Hidden": 480,
+    "pairV2": 300,
+    "pairV2Dev": 120,
+    "pairV2Hidden": 180,
+    "runtimeContracts": 22
   },
   "canonicalSha256": {
-    "goldV2Full": "7b08420acc04894b2a9aa6f56a17994bc79f2d1913032eebb94a17ace332e3a8",
-    "pairV2Full": "79f531d3cef550c390c167444f9f97d656b78d95c5392a4962a2a65a94c10652",
-    "runtimeContracts": "42c1f5847fe88ed70ec9ce35217dcd8cfdc90fa8a7dd9a53e45b50481204b96e",
-    "manifest": "ff5384e0386079a1e16464063247520eae7ea4964b43c6b7a9972e38b2ba7da9"
+    "goldV2Full": "0f57a9b87d6c6a044fcb627e75c701fb63e90d1fce47a22be011b200b54635fe",
+    "pairV2Full": "b99596e3f60da8dc2b9080c7b218ca48829347ed13f73a25a7a853147a4ac85d",
+    "runtimeContracts": "3bd16cf3563711ce08df9da9d71d52db8dffdc200715265b6812961d63dc73d1",
+    "manifest": "a9756066d59ea2a972fb48910bf8099fd218a4541bf8451393114cd5feeb13bc"
   },
   "providerLeakageCount": 0,
   "pairValidationErrorCount": 0,
   "pairClusterAudit": {
     "clusterUnit": "team",
-    "devClusterCount": 6,
-    "hiddenClusterCount": 10,
-    "totalClusterCount": 16,
+    "devClusterCount": 8,
+    "hiddenClusterCount": 12,
+    "totalClusterCount": 20,
     "pairsPerCluster": {
       "dev:T01": 15,
       "dev:T02": 15,
@@ -48,6 +48,8 @@
       "dev:T04": 15,
       "dev:T11": 15,
       "dev:T12": 15,
+      "dev:T17": 15,
+      "dev:T18": 15,
       "hidden:T05": 15,
       "hidden:T06": 15,
       "hidden:T07": 15,
@@ -57,37 +59,39 @@
       "hidden:T13": 15,
       "hidden:T14": 15,
       "hidden:T15": 15,
-      "hidden:T16": 15
+      "hidden:T16": 15,
+      "hidden:T19": 15,
+      "hidden:T20": 15
     },
     "errors": []
   },
   "pairMinimalityApprovalAudit": {
     "ledgerPath": "measurement-v2/private/approvals/pair-minimality-approval-ledger.json",
-    "ledgerFileSha256": "c831b22508c2e2077f258de2cc9a0670c7a409c809c01cb8c574cc43e84213f6",
-    "ledgerCanonicalSha256": "d1638c40ff677cc295f5d3d29e0e18774ee665e77f60f59e2e13e9c1198e8ec4",
-    "approvedTeamCount": 16,
-    "approvedPairCount": 240,
-    "evidenceFileCount": 16,
+    "ledgerFileSha256": "409767e100d88b5cb6f01fac46c9dfb98c8bf4d2d060fe6d06ae441fa945b323",
+    "ledgerCanonicalSha256": "143053f23b41d67c7b6993c180b5e7337970dadbfe82063581a15b5bde00fb83",
+    "approvedTeamCount": 20,
+    "approvedPairCount": 300,
+    "evidenceFileCount": 20,
     "errors": []
   },
   "goldValidationErrorCount": 0,
   "frozenM0GoldValidation": {
-    "scorerTag": "task1-measure-m0-v2-pass",
-    "scorerCommit": "a5f7e1a908b9104e8542506c9238bd3e6e5e0074",
-    "scorerSourceBlob": "d0c03836c2e46acbea02dbd509716ddc7bcfd1cf",
-    "typesSourceBlob": "4f9795d80a1f6b9a66272765ba3704412d8d252c",
+    "scorerTag": "task1-candidate-base-v1",
+    "scorerCommit": "fa79ab94720545e1b6034b83f9b08d83ff2d6f9c",
+    "scorerSourceBlob": "da935e8da2a001850a6053746935f2024dbd4e43",
+    "typesSourceBlob": "57b32b1de0af0f27add4a32af26f7ff2e323d9f4",
     "jsonPathSourceBlob": "c18db95853ff866c85aba070cdcc6a8f50e1dee9",
     "normalizerSourceBlob": "ca9533cfb859da4a4ef594e68e01378c8ecd0c75",
-    "validatedGoldCount": 640,
-    "negativeBindingTestCount": 6,
+    "validatedGoldCount": 800,
+    "negativeBindingTestCount": 8,
     "errors": []
   },
   "memoryFollowupAudit": {
     "schemaVersion": "task1.memory-followup-audit.v1",
-    "auditedCaseCount": 15,
+    "auditedCaseCount": 17,
     "conversationTerminalDowngradeCount": 9,
-    "scenarioTypedBindingCount": 6,
-    "negativeBindingTestCount": 6,
+    "scenarioTypedBindingCount": 8,
+    "negativeBindingTestCount": 8,
     "conversationTerminalDowngradeCases": [
       "T03-MEM-003-P",
       "T04-MEM-003-P",
@@ -105,7 +109,9 @@
       "T11-MEMORY-003-P",
       "T11-MEMORY-004-P",
       "T12-MEMORY-003-P",
-      "T12-MEMORY-005-P"
+      "T12-MEMORY-005-P",
+      "T19-PAIR-M03-POS",
+      "T20-PAIR-M03-POS"
     ],
     "scenarioResponsePath": "data.entries.0.path",
     "conversationSearchSessionIdResponsePath": null,
@@ -116,18 +122,18 @@
     },
     "productionResponseEvidence": {
       "sourcePath": "MemoryCore/src/gateway/v2-router.ts",
-      "sourceCommit": "6382e8a6e5c76c13d31d9ae9d21f5824de7d3036",
-      "sourceFileSha256": "c51d842c440af5cebb50d28e3ebfb91c8c25a16cdf7d0107222eb528d8448220",
+      "sourceCommit": "7a806e13d3acb4b6478e8d121c4b31bc0da54bb7",
+      "sourceFileSha256": "baa7b34dda780bf0ae209d2c9fe0d5fe5a4034ead6cc34de64ffa937ea12dd7b",
       "conversationSearch": "data.messages[] omits session_id/session_key; search is terminal for 9 cases",
-      "scenarioList": "data.entries.0.path binds to read_scene.path for 6 prefix-filtered cases"
+      "scenarioList": "data.entries.0.path binds to read_scene.path for 8 prefix-filtered cases"
     },
-    "strictCanonicalSha256": "fa223ad798042076155b4b4b7d651b0ce230c8e31a275550d182c0ce53a8b8b3"
+    "strictCanonicalSha256": "c9895950c5d9047cafbfac42da10c70205944cfa2a822b02278870ab5dc50885"
   },
   "contractCoverage": {
-    "runtimeContracts": 21,
-    "knowledgeTerminalCases": 48,
-    "pairSingleChangedPointer": 240,
-    "pairCausalFactor": 240
+    "runtimeContracts": 22,
+    "knowledgeTerminalCases": 60,
+    "pairSingleChangedPointer": 300,
+    "pairCausalFactor": 300
   },
   "dataOverlayGates": {
     "DS06-G01_private_gold_v2": "passed",

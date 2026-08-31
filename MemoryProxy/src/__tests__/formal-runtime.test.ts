@@ -12,7 +12,7 @@ import {
 } from "../../eval/tool-prompt-bench/formal-runtime/index.js";
 
 describe("Task 1 formal runtime freeze", () => {
-  it("accepts only the annotated formal-v1.1 data tag and pins its object and commit", () => {
+  it("accepts only the annotated formal-v2.1 data tag and pins its object and commit", () => {
     const freeze = resolveFormalDataFreeze({ repositoryRoot: process.cwd() });
 
     expect(freeze).toMatchObject({
@@ -20,8 +20,8 @@ describe("Task 1 formal runtime freeze", () => {
       tagObject: FORMAL_DATA_TAG_OBJECT,
       commit: FORMAL_DATA_COMMIT,
       objectType: "tag",
-      statusTagBlob: "6e1f9324b0f2a5cce645340701ad9624f3683c21",
-      statusFileSha256: "94c447322c8c204403b44a4abf6f691480b8902c3300caa09224ac11fe3f1267",
+      statusTagBlob: "7a262b13836fd843637e74312ca5b6c9b7e43396",
+      statusFileSha256: "acd98947d3892047c9479287325bb502a0a892c2710c5e248c86968c0dcf22cc",
       formalMetricEligible: false,
     });
 
@@ -100,7 +100,7 @@ describe("Task 1 formal runtime freeze", () => {
     })).toThrow(/provider row has unexpected key: gold/);
   });
 
-  it("loads all 640 provider cases with frozen split hashes", () => {
+  it("loads all 800 provider cases with frozen split hashes", () => {
     const freeze = resolveFormalDataFreeze({ repositoryRoot: process.cwd() });
     const dev = loadFormalProviderSplit({ freeze, split: "dev" });
     const hidden = loadFormalProviderSplit({
@@ -110,21 +110,21 @@ describe("Task 1 formal runtime freeze", () => {
     });
 
     expect(dev).toMatchObject({
-      count: 240,
-      fileSha256: "8018bb65160eb1cac13e489ae54f258f2369dc4af058f09a3e1dc432961bc1f3",
-      canonicalSha256: "ab1842aa1cc6d36a79bd8c232f2d66fd0d097c50eea4c2c09c4b4c8393e6308a",
+      count: 320,
+      fileSha256: "b062d284cb849edd6504340e81f4f34e1dc37b126dca53edab6062749b1c2ed4",
+      canonicalSha256: "2b4d0645d8111699f7a6a06d4fb387b767122037b2c813583fe393068dbcde10",
       formalMetricEligible: false,
     });
     expect(hidden).toMatchObject({
-      count: 400,
-      fileSha256: "743b2ee051572c81aec8b4db6b581a77143ed283ee136448b095e8576e0d5799",
-      canonicalSha256: "fc2d655011681cf63c38e5b71e92790ebeb601ec77ed5cf2ac42784aa73e212b",
+      count: 480,
+      fileSha256: "0a38a9433761adaf286b00a62b2bbda6526c41ab83dcad844b0f7b83929118fc",
+      canonicalSha256: "34e01c72495d4617ff8951d2c4b0b2a574b9dabc9b621fcd5385bb27c4699566",
       formalMetricEligible: false,
     });
-    expect(new Set([...dev.cases, ...hidden.cases].map((item) => item.caseId)).size).toBe(640);
+    expect(new Set([...dev.cases, ...hidden.cases].map((item) => item.caseId)).size).toBe(800);
   });
 
-  it("reads public status metadata for private hashes without opening private files", () => {
+  it("reads public status metadata without opening private files", () => {
     const freeze = resolveFormalDataFreeze({ repositoryRoot: process.cwd() });
     const reads: string[] = [];
     const metadata = loadFormalDatasetMetadata({
@@ -139,28 +139,22 @@ describe("Task 1 formal runtime freeze", () => {
       expect.stringMatching(/[\\/]formal-dataset[\\/]DATASET-BUILD-STATUS\.json$/),
     ]);
     expect(metadata).toMatchObject({
-      datasetContractRevision: "formal-v1",
+      datasetContractRevision: "formal-v2.1",
       dataFreeze: {
         tag: FORMAL_DATA_TAG,
         tagObject: FORMAL_DATA_TAG_OBJECT,
         commit: FORMAL_DATA_COMMIT,
-        statusTagBlob: "6e1f9324b0f2a5cce645340701ad9624f3683c21",
-        statusFileSha256: "94c447322c8c204403b44a4abf6f691480b8902c3300caa09224ac11fe3f1267",
+        statusTagBlob: "7a262b13836fd843637e74312ca5b6c9b7e43396",
+        statusFileSha256: "acd98947d3892047c9479287325bb502a0a892c2710c5e248c86968c0dcf22cc",
       },
-      counts: { total: 640, dev: 240, hiddenTest: 400, pairs: 240 },
+      counts: { total: 800, dev: 320, hiddenTest: 480, pairs: 300 },
       contractHashes: {
-        fileSha256: "991ff87255019c0d4b64deba16b76b144bd3c63138be355c747865329e83da44",
-        canonicalSha256: "4fc62c1829301fe9f2410f6be40698d7b3d09ec90dde3bfe294452f7ef152d41",
+        fileSha256: "0d398c9e4c46b60f86f245265769062b9ede2ffdf53a80088fe0421fdd797d9d",
+        canonicalSha256: "eb04b26cfe03810030f6b7d0a06f82dfedf7c8011ce11bb181db8af0b94b58b7",
       },
       snapshotHashes: {
-        devCanonicalSha256: "3a82d0ad8241ff3e2173555efbdb65dfb367a0a38c9998203c5b4754611a4783",
-        hiddenCanonicalSha256: "23fe7b47d13c950765fa9557da918e1d102b7ab4558171cb15a8444d1cbd9c9e",
-      },
-      privateArtifactHashes: {
-        measurementV2ManifestCanonicalSha256: "ff5384e0386079a1e16464063247520eae7ea4964b43c6b7a9972e38b2ba7da9",
-        goldV2FullCanonicalSha256: "7b08420acc04894b2a9aa6f56a17994bc79f2d1913032eebb94a17ace332e3a8",
-        pairV2FullCanonicalSha256: "79f531d3cef550c390c167444f9f97d656b78d95c5392a4962a2a65a94c10652",
-        runtimeContractsV2CanonicalSha256: "42c1f5847fe88ed70ec9ce35217dcd8cfdc90fa8a7dd9a53e45b50481204b96e",
+        devCanonicalSha256: "addd9c6311d4bd44478ea9438f50816d59eb2c8adfb9c4d9f53fd3fc152e0b7e",
+        hiddenCanonicalSha256: "93d18538660330603f082a396791712e9b0cdba6647ea819fa3ca6e456085fbb",
       },
       formalMetricEligible: false,
     });

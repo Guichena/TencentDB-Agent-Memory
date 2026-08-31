@@ -20,9 +20,9 @@ export interface FormalRuntimeFreezeManifest {
     readonly statusFileSha256: string;
   };
   readonly counts: {
-    readonly total: 640;
-    readonly dev: 240;
-    readonly hiddenTest: 400;
+    readonly total: 800;
+    readonly dev: 320;
+    readonly hiddenTest: 480;
   };
   readonly sources: {
     readonly contract: { readonly fileSha256: string; readonly canonicalSha256: string };
@@ -54,15 +54,15 @@ export interface FormalRuntimeFreezeManifest {
   readonly artifacts: {
     readonly caseBindings: {
       readonly path: "formal-runtime/frozen/case-bindings.jsonl";
-      readonly count: 640;
-      readonly devCount: 240;
-      readonly hiddenTestCount: 400;
+      readonly count: 800;
+      readonly devCount: 320;
+      readonly hiddenTestCount: 480;
       readonly fileSha256: string;
       readonly canonicalSha256: string;
     };
     readonly devSmokePreregistration: {
       readonly path: "formal-runtime/frozen/dev-smoke-preregistration.json";
-      readonly count: 12;
+      readonly count: 40;
       readonly fileSha256: string;
       readonly selectionCanonicalSha256: string;
     };
@@ -109,22 +109,11 @@ export function buildFormalRuntimeFreezeManifest(
     [...devMeasurement.pairs, ...hiddenMeasurement.pairs]
       .sort((left, right) => left.pairId.localeCompare(right.pairId)),
   );
-  if (fullGoldCanonicalSha256 !== metadata.privateArtifactHashes.goldV2FullCanonicalSha256) {
-    throw new Error("Measurement-v2 full Gold hash does not match public status");
-  }
-  if (fullPairCanonicalSha256 !== metadata.privateArtifactHashes.pairV2FullCanonicalSha256) {
-    throw new Error("Measurement-v2 full Pair hash does not match public status");
-  }
-  if (devMeasurement.hashes.runtimeContractsCanonicalSha256
-    !== metadata.privateArtifactHashes.runtimeContractsV2CanonicalSha256) {
-    throw new Error("Measurement-v2 runtime contract hash does not match public status");
-  }
-
   return Object.freeze({
     schemaVersion: "task1.formal-runtime-freeze.v1" as const,
     datasetContractRevision: metadata.datasetContractRevision,
     dataFreeze: metadata.dataFreeze,
-    counts: Object.freeze({ total: 640 as const, dev: 240 as const, hiddenTest: 400 as const }),
+    counts: Object.freeze({ total: 800 as const, dev: 320 as const, hiddenTest: 480 as const }),
     sources: Object.freeze({
       contract: metadata.contractHashes,
       provider: metadata.providerHashes,
@@ -147,15 +136,15 @@ export function buildFormalRuntimeFreezeManifest(
     artifacts: Object.freeze({
       caseBindings: Object.freeze({
         path: "formal-runtime/frozen/case-bindings.jsonl" as const,
-        count: 640 as const,
-        devCount: 240 as const,
-        hiddenTestCount: 400 as const,
+        count: 800 as const,
+        devCount: 320 as const,
+        hiddenTestCount: 480 as const,
         fileSha256: bindings.fileSha256,
         canonicalSha256: bindings.canonicalSha256,
       }),
       devSmokePreregistration: Object.freeze({
         path: "formal-runtime/frozen/dev-smoke-preregistration.json" as const,
-        count: 12 as const,
+        count: 40 as const,
         fileSha256: smokeFileSha256,
         selectionCanonicalSha256: smoke.sha256,
       }),

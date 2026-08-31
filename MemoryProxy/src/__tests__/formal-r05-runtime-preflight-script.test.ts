@@ -50,7 +50,10 @@ function smoke() {
   return {
     preregistration: {
       caseIds,
-      selectionContract: { split: "dev", totalCases: 12 },
+      selectionContract: {
+        split: "dev",
+        totalCases: R05_FROZEN_DEV_SMOKE.caseIds.length,
+      },
       sha256: R05_FROZEN_DEV_SMOKE.selectionSha256,
     },
     manifests: caseIds.map((caseId, index) => ({
@@ -100,14 +103,14 @@ describe("R05 reusable no-model runtime preflight", () => {
     expect(() => validateR05RestorePlan({ ...plan(), planSha256: "0".repeat(64) }))
       .toThrow(/planSha256/i);
     expect(() => validateR05RestorePlan({ ...plan(), assets: [] }))
-      .toThrow(/284 assets/i);
+      .toThrow(/386 assets/i);
   });
 
   it("keeps restore observations unverified and rejects adapter self-attestation", () => {
     expect(validateR05RestoreObservations(restore())).toMatchObject({
       complete: true,
-      actionCount: 318,
-      requirementCount: 209,
+      actionCount: 432,
+      requirementCount: 285,
     });
     expect(() => validateR05RestoreObservations({
       ...restore(),
@@ -119,17 +122,18 @@ describe("R05 reusable no-model runtime preflight", () => {
     })).toThrow(/complete.*true/i);
   });
 
-  it("requires the exact 12-case preregistered set and unique repeat-one identities", () => {
+  it("requires the exact 40-case preregistered set and unique repeat-one identities", () => {
     const input = smoke();
     expect(validateR05PreparedSmoke(input.preregistration, input.manifests).caseIds)
       .toEqual(input.preregistration.caseIds);
     expect(() => validateR05PreparedSmoke({
       ...input.preregistration,
       caseIds: [...input.preregistration.caseIds].reverse(),
-    }, input.manifests)).toThrow(/exact frozen 12-case ordered set/i);
+    }, input.manifests)).toThrow(/exact frozen 40-case ordered set/i);
+    const finalIndex = input.manifests.length - 1;
     expect(() => validateR05PreparedSmoke(input.preregistration, [
-      ...input.manifests.slice(0, 11),
-      { ...input.manifests[11], case_id: input.manifests[0].case_id },
+      ...input.manifests.slice(0, finalIndex),
+      { ...input.manifests[finalIndex], case_id: input.manifests[0].case_id },
     ])).toThrow(/exact preregistered case set/i);
     expect(() => validateR05PreparedSmoke(input.preregistration, [
       { ...input.manifests[0], repeat: 2 },
@@ -141,7 +145,7 @@ describe("R05 reusable no-model runtime preflight", () => {
     ])).toThrow(/unique session_id/i);
   });
 
-  it("keeps one public wrapper fail-closed and covers the complete 12-run chain", async () => {
+  it("keeps one public wrapper fail-closed and covers the complete 40-run chain", async () => {
     const source = await readFile(resolve(
       process.cwd(),
       "eval",
@@ -150,7 +154,7 @@ describe("R05 reusable no-model runtime preflight", () => {
     ), "utf8");
 
     expect(source).toMatch(/Node\.js 22/u);
-    expect(source).toContain("task1-data-formal-v1.1");
+    expect(source).toContain("task1-data-formal-v2.1");
     expect(source).toContain("task1-code-freeze");
     expect(source).toContain("/health");
     expect(source).toContain("/v3/meta/auth/verify");
@@ -164,7 +168,7 @@ describe("R05 reusable no-model runtime preflight", () => {
     expect(source).toContain("run-formal-prepare.ps1");
     expect(source).toContain("eval:tool-prompt:formal:inspect-assets");
     expect(source).toContain("create-formal-preflight-receipt.ps1");
-    expect(source).toContain("$expectedRunCount = 12");
+    expect(source).toContain("$expectedRunCount = 40");
     expect(source).toContain("Assert-FinalGitLocks");
     expect(source).toContain("finalGitLocks");
     expect(source).toContain("ready");

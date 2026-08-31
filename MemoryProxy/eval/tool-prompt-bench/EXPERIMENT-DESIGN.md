@@ -2,9 +2,9 @@
 
 | 项目 | 当前设置 |
 |---|---|
-| 状态 | Formal v1.1 数据已冻结；Measurement-v2 provisional common-base 正在做最终零模型 Gate，等待 R05 blank-stack preflight 后冻结 tag |
-| 当前分支 | `codex/task1-measurement-v2-integration` |
-| 数据合同 | annotated tag `task1-data-formal-v1.1`（640 case，私有 Gold/Pair 与 provider 输入隔离） |
+| 状态 | Formal v2.1 数据已冻结；800 例 Measurement-v2 common-base 正在完成最终零模型 Gate，随后等待用户执行 R05 blank-stack preflight |
+| 当前分支 | `codex/task1-common-base-formal-v2.1` |
+| 数据合同 | annotated tag `task1-data-formal-v2.1`（800 case，私有 Gold/Pair 与 provider 输入隔离） |
 | 代码冻结 | `task1-code-freeze`；V0、V0-C、V1a、V1、V2、V3 已具备生产 profile |
 | 主模型 | `gpt-5.6-luna` |
 | 推理强度 | `high` |
@@ -128,19 +128,19 @@ Capability Fixture 在 V0、V0-C、V1 和 V2 中保持不变。V3 只根据生�
 |---|---:|---|
 | `case-definitions.ts` 生成的旧数据 | Dev 60，Test 40 | Schema、Parser、旧 Scorer 和 Mock 合同回归 |
 | `worlds/` 中的种子数据 | 3 个 World，48 条 case | World 结构与 loader 的 Pilot，不进入正式结果 |
-| `formal-dataset/` 冻结数据 | 1 Space、16 Team、640 case | 正式 Dev 与 Hidden Test；以 `task1-data-formal-v1.1` 为数据合同输入 |
+| `formal-dataset/` 冻结数据 | 1 Space、20 Team、800 case | 正式 Dev 与 Hidden Test；以 `task1-data-formal-v2.1` 为数据合同输入 |
 
-旧 100 条 case 大多是一题一个小 fixture，上下文、同类干扰资产和本地工作区不足，只保留为回归。3 个种子 World 已被开发过程查看和修改，只能作为 Pilot。正式结论仅使用冻结的 640 条 provider case、对应私有 Gold v2、240 个 Pair 合同和两个冻结快照。
+旧 100 条 case 大多是一题一个小 fixture，上下文、同类干扰资产和本地工作区不足，只保留为回归。3 个种子 World 已被开发过程查看和修改，只能作为 Pilot。正式结论仅使用冻结的 800 条 provider case、对应私有 Gold v2、300 个 Pair 合同和两个冻结快照。
 
 ### World 与源码实体的映射
 
-正式数据使用一个工程 Space，包含 16 个按技术主题划分的 Team。每个 Team 固定一个中性业务 Agent，并提供 40 条真实编程场景 case；每条 case 通过冻结 runtime binding 选择 Team、Agent 和 Task。
+正式数据使用一个工程 Space，包含 20 个按技术主题划分的 Team。每个 Team 固定一个中性业务 Agent，并提供 40 条真实编程场景 case；每条 case 通过冻结 runtime binding 选择 Team、Agent 和 Task。
 
 ```text
 Space: space-task1-engineering
-├─ Dev Teams × 6
+├─ Dev Teams × 8
 │  └─ 每 Team：中性 Agent、40 cases、同 Team Memory/Skill/Knowledge 与强干扰
-└─ Hidden Test Teams × 10
+└─ Hidden Test Teams × 12
    └─ 每 Team：中性 Agent、40 cases、独立资产命名与语义
 ```
 
@@ -150,20 +150,20 @@ Session 绑定 Team 后，另一个 Team 的资产不会被该 Session 看到，
 
 ### 规模与切分
 
-正式冻结规模是 1 个 Space、16 个 Team、640 条 case。切分单位是完整 Team，同一 Team 不能跨 Dev 与 Hidden Test；统计置信区间也以 Team 作为 cluster，而不是把 40 条同 Team case 当作完全独立样本。
+正式冻结规模是 1 个 Space、20 个 Team、800 条 case。切分单位是完整 Team，同一 Team 不能跨 Dev 与 Hidden Test；统计置信区间也以 Team 作为 cluster，而不是把 40 条同 Team case 当作完全独立样本。
 
 | Split | Team | Memory Positive | Skill Positive | Knowledge Positive | Paired No-tool | Natural Coding Negative | 合计 |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| Dev | 6 | 36 | 36 | 18 | 90 | 60 | 240 |
-| Hidden Test | 10 | 60 | 60 | 30 | 150 | 100 | 400 |
-| 合计 | 16 | 96 | 96 | 48 | 240 | 160 | 640 |
+| Dev | 8 | 48 | 48 | 24 | 120 | 80 | 320 |
+| Hidden Test | 12 | 72 | 72 | 36 | 180 | 120 | 480 |
+| 合计 | 20 | 120 | 120 | 60 | 300 | 200 | 800 |
 
-每个 Team 固定 40 条：Memory Positive 6、Skill Positive 6、Knowledge Positive 3、配对 No-tool 15、自然 Coding Negative 10。每 Team 的 15 个正负 Pair 在 private Pair v2 中冻结。Smoke 从 6 个 Dev Team 中各选 2 条，共 12 条，不增加重复 case。
+每个 Team 固定 40 条：Memory Positive 6、Skill Positive 6、Knowledge Positive 3、配对 No-tool 15、自然 Coding Negative 10。每 Team 的 15 个正负 Pair 在 private Pair v2 中冻结。Smoke 从 8 个 Dev Team 中各选 5 条，共 40 条，不增加重复 case；每个 Team 包含 Memory、Skill、Knowledge 正例、一个冻结 Pair 负例和一个自然 Coding 负例。
 
 冻结切分如下：
 
-- Dev：T01–T04、T11–T12，共 240 条，可用于相邻 Variant 配对和选择候选。
-- Hidden Test：T05–T10、T13–T16，共 400 条；只在 Final 冻结后运行，不用其模型结果调 Prompt。
+- Dev：T01–T04、T11–T12、T17–T18，共 320 条，可用于相邻 Variant 配对和选择候选。
+- Hidden Test：T05–T10、T13–T16、T19–T20，共 480 条；只在 Final 冻结后运行，不用其模型结果调 Prompt。
 
 Dev 与 Hidden Test 之间不得复用可识别的 Skill 名、Memory id、session id、L2 路径、Knowledge id、仓库 slug 或原样 Query。题型模板可以一致，具体语义和资产必须独立。
 
@@ -488,10 +488,10 @@ Gate：任何人只看冻结清单和一条 case，都能判断哪些内容是�
 - 把 Attempt、Malformed Attempt、真实 Entry Call 和 Infrastructure Error 分开。
 - 把历史上下文作为真实 Responses 消息发送，把活动项目文件写入临时工作区。
 - 保留 Mock Bridge 的 100 case 回归和完整 Gold 序列 smoke。
-- 完成 6 个 Dev Team、240 条 provider case 及私有 Gold/Pair 合同。
-- 创建并封存 10 个 Hidden Test Team、400 条 case，只做结构、资产和 Gold 合同验证。
+- 完成 8 个 Dev Team、320 条 provider case 及私有 Gold/Pair 合同。
+- 创建并封存 12 个 Hidden Test Team、480 条 case，只做结构、资产和 Gold 合同验证。
 
-Gate：16 个 Team 都通过结构、唯一性、干扰项、provider exclusion 和合同重放；两个真实资产快照可确定恢复，运行前后 hash 不变。模型驱动的 12 条 Smoke 留到 P04，不在数据准备阶段执行。
+Gate：20 个 Team 都通过结构、唯一性、干扰项、provider exclusion 和合同重放；两个真实资产快照可确定恢复，运行前后 hash 不变。模型驱动的 40 条 Smoke 留到 P04，不在数据准备阶段执行。
 
 阶段产物：World manifest、snapshot manifest、真实链路 runner、无模型 dry-run manifest 和合同 trace。
 
@@ -538,8 +538,8 @@ Gate：每个 Variant 只有声明的改造类型发生变化，静态 Prompt di
 工作内容：
 
 - 只在 P01 数据 Gate 与 P03 代码 Gate 都通过后建立实验集成分支。
-- 先用 V0 完成 12 条真实链路 Smoke，确认 Session Init、生产 InjectionPipeline、真实入口观测和本地产物完整。
-- 依次完成 V0 对 V0-C、V0-C 对 V1a、V1a 对 V1、V1 对 V2、V2 对 V3 的 240 条 Dev 配对比较。
+- 先用 V0 完成 40 条真实链路 Smoke，确认 Session Init、生产 InjectionPipeline、真实入口观测和本地产物完整。
+- 依次完成 V0 对 V0-C、V0-C 对 V1a、V1a 对 V1、V1 对 V2、V2 对 V3 的 320 条 Dev 配对比较。
 - 每一组完成并做出阶段决定后才运行下一组，同组两个 Variant 按 case 交错。
 - 对 V0-C、V1 和 V2 交错运行固定的 Baseline Sentinel，观察时间漂移。
 - 先应用行为 Gate，再比较 FCR、Static Tool Tokens 和改动范围。
@@ -550,7 +550,7 @@ Gate：每个 Variant 只有声明的改造类型发生变化，静态 Prompt di
 
 优秀目标：Pure Coding FCR 为 0，整体 FCR 下降，Conditional Terminal Accuracy 不下降，静态工具 Token 至少减少 25%。25% 是目标，不应为了达到数字删除必要触发信息。
 
-阶段产物：12 条 Smoke 报告、各相邻版本配对结果、Pareto 表、候选选择记录和 Final freeze manifest。
+阶段产物：40 条 Smoke 报告、各相邻版本配对结果、Pareto 表、候选选择记录和 Final freeze manifest。
 
 ### P05：Hidden Test、Cache 和真实链路复核
 
@@ -559,7 +559,7 @@ Gate：每个 Variant 只有声明的改造类型发生变化，静态 Prompt di
 工作内容：
 
 - 只运行 V0、V0-C 和 Final，不再修改 Prompt 或 Gold。
-- 在 400 条 Hidden Test 上每个 Variant 运行三次，按 case 和 repeat 交错。
+- 在 480 条 Hidden Test 上每个 Variant 运行三次，按 case 和 repeat 交错。
 - 保存完整 Token、Hash、稳定前缀和 Provider usage。
 - 在每个 Family 选少量 case 做完整真实链路 smoke，结果单独报告。
 - 若预算允许，增加第二模型的平衡子集复核，不与 Luna 合并。
@@ -630,11 +630,11 @@ Campaign 至少保存 `campaign-manifest.json`、`scores.jsonl`、`summary.json`
 
 满足以下条件后才采集 V0 正式基线：
 
-- 6 个 Dev Team、240 条 case 完成结构、唯一性、干扰项和合同验证。
-- 10 个 Hidden Test Team、400 条 case 已冻结，未参与 Prompt 调整。
+- 8 个 Dev Team、320 条 case 完成结构、唯一性、干扰项和合同验证。
+- 12 个 Hidden Test Team、480 条 case 已冻结，未参与 Prompt 调整。
 - 每个 split 都能从对应的冻结 Dev/Hidden snapshot 恢复；同一 split 内所有 Variant 使用同一 snapshot。
 - 自动写回和抽取已关闭，或每个 Variant 前能恢复同一快照。
-- 12 条 Smoke 全部经过正常 Session Init 和生产 InjectionPipeline。
+- 40 条 Smoke 全部经过正常 Session Init 和生产 InjectionPipeline。
 - runner 没有预渲染正式 Prompt，真实入口观测能区分 Attempt、Malformed 和 Entry Call。
 - 工作区文件和历史消息通过真实 Codex 输入加载。
 - Luna、`high`、`medium`、CLI 版本、官方上游和 MemoryProxy commit 被完整记录。

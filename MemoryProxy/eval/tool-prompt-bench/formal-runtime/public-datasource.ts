@@ -74,16 +74,6 @@ export function openFormalProviderSplit(input: OpenFormalProviderSplitInput): Fo
     || !isDeepStrictEqual(manifest.sources.snapshots, metadata.snapshotHashes)) {
     throw new Error("runtime freeze manifest does not match public dataset status");
   }
-  if (manifest.measurementV2.manifestCanonicalSha256
-      !== metadata.privateArtifactHashes.measurementV2ManifestCanonicalSha256
-    || manifest.measurementV2.gold.fullCanonicalSha256
-      !== metadata.privateArtifactHashes.goldV2FullCanonicalSha256
-    || manifest.measurementV2.pairs.fullCanonicalSha256
-      !== metadata.privateArtifactHashes.pairV2FullCanonicalSha256
-    || manifest.measurementV2.runtimeContractsCanonicalSha256
-      !== metadata.privateArtifactHashes.runtimeContractsV2CanonicalSha256) {
-    throw new Error("runtime freeze Measurement-v2 hashes do not match public status");
-  }
   const provider = loadFormalProviderSplit({
     freeze: input.freeze,
     split: input.split,

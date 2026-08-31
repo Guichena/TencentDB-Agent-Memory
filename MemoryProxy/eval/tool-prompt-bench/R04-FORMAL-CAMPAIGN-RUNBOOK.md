@@ -1,6 +1,6 @@
 # R04 正式 Campaign 操作手册
 
-> 本文件中的 R04 branch/worktree 是**历史 checkpoint**，只说明 runner 能力的来源，不再是任何 live 执行路径。统一使用 `ExecutionRoot`：最终 Measurement-v2 integration provisional common-base 必须先提交无 TBD 的 Selection Contract 与 freeze manifest，再在该精确提交上执行 R05 blank-stack preflight；通过后不再修改 HEAD，只给同一提交打 Measurement-v2/candidate-base tag。**E01/R04 V0 runtime smoke**（12 次 Luna）与正式 V0–V3 使用 tagged candidate-base，各 Prompt 方法使用该 tag 的各自后代。
+> 本文件中的 R04 branch/worktree 是**历史 checkpoint**，只说明 runner 能力的来源，不再是任何 live 执行路径。统一使用 `ExecutionRoot`：最终 Measurement-v2 integration provisional common-base 必须先提交无 TBD 的 Selection Contract 与 freeze manifest，再在该精确提交上执行 R05 blank-stack preflight；通过后不再修改 HEAD，只给同一提交打 Measurement-v2/candidate-base tag。**E01/R04 V0 runtime smoke**（40 次 Luna）与正式 V0–V3 使用 tagged candidate-base，各 Prompt 方法使用该 tag 的各自后代。
 
 ## 当前结论
 
@@ -9,7 +9,7 @@
 | 历史 R04 worktree | `D:\projects\TencentDB-Agent-Memory-task1-r04-runner-v1`（只读 checkpoint，不作 ExecutionRoot） |
 | 分支 | `codex/task1-experiment-r04-runner-v1` |
 | Prompt freeze | annotated tag `task1-code-freeze`，解引用 commit `d0996809ed63f6cfc67504ad180db0d48ac70475` |
-| 数据 freeze | annotated tag `task1-data-formal-v1.1`，640 case；Dev 240、Hidden 400 |
+| 数据 freeze | annotated tag `task1-data-formal-v2.1`，800 case；Dev 320、Hidden 480 |
 | 主模型 | `gpt-5.6-luna` |
 | 推理强度 | `high` |
 | 输出详细度 | `medium` |
@@ -68,7 +68,7 @@ Variant/Profile 映射固定为：
 ```powershell
 git -C $ExecutionRoot status --short --branch
 git -C $ExecutionRoot rev-parse 'task1-code-freeze^{}'
-git -C $ExecutionRoot rev-parse 'task1-data-formal-v1.1^{}'
+git -C $ExecutionRoot rev-parse 'task1-data-formal-v2.1^{}'
 node --version
 codex --version
 Test-Path -LiteralPath (Join-Path $TraceRoot $CampaignId)
@@ -82,7 +82,7 @@ Test-Path -LiteralPath (Join-Path $TraceRoot $CampaignId)
 
 现有代码提供：
 
-- `buildFrozenFormalAssetRestorePlan()`：从 `task1-data-formal-v1.1` 构造 Gold-blind restore plan。
+- `buildFrozenFormalAssetRestorePlan()`：从 `task1-data-formal-v2.1` 构造 Gold-blind restore plan。
 - `formal-dataset/scripts/restore-formal-snapshot.ts`：校验 plan 后加载生产 restore adapter。
 - `formal-dataset/scripts/inspect-formal-snapshot.ts`：校验 plan 和 restore observations 后加载生产 inspector。
 - `create-formal-preflight-receipt.ps1`：把 prepared run 的公开身份与 inspect observations 绑定，独立重算六项 Gate。
@@ -136,7 +136,7 @@ Invoke-RestMethod $KnowledgeHealthUrl | ConvertTo-Json -Depth 8
 
 ## 四、PrepareOnly
 
-先为 E01/R04 V0 runtime smoke 准备 12 条 Dev run，不调用模型；下一节才各调用一次 Luna：
+先为 E01/R04 V0 runtime smoke 准备 40 条 Dev run，不调用模型；下一节才各调用一次 Luna：
 
 ```powershell
 & (Join-Path $BenchRoot "run-formal-prepare.ps1") `
@@ -243,8 +243,8 @@ providerCollection.formalCampaignEligible == true
 ## 九、推荐实际顺序
 
 1. provisional common-base 先提交无 TBD 的 Measurement-v2 freeze manifest 与 Selection Contract，再在该精确提交上完成 0 模型 R05 blank-stack preflight；通过后不得修改 HEAD，只给同一提交打 Measurement-v2/candidate-base tag。
-2. tagged candidate-base 先跑 E01/R04 V0 runtime smoke（12 次 Luna）。
-3. runtime smoke 全部可收集且正式 eligible 后，跑 240 条 Dev V0。
+2. tagged candidate-base 先跑 E01/R04 V0 runtime smoke（40 次 Luna）。
+3. runtime smoke 全部可收集且正式 eligible 后，跑 320 条 Dev V0。
 4. 分别用新 Campaign 跑 V0-C、V1a、V1、V2、V3；同一 Variant 内 case/Pair 固定，跨 Variant 用离线 case id 配对。
 5. 每个 Prompt 方法从 tagged candidate-base 建独立后代并创建新 run/Session/result；普通 Prompt 改动不重跑公共 blank-stack Gate，只有 adapter/runner/scorer/restore/preflight 基础设施变化才重跑。
 6. 先比较相邻版本，保留所有中间版本；效果最好的中间产物可以胜过最终编号。
@@ -256,4 +256,4 @@ providerCollection.formalCampaignEligible == true
 R04 代码 Gate 与正式模型 Gate 是两件事：
 
 - R04 代码 Gate：本分支测试、类型增量、Prompt freeze、trace seal、Gold-blind 边界、usage、eligibility、M0、Pair、cache Gate 和人工命令全部通过；可以在不运行模型的情况下完成。
-- 正式模型 Gate：必须额外有已通过的 R05 blank-stack preflight、tagged candidate-base、12 条 E01/R04 V0 runtime smoke、sealed trace 和 `formalCampaignEligible=true` bundle。当前尚未满足，不能宣称已经得到任务一优化结论。
+- 正式模型 Gate：必须额外有已通过的 R05 blank-stack preflight、tagged candidate-base、40 条 E01/R04 V0 runtime smoke、sealed trace 和 `formalCampaignEligible=true` bundle。当前尚未满足，不能宣称已经得到任务一优化结论。

@@ -89,7 +89,7 @@ function parseProviderRow(value: unknown, lineNumber: number): ProviderVisibleCa
 
 function providerPath(freeze: FormalDataFreeze, split: FormalProviderSplit): string {
   const fileName = split === "dev" ? "dev.jsonl" : "hidden.sealed.jsonl";
-  return resolve(freeze.datasetRoot, "provider", fileName);
+  return resolve(freeze.datasetRoot, "revisions", "formal-v2", "provider", fileName);
 }
 
 /**

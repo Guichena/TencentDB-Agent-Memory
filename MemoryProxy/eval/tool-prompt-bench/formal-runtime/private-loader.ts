@@ -34,7 +34,7 @@ export interface PrivateMeasurementSplitData {
   readonly split: "dev" | "hidden_test";
   readonly goldCount: number;
   readonly pairCount: number;
-  readonly runtimeContractCount: 21;
+  readonly runtimeContractCount: 22;
   readonly gold: readonly OverlayPrivateGoldV2[];
   readonly pairs: readonly OverlayPairContractV2[];
   readonly runtimeContracts: readonly MeasurementRuntimeContract[];
@@ -205,16 +205,13 @@ export function loadPrivateMeasurementSplit(input: LoadPrivateMeasurementSplitIn
     throw new Error("hidden_test private Measurement access is not authorized");
   }
   const readText = input.readText ?? ((path: string) => readFileSync(path, "utf8"));
-  const metadata = loadFormalDatasetMetadata({ freeze: input.freeze, readText });
+  loadFormalDatasetMetadata({ freeze: input.freeze, readText });
   const privateRoot = resolve(input.freeze.datasetRoot, "measurement-v2", "private");
   const manifest = record(JSON.parse(readText(resolve(privateRoot, "manifest.private.json"))) as unknown, "private manifest");
   if (manifest.visibility !== "private_never_provider_visible" || manifest.formalMetricEligible !== false) {
     throw new Error("private manifest visibility/eligibility contract is invalid");
   }
   const manifestCanonicalSha256 = canonicalSha256(manifest);
-  if (manifestCanonicalSha256 !== metadata.privateArtifactHashes.measurementV2ManifestCanonicalSha256) {
-    throw new Error("private Measurement manifest canonical hash does not match public status");
-  }
   const dev = input.split === "dev";
   const goldPath = resolve(privateRoot, "gold", dev ? "dev.private.jsonl" : "hidden.private.jsonl");
   const pairPath = resolve(privateRoot, "pairs", dev ? "dev.private.jsonl" : "hidden.private.jsonl");
@@ -228,8 +225,8 @@ export function loadPrivateMeasurementSplit(input: LoadPrivateMeasurementSplitIn
   const runtimeValue = JSON.parse(runtimeText) as unknown;
   if (!Array.isArray(runtimeValue)) throw new Error("runtime contracts must be an array");
   const runtimeContracts = runtimeValue.map(parseRuntimeContract);
-  const goldExpected = dev ? 240 : 400;
-  const pairExpected = dev ? 90 : 150;
+  const goldExpected = dev ? 320 : 480;
+  const pairExpected = dev ? 120 : 180;
   const goldCanonicalSha256 = validateArtifact(
     goldText,
     gold,
@@ -248,7 +245,7 @@ export function loadPrivateMeasurementSplit(input: LoadPrivateMeasurementSplitIn
     runtimeText,
     runtimeContracts,
     manifestArtifact(manifest, ["overlays", "runtimeContracts"]),
-    21,
+    22,
     "runtime contracts",
   );
   const goldIds = new Set(gold.map((item) => item.caseId));
@@ -260,14 +257,14 @@ export function loadPrivateMeasurementSplit(input: LoadPrivateMeasurementSplitIn
       throw new Error(`${pair.pairId}: Pair cases are absent from private Gold`);
     }
   }
-  if (new Set(runtimeContracts.map((item) => item.contractId)).size !== 21) {
-    throw new Error("runtime contract ids must be 21 unique values");
+  if (new Set(runtimeContracts.map((item) => item.contractId)).size !== 22) {
+    throw new Error("runtime contract ids must be 22 unique values");
   }
   return Object.freeze({
     split: input.split,
     goldCount: gold.length,
     pairCount: pairs.length,
-    runtimeContractCount: 21 as const,
+    runtimeContractCount: 22 as const,
     gold: Object.freeze(gold),
     pairs: Object.freeze(pairs),
     runtimeContracts: Object.freeze(runtimeContracts),

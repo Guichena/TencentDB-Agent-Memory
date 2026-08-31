@@ -39,8 +39,11 @@ import {
   type OverlayToolFamily,
 } from "./measurement-v2-overlay-schema.js";
 
-const CORE_TAG = "task1-data-core-formal-v1";
-const CORE_COMMIT = "418ecd102fa2019c139da9eebf88b163eca5a208";
+const DATA_TAG = "task1-data-formal-v2.1";
+const DATA_TAG_OBJECT = "6dcb766b0d9d831fe06cd45176da4d8d59cd0a78";
+const DATA_COMMIT = "a8ae02e376f07ea7baa6a13f66aa4fb560b95ce6";
+const STATUS_BLOB = "7a262b13836fd843637e74312ca5b6c9b7e43396";
+const STATUS_SHA256 = "acd98947d3892047c9479287325bb502a0a892c2710c5e248c86968c0dcf22cc";
 const OVERLAY_ROOT = "measurement-v2/private";
 const CANONICAL_CONTRACT_ID = "task1.measurement-v2.canonical-json.v2.1";
 const CANONICAL_SOURCE_PATH = "MemoryProxy/eval/tool-prompt-bench/measurement-v2/canonical-json.ts";
@@ -51,36 +54,15 @@ const M1_CANONICAL_TAG = "task1-measure-m1-v2.1-pass";
 const M1_CANONICAL_COMMIT = "6bb57979d6a6c81b4d800995b36b4cd718be1ab5";
 const M2_CANONICAL_TAG = "task1-measure-m2-v2.1-pass";
 const M2_CANONICAL_COMMIT = "6dfb0756c864fc470f85575965304c35a5892eca";
-const M0_SCORER_TAG = "task1-measure-m0-v2-pass";
-const M0_SCORER_COMMIT = "a5f7e1a908b9104e8542506c9238bd3e6e5e0074";
+const M0_SCORER_TAG = "task1-candidate-base-v1";
+const M0_SCORER_COMMIT = "fa79ab94720545e1b6034b83f9b08d83ff2d6f9c";
 const M0_SOURCE_BLOBS = {
-  scorer: "d0c03836c2e46acbea02dbd509716ddc7bcfd1cf",
-  types: "4f9795d80a1f6b9a66272765ba3704412d8d252c",
+  scorer: "da935e8da2a001850a6053746935f2024dbd4e43",
+  types: "57b32b1de0af0f27add4a32af26f7ff2e323d9f4",
   jsonPath: "c18db95853ff866c85aba070cdcc6a8f50e1dee9",
   normalizer: "ca9533cfb859da4a4ef594e68e01378c8ecd0c75",
 } as const;
 const PAIR_APPROVAL_LEDGER_PATH = `${OVERLAY_ROOT}/approvals/pair-minimality-approval-ledger.json`;
-const CONVERSATION_TERMINAL_DOWNGRADE_CASES = [
-  "T03-MEM-003-P",
-  "T04-MEM-003-P",
-  "T05-DS05-MEM-PAIR-02-POS",
-  "T06-MEM-BP-02-POS",
-  "T09-MEM-003-P",
-  "T10-MEM-001-P",
-  "T10-MEM-004-P",
-  "T13-MEM-003-P",
-  "T14-MEM-003-P",
-] as const;
-const SCENARIO_TYPED_BINDING_CASES = [
-  "T07-PAIR-M04-P",
-  "T08-PAIR-M03-P",
-  "T11-MEMORY-003-P",
-  "T11-MEMORY-004-P",
-  "T12-MEMORY-003-P",
-  "T12-MEMORY-005-P",
-] as const;
-const conversationDowngradeCaseIds = new Set<string>(CONVERSATION_TERMINAL_DOWNGRADE_CASES);
-const scenarioBindingCaseIds = new Set<string>(SCENARIO_TYPED_BINDING_CASES);
 const GIT_ROOT = execFileSync("git", ["rev-parse", "--show-toplevel"], {
   encoding: "utf8",
 }).trim();
@@ -91,7 +73,9 @@ interface RuntimeContractV2 {
   tool: string;
   endpoint: string;
   method: string;
-  operation: { kind: "none" } | { kind: "argument"; path: string; value: string };
+  operation:
+    | { kind: "none" }
+    | { kind: "argument"; path: string; value: string };
   acceptedStatusCodes: number[];
 }
 
@@ -142,13 +126,24 @@ function git(...args: string[]): string {
   return execFileSync("git", args, { cwd: GIT_ROOT, encoding: "utf8" }).trim();
 }
 
-function assertCoreIdentity(coreTag: string, coreCommit: string): void {
-  if (coreTag !== CORE_TAG || coreCommit !== CORE_COMMIT) {
-    fail(`overlay builder is frozen to ${CORE_TAG}@${CORE_COMMIT}`);
+function normalizedTextSha256(value: Uint8Array): string {
+  return createHash("sha256")
+    .update(Buffer.from(value).toString("utf8").replace(/\r\n/gu, "\n"), "utf8")
+    .digest("hex");
+}
+
+function assertDataIdentity(dataTag: string, dataCommit: string): void {
+  if (dataTag !== DATA_TAG || dataCommit !== DATA_COMMIT) {
+    fail(`overlay builder is frozen to ${DATA_TAG}@${DATA_COMMIT}`);
   }
-  const tagTarget = git("rev-parse", `${coreTag}^{}`);
-  if (tagTarget !== coreCommit) fail(`${coreTag} resolves to ${tagTarget}, expected ${coreCommit}`);
-  git("merge-base", "--is-ancestor", coreCommit, "HEAD");
+  if (git("cat-file", "-t", dataTag) !== "tag") fail(`${dataTag} must be an annotated tag`);
+  if (git("rev-parse", dataTag) !== DATA_TAG_OBJECT) fail(`${dataTag} tag object drift`);
+  const tagTarget = git("rev-parse", `${dataTag}^{}`);
+  if (tagTarget !== dataCommit) fail(`${dataTag} resolves to ${tagTarget}, expected ${dataCommit}`);
+  const statusPath = "MemoryProxy/eval/tool-prompt-bench/formal-dataset/DATASET-BUILD-STATUS.json";
+  if (git("rev-parse", `${dataTag}:${statusPath}`) !== STATUS_BLOB) fail(`${dataTag} status blob drift`);
+  const statusBytes = execFileSync("git", ["show", `${dataTag}:${statusPath}`], { cwd: GIT_ROOT });
+  if (normalizedTextSha256(statusBytes) !== STATUS_SHA256) fail(`${dataTag} normalized status SHA-256 drift`);
 }
 
 function assertOverlayCanonicalContract(): void {
@@ -184,28 +179,29 @@ function assertOverlayCanonicalContract(): void {
   }
 }
 
-async function assertWorkingCoreMatchesTag(
+async function assertWorkingDataMatchesTag(
   datasetRoot: string,
-  coreCommit: string,
+  dataCommit: string,
 ): Promise<void> {
   const files = [
-    "registry/contracts/formal-v1.json",
-    "provider/dev.jsonl",
-    "provider/hidden.sealed.jsonl",
-    "snapshots/dev/scorer-gold.private.jsonl",
-    "snapshots/dev/snapshot-input.json",
-    "snapshots/hidden/scorer-gold.private.jsonl",
-    "snapshots/hidden/snapshot-input.json",
+    "DATASET-BUILD-STATUS.json",
+    "registry/contracts/formal-v2.json",
+    "revisions/formal-v2/provider/dev.jsonl",
+    "revisions/formal-v2/provider/hidden.sealed.jsonl",
+    "revisions/formal-v2/snapshots/dev/scorer-gold.private.jsonl",
+    "revisions/formal-v2/snapshots/dev/snapshot-input.json",
+    "revisions/formal-v2/snapshots/hidden/scorer-gold.private.jsonl",
+    "revisions/formal-v2/snapshots/hidden/snapshot-input.json",
   ];
   for (const relative of files) {
     const repositoryPath = `MemoryProxy/eval/tool-prompt-bench/formal-dataset/${relative}`;
-    const frozen = execFileSync("git", ["show", `${coreCommit}:${repositoryPath}`], {
+    const frozen = execFileSync("git", ["show", `${dataCommit}:${repositoryPath}`], {
       cwd: GIT_ROOT,
       maxBuffer: 64 * 1024 * 1024,
     });
     const current = await readFile(resolve(datasetRoot, relative));
-    if (bytesSha256(frozen) !== bytesSha256(current)) {
-      fail(`${relative} differs from frozen data core ${coreCommit}`);
+    if (normalizedTextSha256(frozen) !== normalizedTextSha256(current)) {
+      fail(`${relative} differs from frozen formal-v2.1 data ${dataCommit}`);
     }
   }
   const compiler = await readFile(resolve(datasetRoot, "scripts/compile-formal-dataset.ts"), "utf8");
@@ -283,7 +279,14 @@ function actionForStep(
   if (stepIndex === 0) {
     const actions = gold.allowedFirstActions.filter((candidate) => candidate.tool === tool);
     if (actions.length !== 1) fail(`${annotation.caseId}: first step ${tool} is ambiguous`);
-    return { action: actions[0] };
+    const action = actions[0];
+    const operation = action.argumentRules?.exactValues?.tool_name;
+    return {
+      action,
+      ...(tool === "knowledge_tools_call" && typeof operation === "string"
+        ? { knowledgeOperation: operation }
+        : {}),
+    };
   }
   if (tool === "knowledge_tools_call") {
     const priorKnowledgeSteps = sequence.slice(1, stepIndex)
@@ -317,8 +320,20 @@ function targetScenePath(
   return targets[0].path;
 }
 
+function isConversationTerminalDowngrade(annotation: PrivateCaseAnnotation): boolean {
+  return annotation.gold.expectedFollowupActions?.some((action) => (
+    action.tool === "tdai_conversation_query" && action.argumentRules?.valueFromPreviousStep
+  )) ?? false;
+}
+
+function isScenarioTypedBinding(annotation: PrivateCaseAnnotation): boolean {
+  return annotation.gold.expectedFollowupActions?.some((action) => (
+    action.tool === "tdai_read_scene" && action.argumentRules?.valueFromPreviousStep
+  )) ?? false;
+}
+
 function overlaySequences(annotation: PrivateCaseAnnotation): readonly (readonly string[])[] {
-  if (!conversationDowngradeCaseIds.has(annotation.caseId)) return annotation.gold.allowedSequences;
+  if (!isConversationTerminalDowngrade(annotation)) return annotation.gold.allowedSequences;
   for (const sequence of annotation.gold.allowedSequences) {
     if (sequence.length !== 2
       || sequence[0] !== "tdai_conversation_search"
@@ -450,7 +465,7 @@ function buildGoldV2(
     evaluationSchemaVersion: 2,
     caseId: annotation.caseId,
     expectation: "tool",
-    attemptBudget: conversationDowngradeCaseIds.has(annotation.caseId) ? 1 : gold.maxTdaiCalls,
+    attemptBudget: isConversationTerminalDowngrade(annotation) ? 1 : gold.maxTdaiCalls,
     allowedSequences: sequences.map((sequence, sequenceIndex) => ({
       sequenceId: `${annotation.caseId}:sequence-${sequenceIndex + 1}`,
       steps: sequence.map((_tool, stepIndex) => buildGoldStep(annotation, sequence, stepIndex, contract)),
@@ -476,7 +491,7 @@ function pairProjection(caseInput: PublicCaseInput, split: OverlaySplit): Overla
       snapshotId: caseInput.snapshotId,
       workspace: caseInput.workspace,
       language: caseInput.language,
-      difficulty: caseInput.difficulty,
+      ...(caseInput.difficulty === undefined ? {} : { difficulty: caseInput.difficulty }),
       contextMessages: caseInput.contextMessages,
       query: caseInput.query,
       visibleAssetSetSha256: caseInput.visibleAssetSetSha256,
@@ -496,6 +511,45 @@ interface PairApprovalAudit {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+async function buildPairApprovalLedger(
+  contract: FormalWorldContract,
+  datasetRoot: string,
+  evidenceSourceCommit: string,
+): Promise<PairApprovalLedger> {
+  const publicById = new Map(contract.publicCases.map((item) => [item.caseId, item]));
+  const teams = await Promise.all([...contract.teams]
+    .sort((left, right) => left.teamId.localeCompare(right.teamId))
+    .map(async (team) => {
+      const pairIds = contract.pairs
+        .filter((pair) => publicById.get(pair.positiveCaseId)?.identity.teamId === team.teamId)
+        .map((pair) => pair.pairId)
+        .sort();
+      if (pairIds.length !== 15) fail(`${team.teamId}: expected 15 Pair approvals`);
+      const evidencePath = `staging/teams/${team.teamId}/gate.json`;
+      const repositoryPath = `MemoryProxy/eval/tool-prompt-bench/formal-dataset/${evidencePath}`;
+      const frozenEvidence = execFileSync(
+        "git",
+        ["show", `${evidenceSourceCommit}:${repositoryPath}`],
+        { cwd: GIT_ROOT, maxBuffer: 16 * 1024 * 1024 },
+      );
+      return {
+        teamId: team.teamId,
+        pairIds,
+        pairIdsCanonicalSha256: canonicalSha256(pairIds),
+        reviewStatus: "approved" as const,
+        reviewer: "Task 1 formal-v2.1 Team Gate and DS09 integration review",
+        evidencePath,
+        evidenceFileSha256: bytesSha256(frozenEvidence),
+        evidenceSourceCommit,
+      };
+    }));
+  return {
+    schemaVersion: "task1.pair-minimality-approval-ledger.v1",
+    reviewCriterion: "One and only one contextMessages pointer changes; all non-allowed Pair fields remain invariant.",
+    teams,
+  };
 }
 
 async function validatePairApprovalEvidence(
@@ -539,7 +593,10 @@ async function validatePairApprovalEvidence(
     }
     const gate = await readJson<Record<string, unknown>>(evidencePath);
     if (gate.team_id !== team.teamId) errors.push(`${team.teamId}: Gate team_id mismatch`);
-    const passed = gate.status === "pass" || gate.status === "passed" || gate.passed === true;
+    const passed = gate.status === "pass"
+      || gate.status === "passed"
+      || gate.passed === true
+      || gate.valid === true;
     if (!passed) errors.push(`${team.teamId}: Gate is not passed`);
     const counts = isRecord(gate.counts) ? gate.counts : {};
     const pairCount = counts.pairs ?? counts.positive_pairs;
@@ -630,8 +687,14 @@ function validatePairClusters(
   }
   const devClusterCount = [...counts.keys()].filter((key) => key.startsWith("dev:")).length;
   const hiddenClusterCount = [...counts.keys()].filter((key) => key.startsWith("hidden:")).length;
-  if (devClusterCount !== 6) errors.push(`Dev Pair clusters expected 6, found ${devClusterCount}`);
-  if (hiddenClusterCount !== 10) errors.push(`Hidden Pair clusters expected 10, found ${hiddenClusterCount}`);
+  const expectedDevClusters = contract.teams.filter((team) => team.split === "dev").length;
+  const expectedHiddenClusters = contract.teams.filter((team) => team.split === "hidden_test").length;
+  if (devClusterCount !== expectedDevClusters) {
+    errors.push(`Dev Pair clusters expected ${expectedDevClusters}, found ${devClusterCount}`);
+  }
+  if (hiddenClusterCount !== expectedHiddenClusters) {
+    errors.push(`Hidden Pair clusters expected ${expectedHiddenClusters}, found ${hiddenClusterCount}`);
+  }
   return {
     clusterUnit: "team",
     devClusterCount,
@@ -681,15 +744,15 @@ function validateGoldOverlay(
   const caseIds = new Set(contract.publicCases.map((item) => item.caseId));
   const annotationById = new Map(contract.privateAnnotations.map((item) => [item.caseId, item]));
   const runtimeById = new Map(runtimeContracts.map((item) => [item.contractId, item]));
-  if (gold.length !== 640 || new Set(gold.map((item) => item.caseId)).size !== 640) {
-    errors.push(`Gold v2 requires 640 unique cases, found ${gold.length}`);
+  if (gold.length !== 800 || new Set(gold.map((item) => item.caseId)).size !== 800) {
+    errors.push(`Gold v2 requires 800 unique cases, found ${gold.length}`);
   }
   for (const item of gold) {
     if (!caseIds.has(item.caseId)) errors.push(`${item.caseId}: unknown Case`);
     const legacy = annotationById.get(item.caseId);
     if (!legacy) continue;
     if (item.evaluationSchemaVersion !== 2) errors.push(`${item.caseId}: wrong evaluationSchemaVersion`);
-    const expectedAttemptBudget = conversationDowngradeCaseIds.has(item.caseId)
+    const expectedAttemptBudget = isConversationTerminalDowngrade(legacy)
       ? 1
       : legacy.gold.maxTdaiCalls;
     if (item.attemptBudget !== expectedAttemptBudget) errors.push(`${item.caseId}: attempt budget drift`);
@@ -777,7 +840,7 @@ function validateGoldWithFrozenM0(
           evaluationSchemaVersion: 2,
           caseId: item.caseId,
           runId: `data-contract-validation:${item.caseId}`,
-          variantId: "task1-data-formal-v1.1",
+          variantId: DATA_TAG,
           rawTraceStatus: "complete",
           attempts: [],
         },
@@ -788,7 +851,15 @@ function validateGoldWithFrozenM0(
     }
   }
 
-  for (const caseId of SCENARIO_TYPED_BINDING_CASES) {
+  const scenarioTypedBindingCases = gold
+    .filter((item) => item.allowedSequences.some((sequence) => (
+      sequence.steps.length === 2
+      && sequence.steps[0]?.tool === "tdai_scenario_ls"
+      && sequence.steps[1]?.tool === "tdai_read_scene"
+      && sequence.steps[1].bindings.some((binding) => binding.argumentPath === "path")
+    )))
+    .map((item) => item.caseId);
+  for (const caseId of scenarioTypedBindingCases) {
     const item = gold.find((candidate) => candidate.caseId === caseId);
     const steps = item?.allowedSequences[0]?.steps;
     if (!item || !steps || steps.length !== 2) {
@@ -832,7 +903,7 @@ function validateGoldWithFrozenM0(
           evaluationSchemaVersion: 2,
           caseId,
           runId: `negative-binding:${caseId}`,
-          variantId: "task1-data-formal-v1.1",
+          variantId: DATA_TAG,
           rawTraceStatus: "complete",
           attempts,
         },
@@ -878,25 +949,26 @@ function validateMemoryFollowupAudit(
   const errors: string[] = [];
   let negativeBindingTestCount = 0;
   const goldById = new Map(gold.map((item) => [item.caseId, item]));
-  const expectedCaseIds = new Set<string>([
-    ...CONVERSATION_TERMINAL_DOWNGRADE_CASES,
-    ...SCENARIO_TYPED_BINDING_CASES,
-  ]);
   const legacyMemoryFollowups = contract.privateAnnotations.filter((annotation) => (
     annotation.gold.expectedFollowupActions?.some((action) => (
       action.argumentRules?.valueFromPreviousStep
       && (action.tool === "tdai_conversation_query" || action.tool === "tdai_read_scene")
     ))
   ));
-  const legacyIds = new Set(legacyMemoryFollowups.map((item) => item.caseId));
-  for (const caseId of expectedCaseIds) {
-    if (!legacyIds.has(caseId)) errors.push(`${caseId}: expected legacy Memory follow-up is missing`);
-  }
-  for (const caseId of legacyIds) {
-    if (!expectedCaseIds.has(caseId)) errors.push(`${caseId}: unaudited legacy Memory follow-up`);
+  const conversationTerminalDowngradeCases = legacyMemoryFollowups
+    .filter(isConversationTerminalDowngrade)
+    .map((item) => item.caseId)
+    .sort();
+  const scenarioTypedBindingCases = legacyMemoryFollowups
+    .filter(isScenarioTypedBinding)
+    .map((item) => item.caseId)
+    .sort();
+  if (conversationTerminalDowngradeCases.length + scenarioTypedBindingCases.length
+    !== legacyMemoryFollowups.length) {
+    errors.push("unsupported typed Memory follow-up tool in formal-v2 contract");
   }
 
-  for (const caseId of CONVERSATION_TERMINAL_DOWNGRADE_CASES) {
+  for (const caseId of conversationTerminalDowngradeCases) {
     const item = goldById.get(caseId);
     const steps = item?.allowedSequences[0]?.steps ?? [];
     if (item?.attemptBudget !== 1
@@ -907,7 +979,7 @@ function validateMemoryFollowupAudit(
     }
   }
 
-  for (const caseId of SCENARIO_TYPED_BINDING_CASES) {
+  for (const caseId of scenarioTypedBindingCases) {
     const annotation = contract.privateAnnotations.find((item) => item.caseId === caseId);
     const item = goldById.get(caseId);
     if (!annotation || !item) {
@@ -941,11 +1013,11 @@ function validateMemoryFollowupAudit(
 
   return {
     auditedCaseCount: legacyMemoryFollowups.length,
-    conversationTerminalDowngradeCount: CONVERSATION_TERMINAL_DOWNGRADE_CASES.length,
-    scenarioTypedBindingCount: SCENARIO_TYPED_BINDING_CASES.length,
+    conversationTerminalDowngradeCount: conversationTerminalDowngradeCases.length,
+    scenarioTypedBindingCount: scenarioTypedBindingCases.length,
     negativeBindingTestCount,
-    conversationTerminalDowngradeCases: CONVERSATION_TERMINAL_DOWNGRADE_CASES,
-    scenarioTypedBindingCases: SCENARIO_TYPED_BINDING_CASES,
+    conversationTerminalDowngradeCases,
+    scenarioTypedBindingCases,
     scenarioResponsePath: "data.entries.0.path",
     conversationSearchSessionIdResponsePath: null,
     errors,
@@ -966,18 +1038,21 @@ async function identity(
 }
 
 async function main(): Promise<void> {
-  const coreTag = option("--core-tag") ?? CORE_TAG;
-  const coreCommit = option("--core-commit") ?? CORE_COMMIT;
+  const dataTag = option("--data-tag") ?? DATA_TAG;
+  const dataCommit = option("--data-commit") ?? DATA_COMMIT;
   assertOverlayCanonicalContract();
-  assertCoreIdentity(coreTag, coreCommit);
+  assertDataIdentity(dataTag, dataCommit);
 
   const datasetRoot = resolve(import.meta.dirname, "..");
-  await assertWorkingCoreMatchesTag(datasetRoot, coreCommit);
-  const contractPath = resolve(datasetRoot, "registry/contracts/formal-v1.json");
+  await assertWorkingDataMatchesTag(datasetRoot, dataCommit);
+  const contractPath = resolve(datasetRoot, "registry/contracts/formal-v2.json");
   const contract = await readJson<FormalWorldContract>(contractPath);
-  if (contract.world.status !== "frozen") fail("formal-v1 world is not frozen");
-  if (contract.publicCases.length !== 640 || contract.privateAnnotations.length !== 640 || contract.pairs.length !== 240) {
-    fail("formal-v1 core count mismatch");
+  if (contract.world.status !== "frozen") fail("formal-v2 world is not frozen");
+  if (contract.teams.length !== 20
+    || contract.publicCases.length !== 800
+    || contract.privateAnnotations.length !== 800
+    || contract.pairs.length !== 300) {
+    fail("formal-v2 count mismatch");
   }
 
   const teamSplit = new Map(contract.teams.map((team) => [team.teamId, team.split]));
@@ -997,7 +1072,8 @@ async function main(): Promise<void> {
   }
 
   const pairApprovalLedgerPath = resolve(datasetRoot, PAIR_APPROVAL_LEDGER_PATH);
-  const pairApprovalLedger = await readJson<PairApprovalLedger>(pairApprovalLedgerPath);
+  const pairApprovalLedger = await buildPairApprovalLedger(contract, datasetRoot, dataCommit);
+  await writeJson(pairApprovalLedgerPath, pairApprovalLedger);
   const pairApproval = await validatePairApprovalEvidence(
     pairApprovalLedger,
     contract,
@@ -1032,8 +1108,8 @@ async function main(): Promise<void> {
   await writeJsonl(pairHiddenPath, pairHidden);
   await writeJson(runtimePath, runtimeContracts);
 
-  const providerDevPath = resolve(datasetRoot, "provider/dev.jsonl");
-  const providerHiddenPath = resolve(datasetRoot, "provider/hidden.sealed.jsonl");
+  const providerDevPath = resolve(datasetRoot, "revisions/formal-v2/provider/dev.jsonl");
+  const providerHiddenPath = resolve(datasetRoot, "revisions/formal-v2/provider/hidden.sealed.jsonl");
   const providerDev = await readJsonl<unknown>(providerDevPath);
   const providerHidden = await readJsonl<unknown>(providerHiddenPath);
   const snapshots = Object.fromEntries(contract.snapshots.map((snapshot) => [snapshot.split, canonicalSha256V1(snapshot)]));
@@ -1058,8 +1134,10 @@ async function main(): Promise<void> {
       sourcePath: memoryRouterSourceRelative,
       sourceCommit: memoryRouterSourceCommit,
       sourceFileSha256: await fileSha256(memoryRouterSourcePath),
-      conversationSearch: "data.messages[] omits session_id/session_key; search is terminal for 9 cases",
-      scenarioList: "data.entries.0.path binds to read_scene.path for 6 prefix-filtered cases",
+      conversationSearch:
+        `data.messages[] omits session_id/session_key; search is terminal for ${memoryFollowupAudit.conversationTerminalDowngradeCount} cases`,
+      scenarioList:
+        `data.entries.0.path binds to read_scene.path for ${memoryFollowupAudit.scenarioTypedBindingCount} prefix-filtered cases`,
     },
   };
   const memoryFollowupContract = {
@@ -1092,15 +1170,18 @@ async function main(): Promise<void> {
       m1V2_1: { tag: M1_CANONICAL_TAG, commit: M1_CANONICAL_COMMIT },
       m2V2_1: { tag: M2_CANONICAL_TAG, commit: M2_CANONICAL_COMMIT },
     },
-    dataCore: {
-      tag: coreTag,
-      commit: coreCommit,
+    dataFreeze: {
+      tag: dataTag,
+      tagObject: DATA_TAG_OBJECT,
+      commit: dataCommit,
+      statusBlob: STATUS_BLOB,
+      statusSha256: STATUS_SHA256,
       canonicalContract: {
         canonicalContractId: "task1.formal-snapshot.canonical-json.v1",
         sourcePath: "MemoryProxy/eval/tool-prompt-bench/worlds/formal-snapshot.ts",
-        sourceBlob: git("rev-parse", `${coreCommit}:MemoryProxy/eval/tool-prompt-bench/worlds/formal-snapshot.ts`),
+        sourceBlob: git("rev-parse", `${dataCommit}:MemoryProxy/eval/tool-prompt-bench/worlds/formal-snapshot.ts`),
       },
-      contractPath: "registry/contracts/formal-v1.json",
+      contractPath: "registry/contracts/formal-v2.json",
       contractFileSha256: await fileSha256(contractPath),
       contractCanonicalSha256: canonicalSha256V1(contract),
       provider: {
@@ -1197,10 +1278,10 @@ async function main(): Promise<void> {
     ...persistedM0GoldValidation.errors,
     ...persistedPairApproval.audit.errors,
   ];
-  if (persistedGold.length !== 640) errors.push(`persisted Gold count ${persistedGold.length}`);
-  if (persistedPairs.length !== 240) errors.push(`persisted Pair count ${persistedPairs.length}`);
+  if (persistedGold.length !== 800) errors.push(`persisted Gold count ${persistedGold.length}`);
+  if (persistedPairs.length !== 300) errors.push(`persisted Pair count ${persistedPairs.length}`);
   if (providerLeakage.length > 0) errors.push(`provider overlay leakage: ${providerLeakage.join(",")}`);
-  if (persistedManifest.dataCore.commit !== coreCommit) errors.push("manifest core commit drift");
+  if (persistedManifest.dataFreeze.commit !== dataCommit) errors.push("manifest data commit drift");
   const {
     strictCanonicalSha256: persistedMemoryAuditSha,
     ...persistedMemoryAuditWithoutSha
@@ -1212,19 +1293,19 @@ async function main(): Promise<void> {
     sequence.steps.at(-1)?.family === "knowledge"
   ))).length;
   const pairChangedPointerCount = persistedPairs.filter((pair) => (
-    pair.changedPointerCount === 1 && pair.allowedChangedPointers.length === 1
+    pair.allowedChangedPointers.length === 1
   )).length;
   const pairCausalFactorCount = persistedPairs.filter((pair) => pair.causalFactorId.length > 0).length;
-  if (runtimeContracts.length !== 21) errors.push(`runtime contract count ${runtimeContracts.length} != 21`);
-  if (knowledgeTerminalCount !== 48) errors.push(`knowledge terminal count ${knowledgeTerminalCount} != 48`);
-  if (pairChangedPointerCount !== 240) errors.push(`single-pointer Pair count ${pairChangedPointerCount} != 240`);
-  if (pairCausalFactorCount !== 240) errors.push(`Pair causal factor count ${pairCausalFactorCount} != 240`);
+  if (runtimeContracts.length !== 22) errors.push(`runtime contract count ${runtimeContracts.length} != 22`);
+  if (knowledgeTerminalCount !== 60) errors.push(`knowledge terminal count ${knowledgeTerminalCount} != 60`);
+  if (pairChangedPointerCount !== 300) errors.push(`single-pointer Pair count ${pairChangedPointerCount} != 300`);
+  if (pairCausalFactorCount !== 300) errors.push(`Pair causal factor count ${pairCausalFactorCount} != 300`);
   const report = {
     schemaVersion: "task1.measurement-v2-overlay-validation.v1",
     valid: errors.length === 0,
     errors,
-    coreTag,
-    coreCommit,
+    dataTag,
+    dataCommit,
     canonicalContract: persistedManifest.canonicalContract,
     counts: persistedManifest.counts,
     canonicalSha256: {

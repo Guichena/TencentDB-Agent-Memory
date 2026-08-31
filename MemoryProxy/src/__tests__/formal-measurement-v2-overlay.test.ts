@@ -63,16 +63,16 @@ describe("Task 1 Measurement-v2 private overlay", () => {
     ].sort((left, right) => String(left.pairId).localeCompare(String(right.pairId)));
 
     expect(manifest.visibility).toBe("private_never_provider_visible");
-    expect(manifest.dataCore.tag).toBe("task1-data-core-formal-v1");
-    expect(manifest.dataCore.commit).toBe("418ecd102fa2019c139da9eebf88b163eca5a208");
-    expect(manifest.counts.goldV2).toBe(640);
-    expect(manifest.counts.pairV2).toBe(240);
+    expect(manifest.dataFreeze.tag).toBe("task1-data-formal-v2.1");
+    expect(manifest.dataFreeze.commit).toBe("a8ae02e376f07ea7baa6a13f66aa4fb560b95ce6");
+    expect(manifest.counts.goldV2).toBe(800);
+    expect(manifest.counts.pairV2).toBe(300);
     expect(manifest.canonicalContract).toMatchObject({
       canonicalContractId: "task1.measurement-v2.canonical-json.v2.1",
       sourceBlob: "a9fe41894fab2d5cb997a703ff11af5d99181655",
       sharedTestBlob: "6d10c5476956a310b6e800c6f2549dac477d4a8e",
     });
-    expect(manifest.dataCore.canonicalContract.canonicalContractId).toBe(
+    expect(manifest.dataFreeze.canonicalContract.canonicalContractId).toBe(
       "task1.formal-snapshot.canonical-json.v1",
     );
     expect(manifest.dataContractReady).toBe(true);
@@ -81,21 +81,21 @@ describe("Task 1 Measurement-v2 private overlay", () => {
     expect(manifest.formalCampaignReady).toBe(false);
     expect(manifest.formalMetricEligible).toBe(false);
     expect(manifest.frozenM0GoldValidation).toMatchObject({
-      scorerTag: "task1-measure-m0-v2-pass",
-      validatedGoldCount: 640,
-      negativeBindingTestCount: 6,
+      scorerTag: "task1-candidate-base-v1",
+      validatedGoldCount: 800,
+      negativeBindingTestCount: 8,
       errors: [],
     });
     expect(manifest.pairMinimalityApprovalContract).toMatchObject({
-      approvedTeamCount: 16,
-      approvedPairCount: 240,
-      evidenceFileCount: 16,
+      approvedTeamCount: 20,
+      approvedPairCount: 300,
+      evidenceFileCount: 20,
       errors: [],
     });
     const { strictCanonicalSha256, ...memoryAudit } = manifest.memoryFollowupContract;
     expect(canonicalSha256(memoryAudit)).toBe(strictCanonicalSha256);
-    expect(canonicalSha256(gold)).toBe("7b08420acc04894b2a9aa6f56a17994bc79f2d1913032eebb94a17ace332e3a8");
-    expect(canonicalSha256(pairs)).toBe("79f531d3cef550c390c167444f9f97d656b78d95c5392a4962a2a65a94c10652");
+    expect(canonicalSha256(gold)).toBe("0f57a9b87d6c6a044fcb627e75c701fb63e90d1fce47a22be011b200b54635fe");
+    expect(canonicalSha256(pairs)).toBe("b99596e3f60da8dc2b9080c7b218ca48829347ed13f73a25a7a853147a4ac85d");
     expect(gold.filter((item) => item.expectation === "no-tool")
       .every((item) => Array.isArray(item.allowedSequences) && item.allowedSequences.length === 0)).toBe(true);
     const clusters = new Map<string, number>();
@@ -103,9 +103,9 @@ describe("Task 1 Measurement-v2 private overlay", () => {
       const key = String(pair.independenceKey);
       clusters.set(key, (clusters.get(key) ?? 0) + 1);
     }
-    expect(clusters.size).toBe(16);
-    expect([...clusters.keys()].filter((key) => key.startsWith("dev:")).length).toBe(6);
-    expect([...clusters.keys()].filter((key) => key.startsWith("hidden:")).length).toBe(10);
+    expect(clusters.size).toBe(20);
+    expect([...clusters.keys()].filter((key) => key.startsWith("dev:")).length).toBe(8);
+    expect([...clusters.keys()].filter((key) => key.startsWith("hidden:")).length).toBe(12);
     expect([...clusters.values()].every((count) => count === 15)).toBe(true);
   });
 

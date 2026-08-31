@@ -13,19 +13,19 @@ describe("R02 PrepareOnly public datasource adapter", () => {
     const dev = await source.openProviderSplit("dev");
 
     expect(status).toMatchObject({
-      datasetRevision: "formal-v1",
-      datasetTag: "task1-data-formal-v1.1",
+      datasetRevision: "formal-v2.1",
+      datasetTag: "task1-data-formal-v2.1",
       datasetTagObject: freeze.tagObject,
       datasetCommit: freeze.commit,
       formalMetricEligible: false,
     });
     expect(status.splits.dev).toMatchObject({
-      expectedCaseCount: 240,
+      expectedCaseCount: 320,
       privateGoldHashScope: "measurement-v2-split-canonical",
       pairContractHashScope: "measurement-v2-split-canonical",
     });
-    expect(status.preregisteredSmokeCaseIds).toHaveLength(12);
-    expect(dev.cases).toHaveLength(240);
+    expect(status.preregisteredSmokeCaseIds).toHaveLength(40);
+    expect(dev.cases).toHaveLength(320);
     expect(dev.caseBindingsFileSha256).toMatch(/^[a-f0-9]{64}$/);
     expect(dev.cases[0]).toMatchObject({
       split: "dev",

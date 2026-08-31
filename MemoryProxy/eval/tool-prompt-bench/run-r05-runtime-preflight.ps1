@@ -10,7 +10,7 @@ param(
   [Parameter(Mandatory = $true)][string]$RuntimeServiceId,
   [Parameter(Mandatory = $true)][string]$RuntimeAuthUserId,
   [string]$CampaignId = "task1-r05-blank-stack-preflight-r1",
-  [string]$DataTag = "task1-data-formal-v1.1",
+  [string]$DataTag = "task1-data-formal-v2.1",
   [string]$CodeRef = "HEAD",
   [string]$PromptFreezeRef = "task1-code-freeze",
   [ValidateSet("Restore", "Inspect")][string]$Stage = "Restore",
@@ -21,7 +21,7 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-$expectedRunCount = 12
+$expectedRunCount = 40
 $expectedChecks = @(
   "auth-user-mapping",
   "metadata-identity",
@@ -313,8 +313,8 @@ if ($CampaignId -notmatch '^[A-Za-z0-9][A-Za-z0-9._-]*$' -or
     $CampaignId -eq "." -or $CampaignId -eq "..") {
   throw "CampaignId must be a safe path segment."
 }
-if ($DataTag -ne "task1-data-formal-v1.1") {
-  throw "DataTag must remain task1-data-formal-v1.1 for the R05 runtime Gate."
+if ($DataTag -ne "task1-data-formal-v2.1") {
+  throw "DataTag must remain task1-data-formal-v2.1 for the R05 runtime Gate."
 }
 if ($PromptFreezeRef -ne "task1-code-freeze") {
   throw "PromptFreezeRef must remain task1-code-freeze for the R05 runtime Gate."
@@ -411,7 +411,7 @@ if ($DryRun) {
         "MemoryCore auth/verify",
         "build restore plan",
         "restore Dev assets once",
-        "prepare and validate the frozen 12-case preflight selection without a model",
+        "prepare and validate the frozen 40-case preflight selection without a model",
         "write create-new restore-stage handoff",
         "stop at wait-for-knowledge-ready"
       )

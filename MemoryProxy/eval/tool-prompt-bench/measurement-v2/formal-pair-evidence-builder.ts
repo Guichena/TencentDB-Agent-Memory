@@ -48,7 +48,7 @@ export interface BuildFormalPairEvidenceInputV2 {
 }
 
 const FROZEN_FORMAL_WORLD_CANONICAL_SHA256 =
-  "4fc62c1829301fe9f2410f6be40698d7b3d09ec90dde3bfe294452f7ef152d41";
+  "eb04b26cfe03810030f6b7d0a06f82dfedf7c8011ce11bb181db8af0b94b58b7";
 const SHA256 = /^[a-f0-9]{64}$/u;
 
 function nonBlank(label: string, value: string): string {
@@ -79,12 +79,13 @@ function projectPairCase(
 ): PairCaseProjectionV2 {
   const { sessionId: _sessionId, ...stableIdentity } = formalCase.identity;
   void _sessionId;
+  const difficulty = (formalCase as Partial<PublicCaseInput>).difficulty;
   const comparisonDocument = {
     identity: stableIdentity,
     snapshotId: formalCase.snapshotId,
     workspace: formalCase.workspace,
     language: formalCase.language,
-    difficulty: formalCase.difficulty,
+    ...(difficulty === undefined ? {} : { difficulty }),
     contextMessages: formalCase.contextMessages,
     query: formalCase.query,
     visibleAssetSetSha256: formalCase.visibleAssetSetSha256,

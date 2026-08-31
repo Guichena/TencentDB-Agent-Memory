@@ -43,7 +43,6 @@ export type {
   FormalSmokePreregistration,
   FormalSmokeSelectionContract,
   FormalSmokeTeamRule,
-  SmokeNoToolKind,
 } from "./build-smoke-preregistration.js";
 export {
   FORMAL_RUNTIME_FREEZE_CANONICAL_SHA256,

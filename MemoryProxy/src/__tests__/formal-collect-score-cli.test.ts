@@ -150,7 +150,7 @@ async function writeCompletedExecutionFixture(
   caseId: string,
   repeat: number,
 ): Promise<{ directory: string; receipt: FormalExecutionReceipt }> {
-  const datasetRevision = "task1-data-formal-v1.1";
+  const datasetRevision = "task1-data-formal-v2.1";
   const campaignId = "campaign-a";
   const directory = join(root, datasetRevision, campaignId, caseId, "V0", String(repeat));
   await mkdir(directory, { recursive: true });
@@ -607,7 +607,7 @@ describe("formal collect/score CLI", () => {
     const schemaOnlyRoot = await mkdtemp(join(tmpdir(), "task1-collect-schema-only-"));
     const schemaOnlyDirectory = join(
       schemaOnlyRoot,
-      "task1-data-formal-v1.1",
+      "task1-data-formal-v2.1",
       "campaign-a",
       "case-a",
       "V0",

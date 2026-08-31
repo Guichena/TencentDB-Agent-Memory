@@ -66,22 +66,22 @@ describe("frozen formal asset restore plan builder", () => {
         tag: FORMAL_DATA_TAG,
         tagObject: FORMAL_DATA_TAG_OBJECT,
         commit: FORMAL_DATA_COMMIT,
-        contractCanonicalSha256: "4fc62c1829301fe9f2410f6be40698d7b3d09ec90dde3bfe294452f7ef152d41",
-        snapshotCanonicalSha256: "3a82d0ad8241ff3e2173555efbdb65dfb367a0a38c9998203c5b4754611a4783",
+        contractCanonicalSha256: "eb04b26cfe03810030f6b7d0a06f82dfedf7c8011ce11bb181db8af0b94b58b7",
+        snapshotCanonicalSha256: "addd9c6311d4bd44478ea9438f50816d59eb2c8adfb9c4d9f53fd3fc152e0b7e",
       },
       executable: false,
       formalMetricEligible: false,
     }));
-    expect(plan.selectedVisibleAssetSets).toHaveLength(6);
-    expect(plan.identityMappings.teams).toHaveLength(6);
-    expect(plan.identityMappings.tasks).toHaveLength(24);
-    expect(plan.assets).toHaveLength(284);
-    expect(plan.actions).toHaveLength(318);
+    expect(plan.selectedVisibleAssetSets).toHaveLength(8);
+    expect(plan.identityMappings.teams).toHaveLength(8);
+    expect(plan.identityMappings.tasks).toHaveLength(34);
+    expect(plan.assets).toHaveLength(386);
+    expect(plan.actions).toHaveLength(432);
     for (const suffix of [
       "formal-dataset/DATASET-BUILD-STATUS.json",
       "formal-runtime/frozen/formal-runtime-freeze.json",
       "formal-runtime/frozen/case-bindings.jsonl",
-      "formal-dataset/registry/contracts/formal-v1.json",
+      "formal-dataset/registry/contracts/formal-v2.json",
     ]) {
       expect(readPaths.some((path) => path.endsWith(suffix)), suffix).toBe(true);
     }
@@ -101,7 +101,7 @@ describe("frozen formal asset restore plan builder", () => {
       split: "dev",
       readText: (path) => {
         const text = readFileSync(path, "utf8");
-        return path.endsWith("formal-v1.json") ? `${text}\n` : text;
+        return path.endsWith("formal-v2.json") ? `${text}\n` : text;
       },
     })).toThrow(/contract file hash/u);
   });

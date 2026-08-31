@@ -20,9 +20,9 @@ export interface AnnotatedTagIdentity {
 
 export const TASK1_CANDIDATE_BASE_TAGS = Object.freeze({
   data: {
-    tag: "task1-data-formal-v1.1",
-    tagObject: "6ba3a0e4098786882dd500f884823f2f8dfbb9d3",
-    peeledCommit: "02620d8313dcb883b7a57c4c2edc8f4286eb4bc9",
+    tag: "task1-data-formal-v2.1",
+    tagObject: "6dcb766b0d9d831fe06cd45176da4d8d59cd0a78",
+    peeledCommit: "a8ae02e376f07ea7baa6a13f66aa4fb560b95ce6",
   },
   prompt: {
     tag: "task1-code-freeze",
@@ -49,7 +49,7 @@ export const TASK1_CANDIDATE_BASE_TOKENIZER = Object.freeze({
 
 // Updated only when the frozen Selection Contract is intentionally changed.
 export const TASK1_CANDIDATE_BASE_SELECTION_CONTRACT_SHA256 =
-  "4c4cad017f8326ed3f57b7bf571a8df97b973a3bf8e94f242779fc0fc6cc763c";
+  "5dca2bf5df8cf0f1d6de1284934ed6c754ba4ff980ce7d59fc9ec576f25314f9";
 
 export interface Task1CandidateBaseManifestV1 {
   readonly schemaVersion: "task1.candidate-base.v1";

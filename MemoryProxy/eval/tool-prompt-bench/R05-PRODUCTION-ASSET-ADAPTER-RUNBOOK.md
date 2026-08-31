@@ -1,12 +1,12 @@
 # R05 生产资产恢复与逐 Run 预检手册
 
-> 本手册描述的是任务一所有 Prompt 创新共同继承的一次性公共准备链，不是任何一个创新方法，也不代表任何方法的模型行为结果。统一名称为 **R05 blank-stack preflight**：0 次模型调用，只做 restore、inspect 和 12 份 receipt。后续 **E01/R04 V0 runtime smoke** 才是 12 次 Luna，二者不能混称。R05 的生产 adapter 实现仍冻结在 `c86b154`；本复现分支只补一键编排、可执行 Gate 命令和文档，不回写冻结 R05。
+> 本手册描述的是任务一所有 Prompt 创新共同继承的一次性公共准备链，不是任何一个创新方法，也不代表任何方法的模型行为结果。统一名称为 **R05 blank-stack preflight**：0 次模型调用，只做 restore、inspect 和 40 份 receipt。后续 **E01/R04 V0 runtime smoke** 才是 40 次 Luna，二者不能混称。R05 的生产 adapter 实现仍冻结在 `c86b154`；本复现分支只补一键编排、可执行 Gate 命令和文档，不回写冻结 R05。
 
 ## 1. 本阶段解决什么
 
 R05 只补齐正式模型执行前的生产资产链路，不运行 Luna，也不评价资产回答质量：
 
-1. 从 `task1-data-formal-v1.1` 构造 Gold-blind restore plan。
+1. 从 `task1-data-formal-v2.1` 构造 Gold-blind restore plan。
 2. 通过真实 MemoryCore、MemoryKnowledge 接口创建 Team、Agent、Task 和可见资产。
 3. 对每个 prepared run 绑定公开的 Space/Team/Agent/Task/Session。
 4. 通过真实生产接口回读 Memory、Skill、Knowledge，并保存响应内容 hash 与 runtime locator。
@@ -23,7 +23,7 @@ R05 只补齐正式模型执行前的生产资产链路，不运行 Luna，也�
 | 冻结 R05 实现 | `codex/task1-experiment-r05-production-assets-v1` @ `c86b154f9f597da0788592c66b93d574fd3f10f9` |
 | Runtime Gate support 分支 | `codex/task1-r05-runtime-gate-repro-v1`（只增加编排、测试、Gate/手册修正；不跑 live Gate） |
 | 上游代码检查点 | R04 `92da207` |
-| 数据 tag | annotated tag `task1-data-formal-v1.1` |
+| 数据 tag | annotated tag `task1-data-formal-v2.1` |
 | 模型 | `gpt-5.6-luna`，`high`；R05 本身不调用 |
 | 数据面 | 本地 `server_team` 的 MemoryCore + MemoryKnowledge + MemoryProxy |
 | 结果写入 | 只能写 worktree 外的新目录；所有 JSON 使用 create-new，不覆盖旧证据 |
@@ -64,7 +64,7 @@ $ExecutionRoot = "<Measurement-v2 integration provisional common-base 的绝对�
 $ProxyRoot = Join-Path $ExecutionRoot "MemoryProxy"
 $BenchRoot = Join-Path $ProxyRoot "eval\tool-prompt-bench"
 git -C $ExecutionRoot status --short --branch
-git -C $ExecutionRoot rev-parse 'task1-data-formal-v1.1^{}'
+git -C $ExecutionRoot rev-parse 'task1-data-formal-v2.1^{}'
 ```
 
 必须保持传入的代码 worktree 和冻结数据 worktree 都干净。restore plan、observations、prepared runs 和 summary 都放在仓库外的 RunRoot 中。`Restore` 拒绝已有 RunRoot，`Inspect` 只接受该 Restore 阶段创建的 RunRoot；两个阶段都拒绝覆盖 JSON。
@@ -76,7 +76,7 @@ git -C $ExecutionRoot rev-parse 'task1-data-formal-v1.1^{}'
 1. `RepositoryRoot`：尚未打 candidate tag 的最终 Measurement-v2 integration provisional common-base 干净 worktree；`CodeRef` 必须解析为该 worktree 的 HEAD。
 2. `Config`：MemoryProxy 实际启动时读取的 YAML 绝对路径；脚本会用 SHA-256 与 `/health` 回报值比对。
 3. `RunRoot`：仓库外的证据目录。`Restore` 阶段要求它尚不存在；`Inspect` 阶段必须复用同一个已恢复目录。
-4. `FrozenDataRoot`：干净、HEAD 精确等于 `task1-data-formal-v1.1^{commit}` 的独立 checkout。
+4. `FrozenDataRoot`：干净、HEAD 精确等于 `task1-data-formal-v2.1^{commit}` 的独立 checkout。
 5. MemoryCore、MemoryKnowledge、MemoryProxy 三个无凭据 base URL；R05 的 blank stack 只接受 `localhost`、`127.0.0.1`、`::1` 等本机 loopback，拒绝远端 host。
 6. 本轮专用 `RuntimeServiceId`（数据集 Space 到真实实例的唯一映射）。
 7. `RuntimeAuthUserId`（本轮 user key 经 MemoryCore `/v3/meta/auth/verify` 解析出的真实 user id）。
@@ -222,7 +222,7 @@ $ArtifactRoot = Join-Path $RunRoot "evidence"
 $CampaignRoot = Join-Path $RunRoot "prepared"
 $PlanPath = Join-Path $ArtifactRoot "dev-restore-plan.json"
 $RestorePath = Join-Path $ArtifactRoot "dev-restore-observations.json"
-$FrozenDataRoot = "D:\projects\TencentDB-Agent-Memory-task1-data-formal-v1.1"
+$FrozenDataRoot = "D:\projects\TencentDB-Agent-Memory-task1-data-formal-v2.1"
 
 $env:TDAI_FORMAL_MEMORY_CORE_URL = "http://127.0.0.1:<MemoryCore端口>"
 $env:TDAI_FORMAL_MEMORY_KNOWLEDGE_URL = "http://127.0.0.1:<MemoryKnowledge端口>"
@@ -234,7 +234,7 @@ $env:TDAI_FORMAL_MEMORY_CORE_API_KEY = "<仅在当前终端输入的MemoryCore g
 $env:TDAI_EVAL_USER_KEY = "<仅在当前终端输入>"
 ```
 
-`$FrozenDataRoot` 必须是 `task1-data-formal-v1.1` 的独立只读 checkout，供 Skill manifest hash 匹配真实 `SKILL.md` 和资源文件；不能指向 raw source copy，也不能指向正在开发的数据分支。
+`$FrozenDataRoot` 必须是 `task1-data-formal-v2.1` 的独立只读 checkout，供 Skill manifest hash 匹配真实 `SKILL.md` 和资源文件；不能指向 raw source copy，也不能指向正在开发的数据分支。
 
 服务启动时必须额外满足：
 
@@ -280,7 +280,7 @@ $env:TDAI_EVAL_USER_KEY = "<只在当前终端输入>"
 & $GateScript @GateArgs -Stage Restore
 ```
 
-`Restore` 会恢复一次 Dev 资产、生成 12 条 PrepareOnly manifest，写入 create-new 的 `r05-restore-stage.json`，然后以 `stage=wait-for-knowledge-ready` 正常退出。此时不能再次执行 `Restore`。等待 MemoryKnowledge 完成异步建图，由用户确认全部可见 code-graph 已为 `ready`，再复用原参数运行 `Inspect`：
+`Restore` 会恢复一次 Dev 资产、生成 40 条 PrepareOnly manifest，写入 create-new 的 `r05-restore-stage.json`，然后以 `stage=wait-for-knowledge-ready` 正常退出。此时不能再次执行 `Restore`。等待 MemoryKnowledge 完成异步建图，由用户确认全部可见 code-graph 已为 `ready`，再复用原参数运行 `Inspect`：
 
 ```powershell
 & $GateScript @GateArgs -Stage Inspect -DryRun
@@ -293,9 +293,9 @@ $env:TDAI_EVAL_USER_KEY = "<只在当前终端输入>"
 
 1. Node 22、代码/数据 worktree clean、annotated data tag、冻结 checkout、config/本地依赖。
 2. 三服务 health 与 MemoryCore auth 映射；这些检查在创建输出目录、恢复资产之前完成。
-3. create-new restore plan；在 restore 前独立断言 canonical `planSha256=6a15b1981ecf506c9650e2dd9d918bc63cf18b39c79f3da0849d279d61c24b0d`、318 actions、209 requirements、284 assets，然后只恢复一次 Dev 资产。
-4. restore 后独立断言外层 `operation=restore`、`verification=unverified`、`formalMetricEligible=false`、`readyForFormalMeasurement=false`，以及内层 receipt `complete=true`、318 actions、209 requirements；adapter 不能自我授信。
-5. `Restore` 只生成冻结登记表中的 12 条 V0 Smoke PrepareOnly；在退出前断言精确 case 集合、`repeat=1`、非空且唯一的 `run_id`/`session_id`，不执行任何模型命令。
+3. create-new restore plan；在 restore 前独立断言 canonical `planSha256=e8babf994edb93fbbc71f5e3ef8450536df3367b17003d279a11a7d5619c4bb4`、432 actions、285 requirements、386 assets，然后只恢复一次 Dev 资产。
+4. restore 后独立断言外层 `operation=restore`、`verification=unverified`、`formalMetricEligible=false`、`readyForFormalMeasurement=false`，以及内层 receipt `complete=true`、432 actions、285 requirements；adapter 不能自我授信。
+5. `Restore` 只生成冻结登记表中的 40 条 V0 Smoke PrepareOnly；在退出前断言精确 case 集合、`repeat=1`、非空且唯一的 `run_id`/`session_id`，不执行任何模型命令。
 6. `Restore` 写 create-new handoff 并停在 `wait-for-knowledge-ready`。等待期间不运行脚本，不重复 restore。
 7. `Inspect` 先验证 handoff、服务实例和全部既有文件 hash，再在每个 prepared run 的 read-back 前确认 MemoryKnowledge auto-sync disabled/idle，且该 run 可见 code-graph 均为 `ready`；随后执行真实 inspect 和无模型 Session Init。
 8. 独立 evaluator 生成六项全 pass 的 create-new receipt。
@@ -334,10 +334,10 @@ npm run eval:tool-prompt:formal:build-restore-plan -- `
 成功输出必须精确等于：
 
 ```text
-planSha256    6a15b1981ecf506c9650e2dd9d918bc63cf18b39c79f3da0849d279d61c24b0d
-actions       318
-requirements  209
-assets         284
+planSha256    e8babf994edb93fbbc71f5e3ef8450536df3367b17003d279a11a7d5619c4bb4
+actions       432
+requirements  285
+assets         386
 ```
 
 `Restore` 阶段会在恢复资产前解析该 JSON 并 fail closed；不能只相信构造命令的退出码。命令使用 `flag=wx`；目标已存在会失败，不能覆盖。
@@ -360,20 +360,20 @@ restore 顺序由冻结 plan 决定；不重试、不回滚、不启动模型。
 
 ```text
 operation = restore
-planSha256 = 6a15b1981ecf506c9650e2dd9d918bc63cf18b39c79f3da0849d279d61c24b0d
+planSha256 = e8babf994edb93fbbc71f5e3ef8450536df3367b17003d279a11a7d5619c4bb4
 verification = unverified
 formalMetricEligible = false
 readyForFormalMeasurement = false
 unverifiedObservations.complete = true
-unverifiedObservations.actionCount = 318
-unverifiedObservations.requirementCount = 209
+unverifiedObservations.actionCount = 432
+unverifiedObservations.requirementCount = 285
 ```
 
 这不是失败，而是防止 adapter 自我授信。真正 readiness 只能由第 11 节 evaluator 生成。
 
 ## 9. PrepareOnly（等价展开）
 
-为 R05 blank-stack preflight 准备冻结的 12 条 Dev selection，不运行 Luna；这不是 E01/R04 V0 runtime smoke：
+为 R05 blank-stack preflight 准备冻结的 40 条 Dev selection，不运行 Luna；这不是 E01/R04 V0 runtime smoke：
 
 ```powershell
 & (Join-Path $BenchRoot "run-formal-prepare.ps1") `
@@ -391,18 +391,9 @@ unverifiedObservations.requirementCount = 209
   -PromptFreezeRef "task1-code-freeze"
 ```
 
-冻结 Dev Smoke selection canonical SHA-256 是 `f300079fc408878cf2bf5921a9e6b3004ce9e5fa3034857221554c00a9a101ec`，精确有序 case 集合是：
+冻结 Dev Smoke selection canonical SHA-256 是 `523788fad4c50750049ea8efb53e9c4ce43d43d0b05de8696fd403e7efd68bee`，精确有序 case 集合见 `formal-runtime/frozen/dev-smoke-preregistration.json`，共 40 条；运行器会逐条验证顺序和成员身份。
 
-```text
-T01-MEMORY-006-P       T01-MEMORY-006-N
-T02-MEMORY-001-P       T02-NATURAL-001
-T03-SKILL-001-P        T03-SKILL-001-N
-T04-SKILL-001-P        T04-NAT-001
-T11-KNOWLEDGE-013-P    T11-KNOWLEDGE-013-N
-T12-KNOWLEDGE-013-P    T12-NATURAL-001-N
-```
-
-PrepareOnly 为每条 case 生成独立 opaque session id 和公开 expected binding；`Restore` 阶段会在写 handoff 前核验 case 集合、`repeat=1`、12 个非空唯一 `run_id` 和 12 个非空唯一 `session_id`。它不打开 private Gold，不执行 Codex。
+PrepareOnly 为每条 case 生成独立 opaque session id 和公开 expected binding；`Restore` 阶段会在写 handoff 前核验 case 集合、`repeat=1`、40 个非空唯一 `run_id` 和 40 个非空唯一 `session_id`。它不打开 private Gold，不执行 Codex。
 
 ## 10. 对每个 prepared run 生成 inspect observations（等价展开）
 
@@ -461,7 +452,7 @@ $PreflightPath = Join-Path $ArtifactRoot "preflight\<run-id>.json"
 
 ## 12. 公共准备链到后续方法分支的交接
 
-12 条 preflight selection 全部得到 create-new `ready=true` receipt、final Git locks 通过且 summary 已生成后，R05 blank-stack preflight 才通过。此时 Selection Contract 与 freeze manifest 已经存在于受测提交；不得再修改 HEAD，只给该精确提交打 Measurement-v2/candidate-base tag。之后才执行 **E01/R04 V0 runtime smoke**（12 次 Luna）和完整 Dev。
+40 条 preflight selection 全部得到 create-new `ready=true` receipt、final Git locks 通过且 summary 已生成后，R05 blank-stack preflight 才通过。此时 Selection Contract 与 freeze manifest 已经存在于受测提交；不得再修改 HEAD，只给该精确提交打 Measurement-v2/candidate-base tag。之后才执行 **E01/R04 V0 runtime smoke**（40 次 Luna）和完整 Dev。
 
 普通 Prompt 设计或措辞变化不重跑公共 Gate：它们从 tagged candidate-base 建立各自的后代 branch/worktree，为自己的 commit/config/profile 创建全新的 prepared run、Session、run-specific receipt 和结果证据。只有修改 adapter、runner、scorer、restore 或 preflight 基础设施时，公共 Gate 才必须在新的 provisional common-base 上重跑。不得复用其他方法已消费的 Session/result。
 

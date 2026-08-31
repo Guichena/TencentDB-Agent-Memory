@@ -21,7 +21,7 @@ export interface LoadFormalCaseBindingsInput {
 export interface FormalCaseBindingSplitData {
   readonly split: FormalBindingSplit;
   readonly count: number;
-  readonly totalCount: 640;
+  readonly totalCount: 800;
   readonly rows: readonly FormalCaseBinding[];
   readonly fileSha256: string;
   readonly canonicalSha256: string;
@@ -174,14 +174,14 @@ export function loadFormalCaseBindings(input: LoadFormalCaseBindingsInput): Form
   }
   const devCount = allRows.filter((row) => row.split === "dev").length;
   const hiddenCount = allRows.filter((row) => row.split === "hidden_test").length;
-  if (allRows.length !== 640 || devCount !== 240 || hiddenCount !== 400) {
-    throw new Error(`case binding counts must be 640/240/400, got ${allRows.length}/${devCount}/${hiddenCount}`);
+  if (allRows.length !== 800 || devCount !== 320 || hiddenCount !== 480) {
+    throw new Error(`case binding counts must be 800/320/480, got ${allRows.length}/${devCount}/${hiddenCount}`);
   }
   const rows = Object.freeze(allRows.filter((row) => row.split === input.split));
   return Object.freeze({
     split: input.split,
     count: rows.length,
-    totalCount: 640 as const,
+    totalCount: 800 as const,
     rows,
     fileSha256: exactUtf8Sha256(rawText),
     canonicalSha256: canonicalSha256(allRows),

@@ -38,14 +38,14 @@ describe("Task 1 formal public datasource", () => {
 
     expect(hidden).toMatchObject({
       split: "hidden_test",
-      count: 400,
-      snapshotCanonicalSha256: "23fe7b47d13c950765fa9557da918e1d102b7ab4558171cb15a8444d1cbd9c9e",
-      measurementV2GoldCanonicalSha256: "fdcbfbce3ada6b274cdfb6a9444c3f151af004b6186ca5e0186fe7e16d3c883f",
-      measurementV2PairCanonicalSha256: "9195cf6dc6fbec5dca2f1824c93763f50d42cb3f00f06339f7431dde239b42b8",
+      count: 480,
+      snapshotCanonicalSha256: "93d18538660330603f082a396791712e9b0cdba6647ea819fa3ca6e456085fbb",
+      measurementV2GoldCanonicalSha256: "2e5c5bf72c2fa162944ddf7fdc788b9cc2d9cbb2bbce42e27b9d98773e69565f",
+      measurementV2PairCanonicalSha256: "76ee4c151313fb731dc83f51301eee666e105db08b1d08351c6ef87e5727ac3d",
       formalMetricEligible: false,
     });
     expect(hidden.cases.every((item) => item.provider.caseId === item.binding.caseId)).toBe(true);
-    expect(new Set(hidden.cases.map((item) => item.provider.caseId)).size).toBe(400);
+    expect(new Set(hidden.cases.map((item) => item.provider.caseId)).size).toBe(480);
     expect(reads.map((path) => basename(path)).sort()).toEqual([
       "DATASET-BUILD-STATUS.json",
       "case-bindings.jsonl",
@@ -56,9 +56,9 @@ describe("Task 1 formal public datasource", () => {
 
     const dev = openFormalProviderSplit({ freeze, split: "dev" });
     expect(dev).toMatchObject({
-      count: 240,
-      snapshotCanonicalSha256: "3a82d0ad8241ff3e2173555efbdb65dfb367a0a38c9998203c5b4754611a4783",
-      measurementV2GoldCanonicalSha256: "8cfffec5c06b37b92b41cf95ee0d70333e9a2a7f6063145100b20ce753fe58c5",
+      count: 320,
+      snapshotCanonicalSha256: "addd9c6311d4bd44478ea9438f50816d59eb2c8adfb9c4d9f53fd3fc152e0b7e",
+      measurementV2GoldCanonicalSha256: "720d5ee06bebb6edb5b15698d605590bf917998eedf6f448692b1fdf16bb3657",
       formalMetricEligible: false,
     });
   });

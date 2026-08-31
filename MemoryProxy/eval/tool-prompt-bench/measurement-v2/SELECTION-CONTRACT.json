@@ -41,36 +41,36 @@
     ]
   },
   "formalData": {
-    "tag": "task1-data-formal-v1.1",
-    "tagObject": "6ba3a0e4098786882dd500f884823f2f8dfbb9d3",
-    "peeledCommit": "02620d8313dcb883b7a57c4c2edc8f4286eb4bc9",
+    "tag": "task1-data-formal-v2.1",
+    "tagObject": "6dcb766b0d9d831fe06cd45176da4d8d59cd0a78",
+    "peeledCommit": "a8ae02e376f07ea7baa6a13f66aa4fb560b95ce6",
     "dev": {
-      "caseCount": 240,
-      "toolPositiveCount": 90,
-      "noToolCount": 150,
-      "pairCount": 90,
-      "naturalCodingNegativeCount": 60,
+      "caseCount": 320,
+      "toolPositiveCount": 120,
+      "noToolCount": 200,
+      "pairCount": 120,
+      "naturalCodingNegativeCount": 80,
       "familyPositiveCounts": {
-        "memory": 36,
-        "skill": 36,
-        "knowledge": 18
+        "memory": 48,
+        "skill": 48,
+        "knowledge": 24
       },
       "independenceKey": "split:teamId",
-      "independenceClusterCount": 6
+      "independenceClusterCount": 8
     },
     "hidden": {
-      "caseCount": 400,
-      "toolPositiveCount": 150,
-      "noToolCount": 250,
-      "pairCount": 150,
-      "naturalCodingNegativeCount": 100,
+      "caseCount": 480,
+      "toolPositiveCount": 180,
+      "noToolCount": 300,
+      "pairCount": 180,
+      "naturalCodingNegativeCount": 120,
       "familyPositiveCounts": {
-        "memory": 60,
-        "skill": 60,
-        "knowledge": 30
+        "memory": 72,
+        "skill": 72,
+        "knowledge": 36
       },
       "independenceKey": "split:teamId",
-      "independenceClusterCount": 10
+      "independenceClusterCount": 12
     }
   },
   "metricBindings": {
@@ -170,19 +170,19 @@
     "maxCorrectCaseRegressionPerFamilyPerRepeat": 1,
     "families": {
       "memory": {
-        "devDenominatorPerRepeat": 36
+        "devDenominatorPerRepeat": 48
       },
       "skill": {
-        "devDenominatorPerRepeat": 36
+        "devDenominatorPerRepeat": 48
       },
       "knowledge": {
-        "devDenominatorPerRepeat": 18
+        "devDenominatorPerRepeat": 24
       }
     }
   },
   "naturalCodingNegativeGate": {
     "reference": "V0-C",
-    "devDenominatorPerRepeat": 60,
+    "devDenominatorPerRepeat": 80,
     "maxFalseCallIncreasePerRepeat": 0,
     "idealTargetFalseCalls": 0
   },

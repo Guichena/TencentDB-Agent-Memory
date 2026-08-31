@@ -403,7 +403,7 @@ function validatePublicStatus(status: FormalPreparePublicStatus): FormalPrepareP
   requireSha256("contractSha256", status.contractSha256);
   for (const split of ["dev", "hidden_test"] as const) {
     const splitStatus = status.splits[split];
-    const requiredCount = split === "dev" ? 240 : 400;
+    const requiredCount = split === "dev" ? 320 : 480;
     if (splitStatus.expectedCaseCount !== requiredCount) {
       throw new Error(`${split}: public status expectedCaseCount must be ${requiredCount}`);
     }
@@ -418,9 +418,9 @@ function validatePublicStatus(status: FormalPreparePublicStatus): FormalPrepareP
     }
     requireSha256(`${split}.snapshotSha256`, splitStatus.snapshotSha256);
   }
-  if (status.preregisteredSmokeCaseIds.length !== 12
-    || new Set(status.preregisteredSmokeCaseIds).size !== 12) {
-    throw new Error("public status must preregister exactly 12 unique smoke case ids");
+  if (status.preregisteredSmokeCaseIds.length !== 40
+    || new Set(status.preregisteredSmokeCaseIds).size !== 40) {
+    throw new Error("public status must preregister exactly 40 unique smoke case ids");
   }
   return status;
 }

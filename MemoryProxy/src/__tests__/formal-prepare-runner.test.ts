@@ -18,6 +18,11 @@ import {
 import type { PinnedFormalExecutionPreflightReceipt } from "../../eval/tool-prompt-bench/formal-execution-preflight.js";
 import { canonicalSha256 } from "../../eval/tool-prompt-bench/formal-runtime/canonical.js";
 import {
+  FORMAL_DATA_COMMIT,
+  FORMAL_DATA_TAG,
+  FORMAL_DATA_TAG_OBJECT,
+} from "../../eval/tool-prompt-bench/formal-runtime/freeze.js";
+import {
   executePreparedFormalRun,
 } from "../../eval/tool-prompt-bench/formal-execution-runner.js";
 import {
@@ -49,7 +54,7 @@ function makeCase(index: number, split: "dev" | "hidden_test" = "dev"): FormalPr
     binding: {
       identity: {
         spaceId: "space-formal",
-        teamId: `team-${String((index % 16) + 1).padStart(2, "0")}`,
+        teamId: `team-${String((index % 20) + 1).padStart(2, "0")}`,
         agentId: "agent-general",
         taskId: `task-${"1".repeat(32)}`,
         userId: "user-formal",
@@ -65,18 +70,18 @@ function makeCase(index: number, split: "dev" | "hidden_test" = "dev"): FormalPr
 
 function makeStatus(): FormalPreparePublicStatus {
   return {
-    datasetRevision: "formal-v1.1",
-    datasetTag: "task1-data-formal-v1.1",
-    datasetTagObject: "6ba3a0e4098786882dd500f884823f2f8dfbb9d3",
-    datasetCommit: "1".repeat(40),
+    datasetRevision: "formal-v2.1",
+    datasetTag: FORMAL_DATA_TAG,
+    datasetTagObject: FORMAL_DATA_TAG_OBJECT,
+    datasetCommit: FORMAL_DATA_COMMIT,
     contractSha256: SHA_A,
     preregisteredSmokeCaseIds: Array.from(
-      { length: 12 },
+      { length: 40 },
       (_, index) => makeCase(index + 1).providerRecord.caseId,
     ),
     splits: {
       dev: {
-        expectedCaseCount: 240,
+        expectedCaseCount: 320,
         providerInputSha256: SHA_C,
         privateGoldSha256: SHA_D,
         privateGoldHashScope: "measurement-v2-split-canonical",
@@ -85,7 +90,7 @@ function makeStatus(): FormalPreparePublicStatus {
         snapshotSha256: SHA_E,
       },
       hidden_test: {
-        expectedCaseCount: 400,
+        expectedCaseCount: 480,
         providerInputSha256: SHA_D,
         privateGoldSha256: SHA_E,
         privateGoldHashScope: "measurement-v2-split-canonical",
@@ -99,8 +104,8 @@ function makeStatus(): FormalPreparePublicStatus {
 }
 
 function makeSource(audit: string[] = []): FormalPrepareDataSource {
-  const dev = Array.from({ length: 240 }, (_, index) => makeCase(index + 1));
-  const hidden = Array.from({ length: 400 }, (_, index) => makeCase(index + 1, "hidden_test"));
+  const dev = Array.from({ length: 320 }, (_, index) => makeCase(index + 1));
+  const hidden = Array.from({ length: 480 }, (_, index) => makeCase(index + 1, "hidden_test"));
   return {
     async readPublicStatus() {
       audit.push("public-status");
@@ -207,8 +212,8 @@ describe("R02 PrepareOnly formal runner", () => {
 
     for (const run of result.runs) {
       expect(run.manifest).toMatchObject({
-        dataset_revision: "formal-v1.1",
-        dataset_commit: "1".repeat(40),
+        dataset_revision: "formal-v2.1",
+        dataset_commit: FORMAL_DATA_COMMIT,
         contract_sha256: SHA_A,
         private_gold_sha256: SHA_D,
         private_gold_hash_scope: "measurement-v2-split-canonical",
@@ -234,7 +239,7 @@ describe("R02 PrepareOnly formal runner", () => {
         finished_at: null,
       });
       expect(run.directory.replaceAll("\\", "/")).toContain(
-        "/formal-v1.1/campaign-r02-c/D-001-P/",
+        "/formal-v2.1/campaign-r02-c/D-001-P/",
       );
       expect(run.directory.replaceAll("\\", "/")).toMatch(/\/V0\/1$/);
 
@@ -464,11 +469,11 @@ describe("R02 PrepareOnly formal runner", () => {
       writeArtifacts: false,
     });
     expect(audit).toEqual(["public-status", "open:hidden_test:true"]);
-    expect(allowed.runs).toHaveLength(400);
+    expect(allowed.runs).toHaveLength(480);
     expect(JSON.stringify(allowed)).not.toContain("heldOutAuthorized");
   });
 
-  it("enumerates exact dev/hidden counts, preregistered smoke 12, and one requested case", async () => {
+  it("enumerates exact dev/hidden counts, preregistered smoke 40, and one requested case", async () => {
     const outputRoot = await mkdtemp(join(tmpdir(), "task1-r02-scopes-"));
     const common = baseInput(outputRoot, makeSource());
 
@@ -479,7 +484,7 @@ describe("R02 PrepareOnly formal runner", () => {
       caseSplit: undefined,
       writeArtifacts: false,
     });
-    expect(dev.runs).toHaveLength(240);
+    expect(dev.runs).toHaveLength(320);
 
     const smoke = await prepareFormalCampaign({
       ...common,
@@ -498,7 +503,7 @@ describe("R02 PrepareOnly formal runner", () => {
       },
       writeArtifacts: false,
     });
-    expect(smoke.runs).toHaveLength(12);
+    expect(smoke.runs).toHaveLength(40);
     expect(smoke.runs.map((run) => run.manifest.case_id)).toEqual(makeStatus().preregisteredSmokeCaseIds);
 
     const one = await prepareFormalCampaign({ ...common, writeArtifacts: false });
@@ -518,7 +523,7 @@ describe("R02 PrepareOnly formal runner", () => {
       scope: "dev",
       caseId: undefined,
       caseSplit: undefined,
-    })).rejects.toThrow(/expected 240 cases/i);
+    })).rejects.toThrow(/expected 320 cases/i);
 
     await expect(prepareFormalCampaign({
       ...baseInput(outputRoot, makeSource()),

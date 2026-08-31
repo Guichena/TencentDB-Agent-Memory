@@ -99,7 +99,7 @@ export async function discoverFrozenSkillPackageRoots(
     if (code === "ENOENT") {
       throw new Error(
         "Frozen data checkout does not contain formal-dataset/source-material; "
-        + "create it from task1-data-formal-v1.1 before restore",
+        + "create it from task1-data-formal-v2.1 before restore",
       );
     }
     throw cause;

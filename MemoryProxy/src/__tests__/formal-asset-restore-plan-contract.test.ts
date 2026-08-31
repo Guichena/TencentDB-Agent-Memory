@@ -27,8 +27,8 @@ const revision = {
   tag: FORMAL_DATA_TAG,
   tagObject: FORMAL_DATA_TAG_OBJECT,
   commit: FORMAL_DATA_COMMIT,
-  contractCanonicalSha256: "4fc62c1829301fe9f2410f6be40698d7b3d09ec90dde3bfe294452f7ef152d41",
-  snapshotCanonicalSha256: "3a82d0ad8241ff3e2173555efbdb65dfb367a0a38c9998203c5b4754611a4783",
+  contractCanonicalSha256: "eb04b26cfe03810030f6b7d0a06f82dfedf7c8011ce11bb181db8af0b94b58b7",
+  snapshotCanonicalSha256: "addd9c6311d4bd44478ea9438f50816d59eb2c8adfb9c4d9f53fd3fc152e0b7e",
 } as const;
 
 function loadContract(): FormalWorldContract {
@@ -37,7 +37,7 @@ function loadContract(): FormalWorldContract {
     "formal-dataset",
     "registry",
     "contracts",
-    "formal-v1.json",
+    "formal-v2.json",
   ), "utf8")) as FormalWorldContract;
 }
 

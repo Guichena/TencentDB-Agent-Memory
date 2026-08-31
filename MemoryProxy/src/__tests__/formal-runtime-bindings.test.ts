@@ -52,11 +52,11 @@ describe("Task 1 formal runtime case bindings", () => {
     });
 
     expect(built).toMatchObject({
-      count: 640,
-      splitCounts: { dev: 240, hiddenTest: 400 },
+      count: 800,
+      splitCounts: { dev: 320, hiddenTest: 480 },
       formalMetricEligible: false,
     });
-    expect(new Set(built.rows.map((row) => row.caseId)).size).toBe(640);
+    expect(new Set(built.rows.map((row) => row.caseId)).size).toBe(800);
     expect(built.rows.map((row) => row.caseId)).toEqual(
       [...built.rows.map((row) => row.caseId)].sort(),
     );
@@ -96,7 +96,7 @@ describe("Task 1 formal runtime case bindings", () => {
     expect(reads.map((path) => basename(path)).sort()).toEqual([
       "DATASET-BUILD-STATUS.json",
       "dev.jsonl",
-      "formal-v1.json",
+      "formal-v2.json",
       "hidden.sealed.jsonl",
     ]);
     expect(reads.some((path) => /measurement-v2[\\/]private/u.test(path))).toBe(false);
@@ -118,8 +118,8 @@ describe("Task 1 formal runtime case bindings", () => {
 
     expect(dev).toMatchObject({
       split: "dev",
-      count: 240,
-      totalCount: 640,
+      count: 320,
+      totalCount: 800,
       fileSha256: built.fileSha256,
       canonicalSha256: built.canonicalSha256,
       formalMetricEligible: false,

@@ -43,8 +43,8 @@ export interface BuildFormalCaseBindingsInput {
 }
 
 export interface BuiltFormalCaseBindings {
-  readonly count: 640;
-  readonly splitCounts: { readonly dev: 240; readonly hiddenTest: 400 };
+  readonly count: 800;
+  readonly splitCounts: { readonly dev: 320; readonly hiddenTest: 480 };
   readonly rows: readonly FormalCaseBinding[];
   readonly fileSha256: string;
   readonly canonicalSha256: string;
@@ -113,7 +113,7 @@ export function buildFormalCaseBindings(input: BuildFormalCaseBindingsInput): Bu
     input.freeze.datasetRoot,
     "registry",
     "contracts",
-    "formal-v1.json",
+    "formal-v2.json",
   ));
   const contract = JSON.parse(contractText) as FormalWorldContract;
   assertFormalWorldContract(contract);
@@ -173,13 +173,13 @@ export function buildFormalCaseBindings(input: BuildFormalCaseBindingsInput): Bu
   }
   const devCount = rows.filter((row) => row.split === "dev").length;
   const hiddenCount = rows.filter((row) => row.split === "hidden_test").length;
-  if (rows.length !== 640 || devCount !== 240 || hiddenCount !== 400) {
-    throw new Error(`formal binding counts must be 640/240/400, got ${rows.length}/${devCount}/${hiddenCount}`);
+  if (rows.length !== 800 || devCount !== 320 || hiddenCount !== 480) {
+    throw new Error(`formal binding counts must be 800/320/480, got ${rows.length}/${devCount}/${hiddenCount}`);
   }
   const serialized = serializeFormalCaseBindings(rows);
   return Object.freeze({
-    count: 640 as const,
-    splitCounts: Object.freeze({ dev: 240 as const, hiddenTest: 400 as const }),
+    count: 800 as const,
+    splitCounts: Object.freeze({ dev: 320 as const, hiddenTest: 480 as const }),
     rows: Object.freeze(rows),
     fileSha256: sha256Text(serialized),
     canonicalSha256: canonicalSha256(rows),

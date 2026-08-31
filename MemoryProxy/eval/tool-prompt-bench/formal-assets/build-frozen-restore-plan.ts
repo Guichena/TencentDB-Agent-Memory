@@ -41,7 +41,7 @@ function assertResolvedFreeze(freeze: FormalDataFreeze): void {
     || freeze.commit !== FORMAL_DATA_COMMIT
     || freeze.objectType !== "tag"
     || freeze.formalMetricEligible !== false) {
-    throw new Error("resolved formal data freeze does not match task1-data-formal-v1.1");
+    throw new Error("resolved formal data freeze does not match task1-data-formal-v2.1");
   }
 }
 
@@ -58,7 +58,7 @@ function assertAuthoringWritePolicy(policy: FormalWorldContract["world"]["runtim
     || policy.assetReflection !== false
     || policy.writeL0 !== false
     || policy.archiveWriteBack !== false) {
-    throw new Error("formal-v1 authoring policy must disable every frozen write side effect");
+    throw new Error("formal-v2 authoring policy must disable every frozen write side effect");
   }
 }
 
@@ -103,14 +103,14 @@ export function buildFrozenFormalAssetRestorePlan(
     throw new Error("formal restore case bindings do not match the frozen runtime manifest");
   }
 
-  const contractPath = resolve(freeze.datasetRoot, "registry", "contracts", "formal-v1.json");
+  const contractPath = resolve(freeze.datasetRoot, "registry", "contracts", "formal-v2.json");
   const contractText = readText(contractPath);
   if (normalizedFileSha256(contractText) !== metadata.contractHashes.fileSha256) {
-    throw new Error("formal-v1 contract file hash does not match public status");
+    throw new Error("formal-v2 contract file hash does not match public status");
   }
   const contract = JSON.parse(contractText) as FormalWorldContract;
   if (canonicalSha256(contract) !== metadata.contractHashes.canonicalSha256) {
-    throw new Error("formal-v1 contract canonical hash does not match public status");
+    throw new Error("formal-v2 contract canonical hash does not match public status");
   }
   assertFormalWorldContract(contract);
   assertAuthoringWritePolicy(contract.world.runtimePolicy);
@@ -118,7 +118,7 @@ export function buildFrozenFormalAssetRestorePlan(
   const snapshotId = contract.world.snapshotIds[input.split];
   const snapshot = contract.snapshots.find((candidate) => candidate.snapshotId === snapshotId);
   if (!snapshot || snapshot.split !== input.split) {
-    throw new Error(`formal-v1 contract has no ${input.split} snapshot ${snapshotId}`);
+    throw new Error(`formal-v2 contract has no ${input.split} snapshot ${snapshotId}`);
   }
   const expectedSnapshotHash = input.split === "dev"
     ? metadata.snapshotHashes.devCanonicalSha256

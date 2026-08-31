@@ -50,6 +50,7 @@ describe("Task 1 DS00 identity registry", () => {
   it("keeps construction and freeze entry points explicit", () => {
     expect(readdirSync(resolve(root, "scripts")).sort()).toEqual([
       "build-formal-restore-plan.ts",
+      "build-formal-v21-coverage.ts",
       "build-measurement-v2-overlay.ts",
       "compile-formal-dataset.ts",
       "inspect-formal-snapshot.ts",
