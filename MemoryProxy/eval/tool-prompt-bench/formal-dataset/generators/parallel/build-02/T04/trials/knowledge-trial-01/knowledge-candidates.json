@@ -1,0 +1,176 @@
+{
+  "schema_version": "task1.knowledge_candidates.v1",
+  "stage": "DS03",
+  "team_id": "T04",
+  "frozen_at": "2026-08-29T22:55:00+08:00",
+  "candidates": [
+    {
+      "asset_id": "T04-KNOW-PETCLINIC-CODEGRAPH",
+      "type": "code_graph",
+      "name": "PetClinic Jakarta and security code graph",
+      "status": "ready",
+      "visibility": "fixed",
+      "fixture_kind": "fixed_synthetic",
+      "project_id": "T04-PROJECT-PETCLINIC",
+      "repository": {
+        "slug": "spring-projects/spring-petclinic",
+        "url": "https://github.com/spring-projects/spring-petclinic",
+        "commit": "818c4136ea971c21674525f9053de0d9c7ad8cfe"
+      },
+      "scope": "Jakarta namespace ownership, retained JDK javax packages, validation and persistence boundaries, and Spring Security configuration relationships",
+      "fixed_tool_list": [
+        "get_info",
+        "search",
+        "explore",
+        "callers",
+        "callees",
+        "impact",
+        "node",
+        "status",
+        "files"
+      ],
+      "successful_readonly_search_fixture": {
+        "tool": "search",
+        "params": {
+          "query": "Jakarta namespace retained JDK javax validation persistence security boundary",
+          "limit": 8
+        },
+        "read_only": true,
+        "expected_status": "success"
+      },
+      "selection_metadata": {
+        "workspace_anchor": "Spring PetClinic Jakarta and security migration",
+        "unique_topics": [
+          "Jakarta namespace",
+          "retained JDK javax",
+          "validation and persistence",
+          "security configuration"
+        ],
+        "not_for": [
+          "Google Auto Maven build graph",
+          "RestClient migration decision matrix"
+        ]
+      }
+    },
+    {
+      "asset_id": "T04-KNOW-GOOGLE-AUTO-CODEGRAPH",
+      "type": "code_graph",
+      "name": "Google Auto multi-module Maven build graph",
+      "status": "ready",
+      "visibility": "fixed",
+      "fixture_kind": "fixed_synthetic",
+      "project_id": "T04-PROJECT-GOOGLE-AUTO",
+      "repository": {
+        "slug": "google/auto",
+        "url": "https://github.com/google/auto",
+        "commit": "2776e288bd3011800e46581b0b810668cc6d664b"
+      },
+      "scope": "multi-module Maven aggregation, dependency-management edges, plugin execution bindings, profile applicability, and build-evidence structure",
+      "fixed_tool_list": [
+        "get_info",
+        "search",
+        "explore",
+        "callers",
+        "callees",
+        "impact",
+        "node",
+        "status",
+        "files"
+      ],
+      "successful_readonly_search_fixture": {
+        "tool": "search",
+        "params": {
+          "query": "aggregator dependencyManagement plugin execution profile module build graph",
+          "limit": 8
+        },
+        "read_only": true,
+        "expected_status": "success",
+        "fixture_note": "The result is a fixed synthetic fixture: it supplies structural graph edges and node file locations for this evaluation case, not an externally verified implementation claim.",
+        "expected_relations": [
+          {
+            "from": "synthetic aggregator root",
+            "from_path": "fixture/google-auto/pom.xml",
+            "to": "synthetic affected module",
+            "to_path": "fixture/google-auto/auto-processor/pom.xml",
+            "kind": "aggregates",
+            "synthetic": true
+          },
+          {
+            "from": "synthetic dependency-management node",
+            "from_path": "fixture/google-auto/pom.xml",
+            "to": "synthetic affected module",
+            "to_path": "fixture/google-auto/auto-processor/pom.xml",
+            "kind": "manages_dependencies",
+            "synthetic": true
+          },
+          {
+            "from": "synthetic affected module",
+            "from_path": "fixture/google-auto/auto-processor/pom.xml",
+            "to": "synthetic Maven plugin execution node",
+            "to_path": "fixture/google-auto/auto-processor/pom.xml#synthetic-compile",
+            "kind": "binds_plugin_execution",
+            "synthetic": true
+          }
+        ],
+        "expected_profile_scope": {
+          "profile": "synthetic-jdk17",
+          "scope_path": "fixture/google-auto/auto-processor/pom.xml",
+          "applies_to": "synthetic affected module",
+          "synthetic": true
+        }
+      },
+      "selection_metadata": {
+        "workspace_anchor": "Google Auto Maven build diagnosis",
+        "unique_topics": [
+          "multi-module aggregation",
+          "dependency management",
+          "plugin execution",
+          "profile scope"
+        ],
+        "not_for": [
+          "PetClinic Jakarta and security code graph",
+          "backend migration decision matrix"
+        ]
+      }
+    },
+    {
+      "asset_id": "T04-KNOW-BACKEND-MIGRATION-WIKI",
+      "type": "wiki",
+      "name": "Java backend migration decision wiki",
+      "status": "ready",
+      "visibility": "fixed",
+      "fixture_kind": "fixed_synthetic",
+      "project_id": "T04-PROJECT-REST-CONSUMER",
+      "scope": "decision boundaries for Jakarta namespace work, synchronous RestClient evolution, Spring Security changes, and Maven-only build diagnosis",
+      "fixed_tool_list": [
+        "get_info",
+        "search",
+        "open",
+        "status",
+        "files"
+      ],
+      "successful_readonly_search_fixture": {
+        "tool": "search",
+        "params": {
+          "query": "backend migration decision boundary Jakarta RestClient security Maven",
+          "limit": 6
+        },
+        "read_only": true,
+        "expected_status": "success"
+      },
+      "selection_metadata": {
+        "workspace_anchor": "Java backend migration triage",
+        "unique_topics": [
+          "decision boundary",
+          "synchronous RestClient",
+          "migration triage",
+          "symptom classification"
+        ],
+        "not_for": [
+          "PetClinic source-graph node relationships",
+          "Google Auto module and plugin graph"
+        ]
+      }
+    }
+  ]
+}

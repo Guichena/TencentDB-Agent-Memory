@@ -1,0 +1,220 @@
+{
+  "schema_version": "task1.team_knowledge_assets.v1",
+  "team_id": "T10",
+  "knowledge": [
+    {
+      "assetId": "cg-t10maven01",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-knowledge-cg-t10maven01"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "type": "code_graph",
+      "name": "Atlas Maven Symbol Graph",
+      "repoUrl": "https://github.com/TencentCloud/TencentDB-Agent-Memory.git",
+      "repoCommit": "960021e472456515a89d3c2c4f2962fbf6cc51a1",
+      "indexVersion": "task1-t10-synthetic-v1",
+      "snapshotSha256": "1663d2e7ab983849e47fc1746f5083977a4a3ebc70974d68839f638257451d2f",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t10-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "b0ac8bf35aa90ad9b9f9b5d35952ca7c70a904cfd1d7583655b9ab95d295c12e"
+    },
+    {
+      "assetId": "wiki-t10release01",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-knowledge-wiki-t10release01"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "type": "wiki",
+      "name": "Release Candidate Operations",
+      "snapshotSha256": "25937f10d6e3fcfd27cfacf529c700d1122ffda93cb0e9713e6157d40ef97b06",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t10-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "80b22ce605ecbc8a9b5e902a9a52423a55fabe85dd7b29f6dd3fc63821eb548e"
+    },
+    {
+      "assetId": "cg-t10pybuild01",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-knowledge-cg-t10pybuild01"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "type": "code_graph",
+      "name": "PyArtifact Build Graph",
+      "repoUrl": "https://github.com/TencentCloud/TencentDB-Agent-Memory.git",
+      "repoCommit": "960021e472456515a89d3c2c4f2962fbf6cc51a1",
+      "indexVersion": "task1-t10-synthetic-v1",
+      "snapshotSha256": "6d0d870bb15c438bf9d7202bc1d2ef3774cd12f19429dcbfd152351f2bd61272",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t10-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "57862732f3f97b27b7ee88272b4bceecc4a01cb756def1c76e9793e90d3f859e"
+    }
+  ],
+  "fixtures": [
+    {
+      "asset_id": "cg-t10maven01",
+      "status": "ready",
+      "repo_match": "forge/atlas-parent",
+      "tools_list": {
+        "request": {
+          "knowledge_id": "cg-t10maven01"
+        },
+        "response": {
+          "tools": [
+            {
+              "name": "search_symbols",
+              "description": "Search the frozen POM and plugin execution symbol graph by symbol or concept.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "query"
+                ],
+                "additionalProperties": false
+              }
+            }
+          ]
+        }
+      },
+      "tools_call": [
+        {
+          "request": {
+            "tool_name": "search_symbols",
+            "params": {
+              "query": "source attachment execution phase"
+            }
+          },
+          "response": {
+            "symbols": [
+              {
+                "symbol": "attachSources",
+                "kind": "plugin_execution",
+                "file": "build-support/pom.xml",
+                "phase": "verify"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "asset_id": "wiki-t10release01",
+      "status": "ready",
+      "repo_match": "forge/release-orchestrator",
+      "tools_list": {
+        "request": {
+          "knowledge_id": "wiki-t10release01"
+        },
+        "response": {
+          "tools": [
+            {
+              "name": "search_pages",
+              "description": "Search the frozen release candidate operations pages by text query.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "query"
+                ],
+                "additionalProperties": false
+              }
+            }
+          ]
+        }
+      },
+      "tools_call": [
+        {
+          "request": {
+            "tool_name": "search_pages",
+            "params": {
+              "query": "candidate evidence package approval gate"
+            }
+          },
+          "response": {
+            "pages": [
+              {
+                "ref": "candidate-evidence-gate",
+                "title": "Release candidate evidence and approval",
+                "path": "/release/candidate-operations",
+                "content": "The current candidate evidence package is rc-evidence-v3 and approval requires two-person-review."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "asset_id": "cg-t10pybuild01",
+      "status": "ready",
+      "repo_match": "forge/pyartifact",
+      "tools_list": {
+        "request": {
+          "knowledge_id": "cg-t10pybuild01"
+        },
+        "response": {
+          "tools": [
+            {
+              "name": "search_symbols",
+              "description": "Search the frozen Python build metadata symbol graph by symbol or concept.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "query"
+                ],
+                "additionalProperties": false
+              }
+            }
+          ]
+        }
+      },
+      "tools_call": [
+        {
+          "request": {
+            "tool_name": "search_symbols",
+            "params": {
+              "query": "dynamic build version resolver"
+            }
+          },
+          "response": {
+            "symbols": [
+              {
+                "symbol": "resolveBuildVersion",
+                "kind": "function",
+                "file": "src/pyartifact/build_meta.py"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

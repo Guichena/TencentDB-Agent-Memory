@@ -1,0 +1,22 @@
+--- a/skills/playwright-expert/SKILL.md
++++ b/adapted/playwright-expert/SKILL.md
+@@ -15,0 +15,19 @@
++
++
++## TDAI Host Routing
++
++Load this package with `skill_view`. If the manifest points to a supporting file, read that file with `skill_files_read`; do not install or execute source-repository dependencies for Task 1.
++
++Use when:
++- Writing E2E tests with Playwright
++- Setting up browser-test infrastructure, page objects, fixtures, reporters, CI integration, API mocking, or visual regression testing
++- Debugging flaky browser tests
++
++Do not use when:
++- Do not use waitForTimeout() when proper waits are available
++- Do not rely on CSS class selectors
++- Do not share state between tests
++- Do not ignore flaky tests
++- Do not use first() or nth() without good reason
++
++The upstream technical workflow below is preserved unchanged.

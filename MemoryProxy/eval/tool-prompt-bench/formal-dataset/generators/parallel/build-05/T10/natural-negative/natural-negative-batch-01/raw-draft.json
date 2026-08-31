@@ -1,0 +1,150 @@
+{
+  "schema_version": "task1.luna_natural_negative_draft.v1",
+  "batch_id": "t10-natural-negative-batch-01",
+  "stage": "DS05",
+  "team_id": "T10",
+  "family": "natural-negative",
+  "cases": [
+    {
+      "draft_case_id": "T10-DRAFT-NN-001",
+      "difficulty": "medium",
+      "context_messages": [
+        {"role": "user", "content": "我们正在整理 atlas-parent 的多模块构建配置。这次变更只涉及根 POM 中的版本属性，不能改模块列表、插件或格式。"},
+        {"role": "assistant", "content": "已确认可见片段如下：\n<project>\n  <properties>\n    <java.version>21</java.version>\n    <revision>2.4.0</revision>\n  </properties>\n  <modules><module>core</module><module>cli</module></modules>\n</project>\n目标版本是 2.5.0，输出应只改变 revision 的文本值。"},
+        {"role": "user", "content": "我原先考虑先跑一轮完整构建来确认版本，但这次方向调整为只做静态文本修改，不运行构建。"},
+        {"role": "assistant", "content": "已检查需求边界：模块顺序、Java 版本和 XML 排版都保持原样；唯一剩余动作是按给定目标版本更新这一处属性。"}
+      ],
+      "query": "请修改上面的 POM 片段，把 revision 更新为 2.5.0，并返回保持原格式的完整片段。",
+      "why_current_context_is_sufficient": "片段、唯一允许修改的位置、目标版本和禁止执行构建的边界均已明确，不需要额外资料。",
+      "visible_distractor_ids_author_only": ["T10-L0-02", "T10-SKILL-MAVEN-DEPENDENCIES"],
+      "sol_review_questions": ["是否确实只改变 revision 属性值？"]
+    },
+    {
+      "draft_case_id": "T10-DRAFT-NN-002",
+      "difficulty": "medium",
+      "context_messages": [
+        {"role": "user", "content": "pyartifact 的打包元数据已经固定，当前只要把项目声明版本改成下一版，其他构建后端和依赖不能动。"},
+        {"role": "assistant", "content": "可见的 pyproject.toml 片段是：\n[project]\nname = \"pyartifact\"\nversion = \"1.8.3\"\ndescription = \"Artifact helpers\"\n\n[build-system]\nrequires = [\"hatchling==1.25.0\"]\nbuild-backend = \"hatchling.build\"\n\n指定的新版本为 1.9.0。"},
+        {"role": "user", "content": "之前有人建议重新创建虚拟环境后再打包，我已把方向改为仅编辑配置文件；不要安装依赖，也不要生成制品。"},
+        {"role": "assistant", "content": "已核对：名称、描述、构建后端和固定版本的构建依赖都应保留，唯一编辑点是 project.version。"}
+      ],
+      "query": "请把上述 pyproject.toml 中的 project.version 更新为 1.9.0，返回完整片段。",
+      "why_current_context_is_sufficient": "配置片段与明确的新版本已经给出，修改范围和不执行打包的约束也已锁定。",
+      "visible_distractor_ids_author_only": ["T10-L1-01", "T10-SKILL-UV-PACKAGE-MANAGER"],
+      "sol_review_questions": ["是否保持 build-system 与其他元数据不变？"]
+    },
+    {
+      "draft_case_id": "T10-DRAFT-NN-003",
+      "difficulty": "medium",
+      "context_messages": [
+        {"role": "user", "content": "我在写 atlas-parent 的构建说明。当前上下文已经确定生命周期顺序，只需要用两句话解释 package 和 verify 的差别。"},
+        {"role": "assistant", "content": "本项目采用的阶段顺序是 clean → compile → test → package → verify → install。package 会按打包配置生成主制品；verify 会在此基础上执行验证阶段的检查，可能包含额外的质量门，但不会把 package 的含义改成发布。"},
+        {"role": "user", "content": "最开始我想把问题扩展成一份完整生命周期教程，后来收窄为两句话，且不需要运行任何阶段。"},
+        {"role": "assistant", "content": "已完成范围收敛：顺序和两个阶段的作用都有现成证据，回答时不添加命令、插件专属行为或未给出的例外。"}
+      ],
+      "query": "请严格用两句话说明 package 与 verify 的区别，并依据给定阶段顺序作答。",
+      "why_current_context_is_sufficient": "阶段顺序与两阶段定义已在上下文中完整给出，问题只要求受限长度的解释。",
+      "visible_distractor_ids_author_only": ["T10-L0-01", "T10-SKILL-MAVEN-LIFECYCLE"],
+      "sol_review_questions": ["回答是否恰好两句话且不引入新事实？"]
+    },
+    {
+      "draft_case_id": "T10-DRAFT-NN-004",
+      "difficulty": "medium",
+      "context_messages": [
+        {"role": "user", "content": "ci-sheriff 的工作流文件有一个缩进错误。目标是只修 YAML 结构，不改变作业名称、运行器或命令。"},
+        {"role": "assistant", "content": "当前可见文件为：\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - name: Run tests\n      run: pytest -q\n\n期望结构是把 run 与 name 对齐在同一个步骤映射下：\n      - name: Run tests\n        run: pytest -q"},
+        {"role": "user", "content": "我原来打算顺便升级 action 版本，但已调整方向，只修这一处缩进；不提交、不触发作业。"},
+        {"role": "assistant", "content": "已确认其余 YAML 层级正确，作业名和命令均已给定，唯一变化应是 run 的缩进。"}
+      ],
+      "query": "请修复这个 GitHub Actions YAML 的缩进错误，并返回完整的 jobs.test 片段。",
+      "why_current_context_is_sufficient": "原始片段、期望的正确层级及不可变字段都已直接提供，不需要查看运行结果。",
+      "visible_distractor_ids_author_only": ["T10-SKILL-GITHUB-ACTIONS", "T10-SKILL-ANALYZE-CI"],
+      "sol_review_questions": ["是否只修正 run 的 YAML 缩进？"]
+    },
+    {
+      "draft_case_id": "T10-DRAFT-NN-005",
+      "difficulty": "medium",
+      "context_messages": [
+        {"role": "user", "content": "我们要给 Python 制品名解析函数补一个单元测试。函数本身、输入和期望输出都已经在当前上下文中，不需要扩展测试范围。"},
+        {"role": "assistant", "content": "可见函数是：\ndef artifact_stem(filename):\n    return filename.removesuffix('.whl').removesuffix('.tar.gz')\n\n请为它补测试，样例与结果固定为：artifact_stem('acme_core-2.1.0-py3-none-any.whl') 返回 'acme_core-2.1.0-py3-none-any'；artifact_stem('acme_core-2.1.0.tar.gz') 返回 'acme_core-2.1.0'。"},
+        {"role": "user", "content": "起初想加入文件系统和打包后端的集成测试，但方向已改为一个纯单元测试文件，不能改函数实现。"},
+        {"role": "assistant", "content": "已完成测试边界确认：使用 pytest 的参数化用例即可覆盖这两个明确样例，不访问磁盘、不构建 wheel 或 sdist。"}
+      ],
+      "query": "请为给定的 artifact_stem 函数写一个 pytest 单元测试，覆盖上述两个输入输出，并只返回测试代码。",
+      "why_current_context_is_sufficient": "函数实现、两个测试样例、期望值和纯单元测试边界全部可见，足以直接编写测试。",
+      "visible_distractor_ids_author_only": ["T10-SKILL-PYTHON-TESTING-PATTERNS", "T10-SKILL-PYTHON-PACKAGING"],
+      "sol_review_questions": ["测试是否覆盖两个给定样例且不引入外部依赖？"]
+    },
+    {
+      "draft_case_id": "T10-DRAFT-NN-006",
+      "difficulty": "medium",
+      "context_messages": [
+        {"role": "user", "content": "runtime-kit 的 README 需要补上团队已经选定的唯一执行命令。环境和锁文件都已准备好，这次只是文档更新。"},
+        {"role": "assistant", "content": "README 的开发检查章节目前只有标题：\n## Local checks\n\n目标内容已确定为一行代码块：\n`uv run pytest -q`\n\n除此之外不添加环境创建、依赖同步或发布步骤。"},
+        {"role": "user", "content": "之前有人建议先重新搭建环境来验证命令，我已调整为只更新 README，不执行该命令。"},
+        {"role": "assistant", "content": "已核对文档范围：保留现有标题，只插入给定命令，并明确不改变项目配置。"}
+      ],
+      "query": "请按当前上下文更新 README 的 Local checks 章节，只加入给定的 uv 命令，不要运行它。",
+      "why_current_context_is_sufficient": "唯一命令、插入位置和不建立环境、不执行命令的约束均已明确。",
+      "visible_distractor_ids_author_only": ["T10-L1-09", "T10-SKILL-UV-PACKAGE-MANAGER"],
+      "sol_review_questions": ["是否只做 README 文本变更并保留标题？"]
+    },
+    {
+      "draft_case_id": "T10-DRAFT-NN-007",
+      "difficulty": "medium",
+      "context_messages": [
+        {"role": "user", "content": "release-orchestrator 已经有明确的变更条目，现在需要整理成发布说明 Markdown。工作只停留在文档层，不生成或推送 release。"},
+        {"role": "assistant", "content": "变更条目如下：\n- 修复候选制品的校验和展示\n- 将回滚说明移到部署检查清单\n- 增加审批人字段的必填校验\n\n发布说明格式已确定：标题为 `Release candidate 2.4.0`，下面分成 `Changed` 和 `Operations` 两个二级标题；前三条放入 Changed，回滚说明的归档位置放入 Operations。"},
+        {"role": "user", "content": "我原本考虑先生成候选制品再写说明，后来决定只整理已有条目，不能调用发布系统或推送标签。"},
+        {"role": "assistant", "content": "已确认所有文案事实和 Markdown 结构都在当前上下文中，输出只应是说明文档，不添加版本之外的推测。"}
+      ],
+      "query": "请根据给定条目生成发布说明 Markdown，使用指定标题和两个小节；不要生成或推送真实 release。",
+      "why_current_context_is_sufficient": "变更内容、标题、分组方式和不执行发布的边界全部已提供，只需进行格式整理。",
+      "visible_distractor_ids_author_only": ["T10-L2-03", "T10-SKILL-DEPLOYMENT-PIPELINE"],
+      "sol_review_questions": ["输出是否仅整理已给条目且保持两个指定小节？"]
+    },
+    {
+      "draft_case_id": "T10-DRAFT-NN-008",
+      "difficulty": "medium",
+      "context_messages": [
+        {"role": "user", "content": "plugin-hub 的 Maven 配置有一个可见的 XML 闭合标签错误。插件目标和绑定阶段都已决定，只修结构。"},
+        {"role": "assistant", "content": "原始片段为：\n<execution>\n  <id>attach-metadata</id>\n  <phase>verify</phase>\n  <goals>\n    <goal>attach</goal>\n  </goals>\n</executions>\n\n唯一错误是末尾闭合标签写成了 </executions>；期望结果是保持 id、verify 和 attach 不变，并将末尾改为正确的 </execution>。"},
+        {"role": "user", "content": "一开始想连同插件版本一起整理，后来收窄为只修闭合标签；不要解析项目或运行 Maven。"},
+        {"role": "assistant", "content": "已完成范围确认：目标 phase 已明确，问题仅限 XML 结构，输出不应引入新的 goal 或参数。"}
+      ],
+      "query": "请修复上述 Maven plugin execution 的 XML 闭合标签，并返回修正后的片段。",
+      "why_current_context_is_sufficient": "原始 XML、目标 phase、不可变字段和唯一修复范围均已可见，静态修复无需额外资料。",
+      "visible_distractor_ids_author_only": ["T10-SKILL-MAVEN-PLUGINS", "T10-SKILL-MAVEN-LIFECYCLE"],
+      "sol_review_questions": ["是否只修 XML 闭合关系并保留 verify 绑定？"]
+    },
+    {
+      "draft_case_id": "T10-DRAFT-NN-009",
+      "difficulty": "medium",
+      "context_messages": [
+        {"role": "user", "content": "atlas-parent 的一个依赖声明需要改作用域。版本、坐标、排除项和原因都已经确定，不需要做依赖仲裁。"},
+        {"role": "assistant", "content": "可见声明如下：\n<dependency>\n  <groupId>org.example</groupId>\n  <artifactId>fixture-api</artifactId>\n  <version>3.2.1</version>\n  <scope>compile</scope>\n</dependency>\n\n目标是把 scope 改为 test，因为它只被测试源码引用；其他四行必须保持不变。"},
+        {"role": "user", "content": "最初想检查整个依赖树，后来明确只做这一个局部编辑；不升级版本、不改父 POM，也不运行构建。"},
+        {"role": "assistant", "content": "已确认唯一变更是作用域从 compile 到 test，原因和目标都在上下文中，直接返回修改后的声明即可。"}
+      ],
+      "query": "请把给定依赖声明的 scope 改为 test，并返回完整 XML；不要改变其他字段。",
+      "why_current_context_is_sufficient": "坐标、版本、原 scope、目标 scope 和修改边界均已明确，不需要查依赖树或项目历史。",
+      "visible_distractor_ids_author_only": ["T10-SKILL-MAVEN-DEPENDENCIES", "T10-L1-03"],
+      "sol_review_questions": ["是否仅将 scope 从 compile 改成 test？"]
+    },
+    {
+      "draft_case_id": "T10-DRAFT-NN-010",
+      "difficulty": "medium",
+      "context_messages": [
+        {"role": "user", "content": "ci-sheriff 需要一个纯函数，从给定的 CI 日志行中提取模块名。正则、输入和输出样例都已经提供，只写单元级实现。"},
+        {"role": "assistant", "content": "函数签名为 `extract_module(line: str) -> str | None`。日志格式固定为 `[module=<name>] <message>`，使用正则 `^\\[module=([^\\]]+)\\]`；输入 `[module=core] tests failed` 应返回 `core`，输入 `[runner] checkout complete` 应返回 None。"},
+        {"role": "user", "content": "我原先想把它接入完整的失败分析流程，后来改为只实现这个纯函数，不读取其他日志、不触发 CI 作业。"},
+        {"role": "assistant", "content": "已完成边界确认：只需按给定正则读取行首模块字段，未匹配时返回 None；函数不应有外部副作用。"}
+      ],
+      "query": "请实现 extract_module 这个纯函数，并用两个给定样例写最小 pytest 测试；只返回 Python 代码。",
+      "why_current_context_is_sufficient": "签名、正则、两条输入输出和无外部副作用的要求均已给出，可以直接实现并测试。",
+      "visible_distractor_ids_author_only": ["T10-SKILL-ANALYZE-CI", "T10-SKILL-PYTHON-TESTING-PATTERNS"],
+      "sol_review_questions": ["实现是否严格使用给定正则并覆盖匹配与不匹配两例？"]
+    }
+  ]
+}
+

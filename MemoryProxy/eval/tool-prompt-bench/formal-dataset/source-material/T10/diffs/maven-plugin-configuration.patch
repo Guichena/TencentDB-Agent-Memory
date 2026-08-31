@@ -1,0 +1,10 @@
+--- a/raw/benchflow-skillsbench/maven-plugin-configuration/SKILL.md
++++ b/adapted/maven-plugin-configuration/SKILL.md
+@@ -1,4 +1,6 @@
+ ---
+ name: maven-plugin-configuration
+-description: Use when configuring Maven plugins, setting up common plugins like compiler, surefire, jar, or creating custom plugin executions.
++description: "配置 Maven 插件版本、pluginManagement、executions、阶段绑定、目标和插件参数。"
++use_when: "需要新增或调整编译、测试、质量、打包、代码生成或版本插件的执行与参数。"
++do_not_use_when: "问题是依赖版本和 BOM 管理、生命周期阶段选择，或只有一份未分类的 CI 失败日志。"
+ ---

@@ -1,0 +1,99 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t04-knowledge-trial-01",
+  "stage": "DS03",
+  "team_id": "T04",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T04-DS03-KNOWLEDGE-001",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "这条工作线固定在 Google Auto 多模块 Maven 构建诊断项目和给定提交上，范围是模块关系、依赖收敛、生命周期、插件执行与 profile；不要把 PetClinic 的 Jakarta/security 结论或同步 REST 客户端结论混进来。"
+        },
+        {
+          "role": "assistant",
+          "content": "工作区边界已记下。我会只核对这条多模块构建线的结构事实，不改代码，也不把相邻项目的迁移结论当成构建图事实。"
+        },
+        {
+          "role": "user",
+          "content": "当前症状是聚合构建在生命周期阶段失败；日志只保留了 aggregator、dependencyManagement、plugin execution 和 profile 这些词，没有留下模块依赖方向或配置归属。"
+        },
+        {
+          "role": "assistant",
+          "content": "这些词只能说明问题落在多模块构建与配置交界处，尚不能证明固定代码图中的边方向、节点位置或 profile 作用范围。"
+        },
+        {
+          "role": "user",
+          "content": "我已排除单模块源代码语义和测试断言两条相邻主线，也没有把一次命令行输出中的模块顺序当作构建图关系。"
+        },
+        {
+          "role": "assistant",
+          "content": "排除范围保持不变；下一步只需要核对固定 Google Auto 构建图中与聚合、依赖管理和插件生命周期直接相关的结构关系。"
+        },
+        {
+          "role": "user",
+          "content": "现有交接材料仍只有项目背景、生命周期词和失败现象，未给出聚合根到受影响模块的关系方向、依赖管理与插件执行的节点位置，也未给出 profile 的生效范围。"
+        },
+        {
+          "role": "assistant",
+          "content": "因此当前唯一未决事实是固定构建图中的这些结构关系及节点位置；不要从相似 Maven 工程或未冻结的外部实现推断。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请确认固定 Google Auto 构建图中聚合关系、依赖管理与插件执行的方向和节点文件位置，并说明 profile 的生效范围；只返回与这条多模块构建诊断直接相关的结构结果。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充日志仍没有模块依赖方向、dependencyManagement 所在节点、插件执行绑定或 profile 的生效范围；请保留该结构缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "固定 Google Auto code graph 中聚合根、受影响模块、依赖管理节点、插件执行节点和 profile 作用范围的关系方向与文件位置尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": [
+            "T04-KNOW-GOOGLE-AUTO-CODEGRAPH"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "knowledge_tools_list",
+              "knowledge_tools_call"
+            ]
+          ],
+          "chain_kind": "self_discovery_two_step",
+          "stop_after_candidate": "先发现目标固定合成代码图可用的只读检索能力，再用构建图关键词进行一次 search；返回聚合、dependencyManagement、plugin execution、profile 的结构关系与节点文件位置后停止。返回内容必须标明这是 fixed synthetic fixture，不把它表述为未经冻结源码核对的外部实现事实。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已补齐唯一缺口。以下值均明确属于本题的 fixed synthetic fixture，不是未经冻结源码核对的外部实现事实：fixture/google-auto/pom.xml --aggregates--> fixture/google-auto/auto-processor/pom.xml；dependencyManagement 节点是 fixture/google-auto/pom.xml，管理目标 fixture/google-auto/auto-processor/pom.xml；plugin execution 节点是 fixture/google-auto/auto-processor/pom.xml，绑定 synthetic-compile execution；profile synthetic-jdk17 仅作用于 fixture/google-auto/auto-processor/pom.xml。该摘要不引入其他项目结论。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已包含固定合成构建图所需的关系方向、相关节点文件位置和 profile 生效范围；工具调用不再提供新的必要信息。负例只改变是否需要 Knowledge 工具，项目、任务和其余上下文保持不变。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T04-KNOW-PETCLINIC-CODEGRAPH",
+        "T04-KNOW-BACKEND-MIGRATION-WIKI"
+      ],
+      "controlled_delta_note": "Positive 只保留固定 Google Auto 构建图的结构缺口；Negative 只补齐该固定 synthetic fixture 的关系方向、节点文件位置和 profile 范围，从而改变 Knowledge 工具是否仍有必要，其他工作区、症状、排除项及 query 完全不变。",
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为固定构建图的关系方向、节点文件位置和 profile 范围，而没有暗示未经冻结源码核对的外部实现事实或修复方案？",
+        "Positive 的私有序列是否明确覆盖先发现工具能力、再以固定参数执行一次只读 search，并在首个成功结果后停止？",
+        "Negative 是否仅因交接摘要已经包含 fixed synthetic fixture 的结构结果而不再需要 Knowledge 工具，且没有改变项目、任务或其他 provider-visible 文本？",
+        "Google Auto 多模块 Maven 主题是否足以在三个 fixed ready 候选中唯一选择目标代码图，且 PetClinic 图与迁移 wiki 的答案边界不重叠？"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "build-07-T13-pilot-skill-01",
+  "stage": "DS05",
+  "team_id": "T13",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T13-SKL-003-pilot-01",
+      "external_source_ids": ["T13-SRC-TEMPO"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Harborlane Payments 最近支付链路出现偶发高延迟。请基于当前项目上下文给出排障准备方案。"},
+        {"role": "assistant", "content": "已知应用会发出 OTLP traces，Explore 中需要按服务和时长筛选，并希望把 trace 与日志、指标、profile 互相跳转；目前还不确定项目可用能力是否覆盖这条链路。"},
+        {"role": "user", "content": "我只想要一个可执行的下一步和判断依据，保持在当前项目范围内。"}
+      ],
+      "changed_message_index": 3,
+      "query": "请告诉我下一步应该怎么做，并给出最小可行验证路径。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "先从项目可用能力中检索描述包含分布式追踪后端、TraceQL、OTLP/Jaeger/Zipkin 接入、对象存储和跨信号关联的条目，再打开最匹配的完整内容；不要凭空假设其他组件。"},
+        "private_proposal": {
+          "unique_information_gap": "当前上下文只表明需要分布式追踪后端的安装、摄取验证、TraceQL 查询和跨信号关联步骤，未给出可直接采用的内部 Skill 内容。",
+          "route": "skill",
+          "target_asset_ids": ["T13-SKILL-TEMPO"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "打开 T13-SKILL-TEMPO 后，使用其最小摄取验证与 TraceQL 排障步骤回答。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "相关操作手册的关键内容已在这里补齐：先启动本地分布式追踪示例并检查就绪状态，再发送一个带 service.name 的 OTLP span；确认摄取计数增加且按 trace id 可取回，随后用资源服务名和时长条件查询慢请求。若要关联下游错误，使用服务端 span 到错误 span 的结构关系；需要按服务统计错误率时用速率聚合。部署到集群时配置对象存储并确认分发、摄取、查询、前端和压实组件均就绪，多租户请求保持相同的租户标识。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "追加消息已经给出本地启动、就绪检查、OTLP 摄取验证、trace 取回、慢请求与下游错误查询、错误率聚合、对象存储部署和多租户一致性等完整最小路径，无需再定位内部 Skill。"}
+      },
+      "visible_distractor_ids_author_only": ["T13-SKILL-LOKI", "T13-SKILL-OPENTELEMETRY", "T13-SKILL-PYROSCOPE"],
+      "controlled_delta_note": "Positive 只指出需定位覆盖追踪后端与跨信号关联的能力，Negative 仅补齐同一信息缺口所需的具体操作步骤；共享上下文和 query 完全相同。",
+      "source_fact_map": [
+        {"claim": "该 Skill 覆盖 OTLP、Jaeger、Zipkin 摄取，并以对象存储写入追踪块。", "source_id": "T13-SRC-TEMPO", "locator": "front matter description; Prerequisites; Common Workflows 1"},
+        {"claim": "该 Skill 给出就绪/摄取验证、TraceQL 慢请求与结构关系查询、错误率聚合。", "source_id": "T13-SRC-TEMPO", "locator": "Common Workflows 1 and 3"},
+        {"claim": "该 Skill 覆盖 Helm 部署、多租户租户标识和 traces-to-logs/metrics/profiles 关联。", "source_id": "T13-SRC-TEMPO", "locator": "Common Workflows 4; Multi-tenancy; front matter description"}
+      ],
+      "sol_review_questions": [
+        "Positive 的检索线索是否足以命中目标条目，同时没有在 provider-visible 文本中暴露正式 Skill 名称？",
+        "Negative 是否只补足了安装、摄取验证、查询和关联这一唯一信息缺口？",
+        "是否接受以 OTLP/Jaeger/Zipkin、TraceQL 和对象存储作为宿主可见的领域线索？"
+      ]
+    }
+  ]
+}

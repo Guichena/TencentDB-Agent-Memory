@@ -1,0 +1,1 @@
+T14 DS05 pilot-skill-01 revision-02：SKL-003 query 已重生为 Meridian Fleet 交付前 Flux/Kubernetes 仓库审计请求；Positive 走本地 GitOps 仓库审计候选定位，Negative 已补齐同一操作信息缺口。请 Sol 复核 provider-visible 文本的名称/工具/评测术语隔离、搜索后按返回标识查看的路径，以及 16 个 adaptations 的 source/hash/步骤保真度。

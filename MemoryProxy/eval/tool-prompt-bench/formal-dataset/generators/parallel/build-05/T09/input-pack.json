@@ -1,0 +1,359 @@
+{
+  "schema_version": "task1.team_input_pack.v1",
+  "build_id": "build-05",
+  "stage": "DS05",
+  "team_id": "T09",
+  "split": "hidden_test",
+  "theme": "安全与依赖：Trivy 离线审计、漏洞信息提取、依赖报告与普通升级的精确路由",
+  "frozen_by": "sol",
+  "frozen_at": "2026-08-29T22:02:59.4844537+08:00",
+  "source_lock": "../../../source-material/T09/source-lock.json",
+  "identity": {
+    "space_id": "space-task1-engineering",
+    "team_id": "T09",
+    "active_agent_id": "agent-task1-t09-general",
+    "asset_agent_ids": ["agent-task1-t09-assets-a", "agent-task1-t09-assets-b"],
+    "user_id": "user-task1-t09-eval"
+  },
+  "project_streams": [
+    {
+      "project_id": "t09-nebula-console",
+      "repo_slug": "aegis/nebula-console",
+      "purpose": "air-gapped Node.js release dependency audit using a fixed Trivy database"
+    },
+    {
+      "project_id": "t09-risk-catalog",
+      "repo_slug": "aegis/risk-catalog",
+      "purpose": "normalize CVSS fields from already-produced vulnerability JSON"
+    },
+    {
+      "project_id": "t09-compliance-export",
+      "repo_slug": "aegis/compliance-export",
+      "purpose": "emit deterministic vulnerability CSV reports from parsed findings"
+    },
+    {
+      "project_id": "t09-harbor-gateway",
+      "repo_slug": "aegis/harbor-gateway",
+      "purpose": "plan ordinary dependency upgrades and compatibility verification"
+    },
+    {
+      "project_id": "t09-sentinel-api",
+      "repo_slug": "aegis/sentinel-api",
+      "purpose": "configure SAST separately from dependency scanning"
+    },
+    {
+      "project_id": "t09-vault-line",
+      "repo_slug": "aegis/vault-line",
+      "purpose": "implement remediation for already-triaged Fortify SAST or DAST findings"
+    }
+  ],
+  "provider_visible_rules": {
+    "language": "zh",
+    "never_name": [
+      "TDAI",
+      "Memory L0",
+      "Memory L1",
+      "Memory L2",
+      "Memory L3",
+      "skill_search",
+      "skill_view",
+      "skill_view_by_id",
+      "skill_files_read",
+      "knowledge_tools_list",
+      "knowledge_tools_call",
+      "knowledge_id",
+      "Gold",
+      "private proposal",
+      "T09-L0-",
+      "T09-L1-",
+      "T09-L2-",
+      "T09-SKILL-",
+      "wiki-t09",
+      "cg-t09"
+    ],
+    "conversation_expectation": "Natural engineering dialogue with task background, evidence, one direction change, completed work, the remaining information gap, and a final request. Do not solve the final engineering task.",
+    "pair_rule": "Positive and Negative share identity, snapshot, shared messages, workspace and exactly the same query. Only the appended delta message changes. Positive keeps one frozen gap; Negative supplies exactly that fact."
+  },
+  "asset_plan": {
+    "memory": {
+      "l0_count": 10,
+      "l1_count": 14,
+      "l2_count": 4,
+      "l3_count": 1,
+      "l0_ids": ["T09-L0-01", "T09-L0-02", "T09-L0-03", "T09-L0-04", "T09-L0-05", "T09-L0-06", "T09-L0-07", "T09-L0-08", "T09-L0-09", "T09-L0-10"],
+      "l1_ids": ["T09-L1-01", "T09-L1-02", "T09-L1-03", "T09-L1-04", "T09-L1-05", "T09-L1-06", "T09-L1-07", "T09-L1-08", "T09-L1-09", "T09-L1-10", "T09-L1-11", "T09-L1-12", "T09-L1-13", "T09-L1-14"],
+      "l2_ids": ["T09-L2-01", "T09-L2-02", "T09-L2-03", "T09-L2-04"],
+      "l3_id": "T09-L3-01",
+      "l2_paths": [
+        "/security/audit/offline-runbook",
+        "/security/reporting/cvss-policy",
+        "/security/reporting/csv-contract",
+        "/security/upgrade/review-checklist"
+      ],
+      "world_facts": [
+        "T09-L0-01 contains the exact prior air-gap wrapper decision for nebula-console: fixed cache .audit-cache/2026-07-15 and output build/audit/trivy.raw.json; nearby sessions contain online and container-scan alternatives.",
+        "T09-L0-03 is the complete risk-catalog review session that records the accepted NVD-then-GHSA-then-vendor CVSS fallback after two rejected alternatives; a search result supplies the session id and the full reasoning requires the complete session.",
+        "T09-L1-01 records the accepted audit policy: include HIGH and CRITICAL only, preserve a missing fixed version as an empty field, and never infer a vulnerability result not present in the frozen scan JSON.",
+        "T09-L1-05 records the approved CSV column order: vulnerability_id, package_name, installed_version, fixed_version, severity, cvss_score.",
+        "T09-L1-09 is a decision memory dated 2026-07-28 and typed decision: routine upgrade reviews must separate compatibility work from scan-result extraction.",
+        "T09-L2-01 at /security/audit/offline-runbook contains the exact mapping from Trivy process exit conditions to the team audit wrapper result; its injected summary must not reveal that mapping.",
+        "L3 contains only stable principles: do not run a real release or security scan during planning, prefer frozen inputs, and distinguish discovery from reporting. It contains no case answer."
+      ]
+    },
+    "skills": {
+      "pool_count": 14,
+      "bound_skill_ids": [
+        "T09-SKILL-TRIVY-OFFLINE",
+        "T09-SKILL-CVSS-EXTRACTION",
+        "T09-SKILL-FORTIFY-REMEDIATE",
+        "T09-SKILL-THREAT-MITIGATION",
+        "T09-SKILL-GITHUB-ACTIONS",
+        "T09-SKILL-SECRETS-MANAGEMENT"
+      ],
+      "team_searchable_skill_ids": [
+        "T09-SKILL-VULNERABILITY-CSV",
+        "T09-SKILL-DEPENDENCY-UPGRADE",
+        "T09-SKILL-SAST-CONFIGURATION",
+        "T09-SKILL-ATTACK-TREE",
+        "T09-SKILL-SECURITY-REQUIREMENTS",
+        "T09-SKILL-STRIDE-ANALYSIS",
+        "T09-SKILL-DEPLOYMENT-PIPELINE",
+        "T09-SKILL-GITLAB-CI"
+      ],
+      "adaptation_policy": "Read the frozen raw files. Preserve names and all core technical steps. You may only propose neutral listing descriptions plus explicit use_when and do_not_use_when boundaries, and may replace unsupported host-tool names if one occurs. Do not invent any Skill or procedure.",
+      "routing_boundaries": [
+        "Use trivy-offline-vulnerability-scanning only when a dependency artifact still must be scanned with a fixed offline Trivy database; do not use it when scan JSON already exists, for SAST, or for an ordinary version bump.",
+        "Use cvss-score-extraction when vulnerability records already exist and CVSS source priority or missing-score fallback is the gap; do not use it to scan or format a complete CSV.",
+        "Use vulnerability-csv-reporting when parsed findings already exist and the missing procedure is filtering/field mapping/CSV formatting; do not use it to discover findings.",
+        "Use dependency-upgrade for compatibility-aware version upgrades; do not use it to determine the vulnerability set from an unscanned lockfile.",
+        "Use sast-configuration for source-code static analysis configuration; do not use it for software composition analysis of package-lock.json.",
+        "Use fortify-remediate only for already-detected Fortify SAST/DAST findings. The resource-read case requires references/sast-dast-implementation.md after the listed Skill is opened."
+      ]
+    },
+    "knowledge": {
+      "resources": [
+        {
+          "asset_id": "wiki-t09audit01",
+          "knowledge_id": "wiki-t09audit01",
+          "type": "wiki",
+          "name": "Nebula Offline Audit Operations",
+          "summary": "Internal operational runbooks for the nebula-console air-gapped audit environment.",
+          "repo_match": "aegis/nebula-console",
+          "tool_name": "search_pages",
+          "required_param": "query",
+          "private_fact": "The current exception code for a frozen vulnerability database older than fourteen days is AIRGAP-DB-AGE-14."
+        },
+        {
+          "asset_id": "cg-t09risk01",
+          "knowledge_id": "cg-t09risk01",
+          "type": "code_graph",
+          "name": "Risk Catalog Symbol Graph",
+          "summary": "Read-only symbol graph for the risk-catalog normalizer repository.",
+          "repo_match": "aegis/risk-catalog",
+          "tool_name": "search_symbols",
+          "required_param": "query",
+          "private_fact": "The normalization boundary used by the current branch is normalizeCvssCandidate in src/normalizers/cvss.ts."
+        },
+        {
+          "asset_id": "wiki-t09comp01",
+          "knowledge_id": "wiki-t09comp01",
+          "type": "wiki",
+          "name": "Compliance Export Contract",
+          "summary": "Internal report schemas and retention rules for compliance-export.",
+          "repo_match": "aegis/compliance-export",
+          "tool_name": "search_pages",
+          "required_param": "query",
+          "private_fact": "The active consumer contract is audit-bom-v2 and requires UTF-8 without BOM."
+        }
+      ]
+    }
+  },
+  "pair_specs": [
+    {
+      "draft_pair_id": "T09-DRAFT-MEM-001",
+      "family": "memory",
+      "batch": "trial/memory/memory-trial-01",
+      "target_asset_ids": ["T09-L0-01"],
+      "allowed_sequence_candidates": [["tdai_conversation_search"]],
+      "private_gap": "The exact prior air-gap wrapper cache path and raw output path are absent from current context and exist only in the prior session.",
+      "stop_after": "The search result returns the exact T09-L0-01 message.",
+      "visible_distractors": ["T09-L0-02", "T09-L1-03", "T09-SKILL-TRIVY-OFFLINE"]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-MEM-002",
+      "family": "memory",
+      "batch": "expansion/memory/memory-batch-02",
+      "target_asset_ids": ["T09-L1-01"],
+      "allowed_sequence_candidates": [["tdai_memory_search"]],
+      "private_gap": "The accepted team policy for severity filtering and absent fixed versions is missing; a distilled decision is required, not verbatim history.",
+      "stop_after": "The semantic memory search returns T09-L1-01.",
+      "visible_distractors": ["T09-L1-02", "T09-L1-06", "T09-SKILL-CVSS-EXTRACTION"]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-MEM-003",
+      "family": "memory",
+      "batch": "expansion/memory/memory-batch-02",
+      "target_asset_ids": ["T09-L0-03"],
+      "allowed_sequence_candidates": [["tdai_conversation_search", "tdai_conversation_query"]],
+      "private_gap": "The task needs the complete earlier review chain, including rejected CVSS fallback alternatives; search locates the session and the full session supplies the ordered reasoning.",
+      "stop_after": "The complete target session is returned after its id comes from search.",
+      "visible_distractors": ["T09-L0-04", "T09-L1-04", "T09-SKILL-CVSS-EXTRACTION"]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-MEM-004",
+      "family": "memory",
+      "batch": "expansion/memory/memory-batch-02",
+      "target_asset_ids": ["T09-L1-05"],
+      "allowed_sequence_candidates": [["tdai_memory_search"]],
+      "private_gap": "The approved CSV field order from a past decision is absent; the current code only exposes unordered field names.",
+      "stop_after": "The semantic memory search returns T09-L1-05.",
+      "visible_distractors": ["T09-L1-06", "T09-L0-06", "T09-SKILL-VULNERABILITY-CSV"]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-MEM-005",
+      "family": "memory",
+      "batch": "expansion/memory/memory-batch-02",
+      "target_asset_ids": ["T09-L1-09"],
+      "allowed_sequence_candidates": [["tdai_atomic_query"]],
+      "private_gap": "The user explicitly asks for the most recent decision memory after 2026-07-20 with type decision; structured time/type filtering is required.",
+      "stop_after": "The structured atomic query returns T09-L1-09.",
+      "visible_distractors": ["T09-L1-08", "T09-L1-10", "T09-SKILL-DEPENDENCY-UPGRADE"]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-MEM-006",
+      "family": "memory",
+      "batch": "expansion/memory/memory-batch-02",
+      "target_asset_ids": ["T09-L2-01"],
+      "allowed_sequence_candidates": [["tdai_read_scene"]],
+      "private_gap": "The injected scene index gives /security/audit/offline-runbook, but its summary omits the exact exit-condition mapping needed now.",
+      "stop_after": "Reading the known scene path returns T09-L2-01.",
+      "visible_distractors": ["T09-L2-02", "T09-L2-04", "T09-SKILL-TRIVY-OFFLINE"]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-SKILL-001",
+      "family": "skill",
+      "batch": "trial/skill/skill-trial-01",
+      "target_asset_ids": ["T09-SKILL-TRIVY-OFFLINE"],
+      "allowed_sequence_candidates": [["skill_view"]],
+      "private_gap": "The workspace and frozen database are known, but the exact reusable offline scan workflow is absent; the target is listed.",
+      "stop_after": "The listed Skill content and manifest are returned.",
+      "visible_distractors": ["T09-SKILL-CVSS-EXTRACTION", "T09-SKILL-GITHUB-ACTIONS", "T09-SKILL-SECRETS-MANAGEMENT"]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-SKILL-002",
+      "family": "skill",
+      "batch": "expansion/skill/skill-batch-02",
+      "target_asset_ids": ["T09-SKILL-CVSS-EXTRACTION"],
+      "allowed_sequence_candidates": [["skill_view"]],
+      "private_gap": "Scan JSON already exists; only source-priority and missing-score extraction procedure is absent; the target is listed.",
+      "stop_after": "The listed CVSS extraction Skill is returned.",
+      "visible_distractors": ["T09-SKILL-TRIVY-OFFLINE", "T09-SKILL-VULNERABILITY-CSV", "T09-SKILL-THREAT-MITIGATION"]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-SKILL-003",
+      "family": "skill",
+      "batch": "expansion/skill/skill-batch-02",
+      "target_asset_ids": ["T09-SKILL-VULNERABILITY-CSV"],
+      "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+      "private_gap": "Parsed findings are available but the reusable CSV mapping procedure is absent; the target is not listed but is same-Team searchable.",
+      "stop_after": "The search result's Skill id is opened.",
+      "visible_distractors": ["T09-SKILL-CVSS-EXTRACTION", "T09-SKILL-DEPENDENCY-UPGRADE", "T09-SKILL-GITLAB-CI"]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-SKILL-004",
+      "family": "skill",
+      "batch": "expansion/skill/skill-batch-02",
+      "target_asset_ids": ["T09-SKILL-DEPENDENCY-UPGRADE"],
+      "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+      "private_gap": "The vulnerable package and target version are known, but compatibility-aware staged upgrade procedure is absent; no scan is required.",
+      "stop_after": "The searched dependency-upgrade Skill is opened by returned id.",
+      "visible_distractors": ["T09-SKILL-TRIVY-OFFLINE", "T09-SKILL-DEPLOYMENT-PIPELINE", "T09-SKILL-GITHUB-ACTIONS"]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-SKILL-005",
+      "family": "skill",
+      "batch": "expansion/skill/skill-batch-02",
+      "target_asset_ids": ["T09-SKILL-SAST-CONFIGURATION"],
+      "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+      "private_gap": "The task is source-code static analysis configuration, not dependency scanning; the appropriate procedure is unlisted but same-Team searchable.",
+      "stop_after": "The searched SAST configuration Skill is opened by returned id.",
+      "visible_distractors": ["T09-SKILL-TRIVY-OFFLINE", "T09-SKILL-ATTACK-TREE", "T09-SKILL-SECURITY-REQUIREMENTS"]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-SKILL-006",
+      "family": "skill",
+      "batch": "expansion/skill/skill-batch-02",
+      "target_asset_ids": ["T09-SKILL-FORTIFY-REMEDIATE"],
+      "allowed_sequence_candidates": [["skill_view", "skill_files_read"]],
+      "resource_path": "references/sast-dast-implementation.md",
+      "private_gap": "An already-triaged Fortify finding needs the package's implementation checklist resource; the listed overview alone does not contain that resource text.",
+      "stop_after": "The listed Skill is opened and the named resource file is returned.",
+      "visible_distractors": ["T09-SKILL-SAST-CONFIGURATION", "T09-SKILL-THREAT-MITIGATION", "T09-SKILL-SECRETS-MANAGEMENT"]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-KNOW-001",
+      "family": "knowledge",
+      "batch": "trial/knowledge/knowledge-trial-01",
+      "target_asset_ids": ["wiki-t09audit01"],
+      "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+      "private_gap": "The current internal exception code for an aged frozen audit database is absent from context and belongs to the repo-matched operations wiki.",
+      "stop_after": "The resource tool list is discovered and search_pages returns the exception code.",
+      "visible_distractors": ["cg-t09risk01", "wiki-t09comp01", "T09-L1-01"]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-KNOW-002",
+      "family": "knowledge",
+      "batch": "expansion/knowledge/knowledge-batch-02",
+      "target_asset_ids": ["cg-t09risk01"],
+      "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+      "private_gap": "The current risk-catalog symbol boundary is not in the workspace excerpt or history and must be queried from the repo-matched symbol graph.",
+      "stop_after": "The resource tool list is discovered and search_symbols returns the target symbol.",
+      "visible_distractors": ["wiki-t09audit01", "wiki-t09comp01", "T09-SKILL-CVSS-EXTRACTION"]
+    },
+    {
+      "draft_pair_id": "T09-DRAFT-KNOW-003",
+      "family": "knowledge",
+      "batch": "expansion/knowledge/knowledge-batch-02",
+      "target_asset_ids": ["wiki-t09comp01"],
+      "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+      "private_gap": "The active internal consumer contract and file encoding are absent and belong to the compliance-export wiki, not to a generic reporting Skill.",
+      "stop_after": "The resource tool list is discovered and search_pages returns the active contract and encoding.",
+      "visible_distractors": ["wiki-t09audit01", "cg-t09risk01", "T09-SKILL-VULNERABILITY-CSV"]
+    }
+  ],
+  "natural_negative_specs": [
+    "Given a complete Trivy JSON excerpt, implement a pure function that keeps HIGH/CRITICAL rows; all field mapping is supplied.",
+    "Fix one CSV escaping bug with the failing input, expected output, and existing function shown.",
+    "Update a pinned package version in package.json when the exact target version and validation commands are already provided.",
+    "Explain why a supplied CVSS fallback function returns null for an empty object; the entire function is visible.",
+    "Correct indentation in a visible GitHub Actions YAML step; no organizational convention is missing.",
+    "Add a unit test for a shown severity comparator with expected ordering provided.",
+    "Rename one report header and update its visible snapshot expectation.",
+    "Refactor a shown JSON-to-row loop into map without changing behavior; inputs and outputs are supplied.",
+    "Fix a TypeScript type narrowing error in a visible vulnerability record parser; the compiler error and types are complete.",
+    "Add a guard for an absent FixedVersion field using the explicit empty-string rule stated in current context."
+  ],
+  "batch_plan": [
+    {"batch": "trial/memory/memory-trial-01", "family": "memory", "count": 1},
+    {"batch": "trial/skill/skill-trial-01", "family": "skill", "count": 1},
+    {"batch": "trial/knowledge/knowledge-trial-01", "family": "knowledge", "count": 1},
+    {"batch": "expansion/memory/memory-batch-02", "family": "memory", "count": 5},
+    {"batch": "expansion/skill/skill-batch-02", "family": "skill", "count": 5},
+    {"batch": "expansion/knowledge/knowledge-batch-02", "family": "knowledge", "count": 2},
+    {"batch": "natural-negative/natural-negative-batch-01", "family": "natural-negative", "count": 10}
+  ],
+  "sol_only": {
+    "final_gold_authority": true,
+    "visibility_authority": true,
+    "license_authority": true,
+    "staging_authority": true,
+    "required_final_counts": {
+      "memory_positive": 6,
+      "skill_positive": 6,
+      "knowledge_positive": 3,
+      "paired_negative": 15,
+      "natural_negative": 10,
+      "total_cases": 40
+    }
+  }
+}

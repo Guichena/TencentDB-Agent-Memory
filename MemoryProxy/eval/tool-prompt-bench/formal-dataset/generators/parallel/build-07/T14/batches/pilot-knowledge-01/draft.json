@@ -1,0 +1,87 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t14-pilot-knowledge-01",
+  "stage": "DS05",
+  "team_id": "T14",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T14-DS05-KNW-001",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "今天继续处理 Borealis Platform 的 Kubernetes 工作负载、Helm chart 与回滚护栏排查，固定快照和工作区不变；不要把 Meridian Fleet 的 GitOps 漂移或 Forge Build 的构建交付混进来。"
+        },
+        {
+          "role": "assistant",
+          "content": "边界已记下：当前只处理 Borealis Platform 的 Helm 回滚护栏，保持既定快照和工作区，不合并 Meridian Fleet 或 Forge Build 的上下文。"
+        },
+        {
+          "role": "user",
+          "content": "这次只关注 Helm 回滚护栏在工作负载发布路径中的触发来源。记录里出现了 rollback guard、release policy 和 admission check 等词，但没有可靠的代码位置。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把这些词当作定位线索，不从相似组件名猜文件或行号；只核对当前项目固定代码中的节点关系。"
+        },
+        {
+          "role": "user",
+          "content": "我还看到 Meridian Fleet 关于漂移例外的 wiki 摘要，以及 Forge Build 的镜像签名影响记录；两条都是同域但不同项目的独立线索。"
+        },
+        {
+          "role": "assistant",
+          "content": "已将 Meridian Fleet 和 Forge Build 的线索排除，当前问题仍限于 Borealis Platform 的回滚护栏定位。"
+        },
+        {
+          "role": "user",
+          "content": "本次只需确认回滚护栏负责校验的那个符号在固定代码中的准确源文件和行号，不要扩展到策略阈值、依赖关系或修复建议。"
+        },
+        {
+          "role": "assistant",
+          "content": "目前已确认项目、Helm 回滚主题和发布路径；尚未确认负责回滚护栏校验的符号在固定代码里的准确源文件和行号。当前材料不足以安全写出确切位置。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请确认 Borealis Platform 固定代码中负责 Helm 回滚护栏校验的符号的准确源文件和行号，并只返回该定位。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充记录仍只有回滚现象、组件词和发布路径，没有提供固定代码中的源文件或行号；请保留这一处定位缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "Borealis Platform 固定代码中负责 Helm 回滚护栏校验的符号，其精确源文件和行号尚未出现在当前上下文，不能从组件词推导。",
+          "route": "knowledge",
+          "target_asset_ids": ["T14-KNOW-BOREALIS-CG"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "frozen_tool_request": {
+            "toolName": "search",
+            "parameters": {"text": "RollbackGuardEvaluator", "project": "t14-borealis-platform"}
+          },
+          "stop_after_candidate": "用 Borealis Platform 代码索引的符号检索得到 internal/helm/rollback_guard.go:117 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已补齐唯一缺口：固定代码索引将负责 Helm 回滚护栏校验的符号定位为 `internal/helm/rollback_guard.go:117`；策略阈值、依赖关系、修复建议及另外两个项目仍不纳入本次记录。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已经补齐负责 Helm 回滚护栏校验符号的固定源文件和行号，并保持 Borealis Platform 范围及另外两个项目排除项；无需再查资源。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T14-KNOW-MERIDIAN-WIKI", "T14-KNOW-FORGE-CG"],
+      "controlled_delta_note": "Positive 只保留负责 Helm 回滚护栏校验符号的精确位置缺口；Negative 只补齐 internal/helm/rollback_guard.go:117，项目范围、排除项和 query 完全不变。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为 Borealis Platform 固定代码索引中的符号文件和行号，没有隐含策略阈值、依赖关系或修复结论？",
+        "Negative 是否只补入 internal/helm/rollback_guard.go:117，并保持 Meridian Fleet、Forge Build 排除项和 query 不变？",
+        "Borealis Platform、Helm 回滚护栏和发布路径这些自然线索，是否足以在三个 ready 资源中唯一选择 Borealis 代码索引，同时避免首屏摘要直接给出该定位？"
+      ]
+    }
+  ]
+}

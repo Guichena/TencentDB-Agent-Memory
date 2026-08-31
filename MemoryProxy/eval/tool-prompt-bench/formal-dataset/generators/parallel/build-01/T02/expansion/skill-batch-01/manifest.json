@@ -1,0 +1,42 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "t02-skill-expansion-batch-01",
+  "stage": "DS03",
+  "team_id": "T02",
+  "input_source_ids": [
+    "source-t02-skill-workload-balancing",
+    "source-t02-skill-python-parallelization",
+    "source-t02-skill-memory-optimization",
+    "source-t02-skill-testing-python",
+    "source-t02-skill-jupyter-notebook"
+  ],
+  "input_pack": "input-pack.json",
+  "input_pack_sha256": "f190ede8852d94441c7da26d3737158dfced230bab8996d446cd99f0abb2c8cc",
+  "asset_world": "asset-world/asset-world-batch-01/draft.json",
+  "asset_world_sha256": "7673cfc3a7048aad3fddbc52e614eeca8868bc64e1a65ec9b3149871a14d5435",
+  "source_pack_lock": "source-pack.lock.json",
+  "skill_manifest_sha256": "be77f6fdfa5523ea027c6b53296d8a32c10a8de77392addb4041bb6b5f34fc57",
+  "project_manifest_sha256": "1aa33c0934dd7df151ee5e5bc657f8365ecc71efb5ffb0a239354e1ff4dd1f66",
+  "skill_source_sha256": {
+    "workload-balancing": "28260b9d369855ee36fab41bc2c084bb08e0473787888a3d20ca67d25d62ad5c",
+    "python-parallelization": "cade40ed1ab5ae28c52ef8ebeaaf0d72b0323d73aa1886f54f5a995685a48a79",
+    "memory-optimization": "cc56c4b8119265a50ae48506c20f6e495bcb7972dfb7e78adc5405b840fb2ba8",
+    "testing-python": "2741f4b02a7021658993213ce85095871e30ebfc1eba2bbef9d56f0bb71dea32",
+    "jupyter-notebook": "62f102e8554b25716dccef0ffab4572d4e3eaf05ccc76562d33a065bc9c521fb"
+  },
+  "target_source_hashes": {
+    "workload-balancing/SKILL.md": "28260b9d369855ee36fab41bc2c084bb08e0473787888a3d20ca67d25d62ad5c",
+    "python-parallelization/SKILL.md": "cade40ed1ab5ae28c52ef8ebeaaf0d72b0323d73aa1886f54f5a995685a48a79",
+    "memory-optimization/SKILL.md": "cc56c4b8119265a50ae48506c20f6e495bcb7972dfb7e78adc5405b840fb2ba8",
+    "testing-python/SKILL.md": "2741f4b02a7021658993213ce85095871e30ebfc1eba2bbef9d56f0bb71dea32",
+    "jupyter-notebook/SKILL.md": "62f102e8554b25716dccef0ffab4572d4e3eaf05ccc76562d33a065bc9c521fb"
+  },
+  "generated_at": "2026-08-29T22:58:00+08:00",
+  "actual_count": 5,
+  "raw_output_file": "draft.json",
+  "raw_output_sha256": "c57fd21bfe9c8d582d0c1405882b92a5c36ce8cb9608da1f3460a1dcfad95007"
+}

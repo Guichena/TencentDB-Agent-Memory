@@ -1,0 +1,22 @@
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/ui-design/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-UI-DESIGN/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+diff --git MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/ui-design/SKILL.md MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-UI-DESIGN/SKILL.md
+index 68e74d9..bb60d06 100644
+--- MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/ui-design/SKILL.md
++++ MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-UI-DESIGN/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+ name: ui-design
+-description: UI/UX and frontend design best practices guidelines (formerly frontend-design). This skill should be used when writing, reviewing, or designing frontend code to ensure accessibility, performance, and usability. Triggers on tasks involving HTML structure, CSS styling, responsive layouts, form design, animations, or accessibility improvements.
++description: "前端可用性、可访问性、响应式布局和视觉实现审查。"
++use_when: "需要 UI/UX 或响应式实现与审查。"
++do_not_use_when: "React 重渲染、Web Vitals 采集或 Playwright 可靠性问题时不用。"
+ ---
+ 
+ # UI/UX Best Practices Frontend Design
+@@ -107,3 +109,4 @@ Read individual reference files for detailed explanations and code examples:
+ ## Full Compiled Document
+ 
+ For the complete guide with all rules expanded: [AGENTS.md](AGENTS.md)
++
+

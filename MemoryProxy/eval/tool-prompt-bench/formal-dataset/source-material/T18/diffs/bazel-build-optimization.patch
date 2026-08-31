@@ -1,0 +1,20 @@
+--- a/plugins/developer-essentials/skills/bazel-build-optimization/SKILL.md
++++ b/adapted/bazel-build-optimization/SKILL.md
+@@ -5,0 +5,17 @@
++
++
++## TDAI Host Routing
++
++Load this package with `skill_view`. If the manifest points to a supporting file, read that file with `skill_files_read`; do not install or execute source-repository dependencies for Task 1.
++
++Use when:
++- Setting up Bazel in a monorepo
++- Optimizing build times
++- Configuring remote caching or execution
++
++Do not use when:
++- Do not use for non-Bazel build systems
++- Do not hide dependencies behind broad globs
++- Do not ignore build warnings or generated directories
++
++The upstream technical workflow below is preserved unchanged.

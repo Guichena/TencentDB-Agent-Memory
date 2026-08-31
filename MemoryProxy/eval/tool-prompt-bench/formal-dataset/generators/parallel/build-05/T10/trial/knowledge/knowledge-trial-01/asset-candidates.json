@@ -1,0 +1,182 @@
+{
+  "schema_version": "task1.knowledge_asset_candidates.v1",
+  "batch_id": "t10-knowledge-trial-01",
+  "team_id": "T10",
+  "status": "proposal_only_not_approved_or_visible",
+  "synthetic": true,
+  "resources": [
+    {
+      "asset_id": "cg-t10maven01",
+      "knowledge_id": "cg-t10maven01",
+      "type": "code_graph",
+      "name": "Atlas Maven Symbol Graph",
+      "summary": "atlas-parent 当前冻结提交的只读 POM 与插件 execution 关系图。",
+      "repo_match": "forge/atlas-parent",
+      "status": "ready",
+      "access_mode": "read_only",
+      "read_only": true,
+      "tool_name": "search_symbols",
+      "required_param": "query",
+      "tools/list": {
+        "request": {
+          "knowledge_id": "cg-t10maven01"
+        },
+        "response": {
+          "tools": [
+            {
+              "name": "search_symbols",
+              "description": "Search the frozen POM and plugin execution symbol graph by symbol or concept.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": ["query"],
+                "additionalProperties": false
+              }
+            }
+          ]
+        }
+      },
+      "deterministic_read_only_responses": [
+        {
+          "request": {
+            "tool_name": "search_symbols",
+            "arguments": {
+              "query": "source attachment execution phase"
+            }
+          },
+          "response": {
+            "symbols": [
+              {
+                "symbol": "attachSources",
+                "kind": "plugin_execution",
+                "file": "build-support/pom.xml",
+                "phase": "verify"
+              }
+            ]
+          }
+        }
+      ],
+      "private_fact_author_only": "build-support/pom.xml 中 attachSources execution 绑定 verify phase。"
+    },
+    {
+      "asset_id": "wiki-t10release01",
+      "knowledge_id": "wiki-t10release01",
+      "type": "wiki",
+      "name": "Release Candidate Operations",
+      "summary": "release-orchestrator 的候选制品和审批门只读说明。",
+      "repo_match": "forge/release-orchestrator",
+      "status": "ready",
+      "access_mode": "read_only",
+      "read_only": true,
+      "tool_name": "search_pages",
+      "required_param": "query",
+      "tools/list": {
+        "request": {
+          "knowledge_id": "wiki-t10release01"
+        },
+        "response": {
+          "tools": [
+            {
+              "name": "search_pages",
+              "description": "Search the frozen release candidate operations pages by text query.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": ["query"],
+                "additionalProperties": false
+              }
+            }
+          ]
+        }
+      },
+      "deterministic_read_only_responses": [
+        {
+          "request": {
+            "tool_name": "search_pages",
+            "arguments": {
+              "query": "candidate evidence package approval gate"
+            }
+          },
+          "response": {
+            "pages": [
+              {
+                "ref": "candidate-evidence-gate",
+                "title": "Release candidate evidence and approval",
+                "path": "/release/candidate-operations",
+                "content": "The current candidate evidence package is rc-evidence-v3 and approval requires two-person-review."
+              }
+            ]
+          }
+        }
+      ],
+      "private_fact_author_only": "当前候选证据包名为 rc-evidence-v3，批准门为 two-person-review。"
+    },
+    {
+      "asset_id": "cg-t10pybuild01",
+      "knowledge_id": "cg-t10pybuild01",
+      "type": "code_graph",
+      "name": "PyArtifact Build Graph",
+      "summary": "pyartifact 当前冻结提交的只读构建元数据符号图。",
+      "repo_match": "forge/pyartifact",
+      "status": "ready",
+      "access_mode": "read_only",
+      "read_only": true,
+      "tool_name": "search_symbols",
+      "required_param": "query",
+      "tools/list": {
+        "request": {
+          "knowledge_id": "cg-t10pybuild01"
+        },
+        "response": {
+          "tools": [
+            {
+              "name": "search_symbols",
+              "description": "Search the frozen Python build metadata symbol graph by symbol or concept.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": ["query"],
+                "additionalProperties": false
+              }
+            }
+          ]
+        }
+      },
+      "deterministic_read_only_responses": [
+        {
+          "request": {
+            "tool_name": "search_symbols",
+            "arguments": {
+              "query": "dynamic build version resolver"
+            }
+          },
+          "response": {
+            "symbols": [
+              {
+                "symbol": "resolveBuildVersion",
+                "kind": "function",
+                "file": "src/pyartifact/build_meta.py"
+              }
+            ]
+          }
+        }
+      ],
+      "private_fact_author_only": "动态版本解析入口为 resolveBuildVersion，路径 src/pyartifact/build_meta.py。"
+    }
+  ]
+}

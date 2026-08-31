@@ -1,0 +1,652 @@
+{
+  "schema_version": "task1.team_skill_assets.v2",
+  "team_id": "T17",
+  "skills": [
+    {
+      "assetId": "T17-SKL-01",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-SKILL-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "screen-reader-testing",
+      "version": "1.0.0-t17",
+      "description": "Test web applications with screen readers including VoiceOver, NVDA, and JAWS. Use when validating screen reader compatibility, debugging accessibility issues, or ensuring assistive technology support.",
+      "useWhen": "Validating screen reader compatibility; Testing ARIA implementations; Debugging assistive technology issues; Verifying form accessibility; Testing dynamic content announcements; Ensuring navigation accessibility",
+      "doNotUseWhen": "Don't assume one screen reader is enough; Don't ignore mobile; Don't test only the happy path; Don't skip dynamic content; Don't rely on visual testing",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "6006686ba4552169b9be6f7b958e9f9581c528cbca47bb6b69b2ad97a27fea50"
+        }
+      ],
+      "contentHash": "58455f95221759dd4c5fbe36743b00b197bc522509ac5ccb0fab388ed467a1ce"
+    },
+    {
+      "assetId": "T17-SKL-02",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-SKILL-02"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "wcag-audit-patterns",
+      "version": "1.0.0-t17",
+      "description": "Conduct WCAG 2.2 accessibility audits with automated testing, manual verification, and remediation guidance. Use when auditing websites for accessibility, fixing WCAG violations, or implementing accessible design patterns.",
+      "useWhen": "Conducting accessibility audits; Fixing WCAG violations; Implementing accessible components; Preparing for accessibility lawsuits; Meeting ADA/Section 508 requirements; Achieving VPAT compliance",
+      "doNotUseWhen": "Don't rely only on automated testing; Don't use ARIA as the first solution; Don't hide focus outlines; Don't disable zoom; Don't use color alone",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "33731fef7df1bc109809e348d960d95bdfd67ef0330a6286e204a5d2370d9b9c"
+        },
+        {
+          "path": "references/details.md",
+          "sha256": "0a61237ccb4e1b2cba4291f83e0747ad64ac9ba81b37427ee0e648537c9c78d6"
+        }
+      ],
+      "contentHash": "ceb1d369145c64dc283b15fd39a69b49399e7f9c26031174b0c1e20921c97b0a"
+    },
+    {
+      "assetId": "T17-SKL-03",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-SKILL-03"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "react-modernization",
+      "version": "1.0.0-t17",
+      "description": "Upgrade React applications to latest versions, migrate from class components to hooks, and adopt concurrent features. Use when modernizing React codebases, migrating to React Hooks, or upgrading to latest React versions.",
+      "useWhen": "Upgrading React applications to latest versions; Migrating class components to functional components with hooks; Adopting concurrent React features (Suspense, transitions); Applying codemods for automated refactoring; Modernizing state management patterns; Updating to TypeScript; Improving performance with React 18+ features",
+      "doNotUseWhen": "Do not use when no React modernization, hooks migration, version upgrade, or concurrent-feature work is involved; Do not use for unrelated backend-only changes",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "156c2f1fcda7c195e2c942025aaa1dcccf97a05e083ccfd796e4d93f12b0f6fb"
+        }
+      ],
+      "contentHash": "32e624cec4399decd090935850fd3d922afb295f8cfb787f1ec92ab4d2465c59"
+    },
+    {
+      "assetId": "T17-SKL-04",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-SKILL-04"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "nextjs-app-router-patterns",
+      "version": "1.0.0-t17",
+      "description": "Master Next.js 14+ App Router with Server Components, streaming, parallel routes, and advanced data fetching. Use when building Next.js applications, implementing SSR/SSG, or optimizing React Server Components.",
+      "useWhen": "Building new Next.js applications with App Router; Migrating from Pages Router to App Router; Implementing Server Components and streaming; Setting up parallel and intercepting routes; Optimizing data fetching and caching; Building full-stack features with Server Actions",
+      "doNotUseWhen": "Do not use hooks in Server Components; Do not fetch in Client Components; Do not over-nest layouts; Do not ignore loading states; Do not pass non-serializable data across the Server-to-Client boundary",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "2f545891589ef1a05e3d2a7fad5771c031aeb63d9f3cb3fc84d6f90bff1d4518"
+        }
+      ],
+      "contentHash": "8dac153a8369b0d737d20058a7a56c14e7ccf98e7a4dd94acd3f886997368b6d"
+    },
+    {
+      "assetId": "T17-SKL-05",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-SKILL-05"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "react-state-management",
+      "version": "1.0.0-t17",
+      "description": "Master modern React state management with Redux Toolkit, Zustand, Jotai, and React Query. Use when setting up global state, managing server state, or choosing between state management solutions.",
+      "useWhen": "Setting up global state management in a React app; Choosing between Redux Toolkit, Zustand, or Jotai; Managing server state with React Query or SWR; Implementing optimistic updates; Debugging state-related issues; Migrating from legacy Redux to modern patterns",
+      "doNotUseWhen": "Don't over-globalize; Don't duplicate server state; Don't mutate directly; Don't store derived data; Don't mix paradigms",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "2704699e79d64e62ee9e2e4a441788f06ddd3d4575b71294735f2749388c17ab"
+        }
+      ],
+      "contentHash": "f0d97d190adfaf6f6fc38b4af5a4ac419c6498f51a8b62d420042e873b275763"
+    },
+    {
+      "assetId": "T17-SKL-06",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-SKILL-06"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "tailwind-design-system",
+      "version": "1.0.0-t17",
+      "description": "Build scalable design systems with Tailwind CSS v4, design tokens, component libraries, and responsive patterns. Use when creating component libraries, implementing design systems, or standardizing UI patterns.",
+      "useWhen": "Creating a component library with Tailwind v4; Implementing design tokens and theming with CSS-first configuration; Building responsive and accessible components; Standardizing UI patterns across a codebase; Migrating from Tailwind v3 to v4; Setting up dark mode with native CSS features",
+      "doNotUseWhen": "Do not use when the task is unrelated to Tailwind CSS, design tokens, component libraries, responsive patterns, or UI standardization",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "1ff39ee5f4be2865a72b9cd24263f5d5cdf62b22e6a436e15bb71988b0cc090d"
+        }
+      ],
+      "contentHash": "8f12c72e1b7c05dd9eebc5f5150ef6ad5c1cfae53f5c7656fa4b1fe1cb89ff6f"
+    },
+    {
+      "assetId": "T17-SKL-07",
+      "ownerAgentId": "agent-task1-t17-assets-a",
+      "sourceEvidenceIds": [
+        "T17-SRC-SKILL-07"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "design-system-patterns",
+      "version": "1.0.0-t17",
+      "description": "Build scalable design systems with design tokens, theming infrastructure, and component architecture patterns. Use when creating design tokens, implementing theme switching, building component libraries, or establishing design system foundations.",
+      "useWhen": "Creating design tokens for colors, typography, spacing, and shadows; Implementing light/dark theme switching with CSS custom properties; Building multi-brand theming systems; Architecting component libraries with consistent APIs; Establishing design-to-code workflows with Figma tokens; Creating semantic token hierarchies (primitive, semantic, component); Setting up design system documentation and guidelines",
+      "doNotUseWhen": "Do not use when the task is unrelated to tokens, theming, component architecture, design-to-code workflows, or design-system documentation",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "f4a19c7ab725999cd3a0615efdb061b4a1fbca8c0a61d70d25dd453ecdf6a4a8"
+        }
+      ],
+      "contentHash": "ea61c97041176b307a16f00cd13c3e5a2c2ccb9876474bc39f46247b5d3a9bce"
+    },
+    {
+      "assetId": "T17-SKL-08",
+      "ownerAgentId": "agent-task1-t17-assets-a",
+      "sourceEvidenceIds": [
+        "T17-SRC-SKILL-08"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "responsive-design",
+      "version": "1.0.0-t17",
+      "description": "Implement modern responsive layouts using container queries, fluid typography, CSS Grid, and mobile-first breakpoint strategies. Use when building adaptive interfaces, implementing fluid layouts, or creating component-level responsive behavior.",
+      "useWhen": "Implementing mobile-first responsive layouts; Using container queries for component-based responsiveness; Creating fluid typography and spacing scales; Building complex layouts with CSS Grid and Flexbox; Designing breakpoint strategies for design systems; Implementing responsive images and media; Creating adaptive navigation patterns; Building responsive tables and data displays",
+      "doNotUseWhen": "Do not use when the task has no adaptive layout, fluid value, breakpoint, responsive media, navigation, table, or component-level responsive requirement",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "90f7c17e13f76ce1cf5de1c2263a3bd31936ebb07511945cf9f691581837102b"
+        }
+      ],
+      "contentHash": "e80af64c4cdd157921d4429a1fb0a07347208bb192c8162032c0d3b53b63cb18"
+    },
+    {
+      "assetId": "T17-SKL-09",
+      "ownerAgentId": "agent-task1-t17-assets-a",
+      "sourceEvidenceIds": [
+        "T17-SRC-SKILL-09"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "web-component-design",
+      "version": "1.0.0-t17",
+      "description": "Master React, Vue, and Svelte component patterns including CSS-in-JS, composition strategies, and reusable component architecture. Use when building UI component libraries, designing component APIs, or implementing frontend design systems.",
+      "useWhen": "Designing reusable component libraries or design systems; Implementing complex component composition patterns; Choosing and applying CSS-in-JS solutions; Building accessible, responsive UI components; Creating consistent component APIs across a codebase; Refactoring legacy components into modern patterns; Implementing compound components or render props",
+      "doNotUseWhen": "Do not use when the task is unrelated to reusable components, composition, component APIs, CSS-in-JS, or frontend design systems",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "e4c307df7ae1ca5d2e467f8dbd7a226664a15e242273d8170c88f1be0a304f55"
+        }
+      ],
+      "contentHash": "2d03afa0fb5bca95df32b0ab7df58ce0a3cc884c95e9844382dab43ac070c95c"
+    },
+    {
+      "assetId": "T17-SKL-10",
+      "ownerAgentId": "agent-task1-t17-assets-a",
+      "sourceEvidenceIds": [
+        "T17-SRC-SKILL-10"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "accessibility-compliance",
+      "version": "1.0.0-t17",
+      "description": "Implement WCAG 2.2 compliant interfaces with mobile accessibility, inclusive design patterns, and assistive technology support. Use when auditing accessibility, implementing ARIA patterns, building for screen readers, or ensuring inclusive user experiences.",
+      "useWhen": "Implementing WCAG 2.2 Level AA or AAA compliance; Building screen reader accessible interfaces; Adding keyboard navigation to interactive components; Implementing focus management and focus trapping; Creating accessible forms with proper labeling; Supporting reduced motion and high contrast preferences; Building mobile accessibility features (iOS VoiceOver, Android TalkBack); Conducting accessibility audits and fixing violations",
+      "doNotUseWhen": "Do not use when the task has no accessibility, inclusive-design, ARIA, keyboard, focus, form-labeling, mobile-assistive-technology, or audit requirement",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "001d9c95af1801ea1d7b57062f605af52fdb7fab4eea90829904362566926c04"
+        }
+      ],
+      "contentHash": "7ea805a62e9198484cdc4c1b20af19bda81accf5eba5360947499fb4e670fa3b"
+    },
+    {
+      "assetId": "T17-SKL-11",
+      "ownerAgentId": "agent-task1-t17-assets-a",
+      "sourceEvidenceIds": [
+        "T17-SRC-SKILL-11"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "e2e-testing-patterns",
+      "version": "1.0.0-t17",
+      "description": "Master end-to-end testing with Playwright and Cypress to build reliable test suites that catch bugs, improve confidence, and enable fast deployment. Use when implementing E2E tests, debugging flaky tests, or establishing testing standards.",
+      "useWhen": "Implementing end-to-end test automation; Debugging flaky or unreliable tests; Testing critical user workflows; Setting up CI/CD test pipelines; Testing across multiple browsers; Validating accessibility requirements; Testing responsive designs; Establishing E2E testing standards",
+      "doNotUseWhen": "Do not use E2E tests for unit-level logic; Do not use E2E tests as API-contract integration tests; Do not use E2E tests for every edge case when the case is too slow; Do not test internal implementation details",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "97a2903a813dc3c00621956cc5d331f1742e2a714e40dda6977eaa034e908c66"
+        }
+      ],
+      "contentHash": "6807e80c61c737d1f1177f53188d2835373c8aea6328609de132a177567b3b58"
+    },
+    {
+      "assetId": "T17-SKL-12",
+      "ownerAgentId": "agent-task1-t17-assets-b",
+      "sourceEvidenceIds": [
+        "T17-SRC-SKILL-12"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "javascript-testing-patterns",
+      "version": "1.0.0-t17",
+      "description": "Implement comprehensive testing strategies using Jest, Vitest, and Testing Library for unit tests, integration tests, and end-to-end testing with mocking, fixtures, and test-driven development. Use when writing JavaScript/TypeScript tests, setting up test infrastructure, or implementing TDD/BDD workflows.",
+      "useWhen": "Setting up test infrastructure for new projects; Writing unit tests for functions and classes; Creating integration tests for APIs and services; Implementing end-to-end tests for user flows; Mocking external dependencies and APIs; Testing React, Vue, or other frontend components; Implementing test-driven development (TDD); Setting up continuous testing in CI/CD pipelines",
+      "doNotUseWhen": "Do not use when there is no JavaScript/TypeScript testing, test infrastructure, mocking, fixtures, or TDD/BDD requirement",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "6de5dd9ff26428d5c74e054504eae4081f436297c2f4f0c6bdb1830832eb907e"
+        }
+      ],
+      "contentHash": "2fcafc1a0e21d1a44df56844323245d608e5bf8aa6a8d3f551388386ccfe3910"
+    },
+    {
+      "assetId": "T17-SKL-13",
+      "ownerAgentId": "agent-task1-t17-assets-b",
+      "sourceEvidenceIds": [
+        "T17-SRC-SKILL-13"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "react-expert",
+      "version": "1.0.0-t17",
+      "description": "Use when building React 18+ applications in .jsx or .tsx files, Next.js App Router projects, or create-react-app setups. Creates components, implements custom hooks, debugs rendering issues, migrates class components to functional, and implements state management. Invoke for Server Components, Suspense boundaries, useActionState forms, performance optimization, or React 19 features.",
+      "useWhen": "Building new React components or features; Implementing state management (local, Context, Redux, Zustand); Optimizing React performance; Setting up React project architecture; Working with React 19 Server Components; Implementing forms with React 19 actions; Data fetching patterns with TanStack Query or use()",
+      "doNotUseWhen": "Do not mutate state directly; Do not use array index as key for dynamic lists; Do not create functions inside JSX when avoidable; Do not forget useEffect cleanup; Do not ignore React strict mode warnings; Do not skip error boundaries in production",
+      "repoCommit": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "09fde61f4469c47b00e7a5ad466246aaba2574b5a06bf45b8e002f07b98978d1"
+        }
+      ],
+      "contentHash": "f88bff6bbb858b729bf522e90678e9e563f2f02dbeeb7f39603c6215b6af050e"
+    },
+    {
+      "assetId": "T17-SKL-14",
+      "ownerAgentId": "agent-task1-t17-assets-b",
+      "sourceEvidenceIds": [
+        "T17-SRC-SKILL-14"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "nextjs-developer",
+      "version": "1.0.0-t17",
+      "description": "Use when building Next.js 14+ applications with App Router, server components, or server actions. Invoke to configure route handlers, implement middleware, set up API routes, add streaming SSR, write generateMetadata for SEO, scaffold loading.tsx/error.tsx boundaries, or deploy to Vercel. Triggers on: Next.js, Next.js 14, App Router, RSC, use server, Server Components, Server Actions, React Server Components, generateMetadata, loading.tsx, Next.js deployment, Vercel, Next.js performance.",
+      "useWhen": "Building Next.js 14+ App Router applications; Configuring route handlers, middleware, API routes, streaming SSR, metadata, loading/error boundaries, or deployment",
+      "doNotUseWhen": "Do not use Pages Router; Do not convert components to Client Components just to access data; Do not skip loading.tsx or error.tsx boundaries on async route segments; Do not deploy without running next build",
+      "repoCommit": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "00ffd6b38418861ad0a8692c76b3a09eafedfcd53a5fedc1d770f2b14c589227"
+        }
+      ],
+      "contentHash": "25f216752b47f94c9fcb6843d7319867c1e66163016cbf381ac58a43ec5c0178"
+    },
+    {
+      "assetId": "T17-SKL-15",
+      "ownerAgentId": "agent-task1-t17-assets-b",
+      "sourceEvidenceIds": [
+        "T17-SRC-SKILL-15"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "playwright-expert",
+      "version": "1.0.0-t17",
+      "description": "Use when writing E2E tests with Playwright, setting up test infrastructure, or debugging flaky browser tests. Invoke to write test scripts, create page objects, configure test fixtures, set up reporters, add CI integration, implement API mocking, or perform visual regression testing. Trigger terms: Playwright, E2E test, end-to-end, browser testing, automation, UI testing, visual testing, Page Object Model, test flakiness.",
+      "useWhen": "Writing E2E tests with Playwright; Setting up browser-test infrastructure, page objects, fixtures, reporters, CI integration, API mocking, or visual regression testing; Debugging flaky browser tests",
+      "doNotUseWhen": "Do not use waitForTimeout() when proper waits are available; Do not rely on CSS class selectors; Do not share state between tests; Do not ignore flaky tests; Do not use first() or nth() without good reason",
+      "repoCommit": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "6f33371eb8a652577a003ce95aefaf343db22f21063fcab5b51292879322e7b9"
+        }
+      ],
+      "contentHash": "0704129619bf42ea56079f2dda9354c65c8fdad51841289765ddf783fdb11de7"
+    },
+    {
+      "assetId": "T17-SKL-16",
+      "ownerAgentId": "agent-task1-t17-assets-b",
+      "sourceEvidenceIds": [
+        "T17-SRC-SKILL-16"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "name": "typescript-pro",
+      "version": "1.0.0-t17",
+      "description": "Implements advanced TypeScript type systems, creates custom type guards, utility types, and branded types, and configures tRPC for end-to-end type safety. Use when building TypeScript applications requiring advanced generics, conditional or mapped types, discriminated unions, monorepo setup, or full-stack type safety with tRPC.",
+      "useWhen": "Building TypeScript applications requiring advanced generics, conditional or mapped types, discriminated unions, monorepo setup, or full-stack type safety with tRPC",
+      "doNotUseWhen": "Do not use explicit any without justification; Do not skip type coverage for public APIs; Do not mix type-only and value imports; Do not disable strict null checks; Do not use as assertions without necessity; Do not ignore compiler performance warnings; Do not skip declaration file generation; Do not use enums when const objects with as const are appropriate",
+      "repoCommit": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "6278afa3b1091d490a7e12e57ca0e50ccbfede9e21fee76ec4ed85d69e34131d"
+        }
+      ],
+      "contentHash": "b6c86e17dc416df3dc2e65483265c1e91f5a142a4fd5f0d0cf188cd4ae6dee10"
+    }
+  ],
+  "adaptationAudit": [
+    {
+      "assetId": "T17-SKL-01",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/accessibility-compliance/skills/screen-reader-testing/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/accessibility-compliance/skills/screen-reader-testing/SKILL.md",
+      "rawSha256": "591c7ff80f40ed866071920f723c1d22a6ceb096c0794aeec1cf9562865119d8",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/adapted/screen-reader-testing/SKILL.md",
+      "adaptedSha256": "6006686ba4552169b9be6f7b958e9f9581c528cbca47bb6b69b2ad97a27fea50",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/diffs/screen-reader-testing.patch",
+      "diffSha256": "f40d0fd3afe9032252b7ddb38fc5856fdc9a476b55a3821adf87428acd94ad51",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T17-SKL-02",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/accessibility-compliance/skills/wcag-audit-patterns/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/accessibility-compliance/skills/wcag-audit-patterns/SKILL.md",
+      "rawSha256": "db263a3405deb95a63175f33da4a9d82d8595599fbee4a81979059b35a7cec40",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/adapted/wcag-audit-patterns/SKILL.md",
+      "adaptedSha256": "33731fef7df1bc109809e348d960d95bdfd67ef0330a6286e204a5d2370d9b9c",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/diffs/wcag-audit-patterns.patch",
+      "diffSha256": "8ead9bee73c04dab426a3c20690eca85e5dba8a2cfa8181a49c6d113ca2947dc",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T17-SKL-03",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/framework-migration/skills/react-modernization/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/framework-migration/skills/react-modernization/SKILL.md",
+      "rawSha256": "7787e2435f53744559f1c48a0769f17ffba48cb1e2ca4fe207cbb81b800055f1",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/adapted/react-modernization/SKILL.md",
+      "adaptedSha256": "156c2f1fcda7c195e2c942025aaa1dcccf97a05e083ccfd796e4d93f12b0f6fb",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/diffs/react-modernization.patch",
+      "diffSha256": "1c5e9cc42e388aa091b11e2284b78d7b1cc7bcd60119f3a1566c2e81b55a907f",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T17-SKL-04",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/frontend-mobile-development/skills/nextjs-app-router-patterns/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/frontend-mobile-development/skills/nextjs-app-router-patterns/SKILL.md",
+      "rawSha256": "8de4ab196350d6bb2d191260e13d1645822b7ec1bae205a2018a24cdc3f9b26c",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/adapted/nextjs-app-router-patterns/SKILL.md",
+      "adaptedSha256": "2f545891589ef1a05e3d2a7fad5771c031aeb63d9f3cb3fc84d6f90bff1d4518",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/diffs/nextjs-app-router-patterns.patch",
+      "diffSha256": "d90028efb6eb2a385141f6dc194d9f7e94608504521274e741b3242fb29bd63a",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T17-SKL-05",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/frontend-mobile-development/skills/react-state-management/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/frontend-mobile-development/skills/react-state-management/SKILL.md",
+      "rawSha256": "71abf349b19fe5cef64f4e4f2dd4a89011a5e947d8ce278d53a489292f508032",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/adapted/react-state-management/SKILL.md",
+      "adaptedSha256": "2704699e79d64e62ee9e2e4a441788f06ddd3d4575b71294735f2749388c17ab",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/diffs/react-state-management.patch",
+      "diffSha256": "98e8644c914644af13f2c7a51548c46dd905b180b22b3b4520a7d1e906632ed7",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T17-SKL-06",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/frontend-mobile-development/skills/tailwind-design-system/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/frontend-mobile-development/skills/tailwind-design-system/SKILL.md",
+      "rawSha256": "b6577edb7b7f71a6954f68b80c7eea1748ccdf31862759f864bce558fb2bcf83",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/adapted/tailwind-design-system/SKILL.md",
+      "adaptedSha256": "1ff39ee5f4be2865a72b9cd24263f5d5cdf62b22e6a436e15bb71988b0cc090d",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/diffs/tailwind-design-system.patch",
+      "diffSha256": "18462a583d1accb0412dda7cde63eaecaf85802d18fc3fee87866143ed5116ac",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T17-SKL-07",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/ui-design/skills/design-system-patterns/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/ui-design/skills/design-system-patterns/SKILL.md",
+      "rawSha256": "618355f0e6c6ba8ca5d231035c9da18302fe6894aedce565743e9181b6c928ee",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/adapted/design-system-patterns/SKILL.md",
+      "adaptedSha256": "f4a19c7ab725999cd3a0615efdb061b4a1fbca8c0a61d70d25dd453ecdf6a4a8",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/diffs/design-system-patterns.patch",
+      "diffSha256": "3d14596ecb51f5744c7d54f001aad4b8868e7f4ec00d096456a82fe94cdd1eb0",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T17-SKL-08",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/ui-design/skills/responsive-design/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/ui-design/skills/responsive-design/SKILL.md",
+      "rawSha256": "c8bd56f8fc0f122c4ff392b02617f0e6bb4a353b2d0189235c6ee77cdcfe8690",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/adapted/responsive-design/SKILL.md",
+      "adaptedSha256": "90f7c17e13f76ce1cf5de1c2263a3bd31936ebb07511945cf9f691581837102b",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/diffs/responsive-design.patch",
+      "diffSha256": "3a25f886a15df1b0d87a5fab179b7ebad28089a42ab8251d69442550ece00ff9",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T17-SKL-09",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/ui-design/skills/web-component-design/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/ui-design/skills/web-component-design/SKILL.md",
+      "rawSha256": "a7978f5e9e3fa7129cf3eb8d607cedece4e207011321893d9a3c5dd92cf32603",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/adapted/web-component-design/SKILL.md",
+      "adaptedSha256": "e4c307df7ae1ca5d2e467f8dbd7a226664a15e242273d8170c88f1be0a304f55",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/diffs/web-component-design.patch",
+      "diffSha256": "88455c347d48d765fffc36267041089fa78200cde489918d126ac53ba1876a19",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T17-SKL-10",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/ui-design/skills/accessibility-compliance/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/ui-design/skills/accessibility-compliance/SKILL.md",
+      "rawSha256": "3ad0fbcb0a69b69e70652641a8eeb59f168cceb4bc9d9b9c8b47154072b9e1a2",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/adapted/accessibility-compliance/SKILL.md",
+      "adaptedSha256": "001d9c95af1801ea1d7b57062f605af52fdb7fab4eea90829904362566926c04",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/diffs/accessibility-compliance.patch",
+      "diffSha256": "1106ff8c9608035b4dad442b59182acea12260b3a0a20739661bbf0f8089dd6c",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T17-SKL-11",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/developer-essentials/skills/e2e-testing-patterns/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/developer-essentials/skills/e2e-testing-patterns/SKILL.md",
+      "rawSha256": "1653690dde9eeca6dcb66086277791c2a3ccc2b37eaab6ec9b627a10adfb94be",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/adapted/e2e-testing-patterns/SKILL.md",
+      "adaptedSha256": "97a2903a813dc3c00621956cc5d331f1742e2a714e40dda6977eaa034e908c66",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/diffs/e2e-testing-patterns.patch",
+      "diffSha256": "99f6fba30879075a301830438d2648bbdc350d43b6f3e345972d8c7d233885a8",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T17-SKL-12",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "upstreamPath": "plugins/javascript-typescript/skills/javascript-testing-patterns/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/javascript-typescript/skills/javascript-testing-patterns/SKILL.md",
+      "rawSha256": "d99e1d7344ca7b87395c7e49f6c635ea67fe16d57f4698d72c78d405020f5782",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/adapted/javascript-testing-patterns/SKILL.md",
+      "adaptedSha256": "6de5dd9ff26428d5c74e054504eae4081f436297c2f4f0c6bdb1830832eb907e",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/diffs/javascript-testing-patterns.patch",
+      "diffSha256": "e791f1583fb2dfc54d5ae19d13cec819f878f5efd3e3fd7514d994f2c57b0f3d",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T17-SKL-13",
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "license": "MIT",
+      "upstreamPath": "skills/react-expert/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/claudeSkills/skills/react-expert/SKILL.md",
+      "rawSha256": "542b344c6b4c3b801255c77fe93c7685ff37a4a1c2d04ecaaa81f3f5aa15dc0a",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/adapted/react-expert/SKILL.md",
+      "adaptedSha256": "09fde61f4469c47b00e7a5ad466246aaba2574b5a06bf45b8e002f07b98978d1",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/diffs/react-expert.patch",
+      "diffSha256": "0491dbf21a98229ede61bdf036c47902b2297006ba41a550252c95dd62deeed6",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T17-SKL-14",
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "license": "MIT",
+      "upstreamPath": "skills/nextjs-developer/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/claudeSkills/skills/nextjs-developer/SKILL.md",
+      "rawSha256": "a8631cf7789732d8f9924ec763d5f9b99ddb35b793929a2d067a72088c96de70",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/adapted/nextjs-developer/SKILL.md",
+      "adaptedSha256": "00ffd6b38418861ad0a8692c76b3a09eafedfcd53a5fedc1d770f2b14c589227",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/diffs/nextjs-developer.patch",
+      "diffSha256": "6f9bd322a9339fe2841107771a33582df59a625699d35e1e62ec6be9e9a90462",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T17-SKL-15",
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "license": "MIT",
+      "upstreamPath": "skills/playwright-expert/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/claudeSkills/skills/playwright-expert/SKILL.md",
+      "rawSha256": "d6c5c04e570659a902e7c212067116131743e588af16406672fab58f0f62d8e1",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/adapted/playwright-expert/SKILL.md",
+      "adaptedSha256": "6f33371eb8a652577a003ce95aefaf343db22f21063fcab5b51292879322e7b9",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/diffs/playwright-expert.patch",
+      "diffSha256": "0c3cd5f702b28a2bb21d5ccf4902526f86522cfa1ee93935f00685c0a21605b5",
+      "coreStepsPreserved": true
+    },
+    {
+      "assetId": "T17-SKL-16",
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "license": "MIT",
+      "upstreamPath": "skills/typescript-pro/SKILL.md",
+      "rawPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/claudeSkills/skills/typescript-pro/SKILL.md",
+      "rawSha256": "5f5bc47c167f0485c01a3b5a14b9999141b1e7c54e7775aecf73ad16f114c066",
+      "adaptedPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/adapted/typescript-pro/SKILL.md",
+      "adaptedSha256": "6278afa3b1091d490a7e12e57ca0e50ccbfede9e21fee76ec4ed85d69e34131d",
+      "diffPath": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/diffs/typescript-pro.patch",
+      "diffSha256": "af7a7c00c6a2b78ed3ef83d0425ec231d52c81d501ba1c94b5857aadf17f7fae",
+      "coreStepsPreserved": true
+    }
+  ]
+}

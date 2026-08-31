@@ -1,0 +1,14 @@
+diff --git a/raw/csharp-docs/SKILL.md b/adapted/T06-SKILL-CSHARP-DOCS/SKILL.md
+index 6c67306..1d34af4 100644
+--- a/raw/csharp-docs/SKILL.md
++++ b/adapted/T06-SKILL-CSHARP-DOCS/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+ name: csharp-docs
+-description: 'Ensure that C# types are documented with XML comments and follow best practices for documentation.'
++description: 'Document C# types and members with precise XML comments and API documentation conventions.'
++use_when: 'Use when documenting C# types and members with XML comments, parameter, return, exception, and example tags.'
++do_not_use_when: 'Do not use for System.CommandLine architecture or non-documentation changes.'
+ ---
+ 
+ # C# Documentation Best Practices

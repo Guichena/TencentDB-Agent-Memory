@@ -1,0 +1,13 @@
+{
+  "schema_version": "task1.luna_batch_validation.v1",
+  "valid": true,
+  "batch_dir": "D:\\projects\\TencentDB-Agent-Memory-task1-data-build-16team-t13-t14\\MemoryProxy\\eval\\tool-prompt-bench\\formal-dataset\\generators\\parallel\\build-07\\T14\\batches\\pilot-skill-01",
+  "expected_stage": "DS05",
+  "expected_team": "T14",
+  "family": "skill",
+  "expected_count": 1,
+  "actual_count": 1,
+  "raw_output_sha256": "9301487aca95e882ed9bbf62c95b1556df2306eb95e4d851ba4ae058b56b57d9",
+  "error_count": 0,
+  "errors": []
+}

@@ -1,0 +1,23 @@
+--- a/plugins/framework-migration/skills/react-modernization/SKILL.md
++++ b/adapted/react-modernization/SKILL.md
+@@ -5,0 +5,20 @@
++
++
++## TDAI Host Routing
++
++Load this package with `skill_view`. If the manifest points to a supporting file, read that file with `skill_files_read`; do not install or execute source-repository dependencies for Task 1.
++
++Use when:
++- Upgrading React applications to latest versions
++- Migrating class components to functional components with hooks
++- Adopting concurrent React features (Suspense, transitions)
++- Applying codemods for automated refactoring
++- Modernizing state management patterns
++- Updating to TypeScript
++- Improving performance with React 18+ features
++
++Do not use when:
++- Do not use when no React modernization, hooks migration, version upgrade, or concurrent-feature work is involved
++- Do not use for unrelated backend-only changes
++
++The upstream technical workflow below is preserved unchanged.

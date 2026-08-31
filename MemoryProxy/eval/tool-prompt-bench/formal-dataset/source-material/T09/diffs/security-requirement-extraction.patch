@@ -1,0 +1,10 @@
+--- a/raw/wshobson-agents/security-requirement-extraction/SKILL.md
++++ b/adapted/security-requirement-extraction/SKILL.md
+@@ -1,4 +1,6 @@
+ ---
+ name: security-requirement-extraction
+-description: Derive security requirements from threat models and business context. Use when translating threats into actionable requirements, creating security user stories, or building security test cases.
++description: "从威胁模型和业务上下文提取可追踪、可测试且带优先级的安全需求。"
++use_when: "需要把威胁、合规或业务背景转化为安全用户故事、验收标准或测试案例。"
++do_not_use_when: "任务是识别攻击路径、直接配置扫描器，或对已发现问题执行修复。"
+ ---

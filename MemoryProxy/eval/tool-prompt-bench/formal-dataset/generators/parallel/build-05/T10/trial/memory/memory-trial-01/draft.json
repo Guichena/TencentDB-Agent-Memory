@@ -1,0 +1,49 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t10-memory-trial-01",
+  "stage": "DS05",
+  "team_id": "T10",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T10-DRAFT-MEM-001",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮要处理 atlas-parent 的多模块 Maven 构建评审，目标是核对验证链路，但不执行真实构建或安装任何产物。"},
+        {"role": "assistant", "content": "我先把范围限定在目标模块与聚合项目的阶段规划，并把依赖仲裁、插件配置和发布准备保持为独立工作流。"},
+        {"role": "user", "content": "当前工作区能确认模块边界和评审背景，交接笔记却没有保留上次评审的完整阶段取舍。"},
+        {"role": "assistant", "content": "现有文件可以说明当前状态，但不能替代此前会话里已经验证过的阶段决策；真实构建、制品发布和环境替换都先不纳入。"},
+        {"role": "user", "content": "方向已经从直接尝试阶段组合改成找回上一次验证过的多模块评审决定，避免把当前猜测写成历史事实。"},
+        {"role": "assistant", "content": "项目、模块边界、固定工作区和相近流程都核对完了；实现前只差补回历史记录中的完整阶段取舍与被否决方案。"},
+        {"role": "user", "content": "交接摘要没有保存那段取舍，我不想根据 Maven 生命周期名称猜一个看似合理的组合再继续。"},
+        {"role": "assistant", "content": "那就先恢复此前会话中已经确认的评审结论，再决定是否需要后续验证动作。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请找回此前 atlas-parent 多模块构建评审的完整阶段取舍，包括最终采用的顺序和被否决的两种跳阶段方案；只需要历史结论，不要执行构建或安装。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前日志仍只有模块已定位和评审完成的概括，没有记录上次最终采用的阶段顺序，也没有记录被否决的两种跳阶段方案。"},
+        "private_proposal": {
+          "unique_information_gap": "The complete prior multi-module Maven review, including the accepted verify-then-aggregate-install sequence and two rejected skip-stage alternatives, is absent from current context; search only locates the session and the full conversation is required.",
+          "route": "memory",
+          "target_asset_ids": ["T10-L0-01"],
+          "allowed_sequence_candidates": [["tdai_conversation_search", "tdai_conversation_query"]],
+          "stop_after_candidate": "After locating and reading the complete target conversation, stop before any build or install action."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接记录已经补全此前的决定：评审接受先对目标模块执行 verify，再做聚合 install；并明确否决了直接跳过 verify 的聚合安装方案和只跑目标模块后立即安装的方案。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies exactly the accepted stage order and the two rejected skip-stage alternatives from the prior review; no historical retrieval is needed."}
+      },
+      "visible_distractor_ids_author_only": ["T10-L0-02", "T10-L1-03", "T10-SKILL-MAVEN-LIFECYCLE"],
+      "controlled_delta_note": "Positive and Negative share the same project, workspace, snapshot assumptions, history boundary, and final query. Only appended message 8 changes: Positive leaves the accepted phase choice and two rejected alternatives unresolved; Negative supplies exactly those facts.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否接受 T10-L0-01 作为需先定位、再读取完整会话才能恢复阶段取舍与两种被否决方案的唯一候选目标？",
+        "Negative delta 是否只补足最终阶段顺序与两种跳阶段否决，没有改变多模块构建评审背景或触发真实执行？"
+      ]
+    }
+  ]
+}

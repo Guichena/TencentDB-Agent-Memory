@@ -1,0 +1,302 @@
+{
+  "schema_version": "task1.formal_knowledge_assets.v1",
+  "team_id": "T07",
+  "knowledge": [
+    {
+      "assetId": "wiki-t07gr01",
+      "ownerAgentId": "agent-task1-t07-general",
+      "sourceEvidenceIds": [
+        "source-t07-knowledge-wiki-t07gr01"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "type": "wiki",
+      "name": "Graph adapter design wiki",
+      "snapshotSha256": "1601fae4ef7dfa05eada35931bbc2fc77b5a60d8b387f676a5616008b4edeb5c",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t07-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "b79caf0854c3140a21af7420013d43befc2dbe850dfad3812c534e3b71637813"
+    },
+    {
+      "assetId": "cg-t07qd01",
+      "ownerAgentId": "agent-task1-t07-general",
+      "sourceEvidenceIds": [
+        "source-t07-knowledge-cg-t07qd01"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "type": "code_graph",
+      "name": "Qdrant gateway code graph",
+      "repoUrl": "https://github.com/qdrant/qdrant-client",
+      "repoCommit": "550484d767d319857d4f46e97d4551ba419ee670",
+      "indexVersion": "task1.synthetic-code-graph.v1",
+      "snapshotSha256": "e0f719ee99f7457f2e3075157c9b7c66b2a7413149718cfa833ca8e9ce2d339c",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t07-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "afd66d812c542d442d47b312589c9e0257cbcaf3ce173bc2d221091844b1b348"
+    },
+    {
+      "assetId": "wiki-t07ap01",
+      "ownerAgentId": "agent-task1-t07-general",
+      "sourceEvidenceIds": [
+        "source-t07-knowledge-wiki-t07ap01"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "type": "wiki",
+      "name": "Partner API compatibility wiki",
+      "snapshotSha256": "5d6b816ceb5e35f496f994e9ee86ea387b159c9e4bce64d2ce9d18125a9a0696",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t07-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "11d7930845d5a3be66b65cd617ac797653b4f0f124919086fcc26f92a842fd20"
+    }
+  ],
+  "fixtures": [
+    {
+      "knowledge_id": "wiki-t07gr01",
+      "status": "ready",
+      "summary": "Internal synthetic design notes for the TypeScript directory-sync adapter in the Graph integration workspace.",
+      "workspace_match": {
+        "space_id": "space-task1-engineering",
+        "project_id": "graph-tenant-sync",
+        "task_id": "task-task1-t07-graphsync",
+        "structure": "pnpm workspace with packages/graph-client, services/directory-sync, and tests/adapter",
+        "match": "exact"
+      },
+      "repo_match": {
+        "repository_url": "https://github.com/microsoftgraph/msgraph-sdk-javascript",
+        "commit_sha": "5438ae90f50ef15d3656f0cf9c5485deee351f19",
+        "match": "exact"
+      },
+      "tools_list_definition": {
+        "protocol_method": "tools/list",
+        "stable_fixture": true,
+        "tools": [
+          {
+            "name": "search_pages",
+            "description": "Read-only search over synthetic design pages by topic or phrase.",
+            "read_only": true,
+            "input_schema": {
+              "type": "object",
+              "required": [
+                "query"
+              ],
+              "properties": {
+                "query": {
+                  "type": "string"
+                },
+                "limit": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          {
+            "name": "get_page",
+            "description": "Read one synthetic design page by stable page reference.",
+            "read_only": true,
+            "input_schema": {
+              "type": "object",
+              "required": [
+                "ref"
+              ],
+              "properties": {
+                "ref": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "query_tools": [
+        {
+          "name": "search_pages",
+          "read_only": true,
+          "mutates": false,
+          "fixture_request": {
+            "query": "directory-sync adapter pagination throttling fields",
+            "limit": 5
+          },
+          "fixture_response": {
+            "matches": [
+              {
+                "ref": "graph-adapter-boundaries",
+                "title": "Directory sync adapter boundaries",
+                "summary": "Synthetic page covering request construction, page traversal and throttling boundaries.",
+                "content": "For directory synchronization, graph-client owns page traversal and 429 backoff retries. directory-sync consumes the paged result and does not repeat retries. Field selection is fixed in the graph-client request builder; the adapter does not choose fields again."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "knowledge_id": "cg-t07qd01",
+      "status": "ready",
+      "summary": "Internal synthetic symbol and call graph for the Python ingestion gateway in the neighboring vector-search workspace.",
+      "workspace_match": {
+        "space_id": "space-task1-engineering",
+        "project_id": "qdrant-ingestion-gateway",
+        "task_id": "task-task1-t07-qdrant",
+        "structure": "src layout package with gateway/client.py, ingestion/batches.py, retrieval/filters.py and pytest adapter tests",
+        "match": "exact for neighboring project"
+      },
+      "repo_match": {
+        "repository_url": "https://github.com/qdrant/qdrant-client",
+        "commit_sha": "550484d767d319857d4f46e97d4551ba419ee670",
+        "match": "exact for neighboring project"
+      },
+      "tools_list_definition": {
+        "protocol_method": "tools/list",
+        "stable_fixture": true,
+        "tools": [
+          {
+            "name": "search_code",
+            "description": "Read-only symbol search over the synthetic gateway graph.",
+            "read_only": true,
+            "input_schema": {
+              "type": "object",
+              "required": [
+                "query"
+              ],
+              "properties": {
+                "query": {
+                  "type": "string"
+                },
+                "limit": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          {
+            "name": "get_symbol",
+            "description": "Read-only lookup of one synthetic symbol node.",
+            "read_only": true,
+            "input_schema": {
+              "type": "object",
+              "required": [
+                "symbol"
+              ],
+              "properties": {
+                "symbol": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "query_tools": [
+        {
+          "name": "search_code",
+          "read_only": true,
+          "mutates": false,
+          "fixture_request": {
+            "query": "batch upsert filter gateway",
+            "limit": 5
+          },
+          "fixture_response": {
+            "matches": [
+              {
+                "symbol": "upsert_batches",
+                "file": "src/ingestion/batches.py",
+                "line": 118,
+                "summary": "Synthetic gateway batch path; unrelated to TypeScript directory synchronization."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "knowledge_id": "wiki-t07ap01",
+      "status": "ready",
+      "summary": "Internal synthetic compatibility notes for the generated TypeScript client in the neighboring OpenAPI workspace.",
+      "workspace_match": {
+        "space_id": "space-task1-engineering",
+        "project_id": "partner-openapi-client",
+        "task_id": "task-task1-t07-openapi",
+        "structure": "single-package generated client with openapi/schema.yaml, src/generated, src/runtime and contract tests",
+        "match": "exact for neighboring project"
+      },
+      "repo_match": {
+        "repository_url": "https://github.com/openapi-ts/openapi-typescript",
+        "commit_sha": "0cc7ee77d28359c7901d9cd3b5733b70a050ea49",
+        "match": "exact for neighboring project"
+      },
+      "tools_list_definition": {
+        "protocol_method": "tools/list",
+        "stable_fixture": true,
+        "tools": [
+          {
+            "name": "search_pages",
+            "description": "Read-only search over synthetic API compatibility pages.",
+            "read_only": true,
+            "input_schema": {
+              "type": "object",
+              "required": [
+                "query"
+              ],
+              "properties": {
+                "query": {
+                  "type": "string"
+                },
+                "limit": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          {
+            "name": "get_page",
+            "description": "Read one synthetic compatibility page by stable page reference.",
+            "read_only": true,
+            "input_schema": {
+              "type": "object",
+              "required": [
+                "ref"
+              ],
+              "properties": {
+                "ref": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "query_tools": [
+        {
+          "name": "search_pages",
+          "read_only": true,
+          "mutates": false,
+          "fixture_request": {
+            "query": "schema runtime compatibility",
+            "limit": 5
+          },
+          "fixture_response": {
+            "matches": [
+              {
+                "ref": "partner-runtime-compatibility",
+                "title": "Generated client runtime compatibility",
+                "summary": "Synthetic notes on schema-driven request and runtime contract compatibility.",
+                "content": "The generated client owns schema-derived request shapes; runtime authentication is applied at the ordinary REST boundary. This page is unrelated to directory synchronization."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

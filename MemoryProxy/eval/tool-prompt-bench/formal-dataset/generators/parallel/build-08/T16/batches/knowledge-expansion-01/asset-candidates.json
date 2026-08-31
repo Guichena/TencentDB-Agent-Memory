@@ -1,0 +1,113 @@
+{
+  "schema_version": "task1.knowledge_asset_candidates.v1",
+  "stage": "DS05",
+  "team_id": "T16",
+  "synthetic": true,
+  "candidates": [
+    {
+      "asset_id": "T16-KNW-001",
+      "status": "ready",
+      "name": "Ledger consumer code graph",
+      "type": "code_graph",
+      "service_url": "https://knowledge.synthetic.invalid/ledger-consumer",
+      "workspace_match": "internal/ledger-ingest",
+      "about": "Ledger 事件消费者的 outbox、幂等键和去重调用关联。",
+      "summary": "用于选择与 Ledger 事件摄取和消费者调用关系主题匹配的内部资源。",
+      "tools": [
+        {"name": "search", "params": {"query": "string"}},
+        {"name": "callers", "params": {"symbol": "string"}}
+      ],
+      "minimal_synthetic_query_result": {
+        "tool_listing": {
+          "tool_name": "tools/list",
+          "result": {
+            "tools": [
+              {"tool_name": "search", "params": {"query": "string"}},
+              {"tool_name": "callers", "params": {"symbol": "string"}}
+            ]
+          }
+        },
+        "successful_query": {
+          "tool_name": "search",
+          "params": {"query": "ledger outbox idempotency consumer call chain"},
+          "result": {
+            "title": "Ledger consumer code graph",
+            "rule_text": "补充可直接采用的图谱结论：Ledger 写库事务在 OrderOutboxWriter.commit 中同时写入 outbox；LedgerDispatcher.publish 以 event_id 作为幂等键；重复事件在 LedgerConsumer.deduplicate 中按 event_id 丢弃，确认成功后才提交 offset；调用链为 OrderService.save → OrderOutboxWriter.commit → LedgerDispatcher.publish → LedgerConsumer.deduplicate。这就是本次要查的调用链。",
+            "transaction_entry": "OrderOutboxWriter.commit 同时写入 outbox",
+            "publish_idempotency_key": "event_id",
+            "deduplication": "LedgerConsumer.deduplicate 按 event_id 丢弃重复事件",
+            "offset_commit": "确认成功后才提交 offset",
+            "call_chain": ["OrderService.save", "OrderOutboxWriter.commit", "LedgerDispatcher.publish", "LedgerConsumer.deduplicate"]
+          }
+        }
+      }
+    },
+    {
+      "asset_id": "T16-KNW-002",
+      "status": "ready",
+      "name": "Beacon DLQ recovery runbook",
+      "type": "wiki",
+      "service_url": "https://knowledge.synthetic.invalid/beacon-dlq-recovery",
+      "workspace_match": "internal/beacon-notify",
+      "about": "内部重试阈值、poison message 隔离、死信重放和审计步骤。",
+      "summary": "用于选择与 Beacon 消息重试、poison message 和死信恢复主题匹配的内部资源；摘要不包含阈值或步骤正文。",
+      "tools": [
+        {"name": "search", "params": {"query": "string"}},
+        {"name": "read_page", "params": {"page_id": "string"}}
+      ],
+      "minimal_synthetic_query_result": {
+        "tool_listing": {
+          "tool_name": "tools/list",
+          "result": {
+            "tools": [
+              {"tool_name": "search", "params": {"query": "string"}},
+              {"tool_name": "read_page", "params": {"page_id": "string"}}
+            ]
+          }
+        },
+        "successful_query": {
+          "tool_name": "search",
+          "params": {"query": "poison message isolation threshold dead-letter replay"},
+          "result": {"title": "Beacon DLQ recovery runbook", "summary": "返回与 Beacon 死信恢复主题匹配的页面摘要。"}
+        }
+      }
+    },
+    {
+      "asset_id": "T16-KNW-003",
+      "status": "ready",
+      "name": "Streamline event schema governance",
+      "type": "wiki",
+      "service_url": "https://knowledge.synthetic.invalid/streamline-schema-governance",
+      "workspace_match": "internal/streamline-schema",
+      "about": "事件 envelope、版本演进、兼容级别和消费者迁移。",
+      "summary": "用于选择与 Streamline 事件 schema 演进和消费者兼容主题匹配的内部资源；摘要不包含字段或版本规则正文。",
+      "tools": [
+        {"name": "search", "params": {"query": "string"}},
+        {"name": "read_page", "params": {"page_id": "string"}}
+      ],
+      "minimal_synthetic_query_result": {
+        "tool_listing": {
+          "tool_name": "tools/list",
+          "result": {
+            "tools": [
+              {"tool_name": "search", "params": {"query": "string"}},
+              {"tool_name": "read_page", "params": {"page_id": "string"}}
+            ]
+          }
+        },
+        "successful_query": {
+          "tool_name": "search",
+          "params": {"query": "event envelope schema evolution consumer compatibility"},
+          "result": {
+            "title": "Streamline event schema governance",
+            "rule_text": "补充可直接采用的治理决定：envelope 必须保留 event_id、event_type、event_version、occurred_at；新增 optional 字段沿用当前 major 并递增 minor；删除字段或把 optional 改 required 需递增 major；消费者兼容窗口要求旧消费者至少支持当前与前一 minor，迁移完成后才停发旧版本。这就是本次要查的 schema 规则。",
+            "required_envelope_fields": ["event_id", "event_type", "event_version", "occurred_at"],
+            "optional_field_evolution": "沿用当前 major 并递增 minor",
+            "breaking_evolution": "删除字段或把 optional 改 required 需递增 major",
+            "consumer_compatibility_window": "旧消费者至少支持当前与前一 minor，迁移完成后才停发旧版本"
+          }
+        }
+      }
+    }
+  ]
+}

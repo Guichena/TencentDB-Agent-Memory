@@ -1,0 +1,182 @@
+{
+  "schema_version": "task1.skill_host_adaptations.v1",
+  "team_id": "T14",
+  "adaptations": [
+    {
+      "asset_id": "T14-SKILL-HELM-CHART",
+      "source_id": "T14-SRC-HELM-CHART",
+      "name": "helm-chart",
+      "listing_description": "面向 Kubernetes Helm chart 编写与维护的中性指南，覆盖 chart 结构、值契约、模板、资源安全默认值、测试和版本管理。",
+      "use_when": ["创建或维护 Helm chart", "设计 values 与模板", "渲染、校验或发布 chart"],
+      "do_not_use_when": ["只需运行已有 release 的运维命令", "任务不涉及 Helm 模板或 chart 结构"],
+      "tool_name_adaptations": {"helm": "宿主 Helm CLI", "kubectl/kubeconform": "宿主 Kubernetes 渲染校验器", "chart-testing": "宿主 chart CI 检查器"},
+      "core_steps_preserved": ["按约定组织 chart 目录、文件名和资源粒度", "在 Chart.yaml 区分 chart version、appVersion、kubeVersion 并遵循名称规则", "把 values.yaml 作为 API 契约并用 values.schema.json 校验", "用 include、required、tpl、helpers 和安全模板模式生成资源", "通过 lint、渲染、Kubernetes schema、单元测试和 chart-testing 验证", "避免 latest、明文 Secret、缺少 checksum/PDB/资源限制等常见问题并按变更递增版本"],
+      "raw_sha256": "a76387a1fe66946d28aa21cf97fd4871d27c6971325ee769e5469cb459f48358"
+    },
+    {
+      "asset_id": "T14-SKILL-TEKTON-PIPELINES",
+      "source_id": "T14-SRC-TEKTON-PIPELINES",
+      "name": "tekton-pipelines",
+      "listing_description": "面向 Tekton Pipeline 与 PipelineRun 编排的中性指南，覆盖解析器、认证、调度、条件、finally 和超时。",
+      "use_when": ["编写 PipelineRun 或 TaskRun", "配置任务解析器与私有仓库认证", "设计调度、条件或超时"],
+      "do_not_use_when": ["目标是 Pipelines-as-Code 事件触发规则", "任务只涉及普通 Kubernetes Job"],
+      "tool_name_adaptations": {"kubectl/tkn": "宿主 Kubernetes 与 Tekton CLI", "resolver": "宿主任务解析器", "CEL": "宿主条件表达式运行时"},
+      "core_steps_preserved": ["使用 tekton.dev/v1 资源并优先通过 git、cluster 或 hub resolver 引用任务", "为私有 Git 认证创建带主机注解的 Secret 并挂到 PipelineRun ServiceAccount", "用 pipeline-wide podTemplate 做统一节点放置，用 taskRunSpecs 做逐任务放置", "用数组参数和 matrix 进行动态调度并用 when/CEL 表达条件", "配置 finally 任务和 Pipeline、Task、Step 的超时层级", "按需调节 resolver cache 的 TTL 与大小并避免 v1beta1、内联 TaskSpec 和标量 matrix 参数"],
+      "raw_sha256": "934070b8a220a8d1b24d58b23e728ba01614168492392c7bd3bf907acc7cc301"
+    },
+    {
+      "asset_id": "T14-SKILL-FLUX-KNOWLEDGE",
+      "source_id": "T14-SRC-FLUX-KNOWLEDGE",
+      "name": "gitops-knowledge",
+      "listing_description": "面向 Flux CD GitOps 设计与配置的中性知识指南，覆盖 CRD、依赖顺序、源与应用器选择、ResourceSet 和镜像自动化。",
+      "use_when": ["设计 Flux GitOps 交付拓扑", "选择源类型、应用器或 ResourceSet", "编写或校验 Flux CRD YAML"],
+      "do_not_use_when": ["只需排查单个集群当前状态", "问题不涉及 Flux 或 GitOps 资源"],
+      "tool_name_adaptations": {"flux schema discover/validate": "宿主 Flux schema 工具", "grep": "宿主文本字段索引查询器", "kubectl": "宿主 Kubernetes 客户端"},
+      "core_steps_preserved": ["严格按 CRD 表使用 apiVersion/kind，并在 assets/schemas 字段索引核对字段、类型、枚举和必填项", "在 GitOps 仓库中先做 layout inventory，再写入清单并用 schema validate 验证", "按 Git、OCI、Helm、Bucket 或 ArtifactGenerator 决策树选择源，按 Kustomization、HelmRelease 或 ResourceSet 选择应用编排", "使用 FluxInstance 进行集群设置并维护源、应用器和依赖的正确顺序", "按规范实现 GitRepository/Kustomization、OCI Helm、ResourceSet、通知和镜像自动化模式", "遵循 RetryOnFailure、Job force/no-TTL、wait、同命名空间 substituteFrom 和镜像引用等约束"],
+      "raw_sha256": "7be56232f0fd6ba70e05b0f0b4c54bb6d900f281edd8ed0ac0497168b44f56c9"
+    },
+    {
+      "asset_id": "T14-SKILL-HARBOR-HELM",
+      "source_id": "T14-SRC-HARBOR-HELM",
+      "name": "harbor-helm",
+      "listing_description": "面向 Harbor Helm chart 部署与升级的中性指南，覆盖入口、外部依赖、存储、扫描器、生产配置和迁移。",
+      "use_when": ["用 Helm 部署或配置 Harbor", "规划外部数据库、Redis 或对象存储", "执行 Harbor 升级或迁移"],
+      "do_not_use_when": ["只需调用 Harbor REST API", "任务不涉及 Harbor chart 或集群部署"],
+      "tool_name_adaptations": {"helm": "宿主 Helm CLI", "kubectl": "宿主 Kubernetes 客户端", "goharbor/prepare": "宿主 Harbor 迁移准备工具"},
+      "core_steps_preserved": ["先配置暴露方式、externalURL 和认证", "为生产环境选择外部 PostgreSQL、Redis 与对象存储并核对区域", "配置 Trivy、各组件副本与 exporter 凭据", "用完整 production values 部署并验证依赖和组件状态", "升级前备份全部数据，按版本迁移路径运行 goharbor/prepare schema migration", "避免内部单 Pod 数据库、启用已弃用 Notary、Trivy 限流和管理员密码误配置"],
+      "raw_sha256": "ad3dd5bb8f6d1acb539eb6b1f73ee44c8efe4ef3936581ac888df136c98135d2"
+    },
+    {
+      "asset_id": "T14-SKILL-EXTERNAL-SECRETS",
+      "source_id": "T14-SRC-EXTERNAL-SECRETS",
+      "name": "external-secrets",
+      "listing_description": "面向 External Secrets Operator 同步外部凭据的中性指南，覆盖 provider 认证、Secret 模板、刷新策略、指标和 Helm 部署。",
+      "use_when": ["从 Vault 或云端 provider 同步 Kubernetes Secret", "配置 ExternalSecret、PushSecret 或 SecretStore", "排查凭据刷新和模板问题"],
+      "do_not_use_when": ["只需加密并提交静态 Secret", "任务不涉及外部 secret provider"],
+      "tool_name_adaptations": {"kubectl": "宿主 Kubernetes 客户端", "Vault/AWS/GCP/Azure": "宿主外部凭据 provider", "Helm": "宿主 chart 部署工具"},
+      "core_steps_preserved": ["先按 SecretStore/ClusterSecretStore 和 provider 认证方式建立访问模型", "用 ExternalSecret 的 storeRef、target policy、data/dataFrom 和模板定义同步结果", "按需配置 PushSecret 或 ClusterExternalSecret 的反向同步和多命名空间投影", "用 v2 模板函数及 mergePolicy 变换数据，并选择 Periodic、CreatedOnce 或 OnChange 刷新策略", "用 Helm values 配置 CRD、HA、webhook、证书、并发和监控后部署", "核对 KV 版本、Vault policy、ServiceAccount namespace、模板状态、创建策略和指标端口"],
+      "raw_sha256": "7a80f91c2b20050d7deb581088f412dfd63753791b89b3447baabdeab758e33f"
+    },
+    {
+      "asset_id": "T14-SKILL-CILIUM-GATEWAY",
+      "source_id": "T14-SRC-CILIUM-GATEWAY",
+      "name": "cilium-gateway",
+      "listing_description": "面向 Cilium Gateway API 入口流量的中性指南，覆盖 TLS、跨命名空间引用、流量切分、认证代理和故障排查。",
+      "use_when": ["创建 Gateway、HTTPRoute 或 TLSRoute", "配置 TLS、重定向或流量切分", "排查 Cilium Gateway 和 Envoy 入口"],
+      "do_not_use_when": ["入口控制器不是 Cilium", "问题只涉及后端 Service 而不涉及 Gateway API"],
+      "tool_name_adaptations": {"kubectl": "宿主 Kubernetes 客户端", "Cilium/Envoy": "宿主网络与代理组件", "Gateway API": "宿主网关资源接口"},
+      "core_steps_preserved": ["启用 kubeProxyReplacement、Gateway API 和匹配版本的 Gateway API CRD", "配置 GatewayClass/Gateway listener、TLS termination 与 host network 前置条件", "用 HTTPRoute 实现 HTTPS 重定向、后端路由、跨命名空间 ReferenceGrant、oauth2-proxy、权重和 header 修改", "需要固定入口时配置 Gateway addresses 或 LB IPAM", "通过 Gateway/HTTPRoute 状态、operator 日志、CiliumEnvoyConfig 和 CRD 安装状态排障", "将 Programmed=False 的已知外观问题与真正路由故障区分，并注意 TLS passthrough 的源 IP 语义"],
+      "raw_sha256": "ff92e868d7231e9d79e963ff2dbf39709b19889aeeb8b0c0c245bd500b22824d"
+    },
+    {
+      "asset_id": "T14-SKILL-HELM-OPS",
+      "source_id": "T14-SRC-HELM-OPS",
+      "name": "helm-ops",
+      "listing_description": "面向 Helm release 运行维护的中性指南，覆盖状态检查、试运行、OCI 依赖、值管理、钩子和 GitOps 交接。",
+      "use_when": ["检查或排查 Helm release", "比较 revision、渲染或回滚", "管理 OCI chart、values 或 hooks"],
+      "do_not_use_when": ["要编写新的 chart 模板", "生产流程只允许直接修改 Kubernetes 对象而不涉及 release"],
+      "tool_name_adaptations": {"helm": "宿主 Helm CLI", "kubectl": "宿主 Kubernetes 客户端", "Flux/ArgoCD": "宿主 GitOps 发布控制器"},
+      "core_steps_preserved": ["列出 release 并检查状态、历史和 revision 差异", "用 dry-run、debug 和远端 chart 检查渲染及失败原因", "处理 OCI chart 依赖并按层级合并 values，避免通过命令行泄露 Secret", "理解 pre/post hooks、清理策略、数组覆盖和 Helm 4 flag 变化", "生产环境优先接入 Flux HelmRelease 或 ArgoCD，postRenderer 只做最后一公里修补", "故障时谨慎 rollback/uninstall，保留可恢复的 release history 并检查 hooks 是否需要重跑"],
+      "raw_sha256": "9066b237221141b8318dbe5630fca19641737d3e0d4f15a63f6ef27076545e7d"
+    },
+    {
+      "asset_id": "T14-SKILL-FLAGGER",
+      "source_id": "T14-SRC-FLAGGER",
+      "name": "flagger",
+      "listing_description": "面向 Kubernetes 渐进式发布的中性指南，覆盖 Canary、分析指标、webhook、告警、服务网格和 Helm 部署。",
+      "use_when": ["设计 canary、A/B 或 blue/green 发布", "配置分析指标和发布 webhook", "排查渐进发布回滚"],
+      "do_not_use_when": ["只做一次性部署而无渐进策略", "目标是 Git 提交式镜像更新而不是流量发布"],
+      "tool_name_adaptations": {"kubectl": "宿主 Kubernetes 客户端", "Prometheus": "宿主指标后端", "Istio/Linkerd/NGINX": "宿主流量提供方"},
+      "core_steps_preserved": ["以 Canary targetRef、service、provider 和 analysis 配置发布目标", "按 Kubernetes CNI、服务网格、A/B 或 blue/green 选择适合的流量策略", "配置 stepWeight、threshold、iterations、指标模板和 webhook 阶段", "配置 AlertProvider 与部署 chart/CRD 及 metricsServer", "验证 Prometheus 可达、webhook 可达、service.port 和 targetRef 类型正确", "依据成功率、延迟和阈值决定 promote 或 rollback，并注意无 mesh 时没有加权流量"],
+      "raw_sha256": "99b219ca26ca7e53a045a1c0f86103973a0492e8fd77f21fc9f910928c53545f"
+    },
+    {
+      "asset_id": "T14-SKILL-SEALED-SECRETS",
+      "source_id": "T14-SRC-SEALED-SECRETS",
+      "name": "sealed-secrets",
+      "listing_description": "面向 Sealed Secrets 加密提交与控制器运维的中性指南，覆盖 sealing、范围、密钥续期、重加密和校验。",
+      "use_when": ["把 Kubernetes Secret 安全提交到 Git", "配置 SealedSecret 的 namespace 或 cluster scope", "续期、重加密或排查解密"],
+      "do_not_use_when": ["已有外部 secret provider 并只需同步", "需要管理普通 Secret 的业务数据而非加密清单"],
+      "tool_name_adaptations": {"kubeseal": "宿主 sealing CLI", "kubectl": "宿主 Kubernetes 客户端", "Helm": "宿主 chart 部署工具"},
+      "core_steps_preserved": ["在本地以 dry-run Secret 作为输入，用控制器公钥加密 data/stringData", "按 strict、namespace 或 cluster scope 选择名称与命名空间绑定范围", "提交 SealedSecret 并由控制器解密、创建和持续 reconcile Secret", "管理初始密钥、keyrenewperiod、key-cutoff-time、旧钥保留和 re-encrypt 生命周期", "用 kubeseal 获取证书、离线封装、合并键和校验清单", "区分 sealing key 续期与实际凭据轮换，泄钥时轮换真实 Secret；确认控制器命名空间、skipRecreate 和监控配置"],
+      "raw_sha256": "745afb8a281f7d22311da244e6a92ff33ef3d97c0976ac7580ca0a14861aa793"
+    },
+    {
+      "asset_id": "T14-SKILL-RELOADER",
+      "source_id": "T14-SRC-RELOADER",
+      "name": "stakater-reloader",
+      "listing_description": "面向 ConfigMap/Secret 变更触发工作负载重载的中性指南，覆盖 annotation 模式、排除、策略、GitOps 和指标。",
+      "use_when": ["配置 Secret 或 ConfigMap 变更后的重启", "选择 auto、named 或 search/match 触发规则", "排查重载未发生或 GitOps 漂移"],
+      "do_not_use_when": ["需要重新同步外部 Secret 内容", "变更不会被工作负载以配置方式消费"],
+      "tool_name_adaptations": {"kubectl": "宿主 Kubernetes 客户端", "Helm": "宿主 chart 配置工具", "webhook": "宿主通知接收端"},
+      "core_steps_preserved": ["在 workload 上选择 auto、named 或 search/match annotation 模式", "用 exclude 和 ignore 控制资源范围，并理解 auto 优先级及自定义 annotation 替换规则", "区分 data 变更触发与 metadata 变更不触发，按 rollout、restart 或 annotations 策略选择行为", "部署并配置 Helm、HA、reloadOnCreate、pause 和指标", "将其与 ESO、CSI、Vault、Flux/Helm/Kustomize 或 Argo CD 组合时核对各方触发语义", "检查资源是否先存在、排除 annotation 是否在 workload、Argo 漂移和 syncAfterRestart 前置条件是否满足"],
+      "raw_sha256": "a227679e8e8940e7f89a379a0714d32549ae65e3fe3131b8fe03566f26f9b180"
+    },
+    {
+      "asset_id": "T14-SKILL-TEKTON-PAC",
+      "source_id": "T14-SRC-TEKTON-PAC",
+      "name": "tekton-pac",
+      "listing_description": "面向 Tekton Pipelines-as-Code 事件触发与安全交付的中性指南，覆盖 Repository、匹配、CEL、ChatOps、审批和 plan/apply。",
+      "use_when": ["按 Git 事件触发 PipelineRun", "设计 PR 审批、评论命令或 CEL 条件", "构建安全的 plan/apply 交付流"],
+      "do_not_use_when": ["只需手动运行 Tekton Pipeline", "任务不涉及仓库事件或变更审批"],
+      "tool_name_adaptations": {"tkn pac": "宿主 Pipelines-as-Code CLI", "GitHub/GitLab": "宿主代码托管 webhook", "CEL": "宿主条件表达式运行时"},
+      "core_steps_preserved": ["选择 standalone 或 operator 安装并明确只启用一个 PaC 控制器", "创建与仓库 URL 匹配的 Repository CR 和 target-namespace，使用 on-event/on-target-branch 等匹配规则", "用 CEL 与动态变量表达条件，并处理 ChatOps 评论命令", "配置外部贡献者审批、OWNERS、GitHub App 短期令牌和 URL 绑定的 ACL", "采用 PR/push 只做 plan、main 上显式 apply 的 plan/apply 分离并处理集群内 Git 凭据重写", "按需使用 repo-root task、共享 cluster Task、tkn pac CLI，并避免重复运行名、内联对象变量和内置命令冲突"],
+      "raw_sha256": "a05e12878aa539854722b1d85e59965743203e221ed6903b0b91e27ea3f3c004"
+    },
+    {
+      "asset_id": "T14-SKILL-GITEA-REGISTRY",
+      "source_id": "T14-SRC-GITEA-REGISTRY",
+      "name": "gitea-registry",
+      "listing_description": "面向 Gitea 容器与 Helm OCI registry 的中性指南，覆盖认证、命名、多架构、REST 管理和常见错误。",
+      "use_when": ["向 Gitea registry 推送或拉取镜像", "配置多架构镜像或 Helm OCI 包", "列出或删除 registry 包版本"],
+      "do_not_use_when": ["registry 不是 Gitea", "只需构建镜像而不涉及推送或仓库管理"],
+      "tool_name_adaptations": {"docker/helm": "宿主镜像与 Helm CLI", "curl": "宿主 HTTP 客户端", "personal access token": "宿主个人访问令牌"},
+      "core_steps_preserved": ["用 Gitea 用户名和个人访问令牌建立认证，尤其为启用 2FA 的账户", "遵循 owner/image 的镜像命名并执行 push/pull", "为多架构镜像分别构建并发布正确的 manifest", "通过 API 列包、查看版本并按 owner/type/name/version 全路径删除", "按支持的包类型与 registry 配置选择工作流", "推送 Helm chart 时使用 OCI 格式并记住 tag 大小写不敏感和删除接口要求完整路径"],
+      "raw_sha256": "1af7d8b39adfaa60189fd79a0331abf8ecf20aababfcc08c9fb161a2f45b2103"
+    },
+    {
+      "asset_id": "T14-SKILL-HARBOR-API",
+      "source_id": "T14-SRC-HARBOR-API",
+      "name": "harbor-api",
+      "listing_description": "面向 Harbor REST API v2 自动化的中性指南，覆盖项目、制品、机器人账户、扫描、复制、GC 和身份配置。",
+      "use_when": ["自动化 Harbor 项目或制品管理", "触发扫描、复制或垃圾回收", "配置机器人账户、OIDC/LDAP 或读取审计信息"],
+      "do_not_use_when": ["只需部署 Harbor Helm chart", "registry 不是 Harbor 或无需 REST 自动化"],
+      "tool_name_adaptations": {"curl": "宿主 HTTP 客户端", "jq": "宿主 JSON 过滤器", "/api/v2.0": "宿主 Harbor API v2 基路径"},
+      "core_steps_preserved": ["统一使用 /api/v2.0，并先检查 health/statistics/search 与 Swagger 能力", "根据场景用 basic、Bearer、robot 或 OIDC token 认证并限制 token scope", "通过项目、仓库和 artifact endpoint 管理资源与标签", "按需管理 scanner、漏洞扫描、replication policy/execution、registry 和 GC", "用 robots、OIDC/LDAP、configurations、audit-logs 与 system info 完成管理自动化", "保存只返回一次的 robot secret、为 token 设置期限并注意 OIDC 不支持 basic auth 与升级会清理旧扫描报告"],
+      "raw_sha256": "2efb7e59ba47ac896e88a005a8892e455a2f8fd2365cde1b0c8bebb9d5cdfb1c"
+    },
+    {
+      "asset_id": "T14-SKILL-TUPPR",
+      "source_id": "T14-SRC-TUPPR",
+      "name": "tuppr",
+      "listing_description": "面向 Talos 与 Kubernetes 节点升级编排的中性指南，覆盖升级 CR、健康检查、排水、并行度和维护窗口。",
+      "use_when": ["通过 Kubernetes API 声明 Talos/Kubernetes 升级", "设计节点排水、健康检查和维护窗口", "排查升级队列或暂停恢复"],
+      "do_not_use_when": ["要手动执行 talosctl 升级", "任务只涉及机器配置而非版本升级控制器"],
+      "tool_name_adaptations": {"kubectl": "宿主 Kubernetes 客户端", "talosctl": "宿主 Talos 管理 CLI", "Helm": "宿主 chart 部署工具"},
+      "core_steps_preserved": ["部署升级控制器并满足 Talos API CRD、talosServiceAccount 与 leader election 前置条件", "用 TalosUpgrade 声明目标版本、健康检查、节点选择、parallelism、drain 和 maintenance window", "用 KubernetesUpgrade 声明每集群唯一的 Kubernetes 目标版本并理解 history", "用 kubectl watch/describe 观察状态，使用 suspend annotation 暂停或恢复", "按 0.4.x 到 0.5.x 的能力和安装器预拉取、silence、schematic 变化核对版本", "避免并发配置变更、缺少关键健康检查、错误 namespace、习惯性 force 和覆盖 talosconfig Secret"],
+      "raw_sha256": "eb8779ae2bcdb13fafcd64831e39ddafa6c35f1c2148728a2797b067b7c7b0e1"
+    },
+    {
+      "asset_id": "T14-SKILL-FLUX-AUDIT",
+      "source_id": "T14-SRC-FLUX-AUDIT",
+      "name": "gitops-repo-audit",
+      "listing_description": "面向本地 Flux CD GitOps 仓库审计的中性指南，覆盖资源发现、清单验证、API 兼容性、最佳实践、安全审查和分级报告。",
+      "use_when": ["交付前审计或安全检查 GitOps 仓库", "核对 Kubernetes 清单、Kustomize overlay 和 Flux API", "需要有证据的最佳实践与安全报告"],
+      "do_not_use_when": ["需要排查在线集群状态或控制器日志", "任务只需编写单个 YAML 而不做仓库审计"],
+      "tool_name_adaptations": {"flux-schema/flux": "宿主 Flux schema 与 CLI", "kustomize/kubectl": "宿主清单构建与校验器", "mktemp/grep": "宿主临时文件与文本分析器"},
+      "core_steps_preserved": ["发现本地仓库资源库存、目录模式、集群配置和旧式同步文件，必要时读取仓库模式参考", "以唯一临时 bundle 渲染并校验清单及 Kustomize overlay，必要时用临时 dotenv 做变量替换并重跑", "运行弃用 Flux API 检查，发现问题时读取迁移流程", "按仓库模式评估最佳实践、资源一致性和字段索引，修改 YAML 前核对字段名、类型和嵌套", "逐项检查 Secret、私有源、OCI、RBAC、多租户、跨命名空间引用、镜像自动化和渲染后安全；将无 schema/加密 Secret 的 skipped 视为预期", "按摘要、目录结构、校验、API、最佳实践、安全和 Critical/Warning/Info 建议生成报告"],
+      "raw_sha256": "54f7177812a85b9903d5ed7333b1cfd7c248c8b468b8dcfe66f0d1ad15ba24ea"
+    },
+    {
+      "asset_id": "T14-SKILL-FLUX-DEBUG",
+      "source_id": "T14-SRC-FLUX-DEBUG",
+      "name": "gitops-cluster-debug",
+      "listing_description": "面向 Flux 集群在线故障排查的中性指南，覆盖上下文、资源状态、依赖链、日志、镜像自动化和通知。",
+      "use_when": ["排查在线 Flux 集群资源", "从 source/applier 追踪到 managed resources", "根据状态、事件和日志定位根因"],
+      "do_not_use_when": ["只审计本地仓库文件而不接触集群", "当前问题没有在线集群或控制器状态"],
+      "tool_name_adaptations": {"kubectl": "宿主 Kubernetes 客户端", "Flux Operator API": "宿主 Flux 集群查询接口", "logs": "宿主 Pod 日志查询器"},
+      "core_steps_preserved": ["先列出并切换匹配的 kubeconfig context，再确认 FluxInstance 与 Secret 读取边界", "根据资源类型检查 Flux 安装、HelmRelease、Kustomization、ResourceSet、Source、Image Automation 或 Notification", "沿 source→applier→managed resource 依赖链读取 spec、status、events 和 inventory", "对失败的 managed resource 获取相关 Pod 日志并分析错误、警告和模式", "对镜像自动化检查控制器、扫描、策略、提交和 image marker；对通知检查 eventSources、Provider 和 Receiver", "报告集群、资源、依赖链、根因与精确建议，并区分 suspended、progressing、stale 和真正失败"],
+      "raw_sha256": "04acf50a728eb519ab9baa47a48a189a12c1dd71bd0ed692a80e75df4eaa29c1"
+    }
+  ]
+}

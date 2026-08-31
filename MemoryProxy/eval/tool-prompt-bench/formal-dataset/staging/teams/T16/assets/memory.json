@@ -1,0 +1,2018 @@
+{
+  "schema_version": "task1.team_assets.memory.v1",
+  "team_id": "T16",
+  "l0Conversations": [
+    {
+      "assetId": "T16-L0-001",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T16-L0-001",
+      "messages": [
+        {
+          "messageId": "T16-L0-001-M01",
+          "role": "user",
+          "content": "Relay Orders 的 create、reserve、ship 事件顺序偶尔不稳定，先看什么？",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "440b0718a4030b2742c681d63429722dd77ca92df595eda02776dc01ce54babb"
+        },
+        {
+          "messageId": "T16-L0-001-M02",
+          "role": "assistant",
+          "content": "先确认同一订单是否稳定进入同一分区，再看 consumer group 的处理顺序。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T10:00:00+08:00",
+          "contentHash": "9344e055fe42d51b0ba55e6e97db667831e779e84f78da0d4e201c495f0a452b"
+        },
+        {
+          "messageId": "T16-L0-001-M03",
+          "role": "user",
+          "content": "同一订单的三个事件必须按产生顺序处理。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T11:00:00+08:00",
+          "contentHash": "62a0e1b78050fe850e4d06c07d56dd9006074d07c22f0e66a9f2c39ec1ed8866"
+        },
+        {
+          "messageId": "T16-L0-001-M04",
+          "role": "assistant",
+          "content": "分区字段要绑定订单身份，不能只追求区域或客户的均匀分布。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T12:00:00+08:00",
+          "contentHash": "3f89f606bd32df0888443ed05876e19fec89d614b5c55edfd4adec6088960d9f"
+        },
+        {
+          "messageId": "T16-L0-001-M05",
+          "role": "user",
+          "content": "customer_id 和 region 都有人提过。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T13:00:00+08:00",
+          "contentHash": "da76659d6f530b88486f260357d8bce48951047bebae88a3597ecccd1c8ef2ba"
+        },
+        {
+          "messageId": "T16-L0-001-M06",
+          "role": "assistant",
+          "content": "它们分别适合租户隔离或吞吐分析，不一定能提供订单级顺序。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T14:00:00+08:00",
+          "contentHash": "b8d792084e4af8f2867e724baeeb598724c5acef8acdc69c1aa4c50471883e5f"
+        },
+        {
+          "messageId": "T16-L0-001-M07",
+          "role": "user",
+          "content": "最终采用字段在摘要里只写成‘按订单’。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T15:00:00+08:00",
+          "contentHash": "c08a3abdadb852b0059b2abbcde403cfb3fc4b4123dda3c7781c4a064f82f26f"
+        },
+        {
+          "messageId": "T16-L0-001-M08",
+          "role": "assistant",
+          "content": "需要找原始决定，确认具体 key 和同一订单的顺序保证。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T16:00:00+08:00",
+          "contentHash": "982d2bbc2f3faec631421db6a367a228c4c557e011dc3de703fc293f1b49666a"
+        },
+        {
+          "messageId": "T16-L0-001-M09",
+          "role": "user",
+          "content": "我记得不是 customer_id，但忘了字段名。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "c5f70c89b05554960400b146a6f1647fb9fe8e44e762c73838271345f2d65c6d"
+        },
+        {
+          "messageId": "T16-L0-001-M10",
+          "role": "assistant",
+          "content": "那就不要从相邻吞吐方案推断。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T10:00:00+08:00",
+          "contentHash": "b7f684a66aae64bc196aa4a5603ee596ecd15093f3551b117b1aaf752cf8ac41"
+        },
+        {
+          "messageId": "T16-L0-001-M11",
+          "role": "user",
+          "content": "找到后把候选字段排除理由一并记录。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T11:00:00+08:00",
+          "contentHash": "f0c6d9c276ec8a014bd1f258c51d6d646cb8d6c571e4ffe3945dc67e425c3972"
+        },
+        {
+          "messageId": "T16-L0-001-M12",
+          "role": "assistant",
+          "content": "好的，直接引用最终分区决定并保留边界。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T12:00:00+08:00",
+          "contentHash": "eea9fd2199bac8d850de88ea9d27ad196017bfa4591f12bad1cbbcce52c13040"
+        }
+      ],
+      "contentHash": "c8cd19c749ace949c5094d6ac2c049af486aae1251aafd9d92fdb3bed95817b7"
+    },
+    {
+      "assetId": "T16-L0-002",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T16-L0-002",
+      "messages": [
+        {
+          "messageId": "T16-L0-002-M01",
+          "role": "user",
+          "content": "Relay 发生 rebalance 后，有些分区的消费速度下降。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "b92e74e39013f74a8c6808904edb2cbfd4cbdb3245c21923dd05655a2bb07e44"
+        },
+        {
+          "messageId": "T16-L0-002-M02",
+          "role": "assistant",
+          "content": "先看 consumer group 成员变化和分区重新分配的时间线。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T10:00:00+08:00",
+          "contentHash": "f19619c083b3b56f5d8cb0f83cca3e2327e3a6da90e4949b0f331035a3135035"
+        },
+        {
+          "messageId": "T16-L0-002-M03",
+          "role": "user",
+          "content": "这轮主要关心吞吐，不改变订单分区策略。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T11:00:00+08:00",
+          "contentHash": "9cfad301be28215c6bd8ff46cbcc102a8db3b66a49b01a96617fd3a379aa182c"
+        },
+        {
+          "messageId": "T16-L0-002-M04",
+          "role": "assistant",
+          "content": "可以先调观察指标，但不要把临时 rebalance 诊断当作业务 key 决定。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T12:00:00+08:00",
+          "contentHash": "e14c7cfd48b7f815b9bd2a9ddb0616619d2f2df2151324cfc32c1fd712a55f58"
+        },
+        {
+          "messageId": "T16-L0-002-M05",
+          "role": "user",
+          "content": "有人建议按 region 拆分分区。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T13:00:00+08:00",
+          "contentHash": "aef0e6c2f038309eb761d63914b825475cf727637ac85af4173d7f6138cfcc2f"
+        },
+        {
+          "messageId": "T16-L0-002-M06",
+          "role": "assistant",
+          "content": "region 可能改善分布，却无法单独保证同一订单有序。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T14:00:00+08:00",
+          "contentHash": "2db67bd8c0e29ae369cfc97f40b3d2c93143103cfde1c3d18e7c4d04fe972288"
+        },
+        {
+          "messageId": "T16-L0-002-M07",
+          "role": "user",
+          "content": "lag 指标在某个时段升高。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T15:00:00+08:00",
+          "contentHash": "b164152ec3ad83c5458bb0c74ef5b38d874cd18b1da61f09a0e644cb532f173d"
+        },
+        {
+          "messageId": "T16-L0-002-M08",
+          "role": "assistant",
+          "content": "lag 只用于观察积压，不是路由身份。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T16:00:00+08:00",
+          "contentHash": "0bf7a525e5c320f7f9704af10561751d545a7aedb112c8fa922e1950b0c4b12a"
+        },
+        {
+          "messageId": "T16-L0-002-M09",
+          "role": "user",
+          "content": "这次没有改 partition key。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "9e03d000645f211f2711144f15c1584f9f58380d2403da224c478f68aa5db191"
+        },
+        {
+          "messageId": "T16-L0-002-M10",
+          "role": "assistant",
+          "content": "那就把它与顺序保证的决策分开归档。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T10:00:00+08:00",
+          "contentHash": "68145738e926ee3246900ffbd2348007d71b6054e0d07d0f7acf4257ab68de08"
+        },
+        {
+          "messageId": "T16-L0-002-M11",
+          "role": "user",
+          "content": "我会补齐 rebalance 时间线。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T11:00:00+08:00",
+          "contentHash": "5a25dabc8a85796a4b8198396927abdf2e42bbca142b0c96a8604c4e5eb8b90f"
+        },
+        {
+          "messageId": "T16-L0-002-M12",
+          "role": "assistant",
+          "content": "并标注这是运行诊断而非订单身份结论。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T12:00:00+08:00",
+          "contentHash": "c5aeab2bd066bfe7d3c1e33950b86f37eb510db6212f8bbd857b6d3210334fa6"
+        }
+      ],
+      "contentHash": "53321837d59d63b22328cc4940108e4882c7a16091305ea2cc2573e4d44faa2c"
+    },
+    {
+      "assetId": "T16-L0-003",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T16-L0-003",
+      "messages": [
+        {
+          "messageId": "T16-L0-003-M01",
+          "role": "user",
+          "content": "Relay Orders 的顺序问题先从哪个 key 查？",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T09:00:00+08:00",
+          "contentHash": "adc96b3018caf16bf56ca84d4f42a39e3ba7669a98959e018bab716bfb6046dd"
+        },
+        {
+          "messageId": "T16-L0-003-M02",
+          "role": "assistant",
+          "content": "先看订单流的 partition key，保证同一订单进入同一分区。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T10:00:00+08:00",
+          "contentHash": "271450c22dcef378cdd575d3e93b5d2be0c38434e3b2124fa66c8caab9f6d5c1"
+        },
+        {
+          "messageId": "T16-L0-003-M03",
+          "role": "user",
+          "content": "这个 key 是给 broker 路由用的，不是业务去重。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T11:00:00+08:00",
+          "contentHash": "0d9daff61771fa3350c378ab3cbc6002ee300d024c47084744587d5fb393135b"
+        },
+        {
+          "messageId": "T16-L0-003-M04",
+          "role": "assistant",
+          "content": "对，路由键与 consumer 幂等键的职责不同。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T12:00:00+08:00",
+          "contentHash": "05bc9ac4aacc7e3bec3be60b9722be214a208249663dd5b461a9f8d1c4a7ad88"
+        },
+        {
+          "messageId": "T16-L0-003-M05",
+          "role": "user",
+          "content": "订单更新事件里也有 attempt_id。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T13:00:00+08:00",
+          "contentHash": "343f3938be347c1a2604f61ac26750ed2955bf9130dfa1aaf77a3126e14de818"
+        },
+        {
+          "messageId": "T16-L0-003-M06",
+          "role": "assistant",
+          "content": "这里仅用于追踪重试次数，不决定订单事件的分区归属。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T14:00:00+08:00",
+          "contentHash": "0d975496e2937636f0e66d48b9535d0e7a7404330836e649de0cc7b796476346"
+        },
+        {
+          "messageId": "T16-L0-003-M07",
+          "role": "user",
+          "content": "Consumer Watch 报告了一个 lag 峰值。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T15:00:00+08:00",
+          "contentHash": "cb1639535b9de2283dd9560bb95b94555d33d4343658fc11d8a62c3c7d7c3d91"
+        },
+        {
+          "messageId": "T16-L0-003-M08",
+          "role": "assistant",
+          "content": "lag 是诊断指标，不可拿来回答 Ledger 的幂等键组成。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T16:00:00+08:00",
+          "contentHash": "fb07bd6f6ff32db37b368ae152298723262738527c9c7e84ceafed4173f146ee"
+        },
+        {
+          "messageId": "T16-L0-003-M09",
+          "role": "user",
+          "content": "我会把它和 Ledger 的去重复盘分开。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T09:00:00+08:00",
+          "contentHash": "ac454260c9e90bb34b1a703dcc60ec3830292c9d37e1d3e4c3f38ac26c75d6b8"
+        },
+        {
+          "messageId": "T16-L0-003-M10",
+          "role": "assistant",
+          "content": "这样可以避免把 partition key 当成业务身份。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T10:00:00+08:00",
+          "contentHash": "88dd19d9ea046113d765bb1d0fe480395edba28bba9f397312e5df9904333d67"
+        },
+        {
+          "messageId": "T16-L0-003-M11",
+          "role": "user",
+          "content": "这轮没有写 Ledger entry 的字段顺序。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T11:00:00+08:00",
+          "contentHash": "c409358bf199efca99b4b13c7710e32526183e6c02eb197046267b7840bd1e57"
+        },
+        {
+          "messageId": "T16-L0-003-M12",
+          "role": "assistant",
+          "content": "正确，它只说明订单流的分区顺序约束。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T12:00:00+08:00",
+          "contentHash": "78f41a9ff9503871beb4e84aabaf15746700478eabf607fb9be7902b3aec40d1"
+        }
+      ],
+      "contentHash": "608b8bae839e00c4ad8a0271ea98e0a14c20ab5b4406e3bb69957b49718985d7"
+    },
+    {
+      "assetId": "T16-L0-004",
+      "ownerAgentId": "agent-task1-t16-assets-a",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T16-L0-004",
+      "messages": [
+        {
+          "messageId": "T16-L0-004-M01",
+          "role": "user",
+          "content": "Ledger consumer 的重复投递复盘先看哪一段？",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T09:00:00+08:00",
+          "contentHash": "89bd0142bcd79c1ad3b7bef55b811601818b8328c5c75108a4cdc441899afc4c"
+        },
+        {
+          "messageId": "T16-L0-004-M02",
+          "role": "assistant",
+          "content": "先看 outbox 事件进入 consumer 的去重入口，确认同一事件重试时键是否稳定。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T10:00:00+08:00",
+          "contentHash": "e58ed1092cd460edbf24c0657843aab5b3ed42aa10c0573246e91034c411528d"
+        },
+        {
+          "messageId": "T16-L0-004-M03",
+          "role": "user",
+          "content": "同一租户和账户的同一笔 entry 被投递两次，第一次成功，第二次应跳过。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T11:00:00+08:00",
+          "contentHash": "e7f6e98373de4bb54fcb0f58330084f34961c34609267de9a4fa266a2d7b7071"
+        },
+        {
+          "messageId": "T16-L0-004-M04",
+          "role": "assistant",
+          "content": "那要排除 broker offset 和分区路由，它们不是业务幂等键。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T12:00:00+08:00",
+          "contentHash": "09f13ddaff00fcec019b9775f76b7fa45408ae91e0fa1143ef6504516a00f26c"
+        },
+        {
+          "messageId": "T16-L0-004-M05",
+          "role": "user",
+          "content": "事件 envelope 里还有 schema_version 和 attempt_id。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T13:00:00+08:00",
+          "contentHash": "6e218bc72f6c226a74e9e416b4d3f96be925aaf8ace19933c10ab32b14893c25"
+        },
+        {
+          "messageId": "T16-L0-004-M06",
+          "role": "assistant",
+          "content": "schema 版本可能影响事件身份，attempt_id 则要确认是否会随重试变化。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T14:00:00+08:00",
+          "contentHash": "b52bd245656e6173c912a25e2302f5d12ee3f327f32482fd93376d2bad29e43b"
+        },
+        {
+          "messageId": "T16-L0-004-M07",
+          "role": "user",
+          "content": "Relay 的 partition key 讨论不能直接套到 Ledger。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T15:00:00+08:00",
+          "contentHash": "547ecf60c738ecec9853139f796893592982199f312f0aa054f4faecdeb13490"
+        },
+        {
+          "messageId": "T16-L0-004-M08",
+          "role": "assistant",
+          "content": "对，当前只记录 Ledger consumer 的业务去重决定。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T16:00:00+08:00",
+          "contentHash": "7af1dfc7c89ae8513ba6580b687c6d8dc0c8d2da892d3ad179f61e86aadde236"
+        },
+        {
+          "messageId": "T16-L0-004-M09",
+          "role": "user",
+          "content": "我们确定要做去重，但摘要没有字段顺序。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T09:00:00+08:00",
+          "contentHash": "43efc60b6f09578db2a1ec2ba6f99c82ba7b786ff67c96ea1a274d88b9dfb3a9"
+        },
+        {
+          "messageId": "T16-L0-004-M10",
+          "role": "assistant",
+          "content": "应回到复盘原始消息，找出完整拼接表达式和排除字段。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T10:00:00+08:00",
+          "contentHash": "5029befc83c18160ae342fdeff84064be938bca592209ccdd971a918710f6398"
+        },
+        {
+          "messageId": "T16-L0-004-M11",
+          "role": "user",
+          "content": "请写出幂等键的精确决定。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T11:00:00+08:00",
+          "contentHash": "5ef6b53fb3f40cd01cac6ec5153d9c2b577b4f1534779248258f796f292a675f"
+        },
+        {
+          "messageId": "T16-L0-004-M12",
+          "role": "assistant",
+          "content": "复盘决定是：幂等键按 tenant_id|account_id|entry_id|schema_version 拼接，只使用这四个字段；明确不把 attempt_id 放入键，因为它会随投递重试变化。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T12:00:00+08:00",
+          "contentHash": "27ca536206d298e7ab8254414c0e4bd08430f03e9f917e8c3a4b0ea2438ead4b"
+        },
+        {
+          "messageId": "T16-L0-004-M13",
+          "role": "user",
+          "content": "这条要和 outbox 的至少一次语义一起留档。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T13:00:00+08:00",
+          "contentHash": "81be1eb1188df2b433322a504f4aca755984f3dbcf55dba3e398d9ec1452262b"
+        },
+        {
+          "messageId": "T16-L0-004-M14",
+          "role": "assistant",
+          "content": "已记录；partition key 和 lag 指标仍作为其他诊断信息单独维护。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T14:00:00+08:00",
+          "contentHash": "6646b94c800452ca982036230b4798583ef9576ba9566aaaf7d6f729d5cf9855"
+        }
+      ],
+      "contentHash": "19bdeac3aaaf4477a9505b40a6dadcf656c236c73b224f85dc8e65f554b7d9cd"
+    },
+    {
+      "assetId": "T16-L0-005",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T16-L0-005",
+      "messages": [
+        {
+          "messageId": "T16-L0-005-M01",
+          "role": "user",
+          "content": "Beacon 普通网络错误要怎么退避？",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "5a1921985b0e882fbd7b83ebc7b8d74b2a0d31d1bd9d116fe491a818129939a0"
+        },
+        {
+          "messageId": "T16-L0-005-M02",
+          "role": "assistant",
+          "content": "先区分可恢复错误和 poison message，再套用对应的退避策略。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T10:00:00+08:00",
+          "contentHash": "d1e1a0256c0b13f00a4c14a9845f1adf15908ab4366c9fe80a08fc39b8b78edf"
+        },
+        {
+          "messageId": "T16-L0-005-M03",
+          "role": "user",
+          "content": "普通失败可以延迟后重新投递。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T11:00:00+08:00",
+          "contentHash": "5d47b41026b440a1fd3308f558cd91aa1a21d1e944d6ee6a3ca5f9dc0404260d"
+        },
+        {
+          "messageId": "T16-L0-005-M04",
+          "role": "assistant",
+          "content": "可以，但延迟间隔与最大次数要从生产策略读取。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "ab88854d1d0831747660da7bac656c82a2e1aeb6323b07e6477b6c554d9144f0"
+        },
+        {
+          "messageId": "T16-L0-005-M05",
+          "role": "user",
+          "content": "有人拿演练中的指数退避参数来比较。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T13:00:00+08:00",
+          "contentHash": "becb66edc47cca8d2b1cddc1bd6ca7998ab354cba2c95981efbdd5c8e7308f1a"
+        },
+        {
+          "messageId": "T16-L0-005-M06",
+          "role": "assistant",
+          "content": "演练参数只用于验证流程，不能替代 poison 的生产阈值。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T14:00:00+08:00",
+          "contentHash": "54ea83d7d6f5917f74e72cf23a769bcbee8ef3ef2375b76e087c6a5b25225d0c"
+        },
+        {
+          "messageId": "T16-L0-005-M07",
+          "role": "user",
+          "content": "这次没有讨论死信队列。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T15:00:00+08:00",
+          "contentHash": "894db57ddc8874f44f38e15b28a0ef9ea1fd83eae530528948348317a87cfc7a"
+        },
+        {
+          "messageId": "T16-L0-005-M08",
+          "role": "assistant",
+          "content": "那它只是普通错误的退避记录。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T16:00:00+08:00",
+          "contentHash": "cbf66a307878cf16c40b7aa4dce3ac211b2a491fefbdb795c7445b546cbc93ba"
+        },
+        {
+          "messageId": "T16-L0-005-M09",
+          "role": "user",
+          "content": "我会把通知延迟和隔离策略分开。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "c2a8a01859406993d59a4172ab7508b466159e0c9534738a2bcbd18974f11469"
+        },
+        {
+          "messageId": "T16-L0-005-M10",
+          "role": "assistant",
+          "content": "这样不会误读尝试次数的含义。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T10:00:00+08:00",
+          "contentHash": "cd022bd9bb71338906169a01ec1aa767e1a2f0b7991cc55127735775c2ea7c8e"
+        },
+        {
+          "messageId": "T16-L0-005-M11",
+          "role": "user",
+          "content": "记录里也没有人工重放。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T11:00:00+08:00",
+          "contentHash": "f070cc6aee90f8619b879f6c8cad1fa3a955c03d5c1983fc99fa6c6f73b9cd9d"
+        },
+        {
+          "messageId": "T16-L0-005-M12",
+          "role": "assistant",
+          "content": "对，普通退避不等于死信审核流程。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "0dae3768ef6c25a363a69051d1b6b407bfe99909ad9956e6d4cbf15dc8b80132"
+        }
+      ],
+      "contentHash": "50c0b95de553e1ea2cccd7271af3736b894558b94875bb2ea23c205589db794c"
+    },
+    {
+      "assetId": "T16-L0-006",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T16-L0-006",
+      "messages": [
+        {
+          "messageId": "T16-L0-006-M01",
+          "role": "user",
+          "content": "Beacon 死信恢复演练要记录哪些步骤？",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "9b2b18180ffad10b35f3310b75d7dad1aefdae5ca56b7b82f6a708e657c849c2"
+        },
+        {
+          "messageId": "T16-L0-006-M02",
+          "role": "assistant",
+          "content": "记录人工审核、修正消息和受控重放的审计信息。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T10:00:00+08:00",
+          "contentHash": "9721d798687cde697b135eae9fe907b05f0c55a6875c056dba00ebab2720b116"
+        },
+        {
+          "messageId": "T16-L0-006-M03",
+          "role": "user",
+          "content": "演练重点是重放权限，不是自动投递阈值。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T11:00:00+08:00",
+          "contentHash": "5a6d671accdff8a2f6c9d6addca069dbbacc03b9bc747743b6122d812fe8b33f"
+        },
+        {
+          "messageId": "T16-L0-006-M04",
+          "role": "assistant",
+          "content": "对，权限与自动隔离是两条流程。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "a464dede6251b42f112f75280b4a9b85a54efda9799f3cead827bb5dca3ebdeb"
+        },
+        {
+          "messageId": "T16-L0-006-M05",
+          "role": "user",
+          "content": "有一条旧 runbook 写了不同的重试数字。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T13:00:00+08:00",
+          "contentHash": "bfcddbf32c1323645a227fe463c26bbe59ab673b37a3616cb591f8e55b743430"
+        },
+        {
+          "messageId": "T16-L0-006-M06",
+          "role": "assistant",
+          "content": "旧 runbook 先标为待复核，不能直接当生产决定。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T14:00:00+08:00",
+          "contentHash": "6884fea2de1d71ee74035875baabee581d5df3c096fec186bb02a2c611b4541e"
+        },
+        {
+          "messageId": "T16-L0-006-M07",
+          "role": "user",
+          "content": "生产策略如何处理 429/503 这类临时错误，以及 validation error？",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T15:00:00+08:00",
+          "contentHash": "78794cf1d5afd185d22f22664de285e4a5969c3f12d0b729cf6ca035cbbe7f4a"
+        },
+        {
+          "messageId": "T16-L0-006-M08",
+          "role": "assistant",
+          "content": "最终策略是：retryable 429/503 依次等待 15 秒、60 秒、5 分钟、15 分钟后再投递；non-retryable validation error 直接隔离，不进入重试队列。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T16:00:00+08:00",
+          "contentHash": "054dfd3818c29545248a9f491423975fda311986db93df64f4609a04d14ee3a1"
+        },
+        {
+          "messageId": "T16-L0-006-M09",
+          "role": "user",
+          "content": "连续失败的 poison message 另有死信边界吗？",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "54a670e1a6de35561af0bb852acee0b9909d65d57099d398f16f0c4d64313648"
+        },
+        {
+          "messageId": "T16-L0-006-M10",
+          "role": "assistant",
+          "content": "有，连续失败 5 次后进入 beacon.notify.dlq；这个阈值与临时错误退避规则分开。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T10:00:00+08:00",
+          "contentHash": "c8ec91b5546b9973364f20c499dd709942c9f776c71086897dc5fb05bba08057"
+        },
+        {
+          "messageId": "T16-L0-006-M11",
+          "role": "user",
+          "content": "我会标注这是演练历史。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T11:00:00+08:00",
+          "contentHash": "1615beef81dec0fa43ae00b1545ee244298281cbc955449b6ec954311e7e8f89"
+        },
+        {
+          "messageId": "T16-L0-006-M12",
+          "role": "assistant",
+          "content": "并与生产重试策略分开引用。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "8a7b71fbe6ae1d11b0e839f7f1fe1be32ca5b757b9b9dc0b4485be426081d3d3"
+        }
+      ],
+      "contentHash": "ee1722273c04fafb14dbfa81a0958814fcaca55ddbda484465f0a8b253287163"
+    },
+    {
+      "assetId": "T16-L0-007",
+      "ownerAgentId": "agent-task1-t16-assets-a",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T16-L0-007",
+      "messages": [
+        {
+          "messageId": "T16-L0-007-M01",
+          "role": "user",
+          "content": "Ledger outbox 的去重记录如何和 broker offset 对照？",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T09:00:00+08:00",
+          "contentHash": "1aa79ed4b0757d33912d681985b6f2924fe08f24d3fe3575da4ac10b0866c7fd"
+        },
+        {
+          "messageId": "T16-L0-007-M02",
+          "role": "assistant",
+          "content": "offset 可以帮助追踪投递位置，但不是业务幂等身份。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "106387cb454fe6327b8c381c75894eb9e6be2e3e615ba3621ea62e59003785ce"
+        },
+        {
+          "messageId": "T16-L0-007-M03",
+          "role": "user",
+          "content": "重复消息的 offset 不同，entry 仍相同。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T11:00:00+08:00",
+          "contentHash": "324ff0dfa19812a60cf06506b68bf37a817a8a18128cc07e01b10d2bcd761e87"
+        },
+        {
+          "messageId": "T16-L0-007-M04",
+          "role": "assistant",
+          "content": "这正是需要稳定业务键的原因。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T12:00:00+08:00",
+          "contentHash": "2c26cfd5bb5ddabf40a881f7b1923b8d47eccb9ece47291f3583d3d7b9f13bbf"
+        },
+        {
+          "messageId": "T16-L0-007-M05",
+          "role": "user",
+          "content": "attempt_id 在日志里方便追踪。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T13:00:00+08:00",
+          "contentHash": "4d4b6439047c74bed8432fda863057e6adce2f4c65306acd5cc56ed07d970ad4"
+        },
+        {
+          "messageId": "T16-L0-007-M06",
+          "role": "assistant",
+          "content": "追踪字段与去重字段要避免混用。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T14:00:00+08:00",
+          "contentHash": "5034d48d57d6fa8b286d8c792450eb3914cc82b8b2cf1b0bc744323867eba55d"
+        },
+        {
+          "messageId": "T16-L0-007-M07",
+          "role": "user",
+          "content": "这轮只查指标，不改 outbox 状态时序。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T15:00:00+08:00",
+          "contentHash": "3a5824ee31a4cd9d1ff98053d833ced7c25caa700bdc037d9db88df11fb0f900"
+        },
+        {
+          "messageId": "T16-L0-007-M08",
+          "role": "assistant",
+          "content": "那就不把它当作发布确认决定。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T16:00:00+08:00",
+          "contentHash": "87dd9743cd0ad4b82b16f29a6dfa06e2b5ed2627e283d81da74f4a7ddd4e656d"
+        },
+        {
+          "messageId": "T16-L0-007-M09",
+          "role": "user",
+          "content": "Consumer Watch 的 lag 也要关联。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T09:00:00+08:00",
+          "contentHash": "08c763e5404fa3738b3d396aeda7367219acf5e0a8b628462205e56bf3787e53"
+        },
+        {
+          "messageId": "T16-L0-007-M10",
+          "role": "assistant",
+          "content": "lag 可做诊断，但不能决定状态写入时机。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "8d3e7b11efb8439ccfb941be78d6edb0f95a7a3c0e1eced7ea55f13d8628442c"
+        },
+        {
+          "messageId": "T16-L0-007-M11",
+          "role": "user",
+          "content": "复盘材料里没有 ack 先后的句子。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T11:00:00+08:00",
+          "contentHash": "4df381e91ed7d4c1f1bd0e4cd269e0d1ee72749f8145907cb1aac4666ba8d74c"
+        },
+        {
+          "messageId": "T16-L0-007-M12",
+          "role": "assistant",
+          "content": "那应寻找另一条专门的时序复盘。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T12:00:00+08:00",
+          "contentHash": "b5a56c767f63249b9893fe44b536d56c40334144d5ab13c5549b48976fbb2449"
+        }
+      ],
+      "contentHash": "8a6bdc6550980dbf6ae516d828ce0d07a71ef1a954811e8905a8c2b69dc54f82"
+    },
+    {
+      "assetId": "T16-L0-008",
+      "ownerAgentId": "agent-task1-t16-assets-b",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T16-L0-008",
+      "messages": [
+        {
+          "messageId": "T16-L0-008-M01",
+          "role": "user",
+          "content": "Streamline 的事件版本号重命名会影响哪些 consumer？",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T09:00:00+08:00",
+          "contentHash": "413b4c2747eabdef40357700e82740d160025fd144876924d4667057b14ffae0"
+        },
+        {
+          "messageId": "T16-L0-008-M02",
+          "role": "assistant",
+          "content": "先列出解析 envelope 版本字段的 consumer，再看兼容窗口。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "1ec45a186f5c9a1613f85c4776dc09794d0be852dc226bf1e3e690394986b9db"
+        },
+        {
+          "messageId": "T16-L0-008-M03",
+          "role": "user",
+          "content": "这条只讨论版本号字段重命名，不是新增 trace_id。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T11:00:00+08:00",
+          "contentHash": "a5b866eb6da4eef2ebe8be0034c7d54727b64ec160dd6b3772bf0d43a6ad6639"
+        },
+        {
+          "messageId": "T16-L0-008-M04",
+          "role": "assistant",
+          "content": "那要单独评估旧版本识别与迁移顺序。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T12:00:00+08:00",
+          "contentHash": "bea38c9f50e5c064bda1b85bdd231420104b10f5750ef554eb56bea8d83870bd"
+        },
+        {
+          "messageId": "T16-L0-008-M05",
+          "role": "user",
+          "content": "七月草案提过一次双写。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T13:00:00+08:00",
+          "contentHash": "2412f41b76b63a3accb9654430312741076d37eba2eb69d05cb9fcb288c15aba"
+        },
+        {
+          "messageId": "T16-L0-008-M06",
+          "role": "assistant",
+          "content": "草案不等于近期 decision，不能直接引用。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T14:00:00+08:00",
+          "contentHash": "9c697b264cd23b0135c1527d9612ce3ce51c588a16e4d92e12bf893c07e5c0fe"
+        },
+        {
+          "messageId": "T16-L0-008-M07",
+          "role": "user",
+          "content": "response envelope 的规则也被贴进来了。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T15:00:00+08:00",
+          "contentHash": "0e20100413eb9e64f0e3259bff05f949a74c9e12691b6876dca108e86d7823ca"
+        },
+        {
+          "messageId": "T16-L0-008-M08",
+          "role": "assistant",
+          "content": "要区分 request、response 和 envelope 元数据。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T16:00:00+08:00",
+          "contentHash": "c55aa74c047bf6111af74bbc882ba0ef990c466f3798b9761b2ea0ad05e1568d"
+        },
+        {
+          "messageId": "T16-L0-008-M09",
+          "role": "user",
+          "content": "这次没有最终规则数字。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T09:00:00+08:00",
+          "contentHash": "e8dc8f772131ea24b5b031a69e80ed2e9e547fd0088639512e8684703c876d8d"
+        },
+        {
+          "messageId": "T16-L0-008-M10",
+          "role": "assistant",
+          "content": "对，它是迁移背景，不提供目标字段的采用规则。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "2981ca8a928c24ff79802e511b0ececf6486afec6bd4fdf1ab63148c11960c28"
+        },
+        {
+          "messageId": "T16-L0-008-M11",
+          "role": "user",
+          "content": "我会把它放到 schema 变更背景。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T11:00:00+08:00",
+          "contentHash": "a52e758b8d2aa16b708830ab1b1e78ef55b0245c16989baf53fb025a2d2d198f"
+        },
+        {
+          "messageId": "T16-L0-008-M12",
+          "role": "assistant",
+          "content": "并标注版本重命名这一不同缺口。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T12:00:00+08:00",
+          "contentHash": "ad00d4607a47fc1e6369220aaa5fc9306de549d0bd6b564f97e4321c68d91e5c"
+        }
+      ],
+      "contentHash": "3696cbc967c3143e9fb8afd01756e895e666947b716dd752025ef0dc4154fbca"
+    },
+    {
+      "assetId": "T16-L0-009",
+      "ownerAgentId": "agent-task1-t16-assets-a",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T16-L0-009",
+      "messages": [
+        {
+          "messageId": "T16-L0-009-M01",
+          "role": "user",
+          "content": "Ledger outbox 偶尔出现状态已发布但 broker 没有事件，复盘从哪里开始？",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T09:00:00+08:00",
+          "contentHash": "30a030c5ff9767c2cd927c8390d9f4c10c567316e6a9f3de8934405879602e58"
+        },
+        {
+          "messageId": "T16-L0-009-M02",
+          "role": "assistant",
+          "content": "先把数据库状态更新、发送动作和 broker ack 排成时间线。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T10:00:00+08:00",
+          "contentHash": "c381d1e90e0eb59b23dcfc0d6c23a5749fe8407dddd2b259852afb63d3cd655c"
+        },
+        {
+          "messageId": "T16-L0-009-M03",
+          "role": "user",
+          "content": "现在的实现可能先写 published_at，再尝试发送。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "940ef2fc4e9a62d81c6c366136769b3148f1903308b217232113bf1fe4f6edb3"
+        },
+        {
+          "messageId": "T16-L0-009-M04",
+          "role": "assistant",
+          "content": "如果发送失败，先写状态就会让待发送事件看起来已经完成。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T12:00:00+08:00",
+          "contentHash": "6966cbaf57619e510c44ebab862e0adeaef8690be5a2f19c3dbc3cbccf56c0b4"
+        },
+        {
+          "messageId": "T16-L0-009-M05",
+          "role": "user",
+          "content": "相邻记录还讨论 consumer 重复投递和幂等键，不是这次时序点。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T13:00:00+08:00",
+          "contentHash": "0c094999eda7838e2412dc0adbd5436c75b7827aae8a8159630370f9f2209f8d"
+        },
+        {
+          "messageId": "T16-L0-009-M06",
+          "role": "assistant",
+          "content": "收到，目标是 outbox 状态与 broker 确认的先后关系。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T14:00:00+08:00",
+          "contentHash": "f23782309435212c5c5f0fc1b38ef7477561feeacacde8eda092fb6a0c655233"
+        },
+        {
+          "messageId": "T16-L0-009-M07",
+          "role": "user",
+          "content": "摘要只说‘修复了 outbox 时序’，没有留下原句。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T15:00:00+08:00",
+          "contentHash": "1ab75a3d7a07f1a255f5795eb5807e78ea8d1086d2083e6054a798d734ae4bf7"
+        },
+        {
+          "messageId": "T16-L0-009-M08",
+          "role": "assistant",
+          "content": "需要回到时序复盘，找出 ack 和 published_at 的准确关系。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T16:00:00+08:00",
+          "contentHash": "a6e27f989ad033c4b140fbe71cf65110f3378f69a8777e9858c065fd78076d8d"
+        },
+        {
+          "messageId": "T16-L0-009-M09",
+          "role": "user",
+          "content": "还要保留发送失败时的状态。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T09:00:00+08:00",
+          "contentHash": "7aa685cda13ffeba76480e6bda0f97bb545f4573173eaa66a71cdc4992ab390c"
+        },
+        {
+          "messageId": "T16-L0-009-M10",
+          "role": "assistant",
+          "content": "对，失败边界和成功确认必须同时写清楚。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T10:00:00+08:00",
+          "contentHash": "268b63323a76728e5095eb183b9c950c8ea2f779442c859e273135fe497469b2"
+        },
+        {
+          "messageId": "T16-L0-009-M11",
+          "role": "user",
+          "content": "请记录最终决定。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "875e1a62efe227092d7e3d39dba8acee69b221ae5c6311c68f12181bd7abec9c"
+        },
+        {
+          "messageId": "T16-L0-009-M12",
+          "role": "assistant",
+          "content": "复盘决定是：只有收到 broker ack 后才设置 published_at；发送失败时保持 outbox 待发送状态，不能在 ack 之前先标记已发布。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T12:00:00+08:00",
+          "contentHash": "90336d852b907461d22e0fbd5a80d1a7d9f7ff0088c8fb4b3128c50cf74e3e61"
+        }
+      ],
+      "contentHash": "6eaa4af3355d6ea550cdd62c8184b0597932dd3c833967677cf343b4686e0f25"
+    },
+    {
+      "assetId": "T16-L0-010",
+      "ownerAgentId": "agent-task1-t16-assets-b",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T16-L0-010",
+      "messages": [
+        {
+          "messageId": "T16-L0-010-M01",
+          "role": "user",
+          "content": "Streamline envelope 要增加 trace_id，兼容审查需要区分什么？",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T09:00:00+08:00",
+          "contentHash": "96a4068dce12502ddd7261043c24c4e335ae295e04f103791f95c7ef4e47283b"
+        },
+        {
+          "messageId": "T16-L0-010-M02",
+          "role": "assistant",
+          "content": "先区分新增可选字段、版本号变更和消费者迁移排期。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T10:00:00+08:00",
+          "contentHash": "40d7725088b422e8f92c3c2643528b9351fe023ac0b69e382e26ffa9c92b6434"
+        },
+        {
+          "messageId": "T16-L0-010-M03",
+          "role": "user",
+          "content": "旧消费者只认识现有字段，遇到未知字段不会失败。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "58b4907880d12c27508a2f9b6a92975bd92dfe7e74e08fbf608b01a8970625b0"
+        },
+        {
+          "messageId": "T16-L0-010-M04",
+          "role": "assistant",
+          "content": "那要把未知字段处理与版本号重命名分开。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T12:00:00+08:00",
+          "contentHash": "b01cfe94d6a0009e5f55bbcfdd8396aa77f0ed7b21d126d535b147f5ce077dde"
+        },
+        {
+          "messageId": "T16-L0-010-M05",
+          "role": "user",
+          "content": "这条要放进八月的 decision 记录。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T13:00:00+08:00",
+          "contentHash": "cbfcb3ba359a796f1c48f49c72df21006790979dceddad60dc254b7b2a896596"
+        },
+        {
+          "messageId": "T16-L0-010-M06",
+          "role": "assistant",
+          "content": "先确保记录标明项目、类型和时间窗口。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T14:00:00+08:00",
+          "contentHash": "a69e9acd7bfa96957855488c48d990c0294b3a44d3165a95a583cf0304f552c7"
+        },
+        {
+          "messageId": "T16-L0-010-M07",
+          "role": "user",
+          "content": "当前摘要只有‘兼容评估完成’。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T15:00:00+08:00",
+          "contentHash": "bb85f7e49d61780fd48cbaddb731ec9d7949f367d77fd1910cbfcde6f3a6c85e"
+        },
+        {
+          "messageId": "T16-L0-010-M08",
+          "role": "assistant",
+          "content": "该窗口内的决定是：trace_id 作为可选 envelope 字段按向后兼容规则加入，旧消费者必须忽略未知字段，不要求同一版本立刻迁移。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T16:00:00+08:00",
+          "contentHash": "934d4d75d377dd71ba8025890c6049d03f8c4c16ae7bff158b3306d0d576ddc3"
+        },
+        {
+          "messageId": "T16-L0-010-M09",
+          "role": "user",
+          "content": "不要把七月草案的双写要求算进来。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T09:00:00+08:00",
+          "contentHash": "a4322de9386e6c00da00e8ab01a6afbc27cc8c66f6ca6217447f0233ad9acbf7"
+        },
+        {
+          "messageId": "T16-L0-010-M10",
+          "role": "assistant",
+          "content": "明白，草案和近期正式决定分开。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T10:00:00+08:00",
+          "contentHash": "cfb809c09c38210f49dfa70ece048f1591b4ad6ac374a573daa4ccb736b2faa0"
+        },
+        {
+          "messageId": "T16-L0-010-M11",
+          "role": "user",
+          "content": "找到后记录旧消费者边界。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "310b0bc7028a72a0aa7b9f86cb2386e44640aa1c08ca40d0bbee1b7bb0564516"
+        },
+        {
+          "messageId": "T16-L0-010-M12",
+          "role": "assistant",
+          "content": "会同时记录可选性与兼容行为。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T12:00:00+08:00",
+          "contentHash": "6f0369a801672a047816f38a3c237d9ecc73c51d5cb830313ab5b19e25ec73ce"
+        }
+      ],
+      "contentHash": "feb0f063c516ec60967e80103387b2d82d7fd634252f81f941bec7a1acbd762e"
+    },
+    {
+      "assetId": "T16-L0-011",
+      "ownerAgentId": "agent-task1-t16-assets-b",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T16-L0-011",
+      "messages": [
+        {
+          "messageId": "T16-L0-011-M01",
+          "role": "user",
+          "content": "Consumer Watch 发现滚动发布期间 lag 突增，先排查哪条链路？",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T09:00:00+08:00",
+          "contentHash": "ce2ce4afd12cdafd3ab36ed7598fde70d3ef2c51f5e4ad7feff533886222c0e2"
+        },
+        {
+          "messageId": "T16-L0-011-M02",
+          "role": "assistant",
+          "content": "先看实例上下线、partition assignment 和再均衡时间线。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T10:00:00+08:00",
+          "contentHash": "b38263c47902ecf410e8223bcb811284a1d905f13c9f52ef393d751bec59f4ce"
+        },
+        {
+          "messageId": "T16-L0-011-M03",
+          "role": "user",
+          "content": "指标显示旧实例退出和新实例加入之间有一段重叠。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T11:00:00+08:00",
+          "contentHash": "cd33855268f27ff98b9202753bc94d6957cf2bee0c7240d838acdeb736bf92ab"
+        },
+        {
+          "messageId": "T16-L0-011-M04",
+          "role": "assistant",
+          "content": "需要确认旧实例是否及时撤销 assignment，避免分区长时间卡住。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "0e469b69c5678c9b78d3cae27b02ea75f28f31d278e778988a8e78fc31d135a8"
+        },
+        {
+          "messageId": "T16-L0-011-M05",
+          "role": "user",
+          "content": "Relay 的顺序策略和 Beacon 的死信也出现在同一张排查表。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T13:00:00+08:00",
+          "contentHash": "dc56902df6c21bc2c6d8d5c8ba7328e0a5aeecd023b6cec06edcfabd5d6e6351"
+        },
+        {
+          "messageId": "T16-L0-011-M06",
+          "role": "assistant",
+          "content": "那些是相邻背景，不能直接解释本次 lag 峰值。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T14:00:00+08:00",
+          "contentHash": "d508382215eea184949a0e426f6aa596e5ab4003c7aab4725831e1df4b3cf1de"
+        },
+        {
+          "messageId": "T16-L0-011-M07",
+          "role": "user",
+          "content": "摘要只写‘滚动发布引发 lag’，没有根因。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T15:00:00+08:00",
+          "contentHash": "8dfcc7a5c1faaa11d2e9d2cf19f7cdf085ca70de215dded3748e72aae01901df"
+        },
+        {
+          "messageId": "T16-L0-011-M08",
+          "role": "assistant",
+          "content": "应回到事故场景，核对 assignment 撤销与再均衡是否衔接。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T16:00:00+08:00",
+          "contentHash": "8e83a9e3164aa83f79a0dfe7c3660308ef717c53549068e1e4c0803f961266bc"
+        },
+        {
+          "messageId": "T16-L0-011-M09",
+          "role": "user",
+          "content": "我记得不是 broker 故障。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T09:00:00+08:00",
+          "contentHash": "b991e7ec97e0869b47ebd960ef37ad53087dddac7eb163c4ec428beb08bc1ec8"
+        },
+        {
+          "messageId": "T16-L0-011-M10",
+          "role": "assistant",
+          "content": "那就优先验证 consumer 生命周期和分区归属。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T10:00:00+08:00",
+          "contentHash": "13c07cd98df27652cf64375333589cb69e1136c94adc12808f91f93e1a02d62b"
+        },
+        {
+          "messageId": "T16-L0-011-M11",
+          "role": "user",
+          "content": "请保留因果链而不是只写告警现象。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T11:00:00+08:00",
+          "contentHash": "647aea602bf57252748a0e30d60bdcdbecdc6e87a71a4a56f03ac19e3fc2c970"
+        },
+        {
+          "messageId": "T16-L0-011-M12",
+          "role": "assistant",
+          "content": "好的，根因记录需要连上旧 assignment、新实例等待和 lag。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "6d00ca2f61d48962eba2521d1add034b861452e1ecf31ecd1124e12a113047c7"
+        }
+      ],
+      "contentHash": "d23f9e34280d4a5a31b49ec11e1e840975024062d2bab7f65d43dd38bc25c786"
+    },
+    {
+      "assetId": "T16-L0-012",
+      "ownerAgentId": "agent-task1-t16-assets-b",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T16-L0-012",
+      "messages": [
+        {
+          "messageId": "T16-L0-012-M01",
+          "role": "user",
+          "content": "Consumer Watch 的 lag 告警阈值最近要调整吗？",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T09:00:00+08:00",
+          "contentHash": "e5c8b5e8f9600c7c95aa7b70ba0fc07ce2918c39cd6b2afed4a15d260e0cb176"
+        },
+        {
+          "messageId": "T16-L0-012-M02",
+          "role": "assistant",
+          "content": "先看历史基线和业务高峰，不要把阈值调整当事故根因。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T10:00:00+08:00",
+          "contentHash": "7df981875bbfc0773c0ae737193e2e610c4174d4c7a6d94f76a7a86f04fa27a8"
+        },
+        {
+          "messageId": "T16-L0-012-M03",
+          "role": "user",
+          "content": "这轮没有滚动发布，只有流量短时上升。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T11:00:00+08:00",
+          "contentHash": "78125f1ce55b32aee17ce2315c7899d5ea8783c1838f1254e871545331d42cde"
+        },
+        {
+          "messageId": "T16-L0-012-M04",
+          "role": "assistant",
+          "content": "那要看处理耗时和积压恢复速度。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "5e974257ad72ef1eec33a3ebf5c01282a6d123c403b1612ab8ed1f8bd3a58d53"
+        },
+        {
+          "messageId": "T16-L0-012-M05",
+          "role": "user",
+          "content": "有人建议直接扩大 consumer group。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T13:00:00+08:00",
+          "contentHash": "b5ad9fb9a893d83736f3d0445e78f4e6c360f3395686990b969608026e0f8c43"
+        },
+        {
+          "messageId": "T16-L0-012-M06",
+          "role": "assistant",
+          "content": "扩容是缓解动作，不证明 assignment 卡住。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T14:00:00+08:00",
+          "contentHash": "0d5c48f79c8cfda9325453a9689d3a0eefa14c55310bd23e64fef9531e2cde9d"
+        },
+        {
+          "messageId": "T16-L0-012-M07",
+          "role": "user",
+          "content": "本次没有旧实例和新实例重叠。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T15:00:00+08:00",
+          "contentHash": "bd2b550e1885ebbaad7e401819624d83bf36c64c7ebd7b2cfc3f1927a2ca2bbd"
+        },
+        {
+          "messageId": "T16-L0-012-M08",
+          "role": "assistant",
+          "content": "因此它不能回答滚动发布事故的根因。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T16:00:00+08:00",
+          "contentHash": "4e5f114cefdacddca7fba0ac1d3c35965d86880ee75b9672e9bd0ecd1816bce7"
+        },
+        {
+          "messageId": "T16-L0-012-M09",
+          "role": "user",
+          "content": "日志里只保留了 lag 数值。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T09:00:00+08:00",
+          "contentHash": "536fe1c38c530a80b58873f0a10b159335cf4d74a3a378dc9f30b634bc47a3f5"
+        },
+        {
+          "messageId": "T16-L0-012-M10",
+          "role": "assistant",
+          "content": "数值是现象，仍需结合生命周期事件。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T10:00:00+08:00",
+          "contentHash": "0f33c9d0f03e6be74a586dc0bf54196745fcaba5a95dcfd1e5da2a1a5a1094d8"
+        },
+        {
+          "messageId": "T16-L0-012-M11",
+          "role": "user",
+          "content": "我会把它归到阈值调优。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T11:00:00+08:00",
+          "contentHash": "ef08a645f7c0bad7b4f37ec306dbe9e3fd55749959080fb4ea6b3e47643a5278"
+        },
+        {
+          "messageId": "T16-L0-012-M12",
+          "role": "assistant",
+          "content": "对，与事故场景分开归档。",
+          "sourceEvidenceIds": [
+            "T16-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "543f313bab3a3e8bb3586b8886d8beb29697c06d39b20dbf3ef20f93c90784e9"
+        }
+      ],
+      "contentHash": "725a7013c364ab9f9a4c91dce56362b8f3191a13d2792e774ad2e6eb74f8af30"
+    }
+  ],
+  "l1Memories": [
+    {
+      "assetId": "T16-L1-001",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "最终决定是使用 order_id 作为 partition key；同一 order_id 的 create、reserve、ship 事件进入同一分区并保持顺序，customer_id 和 region 不作为这条顺序保证的 key。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T16-L0-001-M02",
+        "T16-L0-001-M04",
+        "T16-L0-001-M08"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "de16a5af321f456b659202f8575d827274eb4f23ee06c73ebe148703199e6591"
+    },
+    {
+      "assetId": "T16-L1-002",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Relay 的 customer_id 与 region 方案服务于租户隔离或吞吐，不替代订单级顺序身份。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T16-L0-001-M05",
+        "T16-L0-001-M06"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "32d7a5c1049a0cd4f4634f18f770e1a7ebe4d895112a566fc117c78ddc9f0baa"
+    },
+    {
+      "assetId": "T16-L1-003",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Relay rebalance 与 lag 记录属于运行诊断，不能作为 partition key 决定的直接证据。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T16-L0-002-M03",
+        "T16-L0-002-M08"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "48544148a6b39d67091863c118adbaf3c7211769fb8b139a2766b0249f394bca"
+    },
+    {
+      "assetId": "T16-L1-004",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Beacon 生产策略规定：retryable 429/503 依次等待 15 秒、60 秒、5 分钟、15 分钟后再投递；non-retryable validation error 直接隔离，不进入重试队列。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T16-L0-006-M07",
+        "T16-L0-006-M08"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "b488e170c537b786fb8cb0ca2331238366fffba81fb4555433d9ddf1cf3334ff"
+    },
+    {
+      "assetId": "T16-L1-005",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Beacon 普通可恢复错误按退避重新投递，但该摘要不提供 poison 隔离的生产数字。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T16-L0-005-M03",
+        "T16-L0-005-M04"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "613a956a1b5ee2eddb27626a1095201b958a9084ade7054d96df14e7ccea9b17"
+    },
+    {
+      "assetId": "T16-L1-006",
+      "ownerAgentId": "agent-task1-t16-assets-a",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Ledger consumer 已采用稳定业务身份做重复投递去重，摘要提醒不要使用会随重试变化的传输标识，但没有保留幂等键的逐字段原话。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T16-L0-004-M11",
+        "T16-L0-004-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "184f093de14d25679a32219606de5fac0ea74976ca990a3f9c96e4d944d0511d"
+    },
+    {
+      "assetId": "T16-L1-007",
+      "ownerAgentId": "agent-task1-t16-assets-a",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Ledger 时序复盘要求以 broker ack 作为发布完成的确认点；发送失败时事件仍留在 outbox 待发送状态，不能仅凭数据库状态判断已发布。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T16-L0-009-M02",
+        "T16-L0-009-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "b71be89e291b0c2c5e703eecb720a44e6e103e92c34c7494f1db5a32a5963ec6"
+    },
+    {
+      "assetId": "T16-L1-008",
+      "ownerAgentId": "agent-task1-t16-assets-a",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Ledger 的 broker offset 与 attempt_id 用于投递追踪，和业务幂等或 outbox 状态时序分别处理。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T16-L0-007-M02",
+        "T16-L0-007-M06"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "1b3584b3cad983c6677bf23d7f928e44ee4edb69a258c7d6d90806524c9142f8"
+    },
+    {
+      "assetId": "T16-L1-009",
+      "ownerAgentId": "agent-task1-t16-assets-a",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Ledger 时序问题应回到原始复盘确认 ack 前后的状态边界，而不是从重复投递摘要推断。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T16-L0-009-M08",
+        "T16-L0-009-M10"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "5e94ac8f2632afb44f067590fe10202a0dd2e328403a358cf6f6499673490d74"
+    },
+    {
+      "assetId": "T16-L1-010",
+      "ownerAgentId": "agent-task1-t16-assets-b",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Streamline envelope 审查需区分新增可选字段、版本号变更和消费者迁移排期。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T16-L0-010-M02",
+        "T16-L0-010-M04"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "d4cba7bc13433d3eec18d349d95b0e440f05f64d756e8bb6c94f9aace0858415"
+    },
+    {
+      "assetId": "T16-L1-011",
+      "ownerAgentId": "agent-task1-t16-assets-b",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "在 2026-08-01 至 2026-08-29 的 decision 窗口内，trace_id 作为可选 envelope 字段按向后兼容规则加入，旧消费者必须忽略未知字段，不要求同一版本立刻迁移。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T16-L0-010-M05",
+        "T16-L0-010-M08"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "c25ad29a79b61639fb8730817274d2fd8721c8c5a084ebde23305d99f5bdeb62"
+    },
+    {
+      "assetId": "T16-L1-012",
+      "ownerAgentId": "agent-task1-t16-assets-b",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Streamline 版本号重命名与 response 方向记录是不同审查分支，七月草案不能替代近期字段决定。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T16-L0-008-M03",
+        "T16-L0-008-M08"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "72f1d2df5349d6b417c2fb2179cd83a2fb85927bd3165074d250b3c6b5fe4702"
+    },
+    {
+      "assetId": "T16-L1-013",
+      "ownerAgentId": "agent-task1-t16-assets-b",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Consumer Watch 事故诊断优先排 instance 生命周期、partition assignment 与再均衡的时间线。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T16-L0-011-M02",
+        "T16-L0-011-M04"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "7d3bef25174726ec08a6d98a3373b97da0708fdfc1242c2319d350f75da7ccac"
+    },
+    {
+      "assetId": "T16-L1-014",
+      "ownerAgentId": "agent-task1-t16-assets-b",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Consumer Watch 阈值调优与滚动发布事故分开记录，流量上升本身不能说明 assignment 根因。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T16-L0-012-M02",
+        "T16-L0-012-M08"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "939cffd8fd520871a204f77dee5662dc91ba7658f57f99ebb8b3ba3cc5b91094"
+    },
+    {
+      "assetId": "T16-L1-015",
+      "ownerAgentId": "agent-task1-t16-assets-b",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Consumer Watch 事故根因是滚动发布时旧 consumer 实例未及时撤销 partition assignment，导致新实例等待再均衡而形成卡分区和 lag 突增。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T16-L0-011-M07",
+        "T16-L0-011-M08"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "853bc1025983e1a00c098187c1e21618c733dfd5462b4f7059dada397636252a"
+    },
+    {
+      "assetId": "T16-L1-016",
+      "ownerAgentId": "agent-task1-t16-assets-b",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "扩大 consumer group 是缓解动作，不能替代对分区生命周期和旧实例状态的证据核对。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T16-L0-012-M05",
+        "T16-L0-012-M10"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "6e1f0fe8e3c23c55977c37ac1574fcee33efef404587afcbf58ea4da3c7375c2"
+    }
+  ],
+  "l2Scenes": [
+    {
+      "assetId": "T16-L2-001",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "path": "events/relay/partition-ordering.md",
+      "summary": "说明 Relay 订单顺序场景、分区审查入口和候选字段区分，不泄露当前 partition key。",
+      "content": "该场景说明 Relay 订单事件的顺序约束、consumer group 观察项、分区方案比较和 rebalance 诊断入口；具体采用字段需回到对应记忆证据。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T16-L0-001",
+        "T16-L0-002"
+      ],
+      "contentHash": "8ed3812c051126e1c3b2435ff02c5fa18f8db7c0e890446783310380ccda7d93"
+    },
+    {
+      "assetId": "T16-L2-002",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "path": "retry/beacon/dlq-policy.md",
+      "summary": "说明 Beacon 重试、poison message 和死信恢复场景，不泄露当前阈值。",
+      "content": "该场景描述 Beacon 临时错误退避、validation error 隔离、死信队列审计和人工重放入口；生产规则中连续失败 5 次后进入 beacon.notify.dlq，并与 429/503 的临时错误退避分开。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T16-L0-005",
+        "T16-L0-006"
+      ],
+      "contentHash": "99aa33e5b4517f311422db4aeca6e1f460b8961d3263e5a9450f0d226e195d82"
+    },
+    {
+      "assetId": "T16-L2-003",
+      "ownerAgentId": "agent-task1-t16-assets-a",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "path": "idempotency/ledger/dedup.md",
+      "summary": "说明 Ledger 幂等处理、重复投递和审计入口，不泄露当前 consumer 采用的 key 组成。",
+      "content": "该场景汇总 Ledger outbox、至少一次投递、重复识别、offset/attempt 追踪与发布状态审计入口，并将业务身份和传输诊断分开。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T16-L0-004",
+        "T16-L0-007",
+        "T16-L0-009"
+      ],
+      "contentHash": "33e9237dba85587425f125f415ddb588adaf9f11837dbee76f4a5deccc63fb0d"
+    },
+    {
+      "assetId": "T16-L2-004",
+      "ownerAgentId": "agent-task1-t16-assets-b",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "path": "schema/streamline/evolution.md",
+      "summary": "说明 Streamline envelope 演进入口、版本字段审查和消费者兼容分支，不泄露采用的兼容规则。",
+      "content": "该场景说明 Streamline schema 演进需区分新增字段、版本号变更、request/response 方向、草案状态和消费者迁移证据。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T16-L0-008",
+        "T16-L0-010"
+      ],
+      "contentHash": "4d9e524007becfd27b60355a39ba299455b059286b66bf10b383e0085988b364"
+    },
+    {
+      "assetId": "T16-L2-005",
+      "ownerAgentId": "agent-task1-t16-assets-b",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "path": "consumers/watch/lag-diagnosis.md",
+      "summary": "说明 Consumer Watch lag、卡分区和重复投递的诊断流程，不泄露本次根因。",
+      "content": "Consumer Watch 事故场景的根因是滚动发布时旧 consumer 实例未及时撤销 partition assignment，导致新实例等待再均衡而形成卡分区和 lag 突增；阈值调优与扩容只是相邻缓解动作。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T16-L0-011",
+        "T16-L0-012"
+      ],
+      "contentHash": "42375465c538375ddfe614c2c934f7a29317d0c3ba910ef2c5f8da9fe5bf01db"
+    }
+  ],
+  "l3Profiles": [
+    {
+      "assetId": "T16-L3-001",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-SRC-HISTORY-L3"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "content": "团队处理事件问题时偏好先观察真实投递，再重放最小样本；幂等优先，保留事件顺序、关联标识和审计边界。遇到相邻系统的相似字段，会先区分路由、诊断与业务身份，再引用可追溯的原始证据。记录应明确项目范围、事件时间线和不确定性，避免用摘要推断具体结论。该偏好只描述稳定工作方式，不包含任何具体项目答案。",
+      "stability": "team",
+      "contentHash": "75da319041f2c56b6aea92136ce08e1ff9e32a6b6a1c6516b4d328f71acdce48"
+    }
+  ]
+}

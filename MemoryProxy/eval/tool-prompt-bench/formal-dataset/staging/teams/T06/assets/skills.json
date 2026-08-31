@@ -1,0 +1,426 @@
+{
+  "schema_version": "task1.team_skill_assets.v1",
+  "team_id": "T06",
+  "skills": [
+    {
+      "assetId": "T06-SKILL-SYSTEM-COMMANDLINE",
+      "ownerAgentId": "agent-task1-t06-general",
+      "sourceEvidenceIds": [
+        "T06-SRC-SYSTEM-COMMANDLINE"
+      ],
+      "observedAt": "2026-08-28T05:41:12Z",
+      "name": "system-commandline-cli",
+      "version": "0.1.0+t06.f11a4e44",
+      "description": "System.CommandLine command architecture",
+      "useWhen": "Use when adding .NET CLI commands, options, arguments, handlers, groups or recursive global options.",
+      "doNotUseWhen": "Do not use for ordinary C# APIs, editor extensions, DVC workflows or generic documentation.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "4b2996f27dfdb8090b932d0a943995f0f9c16f6ab950605117d31020eabf10f9"
+        }
+      ],
+      "contentHash": "8ad8c1a3274762ac0ffb2c20a2eeaebeef44187dd43321b4602f81fd7d382ef7"
+    },
+    {
+      "assetId": "T06-SKILL-VSCODE-COMMANDS",
+      "ownerAgentId": "agent-task1-t06-general",
+      "sourceEvidenceIds": [
+        "T06-SRC-VSCODE-COMMANDS"
+      ],
+      "observedAt": "2026-08-28T05:41:12Z",
+      "name": "vscode-extension-commands",
+      "version": "0.1.0+t06.f11a4e44",
+      "description": "VS Code extension command contributions",
+      "useWhen": "Use when adding or updating contributed commands, Command Palette entries, side-bar commands, enablement or menu placement.",
+      "doNotUseWhen": "Do not use for generic CLI parsing, extension localization-only work or ordinary documentation.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "64403851bdbfeb18d85c1ff59f5f42b55209e89488752f17b32e4d3660c0f786"
+        }
+      ],
+      "contentHash": "a2d220c72bf86d048c533c7a95158a6cf40b5c841c187a3c029e4a9cded83827"
+    },
+    {
+      "assetId": "T06-SKILL-VSCODE-LOCALIZATION",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "T06-SRC-VSCODE-L10N"
+      ],
+      "observedAt": "2026-08-28T05:41:12Z",
+      "name": "vscode-extension-localization",
+      "version": "0.1.0+t06.f11a4e44",
+      "description": "VS Code extension localization",
+      "useWhen": "Use when localizing extension commands, settings, menus, walkthroughs or runtime strings across supported languages.",
+      "doNotUseWhen": "Do not use for command registration without localization, .NET CLI design or DVC.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "7bf9cebbbd44e631b7f422e828cb2ed0dddf9d6a4d61b865c17899e2511376cd"
+        }
+      ],
+      "contentHash": "c54e982f2ade6cfd86c846a92a7c9a00b43370305c712cbc74fdd8a4621f1d30"
+    },
+    {
+      "assetId": "T06-SKILL-DOCUMENTATION-WRITER",
+      "ownerAgentId": "agent-task1-t06-general",
+      "sourceEvidenceIds": [
+        "T06-SRC-DOC-WRITER"
+      ],
+      "observedAt": "2026-08-28T05:41:12Z",
+      "name": "documentation-writer",
+      "version": "0.1.0+t06.f11a4e44",
+      "description": "Diátaxis documentation workflow",
+      "useWhen": "Use when choosing and writing tutorials, how-to guides, references or explanations for a defined audience and goal.",
+      "doNotUseWhen": "Do not use for implementing CLI parsers, extension commands or DVC pipelines.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "8ed564a8d74aa5e623e79efc5611a3488e781704095dd412a100eeb08f7ce8db"
+        }
+      ],
+      "contentHash": "6df3d827d8a1266a47ebf23d6c7f29156f6fb5b1c31dba5da777606a948f51b5"
+    },
+    {
+      "assetId": "T06-SKILL-MICROSOFT-DOCS",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "T06-SRC-MICROSOFT-DOCS"
+      ],
+      "observedAt": "2026-08-28T05:41:12Z",
+      "name": "microsoft-docs",
+      "version": "0.1.0+t06.f11a4e44",
+      "description": "Microsoft documentation lookup",
+      "useWhen": "Use when the task needs current Microsoft, .NET, Azure or VS Code documentation and examples from the documented source routes.",
+      "doNotUseWhen": "Do not use when the required implementation procedure is already in a specific local Skill.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "bad4a64c25380e4915b20d8272920dc067877db7d7854f6a365fb79f7bc662e2"
+        }
+      ],
+      "contentHash": "0bd6bcc38db129799f48992d16d869a6a8144e4fb165257d761989d7b8780d09"
+    },
+    {
+      "assetId": "T06-SKILL-CSHARP-DOCS",
+      "ownerAgentId": "agent-task1-t06-assets-b",
+      "sourceEvidenceIds": [
+        "T06-SRC-CSHARP-DOCS"
+      ],
+      "observedAt": "2026-08-28T05:41:12Z",
+      "name": "csharp-docs",
+      "version": "0.1.0+t06.f11a4e44",
+      "description": "C# XML documentation",
+      "useWhen": "Use when documenting C# types and members with XML comments, parameter, return, exception and example tags.",
+      "doNotUseWhen": "Do not use for System.CommandLine architecture or non-documentation changes.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "762daabae9414314928fdbdfb84322aba833b671c04c5cca276ee1d5820ebfed"
+        }
+      ],
+      "contentHash": "1cdbd8e9c70059a1c47538b8b7b37f864a7a6acc6a69760fdade3bfba8cfa375"
+    },
+    {
+      "assetId": "T06-SKILL-MCP-CLI",
+      "ownerAgentId": "agent-task1-t06-assets-b",
+      "sourceEvidenceIds": [
+        "T06-SRC-MCP-CLI"
+      ],
+      "observedAt": "2026-08-28T05:41:12Z",
+      "name": "mcp-cli",
+      "version": "0.1.0+t06.f11a4e44",
+      "description": "MCP command-line client",
+      "useWhen": "Use when discovering MCP servers and tools or calling an MCP tool from a command line with structured arguments.",
+      "doNotUseWhen": "Do not use for building an application CLI, parsing its arguments or editing VS Code extensions.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "59705e34a7636c1dd87168172097c6258600076b8b951eebb279680f730fd296"
+        }
+      ],
+      "contentHash": "a9d239ff2506b19d0ece4325211756a045ab6a7754fd3739d9e5f1e9cf66723a"
+    },
+    {
+      "assetId": "T06-SKILL-CLI-MASTERY",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "T06-SRC-CLI-MASTERY"
+      ],
+      "observedAt": "2026-08-28T05:41:12Z",
+      "name": "cli-mastery",
+      "version": "0.1.0+t06.f11a4e44",
+      "description": "Copilot CLI training",
+      "useWhen": "Use for interactive GitHub Copilot CLI lessons, quizzes, scenarios and reference questions.",
+      "doNotUseWhen": "Do not use for application CLI implementation, System.CommandLine, VS Code extensions or DVC.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "9ac4e6a55a1703e404a59701ede747b41f5fa84685413c9611d143d7a9c0e75e"
+        }
+      ],
+      "contentHash": "4e65278a3475f621c9bb2f1132acb46fb0942edc7a5f72cfd94fecb22ac2803a"
+    },
+    {
+      "assetId": "T06-SKILL-DVC",
+      "ownerAgentId": "agent-task1-t06-general",
+      "sourceEvidenceIds": [
+        "T06-SRC-DVC"
+      ],
+      "observedAt": "2026-08-28T17:04:41Z",
+      "name": "dvc-cli",
+      "version": "0.1.0+t06.c29af6ca",
+      "description": "DVC CLI task router",
+      "useWhen": "Use when a task names DVC, dvc CLI commands, data pipelines, experiments, remotes, cache, metrics or parameters.",
+      "doNotUseWhen": "Do not use for generic CLI creation, editor command contributions or ordinary docs.",
+      "repoCommit": "c29af6ca56b0b89814fb4bcff1cbbab0100ff7c9",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "5d793e65bfeef524ac77f9d0a188ef4d9114f07b1ca738524a98ca6796678a74"
+        },
+        {
+          "path": "sub-skills/remotes-and-cache/SKILL.md",
+          "sha256": "8b3b00e0ca498fde66d698f4ef0b4a25c41b49cc278cfe2dcb272182b72d348f"
+        }
+      ],
+      "contentHash": "b186e7b636df20e947533f2dedd82d5f8d0c44142d057c9ac5019f15c9adb0c0"
+    },
+    {
+      "assetId": "T06-SKILL-DVC-DATA-PIPELINES",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "T06-SRC-DVC-DATA"
+      ],
+      "observedAt": "2026-08-28T17:04:41Z",
+      "name": "dvc-data-and-pipelines",
+      "version": "0.1.0+t06.c29af6ca",
+      "description": "DVC data and pipelines",
+      "useWhen": "Use for dvc init/add, .dvc files, dvc.yaml stages, lock files, repro, status, diff and DAG planning.",
+      "doNotUseWhen": "Do not use for experiment queues, remote credentials, generic CLIs or editor extensions.",
+      "repoCommit": "c29af6ca56b0b89814fb4bcff1cbbab0100ff7c9",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "c090c4981bdf5328f99a6e61697575011529aedabf55edcc20b34a259089f894"
+        }
+      ],
+      "contentHash": "a541457930582e06b96416671fdd58eab382d14758ea7425c558d9de5b94a5d5"
+    },
+    {
+      "assetId": "T06-SKILL-DVC-EXPERIMENTS",
+      "ownerAgentId": "agent-task1-t06-assets-b",
+      "sourceEvidenceIds": [
+        "T06-SRC-DVC-EXPERIMENTS"
+      ],
+      "observedAt": "2026-08-28T17:04:41Z",
+      "name": "dvc-experiments",
+      "version": "0.1.0+t06.c29af6ca",
+      "description": "DVC experiments",
+      "useWhen": "Use for dvc exp run, queue, show, diff, apply, branch, share, rename and cleanup workflows.",
+      "doNotUseWhen": "Do not use for ordinary dvc repro pipeline design, remote setup or generic argument parsing.",
+      "repoCommit": "c29af6ca56b0b89814fb4bcff1cbbab0100ff7c9",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "0fbaff7d0d1ca951bd6a8f5c4f5c147cdcab0cd2174acb0dc1dd02b81cd4694a"
+        }
+      ],
+      "contentHash": "fefdad6660052975eaff861052337246006227b0be56848580fa6c26a155aaaa"
+    },
+    {
+      "assetId": "T06-SKILL-DVC-REMOTES-CACHE",
+      "ownerAgentId": "agent-task1-t06-assets-a",
+      "sourceEvidenceIds": [
+        "T06-SRC-DVC-REMOTES"
+      ],
+      "observedAt": "2026-08-28T17:04:41Z",
+      "name": "dvc-remotes-and-cache",
+      "version": "0.1.0+t06.c29af6ca",
+      "description": "DVC remotes and cache",
+      "useWhen": "Use for DVC remote configuration, push/pull/fetch, cache behavior, optional backends and safe garbage collection.",
+      "doNotUseWhen": "Do not use for stage construction, experiment comparison, editor commands or generic docs.",
+      "repoCommit": "c29af6ca56b0b89814fb4bcff1cbbab0100ff7c9",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "beb0975abbca79e54b6d3c0d1cbbe7db519e3f0c24b00bd9a3a80595810ab0a8"
+        }
+      ],
+      "contentHash": "a31efacf8f38ccb4cc480959f7629b27b50c96632db89a2ac5c41b59c4f0c7c5"
+    },
+    {
+      "assetId": "T06-SKILL-DVC-METRICS-PARAMS-PLOTS",
+      "ownerAgentId": "agent-task1-t06-assets-b",
+      "sourceEvidenceIds": [
+        "T06-SRC-DVC-METRICS"
+      ],
+      "observedAt": "2026-08-28T17:04:41Z",
+      "name": "dvc-metrics-params-plots",
+      "version": "0.1.0+t06.c29af6ca",
+      "description": "DVC metrics params and plots",
+      "useWhen": "Use for declaring, showing, diffing or troubleshooting DVC metrics, parameters and plots.",
+      "doNotUseWhen": "Do not use for remote configuration, generic CLI creation or extension command registration.",
+      "repoCommit": "c29af6ca56b0b89814fb4bcff1cbbab0100ff7c9",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "38a90f27962e35cb664e485d07a128de76e9a24f0cdc412992efa824a8ca8129"
+        }
+      ],
+      "contentHash": "bbe769ee9d6fb04b855a20bca63040765eeb3743f20b25ef1f821da5243c9ced"
+    },
+    {
+      "assetId": "T06-SKILL-DART-CLI",
+      "ownerAgentId": "agent-task1-t06-assets-b",
+      "sourceEvidenceIds": [
+        "T06-SRC-DART-CLI"
+      ],
+      "observedAt": "2026-08-24T17:16:53Z",
+      "name": "dart-build-cli-app",
+      "version": "0.1.0+t06.864cf879",
+      "description": "Dart CLI application construction",
+      "useWhen": "Use when building Dart command-line apps with args, CommandRunner, exit codes, testing and compilation.",
+      "doNotUseWhen": "Do not use for .NET System.CommandLine, VS Code extensions or DVC workflows.",
+      "repoCommit": "864cf8797b190ddb81e4875db6dd6bab89641f62",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "1b5b346cd73cb39640057409394a5f5984f71d7580194c4ca8d46f34b2ebf70a"
+        }
+      ],
+      "contentHash": "c2ff02c905e43d094e6a530f9d6f3adcb7e2873ee287ddc488cb72c362ee0c63"
+    },
+    {
+      "assetId": "T06-SKILL-CREATE-CLI",
+      "ownerAgentId": "agent-task1-t06-general",
+      "sourceEvidenceIds": [
+        "T06-SRC-CREATE-CLI"
+      ],
+      "observedAt": "2026-08-14T21:46:23Z",
+      "name": "create-typescript-cli",
+      "version": "0.1.0+t06.ce046f26",
+      "description": "TypeScript CLI construction",
+      "useWhen": "Use when creating or expanding a TypeScript CLI and selecting manual parsing, Commander.js or oclif complexity.",
+      "doNotUseWhen": "Do not use for .NET System.CommandLine, DVC operations, VS Code extension commands or plain docs.",
+      "repoCommit": "ce046f26495c73f007790971869c94d58e0f6a20",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "38620e6c895acd91fea97399be3217238510cdacdfc5b144e0bd69536814700a"
+        }
+      ],
+      "contentHash": "6b2ed953749c00b45bbd542ed43f4411888abb5be78ff818819e1687580dd3bf"
+    },
+    {
+      "assetId": "T06-SKILL-LOGSEQ-CLI-MAINTENANCE",
+      "ownerAgentId": "agent-task1-t06-general",
+      "sourceEvidenceIds": [
+        "T06-SRC-LOGSEQ-CLI"
+      ],
+      "observedAt": "2026-08-26T15:33:17Z",
+      "name": "cli-argument-maintenance",
+      "version": "0.1.0+t06.3e85583f",
+      "description": "CLI argument and output maintenance",
+      "useWhen": "Use when refactoring CLI parsing, validation, execution, presentation, exit codes and command tests without changing behavior.",
+      "doNotUseWhen": "Do not use for new feature delivery unless maintenance is explicitly requested.",
+      "repoCommit": "3e85583fa47eb2173c136ef45fcc3c1dd2174443",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "2539afe027d17b4f4529908aef276e06b72c201517d57d4f431a024757746fc8"
+        }
+      ],
+      "contentHash": "95e7b292e629783e8ee462165e87ae6acaf3f587a06ddd87b73d074913bf75b3"
+    }
+  ]
+}

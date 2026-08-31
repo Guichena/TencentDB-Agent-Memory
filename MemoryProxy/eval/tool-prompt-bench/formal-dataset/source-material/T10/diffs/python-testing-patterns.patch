@@ -1,0 +1,10 @@
+--- a/raw/wshobson-agents/python-testing-patterns/SKILL.md
++++ b/adapted/python-testing-patterns/SKILL.md
+@@ -1,4 +1,6 @@
+ ---
+ name: python-testing-patterns
+-description: Implement comprehensive testing strategies with pytest, fixtures, mocking, and test-driven development. Use when writing Python tests, setting up test suites, or implementing testing best practices.
++description: "用 pytest、AAA 结构、fixtures、mock、参数化和 TDD 构建隔离且可维护的 Python 测试策略。"
++use_when: "需要搭建测试套件、选择单元/集成测试模式、配置 fixtures 和 mock，或系统化排查测试失败。"
++do_not_use_when: "任务是 Python 包元数据和分发物构建、uv 锁文件管理，或与 Python 无关的 Maven 流程。"
+ ---

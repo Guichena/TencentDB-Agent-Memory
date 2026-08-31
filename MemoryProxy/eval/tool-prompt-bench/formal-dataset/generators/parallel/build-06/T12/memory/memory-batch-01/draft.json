@@ -1,0 +1,249 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t12-memory-batch-01",
+  "stage": "DS02",
+  "team_id": "T12",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T12-MEMORY-B01-LEDGER-ROLLOUT-CONVENTION",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Ledger 正在把交易表从旧列约束迁移到兼容新写入路径的结构，当前工作区位于零停机发布分支。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把 Ledger 与 Beacon 的查询计划、Harbor 的批量回填、Quartz 的 ORM 兼容和 Archive 的索引生命周期分开，避免混用数据库演进结论。"
+        },
+        {
+          "role": "user",
+          "content": "现有交接记录保留了迁移阶段和回滚窗口，但没有保留上次验证通过时先扩展、再双写、最后切读的具体约定。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前分支可以检查现状，却不能代替此前已验证的发布规则；本轮也不扩大到重写交易逻辑或重新设计表结构。"
+        },
+        {
+          "role": "user",
+          "content": "目标是恢复 Ledger 零停机迁移的既有操作约定，用来对照当前发布计划，而不是立即执行变更。"
+        },
+        {
+          "role": "assistant",
+          "content": "项目边界、工作区和相邻干扰流均已确认，实施前只缺历史上那条已验证的迁移顺序与兼容条件。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "请找回 Ledger 零停机迁移中已验证的阶段顺序与兼容约定，用来核对当前发布计划。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要只有迁移阶段和回滚窗口，没有留下此前验证过的扩展、双写、切读顺序及其兼容要求。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少 Ledger 历史迁移场景中已验证的阶段顺序和兼容规则，当前上下文仅有范围与症状。",
+          "route": "memory",
+          "target_asset_ids": [
+            "T12-L1-LEDGER-ZERO-DOWNTIME-ROLLOUT"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_memory_search"
+            ]
+          ],
+          "stop_after_candidate": "tdai_memory_search returns the distilled Ledger zero-downtime rollout convention."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接笔记已补全约定：先增加可回滚的新结构并保持旧写入可用，再在同一事务边界双写并校验一致性，最后切换读取；确认旧客户端仍可写后才关闭旧路径。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta supplies the validated rollout order and compatibility gate, so historical retrieval is unnecessary."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T12-L0-LEDGER-LOCK-NOISE",
+        "T12-L0-BEACON-PLAN",
+        "T12-L0-HARBOR-BACKFILL"
+      ],
+      "controlled_delta_note": "Both variants share the Ledger branch, migration scope, rollback assumptions, project separation, and query. Only appended message 6 changes: Positive leaves the historical order unresolved; Negative supplies exactly the order and old-client compatibility gate.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否接受按 Ledger 零停机迁移语境进行历史记忆搜索，而不把当前分支当作既有约定？",
+        "Negative 是否只补足阶段顺序与兼容门槛，没有引入新的迁移设计？"
+      ]
+    },
+    {
+      "draft_pair_id": "T12-MEMORY-B01-BEACON-PLAN-REGRESSION",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Beacon 在新增筛选字段后出现查询计划回归，当前只讨论索引演进实验与线上读路径的兼容观察。"
+        },
+        {
+          "role": "assistant",
+          "content": "Beacon 会与 Ledger 的无停机迁移、Harbor 的可恢复回填、Quartz 的 ORM 版本边界和 Archive 的索引退役分别处理。"
+        },
+        {
+          "role": "user",
+          "content": "现有报告保留了回归样本和大致时间窗，但没有留下那次实验比较不同索引方案时采用的先后与判定标准。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前数据库状态只能复现慢查询，不能替代历史实验记录；本轮不直接修改索引，也不把统计信息刷新当作结论。"
+        },
+        {
+          "role": "user",
+          "content": "目标是找回 Beacon 查询计划实验的历史结论，作为重新验证前的对照。"
+        },
+        {
+          "role": "assistant",
+          "content": "查询范围、回归边界和其他数据库演进流均已固定，只差定位对应的历史实验记录。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "请找回 Beacon 查询计划回归实验中比较索引方案与判定是否接受的历史步骤。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "手头摘要只说明出现回归，没有保留实验中先建立对照、再观察计划稳定性、最后按延迟与计划形态判定的具体过程。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少 Beacon 历史查询计划实验的步骤与验收标准，需要发现对应的评审会话。",
+          "route": "memory",
+          "target_asset_ids": [
+            "T12-L0-BEACON-QUERY-PLAN-EXPERIMENT"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_conversation_search"
+            ]
+          ],
+          "stop_after_candidate": "tdai_conversation_search returns the reviewed Beacon plan-regression experiment."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "实验记录已补全：先用旧索引建立同参数对照，再观察新索引下计划是否稳定，最后同时检查尾延迟与计划节点是否符合预期；两项都通过才接受方案。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta supplies the complete experiment sequence and acceptance criteria without changing the scope."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T12-L0-BEACON-STATISTICS",
+        "T12-L0-LEDGER-ROLLOUT",
+        "T12-L0-ARCHIVE-INDEX"
+      ],
+      "controlled_delta_note": "Only appended message 6 differs. Positive requests discovery of the prior Beacon experiment; Negative supplies its three-step comparison and two-part acceptance rule while preserving the same regression and workspace assumptions.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "该缺口是否需要先发现对应历史实验会话，而不是直接假设某个方案结论？",
+        "Negative 是否只补足实验顺序与验收条件，没有提前要求执行索引变更？"
+      ]
+    },
+    {
+      "draft_pair_id": "T12-MEMORY-B01-HARBOR-RESUMABLE-BACKFILL",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Harbor 正在为新增字段执行可恢复回填，最近一次暂停发生在批次边界附近，当前要核对既有的断点续跑流程。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会将 Harbor 与 Ledger 的发布切换、Beacon 的计划实验、Quartz 的映射兼容和 Archive 的索引清理隔离，不把其他流的回滚方式套进来。"
+        },
+        {
+          "role": "user",
+          "content": "监控里有批次进度和暂停时间，但没有保留上次验证时如何记录检查点、重启后如何确认幂等以及何时推进游标。"
+        },
+        {
+          "role": "assistant",
+          "content": "这些指标只描述当前停点，不能替代历史上已验证的恢复过程；本轮也不直接重跑回填。"
+        },
+        {
+          "role": "user",
+          "content": "目标是恢复 Harbor 可恢复回填的历史场景流程，作为这次续跑前的核对依据。"
+        },
+        {
+          "role": "assistant",
+          "content": "项目归属、暂停边界和演进任务范围均已确认，剩下的是找到那次验证过的断点续跑场景。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "请找回 Harbor 回填暂停后续跑时，检查点记录、幂等确认和游标推进的历史操作顺序。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "当前记录只有暂停批次，没有留下验证过的检查点写入、重启幂等核对和游标推进之间的先后关系。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少 Harbor 断点续跑验证场景及其动作顺序，适合先发现历史场景。",
+          "route": "memory",
+          "target_asset_ids": [
+            "T12-L1-HARBOR-RESUMABLE-BACKFILL"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_scenario_ls"
+            ]
+          ],
+          "stop_after_candidate": "tdai_scenario_ls identifies the Harbor resumable-backfill scenario with the validated recovery sequence."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "续跑记录已补全顺序：先持久化并读取最后完成批次的检查点，再用该检查点重放一小批确认重复执行不产生重复结果，最后仅在校验通过后推进游标。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta gives the exact checkpoint, idempotency, and cursor order, so scenario discovery is unnecessary."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T12-L0-HARBOR-THROUGHPUT",
+        "T12-L0-LEDGER-ROLLBACK",
+        "T12-L0-QUARTZ-MAPPING"
+      ],
+      "controlled_delta_note": "The Harbor scope, pause boundary, workspace, and query are identical. Only message 6 changes: Positive lacks the validated recovery sequence; Negative supplies exactly the three ordered recovery actions.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "按暂停与回填语境先做历史场景发现是否合适，不应直接读取未定位的记录？",
+        "Negative 是否只提供断点续跑顺序，没有改变批次边界或回填策略？"
+      ]
+    }
+  ]
+}

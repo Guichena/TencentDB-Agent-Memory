@@ -1,0 +1,195 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "build-08-T15-DS05-skill-expansion-01",
+  "stage": "DS05",
+  "team_id": "T15",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T15-EXP-SKL-001",
+      "external_source_ids": ["T15-EXT-SKL-004", "T15-EXT-SKL-003", "T15-EXT-SKL-002"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Harbor 合作方要接入一个外部 REST API，目标是给 Microsoft 365 Copilot 建立可维护的 TypeSpec 插件。"},
+        {"role": "assistant", "content": "我会先确认 API 基础地址、用途、所需 CRUD 操作、认证方式、破坏性操作的确认要求和结果展示方式。"},
+        {"role": "user", "content": "这些业务选项已经明确，但仓库还没有插件文件；实现需要保持端点、模型和代理定义之间的契约一致。"},
+        {"role": "assistant", "content": "接下来需要确定插件的最小文件边界和每个文件的职责，再开始填写操作与模型。"}
+      ],
+      "changed_message_index": 4,
+      "query": "建立这个 TypeSpec 插件时，必须产出哪些文件，各自负责什么？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "上文还没有给出完整插件的文件职责。请先在团队可用能力中查找最匹配的方案，再按返回的标识打开它；找到后停止继续查找。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少 T15-SKL-008 的核心输出映射：main.tsp 代理定义、actions.tsp 操作与模型，以及需要时的 cards/card.json。",
+          "route": "skill",
+          "target_asset_ids": ["T15-SKL-008"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "团队搜索返回 T15-SKL-008 对应的 skill_id 后，仅按该返回值打开一次并停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充：完整插件的文件职责已经确定。main.tsp 放代理定义并引用操作；actions.tsp 放服务声明、认证、REST 操作和请求响应模型；如果需要自适应卡片，则再生成 cards/card.json。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "负例 delta 明确给出了完整插件的三个文件职责与可选条件，已足以回答查询。"}
+      },
+      "visible_distractor_ids_author_only": ["T15-SKL-004", "T15-SKL-007"],
+      "controlled_delta_note": "Positive 与 Negative 的 shared context 和 query 完全相同；仅 delta 由文件职责缺口变为同一职责事实的完整补充。",
+      "source_fact_map": [
+        {"claim": "完整插件由 main.tsp 代理定义、actions.tsp 操作与模型，以及按需的 cards/card.json 组成。", "source_id": "T15-EXT-SKL-004", "locator": "SKILL.md § Requirements; § Workflow"},
+        {"claim": "已有插件中补充 REST 操作与卡片属于操作级工作，而不是新插件的文件边界。", "source_id": "T15-EXT-SKL-003", "locator": "SKILL.md § Adding GET Operations; § Adding POST Operations"},
+        {"claim": "从规范生成完整应用是跨层应用生成流程，和 TypeSpec 插件文件职责不同。", "source_id": "T15-EXT-SKL-002", "locator": "SKILL.md § Generation Process"}
+      ],
+      "sol_review_questions": ["正例是否只缺少三个插件文件的职责映射？", "负例是否只补齐该映射且未引入额外流程？", "两个干扰是否真实且同属 API/插件实现域？"]
+    },
+    {
+      "draft_pair_id": "T15-EXP-SKL-002",
+      "external_source_ids": ["T15-EXT-SKL-008", "T15-EXT-SKL-005", "T15-EXT-SKL-007"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Meridian SDK Forge 需要给一个外部支付 API 增加 Python 客户端，项目目前只有业务需求，没有可信的接口目录。"},
+        {"role": "assistant", "content": "我会先确认代码库的主语言和现有约束，再确定外部服务的可用接口、认证方式及需要实现的调用。"},
+        {"role": "user", "content": "服务名称和目标调用已经给出，但仓库里没有该服务的 SDK 说明，也不能凭记忆猜接口。"},
+        {"role": "assistant", "content": "实现前需要先完成外部 API 发现，再按发现结果获取集成指导和必要的模型、端点定义。"}
+      ],
+      "changed_message_index": 4,
+      "query": "这个外部 API 集成流程的首个发现动作是什么？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前上下文尚未说明首个发现动作。请先在团队可用能力中查找相关方案，再按返回的标识打开匹配项；找到后停止查找。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少 T15-SKL-009 的首个发现步骤：检测主语言后，以语言和请求中的 API key 调用 fetch_api，且必须从该发现开始。",
+          "route": "skill",
+          "target_asset_ids": ["T15-SKL-009"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "团队搜索返回 T15-SKL-009 对应的 skill_id 后，用返回值打开一次并停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充：首个发现动作是先从工作区文件模式检测项目主语言，然后以该 language 和请求中的 API key 调用 fetch_api；集成流程必须从这个发现开始，不能凭记忆推断外部 API 能力。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "负例 delta 精确补充了首个发现动作、两个输入和不得凭记忆猜测的约束，足以回答查询。"}
+      },
+      "visible_distractor_ids_author_only": ["T15-SKL-010", "T15-SKL-011"],
+      "controlled_delta_note": "两侧仅改变 changed_message_index=4 的信息充分性；query、工作区和前置上下文保持一致。",
+      "source_fact_map": [
+        {"claim": "第三方 API 集成必须先检测主语言，再用 language 与 key 调用 fetch_api。", "source_id": "T15-EXT-SKL-008", "locator": "SKILL.md § Workflow 1a; § Workflow 2"},
+        {"claim": "Copilot SDK 关注在应用内嵌入代理运行时、会话和自定义工具，而不是外部 API 目录发现。", "source_id": "T15-EXT-SKL-005", "locator": "SKILL.md § Overview; § Custom Tools"},
+        {"claim": "Qdrant 客户端候选覆盖多语言 SDK 与 REST/gRPC 参考，属于具体向量服务客户端流程。", "source_id": "T15-EXT-SKL-007", "locator": "SKILL.md § Qdrant Clients SDK; § API Reference"}
+      ],
+      "sol_review_questions": ["正例是否只缺首个 fetch_api 发现动作？", "负例是否准确补齐 language、key 和先发现约束？", "干扰是否属于 API/SDK 集成域而非无关能力？"]
+    },
+    {
+      "draft_pair_id": "T15-EXP-SKL-003",
+      "external_source_ids": ["T15-EXT-SKL-001", "T15-EXT-SKL-003", "T15-EXT-SKL-002"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "medium",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Harbor 合作方的 ASP.NET Minimal API 有一个读取端点，成功和未找到时需要返回不同的响应类型。"},
+        {"role": "assistant", "content": "我会让路由参数保持强类型，并为端点补齐请求响应模型、校验和 OpenAPI 描述。"},
+        {"role": "user", "content": "项目只确定了业务分支和文档要求，还没有决定多响应结果在实现中的表达方式。"},
+        {"role": "assistant", "content": "需要先确定结果类型的声明方式，再补具体端点和文档细节。"}
+      ],
+      "changed_message_index": 4,
+      "query": "这个端点的多个响应类型应该如何表达，才能保持强类型？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "上下文还没有确定多响应结果的表达方式。请直接查看首屏中匹配的团队能力说明，然后回答；不要继续查找其他能力。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少 T15-SKL-001 关于多响应端点的核心建议：用 Results<T1,T2> 表达多种响应，并返回 TypedResults 而不是 Results。",
+          "route": "skill",
+          "target_asset_ids": ["T15-SKL-001"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "直接打开首屏 listing 中返回的 T15-SKL-001，读取后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充：多响应端点用 Results<T1, T2> 表达允许的响应类型，并返回 TypedResults，而不是无类型的 Results；这样可以保持结果的强类型。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "负例 delta 已精确给出多响应结果的泛型表达和返回值形式，足以直接回答查询。"}
+      },
+      "visible_distractor_ids_author_only": ["T15-SKL-004", "T15-SKL-007"],
+      "controlled_delta_note": "Positive 与 Negative 仅在追加 delta 处改变该单一类型处理事实，query 与四条 shared context 完全相同。",
+      "source_fact_map": [
+        {"claim": "ASP.NET Minimal API 对多响应使用 Results<T1,T2> 并返回 TypedResults。", "source_id": "T15-EXT-SKL-001", "locator": "SKILL.md § Type Handling"},
+        {"claim": "TypeSpec 干扰项使用操作、路由和参数装饰来定义 REST 操作。", "source_id": "T15-EXT-SKL-003", "locator": "SKILL.md § Adding GET Operations"},
+        {"claim": "OpenAPI 应用生成候选覆盖跨层结构，不是单个端点的响应类型表达。", "source_id": "T15-EXT-SKL-002", "locator": "SKILL.md § Generation Process; § Output Structure"}
+      ],
+      "sol_review_questions": ["正例是否只缺 Results<T1,T2>/TypedResults 这一核心事实？", "负例是否未额外引入端点设计步骤？", "首屏直查路由和两个 API 干扰是否符合要求？"]
+    },
+    {
+      "draft_pair_id": "T15-EXP-SKL-004",
+      "external_source_ids": ["T15-EXT-SKL-006", "T15-EXT-SKL-005", "T15-EXT-SKL-017"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Meridian SDK Forge 要同步 Microsoft 365 用户集合的变化，不能每次都重新拉取整批数据。"},
+        {"role": "assistant", "content": "我会先确认运行环境和权限，再设计首次同步、后续增量同步以及游标持久化。"},
+        {"role": "user", "content": "资源范围和权限边界已经明确，但增量同步的返回游标和后续请求规则尚未确定。"},
+        {"role": "assistant", "content": "需要先确定服务端增量查询的两次调用关系，再实现持久化和重试。"}
+      ],
+      "changed_message_index": 4,
+      "query": "使用 delta queries 做增量同步时，首次和后续请求分别如何处理？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前上下文没有给出增量游标的处理规则。请直接查看首屏中匹配的团队能力说明，然后回答；只查看这一个匹配项。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少 T15-SKL-002 的 delta query 核心事实：首次请求取得项目与 @odata.deltaLink，后续使用 deltaLink 仅取得变化并持久化该链接。",
+          "route": "skill",
+          "target_asset_ids": ["T15-SKL-002"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "直接打开首屏 listing 中返回的 T15-SKL-002，读取后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充：首次增量请求返回全部当前项目以及 @odata.deltaLink；之后的请求使用这个 deltaLink，只取上次同步以来的变化，并把 deltaLink 持久化到数据库或 blob，供下一次同步继续使用。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "负例 delta 已补齐首次响应、后续请求、变化范围和游标持久化规则，足以回答查询。"}
+      },
+      "visible_distractor_ids_author_only": ["T15-SKL-010", "T15-SKL-017"],
+      "controlled_delta_note": "两侧 shared context 与 query 相同；只有 delta 改变是否已知首次/后续增量游标规则。",
+      "source_fact_map": [
+        {"claim": "首次 delta 请求返回项目与 @odata.deltaLink，后续用 deltaLink 获取变化并持久化。", "source_id": "T15-EXT-SKL-006", "locator": "SKILL.md § Delta queries"},
+        {"claim": "Copilot SDK 干扰流程围绕代理客户端、会话、流式响应和自定义工具。", "source_id": "T15-EXT-SKL-005", "locator": "SKILL.md § Quick Start; § Streaming Responses; § Custom Tools"},
+        {"claim": "Power Platform 连接器干扰流程关注 MCP 连接器 schema、资源输出和连接器校验。", "source_id": "T15-EXT-SKL-017", "locator": "SKILL.md § Connector Generation; § Schema Validation & Troubleshooting"}
+      ],
+      "sol_review_questions": ["正例是否只缺首次与后续 deltaLink 关系？", "负例是否包含持久化要求且不扩展到权限设计？", "两个干扰是否同属 Microsoft/代理/API 集成域？"]
+    },
+    {
+      "draft_pair_id": "T15-EXP-SKL-005",
+      "external_source_ids": ["T15-EXT-SKL-009", "T15-EXT-RES-001", "T15-EXT-SKL-007", "T15-EXT-SKL-005"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Meridian SDK Forge 正在发布一个 Python SDK，版本号要由 git tag 驱动，CI 负责构建和发布。"},
+        {"role": "assistant", "content": "我会先确定构建后端、版本策略和发布校验，再检查 CI checkout 是否保留了版本计算所需的历史。"},
+        {"role": "user", "content": "团队已经决定采用动态版本，不希望在源码里维护第二份固定版本；但 CI checkout 的关键设置还没写入发布说明。"},
+        {"role": "assistant", "content": "需要从版本策略参考中确认动态版本计算对 CI 历史深度的具体要求。"}
+      ],
+      "changed_message_index": 4,
+      "query": "采用 git tag 动态版本时，CI checkout 必须保留什么设置？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前上下文还没有给出 CI checkout 的关键设置。请先直接查看首屏中匹配的能力，再读取其中精确的 `references/versioning-strategy.md` 资源；读到后停止。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少 T15-SKL-003 的资源事实：动态版本策略要求每个会安装或构建包的 CI job 使用 fetch-depth: 0，以取得完整 git tag 历史。",
+          "route": "skill",
+          "target_asset_ids": ["T15-SKL-003"],
+          "allowed_sequence_candidates": [["skill_view", "skill_files_read"]],
+          "stop_after_candidate": "打开 T15-SKL-003 后，只读取精确资源 references/versioning-strategy.md 一次并停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充：采用动态版本时，每个会安装或构建包的 CI job 都必须在 checkout 中设置 `fetch-depth: 0`，以保留完整 tag 历史；否则版本计算可能静默回退到开发版本。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "负例 delta 精确补齐了 fetch-depth、适用范围、原因和失败后果，足以回答查询。"}
+      },
+      "visible_distractor_ids_author_only": ["T15-SKL-011", "T15-SKL-010"],
+      "controlled_delta_note": "Positive 与 Negative 共享相同上下文和 query；仅追加 delta 在缺失与补齐 CI 历史深度这一单一资源事实之间变化。",
+      "source_fact_map": [
+        {"claim": "git tag 动态版本要求每个 CI job 使用 fetch-depth: 0。", "source_id": "T15-EXT-RES-001", "locator": "references/versioning-strategy.md § 5 Dynamic Versioning; § Critical CI requirement"},
+        {"claim": "Python 包构建候选还规定从构建、校验、测试发布到正式发布的 PyPA 流程。", "source_id": "T15-EXT-SKL-009", "locator": "SKILL.md § 5 PyPA Packaging Flow"},
+        {"claim": "Qdrant 客户端干扰是多语言服务客户端与 REST/gRPC 使用流程。", "source_id": "T15-EXT-SKL-007", "locator": "SKILL.md § Qdrant Clients SDK; § API Reference"},
+        {"claim": "Copilot SDK 干扰是应用内代理运行时和会话集成流程。", "source_id": "T15-EXT-SKL-005", "locator": "SKILL.md § Overview; § Quick Start"}
+      ],
+      "sol_review_questions": ["正例是否要求精确读取 references/versioning-strategy.md？", "负例是否只补齐 fetch-depth: 0 与完整 tag 历史原因？", "两个干扰是否为真实的 SDK/发布相关能力？"]
+    }
+  ]
+}

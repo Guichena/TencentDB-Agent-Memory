@@ -1,0 +1,88 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T18-TRIAL-MEM-01",
+  "stage": "DS03",
+  "team_id": "T18",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T18-TRIAL-MEM-01-P01",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们正在复盘 Quartz 请求性能项目的一次 p99 延迟回归，只关注线上同步查询路径的根因判定。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前指标面板能看到 p50、p95、p99、CPU 和请求类型，但交接摘要没有把最终判定标准写全。"
+        },
+        {
+          "role": "user",
+          "content": "这次排查以服务发布后的稳定窗口为背景，缓存已预热，压测与批处理流量不作为主要判断对象。"
+        },
+        {
+          "role": "assistant",
+          "content": "已排除单次尖峰、冷启动抖动和采样缺口；需要的是当时评审后沿用的回归门槛，而非临时调参建议。"
+        },
+        {
+          "role": "user",
+          "content": "Quartz 的基线来自发布前同一地域、同一实例规格的稳定观测，回归判断要能在告警和复盘中复现。"
+        },
+        {
+          "role": "assistant",
+          "content": "我们还要说明门槛在什么请求范围内成立，避免把它误套到冷缓存、批量接口或资源规格不同的样本上。"
+        },
+        {
+          "role": "user",
+          "content": "目前只记得结论与 CPU 资源是否紧张有关，但没有留下最终阈值、持续时间和例外范围。"
+        },
+        {
+          "role": "assistant",
+          "content": "身份、工作区和当前快照均保持不变；请把这次 Quartz 回归判断所依赖的历史边界补完整。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请确认 Quartz p99 回归的最终根因阈值是什么，以及这条判定适用于哪些请求和观测条件？",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "现有交接仍缺少当时定下的具体数值门槛、需要持续多久，以及它只适用于哪些已稳定的请求流量；请找回那条历史决定。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "仅缺 T18-L1-03 中 Quartz p99 回归的最终根因门槛：相对稳定基线的数值倍数、连续窗口时长，以及该门槛适用的请求与观测边界。",
+          "route": "memory",
+          "target_asset_ids": ["T18-L1-03"],
+          "allowed_sequence_candidates": [["tdai_memory_search"]],
+          "stop_after_candidate": "返回直接写出 Quartz p99 回归阈值、持续窗口和适用边界的历史记忆后立即停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "历史决定是：当同步查询路径的 p99 达到发布前同地域同规格稳定基线的 1.8 倍或更高，并在连续 3 个 5 分钟窗口保持时，才判为该回归根因门槛；该门槛只适用于缓存已预热、稳定窗口内的线上同步查询，冷启动、冷缓存、批处理接口、单次尖峰及不同实例规格样本不适用，CPU 仅作为伴随信号而不是单独触发条件。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息完整给出了相对稳定基线的 1.8 倍阈值、连续 3 个 5 分钟窗口的持续条件、已预热稳定线上同步查询的适用范围，以及冷启动、冷缓存、批处理、单次尖峰、不同规格和 CPU 单独触发的例外。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T18-L1-01",
+        "T18-L1-09",
+        "T18-L0-04"
+      ],
+      "controlled_delta_note": "正负样本共享相同的 Quartz 项目背景、8 条上下文消息、身份、工作区、快照与最终查询；仅追加 delta 从缺少 p99 根因门槛及适用边界变为完整给出阈值、持续窗口、请求范围和排除项。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 是否只留下 p99 相对基线阈值、连续窗口和适用边界这一个历史事实缺口？",
+        "Negative 是否仅补齐 1.8 倍、连续 3 个 5 分钟窗口、预热稳定同步查询范围及明确排除项？",
+        "CPU 伴随信号、冷启动、冷缓存、批处理、单次尖峰和不同实例规格是否形成了足够但不改变目标事实的同域干扰？",
+        "命中历史结论后是否只需一次记忆检索并立即停止？"
+      ]
+    }
+  ]
+}

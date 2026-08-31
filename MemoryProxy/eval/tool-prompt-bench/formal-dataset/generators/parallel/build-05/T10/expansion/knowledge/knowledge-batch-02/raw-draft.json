@@ -1,0 +1,192 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t10-knowledge-batch-02",
+  "stage": "DS05",
+  "team_id": "T10",
+  "family": "knowledge",
+  "external_source_ids": [],
+  "pairs": [
+    {
+      "draft_pair_id": "T10-DRAFT-KNOW-002",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "今天继续核对 release-orchestrator 的候选发布证据，当前只做只读资料整理，不推送制品、不打生产标签。"
+        },
+        {
+          "role": "assistant",
+          "content": "范围已确认。现有候选文件和 dry-run 摘要可以说明流程，但我不会把部署管线或构建步骤混入这条证据边界。"
+        },
+        {
+          "role": "user",
+          "content": "交接记录能看到候选制品与报告已经规划，却没有保留当前候选证据包的准确名称和批准门。"
+        },
+        {
+          "role": "assistant",
+          "content": "本地文件只能确认当前工作区状态，不能替代匹配仓库的只读发布资料；真实审批和发布动作都不在本轮。"
+        },
+        {
+          "role": "user",
+          "content": "方向从按目录名猜测证据包改为核对既有发布资料，避免把相似项目的门槛当成当前规则。"
+        },
+        {
+          "role": "assistant",
+          "content": "仓库、候选阶段、只读范围和排除项都已确认，剩下的是同一套候选规则中的两个关联事实。"
+        },
+        {
+          "role": "user",
+          "content": "我不想从报告文件名推断证据包版本，也不想假设批准人数；请保持信息缺口不变。"
+        },
+        {
+          "role": "assistant",
+          "content": "先恢复匹配资料中的准确名称和批准门，再决定是否需要更新交接摘要。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请确认当前 release-orchestrator 使用的候选证据包名称和批准门；只返回匹配只读资料中的事实，不执行审批或发布。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充摘录仍只有候选制品与 dry-run 报告的概述，没有写出证据包名称和批准门；请保留这两项事实的唯一缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少当前内部 release candidate 证据包名称和批准门，属于匹配仓库的只读发布 wiki。",
+          "route": "knowledge",
+          "target_asset_ids": [
+            "wiki-t10release01"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "knowledge_tools_list",
+              "knowledge_tools_call"
+            ]
+          ],
+          "stop_after_candidate": "发现资源工具并返回当前证据包与门槛后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已补齐两项事实：当前候选证据包名为 rc-evidence-v3，批准门为 two-person-review；其他流程和只读边界不变。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta supplies exactly the current candidate evidence package name and approval gate; no read-only resource query is needed."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "cg-t10maven01",
+        "cg-t10pybuild01",
+        "T10-SKILL-DEPLOYMENT-PIPELINE"
+      ],
+      "controlled_delta_note": "Positive 只保留候选证据包名称和批准门缺口；Negative 只补入 rc-evidence-v3 与 two-person-review 这两项事实，保持仓库、候选阶段、只读边界和最终 query 完全不变。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "确认 Positive 的唯一缺口是同一候选规则中的证据包名称与批准门，并且目标资料与仓库匹配。",
+        "确认最短候选链路严格为先发现只读资料能力、再查询资料，不执行审批或发布动作。",
+        "确认 Negative 仅补入 rc-evidence-v3 与 two-person-review，未扩展到其他流程事实或操作建议。",
+        "确认两条候选文本没有出现资源标识、知识查询动作名称、私有资产 id、Gold 或评测语言。"
+      ]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-KNOW-003",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "今天继续核对 pyartifact 的动态版本构建路径，当前只做只读代码证据整理，不修改代码、不运行构建。"
+        },
+        {
+          "role": "assistant",
+          "content": "范围已确认。工作区有构建元数据摘要和 wheel 流程线索，但本轮不把打包策略或环境搭建混入符号定位。"
+        },
+        {
+          "role": "user",
+          "content": "现有摘录能看到版本值被动态解析，却没有保留当前分支使用的准确函数符号和文件路径。"
+        },
+        {
+          "role": "assistant",
+          "content": "调用背景不能证明冻结分支实际使用的入口；我也不会通过运行构建或猜测模块名来补足证据。"
+        },
+        {
+          "role": "user",
+          "content": "方向从沿调用关系猜函数改为核对匹配仓库的只读代码图，避免把相邻打包资料当成当前实现。"
+        },
+        {
+          "role": "assistant",
+          "content": "仓库、动态版本主题、只读范围和排除项都已确认，剩下的是同一入口的符号与路径事实。"
+        },
+        {
+          "role": "user",
+          "content": "交接摘要没有保存入口名称和文件位置，我不想把通用 Python 项目结构当成当前分支证据。"
+        },
+        {
+          "role": "assistant",
+          "content": "先恢复匹配代码资料中的准确符号和路径，再决定是否需要补充评审记录。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请确认当前 pyartifact 动态版本解析的准确函数符号和文件路径；只返回匹配只读代码资料中的事实，不修改代码或运行构建。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充摘录仍只有动态版本调用的概述，没有写出当前分支的函数符号和文件路径；请保留这一入口事实的唯一缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "当前分支的动态版本解析符号和路径不在工作区摘录中，需查询匹配仓库的只读符号图。",
+          "route": "knowledge",
+          "target_asset_ids": [
+            "cg-t10pybuild01"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "knowledge_tools_list",
+              "knowledge_tools_call"
+            ]
+          ],
+          "stop_after_candidate": "发现资源工具并返回符号与路径后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "评审摘要已补齐入口事实：动态版本解析入口为 resolveBuildVersion，路径为 src/pyartifact/build_meta.py；其他仓库和只读边界不变。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta supplies exactly the dynamic-version resolver symbol and path; no read-only code-graph query is needed."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "wiki-t10release01",
+        "cg-t10maven01",
+        "T10-SKILL-PYTHON-PACKAGING"
+      ],
+      "controlled_delta_note": "Positive 只保留动态版本解析符号和路径缺口；Negative 只补入 resolveBuildVersion 与 src/pyartifact/build_meta.py 这一入口事实，保持仓库、主题、只读边界和最终 query 完全不变。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "确认 Positive 的唯一缺口是当前分支动态版本解析入口的符号与路径，并且目标资料与仓库匹配。",
+        "确认最短候选链路严格为先发现只读代码资料能力、再查询资料，不修改代码或运行构建。",
+        "确认 Negative 仅补入 resolveBuildVersion 与 src/pyartifact/build_meta.py，未扩展到打包策略或代码修改建议。",
+        "确认两条候选文本没有出现资源标识、知识查询动作名称、私有资产 id、Gold 或评测语言。"
+      ]
+    }
+  ]
+}

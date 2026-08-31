@@ -1,0 +1,134 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t06-pilot-skill-01",
+  "stage": "DS05",
+  "team_id": "T06",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T06-SKILL-BP-01",
+      "external_source_ids": ["T06-SRC-SYSTEM-COMMANDLINE"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们要给 harbor-admin-cli 增加 agent export 命令，目标框架是 .NET 8，命令解析采用 System.CommandLine v2.x。它需要归入 agent 命令组，并能导出指定格式的资源。"
+        },
+        {
+          "role": "assistant",
+          "content": "我先按现有 CLI 的结构确认入口、命令组和服务边界，再把新增命令接入，避免把业务逻辑堆进入口文件。"
+        },
+        {
+          "role": "user",
+          "content": "当前仓库已有 Program.cs、Commands 目录、RootCommand 和 AgentCommand。export 只有一个空类，资源导出服务已经有接口，具体实现由启动配置提供。"
+        },
+        {
+          "role": "assistant",
+          "content": "现有命令的公共约定是命令类放在对应分组目录，入口只负责组装命令树；我会保留已有的公共基类和构造方式。"
+        },
+        {
+          "role": "user",
+          "content": "export 需要一个必填的输出路径和一个可选格式，执行结果要用整数退出码表达。删除类命令仍然必须保留清晰的确认提示。"
+        },
+        {
+          "role": "assistant",
+          "content": "导出命令本身不是破坏性操作，但命令组中已有删除入口，所以公共约定中的确认边界不能因为这次改动而弱化。"
+        },
+        {
+          "role": "user",
+          "content": "最近发现不同命令读取共享配置的方式不一致；服务地址和可选密钥也有宽松接受空白值的情况。希望这次一并按统一规则收紧。"
+        },
+        {
+          "role": "assistant",
+          "content": "目前只完成了空类、命令树位置和服务接口的盘点，尚缺一套从声明参数到处理、注册、共享配置校验和测试边界的统一实施顺序。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请给出下一步实施方案，确保新增命令的结构、参数、处理器、注册、依赖注入和全局选项校验都符合项目约定，并列出需要验证的测试边界。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "当前资料只覆盖了命令树与服务接口的大方向，没有给出从公共基类、选项与参数、异步处理器到注册、确认、依赖注入、共享配置递归校验、命名和测试的完整落地顺序；请在现有业务约束下补齐实施依据。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "当前会话没有 System.CommandLine 命令架构的完整、按顺序实施流程，尤其缺少共享配置的递归注册、静态选项复用、解析期校验及根解析器测试边界；目标来源资产是冻结的 system-commandline-cli 原文，当前上下文和本地代码盘点不足以可靠重建其全部约束，相邻 CLI 资产只覆盖其他语言或维护场景。读取目标资产返回成功后即可停止。",
+          "route": "skill",
+          "target_asset_ids": ["T06-SKILL-SYSTEM-COMMANDLINE"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "skill_view 返回 listed 目标资产正文后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充的统一实施约束如下，请按此顺序落地：1）架构：优先让项目专用的抽象 CommandBase 继承 Command，具体命令继承它；若已有基类沿用其约定，简单应用才直接继承 Command。目录保持 Program.cs、Commands/CommandBase.cs、Commands/GlobalOptions.cs、Commands/RootCommand.cs 及每个分组目录。2）参数：在命令类中用 private readonly Option<T> 和 Argument<T> 保存定义；构造时填写 Description、Required，必要时增加短别名，并分别加入 Options、Arguments；处理器用同一个定义通过 ParseResult.GetValue 读取。3）处理器：用 SetAction 绑定 async Task<int>，依次读取参数、按需加载会话设置、尽早校验配置、调用业务服务、输出结果并返回退出码；处理器保持薄，不直接承载业务逻辑。4）分组与注册：父分组负责把子命令加入 Subcommands，除非直接调用有独立行为，否则不绑定 action；顶层命令在 RootCommand 注册，子命令在父构造函数注册。5）破坏性操作：删除前输出不可撤销的确认提示，只接受 yes 或 y，否则输出取消并返回 0。6）服务与依赖注入：命令构造函数接收接口而非具体实现，Program.cs 用 TryAddSingleton 注册实现，并在 ServiceProviderExtensions.cs 提供调用 GetRequiredService 的便捷扩展。7）命名和可见性：命令名用小写 kebab-case，类名用 PascalCase 加 Command，选项字段用 _camelCaseOption，参数字段用 _camelCaseArgument，命名空间和目录对应，命令类均为 internal。8）共享选项：在 GlobalOptions 中只创建并复用静态 Option<T>；设置 Recursive=true，根的 Options 只加入每个共享选项一次，叶命令不重复加入；通过该静态定义或 CommandBase 辅助方法读取。9）解析期校验：把校验放入 Validators，使无效输入时处理器不执行；服务地址须为非空、绝对的 http 或 https URI，拒绝不支持的协议、相对地址、查询串和片段；可选密钥允许省略，但显式空白值必须拒绝，且校验不得记录、显示、裁剪或改写原值；校验与派生分离，错误消息稳定且说明选项和格式。10）测试：从根解析器覆盖默认值、显式有效值、无效值以及共享选项放在子命令前后两种位置，并确认无效输入不会调用处理器。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "负例 delta 已补齐冻结原文的完整最小技术流程：命令架构、参数声明与读取、异步处理器、分组注册、破坏性确认、接口注入、命名可见性、递归共享选项、解析期 URI/密钥校验和根解析器测试均已给出，继续读取外部资产不会增加完成该请求所需的事实。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T06-SKILL-CREATE-CLI",
+        "T06-SKILL-DART-CLI",
+        "T06-SKILL-LOGSEQ-CLI-MAINTENANCE"
+      ],
+      "controlled_delta_note": "两条 case 共用完全相同的 8 条上下文与 query；仅第 8 条追加消息改变信息充分性。Positive 保留完整 System.CommandLine 流程缺口，Negative 仅补入能替代读取的最小完整流程。目标为 listed 资产，首动作唯一且只需一次 view。",
+      "source_fact_map": [
+        {
+          "claim": "项目专用 CommandBase、命令目录结构与具体命令继承约定",
+          "source_id": "T06-SRC-SYSTEM-COMMANDLINE",
+          "locator": "Architecture Overview; RULE 1"
+        },
+        {
+          "claim": "Option/Argument 声明、Description/Required、别名、集合注册与 ParseResult.GetValue",
+          "source_id": "T06-SRC-SYSTEM-COMMANDLINE",
+          "locator": "RULE 2 — Options and Arguments"
+        },
+        {
+          "claim": "SetAction 异步处理器及薄处理器职责顺序",
+          "source_id": "T06-SRC-SYSTEM-COMMANDLINE",
+          "locator": "RULE 3 — Command Handler Pattern; RULE 7 — Command Logic"
+        },
+        {
+          "claim": "分组不绑定 action 的默认约定及 Root/父命令注册位置",
+          "source_id": "T06-SRC-SYSTEM-COMMANDLINE",
+          "locator": "RULE 4 — Command Group; RULE 5 — Registration"
+        },
+        {
+          "claim": "破坏性操作确认与取消返回码",
+          "source_id": "T06-SRC-SYSTEM-COMMANDLINE",
+          "locator": "RULE 6 — User Confirmation for Destructive Operations"
+        },
+        {
+          "claim": "接口依赖注入、TryAddSingleton 与 GetRequiredService 扩展",
+          "source_id": "T06-SRC-SYSTEM-COMMANDLINE",
+          "locator": "RULE 7 — Command Logic; RULE 8 — Dependency Injection"
+        },
+        {
+          "claim": "命名约定与命令类 internal 可见性",
+          "source_id": "T06-SRC-SYSTEM-COMMANDLINE",
+          "locator": "RULE 9 — Naming Conventions; RULE 10 — Visibility"
+        },
+        {
+          "claim": "递归共享选项、根部单次注册、静态复用、Validators 及 URI/密钥校验测试边界",
+          "source_id": "T06-SRC-SYSTEM-COMMANDLINE",
+          "locator": "RULE 11 — Global Options and Validation; RULE 12 — Checklist for New Commands"
+        }
+      ],
+      "sol_review_questions": [
+        "Positive 是否确实缺少完整技术流程，而非仅缺少一个局部事实？",
+        "目标是 listed 资产时，skill_view 是否为唯一首动作且不应先搜索？",
+        "Negative 是否只补充解决该信息缺口所需的完整最小流程？",
+        "Negative 的十步约束是否忠实保留冻结原文的顺序、推荐和安全边界？",
+        "两条 case 是否仅在 changed_message_index=8 的追加消息上不同，query 与 8 条共享消息是否逐字相同？",
+        "三个同域干扰是否真实可见且不会以名称或描述长度泄露目标？",
+        "provider-visible 文本是否不含 Skill、工具、端点、内部 id 或 Gold 字段？",
+        "source_fact_map 是否覆盖直接导入原文的关键规则并使用冻结 source id？",
+        "Negative 信息完整后是否无需读取目标资产即可回答请求？"
+      ]
+    }
+  ]
+}

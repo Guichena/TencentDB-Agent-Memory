@@ -1,0 +1,11 @@
+{
+  "schema_version": "task1.source_pack_lock.v1",
+  "team_id": "T02",
+  "stage": "DS03",
+  "input_pack_sha256": "f190ede8852d94441c7da26d3737158dfced230bab8996d446cd99f0abb2c8cc",
+  "skill_sources_sha256": "be77f6fdfa5523ea027c6b53296d8a32c10a8de77392addb4041bb6b5f34fc57",
+  "project_sources_sha256": "1aa33c0934dd7df151ee5e5bc657f8365ecc71efb5ffb0a239354e1ff4dd1f66",
+  "skill_source_count": 15,
+  "project_source_count": 4,
+  "frozen": true
+}

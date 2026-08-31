@@ -1,0 +1,244 @@
+{
+  "schema_version": "task1.luna_natural_negative_draft.v1",
+  "batch_id": "t09-natural-negative-batch-01",
+  "stage": "DS05",
+  "team_id": "T09",
+  "cases": [
+    {
+      "draft_case_id": "T09-NN-001",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "nebula-console 的隔离发布审计已经完成，当前只处理已生成的 JSON 记录；在线更新、镜像扫描和源码分析都不在这次改动内。"
+        },
+        {
+          "role": "assistant",
+          "content": "输入和字段映射已经固定：每条记录的 VulnerabilityID、PkgName、InstalledVersion、FixedVersion、Severity 分别映射到 id、package、installed、fixed、severity；缺少 FixedVersion 时写空字符串。"
+        },
+        {
+          "role": "user",
+          "content": "测试夹具只有下面两条，过滤结果也已约定为只保留 HIGH 和 CRITICAL：[{\"VulnerabilityID\":\"CVE-2024-1111\",\"PkgName\":\"fast-xml-parser\",\"InstalledVersion\":\"4.3.5\",\"FixedVersion\":\"4.4.1\",\"Severity\":\"HIGH\"},{\"VulnerabilityID\":\"CVE-2024-2222\",\"PkgName\":\"kleur\",\"InstalledVersion\":\"4.1.5\",\"Severity\":\"MEDIUM\"}]。"
+        },
+        {
+          "role": "assistant",
+          "content": "剩余工作只是把已知规则写成无副作用的转换函数，并用夹具验证，不需要补充任何审计策略。"
+        }
+      ],
+      "query": "请在 TypeScript 中实现纯函数 filterHighCritical(records)，按上述字段映射先过滤出 HIGH/CRITICAL，再返回对象数组；对输入数组和记录都不要原地修改，并给出这两条夹具对应的返回值。",
+      "why_current_context_is_sufficient": "输入记录、保留的严重性、字段映射、缺失修复版本的空字符串规则以及预期夹具都已在上下文中明确，函数不需要外部资料或运行扫描。",
+      "visible_distractor_ids_author_only": ["T09-L1-03", "T09-SKILL-TRIVY-OFFLINE", "T09-SKILL-CVSS-EXTRACTION"],
+      "sol_review_questions": ["是否严格只保留 HIGH 与 CRITICAL？", "是否保持纯函数并正确处理缺失 FixedVersion？"]
+    },
+    {
+      "draft_case_id": "T09-NN-002",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "compliance-export 已经拿到解析后的漏洞行，最近一次普通依赖升级和隔离审计都已完成；现在只修复 CSV 单元格转义，不改变筛选或列顺序。"
+        },
+        {
+          "role": "assistant",
+          "content": "现有函数和失败输入如下：\n```js\nfunction csvCell(value) {\n  const text = String(value ?? '');\n  return text.includes(',') ? `\"${text}\"` : text;\n}\n```\n输入数组是 ['CVE-7', 'lib\"core', '1.0']。"
+        },
+        {
+          "role": "user",
+          "content": "快照已经给出唯一期望输出：CVE-7,\"lib\"\"core\",1.0。空字符串和没有逗号或引号的普通值仍应保持现有输出形式。"
+        },
+        {
+          "role": "assistant",
+          "content": "方向已从重做整份报表收窄为修一个转义分支；漏洞发现、CVSS 提取、SAST 和 DAST 均不需要改动。"
+        }
+      ],
+      "query": "请修正上面 csvCell 的一个 CSV 转义 bug，使给定输入严格得到给定快照；保留其他可见行为，并补充一个覆盖双引号的最小断言。",
+      "why_current_context_is_sufficient": "现有实现、失败输入、精确期望输出和不变行为均已提供，修复只涉及可见函数内的双引号转义。",
+      "visible_distractor_ids_author_only": ["T09-L1-05", "T09-SKILL-VULNERABILITY-CSV", "T09-SKILL-TRIVY-OFFLINE"],
+      "sol_review_questions": ["双引号是否按 CSV 规则加倍？", "是否避免扩大到报表发现或字段策略？"]
+    },
+    {
+      "draft_case_id": "T09-NN-003",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "harbor-gateway 的依赖兼容性核对已结束，已确认只升级一个包；漏洞集合、报告导出和源代码安全分析另有独立安排。"
+        },
+        {
+          "role": "assistant",
+          "content": "package.json 当前相关片段为 {\"dependencies\": {\"@aegis/parser\": \"2.4.1\", \"yaml\": \"2.3.4\"}}，目标只把 @aegis/parser 改为 2.5.0，其他依赖不得变化。"
+        },
+        {
+          "role": "user",
+          "content": "目标版本已经由维护者确认，验证命令也固定为 npm install --package-lock-only、npm test -- parser、npm run build；失败时不要顺手升级其他包。"
+        },
+        {
+          "role": "assistant",
+          "content": "现在的方向是一个局部清单变更加既定验证，不需要联网查版本、重新扫描锁文件或寻找新的兼容性资料。"
+        }
+      ],
+      "query": "请更新 package.json 中 @aegis/parser 到 2.5.0，并按已给出的三个命令验证；汇报变更和验证结果，保持其他依赖不变。",
+      "why_current_context_is_sufficient": "包名、当前版本、目标版本、不可变更范围和完整验证命令都已明确，这是局部依赖升级请求。",
+      "visible_distractor_ids_author_only": ["T09-L0-06", "T09-SKILL-DEPENDENCY-UPGRADE", "T09-SKILL-TRIVY-OFFLINE"],
+      "sol_review_questions": ["是否只修改指定依赖到精确目标版本？", "是否使用了上下文中给出的全部验证命令？"]
+    },
+    {
+      "draft_case_id": "T09-NN-004",
+      "difficulty": "easy",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "risk-catalog 正在解释一个已经可复现的空记录行为；扫描结果、报表字段和依赖升级都已排除在本次问答之外。"
+        },
+        {
+          "role": "assistant",
+          "content": "完整函数如下：\n```js\nfunction fallbackScore(record) {\n  const candidates = [record.nvd?.score, record.ghsa?.score, record.vendor?.score];\n  return candidates.find((value) => typeof value === 'number' && Number.isFinite(value)) ?? null;\n}\n```"
+        },
+        {
+          "role": "user",
+          "content": "调用是 fallbackScore({})，实际值为 null；函数源码、输入和判定条件都在这里，没有隐藏的来源优先级需要补查。"
+        }
+      ],
+      "query": "请解释为什么 fallbackScore({}) 返回 null，逐步指出 candidates 中各项的值以及 find 和 ?? null 在这里分别做了什么；不要修改函数。",
+      "why_current_context_is_sufficient": "完整函数和空对象输入已给出，三个可选链结果及其类型判断足以推出返回值，无需查询任何外部记录。",
+      "visible_distractor_ids_author_only": ["T09-L1-04", "T09-L1-06", "T09-SKILL-CVSS-EXTRACTION"],
+      "sol_review_questions": ["是否说明三个候选值均为 undefined？", "是否准确区分 find 未命中与空值合并？"]
+    },
+    {
+      "draft_case_id": "T09-NN-005",
+      "difficulty": "easy",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "sentinel-api 的 CI 配置已经确定只做一个 YAML 排版修正；依赖审计、源码规则设计、凭据管理和发布架构都不在范围内。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前文件片段中唯一的语法问题是 run 的块内容缩进：\n```yaml\njobs:\n  audit-fixture:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - name: audit fixture\n        run: |\n        node scripts/audit-fixture.mjs\n        echo done\n        env:\n          AUDIT_MODE: offline\n```"
+        },
+        {
+          "role": "user",
+          "content": "组织约定已经写死：步骤名称、命令顺序、环境变量和值都必须原样保留，只把多行 run 的两行命令缩进到块标量下。"
+        }
+      ],
+      "query": "请修正上面 GitHub Actions YAML 中 audit fixture 步骤的缩进，使配置可解析；仅调整缩进，不增删步骤、命令、环境变量或安全检查。",
+      "why_current_context_is_sufficient": "完整 YAML 片段和允许的唯一改动均已给出，修复是局部缩进调整，不依赖组织规范或其他流水线知识。",
+      "visible_distractor_ids_author_only": ["T09-SKILL-GITHUB-ACTIONS", "T09-SKILL-SECRETS-MANAGEMENT", "T09-SKILL-DEPLOYMENT-PIPELINE"],
+      "sol_review_questions": ["两行 run 内容是否相对块标量正确缩进？", "是否保持所有可见键和值不变？"]
+    },
+    {
+      "draft_case_id": "T09-NN-006",
+      "difficulty": "easy",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "compliance-export 已完成字段解析，目前只需要为一个公开的严重性比较器补测试；扫描执行、CSV 发现和升级计划都已完成。"
+        },
+        {
+          "role": "assistant",
+          "content": "比较器和排序约定完整如下：\n```js\nconst order = { CRITICAL: 4, HIGH: 3, MEDIUM: 2, LOW: 1, UNKNOWN: 0 };\nexport function compareSeverity(a, b) {\n  return order[b] - order[a];\n}\n```\n测试框架是 Vitest。"
+        },
+        {
+          "role": "user",
+          "content": "期望从高到低的顺序明确为 ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW']，并且 compareSeverity('HIGH', 'LOW') 应为负数、compareSeverity('LOW', 'HIGH') 应为正数。"
+        }
+      ],
+      "query": "请为 compareSeverity 添加一个最小 Vitest 单元测试，覆盖给定的四级排序以及两个比较结果符号；不要改动比较器实现。",
+      "why_current_context_is_sufficient": "比较器实现、测试框架、排序数组和两个符号断言均已明确，新增测试不需要推断额外严重性策略。",
+      "visible_distractor_ids_author_only": ["T09-L1-07", "T09-SKILL-VULNERABILITY-CSV", "T09-SKILL-SAST-CONFIGURATION"],
+      "sol_review_questions": ["测试是否覆盖 CRITICAL 到 LOW 的完整顺序？", "是否保留比较器实现不变并断言两个符号？"]
+    },
+    {
+      "draft_case_id": "T09-NN-007",
+      "difficulty": "easy",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "合规报告的解析链路已经稳定，这次只把一列的展示标题从 severity 改成 risk_level；漏洞扫描、CVSS 计算和升级验证均不需要调整。"
+        },
+        {
+          "role": "assistant",
+          "content": "现有实现和快照如下：\n```js\nexport function header() {\n  return ['vulnerability_id', 'package_name', 'installed_version', 'fixed_version', 'severity', 'cvss_score'];\n}\n```\n快照期望：vulnerability_id,package_name,installed_version,fixed_version,severity,cvss_score"
+        },
+        {
+          "role": "user",
+          "content": "维护者已确认只改这一处公开标题，新的唯一快照期望是 vulnerability_id,package_name,installed_version,fixed_version,risk_level,cvss_score；列数和顺序不变。"
+        }
+      ],
+      "query": "请将 header() 的第五个标题改为 risk_level，并同步更新上面可见快照期望；保持其他标题、列顺序和实现行为不变。",
+      "why_current_context_is_sufficient": "需要替换的旧标题、新标题、完整实现、完整旧快照和完整新快照都已给出，属于确定性的局部重命名。",
+      "visible_distractor_ids_author_only": ["T09-L1-05", "T09-L1-08", "T09-SKILL-VULNERABILITY-CSV"],
+      "sol_review_questions": ["是否只修改第五列标题及对应快照？", "其他五个标题和列顺序是否保持不变？"]
+    },
+    {
+      "draft_case_id": "T09-NN-008",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "risk-catalog 的转换函数已经有完整测试，当前只做等价重构；输入来自已解析漏洞记录，发现、报告策略和普通升级都不在本次改动中。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前循环实现为：\n```js\nexport function toRows(findings) {\n  const rows = [];\n  findings.forEach((v) => {\n    rows.push({ id: v.VulnerabilityID, package: v.PkgName, severity: v.Severity });\n  });\n  return rows;\n}\n```"
+        },
+        {
+          "role": "user",
+          "content": "固定输入 [{\"VulnerabilityID\":\"CVE-1\",\"PkgName\":\"alpha\",\"Severity\":\"HIGH\"},{\"VulnerabilityID\":\"CVE-2\",\"PkgName\":\"beta\",\"Severity\":\"LOW\"}] 的固定输出是 [{\"id\":\"CVE-1\",\"package\":\"alpha\",\"severity\":\"HIGH\"},{\"id\":\"CVE-2\",\"package\":\"beta\",\"severity\":\"LOW\"}]。"
+        }
+      ],
+      "query": "请把 toRows 重构为使用 map，同时保持给定输入的输出、顺序、字段名和空数组行为完全不变；不要改动业务逻辑。",
+      "why_current_context_is_sufficient": "原始循环、目标重构形式、完整输入输出和不变约束均已提供，map 重构不需要额外领域规则。",
+      "visible_distractor_ids_author_only": ["T09-L1-07", "T09-L1-10", "T09-SKILL-VULNERABILITY-CSV"],
+      "sol_review_questions": ["是否使用 map 且保持输入顺序？", "是否保留精确字段映射并支持空数组？"]
+    },
+    {
+      "draft_case_id": "T09-NN-009",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "risk-catalog 的漏洞记录解析器已经确定输入模型，这次只修复一个 TypeScript 类型收窄错误；报告导出、依赖扫描和静态分析配置都不在范围内。"
+        },
+        {
+          "role": "assistant",
+          "content": "完整类型、实现和编译器错误如下：\n```ts\ntype Severity = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';\ntype Vulnerability = { Severity?: Severity };\nconst rank: Record<Severity, number> = { CRITICAL: 4, HIGH: 3, MEDIUM: 2, LOW: 1 };\nfunction severityRank(item: Vulnerability): number {\n  return rank[item.Severity];\n}\n```\nTS2538: Type 'undefined' cannot be used as an index type."
+        },
+        {
+          "role": "user",
+          "content": "缺失 Severity 的业务规则也已给出：返回 0；四个已知值必须继续返回 rank 中的数值，且不允许扩大 Severity 联合类型。"
+        }
+      ],
+      "query": "请修复 severityRank 的类型收窄错误，使完整类型检查通过，并实现缺失 Severity 返回 0、已知 Severity 保持原 rank 的规则；只修改可见函数。",
+      "why_current_context_is_sufficient": "完整类型、错误、映射表以及 undefined 的精确业务结果都已提供，使用显式守卫即可完成安全收窄。",
+      "visible_distractor_ids_author_only": ["T09-SKILL-SAST-CONFIGURATION", "T09-SKILL-CVSS-EXTRACTION", "T09-L1-07"],
+      "sol_review_questions": ["是否在索引前收窄可选 Severity？", "是否让缺失值返回 0 且不改变联合类型？"]
+    },
+    {
+      "draft_case_id": "T09-NN-010",
+      "difficulty": "easy",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "nebula-console 已完成固定输入审计，当前只补一个已知解析边界；原始结果、CSV 报告、源码分析和普通版本升级都不需要重新执行。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前类型和函数为：\n```ts\ntype RawFinding = { VulnerabilityID: string; FixedVersion?: string };\nfunction toRow(finding: RawFinding) {\n  return { id: finding.VulnerabilityID, fixed_version: finding.FixedVersion.trim() };\n}\n```"
+        },
+        {
+          "role": "user",
+          "content": "当前上下文中的明确规则是：FixedVersion 缺失时必须写空字符串；有值时保留其原字符串内容。示例输入 {VulnerabilityID: 'CVE-9'} 的期望结果是 {id: 'CVE-9', fixed_version: ''}。"
+        },
+        {
+          "role": "assistant",
+          "content": "实现范围已收窄为给可选字段加一个局部保护，不能借此改变 id、版本文本或其他报告字段。"
+        }
+      ],
+      "query": "请在 toRow 中为缺失的 FixedVersion 加 guard，遵循已给出的空字符串规则，并确保有值时保留原字符串；补充示例输入的断言。",
+      "why_current_context_is_sufficient": "可选字段类型、当前出错表达式、缺失值规则和完整示例期望均已在上下文中给出，局部 guard 即可完成请求。",
+      "visible_distractor_ids_author_only": ["T09-L1-01", "T09-L1-05", "T09-SKILL-TRIVY-OFFLINE"],
+      "sol_review_questions": ["缺失 FixedVersion 是否严格返回空字符串？", "有值时是否保持原字符串并只修改必要 guard？"]
+    }
+  ]
+}

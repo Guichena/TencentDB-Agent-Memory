@@ -1,0 +1,22 @@
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/vitest/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-VITEST/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+diff --git MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/vitest/SKILL.md MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-VITEST/SKILL.md
+index 262df2a..a43973b 100644
+--- MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/vitest/SKILL.md
++++ MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-VITEST/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+ name: vitest
+-description: Current Vitest 4 guidance for setup, async tests, vi mocks, snapshots, worker pools, environments, assertions, and test performance. TDD methodology is covered by tdd and network mocking by msw.
++description: "Vitest 4 单元测试、mock、异步断言、worker 和测试性能。"
++use_when: "任务是 Vitest 单元/组件测试。"
++do_not_use_when: "Playwright E2E、浏览器测量或 TDD 流程设计时不用。"
+ ---
+ 
+ # Vitest Best Practices
+@@ -118,3 +120,4 @@ Read individual reference files for detailed explanations and code examples:
+ ## Full Compiled Document
+ 
+ For the complete guide with all rules expanded: `AGENTS.md`
++
+

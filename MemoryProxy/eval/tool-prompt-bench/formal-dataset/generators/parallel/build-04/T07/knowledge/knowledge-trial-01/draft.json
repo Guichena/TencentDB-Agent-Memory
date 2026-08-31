@@ -1,0 +1,54 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t07-knowledge-trial-01",
+  "stage": "DS05",
+  "team_id": "T07",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T07-PAIR-K01",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这次继续处理 graph-tenant-sync 的目录同步适配器，主工作区是 TypeScript pnpm workspace；另外两条 SDK 与 API 集成线只作为相邻工作区，结论不要混在一起。"},
+        {"role": "assistant", "content": "边界已记下。我会只围绕目录同步适配器的设计记录核对事实，并保持 Qdrant 网关和生成式 API client 两条线分离。"},
+        {"role": "user", "content": "当前固定仓库是 https://github.com/microsoftgraph/msgraph-sdk-javascript，提交 5438ae90f50ef15d3656f0cf9c5485deee351f19；工作区包含 packages/graph-client、services/directory-sync 和 tests/adapter。"},
+        {"role": "assistant", "content": "固定版本和目录结构已记下。现在只看 graph-client 与 directory-sync 的适配边界，不根据相似的 API client 代码推测实现细节。"},
+        {"role": "user", "content": "已有材料只标出 daemon authentication、selected fields、pagination、throttling 和 adapter tests 这些主题，但没有把目录同步流程的职责分界写完整。"},
+        {"role": "assistant", "content": "我会把这些主题当作检索线索，而不是现成结论；尤其不把分页、限流和字段选择的责任归属从主题名称外推出来。"},
+        {"role": "user", "content": "已完成的是确认当前任务、固定仓库提交和三个相关目录；也排除了 Qdrant 网关与 partner API client 的相邻工作区。"},
+        {"role": "assistant", "content": "目前仍缺的是这份 Graph 适配器设计记录对分页、429 限流重试与字段选择责任归属的明确表述。仅凭当前上下文不能可靠写出该边界。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请先确认当前固定 Graph 适配器设计记录中，目录同步流程对分页、429 限流重试和字段选择的责任归属；只回答这条工作区的边界。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "补充日志仍只有 daemon authentication、selected fields、pagination、throttling 和 adapter tests 这些主题，没有明确责任归属；请保留这个信息缺口。"},
+        "private_proposal": {
+          "unique_information_gap": "固定 Graph 适配器设计 wiki 中关于目录同步流程的分页、429 限流重试和字段选择责任归属尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": ["wiki-t07gr01"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "先列出绑定资源的只读查询能力，再用 search_pages 查询 Graph adapter boundary 页面并停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接摘要已经补齐唯一缺口：目录同步由 graph-client 统一负责分页遍历与 429 退避重试，directory-sync 只消费分页结果且不重复重试；字段选择固定在 graph-client 的 request builder，adapter 层不重新决定字段。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已补齐分页、429 退避重试和字段选择的唯一责任边界，并保持目录同步、Graph client 与相邻工作区的区分；无需再次查询资源。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["cg-t07qd01", "wiki-t07ap01"],
+      "controlled_delta_note": "Positive 只保留 Graph 适配器设计记录的责任归属缺口；Negative 只补齐分页、429 退避重试和字段选择的三项边界，其他任务身份、固定版本、排除项与 query 完全不变。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为 Graph 适配器设计记录中的三项责任归属，没有泄露合成资源的正文？",
+        "Negative 是否只增加 graph-client、directory-sync 与 request builder 的边界，并保持其余上下文和 query 完全一致？",
+        "工作区结构、仓库 URL 与固定提交是否足以在三个 ready 资源中唯一选择 Graph 设计 wiki，而不误选 Qdrant 代码图或 partner API wiki？",
+        "该资源正文是否明确标注为内部合成 fixture，且最终可见性与正式裁决仍由 Sol 决定？"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/react-hook-form/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-REACT-HOOK-FORM/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+diff --git MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/react-hook-form/SKILL.md MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-REACT-HOOK-FORM/SKILL.md
+index 0dba405..7b8c77e 100644
+--- MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/react-hook-form/SKILL.md
++++ MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-REACT-HOOK-FORM/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+ name: react-hook-form
+-description: Current React Hook Form v7 guidance for useForm, useWatch, useController, useFieldArray, validation, subscriptions, and UI-library integration. React Server Actions and useActionState are covered by the react skill.
++description: "React Hook Form v7 的订阅、控制器、字段数组和表单性能规则。"
++use_when: "问题明确涉及 useForm、useWatch、useController 或字段数组。"
++do_not_use_when: "普通 React 状态、TanStack Query 或页面 CLS 时不用。"
+ ---
+ 
+ # React Hook Form Best Practices
+@@ -113,3 +115,4 @@ Read individual reference files for detailed explanations and code examples:
+ ## Full Compiled Document
+ 
+ For the complete guide with all rules expanded: `AGENTS.md`
++
+

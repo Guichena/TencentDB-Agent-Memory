@@ -1,0 +1,200 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "build-08-T16-DS05-skill-expansion-01",
+  "stage": "DS05",
+  "team_id": "T16",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T16-EXP-SKL-001",
+      "external_source_ids": ["T16-EXT-SKL-014", "T16-EXT-SKL-015", "T16-EXT-SKL-016", "T16-EXT-SKL-017"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Ledger Event Ingestion 需要把写入订单状态和读取报表拆开，事件会从写侧传播到读侧。"},
+        {"role": "assistant", "content": "我会先确认写入命令、查询模型、事件契约、允许的传播延迟和读模型重建需求。"},
+        {"role": "user", "content": "团队已同意读写可以独立扩展，但还没有明确事件产生后谁负责更新读模型。"},
+        {"role": "assistant", "content": "下一步需要确定 CQRS 组件之间的职责关系，避免把查询逻辑塞进写入路径。"}
+      ],
+      "changed_message_index": 4,
+      "query": "在 CQRS 中，事件产生后由哪个组件更新读模型？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前上下文还没有明确事件到读模型的更新职责。请先在团队可用能力中查找相关方案，再按返回的标识打开匹配项；找到后停止查找。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少 T16-SKL-008 的核心职责映射：Projector 从事件更新 read model；Command Handler 负责校验并执行命令，Query Handler 从 read model 读取。",
+          "route": "skill",
+          "target_asset_ids": ["T16-SKL-008"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "团队搜索返回 T16-SKL-008 对应 skill_id 后按该标识打开一次并停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充：事件产生后由 Projector 更新 read model；写侧的 Command Handler 负责校验和执行命令，读侧的 Query Handler 只从 read model 取数。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "负例 delta 直接给出事件、Projector、读模型以及命令/查询处理器的职责，已足以回答查询。"}
+      },
+      "visible_distractor_ids_author_only": ["T16-SKL-009", "T16-SKL-010", "T16-SKL-011"],
+      "controlled_delta_note": "两侧 shared context、query 和身份/工作区假设一致，仅 delta 从职责缺口变为 Projector 职责事实。",
+      "source_fact_map": [
+        {"claim": "CQRS 组件中 Projector 从事件更新读模型，Command Handler 执行命令，Query Handler 读取读模型。", "source_id": "T16-EXT-SKL-014", "locator": "SKILL.md § Key Components"},
+        {"claim": "Projection 候选负责从 event stream 构建 read model。", "source_id": "T16-EXT-SKL-015", "locator": "SKILL.md § Projection Architecture"},
+        {"claim": "Microservices 候选提供服务边界、异步通信与数据管理模式。", "source_id": "T16-EXT-SKL-016", "locator": "SKILL.md § Core Concepts"},
+        {"claim": "Workflow 候选关注 workflow/activity 分离、状态保存和恢复。", "source_id": "T16-EXT-SKL-017", "locator": "SKILL.md § Best Practices; § Key Principles"}
+      ],
+      "sol_review_questions": ["正例是否只缺少 Projector 更新读模型这一职责事实？", "负例是否只补齐组件职责而未扩展到重建或一致性策略？", "三个干扰是否均为真实且同域的读写分离/分布式工作流能力？"]
+    },
+    {
+      "draft_pair_id": "T16-EXP-SKL-002",
+      "external_source_ids": ["T16-EXT-SKL-015", "T16-EXT-SKL-014", "T16-EXT-SKL-016", "T16-EXT-SKL-017"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Streamline Event Schema 的读模型重建可能跨越数小时，服务重启后不能从头猜测已处理位置。"},
+        {"role": "assistant", "content": "我会先区分实时、追赶、持久化和内联投影，再确认幂等、事务、延迟监控与重建方案。"},
+        {"role": "user", "content": "事件流和读模型都已存在，但重启恢复所需的进度记录尚未决定放在哪里。"},
+        {"role": "assistant", "content": "下一步要明确哪一种投影会保存恢复位置，以及它如何继续处理失败后的事件。"}
+      ],
+      "changed_message_index": 4,
+      "query": "需要在重启后从上次位置继续的投影，应保存什么？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前上下文没有给出投影重启恢复位置的保存方式。请先在团队可用能力中查找相关方案，再按返回的标识打开匹配项；打开后停止继续查找。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少 T16-SKL-009 的核心事实：Persistent projection 存储 checkpoint，以便失败或重启后继续。",
+          "route": "skill",
+          "target_asset_ids": ["T16-SKL-009"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "团队搜索返回 T16-SKL-009 对应 skill_id 后按该标识打开一次并停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充：要支持重启后继续的投影应采用 Persistent 类型，并存储 checkpoint；发生失败或重启时从该 checkpoint 恢复处理，而不是重新猜测进度。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "负例 delta 已精确给出 Persistent projection、checkpoint 和失败/重启恢复关系，足以回答查询。"}
+      },
+      "visible_distractor_ids_author_only": ["T16-SKL-008", "T16-SKL-010", "T16-SKL-011"],
+      "controlled_delta_note": "Positive 与 Negative 只改变追加 delta 的 checkpoint 事实，shared context 与 query 完全相同。",
+      "source_fact_map": [
+        {"claim": "Persistent projection 存储 checkpoint，可在重启或失败后恢复。", "source_id": "T16-EXT-SKL-015", "locator": "SKILL.md § Projection Types; § Best Practices / Do's"},
+        {"claim": "CQRS 以事件把写模型传播到读模型，并接受 eventual consistency。", "source_id": "T16-EXT-SKL-014", "locator": "SKILL.md § CQRS Architecture; § Best Practices / Do's"},
+        {"claim": "Microservices 候选包括事件通信、数据归属和 Saga 概览。", "source_id": "T16-EXT-SKL-016", "locator": "SKILL.md § Core Concepts"},
+        {"claim": "Workflow 候选关注持久工作流状态和从最后成功步骤恢复。", "source_id": "T16-EXT-SKL-017", "locator": "SKILL.md § When to Use Workflow Orchestration"}
+      ],
+      "sol_review_questions": ["正例是否只缺 checkpoint 保存这一唯一恢复事实？", "负例是否没有混入投影类型选择之外的监控细节？", "三个干扰是否真实且属于读模型/分布式工作流域？"]
+    },
+    {
+      "draft_pair_id": "T16-EXP-SKL-003",
+      "external_source_ids": ["T16-EXT-SKL-002", "T16-EXT-SKL-001", "T16-EXT-SKL-003", "T16-EXT-SKL-009"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Relay Orders Stream 的 Python IoT Edge 模块会在网络抖动时处理遥测，断线期间仍可能重复收到消息。"},
+        {"role": "assistant", "content": "我会先定义消息输入输出、版本和路由，再设计容器运行、健康检查、安全传输与上线回滚。"},
+        {"role": "user", "content": "模块功能和部署环境已明确，但网络断开与重连时的可靠性处理还没有写进实现方案。"},
+        {"role": "assistant", "content": "下一步需要确定重试、降级、本地排队和重放消息的处理原则。"}
+      ],
+      "changed_message_index": 4,
+      "query": "IoT Edge 模块如何处理网络断开、重试和重复消息？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "上文还没有给出网络不稳定时的可靠性处理。请直接查看首屏中匹配的团队能力说明，然后回答；只查看这一个匹配项。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少 T16-SKL-002 的可靠性设计事实：指数退避加抖动重试、上游失败时优雅降级、必要时本地排队，以及对重放消息幂等处理。",
+          "route": "skill",
+          "target_asset_ids": ["T16-SKL-002"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "直接打开首屏 listing 中的 T16-SKL-002，读取后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充：网络不稳定时使用带抖动的指数退避重试；上游失败要优雅降级，需要时在本地排队；重放或重复到达的消息必须幂等处理。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "负例 delta 已完整补齐断线、重试、降级、本地队列和重复消息处理原则。"}
+      },
+      "visible_distractor_ids_author_only": ["T16-SKL-001", "T16-SKL-003", "T16-SKL-014"],
+      "controlled_delta_note": "Positive 与 Negative 仅在 delta 处改变边缘可靠性事实是否已知；query 和 shared context 不变。",
+      "source_fact_map": [
+        {"claim": "IoT Edge 模块可靠性设计包括指数退避加抖动、优雅降级、本地排队和幂等重放。", "source_id": "T16-EXT-SKL-002", "locator": "SKILL.md § Reliability Design"},
+        {"claim": "云模式候选提供技术无关的分布式可靠性、消息和部署模式。", "source_id": "T16-EXT-SKL-001", "locator": "SKILL.md § Cloud Design Patterns; § Pattern Categories at a Glance"},
+        {"claim": "CloudWatch 候选用于日志、指标、告警和生产事故调查。", "source_id": "T16-EXT-SKL-003", "locator": "SKILL.md § Reusable patterns for investigating production incidents"},
+        {"claim": "Aspire 候选聚焦 .NET 分布式应用编排与可观测性。", "source_id": "T16-EXT-SKL-009", "locator": "SKILL.md front matter; § Overview"}
+      ],
+      "sol_review_questions": ["正例是否只缺网络不稳定下四项可靠性原则？", "负例是否严格对应冻结 IoT Edge 文件的 Reliability Design？", "三个干扰是否均为真实云/边缘/可观测性相关能力？"]
+    },
+    {
+      "draft_pair_id": "T16-EXP-SKL-004",
+      "external_source_ids": ["T16-EXT-SKL-003", "T16-EXT-SKL-001", "T16-EXT-SKL-002", "T16-EXT-SKL-009"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Consumer Watch 发现某个 AWS 服务告警，怀疑刚发生的部署导致错误率上升。"},
+        {"role": "assistant", "content": "我会先固定告警状态的精确时间，再按账号、区域、服务、操作和资源逐层缩小影响范围。"},
+        {"role": "user", "content": "告警时间和受影响服务已知，但还没有判断哪些部署事件足以与告警建立强关联。"},
+        {"role": "assistant", "content": "下一步需要明确部署与告警的时间窗口、资源匹配和执行者条件。"}
+      ],
+      "changed_message_index": 4,
+      "query": "如何判定一个部署事件与 CloudWatch 告警强关联？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "上下文还没有给出部署关联的判定条件。请直接查看首屏中匹配的团队能力说明，然后回答；只查看这一个匹配项。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少 T16-SKL-003 的 correlation criteria：部署命中同一 service/resource、在告警转为 ALARM 前 15 分钟内完成，且部署者是 CI/CD role 而非人工 hotfix。",
+          "route": "skill",
+          "target_asset_ids": ["T16-SKL-003"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "直接打开首屏 listing 中的 T16-SKL-003，读取后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充：只有同时满足三个条件才算强关联：部署目标与告警属于同一 service/resource；部署在告警进入 ALARM 前 15 分钟内完成；执行者身份匹配 CI/CD role，而不是人工 hotfix。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "负例 delta 已逐项补齐同资源、15 分钟窗口和 CI/CD 执行者三个判定条件。"}
+      },
+      "visible_distractor_ids_author_only": ["T16-SKL-001", "T16-SKL-002", "T16-SKL-014"],
+      "controlled_delta_note": "两侧只改变部署关联三条件是否已知，query、时间假设和其他上下文完全一致。",
+      "source_fact_map": [
+        {"claim": "CloudWatch 部署关联要求同一资源、告警前 15 分钟内完成、执行者为 CI/CD role。", "source_id": "T16-EXT-SKL-003", "locator": "SKILL.md § Pattern 2: Alarm History to Deploy-Event Correlation / Correlation criteria"},
+        {"claim": "云模式候选提供可靠性与部署模式的架构取舍。", "source_id": "T16-EXT-SKL-001", "locator": "SKILL.md § References; § Pattern Categories at a Glance"},
+        {"claim": "IoT Edge 候选包含部署、回滚和可观测性检查。", "source_id": "T16-EXT-SKL-002", "locator": "SKILL.md § Deployment and Operations; § Required Output"},
+        {"claim": "Aspire 候选关注分布式应用开发环境和可观测性。", "source_id": "T16-EXT-SKL-009", "locator": "SKILL.md front matter; § Overview"}
+      ],
+      "sol_review_questions": ["正例是否只缺三个 correlation criteria？", "负例是否没有引入 blast-radius 或时间线重建的额外规则？", "三个干扰是否属于云架构、边缘部署或观测域？"]
+    },
+    {
+      "draft_pair_id": "T16-EXP-SKL-005",
+      "external_source_ids": ["T16-EXT-SKL-001", "T16-EXT-RES-001", "T16-EXT-SKL-016", "T16-EXT-SKL-017", "T16-EXT-SKL-003"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Relay Orders Stream 要在多个服务间广播订单事件，不能让发布者直接依赖每个消费者。"},
+        {"role": "assistant", "content": "我会先确认事件主题、订阅者、投递保证、顺序要求和重复消息处理，再选择协作模式。"},
+        {"role": "user", "content": "发布者和消费者清单已明确，但消息如何解耦、各服务如何参与业务处理还没有定稿。"},
+        {"role": "assistant", "content": "下一步需要从消息集成参考中确认适合事件驱动协作的模式及实施注意事项。"}
+      ],
+      "changed_message_index": 4,
+      "query": "采用 Choreography 模式时，各服务如何协作并保证消息处理可靠？",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前上下文还没有给出 Choreography 的协作与可靠性要点。请先直接查看首屏中匹配的团队能力，再读取精确的 `references/messaging-integration.md` 资源；读到后停止。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少 T16-SKL-001 资源中的 Choreography 核心事实：各服务自行决定业务处理，通过事件协作；使用发布订阅、保持幂等并提供日志和分布式追踪。",
+          "route": "skill",
+          "target_asset_ids": ["T16-SKL-001"],
+          "allowed_sequence_candidates": [["skill_view", "skill_files_read"]],
+          "stop_after_candidate": "打开 T16-SKL-001 后仅读取 references/messaging-integration.md 一次并停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充：Choreography 让各服务通过事件协作、各自决定业务处理，不依赖中央编排者；用发布订阅分发领域事件，并让处理保持幂等，同时提供完整日志和分布式追踪。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "负例 delta 已补齐 Choreography 的去中心协作、发布订阅、幂等、日志和追踪核心步骤。"}
+      },
+      "visible_distractor_ids_author_only": ["T16-SKL-010", "T16-SKL-011", "T16-SKL-003"],
+      "controlled_delta_note": "Positive 与 Negative 共享全部上下文和 query；仅追加 delta 改变是否已知资源中的 Choreography 要点。",
+      "source_fact_map": [
+        {"claim": "Choreography 由各服务决定处理并通过事件协作，使用发布订阅，保证幂等并提供日志/分布式追踪。", "source_id": "T16-EXT-RES-001", "locator": "references/messaging-integration.md § Choreography Pattern"},
+        {"claim": "云模式主 Skill 将 messaging/integration 作为独立参考导航。", "source_id": "T16-EXT-SKL-001", "locator": "SKILL.md § References"},
+        {"claim": "Microservices 候选覆盖异步事件通信和服务解耦。", "source_id": "T16-EXT-SKL-016", "locator": "SKILL.md § Core Concepts / Communication Patterns"},
+        {"claim": "Workflow orchestration 候选提供更高层的持久工作流协调。", "source_id": "T16-EXT-SKL-017", "locator": "SKILL.md front matter; § When to Use Workflow Orchestration"},
+        {"claim": "CloudWatch 候选用于指标、告警和事故调查，不定义事件协作模式。", "source_id": "T16-EXT-SKL-003", "locator": "SKILL.md § Reusable patterns for investigating production incidents"}
+      ],
+      "sol_review_questions": ["正例是否走 skill_view 后精确读取 references/messaging-integration.md？", "负例是否严格补齐资源中的 Choreography 四项要点？", "三个干扰是否真实且属于事件驱动架构或相关运维域？"]
+    }
+  ]
+}

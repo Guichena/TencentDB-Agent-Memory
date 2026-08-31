@@ -1,0 +1,72 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T18-TRIAL-KNW-01",
+  "stage": "DS03",
+  "team_id": "T18",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T18-TRIAL-KNW-01-PAIR-01",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们正在核对 Quartz 请求性能项目的一项延迟决策，工作区保持冻结，不做代码修改。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前讨论确认 SpanBudget 用于约束端到端 p99，但未展示该决策涉及的负责人归属与影响边界。"
+        },
+        {
+          "role": "user",
+          "content": "我需要给出可复核的结论，说明这项预算由谁负责、会影响哪些调用面，以及容量判断应遵循什么边界。"
+        },
+        {
+          "role": "assistant",
+          "content": "现有上下文只说明了指标名称和问题范围，没有给出决策正文中的 ownership 与 impact 细节。"
+        }
+      ],
+      "changed_message_index": 4,
+      "query": "请确认 SpanBudget p99 决策的负责人归属、影响调用面和容量边界，并给出简短依据。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "当前上下文没有给出 SpanBudget p99 决策的具体归属、影响调用面或容量边界；请在冻结范围内查证后回答。"
+        },
+        "private_proposal": {
+          "slot": "KNW-01",
+          "unique_information_gap": "Quartz 的 SpanBudget p99 决策负责人、影响调用面和容量边界未在上下文出现，需要从 T18-KNW-01 获取最小决定条目。",
+          "route": "knowledge",
+          "target_asset_ids": ["T18-KNW-01"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "tool_name": "search",
+          "params": {
+            "query": "SpanBudget p99 ownership impact"
+          },
+          "stop_after_candidate": "先列出知识资源可用工具，再使用返回的 search 工具，以 knowledge_id=T18-KNW-01、tool_name=search、params={query:\"SpanBudget p99 ownership impact\"} 调用一次；得到匹配条目后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充当前决定：SpanBudget p99 由 Quartz 性能平台团队负责，影响入口是 API gateway、异步任务 worker 和下游 RPC 聚合；容量判断以尾延迟预算在每级调用链的可加总上限为边界，超出预算先归因到持有该级 span 的团队，再调整采样与并发配置。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经给出负责人归属、受影响调用面、容量边界及超预算处置依据，当前上下文足以直接回答，无需检索。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T18-KNW-02", "T18-KNW-03"],
+      "controlled_delta_note": "Positive 与 Negative 仅在追加消息中改变 SpanBudget p99 决策的负责人、影响调用面和容量边界信息；共享上下文与查询完全相同。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "确认 provider-visible 文本未出现工具名、资源标识、knowledge_id、Gold 或评测措辞。",
+        "确认正例冻结使用 KNW-01 对应的目标，并按列出工具后调用 search 的顺序执行一次。",
+        "确认负例追加消息单独提供了负责人、影响调用面和容量边界，且没有新增任务要求。"
+      ]
+    }
+  ]
+}

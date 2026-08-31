@@ -1,0 +1,208 @@
+{
+  "schema_version": "task1.github_skill_source_lock.v1",
+  "team_id": "T10",
+  "frozen_at": "2026-08-29T23:20:00+08:00",
+  "frozen_by": "sol",
+  "selection_method": "Ordinary GitHub search followed by immutable raw-file fetch at pinned commits.",
+  "license_policy": "Only files from repositories with explicit SPDX-compatible licenses are included.",
+  "repositories": [
+    {
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "license": "Apache-2.0",
+      "license_path": "LICENSE",
+      "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "license_path": "LICENSE",
+      "license_sha256": "f89abb55d9f073f38f1703e4518f0613c788c6174be7f13b8dfe48a1c076c746"
+    }
+  ],
+  "skills": [
+    {
+      "source_id": "source-t10-skill-maven-lifecycle",
+      "asset_id": "T10-SKILL-MAVEN-LIFECYCLE",
+      "name": "maven-build-lifecycle",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "path": "tasks/fix-build-google-auto/environment/skills/maven-build-lifecycle/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_sha256": "8d65a5ace544deb6beafebe9275eaa9f0673ac1286899c7f7ddecd3dfce03974",
+      "checked_in_path": "raw/benchflow-skillsbench/maven-build-lifecycle/SKILL.md",
+      "pool_role": "listed_target"
+    },
+    {
+      "source_id": "source-t10-skill-maven-dependencies",
+      "asset_id": "T10-SKILL-MAVEN-DEPENDENCIES",
+      "name": "maven-dependency-management",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "path": "tasks/fix-build-google-auto/environment/skills/maven-dependency-management/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_sha256": "d5a95c61cb189750beafbd7fea8e8ca8159ccf905d90974637b0a3e5495c7846",
+      "checked_in_path": "raw/benchflow-skillsbench/maven-dependency-management/SKILL.md",
+      "pool_role": "search_target"
+    },
+    {
+      "source_id": "source-t10-skill-maven-plugins",
+      "asset_id": "T10-SKILL-MAVEN-PLUGINS",
+      "name": "maven-plugin-configuration",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "path": "tasks/fix-build-google-auto/environment/skills/maven-plugin-configuration/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_sha256": "ff8b766a8283c035d0fba5cf71f0dd194c14a21e136c2a2916bf7bff3fcdd01c",
+      "checked_in_path": "raw/benchflow-skillsbench/maven-plugin-configuration/SKILL.md",
+      "pool_role": "search_target"
+    },
+    {
+      "source_id": "source-t10-skill-analyze-ci",
+      "asset_id": "T10-SKILL-ANALYZE-CI",
+      "name": "analyze-ci",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "path": "tasks/fix-build-agentops/environment/skills/analyze-ci/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_sha256": "f59a07dcffe019f17cfa6ec211cbfb070e6292257be7119ed55ffa0b9bce7197",
+      "checked_in_path": "raw/benchflow-skillsbench/analyze-ci/SKILL.md",
+      "pool_role": "searchable_distractor"
+    },
+    {
+      "source_id": "source-t10-skill-temporal-python-testing",
+      "asset_id": "T10-SKILL-TEMPORAL-PYTHON-TESTING",
+      "name": "temporal-python-testing",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "path": "tasks/fix-build-agentops/environment/skills/temporal-python-testing/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_sha256": "21e5d2382d474553eadb2771c764f4aa2b55a12bd75bc40894e68630c02db7bb",
+      "checked_in_path": "raw/benchflow-skillsbench/temporal-python-testing/SKILL.md",
+      "pool_role": "searchable_distractor"
+    },
+    {
+      "source_id": "source-t10-skill-testing-python",
+      "asset_id": "T10-SKILL-TESTING-PYTHON",
+      "name": "testing-python",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "path": "tasks/fix-build-agentops/environment/skills/testing-python/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_sha256": "2741f4b02a7021658993213ce85095871e30ebfc1eba2bbef9d56f0bb71dea32",
+      "checked_in_path": "raw/benchflow-skillsbench/testing-python/SKILL.md",
+      "pool_role": "searchable_distractor"
+    },
+    {
+      "source_id": "source-t10-skill-uv-package-manager",
+      "asset_id": "T10-SKILL-UV-PACKAGE-MANAGER",
+      "name": "uv-package-manager",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "path": "tasks/fix-build-agentops/environment/skills/uv-package-manager/SKILL.md",
+      "license": "Apache-2.0",
+      "raw_sha256": "85c71e75e63966eb06a72dc0a7ed2046c45c38bb5574d748603917c4a3801878",
+      "checked_in_path": "raw/benchflow-skillsbench/uv-package-manager/SKILL.md",
+      "pool_role": "listed_target"
+    },
+    {
+      "source_id": "source-t10-skill-python-packaging",
+      "asset_id": "T10-SKILL-PYTHON-PACKAGING",
+      "name": "python-packaging",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "path": "plugins/python-development/skills/python-packaging/SKILL.md",
+      "license": "MIT",
+      "raw_sha256": "744653d7bca3b0cfcb50155a3bb9ef56c7aba7eb4923091d07e75171261e5b49",
+      "checked_in_path": "raw/wshobson-agents/python-packaging/SKILL.md",
+      "pool_role": "listed_resource_target",
+      "resource_paths": [
+        {
+          "path": "references/details.md",
+          "source_path": "plugins/python-development/skills/python-packaging/references/details.md",
+          "raw_sha256": "947a58e5489293e06dc367f875d984f1d0d6c26c3a0e64e2875460969c3ceb58",
+          "checked_in_path": "raw/wshobson-agents/python-packaging/references/details.md"
+        },
+        {
+          "path": "references/advanced-patterns.md",
+          "source_path": "plugins/python-development/skills/python-packaging/references/advanced-patterns.md",
+          "raw_sha256": "ab47dec3bf71c066e5d262eb6159b966ea95067ac23b27d8607d36d89f0e00ca",
+          "checked_in_path": "raw/wshobson-agents/python-packaging/references/advanced-patterns.md"
+        }
+      ]
+    },
+    {
+      "source_id": "source-t10-skill-python-project-structure",
+      "asset_id": "T10-SKILL-PYTHON-PROJECT-STRUCTURE",
+      "name": "python-project-structure",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "path": "plugins/python-development/skills/python-project-structure/SKILL.md",
+      "license": "MIT",
+      "raw_sha256": "c53696fb8d9014abc280fc0e64220cae0d087766a16380e211a6745e481dae65",
+      "checked_in_path": "raw/wshobson-agents/python-project-structure/SKILL.md",
+      "pool_role": "searchable_distractor"
+    },
+    {
+      "source_id": "source-t10-skill-python-testing-patterns",
+      "asset_id": "T10-SKILL-PYTHON-TESTING-PATTERNS",
+      "name": "python-testing-patterns",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "path": "plugins/python-development/skills/python-testing-patterns/SKILL.md",
+      "license": "MIT",
+      "raw_sha256": "a1020718f31629c2a5b20731cad1804dbb81b18800495c5cebdf16e6cac9c175",
+      "checked_in_path": "raw/wshobson-agents/python-testing-patterns/SKILL.md",
+      "pool_role": "listed_distractor"
+    },
+    {
+      "source_id": "source-t10-skill-github-actions",
+      "asset_id": "T10-SKILL-GITHUB-ACTIONS",
+      "name": "github-actions-templates",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "path": "plugins/cicd-automation/skills/github-actions-templates/SKILL.md",
+      "license": "MIT",
+      "raw_sha256": "a280b280bd57708d6ed834c37253605d169c7a6f0214b64789c70de73f17ea69",
+      "checked_in_path": "raw/wshobson-agents/github-actions-templates/SKILL.md",
+      "pool_role": "search_target"
+    },
+    {
+      "source_id": "source-t10-skill-deployment-pipeline",
+      "asset_id": "T10-SKILL-DEPLOYMENT-PIPELINE",
+      "name": "deployment-pipeline-design",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "path": "plugins/cicd-automation/skills/deployment-pipeline-design/SKILL.md",
+      "license": "MIT",
+      "raw_sha256": "9a56bd9401c1dc8ef5a15758d7234f211193097ddb3895d46d1ddcd730687b18",
+      "checked_in_path": "raw/wshobson-agents/deployment-pipeline-design/SKILL.md",
+      "pool_role": "listed_distractor"
+    },
+    {
+      "source_id": "source-t10-skill-gitlab-ci",
+      "asset_id": "T10-SKILL-GITLAB-CI",
+      "name": "gitlab-ci-patterns",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "path": "plugins/cicd-automation/skills/gitlab-ci-patterns/SKILL.md",
+      "license": "MIT",
+      "raw_sha256": "0b2d3cf90961e4df928106fc40911cd7a1c4d4703354a86b9d7bacadff7df8fd",
+      "checked_in_path": "raw/wshobson-agents/gitlab-ci-patterns/SKILL.md",
+      "pool_role": "searchable_distractor"
+    },
+    {
+      "source_id": "source-t10-skill-git-workflows",
+      "asset_id": "T10-SKILL-GIT-WORKFLOWS",
+      "name": "git-advanced-workflows",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "path": "plugins/developer-essentials/skills/git-advanced-workflows/SKILL.md",
+      "license": "MIT",
+      "raw_sha256": "05205690ef34b05d1ae2596a59f9897680511198b16b38e9a6c1bf04e8da9711",
+      "checked_in_path": "raw/wshobson-agents/git-advanced-workflows/SKILL.md",
+      "pool_role": "listed_distractor"
+    }
+  ]
+}

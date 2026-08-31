@@ -1,0 +1,12 @@
+--- a/raw/benchflow-skillsbench/analyze-ci/SKILL.md
++++ b/adapted/analyze-ci/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+ name: analyze-ci
+-description: Analyze failed GitHub Action jobs for a pull request.
++description: "分析 GitHub Actions 拉取请求或具体任务的失败日志，提炼根因、错误、测试名和相关片段。"
++use_when: "需要针对 GitHub Actions 任务或拉取请求的失败作业进行日志分析和失败摘要。"
++do_not_use_when: "问题是本地 Maven/Python 环境设置、生命周期配置，或平台无关的部署流水线设计。"
+ allowed-tools:
+   - Bash(uv run skills analyze-ci:*)
+ ---

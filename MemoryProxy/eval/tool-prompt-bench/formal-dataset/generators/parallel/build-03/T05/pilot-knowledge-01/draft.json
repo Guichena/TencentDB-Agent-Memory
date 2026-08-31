@@ -1,0 +1,87 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T05-DS05-KNOW-PILOT-01",
+  "stage": "DS05",
+  "team_id": "T05",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T05-DS05-KNOW-PAIR-01",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们在 atlas-insights 维护经营分析图表，最近需要确认一处收入趋势图组件的代码归属。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前范围限定在团队的 Atlas 图表代码索引：只核对符号定义和直接调用关系，不涉及浏览器测量、界面规范或结账回归。"
+        },
+        {
+          "role": "user",
+          "content": "现象是把收入趋势图的 tooltip 数据整理从 render 函数移到 selector 后，代码评审需要确认相关组件的位置与调用边界。"
+        },
+        {
+          "role": "assistant",
+          "content": "图表仍需保持多序列数据绑定、比例尺和 tooltip 坐标规则不变；本次只补充可核对的代码位置，不提出重构。"
+        },
+        {
+          "role": "user",
+          "content": "要查的符号名是 RevenueTooltip，预期它可能是 TypeScript 组件或工厂；结果请区分定义位置与直接调用者。"
+        },
+        {
+          "role": "assistant",
+          "content": "请把结果限定为 atlas-insights 当前代码范围内的文件与行号，并保留两个同域的图表干扰项不作结论。"
+        },
+        {
+          "role": "user",
+          "content": "如果定位到定义，还需要说明下一步应优先核对哪些文件，以便评审 selector 改动是否越过组件边界。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会基于已确认的项目、符号和验收边界组织一次最小查询，然后只返回定义、直接调用者和核对范围。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请基于当前上下文给出 RevenueTooltip 的定义位置、直接调用者，以及我下一步应核对的文件范围。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "目前上下文里还没有 RevenueTooltip 在 atlas-insights 代码中的定义或调用结果；请先补齐这项定位信息，再回答后续核对范围。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少 Atlas 图表代码索引中 RevenueTooltip 的定义位置与直接调用者结果。",
+          "route": "knowledge",
+          "target_asset_ids": ["T05-KNOWLEDGE-ATLAS-CG"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "获得 RevenueTooltip 的定义和直接调用结果后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "代码索引结果已确认：RevenueTooltip 定义于 src/charts/revenue/RevenueTooltip.tsx 第 18 行，直接调用者是 src/charts/revenue/RevenuePanel.tsx 第 74 行和 src/charts/revenue/RevenueSmallMultiples.tsx 第 41 行。请基于这些结果回答后续核对范围。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "负例 delta 已完整提供定义文件、定义行号和两个直接调用者；核对范围可由这些文件及共享上下文中的 selector 边界直接推出，无需额外查询。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T05-ATLAS-DISTRACTOR-SERIES-SCALE", "T05-ATLAS-DISTRACTOR-TOOLTIP-COORDINATE"],
+      "controlled_delta_note": "正负例共享完全相同的 8 条上下文与查询，仅第 9 条 delta 改变：正例缺少 RevenueTooltip 的代码定位结果，负例补足同一组定义与直接调用者信息。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "唯一信息缺口是否仅为 RevenueTooltip 的定义位置与直接调用者，而不是性能、界面或测试资料？",
+        "正例的首动作是否唯一指向 Atlas 图表代码索引，并在得到定义和调用结果后停止？",
+        "负例是否给出了定义文件、定义行号和两个直接调用者这一完整最小信息链路？",
+        "正负例是否只改变第 9 条 delta，且 query 与共享上下文逐字一致？",
+        "目标代码索引与两个同域干扰是否仅存在于 author-only 字段或自然语言概念中，没有暴露内部标识？",
+        "共享上下文、两条 delta 与 query 是否没有内部资源标识、动作名或禁止词泄漏？",
+        "负例是否无需依赖额外历史、Skill 或知识库内容即可完成回答？"
+      ]
+    }
+  ]
+}

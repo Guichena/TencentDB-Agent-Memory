@@ -1,0 +1,165 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T05-DS05-KNOW-EXPAND-01",
+  "stage": "DS05",
+  "team_id": "T05",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T05-KNOW-BP-02",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们在 meridian-storefront 维护商品详情页，正在复盘媒体区域的首屏布局稳定性。"
+        },
+        {
+          "role": "assistant",
+          "content": "本次范围限定为 Meridian 的前端决策记录，只核对媒体占位与布局偏移，不延伸到结账流程或通用组件重构。"
+        },
+        {
+          "role": "user",
+          "content": "商品主图在网络较慢时会晚于标题出现，验收要确认页面是否先保留稳定的媒体盒子。"
+        },
+        {
+          "role": "assistant",
+          "content": "请把布局稳定性与 hydration 提示、图片懒加载优先级分开；那两条 storefront 线索只作为同域背景，不要替代占位决策。"
+        },
+        {
+          "role": "user",
+          "content": "我需要找到关于媒体占位的既定规则，并确认它要求的尺寸约束和验证顺序。"
+        },
+        {
+          "role": "assistant",
+          "content": "回答应聚焦 Meridian 当前决策记录中的可执行规则，保留页面实现所需的文件线索，不假设新的实验数据。"
+        },
+        {
+          "role": "user",
+          "content": "如果记录中同时提到首图加载策略，只摘出它与布局偏移验收直接相关的部分。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会先按已确定的项目范围查找对应页面，再在命中后停止，输出占位规则、尺寸约束与 rollout 顺序。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请给出 Meridian 媒体占位的既定规则、尺寸约束、验证顺序和对应决策文件。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "当前上下文还没有这条决策记录的正文；请先补齐媒体占位规则、尺寸约束、验证顺序和文件位置，再回答我的问题。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少 Meridian 决策库中媒体占位规则的正文、尺寸约束、验证顺序与文件位置。",
+          "route": "knowledge",
+          "target_asset_ids": ["T05-KNOWLEDGE-MERIDIAN-WIKI"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "获得媒体占位决策正文、尺寸约束、验证顺序和文件位置后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "决策记录已确认：商品媒体必须在内容到达前保留固定宽高比盒子，优先使用明确的 width/height 或 aspect-ratio；首图预加载不能替代空间预留。文件是 decisions/media-placeholder-cls.md，验证顺序为先按商品图库的 4:3 约束预留空间，再测量 CLS，最后才调整加载优先级。请基于这些结果回答。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "负例 delta 已完整给出占位规则、尺寸约束、预加载边界、决策文件与三步验证顺序；无需再查内部页面。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T05-MERIDIAN-DISTRACTOR-HYDRATION", "T05-MERIDIAN-DISTRACTOR-IMAGE-LAZYLOAD"],
+      "controlled_delta_note": "正负例共享完全相同的 8 条上下文与查询，仅第 9 条 delta 改变：正例缺少媒体占位决策事实，负例补足同一组规则、文件和验证顺序。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "唯一信息缺口是否只包含媒体占位的规则、尺寸约束、验证顺序和文件位置？",
+        "正例的首动作是否唯一指向 Meridian 决策库，并在命中正文后停止？",
+        "负例是否完整提供固定宽高比、width/height 或 aspect-ratio、预加载边界、文件和三步验证顺序？",
+        "正负例是否只改变第 9 条 delta，且共享上下文与 query 逐字一致？",
+        "两个同域干扰是否仅作为 author-only 标记或背景概念，没有改变目标页面的唯一性？",
+        "provider-visible 文本是否没有内部资源标识、动作名或协议路径泄漏？",
+        "负例是否不依赖历史、Skill 或其他知识资源即可直接作答？"
+      ]
+    },
+    {
+      "draft_pair_id": "T05-KNOW-BP-03",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "pulse-checkout 的结账回归最近要核对确认动作的调用边界，重点是常规付款入口。"
+        },
+        {
+          "role": "assistant",
+          "content": "范围只覆盖 Pulse 结账调用关系和稳定定位器约定；金额校验与支付重试的相关线索保留为同域干扰。"
+        },
+        {
+          "role": "user",
+          "content": "Review 页面和快捷支付按钮都可能触发确认动作，代码评审需要分清谁是真正的直接调用者。"
+        },
+        {
+          "role": "assistant",
+          "content": "不要从测试断言或网络等待推断调用图；只返回调用图中可核对的符号、文件和行号。"
+        },
+        {
+          "role": "user",
+          "content": "待核对的符号名是 confirmPurchase，结果要覆盖所有直接入口，并标出常规结账入口。"
+        },
+        {
+          "role": "assistant",
+          "content": "这次只解决调用者定位，不评价重试策略、总价计算或 E2E 定位器是否需要修改。"
+        },
+        {
+          "role": "user",
+          "content": "如果有多个入口，请把 Review 面板与快捷付款分列，避免把间接链路当成直接关系。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会依据当前项目选择调用关系资料，命中后只整理直接调用者和常规入口的核对点。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请给出 confirmPurchase 的直接调用者、文件行号，并指出常规结账入口需要先核对哪个调用点。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "当前上下文仍没有 confirmPurchase 的调用关系结果；请先补齐直接调用者、文件行号和常规入口，再回答后续核对问题。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少 Pulse 调用图中 confirmPurchase 的完整直接调用者列表、文件行号及常规结账入口标记。",
+          "route": "knowledge",
+          "target_asset_ids": ["T05-KNOWLEDGE-PULSE-CG"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "获得 confirmPurchase 的直接调用者与位置，并确认常规入口后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "调用图结果已确认：confirmPurchase 的直接调用者是 src/checkout/ReviewPanel.tsx 第 88 行与 src/checkout/ExpressPayButton.tsx 第 52 行；前者是常规结账入口，后者是快捷支付入口。请基于这些结果回答。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "负例 delta 已提供完整直接调用者、文件行号及常规与快捷入口的区分；不需要额外检索即可回答。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T05-PULSE-DISTRACTOR-VALIDATE-TOTAL", "T05-PULSE-DISTRACTOR-RETRY-PAYMENT"],
+      "controlled_delta_note": "正负例共享完全相同的 8 条上下文与查询，仅第 9 条 delta 改变：正例缺少调用关系事实，负例补足同一组直接调用者、位置与入口区分。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "唯一信息缺口是否仅为 confirmPurchase 的直接调用者、文件行号与常规入口，而不是测试或支付策略？",
+        "正例的首动作是否唯一指向 Pulse 调用关系资料，并在得到完整调用者结果后停止？",
+        "负例是否给出了两个直接调用者的精确路径、行号及常规/快捷入口区分？",
+        "正负例是否只改变第 9 条 delta，且共享上下文与 query 逐字一致？",
+        "金额校验和支付重试两个同域干扰是否不会被误当成目标调用关系？",
+        "provider-visible 文本是否没有内部资源标识、动作名或协议路径泄漏？",
+        "负例是否可仅凭当前 delta 与共享上下文作答，不依赖历史或 Skill？"
+      ]
+    }
+  ]
+}

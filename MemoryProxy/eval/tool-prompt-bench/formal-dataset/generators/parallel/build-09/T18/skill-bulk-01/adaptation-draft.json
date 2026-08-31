@@ -1,0 +1,135 @@
+{
+  "schema_version": "task1.skill_adaptation_draft.v1",
+  "batch_id": "T18-SKL-BULK-01",
+  "team_id": "T18",
+  "adaptations": [
+    {
+      "asset_id": "T18-SKL-01",
+      "listing_description": "Diagnose and improve Python service performance across CPU, memory, execution time, and I/O. Use when profiling a Python performance regression or selecting measured optimization strategies.",
+      "use_when": ["Profiling Python CPU or memory behavior", "Investigating execution-time or I/O regressions", "Comparing measured optimization options"],
+      "do_not_use_when": ["Do not use for non-Python performance work", "Do not optimize without a measured baseline"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅限定在宿主的 Python 性能诊断和优化场景；保留原始剖析、指标、优化策略与验证顺序。"
+    },
+    {
+      "asset_id": "T18-SKL-02",
+      "listing_description": "Design Go concurrency with goroutines, channels, synchronization primitives, and context, including worker pools and graceful shutdown.",
+      "use_when": ["Building concurrent Go applications", "Implementing worker pools or pipelines", "Debugging races or goroutine lifecycle issues"],
+      "do_not_use_when": ["Do not use for non-Go concurrency", "Do not leave cancellation or goroutine exit paths unspecified"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅限定在宿主的 Go 并发设计与诊断场景；保留原始模式、取消、关闭和竞态检测内容及详细资源边界。"
+    },
+    {
+      "asset_id": "T18-SKL-03",
+      "listing_description": "Apply SQL optimization patterns for query performance, indexes, execution plans, and scalable database access.",
+      "use_when": ["Analyzing slow SQL queries", "Reviewing execution plans and index choices", "Improving database access performance"],
+      "do_not_use_when": ["Do not use for non-SQL application logic", "Do not apply changes without measuring their effect"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主数据库和 SQL 性能场景边界；保留原始查询、索引、计划与验证步骤。"
+    },
+    {
+      "asset_id": "T18-SKL-04",
+      "listing_description": "Implement distributed tracing to follow requests across microservices, understand dependencies, and identify latency or failure points.",
+      "use_when": ["Debugging distributed latency", "Understanding service dependencies", "Tracing error propagation and request paths"],
+      "do_not_use_when": ["Do not use when the issue has no distributed request path", "Do not treat traces as a substitute for service evidence"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅限定在宿主的分布式请求可观测性场景；保留原始采样、传播、标记、日志关联、告警和排查内容。"
+    },
+    {
+      "asset_id": "T18-SKL-05",
+      "listing_description": "Implement service-level objectives and latency-oriented observability practices for performance and reliability work.",
+      "use_when": ["Defining latency or reliability objectives", "Connecting service measurements to operational thresholds"],
+      "do_not_use_when": ["Do not use for feature implementation without an objective", "Do not replace measurements with an unverified target"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主 SLO 与性能可观测性边界；保留原始目标、指标和验证流程。"
+    },
+    {
+      "asset_id": "T18-SKL-06",
+      "listing_description": "Optimize Spark workloads through partitioning, shuffle, and throughput-oriented processing practices.",
+      "use_when": ["Diagnosing Spark throughput or partition imbalance", "Reviewing shuffle and batch-processing performance"],
+      "do_not_use_when": ["Do not use for non-Spark data processing", "Do not tune partitioning without workload evidence"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅限定在宿主 Cascade 数据处理场景；保留原始 Spark 优化与吞吐检查顺序。"
+    },
+    {
+      "asset_id": "T18-SKL-07",
+      "listing_description": "Design and review PostgreSQL tables with appropriate data types, constraints, indexes, partitioning, and performance patterns.",
+      "use_when": ["Designing PostgreSQL-specific schemas", "Reviewing types, constraints, indexes, or partitions", "Balancing read paths with write-heavy workloads"],
+      "do_not_use_when": ["Do not use for a database engine with different semantics", "Do not denormalize without measured benefit", "Do not add indexes unrelated to real access paths"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅限定在宿主 PostgreSQL 表设计审查；保留原始类型、约束、索引、分区和模式演进原则。"
+    },
+    {
+      "asset_id": "T18-SKL-08",
+      "listing_description": "Configure Prometheus collection and monitoring for service performance and operational signals.",
+      "use_when": ["Setting up Prometheus monitoring", "Reviewing collection and metric configuration"],
+      "do_not_use_when": ["Do not use for tracing-only investigations", "Do not change monitoring configuration without checking service impact"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主 Sentinel 指标监控边界；保留原始配置、采集和验证内容。"
+    },
+    {
+      "asset_id": "T18-SKL-09",
+      "listing_description": "Observe service-mesh traffic and dependencies for distributed performance and reliability investigations.",
+      "use_when": ["Investigating service-mesh request behavior", "Reviewing cross-service traffic and dependency signals"],
+      "do_not_use_when": ["Do not use when no service mesh is involved", "Do not infer application causes from mesh signals alone"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅限定在宿主微服务网络观测边界；保留原始服务网格观测步骤。"
+    },
+    {
+      "asset_id": "T18-SKL-10",
+      "listing_description": "Optimize Bazel builds for large monorepos with target boundaries, dependency discipline, remote caching or execution, and build governance.",
+      "use_when": ["Setting up Bazel in a monorepo", "Optimizing build times", "Configuring remote caching or execution"],
+      "do_not_use_when": ["Do not use for non-Bazel build systems", "Do not hide dependencies behind broad globs", "Do not ignore build warnings or generated directories"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅限定在宿主 Forge 构建效率场景；保留原始工作区、目标、依赖、缓存、可见性和反模式内容。"
+    },
+    {
+      "asset_id": "T18-SKL-11",
+      "listing_description": "Improve Turborepo caching and task orchestration for repository build performance.",
+      "use_when": ["Reviewing Turborepo cache behavior", "Optimizing monorepo task execution"],
+      "do_not_use_when": ["Do not use for repositories without Turborepo", "Do not change task boundaries without checking dependency behavior"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主 Forge 构建缓存场景边界；保留原始缓存与任务编排步骤。"
+    },
+    {
+      "asset_id": "T18-SKL-12",
+      "listing_description": "Apply memory-safety patterns for systems programming and resource-sensitive implementations.",
+      "use_when": ["Reviewing memory-safety risks in systems code", "Investigating resource lifetime concerns"],
+      "do_not_use_when": ["Do not use for unrelated performance symptoms", "Do not infer a memory-safety issue without code evidence"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅限定在宿主系统代码内存安全边界；保留原始安全模式和审查流程。"
+    },
+    {
+      "asset_id": "T18-SKL-13",
+      "listing_description": "Apply Node.js backend patterns for service implementation, runtime behavior, and maintainable request handling.",
+      "use_when": ["Designing or reviewing Node.js backend services", "Investigating Node.js request or runtime behavior"],
+      "do_not_use_when": ["Do not use for non-Node.js backends", "Do not apply backend patterns without confirming the runtime"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主服务端工程边界；保留原始 Node.js 后端模式与检查顺序。"
+    },
+    {
+      "asset_id": "T18-SKL-14",
+      "listing_description": "Optimize PostgreSQL and MySQL database performance through measured query analysis, index design, tuning, and validation.",
+      "use_when": ["Analyzing slow queries and execution plans", "Designing indexes or query rewrites", "Tuning database performance and lock behavior"],
+      "do_not_use_when": ["Do not use without a measured baseline", "Do not apply multiple performance changes at once", "Do not ignore write or replication impact"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅限定在宿主 Quartz/Cascade 数据库性能分析边界；保留原始基线、瓶颈、增量实施和验证工作流。"
+    },
+    {
+      "asset_id": "T18-SKL-15",
+      "listing_description": "Develop and review production Go services with concurrency, error handling, testing, and maintainability practices.",
+      "use_when": ["Building Go services", "Reviewing Go concurrency or error-handling design"],
+      "do_not_use_when": ["Do not use for non-Go services", "Do not replace focused concurrency guidance when a specific pattern is required"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅记录宿主 Ironclad Go 服务边界；保留原始服务开发、测试和审查步骤。"
+    },
+    {
+      "asset_id": "T18-SKL-16",
+      "listing_description": "Engineer Rust systems with ownership, concurrency, performance, and safe resource-management practices.",
+      "use_when": ["Designing or reviewing Rust systems code", "Investigating Rust concurrency or performance concerns"],
+      "do_not_use_when": ["Do not use for non-Rust code", "Do not infer Rust-specific behavior for another language"],
+      "core_steps_preserved": true,
+      "adaptation_note": "仅限定在宿主系统工程的 Rust 场景；保留原始所有权、并发、性能和安全步骤。"
+    }
+  ]
+}

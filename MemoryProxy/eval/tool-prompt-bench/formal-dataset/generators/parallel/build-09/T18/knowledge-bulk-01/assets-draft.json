@@ -1,0 +1,99 @@
+{
+  "schema_version": "task1.knowledge_asset_candidates.v1",
+  "stage": "DS03",
+  "team_id": "T18",
+  "synthetic": true,
+  "candidates": [
+    {
+      "asset_id": "T18-KNW-01",
+      "status": "ready",
+      "type": "wiki",
+      "name": "Quartz performance decisions",
+      "about": "Quartz 延迟、profiling 与容量决策索引。",
+      "summary": "Quartz 延迟、profiling 与容量主题的冻结决策索引，用于在三项资源中唯一选择 Quartz 主题；摘要不包含负责人、调用面或容量边界正文。",
+      "source": "internal_synthetic_fixture",
+      "tools": [
+        {"name": "search", "params": {"query": "string"}},
+        {"name": "read_page", "params": {"page_id": "string"}}
+      ],
+      "minimal_synthetic_query_result": {
+        "tool_listing": {
+          "tool_name": "tools/list",
+          "result": {"tools": [{"tool_name": "search", "params": {"query": "string"}}, {"tool_name": "read_page", "params": {"page_id": "string"}}]}
+        },
+        "successful_query": {
+          "tool_name": "search",
+          "params": {"query": "SpanBudget p99 ownership impact"},
+          "result": {
+            "decision": "SpanBudget p99 由 Quartz 性能平台团队负责，影响入口是 API gateway、异步任务 worker 和下游 RPC 聚合；容量判断以尾延迟预算在每级调用链的可加总上限为边界，超出预算先归因到持有该级 span 的团队，再调整采样与并发配置。",
+            "owner": "Quartz 性能平台团队",
+            "affected_call_surfaces": ["API gateway", "异步任务 worker", "下游 RPC 聚合"],
+            "capacity_boundary": "尾延迟预算在每级调用链的可加总上限",
+            "over_budget_action": "先归因到持有该级 span 的团队，再调整采样与并发配置"
+          }
+        }
+      }
+    },
+    {
+      "asset_id": "T18-KNW-02",
+      "status": "ready",
+      "type": "wiki",
+      "name": "Cascade throughput decisions",
+      "about": "Cascade Spark、数据库与批处理吞吐决策索引。",
+      "summary": "Cascade Spark、数据库与批处理吞吐主题的冻结决策索引，用于在三项资源中唯一选择 Cascade 主题；摘要不包含函数调用关系正文。",
+      "source": "internal_synthetic_fixture",
+      "tools": [
+        {"name": "search", "params": {"query": "string"}},
+        {"name": "read_page", "params": {"page_id": "string"}}
+      ],
+      "minimal_synthetic_query_result": {
+        "tool_listing": {
+          "tool_name": "tools/list",
+          "result": {"tools": [{"tool_name": "search", "params": {"query": "string"}}, {"tool_name": "read_page", "params": {"page_id": "string"}}]}
+        },
+        "successful_query": {
+          "tool_name": "search",
+          "params": {"query": "rebalancePartitions direct consumers"},
+          "result": {
+            "decision": "rebalancePartitions 的直接使用方是 buildShufflePlan 与 executePartitionRebalance；前者生成分区重平衡计划，后者在批处理执行阶段应用该计划。",
+            "symbol": "rebalancePartitions",
+            "direct_consumers": [
+              {"name": "buildShufflePlan", "role": "生成分区重平衡计划"},
+              {"name": "executePartitionRebalance", "role": "在批处理执行阶段应用分区重平衡计划"}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "asset_id": "T18-KNW-03",
+      "status": "ready",
+      "type": "wiki",
+      "name": "Forge build performance decisions",
+      "about": "Forge 远程执行、缓存与构建性能决策索引。",
+      "summary": "Forge 远程执行、缓存与构建性能主题的冻结决策索引，用于在三项资源中唯一选择 Forge 主题；摘要不包含回退触发条件、边界或设计理由正文。",
+      "source": "internal_synthetic_fixture",
+      "tools": [
+        {"name": "search", "params": {"query": "string"}},
+        {"name": "read_page", "params": {"page_id": "string"}}
+      ],
+      "minimal_synthetic_query_result": {
+        "tool_listing": {
+          "tool_name": "tools/list",
+          "result": {"tools": [{"tool_name": "search", "params": {"query": "string"}}, {"tool_name": "read_page", "params": {"page_id": "string"}}]}
+        },
+        "successful_query": {
+          "tool_name": "search",
+          "params": {"query": "remote execution fallback rationale"},
+          "result": {
+            "decision": "远程执行服务不可用或排队超过 30 秒时允许回退到本地执行；本地执行仍复用相同的 hermetic 输入与 action digest，但结果不视为远程缓存命中。这样既避免远程队列阻塞开发反馈，也保持输入与产物关系可复现；回退仅适用于允许本地执行的动作，受策略禁止的动作仍直接失败。",
+            "fallback_triggers": ["远程执行服务不可用", "远程排队超过 30 秒"],
+            "local_execution_boundary": "仅适用于允许本地执行的动作；受策略禁止的动作直接失败",
+            "cache_semantics": "本地结果不视为远程缓存命中",
+            "rationale": "避免远程队列阻塞开发反馈，同时保持 hermetic 输入、action digest 与产物关系可复现"
+          }
+        }
+      }
+    }
+  ]
+}

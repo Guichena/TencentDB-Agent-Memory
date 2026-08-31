@@ -1,0 +1,66 @@
+{
+  "schema_version": "task1.formal_knowledge_assets.v1",
+  "team_id": "T01",
+  "knowledge": [
+    {
+      "assetId": "cg-t01ujs01",
+      "ownerAgentId": "agent-task1-t01-general",
+      "sourceEvidenceIds": [
+        "source-t01-knowledge-ujson-codegraph"
+      ],
+      "observedAt": "2026-08-29T18:10:00+08:00",
+      "type": "code_graph",
+      "name": "ultrajson pinned code graph",
+      "repoUrl": "https://github.com/ultrajson/ultrajson",
+      "repoCommit": "8f23cce7929c49b9235d2f46ac9a403d051a9c95",
+      "indexVersion": "task1-codegraph-fixture-v1",
+      "snapshotSha256": "7f76fa5b242f05fa47539029605fe071dc6059ac81eca1dcae40e59c77eb7022",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t01-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "5ea4a81476b3c7458c6ff880a132a12fda711120dd7b271f1458aedeb7c57a3e"
+    },
+    {
+      "assetId": "cg-t01mypy1",
+      "ownerAgentId": "agent-task1-t01-general",
+      "sourceEvidenceIds": [
+        "source-t01-knowledge-mypy-codegraph"
+      ],
+      "observedAt": "2026-08-29T18:10:00+08:00",
+      "type": "code_graph",
+      "name": "mypy pinned code graph",
+      "repoUrl": "https://github.com/python/mypy",
+      "repoCommit": "d7b24514d7301f86031b7d1e2215cf8c2476bec0",
+      "indexVersion": "task1-codegraph-fixture-v1",
+      "snapshotSha256": "e99492e3a86dd23a98bce3ea92893171c5027bf56bb8c29ae964aad90830106a",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t01-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "ccacc414808aae5d09e2bed93c24ec60cbaa3fc9f428521043e1876c717a8719"
+    },
+    {
+      "assetId": "wiki-t01rel01",
+      "ownerAgentId": "agent-task1-t01-general",
+      "sourceEvidenceIds": [
+        "source-t01-knowledge-reliability-wiki"
+      ],
+      "observedAt": "2026-08-29T18:10:00+08:00",
+      "type": "wiki",
+      "name": "T01 Python reliability evidence policy",
+      "snapshotSha256": "2dd2e39e354c6ee587f489eacebb0487e48345836ac4a58969fbf54b4aef840b",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t01-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "82e0272ab1479fde6eab824e2e0e6510d3ba39c989f2d993be1cb73323caf733"
+    }
+  ]
+}

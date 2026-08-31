@@ -1,0 +1,593 @@
+{
+  "schema_version": "task1.team_input_pack.v1",
+  "build_id": "build-03",
+  "stage": "DS05",
+  "team_id": "T05",
+  "split": "hidden_test",
+  "world_as_of": "2026-08-29T21:30:00+08:00",
+  "generator_contract": {
+    "model": "gpt-5.6-luna",
+    "reasoning_effort": "high",
+    "fork_turns": "none",
+    "verbosity": "medium",
+    "prompt_version": "task1.luna-batch.v1",
+    "draft_only": true,
+    "may_not_write_staging": true,
+    "may_not_decide_final_gold": true
+  },
+  "team": {
+    "name": "Web 产品",
+    "mission": "维护数据可视化、React 商品体验、性能稳定性与浏览器回归。",
+    "project_streams": [
+      {
+        "id": "atlas-insights",
+        "summary": "D3 驱动的经营分析图表，关注确定性 SVG、tooltip 与多序列刻度。"
+      },
+      {
+        "id": "meridian-storefront",
+        "summary": "React 商品页与媒体卡片，关注 CLS、hydration 和首屏体验。"
+      },
+      {
+        "id": "beacon-console",
+        "summary": "React 管理控制台，关注重渲染、缓存订阅和长列表。"
+      },
+      {
+        "id": "pulse-checkout",
+        "summary": "结账流程 Playwright 回归，关注定位器、等待、trace 与网络 mock。"
+      },
+      {
+        "id": "canvas-reports",
+        "summary": "报告预览与浏览器测量，关注 Web Vitals、响应式布局和视觉稳定性。"
+      }
+    ],
+    "agents": [
+      {
+        "agent_id": "agent-task1-t05-general",
+        "role": "当前通用业务 Agent"
+      },
+      {
+        "agent_id": "agent-task1-t05-assets-a",
+        "role": "团队 Skill 与 Memory 资产来源 A"
+      },
+      {
+        "agent_id": "agent-task1-t05-assets-b",
+        "role": "团队 Skill 与 Memory 资产来源 B"
+      }
+    ]
+  },
+  "counts": {
+    "l0_sessions": 10,
+    "l0_messages_each": [
+      12,
+      20
+    ],
+    "l1_memories": 16,
+    "l2_scenes": 4,
+    "l3_profiles": 1,
+    "skills": 16,
+    "knowledge": 3,
+    "memory_pairs": 6,
+    "skill_pairs": 6,
+    "knowledge_pairs": 3,
+    "natural_negatives": 10,
+    "total_pairs": 15,
+    "total_cases": 40
+  },
+  "source_lock": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/source-lock.json",
+  "skill_pool": [
+    {
+      "asset_id": "T05-SKILL-REACT",
+      "source_id": "T05-SRC-REACT",
+      "name": "react",
+      "description": "React 19 组件、Hook、effect、并发渲染与 memoization 的通用实现边界。",
+      "use_when": "任务是 React 组件或 Hook 的实现和审查，且并非专门的性能审计流程。",
+      "do_not_use_when": "Next.js 路由缓存、表单库专属行为或浏览器测量时不用。",
+      "owner_agent_id": "agent-task1-t05-general",
+      "visibility": "private",
+      "bound_to_active_agent": true,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/react/SKILL.md",
+      "technical_invariant": "Preserve the source file's ordered workflow and technical recommendations; adaptation is limited to naming and routing boundaries.",
+      "resources": []
+    },
+    {
+      "asset_id": "T05-SKILL-REACT-PERFORMANCE",
+      "source_id": "T05-SRC-REACT-PERF",
+      "name": "react-performance",
+      "description": "按影响优先级处理 React/Next.js waterfall、bundle、RSC、重渲染和渲染成本。",
+      "use_when": "已有 React 性能症状，需要选择并实施有证据的优化策略。",
+      "do_not_use_when": "需要浏览器实测指标、普通组件功能实现或 Playwright E2E 时不用。",
+      "owner_agent_id": "agent-task1-t05-assets-a",
+      "visibility": "team",
+      "bound_to_active_agent": false,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/vercel-react-best-practices/SKILL.md",
+      "technical_invariant": "Preserve the source file's ordered workflow and technical recommendations; adaptation is limited to naming and routing boundaries.",
+      "resources": []
+    },
+    {
+      "asset_id": "T05-SKILL-TANSTACK-QUERY",
+      "source_id": "T05-SRC-TANSTACK",
+      "name": "tanstack-query",
+      "description": "TanStack Query v5 查询、缓存、失效、预取和渲染订阅优化。",
+      "use_when": "问题明确涉及 useQuery、mutation、queryClient 或缓存失效。",
+      "do_not_use_when": "普通 React 本地状态、D3 数据绑定或 E2E 测试时不用。",
+      "owner_agent_id": "agent-task1-t05-general",
+      "visibility": "private",
+      "bound_to_active_agent": true,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/tanstack-query/SKILL.md",
+      "technical_invariant": "Preserve the source file's ordered workflow and technical recommendations; adaptation is limited to naming and routing boundaries.",
+      "resources": []
+    },
+    {
+      "asset_id": "T05-SKILL-REACT-HOOK-FORM",
+      "source_id": "T05-SRC-RHF",
+      "name": "react-hook-form",
+      "description": "React Hook Form v7 的订阅、控制器、字段数组和表单性能规则。",
+      "use_when": "问题明确涉及 useForm、useWatch、useController 或字段数组。",
+      "do_not_use_when": "普通 React 状态、TanStack Query 或页面 CLS 时不用。",
+      "owner_agent_id": "agent-task1-t05-assets-a",
+      "visibility": "team",
+      "bound_to_active_agent": false,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/react-hook-form/SKILL.md",
+      "technical_invariant": "Preserve the source file's ordered workflow and technical recommendations; adaptation is limited to naming and routing boundaries.",
+      "resources": []
+    },
+    {
+      "asset_id": "T05-SKILL-NEXTJS",
+      "source_id": "T05-SRC-NEXTJS",
+      "name": "nextjs",
+      "description": "Next.js 16 App Router、缓存、Server Components、Actions 和路由规则。",
+      "use_when": "任务明确涉及 Next.js App Router 或服务端/客户端边界。",
+      "do_not_use_when": "框架无关 React 组件、D3 可视化或纯浏览器测量时不用。",
+      "owner_agent_id": "agent-task1-t05-assets-a",
+      "visibility": "team",
+      "bound_to_active_agent": false,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/nextjs/SKILL.md",
+      "technical_invariant": "Preserve the source file's ordered workflow and technical recommendations; adaptation is limited to naming and routing boundaries.",
+      "resources": []
+    },
+    {
+      "asset_id": "T05-SKILL-FEATURE-ARCH",
+      "source_id": "T05-SRC-FEATURE-ARCH",
+      "name": "feature-architecture",
+      "description": "React feature-based 模块边界和可扩展目录组织。",
+      "use_when": "需要调整前端 feature/shared 分层和依赖方向。",
+      "do_not_use_when": "局部性能测量、单个图表或测试断言时不用。",
+      "owner_agent_id": "agent-task1-t05-assets-b",
+      "visibility": "team",
+      "bound_to_active_agent": false,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/feature-arch/SKILL.md",
+      "technical_invariant": "Preserve the source file's ordered workflow and technical recommendations; adaptation is limited to naming and routing boundaries.",
+      "resources": []
+    },
+    {
+      "asset_id": "T05-SKILL-UI-DESIGN",
+      "source_id": "T05-SRC-UI-DESIGN",
+      "name": "ui-design",
+      "description": "前端可用性、可访问性、响应式布局和视觉实现审查。",
+      "use_when": "需要 UI/UX 或响应式实现与审查。",
+      "do_not_use_when": "React 重渲染、Web Vitals 采集或 Playwright 可靠性问题时不用。",
+      "owner_agent_id": "agent-task1-t05-assets-b",
+      "visibility": "team",
+      "bound_to_active_agent": false,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/ui-design/SKILL.md",
+      "technical_invariant": "Preserve the source file's ordered workflow and technical recommendations; adaptation is limited to naming and routing boundaries.",
+      "resources": []
+    },
+    {
+      "asset_id": "T05-SKILL-WEB-GUIDELINES",
+      "source_id": "T05-SRC-WEB-GUIDELINES",
+      "name": "web-interface-guidelines",
+      "description": "按 Web Interface Guidelines 审查已给 UI 代码。",
+      "use_when": "请求是界面规范合规审查并已提供相关 UI 代码。",
+      "do_not_use_when": "创建 D3 图表、诊断 CLS 根因或写 E2E 测试时不用。",
+      "owner_agent_id": "agent-task1-t05-assets-b",
+      "visibility": "team",
+      "bound_to_active_agent": false,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/web-design-guidelines/SKILL.md",
+      "technical_invariant": "Preserve the source file's ordered workflow and technical recommendations; adaptation is limited to naming and routing boundaries.",
+      "resources": []
+    },
+    {
+      "asset_id": "T05-SKILL-PLAYWRIGHT",
+      "source_id": "T05-SRC-PLAYWRIGHT",
+      "name": "playwright-e2e",
+      "description": "为 React/Next.js E2E 测试提供稳定定位、等待、隔离、追踪与 CI 调试规则。",
+      "use_when": "需要编写或修复 Playwright E2E 测试，尤其定位器、等待与 trace。",
+      "do_not_use_when": "只测页面性能指标、Vitest 单测或浏览器探索时不用。",
+      "owner_agent_id": "agent-task1-t05-general",
+      "visibility": "private",
+      "bound_to_active_agent": true,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/playwright/SKILL.md",
+      "technical_invariant": "Preserve the source file's ordered workflow and technical recommendations; adaptation is limited to naming and routing boundaries.",
+      "resources": [
+        {
+          "path": "skills/playwright/references/debug-trace-viewer.md",
+          "raw_file_sha256": "cf90a3c680662da2028539ce9d59fb89467465a666d50b09bd37dabcf2385c3d",
+          "local_raw_path": "raw/playwright/references/debug-trace-viewer.md"
+        }
+      ]
+    },
+    {
+      "asset_id": "T05-SKILL-VITEST",
+      "source_id": "T05-SRC-VITEST",
+      "name": "vitest",
+      "description": "Vitest 4 单元测试、mock、异步断言、worker 和测试性能。",
+      "use_when": "任务是 Vitest 单元/组件测试。",
+      "do_not_use_when": "Playwright E2E、浏览器测量或 TDD 流程设计时不用。",
+      "owner_agent_id": "agent-task1-t05-assets-b",
+      "visibility": "team",
+      "bound_to_active_agent": false,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/vitest/SKILL.md",
+      "technical_invariant": "Preserve the source file's ordered workflow and technical recommendations; adaptation is limited to naming and routing boundaries.",
+      "resources": []
+    },
+    {
+      "asset_id": "T05-SKILL-MSW",
+      "source_id": "T05-SRC-MSW",
+      "name": "msw",
+      "description": "MSW v2 的浏览器/Node handler、网络模拟与测试隔离。",
+      "use_when": "任务明确需要 MSW 请求 handler 或网络 mock。",
+      "do_not_use_when": "直接 Playwright route、真实 Web Vitals 测量或 D3 数据处理时不用。",
+      "owner_agent_id": "agent-task1-t05-assets-a",
+      "visibility": "team",
+      "bound_to_active_agent": false,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/msw/SKILL.md",
+      "technical_invariant": "Preserve the source file's ordered workflow and technical recommendations; adaptation is limited to naming and routing boundaries.",
+      "resources": []
+    },
+    {
+      "asset_id": "T05-SKILL-TDD",
+      "source_id": "T05-SRC-TDD",
+      "name": "tdd",
+      "description": "red-green-refactor 流程和测试先行边界。",
+      "use_when": "用户明确要求测试先行或 red-green-refactor。",
+      "do_not_use_when": "只修 Playwright flaky test、测量 CLS 或实现 D3 图表时不用。",
+      "owner_agent_id": "agent-task1-t05-assets-b",
+      "visibility": "team",
+      "bound_to_active_agent": false,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/tdd/SKILL.md",
+      "technical_invariant": "Preserve the source file's ordered workflow and technical recommendations; adaptation is limited to naming and routing boundaries.",
+      "resources": []
+    },
+    {
+      "asset_id": "T05-SKILL-TAILWIND",
+      "source_id": "T05-SRC-TAILWIND",
+      "name": "tailwind-v4",
+      "description": "Tailwind CSS v4 样式组织、构建输出和性能边界。",
+      "use_when": "任务明确涉及 Tailwind v4 utilities、theme 或生成 CSS。",
+      "do_not_use_when": "普通 CSS、D3 SVG 属性、React render profile 时不用。",
+      "owner_agent_id": "agent-task1-t05-general",
+      "visibility": "private",
+      "bound_to_active_agent": true,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/tailwind/SKILL.md",
+      "technical_invariant": "Preserve the source file's ordered workflow and technical recommendations; adaptation is limited to naming and routing boundaries.",
+      "resources": []
+    },
+    {
+      "asset_id": "T05-SKILL-D3-VISUALIZATION",
+      "source_id": "T05-SRC-D3",
+      "name": "d3-visualization",
+      "description": "可复现的 D3 SVG/HTML 可视化流程，覆盖数据绑定、比例尺、轴、图例和确定性输出。",
+      "use_when": "需要构建或修正 D3 图表、交互式 SVG 或离线可视化。",
+      "do_not_use_when": "只需表格摘要、浏览器性能测量或 React 重渲染诊断时不用。",
+      "owner_agent_id": "agent-task1-t05-general",
+      "visibility": "private",
+      "bound_to_active_agent": true,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/d3-visualization/SKILL.md",
+      "technical_invariant": "Preserve the source file's ordered workflow and technical recommendations; adaptation is limited to naming and routing boundaries.",
+      "resources": []
+    },
+    {
+      "asset_id": "T05-SKILL-PLAYWRIGHT-CLI",
+      "source_id": "T05-SRC-PLAYWRIGHT-CLI",
+      "name": "playwright-browser-operations",
+      "description": "使用 Playwright CLI 驱动浏览器、快照、trace、网络与会话。",
+      "use_when": "需要通过 Playwright CLI 进行浏览器交互或调试。",
+      "do_not_use_when": "编写 Playwright Test 代码、测 Web Vitals 或静态 UI 审查时不用。",
+      "owner_agent_id": "agent-task1-t05-assets-a",
+      "visibility": "team",
+      "bound_to_active_agent": false,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/playwright-cli/SKILL.md",
+      "technical_invariant": "Preserve the source file's ordered workflow and technical recommendations; adaptation is limited to naming and routing boundaries.",
+      "resources": []
+    },
+    {
+      "asset_id": "T05-SKILL-BROWSER-MEASUREMENT",
+      "source_id": "T05-SRC-AGENT-BROWSER",
+      "name": "browser-vitals-measurement",
+      "description": "通过浏览器采集 Web Vitals 与 React render profile，区分 CLS、LCP、INP 和重渲染证据。",
+      "use_when": "需要实际浏览器中的 Web Vitals、hydration 或 React render 证据。",
+      "do_not_use_when": "只写 Playwright 断言、静态代码审查或 D3 图形实现时不用。",
+      "owner_agent_id": "agent-task1-t05-general",
+      "visibility": "private",
+      "bound_to_active_agent": true,
+      "raw_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/agent-browser-core/SKILL.md",
+      "technical_invariant": "Preserve the source file's ordered workflow and technical recommendations; adaptation is limited to naming and routing boundaries.",
+      "resources": []
+    }
+  ],
+  "skill_positive_blueprints": [
+    {
+      "id": "T05-SKILL-BP-01",
+      "target_asset_id": "T05-SKILL-D3-VISUALIZATION",
+      "listing_state": "listed",
+      "route_candidate": [
+        "skill_view"
+      ],
+      "intent": "复现多序列 D3 图表的确定性结构。"
+    },
+    {
+      "id": "T05-SKILL-BP-02",
+      "target_asset_id": "T05-SKILL-BROWSER-MEASUREMENT",
+      "listing_state": "listed",
+      "route_candidate": [
+        "skill_view"
+      ],
+      "intent": "采集商品页 CLS 与 hydration 指标。"
+    },
+    {
+      "id": "T05-SKILL-BP-03",
+      "target_asset_id": "T05-SKILL-REACT-PERFORMANCE",
+      "listing_state": "not_listed_same_team_searchable",
+      "route_candidate": [
+        "skill_search",
+        "skill_view_by_id"
+      ],
+      "intent": "从 profiler 证据选择 React 性能优化顺序。"
+    },
+    {
+      "id": "T05-SKILL-BP-04",
+      "target_asset_id": "T05-SKILL-UI-DESIGN",
+      "listing_state": "not_listed_same_team_searchable",
+      "route_candidate": [
+        "skill_search",
+        "skill_view_by_id"
+      ],
+      "intent": "审查响应式空状态与信息层级。"
+    },
+    {
+      "id": "T05-SKILL-BP-05",
+      "target_asset_id": "T05-SKILL-PLAYWRIGHT-CLI",
+      "listing_state": "not_listed_same_team_searchable",
+      "route_candidate": [
+        "skill_search",
+        "skill_view_by_id"
+      ],
+      "intent": "用浏览器 CLI 捕获结账失败现场。"
+    },
+    {
+      "id": "T05-SKILL-BP-06",
+      "target_asset_id": "T05-SKILL-PLAYWRIGHT",
+      "listing_state": "listed",
+      "route_candidate": [
+        "skill_view",
+        "skill_files_read"
+      ],
+      "resource_path": "references/debug-trace-viewer.md",
+      "intent": "读取 trace viewer 资源以定位 flaky 回归。"
+    }
+  ],
+  "memory_asset_ids": {
+    "l0": [
+      "T05-L0-01",
+      "T05-L0-02",
+      "T05-L0-03",
+      "T05-L0-04",
+      "T05-L0-05",
+      "T05-L0-06",
+      "T05-L0-07",
+      "T05-L0-08",
+      "T05-L0-09",
+      "T05-L0-10"
+    ],
+    "l1": [
+      "T05-L1-01",
+      "T05-L1-02",
+      "T05-L1-03",
+      "T05-L1-04",
+      "T05-L1-05",
+      "T05-L1-06",
+      "T05-L1-07",
+      "T05-L1-08",
+      "T05-L1-09",
+      "T05-L1-10",
+      "T05-L1-11",
+      "T05-L1-12",
+      "T05-L1-13",
+      "T05-L1-14",
+      "T05-L1-15",
+      "T05-L1-16"
+    ],
+    "l2": [
+      "T05-L2-01",
+      "T05-L2-02",
+      "T05-L2-03",
+      "T05-L2-04"
+    ],
+    "l3": [
+      "T05-L3-01"
+    ]
+  },
+  "memory_positive_blueprints": [
+    {
+      "id": "T05-MEM-BP-01",
+      "project": "atlas-insights",
+      "route_candidate": [
+        "tdai_conversation_search"
+      ],
+      "target": "T05-L0-01",
+      "gap_kind": "上次 tooltip 坐标漂移的精确会话结论"
+    },
+    {
+      "id": "T05-MEM-BP-02",
+      "project": "meridian-storefront",
+      "route_candidate": [
+        "tdai_conversation_search",
+        "tdai_conversation_query"
+      ],
+      "target": "T05-L0-03",
+      "gap_kind": "需要完整复盘 CLS rollout 的顺序与排除项"
+    },
+    {
+      "id": "T05-MEM-BP-03",
+      "project": "beacon-console",
+      "route_candidate": [
+        "tdai_memory_search"
+      ],
+      "target": "T05-L1-05",
+      "gap_kind": "历史确认的重渲染归因结论"
+    },
+    {
+      "id": "T05-MEM-BP-04",
+      "project": "pulse-checkout",
+      "route_candidate": [
+        "tdai_memory_search"
+      ],
+      "target": "T05-L1-09",
+      "gap_kind": "团队已定的稳定定位器约定"
+    },
+    {
+      "id": "T05-MEM-BP-05",
+      "project": "atlas-insights",
+      "route_candidate": [
+        "tdai_atomic_query"
+      ],
+      "target": "T05-L1-13",
+      "gap_kind": "按 decision 类型与时间过滤旧的 Canvas 切换决策"
+    },
+    {
+      "id": "T05-MEM-BP-06",
+      "project": "canvas-reports",
+      "route_candidate": [
+        "tdai_read_scene"
+      ],
+      "target": "T05-L2-04",
+      "injected_path": "web/canvas-reports/cls-incident-playbook.md",
+      "gap_kind": "已注入索引对应的事故场景正文"
+    }
+  ],
+  "knowledge_assets": [
+    {
+      "asset_id": "T05-KNOWLEDGE-ATLAS-CG",
+      "type": "code_graph",
+      "name": "Atlas 图表代码索引",
+      "workspace_match": "atlas-insights",
+      "tool_list": [
+        {
+          "name": "find_symbol",
+          "required_params": [
+            "symbol"
+          ]
+        }
+      ]
+    },
+    {
+      "asset_id": "T05-KNOWLEDGE-MERIDIAN-WIKI",
+      "type": "wiki",
+      "name": "Meridian 前端决策库",
+      "workspace_match": "meridian-storefront",
+      "tool_list": [
+        {
+          "name": "search_pages",
+          "required_params": [
+            "query"
+          ]
+        }
+      ]
+    },
+    {
+      "asset_id": "T05-KNOWLEDGE-PULSE-CG",
+      "type": "code_graph",
+      "name": "Pulse 结账调用图",
+      "workspace_match": "pulse-checkout",
+      "tool_list": [
+        {
+          "name": "find_callers",
+          "required_params": [
+            "symbol"
+          ]
+        }
+      ]
+    }
+  ],
+  "knowledge_positive_blueprints": [
+    {
+      "id": "T05-KNOW-BP-01",
+      "target_asset_id": "T05-KNOWLEDGE-ATLAS-CG",
+      "route_candidate": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "intent": "查找图表符号的定义位置，当前输入没有代码索引结果。"
+    },
+    {
+      "id": "T05-KNOW-BP-02",
+      "target_asset_id": "T05-KNOWLEDGE-MERIDIAN-WIKI",
+      "route_candidate": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "intent": "查询 CLS 媒体占位决策，当前输入没有内部页面内容。"
+    },
+    {
+      "id": "T05-KNOW-BP-03",
+      "target_asset_id": "T05-KNOWLEDGE-PULSE-CG",
+      "route_candidate": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "intent": "查询结账路由调用者，当前输入没有调用图结果。"
+    }
+  ],
+  "provider_visible_constraints": {
+    "languages": [
+      "zh"
+    ],
+    "forbidden_tokens": [
+      "tdai_",
+      "skill_search",
+      "skill_view",
+      "skill_files_read",
+      "knowledge_id",
+      "tools/list",
+      "tools/call",
+      "target_asset",
+      "informationGap",
+      "pairId",
+      "/memory-bridge/",
+      "/skill-bridge/"
+    ],
+    "do_not_name_asset_ids": true,
+    "final_query_same_within_pair": true,
+    "only_changed_message_index_may_differ": true
+  },
+  "natural_negative_constraints": {
+    "count": 10,
+    "self_contained": true,
+    "full_distractor_pool_loaded": true,
+    "topics": [
+      "D3 局部数据变换",
+      "React 组件类型修正",
+      "CSS 布局修补",
+      "Playwright 已定位断言修改",
+      "文案与 aria 属性",
+      "小型纯函数",
+      "Vitest 已给定 mock",
+      "静态 SVG 属性",
+      "Next.js 已定位配置",
+      "MSW handler 局部修改"
+    ],
+    "must_not_depend_on_history_or_skill_or_knowledge": true
+  },
+  "sol_review_required": [
+    "唯一信息缺口",
+    "首动作唯一",
+    "完整最小链路",
+    "pair 单变量",
+    "目标资产可见",
+    "至少两个同域干扰",
+    "provider leakage=0",
+    "Negative 已充分",
+    "Skill 技术步骤未被改写"
+  ]
+}

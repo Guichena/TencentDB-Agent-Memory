@@ -1,0 +1,54 @@
+{
+  "schema_version": "task1.github_skill_source.v1",
+  "team_id": "T01",
+  "name": "grpo",
+  "repository_url": "https://github.com/benchflow-ai/skillsbench",
+  "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+  "source_path": "tasks/debug-trl-grpo/environment/skills/grpo/SKILL.md",
+  "license_spdx": "Apache-2.0",
+  "license_file": "../../licenses/Apache-2.0.txt",
+  "visibility": "same-team-search",
+  "main_raw_sha256": "90ef5f123f4b6107d85c69d53d6878aec29e5c08950dc52b9bd6fd872187804c",
+  "raw_files": [
+    {
+      "path": "references/grpo-algorithm.md",
+      "source_path": "tasks/debug-trl-grpo/environment/skills/grpo/references/grpo-algorithm.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/debug-trl-grpo/environment/skills/grpo/references/grpo-algorithm.md",
+      "sha256": "6c476930413c8692ad5ea937c96347f0aa344f0c28f8a1bf8716563687024d7c",
+      "byte_length": 4980
+    },
+    {
+      "path": "references/grpo-trainer-internals.md",
+      "source_path": "tasks/debug-trl-grpo/environment/skills/grpo/references/grpo-trainer-internals.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/debug-trl-grpo/environment/skills/grpo/references/grpo-trainer-internals.md",
+      "sha256": "6487434c2e6799bb3f7b7e4b5815afbe18c84ac09629eb68b676ac8bde566902",
+      "byte_length": 3954
+    },
+    {
+      "path": "SKILL.md",
+      "source_path": "tasks/debug-trl-grpo/environment/skills/grpo/SKILL.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/debug-trl-grpo/environment/skills/grpo/SKILL.md",
+      "sha256": "90ef5f123f4b6107d85c69d53d6878aec29e5c08950dc52b9bd6fd872187804c",
+      "byte_length": 4441
+    }
+  ],
+  "adapted_files": [
+    {
+      "path": "references/grpo-algorithm.md",
+      "sha256": "85c467949b9cae1fadbb1da6882125b64f5a8d475bac7ec97bebb6f4ad41ae70",
+      "byte_length": 5111
+    },
+    {
+      "path": "references/grpo-trainer-internals.md",
+      "sha256": "3365f4815e5789d1205bf3dbb738083141da4ecc45ce46f612bddc38148890a7",
+      "byte_length": 4067
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "85ea906ed63ffc4dbe03ef21a9bfaede187cb8660d1e758e7ba7c39d1582f5c0",
+      "byte_length": 4529
+    }
+  ],
+  "adaptation_diff": "adaptation.diff",
+  "frozen": true
+}

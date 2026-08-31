@@ -1,0 +1,14 @@
+diff --git a/raw/vscode-ext-commands/SKILL.md b/adapted/T06-SKILL-VSCODE-COMMANDS/SKILL.md
+index 0d44dc1..538ee2c 100644
+--- a/raw/vscode-ext-commands/SKILL.md
++++ b/adapted/T06-SKILL-VSCODE-COMMANDS/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+ name: vscode-ext-commands
+-description: 'Guidelines for contributing commands in VS Code extensions. Indicates naming convention, visibility, localization and other relevant attributes, following VS Code extension development guidelines, libraries and good practices'
++description: 'Design VS Code extension command contributions with correct titles, visibility, localization, menus, and side-bar placement.'
++use_when: 'Use when adding or updating contributed commands, Command Palette entries, side-bar commands, enablement, or menu placement.'
++do_not_use_when: 'Do not use for generic CLI parsing, extension localization-only work, or ordinary documentation.'
+ ---
+ 
+ # VS Code extension command contribution

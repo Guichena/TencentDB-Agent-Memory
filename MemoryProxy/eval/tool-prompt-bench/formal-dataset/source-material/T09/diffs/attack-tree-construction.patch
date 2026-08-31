@@ -1,0 +1,10 @@
+--- a/raw/wshobson-agents/attack-tree-construction/SKILL.md
++++ b/adapted/attack-tree-construction/SKILL.md
+@@ -1,4 +1,6 @@
+ ---
+ name: attack-tree-construction
+-description: Build comprehensive attack trees to visualize threat paths. Use when mapping attack scenarios, identifying defense gaps, or communicating security risks to stakeholders.
++description: "使用根目标、AND/OR 节点、叶节点及攻击属性构建攻击树来分析威胁路径。"
++use_when: "需要可视化复杂攻击场景、识别防御缺口或沟通安全风险。"
++do_not_use_when: "任务是直接映射控制措施、提取安全需求或执行依赖漏洞扫描。"
+ ---

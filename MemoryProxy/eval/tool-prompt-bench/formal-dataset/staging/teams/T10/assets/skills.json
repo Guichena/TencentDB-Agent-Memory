@@ -1,0 +1,420 @@
+{
+  "schema_version": "task1.team_skill_assets.v1",
+  "team_id": "T10",
+  "skills": [
+    {
+      "assetId": "T10-SKILL-MAVEN-LIFECYCLE",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-skill-maven-lifecycle"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "maven-build-lifecycle",
+      "version": "1",
+      "description": "说明 Maven 生命周期阶段与目标的执行顺序、配置 profile、模块反应堆选择及构建验证边界。",
+      "useWhen": "需要确定 Maven 阶段或目标的先后、选择多模块构建范围、配置 profile，或分析阶段级构建失败。",
+      "doNotUseWhen": "问题主要是依赖版本/BOM 冲突、单个插件参数配置，或需要设计平台无关的部署流水线。",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "8650e494dbb06b059bfe1ee2838fe895d35f06e62cb6b9c274c00487dd0564b6"
+        }
+      ],
+      "contentHash": "5371fb64eb99fdba7e76cd464979e1435540e6650dfc10783c2b56375cc99ded"
+    },
+    {
+      "assetId": "T10-SKILL-MAVEN-DEPENDENCIES",
+      "ownerAgentId": "agent-task1-t10-assets-b",
+      "sourceEvidenceIds": [
+        "source-t10-skill-maven-dependencies"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "maven-dependency-management",
+      "version": "1",
+      "description": "管理 Maven 依赖声明、scope、版本、BOM、传递依赖和依赖树冲突。",
+      "useWhen": "需要集中管理依赖版本、导入 BOM、处理 scope 或排除项，或分析依赖收敛和树冲突。",
+      "doNotUseWhen": "问题是生命周期阶段顺序、反应堆选择、插件执行配置，或通用 CI 失败日志分析。",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "577f7e27a3a3dd3e90e788b402671dbfec835977248a6cd00267a07aefe01588"
+        }
+      ],
+      "contentHash": "442a77d29e5f1b7c3d4124f6c83762b942e6840146988320b9bdfa2b2118fc26"
+    },
+    {
+      "assetId": "T10-SKILL-MAVEN-PLUGINS",
+      "ownerAgentId": "agent-task1-t10-assets-a",
+      "sourceEvidenceIds": [
+        "source-t10-skill-maven-plugins"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "maven-plugin-configuration",
+      "version": "1",
+      "description": "配置 Maven 插件版本、pluginManagement、executions、阶段绑定、目标和插件参数。",
+      "useWhen": "需要新增或调整编译、测试、质量、打包、代码生成或版本插件的执行与参数。",
+      "doNotUseWhen": "问题是依赖版本和 BOM 管理、生命周期阶段选择，或只有一份未分类的 CI 失败日志。",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "61fd96f71d4814bfb472a9344a5046c8bfdad8dbba99398f45ca220cdebbc8a7"
+        }
+      ],
+      "contentHash": "fe0f684efb29a6f7e599c6f2ede03b5a7d056f8749ac9e52c2c35276b6aabccb"
+    },
+    {
+      "assetId": "T10-SKILL-ANALYZE-CI",
+      "ownerAgentId": "agent-task1-t10-assets-b",
+      "sourceEvidenceIds": [
+        "source-t10-skill-analyze-ci"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "analyze-ci",
+      "version": "1",
+      "description": "分析 GitHub Actions 拉取请求或具体任务的失败日志，提炼根因、错误、测试名和相关片段。",
+      "useWhen": "需要针对 GitHub Actions 任务或拉取请求的失败作业进行日志分析和失败摘要。",
+      "doNotUseWhen": "问题是本地 Maven/Python 环境设置、生命周期配置，或平台无关的部署流水线设计。",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "9f729cc92993e8b34443dadb04c7318d7d8392cba8d97303389a2c8d8396c8d0"
+        }
+      ],
+      "contentHash": "8341cff84f38312390f71ce7794b45a957bbc013fffc96f99a18d46784df366e"
+    },
+    {
+      "assetId": "T10-SKILL-TEMPORAL-PYTHON-TESTING",
+      "ownerAgentId": "agent-task1-t10-assets-a",
+      "sourceEvidenceIds": [
+        "source-t10-skill-temporal-python-testing"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "temporal-python-testing",
+      "version": "1",
+      "description": "使用 pytest、时间跳跃、活动模拟和 replay 测试 Temporal Python 工作流。",
+      "useWhen": "需要为 Temporal 工作流或活动设计单元、集成、replay 测试，或设置其本地测试环境。",
+      "doNotUseWhen": "任务不涉及 Temporal 工作流，且只是通用 Python 测试、项目结构或打包发布。",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "0d54b3047a84aa3934c5d3d3d774bc61da6768d5feb24af0245c14b9f2f3ee2a"
+        }
+      ],
+      "contentHash": "8ce657fb4bb8ae6fff60bacedc7d5e03dc8bcf50cb422a0f48648a0d1820033b"
+    },
+    {
+      "assetId": "T10-SKILL-TESTING-PYTHON",
+      "ownerAgentId": "agent-task1-t10-assets-b",
+      "sourceEvidenceIds": [
+        "source-t10-skill-testing-python"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "testing-python",
+      "version": "1",
+      "description": "用 pytest 设计和评审原子化 Python 测试，覆盖 fixtures、参数化、mock、异步测试和覆盖率。",
+      "useWhen": "需要编写、评审或调试通用 Python 测试，或改进测试隔离、覆盖率和可读性。",
+      "doNotUseWhen": "需要 Temporal 专用测试策略、Python 包构建发布，或仅需安排项目模块目录。",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "d1d9589a18bd373f84f6d6d2d9329235fd7f0ee4527867eb6c6acbc1efc8d252"
+        }
+      ],
+      "contentHash": "175245e3391597a3bfa7ca119fa4e3fb428b72a928f89c1517495ce52c90f9aa"
+    },
+    {
+      "assetId": "T10-SKILL-UV-PACKAGE-MANAGER",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-skill-uv-package-manager"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "uv-package-manager",
+      "version": "1",
+      "description": "使用 uv 管理 Python 解释器、虚拟环境、依赖、工作区和锁文件，并支持可复现同步。",
+      "useWhen": "需要创建 uv 环境、添加或同步依赖、维护 uv.lock、固定 Python 版本或配置离线/CI 安装。",
+      "doNotUseWhen": "缺口是 wheel/sdist 的打包元数据契约、通用测试设计，或 Python 模块目录组织。",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "df984fdf5fb69b730970c7f2ee9b496c28ebdd6957278ce4d3f3a7f76d403343"
+        }
+      ],
+      "contentHash": "7ce54dd552601cb1a01a83fd6ea73ce606b467b006501c559ca5327eab364f0b"
+    },
+    {
+      "assetId": "T10-SKILL-PYTHON-PACKAGING",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-skill-python-packaging"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "python-packaging",
+      "version": "1",
+      "description": "依据 pyproject.toml 和构建后端创建可分发的 Python 包，检查 wheel/sdist 元数据并组织发布流程。",
+      "useWhen": "需要配置包元数据和构建系统、生成 wheel 或源码分发包、检查分发物，或规划发布到包索引。",
+      "doNotUseWhen": "任务只是 Python 项目目录组织、测试设计，或只需管理 uv 环境和锁文件而不涉及分发契约。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "b4bf0978b3fa357d391a6d9278215315a94752fc284505955508366bf047ebed"
+        },
+        {
+          "path": "references/details.md",
+          "sha256": "947a58e5489293e06dc367f875d984f1d0d6c26c3a0e64e2875460969c3ceb58"
+        },
+        {
+          "path": "references/advanced-patterns.md",
+          "sha256": "ab47dec3bf71c066e5d262eb6159b966ea95067ac23b27d8607d36d89f0e00ca"
+        }
+      ],
+      "contentHash": "3ed74cff6e803edcb8b903c31b1b3e2fea6ffe3f9a7009fde97c137e558c234b"
+    },
+    {
+      "assetId": "T10-SKILL-PYTHON-PROJECT-STRUCTURE",
+      "ownerAgentId": "agent-task1-t10-assets-a",
+      "sourceEvidenceIds": [
+        "source-t10-skill-python-project-structure"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "python-project-structure",
+      "version": "1",
+      "description": "规划 Python 项目的目录、模块边界、分层组织和显式公共 API。",
+      "useWhen": "需要新建或重组 Python 项目、决定目录层次、模块职责、测试位置或 __all__ 公共接口。",
+      "doNotUseWhen": "问题是分发包构建与发布、依赖锁定同步，或具体测试策略和失败调试。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "2f88b37cc1da88baed82357e938509a824993db6f1c69786ca1c32930da652be"
+        }
+      ],
+      "contentHash": "910ca6cd86bd3a34f2e851aa8310c8048854acb3f89db214c2f10ed2461dee7b"
+    },
+    {
+      "assetId": "T10-SKILL-PYTHON-TESTING-PATTERNS",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-skill-python-testing-patterns"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "python-testing-patterns",
+      "version": "1",
+      "description": "用 pytest、AAA 结构、fixtures、mock、参数化和 TDD 构建隔离且可维护的 Python 测试策略。",
+      "useWhen": "需要搭建测试套件、选择单元/集成测试模式、配置 fixtures 和 mock，或系统化排查测试失败。",
+      "doNotUseWhen": "任务是 Python 包元数据和分发物构建、uv 锁文件管理，或与 Python 无关的 Maven 流程。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "6f88d7322e6f473c1e3ad1fcd16c5681ed78d8e4206d295a3cc2c98012ae1336"
+        }
+      ],
+      "contentHash": "afabf86040c6829d94dca3c76efc33ec0388f570ae7d3ed79c165e23831a5adf"
+    },
+    {
+      "assetId": "T10-SKILL-GITHUB-ACTIONS",
+      "ownerAgentId": "agent-task1-t10-assets-a",
+      "sourceEvidenceIds": [
+        "source-t10-skill-github-actions"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "github-actions-templates",
+      "version": "1",
+      "description": "为 GitHub Actions 组织测试、构建、容器、安全检查、矩阵和部署工作流模板。",
+      "useWhen": "任务明确要求创建或修改 GitHub Actions 工作流及其测试、构建、部署或复用步骤。",
+      "doNotUseWhen": "任务是 GitLab CI、平台无关的多阶段部署架构，或单纯处理 Maven/Python 本地构建。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "89c337e6886cfff7952c54ec2a332bca2f423d2180a22eb426113372e559bc30"
+        }
+      ],
+      "contentHash": "cc6de045c65006bf68263e86fc2ba3f5869fdf41857417ba90c5f587cfebb217"
+    },
+    {
+      "assetId": "T10-SKILL-DEPLOYMENT-PIPELINE",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-skill-deployment-pipeline"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "deployment-pipeline-design",
+      "version": "1",
+      "description": "设计带质量与安全门、多环境晋级、健康检查、渐进式发布及回滚的多阶段交付流水线。",
+      "useWhen": "需要规划多环境晋级、审批门、canary/blue-green 策略、健康检查或自动回滚。",
+      "doNotUseWhen": "只需某个 CI 平台的工作流模板、生命周期阶段顺序，或本地依赖与测试流程。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "ab9f4d8426d5332fc44d576c18501cd6f1343b113e5ef4be2f56caae85105f10"
+        }
+      ],
+      "contentHash": "cce7c69b0407a1ad0d5214282a6f01b69408668a4acbd765a9652f026dea0b07"
+    },
+    {
+      "assetId": "T10-SKILL-GITLAB-CI",
+      "ownerAgentId": "agent-task1-t10-assets-a",
+      "sourceEvidenceIds": [
+        "source-t10-skill-gitlab-ci"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "gitlab-ci-patterns",
+      "version": "1",
+      "description": "为 GitLab CI 组织阶段、缓存、制品、Runner、部署和安全检查模式。",
+      "useWhen": "任务明确要求实现或优化 GitLab CI/CD 流程、Runner、缓存、制品或 GitOps 部署。",
+      "doNotUseWhen": "任务是 GitHub Actions、平台无关的部署架构，或 Maven/Python 构建流程本身。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "5e5137e568416f42e8cb3b92c4784eeb1cf7af37afd892a3c79186005932c5c3"
+        }
+      ],
+      "contentHash": "46e8613ec769e994b5e154e201c486bb1605e508ddf1bfa46b71c24a4a6e74ee"
+    },
+    {
+      "assetId": "T10-SKILL-GIT-WORKFLOWS",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-skill-git-workflows"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "name": "git-advanced-workflows",
+      "version": "1",
+      "description": "处理 Git rebase、cherry-pick、bisect、worktree、reflog 和分支恢复等高级历史工作流。",
+      "useWhen": "需要整理提交历史、跨分支应用提交、定位回归、并行 worktree 或恢复 Git 操作。",
+      "doNotUseWhen": "问题是构建生命周期、Python 打包测试，或 CI/CD 流水线配置而非 Git 历史管理。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "194e3152f2a547ef10a226a52efb16a5d95a1cd7327c8e02b0273c68dbc2534c"
+        }
+      ],
+      "contentHash": "1410086734db944aee3d5f2756a62b5af1bc68c89784b5e3d430ee11b35af0be"
+    }
+  ],
+  "listing": {
+    "active_agent_id": "agent-task1-t10-general",
+    "bound_skill_ids": [
+      "T10-SKILL-MAVEN-LIFECYCLE",
+      "T10-SKILL-UV-PACKAGE-MANAGER",
+      "T10-SKILL-PYTHON-PACKAGING",
+      "T10-SKILL-PYTHON-TESTING-PATTERNS",
+      "T10-SKILL-DEPLOYMENT-PIPELINE",
+      "T10-SKILL-GIT-WORKFLOWS"
+    ],
+    "team_searchable_skill_ids": [
+      "T10-SKILL-MAVEN-DEPENDENCIES",
+      "T10-SKILL-MAVEN-PLUGINS",
+      "T10-SKILL-GITHUB-ACTIONS",
+      "T10-SKILL-ANALYZE-CI",
+      "T10-SKILL-TEMPORAL-PYTHON-TESTING",
+      "T10-SKILL-TESTING-PYTHON",
+      "T10-SKILL-PYTHON-PROJECT-STRUCTURE",
+      "T10-SKILL-GITLAB-CI"
+    ],
+    "listing_sha256": "287dd56fc92c0480b3735db7978accd54fb23cd759ac9e81f532975a3f5f74e7",
+    "search_assertions": [
+      {
+        "pair_id": "T10-SKILL-002",
+        "target_asset_id": "T10-SKILL-MAVEN-DEPENDENCIES",
+        "absent_from_bound_listing": true,
+        "present_in_same_team_search": true
+      },
+      {
+        "pair_id": "T10-SKILL-003",
+        "target_asset_id": "T10-SKILL-MAVEN-PLUGINS",
+        "absent_from_bound_listing": true,
+        "present_in_same_team_search": true
+      },
+      {
+        "pair_id": "T10-SKILL-005",
+        "target_asset_id": "T10-SKILL-GITHUB-ACTIONS",
+        "absent_from_bound_listing": true,
+        "present_in_same_team_search": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+--- a/plugins/javascript-typescript/skills/nodejs-backend-patterns/SKILL.md
++++ b/adapted/nodejs-backend-patterns/SKILL.md
+@@ -5,0 +5,15 @@
++
++
++## TDAI Host Routing
++
++Load this package with `skill_view`. If the manifest points to a supporting file, read that file with `skill_files_read`; do not install or execute source-repository dependencies for Task 1.
++
++Use when:
++- Designing or reviewing Node.js backend services
++- Investigating Node.js request or runtime behavior
++
++Do not use when:
++- Do not use for non-Node.js backends
++- Do not apply backend patterns without confirming the runtime
++
++The upstream technical workflow below is preserved unchanged.

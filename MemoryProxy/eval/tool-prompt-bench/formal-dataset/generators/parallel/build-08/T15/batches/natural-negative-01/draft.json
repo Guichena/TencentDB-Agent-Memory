@@ -1,0 +1,188 @@
+{
+  "schema_version": "task1.luna_natural_negative_draft.v1",
+  "batch_id": "T15-DS05-natural-negative-01",
+  "stage": "DS05",
+  "team_id": "T15",
+  "cases": [
+    {
+      "draft_case_id": "T15-NN-001",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Harbor 契约审查输入如下。旧版响应 schema：{\"type\":\"object\",\"required\":[\"id\",\"name\"],\"properties\":{\"id\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"}}}；新版响应 schema：{\"type\":\"object\",\"required\":[\"id\",\"name\"],\"properties\":{\"id\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"}}}。"
+        },
+        {
+          "role": "assistant",
+          "content": "本次审查规则已固定：响应新增非 required 字段属于兼容变化；删除字段、收窄已有字段类型或新增 required 字段属于破坏性变化。报告只需给出分类和依据。"
+        }
+      ],
+      "query": "请根据给定的前后 schema 输出兼容性分类，并用两条简短理由说明判断。"
+      ,"why_current_context_is_sufficient": "前后 schema 和逐项兼容规则都已完整给出；新增 description 非 required，直接按规则即可分类，不需要历史或外部资料。",
+      "visible_distractor_ids_author_only": ["T15-L0-001", "T15-SKL-004", "T15-KNW-001"],
+      "sol_review_questions": ["确认分类只能依据上下文中的 schema 与规则。"]
+    },
+    {
+      "draft_case_id": "T15-NN-002",
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "请修复 Harbor 契约匹配函数：\n```ts\ntype Field = { name: string; required: boolean };\nexport function matches(actual: Field[], expected: Field[]) {\n  return expected.every((e) => actual.some((a) => a.name === e.name && (!e.required || a.required)));\n}\n```\n契约要求：字段名比较不区分大小写；expected 的 required=true 时 actual 必须存在且 required=true；expected 的 required=false 时 actual 可以 required 或 optional；actual 多出的字段允许存在。"
+        },
+        {
+          "role": "assistant",
+          "content": "提交物限定为一个可读的 TypeScript 函数和三个最小断言：大小写差异通过、缺失 required 失败、额外字段通过。不要改动 Field 类型。"
+        }
+      ],
+      "query": "请给出修复后的 matches 函数和三个符合约束的断言示例。",
+      "why_current_context_is_sufficient": "函数源码、字段匹配语义、边界条件和输出格式均在消息中明确，所有实现选择都可由这些约束推导。",
+      "visible_distractor_ids_author_only": ["T15-L1-003", "T15-SKL-008", "T15-KNW-002"],
+      "sol_review_questions": ["确认修复同时处理大小写、required 语义和允许额外字段三项约束。"]
+    },
+    {
+      "draft_case_id": "T15-NN-003",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Meridian SDK 生成配置需要同时产出两个包。输入文件是 `openapi/frozen.yaml`，TypeScript 输出到 `dist/ts`，Python 输出到 `dist/py`；TypeScript 使用 fetch 客户端，Python 使用 asyncio 客户端。现有配置片段：\n```json\n{\"input\":\"openapi/latest.yaml\",\"generators\":[{\"name\":\"typescript\",\"output\":\"dist/ts\"},{\"name\":\"python\",\"output\":\"dist/py\"}]}\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "生成器配置的硬性要求是使用冻结输入；生成器名称分别为 `typescript-fetch` 与 `python-asyncio`；输出目录必须保持独立，且最终配置仍是合法 JSON。"
+        }
+      ],
+      "query": "请返回满足这些硬性要求的完整 JSON 生成配置。",
+      "why_current_context_is_sufficient": "输入路径、两个生成器的精确名称、客户端变体、输出目录和合法 JSON 要求均已给出，直接改写配置即可。",
+      "visible_distractor_ids_author_only": ["T15-L0-005", "T15-SKL-003", "T15-KNW-003"],
+      "sol_review_questions": ["确认配置使用 frozen.yaml、两个精确生成器名称且目录未混用。"]
+    },
+    {
+      "draft_case_id": "T15-NN-004",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Meridian 的版本判定只看下列变更：旧版有 `GET /users` 返回 `{id:string,name:string}`；新版将 `name` 改为可缺省、把 `id` 改为 number，并新增可选的 `email`。"
+        },
+        {
+          "role": "assistant",
+          "content": "项目 semver 规则已写死：破坏已有客户端解析或约束的变更升 major；仅新增可选响应字段升 minor；文档或实现不变的修订升 patch。多个变更取最高级别。"
+        }
+      ],
+      "query": "请判断这组变更应升 major、minor 还是 patch，并逐项标注触发最高级别的原因。",
+      "why_current_context_is_sufficient": "所有 API 前后差异及 semver 优先级规则都在上下文中，id 类型变化和 required 语义变化可直接判定最高级别。",
+      "visible_distractor_ids_author_only": ["T15-L0-007", "T15-SKL-005", "T15-KNW-001"],
+      "sol_review_questions": ["确认结论按最高级别规则处理，而不是只按新增 email 判断。"]
+    },
+    {
+      "draft_case_id": "T15-NN-005",
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Pactline provider verification 的断言输入如下：消费者期望 `201`，响应 JSON 为 `{\"id\":\"w-17\",\"state\":\"ready\"}`，但 provider 实际返回 `200` 与 `{\"id\":\"w-17\",\"state\":\"ready\",\"trace\":\"abc\"}`。契约规则是：状态码必须精确相等；响应 JSON 允许 provider 添加字段；id 和 state 必须存在且值相等。"
+        },
+        {
+          "role": "assistant",
+          "content": "测试修复范围仅限断言逻辑：不要删除 provider 的 trace 字段，也不要放宽状态码比较；通过时应保留现有的 id/state 精确比较。"
+        }
+      ],
+      "query": "请写出这条契约测试的修正版断言，并说明当前样例应该通过还是失败。",
+      "why_current_context_is_sufficient": "期望值、实际值和三条断言规则全部明示；状态码不等是唯一失败点，额外 trace 字段按规则允许。",
+      "visible_distractor_ids_author_only": ["T15-L1-009", "T15-SKL-013", "T15-KNW-002"],
+      "sol_review_questions": ["确认测试因 201 与 200 不同而失败，同时忽略允许的 trace 字段。"]
+    },
+    {
+      "draft_case_id": "T15-NN-006",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Pactline 的请求头比较函数如下：\n```python\ndef same_headers(left, right):\n    return left == right\n```\n参数方向固定为：left 是实际请求头，right 是契约期望。先将 left 中仅大小写不同的同名键按不区分大小写合并，多个值以逗号连接；再对 right 的每个期望键逐个按不区分大小写查找并精确比较字符串值；right 缺键或值不同时失败；仅存在于 left 的额外头忽略。头值不得裁剪空格。"
+        },
+        {
+          "role": "assistant",
+          "content": "输入是两个 `dict[str, str]`，可能包含大小写不同但语义相同的键。请保留原函数名，返回布尔值，并覆盖空格差异不得被吞掉这一边界。"
+        }
+      ],
+      "query": "请给出符合上述契约的 Python 实现，并附上一个名称大小写相同语义、一个值空格不同的测试。",
+      "why_current_context_is_sufficient": "数据类型、规范化顺序、额外头处理和空格边界都已明确，函数与测试可以完全由消息中的契约实现。",
+      "visible_distractor_ids_author_only": ["T15-L0-010", "T15-SKL-014", "T15-KNW-003"],
+      "sol_review_questions": ["确认只规范化头名称，不 trim 头值，并忽略未声明额外头。"]
+    },
+    {
+      "draft_case_id": "T15-NN-007",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Atlas 迁移说明的输入已确定：v1 在 2026-09-01 进入弃用，v1 与 v2 并行到 2026-10-15；客户端先把请求头 `X-API-Version: 1` 改成 `2`，再确认响应中的 `id` 与 `status` 两个字段不变。"
+        },
+        {
+          "role": "assistant",
+          "content": "说明必须包含四步：盘点仍使用 v1 的调用方、在预发布环境切换版本头、验证两个字段、在 2026-10-15 前完成生产切换；不得建议删除 id 或 status。"
+        }
+      ],
+      "query": "请生成一份面向合作方的四步迁移说明，保留给定日期和字段约束。",
+      "why_current_context_is_sufficient": "目标版本、两个日期、请求头改法、字段验收条件和四步结构均已给出，不需要任何历史决定即可生成说明。",
+      "visible_distractor_ids_author_only": ["T15-L1-012", "T15-SKL-006", "T15-KNW-002"],
+      "sol_review_questions": ["确认说明包含四步、两个日期和 id/status 不变的验收条件。"]
+    },
+    {
+      "draft_case_id": "T15-NN-008",
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Atlas 的 CI 门禁当前是：\n```yaml\njobs:\n  verify:\n    strategy:\n      matrix:\n        api: [v1]\n    steps:\n      - run: ./verify-contract --api ${{ matrix.api }}\n```\n`./verify-contract --api <version>` 的退出/输出合同固定为：发现 breaking 时退出 1 并输出包含 `breaking` 的诊断；仅有 warning 时退出 0 且命令自身输出一行 `::warning::...` 注释；无问题时退出 0 且不输出 warning。要求同时验证 v1、v2；任一版本出现 breaking 标记就失败；warning 只能汇总为注释，不得使任务失败；两个版本都通过才允许发布 job 继续。"
+        },
+        {
+          "role": "assistant",
+          "content": "只需修改这个工作流片段：扩展矩阵、保留原验证命令参数、让发布 job 依赖 verify。不要引入第三方 action。"
+        }
+      ],
+      "query": "请返回修正后的 YAML，并确保两个版本都验证后才进入发布。",
+      "why_current_context_is_sufficient": "现有 YAML、矩阵目标、失败条件、warning 行为和发布依赖均已明确，修改范围完全封闭在给定片段。",
+      "visible_distractor_ids_author_only": ["T15-L0-011", "T15-SKL-015", "T15-KNW-001"],
+      "sol_review_questions": ["确认矩阵包含 v1/v2、breaking 才失败且发布 job 依赖 verify。"]
+    },
+    {
+      "draft_case_id": "T15-NN-009",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Prism Schema 兼容性输入：旧 schema 为 `{\"type\":\"object\",\"required\":[\"kind\"],\"properties\":{\"kind\":{\"type\":\"string\",\"enum\":[\"A\",\"B\"]}}}`；新 schema 把 enum 改为 `[\"A\",\"B\",\"C\"]`，并新增可选属性 `region`。"
+        },
+        {
+          "role": "assistant",
+          "content": "Prism 的规则是：扩大 enum 对生产者兼容；缩小 enum 对生产者不兼容；新增 optional 属性兼容；required 集合变化必须单独报告。输出一行总体分类和逐项变化。"
+        }
+      ],
+      "query": "请按规则分类这次 schema 变化，并逐项说明 enum 与新增属性的影响。",
+      "why_current_context_is_sufficient": "两个 schema 的差异和每种差异的兼容规则已完整提供，扩大 enum 与新增 optional 属性都可直接判定。",
+      "visible_distractor_ids_author_only": ["T15-L1-014", "T15-SKL-016", "T15-KNW-003"],
+      "sol_review_questions": ["确认扩大 enum 与新增 optional 属性均按给定规则报告为兼容。"]
+    },
+    {
+      "draft_case_id": "T15-NN-010",
+      "difficulty": "hard",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Prism 的 Python 规范化函数需要补全：\n```python\ndef compatible(old, new):\n    # old/new: {'required': set[str], 'enum': dict[str, set[str]]}\n    pass\n```\n规则：new.required 不能比 old.required 多；对每个共有 enum，new 的集合必须是 old 的超集；new 新增 optional enum 不报错；返回 `(ok, reasons)`，reasons 按字段名排序。"
+        },
+        {
+          "role": "assistant",
+          "content": "请保持函数签名和返回类型。测试数据：old.required={id}、old.enum={kind:{A,B}}；new.required={id}、new.enum={kind:{A,B,C},state:{ready}} 应通过；new.required={id,kind} 应失败。"
+        }
+      ],
+      "query": "请实现 compatible 并给出上述两组测试的预期返回值。",
+      "why_current_context_is_sufficient": "函数签名、集合关系、排序要求和两组完整测试数据均在上下文中，答案可独立实现与验证。",
+      "visible_distractor_ids_author_only": ["T15-L0-012", "T15-SKL-018", "T15-KNW-002"],
+      "sol_review_questions": ["确认 required 变多失败、enum 扩大通过、reasons 按字段名排序。"]
+    }
+  ]
+}

@@ -1,0 +1,374 @@
+{
+  "schema_version": "task1.luna_natural_negative_draft.v1",
+  "batch_id": "t13-natural-negative-01",
+  "stage": "DS05",
+  "team_id": "T13",
+  "cases": [
+    {
+      "draft_case_id": "T13-DS05-NN-001",
+      "project_id": "t13-asteria-edge",
+      "task_id": "task-t13-asteria-slo",
+      "category": "metrics",
+      "difficulty": "short",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Asteria 网关最近 5 分钟的计数是：status=200 为 11800，status=500 为 200；指标名是 `http_requests_total`，标签只有 `service` 与 `status`。"
+        },
+        {
+          "role": "assistant",
+          "content": "这组计数可以直接得到错误率；先把 500 请求除以全部请求，再按验收阈值判断。"
+        },
+        {
+          "role": "user",
+          "content": "验收标准规定 5 分钟错误率必须低于 2%，请把计算写成一条 PromQL 表达式，并说明这组数据是否触发阈值。"
+        }
+      ],
+      "query": "给出 PromQL 和一句判定。",
+      "why_current_context_is_sufficient": "指标名、可用标签、两个状态的计数和 2% 验收阈值都已在当前对话明确；只需按通用比例计算并写出查询。",
+      "visible_distractor_ids_author_only": [
+        "asteria-slo-dashboard-v2",
+        "asteria-edge-rollout-notes"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否仅依据给出的计数和阈值完成计算，没有依赖其他项目资料？"
+      ]
+    },
+    {
+      "draft_case_id": "T13-DS05-NN-002",
+      "project_id": "t13-asteria-edge",
+      "task_id": "task-t13-asteria-slo",
+      "category": "metrics-alerting",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "当前告警配置如下：\n```yaml\n- alret: GatewayErrorBudget\n  expr: sum(rate(http_requests_total{service=\"edge\",status=~\"5..\"}[5m])) / sum(rate(http_requests_total{service=\"edge\"}[5m])) > 0.02\n  for: 10m\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "表达式的分子和分母都按同一服务聚合，正则也覆盖 500 段状态码；字段名需要与告警规则的固定结构逐项核对。"
+        },
+        {
+          "role": "user",
+          "content": "部署器报错：`field alret not found in type alerting rule`。团队约定错误率连续 10 分钟超过 2% 才报警，且规则必须通过 YAML 与规则结构校验。"
+        },
+        {
+          "role": "assistant",
+          "content": "修复应保持查询语义和 10 分钟持续时间不变，只处理报错指出的字段拼写，并给出最小配置差异。"
+        },
+        {
+          "role": "user",
+          "content": "请指出配置中的问题，给出修正后的相关 YAML，并说明为什么不会改变 5 分钟查询窗口和 10 分钟持续时间。"
+        }
+      ],
+      "query": "修复这条告警规则的配置。",
+      "why_current_context_is_sufficient": "完整规则、明确的字段拼写错误、解析器报错、持续时间约定及保持查询窗口不变的限制均已给出；将 alret 改为 alert 即可完成局部修复。",
+      "visible_distractor_ids_author_only": [
+        "asteria-slo-burn-rate-draft",
+        "asteria-edge-capacity-panel"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否只修复给定的字段拼写错误，并保留原有 PromQL、5m 窗口和 10m 持续时间？"
+      ]
+    },
+    {
+      "draft_case_id": "T13-DS05-NN-003",
+      "project_id": "t13-harborlane-payments",
+      "task_id": "task-t13-harborlane-trace",
+      "category": "logs-traces",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "支付服务日志是 JSON：`{\"level\":\"error\",\"trace_id\":\"a1\",\"span_id\":\"s9\",\"route\":\"/charge\",\"code\":\"CARD_DECLINED\"}`。同一批 trace 导出为：`[{\"trace_id\":\"a1\",\"span_id\":\"s9\",\"duration_ms\":842},{\"trace_id\":\"b2\",\"span_id\":\"s1\",\"duration_ms\":31}]`。"
+        },
+        {
+          "role": "assistant",
+          "content": "两份数据都带有 trace_id 和 span_id，可以用这两个字段建立稳定连接；日志中的错误事件应保留在匹配结果中。"
+        },
+        {
+          "role": "user",
+          "content": "请写一个 Python 函数，把日志数组和 trace 数组按 `(trace_id, span_id)` 连接，未匹配的日志也要保留并令 `duration_ms` 为 `None`。"
+        }
+      ],
+      "query": "实现这个内存中的日志—trace 连接函数。",
+      "why_current_context_is_sufficient": "输入字段、连接键、一个匹配样例、保留未匹配日志的规则及空值约定全部明确；这是独立的 Python 数据处理实现。",
+      "visible_distractor_ids_author_only": [
+        "harborlane-payment-log-schema",
+        "harborlane-trace-retention-plan"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "实现是否只使用当前给出的两个数组和连接键，并正确保留未匹配日志？"
+      ]
+    },
+    {
+      "draft_case_id": "T13-DS05-NN-004",
+      "project_id": "t13-harborlane-payments",
+      "task_id": "task-t13-harborlane-trace",
+      "category": "alert-correlation",
+      "difficulty": "long",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Harborlane 的三条告警事件如下：\n```json\n{\"alert\":\"payment_timeout\",\"merchant\":\"m-7\",\"route\":\"/charge\",\"trace_id\":\"t-100\",\"started_at\":\"10:01\"}\n{\"alert\":\"payment_retry\",\"merchant\":\"m-7\",\"route\":\"/charge\",\"trace_id\":\"t-101\",\"started_at\":\"10:02\"}\n{\"alert\":\"payment_timeout\",\"merchant\":\"m-8\",\"route\":\"/charge\",\"trace_id\":\"t-102\",\"started_at\":\"10:02\"}\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "同一商户和路由的事件可以归入一个告警组，但不同 trace_id 仍应作为组内证据保留，不能把两种告警名称覆盖掉。"
+        },
+        {
+          "role": "user",
+          "content": "现有 TypeScript 草稿只有 `const key = event.merchant + ':' + event.route;`，随后用对象数组聚合。验收要求：同组输出首次时间、去重后的告警名称列表和所有 trace_id；不同商户必须分组。"
+        },
+        {
+          "role": "assistant",
+          "content": "草稿的分组键满足商户与路由隔离，但聚合器还需要显式初始化时间、集合字段，并在输出时把集合转成稳定排序的数组。"
+        },
+        {
+          "role": "user",
+          "content": "请补全这个聚合函数的核心实现，输入是上面的事件形状，输出顺序按首次出现顺序。"
+        },
+        {
+          "role": "assistant",
+          "content": "实现可以使用 Map；更新已有组时比较时间并向集合加入名称和 trace_id，不要引入外部依赖或时间窗口推断。"
+        }
+      ],
+      "query": "给出可直接替换草稿的 TypeScript 聚合函数。",
+      "why_current_context_is_sufficient": "事件字段和样例、分组键、聚合输出字段、顺序及去重要求都已在对话内给出；只需用标准 Map/集合完成确定性聚合。",
+      "visible_distractor_ids_author_only": [
+        "harborlane-alert-routing-v3",
+        "harborlane-merchant-sla-notes"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否按商户和路由分组、保留所有 trace_id 与告警名，并按首次出现顺序输出？"
+      ]
+    },
+    {
+      "draft_case_id": "T13-DS05-NN-005",
+      "project_id": "t13-nimbus-batch",
+      "task_id": "task-t13-nimbus-profile",
+      "category": "performance-profiling",
+      "difficulty": "short",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Nimbus 批处理的 CPU 剖析摘要只有三项：`decodeRow 61%`、`compressBatch 24%`、`flush 5%`；其余函数合计 10%。"
+        },
+        {
+          "role": "assistant",
+          "content": "按 CPU 占比，decodeRow 是最高的局部热点，compressBatch 次之；剖析摘要本身不能证明 I/O 或内存问题。"
+        },
+        {
+          "role": "user",
+          "content": "请写一段不超过三句的性能回归备注，列出首要优化顺序，并明确不要把 5% 的 flush 当成首要目标。"
+        }
+      ],
+      "query": "根据摘要写性能回归备注。",
+      "why_current_context_is_sufficient": "函数及其 CPU 百分比、排序要求和明确的排除项都已直接提供；任务只需做简单排序并用文字表达。",
+      "visible_distractor_ids_author_only": [
+        "nimbus-flamegraph-2026-08-29",
+        "nimbus-batch-capacity-review"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "备注是否严格按 CPU 摘要排序，且没有从摘要外推未给出的瓶颈？"
+      ]
+    },
+    {
+      "draft_case_id": "T13-DS05-NN-006",
+      "project_id": "t13-nimbus-batch",
+      "task_id": "task-t13-nimbus-profile",
+      "category": "performance-regression",
+      "difficulty": "long",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "一次批处理基准的结果是：旧版本 10,000 行耗时 820ms，新版本 10,000 行耗时 1,140ms；峰值内存分别为 210MB 和 214MB。"
+        },
+        {
+          "role": "assistant",
+          "content": "时间明显回退而内存基本稳定，因此当前证据只支持性能时间回归，不支持把问题归因于内存增长。"
+        },
+        {
+          "role": "user",
+          "content": "相关代码片段把每行转换成字典后执行 `records.append(normalize(row))`，最后才调用 `flush(records)`；变更说明说 `normalize` 新增了正则解析。"
+        },
+        {
+          "role": "assistant",
+          "content": "给定片段中，新增的逐行正则调用是最直接的候选热点；建议先围绕 10,000 行固定输入做可重复基准，不修改 flush 语义。"
+        },
+        {
+          "role": "user",
+          "content": "验收标准是：新增测试能比较两次耗时，回归阈值为新版本不超过旧版本的 1.2 倍，并在失败信息中包含输入规模。请给出测试伪代码和诊断结论。"
+        },
+        {
+          "role": "assistant",
+          "content": "测试只需固定输入规模、测量同一入口两次并断言比例；诊断结论应区分已观察到的回退与待剖析验证的候选原因。"
+        }
+      ],
+      "query": "写出最小基准测试伪代码，并说明当前能下的结论。",
+      "why_current_context_is_sufficient": "前后基准数据、内存对照、局部代码、变更线索、阈值和失败信息要求都已给出；标准计时与断言伪代码足以完成任务。",
+      "visible_distractor_ids_author_only": [
+        "nimbus-profile-sampling-guide",
+        "nimbus-batch-release-checklist"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否将已证实的时间回退与尚待验证的正则候选区分开，并实现 1.2 倍阈值断言？"
+      ]
+    },
+    {
+      "draft_case_id": "T13-DS05-NN-007",
+      "project_id": "t13-atlas-collector",
+      "task_id": "task-t13-atlas-otel",
+      "category": "traces-config",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Atlas Collector 的配置片段是：\n```yaml\nreceivers:\n  otlp:\n    protocols:\n      grpc: {}\nprocessors:\n  batch: {}\nexporters:\n  otlphttp:\n    endpoint: https://trace.example/v1/traces\nservice:\n  pipelines:\n    traces:\n      receivers: [otlp]\n      processors: [batch]\n      exporters: [otlp]\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "管线引用了 `otlp` exporter，但 exporters 中实际定义的是 `otlphttp`；接收器和处理器名称则能对应上。"
+        },
+        {
+          "role": "user",
+          "content": "启动输出为 `service.pipelines.traces.exporters: exporter otlp is not configured`。验收标准是保留 HTTPS 端点并让配置通过启动校验，请给出最小修复。"
+        }
+      ],
+      "query": "修正 traces pipeline 的 exporter 引用。",
+      "why_current_context_is_sufficient": "配置中 exporter 定义与管线引用的名称不一致，错误输出和保留端点的验收标准也明确；只需修改一个列表项。",
+      "visible_distractor_ids_author_only": [
+        "atlas-otel-routing-v1",
+        "atlas-collector-cert-rotation"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否只将管线引用改为已定义的 HTTPS exporter，并保留 receiver、processor 与端点？"
+      ]
+    },
+    {
+      "draft_case_id": "T13-DS05-NN-008",
+      "project_id": "t13-atlas-collector",
+      "task_id": "task-t13-atlas-otel",
+      "category": "traces-sampling",
+      "difficulty": "long",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "Atlas 的 Java 采样代码如下：\n```java\nSampler sampler = Sampler.parentBased(\n    Sampler.traceIdRatioBased(0.10));\nSdkTracerProvider provider = SdkTracerProvider.builder()\n    .setSampler(sampler)\n    .build();\n```"
+        },
+        {
+          "role": "assistant",
+          "content": "这段代码会对没有父 span 的新 trace 采用 10% 比例；有父 span 时由 parentBased 继承父级采样决定。"
+        },
+        {
+          "role": "user",
+          "content": "迁移验收要求：生产流量仍按 10% 采样，但带 `error=true` 的根 span 必须保留；不能改变已有父级采样传播。当前依赖版本支持 `Sampler.alwaysOn()` 和 `Sampler.parentBased(...)`。"
+        },
+        {
+          "role": "assistant",
+          "content": "要满足要求，可在根 trace 的 parentBased 组合中加入基于错误属性的决策；关键是让错误根 span 优先保留，再对普通无父 trace 使用比例采样。"
+        },
+        {
+          "role": "user",
+          "content": "请给出一个不依赖外部库的实现思路或伪代码，标明决策顺序，并说明子 span 的父级传播如何保持。"
+        },
+        {
+          "role": "assistant",
+          "content": "回答可以使用伪代码表示属性判断和 parentBased 组合，不必声称当前 API 存在一个未展示的现成错误过滤器。"
+        }
+      ],
+      "query": "设计满足这三条验收要求的采样决策伪代码。",
+      "why_current_context_is_sufficient": "现有采样代码、10% 比例、错误根 span 的强制保留、父级传播约束和可用 API 均已明确；通用采样决策逻辑即可给出伪代码。",
+      "visible_distractor_ids_author_only": [
+        "atlas-tail-sampling-migration",
+        "atlas-otel-java-upgrade-notes"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否优先保留 error 根 span、对普通新 trace 保持 10%，并明确子 span 继承父级决定？"
+      ]
+    },
+    {
+      "draft_case_id": "T13-DS05-NN-009",
+      "project_id": "t13-sentrygrid-incident",
+      "task_id": "task-t13-sentrygrid-incident",
+      "category": "incident-diagnosis",
+      "difficulty": "medium",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "SentryGrid 事故时间线：14:02 API 延迟从 120ms 升到 900ms；14:03 只有 `db_pool_wait_seconds` 告警变红；14:04 应用日志出现 `timeout acquiring connection`，但 CPU 为 35%。"
+        },
+        {
+          "role": "assistant",
+          "content": "时间顺序把连接池等待、应用获取连接超时和延迟升高串在一起；CPU 数值不支持把 CPU 饱和作为首要假设。"
+        },
+        {
+          "role": "user",
+          "content": "值班手册的显式验收项是：先确认连接池耗尽，再检查慢查询；每一步都要记录一个可复现的观测证据。请写出四步诊断清单。"
+        }
+      ],
+      "query": "按时间线和验收项给出四步事故诊断清单。",
+      "why_current_context_is_sufficient": "时间线、错误输出、指标和 CPU 对照，以及诊断顺序和证据记录要求都在当前消息中；清单可直接由这些材料组织。",
+      "visible_distractor_ids_author_only": [
+        "sentrygrid-incident-severity-matrix",
+        "sentrygrid-db-oncall-rotation"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "清单是否先验证连接池耗尽、再检查慢查询，并为每一步指定可复现证据？"
+      ]
+    },
+    {
+      "draft_case_id": "T13-DS05-NN-010",
+      "project_id": "t13-sentrygrid-incident",
+      "task_id": "task-t13-sentrygrid-incident",
+      "category": "alert-correlation",
+      "difficulty": "long",
+      "context_messages": [
+        {
+          "role": "user",
+          "content": "SentryGrid 当前有两条规则：`ApiLatencyHigh` 每 1 分钟评估，标签为 `service=checkout, region=cn`；`ApiErrorRateHigh` 也每 1 分钟评估，标签相同。过去 10 分钟两者交替触发，产生 20 条通知。"
+        },
+        {
+          "role": "assistant",
+          "content": "两条规则的服务、区域和评估周期都相同，但告警名称不同；可以在通知层用稳定分组键收敛，同时保留规则名称作为组内明细。"
+        },
+        {
+          "role": "user",
+          "content": "现有 Python 代码是 `group = (a['service'], a['region'])`，然后把同组告警直接丢弃重复项。事故复盘要求：10 分钟窗口内每个服务区域最多一条通知，通知正文必须列出所有触发规则和最早触发时间。"
+        },
+        {
+          "role": "assistant",
+          "content": "不能只用集合丢掉重复事件，因为规则名称和首次时间都要保留；应按分组键累积名称集合并取最小时间，再在窗口边界输出。"
+        },
+        {
+          "role": "user",
+          "content": "请改写这段聚合逻辑的伪代码，并列出两个边界测试：不同区域，以及同一规则在窗口内重复触发。"
+        },
+        {
+          "role": "assistant",
+          "content": "边界测试应验证区域会产生独立组，同一规则重复只增加计数或证据而不重复出现在规则列表；不要改变 10 分钟窗口。"
+        }
+      ],
+      "query": "给出告警收敛伪代码和两个边界测试断言。",
+      "why_current_context_is_sufficient": "规则字段、重复通知现象、现有分组代码、窗口输出要求、保留字段和两个边界条件都已齐全；通用字典/集合聚合足以完成设计。",
+      "visible_distractor_ids_author_only": [
+        "sentrygrid-alert-routing-policy",
+        "sentrygrid-postmortem-template"
+      ],
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "是否在同服务区域的 10 分钟窗口内收敛通知，同时保留所有规则名和最早时间，并隔离不同区域？"
+      ]
+    }
+  ]
+}

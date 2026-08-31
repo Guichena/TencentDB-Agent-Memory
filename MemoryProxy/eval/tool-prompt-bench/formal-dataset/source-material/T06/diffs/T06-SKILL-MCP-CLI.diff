@@ -1,0 +1,14 @@
+diff --git a/raw/mcp-cli/SKILL.md b/adapted/T06-SKILL-MCP-CLI/SKILL.md
+index d5b801e..8a193cb 100644
+--- a/raw/mcp-cli/SKILL.md
++++ b/adapted/T06-SKILL-MCP-CLI/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+ name: mcp-cli
+-description: Interface for MCP (Model Context Protocol) servers via CLI. Use when you need to interact with external tools, APIs, or data sources through MCP servers, list available MCP servers/tools, or call MCP tools from command line.
++description: 'Use a command-line client to discover MCP servers and invoke tools with structured arguments.'
++use_when: 'Use when discovering MCP servers and tools or calling an MCP tool from a command line with structured arguments.'
++do_not_use_when: 'Do not use for building an application CLI, parsing its arguments, or editing VS Code extensions.'
+ ---
+ 
+ # MCP-CLI

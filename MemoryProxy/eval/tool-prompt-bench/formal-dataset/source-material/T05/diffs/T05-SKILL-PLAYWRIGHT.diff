@@ -1,0 +1,23 @@
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/playwright/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-PLAYWRIGHT/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+diff --git MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/playwright/SKILL.md MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-PLAYWRIGHT/SKILL.md
+index 796cbb4..45f8a59 100644
+--- MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/raw/playwright/SKILL.md
++++ MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T05/adapted/T05-SKILL-PLAYWRIGHT/SKILL.md
+@@ -1,6 +1,8 @@
+ ---
+-name: playwright
+-description: Playwright testing best practices for Next.js applications (formerly test-playwright). This skill should be used when writing, reviewing, or debugging E2E tests with Playwright. Triggers on tasks involving test selectors, flaky tests, authentication state, API mocking, hydration testing, parallel execution, CI configuration, or debugging test failures.
++name: playwright-e2e
++description: "为 React/Next.js E2E 测试提供稳定定位、等待、隔离、追踪与 CI 调试规则。"
++use_when: "需要编写或修复 Playwright E2E 测试，尤其定位器、等待与 trace。"
++do_not_use_when: "只测页面性能指标、Vitest 单测或浏览器探索时不用。"
+ ---
+ 
+ # Playwright + Next.js Testing Best Practices
+@@ -113,3 +115,4 @@ Read individual reference files for detailed explanations and code examples:
+ | [AGENTS.md](AGENTS.md) | Complete compiled guide with all rules |
+ | [references/_sections.md](references/_sections.md) | Category definitions and ordering |
+ | [metadata.json](metadata.json) | Version and reference information |
++
+

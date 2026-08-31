@@ -1,0 +1,127 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t04-skill-trial-01",
+  "stage": "DS03",
+  "team_id": "T04",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T04-SKILL-TRIAL-01-MAVEN-DEPENDENCY",
+      "external_source_ids": [
+        "formal-dataset/source-material/T04/skills/maven-dependency-management/raw/SKILL.md",
+        "formal-dataset/source-material/T04/skills/maven-dependency-management/adapted/SKILL.md"
+      ],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "这条工作线固定在 Google Auto 多模块 Maven 构建诊断项目和给定提交上；范围是依赖解析、版本收敛、依赖管理、排除项和作用域。"
+        },
+        {
+          "role": "assistant",
+          "content": "工作区边界已记下。我会只核对依赖关系与类路径证据，不改代码，也不把相邻工程结论当成这条构建线的事实。"
+        },
+        {
+          "role": "user",
+          "content": "构建日志出现同一传递组件的不同版本，并且一个模块的依赖在测试与运行类路径表现不同；还没有决定应在声明、集中管理还是传递边界修正。"
+        },
+        {
+          "role": "assistant",
+          "content": "这些现象说明需要从依赖树和作用域证据开始，分别核对版本选择、传递边界与模块继承关系，不能只凭一条日志命中归因。"
+        },
+        {
+          "role": "user",
+          "content": "我已排除源代码行为和测试断言两条相邻主线；这轮只确认依赖冲突、集中版本、传递排除和类路径作用域的处理顺序。"
+        },
+        {
+          "role": "assistant",
+          "content": "排除范围保持不变；下一步只需要恢复一套从依赖树证据到版本与传递边界核对的资料流程。"
+        },
+        {
+          "role": "user",
+          "content": "当前交接没有给出 nearest definition 的判定、dependencyManagement 与 BOM 的使用边界、传递排除方式，也没有给出 compile、provided、runtime、test 的类路径差异。"
+        },
+        {
+          "role": "assistant",
+          "content": "因此唯一未决的是这套依赖管理流程及其收敛检查边界；不要从相似 Maven 工程或未冻结资料推断具体步骤。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请给出这次 Google Auto 依赖问题的可执行排查顺序：如何查看依赖树并识别冲突，何时集中管理或导入 BOM，如何处理传递排除与作用域，并说明收敛验证的完成边界；先不改代码。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我没有那套完整流程的实际步骤。请先从团队已有资料中找到适用流程并按上述范围概述，从依赖树证据开始，暂不改代码。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结依赖管理流程的顺序、依赖树与冲突判定方法、dependencyManagement/BOM 的集中版本规则、传递排除与 scope 边界，以及完成收敛核对前必须覆盖的检查项。",
+          "route": "skill",
+          "target_asset_ids": ["T04-SKILL-MAVEN-DEPENDENCY"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "查看团队可搜索到的 Maven 依赖管理流程并概述其依赖树、版本管理、排除和作用域检查，暂不修改代码。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已补齐唯一缺口：先用完整或按组件过滤的依赖树并查看冲突解析，再用依赖分析与作用域列表核对声明；对冲突采用 nearest definition 证据，必要时在父 POM 的 dependencyManagement 集中版本或导入 BOM；对不需要的传递边使用 exclusions，并按 compile、provided、runtime、test 的类路径边界核对；最后确认版本、收敛、传递边界和作用域检查均已覆盖，仍不改代码。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta 已将冻结流程的依赖树查看与冲突解析、依赖分析、作用域核对、dependencyManagement/BOM、exclusions 以及完成边界全部补入当前上下文，因此不需要再取得流程资产；项目、任务和其余上下文保持不变，仅改变是否需要 Skill 工具。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T04-SKILL-MAVEN-LIFECYCLE",
+        "T04-SKILL-MAVEN-PLUGIN",
+        "T04-SKILL-JAVA-SPRINGBOOT"
+      ],
+      "controlled_delta_note": "Positive 只保留 Google Auto 依赖解析与类路径核对流程的缺口；Negative 只补齐同一冻结流程的技术步骤，使是否需要 Skill 工具发生变化，其他项目、症状、排除项和 query 完全不变。",
+      "source_fact_map": [
+        {
+          "claim": "The imported raw technical file is from repository https://github.com/benchflow-ai/skillsbench at commit b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af, path tasks/fix-build-google-auto/environment/skills/maven-dependency-management/SKILL.md, licensed Apache-2.0, with raw_file_sha256 d5a95c61cb189750beafbd7fea8e8ca8159ccf905d90974637b0a3e5495c7846.",
+          "source_id": "formal-dataset/source-material/T04/skills/maven-dependency-management/source.json",
+          "locator": "repository; commit_sha; path; license; raw_file_sha256"
+        },
+        {
+          "claim": "The adapted file is byte-identical to the raw file; only listing metadata is adapted, with the same repository, commit, path, Apache-2.0 license, and raw_file_sha256 d5a95c61cb189750beafbd7fea8e8ca8159ccf905d90974637b0a3e5495c7846.",
+          "source_id": "formal-dataset/source-material/T04/skills/maven-dependency-management/adapted/SKILL.md",
+          "locator": "ADAPTATION.md; technical_body_changed=false"
+        },
+        {
+          "claim": "The guide defines compile, provided, runtime, test, system, and import scope class-path and transitive behavior.",
+          "source_id": "formal-dataset/source-material/T04/skills/maven-dependency-management/raw/SKILL.md",
+          "locator": "## Dependency Scopes; ### Available Scopes; ### Scope Examples"
+        },
+        {
+          "claim": "The guide centralizes versions through dependencyManagement and imports BOMs as managed POM dependencies with import scope.",
+          "source_id": "formal-dataset/source-material/T04/skills/maven-dependency-management/raw/SKILL.md",
+          "locator": "## Dependency Management Section; ### Centralizing Versions; ### BOM (Bill of Materials) Import"
+        },
+        {
+          "claim": "The guide handles unwanted transitive edges with exclusions and an alternative dependency.",
+          "source_id": "formal-dataset/source-material/T04/skills/maven-dependency-management/raw/SKILL.md",
+          "locator": "## Exclusions; ### Excluding Transitive Dependencies; ### Excluding Logging Frameworks"
+        },
+        {
+          "claim": "The guide uses dependency tree, filtered tree, output-file, verbose tree, dependency analysis, and scoped dependency listing to inspect resolution and declarations.",
+          "source_id": "formal-dataset/source-material/T04/skills/maven-dependency-management/raw/SKILL.md",
+          "locator": "## Dependency Analysis; ### View Dependency Tree; ### Analyze Dependencies; ### List Dependencies"
+        },
+        {
+          "claim": "The guide states Maven's nearest-definition version strategy and shows dependencyManagement as the way to force a version across modules.",
+          "source_id": "formal-dataset/source-material/T04/skills/maven-dependency-management/raw/SKILL.md",
+          "locator": "## Conflict Resolution; ### Maven's Default Strategy; ### Forcing Versions"
+        }
+      ],
+      "sol_review_questions": [
+        "确认目标 Skill 在当前冻结快照中是 team-visible 且不在 active listing，首选顺序为同 Team 搜索后按返回标识查看。",
+        "确认任务证据唯一指向依赖解析、版本收敛、dependencyManagement、BOM、exclusions 与 scope，不混入生命周期阶段、profile 或插件执行/配置。",
+        "确认 Negative 只因交接摘要已经包含冻结依赖管理流程而不再需要 Skill 工具，项目、任务、工作区和 query 均未改变。",
+        "确认所有技术步骤均可在冻结 raw/adapted 文件的对应章节中逐项核对，并由 source_fact_map 记录来源元数据与步骤证据。"
+      ]
+    }
+  ]
+}

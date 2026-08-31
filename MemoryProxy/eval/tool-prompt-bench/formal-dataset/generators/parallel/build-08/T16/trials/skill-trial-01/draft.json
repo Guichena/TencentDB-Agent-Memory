@@ -1,0 +1,48 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "build-08-T16-DS05-skill-trial-01",
+  "stage": "DS05",
+  "team_id": "T16",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T16-TRIAL-SKL-001",
+      "external_source_ids": ["T16-EXT-SKL-001", "T16-EXT-SKL-013", "T16-EXT-SKL-016", "T16-EXT-SKL-017"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Beacon Notification Queue 要把订单通知跨库存、支付和配送服务串成一个长流程，消息系统采用异步投递。"},
+        {"role": "assistant", "content": "我会先划分参与服务和每一步的所有权，再确认失败类型、重试策略、每步 SLA、消息基础设施和关联标识。"},
+        {"role": "user", "content": "服务边界和消息基础设施已明确，但部分服务会超时或只完成一半；现在需要设计失败后的恢复路径。"},
+        {"role": "assistant", "content": "下一步要把正常步骤、失败处理、超时边界和死信恢复串成可执行的长流程。"}
+      ],
+      "changed_message_index": 4,
+      "query": "请给出这个跨服务长流程在失败时的补偿、超时和死信恢复核心流程。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前对话还没有团队现成的失败恢复流程细节。请先在团队可用能力中查找相关方案，再按返回的标识打开匹配项；打开后停止继续查找。"},
+        "private_proposal": {
+          "unique_information_gap": "需要查找 T16-SKL-007 saga-orchestration，获取跨服务失败补偿、每步超时、部分执行和 DLQ 恢复的核心流程；该能力 team-visible 但不在 active Agent 首屏 listing。",
+          "route": "skill",
+          "target_asset_ids": ["T16-SKL-007"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "团队搜索返回目标 skill_id 后，使用该返回值打开一次并立即停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充：失败恢复按以下核心流程执行。每个参与服务的补偿动作必须幂等且最终视为成功；即使步骤只部分执行，也必须进入补偿。每一步单独配置超时，不能用一个全局超时。补偿消费者要有 DLQ 处理，并确保每个补偿动作即使底层操作已回滚也发布 SagaCompensationCompleted；同时记录 saga_id、step_name 和状态转移，监测卡在 COMPENSATING 的流程并支持从最后已知成功步骤恢复。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "负例 delta 已补齐补偿幂等性、部分失败、每步超时、DLQ 消费、完成事件、状态监测与恢复的核心流程，足以直接回答查询。"}
+      },
+      "visible_distractor_ids_author_only": ["T16-SKL-001", "T16-SKL-010", "T16-SKL-011"],
+      "controlled_delta_note": "Positive 与 Negative 共享全部上下文和 query；仅 changed_message_index=4 的 delta 在缺少与补齐失败补偿/超时/DLQ 恢复事实之间变化。",
+      "source_fact_map": [
+        {"claim": "Saga 为每个参与服务定义补偿动作，补偿必须幂等且最终成功，并配置每步超时。", "source_id": "T16-EXT-SKL-013", "locator": "SKILL.md § What this skill produces; § Best Practices / Do's"},
+        {"claim": "部分执行仍需要补偿，补偿消费者要处理 DLQ 并发布 SagaCompensationCompleted。", "source_id": "T16-EXT-SKL-013", "locator": "SKILL.md § Best Practices / Don'ts; § Troubleshooting / Saga stuck in COMPENSATING state"},
+        {"claim": "Cloud messaging 干扰强调异步协作、幂等、消息重试与死信策略。", "source_id": "T16-EXT-RES-001", "locator": "references/messaging-integration.md § Choreography Pattern; § Competing Consumers Pattern"},
+        {"claim": "Microservices 干扰覆盖服务边界、异步通信、Saga 与一般韧性模式。", "source_id": "T16-EXT-SKL-016", "locator": "SKILL.md § Core Concepts"},
+        {"claim": "Workflow orchestration 干扰区分 workflow/activity、超时、幂等和恢复。", "source_id": "T16-EXT-SKL-017", "locator": "SKILL.md § Best Practices; § Operational Considerations"}
+      ],
+      "sol_review_questions": ["正例是否只保留跨服务失败补偿、每步超时和 DLQ 恢复的事实缺口？", "负例是否严格补齐冻结 saga 文件中的幂等补偿、部分失败、超时和完成事件步骤？", "三个干扰是否真实且同属分布式事务/消息/工作流编排域？"]
+    }
+  ]
+}

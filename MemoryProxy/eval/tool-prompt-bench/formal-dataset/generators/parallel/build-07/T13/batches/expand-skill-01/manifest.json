@@ -1,0 +1,12 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "task1-T13-expand-skill-01",
+  "external_source_ids": ["T13-SRC-PROMETHEUS", "T13-SRC-LOKI", "T13-SRC-PYROSCOPE", "T13-SRC-ALERTING-IRM", "T13-SRC-DPM-FINDER", "T13-SRC-DPM-CLI"],
+  "generated_at": "2026-08-30T00:30:00+08:00",
+  "raw_output_file": "draft.json",
+  "raw_output_sha256": "e375294708e7c3b585d8cef9189bbebc4466b82e284a8834ef3af3072401e5f1",
+  "actual_count": 5
+}

@@ -1,0 +1,471 @@
+{
+  "schema_version": "task1.team_skill_assets.v1",
+  "team_id": "T13",
+  "skills": [
+    {
+      "assetId": "T13-SKILL-PROMETHEUS",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-T13-SRC-PROMETHEUS"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "prometheus",
+      "version": "1.0.0",
+      "description": "面向指标查询与告警运维的中性指南，覆盖选择器、区间速率、聚合、规则校验、记录规则和探索式指标分析。",
+      "useWhen": "需要编写或解释指标查询；配置告警或记录规则；核对规则加载和指标探索",
+      "doNotUseWhen": "任务只涉及日志内容或分布式追踪；需要直接修改业务代码而非指标配置",
+      "repoCommit": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "1547de8e4e92ef45bf13911b6279770c6d771577815683da68880e18cb97473a"
+        }
+      ],
+      "contentHash": "d6d60e02716714426c4a4f1779ec1edab5f1baccbfd0d51fb4281449234ac589"
+    },
+    {
+      "assetId": "T13-SKILL-LOKI",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-T13-SRC-LOKI"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "loki",
+      "version": "1.0.0",
+      "description": "面向日志聚合与查询的中性指南，覆盖流选择、行过滤、解析、标签与数值聚合，以及采集管线和组件排障。",
+      "useWhen": "编写日志查询或日志指标查询；配置文件、Kubernetes 或代理采集；排查日志查询与摄取问题",
+      "doNotUseWhen": "没有日志信号而只分析指标或追踪；需要连续剖析而非日志查询",
+      "repoCommit": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "62e7daecefc73d4392585fff99a5c5d72d2de1aa1472c80c8305b96222982779"
+        }
+      ],
+      "contentHash": "1b197b68c9277c61357f9b161a5b7480bcb1d9c3b378af922f1cff3f9ba4de58"
+    },
+    {
+      "assetId": "T13-SKILL-DPM-FINDER",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-T13-SRC-DPM-FINDER",
+        "T13-EVID-T13-SRC-DPM-CLI"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "dpm-finder",
+      "version": "1.0.0",
+      "description": "面向指标成本与基数诊断的中性指南，按每分钟数据点、标签集和可选价格估算识别高消耗指标。",
+      "useWhen": "调查云端指标费用；寻找高基数或高噪声指标；比较规则变更前后的指标成本",
+      "doNotUseWhen": "没有 Prometheus 端点或只需编写查询；目标是日志、追踪或应用性能分析",
+      "repoCommit": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "b7bc79fd57d3bdba388e273407c6ba55addea9611aea31fcbbac74b70485d0df"
+        },
+        {
+          "path": "references/cli.md",
+          "sha256": "334a06f4b08ded30c7077d39eb55744da1ac50cf57ae45fc20c3921b3660857b"
+        }
+      ],
+      "contentHash": "9793867a749031096b5a93735abac46cf2189deeb789ebf1bb41db46348928e3"
+    },
+    {
+      "assetId": "T13-SKILL-OPENTELEMETRY",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-T13-SRC-OPENTELEMETRY"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "opentelemetry",
+      "version": "1.0.0",
+      "description": "面向应用遥测接入的中性指南，覆盖 OTLP 认证、语言自动插桩、采集器转发、Kubernetes 注入与采样选择。",
+      "useWhen": "给应用增加指标、日志或追踪；配置 OTLP 端点和环境变量；排查 spans 未出现在探索界面",
+      "doNotUseWhen": "只需要查询已有追踪而不改接入；问题是单纯的日志查询或指标规则",
+      "repoCommit": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "79c3e457dfe9083ab628eb011abd8d4084fe1cd0b7a59315be32901678796e4d"
+        }
+      ],
+      "contentHash": "610d91cda42596c9abc2a971eb9b19a8d38f5775fc57db9da1676017bb1dabd2"
+    },
+    {
+      "assetId": "T13-SKILL-DASHBOARDING",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-T13-SRC-DASHBOARDING"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "dashboarding",
+      "version": "1.0.0",
+      "description": "面向可观测性面板编排的中性指南，覆盖 JSON 布局、变量、转换、链接、注释、发布和回读验证。",
+      "useWhen": "创建或修改 Grafana 仪表板；增加变量、转换或面板链接；通过 API 发布并验证面板",
+      "doNotUseWhen": "只需查询单个指标或日志；需要编写采集器或告警路由",
+      "repoCommit": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "dca785650631cb087228adf9a720a05d68e49ee6ec9ba151af9897a86d531c84"
+        }
+      ],
+      "contentHash": "339aa10729f407f90df18c11b6fe6b28e10f135a16a5333df03e66bcb65ec844"
+    },
+    {
+      "assetId": "T13-SKILL-SYNTHETIC",
+      "ownerAgentId": "agent-task1-t13-general",
+      "sourceEvidenceIds": [
+        "T13-EVID-T13-SRC-SYNTHETIC"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "synthetic-monitoring-checks",
+      "version": "1.0.0",
+      "description": "面向可靠性探测的中性指南，覆盖脚本与浏览器检查、断言、密钥、幂等性、频率成本、验证和回滚。",
+      "useWhen": "创建 HTTP、脚本或浏览器合成检查；监控登录到核心动作的用户旅程；验证探测成功率和回滚检查",
+      "doNotUseWhen": "要做持续负载或容量测试；目标是离线单元测试而非线上探测",
+      "repoCommit": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "87747add5854773f2c134dce4f51af9634e625a39a84e32b7f40031fba936c55"
+        }
+      ],
+      "contentHash": "1e4b2085dbe61d3c304539e6c5c1b98688bbbdea156ecaeb6ef0687a36f2bc86"
+    },
+    {
+      "assetId": "T13-SKILL-TEMPO",
+      "ownerAgentId": "agent-task1-t13-assets-a",
+      "sourceEvidenceIds": [
+        "T13-EVID-T13-SRC-TEMPO"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "tempo",
+      "version": "1.0.0",
+      "description": "面向分布式追踪后端运维的中性指南，覆盖多协议摄取、对象存储、TraceQL、服务图、多租户和跨信号关联。",
+      "useWhen": "部署或验证分布式追踪后端；查询慢请求、错误关系或服务错误率；配置对象存储、多租户或追踪到日志/指标/剖析链接",
+      "doNotUseWhen": "只有指标或日志而没有追踪信号；需要做应用插桩而非后端部署与查询",
+      "repoCommit": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "548446ae11f0bb5c63bb5d37e53d0f158b2f866002ccff825cc22c2fa474be75"
+        }
+      ],
+      "contentHash": "8a8344f5b8f566a8f556ea86571779472101e7b2863c6cb8648092293e314230"
+    },
+    {
+      "assetId": "T13-SKILL-PYROSCOPE",
+      "ownerAgentId": "agent-task1-t13-assets-a",
+      "sourceEvidenceIds": [
+        "T13-EVID-T13-SRC-PYROSCOPE"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "pyroscope",
+      "version": "1.0.0",
+      "description": "面向持续性能剖析的中性指南，覆盖 SDK、eBPF、采样转发、ProfileQL、火焰图与追踪到剖析关联。",
+      "useWhen": "寻找 CPU、内存、分配或锁竞争热点；部署集群级 eBPF 剖析；把慢追踪关联到 profile",
+      "doNotUseWhen": "没有 profile 数据而只需指标或日志；问题需要代码级 tracing 插桩而非性能剖析",
+      "repoCommit": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "58ab9560110f50d05cdd3191ac970912af75eb5682855d9a66cd708c8bb2bf96"
+        }
+      ],
+      "contentHash": "c57190bef59c70559022b0e70af24aa1d8cd6f69d3242b9c877ab1d52a17056b"
+    },
+    {
+      "assetId": "T13-SKILL-ALERTING-IRM",
+      "ownerAgentId": "agent-task1-t13-assets-a",
+      "sourceEvidenceIds": [
+        "T13-EVID-T13-SRC-ALERTING-IRM"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "alerting-irm",
+      "version": "1.0.0",
+      "description": "面向告警、值班和 SLO 运维的中性指南，覆盖通知目的地、分层路由、静默、升级链、事故集成和燃烧率。",
+      "useWhen": "配置告警规则、联系点或通知策略；接入值班/事故响应并验证路由；定义 SLO 和多窗口燃烧率告警",
+      "doNotUseWhen": "只需查询指标而不配置告警；目标是日志采集或应用性能剖析",
+      "repoCommit": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "e23570f778be7f546f65930539c83bd8f6e6d984e471f9022a9474fca706daf2"
+        }
+      ],
+      "contentHash": "29fce776161babfc0ce7b952d6d61615e559a290a69a884ce39f8b4fe7a5c826"
+    },
+    {
+      "assetId": "T13-SKILL-ALLOY",
+      "ownerAgentId": "agent-task1-t13-assets-a",
+      "sourceEvidenceIds": [
+        "T13-EVID-T13-SRC-ALLOY"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "alloy",
+      "version": "1.0.0",
+      "description": "面向统一遥测管线的中性指南，覆盖指标、日志、追踪和 profile 的采集、转发、发现、重标记、校验和健康检查。",
+      "useWhen": "编写或迁移遥测采集配置；接收 OTLP、抓取目标或过滤日志；排查采集器不发送数据",
+      "doNotUseWhen": "只需查询后端数据；不涉及采集、转发或管线配置",
+      "repoCommit": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "ad0b2175dc1b7ec79874e7128c476c44f6e2238b8d5041b418072fa015c2e92d"
+        }
+      ],
+      "contentHash": "8b1e6eefb7c5d6f1defc28e0768a22ac04d1138b537966fd3ea10ea9b1fcc0f6"
+    },
+    {
+      "assetId": "T13-SKILL-PROFILECLI",
+      "ownerAgentId": "agent-task1-t13-assets-a",
+      "sourceEvidenceIds": [
+        "T13-EVID-T13-SRC-PROFILECLI"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "profilecli-insights",
+      "version": "1.0.0",
+      "description": "面向远程性能 profile 取证的中性指南，覆盖服务发现、profile 类型选择、pprof 热点排序和源码映射。",
+      "useWhen": "已配置 profile 服务并需调查热点函数；需要将火焰图样本关联到当前仓库源码；比较运行时、GC、锁或分配压力",
+      "doNotUseWhen": "没有 profile 服务或凭据；问题只需要指标、日志或追踪查询",
+      "repoCommit": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "68a7cf8249dc96c09fcb349287e8733bd3dfc4f710ed3d07a1af6d17303f4d6c"
+        }
+      ],
+      "contentHash": "008aef474f1ecd10f89f3e2e38f87aa3dbb018d8ee702c2c1de7c757f87fa7bb"
+    },
+    {
+      "assetId": "T13-SKILL-PROMQL",
+      "ownerAgentId": "agent-task1-t13-assets-b",
+      "sourceEvidenceIds": [
+        "T13-EVID-T13-SRC-PROMQL"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "promql",
+      "version": "1.0.0",
+      "description": "面向 PromQL 编写与优化的中性指南，覆盖速率、标签、聚合、直方图、缺失检测、预测和记录规则。",
+      "useWhen": "编写或修正指标查询；核对 p95、错误率、SLO 和燃烧率；把慢查询迁移为记录规则",
+      "doNotUseWhen": "只需要日志或追踪查询；没有指标端点且不打算提供查询表达式",
+      "repoCommit": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "c2283cb8e2921d95da9641834c9b9bae8a2d8f287aa0e893f8f5ce31ea79c069"
+        }
+      ],
+      "contentHash": "a04407499fece53b0727d16685c3f143fe98e78996096f1a2d0417c9fc0eb590"
+    },
+    {
+      "assetId": "T13-SKILL-LOKI-LABEL",
+      "ownerAgentId": "agent-task1-t13-assets-b",
+      "sourceEvidenceIds": [
+        "T13-EVID-T13-SRC-LOKI-LABEL"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "loki-label-analyzer",
+      "version": "1.0.0",
+      "description": "面向日志标签策略的中性评估指南，覆盖基数、访问模式、静态与动态值、结构化元数据、性能和成本。",
+      "useWhen": "审查日志标签集合；诊断高基数和查询性能问题；设计标签降级、元数据和迁移方案",
+      "doNotUseWhen": "只需写一条日志查询；目标是指标标签而非日志标签",
+      "repoCommit": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "979748d247d1569090028e16a7e405c662464f0edd30c81556f876a8a52e88ce"
+        }
+      ],
+      "contentHash": "a74c240efe9ecaf7042707283f684ce9773eb7cebc1413b16d19bd379fd2c412"
+    },
+    {
+      "assetId": "T13-SKILL-K6-INVESTIGATE",
+      "ownerAgentId": "agent-task1-t13-assets-b",
+      "sourceEvidenceIds": [
+        "T13-EVID-T13-SRC-K6-INVESTIGATE"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "k6-cloud-investigate-test",
+      "version": "1.0.0",
+      "description": "面向云端负载测试调查的中性指南，覆盖测试与运行识别、状态语义、指标时序、日志、阈值陷阱和安全编辑。",
+      "useWhen": "调查指定云端测试或运行；判断通过/失败并查看原始指标和日志；按要求安全修改测试脚本",
+      "doNotUseWhen": "需要新建完整网站压测套件；只分析本地 k6 输出而没有云端运行",
+      "repoCommit": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "9e281bd63db9a5455417b197d152718f6a9b480591fa6b4ffffd854d84e83bcc"
+        }
+      ],
+      "contentHash": "8d84a4e7a95052b1c0670ebaca6c141b47e6f2e6000db78d3e272326d492fe46"
+    },
+    {
+      "assetId": "T13-SKILL-K6-TREND",
+      "ownerAgentId": "agent-task1-t13-assets-b",
+      "sourceEvidenceIds": [
+        "T13-EVID-T13-SRC-K6-TREND"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "k6-trend-analysis",
+      "version": "1.0.0",
+      "description": "面向多次负载运行趋势的中性指南，覆盖窗口、聚合指标、基线、变化率、余量、异常和服务侧关联。",
+      "useWhen": "比较多个云端运行的性能趋势；评估阈值余量和预计越界；需要将客户端回归与服务侧信号关联",
+      "doNotUseWhen": "只有一次运行且只需查看结果；需要直接修复脚本或部署配置",
+      "repoCommit": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "b85bd1b9914e66e5ea643bf5f8de58ad5ee3cee30a7e359b54945bfe101cad31"
+        }
+      ],
+      "contentHash": "f6d9cd452e83e7c88359e2feb638677f0dd796dad7a31fa97b52c6b9a5d24ac3"
+    },
+    {
+      "assetId": "T13-SKILL-K6-WEBSITE",
+      "ownerAgentId": "agent-task1-t13-assets-b",
+      "sourceEvidenceIds": [
+        "T13-EVID-T13-SRC-K6-WEBSITE"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "k6-perf-test-website",
+      "version": "1.0.0",
+      "description": "面向公开网站端到端性能测试的中性指南，覆盖工作流录制、协议与浏览器混合负载、SLO、负载机监控和报告。",
+      "useWhen": "对网站做性能、负载或压力测试；需要协议加浏览器的用户旅程套件；需要本地验证、云端扩展和后端调查流程",
+      "doNotUseWhen": "只需 API/协议压测；目标是移动原生应用或长期容量规划",
+      "repoCommit": "51d33e71e191b409bbd25fc7be2684c610d18166",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "3fa52f3e32dafda884614b76e4359a34e8db7099aaa58e383067ee881cc6bf0b"
+        }
+      ],
+      "contentHash": "e8a06e6a48243330d8ed15fd0e8dfbeea3578e623f05b85c53fdab24ad0a1657"
+    }
+  ],
+  "listingEvidence": {
+    "agentId": "agent-task1-t13-general",
+    "listedAssetIds": [
+      "T13-SKILL-PROMETHEUS",
+      "T13-SKILL-LOKI",
+      "T13-SKILL-DPM-FINDER",
+      "T13-SKILL-OPENTELEMETRY",
+      "T13-SKILL-DASHBOARDING",
+      "T13-SKILL-SYNTHETIC"
+    ],
+    "listingSha256": "0150267540c6ea6b27ba6a74f8dc17f42e2a70b5b969c68fc251181920aa2c79"
+  },
+  "searchFixtures": [
+    {
+      "caseKey": "SKL-003",
+      "targetAssetId": "T13-SKILL-TEMPO",
+      "visibleDistractorIds": [
+        "T13-SKILL-LOKI",
+        "T13-SKILL-OPENTELEMETRY",
+        "T13-SKILL-PYROSCOPE"
+      ],
+      "expectedMode": "team-visible-search"
+    },
+    {
+      "caseKey": "SKL-004",
+      "targetAssetId": "T13-SKILL-PYROSCOPE",
+      "visibleDistractorIds": [
+        "T13-SKILL-PROFILECLI",
+        "T13-SKILL-TEMPO",
+        "T13-SKILL-ALLOY"
+      ],
+      "expectedMode": "team-visible-search"
+    },
+    {
+      "caseKey": "SKL-005",
+      "targetAssetId": "T13-SKILL-ALERTING-IRM",
+      "visibleDistractorIds": [
+        "T13-SKILL-PROMETHEUS",
+        "T13-SKILL-LOKI",
+        "T13-SKILL-SYNTHETIC"
+      ],
+      "expectedMode": "team-visible-search"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "batch_id": "T17-memory-replacement-02",
+  "stage": "DS03",
+  "team_id": "T17",
+  "generator_model": "gpt-5.6-luna",
+  "models": [
+    "gpt-5.6-luna"
+  ],
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "prompt_version": "task1.luna-batch.v1",
+  "raw_output_file": "draft.json",
+  "raw_output_sha256": "d9b18011de07b165d082e4fcbb5bb75f221c0dac3aeae2c32a0941be7e3ce829",
+  "actual_count": 1,
+  "generated_at": "2026-08-31T00:00:00.000Z"
+}

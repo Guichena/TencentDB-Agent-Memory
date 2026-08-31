@@ -1,0 +1,167 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t14-expand-knowledge-01",
+  "stage": "DS05",
+  "team_id": "T14",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T14-DS05-KNW-002",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "今天继续处理 Meridian Fleet 的多集群 GitOps、配置漂移例外和发布协调，固定快照和工作区不变；不要把 Borealis Platform 的 Helm 回滚或 Forge Build 的镜像构建混进来。"
+        },
+        {
+          "role": "assistant",
+          "content": "边界已记下：当前只处理 Meridian Fleet 的 GitOps 交付手册和漂移例外协调，保持既定快照与工作区，不合并另外两个项目的上下文。"
+        },
+        {
+          "role": "user",
+          "content": "这次要核对漂移例外在发布协调中的登记约定。现有讨论只出现了影响集群、例外解除和发布窗口等同域词，没有可直接引用的手册条目。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把这些词当作主题线索，不从 Borealis 的回滚护栏或 Forge 的供应链流程推断 Meridian Fleet 的手册措辞。"
+        },
+        {
+          "role": "user",
+          "content": "Borealis Platform 还有一条 Helm 发布护栏记录，Forge Build 也有 OCI 签名交付记录；它们只是同域干扰，不能替代 Meridian Fleet 的多集群约定。"
+        },
+        {
+          "role": "assistant",
+          "content": "已将这两条跨项目记录保留为排除项；当前仍只定位 Meridian Fleet 手册中漂移例外的登记表述。"
+        },
+        {
+          "role": "user",
+          "content": "本次只需确认手册中关于漂移例外登记、影响集群和解除条件的准确条目，不要扩展到集群操作步骤、审批责任或发布建议。"
+        },
+        {
+          "role": "assistant",
+          "content": "目前已确认项目、GitOps 漂移主题和发布协调范围；上下文尚未包含手册的准确章节和规范条目，不能安全复述具体表述。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请确认 Meridian Fleet 交付手册中关于漂移例外登记的准确条目，并只返回该条目。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充记录仍只有漂移例外的主题和发布协调背景，没有提供手册章节或可引用的规范条目；请保留这一处条目缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "Meridian Fleet 交付手册中关于漂移例外登记的准确章节和规范条目尚未出现在当前上下文，不能从同域项目的惯例推导。",
+          "route": "knowledge",
+          "target_asset_ids": ["T14-KNOW-MERIDIAN-WIKI"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "frozen_tool_request": {
+            "toolName": "search",
+            "parameters": {"text": "漂移例外的发布协调", "topic": "GitOps"}
+          },
+          "stop_after_candidate": "用 Meridian Fleet 交付手册的主题检索得到 drift-exceptions 条目及其规范表述后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已补齐唯一缺口：手册的 `drift-exceptions` 条目规定，漂移例外须在发布协调记录中登记影响集群与解除条件；Borealis Platform、Forge Build 及其他操作建议仍不纳入本次记录。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已经补齐 Meridian Fleet 手册的章节和准确条目，并保持 GitOps 范围及另外两个项目排除项；无需再查资源。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T14-KNOW-BOREALIS-CG", "T14-KNOW-FORGE-CG"],
+      "controlled_delta_note": "Positive 只保留 Meridian Fleet 手册中漂移例外准确条目的缺口；Negative 只补齐 drift-exceptions 条目及其规范表述，项目范围、排除项和 query 完全不变。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为 Meridian Fleet 交付手册中漂移例外登记条目的章节和准确表述，没有隐含操作步骤、审批责任或发布建议？",
+        "Negative 是否只补入 drift-exceptions 条目及‘在发布协调记录中登记影响集群与解除条件’这一规范表述，并保持另外两个项目排除项和 query 不变？",
+        "Meridian Fleet、GitOps 漂移例外和发布协调这些自然线索，是否足以在三个 ready 资源中唯一选择该项目的交付手册，同时避免首屏上下文直接给出条目？",
+        "三个 Knowledge fixture 是否完整、ready、事实一致，并分别使用 Borealis search、Meridian wiki search 与 Forge impact？"
+      ]
+    },
+    {
+      "draft_pair_id": "T14-DS05-KNW-003",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "今天继续处理 Forge Build 的 Tekton 容器构建、OCI registry 和供应链交付，固定快照和工作区不变；不要把 Borealis Platform 的 Helm 回滚或 Meridian Fleet 的 GitOps 漂移混进来。"
+        },
+        {
+          "role": "assistant",
+          "content": "边界已记下：当前只处理 Forge Build 的构建交付影响关系，保持既定快照与工作区，不合并 Borealis Platform 或 Meridian Fleet 的项目上下文。"
+        },
+        {
+          "role": "user",
+          "content": "这次要核对镜像证明步骤完成后会影响哪些下游节点。已有记录提到 Tekton、OCI 发布和签名校验，但没有可靠的文件位置、深度结果或边数量。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把这些词当作定位线索，不从相似的发布任务或供应链组件名猜下游文件，也不把其他项目的回滚或漂移关系带入。"
+        },
+        {
+          "role": "user",
+          "content": "Meridian Fleet 有一条关于漂移例外的多集群记录，Borealis Platform 有一条 Helm 护栏记录；两条都是同域但不同项目的独立干扰。"
+        },
+        {
+          "role": "assistant",
+          "content": "已将 Meridian Fleet 和 Borealis Platform 的线索排除，当前问题仍限于 Forge Build 的镜像证明步骤影响定位。"
+        },
+        {
+          "role": "user",
+          "content": "本次只需确认镜像证明步骤在影响分析深度 2 下的准确下游文件和边数量，不要扩展到构建修复、签名策略或供应链建议。"
+        },
+        {
+          "role": "assistant",
+          "content": "目前已确认项目、Tekton/OCI 主题和影响分析范围；上下文尚未包含深度 2 的准确下游节点及边数量，不能安全写出结果。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请确认 Forge Build 中镜像证明步骤在影响分析深度 2 下的准确下游文件和边数量，并只返回该结果。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充记录仍只有镜像证明步骤、Tekton 构建和 OCI 发布的主题，没有提供影响分析的下游文件或边数量；请保留这一处影响定位缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "Forge Build 中镜像证明步骤在深度 2 下的精确下游节点和边数量尚未出现在当前上下文，不能从构建词或相似任务名推导。",
+          "route": "knowledge",
+          "target_asset_ids": ["T14-KNOW-FORGE-CG"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "frozen_tool_request": {
+            "toolName": "impact",
+            "parameters": {"symbol": "ImageAttestationStep", "project": "t14-forge-build", "depth": 2}
+          },
+          "stop_after_candidate": "用 Forge Build 代码索引的影响分析得到两个深度 2 下游节点和 edge_count 2 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已补齐唯一缺口：固定代码索引显示深度 2 的下游节点为 `pipelines/attestation.yaml:64` 和 `tasks/publish-oci.yaml:91`，边数量为 2；构建修复、签名策略及另外两个项目仍不纳入本次记录。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已经补齐 Forge Build 镜像证明步骤在深度 2 下的两个下游文件及边数量，并保持项目范围和排除项；无需再查资源。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T14-KNOW-BOREALIS-CG", "T14-KNOW-MERIDIAN-WIKI"],
+      "controlled_delta_note": "Positive 只保留 Forge Build 镜像证明步骤深度 2 影响结果的缺口；Negative 只补齐两个下游文件和 edge_count 2，项目范围、排除项和 query 完全不变。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为 Forge Build 代码索引中的深度 2 下游文件和边数量，没有隐含构建修复、签名策略或供应链建议？",
+        "Negative 是否只补入 pipelines/attestation.yaml:64、tasks/publish-oci.yaml:91 和边数量 2，并保持另外两个项目排除项和 query 不变？",
+        "Forge Build、Tekton、OCI 发布和镜像证明这些自然线索，是否足以在三个 ready 资源中唯一选择 Forge 代码索引，同时避免首屏上下文直接给出影响结果？",
+        "三个 Knowledge fixture 是否完整、ready、事实一致，并分别使用 Borealis search、Meridian wiki search 与 Forge impact？"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1017 @@
+{
+  "schema_version": "task1.team_input_pack.v1",
+  "build_id": "build-02",
+  "stage": "DS03",
+  "team_id": "T04",
+  "split": "dev",
+  "frozen_at": "2026-08-29T22:55:00+08:00",
+  "production_contract": {
+    "memory": {
+      "positive_count": 6,
+      "search_first_count": 4,
+      "direct_first_count": 2,
+      "allowed_routes": [
+        [
+          "tdai_memory_search"
+        ],
+        [
+          "tdai_atomic_query"
+        ],
+        [
+          "tdai_conversation_search"
+        ],
+        [
+          "tdai_conversation_search",
+          "tdai_conversation_query"
+        ],
+        [
+          "tdai_read_scene"
+        ]
+      ]
+    },
+    "skill": {
+      "positive_count": 6,
+      "routes": {
+        "listed_direct": {
+          "count": 2,
+          "sequence": [
+            "skill_view"
+          ]
+        },
+        "team_search": {
+          "count": 3,
+          "sequence": [
+            "skill_search",
+            "skill_view_by_id"
+          ]
+        },
+        "listed_resource": {
+          "count": 1,
+          "sequence": [
+            "skill_view",
+            "skill_files_read"
+          ]
+        }
+      }
+    },
+    "knowledge": {
+      "positive_count": 3,
+      "sequence": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "fixed_resource_count": 3
+    },
+    "pair_negative_count": 15,
+    "natural_negative_count": 10,
+    "provider_forbidden_terms": [
+      "gold",
+      "targetAssetIds",
+      "pairId",
+      "informationGap",
+      "knowledge_id",
+      "/memory-bridge/",
+      "/skill-bridge/",
+      "/tools/list",
+      "/tools/call"
+    ]
+  },
+  "identities": {
+    "active_agent_id": "agent-task1-t04-general",
+    "asset_agent_ids": [
+      "agent-task1-t04-assets-a",
+      "agent-task1-t04-assets-b"
+    ],
+    "user_id": "user-task1-t04-eval",
+    "space_id": "space-task1-engineering",
+    "snapshot_id": "snapshot-task1-dev-v1"
+  },
+  "project_streams": [
+    {
+      "projectId": "T04-PROJECT-PETCLINIC",
+      "topic": "Spring PetClinic Jakarta and security migration",
+      "repoSlug": "spring-projects/spring-petclinic",
+      "repoUrl": "https://github.com/spring-projects/spring-petclinic",
+      "commit": "818c4136ea971c21674525f9053de0d9c7ad8cfe",
+      "license": "Apache-2.0",
+      "scope": "Jakarta namespaces, retained JDK javax packages, validation, persistence, security, and focused regression tests"
+    },
+    {
+      "projectId": "T04-PROJECT-REST-CONSUMER",
+      "topic": "Spring synchronous REST client evolution",
+      "repoSlug": "spring-guides/gs-consuming-rest",
+      "repoUrl": "https://github.com/spring-guides/gs-consuming-rest",
+      "commit": "879c2a18a74fc9df071147fdd81206373b30a298",
+      "license": "Apache-2.0",
+      "scope": "synchronous RestTemplate-to-RestClient behavior parity, response mapping, error handling, and client tests"
+    },
+    {
+      "projectId": "T04-PROJECT-GOOGLE-AUTO",
+      "topic": "Google Auto Maven build diagnosis",
+      "repoSlug": "google/auto",
+      "repoUrl": "https://github.com/google/auto",
+      "commit": "2776e288bd3011800e46581b0b810668cc6d664b",
+      "license": "Apache-2.0",
+      "scope": "multi-module Maven lifecycle, dependency convergence, plugin execution, profiles, and build evidence"
+    },
+    {
+      "projectId": "T04-PROJECT-DRUID-BACKEND",
+      "topic": "Apache Druid Java backend security",
+      "repoSlug": "apache/druid",
+      "repoUrl": "https://github.com/apache/druid",
+      "commit": "9318bbee1a26e959b2526ac7cf7045dc906147f2",
+      "license": "Apache-2.0",
+      "scope": "Jackson parser boundaries, adversarial requests, legitimate request compatibility, tests, and Maven module isolation"
+    }
+  ],
+  "asset_targets": {
+    "memory": {
+      "l0_sessions": 10,
+      "l0_messages_per_session": [
+        12,
+        20
+      ],
+      "l1_memories": 16,
+      "l2_scenes": 5,
+      "l3_profiles": 1
+    },
+    "skills": {
+      "total": 16,
+      "bound_to_active": [
+        "T04-SKILL-JAKARTA",
+        "T04-SKILL-RESTCLIENT",
+        "T04-SKILL-SPRING-TESTING",
+        "T04-SKILL-JAVA-JUNIT",
+        "T04-SKILL-JAVA-SPRINGBOOT",
+        "T04-SKILL-CREATE-SPRING"
+      ]
+    },
+    "knowledge": [
+      {
+        "assetId": "T04-KNOW-PETCLINIC-CODEGRAPH",
+        "type": "code_graph",
+        "projectId": "T04-PROJECT-PETCLINIC",
+        "toolName": "search"
+      },
+      {
+        "assetId": "T04-KNOW-GOOGLE-AUTO-CODEGRAPH",
+        "type": "code_graph",
+        "projectId": "T04-PROJECT-GOOGLE-AUTO",
+        "toolName": "search"
+      },
+      {
+        "assetId": "T04-KNOW-BACKEND-MIGRATION-WIKI",
+        "type": "wiki",
+        "about": "Jakarta, RestClient, security, and Maven root-cause decision boundaries",
+        "toolName": "search"
+      }
+    ]
+  },
+  "required_trial_pairs": [
+    {
+      "family": "memory",
+      "route": [
+        "tdai_conversation_search"
+      ],
+      "projectId": "T04-PROJECT-PETCLINIC"
+    },
+    {
+      "family": "skill",
+      "route": [
+        "skill_search",
+        "skill_view_by_id"
+      ],
+      "targetAssetId": "T04-SKILL-MAVEN-DEPENDENCY"
+    },
+    {
+      "family": "knowledge",
+      "route": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "targetAssetId": "T04-KNOW-GOOGLE-AUTO-CODEGRAPH"
+    }
+  ],
+  "final_positive_plan": {
+    "memory": [
+      {
+        "id": "MEM-01",
+        "route": [
+          "tdai_conversation_search"
+        ],
+        "target": "T04-L0-PETCLINIC-NAMESPACE",
+        "project": "PetClinic"
+      },
+      {
+        "id": "MEM-02",
+        "route": [
+          "tdai_memory_search"
+        ],
+        "target": "T04-L1-RESTCLIENT-PARITY",
+        "project": "REST consumer"
+      },
+      {
+        "id": "MEM-03",
+        "route": [
+          "tdai_conversation_search",
+          "tdai_conversation_query"
+        ],
+        "target": "T04-L0-MAVEN-PLUGIN-DIAGNOSIS",
+        "project": "Google Auto"
+      },
+      {
+        "id": "MEM-04",
+        "route": [
+          "tdai_memory_search"
+        ],
+        "target": "T04-L1-DRUID-SECURITY-BOUNDARY",
+        "project": "Druid"
+      },
+      {
+        "id": "MEM-05",
+        "route": [
+          "tdai_atomic_query"
+        ],
+        "target": "T04-L1-MAVEN-DEPENDENCY-CONVERGENCE",
+        "project": "Google Auto"
+      },
+      {
+        "id": "MEM-06",
+        "route": [
+          "tdai_read_scene"
+        ],
+        "target": "T04-L2-SPRING-MIGRATION-BOUNDARIES",
+        "project": "PetClinic"
+      }
+    ],
+    "skill": [
+      {
+        "id": "SKILL-01",
+        "route": [
+          "skill_view"
+        ],
+        "target": "T04-SKILL-JAKARTA",
+        "project": "PetClinic"
+      },
+      {
+        "id": "SKILL-02",
+        "route": [
+          "skill_view"
+        ],
+        "target": "T04-SKILL-RESTCLIENT",
+        "project": "REST consumer"
+      },
+      {
+        "id": "SKILL-03",
+        "route": [
+          "skill_search",
+          "skill_view_by_id"
+        ],
+        "target": "T04-SKILL-MAVEN-DEPENDENCY",
+        "project": "Google Auto"
+      },
+      {
+        "id": "SKILL-04",
+        "route": [
+          "skill_search",
+          "skill_view_by_id"
+        ],
+        "target": "T04-SKILL-MAVEN-LIFECYCLE",
+        "project": "Google Auto"
+      },
+      {
+        "id": "SKILL-05",
+        "route": [
+          "skill_search",
+          "skill_view_by_id"
+        ],
+        "target": "T04-SKILL-MAVEN-PLUGIN",
+        "project": "Google Auto"
+      },
+      {
+        "id": "SKILL-06",
+        "route": [
+          "skill_view",
+          "skill_files_read"
+        ],
+        "target": "T04-SKILL-SPRING-TESTING",
+        "resource": "references/restclienttest.md",
+        "project": "REST consumer"
+      }
+    ],
+    "knowledge": [
+      {
+        "id": "KNOW-01",
+        "target": "T04-KNOW-PETCLINIC-CODEGRAPH",
+        "project": "PetClinic",
+        "toolName": "search"
+      },
+      {
+        "id": "KNOW-02",
+        "target": "T04-KNOW-GOOGLE-AUTO-CODEGRAPH",
+        "project": "Google Auto",
+        "toolName": "search"
+      },
+      {
+        "id": "KNOW-03",
+        "target": "T04-KNOW-BACKEND-MIGRATION-WIKI",
+        "project": "backend migration",
+        "toolName": "search"
+      }
+    ]
+  },
+  "frozen_skills": [
+    {
+      "assetId": "T04-SKILL-JAKARTA",
+      "name": "jakarta-namespace",
+      "source": "skillsbench",
+      "path": "tasks/spring-boot-jakarta-migration/environment/skills/jakarta-namespace/SKILL.md",
+      "ownerAgentId": "agent-task1-t04-general",
+      "visibility": "private",
+      "listed": true,
+      "description": "Migrates Java EE javax namespaces to Jakarta while retaining JDK-owned javax packages.",
+      "useWhen": "A Spring Boot 3 or Jakarta upgrade specifically requires namespace mapping and verification.",
+      "doNotUseWhen": "The issue is RestClient, Maven configuration, a retained JDK javax import, or an exact local replacement already supplied.",
+      "schema_version": "task1.skill_source_lock.v1",
+      "team_id": "T04",
+      "asset_id": "T04-SKILL-JAKARTA",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "commit_sha": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "license": "Apache-2.0",
+      "license_path": "LICENSE",
+      "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "raw_file_sha256": "6af9ccbf16fff0f7cb65ed15a2433256cb48ca2328ebd86f5e556570f86f93a1",
+      "adapted_file_sha256": "6af9ccbf16fff0f7cb65ed15a2433256cb48ca2328ebd86f5e556570f86f93a1",
+      "package_sha256": "e775c2a40a60cc24e99f5b6db642829fbc277792bc8f085b52c90917b30a10e4",
+      "resource_files": [],
+      "adaptation": {
+        "kind": "registry_metadata_only",
+        "technical_body_changed": false,
+        "allowed_changes": [
+          "listing description",
+          "use_when",
+          "do_not_use_when"
+        ],
+        "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "frozen_at": "2026-08-29T22:55:00+08:00",
+      "sourceUrl": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/spring-boot-jakarta-migration/environment/skills/jakarta-namespace/SKILL.md",
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "6af9ccbf16fff0f7cb65ed15a2433256cb48ca2328ebd86f5e556570f86f93a1"
+        }
+      ]
+    },
+    {
+      "assetId": "T04-SKILL-RESTCLIENT",
+      "name": "restclient-migration",
+      "source": "skillsbench",
+      "path": "tasks/spring-boot-jakarta-migration/environment/skills/restclient-migration/SKILL.md",
+      "ownerAgentId": "agent-task1-t04-general",
+      "visibility": "private",
+      "listed": true,
+      "description": "Migrates synchronous Spring RestTemplate calls to Spring 6.1 RestClient while preserving behavior.",
+      "useWhen": "A synchronous Spring HTTP client must move from RestTemplate to RestClient with method and error parity.",
+      "doNotUseWhen": "The target is WebClient/reactive, a controller route, a namespace migration, or a fully specified local edit.",
+      "schema_version": "task1.skill_source_lock.v1",
+      "team_id": "T04",
+      "asset_id": "T04-SKILL-RESTCLIENT",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "commit_sha": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "license": "Apache-2.0",
+      "license_path": "LICENSE",
+      "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "raw_file_sha256": "eb2568b08d96c567b2aaa15f7adfea49a1f71db5ef769a7245be92d2b8e9088e",
+      "adapted_file_sha256": "eb2568b08d96c567b2aaa15f7adfea49a1f71db5ef769a7245be92d2b8e9088e",
+      "package_sha256": "1eaffd125dd614642df8ba6823de2ede62c2e66efc8e46555f03dd1405421083",
+      "resource_files": [],
+      "adaptation": {
+        "kind": "registry_metadata_only",
+        "technical_body_changed": false,
+        "allowed_changes": [
+          "listing description",
+          "use_when",
+          "do_not_use_when"
+        ],
+        "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "frozen_at": "2026-08-29T22:55:00+08:00",
+      "sourceUrl": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/spring-boot-jakarta-migration/environment/skills/restclient-migration/SKILL.md",
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "eb2568b08d96c567b2aaa15f7adfea49a1f71db5ef769a7245be92d2b8e9088e"
+        }
+      ]
+    },
+    {
+      "assetId": "T04-SKILL-SPRING-TESTING",
+      "name": "spring-boot-testing",
+      "source": "awesomeCopilot",
+      "path": "skills/spring-boot-testing/SKILL.md",
+      "resourcePaths": [
+        "skills/spring-boot-testing/references/restclienttest.md"
+      ],
+      "ownerAgentId": "agent-task1-t04-general",
+      "visibility": "private",
+      "listed": true,
+      "description": "Selects focused Spring Boot test slices and resources for MVC, persistence, and REST clients.",
+      "useWhen": "A Spring Boot component needs a focused test slice or a RestClient-specific test procedure.",
+      "doNotUseWhen": "The task is a Maven root-cause diagnosis, namespace migration, or an already specified assertion edit.",
+      "schema_version": "task1.skill_source_lock.v1",
+      "team_id": "T04",
+      "asset_id": "T04-SKILL-SPRING-TESTING",
+      "repository": "https://github.com/github/awesome-copilot",
+      "commit_sha": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "license_path": "LICENSE",
+      "license_sha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "raw_file_sha256": "8161940340dc52766242ab30589369623b31089b41ebd7baa19a27f411648550",
+      "adapted_file_sha256": "8161940340dc52766242ab30589369623b31089b41ebd7baa19a27f411648550",
+      "package_sha256": "f32fd903268697195fe9cbbd0d508c2c281f2206d57a3477ffcccd9ec7756d0a",
+      "resource_files": [
+        {
+          "upstreamPath": "skills/spring-boot-testing/references/restclienttest.md",
+          "localPath": "references/restclienttest.md",
+          "sha256": "a15252889125344f8cf2caf0cfc873c944a80577f73ceac00060a9108b457e88"
+        }
+      ],
+      "adaptation": {
+        "kind": "registry_metadata_only",
+        "technical_body_changed": false,
+        "allowed_changes": [
+          "listing description",
+          "use_when",
+          "do_not_use_when"
+        ],
+        "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "frozen_at": "2026-08-29T22:55:00+08:00",
+      "sourceUrl": "https://raw.githubusercontent.com/github/awesome-copilot/f11a4e441c5ff061b4f8ae37952be8c602e4034e/skills/spring-boot-testing/SKILL.md",
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "8161940340dc52766242ab30589369623b31089b41ebd7baa19a27f411648550"
+        },
+        {
+          "path": "references/restclienttest.md",
+          "sha256": "a15252889125344f8cf2caf0cfc873c944a80577f73ceac00060a9108b457e88"
+        }
+      ]
+    },
+    {
+      "assetId": "T04-SKILL-JAVA-JUNIT",
+      "name": "java-junit",
+      "source": "awesomeCopilot",
+      "path": "skills/java-junit/SKILL.md",
+      "ownerAgentId": "agent-task1-t04-general",
+      "visibility": "private",
+      "listed": true,
+      "description": "Designs focused Java unit tests with JUnit lifecycle, parameterization, and assertions.",
+      "useWhen": "The only missing procedure is a Java unit-test design or JUnit test structure.",
+      "doNotUseWhen": "The request is build diagnosis, HTTP client migration, or an exact assertion already given.",
+      "schema_version": "task1.skill_source_lock.v1",
+      "team_id": "T04",
+      "asset_id": "T04-SKILL-JAVA-JUNIT",
+      "repository": "https://github.com/github/awesome-copilot",
+      "commit_sha": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "license_path": "LICENSE",
+      "license_sha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "raw_file_sha256": "beeae246a2b1a8debffb53b005eba0e025f70923fa26a11f3c4bfefd99388fa3",
+      "adapted_file_sha256": "beeae246a2b1a8debffb53b005eba0e025f70923fa26a11f3c4bfefd99388fa3",
+      "package_sha256": "1ca33bd2398ee64a2bcf03308624698bd9bf24cd7240e753e8324d9069b54f27",
+      "resource_files": [],
+      "adaptation": {
+        "kind": "registry_metadata_only",
+        "technical_body_changed": false,
+        "allowed_changes": [
+          "listing description",
+          "use_when",
+          "do_not_use_when"
+        ],
+        "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "frozen_at": "2026-08-29T22:55:00+08:00",
+      "sourceUrl": "https://raw.githubusercontent.com/github/awesome-copilot/f11a4e441c5ff061b4f8ae37952be8c602e4034e/skills/java-junit/SKILL.md",
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "beeae246a2b1a8debffb53b005eba0e025f70923fa26a11f3c4bfefd99388fa3"
+        }
+      ]
+    },
+    {
+      "assetId": "T04-SKILL-JAVA-SPRINGBOOT",
+      "name": "java-springboot",
+      "source": "awesomeCopilot",
+      "path": "skills/java-springboot/SKILL.md",
+      "ownerAgentId": "agent-task1-t04-general",
+      "visibility": "private",
+      "listed": true,
+      "description": "Provides broad Spring Boot implementation conventions across API, data, validation, and services.",
+      "useWhen": "A general Spring Boot implementation needs framework conventions rather than a narrow migration.",
+      "doNotUseWhen": "A narrow Jakarta, RestClient, Security, Hibernate, or Maven procedure is the unique gap.",
+      "schema_version": "task1.skill_source_lock.v1",
+      "team_id": "T04",
+      "asset_id": "T04-SKILL-JAVA-SPRINGBOOT",
+      "repository": "https://github.com/github/awesome-copilot",
+      "commit_sha": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "license_path": "LICENSE",
+      "license_sha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "raw_file_sha256": "574898202ce298557226c49d35036a6e9e66a1cb205ea15c44db298e6d74e3bd",
+      "adapted_file_sha256": "574898202ce298557226c49d35036a6e9e66a1cb205ea15c44db298e6d74e3bd",
+      "package_sha256": "e364d855f8ecbc09b7973958ad1b496457a447e59b593227d1d5fb722b7e711c",
+      "resource_files": [],
+      "adaptation": {
+        "kind": "registry_metadata_only",
+        "technical_body_changed": false,
+        "allowed_changes": [
+          "listing description",
+          "use_when",
+          "do_not_use_when"
+        ],
+        "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "frozen_at": "2026-08-29T22:55:00+08:00",
+      "sourceUrl": "https://raw.githubusercontent.com/github/awesome-copilot/f11a4e441c5ff061b4f8ae37952be8c602e4034e/skills/java-springboot/SKILL.md",
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "574898202ce298557226c49d35036a6e9e66a1cb205ea15c44db298e6d74e3bd"
+        }
+      ]
+    },
+    {
+      "assetId": "T04-SKILL-CREATE-SPRING",
+      "name": "create-spring-boot-java-project",
+      "source": "awesomeCopilot",
+      "path": "skills/create-spring-boot-java-project/SKILL.md",
+      "ownerAgentId": "agent-task1-t04-general",
+      "visibility": "private",
+      "listed": true,
+      "description": "Scaffolds a new Spring Boot Java project with a deliberate dependency and package layout.",
+      "useWhen": "The deliverable is a new Spring Boot project rather than a change to an existing repository.",
+      "doNotUseWhen": "An existing project only needs migration, testing, or build repair.",
+      "schema_version": "task1.skill_source_lock.v1",
+      "team_id": "T04",
+      "asset_id": "T04-SKILL-CREATE-SPRING",
+      "repository": "https://github.com/github/awesome-copilot",
+      "commit_sha": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "license_path": "LICENSE",
+      "license_sha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "raw_file_sha256": "353f26c4ff608b0e9a00e6f0d75916cae2fb5680358285e06f6c1862c4b459e4",
+      "adapted_file_sha256": "353f26c4ff608b0e9a00e6f0d75916cae2fb5680358285e06f6c1862c4b459e4",
+      "package_sha256": "8d2332323451dbaee1a06f130003ffef0b70956c9a9f63adc590191f03455d44",
+      "resource_files": [],
+      "adaptation": {
+        "kind": "registry_metadata_only",
+        "technical_body_changed": false,
+        "allowed_changes": [
+          "listing description",
+          "use_when",
+          "do_not_use_when"
+        ],
+        "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "frozen_at": "2026-08-29T22:55:00+08:00",
+      "sourceUrl": "https://raw.githubusercontent.com/github/awesome-copilot/f11a4e441c5ff061b4f8ae37952be8c602e4034e/skills/create-spring-boot-java-project/SKILL.md",
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "353f26c4ff608b0e9a00e6f0d75916cae2fb5680358285e06f6c1862c4b459e4"
+        }
+      ]
+    },
+    {
+      "assetId": "T04-SKILL-MAVEN-LIFECYCLE",
+      "name": "maven-build-lifecycle",
+      "source": "skillsbench",
+      "path": "tasks/fix-build-google-auto/environment/skills/maven-build-lifecycle/SKILL.md",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "visibility": "team",
+      "listed": false,
+      "description": "Diagnoses Maven phase, goal, profile, module-order, and lifecycle execution problems.",
+      "useWhen": "The failure is uniquely about which Maven phase/profile/module is executed and in what order.",
+      "doNotUseWhen": "The evidence identifies a dependency conflict or a plugin configuration defect.",
+      "schema_version": "task1.skill_source_lock.v1",
+      "team_id": "T04",
+      "asset_id": "T04-SKILL-MAVEN-LIFECYCLE",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "commit_sha": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "license": "Apache-2.0",
+      "license_path": "LICENSE",
+      "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "raw_file_sha256": "8d65a5ace544deb6beafebe9275eaa9f0673ac1286899c7f7ddecd3dfce03974",
+      "adapted_file_sha256": "8d65a5ace544deb6beafebe9275eaa9f0673ac1286899c7f7ddecd3dfce03974",
+      "package_sha256": "28c1a1e7a9a807fdcca7db8b0adc03f83c6a6f4866ef06463394d661a6b40185",
+      "resource_files": [],
+      "adaptation": {
+        "kind": "registry_metadata_only",
+        "technical_body_changed": false,
+        "allowed_changes": [
+          "listing description",
+          "use_when",
+          "do_not_use_when"
+        ],
+        "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "frozen_at": "2026-08-29T22:55:00+08:00",
+      "sourceUrl": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/fix-build-google-auto/environment/skills/maven-build-lifecycle/SKILL.md",
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "8d65a5ace544deb6beafebe9275eaa9f0673ac1286899c7f7ddecd3dfce03974"
+        }
+      ]
+    },
+    {
+      "assetId": "T04-SKILL-MAVEN-DEPENDENCY",
+      "name": "maven-dependency-management",
+      "source": "skillsbench",
+      "path": "tasks/fix-build-google-auto/environment/skills/maven-dependency-management/SKILL.md",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "visibility": "team",
+      "listed": false,
+      "description": "Diagnoses Maven version mediation, convergence, dependencyManagement, exclusions, and scopes.",
+      "useWhen": "The failing build evidence uniquely points to dependency resolution or version convergence.",
+      "doNotUseWhen": "The root cause is a lifecycle/profile choice, plugin execution, or ordinary Java compilation.",
+      "schema_version": "task1.skill_source_lock.v1",
+      "team_id": "T04",
+      "asset_id": "T04-SKILL-MAVEN-DEPENDENCY",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "commit_sha": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "license": "Apache-2.0",
+      "license_path": "LICENSE",
+      "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "raw_file_sha256": "d5a95c61cb189750beafbd7fea8e8ca8159ccf905d90974637b0a3e5495c7846",
+      "adapted_file_sha256": "d5a95c61cb189750beafbd7fea8e8ca8159ccf905d90974637b0a3e5495c7846",
+      "package_sha256": "6cb4970d34d911e921b65fa00beef890bcf6eb75c47ce76d5fbea8f0acf02c21",
+      "resource_files": [],
+      "adaptation": {
+        "kind": "registry_metadata_only",
+        "technical_body_changed": false,
+        "allowed_changes": [
+          "listing description",
+          "use_when",
+          "do_not_use_when"
+        ],
+        "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "frozen_at": "2026-08-29T22:55:00+08:00",
+      "sourceUrl": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/fix-build-google-auto/environment/skills/maven-dependency-management/SKILL.md",
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "d5a95c61cb189750beafbd7fea8e8ca8159ccf905d90974637b0a3e5495c7846"
+        }
+      ]
+    },
+    {
+      "assetId": "T04-SKILL-MAVEN-PLUGIN",
+      "name": "maven-plugin-configuration",
+      "source": "skillsbench",
+      "path": "tasks/fix-build-google-auto/environment/skills/maven-plugin-configuration/SKILL.md",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "visibility": "team",
+      "listed": false,
+      "description": "Diagnoses Maven plugin versions, executions, goals, inherited configuration, and parameters.",
+      "useWhen": "The build evidence uniquely identifies a plugin execution or plugin parameter defect.",
+      "doNotUseWhen": "The root cause is dependency mediation, lifecycle phase selection, or source code semantics.",
+      "schema_version": "task1.skill_source_lock.v1",
+      "team_id": "T04",
+      "asset_id": "T04-SKILL-MAVEN-PLUGIN",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "commit_sha": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "license": "Apache-2.0",
+      "license_path": "LICENSE",
+      "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "raw_file_sha256": "ff8b766a8283c035d0fba5cf71f0dd194c14a21e136c2a2916bf7bff3fcdd01c",
+      "adapted_file_sha256": "ff8b766a8283c035d0fba5cf71f0dd194c14a21e136c2a2916bf7bff3fcdd01c",
+      "package_sha256": "d135e0cdcaa1d20731e6f2f8e4801decc33563ee58010dfe07648d9a50ff1d4c",
+      "resource_files": [],
+      "adaptation": {
+        "kind": "registry_metadata_only",
+        "technical_body_changed": false,
+        "allowed_changes": [
+          "listing description",
+          "use_when",
+          "do_not_use_when"
+        ],
+        "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "frozen_at": "2026-08-29T22:55:00+08:00",
+      "sourceUrl": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/fix-build-google-auto/environment/skills/maven-plugin-configuration/SKILL.md",
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "ff8b766a8283c035d0fba5cf71f0dd194c14a21e136c2a2916bf7bff3fcdd01c"
+        }
+      ]
+    },
+    {
+      "assetId": "T04-SKILL-SPRING-MIGRATION",
+      "name": "spring-boot-migration",
+      "source": "skillsbench",
+      "path": "tasks/spring-boot-jakarta-migration/environment/skills/spring-boot-migration/SKILL.md",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "visibility": "team",
+      "listed": false,
+      "description": "Coordinates a broad Spring Boot 2-to-3 and Java baseline migration across several subsystems.",
+      "useWhen": "The task genuinely spans the complete Spring Boot platform upgrade and its ordered workstreams.",
+      "doNotUseWhen": "Only namespace, RestClient, Security, Hibernate, or one local edit is requested.",
+      "schema_version": "task1.skill_source_lock.v1",
+      "team_id": "T04",
+      "asset_id": "T04-SKILL-SPRING-MIGRATION",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "commit_sha": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "license": "Apache-2.0",
+      "license_path": "LICENSE",
+      "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "raw_file_sha256": "0cc93cde9cc7cfd0d5af62edce6cedab6395f24b60de883cf5eb36a994e94b78",
+      "adapted_file_sha256": "0cc93cde9cc7cfd0d5af62edce6cedab6395f24b60de883cf5eb36a994e94b78",
+      "package_sha256": "62398d178be8d1be86e0125cc1a6c3b036e58ce30fa6ff80f8db80b48cb1b794",
+      "resource_files": [],
+      "adaptation": {
+        "kind": "registry_metadata_only",
+        "technical_body_changed": false,
+        "allowed_changes": [
+          "listing description",
+          "use_when",
+          "do_not_use_when"
+        ],
+        "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "frozen_at": "2026-08-29T22:55:00+08:00",
+      "sourceUrl": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/spring-boot-jakarta-migration/environment/skills/spring-boot-migration/SKILL.md",
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "0cc93cde9cc7cfd0d5af62edce6cedab6395f24b60de883cf5eb36a994e94b78"
+        }
+      ]
+    },
+    {
+      "assetId": "T04-SKILL-SPRING-SECURITY",
+      "name": "spring-security-6",
+      "source": "skillsbench",
+      "path": "tasks/spring-boot-jakarta-migration/environment/skills/spring-security-6/SKILL.md",
+      "ownerAgentId": "agent-task1-t04-assets-a",
+      "visibility": "team",
+      "listed": false,
+      "description": "Migrates Spring Security configuration to the Spring Security 6 component-based model.",
+      "useWhen": "SecurityFilterChain, request authorization, password encoding, or method security is the unique migration gap.",
+      "doNotUseWhen": "The task concerns only namespace mapping, RestClient, or Maven build mechanics.",
+      "schema_version": "task1.skill_source_lock.v1",
+      "team_id": "T04",
+      "asset_id": "T04-SKILL-SPRING-SECURITY",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "commit_sha": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "license": "Apache-2.0",
+      "license_path": "LICENSE",
+      "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "raw_file_sha256": "d4522347dbc38ba3280929376b054066fa5b202ca845b6fead78c085debb622d",
+      "adapted_file_sha256": "d4522347dbc38ba3280929376b054066fa5b202ca845b6fead78c085debb622d",
+      "package_sha256": "bb883bf4bd1b529207efddb8de6c67ad12f92393d5336e033983a6adfa2cd0a7",
+      "resource_files": [],
+      "adaptation": {
+        "kind": "registry_metadata_only",
+        "technical_body_changed": false,
+        "allowed_changes": [
+          "listing description",
+          "use_when",
+          "do_not_use_when"
+        ],
+        "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "frozen_at": "2026-08-29T22:55:00+08:00",
+      "sourceUrl": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/spring-boot-jakarta-migration/environment/skills/spring-security-6/SKILL.md",
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "d4522347dbc38ba3280929376b054066fa5b202ca845b6fead78c085debb622d"
+        }
+      ]
+    },
+    {
+      "assetId": "T04-SKILL-HIBERNATE",
+      "name": "hibernate-upgrade",
+      "source": "skillsbench",
+      "path": "tasks/spring-boot-jakarta-migration/environment/skills/hibernate-upgrade/SKILL.md",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "visibility": "team",
+      "listed": false,
+      "description": "Migrates Hibernate/JPA mapping and query behavior across a framework upgrade.",
+      "useWhen": "The missing procedure is specifically Hibernate mapping, dialect, query, or persistence behavior migration.",
+      "doNotUseWhen": "Only import namespaces, HTTP client code, or Maven configuration is in scope.",
+      "schema_version": "task1.skill_source_lock.v1",
+      "team_id": "T04",
+      "asset_id": "T04-SKILL-HIBERNATE",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "commit_sha": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "license": "Apache-2.0",
+      "license_path": "LICENSE",
+      "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "raw_file_sha256": "b54208d472482e218ff9cd16e8e4bed12fa8df7f801af8aea22184df954f8bcd",
+      "adapted_file_sha256": "b54208d472482e218ff9cd16e8e4bed12fa8df7f801af8aea22184df954f8bcd",
+      "package_sha256": "1a22e09ebe1401df86fb560d2886aaea6951c0010bcad1a992956bad1255716f",
+      "resource_files": [],
+      "adaptation": {
+        "kind": "registry_metadata_only",
+        "technical_body_changed": false,
+        "allowed_changes": [
+          "listing description",
+          "use_when",
+          "do_not_use_when"
+        ],
+        "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "frozen_at": "2026-08-29T22:55:00+08:00",
+      "sourceUrl": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/spring-boot-jakarta-migration/environment/skills/hibernate-upgrade/SKILL.md",
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "b54208d472482e218ff9cd16e8e4bed12fa8df7f801af8aea22184df954f8bcd"
+        }
+      ]
+    },
+    {
+      "assetId": "T04-SKILL-JACKSON-SECURITY",
+      "name": "jackson-security",
+      "source": "skillsbench",
+      "path": "tasks/fix-druid-loophole-cve/environment/skills/jackson-security/SKILL.md",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "visibility": "team",
+      "listed": false,
+      "description": "Diagnoses and repairs Jackson deserialization and parser-boundary security flaws.",
+      "useWhen": "The task is a Java JSON deserialization vulnerability with adversarial and legitimate behavior constraints.",
+      "doNotUseWhen": "The request is a normal DTO change, HTTP migration, namespace edit, or Maven failure.",
+      "schema_version": "task1.skill_source_lock.v1",
+      "team_id": "T04",
+      "asset_id": "T04-SKILL-JACKSON-SECURITY",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "commit_sha": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "license": "Apache-2.0",
+      "license_path": "LICENSE",
+      "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "raw_file_sha256": "30227192653488b41c91c5824d0b4a62bf780e9e9040600172687ab563d21c57",
+      "adapted_file_sha256": "30227192653488b41c91c5824d0b4a62bf780e9e9040600172687ab563d21c57",
+      "package_sha256": "c1e78a2bf097ae5c60db5ead3c48357a3caf641ec1d1ffe2f5b1bddb57547840",
+      "resource_files": [],
+      "adaptation": {
+        "kind": "registry_metadata_only",
+        "technical_body_changed": false,
+        "allowed_changes": [
+          "listing description",
+          "use_when",
+          "do_not_use_when"
+        ],
+        "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "frozen_at": "2026-08-29T22:55:00+08:00",
+      "sourceUrl": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/fix-druid-loophole-cve/environment/skills/jackson-security/SKILL.md",
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "30227192653488b41c91c5824d0b4a62bf780e9e9040600172687ab563d21c57"
+        }
+      ]
+    },
+    {
+      "assetId": "T04-SKILL-SENIOR-JAVA",
+      "name": "senior-java",
+      "source": "skillsbench",
+      "path": "tasks/fix-druid-loophole-cve/environment/skills/senior-java/SKILL.md",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "visibility": "team",
+      "listed": false,
+      "description": "Provides broad Java code-reading, implementation, testing, and maintainability guidance.",
+      "useWhen": "A general Java engineering workflow lacks a more specific framework or build procedure.",
+      "doNotUseWhen": "A narrow Skill uniquely covers Jakarta, RestClient, security, testing, or a Maven root cause.",
+      "schema_version": "task1.skill_source_lock.v1",
+      "team_id": "T04",
+      "asset_id": "T04-SKILL-SENIOR-JAVA",
+      "repository": "https://github.com/benchflow-ai/skillsbench",
+      "commit_sha": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "license": "Apache-2.0",
+      "license_path": "LICENSE",
+      "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "raw_file_sha256": "c22b277c5a72e4f3ae5e23daedee1b354b59c97cb9375e3874e29214e9e2c5e5",
+      "adapted_file_sha256": "c22b277c5a72e4f3ae5e23daedee1b354b59c97cb9375e3874e29214e9e2c5e5",
+      "package_sha256": "76c2d343ae2b643b907e175ebcedfe2e2291cec4e9d64ced2d18aa4a2dfdfdc3",
+      "resource_files": [],
+      "adaptation": {
+        "kind": "registry_metadata_only",
+        "technical_body_changed": false,
+        "allowed_changes": [
+          "listing description",
+          "use_when",
+          "do_not_use_when"
+        ],
+        "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "frozen_at": "2026-08-29T22:55:00+08:00",
+      "sourceUrl": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/fix-druid-loophole-cve/environment/skills/senior-java/SKILL.md",
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "c22b277c5a72e4f3ae5e23daedee1b354b59c97cb9375e3874e29214e9e2c5e5"
+        }
+      ]
+    },
+    {
+      "assetId": "T04-SKILL-JAVAX-AWESOME",
+      "name": "javax-to-jakarta-migration",
+      "source": "awesomeCopilot",
+      "path": "skills/javax-to-jakarta-migration/SKILL.md",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "visibility": "team",
+      "listed": false,
+      "description": "Migrates broad javax usage to Jakarta with a scan, mapping, build, and verification workflow.",
+      "useWhen": "A general Jakarta namespace conversion needs a broad cross-project procedure.",
+      "doNotUseWhen": "The active agent already lists the narrower project-frozen Jakarta procedure or an exact edit is supplied.",
+      "schema_version": "task1.skill_source_lock.v1",
+      "team_id": "T04",
+      "asset_id": "T04-SKILL-JAVAX-AWESOME",
+      "repository": "https://github.com/github/awesome-copilot",
+      "commit_sha": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "license_path": "LICENSE",
+      "license_sha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "raw_file_sha256": "f93b85539e4f58f0254f935c053fb8a1923b1482ff17062046d884b6ed910c79",
+      "adapted_file_sha256": "f93b85539e4f58f0254f935c053fb8a1923b1482ff17062046d884b6ed910c79",
+      "package_sha256": "ddea07b7f8de27428b1ffa4afe03498692866783857fe448c99c72304c887861",
+      "resource_files": [],
+      "adaptation": {
+        "kind": "registry_metadata_only",
+        "technical_body_changed": false,
+        "allowed_changes": [
+          "listing description",
+          "use_when",
+          "do_not_use_when"
+        ],
+        "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "frozen_at": "2026-08-29T22:55:00+08:00",
+      "sourceUrl": "https://raw.githubusercontent.com/github/awesome-copilot/f11a4e441c5ff061b4f8ae37952be8c602e4034e/skills/javax-to-jakarta-migration/SKILL.md",
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "f93b85539e4f58f0254f935c053fb8a1923b1482ff17062046d884b6ed910c79"
+        }
+      ]
+    },
+    {
+      "assetId": "T04-SKILL-JAVA-REFACTOR",
+      "name": "java-refactoring-extract-method",
+      "source": "awesomeCopilot",
+      "path": "skills/java-refactoring-extract-method/SKILL.md",
+      "ownerAgentId": "agent-task1-t04-assets-b",
+      "visibility": "team",
+      "listed": false,
+      "description": "Extracts a focused Java method while preserving behavior and local tests.",
+      "useWhen": "The task is specifically an extract-method refactor in existing Java code.",
+      "doNotUseWhen": "The task is a framework migration, security fix, HTTP client change, or build diagnosis.",
+      "schema_version": "task1.skill_source_lock.v1",
+      "team_id": "T04",
+      "asset_id": "T04-SKILL-JAVA-REFACTOR",
+      "repository": "https://github.com/github/awesome-copilot",
+      "commit_sha": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "license_path": "LICENSE",
+      "license_sha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "raw_file_sha256": "4f23304d1c3ea81035cae02381e6f6bf70d4652a46990cfd71620f384ad78a2b",
+      "adapted_file_sha256": "4f23304d1c3ea81035cae02381e6f6bf70d4652a46990cfd71620f384ad78a2b",
+      "package_sha256": "966b2aa3f1576e4ce1c9ca23b687e7e88f3b8f7aeb70600acaaf8082206f2a6c",
+      "resource_files": [],
+      "adaptation": {
+        "kind": "registry_metadata_only",
+        "technical_body_changed": false,
+        "allowed_changes": [
+          "listing description",
+          "use_when",
+          "do_not_use_when"
+        ],
+        "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "frozen_at": "2026-08-29T22:55:00+08:00",
+      "sourceUrl": "https://raw.githubusercontent.com/github/awesome-copilot/f11a4e441c5ff061b4f8ae37952be8c602e4034e/skills/java-refactoring-extract-method/SKILL.md",
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "4f23304d1c3ea81035cae02381e6f6bf70d4652a46990cfd71620f384ad78a2b"
+        }
+      ]
+    }
+  ],
+  "prohibitions": [
+    "Do not invent or rewrite a formal Skill technical procedure.",
+    "Do not decide final Gold or production visibility.",
+    "Do not expose author-only ids, tool names, endpoints, or evaluation labels in provider-visible text.",
+    "Do not extract official patches, install upstream dependencies, run upstream tests, or perform formal model evaluation."
+  ],
+  "input_pack_sha256": "2068931a10bfa2d0d39cf2d84c9634b3b4a92fd950aba2a90819ef9cfa2e67b9"
+}

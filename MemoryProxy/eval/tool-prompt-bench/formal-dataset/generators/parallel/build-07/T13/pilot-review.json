@@ -1,0 +1,47 @@
+{
+  "schema_version": "task1.sol_pilot_review.v1",
+  "team_id": "T13",
+  "reviewer": "sol-build-07",
+  "stage": "DS05",
+  "decision": "approved_for_expansion",
+  "reviewed_batches": [
+    {
+      "batch_id": "T13-pilot-memory-01",
+      "family": "memory",
+      "pair_count": 1,
+      "decision": "pass"
+    },
+    {
+      "batch_id": "build-07-T13-pilot-skill-01",
+      "family": "skill",
+      "pair_count": 1,
+      "decision": "pass"
+    },
+    {
+      "batch_id": "t13-pilot-knowledge-01",
+      "family": "knowledge",
+      "pair_count": 1,
+      "decision": "pass"
+    }
+  ],
+  "checks": {
+    "validator_passed": true,
+    "pair_single_variable": true,
+    "changed_message_index_exact": true,
+    "positive_unique_information_gap": true,
+    "negative_context_sufficient": true,
+    "visible_distractors_present": true,
+    "route_matches_frozen_input": true,
+    "pilot_gold_is_proposal_only": true,
+    "provider_leakage_absent": true,
+    "skill_source_hashes_match_freeze": true,
+    "skill_core_steps_preserved": true
+  },
+  "sol_notes": [
+    "Memory pilot keeps the numeric decision absent only on the positive side and preserves plausible same-project distractors.",
+    "Skill pilot requires ordinary capability discovery before the id-based view and does not expose the source procedure in positive context.",
+    "Knowledge pilot leaves a single repository-localization gap and keeps unrelated bound resources visible as distractors.",
+    "All sixteen Skill adaptation records point to frozen raw hashes; listing metadata changes do not replace the upstream technical steps.",
+    "Luna proposals remain generator-only inputs. Final Gold is reserved for Sol assembly."
+  ]
+}

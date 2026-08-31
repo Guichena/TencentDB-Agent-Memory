@@ -1,0 +1,27 @@
+{
+  "schema_version": "task1.skill_source_lock.v1",
+  "team_id": "T04",
+  "asset_id": "T04-SKILL-SPRING-SECURITY",
+  "name": "spring-security-6",
+  "repository": "https://github.com/benchflow-ai/skillsbench",
+  "commit_sha": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+  "path": "tasks/spring-boot-jakarta-migration/environment/skills/spring-security-6/SKILL.md",
+  "license": "Apache-2.0",
+  "license_path": "LICENSE",
+  "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+  "raw_file_sha256": "d4522347dbc38ba3280929376b054066fa5b202ca845b6fead78c085debb622d",
+  "adapted_file_sha256": "d4522347dbc38ba3280929376b054066fa5b202ca845b6fead78c085debb622d",
+  "package_sha256": "bb883bf4bd1b529207efddb8de6c67ad12f92393d5336e033983a6adfa2cd0a7",
+  "resource_files": [],
+  "adaptation": {
+    "kind": "registry_metadata_only",
+    "technical_body_changed": false,
+    "allowed_changes": [
+      "listing description",
+      "use_when",
+      "do_not_use_when"
+    ],
+    "content_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "frozen_at": "2026-08-29T22:55:00+08:00"
+}

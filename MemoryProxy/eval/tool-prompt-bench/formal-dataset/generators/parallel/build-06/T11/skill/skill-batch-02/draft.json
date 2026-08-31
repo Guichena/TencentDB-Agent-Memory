@@ -1,0 +1,329 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t11-skill-batch-02",
+  "stage": "DS02",
+  "team_id": "T11",
+  "family": "skill",
+  "external_source_ids": [
+    "t11-skill-agp9",
+    "t11-skill-profiler",
+    "t11-skill-state-restoration"
+  ],
+  "pairs": [
+    {
+      "draft_pair_id": "T11-SKILL-B01-P004",
+      "external_source_ids": [
+        "t11-skill-agp9"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我在 T11 的 Orchid Android 工程中准备把普通 Android 项目迁移到新的构建插件主版本。"
+        },
+        {
+          "role": "assistant",
+          "content": "已确认这不是 Kotlin Multiplatform 工程，并整理了当前模块、构建逻辑和外部插件清单。"
+        },
+        {
+          "role": "user",
+          "content": "我原本想直接改版本号，但还没有核对当前版本和迁移门槛。"
+        },
+        {
+          "role": "assistant",
+          "content": "方向调整为先确认版本前置，再按兼容性和 DSL 变化安排迁移。"
+        },
+        {
+          "role": "user",
+          "content": "现有构建快照和模块边界已固定，当前缺少从检查到验证的完整迁移顺序。"
+        },
+        {
+          "role": "assistant",
+          "content": "没有顺序清单就开始修改，容易遗漏依赖、构建配置和最终验证。"
+        },
+        {
+          "role": "user",
+          "content": "请先给出迁移开始前的下一步，暂时不要编辑构建文件。"
+        },
+        {
+          "role": "assistant",
+          "content": "需要先补齐该 Android 构建迁移流程的实际步骤和验证出口。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "针对这个普通 Android 项目的构建插件迁移，请给出从检查到验证的下一步顺序，暂时不要修改文件。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我缺少迁移到新主版本的完整流程。请直接查看适用的既有资料，先概述版本检查、配置迁移和验证顺序，停在可以开始审计的位置。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少非 KMP Android 项目迁移到 AGP 9 的版本门槛、依赖/内置 Kotlin/新 DSL/kapt/BuildConfig/properties 步骤及三项验证。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T11-SKILL-AGP9"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_view"
+            ]
+          ],
+          "stop_after_candidate": "查看列出的 AGP 迁移 Skill 后概述审计顺序与验证项，停止修改。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把缺失顺序补齐：先核对项目当前构建插件版本；若低于 9，先停止并让项目使用 IDE 升级助手更新，除非明确要求跳过；若已是 9 或更高，依次检查 KSP 至少 2.3.6、Hilt 至少 2.59.2，迁移内置 Kotlin、新 DSL、kapt 到 KSP 或 legacy-kapt、BuildConfig 字段，然后移除构建属性中的旧兼容开关；最后确认 IDE 同步、`./gradlew help` 和 `./gradlew build --dry-run` 成功，验证时不运行 clean。请据此给出起点。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已完整给出版本门槛、迁移步骤、属性清理和验证顺序，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T11-SKILL-PROFILER",
+        "T11-SKILL-STATE-RESTORE"
+      ],
+      "controlled_delta_note": "Positive 只缺 AGP 迁移顺序；Negative 仅补齐冻结 Skill 支持的门槛、六步迁移和验证清单。",
+      "source_fact_map": [
+        {
+          "claim": "该流程仅适用于非 KMP 项目，并要求先检查当前 AGP 版本，低于 9 时默认停止并使用升级助手。",
+          "source_id": "t11-skill-agp9",
+          "locator": "build-system/agp/agp-9-upgrade/SKILL.md#Requirements"
+        },
+        {
+          "claim": "AGP 已达到 9 时，迁移步骤包含 KSP/Hilt 版本、内置 Kotlin、新 DSL、kapt、BuildConfig 和 gradle.properties。",
+          "source_id": "t11-skill-agp9",
+          "locator": "build-system/agp/agp-9-upgrade/SKILL.md#Steps"
+        },
+        {
+          "claim": "验证包括 IDE sync、gradlew help 和 build dry-run，且不运行 clean。",
+          "source_id": "t11-skill-agp9",
+          "locator": "build-system/agp/agp-9-upgrade/SKILL.md#Verification; #Guidelines"
+        }
+      ],
+      "sol_review_questions": [
+        "确认直接查看的目标是 listed 的 AGP 迁移资产，私有首动作仅为 skill_view。",
+        "确认 Negative 没有把 KMP 迁移或其他插件的额外要求混入本 pair。"
+      ]
+    },
+    {
+      "draft_pair_id": "T11-SKILL-B01-P005",
+      "external_source_ids": [
+        "t11-skill-state-restoration"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我在 T11 的 Helio Compose UI 测试里修复一个滚动位置恢复回归，想证明保存状态经过 round-trip 后仍然一致。"
+        },
+        {
+          "role": "assistant",
+          "content": "已固定测试页面、滚动操作和当前失败快照；这轮只设计回归测试，不改页面实现。"
+        },
+        {
+          "role": "user",
+          "content": "我原本直接在恢复后读取同一个状态引用，但这个测试即使恢复逻辑失效也可能通过。"
+        },
+        {
+          "role": "assistant",
+          "content": "方向调整为先确认测试器的正确接入方式，再设计能区分两次组合的断言。"
+        },
+        {
+          "role": "user",
+          "content": "Compose 测试规则和目标状态已确定，当前缺少从设置内容到恢复断言的完整顺序。"
+        },
+        {
+          "role": "assistant",
+          "content": "还不能凭空补写测试步骤；需要先明确保存状态测试的标准工作流。"
+        },
+        {
+          "role": "user",
+          "content": "请先告诉我从哪里开始，暂时不要写测试代码。"
+        },
+        {
+          "role": "assistant",
+          "content": "在开始实现前，需要补齐状态保存、恢复和重新读取的关键步骤。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "针对这个 Compose 状态恢复回归，请给出从设置内容到断言的正确下一步，暂时不要写代码。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我还缺这类 Compose 状态恢复测试的标准流程。请直接查看适用的既有资料，概述如何设置内容、制造非默认状态、执行恢复并确认第二次组合的结果，停在可以开始实现的位置。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少 StateRestorationTester 的构造、tester.setContent、非默认状态驱动、runOnIdle 捕获、置空引用、恢复及重新断言的完整顺序。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T11-SKILL-STATE-RESTORE"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_view"
+            ]
+          ],
+          "stop_after_candidate": "查看列出的状态恢复 Skill 并概述 round-trip 流程后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把缺失顺序补齐：从 Compose 内容测试规则构造状态恢复测试器，并只用 `restorationTester.setContent { }` 设置内容；让 `rememberSaveable` 状态先变成非默认值，在 `runOnIdle { }` 中捕获值；恢复前把外部可空状态引用设为 null，再执行保存—销毁—恢复；最后在 `runOnIdle { }` 中从第二次组合重新读取并比较值。请据此给出实现起点。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已提供测试器接入、状态驱动、捕获、置空、恢复和重新断言的完整顺序，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T11-SKILL-AGP9",
+        "T11-SKILL-PROFILER"
+      ],
+      "controlled_delta_note": "Positive 只缺 Compose 状态恢复 round-trip 顺序；Negative 仅补齐 tester 接入与可验证的两次组合断言步骤。",
+      "source_fact_map": [
+        {
+          "claim": "状态恢复测试器必须从 ComposeContentTestRule 构造，且内容必须通过 restorationTester.setContent 设置。",
+          "source_id": "t11-skill-state-restoration",
+          "locator": "compose/patterns/testing-state-restoration/SKILL.md#Prerequisites; #Workflow 1-2"
+        },
+        {
+          "claim": "标准流程先驱动非默认状态，在 runOnIdle 中捕获，再将可空引用置 null 后恢复并重新读取。",
+          "source_id": "t11-skill-state-restoration",
+          "locator": "compose/patterns/testing-state-restoration/SKILL.md#Workflow 3-8"
+        },
+        {
+          "claim": "预期持久化状态应使用 rememberSaveable。",
+          "source_id": "t11-skill-state-restoration",
+          "locator": "compose/patterns/testing-state-restoration/SKILL.md#Prerequisites; #Mandatory rules"
+        }
+      ],
+      "sol_review_questions": [
+        "确认直接查看目标为 listed 的 Compose 状态恢复资产，私有序列仅为 skill_view。",
+        "确认 Negative 的 `state = null` 与第二次组合重新读取是单变量 pair 的必要缺口，而非新增测试目标。"
+      ]
+    },
+    {
+      "draft_pair_id": "T11-SKILL-B01-P006",
+      "external_source_ids": [
+        "t11-skill-state-restoration"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我在 T11 的 Helio Compose 测试中遇到两个疑问：恢复后状态看似没变化，以及保存较大数据时出现大小异常。"
+        },
+        {
+          "role": "assistant",
+          "content": "已确认问题集中在保存状态测试的边界，不把它扩大成 Activity 生命周期测试或生产数据迁移。"
+        },
+        {
+          "role": "user",
+          "content": "我原本认为恢复 API 会自动覆盖所有内存状态，也没有检查保存载荷的上限。"
+        },
+        {
+          "role": "assistant",
+          "content": "需要先区分可保存状态与普通内存状态，并明确这个测试工具实际覆盖的生命周期范围。"
+        },
+        {
+          "role": "user",
+          "content": "测试规则、状态来源和异常现象已经整理完，但没有可靠的边界与最小验证清单。"
+        },
+        {
+          "role": "assistant",
+          "content": "如果边界不清楚，测试可能错误地声称覆盖了 Activity 重建，或把过大的载荷当成可恢复状态。"
+        },
+        {
+          "role": "user",
+          "content": "请先给出这两个疑问的处理顺序，暂时不要修改测试。"
+        },
+        {
+          "role": "assistant",
+          "content": "需要先补齐状态类型、保存大小和工具生命周期边界的标准说明。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "针对恢复不生效的假象和保存数据过大的异常，请给出最小验证顺序及适用边界，暂时不要修改测试。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我缺少这类 Compose 保存状态测试的边界说明。请直接查看适用的既有资料，概述哪些状态能恢复、怎样避免复用旧引用、保存载荷有什么限制，以及这个测试不覆盖什么，停在可以开始审计的位置。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少 rememberSaveable 与 remember 的差异、state=null 证明第二次组合、1 MB Bundle 上限，以及不覆盖 Activity 生命周期/回调的边界。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T11-SKILL-STATE-RESTORE"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_view"
+            ]
+          ],
+          "stop_after_candidate": "查看列出的状态恢复 Skill 并概述状态、大小和生命周期边界后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把边界补齐：只有通过 `rememberSaveable` 或 `SaveableStateRegistry` 注册的状态应期待 round-trip 后保留，普通 `remember` 会丢失；捕获值后必须把外部可空引用置 null，才能确认读取的是第二次组合；序列化保存的 Bundle 必须低于 1 MB，大对象应只保存稳定 id；这个测试工具不等同于 Activity 重建、配置变更或进程生命周期回调验证。请据此给出最小审计顺序。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已经给出状态类型、旧引用陷阱、1 MB 限制和生命周期边界，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T11-SKILL-AGP9",
+        "T11-SKILL-PROFILER"
+      ],
+      "controlled_delta_note": "Positive 只缺状态恢复测试的边界与限制；Negative 仅补齐状态类型、引用置空、Bundle 上限和生命周期范围。",
+      "source_fact_map": [
+        {
+          "claim": "普通 remember 状态不会被该 round-trip 保留，预期恢复应使用 rememberSaveable 或 SaveableStateRegistry。",
+          "source_id": "t11-skill-state-restoration",
+          "locator": "compose/patterns/testing-state-restoration/SKILL.md#Prerequisites; #Mandatory rules"
+        },
+        {
+          "claim": "将外部状态引用置 null 可避免断言仍指向第一次组合的实例。",
+          "source_id": "t11-skill-state-restoration",
+          "locator": "compose/patterns/testing-state-restoration/SKILL.md#Workflow 3, 6; #Patterns re-reading the same instance"
+        },
+        {
+          "claim": "序列化 Bundle 有 1 MB 上限，且 StateRestorationTester 不测试 Activity 生命周期或回调。",
+          "source_id": "t11-skill-state-restoration",
+          "locator": "compose/patterns/testing-state-restoration/SKILL.md#Introduction; #Mandatory rules"
+        }
+      ],
+      "sol_review_questions": [
+        "确认该直接查看 pair 只命中列出的状态恢复资产，不需要检索。",
+        "确认 Negative 没有把该工具扩展为 ActivityScenario 或真实进程重启验证。"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t10-memory-batch-02",
+  "stage": "DS05",
+  "team_id": "T10",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T10-DRAFT-MEM-002",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮要核对 pyartifact 的可复现 wheel 构建约定，交付只包括历史决策复核，不执行构建或发布。"},
+        {"role": "assistant", "content": "我先确认项目范围、当前锁定输入和输出目录边界，并把环境搭建、制品检查与发布准备分开。"},
+        {"role": "user", "content": "工作区能看到解释器状态和现有目录，但交接摘要没有留下团队当时接受的完整构建决定。"},
+        {"role": "assistant", "content": "现状检查只能说明眼前输入，不能推断历史规范；本轮也不通过重建环境来填补记录缺口。"},
+        {"role": "user", "content": "方向从清理机器或尝试新命令改成找回已评审的可复现流程，避免把临时操作写成团队约定。"},
+        {"role": "assistant", "content": "项目、快照、责任范围和停止条件都已经固定，当前只缺一条历史构建决策。"},
+        {"role": "user", "content": "我不想依据 wheel 文件名、目录布局或一次成功日志猜出构建顺序和检查边界。"},
+        {"role": "assistant", "content": "先补回既有决策，再判断是否需要后续工程动作；本轮不会修改依赖或环境。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请找回团队已接受的 pyartifact 可复现 wheel 构建决策；只报告历史约定，不重新搭建环境、不执行构建或发布。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "现有交接信息只确认解释器可用、输出目录存在，没有保留已接受的构建决策及其检查顺序。"},
+        "private_proposal": {
+          "unique_information_gap": "当前上下文缺少团队已接受的 Python wheel 可复现构建决策，需检索蒸馏决策而非重新搭环境。",
+          "route": "memory",
+          "target_asset_ids": ["T10-L1-02"],
+          "allowed_sequence_candidates": [["tdai_memory_search"]],
+          "stop_after_candidate": "语义检索返回目标决策后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接记录已经补全决定：使用已锁定环境、隔离构建输出目录，先构建再检查 wheel 元数据；这不等同于重新搭建环境。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies exactly the accepted reproducible-wheel decision and its boundary; no historical retrieval is needed."}
+      },
+      "visible_distractor_ids_author_only": ["T10-L1-01", "T10-L1-04", "T10-SKILL-UV-PACKAGE-MANAGER"],
+      "controlled_delta_note": "The shared project, snapshot, workspace, scope and query are identical. Only appended message 8 changes: Positive leaves the accepted wheel decision unresolved; Negative supplies that one decision and nothing else.",
+      "source_fact_map": [],
+      "sol_review_questions": ["是否接受 T10-L1-02 作为唯一目标，且只需一次语义记忆检索即可恢复该构建决策？", "Negative 是否仅补足锁定环境、隔离输出、先构建后检查元数据这一个事实？"]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-MEM-003",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮要核对 release-orchestrator 的发布候选规则，用户明确要求查找 2026-08-01 之后最新的 decision。"},
+        {"role": "assistant", "content": "我会把历史决策、候选制品、dry-run 报告和实际推送分开，先锁定时间边界与记录类型。"},
+        {"role": "user", "content": "当前工作区只有候选文件和流程概览，交接摘要没有保存指定日期之后那条规则的正文。"},
+        {"role": "assistant", "content": "文件修改时间不能替代带类型的历史查询；生产标签、远端推送和真实发布都不在本轮范围。"},
+        {"role": "user", "content": "方向从按目录或文件时间猜测改成恢复结构化记录，避免把旧的候选限制误当成最新决定。"},
+        {"role": "assistant", "content": "项目、日期下界、记录类型和只读停止条件已经确认，目前只缺符合筛选条件的决定内容。"},
+        {"role": "user", "content": "摘要只说明存在候选流程，没有留下最新规则究竟允许和禁止哪些动作。"},
+        {"role": "assistant", "content": "先补回符合日期与类型条件的历史规则，再决定是否需要写计划；不会触发任何发布动作。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请找出 2026-08-01 之后最新的 decision 类型发布候选规则；只报告历史决定，不推送、不打生产标签。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "现有交接只有候选流程概述，没有写明该日期之后最新 decision 的具体限制和允许范围。"},
+        "private_proposal": {
+          "unique_information_gap": "用户明确要求 2026-08-01 之后最新的 decision 类型发布候选规则，必须使用结构化时间与类型过滤。",
+          "route": "memory",
+          "target_asset_ids": ["T10-L1-05"],
+          "allowed_sequence_candidates": [["tdai_atomic_query"]],
+          "stop_after_candidate": "结构化查询返回目标决策后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接记录已经补全最新决定：候选阶段只生成并核对候选制品与 dry-run 报告，不推送，也不打生产标签。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies exactly the latest rule requested by date and type; the structured historical query is unnecessary."}
+      },
+      "visible_distractor_ids_author_only": ["T10-L1-06", "T10-L1-07", "T10-SKILL-DEPLOYMENT-PIPELINE"],
+      "controlled_delta_note": "All shared messages and the final query retain the same date/type boundary and non-publishing scope. Only appended message 8 changes: Positive leaves the latest rule open; Negative fills that single rule.",
+      "source_fact_map": [],
+      "sol_review_questions": ["是否接受 T10-L1-05 需要按日期和 decision 类型执行一次结构化查询？", "Negative 是否只补足候选阶段生成核对、不得推送和不得打生产标签的规则？"]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-MEM-004",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮要复盘 ci-sheriff 的一次 CI 构建失败，目标是恢复上次完整排除链，不重跑作业。"},
+        {"role": "assistant", "content": "我先固定提交、作业范围和日志窗口，把执行环境、依赖版本、插件配置与发布动作分开审查。"},
+        {"role": "user", "content": "当前日志能定位到失败步骤，但交接摘要没有保留此前复盘的完整证据和取舍。"},
+        {"role": "assistant", "content": "一个失败标记不足以支持根因判断；本轮只恢复既有分析，不改变环境、不升级依赖。"},
+        {"role": "user", "content": "方向从重建执行器改成找回已完成的故障复盘，避免重复改变输入后再比较结果。"},
+        {"role": "assistant", "content": "提交快照、作业边界、日志窗口和只读停止条件均已锁定，当前只缺历史排除链。"},
+        {"role": "user", "content": "摘要没有说明哪些看似合理的修复被否决，也没有留下最终把问题收敛到哪里的依据。"},
+        {"role": "assistant", "content": "先恢复完整复盘，再决定是否需要提出局部修复建议；不会触发新的 CI 作业。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请找回此前 CI 故障复盘的完整排除链，包括被否决的环境重建和依赖升级方案；只需要历史结论，不要重跑流水线。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前交接仍只有失败步骤概览，既没有被否决方向，也没有保存从环境和依赖排除到最终定位的完整链条。"},
+        "private_proposal": {
+          "unique_information_gap": "需要此前 CI 故障复盘的完整排除链，包含被否决的环境重建和依赖升级方案。",
+          "route": "memory",
+          "target_asset_ids": ["T10-L0-06"],
+          "allowed_sequence_candidates": [["tdai_conversation_search", "tdai_conversation_query"]],
+          "stop_after_candidate": "定位并读取完整目标会话后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接记录已经补全复盘：重建环境和升级依赖均被否决，最终定位为插件 execution 未绑定到预期 phase。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies exactly the two rejected directions and the final configuration diagnosis; historical retrieval is unnecessary."}
+      },
+      "visible_distractor_ids_author_only": ["T10-L0-05", "T10-L1-08", "T10-SKILL-ANALYZE-CI"],
+      "controlled_delta_note": "The same fixed CI evidence boundary, workspace assumptions, history request and query are shared. Only appended message 8 changes: Positive leaves the exclusion chain absent; Negative supplies the two rejections and final location.",
+      "source_fact_map": [],
+      "sol_review_questions": ["是否接受 T10-L0-06 先定位再读取完整会话的最小历史链路？", "Negative 是否只补足环境重建、依赖升级两个否决与插件 phase 定位？"]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-MEM-005",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮要核对发布候选 dry-run 的证据边界；当前交接只说有一份清单，不执行任何发布。"},
+        {"role": "assistant", "content": "我会把候选制品、校验结果、变更说明、回滚准备和真实推送保持为不同的审阅边界。"},
+        {"role": "user", "content": "工作区能确认 dry-run 已被计划，但交接摘要没有保留清单正文中的精确证据范围。"},
+        {"role": "assistant", "content": "摘要只能说明场景用途，不能替代已知历史内容；远端推送和生产标签都保持关闭。"},
+        {"role": "user", "content": "方向从重新生成报告改成读取已有场景，避免在冻结输入之外创建新的候选材料。"},
+        {"role": "assistant", "content": "候选阶段、项目范围、只读目标和停止条件已经核对，当前只差清单正文中的精确事实。"},
+        {"role": "user", "content": "我不想根据发布目录、报告标题或文件名猜测证据包到底包含哪些项目。"},
+        {"role": "assistant", "content": "先恢复历史场景中的清单，再决定是否需要补写计划；不会把读取动作升级为发布动作。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请读取已知的发布候选 dry-run 场景，补回其精确证据包清单；只需要历史内容，不执行发布。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前摘要只说明清单服务于候选审阅，没有列出清单正文的精确证据项。"},
+        "private_proposal": {
+          "unique_information_gap": "已知场景路径但注入摘要省略了发布 dry-run 证据包的精确清单；只需读取该场景，不执行发布。",
+          "route": "memory",
+          "target_asset_ids": ["T10-L2-03"],
+          "allowed_sequence_candidates": [["tdai_read_scene"]],
+          "stop_after_candidate": "读取已知场景路径后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接记录已经补全证据包清单：候选制品、校验和、变更摘要、回滚说明四项。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies exactly the four omitted evidence items; reading the known scene is no longer needed."}
+      },
+      "visible_distractor_ids_author_only": ["T10-L2-01", "T10-L2-04", "T10-SKILL-DEPLOYMENT-PIPELINE"],
+      "controlled_delta_note": "The same known-scene, candidate-stage and non-publishing context is shared. Only appended message 8 changes: Positive leaves the exact evidence list unresolved; Negative supplies the four-item list.",
+      "source_fact_map": [],
+      "sol_review_questions": ["是否接受 T10-L2-03 只读取已知场景即可恢复精确证据清单？", "Negative 是否只补足候选制品、校验和、变更摘要、回滚说明四项，未扩大权限？"]
+    },
+    {
+      "draft_pair_id": "T10-DRAFT-MEM-006",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这轮要判断 pyartifact 的失败属于环境搭建还是 Python 包构建，目标是恢复团队已有的诊断边界。"},
+        {"role": "assistant", "content": "我先把解释器、锁文件、wheel 元数据和构建后端分开看，避免把不同阶段的症状合并成一次修复。"},
+        {"role": "user", "content": "当前日志显示失败症状，但交接摘要没有保留团队对两类失败的明确归类规则。"},
+        {"role": "assistant", "content": "单个错误消息不足以决定处理路径；本轮只恢复既有诊断约定，不修改依赖或环境。"},
+        {"role": "user", "content": "方向从立即升级依赖改成找回经过评审的边界，避免扩大变更后再猜测原始原因。"},
+        {"role": "assistant", "content": "项目、输入状态、观察范围和只读停止条件已经固定，当前只缺一条蒸馏诊断规则。"},
+        {"role": "user", "content": "现有摘要没有说解释器或锁文件不可用与元数据、构建后端失败分别应该归到哪一类。"},
+        {"role": "assistant", "content": "先恢复团队规则，再判断当前症状是否需要工程动作；不会借此重建环境。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请找回团队区分环境搭建失败与 Python 包构建失败的诊断边界；只需要历史约定，不要修改依赖或重建环境。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "交接信息只有失败症状和当前输入状态，没有记录两类 Python 失败各自对应的诊断边界。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少团队关于区分环境搭建失败与包构建失败的既有诊断边界。",
+          "route": "memory",
+          "target_asset_ids": ["T10-L1-09"],
+          "allowed_sequence_candidates": [["tdai_memory_search"]],
+          "stop_after_candidate": "语义检索返回目标记忆后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接记录已经补全边界：解释器或锁文件不可用属于环境搭建；环境可用但 wheel 元数据或构建后端失败属于包构建。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "Negative delta supplies exactly the existing classification boundary; semantic retrieval is no longer needed."}
+      },
+      "visible_distractor_ids_author_only": ["T10-L1-10", "T10-L3-01", "T10-SKILL-UV-PACKAGE-MANAGER"],
+      "controlled_delta_note": "The shared failure symptoms, project, input assumptions, read-only scope and query are unchanged. Only appended message 8 changes: Positive leaves the classification boundary missing; Negative supplies exactly that boundary.",
+      "source_fact_map": [],
+      "sol_review_questions": ["是否接受 T10-L1-09 一次语义记忆检索即可恢复两类失败的诊断边界？", "Negative 是否只补足解释器或锁文件不可用、以及元数据或后端失败的分类规则？"]
+    }
+  ]
+}

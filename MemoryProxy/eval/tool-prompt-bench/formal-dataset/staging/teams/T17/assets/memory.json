@@ -1,0 +1,1764 @@
+{
+  "schema_version": "task1.team_memory_assets.v2",
+  "team_id": "T17",
+  "l0Conversations": [
+    {
+      "assetId": "T17-L0-01",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L0-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "sessionId": "session-task1-t17-aurora-token-01",
+      "messages": [
+        {
+          "messageId": "T17-L0-01-M01",
+          "role": "user",
+          "content": "Aurora 开始统一组件 token，先盘点颜色、间距和状态命名。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T08:00:00+08:00",
+          "contentHash": "f8dd49de887f6b8009ac591c9146474f3737e470f2887122644654007866afe4"
+        },
+        {
+          "messageId": "T17-L0-01-M02",
+          "role": "assistant",
+          "content": "我列出了现有 token，并发现 focus ring 在三个组件中各自定义。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "2d708751c53e6a8d42108419e8e6eab10ff14fc8930900d25248befae3dd743c"
+        },
+        {
+          "messageId": "T17-L0-01-M03",
+          "role": "user",
+          "content": "第一次方案把 focus ring 合并，结果高对比主题失去可见性。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T10:00:00+08:00",
+          "contentHash": "54466840655c286da0043ab504141facbf62d3f8cbb2e80f360662e6e37232e4"
+        },
+        {
+          "messageId": "T17-L0-01-M04",
+          "role": "assistant",
+          "content": "这个方案失败了，原因是语义 token 与基础色 token 混为一层。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T11:00:00+08:00",
+          "contentHash": "cc80f1090452d12e11d51765ffb7271eb6764a0671dd864c836a374941524ca4"
+        },
+        {
+          "messageId": "T17-L0-01-M05",
+          "role": "user",
+          "content": "改口：基础色保留原名，语义层单独拥有状态映射。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T12:00:00+08:00",
+          "contentHash": "2ef78524fa2924dfd7c5dde40250e7ece9efb5175770eeceaf60fb9394280a39"
+        },
+        {
+          "messageId": "T17-L0-01-M06",
+          "role": "assistant",
+          "content": "我会把映射写进组件契约，并让主题覆盖只改语义层。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T13:00:00+08:00",
+          "contentHash": "38a107c0b9da8bd4bbab84d18474b5d6dafab8fb55188b21b27e088628829f32"
+        },
+        {
+          "messageId": "T17-L0-01-M07",
+          "role": "user",
+          "content": "Atlas 的缓存键讨论也提到命名稳定性，但那是并行项目。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T14:00:00+08:00",
+          "contentHash": "1196ea5556441092b4522c8ec167bfd024dd3bca4f1f7a166cc8cdb5143ee240"
+        },
+        {
+          "messageId": "T17-L0-01-M08",
+          "role": "assistant",
+          "content": "已标记为干扰；本会话只记录 Aurora token 的契约演化。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T15:00:00+08:00",
+          "contentHash": "e1d0b0134282520618ed172374e63a5f04cf5d341399b04b6c12b973d0dbcb39"
+        },
+        {
+          "messageId": "T17-L0-01-M09",
+          "role": "user",
+          "content": "评审要求每个状态 token 都有键盘焦点和禁用态示例。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T16:00:00+08:00",
+          "contentHash": "bb7f52503245929f1039b54cd1b43ffe779927a325114cf7cc13f684827b63b4"
+        },
+        {
+          "messageId": "T17-L0-01-M10",
+          "role": "assistant",
+          "content": "示例会覆盖默认、暗色和高对比三套主题。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T17:00:00+08:00",
+          "contentHash": "1a8965e3e493ddc310cd92786e044b8ca85fde57bfb5dfba737ea8d1b549a349"
+        },
+        {
+          "messageId": "T17-L0-01-M11",
+          "role": "user",
+          "content": "最终决定先冻结 token 名称，再迁移旧组件。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T08:00:00+08:00",
+          "contentHash": "abdf87feaf5b4ae153564a73ffa0b8c87b7e214b29b6a31b8c34d1e0bed68a02"
+        },
+        {
+          "messageId": "T17-L0-01-M12",
+          "role": "assistant",
+          "content": "迁移顺序和回滚点已记录，等待组件负责人确认。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "9768455813ce9cbd37434c87ac04b7e205a749f385aea0171523ed664f654ed2"
+        }
+      ],
+      "contentHash": "bf6e343e7f58cd6f5e8a22d8fdf51fef783d5d39b1b6827dc92eb964ed74c2de"
+    },
+    {
+      "assetId": "T17-L0-02",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L0-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "sessionId": "session-task1-t17-helios-hydration-incident",
+      "messages": [
+        {
+          "messageId": "T17-L0-02-M01",
+          "role": "user",
+          "content": "Helios 线上出现首屏可见、接管后组件树不一致的事故。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T08:00:00+08:00",
+          "contentHash": "d778ea944dcf5b4af64ba7f2497cf469cdf0a7d0fbeb737acc56071aabe14266"
+        },
+        {
+          "messageId": "T17-L0-02-M02",
+          "role": "assistant",
+          "content": "我先把原因归给响应缓存和旧序列化状态。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T09:00:00+08:00",
+          "contentHash": "b98d45cfb05febcca7068460b5600b9f24156079cd7e3a2b515df6949b79c115"
+        },
+        {
+          "messageId": "T17-L0-02-M03",
+          "role": "user",
+          "content": "缓存假设在隔离复现中没有成立，先撤回这个判断。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T10:00:00+08:00",
+          "contentHash": "8efdffada326f324a525ae3d83924a6a0e825fbc435d89597284bc0c895574d5"
+        },
+        {
+          "messageId": "T17-L0-02-M04",
+          "role": "assistant",
+          "content": "第二次实验只在第二段流到达次序变化时重现。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T11:00:00+08:00",
+          "contentHash": "64b357b71105c6f92ca9eb06c1387c596f2f7c9b9403137a0065192643d99946"
+        },
+        {
+          "messageId": "T17-L0-02-M05",
+          "role": "user",
+          "content": "网络重试、浏览器扩展和服务端 HTML 截断都已排除。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T12:00:00+08:00",
+          "contentHash": "6874665a6f9640fd3bf36e022d1cc5cb7d253e406f8f68e24a0c619234b472bc"
+        },
+        {
+          "messageId": "T17-L0-02-M06",
+          "role": "assistant",
+          "content": "事故范围锁定在流式边界与客户端状态读取的竞态。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T13:00:00+08:00",
+          "contentHash": "fb2ef825b317cec947689690bb29cb2c47d2ab58fdeac2f602fd06386b618e10"
+        },
+        {
+          "messageId": "T17-L0-02-M07",
+          "role": "user",
+          "content": "评审说不要写泛化的‘数据不同步’，要给能引用的原句。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T14:00:00+08:00",
+          "contentHash": "69e6c44116261515633db015009831f32ad47e51f378309fc61495044c9c4d30"
+        },
+        {
+          "messageId": "T17-L0-02-M08",
+          "role": "assistant",
+          "content": "我准备了两版措辞，一版强调 HTML，一版强调状态稳定性。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T15:00:00+08:00",
+          "contentHash": "e4b00b7890e46bd429520b6e40c8c50fe940cdcbc28348cfc04cde281317a063"
+        },
+        {
+          "messageId": "T17-L0-02-M09",
+          "role": "user",
+          "content": "改口：第二版更准确，但要明确发生在第二段 payload。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T16:00:00+08:00",
+          "contentHash": "8a205c84890316f199724d3d898885205cfd6d9d184cbad87b87d77d93a947c6"
+        },
+        {
+          "messageId": "T17-L0-02-M10",
+          "role": "assistant",
+          "content": "复盘批准的原句是：根因不是服务端 HTML 缺失，而是客户端在流式边界到达前读取了未稳定的序列化状态，导致 hydration 在第二段 payload 上发生顺序漂移。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T17:00:00+08:00",
+          "contentHash": "2357e43025b7f1dbe4fb66f1d523a0a3bd8187e7d72dbb266608b861d3c6151a"
+        },
+        {
+          "messageId": "T17-L0-02-M11",
+          "role": "user",
+          "content": "这句作为事故记录固定措辞，并与 RSC ownership 讨论分开。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T08:00:00+08:00",
+          "contentHash": "79187a0df85fa7eac6370029925c6b8059e9a6acc4b50c87841fa6cb78136b0a"
+        },
+        {
+          "messageId": "T17-L0-02-M12",
+          "role": "assistant",
+          "content": "已记录批准时间和复现条件；后续改动先走边界灰度。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-11T09:00:00+08:00",
+          "contentHash": "9c0b861815788fddd3b76e778866a6837d41c093823d2f44c5010de01176d9a1"
+        }
+      ],
+      "contentHash": "eebcc1442f4070366407d03fe4e0b79cf917bb45849c64b4f00862633079b4d9"
+    },
+    {
+      "assetId": "T17-L0-03",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L0-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "sessionId": "session-task1-t17-atlas-cache-01",
+      "messages": [
+        {
+          "messageId": "T17-L0-03-M01",
+          "role": "user",
+          "content": "Atlas 查询缓存偶发读到另一租户的旧列表。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T08:00:00+08:00",
+          "contentHash": "9c457301c51451fcaa51a3d063b4ed0061519aa1998581a022202aa363197833"
+        },
+        {
+          "messageId": "T17-L0-03-M02",
+          "role": "assistant",
+          "content": "先检查查询键是否只使用用户和资源，而没有租户边界。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "ef3eee80ac6c75d0a98afa2561a3668d1a7050ba593cf9756ed33523c5af1480"
+        },
+        {
+          "messageId": "T17-L0-03-M03",
+          "role": "user",
+          "content": "短期修补把租户拼到键尾，但 mutation 后仍有旧值。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T10:00:00+08:00",
+          "contentHash": "c29e68172c6d31b16b17fbb5b3818d9aa41416520bafdd154a94f577b204c135"
+        },
+        {
+          "messageId": "T17-L0-03-M04",
+          "role": "assistant",
+          "content": "说明键隔离和失效边界是两个问题。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T11:00:00+08:00",
+          "contentHash": "716235edc9c5e3512acad7fe0ced5b2df2be30bd9285c38b6146412a5366b97e"
+        },
+        {
+          "messageId": "T17-L0-03-M05",
+          "role": "user",
+          "content": "我们撤回全局清空缓存的提案，影响太大。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "f8ddd8de8594201154156ab1f725efdf8859dbcaa74ad321c80d6b844d8cd7f8"
+        },
+        {
+          "messageId": "T17-L0-03-M06",
+          "role": "assistant",
+          "content": "新方向是 mutation 携带租户与资源范围，按最终提交结果失效。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T13:00:00+08:00",
+          "contentHash": "53d810b6c4c5db4b65008f35031245ea6aa806777f6f966a9ad4428110c5c3ed"
+        },
+        {
+          "messageId": "T17-L0-03-M07",
+          "role": "user",
+          "content": "Helios 的 streaming 事故也有‘最终’语义，但不是同一个项目。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T14:00:00+08:00",
+          "contentHash": "450a2d2228556775a37737daae9dd822c3b8e39f2e755b7fe63b6ed53cc11c7d"
+        },
+        {
+          "messageId": "T17-L0-03-M08",
+          "role": "assistant",
+          "content": "已标记为跨会话引用，Atlas 只保留查询缓存决策。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T15:00:00+08:00",
+          "contentHash": "fa5754c917d55f9d976ab76223ed4cb673ed62932b875efb7124a477530e4009"
+        },
+        {
+          "messageId": "T17-L0-03-M09",
+          "role": "user",
+          "content": "要同时覆盖乐观更新失败和服务端拒绝两条路径。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T16:00:00+08:00",
+          "contentHash": "7510b303fbb4c3a23105132a042d6bd053afb8b6b3aaa0a7dfda096204b65cf4"
+        },
+        {
+          "messageId": "T17-L0-03-M10",
+          "role": "assistant",
+          "content": "两条路径都等待最终 mutation 结果再做局部失效。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T17:00:00+08:00",
+          "contentHash": "70ba11782a915d05acb55447a82853aedc53269308499f16da3cd9d1a7926064"
+        },
+        {
+          "messageId": "T17-L0-03-M11",
+          "role": "user",
+          "content": "评审认可局部边界，要求把跨租户测试加入回归。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T08:00:00+08:00",
+          "contentHash": "3a291a0a1625c695f39cdb62a9f78e80c84eaeaf66b9eb476976c7fd538a2a45"
+        },
+        {
+          "messageId": "T17-L0-03-M12",
+          "role": "assistant",
+          "content": "测试样例已拆为租户隔离、局部失效和回滚三组。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "f87b9fb2033537e6ae43a378d875f0097cbb7f17daabc0a9dac7747b89ecdb5b"
+        }
+      ],
+      "contentHash": "23c3ed9f4ef174d133a204340c8e13d824fab3f8ab8a85a34553d630d0199bec"
+    },
+    {
+      "assetId": "T17-L0-04",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L0-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "sessionId": "session-task1-t17-foundry-chunks-01",
+      "messages": [
+        {
+          "messageId": "T17-L0-04-M01",
+          "role": "user",
+          "content": "Foundry 的异步 chunk 在发布检查中多次超过预算。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T08:00:00+08:00",
+          "contentHash": "df41623bb5e8ea0e7a80ec6c891c66ecb0bbf5d7ced82a7da9952cc7f9bb1268"
+        },
+        {
+          "messageId": "T17-L0-04-M02",
+          "role": "assistant",
+          "content": "早期提案给所有异步 chunk 一个统一的小上限。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T09:00:00+08:00",
+          "contentHash": "34e90e8f6bf03d3cce3fae332b4ecb921625d0a18b6e6e938eddcf78bb226970"
+        },
+        {
+          "messageId": "T17-L0-04-M03",
+          "role": "user",
+          "content": "本地化入口因此无法拆分，首屏路由反而变大。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "857a1e8b11b55dc40b654b445800fd9918779785a216df84e4181530caeedbbd"
+        },
+        {
+          "messageId": "T17-L0-04-M04",
+          "role": "assistant",
+          "content": "失败尝试显示 locale-only chunk 需要单独判断。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T11:00:00+08:00",
+          "contentHash": "1168560ad88706fbdd40aca334c08a17fe20c4b31af8a7cba6332df720ec1f28"
+        },
+        {
+          "messageId": "T17-L0-04-M05",
+          "role": "user",
+          "content": "另一个团队建议把整个预算上调，评审拒绝了。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T12:00:00+08:00",
+          "contentHash": "4a54af23cdf1e5dbe63ec2495aaa53a1cadfa77fe8b8472de15a1ac3fe820fcb"
+        },
+        {
+          "messageId": "T17-L0-04-M06",
+          "role": "assistant",
+          "content": "我们改成冻结普通 chunk，并只讨论无重复依赖的例外。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T13:00:00+08:00",
+          "contentHash": "148d0488670fab768262e2c3d0aaa4bee4090d6d63be3b7c1613fda6b3a043a0"
+        },
+        {
+          "messageId": "T17-L0-04-M07",
+          "role": "user",
+          "content": "Pulse 的资源优先级实验不要写进这个构建决策。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T14:00:00+08:00",
+          "contentHash": "9089cf0cd04a8a02de9536cc18897a8d8524cb5df2e0f3f251d72107325a29b0"
+        },
+        {
+          "messageId": "T17-L0-04-M08",
+          "role": "assistant",
+          "content": "明白，性能实验是干扰，当前只记录 chunk 体积。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T15:00:00+08:00",
+          "contentHash": "ecbb84038ab72755679072167d02ae1800118b253e778d3fbb9f4ab4a8fb9f6f"
+        },
+        {
+          "messageId": "T17-L0-04-M09",
+          "role": "user",
+          "content": "评审还要求例外不能复制 eager route 的依赖。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T16:00:00+08:00",
+          "contentHash": "9f87c0e9a5a19c5c6621ab640657168b14f22d5232c986113fb0a51e4adab3fe"
+        },
+        {
+          "messageId": "T17-L0-04-M10",
+          "role": "assistant",
+          "content": "这项限制加入检查脚本和人工复核表。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T17:00:00+08:00",
+          "contentHash": "96358440016bab8071b1613ad1064763aea1a06fd611880ba3f84cca9dc2f06e"
+        },
+        {
+          "messageId": "T17-L0-04-M11",
+          "role": "user",
+          "content": "数字先留在最终记忆，避免旧提案继续被引用。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T08:00:00+08:00",
+          "contentHash": "4afadbc62089b247fc4adc1f45fe2ae1dc4c9a6f593cea651eac86ed7c37b23f"
+        },
+        {
+          "messageId": "T17-L0-04-M12",
+          "role": "assistant",
+          "content": "已关闭旧提案链接，等待冻结规则进入发布门禁。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-13T09:00:00+08:00",
+          "contentHash": "12ae34635a665ba6b05c462f613a3bf53305cc890f3a949dd0f93c93016411f0"
+        }
+      ],
+      "contentHash": "8df6b60574ba3bc1b314ab5fc9d5fb33cc695e765ccef3888d26d8531ce9aab2"
+    },
+    {
+      "assetId": "T17-L0-05",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L0-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "sessionId": "session-task1-t17-pulse-vitals-01",
+      "messages": [
+        {
+          "messageId": "T17-L0-05-M01",
+          "role": "user",
+          "content": "Pulse 监控发现交互期间长任务增多，先看资源优先级。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T08:00:00+08:00",
+          "contentHash": "da8b5503dd493e851640f295b6e4fc55228925fa65d47163f9ed5c63638cc4d8"
+        },
+        {
+          "messageId": "T17-L0-05-M02",
+          "role": "assistant",
+          "content": "初步怀疑 Foundry 的拆包改变了脚本到达顺序。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T09:00:00+08:00",
+          "contentHash": "5a5f1e29ad48476ceb91cbee878690b60012aefc491d87186c04cae3e81866ba"
+        },
+        {
+          "messageId": "T17-L0-05-M03",
+          "role": "user",
+          "content": "对比结果显示主要问题是渲染抖动，不是 chunk 大小。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T10:00:00+08:00",
+          "contentHash": "2b04e1371d419d8723cba20d099fb10cca5fe7ca2623e268df3056a69204f0dd"
+        },
+        {
+          "messageId": "T17-L0-05-M04",
+          "role": "assistant",
+          "content": "我撤回拆包根因，改查组件重复测量。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "9f1327f995717717806dea082b13dc5dc685355689c23dff6f689d7dbc2d4fbe"
+        },
+        {
+          "messageId": "T17-L0-05-M05",
+          "role": "user",
+          "content": "采样窗口要同时看长任务、INP 和布局偏移。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T12:00:00+08:00",
+          "contentHash": "77b3858b8196dadf3880c7a1e43994767512db38aa61fab1d7923aa249feb3c9"
+        },
+        {
+          "messageId": "T17-L0-05-M06",
+          "role": "assistant",
+          "content": "已加入三项指标和设备分层。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T13:00:00+08:00",
+          "contentHash": "4815fe9bf016911cd6e6869f6066eae61e44a91c83d53bad8b3efadb3982f424"
+        },
+        {
+          "messageId": "T17-L0-05-M07",
+          "role": "user",
+          "content": "Aurora 的 combobox 改动可能制造局部抖动，但只是并行干扰。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T14:00:00+08:00",
+          "contentHash": "bc37110bebdde1552c3a073a2fb375b2232bc7378f6754911ba2e15c32bb49c0"
+        },
+        {
+          "messageId": "T17-L0-05-M08",
+          "role": "assistant",
+          "content": "标记该关联，Pulse 结论仍以生产采样为准。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T15:00:00+08:00",
+          "contentHash": "385112b0bb16777aa612e4b80ec5ac4a133db5e3aa4d91d85915367c49846232"
+        },
+        {
+          "messageId": "T17-L0-05-M09",
+          "role": "user",
+          "content": "一次优化把测量合并，结果低端设备输入延迟变坏。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T16:00:00+08:00",
+          "contentHash": "1618302a8afad1a12f5d0646ece8f90bf9ac00719b095d4d33c356f9d70ade83"
+        },
+        {
+          "messageId": "T17-L0-05-M10",
+          "role": "assistant",
+          "content": "失败版本回滚，保留分帧测量方案。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T17:00:00+08:00",
+          "contentHash": "fdb2daf707813e4c2e5db0f0f1cc9084d77cd2c873ee45710d6967f98d180478"
+        },
+        {
+          "messageId": "T17-L0-05-M11",
+          "role": "user",
+          "content": "灰度需要两轮连续窗口才能扩大。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T08:00:00+08:00",
+          "contentHash": "276ed3edb85083cc476e799f9fee5d5264172fb57094075981b9a6c214c1dd93"
+        },
+        {
+          "messageId": "T17-L0-05-M12",
+          "role": "assistant",
+          "content": "监控面板、阈值和回滚负责人已经分配。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-14T09:00:00+08:00",
+          "contentHash": "4b760a7b38326572ea21d81ee7a0d877c128552fc7c415b7ba8cc1f427387350"
+        }
+      ],
+      "contentHash": "a99432e32f91e1b855b456302e3ebf5590c5355f7d6957a51b3df4ac7e01872c"
+    },
+    {
+      "assetId": "T17-L0-06",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L0-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "sessionId": "session-task1-t17-helios-rsc-boundary",
+      "messages": [
+        {
+          "messageId": "T17-L0-06-M01",
+          "role": "user",
+          "content": "Helios 另有一场 RSC 边界归属讨论，与事故复盘相邻。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T08:00:00+08:00",
+          "contentHash": "e1888c6de56f34dc498bb8fecaa15121e362c43cd363dae3f41ae1e37d7be425"
+        },
+        {
+          "messageId": "T17-L0-06-M02",
+          "role": "assistant",
+          "content": "这场先画服务端组件和客户端组件的依赖边界。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T09:00:00+08:00",
+          "contentHash": "ba05305c5bbd192715e32b47e32b920416f5e96ea50d7cc394019f95e392ddf0"
+        },
+        {
+          "messageId": "T17-L0-06-M03",
+          "role": "user",
+          "content": "第一次划分把表单状态放在服务端，开发体验很差。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T10:00:00+08:00",
+          "contentHash": "6646dc99a479cf046ed78d810f969f16fc134a0918f27a4dac6f6ea96018d660"
+        },
+        {
+          "messageId": "T17-L0-06-M04",
+          "role": "assistant",
+          "content": "方案撤回，交互状态回到客户端拥有。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T11:00:00+08:00",
+          "contentHash": "c403aff6e444c75967050b7e169d3e247c1fd66af24e4343cfc50be2c6de70d4"
+        },
+        {
+          "messageId": "T17-L0-06-M05",
+          "role": "user",
+          "content": "团队担心这会和 streaming rollout 同时变更。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "bcf6cca444164061696e3e23b04d9e0f3f7590a73d7ca0d8fcc21d71ee4e0edf"
+        },
+        {
+          "messageId": "T17-L0-06-M06",
+          "role": "assistant",
+          "content": "决定 ownership 先冻结，rollout 单独排期。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T13:00:00+08:00",
+          "contentHash": "4fbbea611763018d09e6e9eb9fe5049e6588491e1a0f6cc5348327fa756a11f8"
+        },
+        {
+          "messageId": "T17-L0-06-M07",
+          "role": "user",
+          "content": "不要把这里的边界说明当作事故诊断原句。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T14:00:00+08:00",
+          "contentHash": "bdca1ccee4f741c8095c18a9f5b00a0ca59b55887aef846c12e7e5517bf85646"
+        },
+        {
+          "messageId": "T17-L0-06-M08",
+          "role": "assistant",
+          "content": "已在会议记录中加上区分。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T15:00:00+08:00",
+          "contentHash": "b4e05904eb646cabbd8b571f1e786ef831c001b512bab576127f8cdbea85410e"
+        },
+        {
+          "messageId": "T17-L0-06-M09",
+          "role": "user",
+          "content": "评审要求标出可序列化 props 和不可序列化引用。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T16:00:00+08:00",
+          "contentHash": "65df13382b855ccf4e5ae2b2bfd2507296d3d97b9c9ee616867b217edbc0f6a0"
+        },
+        {
+          "messageId": "T17-L0-06-M10",
+          "role": "assistant",
+          "content": "检查表已按两类依赖展开。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T17:00:00+08:00",
+          "contentHash": "5f5ae2bffdf1fcc307f2f1200df1cb76901db26600d8734859018ae945540503"
+        },
+        {
+          "messageId": "T17-L0-06-M11",
+          "role": "user",
+          "content": "下一步和客户端负责人确认边界。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T08:00:00+08:00",
+          "contentHash": "e433e04ec6cf9ec2cb40b973448be35ca728f67c60912070910c80079d3dfe67"
+        },
+        {
+          "messageId": "T17-L0-06-M12",
+          "role": "assistant",
+          "content": "确认后再进入 Helios 发布列车。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-15T09:00:00+08:00",
+          "contentHash": "a17721833a584e6669b3748dd0e1f120190a9d710dd64f799a6f577b37e31f55"
+        }
+      ],
+      "contentHash": "6e6ab2892f0f5cf4c5ceadb928c4f4a538309ae169bd1057215bae37949a044d"
+    },
+    {
+      "assetId": "T17-L0-07",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L0-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "sessionId": "session-task1-t17-atlas-mutation-02",
+      "messages": [
+        {
+          "messageId": "T17-L0-07-M01",
+          "role": "user",
+          "content": "Atlas 的乐观更新在跨租户批量操作时出现回滚范围过宽。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T08:00:00+08:00",
+          "contentHash": "41043546999dc66cb99cacc3b0d8fe5eb559b7c135b85e631d96954c8db042b1"
+        },
+        {
+          "messageId": "T17-L0-07-M02",
+          "role": "assistant",
+          "content": "最初按用户维度清理，误伤了同用户的其他租户。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T09:00:00+08:00",
+          "contentHash": "07ee134d168d2822a7186658f7027e411a2d72f69eb1d7e4eee1e0ac79e109c7"
+        },
+        {
+          "messageId": "T17-L0-07-M03",
+          "role": "user",
+          "content": "失败样例证明用户不是足够细的失效边界。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T10:00:00+08:00",
+          "contentHash": "f4ccbf8f7ba07f4dcdde9796d63015bd9dc8c0132713698d467427f642808ca7"
+        },
+        {
+          "messageId": "T17-L0-07-M04",
+          "role": "assistant",
+          "content": "改成租户、资源和 mutation 三元组。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T11:00:00+08:00",
+          "contentHash": "3748a73a442fb19fa68a3e1b82c6897a0789aac31bc7bc2c2e856b4b24e48c5a"
+        },
+        {
+          "messageId": "T17-L0-07-M05",
+          "role": "user",
+          "content": "服务端拒绝时也必须恢复同一三元组。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T12:00:00+08:00",
+          "contentHash": "760cf1b06dd4ff70554d919888bd1228102111485aa502dc645a52c4fdac87b9"
+        },
+        {
+          "messageId": "T17-L0-07-M06",
+          "role": "assistant",
+          "content": "我补了拒绝和超时测试。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T13:00:00+08:00",
+          "contentHash": "29cb444ad15b86fead4f2e38f6211b88b16c8e0a8aef84962b120441d46a6f36"
+        },
+        {
+          "messageId": "T17-L0-07-M07",
+          "role": "user",
+          "content": "Aurora token 迁移中的回滚点是另一个并行主题。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T14:00:00+08:00",
+          "contentHash": "53816e82f94c1190653229a1cba4d2d917fc14d6481a9e8709e12b0ba38316d7"
+        },
+        {
+          "messageId": "T17-L0-07-M08",
+          "role": "assistant",
+          "content": "已排除 Aurora 干扰，保留 Atlas 失效讨论。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T15:00:00+08:00",
+          "contentHash": "7dab6526b7a894b43501989abb380f4765cf5092afbe54b0eb099d017eca1055"
+        },
+        {
+          "messageId": "T17-L0-07-M09",
+          "role": "user",
+          "content": "评审要看到 mutation 最终状态之后的动作顺序。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T16:00:00+08:00",
+          "contentHash": "f26b762803377c02ed094c8acb5b0b178cc7b58fbe8b50304a091998d9a3144c"
+        },
+        {
+          "messageId": "T17-L0-07-M10",
+          "role": "assistant",
+          "content": "先提交最终状态，再局部失效，最后刷新可见查询。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T17:00:00+08:00",
+          "contentHash": "320fcbc0ddb4f7e537deb9f6c5bec0039ac1f9dc65f78548ff27516969a86497"
+        },
+        {
+          "messageId": "T17-L0-07-M11",
+          "role": "user",
+          "content": "这个顺序与早期全局清理不同。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T08:00:00+08:00",
+          "contentHash": "c5368e91af5b3fd1608837551ccef377fb4c5ac097a6583daad384e775842c5b"
+        },
+        {
+          "messageId": "T17-L0-07-M12",
+          "role": "assistant",
+          "content": "文档已标注旧方案废止。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-16T09:00:00+08:00",
+          "contentHash": "6ed483e9a34dbc89fa97287161e71f7848e8c1fb4d9bdf4e33b40117c9ff2021"
+        }
+      ],
+      "contentHash": "2e562b6db6ad192fb4ba033092887aebcca3e3335fe3b281edbf6df5834266d4"
+    },
+    {
+      "assetId": "T17-L0-08",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L0-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "sessionId": "session-task1-t17-aurora-combobox-a11y",
+      "messages": [
+        {
+          "messageId": "T17-L0-08-M01",
+          "role": "user",
+          "content": "Aurora combobox 在几个屏幕阅读器组合下出现重复播报。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T08:00:00+08:00",
+          "contentHash": "bd0ef00daef235e6298aa8a37699ef503a020037d1c90017d181e2b0ed3be674"
+        },
+        {
+          "messageId": "T17-L0-08-M02",
+          "role": "assistant",
+          "content": "首个建议是用 live region 广播每次焦点移动。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T09:00:00+08:00",
+          "contentHash": "919ecc895e13356e0b8f0acd6c71710e2400233bec88b79a6028d3b2ec757afd"
+        },
+        {
+          "messageId": "T17-L0-08-M03",
+          "role": "user",
+          "content": "测试显示 live region 会在快速输入时重复播报。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T10:00:00+08:00",
+          "contentHash": "f75f80824579f0ea78e3afd2ccd0f844225665203fff30a4fb766d1f2a826255"
+        },
+        {
+          "messageId": "T17-L0-08-M04",
+          "role": "assistant",
+          "content": "我们改试 aria-activedescendant，主流组合表现稳定。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T11:00:00+08:00",
+          "contentHash": "fe75bf7d696f3d2852d084d304086841c636e0d9dab6b76caafbd1a55974482f"
+        },
+        {
+          "messageId": "T17-L0-08-M05",
+          "role": "user",
+          "content": "旧版实现没有可靠的活动后代支持，需要回退。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T12:00:00+08:00",
+          "contentHash": "ff8aad9ebf80c9817007a339346a6698cb70dd69df7dd8539baaab8d300e4157"
+        },
+        {
+          "messageId": "T17-L0-08-M06",
+          "role": "assistant",
+          "content": "一版提案把 roving tabindex 放在第一位，后来撤回。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T13:00:00+08:00",
+          "contentHash": "3984937e42e678165c37251c9554d80417d39ece31b7ed3ff94a46a029ed3b9f"
+        },
+        {
+          "messageId": "T17-L0-08-M07",
+          "role": "user",
+          "content": "改口：静态列表文本只能作为最后保险。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T14:00:00+08:00",
+          "contentHash": "d3d246785e9f22c1148d976a56c464894fc4609ce3df5dbf9d1cd5427ee253d9"
+        },
+        {
+          "messageId": "T17-L0-08-M08",
+          "role": "assistant",
+          "content": "评审保留的顺序是：先使用 aria-activedescendant；失效时回退到 roving tabindex；最后才使用静态列表文本，live region 不作为主回退。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T15:00:00+08:00",
+          "contentHash": "47afca1c0ad566cb77326c6ff9d5fc860de9bbf0088d3ac5c397532549c238ed"
+        },
+        {
+          "messageId": "T17-L0-08-M09",
+          "role": "user",
+          "content": "请把这条顺序和 token 颜色讨论分开归档。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T16:00:00+08:00",
+          "contentHash": "8a0255d7e5eba5ba093c7fc5d7b7d8b9781c1132166f76b9da7a561144949bba"
+        },
+        {
+          "messageId": "T17-L0-08-M10",
+          "role": "assistant",
+          "content": "已拆分会话标签，并附上读屏器回归矩阵。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T17:00:00+08:00",
+          "contentHash": "39d3af4f8305877b4be86fe6c65f8222cf533bbfad361630052a4603328c809d"
+        },
+        {
+          "messageId": "T17-L0-08-M11",
+          "role": "user",
+          "content": "回归要覆盖键盘、触摸和过滤后焦点。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T08:00:00+08:00",
+          "contentHash": "bda1b77999bdf8f1144a3da99edd2046c0e66cbc8d7e5cc25bace0e939ee6950"
+        },
+        {
+          "messageId": "T17-L0-08-M12",
+          "role": "assistant",
+          "content": "测试负责人确认后，按这条顺序进入组件契约。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-17T09:00:00+08:00",
+          "contentHash": "35c92018cfae34b9b9e63fc6bb03a155eb17d00ac0209db78aa8bbd814bf8d06"
+        }
+      ],
+      "contentHash": "453991e3418914c788805acd2ee1775e3cf458b6cbd192e9269bcd274e422f89"
+    },
+    {
+      "assetId": "T17-L0-09",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L0-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "sessionId": "session-task1-t17-pulse-priority-02",
+      "messages": [
+        {
+          "messageId": "T17-L0-09-M01",
+          "role": "user",
+          "content": "Pulse 想调整首屏字体、关键脚本和图片的资源优先级。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T08:00:00+08:00",
+          "contentHash": "aa55881e3a48673a8f539bd535831d43e49fcbd7dfda92a379f3632ab68a4510"
+        },
+        {
+          "messageId": "T17-L0-09-M02",
+          "role": "assistant",
+          "content": "初版把所有字体提前，低端网络反而阻塞了关键脚本。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T09:00:00+08:00",
+          "contentHash": "e9ece0316f6063056ae564e908f815a49dab0bcb2e20dd2f5242193fe2b9abc8"
+        },
+        {
+          "messageId": "T17-L0-09-M03",
+          "role": "user",
+          "content": "撤回全量预加载，改为按路由和设备分层。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T10:00:00+08:00",
+          "contentHash": "7cd1aebf3c8aded15a3e43efde57435902b6fa313fd11b644a5369f5685c6b95"
+        },
+        {
+          "messageId": "T17-L0-09-M04",
+          "role": "assistant",
+          "content": "实验记录显示首屏关键路径缩短，但缓存命中需要观察。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T11:00:00+08:00",
+          "contentHash": "2f895fbb4788a20622f6230dddd6f972be60a715a4f40cb9d9a5d96d40bbaa9f"
+        },
+        {
+          "messageId": "T17-L0-09-M05",
+          "role": "user",
+          "content": "Foundry chunk 预算数字不要在此处重复维护。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T12:00:00+08:00",
+          "contentHash": "c28a18cd5829bcf5d2ce35a1ad245f57e632279530d001da6a475ddc3211a542"
+        },
+        {
+          "messageId": "T17-L0-09-M06",
+          "role": "assistant",
+          "content": "已链接构建项目作为干扰背景，不复制其门禁规则。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T13:00:00+08:00",
+          "contentHash": "e850142f6b1c7664a535876a2f05f9421e0d5f58d9749c50ecc253b15f5a40b9"
+        },
+        {
+          "messageId": "T17-L0-09-M07",
+          "role": "user",
+          "content": "指标看 LCP、INP 和资源阻塞时长。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T14:00:00+08:00",
+          "contentHash": "bdc053e672512ed8a2c3a657972c1a10a185a104a61f78c12790a04b627a532b"
+        },
+        {
+          "messageId": "T17-L0-09-M08",
+          "role": "assistant",
+          "content": "两轮灰度后再决定是否扩大预加载。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T15:00:00+08:00",
+          "contentHash": "6da290dd29bd69ea90ca1c6991c36d74c1cd9913e17f5dbf7875f3bb9500252b"
+        },
+        {
+          "messageId": "T17-L0-09-M09",
+          "role": "user",
+          "content": "浏览器版本差异也要分开记录。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T16:00:00+08:00",
+          "contentHash": "67b3ff76a0a04d78bd9e42057c3b467ba7018a81fb582d91d6dc3c6c863fa90e"
+        },
+        {
+          "messageId": "T17-L0-09-M10",
+          "role": "assistant",
+          "content": "兼容性表交给 Aurora 契约负责人维护。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T17:00:00+08:00",
+          "contentHash": "5c8734c9c7fa67a75d0c5dd855deba040243febd9d2f580e487aceed40da4e26"
+        },
+        {
+          "messageId": "T17-L0-09-M11",
+          "role": "user",
+          "content": "失败实验保留，便于解释为什么撤回全量预加载。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T08:00:00+08:00",
+          "contentHash": "b3cb80c23d77a22b9091775d16241481d6bb27654742924768396372891f51f9"
+        },
+        {
+          "messageId": "T17-L0-09-M12",
+          "role": "assistant",
+          "content": "已补齐时间线和回滚条件。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-18T09:00:00+08:00",
+          "contentHash": "f0ecdac435c0b5d6a1fe4e5c88a9a49e7b92191d6d09b79b638a9d750ba22371"
+        }
+      ],
+      "contentHash": "5ac24e753decf776d3bb73763948d50ac09d1f88469c81b72ac04add3407ca6f"
+    },
+    {
+      "assetId": "T17-L0-10",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L0-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "sessionId": "session-task1-t17-foundry-module-boundary",
+      "messages": [
+        {
+          "messageId": "T17-L0-10-M01",
+          "role": "user",
+          "content": "Foundry monorepo 有几个包同时声明同一模块的所有权。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T08:00:00+08:00",
+          "contentHash": "77ba87110401510824e06373c0866e754b032c2e31840024b123266d63472ced"
+        },
+        {
+          "messageId": "T17-L0-10-M02",
+          "role": "assistant",
+          "content": "第一次按目录切分，生成的入口出现循环依赖。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T09:00:00+08:00",
+          "contentHash": "9e5b64ab49d25edd68193d0d6fe722b9da4550c79a3f607f584a79df7066a00d"
+        },
+        {
+          "messageId": "T17-L0-10-M03",
+          "role": "user",
+          "content": "失败后改按运行时边界和发布责任划分。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T10:00:00+08:00",
+          "contentHash": "0e0e77e6a4cf460867f6791055b77c74cabe22ec4b6429871b2379d2bb9fdddf"
+        },
+        {
+          "messageId": "T17-L0-10-M04",
+          "role": "assistant",
+          "content": "这让共享类型留在稳定层，构建实现进入各自包。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T11:00:00+08:00",
+          "contentHash": "9951211d9891421ba1d4bba609f240eb1d20e9dc2a9d12845e5d3d471b550102"
+        },
+        {
+          "messageId": "T17-L0-10-M05",
+          "role": "user",
+          "content": "异步 chunk 的体积规则会引用这里的所有权，但不是同一决定。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T12:00:00+08:00",
+          "contentHash": "a783f85889c15580662896ca7441f00fdfed9dae97bfe50c0399cc7ce9e4d91e"
+        },
+        {
+          "messageId": "T17-L0-10-M06",
+          "role": "assistant",
+          "content": "两条记录交叉引用，避免把边界和预算混成一句。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T13:00:00+08:00",
+          "contentHash": "e796a4bd572c79b7c785e9dd3a6005215407b6be64cf34ff5d72367fa9ceb8f7"
+        },
+        {
+          "messageId": "T17-L0-10-M07",
+          "role": "user",
+          "content": "改口：工具链只接受一个发布 owner。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T14:00:00+08:00",
+          "contentHash": "9127cc7021cf4931e34e424138fb3e08e748a03f1b042d8d67dd3ee5893de058"
+        },
+        {
+          "messageId": "T17-L0-10-M08",
+          "role": "assistant",
+          "content": "我添加重复 owner 的构建失败检查。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T15:00:00+08:00",
+          "contentHash": "3739f0b9fe834d58d1ee4ca697d3f5adce99b1ae6480e52480f1d4ad73da2e20"
+        },
+        {
+          "messageId": "T17-L0-10-M09",
+          "role": "user",
+          "content": "兼容目标先维持旧入口，再逐包迁移。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T16:00:00+08:00",
+          "contentHash": "d8dd1fc99fdd6cf268c9a38aabf8d27269200003d6a421171fa65554437db21c"
+        },
+        {
+          "messageId": "T17-L0-10-M10",
+          "role": "assistant",
+          "content": "迁移期间保留适配层和明确的删除日期。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T17:00:00+08:00",
+          "contentHash": "d8b03b666ac29eb5c792dc4971c58a0e48adc087927ab7f7c192960f62d28902"
+        },
+        {
+          "messageId": "T17-L0-10-M11",
+          "role": "user",
+          "content": "Pulse 的分包观测是并行干扰。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T08:00:00+08:00",
+          "contentHash": "9afac86b98d690e95bc458bbd6fc07ae963753ab55fbf13ceb0f00b203468276"
+        },
+        {
+          "messageId": "T17-L0-10-M12",
+          "role": "assistant",
+          "content": "已将其从 Foundry 所有权结论中排除。",
+          "sourceEvidenceIds": [
+            "T17-SRC-MEMORY-L0-01"
+          ],
+          "observedAt": "2026-08-19T09:00:00+08:00",
+          "contentHash": "cd3e7cb3e8b2055cbb3d591343ace12da56d7cd71e40a416eefc16c4cf991458"
+        }
+      ],
+      "contentHash": "653c72f9df1596eec8c5149d897154d370533558dc85ffd42afb07a7457296d0"
+    }
+  ],
+  "l1Memories": [
+    {
+      "assetId": "T17-L1-01",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Aurora 将基础色 token 与语义状态 token 分层；主题只覆盖语义层，组件迁移先冻结名称再执行。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T17-L0-01-M09",
+        "T17-L0-01-M10",
+        "T17-L0-01-M11",
+        "T17-L0-01-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "7fd5d5526c41964f5ff07e510ad7f6babac478660e3d045144e0586a697521b7"
+    },
+    {
+      "assetId": "T17-L1-02",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "高对比主题的 focus ring 必须由语义状态映射提供，不能直接复用普通边框色。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T17-L0-01-M09",
+        "T17-L0-01-M10",
+        "T17-L0-01-M11",
+        "T17-L0-01-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "71ead6ccd94fd93dc00c7c74f2dcd6828142ede0ba1c329d4dfcaf96a19cc077"
+    },
+    {
+      "assetId": "T17-L1-03",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Atlas 查询缓存对跨租户 mutation 的最终失效边界是租户、资源与 mutation 结果三元组：必须等最终 mutation 结果提交后，仅失效该三元组范围，再刷新受影响查询；不得按用户全局清空。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T17-L0-07-M09",
+        "T17-L0-07-M10",
+        "T17-L0-07-M11",
+        "T17-L0-07-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "0d1572215aa18651f7fbd3339bc4ba57ebcb83f3a4b128614cf011640a938f5f"
+    },
+    {
+      "assetId": "T17-L1-04",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "乐观更新被服务端拒绝或超时时，按同一租户与资源三元组恢复，不波及同用户的其他租户。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T17-L0-07-M09",
+        "T17-L0-07-M10",
+        "T17-L0-07-M11",
+        "T17-L0-07-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "c28de902ee249eeebe4abfa8e83e678b47bba78f203be4f13bd0ff749af265a8"
+    },
+    {
+      "assetId": "T17-L1-05",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Foundry 模块按运行时边界与发布责任确定单一 owner，共享类型留在稳定层，旧入口通过适配层迁移。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T17-L0-10-M09",
+        "T17-L0-10-M10",
+        "T17-L0-10-M11",
+        "T17-L0-10-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "e81060552def6d9b9bab59bb193b555ac3eb9cd265319cd40a12a43f82598be6"
+    },
+    {
+      "assetId": "T17-L1-06",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Pulse 在低端设备撤回合并测量，采用分帧测量，并以两轮连续窗口验证长任务、INP 与布局偏移。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T17-L0-05-M09",
+        "T17-L0-05-M10",
+        "T17-L0-05-M11",
+        "T17-L0-05-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "6bcad7ba3eb981a9340fca1e78bc116ca266a6dda6ce1d69ace2478059e82ef1"
+    },
+    {
+      "assetId": "T17-L1-07",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Helios 事故排除了缓存、重试、扩展和 HTML 截断，复现条件集中在第二段流到达次序与客户端状态读取竞态。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T17-L0-02-M09",
+        "T17-L0-02-M10",
+        "T17-L0-02-M11",
+        "T17-L0-02-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "990092193bc4caddd0316da4d9668d142618a733206a201bb00a2c1057f2ca7f"
+    },
+    {
+      "assetId": "T17-L1-08",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Aurora combobox 回归覆盖键盘、触摸、过滤后焦点，并按读屏器与浏览器组合记录播报差异。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T17-L0-08-M09",
+        "T17-L0-08-M10",
+        "T17-L0-08-M11",
+        "T17-L0-08-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "e50124aaeda74b48ac0d562e5cd0eeea9924fc159db6afe9b7e3d40c566738e4"
+    },
+    {
+      "assetId": "T17-L1-09",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "instruction 类型的兼容表按历史时间窗维护，不能使用当前浏览器版本替代当时的下限。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T17-L0-08-M09",
+        "T17-L0-08-M10",
+        "T17-L0-08-M11",
+        "T17-L0-08-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "d1d8232e4cc268ac9e1e34e38f06f065547f91f040470094b280add4ca2bae80"
+    },
+    {
+      "assetId": "T17-L1-10",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Foundry 构建评审将异步 chunk 预算与 Pulse 资源优先级实验分开，避免性能实验改写构建门禁。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T17-L0-09-M09",
+        "T17-L0-09-M10",
+        "T17-L0-09-M11",
+        "T17-L0-09-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "ad866dd80529726cda740ab03b73244459cf93763e74356d823b4b8fbf502ffe"
+    },
+    {
+      "assetId": "T17-L1-11",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Foundry 异步 chunk 的冻结体积预算为每个不超过 42 KB gzip；仅 locale-only chunk 在确认不会复制任何 eager route 依赖时可放宽到 56 KB。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T17-L0-10-M09",
+        "T17-L0-10-M10",
+        "T17-L0-10-M11",
+        "T17-L0-10-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "ecc1ad3688145c5c4de8eb1d40eefbac5f49866dcb1526fd038a5081e9d1712f"
+    },
+    {
+      "assetId": "T17-L1-12",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Helios rollout 采用路由分批、独立观测窗口、可关闭开关和明确回退负责人，ownership 决策另行冻结。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T17-L0-02-M09",
+        "T17-L0-02-M10",
+        "T17-L0-02-M11",
+        "T17-L0-02-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "66a3309c26f8801cfda3b999b060f9ddda858b957bc69e54d6881c04d6aa8ad2"
+    },
+    {
+      "assetId": "T17-L1-13",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "locale-only 拆分的例外只为避免首屏回归，必须证明 eager route 依赖不会重复进入异步包。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T17-L0-04-M09",
+        "T17-L0-04-M10",
+        "T17-L0-04-M11",
+        "T17-L0-04-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "1b91d1f62213a7ca224188c98e70aa0e677b26b76f6cb8f5bf3b48cbf287fe2b"
+    },
+    {
+      "assetId": "T17-L1-14",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Pulse 资源优先级按路由和设备分层，撤回全量字体预加载，并以 LCP、INP 和阻塞时长评估。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T17-L0-09-M09",
+        "T17-L0-09-M10",
+        "T17-L0-09-M11",
+        "T17-L0-09-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "a81156b68fbf0971f376e66528323658d201c36d7b6c35ce01a4abc877b8ffca"
+    },
+    {
+      "assetId": "T17-L1-15",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "指定时间窗 2026-08-12 至 2026-08-18 内，instruction 类型的浏览器兼容下限为 Chromium 124、Firefox 125、Safari 17.5、Edge 124。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T17-L0-08-M09",
+        "T17-L0-08-M10",
+        "T17-L0-08-M11",
+        "T17-L0-08-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "914626f835b7fdee7274344287d6e42471c03fb1b4bbb0b04757de83896c1539"
+    },
+    {
+      "assetId": "T17-L1-16",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L1-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "type": "decision",
+      "content": "Helios 事故复盘固定采用批准措辞；RSC ownership 与 streaming rollout 记录不得互相替代。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T17-L0-06-M09",
+        "T17-L0-06-M10",
+        "T17-L0-06-M11",
+        "T17-L0-06-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "11ca126aafb63f64d4d7d8928bc69bc20fe6ec37d89f27d961da3b1116fcacc7"
+    }
+  ],
+  "l2Scenes": [
+    {
+      "assetId": "T17-L2-01",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L2-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "path": "projects/aurora/combobox-a11y-review.md",
+      "summary": "记录 combobox 的读屏器兼容背景、候选方案和回归范围；精确回退顺序留在关联会话中核对。",
+      "content": "场景正文：团队比较活动后代、roving tabindex、静态文本与 live region，最终将兼容决策保留在历史会话；本场景强调回归矩阵和方案演化。",
+      "injected": true,
+      "supportingSessionIds": [
+        "session-task1-t17-aurora-token-01",
+        "session-task1-t17-aurora-combobox-a11y"
+      ],
+      "contentHash": "e5f63bd95a0dfa5cfdfcf51a55ca6d2b4b577f422535ab2993bea0d78f13b226"
+    },
+    {
+      "assetId": "T17-L2-02",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L2-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "path": "projects/atlas/cache-invalidation-review.md",
+      "summary": "记录跨租户查询缓存的事故背景、局部失效讨论和回滚要求；具体边界值留在关联记忆中。",
+      "content": "场景正文：团队从全局清理转向按 mutation 结果局部失效，比较乐观更新、拒绝和超时路径，并要求跨租户回归。",
+      "injected": true,
+      "supportingSessionIds": [
+        "session-task1-t17-atlas-cache-01",
+        "session-task1-t17-atlas-mutation-02"
+      ],
+      "contentHash": "cce06d8258519a6a33d817cfb5688c1dec731e07fa672793b44860c6c8158e79"
+    },
+    {
+      "assetId": "T17-L2-03",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L2-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "path": "projects/foundry/chunk-budget-review.md",
+      "summary": "记录异步拆分的失败尝试、普通包与本地化包的分类及发布门禁背景；精确体积值留在关联记忆中。",
+      "content": "场景正文：本次复盘把统一上限提案与 locale-only 例外分开，要求构建检查验证依赖不重复。",
+      "injected": true,
+      "supportingSessionIds": [
+        "session-task1-t17-foundry-chunks-01",
+        "session-task1-t17-foundry-module-boundary"
+      ],
+      "contentHash": "02250eefa2b7f8a5aa64fb45c50c19402b4946d2c8dd04ce1cc418f5d4d402f8"
+    },
+    {
+      "assetId": "T17-L2-04",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L2-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "path": "projects/helios/streaming-hydration-rollout.md",
+      "summary": "记录流式边界分批启用的背景、风险控制和阶段性核对范围；完整检查条目需读取场景正文确认。",
+      "content": "场景正文：检查清单顺序为：预检——确认服务端标记、客户端版本、回退开关和指标基线；灰度——每批只开一组路由并保留旧路径；观测——连续观察两个窗口，核对 hydration mismatch、错误率和延迟；回退——任一指标越线立即关闭开关、清空该批缓存并记录原因；收尾——通过两轮窗口后扩大下一批，并在全量后归档边界名单与复盘链接。",
+      "injected": true,
+      "supportingSessionIds": [
+        "session-task1-t17-helios-hydration-incident",
+        "session-task1-t17-helios-rsc-boundary"
+      ],
+      "contentHash": "012579c395cbbe9fd66a597860d6d661332e2499afaa42521b10af20f8daab1d"
+    },
+    {
+      "assetId": "T17-L2-05",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L2-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "path": "projects/pulse/web-vitals-review.md",
+      "summary": "记录长任务、资源优先级和渲染抖动的并行调查；具体实验阈值和回滚窗口留在关联记忆中。",
+      "content": "场景正文：团队比较资源优先级与组件测量两条假设，撤回低端设备不稳定的方案，并保留分层灰度。",
+      "injected": true,
+      "supportingSessionIds": [
+        "session-task1-t17-pulse-vitals-01",
+        "session-task1-t17-pulse-priority-02"
+      ],
+      "contentHash": "9fad3fee2449acc656bc108a3c095ddfe8753e6525a7da7425292b7aab959b3d"
+    }
+  ],
+  "l3Profiles": [
+    {
+      "assetId": "T17-L3-01",
+      "ownerAgentId": "agent-task1-t17-general",
+      "sourceEvidenceIds": [
+        "T17-SRC-MEMORY-L3-01"
+      ],
+      "observedAt": "2026-08-31T18:00:00+08:00",
+      "content": "用户偏好先记录失败尝试和改口，再冻结可引用的决定；跨会话引用时要标明项目边界，发布变更采用小批灰度、可观测和可回退流程。",
+      "stability": "team",
+      "contentHash": "b6334bc670fd416237fe76da2144ed00a74951df23977458fa8024cb6f5e1b32"
+    }
+  ]
+}

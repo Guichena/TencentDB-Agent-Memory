@@ -1,0 +1,60 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T19-DS05-KNOWLEDGE-TRIAL-01",
+  "stage": "DS05",
+  "team_id": "T19",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T19-PAIR-K01",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "TokenForge 的访问/刷新令牌轮换正在准备下一阶段灰度。我需要把变更记录整理成可执行的发布检查单。"},
+        {"role": "assistant", "content": "目前已确认签名密钥重叠、JWKS 缓存刷新和旧刷新令牌撤销边界，回滚入口也已经演练。"},
+        {"role": "user", "content": "上次预演发现部分客户端仍在使用旧刷新路径，因此这次要把兼容性验证和监控观察窗写清楚。"},
+        {"role": "assistant", "content": "工程侧会先在低风险租户观测，保持新旧验证路径并行；若异常达到预设门槛，立即停止扩展并回到上一版本。"},
+        {"role": "user", "content": "请从内部运行手册核对发布顺序、观测项和停止条件，尤其关注首批灰度如何定义。"},
+        {"role": "assistant", "content": "我手头的摘要只覆盖了准备工作和回滚职责，没有给出首批范围或具体告警阈值。"},
+        {"role": "user", "content": "整理时只保留与这次轮换直接相关的事实，并注明哪些是已确认、哪些还需要查证。"},
+        {"role": "assistant", "content": "好的，我会按发布前、灰度中、停止/回滚三段组织，并将缺失的数值单独标记。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请给出首批灰度 rollout cohort，以及触发 abort 的全部指标、阈值和观察窗口；如果有附带的回滚动作也一并列出。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "新增一段待核对的变更说明：手头摘要仍未包含首批灰度范围与停止阈值。请查阅运行手册，补齐这两项，并说明它们对应的监控窗口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "内部运行手册中定义的首批灰度租户 cohort，以及所有 abort 指标、阈值和观察窗口。",
+          "route": "knowledge",
+          "target_asset_ids": ["T19-KNOW-WIKI-TOKEN-RUNBOOK"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "先发现可用的内部知识操作，再读取 TokenForge 轮换手册对应页面并停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充的运行手册段落明确规定：首批灰度覆盖低风险租户集合中的 12%，按租户规模分层抽样；扩大范围前须先完成连续 30 分钟基线观测。灰度期间任一条件成立即停止扩展并触发回滚：刷新令牌交换接口的 5xx 比例在滚动 5 分钟内达到或超过 1.0%，invalid_grant/invalid_token 比例在滚动 5 分钟内超过 0.8%，或刷新请求 p95 延迟连续 10 分钟超过 450 ms。动作是冻结扩容、切回上一版本验证器并保留密钥重叠，同时通知值班人员。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加的运行手册段落已经完整给出首批 cohort、基线窗口、全部停止指标及阈值、观察窗口和回滚动作，无需检索。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T19-L1-TOKEN-JWKS-OVERLAP", "T19-L1-TOKEN-REVOCATION-SCOPE", "T19-L2-TOKEN-LIFECYCLE"],
+      "controlled_delta_note": "Positive leaves the exact cohort and the complete abort metric set absent; Negative appends that same fact in full and changes no other context.",
+      "source_fact_map": [
+        {"claim": "首批灰度覆盖低风险租户集合中的 12%，按租户规模分层抽样，扩大前需连续 30 分钟基线观测。", "source_id": "T19-KNOW-WIKI-TOKEN-RUNBOOK", "locator": "wiki:tokenforge:runbook:refresh-rotation#rollout-cohort"},
+        {"claim": "刷新令牌交换 5xx 比例达到或超过 1.0%（滚动 5 分钟）时停止扩展。", "source_id": "T19-KNOW-WIKI-TOKEN-RUNBOOK", "locator": "wiki:tokenforge:runbook:refresh-rotation#abort-metrics"},
+        {"claim": "invalid_grant/invalid_token 比例超过 0.8%（滚动 5 分钟）时停止扩展。", "source_id": "T19-KNOW-WIKI-TOKEN-RUNBOOK", "locator": "wiki:tokenforge:runbook:refresh-rotation#abort-metrics"},
+        {"claim": "刷新请求 p95 延迟连续 10 分钟超过 450 ms 时停止扩展，并冻结扩容、切回上一版本验证器、保留密钥重叠及通知值班人员。", "source_id": "T19-KNOW-WIKI-TOKEN-RUNBOOK", "locator": "wiki:tokenforge:runbook:refresh-rotation#abort-and-rollback"}
+      ],
+      "sol_review_questions": []
+    }
+  ]
+}

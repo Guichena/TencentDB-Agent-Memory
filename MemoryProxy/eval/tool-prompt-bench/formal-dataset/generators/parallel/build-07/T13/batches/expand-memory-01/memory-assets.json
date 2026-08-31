@@ -1,0 +1,98 @@
+{
+  "schema_version": "task1.synthetic_memory_assets.v1",
+  "synthetic": true,
+  "team_id": "T13",
+  "batch_id": "T13-expand-memory-01",
+  "world_as_of": "2026-08-29T12:00:00+08:00",
+  "note": "本文件中的会话、记忆、场景和画像均为合成扩批资产；事实用于历史路由候选，不代表外部仓库事实。",
+  "l0_sessions": [
+    {
+      "asset_id": "T13-L0-001", "level": "L0", "project_id": "t13-asteria-edge", "synthetic": true,
+      "messages": [
+        {"role":"user","content":"Asteria Edge 的边缘网关延迟告警最近会反复触发。"},{"role":"assistant","content":"先记录发生时间、持续时间和恢复前后的告警状态。"},{"role":"user","content":"问题主要出现在晚高峰，恢复前会看到短时尖峰。"},{"role":"assistant","content":"这更像是窗口太短或采样不稳定造成的抖动，需要和 SLO 消耗速度一起看。"},{"role":"user","content":"网关的目标是 99.9% 可用性，当前面板同时显示短期和长期趋势。"},{"role":"assistant","content":"保留两个时间尺度有助于区分瞬时尖峰和持续性风险。"},{"role":"user","content":"我不想为了压低噪声而漏掉真正的持续故障。"},{"role":"assistant","content":"可以把升级条件设成两个尺度都确认后再通知，同时保留明确的回退护栏。"},{"role":"user","content":"团队在本月中旬似乎讨论过类似规则。"},{"role":"assistant","content":"那次讨论的背景和这次现象相近，应该把它作为历史决策线索。"},{"role":"user","content":"我只记得结论包含多窗口和采样质量检查。"},{"role":"assistant","content":"我会把当前症状与历史决策分开记录，避免临时判断覆盖原有约定。"}
+      ]
+    },
+    {
+      "asset_id": "T13-L0-002", "level": "L0", "project_id": "t13-asteria-edge", "synthetic": true,
+      "messages": [
+        {"role":"user","content":"我们复查了边缘网关延迟告警的多窗口方案。"},{"role":"assistant","content":"先确认短窗口和长窗口的单位，再确认升级是否需要连续观测。"},{"role":"user","content":"短窗口用于及时发现突发退化，长窗口用于确认是否形成 SLO 风险。"},{"role":"assistant","content":"两者都确认后升级，可以减少单次尖峰造成的误报。"},{"role":"user","content":"评审还关心采样丢失时不能继续放大告警。"},{"role":"assistant","content":"应将采样质量作为单独的回退护栏，并在变更说明中记录。"},{"role":"user","content":"当时有人提到短窗 5 分钟和长窗 1 小时。"},{"role":"assistant","content":"这两个尺度与现有 SLO 面板一致，但仍需从历史决定中核对数值。"},{"role":"user","content":"我还记得不是看到一次就升级。"},{"role":"assistant","content":"连续评估的设计正是为了过滤单轮抖动。"},{"role":"user","content":"采样质量下降时应恢复旧规则。"},{"role":"assistant","content":"把回退条件和两个窗口的阈值放在同一条决策记录里，方便后续复盘。"}
+      ]
+    },
+    {
+      "asset_id": "T13-L0-003", "level": "L0", "project_id": "t13-harborlane-payments", "synthetic": true,
+      "title": "支付链路演练关联复盘", "messages": [
+        {"role":"user","content":"Harborlane Payments 做了区域切换演练，支付日志和链路偶尔接不上。"},{"role":"assistant","content":"先用同一笔交易的时间戳对齐入口、重试和下游服务。"},{"role":"user","content":"日志能找到订单，但链路页有时只有半段。"},{"role":"assistant","content":"要检查统一交易标识是否写入每个服务，以及传播头是否被重试保留。"},{"role":"user","content":"我们不想把退款 webhook 的相似告警误并进来。"},{"role":"assistant","content":"退款路径单独标记，先聚焦支付入口到授权服务。"},{"role":"user","content":"演练复盘要求日志和链路能互相跳转。"},{"role":"assistant","content":"关联规则要同时约束日志字段和链路传播，不能只改仪表盘。"},{"role":"user","content":"重试异常时还需要更高的可见性。"},{"role":"assistant","content":"把正常流量的采样和异常时的临时采样分开记录。"},{"role":"user","content":"最终做法在复盘结论里，不在当前配置摘要里。"},{"role":"assistant","content":"将复盘作为唯一决定来源，并与退款重放记录区分。"},{"role":"user","content":"最终关联约定需要写回复盘正文，方便下次区域切换核对。"},{"role":"assistant","content":"正文结论：日志统一写入 order_id 并透传 traceparent；支付入口采用 20% head sampling，重试异常时临时提升到 100% 以便串联链路。"}
+      ]
+    },
+    {
+      "asset_id": "T13-L0-004", "level": "L0", "project_id": "t13-harborlane-payments", "synthetic": true,
+      "title": "账单回调补单压测复盘", "messages": [
+        {"role":"user","content":"批量补单时账单回调尾延迟突然变长，实时订单没有同样问题。"},{"role":"assistant","content":"把签名校验、下游调用和失败重试分别计时。"},{"role":"user","content":"签名校验正常，主要耗时集中在下游暂时不可用之后。"},{"role":"assistant","content":"先确认重试是否挤占了批量窗口，再核对历史退避决定。"},{"role":"user","content":"压测复盘也比较了退款 webhook 的重放策略。"},{"role":"assistant","content":"退款重放只作同域参照，账单回调要单独追踪。"},{"role":"user","content":"我们需要知道自动重试什么时候应该停。"},{"role":"assistant","content":"停止边界要和退避阶段、人工接管动作放在同一条记录中。"},{"role":"user","content":"如果连续 5xx 一直重放，尾延迟会继续放大。"},{"role":"assistant","content":"历史决定应明确最大次数，超过后转人工而不是继续排队。"},{"role":"user","content":"这项决定是在补单压测评审中收口的。"},{"role":"assistant","content":"保留压测上下文，避免拿实时订单的参数替代它。"},{"role":"user","content":"把退避阶段和停止边界补进压测复盘，后续才能解释尾延迟。"},{"role":"assistant","content":"正文结论：签名校验通过后按 30 秒、2 分钟、10 分钟退避，最多重试 3 次；下游连续返回 5xx 时在第三次后转入人工队列，不再自动重放。"}
+      ]
+    },
+    {
+      "asset_id": "T13-L0-005", "level": "L0", "project_id": "t13-harborlane-payments", "synthetic": true,
+      "title": "退款 webhook 重放记录", "messages": [
+        {"role":"user","content":"退款 webhook 偶尔重复投递，客服看到同一退款两次。"},{"role":"assistant","content":"先核对幂等键和重放队列，再看是否与支付回调混用。"},{"role":"user","content":"重放主要发生在对账窗口。"},{"role":"assistant","content":"对账窗口的并发与支付补单不同，记录要分开。"},{"role":"user","content":"有人建议给失败事件更长的退避。"},{"role":"assistant","content":"建议先验证退款消费者的去重行为。"},{"role":"user","content":"这不是区域切换演练的记录。"},{"role":"assistant","content":"标记为退款路径，避免与支付链路关联复盘混淆。"},{"role":"user","content":"告警标题和账单回调很像。"},{"role":"assistant","content":"搜索时加入资源类型和事件方向两个限定。"},{"role":"user","content":"暂时不改全局重试参数。"},{"role":"assistant","content":"保留现状，等待退款专项复盘。"}
+      ]
+    },
+    {
+      "asset_id": "T13-L0-006", "level": "L0", "project_id": "t13-harborlane-payments", "synthetic": true,
+      "title": "支付入口采样观察", "messages": [
+        {"role":"user","content":"支付入口的链路样本在高峰期明显变少。"},{"role":"assistant","content":"先比较入口、授权和结算三个服务的采样状态。"},{"role":"user","content":"授权服务仍能看到大部分请求。"},{"role":"assistant","content":"可能是入口策略与下游策略不一致。"},{"role":"user","content":"区域切换演练也出现过链路断点。"},{"role":"assistant","content":"这条记录只讨论采样观察，不等于演练关联规则。"},{"role":"user","content":"重试流量看起来比正常流量更容易留下样本。"},{"role":"assistant","content":"记录异常流量的可见性，但不要推断最终采样决定。"},{"role":"user","content":"退款路径的样本另有一套标签。"},{"role":"assistant","content":"保持退款与支付入口隔离。"},{"role":"user","content":"需要后续评估采样成本。"},{"role":"assistant","content":"把成本评估留给采样专项。"}
+      ]
+    },
+    {
+      "asset_id": "T13-L0-007", "level": "L0", "project_id": "t13-nimbus-batch", "synthetic": true,
+      "title": "Nimbus 交互式小批量画像", "messages": [
+        {"role":"user","content":"Nimbus 的交互式小批量查询需要临时生成火焰图。"},{"role":"assistant","content":"先限制单次输入规模，避免把交互延迟和夜间批处理混在一起。"},{"role":"user","content":"这个任务只跑几分钟，采样开销不明显。"},{"role":"assistant","content":"交互任务的画像策略不能直接套用夜间基准。"},{"role":"user","content":"也看到压缩调用变宽，但不是版本回归主线。"},{"role":"assistant","content":"记录热点供开发者参考，不下批次性能结论。"},{"role":"user","content":"worker 数量由用户临时选择。"},{"role":"assistant","content":"保留选择值，后续与固定基准分开比较。"},{"role":"user","content":"有人问过并发上限。"},{"role":"assistant","content":"当前只约束交互会话，不代表批量分片规则。"},{"role":"user","content":"画像结束后立即清理临时文件。"},{"role":"assistant","content":"将清理动作记录在交互任务日志中。"}
+      ]
+    },
+    {
+      "asset_id": "T13-L0-008", "level": "L0", "project_id": "t13-atlas-collector", "synthetic": true,
+      "title": "Atlas Alloy 标签清理变更", "messages": [
+        {"role":"user","content":"Atlas Collector 的 Alloy 标签清理变更在八月中旬上线。"},{"role":"assistant","content":"先核对接收端是否仍能识别必要资源标签。"},{"role":"user","content":"exporter 队列有短时波动，但采样迁移不在这条变更里。"},{"role":"assistant","content":"把队列波动和标签重写分开验证。"},{"role":"user","content":"评审讨论了丢失标签的补救办法。"},{"role":"assistant","content":"补救办法不等于采样迁移的批准决定。"},{"role":"user","content":"变更日期与另一份正式评审很接近。"},{"role":"assistant","content":"搜索时必须同时限定变更主题和决定类型。"},{"role":"user","content":"目前只观察关键租户。"},{"role":"assistant","content":"观察范围记录在标签变更单中。"},{"role":"user","content":"不调整 traces 保留比例。"},{"role":"assistant","content":"保留当前采样设置，等待迁移评审。"}
+      ]
+    },
+    {
+      "asset_id": "T13-L0-009", "level": "L0", "project_id": "t13-atlas-collector", "synthetic": true,
+      "title": "Atlas exporter 队列观察", "messages": [
+        {"role":"user","content":"Atlas exporter 队列在灰度早期有过堆积。"},{"role":"assistant","content":"先记录队列水位、租户范围和持续时间。"},{"role":"user","content":"堆积没有持续到整个灰度窗口。"},{"role":"assistant","content":"短暂波动不能直接触发管线回退。"},{"role":"user","content":"采样迁移小组在同步观察丢失率。"},{"role":"assistant","content":"将观察指标与批准的迁移约束分开保存。"},{"role":"user","content":"同一周还有 Alloy 标签清理。"},{"role":"assistant","content":"标签清理作为时间相近的干扰。"},{"role":"user","content":"我还没有找到最终批准文档。"},{"role":"assistant","content":"按项目、决定类型和日期检索正式文档。"},{"role":"user","content":"当前不要改 exporter 队列参数。"},{"role":"assistant","content":"只做观测，等待正式决定。"}
+      ]
+    },
+    {
+      "asset_id": "T13-L0-010", "level": "L0", "project_id": "t13-sentrygrid-incident", "synthetic": true,
+      "title": "SentryGrid 相邻 paging 演练", "messages": [
+        {"role":"user","content":"SentryGrid 做了 paging 分组演练，值班台收到许多相似通知。"},{"role":"assistant","content":"先检查分组键、通知渠道和轮值交接。"},{"role":"user","content":"演练没有模拟真正的多服务告警风暴。"},{"role":"assistant","content":"因此不要把它与 noise budget 复盘混为一谈。"},{"role":"user","content":"有人提议给 paging 加一个短静默。"},{"role":"assistant","content":"这只是演练建议，尚未形成事故场景决定。"},{"role":"user","content":"升级由当班 lead 口头确认。"},{"role":"assistant","content":"记录临时做法，不推断正式指挥角色。"},{"role":"user","content":"名称和告警风暴复盘很像。"},{"role":"assistant","content":"用事件类型和复盘主题区分两份记录。"},{"role":"user","content":"这次只验证分组通知。"},{"role":"assistant","content":"保留 paging 分组结果，等待专项复盘。"}
+      ]
+    }
+  ],
+  "l1_memories": [
+    {"asset_id":"T13-L1-001","level":"L1","project_id":"t13-asteria-edge","synthetic":true,"title":"Asteria Edge SLO 告警背景","content":"Asteria Edge 的边缘网关以 99.9% 可用性为目标，延迟告警需要同时观察短期突发和长期消耗，避免单次尖峰直接改变事故级别。","support_chain":["T13-L0-001","T13-L0-002"]},
+    {"asset_id":"T13-L1-002","level":"L1","project_id":"t13-asteria-edge","synthetic":true,"title":"告警抖动复盘线索","content":"本月中旬的复盘将反复触发归因于单轮短时尖峰与采样稳定性混在一起判断，因此采用短期、长期两个尺度，并要求连续观测后再升级。","support_chain":["T13-L0-001","T13-L0-002"]},
+    {"asset_id":"T13-L1-003","level":"L1","project_id":"t13-asteria-edge","synthetic":true,"title":"多窗口阈值与回退决定","content":"历史决定为：5 分钟 burn rate 超过 14、1 小时 burn rate 超过 2；两个窗口各连续评估两轮后才升级；采样丢失率超过 3% 时回退到旧规则。该决定用于压低告警抖动，同时保留采样异常时的安全退路。","support_chain":["T13-L0-001","T13-L0-002"]},
+    {"asset_id":"T13-L1-004","level":"L1","project_id":"t13-asteria-edge","synthetic":true,"title":"上线核对与复盘约束","content":"上线核对沿用短窗 5 分钟、长窗 1 小时的双尺度判断；升级前需完成两轮连续评估，采样质量超过既定丢失上限则恢复旧规则并留下复盘记录。","support_chain":["T13-L0-002","T13-L1-003"]},
+    {"asset_id":"T13-L1-005","level":"L1","project_id":"t13-harborlane-payments","synthetic":true,"title":"退款与支付链路区分","content":"退款 webhook 的重复投递属于独立路径；与支付入口的区域切换演练相比，它们共享部分告警词汇但不共享关联决定。","support_chain":["T13-L0-005","T13-L0-006"]},
+    {"asset_id":"T13-L1-006","level":"L1","project_id":"t13-harborlane-payments","synthetic":true,"title":"补单回调故障线索","content":"账单回调的尾延迟回归集中在批量补单和下游暂时不可用阶段，历史处理应与实时订单及退款重放分开核对。","support_chain":["T13-L0-004","T13-L0-005"]},
+    {"asset_id":"T13-L1-007","level":"L1","project_id":"t13-harborlane-payments","synthetic":true,"title":"支付入口采样观察","content":"支付入口的采样波动会使链路看起来不完整，但观察记录没有替代区域切换关联复盘中的最终做法。","support_chain":["T13-L0-003","T13-L0-006"]},
+    {"asset_id":"T13-L1-008","level":"L1","project_id":"t13-nimbus-batch","synthetic":true,"title":"Nimbus 回归基准约束","content":"夜间批次性能回归必须固定输入和 worker 基线，并把交互式小批量画像作为独立场景。","support_chain":["T13-L0-007"]},
+    {"asset_id":"T13-L1-009","level":"L1","project_id":"t13-nimbus-batch","synthetic":true,"title":"压缩热点定位线索","content":"Nimbus 的压缩调用热点在版本回归中变宽，画像结果需要与批次吞吐和采样开销一起解释。","support_chain":["T13-L0-007"]},
+    {"asset_id":"T13-L1-010","level":"L1","project_id":"t13-nimbus-batch","synthetic":true,"title":"夜间画像采样决定","content":"夜间基准画像固定 10% 采样，分片并发最多 8 个；当单个热点累计样本达到 50 万或画像开销超过批次 CPU 的 5% 就停止采集。","support_chain":["T13-L0-007"]},
+    {"asset_id":"T13-L1-011","level":"L1","project_id":"t13-nimbus-batch","synthetic":true,"title":"火焰图复盘记录","content":"火焰图复盘要求保留发布版本、固定批次和热点排序，不能用交互任务的临时样本替代夜间基准。","support_chain":["T13-L0-007"]},
+    {"asset_id":"T13-L1-012","level":"L1","project_id":"t13-atlas-collector","synthetic":true,"title":"Atlas 灰度观测背景","content":"Atlas 采样迁移灰度期间应同时观察 exporter 队列和关键租户数据完整性，短时队列波动本身不等于回退。","support_chain":["T13-L0-008","T13-L0-009"]},
+    {"asset_id":"T13-L1-013","level":"L1","project_id":"t13-atlas-collector","synthetic":true,"title":"采样迁移批准决定","content":"正式批准方案保留 15% 的全量 traces；若 exporter 队列连续 5 分钟超过 70% 或关键租户丢失率达到 1%，立即回退旧管线。","support_chain":["T13-L0-008","T13-L0-009"]},
+    {"asset_id":"T13-L1-014","level":"L1","project_id":"t13-atlas-collector","synthetic":true,"title":"标签清理相邻变更","content":"Alloy 标签清理发生在相近时间，但它处理的是标签识别与重写，不改变采样迁移批准决定。","support_chain":["T13-L0-008"]},
+    {"asset_id":"T13-L1-015","level":"L1","project_id":"t13-sentrygrid-incident","synthetic":true,"title":"事故风暴复盘线索","content":"SentryGrid 告警风暴复盘围绕重复通知、静默护栏、noise budget 和升级确认展开，具体行动项保留在事故场景中。","support_chain":["T13-L0-010"]},
+    {"asset_id":"T13-L1-016","level":"L1","project_id":"t13-sentrygrid-incident","synthetic":true,"title":"paging 分组演练干扰","content":"paging 分组演练只验证通知分组和轮值交接，与告警风暴的 noise budget 决定相似但不是同一事件。","support_chain":["T13-L0-010"]}
+  ],
+  "l2_scenes": [
+    {"asset_id":"T13-L2-001","level":"L2","project_id":"t13-asteria-edge","synthetic":true,"path":"reviews/asteria-edge/latency-alerts.md","scene":"边缘网关可观测性与告警策略复盘","summary":"团队围绕延迟告警抖动、SLO 风险和采样稳定性做过一轮策略复盘，形成了可供历史核对的多窗口决策记录。具体数字与回退门槛保留在相关历史条目中。","content":"场景记录：Asteria Edge 在晚高峰出现延迟尖峰，团队比较短期和长期 SLO 消耗，并决定将窗口判断、连续观测和采样质量护栏放在同一条复盘链路中。短窗、长窗的具体阈值与采样丢失回退门槛由关联的历史记忆保存；本场景只记录决策背景、核对顺序和复盘要求。","linked_assets":["T13-L0-001","T13-L0-002","T13-L1-001","T13-L1-002","T13-L1-003","T13-L1-004"]},
+    {"asset_id":"T13-L2-002","level":"L2","project_id":"t13-harborlane-payments","synthetic":true,"path":"reviews/harborlane/region-failover.md","scene":"支付区域切换演练场景","summary":"一次支付区域切换演练集中讨论日志、链路和重复告警的关联方式；退款重放是相邻但独立的场景。","content":"场景记录：区域切换演练从支付入口到授权服务复盘同一交易的日志与链路连续性，要求统一交易标识、传播链路上下文，并为异常重试保留更高可见性。退款 webhook 的重复投递被列为独立干扰。完整字段与采样档位写入关联会话结论。","linked_assets":["T13-L0-003","T13-L0-005","T13-L1-005","T13-L1-007"]},
+    {"asset_id":"T13-L2-003","level":"L2","project_id":"t13-nimbus-batch","synthetic":true,"path":"reviews/nimbus/interactive-profile.md","scene":"Nimbus 交互式画像场景","summary":"交互式小批量画像包含压缩热点和临时采样讨论，与夜间基准回归相似但约束不同。","content":"场景记录：Nimbus 交互式小批量为了定位压缩热点临时生成火焰图，输入规模、worker 数量和采样开销随会话变化。该场景要求把临时画像与固定夜间基准分离，清理临时文件，并将任何并发讨论标记为交互任务约束。夜间基准的正式参数保留在另一条记忆中。","linked_assets":["T13-L0-007","T13-L0-008","T13-L1-008","T13-L1-009","T13-L1-011"]},
+    {"asset_id":"T13-L2-004","level":"L2","project_id":"t13-sentrygrid-incident","synthetic":true,"path":"incidents/sentrygrid/paging-drill.md","scene":"SentryGrid paging 分组演练","summary":"该场景验证通知分组、轮值交接和临时静默建议，不是告警风暴 noise budget 的正式复盘。","content":"场景记录：本次 paging 分组演练验证通知分组键、渠道路由和轮值交接；参与者提出短静默建议，但没有形成告警风暴的正式预算规则，也没有确定事故升级确认角色。该演练与 noise budget review 保持独立。","linked_assets":["T13-L0-001","T13-L0-010","T13-L1-016"]},
+    {"asset_id":"T13-L2-005","level":"L2","project_id":"t13-sentrygrid-incident","synthetic":true,"path":"incidents/sentrygrid/noise-budget-review.md","scene":"SentryGrid 告警风暴 noise budget review","summary":"告警风暴复盘场景记录了重复通知、静默护栏、noise budget 和升级确认的最终行动项；具体执行细节仅在场景正文中核对，摘要不展开数值。","content":"场景正文：SentryGrid 告警风暴复盘确认重复 paging 必须受静默护栏约束。静默窗口上限为 12 分钟；noise budget 设为每小时 3 次 paging。预算耗尽后，由 incident commander 确认是否升级。解除静默、预算耗尽和升级确认都要写入事故时间线；当前值班表不改变这次复盘确定的角色。","linked_assets":["T13-L0-001","T13-L0-010","T13-L1-015","T13-L1-016"]}
+  ],
+  "l3_profiles": [
+    {"asset_id":"T13-L3-001","level":"L3","synthetic":true,"summary":"用户长期负责工程可观测性，偏好先核对历史决策，再进行小范围、可回退的变更。","linked_projects":["t13-asteria-edge","t13-harborlane-payments","t13-nimbus-batch","t13-atlas-collector","t13-sentrygrid-incident"]}
+  ]
+}

@@ -1,0 +1,1663 @@
+{
+  "schema_version": "task1.team_memory_assets.v1",
+  "team_id": "T10",
+  "l0Conversations": [
+    {
+      "assetId": "T10-L0-01",
+      "ownerAgentId": "agent-task1-t10-assets-a",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l0"
+      ],
+      "observedAt": "2026-08-01T09:00:00+08:00",
+      "sessionId": "T10-L0-01",
+      "messages": [
+        {
+          "messageId": "T10-L0-01-M001",
+          "role": "user",
+          "content": "本轮围绕 atlas-parent 多模块构建阶段评审会话 展开，先确认项目、输入和交付边界。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-01T09:00:00+08:00",
+          "contentHash": "a7cf49735c26af9c82bfe9947d191c6751644feaf9f29551dff6e4177d697c33"
+        },
+        {
+          "messageId": "T10-L0-01-M002",
+          "role": "assistant",
+          "content": "我把范围限定在当前工程问题，并把相邻流程保持为独立记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-01T09:00:00+08:00",
+          "contentHash": "b65b63e3b7972f14313249d9e05623d4307878a3d5bf38505e7df0c9e0d4556d"
+        },
+        {
+          "messageId": "T10-L0-01-M003",
+          "role": "user",
+          "content": "工作区能确认现状，但交接摘要没有保留上次评审的完整决定。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-01T09:00:00+08:00",
+          "contentHash": "039978293ca4e08940a4b98aae18015a7b510db19f2dfad26b327e4c6cbece27"
+        },
+        {
+          "messageId": "T10-L0-01-M004",
+          "role": "assistant",
+          "content": "部署、环境替换和无关的全量操作只作对照，不纳入本轮。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-01T09:00:00+08:00",
+          "contentHash": "7b2aac911956815f426d52a7368e549e038bcc59183961b1af4612675b387867"
+        },
+        {
+          "messageId": "T10-L0-01-M005",
+          "role": "user",
+          "content": "方向从直接尝试新方案改成找回此前验证过的可重复约定。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-01T09:00:00+08:00",
+          "contentHash": "fc7567111d888e5db815f63b394f35304238f531dcace2633ca104c123d48216"
+        },
+        {
+          "messageId": "T10-L0-01-M006",
+          "role": "assistant",
+          "content": "项目、固定输入、责任边界和停止条件都已核对，剩下的是历史记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-01T09:00:00+08:00",
+          "contentHash": "cd44bf001fc5155aa976cd43d9fb6978cdc98d3b342deaf291243f8bc925b2c4"
+        },
+        {
+          "messageId": "T10-L0-01-M007",
+          "role": "user",
+          "content": "我不会从目录名、单次日志或阶段名称猜出未保存的细节。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-01T09:00:00+08:00",
+          "contentHash": "9326afc634ef3c14fd00b2fa80462fad3ffbadbe5e63bf3f6e304f21dc172682"
+        },
+        {
+          "messageId": "T10-L0-01-M008",
+          "role": "assistant",
+          "content": "先恢复历史证据，再决定后续动作；数据建设阶段不执行真实发布。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-01T09:00:00+08:00",
+          "contentHash": "3ca286d524f6e529f2eaba260dd80155179395a2ef2b33e48c311818de0fac0a"
+        },
+        {
+          "messageId": "T10-L0-01-M009",
+          "role": "user",
+          "content": "评审接受先对目标模块执行 verify，再做聚合 install；评审否决了直接跳过 verify 的聚合 install，以及只跑目标模块后立即 install。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-01T09:00:00+08:00",
+          "contentHash": "67b131b62f80dd6def9603eb41b35e3f03f896d45599851640e7ac8063c11f37"
+        },
+        {
+          "messageId": "T10-L0-01-M010",
+          "role": "assistant",
+          "content": "评审要求保留原始输入、决定依据和可复核的交接边界。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-01T09:00:00+08:00",
+          "contentHash": "95e24f95fe922a15e6aa87e0226a13b9c582fe69c90b5f258b75cd8662206dc8"
+        },
+        {
+          "messageId": "T10-L0-01-M011",
+          "role": "user",
+          "content": "相近的依赖、插件、CI 或发布记录不会替代这条工程历史。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-01T09:00:00+08:00",
+          "contentHash": "ed069c0396b4cc0f7a3b33a3025c0d4bf5479d80583c2dd8bea25160722d4a98"
+        },
+        {
+          "messageId": "T10-L0-01-M012",
+          "role": "assistant",
+          "content": "最终记录确认：该结论只服务当前项目边界，后续动作沿冻结记录进行。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-01T09:00:00+08:00",
+          "contentHash": "a08442ed355d124e4a83baf6499a9d24acfa105b27adfce667db77359496491b"
+        }
+      ],
+      "contentHash": "dcb45d4cc8df2f78d436958621daf2d199c5b628ee7954f8b6eace5ed05eea70"
+    },
+    {
+      "assetId": "T10-L0-02",
+      "ownerAgentId": "agent-task1-t10-assets-b",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l0"
+      ],
+      "observedAt": "2026-08-02T09:00:00+08:00",
+      "sessionId": "T10-L0-02",
+      "messages": [
+        {
+          "messageId": "T10-L0-02-M001",
+          "role": "user",
+          "content": "本轮围绕 atlas-parent 依赖仲裁边界会话 展开，先确认项目、输入和交付边界。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-02T09:00:00+08:00",
+          "contentHash": "3077632ec612dcbc7484ed0dd2c7041b3b0216f7ec0d17e93201834f78dcdd99"
+        },
+        {
+          "messageId": "T10-L0-02-M002",
+          "role": "assistant",
+          "content": "我把范围限定在当前工程问题，并把相邻流程保持为独立记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-02T09:00:00+08:00",
+          "contentHash": "a443c0589c80bdd05315c4a7ec813f92fd8ff3973fae4564731bec38dcd79985"
+        },
+        {
+          "messageId": "T10-L0-02-M003",
+          "role": "user",
+          "content": "工作区能确认现状，但交接摘要没有保留上次评审的完整决定。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-02T09:00:00+08:00",
+          "contentHash": "2031e0ba9f5a79a7fea8932b1eeb647af5463abee72b18f870b37800410ca221"
+        },
+        {
+          "messageId": "T10-L0-02-M004",
+          "role": "assistant",
+          "content": "部署、环境替换和无关的全量操作只作对照，不纳入本轮。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-02T09:00:00+08:00",
+          "contentHash": "e80546bbeaedb5e53e4b7e6d38393955e49060efe5c32cb8d29457b12c1811a5"
+        },
+        {
+          "messageId": "T10-L0-02-M005",
+          "role": "user",
+          "content": "方向从直接尝试新方案改成找回此前验证过的可重复约定。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-02T09:00:00+08:00",
+          "contentHash": "83bcb1763fe8ca3d2cf3154bd4d88bbcf2a294e0284a6e01043557c55aba0173"
+        },
+        {
+          "messageId": "T10-L0-02-M006",
+          "role": "assistant",
+          "content": "项目、固定输入、责任边界和停止条件都已核对，剩下的是历史记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-02T09:00:00+08:00",
+          "contentHash": "fd0c7b9113e417a4812f8c4c26afcc4342f842043bb7c9408b1fec3dba42e91e"
+        },
+        {
+          "messageId": "T10-L0-02-M007",
+          "role": "user",
+          "content": "我不会从目录名、单次日志或阶段名称猜出未保存的细节。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-02T09:00:00+08:00",
+          "contentHash": "e11c26be13d1dc785e02c21028e5a6d67c258890df0c993ceb2f9cc2bcfdce1f"
+        },
+        {
+          "messageId": "T10-L0-02-M008",
+          "role": "assistant",
+          "content": "先恢复历史证据，再决定后续动作；数据建设阶段不执行真实发布。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-02T09:00:00+08:00",
+          "contentHash": "199724866ae8a5c3ba49452ea3fb9a6e79ed3d381b2bde13592c98d73ae780d2"
+        },
+        {
+          "messageId": "T10-L0-02-M009",
+          "role": "user",
+          "content": "BOM、scope、依赖收敛和依赖树冲突必须与生命周期阶段选择分开记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-02T09:00:00+08:00",
+          "contentHash": "d9024428795791135b870e6d5879d6dd7d41b6d3ac8717e384889ef045391533"
+        },
+        {
+          "messageId": "T10-L0-02-M010",
+          "role": "assistant",
+          "content": "评审要求保留原始输入、决定依据和可复核的交接边界。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-02T09:00:00+08:00",
+          "contentHash": "07c1674aff31686c31071d477add3b4afc466f33997a07a82a4b7dd385ebc050"
+        },
+        {
+          "messageId": "T10-L0-02-M011",
+          "role": "user",
+          "content": "相近的依赖、插件、CI 或发布记录不会替代这条工程历史。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-02T09:00:00+08:00",
+          "contentHash": "28f3c9ba7d0f15f52bcac75f3785821c15633108dd27609e2b36aea73305d669"
+        },
+        {
+          "messageId": "T10-L0-02-M012",
+          "role": "assistant",
+          "content": "最终记录确认：该结论只服务当前项目边界，后续动作沿冻结记录进行。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-02T09:00:00+08:00",
+          "contentHash": "b15f3d52b141cc7786c1107e190ab0d8936696197e36f502bbd55b3ca39c25e9"
+        }
+      ],
+      "contentHash": "1354a91733754e79f854263225f970431a700b77d376f710d43abf90322748ca"
+    },
+    {
+      "assetId": "T10-L0-03",
+      "ownerAgentId": "agent-task1-t10-assets-a",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l0"
+      ],
+      "observedAt": "2026-08-03T09:00:00+08:00",
+      "sessionId": "T10-L0-03",
+      "messages": [
+        {
+          "messageId": "T10-L0-03-M001",
+          "role": "user",
+          "content": "本轮围绕 pyartifact 可复现 wheel 决策会话 展开，先确认项目、输入和交付边界。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-03T09:00:00+08:00",
+          "contentHash": "9a6c16d7b24c7da354b6da731994939e817062a5c7752bcc524eb57e94b79006"
+        },
+        {
+          "messageId": "T10-L0-03-M002",
+          "role": "assistant",
+          "content": "我把范围限定在当前工程问题，并把相邻流程保持为独立记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-03T09:00:00+08:00",
+          "contentHash": "50946b01b68f8f3b482c3d023371d5da1bdf47b3f336914e61573020ae74925d"
+        },
+        {
+          "messageId": "T10-L0-03-M003",
+          "role": "user",
+          "content": "工作区能确认现状，但交接摘要没有保留上次评审的完整决定。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-03T09:00:00+08:00",
+          "contentHash": "7eed610766c50eb777e1900d55258b49dfd837dcd86574f794a8d7d31d2428f2"
+        },
+        {
+          "messageId": "T10-L0-03-M004",
+          "role": "assistant",
+          "content": "部署、环境替换和无关的全量操作只作对照，不纳入本轮。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-03T09:00:00+08:00",
+          "contentHash": "cda162ae595872d92f38981daefc8d1d8bd0e9345eb59feac927ed00516a1624"
+        },
+        {
+          "messageId": "T10-L0-03-M005",
+          "role": "user",
+          "content": "方向从直接尝试新方案改成找回此前验证过的可重复约定。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-03T09:00:00+08:00",
+          "contentHash": "14c5d21335d260df9c636317e3f55914d9eb2125f79b9f704948b654c4632fed"
+        },
+        {
+          "messageId": "T10-L0-03-M006",
+          "role": "assistant",
+          "content": "项目、固定输入、责任边界和停止条件都已核对，剩下的是历史记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-03T09:00:00+08:00",
+          "contentHash": "138d2b3429afb5c9d381e1fc412b3bec55cf489ee9798c9ef13775a59dbdc0fd"
+        },
+        {
+          "messageId": "T10-L0-03-M007",
+          "role": "user",
+          "content": "我不会从目录名、单次日志或阶段名称猜出未保存的细节。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-03T09:00:00+08:00",
+          "contentHash": "271917c2a2ea8bd9380160dffd2c0f18e64c0c535e01c2b681ce5274d670a256"
+        },
+        {
+          "messageId": "T10-L0-03-M008",
+          "role": "assistant",
+          "content": "先恢复历史证据，再决定后续动作；数据建设阶段不执行真实发布。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-03T09:00:00+08:00",
+          "contentHash": "346a2bfb958a31b89ef3d509b7dca28813c7fa7a49e9ce5e390b97735dc61f50"
+        },
+        {
+          "messageId": "T10-L0-03-M009",
+          "role": "user",
+          "content": "pyartifact 使用已锁定环境、隔离构建输出目录、先构建再检查制品元数据，不等同于重新搭建环境。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-03T09:00:00+08:00",
+          "contentHash": "24dde4e119c97bc725594b4a98551013500d95f362f285ebc77b42f73fc86cde"
+        },
+        {
+          "messageId": "T10-L0-03-M010",
+          "role": "assistant",
+          "content": "评审要求保留原始输入、决定依据和可复核的交接边界。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-03T09:00:00+08:00",
+          "contentHash": "0636242ce6aff2ddc340497c5b367eb2817f87ea93ce98d0be5eed4971b0a9cb"
+        },
+        {
+          "messageId": "T10-L0-03-M011",
+          "role": "user",
+          "content": "相近的依赖、插件、CI 或发布记录不会替代这条工程历史。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-03T09:00:00+08:00",
+          "contentHash": "dcd702a394a1df16576ae543e80668a61b8232ab0f6c225908e3c21c3f19280f"
+        },
+        {
+          "messageId": "T10-L0-03-M012",
+          "role": "assistant",
+          "content": "最终记录确认：该结论只服务当前项目边界，后续动作沿冻结记录进行。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-03T09:00:00+08:00",
+          "contentHash": "bb6c21b3fb0dce6c3a0d12ca64e87b2034bf4fc720e577ab7785d4c1c4e6af8d"
+        }
+      ],
+      "contentHash": "9f3bc7c09ddc567f622aed587990df009c0e0fc7812371c8e130811da4aa6f97"
+    },
+    {
+      "assetId": "T10-L0-04",
+      "ownerAgentId": "agent-task1-t10-assets-b",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l0"
+      ],
+      "observedAt": "2026-08-04T09:00:00+08:00",
+      "sessionId": "T10-L0-04",
+      "messages": [
+        {
+          "messageId": "T10-L0-04-M001",
+          "role": "user",
+          "content": "本轮围绕 pyartifact 环境复核会话 展开，先确认项目、输入和交付边界。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-04T09:00:00+08:00",
+          "contentHash": "69376b0b2a868f70332f953b2c96191fa4818c5b99968e33fe0d6d5232cdfc75"
+        },
+        {
+          "messageId": "T10-L0-04-M002",
+          "role": "assistant",
+          "content": "我把范围限定在当前工程问题，并把相邻流程保持为独立记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-04T09:00:00+08:00",
+          "contentHash": "e67ee122bc83e4345ffe8dcfbc3498e3d3706aa1eaa45c8a20a7e06e5c559916"
+        },
+        {
+          "messageId": "T10-L0-04-M003",
+          "role": "user",
+          "content": "工作区能确认现状，但交接摘要没有保留上次评审的完整决定。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-04T09:00:00+08:00",
+          "contentHash": "96de57a18f2d858f1ddd3fb74d55cbe53276f38f5a001ea6d8e29635b7384e76"
+        },
+        {
+          "messageId": "T10-L0-04-M004",
+          "role": "assistant",
+          "content": "部署、环境替换和无关的全量操作只作对照，不纳入本轮。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-04T09:00:00+08:00",
+          "contentHash": "9e75c7e1165a6f2b13c6bba1e0f367d1a805f326920a22bac3bab60d75704af1"
+        },
+        {
+          "messageId": "T10-L0-04-M005",
+          "role": "user",
+          "content": "方向从直接尝试新方案改成找回此前验证过的可重复约定。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-04T09:00:00+08:00",
+          "contentHash": "a9973b3cae76edc1eacbe92f3f7adf8cc6c990e521ab3f3b0c55f1e3f79cd337"
+        },
+        {
+          "messageId": "T10-L0-04-M006",
+          "role": "assistant",
+          "content": "项目、固定输入、责任边界和停止条件都已核对，剩下的是历史记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-04T09:00:00+08:00",
+          "contentHash": "e6886f76a9cad02167e10b6a00e881a9e6b6384d29b8cbd50f2a134945687337"
+        },
+        {
+          "messageId": "T10-L0-04-M007",
+          "role": "user",
+          "content": "我不会从目录名、单次日志或阶段名称猜出未保存的细节。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-04T09:00:00+08:00",
+          "contentHash": "8e804eb72e805aaf024429ab56a72c1fff64322ec2111f0fe86aadd32f5bbda5"
+        },
+        {
+          "messageId": "T10-L0-04-M008",
+          "role": "assistant",
+          "content": "先恢复历史证据，再决定后续动作；数据建设阶段不执行真实发布。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-04T09:00:00+08:00",
+          "contentHash": "894591a49708889a8c3c870299b86844dabe5c1c8878f429bc446bc390c7c19f"
+        },
+        {
+          "messageId": "T10-L0-04-M009",
+          "role": "user",
+          "content": "解释器、锁文件和输出目录边界需要单独复核，环境状态不能替代 wheel 元数据检查。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-04T09:00:00+08:00",
+          "contentHash": "ecc9c91e66525ae2de6636a3095b36118803310489b67bb38ba895a43f4cca63"
+        },
+        {
+          "messageId": "T10-L0-04-M010",
+          "role": "assistant",
+          "content": "评审要求保留原始输入、决定依据和可复核的交接边界。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-04T09:00:00+08:00",
+          "contentHash": "e00da18b39956b839aa9cb14728ea39e2296cde94d8306d952f9f772bc2308a8"
+        },
+        {
+          "messageId": "T10-L0-04-M011",
+          "role": "user",
+          "content": "相近的依赖、插件、CI 或发布记录不会替代这条工程历史。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-04T09:00:00+08:00",
+          "contentHash": "52a74c8c8cd1e2d45d5e1475582d162b64d667cf180930161807922dfa2f0e9a"
+        },
+        {
+          "messageId": "T10-L0-04-M012",
+          "role": "assistant",
+          "content": "最终记录确认：该结论只服务当前项目边界，后续动作沿冻结记录进行。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-04T09:00:00+08:00",
+          "contentHash": "21d00b3083a4e1fd9bb463c71141841f714aec49120c549c8ba2b58575c6d986"
+        }
+      ],
+      "contentHash": "ea8d208298b90615279adb87ddf85a959984590aa648060f82252af616c10f9a"
+    },
+    {
+      "assetId": "T10-L0-05",
+      "ownerAgentId": "agent-task1-t10-assets-a",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l0"
+      ],
+      "observedAt": "2026-08-05T09:00:00+08:00",
+      "sessionId": "T10-L0-05",
+      "messages": [
+        {
+          "messageId": "T10-L0-05-M001",
+          "role": "user",
+          "content": "本轮围绕 发布候选 dry-run 阶段会话 展开，先确认项目、输入和交付边界。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-05T09:00:00+08:00",
+          "contentHash": "a11d4f06afaeb820ed30b5a6b09b28d02852b874bdc2b5c18bf97c5ac94efdc8"
+        },
+        {
+          "messageId": "T10-L0-05-M002",
+          "role": "assistant",
+          "content": "我把范围限定在当前工程问题，并把相邻流程保持为独立记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-05T09:00:00+08:00",
+          "contentHash": "92ddcde89c12147e8713fd4980ff2a7061280d3242e64c754d468cc69c9211ce"
+        },
+        {
+          "messageId": "T10-L0-05-M003",
+          "role": "user",
+          "content": "工作区能确认现状，但交接摘要没有保留上次评审的完整决定。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-05T09:00:00+08:00",
+          "contentHash": "6a2ae634b569bdeec66c20f76495849aba631cb9461ed050ac69bb3a1e44e516"
+        },
+        {
+          "messageId": "T10-L0-05-M004",
+          "role": "assistant",
+          "content": "部署、环境替换和无关的全量操作只作对照，不纳入本轮。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-05T09:00:00+08:00",
+          "contentHash": "36577dc59d67a6823855516d72c08c02e96fcd2aa683fd1091e8379201dd338e"
+        },
+        {
+          "messageId": "T10-L0-05-M005",
+          "role": "user",
+          "content": "方向从直接尝试新方案改成找回此前验证过的可重复约定。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-05T09:00:00+08:00",
+          "contentHash": "efe11acd93c079e5f1e99db68fadbe8fae50ad1ecc69bd2f72a868690cf85ab2"
+        },
+        {
+          "messageId": "T10-L0-05-M006",
+          "role": "assistant",
+          "content": "项目、固定输入、责任边界和停止条件都已核对，剩下的是历史记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-05T09:00:00+08:00",
+          "contentHash": "7d54e7ec4988cefde8283dec2229836267e8b01406d53cb943f0516e6c11464c"
+        },
+        {
+          "messageId": "T10-L0-05-M007",
+          "role": "user",
+          "content": "我不会从目录名、单次日志或阶段名称猜出未保存的细节。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-05T09:00:00+08:00",
+          "contentHash": "4e845fbda80fe9f0ad562b8b133920ed9629166d8eae3ecde6e9f9c413e21897"
+        },
+        {
+          "messageId": "T10-L0-05-M008",
+          "role": "assistant",
+          "content": "先恢复历史证据，再决定后续动作；数据建设阶段不执行真实发布。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-05T09:00:00+08:00",
+          "contentHash": "d2a5b77a81b8904f06f400a8ea48fc77493a71a60ea1f7480967e4c2589f7e9c"
+        },
+        {
+          "messageId": "T10-L0-05-M009",
+          "role": "user",
+          "content": "候选阶段只生成和核对制品与 dry-run 报告，不执行推送或生产标签动作。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-05T09:00:00+08:00",
+          "contentHash": "99def88a5fea22028be46d221a2f4f49497d44f8b1f9578e14aa7c2ecae1004a"
+        },
+        {
+          "messageId": "T10-L0-05-M010",
+          "role": "assistant",
+          "content": "评审要求保留原始输入、决定依据和可复核的交接边界。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-05T09:00:00+08:00",
+          "contentHash": "774049ea03091fb3326269384e5563fc5f926df49b041eff8433ccbd3602043a"
+        },
+        {
+          "messageId": "T10-L0-05-M011",
+          "role": "user",
+          "content": "相近的依赖、插件、CI 或发布记录不会替代这条工程历史。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-05T09:00:00+08:00",
+          "contentHash": "042ed2094485897df15ad27648c1b42fb604229333ad42cfa077bc661df25a6b"
+        },
+        {
+          "messageId": "T10-L0-05-M012",
+          "role": "assistant",
+          "content": "最终记录确认：该结论只服务当前项目边界，后续动作沿冻结记录进行。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-05T09:00:00+08:00",
+          "contentHash": "46157dfe7523be9e92f1e8f2de5a3583c315b81f70bbb9a28a02c537ce8104df"
+        }
+      ],
+      "contentHash": "1846dec5c43ce5f3af061b250df6f26247bbed85cb484dc6eeda8adde1d4abac"
+    },
+    {
+      "assetId": "T10-L0-06",
+      "ownerAgentId": "agent-task1-t10-assets-b",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l0"
+      ],
+      "observedAt": "2026-08-06T09:00:00+08:00",
+      "sessionId": "T10-L0-06",
+      "messages": [
+        {
+          "messageId": "T10-L0-06-M001",
+          "role": "user",
+          "content": "本轮围绕 CI 失败复盘与插件 phase 定位会话 展开，先确认项目、输入和交付边界。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-06T09:00:00+08:00",
+          "contentHash": "60dca8bd67765d3b906e76679703a762a4e12e5870fef8624e8dd5c82689250f"
+        },
+        {
+          "messageId": "T10-L0-06-M002",
+          "role": "assistant",
+          "content": "我把范围限定在当前工程问题，并把相邻流程保持为独立记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-06T09:00:00+08:00",
+          "contentHash": "1f841d8a8e54609ae0cccad94d6a554d0a7c72e9b03db7f428fb564a2167df80"
+        },
+        {
+          "messageId": "T10-L0-06-M003",
+          "role": "user",
+          "content": "工作区能确认现状，但交接摘要没有保留上次评审的完整决定。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-06T09:00:00+08:00",
+          "contentHash": "6aa850d28a9252dc7f257dc753bb1df5e36859331617d3549d4d817ebc1d3f89"
+        },
+        {
+          "messageId": "T10-L0-06-M004",
+          "role": "assistant",
+          "content": "部署、环境替换和无关的全量操作只作对照，不纳入本轮。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-06T09:00:00+08:00",
+          "contentHash": "636404d7e5831cf035f2a875253ed39fdb65648ac97e3f55451c870b89800ae6"
+        },
+        {
+          "messageId": "T10-L0-06-M005",
+          "role": "user",
+          "content": "方向从直接尝试新方案改成找回此前验证过的可重复约定。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-06T09:00:00+08:00",
+          "contentHash": "fa07e89751661e3be03ccca817e8a8f86c4be243f3cc8cbdd8b03848c0dda662"
+        },
+        {
+          "messageId": "T10-L0-06-M006",
+          "role": "assistant",
+          "content": "项目、固定输入、责任边界和停止条件都已核对，剩下的是历史记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-06T09:00:00+08:00",
+          "contentHash": "8313fadce7405330d2a371d5c3aac87603f3e5499d2e1da7b7bef93c07e636ef"
+        },
+        {
+          "messageId": "T10-L0-06-M007",
+          "role": "user",
+          "content": "我不会从目录名、单次日志或阶段名称猜出未保存的细节。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-06T09:00:00+08:00",
+          "contentHash": "6250b43acbb5737272fd484b3478d787bc73657984824a7ad2f49c8c3eba73c7"
+        },
+        {
+          "messageId": "T10-L0-06-M008",
+          "role": "assistant",
+          "content": "先恢复历史证据，再决定后续动作；数据建设阶段不执行真实发布。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-06T09:00:00+08:00",
+          "contentHash": "0e377286c0e3759f22e83ed29960119219841a4ac58ce6d368dab7dc2b94f9ba"
+        },
+        {
+          "messageId": "T10-L0-06-M009",
+          "role": "user",
+          "content": "复盘否决重建环境和升级依赖，最终定位为插件 execution 未绑定到预期 phase。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-06T09:00:00+08:00",
+          "contentHash": "858cd8d1db12d907cf444978fdd38a3505c35cad54280ce88534e7c564cf4966"
+        },
+        {
+          "messageId": "T10-L0-06-M010",
+          "role": "assistant",
+          "content": "评审要求保留原始输入、决定依据和可复核的交接边界。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-06T09:00:00+08:00",
+          "contentHash": "3cab3b58c0c868fb27c8779f862d3c8728d07ec8a9781474eef28e4c57f3cd39"
+        },
+        {
+          "messageId": "T10-L0-06-M011",
+          "role": "user",
+          "content": "相近的依赖、插件、CI 或发布记录不会替代这条工程历史。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-06T09:00:00+08:00",
+          "contentHash": "a4215780d8fc678338d6f73f5aa0b248db33a72693a75cc48a7d3ea47def9bc4"
+        },
+        {
+          "messageId": "T10-L0-06-M012",
+          "role": "assistant",
+          "content": "最终记录确认：该结论只服务当前项目边界，后续动作沿冻结记录进行。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-06T09:00:00+08:00",
+          "contentHash": "e4821b5ca66acf0beabf51eb9eea3629f8222c0065f64a8d84ccfdcf8ecd0bef"
+        }
+      ],
+      "contentHash": "06ed11affe576f2e2aedb1cbe0a89cfdb63cddfbb3ec1588a8c92d2a32939cd5"
+    },
+    {
+      "assetId": "T10-L0-07",
+      "ownerAgentId": "agent-task1-t10-assets-a",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l0"
+      ],
+      "observedAt": "2026-08-07T09:00:00+08:00",
+      "sessionId": "T10-L0-07",
+      "messages": [
+        {
+          "messageId": "T10-L0-07-M001",
+          "role": "user",
+          "content": "本轮围绕 GitHub Actions 与 GitLab 边界会话 展开，先确认项目、输入和交付边界。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-07T09:00:00+08:00",
+          "contentHash": "8bc315a599e26feba39a501ca3ea9aae8948353a70e908503f7880b9be5f3649"
+        },
+        {
+          "messageId": "T10-L0-07-M002",
+          "role": "assistant",
+          "content": "我把范围限定在当前工程问题，并把相邻流程保持为独立记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-07T09:00:00+08:00",
+          "contentHash": "785bb8b8182f68812bd735d80f341ee80a3bb82cfafb328158b79f6ca6715645"
+        },
+        {
+          "messageId": "T10-L0-07-M003",
+          "role": "user",
+          "content": "工作区能确认现状，但交接摘要没有保留上次评审的完整决定。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-07T09:00:00+08:00",
+          "contentHash": "382f379d546d367a3100b1f43752f8b6646f1f44be60a90d9e2867fbdb7360bf"
+        },
+        {
+          "messageId": "T10-L0-07-M004",
+          "role": "assistant",
+          "content": "部署、环境替换和无关的全量操作只作对照，不纳入本轮。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-07T09:00:00+08:00",
+          "contentHash": "1d81e0e9f24958fac9e74654a8ef63d1bad63cfa418343f067a36fe6c7762d75"
+        },
+        {
+          "messageId": "T10-L0-07-M005",
+          "role": "user",
+          "content": "方向从直接尝试新方案改成找回此前验证过的可重复约定。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-07T09:00:00+08:00",
+          "contentHash": "0dcb931fe91add20a88680b2c0866d5c0046f01b00649def09cfa1404738c1ac"
+        },
+        {
+          "messageId": "T10-L0-07-M006",
+          "role": "assistant",
+          "content": "项目、固定输入、责任边界和停止条件都已核对，剩下的是历史记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-07T09:00:00+08:00",
+          "contentHash": "41fe19c3c8fd782c4ca65e29013987446423ddd288f21af7a95d7a465a95a96d"
+        },
+        {
+          "messageId": "T10-L0-07-M007",
+          "role": "user",
+          "content": "我不会从目录名、单次日志或阶段名称猜出未保存的细节。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-07T09:00:00+08:00",
+          "contentHash": "6b3a221bb22d681eeaa845e924c72353c56d478a94974c8d22ae246ef2053339"
+        },
+        {
+          "messageId": "T10-L0-07-M008",
+          "role": "assistant",
+          "content": "先恢复历史证据，再决定后续动作；数据建设阶段不执行真实发布。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-07T09:00:00+08:00",
+          "contentHash": "565691109a2cc59420722d52a85fdb860ada1000030c396ea4648364424d7048"
+        },
+        {
+          "messageId": "T10-L0-07-M009",
+          "role": "user",
+          "content": "GitHub-specific 请求沿 Actions 模板处理，GitLab CI 和平台中立 pipeline 只能作为对照。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-07T09:00:00+08:00",
+          "contentHash": "7213919d67e9bdf4909fe28d47fa1320dd658bd902f85761946dcfd3fe5455bb"
+        },
+        {
+          "messageId": "T10-L0-07-M010",
+          "role": "assistant",
+          "content": "评审要求保留原始输入、决定依据和可复核的交接边界。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-07T09:00:00+08:00",
+          "contentHash": "89d63ea0edb63baa9f6959a1ad74a0663ff2ef60c3f85122e92ed60304c56c74"
+        },
+        {
+          "messageId": "T10-L0-07-M011",
+          "role": "user",
+          "content": "相近的依赖、插件、CI 或发布记录不会替代这条工程历史。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-07T09:00:00+08:00",
+          "contentHash": "d0561a08e904a8a165611e9c2245bd088a26d9583f08c2cf65c873b8b09c2699"
+        },
+        {
+          "messageId": "T10-L0-07-M012",
+          "role": "assistant",
+          "content": "最终记录确认：该结论只服务当前项目边界，后续动作沿冻结记录进行。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-07T09:00:00+08:00",
+          "contentHash": "50ce7303fa282bd5ad04628b01243f7591a18e063d725eb8473df7d63df95561"
+        }
+      ],
+      "contentHash": "913656e6d512487773d96239c33c45a3d39285c4509494e7a067295a12d6c788"
+    },
+    {
+      "assetId": "T10-L0-08",
+      "ownerAgentId": "agent-task1-t10-assets-b",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l0"
+      ],
+      "observedAt": "2026-08-08T09:00:00+08:00",
+      "sessionId": "T10-L0-08",
+      "messages": [
+        {
+          "messageId": "T10-L0-08-M001",
+          "role": "user",
+          "content": "本轮围绕 候选制品索引证据会话 展开，先确认项目、输入和交付边界。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-08T09:00:00+08:00",
+          "contentHash": "4ad9e9dc235fe7cab1dc76c8289f6c704352fb0b56630e23717dee36cb8780aa"
+        },
+        {
+          "messageId": "T10-L0-08-M002",
+          "role": "assistant",
+          "content": "我把范围限定在当前工程问题，并把相邻流程保持为独立记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-08T09:00:00+08:00",
+          "contentHash": "a3fc5205e0c2eccd5d50d13bb718b5afbccfe72c865642c415f34788c1d783b5"
+        },
+        {
+          "messageId": "T10-L0-08-M003",
+          "role": "user",
+          "content": "工作区能确认现状，但交接摘要没有保留上次评审的完整决定。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-08T09:00:00+08:00",
+          "contentHash": "bcee8a4421587d1b1c84e8d03be2573341d41653ca5793aae42856557d45f708"
+        },
+        {
+          "messageId": "T10-L0-08-M004",
+          "role": "assistant",
+          "content": "部署、环境替换和无关的全量操作只作对照，不纳入本轮。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-08T09:00:00+08:00",
+          "contentHash": "68d860da44334ea8f799bd8f3f72c0a0cb0d877323ba35d20cd0d59a0a512fba"
+        },
+        {
+          "messageId": "T10-L0-08-M005",
+          "role": "user",
+          "content": "方向从直接尝试新方案改成找回此前验证过的可重复约定。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-08T09:00:00+08:00",
+          "contentHash": "7ba64ad8de0a837aa46b25eb0743a53f886841f615aebb877a6cf6419bdcfd0c"
+        },
+        {
+          "messageId": "T10-L0-08-M006",
+          "role": "assistant",
+          "content": "项目、固定输入、责任边界和停止条件都已核对，剩下的是历史记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-08T09:00:00+08:00",
+          "contentHash": "8a8ba5e3e66122b3837d45c5eac018fb6dab11baa001f0405d234747eeefc53a"
+        },
+        {
+          "messageId": "T10-L0-08-M007",
+          "role": "user",
+          "content": "我不会从目录名、单次日志或阶段名称猜出未保存的细节。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-08T09:00:00+08:00",
+          "contentHash": "5a233e58f8f7b488bd6a05d90077a97a6fac8e0e9ecb6cb1a03713fd6328be13"
+        },
+        {
+          "messageId": "T10-L0-08-M008",
+          "role": "assistant",
+          "content": "先恢复历史证据，再决定后续动作；数据建设阶段不执行真实发布。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-08T09:00:00+08:00",
+          "contentHash": "bcaa70d366ab1cf148939464ab208a6f10787089f7d2136ec2bc5aba89dbcd4c"
+        },
+        {
+          "messageId": "T10-L0-08-M009",
+          "role": "user",
+          "content": "候选制品、校验值和变更信息是可审阅证据，索引审阅不触发生产推送。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-08T09:00:00+08:00",
+          "contentHash": "94ba9679c3d04c3058db3a35834b506c960e2550b2e00fb49bebec6f42dab319"
+        },
+        {
+          "messageId": "T10-L0-08-M010",
+          "role": "assistant",
+          "content": "评审要求保留原始输入、决定依据和可复核的交接边界。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-08T09:00:00+08:00",
+          "contentHash": "7f865ebfde562f4e0df9d5136f484ac930579ee38634b0be278f52f603bd5cd8"
+        },
+        {
+          "messageId": "T10-L0-08-M011",
+          "role": "user",
+          "content": "相近的依赖、插件、CI 或发布记录不会替代这条工程历史。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-08T09:00:00+08:00",
+          "contentHash": "d7c94614208cbbe5d9779269ae34f16d83e5dc240d9e51eccedd96948da3c790"
+        },
+        {
+          "messageId": "T10-L0-08-M012",
+          "role": "assistant",
+          "content": "最终记录确认：该结论只服务当前项目边界，后续动作沿冻结记录进行。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-08T09:00:00+08:00",
+          "contentHash": "abe011c7acc098b1702eea47e01161053b97a51d5a932866a18a33dc0c8195ac"
+        }
+      ],
+      "contentHash": "3c4eef09d2bd7e12a38be7ed3e2110e659e5df8884d6f5760e6fb312d6e61443"
+    },
+    {
+      "assetId": "T10-L0-09",
+      "ownerAgentId": "agent-task1-t10-assets-a",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l0"
+      ],
+      "observedAt": "2026-08-09T09:00:00+08:00",
+      "sessionId": "T10-L0-09",
+      "messages": [
+        {
+          "messageId": "T10-L0-09-M001",
+          "role": "user",
+          "content": "本轮围绕 发布候选决策复核会话 展开，先确认项目、输入和交付边界。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-09T09:00:00+08:00",
+          "contentHash": "59005508dcd78f7e4247351720a5e6dd702d09cfdef067f9e9790c7bce1e70c8"
+        },
+        {
+          "messageId": "T10-L0-09-M002",
+          "role": "assistant",
+          "content": "我把范围限定在当前工程问题，并把相邻流程保持为独立记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-09T09:00:00+08:00",
+          "contentHash": "65db410eb19499ec14a2909adf1be33176fa383a6f06f5df8feb1287e2f4b7f9"
+        },
+        {
+          "messageId": "T10-L0-09-M003",
+          "role": "user",
+          "content": "工作区能确认现状，但交接摘要没有保留上次评审的完整决定。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-09T09:00:00+08:00",
+          "contentHash": "53857b9007806173e308bbf2132d383afe672a5b49a71ec4c5b1304191790257"
+        },
+        {
+          "messageId": "T10-L0-09-M004",
+          "role": "assistant",
+          "content": "部署、环境替换和无关的全量操作只作对照，不纳入本轮。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-09T09:00:00+08:00",
+          "contentHash": "a22e21420f6c7c44678122294c6a9ec4b2bd47ccd1f3dbbcf24054ccd7444840"
+        },
+        {
+          "messageId": "T10-L0-09-M005",
+          "role": "user",
+          "content": "方向从直接尝试新方案改成找回此前验证过的可重复约定。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-09T09:00:00+08:00",
+          "contentHash": "ef1711e32a63bd5261602cb400d547fa1d401f0e5edd91640e4b0083c847254e"
+        },
+        {
+          "messageId": "T10-L0-09-M006",
+          "role": "assistant",
+          "content": "项目、固定输入、责任边界和停止条件都已核对，剩下的是历史记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-09T09:00:00+08:00",
+          "contentHash": "c9d8311a2644f4b54de1f84683eab883020a36c50a536bd5e982e6fcbc2cb71f"
+        },
+        {
+          "messageId": "T10-L0-09-M007",
+          "role": "user",
+          "content": "我不会从目录名、单次日志或阶段名称猜出未保存的细节。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-09T09:00:00+08:00",
+          "contentHash": "5685c86056f5e1edd5821237a2db8e873b6f81755cc3959bbd9d46f0b9bda56e"
+        },
+        {
+          "messageId": "T10-L0-09-M008",
+          "role": "assistant",
+          "content": "先恢复历史证据，再决定后续动作；数据建设阶段不执行真实发布。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-09T09:00:00+08:00",
+          "contentHash": "7a8e32fe5ef76127df7224d8ab06739ce47a69f5b5491585f1189d26cd446d06"
+        },
+        {
+          "messageId": "T10-L0-09-M009",
+          "role": "user",
+          "content": "2026-08-08 的 decision 只允许候选制品与 dry-run 报告核对，不推送、不打生产标签。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-09T09:00:00+08:00",
+          "contentHash": "bc896e9b08fe1acae78a3f2197ce7b8e6130c3cc9b36c7556cb3727a56ce3e43"
+        },
+        {
+          "messageId": "T10-L0-09-M010",
+          "role": "assistant",
+          "content": "评审要求保留原始输入、决定依据和可复核的交接边界。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-09T09:00:00+08:00",
+          "contentHash": "969f18e399dc685464fd42d612caf286d60afc94db12191e96a2510aa238e03c"
+        },
+        {
+          "messageId": "T10-L0-09-M011",
+          "role": "user",
+          "content": "相近的依赖、插件、CI 或发布记录不会替代这条工程历史。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-09T09:00:00+08:00",
+          "contentHash": "e933e8f10aa80d7eacdabe0d914d23d27887291d313ae82360949d6dc11cefda"
+        },
+        {
+          "messageId": "T10-L0-09-M012",
+          "role": "assistant",
+          "content": "最终记录确认：该结论只服务当前项目边界，后续动作沿冻结记录进行。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-09T09:00:00+08:00",
+          "contentHash": "aa914abc332281eb4c46502acaa3e94a9ce38ccc438983006bc1a9c8ccfc116d"
+        }
+      ],
+      "contentHash": "d7713fef6873e6294039668f4cbc26252161e5e434a34d561dfb4a06918a370a"
+    },
+    {
+      "assetId": "T10-L0-10",
+      "ownerAgentId": "agent-task1-t10-assets-b",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l0"
+      ],
+      "observedAt": "2026-08-10T09:00:00+08:00",
+      "sessionId": "T10-L0-10",
+      "messages": [
+        {
+          "messageId": "T10-L0-10-M001",
+          "role": "user",
+          "content": "本轮围绕 Maven 验证与插件衔接复核会话 展开，先确认项目、输入和交付边界。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "34be9ec6f7caddb30acd94295813a07ff2d012256687846c09f4f0847ed5f19f"
+        },
+        {
+          "messageId": "T10-L0-10-M002",
+          "role": "assistant",
+          "content": "我把范围限定在当前工程问题，并把相邻流程保持为独立记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "ff598c3830ffbe6fb101b18f27871b5e5ef9901402f97ea677addccf415355a8"
+        },
+        {
+          "messageId": "T10-L0-10-M003",
+          "role": "user",
+          "content": "工作区能确认现状，但交接摘要没有保留上次评审的完整决定。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "be635075acf975f53c12f960edb0137385a2258d3c8be126ba9fd253ad1cee8d"
+        },
+        {
+          "messageId": "T10-L0-10-M004",
+          "role": "assistant",
+          "content": "部署、环境替换和无关的全量操作只作对照，不纳入本轮。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "935a10226114e21f1f9c5f3dfb79c33cbac49748479a81ca213b66d89c5f9dff"
+        },
+        {
+          "messageId": "T10-L0-10-M005",
+          "role": "user",
+          "content": "方向从直接尝试新方案改成找回此前验证过的可重复约定。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "f9d5ab72771a57d10dce6accdd6581385f1865a066cc6fec45e5a02a03f2ba11"
+        },
+        {
+          "messageId": "T10-L0-10-M006",
+          "role": "assistant",
+          "content": "项目、固定输入、责任边界和停止条件都已核对，剩下的是历史记录。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "c5e627cc31d9b77326568f174ad939339c9b550f792ec07a187d71f0ad6b4bf1"
+        },
+        {
+          "messageId": "T10-L0-10-M007",
+          "role": "user",
+          "content": "我不会从目录名、单次日志或阶段名称猜出未保存的细节。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "aba6b4aedc3200380da6e088293d02e4cfec91abb52f0343258f3a866f73b51a"
+        },
+        {
+          "messageId": "T10-L0-10-M008",
+          "role": "assistant",
+          "content": "先恢复历史证据，再决定后续动作；数据建设阶段不执行真实发布。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "0dbfe09c8b1feff8070648631ec210cc9dbf1a509829d48389706bbb8bf478e9"
+        },
+        {
+          "messageId": "T10-L0-10-M009",
+          "role": "user",
+          "content": "插件 execution 的 phase 绑定与 Maven 阶段衔接应独立审计，不能由环境或依赖摘要替代。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "47fb2944ec597eb50d39e833398ff5a4b252bd420cba0183ee1297ccb9451a19"
+        },
+        {
+          "messageId": "T10-L0-10-M010",
+          "role": "assistant",
+          "content": "评审要求保留原始输入、决定依据和可复核的交接边界。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "3665af92f95dea48ee4b79b9d2b93bbaaa9970107dbc0dee70c4ec8398814e3e"
+        },
+        {
+          "messageId": "T10-L0-10-M011",
+          "role": "user",
+          "content": "相近的依赖、插件、CI 或发布记录不会替代这条工程历史。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "bf7c2d63e450a460d8c38972c83f42c403323f1593ffdd086600f506a782f051"
+        },
+        {
+          "messageId": "T10-L0-10-M012",
+          "role": "assistant",
+          "content": "最终记录确认：该结论只服务当前项目边界，后续动作沿冻结记录进行。",
+          "sourceEvidenceIds": [
+            "source-t10-luna-l0"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "4d50600d844c2c429af1705eeb490530139676aaf7519d11107bacbfe5a967bf"
+        }
+      ],
+      "contentHash": "db780f76f9ef57c953f02e62d3cc055b2302a67e6744acdbacae2434a5bfedf5"
+    }
+  ],
+  "l1Memories": [
+    {
+      "assetId": "T10-L1-01",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l1"
+      ],
+      "observedAt": "2026-07-15T16:00:00+08:00",
+      "type": "decision",
+      "content": "Maven 构建使用仓库内签入的 wrapper 和固定 JDK 17，不用机器全局组合替代。",
+      "status": "active",
+      "validFrom": "2026-07-15T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T10-L0-01-M008"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "a4be9263ef6d2e5adc5ef9f668eb974c55659c2040b1829a49e87fb667b6d7ea"
+    },
+    {
+      "assetId": "T10-L1-02",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l1"
+      ],
+      "observedAt": "2026-07-16T16:00:00+08:00",
+      "type": "event",
+      "content": "pyartifact 使用已锁定环境、隔离输出目录，先构建再检查 wheel 元数据；不等同于重新搭环境。",
+      "status": "active",
+      "validFrom": "2026-07-16T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T10-L0-02-M003"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "7b8f6408f9f28cf5b838a5bc0e4c960c4e3f9a92a2c114b8d5004e2581b2d57f"
+    },
+    {
+      "assetId": "T10-L1-03",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l1"
+      ],
+      "observedAt": "2026-07-17T16:00:00+08:00",
+      "type": "fact",
+      "content": "BOM、scope、依赖收敛和依赖树冲突属于依赖仲裁，不由生命周期阶段选择解决。",
+      "status": "active",
+      "validFrom": "2026-07-17T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T10-L0-02-M010"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "c2ca82aef57bc92835fd1184d32a1426f9715781f1937de8e40443d1fc5fb3d6"
+    },
+    {
+      "assetId": "T10-L1-04",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l1"
+      ],
+      "observedAt": "2026-07-18T16:00:00+08:00",
+      "type": "decision",
+      "content": "插件 execution、phase、goal 与参数属于插件配置，不能通过猜依赖版本处理。",
+      "status": "active",
+      "validFrom": "2026-07-18T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T10-L0-03-M005"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "faa40f17d2f7e91085f2cb09190136c1c648aa369abcb0de305461475f9d0aa8"
+    },
+    {
+      "assetId": "T10-L1-05",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l1"
+      ],
+      "observedAt": "2026-07-19T16:00:00+08:00",
+      "type": "decision",
+      "content": "2026-08-08 的 decision：候选阶段只生成并核对候选制品与 dry-run 报告，不推送、不打生产标签。",
+      "status": "active",
+      "validFrom": "2026-07-19T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T10-L0-03-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "603dd693e6fc6f2060dee5cf44f82ce0b770b4abc3a8775a095ed2fe197aab81"
+    },
+    {
+      "assetId": "T10-L1-06",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l1"
+      ],
+      "observedAt": "2026-07-20T16:00:00+08:00",
+      "type": "fact",
+      "content": "候选制品、校验值和变更信息作为审阅证据保存，报告不能改写原始制品。",
+      "status": "active",
+      "validFrom": "2026-07-20T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T10-L0-04-M007"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "7cacdf1df06d883ead5edc51d335ca83ce245547b8765a1abdad7fc78255ea09"
+    },
+    {
+      "assetId": "T10-L1-07",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l1"
+      ],
+      "observedAt": "2026-07-21T16:00:00+08:00",
+      "type": "preference",
+      "content": "Maven 阶段顺序应与 reactor 依赖图、插件绑定和所需证据对齐；不能仅凭单个模块的局部输出判断整个构建状态。",
+      "status": "active",
+      "validFrom": "2026-07-21T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T10-L0-05-M002"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "d6a44827dfd3f665e181b3dcc1657e1036800871a5d9f2e1f3e89b82bcf8dd6d"
+    },
+    {
+      "assetId": "T10-L1-08",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l1"
+      ],
+      "observedAt": "2026-07-22T16:00:00+08:00",
+      "type": "event",
+      "content": "CI 失败复盘固定提交和日志，再区分环境、依赖和插件 phase 绑定。",
+      "status": "active",
+      "validFrom": "2026-07-22T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T10-L0-05-M009"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "d873412a4d4358dc833ccb029f5c1b8d9c50277e2c66794bb9c8ccb2ed83fbc8"
+    },
+    {
+      "assetId": "T10-L1-09",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l1"
+      ],
+      "observedAt": "2026-07-28T16:00:00+08:00",
+      "type": "decision",
+      "content": "解释器或锁文件不可用属于环境搭建；环境可用但 wheel 元数据或构建后端失败属于包构建。",
+      "status": "active",
+      "validFrom": "2026-07-28T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T10-L0-06-M004"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "147e3c5ac8473a6c513997602dce1d1db4c703035a8f552e2401cd4c46236277"
+    },
+    {
+      "assetId": "T10-L1-10",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l1"
+      ],
+      "observedAt": "2026-07-24T16:00:00+08:00",
+      "type": "fact",
+      "content": "GitHub-specific 构建/发布请求沿 Actions 模板处理，GitLab CI 或中立 pipeline 不能替代。",
+      "status": "active",
+      "validFrom": "2026-07-24T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T10-L0-06-M011"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "6ad8776d47a5db734a0fdc8b977013c0bb1d01f2c23ad708eda272b39ec09ae6"
+    },
+    {
+      "assetId": "T10-L1-11",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l1"
+      ],
+      "observedAt": "2026-07-25T16:00:00+08:00",
+      "type": "decision",
+      "content": "dry-run 只产出可审阅计划和证据，不执行远端推送、生产标签或真实发布。",
+      "status": "active",
+      "validFrom": "2026-07-25T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T10-L0-07-M006"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "619d06a3025f7f700e3adb86a74b2d8401153429556c1286775739d44c4b82d2"
+    },
+    {
+      "assetId": "T10-L1-12",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l1"
+      ],
+      "observedAt": "2026-07-26T16:00:00+08:00",
+      "type": "event",
+      "content": "环境和依赖均可用而 CI 仍失败时，检查插件 execution 是否绑定预期 phase。",
+      "status": "active",
+      "validFrom": "2026-07-26T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T10-L0-08-M001"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "6d6e217824d7ab6da37f73b7c4934377a995bf55a9255708abe3487fdd4747d0"
+    },
+    {
+      "assetId": "T10-L1-13",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l1"
+      ],
+      "observedAt": "2026-07-27T16:00:00+08:00",
+      "type": "fact",
+      "content": "wheel 构建复现依赖锁定输入、隔离输出目录和可追溯元数据检查结果。",
+      "status": "active",
+      "validFrom": "2026-07-27T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T10-L0-08-M008"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "9286d2c8b06446b5384a9721dc607f84620a9b1446e7473205eff2f5931182e2"
+    },
+    {
+      "assetId": "T10-L1-14",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l1"
+      ],
+      "observedAt": "2026-07-28T16:00:00+08:00",
+      "type": "preference",
+      "content": "候选制品核对完成不等于生产批准；dry-run 不能推导推送许可。",
+      "status": "active",
+      "validFrom": "2026-07-28T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T10-L0-09-M003"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "bd9ae5b54ddc1910819a466db95b1654930ca5bc91b6193593fac6f0bc11f9e9"
+    }
+  ],
+  "l2Scenes": [
+    {
+      "assetId": "T10-L2-01",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l2"
+      ],
+      "observedAt": "2026-08-01T10:00:00+08:00",
+      "path": "/build/maven/reactor-runbook",
+      "summary": "atlas-parent 多模块 reactor 运行手册，说明输入确认、依赖边界和结果交接。",
+      "content": "适用范围：atlas-parent 的多模块验证计划。运行前确认父 POM、目标模块、提交快照和本地仓库边界；规划阶段记录阶段组合、模块范围、依赖前提和证据点，不启动构建。若输入快照不一致则停止评审；若出现插件或依赖问题，分别转交对应分析流程。构建验证、安装和发布仍是不同授权边界，不能由场景读取自动触发。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T10-L0-01",
+        "T10-L0-02"
+      ],
+      "contentHash": "f8b8c12b09382604060b603a7575f575e1de4fe9a979c72f147b330d6c2ac66f"
+    },
+    {
+      "assetId": "T10-L2-02",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l2"
+      ],
+      "observedAt": "2026-08-02T10:00:00+08:00",
+      "path": "/build/python/artifact-policy",
+      "summary": "pyartifact wheel 制品策略，说明锁定输入、隔离输出和元数据复核的衔接。",
+      "content": "使用已锁定环境，将输出写入隔离目录，构建后检查制品元数据。解释器或锁文件不可用属于环境搭建；环境可用但元数据或构建后端失败属于包构建。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T10-L0-03",
+        "T10-L0-04"
+      ],
+      "contentHash": "a24bde9a8b4de7daae61e5209106d325eea8db51e3bd69f08dc7ab1544e1fe11"
+    },
+    {
+      "assetId": "T10-L2-03",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l2"
+      ],
+      "observedAt": "2026-08-03T10:00:00+08:00",
+      "path": "/build/release/dry-run-checklist",
+      "summary": "发布候选 dry-run 清单，说明候选阶段的审阅边界与停止条件。",
+      "content": "候选阶段只生成并核对候选制品与 dry-run 报告，不推送远端、不打生产标签。证据包包含候选制品、校验和、变更摘要、回滚说明；等待独立审批，不执行真实发布。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T10-L0-05",
+        "T10-L0-06"
+      ],
+      "contentHash": "33a7a578a6135c98ed716049eace97a0070dfb9a54a04f6861692c3d8cc38211"
+    },
+    {
+      "assetId": "T10-L2-04",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l2"
+      ],
+      "observedAt": "2026-08-04T10:00:00+08:00",
+      "path": "/build/ci/failure-triage",
+      "summary": "CI 失败分诊场景，说明固定日志、排除顺序和插件配置边界。",
+      "content": "先固定提交、job 和日志窗口，再排除环境、依赖和插件配置。复盘否决重建环境与升级依赖，最终定位到插件 execution 未绑定预期 phase；完整排除链与日志一并保存。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T10-L0-07",
+        "T10-L0-08"
+      ],
+      "contentHash": "9d9d0ac9cb9d442c0c238683c3ce89e1656de85b6b7550849f0ff707295c2ba5"
+    }
+  ],
+  "l3Profiles": [
+    {
+      "assetId": "T10-L3-01",
+      "ownerAgentId": "agent-task1-t10-general",
+      "sourceEvidenceIds": [
+        "source-t10-luna-l3"
+      ],
+      "observedAt": "2026-08-29T22:45:00+08:00",
+      "content": "稳定原则：冻结输入；区分构建、验证、签名与发布；先做 dry-run；不得在数据建设中运行真实发布；对缺失信息保持诚实并留下可复核边界。",
+      "stability": "team",
+      "contentHash": "6387a6e265e568ffe4e0a36dcfbe3aa84cbccd2391c9d8dc850d4dddd642e568"
+    }
+  ]
+}

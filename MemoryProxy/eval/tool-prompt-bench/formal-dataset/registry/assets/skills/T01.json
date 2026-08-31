@@ -1,0 +1,58 @@
+{
+  "schema_version": "task1.formal_skill_assets.v1",
+  "team_id": "T01",
+  "skills": [
+    {
+      "assetId": "T01-SKILL-DISCOVER-IMPORTANT-FUNCTION",
+      "ownerAgentId": "agent-task1-t01-general",
+      "sourceEvidenceIds": [
+        "source-t01-skill-discover-important-function"
+      ],
+      "observedAt": "2026-06-14T23:16:00Z",
+      "name": "discover-important-function",
+      "version": "1.1.0",
+      "description": "Ranks fuzz-worthy Python files and public input boundaries before harness authoring.",
+      "useWhen": "A Python repository needs a small, evidence-backed shortlist of fuzz targets.",
+      "doNotUseWhen": "The target and rationale are already fixed, or the task is only to implement a known harness.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "d935cc481fe8700ecfec482810dbf7fb56d0ee7e5fec7221ca5a77519d29ce29"
+        }
+      ],
+      "contentHash": "b23665936e03c1335422065b40f4820a215f2c5a46eeb4976b6cd032c20d674a"
+    },
+    {
+      "assetId": "T01-SKILL-FUZZING-PYTHON",
+      "ownerAgentId": "agent-task1-t01-general",
+      "sourceEvidenceIds": [
+        "source-t01-skill-fuzzing-python"
+      ],
+      "observedAt": "2026-06-14T23:16:00Z",
+      "name": "fuzzing-python",
+      "version": "1.1.0",
+      "description": "Builds a minimal coverage-guided Atheris/LibFuzzer harness for a selected Python target.",
+      "useWhen": "The Python target is already selected and the coverage-guided harness structure is missing.",
+      "doNotUseWhen": "The task only selects targets, fixes a localized bug, or already supplies a complete runnable harness.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "718882130de22873f00e422d1c8d4d67febd002d5ee0163f314fea8890c0b835"
+        }
+      ],
+      "contentHash": "1bdbc05351b0467b5f52dbd770f55d9997a0521298f71fc72955b258f28bbd31"
+    }
+  ]
+}

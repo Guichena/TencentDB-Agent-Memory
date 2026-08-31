@@ -1,0 +1,26 @@
+{
+  "schema_version": "task1.team_build_summary.v1",
+  "team_id": "T02",
+  "visible_asset_set_sha256": "5378e4bd911781c0745cf5bfa5fbeb7bf7931e3adb6aebd6798e196209bb6a79",
+  "counts": {
+    "cases": 40,
+    "pairs": 15,
+    "natural_negatives": 10,
+    "positive_families": {
+      "memory": 6,
+      "skill": 6,
+      "knowledge": 3
+    },
+    "l0": 10,
+    "l0_messages": 120,
+    "l1": 15,
+    "l2": 4,
+    "l3": 1,
+    "skills": 15,
+    "listed_skills": 5,
+    "knowledge": 3,
+    "github_skill_sources": 15,
+    "github_project_sources": 4,
+    "sources": 33
+  }
+}

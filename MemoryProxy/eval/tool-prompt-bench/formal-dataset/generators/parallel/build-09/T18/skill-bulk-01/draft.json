@@ -1,0 +1,208 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T18-SKL-BULK-01",
+  "stage": "DS03",
+  "team_id": "T18",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T18-SKL-02",
+      "external_source_ids": ["T18-SKL-04"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Sentinel 的请求链路在多个微服务间出现长尾延迟，团队希望先把调用关系和失败传播看清楚。"},
+        {"role": "assistant", "content": "目前只有各服务的零散日志，尚未建立可关联的跨服务请求视图，也没有确认采样和埋点开销。"},
+        {"role": "user", "content": "这轮先整理观测与排查顺序，不改业务实现；后续再决定是否调整采样和导出配置。"}
+      ],
+      "changed_message_index": 3,
+      "query": "请给出这次分布式请求链路排查的实施顺序、埋点重点和常见故障检查项。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "我还缺少一套可直接采用的实践依据，尤其是采样比例、有意义的标签、跨边界传播、异常和关键事件记录、日志关联、开销控制、告警及无链路和高开销时的排查方法。请先补齐原则，再停在可以开始排查的位置。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少分布式追踪实践中关于适当采样、语义标签、上下文传播、异常与事件、日志关联、开销监控、告警和故障排查的完整建议。",
+          "route": "skill",
+          "target_asset_ids": ["T18-SKL-04"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "阅读分布式追踪指南并概述实施起点后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充已确认的原则：生产环境按负载选择约 1% 到 10% 的采样；给跨度加用户、请求等有意义的标签，贯穿所有服务边界传播上下文；记录异常和关键里程碑事件，统一操作命名并保留行李上下文；把跨度标识关联到日志；监控追踪开销并将 CPU 影响控制在约 1% 内，同时设置链路错误告警。若没有链路，先检查收集端点、网络、采样和应用日志；若开销过高，降低采样率、使用批量处理并检查导出配置。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经给出采样、标签、传播、事件、日志关联、开销、告警和两类故障排查项，足以组织当前排查。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T18-SKL-05", "T18-SKL-08", "T18-SKL-09"],
+      "controlled_delta_note": "Positive 只保留分布式追踪实践缺口；Negative 仅追加采样、传播、记录、开销和排查原则，shared context 与 query 不变。",
+      "source_fact_map": [
+        {"claim": "指南用于跨微服务跟踪请求、理解依赖并定位瓶颈和错误传播。", "source_id": "T18-SKL-04", "locator": "frontmatter.description; Purpose; When to Use"},
+        {"claim": "最佳实践覆盖 1%-10% 生产采样、有意义标签、跨边界上下文传播、异常和跨度事件记录及统一命名。", "source_id": "T18-SKL-04", "locator": "Best Practices 1-5; 8-10"},
+        {"claim": "指南要求监控追踪开销、设置链路错误告警，并针对无链路和高延迟开销给出检查方向。", "source_id": "T18-SKL-04", "locator": "Best Practices 6-7; Integration with Logging; Troubleshooting"}
+      ],
+      "sol_review_questions": []
+    },
+    {
+      "draft_pair_id": "T18-SKL-03",
+      "external_source_ids": ["T18-SKL-07"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "Cascade 要为订单和事件数据设计一组 PostgreSQL 表，查询既有时间范围过滤，也有用户关联和半结构化扩展字段。"},
+        {"role": "assistant", "content": "当前草案混用了多种时间、字符串和金额类型，外键访问路径也没有明确；团队希望先审查模型，再决定索引和分区。"},
+        {"role": "user", "content": "请把建议限定在表设计审查，不执行迁移；还要兼顾写入量和后续模式演进。"}
+      ],
+      "changed_message_index": 3,
+      "query": "请按 PostgreSQL 的语义给出这组表的设计审查顺序、类型约束、索引和分区检查点。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "我缺少 PostgreSQL 专项的落地依据：如何先规范化再谨慎反规范化，选择标识、时间、金额和字符串类型，补齐外键与访问路径索引，处理 JSONB、数组和范围，判断是否分区，以及如何面对写多、更新多和安全演进。请先补齐审查框架。"},
+        "private_proposal": {
+          "unique_information_gap": "需要 PostgreSQL 表设计指南中关于规范化、类型、约束、索引、JSONB/数组/范围、分区、冷热更新与模式演进的具体原则。",
+          "route": "skill",
+          "target_asset_ids": ["T18-SKL-07"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "通过检索后阅读 PostgreSQL 表设计指南并概述审查框架后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充已确认的框架：先按 3NF 消除冗余，只有测量证明连接成为高回报瓶颈时才反规范化；参考表通常用 BIGINT identity 主键，事件时间用 TIMESTAMPTZ，金额用 NUMERIC，文本用 TEXT，并在语义要求处加 NOT NULL 和默认值。为真实查询路径创建索引，外键列需显式建索引；JSONB 只承载可选或半结构化属性并用 GIN，数组只用于需要查询的有序列表，关系仍用连接表，范围数据可用范围类型和 GiST。超大且按时间或维护周期过滤的表再考虑声明式分区；写多时减少索引、批量写入，更新多时分离热列并避免改索引列；演进时先在事务或非生产环境验证，在线建索引并记录依赖。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息覆盖了模型规范化、核心类型、约束、索引、复杂字段、分区、写更新负载和演进审查要点。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T18-SKL-03", "T18-SKL-06", "T18-SKL-10"],
+      "controlled_delta_note": "Positive 只保留 PostgreSQL 专项设计原则缺口；Negative 仅追加原指南的类型、约束、索引、复杂字段、分区和负载检查点。",
+      "source_fact_map": [
+        {"claim": "指南覆盖 PostgreSQL 模式设计、数据类型、约束、索引、性能模式和高级特性。", "source_id": "T18-SKL-07", "locator": "frontmatter.description"},
+        {"claim": "核心规则要求先规范化到 3NF，按实际访问路径建索引，并优先使用 TIMESTAMPTZ、NUMERIC、TEXT 与合适的 identity 标识。", "source_id": "T18-SKL-07", "locator": "Core Rules"},
+        {"claim": "JSONB、数组、范围类型各有适用查询与索引；超大且按键过滤或维护的表才适合声明式分区。", "source_id": "T18-SKL-07", "locator": "Data Types; Indexing; Partitioning; JSONB Guidance"},
+        {"claim": "写入密集表应减少索引并批量写入，更新密集表应分离热列且避免更新索引列，模式演进提供事务性和并发索引建议。", "source_id": "T18-SKL-07", "locator": "Special Considerations > Update-Heavy Tables; Insert-Heavy Workloads; Safe Schema Evolution"}
+      ],
+      "sol_review_questions": []
+    },
+    {
+      "draft_pair_id": "T18-SKL-04",
+      "external_source_ids": ["T18-SKL-10"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Forge 的大型单仓库构建时间持续增长，团队准备引入远程缓存和远程执行，但当前构建边界仍然粗糙。"},
+        {"role": "assistant", "content": "现有目录有少量集中式构建文件，依赖版本和可见性约束也不稳定；这轮先做构建性能方案，不直接改配置。"},
+        {"role": "user", "content": "需要一套从仓库基础、目标拆分到缓存与规则治理的检查顺序，并说明应避免的做法。"}
+      ],
+      "changed_message_index": 3,
+      "query": "请给出大型单仓库构建性能改造的实施顺序、边界设计和缓存治理重点。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "我还缺少构建优化实践，尤其是仓库与版本基础、细粒度目标、远程缓存或执行、依赖固定、可见性控制、按目录维护构建文件，以及通配依赖、忽略警告和临时目录方面的注意事项。请先补齐决策依据。"},
+        "private_proposal": {
+          "unique_information_gap": "需要大型单仓库构建指南中关于基础文件、目标粒度、远程缓存/执行、依赖固定、可见性、目录级构建文件和反模式的流程。",
+          "route": "skill",
+          "target_asset_ids": ["T18-SKL-10"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "检索并阅读构建优化指南，概述改造起点后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充已确认的顺序：先完善 WORKSPACE、构建配置和版本文件，再按目录维护构建描述；把库、二进制和测试拆成细粒度目标以改善缓存命中；固定外部依赖，启用共享远程缓存并按需要配置远程执行；用可见性约束守住架构边界。依赖应显式列出，不用目录通配来掩盖边界；不要提交构建生成的临时目录，不跳过基础工作区设置，也要处理构建警告。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经具体给出基础设置、目标拆分、缓存执行、依赖与可见性治理以及主要反模式，足以继续方案设计。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T18-SKL-11", "T18-SKL-12", "T18-SKL-16"],
+      "controlled_delta_note": "Positive 只指出大型单仓库构建优化依据缺口；Negative 仅补齐基础、目标、缓存、依赖、可见性和反模式顺序。",
+      "source_fact_map": [
+        {"claim": "指南针对大型单仓库的构建配置、远程执行和构建性能优化。", "source_id": "T18-SKL-10", "locator": "frontmatter.description; When to Use This Skill"},
+        {"claim": "核心概念包括构建工作区、包、目标、标签、规则和切面，建议按目录维护构建文件。", "source_id": "T18-SKL-10", "locator": "Core Concepts"},
+        {"claim": "最佳实践要求细粒度目标、固定依赖、远程缓存、合理可见性和目录级构建文件。", "source_id": "T18-SKL-10", "locator": "Best Practices > Do's"},
+        {"claim": "指南反对用 glob 隐式依赖、提交 bazel-* 目录、跳过工作区设置和忽略构建警告。", "source_id": "T18-SKL-10", "locator": "Best Practices > Don'ts"}
+      ],
+      "sol_review_questions": []
+    },
+    {
+      "draft_pair_id": "T18-SKL-05",
+      "external_source_ids": ["T18-SKL-14"],
+      "synthetic_scope": ["team", "project", "conversation"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Quartz 的一条核心查询在新数据量下变慢，业务担心索引调整会增加写放大和复制延迟。"},
+        {"role": "assistant", "content": "目前只有体感变慢的反馈，尚未保留执行计划、缓冲访问或墙钟耗时基线；这轮先做分析方案。"},
+        {"role": "user", "content": "请把诊断、方案、逐项实施和回归验证串起来，并明确何时应该停止或回滚。"}
+      ],
+      "changed_message_index": 3,
+      "query": "请给出这条慢查询的基线采集、瓶颈定位、优化实施和结果验证顺序。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "我缺少数据库性能优化的完整工作流，尤其是变更前的执行计划和指标基线、瓶颈分类、索引或查询重写方案、一次只做一个改动、非生产验证、写性能与复制延迟保护，以及变更后的对比记录。请先补齐依据。"},
+        "private_proposal": {
+          "unique_information_gap": "需要数据库优化指南中关于基线、瓶颈识别、索引/查询/配置方案、增量实施、非生产验证和前后对比的工作流。",
+          "route": "skill",
+          "target_asset_ids": ["T18-SKL-14"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "检索并阅读数据库优化指南，概述分析与验证流程后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充已确认的工作流：任何改动前先保存执行计划、缓冲信息和查询时间基线；从低选择性扫描、连接膨胀、过期统计、缓存命中率和磁盘排序等证据定位瓶颈。一次只设计和实施一个索引、查询重写或配置调整，在非生产环境先验证；每次变更前后都重新采集计划与耗时，检查索引是否实际使用，并记录成本、墙钟时间、写入性能和复制延迟。若写性能或复制延迟变差就回滚，批量数据变化后刷新统计，避免冗余或未使用索引。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经覆盖基线、证据化定位、单项实施、非生产验证、前后对比、回滚条件和统计维护。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T18-SKL-03", "T18-SKL-06", "T18-SKL-07"],
+      "controlled_delta_note": "Positive 仅保留数据库性能优化工作流缺口；Negative 追加基线、定位、逐项变更、验证和回滚要求，query 保持不变。",
+      "source_fact_map": [
+        {"claim": "指南覆盖慢查询、执行计划、索引策略、配置调优、分区、锁竞争和缓存命中率。", "source_id": "T18-SKL-14", "locator": "frontmatter.description; When to Use This Skill"},
+        {"claim": "核心工作流依次为性能分析、瓶颈识别、方案设计、增量实施和结果验证。", "source_id": "T18-SKL-14", "locator": "Core Workflow"},
+        {"claim": "实施前应保留 EXPLAIN ANALYZE 基线，改动应在非生产环境逐项验证，并在写性能或复制延迟恶化时回滚。", "source_id": "T18-SKL-14", "locator": "Core Workflow; warning callout; Constraints > MUST DO"},
+        {"claim": "约束要求前后测量、避免冗余索引和并行多项改动，并在批量数据变化后运行 ANALYZE。", "source_id": "T18-SKL-14", "locator": "Constraints > MUST DO; MUST NOT DO"}
+      ],
+      "sol_review_questions": []
+    },
+    {
+      "draft_pair_id": "T18-SKL-06",
+      "external_source_ids": ["T18-SKL-02"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "long_12_to_18",
+      "shared_context_messages": [
+        {"role": "user", "content": "Ironclad 的 Go worker pool 在高峰时偶发 goroutine 泄漏，取消请求后仍有任务滞留，团队还担心结果通道关闭时发生竞态。"},
+        {"role": "assistant", "content": "当前实现有并发任务、结果汇聚和信号退出，但尚未把取消、限流、错误传播、关闭责任和竞态检查串成统一方案。"},
+        {"role": "user", "content": "请先整理可复用的并发设计与验证顺序，暂不改仓库代码。"}
+      ],
+      "changed_message_index": 3,
+      "query": "请给出这个 worker pool 从并发边界、取消退出到竞态验证的完整排查和改造顺序。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "我需要更详细的 Go 并发实践，尤其是 worker pool、扇出扇入、信号量限并发、优雅停机、错误组取消、并发 map、带超时或默认分支的 select，以及如何用竞态检测覆盖测试、构建和运行。请先阅读完整实践和配套详细示例，再概述起点。"},
+        "private_proposal": {
+          "unique_information_gap": "需要 Go 并发指南及其详细资源中的七类模式、取消和关闭责任、错误组、并发 map、select 超时，以及 race detector 命令。",
+          "route": "skill",
+          "target_asset_ids": ["T18-SKL-02"],
+          "allowed_sequence_candidates": [["skill_view", "skill_files_read"]],
+          "stop_after_candidate": "先阅读 Go 并发指南，再读取 references/details.md 详细模式后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "补充已确认的设计：worker pool 用任务和结果通道并由等待组统一关闭结果；流水线阶段在每个发送和接收点检查取消；需要上限时用带权信号量或有容量的通道，并在任务结束释放；优雅停机由上下文取消、等待完成和超时兜底组成；错误组让首个错误取消其余工作并可设置并发上限。读多写少可用并发 map，写多时采用分片加读写锁；select 为通道操作提供超时、非阻塞默认分支和优先级处理。发送方负责关闭通道，不用睡眠同步；最后用竞态检测分别运行测试、构建和程序。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经覆盖详细资源中的 worker pool、流水线、限并发、停机、错误取消、并发 map、select 和竞态验证模式。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T18-SKL-12", "T18-SKL-15", "T18-SKL-16"],
+      "controlled_delta_note": "Positive 只保留 Go 并发指南及详细资源的模式缺口；Negative 仅追加模式摘要、关闭责任、取消和竞态验证，shared context 与 query 不变。",
+      "source_fact_map": [
+        {"claim": "指南覆盖 goroutine、channel、同步原语、context、worker pool、流水线、生命周期和优雅停机。", "source_id": "T18-SKL-02", "locator": "frontmatter.description; When to Use This Skill; Core Concepts"},
+        {"claim": "详细资源包含 worker pool、扇出扇入、信号量限并发、优雅停机、错误组取消、并发 map 和带超时/默认分支的 select。", "source_id": "T18-SKL-02", "locator": "references/details.md#Patterns; Pattern 1-7"},
+        {"claim": "指南要求使用 context、由发送方关闭通道、用 errgroup 管理错误、避免 goroutine 泄漏并检查取消。", "source_id": "T18-SKL-02", "locator": "Best Practices > Do's; Best Practices > Don'ts"},
+        {"claim": "详细资源最后给出用 race detector 执行测试、构建和运行的命令。", "source_id": "T18-SKL-02", "locator": "references/details.md#Race Detection"}
+      ],
+      "sol_review_questions": []
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+--- a/plugins/javascript-typescript/skills/javascript-testing-patterns/SKILL.md
++++ b/adapted/javascript-testing-patterns/SKILL.md
+@@ -5,0 +5,20 @@
++
++
++## TDAI Host Routing
++
++Load this package with `skill_view`. If the manifest points to a supporting file, read that file with `skill_files_read`; do not install or execute source-repository dependencies for Task 1.
++
++Use when:
++- Setting up test infrastructure for new projects
++- Writing unit tests for functions and classes
++- Creating integration tests for APIs and services
++- Implementing end-to-end tests for user flows
++- Mocking external dependencies and APIs
++- Testing React, Vue, or other frontend components
++- Implementing test-driven development (TDD)
++- Setting up continuous testing in CI/CD pipelines
++
++Do not use when:
++- Do not use when there is no JavaScript/TypeScript testing, test infrastructure, mocking, fixtures, or TDD/BDD requirement
++
++The upstream technical workflow below is preserved unchanged.

@@ -1,0 +1,1 @@
+No open Sol decisions remain for this T08 skill expansion. The five pairs use the frozen Jest, Temporal replay, Playwright generation, ScoutQA, and Spring Boot testing sources with their specified routes and controlled deltas.

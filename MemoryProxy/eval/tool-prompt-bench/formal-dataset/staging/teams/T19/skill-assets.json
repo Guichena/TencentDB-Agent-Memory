@@ -1,0 +1,690 @@
+{
+  "schema_version": "task1.team_skill_assets.v1",
+  "team_id": "T19",
+  "skills": [
+    {
+      "assetId": "T19-SKILL-AWS-AUTH",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-SKILL-AWS-AUTH",
+        "T19-EVID-SKILL-AWS-AUTH-TOKENS-SESSIONS"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "aws-auth",
+      "version": "1",
+      "description": "Amazon Cognito 用户池、身份池、OAuth/OIDC 登录、令牌生命周期和 API 授权配置。",
+      "useWhen": "需要配置 Cognito 登录、托管登录、MFA、社交或 SAML 联邦、令牌刷新/轮换/撤销，或为 API 配置 Cognito/JWT 授权器时使用。",
+      "doNotUseWhen": "不要用于 Amplify Gen2 后端定义、IAM/STS/Identity Center、API Gateway 路由集成或 Lambda 实现。",
+      "repoCommit": "ed19c44c46c9c3a12ef0ff5bbf88161b75d3efbe",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "84cb82cf6c23196f203a16ccdcb63d4f688b2da2aa649339600fe80c1ac9c332"
+        },
+        {
+          "path": "references/tokens-and-sessions.md",
+          "sha256": "7a315bd0fa8d29503fcce21e2b87a5e04f64a01ff9a8df5a33f8efccdbfe752a"
+        }
+      ],
+      "contentHash": "024a41fe75cf4acccc2104f2feeba9af58f137c36409ac02195f302602a50ed2"
+    },
+    {
+      "assetId": "T19-SKILL-AWS-IAM",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-SKILL-AWS-IAM"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "aws-iam",
+      "version": "2",
+      "description": "AWS IAM 策略评估边界、信任策略、STS、Organizations、服务角色和常见陷阱。",
+      "useWhen": "创建或更新 IAM 角色、编写 IAM/桶策略、处理 STS、Organizations、条件运算符或服务执行角色时使用。",
+      "doNotUseWhen": "不要用于 Cognito 用户池策略或应用层 RBAC 等非 IAM 授权问题。",
+      "repoCommit": "ed19c44c46c9c3a12ef0ff5bbf88161b75d3efbe",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "dc4965ef0c5b51dbecddc9c44195643bf45c3b733d1428caf815006598bc8e3d"
+        }
+      ],
+      "contentHash": "badeff669363471feea19539ccb957f5d39bc452d3c6014625670027af636c60"
+    },
+    {
+      "assetId": "T19-SKILL-NETWORK-SECURITY",
+      "ownerAgentId": "agent-task1-t19-policy-assurance",
+      "sourceEvidenceIds": [
+        "T19-EVID-SKILL-NETWORK-SECURITY"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "network-security",
+      "version": "1",
+      "description": "网络分段、默认拒绝、出口控制和内部 TLS 的网络边界防护。",
+      "useWhen": "配置安全组或防火墙、设计网络分段、限制横向可达性、过滤出口或启用服务间 TLS 时使用。",
+      "doNotUseWhen": "身份作为信任边界时用 zero-trust；Kubernetes 网络策略和服务网格细节不属于本 Skill。",
+      "repoCommit": "0c89b7ed911082d77b0674759fc3a7ac3814c354",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "42a60b840810a9e590f500583259ee73d7383450712842498cb0b15251df3da7"
+        }
+      ],
+      "contentHash": "39aadfedc836b499cb0195b7ea49d45fa9c48bd9d22af6cfdcc87850b326a2b3"
+    },
+    {
+      "assetId": "T19-SKILL-AWS-SECURITY",
+      "ownerAgentId": "agent-task1-t19-policy-assurance",
+      "sourceEvidenceIds": [
+        "T19-EVID-SKILL-AWS-SECURITY"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "aws-security",
+      "version": "1",
+      "description": "AWS Security Hub、GuardDuty、Inspector、Macie、Detective 和 Security Lake 的只读安全工作流。",
+      "useWhen": "检查 AWS 安全服务配置、汇总发现、查看暴露或威胁结果、核对 CSPM 控件或跨服务安全态势时使用。",
+      "doNotUseWhen": "不要建议修改、删除、启用或禁用资源的 API；不要在配置状态上添加未经证实的严重性判断或建议抑制发现。",
+      "repoCommit": "ed19c44c46c9c3a12ef0ff5bbf88161b75d3efbe",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "62b5fd74760571e989ed96680c3c838ffe31ac901fd79b62faeccd4eebcace01"
+        }
+      ],
+      "contentHash": "e8b249759018a9e89a60ab2cb745452aab961d76338b8b457afc5a471c71bae6"
+    },
+    {
+      "assetId": "T19-SKILL-SIGNING-IN-TO-AWS",
+      "ownerAgentId": "agent-task1-t19-policy-assurance",
+      "sourceEvidenceIds": [
+        "T19-EVID-SKILL-SIGNING-IN-TO-AWS"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "signing-in-to-aws",
+      "version": "1",
+      "description": "使用 AWS CLI 本地登录获得短期、自动轮换的 CLI/SDK 凭证。",
+      "useWhen": "本地开发需要 AWS 凭证、凭证过期或缺失，或用户询问如何设置 AWS 本地访问时使用。",
+      "doNotUseWhen": "不要用于 CI/CD 凭证；不要绕过用户对交互式登录的确认，也不要把现有 SSO 流程强行改成另一种登录。",
+      "repoCommit": "ed19c44c46c9c3a12ef0ff5bbf88161b75d3efbe",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "9d7bd588b1328d96c3999b84f00b851ef59531a9627aa6cd2279bb90a75a9db5"
+        }
+      ],
+      "contentHash": "6062062423ccfe2b4163d4129cc8a483d8fe9f67a413611c207645626ea54a53"
+    },
+    {
+      "assetId": "T19-SKILL-IAM-ACCESS-MANAGEMENT",
+      "ownerAgentId": "agent-task1-t19-policy-assurance",
+      "sourceEvidenceIds": [
+        "T19-EVID-SKILL-IAM-ACCESS-MANAGEMENT"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "iam-access-management",
+      "version": "1",
+      "description": "以角色、短期凭证、定期审查和按需授权实现最小权限访问管理。",
+      "useWhen": "授予云或系统访问、设计角色、建立 break-glass 流程、审查访问范围或移除遗留权限时使用。",
+      "doNotUseWhen": "凭证存放位置使用 secrets-management；用身份替代网络位置的边界使用 zero-trust。",
+      "repoCommit": "0c89b7ed911082d77b0674759fc3a7ac3814c354",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "2754e966cd37d6c2d4d82f03ed0afd637fb571fa7102e9e8933bbadfbe4decb4"
+        }
+      ],
+      "contentHash": "b4ae5fca6476536f5024f350f117ca8edaf553bf23486be1f095f384f6f07f9c"
+    },
+    {
+      "assetId": "T19-SKILL-SECRETS-MANAGEMENT",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-SKILL-SECRETS-MANAGEMENT"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "secrets-management",
+      "version": "1",
+      "description": "将凭证、密钥和证书置于受控存储，并以运行时最小范围注入和可撤销生命周期管理。",
+      "useWhen": "发现代码硬编码密码或 token、设置 API key、配置秘密存储、处理泄露或 CI 机密注入时使用。",
+      "doNotUseWhen": "谁有权读取秘密属于 iam-access-management；依赖或镜像漏洞扫描不属于本 Skill。",
+      "repoCommit": "0c89b7ed911082d77b0674759fc3a7ac3814c354",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "3a414d422a0091929ae5310e6862d2173a03e38d77a1a6addca77ee43b9ab7f9"
+        }
+      ],
+      "contentHash": "11a426491391c2e15364c7a476270455027115489869fb2d486a92c42bebfd27"
+    },
+    {
+      "assetId": "T19-SKILL-ZERO-TRUST",
+      "ownerAgentId": "agent-task1-t19-general",
+      "sourceEvidenceIds": [
+        "T19-EVID-SKILL-ZERO-TRUST"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "zero-trust",
+      "version": "1",
+      "description": "以已验证身份、工作负载级微分段和持续验证替代网络位置的隐式信任。",
+      "useWhen": "系统把 VPC 内部视为可信、要按身份而非 IP 授权，或要限制受感染工作负载的横向移动时使用。",
+      "doNotUseWhen": "只配置防火墙、出口或粗粒度网络分段使用 network-security；角色模型设计使用 iam-access-management。",
+      "repoCommit": "0c89b7ed911082d77b0674759fc3a7ac3814c354",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "01b6e07a812195e1f2df8d2ba000294bc645724ca141a4cc03efa48478cd95fb"
+        }
+      ],
+      "contentHash": "8fe4657ea85a5a8d3f2f5072373cd5144c9b7b310a558876df30cf2e23530a2c"
+    },
+    {
+      "assetId": "T19-SKILL-POLICY-AS-CODE",
+      "ownerAgentId": "agent-task1-t19-policy-assurance",
+      "sourceEvidenceIds": [
+        "T19-EVID-SKILL-POLICY-AS-CODE"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "policy-as-code",
+      "version": "1",
+      "description": "用 OPA、Sentinel 或 Kyverno 在计划和准入阶段自动阻止不合规的基础设施变更。",
+      "useWhen": "编写 Rego/Sentinel、接入准入控制器、把策略检查放进流水线，或决定审计与强制模式时使用。",
+      "doNotUseWhen": "Terraform 计划专门流程或 Kubernetes 具体准入之外的主题不要假装由本 Skill 覆盖。",
+      "repoCommit": "0c89b7ed911082d77b0674759fc3a7ac3814c354",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "965f99a33652e159727ae1c6ccffe654acdf9e42a8f68a81c23b2685661aa381"
+        }
+      ],
+      "contentHash": "37d70fc642571f75d7a12f9c930d679c3f04fd339290fa5be76e5474674542d1"
+    },
+    {
+      "assetId": "T19-SKILL-COMPLIANCE-AS-CODE",
+      "ownerAgentId": "agent-task1-t19-policy-assurance",
+      "sourceEvidenceIds": [
+        "T19-EVID-SKILL-COMPLIANCE-AS-CODE"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "compliance-as-code",
+      "version": "1",
+      "description": "把合规控制转换为持续执行的检查和自动证据，使审计证据可查询且可追溯。",
+      "useWhen": "准备 SOC 2、ISO 27001 或 PCI 审计，映射基础设施控制、检测基线漂移或证明控制持续有效时使用。",
+      "doNotUseWhen": "部署时强制规则使用 policy-as-code；访问谁有权读取系统使用 iam-access-management。",
+      "repoCommit": "0c89b7ed911082d77b0674759fc3a7ac3814c354",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "446b0a138853e2b5c78d08cf0a9b6fc0bf2059f3637bfb0eba0d3f2238fb1494"
+        }
+      ],
+      "contentHash": "d7969e3f27c773036df12f2581402778a12e3baae06fb08a08549b48e4a9b471"
+    },
+    {
+      "assetId": "T19-SKILL-KUBERNETES-SECURITY",
+      "ownerAgentId": "agent-task1-t19-policy-assurance",
+      "sourceEvidenceIds": [
+        "T19-EVID-SKILL-KUBERNETES-SECURITY"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "kubernetes-security",
+      "version": "1",
+      "description": "Kubernetes RBAC、Pod Security、准入策略、securityContext、秘密加密和镜像来源验证。",
+      "useWhen": "配置集群 RBAC、强化 Pod、编写准入策略、限制受感染 Pod 能力或核对镜像签名时使用。",
+      "doNotUseWhen": "网络隔离、镜像内容扫描或外部秘密后端分别属于其他主题，不要把它们的未冻结材料当作本 Skill 证据。",
+      "repoCommit": "0c89b7ed911082d77b0674759fc3a7ac3814c354",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "ff6ece4260052e9dc3ce5bfa99d70e22fb23073cd7d9797f35d396b381b3514a"
+        }
+      ],
+      "contentHash": "1c2d1b0c72a305ffbc6174ed275e46c0c22c17a5e482ed6a49c922834cda77bc"
+    },
+    {
+      "assetId": "T19-SKILL-PIPELINE-SECURITY",
+      "ownerAgentId": "agent-task1-t19-policy-assurance",
+      "sourceEvidenceIds": [
+        "T19-EVID-SKILL-PIPELINE-SECURITY"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "pipeline-security",
+      "version": "1",
+      "description": "CI/CD 运行器最小权限、机密隔离、OIDC 联邦、流水线防投毒和依赖固定。",
+      "useWhen": "配置 CI 运行器权限、保护流水线机密、审查工作流安全或设置云部署凭证时使用。",
+      "doNotUseWhen": "只扫描产出镜像内容或讨论更广泛的软件供应链时不要冒充本 Skill 的完整覆盖。",
+      "repoCommit": "0c89b7ed911082d77b0674759fc3a7ac3814c354",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "8869daf772147aec57f2c2b4d43df67b4b20d07524072828cdae7abc8f5ade35"
+        }
+      ],
+      "contentHash": "c06ad5de160ed23a17b37209aeb4de2320b289265c29f4702e4a83cada04701e"
+    },
+    {
+      "assetId": "T19-SKILL-ZOOM-OAUTH",
+      "ownerAgentId": "agent-task1-t19-identity-platform",
+      "sourceEvidenceIds": [
+        "T19-EVID-SKILL-ZOOM-OAUTH"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "zoom-oauth",
+      "version": "1",
+      "description": "Zoom 账户、用户、设备和应用自有四类 OAuth 授权流及令牌生命周期。",
+      "useWhen": "实现 Zoom API 授权、账户或用户授权、设备流、PKCE、访问/刷新令牌或 OAuth 错误处理时使用。",
+      "doNotUseWhen": "仅做 Zoom REST 资源 CRUD、分页或 webhook 服务器实现时应使用相应 REST 主题；不要把 JWT Marketplace 应用类型当作新方案。",
+      "repoCommit": "d829544b7d0cf396e1263a3534dd5c2f0e4accac",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "acadcb4e6ba9538e3702cf338825e387f9d4059a532eaa032524c7feb930108b"
+        }
+      ],
+      "contentHash": "790d078e818feec370a217b4007b3286c13de46347d0468c1f2301b005e3061c"
+    },
+    {
+      "assetId": "T19-SKILL-ZOOM-REST-API",
+      "ownerAgentId": "agent-task1-t19-identity-platform",
+      "sourceEvidenceIds": [
+        "T19-EVID-SKILL-ZOOM-REST-API"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "zoom-rest-api",
+      "version": "1",
+      "description": "Zoom REST API 的会议、用户、录制、webhook、速率限制和资源管理集成。",
+      "useWhen": "调用 Zoom REST 端点、管理会议或用户、处理录制下载、分页、区域 URL、webhook 或 API 错误时使用。",
+      "doNotUseWhen": "只实现 OAuth 授权流和令牌管理时使用 zoom-oauth；不要继续使用已废弃的 JWT Marketplace 应用类型。",
+      "repoCommit": "d829544b7d0cf396e1263a3534dd5c2f0e4accac",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "de4e3b28a68bd02ecf3ea29ad2610aab3a32b1bc697004a2b7faaa9e4b742032"
+        }
+      ],
+      "contentHash": "193fef1a9c66990d0f778f7b68bcb14156b59530d4f25b4679e8cce2a89b03a4"
+    },
+    {
+      "assetId": "T19-SKILL-LOCAL-OIDC-PROVIDER",
+      "ownerAgentId": "agent-task1-t19-identity-platform",
+      "sourceEvidenceIds": [
+        "T19-EVID-SKILL-LOCAL-OIDC-PROVIDER"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "local-oidc-provider",
+      "version": "1",
+      "description": "在 localhost 上运行规范兼容的 OIDC/OAuth 提供方，用于真实客户端的首次本地接线。",
+      "useWhen": "没有真实身份提供方凭据、需要离线开发 OIDC/OAuth、首次配置 client/redirect/issuer 或测试登录回调时使用。",
+      "doNotUseWhen": "不要用于生产认证；E2E 自动化、CI、动态注册、Docker 或持久共享部署应使用专门的 stubIdP 指南。",
+      "repoCommit": "a9fa06143ce801b926aeae73561297a7751de90b",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "8be7530ed5df2bbcb1c85bfa2cff30d89bc37abf4ade0cc46a165f9f66e962c7"
+        }
+      ],
+      "contentHash": "2bbb2e244435bb29b3d9883e585b557a9b7fe0b1d27b9426160dea476aada853"
+    },
+    {
+      "assetId": "T19-SKILL-STUBIDP",
+      "ownerAgentId": "agent-task1-t19-identity-platform",
+      "sourceEvidenceIds": [
+        "T19-EVID-SKILL-STUBIDP"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "stubidp",
+      "version": "1",
+      "description": "用于开发、E2E、CI、Docker 和动态注册测试的轻量 OIDC stub 提供方。",
+      "useWhen": "需要无人工交互的登录测试、CI 中运行 OIDC、多个服务动态注册客户端、Docker 部署或持久测试 IdP 时使用。",
+      "doNotUseWhen": "不要把它用于生产或面向客户的认证；首次单次本地接线优先使用 local-oidc-provider 的范围。",
+      "repoCommit": "a9fa06143ce801b926aeae73561297a7751de90b",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "67ff66767cbf92d6cfa74467499b77f7207ef67cfb10f0442d87595ce7e22706"
+        }
+      ],
+      "contentHash": "d639a39e477b7cae43f2e17b347858003a4430d0b481b823d45a685edab2f868"
+    },
+    {
+      "assetId": "T19-SKILL-AUTH-IMPLEMENTATION-PATTERNS",
+      "ownerAgentId": "agent-task1-t19-identity-platform",
+      "sourceEvidenceIds": [
+        "T19-EVID-SKILL-AUTH-IMPLEMENTATION-PATTERNS"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "auth-implementation-patterns",
+      "version": "1",
+      "description": "JWT、OAuth2、会话管理和 RBAC 的通用认证授权实现模式。",
+      "useWhen": "实现登录、保护 REST/GraphQL API、集成 OAuth/SSO、构建 RBAC、迁移认证或调试安全问题时使用。",
+      "doNotUseWhen": "需要具体云服务 API、专门策略模型或提供方行为时不要把通用模式当成唯一操作依据。",
+      "repoCommit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "1fc61d6074ace3d3db9d527ef92a7188118ff305b6ea98e0f9356545c6e15996"
+        }
+      ],
+      "contentHash": "34eb0bf39920d2c000fde4caa7961bc232f426f96c372699cdeb16b92718186b"
+    },
+    {
+      "assetId": "T19-SKILL-ACCESS-CONTROL-POLICY-DESIGN",
+      "ownerAgentId": "agent-task1-t19-policy-assurance",
+      "sourceEvidenceIds": [
+        "T19-EVID-SKILL-ACCESS-CONTROL-POLICY-DESIGN"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "name": "access-control-policy-design",
+      "version": "1",
+      "description": "RBAC、ABAC、PBAC、ReBAC、ACL/DAC 及其混合授权架构和审计设计。",
+      "useWhen": "讨论角色、权限、策略、多租户访问、最小权限、Zero Trust、OPA/Cedar/Casbin 或访问审计时使用。",
+      "doNotUseWhen": "仅需认证、网络防火墙或具体提供方 token API 时不要将本架构导航器当成实现细节来源。",
+      "repoCommit": "ad9acf02bf44d11434d0fd6ee6f879b8417013a6",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "e6ab349cc89f628a71f1b729d83406c96f04a5cad7de8ab04e41f77b2460fe81"
+        }
+      ],
+      "contentHash": "1f3ea801cd6bbffbcb03981857c63d75fddb118a9c60f49d6da211354bc209ae"
+    }
+  ],
+  "externalImports": [
+    {
+      "sourceId": "T19-SRC-AWS-AUTH",
+      "skillKey": "aws-auth",
+      "kind": "skill",
+      "repository": "https://github.com/aws/agent-toolkit-for-aws",
+      "commit": "ed19c44c46c9c3a12ef0ff5bbf88161b75d3efbe",
+      "license": "Apache-2.0",
+      "path": "skills/core-skills/aws-auth/SKILL.md",
+      "rawSha256": "84cb82cf6c23196f203a16ccdcb63d4f688b2da2aa649339600fe80c1ac9c332",
+      "adaptedSha256": "db408f5185bca3fdb4810354901aa5fc832da67ebe604b5776cbc54c2a145143"
+    },
+    {
+      "sourceId": "T19-SRC-AWS-AUTH-TOKENS-SESSIONS",
+      "skillKey": "aws-auth-tokens-sessions",
+      "kind": "resource",
+      "repository": "https://github.com/aws/agent-toolkit-for-aws",
+      "commit": "ed19c44c46c9c3a12ef0ff5bbf88161b75d3efbe",
+      "license": "Apache-2.0",
+      "path": "skills/core-skills/aws-auth/references/tokens-and-sessions.md",
+      "rawSha256": "7a315bd0fa8d29503fcce21e2b87a5e04f64a01ff9a8df5a33f8efccdbfe752a",
+      "adaptedSha256": "db408f5185bca3fdb4810354901aa5fc832da67ebe604b5776cbc54c2a145143"
+    },
+    {
+      "sourceId": "T19-SRC-AWS-IAM",
+      "skillKey": "aws-iam",
+      "kind": "skill",
+      "repository": "https://github.com/aws/agent-toolkit-for-aws",
+      "commit": "ed19c44c46c9c3a12ef0ff5bbf88161b75d3efbe",
+      "license": "Apache-2.0",
+      "path": "skills/core-skills/aws-iam/SKILL.md",
+      "rawSha256": "dc4965ef0c5b51dbecddc9c44195643bf45c3b733d1428caf815006598bc8e3d",
+      "adaptedSha256": "f86958ee749a5bd7c67f8cd379f070f7742b6507753e40fe85573e16bba841c9"
+    },
+    {
+      "sourceId": "T19-SRC-NETWORK-SECURITY",
+      "skillKey": "network-security",
+      "kind": "skill",
+      "repository": "https://github.com/arjunprabhulal/devops-skills",
+      "commit": "0c89b7ed911082d77b0674759fc3a7ac3814c354",
+      "license": "MIT",
+      "path": "skills/security/network-security/SKILL.md",
+      "rawSha256": "42a60b840810a9e590f500583259ee73d7383450712842498cb0b15251df3da7",
+      "adaptedSha256": "643fac83a406e16007ebb6c043469a87f1518243a012d5b94173835ad8494a5d"
+    },
+    {
+      "sourceId": "T19-SRC-AWS-SECURITY",
+      "skillKey": "aws-security",
+      "kind": "skill",
+      "repository": "https://github.com/aws/agent-toolkit-for-aws",
+      "commit": "ed19c44c46c9c3a12ef0ff5bbf88161b75d3efbe",
+      "license": "Apache-2.0",
+      "path": "skills/core-skills/aws-security/SKILL.md",
+      "rawSha256": "62b5fd74760571e989ed96680c3c838ffe31ac901fd79b62faeccd4eebcace01",
+      "adaptedSha256": "7d5d393477a4d0cfa8f4e2a460dd20857f47ebef0dae6966c7bbf097aae7a050"
+    },
+    {
+      "sourceId": "T19-SRC-SIGNING-IN-TO-AWS",
+      "skillKey": "signing-in-to-aws",
+      "kind": "skill",
+      "repository": "https://github.com/aws/agent-toolkit-for-aws",
+      "commit": "ed19c44c46c9c3a12ef0ff5bbf88161b75d3efbe",
+      "license": "Apache-2.0",
+      "path": "skills/core-skills/signing-in-to-aws/SKILL.md",
+      "rawSha256": "9d7bd588b1328d96c3999b84f00b851ef59531a9627aa6cd2279bb90a75a9db5",
+      "adaptedSha256": "e3c236b3c0ef6833c3da6ba33f0a46f0a5fdbdf388cf421eb00e39313e5bfcad"
+    },
+    {
+      "sourceId": "T19-SRC-IAM-ACCESS-MANAGEMENT",
+      "skillKey": "iam-access-management",
+      "kind": "skill",
+      "repository": "https://github.com/arjunprabhulal/devops-skills",
+      "commit": "0c89b7ed911082d77b0674759fc3a7ac3814c354",
+      "license": "MIT",
+      "path": "skills/security/iam-access-management/SKILL.md",
+      "rawSha256": "2754e966cd37d6c2d4d82f03ed0afd637fb571fa7102e9e8933bbadfbe4decb4",
+      "adaptedSha256": "452721cbda43fe746f4d099814508b988116d2977374025123e2e8a65011a3f0"
+    },
+    {
+      "sourceId": "T19-SRC-SECRETS-MANAGEMENT",
+      "skillKey": "secrets-management",
+      "kind": "skill",
+      "repository": "https://github.com/arjunprabhulal/devops-skills",
+      "commit": "0c89b7ed911082d77b0674759fc3a7ac3814c354",
+      "license": "MIT",
+      "path": "skills/security/secrets-management/SKILL.md",
+      "rawSha256": "3a414d422a0091929ae5310e6862d2173a03e38d77a1a6addca77ee43b9ab7f9",
+      "adaptedSha256": "9be5911a9a8275ec2ba1209ea4943626756b4c09926985d374d82d991680dae9"
+    },
+    {
+      "sourceId": "T19-SRC-ZERO-TRUST",
+      "skillKey": "zero-trust",
+      "kind": "skill",
+      "repository": "https://github.com/arjunprabhulal/devops-skills",
+      "commit": "0c89b7ed911082d77b0674759fc3a7ac3814c354",
+      "license": "MIT",
+      "path": "skills/security/zero-trust/SKILL.md",
+      "rawSha256": "01b6e07a812195e1f2df8d2ba000294bc645724ca141a4cc03efa48478cd95fb",
+      "adaptedSha256": "469766c3fb78433ec76fd88c32bbb1f13835f44a7a697933209da24051c807c1"
+    },
+    {
+      "sourceId": "T19-SRC-POLICY-AS-CODE",
+      "skillKey": "policy-as-code",
+      "kind": "skill",
+      "repository": "https://github.com/arjunprabhulal/devops-skills",
+      "commit": "0c89b7ed911082d77b0674759fc3a7ac3814c354",
+      "license": "MIT",
+      "path": "skills/iac/policy-as-code/SKILL.md",
+      "rawSha256": "965f99a33652e159727ae1c6ccffe654acdf9e42a8f68a81c23b2685661aa381",
+      "adaptedSha256": "4a76b76130909f36828f9ef23fa46a47ef0e07db8b607fdc69c1ae52b1b57011"
+    },
+    {
+      "sourceId": "T19-SRC-COMPLIANCE-AS-CODE",
+      "skillKey": "compliance-as-code",
+      "kind": "skill",
+      "repository": "https://github.com/arjunprabhulal/devops-skills",
+      "commit": "0c89b7ed911082d77b0674759fc3a7ac3814c354",
+      "license": "MIT",
+      "path": "skills/security/compliance-as-code/SKILL.md",
+      "rawSha256": "446b0a138853e2b5c78d08cf0a9b6fc0bf2059f3637bfb0eba0d3f2238fb1494",
+      "adaptedSha256": "7130b35797c5e7030410560a813ef033919e9b1bdef1655149fdd94bfedc10e3"
+    },
+    {
+      "sourceId": "T19-SRC-KUBERNETES-SECURITY",
+      "skillKey": "kubernetes-security",
+      "kind": "skill",
+      "repository": "https://github.com/arjunprabhulal/devops-skills",
+      "commit": "0c89b7ed911082d77b0674759fc3a7ac3814c354",
+      "license": "MIT",
+      "path": "skills/kubernetes/kubernetes-security/SKILL.md",
+      "rawSha256": "ff6ece4260052e9dc3ce5bfa99d70e22fb23073cd7d9797f35d396b381b3514a",
+      "adaptedSha256": "733b9cc4a32b5703486ad2fe9379e83a658f7d732d7210abf5ac22e375b379db"
+    },
+    {
+      "sourceId": "T19-SRC-PIPELINE-SECURITY",
+      "skillKey": "pipeline-security",
+      "kind": "skill",
+      "repository": "https://github.com/arjunprabhulal/devops-skills",
+      "commit": "0c89b7ed911082d77b0674759fc3a7ac3814c354",
+      "license": "MIT",
+      "path": "skills/ci-cd/pipeline-security/SKILL.md",
+      "rawSha256": "8869daf772147aec57f2c2b4d43df67b4b20d07524072828cdae7abc8f5ade35",
+      "adaptedSha256": "0a62919a331e26edbb93d74c50f8fffc4e4ea4c17f14a934e8cb117a4858891b"
+    },
+    {
+      "sourceId": "T19-SRC-ZOOM-OAUTH",
+      "skillKey": "zoom-oauth",
+      "kind": "skill",
+      "repository": "https://github.com/zoom/skills",
+      "commit": "d829544b7d0cf396e1263a3534dd5c2f0e4accac",
+      "license": "MIT",
+      "path": "skills/oauth/SKILL.md",
+      "rawSha256": "acadcb4e6ba9538e3702cf338825e387f9d4059a532eaa032524c7feb930108b",
+      "adaptedSha256": "b3b2d87a43ce3b336cd4dd800d313546e413cc96bb1c04c71610993e4609cb58"
+    },
+    {
+      "sourceId": "T19-SRC-ZOOM-REST-API",
+      "skillKey": "zoom-rest-api",
+      "kind": "skill",
+      "repository": "https://github.com/zoom/skills",
+      "commit": "d829544b7d0cf396e1263a3534dd5c2f0e4accac",
+      "license": "MIT",
+      "path": "skills/rest-api/SKILL.md",
+      "rawSha256": "de4e3b28a68bd02ecf3ea29ad2610aab3a32b1bc697004a2b7faaa9e4b742032",
+      "adaptedSha256": "3d6d4654cabac45aa197915901dec18c0a08c54b64d649848038963a89df3986"
+    },
+    {
+      "sourceId": "T19-SRC-LOCAL-OIDC-PROVIDER",
+      "skillKey": "local-oidc-provider",
+      "kind": "skill",
+      "repository": "https://github.com/cerberauth/stubidp",
+      "commit": "a9fa06143ce801b926aeae73561297a7751de90b",
+      "license": "MIT",
+      "path": "skills/local-oidc-provider/SKILL.md",
+      "rawSha256": "8be7530ed5df2bbcb1c85bfa2cff30d89bc37abf4ade0cc46a165f9f66e962c7",
+      "adaptedSha256": "9310a1c85718bc3a0d9ea2f09bf71328bfee2cf71db891dc0991b024ea26f125"
+    },
+    {
+      "sourceId": "T19-SRC-STUBIDP",
+      "skillKey": "stubidp",
+      "kind": "skill",
+      "repository": "https://github.com/cerberauth/stubidp",
+      "commit": "a9fa06143ce801b926aeae73561297a7751de90b",
+      "license": "MIT",
+      "path": "skills/stubidp/SKILL.md",
+      "rawSha256": "67ff66767cbf92d6cfa74467499b77f7207ef67cfb10f0442d87595ce7e22706",
+      "adaptedSha256": "b630ae394a829ddd25eeae4ffc4edd2758bd0e464590a909f7decf44769555e8"
+    },
+    {
+      "sourceId": "T19-SRC-AUTH-IMPLEMENTATION-PATTERNS",
+      "skillKey": "auth-implementation-patterns",
+      "kind": "skill",
+      "repository": "https://github.com/wshobson/agents",
+      "commit": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/developer-essentials/skills/auth-implementation-patterns/SKILL.md",
+      "rawSha256": "1fc61d6074ace3d3db9d527ef92a7188118ff305b6ea98e0f9356545c6e15996",
+      "adaptedSha256": "08a72980a213e072860a0bc8bcd577f8e9884d3cdd7d7136bea88a1ccc14b016"
+    },
+    {
+      "sourceId": "T19-SRC-ACCESS-CONTROL-POLICY-DESIGN",
+      "skillKey": "access-control-policy-design",
+      "kind": "skill",
+      "repository": "https://github.com/tan-yong-sheng/ai-vision-mcp",
+      "commit": "ad9acf02bf44d11434d0fd6ee6f879b8417013a6",
+      "license": "MIT",
+      "path": ".claude/skills/access-control-policy-design/SKILL.md",
+      "rawSha256": "e6ab349cc89f628a71f1b729d83406c96f04a5cad7de8ab04e41f77b2460fe81",
+      "adaptedSha256": "e8078cf0a2fec152d08aabdf38425d03896f56b9832b4797c5f2d89361ada295"
+    }
+  ]
+}

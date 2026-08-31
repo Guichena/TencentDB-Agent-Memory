@@ -1,0 +1,12 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "t12-memory-repair-batch-03",
+  "external_source_ids": [],
+  "generated_at": "2026-08-30T12:00:00+08:00",
+  "actual_count": 1,
+  "raw_output_file": "draft.json",
+  "raw_output_sha256": "5a34ede278861f28f881dc926c87df2ded318095a9c46bb2cc40755bf5a41561"
+}

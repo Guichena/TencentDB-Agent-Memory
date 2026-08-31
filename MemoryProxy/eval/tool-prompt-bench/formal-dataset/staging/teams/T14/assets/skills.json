@@ -1,0 +1,471 @@
+{
+  "schema_version": "task1.team_skill_assets.v1",
+  "team_id": "T14",
+  "skills": [
+    {
+      "assetId": "T14-SKILL-HELM-CHART",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-T14-SRC-HELM-CHART"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "helm-chart",
+      "version": "1.0.0",
+      "description": "面向 Kubernetes Helm chart 编写与维护的中性指南，覆盖 chart 结构、值契约、模板、资源安全默认值、测试和版本管理。",
+      "useWhen": "创建或维护 Helm chart；设计 values 与模板；渲染、校验或发布 chart",
+      "doNotUseWhen": "只需运行已有 release 的运维命令；任务不涉及 Helm 模板或 chart 结构",
+      "repoCommit": "077702b44a5367fde0496db6a91b015f1416312a",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "a76387a1fe66946d28aa21cf97fd4871d27c6971325ee769e5469cb459f48358"
+        }
+      ],
+      "contentHash": "7ffb5679f3f985ace814679c89094731d2a333a09fcce6003c71be797a298bb6"
+    },
+    {
+      "assetId": "T14-SKILL-TEKTON-PIPELINES",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-T14-SRC-TEKTON-PIPELINES"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "tekton-pipelines",
+      "version": "1.0.0",
+      "description": "面向 Tekton Pipeline 与 PipelineRun 编排的中性指南，覆盖解析器、认证、调度、条件、finally 和超时。",
+      "useWhen": "编写 PipelineRun 或 TaskRun；配置任务解析器与私有仓库认证；设计调度、条件或超时",
+      "doNotUseWhen": "目标是 Pipelines-as-Code 事件触发规则；任务只涉及普通 Kubernetes Job",
+      "repoCommit": "077702b44a5367fde0496db6a91b015f1416312a",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "934070b8a220a8d1b24d58b23e728ba01614168492392c7bd3bf907acc7cc301"
+        }
+      ],
+      "contentHash": "38cb3a01574dd543d8a07fc89a56c7367ee148959ae5dfabc72843fe942b8676"
+    },
+    {
+      "assetId": "T14-SKILL-FLUX-KNOWLEDGE",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-T14-SRC-FLUX-KNOWLEDGE",
+        "T14-EVID-T14-SRC-FLUX-IMAGE-AUTOMATION"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "gitops-knowledge",
+      "version": "1.0.0",
+      "description": "面向 Flux CD GitOps 设计与配置的中性知识指南，覆盖 CRD、依赖顺序、源与应用器选择、ResourceSet 和镜像自动化。",
+      "useWhen": "设计 Flux GitOps 交付拓扑；选择源类型、应用器或 ResourceSet；编写或校验 Flux CRD YAML",
+      "doNotUseWhen": "只需排查单个集群当前状态；问题不涉及 Flux 或 GitOps 资源",
+      "repoCommit": "e7e95ef1648a72f5276db6f98b799c5974ea846f",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "7be56232f0fd6ba70e05b0f0b4c54bb6d900f281edd8ed0ac0497168b44f56c9"
+        },
+        {
+          "path": "references/image-automation.md",
+          "sha256": "48fe0901ddca3993acceb2b92eea365d5c6f1f5e9dfda76136319d92e16692ea"
+        }
+      ],
+      "contentHash": "00826dac86cf13ddde6d6b40683be1149005a49bd00bd13d10116ee9c1482193"
+    },
+    {
+      "assetId": "T14-SKILL-HARBOR-HELM",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-T14-SRC-HARBOR-HELM"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "harbor-helm",
+      "version": "1.0.0",
+      "description": "面向 Harbor Helm chart 部署与升级的中性指南，覆盖入口、外部依赖、存储、扫描器、生产配置和迁移。",
+      "useWhen": "用 Helm 部署或配置 Harbor；规划外部数据库、Redis 或对象存储；执行 Harbor 升级或迁移",
+      "doNotUseWhen": "只需调用 Harbor REST API；任务不涉及 Harbor chart 或集群部署",
+      "repoCommit": "077702b44a5367fde0496db6a91b015f1416312a",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "ad3dd5bb8f6d1acb539eb6b1f73ee44c8efe4ef3936581ac888df136c98135d2"
+        }
+      ],
+      "contentHash": "6c217a1777a0dc931684bdf8b26508be34d9e658e7a0bdf61ea1bea62acf75f8"
+    },
+    {
+      "assetId": "T14-SKILL-EXTERNAL-SECRETS",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-T14-SRC-EXTERNAL-SECRETS"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "external-secrets",
+      "version": "1.0.0",
+      "description": "面向 External Secrets Operator 同步外部凭据的中性指南，覆盖 provider 认证、Secret 模板、刷新策略、指标和 Helm 部署。",
+      "useWhen": "从 Vault 或云端 provider 同步 Kubernetes Secret；配置 ExternalSecret、PushSecret 或 SecretStore；排查凭据刷新和模板问题",
+      "doNotUseWhen": "只需加密并提交静态 Secret；任务不涉及外部 secret provider",
+      "repoCommit": "077702b44a5367fde0496db6a91b015f1416312a",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "7a80f91c2b20050d7deb581088f412dfd63753791b89b3447baabdeab758e33f"
+        }
+      ],
+      "contentHash": "ea535380956d7752ef3f1bbadaed0a24b7eab55c33f0f43c078e3e5d27096158"
+    },
+    {
+      "assetId": "T14-SKILL-CILIUM-GATEWAY",
+      "ownerAgentId": "agent-task1-t14-general",
+      "sourceEvidenceIds": [
+        "T14-EVID-T14-SRC-CILIUM-GATEWAY"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "cilium-gateway",
+      "version": "1.0.0",
+      "description": "面向 Cilium Gateway API 入口流量的中性指南，覆盖 TLS、跨命名空间引用、流量切分、认证代理和故障排查。",
+      "useWhen": "创建 Gateway、HTTPRoute 或 TLSRoute；配置 TLS、重定向或流量切分；排查 Cilium Gateway 和 Envoy 入口",
+      "doNotUseWhen": "入口控制器不是 Cilium；问题只涉及后端 Service 而不涉及 Gateway API",
+      "repoCommit": "077702b44a5367fde0496db6a91b015f1416312a",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "ff92e868d7231e9d79e963ff2dbf39709b19889aeeb8b0c0c245bd500b22824d"
+        }
+      ],
+      "contentHash": "21510a88a29a991af451907c6fb09260472980c78751782b46b74fbcbbd4f3cb"
+    },
+    {
+      "assetId": "T14-SKILL-HELM-OPS",
+      "ownerAgentId": "agent-task1-t14-assets-a",
+      "sourceEvidenceIds": [
+        "T14-EVID-T14-SRC-HELM-OPS"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "helm-ops",
+      "version": "1.0.0",
+      "description": "面向 Helm release 运行维护的中性指南，覆盖状态检查、试运行、OCI 依赖、值管理、钩子和 GitOps 交接。",
+      "useWhen": "检查或排查 Helm release；比较 revision、渲染或回滚；管理 OCI chart、values 或 hooks",
+      "doNotUseWhen": "要编写新的 chart 模板；生产流程只允许直接修改 Kubernetes 对象而不涉及 release",
+      "repoCommit": "077702b44a5367fde0496db6a91b015f1416312a",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "9066b237221141b8318dbe5630fca19641737d3e0d4f15a63f6ef27076545e7d"
+        }
+      ],
+      "contentHash": "e605d4837605f1ab519639ad8361f6576da5e9614f126f29ad06bb4acaa28f67"
+    },
+    {
+      "assetId": "T14-SKILL-FLAGGER",
+      "ownerAgentId": "agent-task1-t14-assets-a",
+      "sourceEvidenceIds": [
+        "T14-EVID-T14-SRC-FLAGGER"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "flagger",
+      "version": "1.0.0",
+      "description": "面向 Kubernetes 渐进式发布的中性指南，覆盖 Canary、分析指标、webhook、告警、服务网格和 Helm 部署。",
+      "useWhen": "设计 canary、A/B 或 blue/green 发布；配置分析指标和发布 webhook；排查渐进发布回滚",
+      "doNotUseWhen": "只做一次性部署而无渐进策略；目标是 Git 提交式镜像更新而不是流量发布",
+      "repoCommit": "077702b44a5367fde0496db6a91b015f1416312a",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "99b219ca26ca7e53a045a1c0f86103973a0492e8fd77f21fc9f910928c53545f"
+        }
+      ],
+      "contentHash": "9fdb84b87c39537e60d6038cce79728f4a94258eeffdacf2129330ff64763363"
+    },
+    {
+      "assetId": "T14-SKILL-SEALED-SECRETS",
+      "ownerAgentId": "agent-task1-t14-assets-a",
+      "sourceEvidenceIds": [
+        "T14-EVID-T14-SRC-SEALED-SECRETS"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "sealed-secrets",
+      "version": "1.0.0",
+      "description": "面向 Sealed Secrets 加密提交与控制器运维的中性指南，覆盖 sealing、范围、密钥续期、重加密和校验。",
+      "useWhen": "把 Kubernetes Secret 安全提交到 Git；配置 SealedSecret 的 namespace 或 cluster scope；续期、重加密或排查解密",
+      "doNotUseWhen": "已有外部 secret provider 并只需同步；需要管理普通 Secret 的业务数据而非加密清单",
+      "repoCommit": "077702b44a5367fde0496db6a91b015f1416312a",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "745afb8a281f7d22311da244e6a92ff33ef3d97c0976ac7580ca0a14861aa793"
+        }
+      ],
+      "contentHash": "06d5197ca93d225954794475d6154fe5092186b05499dcbf29aed8f2d1a1ea0b"
+    },
+    {
+      "assetId": "T14-SKILL-RELOADER",
+      "ownerAgentId": "agent-task1-t14-assets-a",
+      "sourceEvidenceIds": [
+        "T14-EVID-T14-SRC-RELOADER"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "stakater-reloader",
+      "version": "1.0.0",
+      "description": "面向 ConfigMap/Secret 变更触发工作负载重载的中性指南，覆盖 annotation 模式、排除、策略、GitOps 和指标。",
+      "useWhen": "配置 Secret 或 ConfigMap 变更后的重启；选择 auto、named 或 search/match 触发规则；排查重载未发生或 GitOps 漂移",
+      "doNotUseWhen": "需要重新同步外部 Secret 内容；变更不会被工作负载以配置方式消费",
+      "repoCommit": "077702b44a5367fde0496db6a91b015f1416312a",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "a227679e8e8940e7f89a379a0714d32549ae65e3fe3131b8fe03566f26f9b180"
+        }
+      ],
+      "contentHash": "b3c0c375841d88b65bbfe48056f79ceb16905ebe1675827d7f52f7f1226ab3b7"
+    },
+    {
+      "assetId": "T14-SKILL-TEKTON-PAC",
+      "ownerAgentId": "agent-task1-t14-assets-a",
+      "sourceEvidenceIds": [
+        "T14-EVID-T14-SRC-TEKTON-PAC"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "tekton-pac",
+      "version": "1.0.0",
+      "description": "面向 Tekton Pipelines-as-Code 事件触发与安全交付的中性指南，覆盖 Repository、匹配、CEL、ChatOps、审批和 plan/apply。",
+      "useWhen": "按 Git 事件触发 PipelineRun；设计 PR 审批、评论命令或 CEL 条件；构建安全的 plan/apply 交付流",
+      "doNotUseWhen": "只需手动运行 Tekton Pipeline；任务不涉及仓库事件或变更审批",
+      "repoCommit": "077702b44a5367fde0496db6a91b015f1416312a",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "a05e12878aa539854722b1d85e59965743203e221ed6903b0b91e27ea3f3c004"
+        }
+      ],
+      "contentHash": "e3b315d08c56374b9a0f977069a0dd47656f91f3e35db4548eede4a478b33969"
+    },
+    {
+      "assetId": "T14-SKILL-GITEA-REGISTRY",
+      "ownerAgentId": "agent-task1-t14-assets-b",
+      "sourceEvidenceIds": [
+        "T14-EVID-T14-SRC-GITEA-REGISTRY"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "gitea-registry",
+      "version": "1.0.0",
+      "description": "面向 Gitea 容器与 Helm OCI registry 的中性指南，覆盖认证、命名、多架构、REST 管理和常见错误。",
+      "useWhen": "向 Gitea registry 推送或拉取镜像；配置多架构镜像或 Helm OCI 包；列出或删除 registry 包版本",
+      "doNotUseWhen": "registry 不是 Gitea；只需构建镜像而不涉及推送或仓库管理",
+      "repoCommit": "077702b44a5367fde0496db6a91b015f1416312a",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "1af7d8b39adfaa60189fd79a0331abf8ecf20aababfcc08c9fb161a2f45b2103"
+        }
+      ],
+      "contentHash": "5287fe6f4197620d2784df98d18a1247810faf46c665c24543232d809c5a685f"
+    },
+    {
+      "assetId": "T14-SKILL-HARBOR-API",
+      "ownerAgentId": "agent-task1-t14-assets-b",
+      "sourceEvidenceIds": [
+        "T14-EVID-T14-SRC-HARBOR-API"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "harbor-api",
+      "version": "1.0.0",
+      "description": "面向 Harbor REST API v2 自动化的中性指南，覆盖项目、制品、机器人账户、扫描、复制、GC 和身份配置。",
+      "useWhen": "自动化 Harbor 项目或制品管理；触发扫描、复制或垃圾回收；配置机器人账户、OIDC/LDAP 或读取审计信息",
+      "doNotUseWhen": "只需部署 Harbor Helm chart；registry 不是 Harbor 或无需 REST 自动化",
+      "repoCommit": "077702b44a5367fde0496db6a91b015f1416312a",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "2efb7e59ba47ac896e88a005a8892e455a2f8fd2365cde1b0c8bebb9d5cdfb1c"
+        }
+      ],
+      "contentHash": "3609cc8273095b1b3fb2480322ccbd179419b682d4dadd60d271759c03f4d642"
+    },
+    {
+      "assetId": "T14-SKILL-TUPPR",
+      "ownerAgentId": "agent-task1-t14-assets-b",
+      "sourceEvidenceIds": [
+        "T14-EVID-T14-SRC-TUPPR"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "tuppr",
+      "version": "1.0.0",
+      "description": "面向 Talos 与 Kubernetes 节点升级编排的中性指南，覆盖升级 CR、健康检查、排水、并行度和维护窗口。",
+      "useWhen": "通过 Kubernetes API 声明 Talos/Kubernetes 升级；设计节点排水、健康检查和维护窗口；排查升级队列或暂停恢复",
+      "doNotUseWhen": "要手动执行 talosctl 升级；任务只涉及机器配置而非版本升级控制器",
+      "repoCommit": "077702b44a5367fde0496db6a91b015f1416312a",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "eb8779ae2bcdb13fafcd64831e39ddafa6c35f1c2148728a2797b067b7c7b0e1"
+        }
+      ],
+      "contentHash": "f5ce5ab8bf6ba941c87ce7bc92372d927793b7c820cd503b615ef7824c7f60e8"
+    },
+    {
+      "assetId": "T14-SKILL-FLUX-AUDIT",
+      "ownerAgentId": "agent-task1-t14-assets-b",
+      "sourceEvidenceIds": [
+        "T14-EVID-T14-SRC-FLUX-AUDIT"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "gitops-repo-audit",
+      "version": "1.0.0",
+      "description": "面向本地 Flux CD GitOps 仓库审计的中性指南，覆盖资源发现、清单验证、API 兼容性、最佳实践、安全审查和分级报告。",
+      "useWhen": "交付前审计或安全检查 GitOps 仓库；核对 Kubernetes 清单、Kustomize overlay 和 Flux API；需要有证据的最佳实践与安全报告",
+      "doNotUseWhen": "需要排查在线集群状态或控制器日志；任务只需编写单个 YAML 而不做仓库审计",
+      "repoCommit": "e7e95ef1648a72f5276db6f98b799c5974ea846f",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "54f7177812a85b9903d5ed7333b1cfd7c248c8b468b8dcfe66f0d1ad15ba24ea"
+        }
+      ],
+      "contentHash": "0ea14f638e402745bfdd028e495e2b1c1650275a3f8aafaebefb14f0a9035c92"
+    },
+    {
+      "assetId": "T14-SKILL-FLUX-DEBUG",
+      "ownerAgentId": "agent-task1-t14-assets-b",
+      "sourceEvidenceIds": [
+        "T14-EVID-T14-SRC-FLUX-DEBUG"
+      ],
+      "observedAt": "2026-08-28T18:00:00+08:00",
+      "name": "gitops-cluster-debug",
+      "version": "1.0.0",
+      "description": "面向 Flux 集群在线故障排查的中性指南，覆盖上下文、资源状态、依赖链、日志、镜像自动化和通知。",
+      "useWhen": "排查在线 Flux 集群资源；从 source/applier 追踪到 managed resources；根据状态、事件和日志定位根因",
+      "doNotUseWhen": "只审计本地仓库文件而不接触集群；当前问题没有在线集群或控制器状态",
+      "repoCommit": "e7e95ef1648a72f5276db6f98b799c5974ea846f",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "04acf50a728eb519ab9baa47a48a189a12c1dd71bd0ed692a80e75df4eaa29c1"
+        }
+      ],
+      "contentHash": "b8930c53c45020c4c09aa47fb883b40630e927b5eb3d1c48e71451606cfe22b2"
+    }
+  ],
+  "listingEvidence": {
+    "agentId": "agent-task1-t14-general",
+    "listedAssetIds": [
+      "T14-SKILL-HELM-CHART",
+      "T14-SKILL-TEKTON-PIPELINES",
+      "T14-SKILL-FLUX-KNOWLEDGE",
+      "T14-SKILL-HARBOR-HELM",
+      "T14-SKILL-EXTERNAL-SECRETS",
+      "T14-SKILL-CILIUM-GATEWAY"
+    ],
+    "listingSha256": "ad9d02e2316b4bdcec9b24c53b497c020c8b5b95c046ade49029e4dac22b49d3"
+  },
+  "searchFixtures": [
+    {
+      "caseKey": "SKL-003",
+      "targetAssetId": "T14-SKILL-FLUX-AUDIT",
+      "visibleDistractorIds": [
+        "T14-SKILL-FLUX-KNOWLEDGE",
+        "T14-SKILL-FLUX-DEBUG",
+        "T14-SKILL-HELM-CHART"
+      ],
+      "expectedMode": "team-visible-search"
+    },
+    {
+      "caseKey": "SKL-004",
+      "targetAssetId": "T14-SKILL-FLAGGER",
+      "visibleDistractorIds": [
+        "T14-SKILL-HELM-OPS",
+        "T14-SKILL-RELOADER",
+        "T14-SKILL-FLUX-KNOWLEDGE"
+      ],
+      "expectedMode": "team-visible-search"
+    },
+    {
+      "caseKey": "SKL-005",
+      "targetAssetId": "T14-SKILL-RELOADER",
+      "visibleDistractorIds": [
+        "T14-SKILL-EXTERNAL-SECRETS",
+        "T14-SKILL-FLUX-KNOWLEDGE",
+        "T14-SKILL-FLAGGER"
+      ],
+      "expectedMode": "team-visible-search"
+    }
+  ]
+}

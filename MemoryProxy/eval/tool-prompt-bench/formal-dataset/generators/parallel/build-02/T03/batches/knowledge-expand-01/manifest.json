@@ -1,0 +1,12 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "t03-knowledge-expand-01",
+  "input_source_ids": [],
+  "generated_at": "2026-08-29T22:20:00+08:00",
+  "raw_output_file": "draft.json",
+  "raw_output_sha256": "dc2296584cd39d1eb770d6344f48abac3f0658eb45c2e44b8a66d5512959fcdc",
+  "actual_count": 2
+}

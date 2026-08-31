@@ -1,0 +1,57 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T07-skill-trial-01",
+  "stage": "DS05",
+  "team_id": "T07",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T07-PAIR-S01",
+      "external_source_ids": ["T07-SKILL-QDRANT-CLIENT"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我们正在维护 Python 的向量摄取网关，当前范围包括集合初始化、批量写入、payload 过滤和相似检索。"},
+        {"role": "assistant", "content": "我已确认工作区结构和客户端边界，接下来会先把接入流程与测试观察点整理清楚。"},
+        {"role": "user", "content": "项目要求使用已经固定版本的官方客户端库，不希望在网关里直接拼原始 HTTP 请求。"},
+        {"role": "assistant", "content": "那需要先确认 Python 客户端的安装入口、REST 与 gRPC 的选择边界，以及现有 API 参考的位置。"},
+        {"role": "user", "content": "写入会重复执行，重复提交同一批点不能产生重复记录；测试还要能观察批量参数和失败重试设置。"},
+        {"role": "assistant", "content": "幂等写入的点标识、批量上传方式和重试参数都应在实现前固定，避免凭经验补出不存在的接口。"},
+        {"role": "user", "content": "现在缺的是一份可复用的客户端接入说明，尤其是从安装到批量写入示例之间的衔接。"},
+        {"role": "assistant", "content": "我会先确认来源材料覆盖的范围，再决定从哪一步开始实现，暂时不改网关代码。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请先说明这个 Python 网关接入向量数据库客户端的下一步和关键边界，暂时不要修改代码。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前上下文还没有那份接入说明的具体内容；固定版本客户端接入约定尚未出现在当前对话中，需要先取得团队已有的客户端接入材料，再概述适用于本项目的安装、API 参考、批量写入和幂等语义，停在可以开始实现的位置。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结客户端指南中关于官方语言客户端、REST/gRPC 参考、代码片段检索以及 Python 批量上传的并行、重试和同标识覆盖语义。",
+          "route": "skill",
+          "target_asset_ids": ["T07-SKILL-QDRANT-CLIENT"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "查看冻结的客户端指南并概述适用于 Python 网关的接入边界后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "我把缺失说明补齐：官方客户端覆盖 Python、JavaScript/TypeScript、Rust、Go、.NET 和 Java；Python 安装入口是 `pip install qdrant-client[fastembed]`。服务交互同时支持 REST 与 gRPC，首次使用或原型阶段优先 REST，并分别以官方 REST OpenAPI 与 gRPC protobuf 作为参考。需要示例时可用代码片段检索入口按语言和用例查询。Python 批量写入使用带 `id`、`payload`、`vector` 的点结构调用 `upload_points`，示例设置 `parallel=4` 和 `max_retries=3`；相同 id 再上传会覆盖已有点，省略 id 时由服务生成 UUID。请据此给出开始实现前的下一步，不修改代码。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已提供 Python 安装入口、REST/gRPC 选择、参考资料类型、示例检索方式、批量写入字段与参数，以及重复写入和缺省标识语义，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T07-SKILL-QDRANT-DIAGNOSIS", "T07-SKILL-QDRANT-DEPLOY"],
+      "controlled_delta_note": "正负分支共享完全相同的 8 条上下文和查询；正分支只说明接入说明缺失，负分支仅补齐同一份客户端指南中的安装、参考、示例和幂等写入事实。",
+      "source_fact_map": [
+        {"claim": "冻结客户端指南列出六种官方客户端及 Python 安装入口。", "source_id": "T07-SKILL-QDRANT-CLIENT", "locator": "skills/qdrant-clients-sdk/raw/SKILL.md#Qdrant Clients SDK"},
+        {"claim": "冻结客户端指南说明 REST/gRPC 参考和原型阶段的 REST 建议。", "source_id": "T07-SKILL-QDRANT-CLIENT", "locator": "skills/qdrant-clients-sdk/raw/SKILL.md#API Reference"},
+        {"claim": "冻结客户端指南的批量示例包含点字段、parallel=4、max_retries=3 及同 id 覆盖语义。", "source_id": "T07-SKILL-QDRANT-CLIENT", "locator": "skills/qdrant-clients-sdk/raw/SKILL.md#Code examples / Snippet 1"}
+      ],
+      "sol_review_questions": [
+        "确认正分支只表达既有客户端接入材料未出现在当前上下文的信息缺口，且目标项目与客户端接入范围匹配。",
+        "确认负分支只补足该指南直接支持的安装、参考、批量参数和幂等语义，没有引入其他资产或额外技术步骤。",
+        "确认最终许可证资格、可见性和 Gold 仍由 Sol 审核决定。"
+      ]
+    }
+  ]
+}

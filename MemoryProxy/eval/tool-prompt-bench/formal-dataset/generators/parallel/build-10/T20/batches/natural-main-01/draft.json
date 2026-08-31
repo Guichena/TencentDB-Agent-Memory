@@ -1,0 +1,218 @@
+{
+  "schema_version": "task1.luna_natural_negative_draft.v1",
+  "batch_id": "T20-DS05-NATURAL-MAIN-01",
+  "stage": "DS05",
+  "team_id": "T20",
+  "cases": [
+    {
+      "draft_case_id": "T20-NAT-01",
+      "synthetic_scope": ["team", "project", "workspace"],
+      "difficulty": "medium",
+      "context_bucket": "long_8",
+      "context_messages": [
+        {"role": "user", "content": "AtlasSearch 要落地一组已经评审完的商品字段映射调整，目标是让名称字段支持英文和中文的词项检索，同时保留精确匹配入口。"},
+        {"role": "assistant", "content": "我会把映射对象、现有字段和验证样例写成明确的局部变更，查询 DSL 和索引切换流程保持不变。"},
+        {"role": "user", "content": "修改文件是 src/search/catalog-mapping.ts，导出的 catalogMapping 需要把 productName 定义为 text，使用 analyzer catalog_text_v2，并添加 raw 子字段，类型为 keyword、ignore_above 为 256。sku 仍是 keyword。"},
+        {"role": "assistant", "content": "收到。productName 负责分析检索，productName.raw 负责精确值，sku 的现有定义不动；我会只调整这个映射对象。"},
+        {"role": "user", "content": "请在同一文件的局部测试中断言 productName.type、productName.analyzer、productName.fields.raw.type、productName.fields.raw.ignore_above 和 sku.type 分别为 text、catalog_text_v2、keyword、256、keyword。"},
+        {"role": "assistant", "content": "测试验收也要确认没有额外字段、没有改变 raw 的名称，并且现有 catalogMapping 的导出名保持不变。"},
+        {"role": "user", "content": "这是一个只涉及映射对象和局部断言的变更，完成后运行该映射测试文件即可。"},
+        {"role": "assistant", "content": "实现范围、精确值和验证方式都已确定，可以按文件内的现有测试风格提交这次小改动。"}
+      ],
+      "query": "请在 src/search/catalog-mapping.ts 中应用上述 productName/sku 映射，并补齐对应的局部测试。",
+      "why_current_context_is_sufficient": "当前上下文给出了目标文件、导出对象、每个字段的精确类型与参数、不得改变的字段以及逐项测试断言，能够直接完成实现和验证。",
+      "visible_distractor_ids_author_only": [],
+      "source_fact_map": [],
+      "sol_review_questions": ["映射字段和参数是否严格按上下文实现？", "测试是否覆盖 analyzer、raw 子字段和 sku 且没有引入额外要求？"]
+    },
+    {
+      "draft_case_id": "T20-NAT-02",
+      "synthetic_scope": ["team", "project", "workspace"],
+      "difficulty": "medium",
+      "context_bucket": "long_8",
+      "context_messages": [
+        {"role": "user", "content": "AtlasSearch 的 lexical query parser 已经完成，本次只需要为它增加单元覆盖，确保字段限定词和带空格的值不会在后续改动中回归。"},
+        {"role": "assistant", "content": "我会沿用 parser 的现有返回结构，只新增测试，不把测试任务扩展成解析器重写。"},
+        {"role": "user", "content": "被测函数是 src/search/lexical-query.ts 导出的 parseLexicalQuery，返回按输入顺序排列的 Clause 对象，每个对象只有 field 和 value 两个键。测试文件固定为 src/search/__tests__/lexical-query.test.ts。"},
+        {"role": "assistant", "content": "测试会直接调用 parseLexicalQuery，并对完整数组做深度相等断言，以便同时检查顺序和对象内容。"},
+        {"role": "user", "content": "请加入这四个样例及精确结果：空字符串返回 []；title:alpha status:open 返回 [{field:'title',value:'alpha'},{field:'status',value:'open'}]；title:\"red blue\" 返回 [{field:'title',value:'red blue'}]；-status:closed 返回 [{field:'status',value:'closed'}]。"},
+        {"role": "assistant", "content": "最后一个样例的前缀只表示当前 parser 约定的否定语法，期望结果仍只保留 field 和 value，不新增 negate 属性。"},
+        {"role": "user", "content": "除这四个用例外不要改变 parser 或测试配置；完成后运行 lexical-query.test.ts。"},
+        {"role": "assistant", "content": "文件位置、四组输入输出和范围限制已经足够，我会只提交测试覆盖。"}
+      ],
+      "query": "请为 parseLexicalQuery 在 src/search/__tests__/lexical-query.test.ts 中补充这四组单元测试，并运行该测试文件。",
+      "why_current_context_is_sufficient": "上下文完整给出了函数、测试文件、返回类型、四个输入及精确数组结果，以及只增测试的边界，不需要额外信息即可编码和运行测试。",
+      "visible_distractor_ids_author_only": [],
+      "source_fact_map": [],
+      "sol_review_questions": ["四个输入的数组顺序和对象键是否逐项匹配？", "是否保持只增单元测试而未修改 parser 或配置？"]
+    },
+    {
+      "draft_case_id": "T20-NAT-03",
+      "synthetic_scope": ["team", "project", "workspace"],
+      "difficulty": "medium",
+      "context_bucket": "long_8",
+      "context_messages": [
+        {"role": "user", "content": "RankLab 需要把检索命中按最终展示顺序排列，当前实现已经拿到每条命中的 score、publishedAt 和 docId。"},
+        {"role": "assistant", "content": "我会把排序规则固定成可读的比较器，并用并列分数样例验证所有次级条件。"},
+        {"role": "user", "content": "目标文件是 src/ranking/order-hits.ts，函数 orderHits(hits) 返回新数组，不得原地修改输入。排序优先级依次是 score 降序、publishedAt 降序、docId 升序。"},
+        {"role": "assistant", "content": "这样相同 score 时较新的时间先出，同一时间再用 docId 的普通字典序保证稳定结果；其他命中字段原样保留。"},
+        {"role": "user", "content": "请用以下样例补测试：a score 0.8、publishedAt 2026-08-01、docId z9；b score 0.8、publishedAt 2026-08-02、docId b2；c score 0.8、publishedAt 2026-08-02、docId a1；d score 0.9、publishedAt 2026-07-01、docId d4。期望 id 顺序为 d4、a1、b2、z9。"},
+        {"role": "assistant", "content": "测试还会保存原始数组副本，断言 orderHits 不改变输入顺序，并确认输出元素仍包含各自的 score、publishedAt 和 docId。"},
+        {"role": "user", "content": "只处理这个排序函数和它的局部测试，不调整分数计算或日期解析；测试命令是 ranking/order-hits.test.ts。"},
+        {"role": "assistant", "content": "比较优先级、完整样例和不变式都已给出，可以直接实现并验证。"}
+      ],
+      "query": "请实现 orderHits 的指定三层排序，并为上述四条命中补充局部测试。",
+      "why_current_context_is_sufficient": "当前请求提供了函数签名、返回与副作用约束、完整排序优先级、四条输入及唯一期望顺序，能够直接编码和测试。",
+      "visible_distractor_ids_author_only": [],
+      "source_fact_map": [],
+      "sol_review_questions": ["score、时间和 docId 的排序方向是否完全正确？", "是否返回新数组并覆盖并列分数的两个次级规则？"]
+    },
+    {
+      "draft_case_id": "T20-NAT-04",
+      "synthetic_scope": ["team", "project", "workspace"],
+      "difficulty": "medium",
+      "context_bucket": "long_8",
+      "context_messages": [
+        {"role": "user", "content": "RankLab 要统一排名评估指标的命名，现有输出里的 ndcg@10 不符合 TypeScript 字段命名约定。"},
+        {"role": "assistant", "content": "我会做一次完整且一致的重命名，保证类型、计算、序列化和断言使用同一个新名称。"},
+        {"role": "user", "content": "旧名 ndcg@10 只出现在 src/ranking/metrics.ts、src/ranking/report.ts、src/ranking/__tests__/metrics.test.ts 和 tests/fixtures/ranking-metrics.json。新名统一为 ndcg10。"},
+        {"role": "assistant", "content": "收到。TypeScript 对象键、读取表达式、报告 JSON 键、fixture 键和测试断言都改为 ndcg10，其他指标如 mrr 和 recall10 不动。"},
+        {"role": "user", "content": "报告序列化后的 JSON 必须包含 {\"ndcg10\":0.742}，不得保留 ndcg@10 别名；metrics.test.ts 仍要断言 ndcg10 的数值为 0.742。"},
+        {"role": "assistant", "content": "我会在指定四个文件内检查旧字符串为零，并保留报告对象的其他键和数值不变。"},
+        {"role": "user", "content": "这是纯命名迁移，不能改计算公式、指标精度或接口路径；完成后运行 metrics.test.ts。"},
+        {"role": "assistant", "content": "所有受影响文件、替换值、排除项和验证方式均已明确，可以直接完成。"}
+      ],
+      "query": "请将 RankLab 的 ndcg@10 全量重命名为 ndcg10，更新列出的类型、报告、fixture 和测试，并验证旧名不再出现。",
+      "why_current_context_is_sufficient": "上下文列出了唯一旧名、全部受影响文件、唯一新名、序列化与测试期望，以及必须保持不变的内容，足以直接完成穷尽式重命名。",
+      "visible_distractor_ids_author_only": [],
+      "source_fact_map": [],
+      "sol_review_questions": ["四个指定文件是否全部使用 ndcg10 且没有旧名或别名？", "计算、精度和其他指标是否保持不变？"]
+    },
+    {
+      "draft_case_id": "T20-NAT-05",
+      "synthetic_scope": ["team", "project", "workspace"],
+      "difficulty": "medium",
+      "context_bucket": "long_8",
+      "context_messages": [
+        {"role": "user", "content": "CursorFlow 的搜索请求 DTO 目前支持 limit 和 sort，下一步要把调用方已经确定的 search-after 游标传到请求体。"},
+        {"role": "assistant", "content": "我会在 DTO 和序列化边界增加一个可选字段，保持没有游标时的现有请求完全不变。"},
+        {"role": "user", "content": "修改 src/cursor/request.ts 的 SearchRequest：新增 searchAfter?: readonly [number, string]。第一个元素是 createdAt 的 Unix 秒数，第二个元素是文档 id。"},
+        {"role": "assistant", "content": "类型会限制为恰好两个元素，并在 toBody() 中将它映射为 search_after；不把驼峰字段名直接发送给服务。"},
+        {"role": "user", "content": "当 searchAfter 为 [1722500000, 'doc-42'] 时，toBody() 必须包含 search_after: [1722500000, 'doc-42']；为 undefined 时必须省略 search_after 键，其他 limit、sort 键和值不变。"},
+        {"role": "assistant", "content": "我会补充这两个序列化断言，并确认输入 tuple 不被修改；不新增 null、offset 或默认游标行为。"},
+        {"role": "user", "content": "只改 DTO、toBody 和 request DTO 的局部测试，完成后运行 cursor/request.test.ts。"},
+        {"role": "assistant", "content": "字段类型、转换名称、带值和不带值的结果都已确定，可以按现有请求构造方式实现。"}
+      ],
+      "query": "请在 src/cursor/request.ts 中加入 searchAfter 的类型与 search_after 序列化，并补齐两个局部测试。",
+      "why_current_context_is_sufficient": "请求给出了确切文件、字段类型、tuple 含义、序列化键名、带值与 undefined 的精确输出及不变字段，能够直接编码和测试。",
+      "visible_distractor_ids_author_only": [],
+      "source_fact_map": [],
+      "sol_review_questions": ["searchAfter 是否严格为两元素 tuple 并正确映射为 search_after？", "undefined 时是否省略字段且保留其他请求内容？"]
+    },
+    {
+      "draft_case_id": "T20-NAT-06",
+      "synthetic_scope": ["team", "project", "workspace"],
+      "difficulty": "medium",
+      "context_bucket": "long_8",
+      "context_messages": [
+        {"role": "user", "content": "CursorFlow 现有的 cursor 分页函数需要补回归测试，重点是 search-after 边界在相同时间戳下仍然稳定。"},
+        {"role": "assistant", "content": "我会只写测试，使用明确排序后的行和边界 tuple，不引入真实时钟或网络依赖。"},
+        {"role": "user", "content": "被测函数是 src/cursor/paginate.ts 的 paginateAfter(rows, limit, after)，排序键固定为 createdAt 降序、id 升序；after 未提供时从第一行开始。"},
+        {"role": "assistant", "content": "测试数据会把两个相同 createdAt 的 id 放在一起，确保第二页从 tuple 之后开始而不是重复边界行。"},
+        {"role": "user", "content": "四行输入为 a(createdAt 10)、c(10)、b(9)、d(8)，函数按规则排序。limit=2 且 after 未提供时期望 [a,c]；after=[10,'c'] 时期望 [b,d]；after=[9,'b'] 时期望 [d]。"},
+        {"role": "assistant", "content": "我会对每次返回的 id 数组做深度相等断言，并另加一个 limit=2、after=[10,'a'] 的断言，期望 [c,b]，覆盖同时间戳的 id 边界。"},
+        {"role": "user", "content": "测试文件固定为 src/cursor/__tests__/paginate.test.ts；不要修改分页实现、排序规则或加入 offset 兼容。"},
+        {"role": "assistant", "content": "输入行、排序规则、三个指定边界和额外同时间戳边界都已完整，可以直接补测试。"}
+      ],
+      "query": "请在 src/cursor/__tests__/paginate.test.ts 中为 paginateAfter 补充上述稳定排序和 search-after 边界测试。",
+      "why_current_context_is_sufficient": "上下文完整提供了被测函数、排序规则、全部行数据、每个边界的精确期望以及只增测试的限制，不依赖其他资料即可完成。",
+      "visible_distractor_ids_author_only": [],
+      "source_fact_map": [],
+      "sol_review_questions": ["测试是否覆盖未提供 after、两个指定边界和相同时间戳的 [10,'a'] 边界？", "期望是否体现 createdAt 降序与 id 升序且没有重复行？"]
+    },
+    {
+      "draft_case_id": "T20-NAT-07",
+      "synthetic_scope": ["team", "project", "workspace"],
+      "difficulty": "hard",
+      "context_bucket": "long_8",
+      "context_messages": [
+        {"role": "user", "content": "ReindexRail 的 cutover 模块中有一段内联 alias 切换逻辑，想把它抽成小 helper 以便局部测试，运行行为必须保持一致。"},
+        {"role": "assistant", "content": "我会先按现有调用顺序抽取纯粹的 helper，再让原调用点传入相同参数，不改变异常传播。"},
+        {"role": "user", "content": "文件是 src/reindex/cutover.ts。现有 applyAliasCutover(client, alias, previousIndex, nextIndex) 先调用 client.indices.exists({index: nextIndex})；返回 false 时抛出 Error('next index missing')；返回 true 后调用一次 updateAliases。"},
+        {"role": "assistant", "content": "updateAliases 的 actions 顺序必须保持为先 add {index: nextIndex, alias}，再 remove {index: previousIndex, alias}；调用抛错时原错误直接向上抛出。"},
+        {"role": "user", "content": "请抽出 export async function swapReadAlias(client, alias, previousIndex, nextIndex): Promise<void>，完整承载上述 exists、错误文本和一次 updateAliases 行为，并让 applyAliasCutover 调用它。"},
+        {"role": "assistant", "content": "我会增加两个 mock 测试：目标索引存在时检查 exists 和 actions 顺序，目标索引不存在时检查错误文本且确认 updateAliases 未调用。"},
+        {"role": "user", "content": "不能增加重试、回滚、删除旧索引或改变 applyAliasCutover 的公开签名；测试文件是 src/reindex/__tests__/cutover.test.ts。"},
+        {"role": "assistant", "content": "helper 签名、两步调用顺序、错误行为和明确排除项已经足够，我会只做这次结构抽取及局部测试。"}
+      ],
+      "query": "请从 src/reindex/cutover.ts 抽出 swapReadAlias，并补充测试证明 alias 切换的调用顺序和缺失目标索引行为不变。",
+      "why_current_context_is_sufficient": "当前上下文逐项规定了 helper 签名、exists 检查、错误文本、updateAliases actions 顺序、异常行为和测试断言，能够直接完成抽取与验证。",
+      "visible_distractor_ids_author_only": [],
+      "source_fact_map": [],
+      "sol_review_questions": ["抽取后是否仍先检查目标索引、再按 add/remove 顺序只调用一次 updateAliases？", "缺失索引时是否保持错误文本且不发起更新？"]
+    },
+    {
+      "draft_case_id": "T20-NAT-08",
+      "synthetic_scope": ["team", "project", "workspace"],
+      "difficulty": "easy",
+      "context_bucket": "long_8",
+      "context_messages": [
+        {"role": "user", "content": "ReindexRail 想让增量索引日志带上几个固定字段，方便从已有日志行直接定位 checkpoint 和延迟。"},
+        {"role": "assistant", "content": "我会沿用现有事件对象和字段，不改变日志级别或 message，只补充明确给出的字段名和值来源。"},
+        {"role": "user", "content": "修改 src/reindex/lag-log.ts 的 buildLagEvent(input)。现有返回值包含 level:'info' 和 message:'checkpoint advanced'；新增 phase:'incremental'、checkpoint: input.checkpoint、lag_ms: input.lagMs、job_id: input.jobId。"},
+        {"role": "assistant", "content": "字段名按日志协议保留下划线形式，checkpoint、lag_ms 和 job_id 都直接取 input，不做格式化或单位换算。"},
+        {"role": "user", "content": "对 input={jobId:'reindex-17', checkpoint:'cp-42', lagMs:240}，完整返回必须包含 level:'info'、message:'checkpoint advanced'、phase:'incremental'、checkpoint:'cp-42'、lag_ms:240、job_id:'reindex-17'。"},
+        {"role": "assistant", "content": "我会在 src/reindex/__tests__/lag-log.test.ts 中做精确对象断言，并验证 input 对象不会被写入新属性。"},
+        {"role": "user", "content": "只增加这四个日志字段，不改字段类型、message 文案或输出接口；完成后运行 lag-log.test.ts。"},
+        {"role": "assistant", "content": "字段清单、值映射和保留内容都已给出，可以直接实现并测试。"}
+      ],
+      "query": "请为 buildLagEvent 增加指定的 phase、checkpoint、lag_ms 和 job_id 字段，并补齐精确日志对象测试。",
+      "why_current_context_is_sufficient": "上下文提供了目标函数、已有字段、新字段的精确名称和值映射、完整样例输出和不变式，足以直接编码和测试。",
+      "visible_distractor_ids_author_only": [],
+      "source_fact_map": [],
+      "sol_review_questions": ["四个新字段是否使用精确协议名称并映射到正确输入值？", "level、message 和 input 对象是否保持不变？"]
+    },
+    {
+      "draft_case_id": "T20-NAT-09",
+      "synthetic_scope": ["team", "project", "workspace"],
+      "difficulty": "medium",
+      "context_bucket": "long_8",
+      "context_messages": [
+        {"role": "user", "content": "VectorBlend 要把已经选定的 embedding 版本沿现有配置对象传到 embedder 创建处，避免索引配置和运行时实际版本脱节。"},
+        {"role": "assistant", "content": "我会只扩展配置类型和传参链路，不改变模型名、维度或现有向量归一化设置。"},
+        {"role": "user", "content": "src/vector/config.ts 中的 VectorConfig 现在有 model:'text-search' 和 dimensions:768；新增 embeddingVersion:'embed-2026-07'。src/vector/create.ts 的 createEmbedder(config) 要把该值传给底层构造参数 version。"},
+        {"role": "assistant", "content": "配置键保持驼峰 embeddingVersion，底层参数键使用已有接口要求的 version；值必须原样传递，不能从 model 推导。"},
+        {"role": "user", "content": "请更新 src/vector/__tests__/create.test.ts：用完整配置断言底层构造收到 {model:'text-search', dimensions:768, version:'embed-2026-07'}，并断言 VectorConfig 的 embeddingVersion 为该字符串。"},
+        {"role": "assistant", "content": "测试还会保留原有 normalize=true 选项的断言；本次不添加默认版本、环境变量或配置回退。"},
+        {"role": "user", "content": "这是一次配置字段透传，完成后只运行 vector/create.test.ts，不改其他向量计算逻辑。"},
+        {"role": "assistant", "content": "来源字段、底层映射、精确版本和测试边界已明确，可以直接完成。"}
+      ],
+      "query": "请在 VectorConfig 中接入 embeddingVersion:'embed-2026-07'，让 createEmbedder 将其透传为 version，并更新对应测试。",
+      "why_current_context_is_sufficient": "上下文给出了两个目标文件、配置对象现状、精确版本、底层键名、完整构造期望和保持项，能够直接完成配置透传与测试。",
+      "visible_distractor_ids_author_only": [],
+      "source_fact_map": [],
+      "sol_review_questions": ["embeddingVersion 是否原样透传为底层 version 而非被推导或改名？", "model、dimensions 和 normalize 既有行为是否保持？"]
+    },
+    {
+      "draft_case_id": "T20-NAT-10",
+      "synthetic_scope": ["team", "project", "workspace"],
+      "difficulty": "hard",
+      "context_bucket": "long_8",
+      "context_messages": [
+        {"role": "user", "content": "VectorBlend 的 hybrid score 计算已经有稳定输出，本次想把表达式拆成可读的小函数，同时保证现有分数和边界错误行为完全不变。"},
+        {"role": "assistant", "content": "我会先固定现有公式和校验，再做等价重构，避免在重构中改变权重含义或数值精度。"},
+        {"role": "user", "content": "src/vector/hybrid-score.ts 导出 hybridScore(lexical, dense, weight)。当前公式是 weight * lexical + (1 - weight) * dense；weight 不在 0 到 1（含边界）时抛出 RangeError('weight must be between 0 and 1')。"},
+        {"role": "assistant", "content": "重构后的公开函数签名和 RangeError 文本必须保持不变；可以抽出 validateWeight 和 combineScores，但不得四舍五入或改变参数顺序。"},
+        {"role": "user", "content": "请为以下精确样例保留测试：hybridScore(0.8,0.4,0.7)=0.68；hybridScore(0.2,0.9,0.7)=0.41；hybridScore(1,0,0.7)=0.7；weight=-0.1 和 weight=1.1 都抛出上述 RangeError。"},
+        {"role": "assistant", "content": "测试文件是 src/vector/__tests__/hybrid-score.test.ts；我会额外断言 lexical 和 dense 为 0、1 时仍按同一公式计算，不引入新默认权重。"},
+        {"role": "user", "content": "只允许在该模块内做等价重构和局部测试，不能改调用方、输出格式或增加截断逻辑；完成后运行 hybrid-score.test.ts。"},
+        {"role": "assistant", "content": "公式、边界、错误文本、样例输出和重构范围均已明确，可以直接完成并验证等价性。"}
+      ],
+      "query": "请重构 src/vector/hybrid-score.ts 的 hybridScore 计算，保持给定公式、RangeError 行为和全部精确输出，并补齐局部测试。",
+      "why_current_context_is_sufficient": "当前上下文完整规定了公开函数、数学公式、权重边界、错误文本、精确样例及允许的重构范围，能够直接实现和测试而无需额外依据。",
+      "visible_distractor_ids_author_only": [],
+      "source_fact_map": [],
+      "sol_review_questions": ["重构是否保持公式、参数顺序、边界和错误文本完全一致？", "0.68、0.41、0.7 及两个越界样例是否都有精确断言且没有截断？"]
+    }
+  ]
+}

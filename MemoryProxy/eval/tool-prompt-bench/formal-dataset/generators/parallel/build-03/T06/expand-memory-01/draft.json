@@ -1,0 +1,460 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t06-expand-memory-01",
+  "stage": "DS05",
+  "team_id": "T06",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T06-MEM-BP-02",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们正在继续 orbit-vscode-extension 的命令入口整理，目标是让命令贡献、侧栏入口和可见性行为一致。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前贡献清单和视图结构已经整理好，handler 也有初步实现。"
+        },
+        {
+          "role": "user",
+          "content": "并行的 harbor-admin-cli 正在处理根命令选项，lineage-ml-pipeline 正在处理 DVC 远端；它们只是同域背景。"
+        },
+        {
+          "role": "assistant",
+          "content": "这里不需要改 .NET 参数解析，也不应把数据流水线的缓存约定带进扩展入口。"
+        },
+        {
+          "role": "user",
+          "content": "已有回归会检查命令面板、侧栏以及资源类型不匹配时的隐藏行为。"
+        },
+        {
+          "role": "assistant",
+          "content": "实现可以按稳定标识、处理函数和 UI 入口拆开验证。"
+        },
+        {
+          "role": "user",
+          "content": "但我没有保存上次 rollout 评审中的完整顺序与明确排除项。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前上下文能确定范围，却缺少历史决定的精确措辞。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请确认上次 orbit-vscode-extension 命令 rollout 的完整顺序、可见性处理和明确排除项。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我记得有命令贡献、handler 和侧栏步骤，但需要历史记录还原精确顺序。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "冻结的历史信息尚未出现在上下文，需要恢复目标决定的精确答案：T06-L0-03",
+          "route": "memory",
+          "target_asset_ids": [
+            "T06-L0-03"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_conversation_search",
+              "tdai_conversation_query"
+            ]
+          ],
+          "stop_after_candidate": "返回承载该决定的最小历史资产后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "历史决定是先贡献稳定命令标识，再注册 handler，再接侧栏入口与 enablement 条件，最后补齐本地化；排除修改 CLI 参数解析，以及把内部诊断命令暴露到命令面板。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已经给出目标决定、完整答案与排除项，无需读取历史资产。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T06-L0-05",
+        "T06-L1-02",
+        "T06-L2-02"
+      ],
+      "controlled_delta_note": "两条变体共享完全相同的 8 条上下文与 query，仅追加的第 9 条消息不同；正例只保留一个历史信息缺口，负例只补齐该缺口。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "正例是否只缺目标历史决定而不缺当前实施边界？",
+        "负例是否完整闭合答案与 exclusions 因而无需检索？",
+        "是否存在至少三个可见同域干扰且没有改变目标项目？",
+        "provider-visible 文本是否未泄漏内部资产标识、工具协议或路由名？"
+      ]
+    },
+    {
+      "draft_pair_id": "T06-MEM-BP-03",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "relay-terminal-client 最近要统一参数错误和远端失败的退出行为。"
+        },
+        {
+          "role": "assistant",
+          "content": "解析器、远端调用和 stdout/stderr 分层已经存在，问题是历史约定没有被完整记录。"
+        },
+        {
+          "role": "user",
+          "content": "harbor-admin-cli 的退出码映射和 orbit 扩展的菜单条件都只是背景，不能替代终端客户端约定。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前测试覆盖成功、缺参和超时，但缺少对归因边界的历史说明。"
+        },
+        {
+          "role": "user",
+          "content": "我们希望保持机器可读输出字段不变，同时让调用方能区分重试条件。"
+        },
+        {
+          "role": "assistant",
+          "content": "实现面应集中在解析层与错误边界，不要把远端异常改写成用法提示。"
+        },
+        {
+          "role": "user",
+          "content": "我记得有一份历史决定明确列出了各类错误的返回值，但现在找不到原文。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前输入还不能给出那份决定的完整答案。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请确认 relay-terminal-client 历史上对参数错误、远端失败和成功场景的退出码归因及排除项。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我只记得要区分用法错误和远端错误，完整返回值仍需查历史。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "冻结的历史信息尚未出现在上下文，需要恢复目标决定的精确答案：T06-L1-05",
+          "route": "memory",
+          "target_asset_ids": [
+            "T06-L1-05"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_memory_search"
+            ]
+          ],
+          "stop_after_candidate": "返回承载该决定的最小历史资产后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "历史决定是缺参或格式错误在解析层返回 2，远端或服务失败返回 1，成功返回 0；排除在 handler 重复解析、把所有错误压成 1、把远端失败伪装成用法错误。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已经给出目标决定、完整答案与排除项，无需读取历史资产。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T06-L1-08",
+        "T06-L2-04",
+        "T06-L0-04"
+      ],
+      "controlled_delta_note": "两条变体共享完全相同的 8 条上下文与 query，仅追加的第 9 条消息不同；正例只保留一个历史信息缺口，负例只补齐该缺口。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "正例是否只缺目标历史决定而不缺当前实施边界？",
+        "负例是否完整闭合答案与 exclusions 因而无需检索？",
+        "是否存在至少三个可见同域干扰且没有改变目标项目？",
+        "provider-visible 文本是否未泄漏内部资产标识、工具协议或路由名？"
+      ]
+    },
+    {
+      "draft_pair_id": "T06-MEM-BP-04",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "lineage-ml-pipeline 需要恢复团队之前确认的 DVC remote 命名和本地凭据约定。"
+        },
+        {
+          "role": "assistant",
+          "content": "流水线 stage 和实验队列都已分开，当前只处理远端与凭据边界。"
+        },
+        {
+          "role": "user",
+          "content": "其他项目的 CLI 配置和扩展本地化是可见干扰，不应改变 DVC 约定。"
+        },
+        {
+          "role": "assistant",
+          "content": "仓库里只能保留不含秘密的配置键或 URL，凭据来源需要保持本地化。"
+        },
+        {
+          "role": "user",
+          "content": "同步和清理顺序已有大致方案，但默认 remote 名称仍缺少历史确认。"
+        },
+        {
+          "role": "assistant",
+          "content": "下一步要把命名、凭据来源和禁止提交的内容分别核对。"
+        },
+        {
+          "role": "user",
+          "content": "我知道团队定过一套规则，却没有保留它的精确文本。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前上下文不足以还原默认名和全部排除项。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请确认团队已定的 DVC remote 默认命名、本地凭据来源和禁止提交项。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我知道凭据不能进仓库，但默认 remote 名和完整边界需要找回历史决定。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "冻结的历史信息尚未出现在上下文，需要恢复目标决定的精确答案：T06-L1-09",
+          "route": "memory",
+          "target_asset_ids": [
+            "T06-L1-09"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_memory_search"
+            ]
+          ],
+          "stop_after_candidate": "返回承载该决定的最小历史资产后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "历史决定是默认 remote 名为 team-cache，凭据仅从本地配置或环境注入；排除把令牌写入提交配置、每个 stage 自定义 remote 名、提交本地绝对路径。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已经给出目标决定、完整答案与排除项，无需读取历史资产。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T06-L1-10",
+        "T06-L2-03",
+        "T06-L0-09"
+      ],
+      "controlled_delta_note": "两条变体共享完全相同的 8 条上下文与 query，仅追加的第 9 条消息不同；正例只保留一个历史信息缺口，负例只补齐该缺口。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "正例是否只缺目标历史决定而不缺当前实施边界？",
+        "负例是否完整闭合答案与 exclusions 因而无需检索？",
+        "是否存在至少三个可见同域干扰且没有改变目标项目？",
+        "provider-visible 文本是否未泄漏内部资产标识、工具协议或路由名？"
+      ]
+    },
+    {
+      "draft_pair_id": "T06-MEM-BP-05",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "harbor-admin-cli 正在整理短选项兼容性，重点是旧别名和安静模式不能互相冲突。"
+        },
+        {
+          "role": "assistant",
+          "content": "命令树和帮助回归已经固定，当前只缺历史决策的日期与分类信息。"
+        },
+        {
+          "role": "user",
+          "content": "orbit 扩展入口、relay 输出合同和 DVC 配置是同域背景，不是这次短选项决策。"
+        },
+        {
+          "role": "assistant",
+          "content": "实现应留在解析层，并保持现有长选项和退出行为。"
+        },
+        {
+          "role": "user",
+          "content": "我需要按 decision 类型和日期过滤历史记录，再确认那次评审对旧别名的结论。"
+        },
+        {
+          "role": "assistant",
+          "content": "过滤条件本身明确，但上下文没有给出对应事件的完整答案。"
+        },
+        {
+          "role": "user",
+          "content": "只记得它发生在八月中旬，具体日期和保留哪些字母还要核对。"
+        },
+        {
+          "role": "assistant",
+          "content": "请以历史决定为准，不要用当前猜测替代日期和别名清单。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请按 decision 类型与 2026-08-11 日期过滤历史，确认旧短选项别名的最终保留决定。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "只知道要保留兼容性，但日期和具体短别名仍是历史信息缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "冻结的历史信息尚未出现在上下文，需要恢复目标决定的精确答案：T06-L1-13",
+          "route": "memory",
+          "target_asset_ids": [
+            "T06-L1-13"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_atomic_query"
+            ]
+          ],
+          "stop_after_candidate": "返回承载该决定的最小历史资产后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "历史决定日期为 2026-08-11：保留 -o 作为输出别名，-q 继续表示安静模式；排除在 handler 二次解释，以及用长选项替换而不保留兼容短别名。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已经给出目标决定、完整答案与排除项，无需读取历史资产。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T06-L1-01",
+        "T06-L1-06",
+        "T06-L1-12"
+      ],
+      "controlled_delta_note": "两条变体共享完全相同的 8 条上下文与 query，仅追加的第 9 条消息不同；正例只保留一个历史信息缺口，负例只补齐该缺口。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "正例是否只缺目标历史决定而不缺当前实施边界？",
+        "负例是否完整闭合答案与 exclusions 因而无需检索？",
+        "是否存在至少三个可见同域干扰且没有改变目标项目？",
+        "provider-visible 文本是否未泄漏内部资产标识、工具协议或路由名？"
+      ]
+    },
+    {
+      "draft_pair_id": "T06-MEM-BP-06",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "relay-terminal-client 的一次发布回归需要复盘，问题表现为缺参请求被当成远端失败。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前日志摘要只说明调用方发生重试，尚未包含事故场景的完整正文。"
+        },
+        {
+          "role": "user",
+          "content": "harbor 的参数解析和 DVC 的缓存策略是可见同域干扰；这次只关注终端发布事故。"
+        },
+        {
+          "role": "assistant",
+          "content": "需要同时确认输出流、退出码、跨平台回归和重试边界。"
+        },
+        {
+          "role": "user",
+          "content": "索引已经提示有一份注入的事故记录，但正文没有出现在当前上下文。"
+        },
+        {
+          "role": "assistant",
+          "content": "在读取正文前不能断言事故的修复决定和覆盖范围。"
+        },
+        {
+          "role": "user",
+          "content": "请找回那份记录，并只按其中的发布复盘继续。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前上下文仍缺少与索引对应的完整事故场景内容。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请读取对应的发布事故场景，复盘缺参、远端失败、输出流和跨平台回归的完整边界。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "当前只有事故摘要和索引线索，缺少注入场景正文及其完整修复边界。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "冻结的历史信息尚未出现在上下文，需要恢复目标决定的精确答案：T06-L2-04",
+          "route": "memory",
+          "target_asset_ids": [
+            "T06-L2-04"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_read_scene"
+            ]
+          ],
+          "stop_after_candidate": "返回承载该决定的最小历史资产后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "事故正文记录：缺参或格式错误应在解析层写 stderr 并返回 2，远端失败返回 1，成功返回 0；保持输出字段和错误边界稳定，并回归 Windows/Unix、缺参、非法值、远端超时及机器可读输出。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已经给出目标决定、完整答案与排除项，无需读取历史资产。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T06-L1-05",
+        "T06-L1-08",
+        "T06-L2-03"
+      ],
+      "controlled_delta_note": "两条变体共享完全相同的 8 条上下文与 query，仅追加的第 9 条消息不同；正例只保留一个历史信息缺口，负例只补齐该缺口。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "正例是否只缺目标历史决定而不缺当前实施边界？",
+        "负例是否完整闭合答案与 exclusions 因而无需检索？",
+        "是否存在至少三个可见同域干扰且没有改变目标项目？",
+        "provider-visible 文本是否未泄漏内部资产标识、工具协议或路由名？"
+      ]
+    }
+  ]
+}

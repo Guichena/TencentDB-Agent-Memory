@@ -1,0 +1,239 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T07-memory-expansion-01",
+  "stage": "DS05",
+  "team_id": "T07",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T07-PAIR-M02",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "昨天批量写入网关出现重复点，先梳理这次幂等写入事故的时间线。"},
+        {"role": "assistant", "content": "先按批次接收、重试、确认和再次提交四个阶段标记日志，再比对点标识是否稳定。"},
+        {"role": "user", "content": "调用方在超时后会再次提交同一批，不能把重试当成新数据。"},
+        {"role": "assistant", "content": "事故复盘需要把首次提交、超时重试和最终确认放在同一条批次链路里核对。"}
+      ],
+      "changed_message_index": 4,
+      "query": "请找回上次幂等写入事故的具体结论，尤其说明重复点为何产生以及修复锁定哪里。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前片段没有保留事故复盘的最终结论；请从之前对话找回具体表述。"},
+        "private_proposal": {
+          "unique_information_gap": "需要恢复上次幂等写入事故中重复点的直接原因、修复边界、稳定标识映射和回归验证结论。",
+          "route": "memory",
+          "target_asset_ids": ["T07-L0-04"],
+          "allowed_sequence_candidates": [["tdai_conversation_search"]],
+          "stop_after_candidate": "找到记录该幂等写入事故及其修复结论的历史会话后即可停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "复盘结论是：重复点来自重试路径重新生成临时标识，底层因此按不同标识接收了两份；修复锁定标识生成和重试边界，让一次批次生命周期共享标识映射，并增加重复提交回归样例。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息已经给出重复点的根因、修复边界、一次批次内的稳定映射以及回归样例要求，无需寻找历史内容。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T07-L0-05", "T07-L1-08"],
+      "controlled_delta_note": "两条分支共享四条事故时间线背景和同一查询；正分支只指出结论缺失，负分支只补足该事故结论。",
+      "source_fact_map": [
+        {"claim": "重试路径重新生成临时标识导致同批次被按不同标识接收", "source_id": "T07-L0-04", "locator": "T07-L0-04-M07..M08"},
+        {"claim": "修复共享一次批次生命周期的标识映射并增加重复提交回归", "source_id": "T07-L0-04", "locator": "T07-L0-04-M09..M10"}
+      ],
+      "sol_review_questions": [
+        "正分支是否确实缺少事故的具体历史结论，而不是缺少一般性的幂等设计建议？",
+        "负分支是否只补充根因和修复结论，没有顺带引入集合或检索方面的新缺口？"
+      ]
+    },
+    {
+      "draft_pair_id": "T07-PAIR-M03",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "We are finalizing the authentication, timeout, and failure boundaries for the generated client so callers get predictable behavior."},
+        {"role": "assistant", "content": "Let us separate credential injection, transport timeout, server failure, and caller cancellation before assigning responsibility."},
+        {"role": "user", "content": "Credentials must stay out of generated artifacts and should not be assembled separately in every endpoint."},
+        {"role": "assistant", "content": "The runtime will apply authentication centrally while endpoint wrappers describe request parameters and response types."},
+        {"role": "user", "content": "Timeouts must be fast and deterministic in tests rather than depending on a real network."},
+        {"role": "assistant", "content": "Use an injectable transport and clock so contract tests can exercise the boundaries with controlled responses."},
+        {"role": "user", "content": "When generation is upgraded, the ownership boundaries for authentication and failures must not silently change."},
+        {"role": "assistant", "content": "Record the boundaries as a stable team convention and compare runtime configuration with the public interface during upgrades."}
+      ],
+      "changed_message_index": 8,
+      "query": "Please retrieve the current team decision about who owns retries for the generated client.",
+      "positive": {
+        "delta_message": {"role": "user", "content": "The current team decision about retry ownership is not present here; please recover the original wording from our earlier discussion."},
+        "private_proposal": {
+          "unique_information_gap": "Recover the current team decision on who decides ordinary retryable failures, whether the client retries implicitly, and how cancellation remains available.",
+          "route": "memory",
+          "target_asset_ids": ["T07-L1-03"],
+          "allowed_sequence_candidates": [["tdai_memory_search"]],
+          "stop_after_candidate": "Stop after finding the current team decision about generated-client retry ownership."
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "The current decision is that ordinary retryable failures remain an explicit caller choice. The generated client does not silently take over retries; an outer boundary may configure automatic retries explicitly, and cancellation must remain available."},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "The appended message supplies the only missing decision: caller ownership of ordinary retries, no implicit client retry, explicit outer-boundary configuration, and preserved cancellation."
+        }
+      },
+      "visible_distractor_ids_author_only": ["T07-L1-14", "T07-L1-15", "T07-L2-01"],
+      "controlled_delta_note": "Both branches share eight English messages covering runtime boundaries but omit retry ownership; only the appended message differs and the negative supplies that one decision.",
+      "source_fact_map": [
+        {"claim": "Ordinary retryable failures are an explicit caller choice; the client does not silently take over retries and cancellation remains available.", "source_id": "T07-L1-03", "locator": "summary; valid_from=2026-08-18"},
+        {"claim": "Responsibility boundaries are compared as a stable convention during upgrades.", "source_id": "T07-L0-08", "locator": "T07-L0-08-M09..M10"}
+      ],
+      "sol_review_questions": [
+        "Does the positive branch omit only retry ownership while retaining the already visible authentication and timeout boundaries?",
+        "Does the negative branch state caller ownership and the no-implicit-retry rule without adding a separate transport or authentication decision?"
+      ]
+    },
+    {
+      "draft_pair_id": "T07-PAIR-M04",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "long_12_to_18",
+      "shared_context_messages": [
+        {"role": "user", "content": "昨天批量写入网关出现重复点，先梳理这次幂等写入事故的时间线。"},
+        {"role": "assistant", "content": "先按批次接收、重试、确认和再次提交四个阶段标记日志，再比对点标识是否稳定。"},
+        {"role": "user", "content": "调用方在超时后会再次提交同一批，不能把重试当成新数据。"},
+        {"role": "assistant", "content": "写入接口要使用由业务记录派生的稳定点标识，并让覆盖写语义保持一致。"},
+        {"role": "user", "content": "集合初始化和批量写入之间还有竞态，首次启动尤其明显。"},
+        {"role": "assistant", "content": "初始化步骤需要可重复执行，写入前确认集合配置已就绪，失败时保留清晰阶段信息。"},
+        {"role": "user", "content": "今天把向量网关的集合初始化和过滤查询接口整理成一条验收清单。"},
+        {"role": "assistant", "content": "清单可以分成集合参数、点写入、负载字段、过滤条件和结果排序五组。"},
+        {"role": "user", "content": "初始化重复执行时不能破坏已有数据，过滤结构和业务排序也要分开。"},
+        {"role": "assistant", "content": "初始化先读取现状，只有缺失时创建；过滤条件和排序参数分别验证，配置冲突则显式报告。"},
+        {"role": "user", "content": "检索质量诊断还要区分相关性和召回率，并检查旧批次负载污染。"},
+        {"role": "assistant", "content": "先固定带标签的查询和过滤变体，再把负载抽样排查与查询质量判断分开记录。"}
+      ],
+      "changed_message_index": 12,
+      "query": "请先定位记录切换编年的历史场景，再读取其中关于接收、重试、确认、初始化和质量诊断的完整时间线。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前上下文没有提供这份连续记录的路径；请先查找相关历史场景，找到后再读取切换编年内容。"},
+        "private_proposal": {
+          "unique_information_gap": "需要先发现未注入的切换编年场景路径，再读取其中从事故到稳定验收和质量诊断的完整连续记录。",
+          "route": "memory",
+          "target_asset_ids": ["T07-L2-03"],
+          "allowed_sequence_candidates": [["tdai_scenario_ls", "tdai_read_scene"]],
+          "stop_after_candidate": "发现并读取对应的切换编年场景后即可停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "记录路径是 scenes/qdrant-ingestion/cutover-chronology。其内容为：切换编年先记录批次接收、重试、确认和再次提交的阶段，再将稳定点标识与可重复初始化纳入写入路径；第二阶段建立集合参数、负载字段、过滤条件和排序分离的验收清单，使用隔离夹具验证首次与重复启动；第三阶段固定带标签查询，分别观察候选数量、命中数量、排序位置和过滤变体，将遗留负载污染排查与检索质量判断拆开。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息同时给出场景路径和完整三阶段切换编年，覆盖查询所要求的接收、重试、确认、初始化及质量诊断信息。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T07-L2-02", "T07-L0-05", "T07-L0-06"],
+      "controlled_delta_note": "两条分支共享十二条向量网关工作背景；正分支只缺历史场景路径和内容，负分支在同一位置补齐该路径及其三阶段编年。",
+      "source_fact_map": [
+        {"claim": "场景路径为 scenes/qdrant-ingestion/cutover-chronology", "source_id": "T07-L2-03", "locator": "path"},
+        {"claim": "切换编年包括事故复盘、稳定验收和质量诊断三个阶段", "source_id": "T07-L2-03", "locator": "content"}
+      ],
+      "sol_review_questions": [
+        "正分支是否确实需要先发现未注入的场景路径，再读取编年内容？",
+        "负分支是否只补齐唯一缺口，并完整区分三阶段而没有引入其他场景的事实？"
+      ]
+    },
+    {
+      "draft_pair_id": "T07-PAIR-M05",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我们继续收敛目录同步适配器，认证方式和凭据来源需要留在边界约定里。"},
+        {"role": "assistant", "content": "先区分后台运行假设、凭据注入位置和失效时的错误分类，再写进适配器约定。"},
+        {"role": "user", "content": "早期讨论里有人提过交互式登录，但后台任务不能依赖人工授权。"},
+        {"role": "assistant", "content": "历史候选和当前采用的方案要按日期标注，避免把旧建议当作现行约定。"},
+        {"role": "user", "content": "目录同步还要能在测试里观察凭据是否传入客户端。"},
+        {"role": "assistant", "content": "凭据提供器和请求客户端保持隔离，测试只替换前者并检查认证配置。"},
+        {"role": "user", "content": "请按明确的日期和状态筛选认证决策，并把已被替代的条目单独区分。"},
+        {"role": "assistant", "content": "筛选结果应保留生效日期和当前状态，不能只按关键词命中后直接下结论。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请按 valid_from=2026-08-18 且 status=active 过滤目录认证决策，并与已被替代的项区分。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "当前上下文没有保留同时满足日期和状态条件的原有认证决策；请查找并返回对应记录。"},
+        "private_proposal": {
+          "unique_information_gap": "需要按 valid_from=2026-08-18 和 status=active 找到当前目录认证决策，并将其与早期已被替代的交互式登录方案区分。",
+          "route": "memory",
+          "target_asset_ids": ["T07-L1-11"],
+          "allowed_sequence_candidates": [["tdai_atomic_query"]],
+          "stop_after_candidate": "找到满足日期和 active 状态的认证决策及其替代关系后即可停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "满足条件的现行决策是：自 2026-08-18 起，目录同步采用无交互的服务到服务认证，凭据由独立提供器注入客户端；早期把交互式登录作为后台兜底的方案已经被替代，不再适用。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息明确给出指定生效日期、active 现行方案、凭据注入边界以及与早期替代方案的区别，查询条件已完全满足。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T07-L1-01", "T07-L1-04", "T07-L1-02"],
+      "controlled_delta_note": "两条分支共享日期和状态筛选的上下文；正分支只缺匹配记录，负分支只补充现行认证决策及被替代关系。",
+      "source_fact_map": [
+        {"claim": "2026-08-18 起采用无交互服务到服务认证并由独立提供器注入凭据", "source_id": "T07-L1-11", "locator": "valid_from=2026-08-18; summary"},
+        {"claim": "交互式登录后台兜底方案已被替代", "source_id": "T07-L1-01", "locator": "status=superseded; superseded_by=T07-L1-11"}
+      ],
+      "sol_review_questions": [
+        "正分支是否只缺满足日期与 active 状态的认证记录，而没有缺少筛选条件本身？",
+        "负分支是否明确区分 2026-08-18 的现行决策和早期 superseded 方案？"
+      ]
+    },
+    {
+      "draft_pair_id": "T07-PAIR-M06",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "合作方的接口描述今天更新了，我们要从模式文件重新生成类型和请求封装。"},
+        {"role": "assistant", "content": "先检查模式变更，再生成类型、路径封装和运行时支持，最后看契约测试差异。"},
+        {"role": "user", "content": "手写层只保留业务适配，不要直接修改生成目录。"},
+        {"role": "assistant", "content": "我会把定制逻辑放在边界层，生成内容作为可重复产物处理。"},
+        {"role": "user", "content": "生成命令要固定版本，认证头则由运行时注入。"},
+        {"role": "assistant", "content": "把生成器版本纳入脚本入口，运行时只接收抽象凭据提供器。"},
+        {"role": "user", "content": "现有场景索引已经给出了稳定路径 scenes/partner-openapi/generated-client，不必重新定位。"},
+        {"role": "assistant", "content": "那就直接读取这份连续场景，核对模式更新、运行时约定和契约验证的整体记录。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请直接读取路径为 scenes/partner-openapi/generated-client 的连续场景，并总结其中的生成、运行时和契约验证约定。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "路径已由当前索引稳定给出；请直接读取这份连续场景并总结其中的关键约定。"},
+        "private_proposal": {
+          "unique_information_gap": "需要读取已知路径对应的连续场景内容，获得模式更新、运行时责任和契约验证三部分的完整约定。",
+          "route": "memory",
+          "target_asset_ids": ["T07-L2-01"],
+          "allowed_sequence_candidates": [["tdai_read_scene"]],
+          "stop_after_candidate": "读取该稳定路径的连续场景后即可停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "场景内容是：从模式文件变更开始，先审阅结构差异，再重新生成类型和请求封装，手写适配留在边界层；随后确定凭据注入、超时、服务端失败和取消的责任边界，普通重试由调用方显式选择；最后用分层契约夹具检查序列化、未知字段解析和错误映射，所有响应均为脱敏合成数据。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息给出了稳定路径所指场景的完整三部分内容，覆盖生成、运行时责任和契约验证，无需再次读取历史记录。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T07-L2-04", "T07-L1-13", "T07-L1-16"],
+      "controlled_delta_note": "两条分支共享已知稳定路径和八条生成客户端背景；正分支只请求读取场景，负分支在同一位置补足场景正文。",
+      "source_fact_map": [
+        {"claim": "稳定场景路径为 scenes/partner-openapi/generated-client", "source_id": "T07-L2-01", "locator": "path"},
+        {"claim": "场景覆盖模式更新、运行时责任边界和分层契约验证", "source_id": "T07-L2-01", "locator": "content"}
+      ],
+      "sol_review_questions": [
+        "正分支是否直接读取已知稳定路径，而没有额外发现路径的步骤？",
+        "负分支是否只补充该场景的三部分正文，并保留普通重试由调用方显式选择这一约定？"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "schema_version": "task1.skill_adaptation_manifest.v1",
+  "team_id": "T10",
+  "policy": "Only neutral discovery metadata changed; package bodies and resources are preserved.",
+  "skills": [
+    {
+      "asset_id": "T10-SKILL-MAVEN-LIFECYCLE",
+      "name": "maven-build-lifecycle",
+      "raw_path": "raw/benchflow-skillsbench/maven-build-lifecycle/SKILL.md",
+      "raw_sha256": "8d65a5ace544deb6beafebe9275eaa9f0673ac1286899c7f7ddecd3dfce03974",
+      "adapted_path": "adapted/maven-build-lifecycle/SKILL.md",
+      "adapted_sha256": "8650e494dbb06b059bfe1ee2838fe895d35f06e62cb6b9c274c00487dd0564b6",
+      "core_body_sha256": "e9944f8bfc3c192ee92758b9e1e1c84814d77d497f2189efe38f71778cbd0436",
+      "diff_path": "diffs/maven-build-lifecycle.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T10-SKILL-MAVEN-DEPENDENCIES",
+      "name": "maven-dependency-management",
+      "raw_path": "raw/benchflow-skillsbench/maven-dependency-management/SKILL.md",
+      "raw_sha256": "d5a95c61cb189750beafbd7fea8e8ca8159ccf905d90974637b0a3e5495c7846",
+      "adapted_path": "adapted/maven-dependency-management/SKILL.md",
+      "adapted_sha256": "577f7e27a3a3dd3e90e788b402671dbfec835977248a6cd00267a07aefe01588",
+      "core_body_sha256": "86f7e2106dfe4de3b92b9afe3b262098b9dbb4c9192821cd6207d1686c8be881",
+      "diff_path": "diffs/maven-dependency-management.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T10-SKILL-MAVEN-PLUGINS",
+      "name": "maven-plugin-configuration",
+      "raw_path": "raw/benchflow-skillsbench/maven-plugin-configuration/SKILL.md",
+      "raw_sha256": "ff8b766a8283c035d0fba5cf71f0dd194c14a21e136c2a2916bf7bff3fcdd01c",
+      "adapted_path": "adapted/maven-plugin-configuration/SKILL.md",
+      "adapted_sha256": "61fd96f71d4814bfb472a9344a5046c8bfdad8dbba99398f45ca220cdebbc8a7",
+      "core_body_sha256": "54ab46d3a720b19b484bc452c96cedbe6ce2d5eedf8185f64db6960b417c512c",
+      "diff_path": "diffs/maven-plugin-configuration.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T10-SKILL-ANALYZE-CI",
+      "name": "analyze-ci",
+      "raw_path": "raw/benchflow-skillsbench/analyze-ci/SKILL.md",
+      "raw_sha256": "f59a07dcffe019f17cfa6ec211cbfb070e6292257be7119ed55ffa0b9bce7197",
+      "adapted_path": "adapted/analyze-ci/SKILL.md",
+      "adapted_sha256": "9f729cc92993e8b34443dadb04c7318d7d8392cba8d97303389a2c8d8396c8d0",
+      "core_body_sha256": "9c450636f87fdeda7acf8d39a0a3267a4cb6d225cfed627fb68c1e31a1babdbc",
+      "diff_path": "diffs/analyze-ci.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T10-SKILL-TEMPORAL-PYTHON-TESTING",
+      "name": "temporal-python-testing",
+      "raw_path": "raw/benchflow-skillsbench/temporal-python-testing/SKILL.md",
+      "raw_sha256": "21e5d2382d474553eadb2771c764f4aa2b55a12bd75bc40894e68630c02db7bb",
+      "adapted_path": "adapted/temporal-python-testing/SKILL.md",
+      "adapted_sha256": "0d54b3047a84aa3934c5d3d3d774bc61da6768d5feb24af0245c14b9f2f3ee2a",
+      "core_body_sha256": "e727147a2d3b1132e86c199695661e97f2ac0abd8018259197f82974b8697363",
+      "diff_path": "diffs/temporal-python-testing.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T10-SKILL-TESTING-PYTHON",
+      "name": "testing-python",
+      "raw_path": "raw/benchflow-skillsbench/testing-python/SKILL.md",
+      "raw_sha256": "2741f4b02a7021658993213ce85095871e30ebfc1eba2bbef9d56f0bb71dea32",
+      "adapted_path": "adapted/testing-python/SKILL.md",
+      "adapted_sha256": "d1d9589a18bd373f84f6d6d2d9329235fd7f0ee4527867eb6c6acbc1efc8d252",
+      "core_body_sha256": "61a778c37d458e555ffcb082f581220246d0ba691d381ccddc8dc013a7b8d25e",
+      "diff_path": "diffs/testing-python.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T10-SKILL-UV-PACKAGE-MANAGER",
+      "name": "uv-package-manager",
+      "raw_path": "raw/benchflow-skillsbench/uv-package-manager/SKILL.md",
+      "raw_sha256": "85c71e75e63966eb06a72dc0a7ed2046c45c38bb5574d748603917c4a3801878",
+      "adapted_path": "adapted/uv-package-manager/SKILL.md",
+      "adapted_sha256": "df984fdf5fb69b730970c7f2ee9b496c28ebdd6957278ce4d3f3a7f76d403343",
+      "core_body_sha256": "d3ab078fc95b2b91fd5fa5b49e65badb9d46f25e0ac7be18595f5dac92895c23",
+      "diff_path": "diffs/uv-package-manager.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T10-SKILL-PYTHON-PACKAGING",
+      "name": "python-packaging",
+      "raw_path": "raw/wshobson-agents/python-packaging/SKILL.md",
+      "raw_sha256": "744653d7bca3b0cfcb50155a3bb9ef56c7aba7eb4923091d07e75171261e5b49",
+      "adapted_path": "adapted/python-packaging/SKILL.md",
+      "adapted_sha256": "b4bf0978b3fa357d391a6d9278215315a94752fc284505955508366bf047ebed",
+      "core_body_sha256": "c49ac22e6884a58c8b4a65a5fe29133cc56610db2cdde62d87a844ff95e14b84",
+      "diff_path": "diffs/python-packaging.patch",
+      "resource_paths": [
+        {
+          "path": "references/details.md",
+          "source_path": "plugins/python-development/skills/python-packaging/references/details.md",
+          "raw_sha256": "947a58e5489293e06dc367f875d984f1d0d6c26c3a0e64e2875460969c3ceb58",
+          "checked_in_path": "raw/wshobson-agents/python-packaging/references/details.md",
+          "adapted_path": "adapted/python-packaging/references/details.md"
+        },
+        {
+          "path": "references/advanced-patterns.md",
+          "source_path": "plugins/python-development/skills/python-packaging/references/advanced-patterns.md",
+          "raw_sha256": "ab47dec3bf71c066e5d262eb6159b966ea95067ac23b27d8607d36d89f0e00ca",
+          "checked_in_path": "raw/wshobson-agents/python-packaging/references/advanced-patterns.md",
+          "adapted_path": "adapted/python-packaging/references/advanced-patterns.md"
+        }
+      ]
+    },
+    {
+      "asset_id": "T10-SKILL-PYTHON-PROJECT-STRUCTURE",
+      "name": "python-project-structure",
+      "raw_path": "raw/wshobson-agents/python-project-structure/SKILL.md",
+      "raw_sha256": "c53696fb8d9014abc280fc0e64220cae0d087766a16380e211a6745e481dae65",
+      "adapted_path": "adapted/python-project-structure/SKILL.md",
+      "adapted_sha256": "2f88b37cc1da88baed82357e938509a824993db6f1c69786ca1c32930da652be",
+      "core_body_sha256": "5ef1c05a69a89d05b1f8bb3645e8fde9607a24c58dbed2809755f90a46f38461",
+      "diff_path": "diffs/python-project-structure.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T10-SKILL-PYTHON-TESTING-PATTERNS",
+      "name": "python-testing-patterns",
+      "raw_path": "raw/wshobson-agents/python-testing-patterns/SKILL.md",
+      "raw_sha256": "a1020718f31629c2a5b20731cad1804dbb81b18800495c5cebdf16e6cac9c175",
+      "adapted_path": "adapted/python-testing-patterns/SKILL.md",
+      "adapted_sha256": "6f88d7322e6f473c1e3ad1fcd16c5681ed78d8e4206d295a3cc2c98012ae1336",
+      "core_body_sha256": "b5ce8e66e781ca18c2ef459ca98ff873f53401d8c94f8e6f5565b95be68c48b6",
+      "diff_path": "diffs/python-testing-patterns.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T10-SKILL-GITHUB-ACTIONS",
+      "name": "github-actions-templates",
+      "raw_path": "raw/wshobson-agents/github-actions-templates/SKILL.md",
+      "raw_sha256": "a280b280bd57708d6ed834c37253605d169c7a6f0214b64789c70de73f17ea69",
+      "adapted_path": "adapted/github-actions-templates/SKILL.md",
+      "adapted_sha256": "89c337e6886cfff7952c54ec2a332bca2f423d2180a22eb426113372e559bc30",
+      "core_body_sha256": "67eaceaba0f1a1bf73a7aca9fb041485cd167a06b23a68bbe39a0b99430b3994",
+      "diff_path": "diffs/github-actions-templates.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T10-SKILL-DEPLOYMENT-PIPELINE",
+      "name": "deployment-pipeline-design",
+      "raw_path": "raw/wshobson-agents/deployment-pipeline-design/SKILL.md",
+      "raw_sha256": "9a56bd9401c1dc8ef5a15758d7234f211193097ddb3895d46d1ddcd730687b18",
+      "adapted_path": "adapted/deployment-pipeline-design/SKILL.md",
+      "adapted_sha256": "ab9f4d8426d5332fc44d576c18501cd6f1343b113e5ef4be2f56caae85105f10",
+      "core_body_sha256": "71d5ade9347e91c476f5ad025f0bd6cde553ce6b010f977d12db365b73be3bf3",
+      "diff_path": "diffs/deployment-pipeline-design.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T10-SKILL-GITLAB-CI",
+      "name": "gitlab-ci-patterns",
+      "raw_path": "raw/wshobson-agents/gitlab-ci-patterns/SKILL.md",
+      "raw_sha256": "0b2d3cf90961e4df928106fc40911cd7a1c4d4703354a86b9d7bacadff7df8fd",
+      "adapted_path": "adapted/gitlab-ci-patterns/SKILL.md",
+      "adapted_sha256": "5e5137e568416f42e8cb3b92c4784eeb1cf7af37afd892a3c79186005932c5c3",
+      "core_body_sha256": "410920786c478da997c8f43bf675e02e3813c33b6bad3c43c60e7f3d970c890f",
+      "diff_path": "diffs/gitlab-ci-patterns.patch",
+      "resource_paths": []
+    },
+    {
+      "asset_id": "T10-SKILL-GIT-WORKFLOWS",
+      "name": "git-advanced-workflows",
+      "raw_path": "raw/wshobson-agents/git-advanced-workflows/SKILL.md",
+      "raw_sha256": "05205690ef34b05d1ae2596a59f9897680511198b16b38e9a6c1bf04e8da9711",
+      "adapted_path": "adapted/git-advanced-workflows/SKILL.md",
+      "adapted_sha256": "194e3152f2a547ef10a226a52efb16a5d95a1cd7327c8e02b0273c68dbc2534c",
+      "core_body_sha256": "857d0d1815d26650e9872500f7eb17eabb83a1e7183ea903d72875d83fea4421",
+      "diff_path": "diffs/git-advanced-workflows.patch",
+      "resource_paths": []
+    }
+  ]
+}

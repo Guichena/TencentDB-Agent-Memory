@@ -1,0 +1,708 @@
+{
+  "schema_version": "task1.formal_skill_assets.v1",
+  "team_id": "T07",
+  "skills": [
+    {
+      "assetId": "T07-SKILL-MSGRAPH-SDK",
+      "ownerAgentId": "agent-task1-t07-general",
+      "sourceEvidenceIds": [
+        "source-t07-skill-msgraph-sdk"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "name": "msgraph-sdk",
+      "version": "1.0.0",
+      "description": "Microsoft 365 Graph SDK 接入：按语言选择认证、分页、批处理、增量同步、通知、节流与权限边界。",
+      "useWhen": "需要从应用访问 Microsoft 365 数据，并要确定 SDK 语言、认证模式、分页或节流处理。",
+      "doNotUseWhen": "任务是普通 REST 调用、静态数据转换，或已经正确完成的适配器测试。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "cafac367eb3fdc99e05aedc76d46ad77f49e6c3fbc549e3cc6ec86d657638d8b"
+        },
+        {
+          "path": "references/dotnet.md",
+          "sha256": "aaaa91345ab7ff18f56d9f14d65a48e076d79221b4e1082290b67784ac26b0af"
+        },
+        {
+          "path": "references/python.md",
+          "sha256": "79e06ae261ba58737f55d7839832826f9bfdfd06225f1d214ae6e5eeac8ffd79"
+        },
+        {
+          "path": "references/typescript.md",
+          "sha256": "0e6f5236ecafc811d86ffe214351f03d66367e268bc76b7a904c51d0e5155acc"
+        }
+      ],
+      "contentHash": "111522cf7a66f74f0b484fb4327bc38879a874d5539c235c1cee1f371cc66ccb"
+    },
+    {
+      "assetId": "T07-SKILL-QDRANT-CLIENT",
+      "ownerAgentId": "agent-task1-t07-general",
+      "sourceEvidenceIds": [
+        "source-t07-skill-qdrant-clients-sdk"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "name": "qdrant-clients-sdk",
+      "version": "1.0.0",
+      "description": "Qdrant 多语言客户端接入与批量点写入示例，含 REST/gRPC 参考和幂等上传语义。",
+      "useWhen": "需要选择 Qdrant 客户端、查阅 REST/gRPC API 参考，或实现带 payload/vector 的批量写入与重试。",
+      "doNotUseWhen": "任务只涉及向量数学、其他向量存储、部署运维或搜索质量诊断。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "eac9386970303787ccff5ce65f77e2bc51286a07b27977a8fba1f256f4c95426"
+        }
+      ],
+      "contentHash": "90c64135794f5ee5d3a35dfeab1a9a31be891c56918a385cadf6fd574325bf54"
+    },
+    {
+      "assetId": "T07-SKILL-OPENAPI-APP",
+      "ownerAgentId": "agent-task1-t07-general",
+      "sourceEvidenceIds": [
+        "source-t07-skill-openapi-to-application-code"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "name": "openapi-to-application-code",
+      "version": "1.0.0",
+      "description": "从 OpenAPI 规范分析端点与安全方案，并生成分层应用、配置、验证、测试和文档。",
+      "useWhen": "OpenAPI 文档需要驱动完整应用或客户端代码生成，并且要核对端点、模型、安全和测试输出。",
+      "doNotUseWhen": "请求只是手写一次 REST 调用，或已经生成客户端后的单元测试。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "4ac9c35e14140129df922091b62288258887e5d0efc0760ab390b3b248a35c16"
+        }
+      ],
+      "contentHash": "4c1ae2cd075bf7b6c1a4af47b1df438a0ba482265ca0b5c015a4b31ccfb38adc"
+    },
+    {
+      "assetId": "T07-SKILL-ASPNET-OPENAPI",
+      "ownerAgentId": "agent-task1-t07-general",
+      "sourceEvidenceIds": [
+        "source-t07-skill-aspnet-minimal-api-openapi"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "name": "aspnet-minimal-api-openapi",
+      "version": "1.0.0",
+      "description": "ASP.NET Minimal API 端点的分组、强类型请求响应与 OpenAPI 文档。",
+      "useWhen": "ASP.NET Minimal API 端点需要组织、类型约束和 OpenAPI/Swagger 元数据。",
+      "doNotUseWhen": "任务是 TypeScript 客户端、Microsoft Graph 调用或 Python 向量客户端。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "16e632ce8cb514d413e968811a2e07b8e0f1e97c6e2e93174efd6cec2e49e86f"
+        }
+      ],
+      "contentHash": "e961f33b7b03832766ccbd7b357b15ca6e6c843099baa5fa2a7ddd7d8188da08"
+    },
+    {
+      "assetId": "T07-SKILL-TYPESPEC-OPS",
+      "ownerAgentId": "agent-task1-t07-general",
+      "sourceEvidenceIds": [
+        "source-t07-skill-typespec-api-operations"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "name": "typespec-api-operations",
+      "version": "1.0.0",
+      "description": "在既有 TypeSpec API 插件中定义 CRUD 操作、路由、参数、响应、确认和自适应卡片。",
+      "useWhen": "正在为 Microsoft 365 Copilot 的 TypeSpec 插件编写或扩展 HTTP 操作。",
+      "doNotUseWhen": "规范已存在且只需客户端集成、普通 REST 调用或测试。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "882751e73fb23048fcffd739345cabec0b3176a922b528f271c3dc7ce78ddd8a"
+        }
+      ],
+      "contentHash": "c64d610c7c58b714417f07c258d5d966bdf4a483b99999bfcc6eede77fdf6f68"
+    },
+    {
+      "assetId": "T07-SKILL-COPILOT-SDK",
+      "ownerAgentId": "agent-task1-t07-general",
+      "sourceEvidenceIds": [
+        "source-t07-skill-copilot-sdk"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "name": "copilot-sdk",
+      "version": "1.0.0",
+      "description": "GitHub Copilot SDK 的多语言 agent 应用、工具、流式响应、会话、MCP 和错误处理指南。",
+      "useWhen": "应用明确要嵌入 GitHub Copilot agent、注册自定义工具、管理会话或连接 MCP。",
+      "doNotUseWhen": "SDK 是 Graph、Qdrant、OpenAPI 生成客户端，或与 Copilot 无关。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "5b432db55670223935a19215850f0e1e094db2026f1aa880f7d7b978fc48a42f"
+        }
+      ],
+      "contentHash": "b00a67b829d9399f5e225b9fcb1ef3b320f89f43429694d8a18c851124730fc8"
+    },
+    {
+      "assetId": "T07-SKILL-QDRANT-DIAGNOSIS",
+      "ownerAgentId": "agent-task1-t07-assets-a",
+      "sourceEvidenceIds": [
+        "source-t07-skill-qdrant-search-quality-diagnosis"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "name": "qdrant-search-quality-diagnosis",
+      "version": "1.0.0",
+      "description": "Qdrant 搜索质量诊断：建立 exact 基线，区分模型、近似索引、量化、过滤和管线问题。",
+      "useWhen": "检索结果不相关、召回下降、近似搜索劣于 exact 或量化后质量变化，需要结构化诊断。",
+      "doNotUseWhen": "任务只是初始化客户端、部署集群、纯向量数学或基础 API 接入。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "faaed6cd9af51548bfc3a0c77d61bb4b96903cb5c0e17b2f3b722c41d1fb350c"
+        }
+      ],
+      "contentHash": "a1ad9c06ab2c0761c36158b7ae7c7ec36d0554a65ec980a02bf5b3c53fff7c70"
+    },
+    {
+      "assetId": "T07-SKILL-JEST",
+      "ownerAgentId": "agent-task1-t07-assets-a",
+      "sourceEvidenceIds": [
+        "source-t07-skill-javascript-typescript-jest"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "name": "javascript-typescript-jest",
+      "version": "1.0.0",
+      "description": "JavaScript/TypeScript Jest 单元测试、外部依赖 mock、异步断言、快照和常用 matcher。",
+      "useWhen": "已有正确的 JavaScript/TypeScript 实现需要聚焦的 Jest 单测与隔离外部依赖。",
+      "doNotUseWhen": "业务逻辑仍缺失、测试是浏览器 E2E，或项目不是 JavaScript/TypeScript。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "cb9a552dfe63cae4f310b27067ba28351b59ad17e83a9e1c5ff23c542ce6fdd8"
+        }
+      ],
+      "contentHash": "7badcd9e142fd0279294cbd554da63d94bee70d99f0643c1211f7c1d1885b056"
+    },
+    {
+      "assetId": "T07-SKILL-AZURE-ROLE",
+      "ownerAgentId": "agent-task1-t07-assets-a",
+      "sourceEvidenceIds": [
+        "source-t07-skill-azure-role-selector"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "name": "azure-role-selector",
+      "version": "1.0.0",
+      "description": "按所需权限为 Azure 身份选择最小权限内置角色，必要时生成自定义角色与部署片段。",
+      "useWhen": "具体 Azure 访问操作需要最小权限角色选择和角色分配建议。",
+      "doNotUseWhen": "任务是 OAuth 流程、Graph 委托 scope 或普通 API token。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "b4de898de0d72f258606efff41841bd31145db5ac18a57a7bd416450eaabe670"
+        }
+      ],
+      "contentHash": "2352af9fab9431909851e156bace42494650f103e9179269980a9abd98304b15"
+    },
+    {
+      "assetId": "T07-SKILL-QDRANT-DEPLOY",
+      "ownerAgentId": "agent-task1-t07-assets-a",
+      "sourceEvidenceIds": [
+        "source-t07-skill-qdrant-deployment-options"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "name": "qdrant-deployment-options",
+      "version": "1.0.0",
+      "description": "按运维责任、延迟和环境目标选择 Qdrant 本地、自托管、托管或低延迟部署方式。",
+      "useWhen": "新项目需要比较 Qdrant 原型、本地、生产自托管、零运维或低延迟部署。",
+      "doNotUseWhen": "集群已存在，任务是客户端 API、搜索正确性或 SDK 调用。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "31afa639420a3434cc8c48039b38820e8248e1ba47074b3f58a724e73af20516"
+        }
+      ],
+      "contentHash": "2c6993b11dc29c8bfd533a71d35f8ac85c0efb5cae7621f664592f7f0565fb8d"
+    },
+    {
+      "assetId": "T07-SKILL-QDRANT-MIGRATION",
+      "ownerAgentId": "agent-task1-t07-assets-a",
+      "sourceEvidenceIds": [
+        "source-t07-skill-qdrant-model-migration"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "name": "qdrant-model-migration",
+      "version": "1.0.0",
+      "description": "Qdrant embedding 模型迁移：新 collection、alias swap、双模型、混合检索和重嵌入速度。",
+      "useWhen": "需要切换 embedding 模型、改变维度、双模型 A/B 或无停机迁移向量。",
+      "doNotUseWhen": "任务是新建 collection、搜索调优、普通客户端接入或没有模型变更。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "811cc59e1b1f421449e898f4e2e3f6d4b43fd220af2d544aaed0e7e134639b07"
+        }
+      ],
+      "contentHash": "4ff0f1615ab8b4d14cf1dc5eba90de8c9a97b3618c3fe6e9233c73402b20325f"
+    },
+    {
+      "assetId": "T07-SKILL-QDRANT-DEBUG",
+      "ownerAgentId": "agent-task1-t07-assets-b",
+      "sourceEvidenceIds": [
+        "source-t07-skill-qdrant-monitoring-debugging"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "name": "qdrant-monitoring-debugging",
+      "version": "1.0.0",
+      "description": "用指标诊断运行中 Qdrant 的优化器、内存、查询延迟和日志问题。",
+      "useWhen": "已运行的 Qdrant 服务出现优化器、OOM、内存、查询延迟或其他可观测运维故障。",
+      "doNotUseWhen": "问题是客户端 API 用法、搜索质量、测试隔离或普通接入。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "f27aa8d722235a0bb5ef56c87c0a5f00d38a5ec7fdf87603f4f28d77c6aab88a"
+        }
+      ],
+      "contentHash": "24e35aa528d884faca63dda0544dfffaffd9fb0949f217dd8492304e1f9b6feb"
+    },
+    {
+      "assetId": "T07-SKILL-QDRANT-INDEX",
+      "ownerAgentId": "agent-task1-t07-assets-b",
+      "sourceEvidenceIds": [
+        "source-t07-skill-qdrant-indexing-performance"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "name": "qdrant-indexing-performance",
+      "version": "1.0.0",
+      "description": "Qdrant 摄取和索引构建性能诊断：上传、优化器、HNSW、分片与 payload index。",
+      "useWhen": "上传慢、索引构建久、优化器卡住或 HNSW/payload index 配置需要调优。",
+      "doNotUseWhen": "任务是客户端初始化、搜索相关性、部署选择或 payload 过滤正确性。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "344b4283daa2a2977525bccedaee4f96aed8a5bccaeb562c46816c3380c27c29"
+        }
+      ],
+      "contentHash": "2b1fea4a7a1112cca563bcfce40e16cb0fcb1e8426dbcdffe5e17dfc3a302ed3"
+    },
+    {
+      "assetId": "T07-SKILL-QDRANT-MEMORY",
+      "ownerAgentId": "agent-task1-t07-assets-b",
+      "sourceEvidenceIds": [
+        "source-t07-skill-qdrant-memory-optimization"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "name": "qdrant-memory-optimization",
+      "version": "1.0.0",
+      "description": "Qdrant resident memory、page cache、量化和 on-disk 组件的容量与内存占用诊断。",
+      "useWhen": "RAM 持续增长、resident memory 过高、OOM 或需要降低向量库内存占用。",
+      "doNotUseWhen": "任务是 API 接入、测试 mock、搜索质量或已知的普通索引配置问题。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "d3be8c9d207f4b625b4724048e45e438f0efeb4650e7cca1da2d40e2ba37dd9d"
+        }
+      ],
+      "contentHash": "124a689ddb8f2c35d03ef409924c79cf3bf5b9f693f2372523cc7ae32fbde651"
+    },
+    {
+      "assetId": "T07-SKILL-QDRANT-SPEED",
+      "ownerAgentId": "agent-task1-t07-assets-b",
+      "sourceEvidenceIds": [
+        "source-t07-skill-qdrant-search-speed-optimization"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "name": "qdrant-search-speed-optimization",
+      "version": "1.0.0",
+      "description": "Qdrant 搜索延迟、吞吐、过滤查询和并行更新后的速度诊断与调优。",
+      "useWhen": "查询慢、延迟高、QPS 不足、过滤搜索变慢或配置/数据增长导致搜索退化。",
+      "doNotUseWhen": "召回质量错误、客户端 API 缺失、初始化接入或仅涉及向量预处理。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "ede068e053005c19718bf11853e99ab94b337db2769f74e52fe63f81fc525131"
+        }
+      ],
+      "contentHash": "5f6a04e2c8b06d6e90a75df567f7b0edcfca7088d251c0abae5bac0527a4a17d"
+    },
+    {
+      "assetId": "T07-SKILL-TS-MCP",
+      "ownerAgentId": "agent-task1-t07-assets-b",
+      "sourceEvidenceIds": [
+        "source-t07-skill-typescript-mcp-server-generator"
+      ],
+      "observedAt": "2026-08-28T12:00:00Z",
+      "name": "typescript-mcp-server-generator",
+      "version": "1.0.0",
+      "description": "TypeScript MCP server v2 项目生成：传输、工具 schema、错误处理、资源、提示与测试。",
+      "useWhen": "需要新建 TypeScript MCP server、注册工具/资源/提示或迁移到 MCP SDK v2。",
+      "doNotUseWhen": "任务消费普通 REST、Graph 或 Qdrant 客户端，或只需生成普通 API client。",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "e409edb78ed746e7a335c35063dea5c2d462e0498740014a58a9c250891cba19"
+        }
+      ],
+      "contentHash": "a60f88bc5b3e64f34fa7377f2404cf3446136cb3e9a00ff0228489de413bdade"
+    }
+  ],
+  "externalImports": [
+    {
+      "sourceId": "source-t07-skill-msgraph-sdk",
+      "assetId": "T07-SKILL-MSGRAPH-SDK",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/msgraph-sdk/SKILL.md",
+      "rawSha256": "cafac367eb3fdc99e05aedc76d46ad77f49e6c3fbc549e3cc6ec86d657638d8b",
+      "adaptedSha256": "cafac367eb3fdc99e05aedc76d46ad77f49e6c3fbc549e3cc6ec86d657638d8b",
+      "packageManifestSha256": "c2459be068b96cee0f14af18067c9f357100075a419ac36da52d1eb583bf2a6a",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/msgraph-sdk/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "msgraph-sdk"
+    },
+    {
+      "sourceId": "source-t07-skill-qdrant-clients-sdk",
+      "assetId": "T07-SKILL-QDRANT-CLIENT",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/qdrant-clients-sdk/SKILL.md",
+      "rawSha256": "eac9386970303787ccff5ce65f77e2bc51286a07b27977a8fba1f256f4c95426",
+      "adaptedSha256": "eac9386970303787ccff5ce65f77e2bc51286a07b27977a8fba1f256f4c95426",
+      "packageManifestSha256": "444179c73ee33cec6ade9e868eb82d223d0b9c3e7f8a7d7e7088a1122a5f7bae",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/qdrant-clients-sdk/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "qdrant-clients-sdk"
+    },
+    {
+      "sourceId": "source-t07-skill-openapi-to-application-code",
+      "assetId": "T07-SKILL-OPENAPI-APP",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/openapi-to-application-code/SKILL.md",
+      "rawSha256": "4ac9c35e14140129df922091b62288258887e5d0efc0760ab390b3b248a35c16",
+      "adaptedSha256": "4ac9c35e14140129df922091b62288258887e5d0efc0760ab390b3b248a35c16",
+      "packageManifestSha256": "270dfc352f8e10e36c28c441722e56fdb50f7137d0254cb55838a454eaa67b10",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/openapi-to-application-code/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "openapi-to-application-code"
+    },
+    {
+      "sourceId": "source-t07-skill-aspnet-minimal-api-openapi",
+      "assetId": "T07-SKILL-ASPNET-OPENAPI",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/aspnet-minimal-api-openapi/SKILL.md",
+      "rawSha256": "16e632ce8cb514d413e968811a2e07b8e0f1e97c6e2e93174efd6cec2e49e86f",
+      "adaptedSha256": "16e632ce8cb514d413e968811a2e07b8e0f1e97c6e2e93174efd6cec2e49e86f",
+      "packageManifestSha256": "b1e1f5667c7fe3438ca3ae370195abdd09b906c0fff2285bf9150a3d91fec352",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/aspnet-minimal-api-openapi/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "aspnet-minimal-api-openapi"
+    },
+    {
+      "sourceId": "source-t07-skill-typespec-api-operations",
+      "assetId": "T07-SKILL-TYPESPEC-OPS",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/typespec-api-operations/SKILL.md",
+      "rawSha256": "882751e73fb23048fcffd739345cabec0b3176a922b528f271c3dc7ce78ddd8a",
+      "adaptedSha256": "882751e73fb23048fcffd739345cabec0b3176a922b528f271c3dc7ce78ddd8a",
+      "packageManifestSha256": "dbf4bf4e99852901fe37d1958eca492dbf919c1eab9e57d664a50de3f9a4e6d8",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/typespec-api-operations/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "typespec-api-operations"
+    },
+    {
+      "sourceId": "source-t07-skill-copilot-sdk",
+      "assetId": "T07-SKILL-COPILOT-SDK",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/copilot-sdk/SKILL.md",
+      "rawSha256": "5b432db55670223935a19215850f0e1e094db2026f1aa880f7d7b978fc48a42f",
+      "adaptedSha256": "5b432db55670223935a19215850f0e1e094db2026f1aa880f7d7b978fc48a42f",
+      "packageManifestSha256": "2e06b1d46535447e1fe9c92403104d40939b8f4b0ca175ed4ef973a46f13f27d",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/copilot-sdk/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "copilot-sdk"
+    },
+    {
+      "sourceId": "source-t07-skill-qdrant-search-quality-diagnosis",
+      "assetId": "T07-SKILL-QDRANT-DIAGNOSIS",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/qdrant-search-quality/diagnosis/SKILL.md",
+      "rawSha256": "faaed6cd9af51548bfc3a0c77d61bb4b96903cb5c0e17b2f3b722c41d1fb350c",
+      "adaptedSha256": "faaed6cd9af51548bfc3a0c77d61bb4b96903cb5c0e17b2f3b722c41d1fb350c",
+      "packageManifestSha256": "d436f2a265ae37d6cbeacef8e82c98cb9edcc9f066eb733815663d03387a13bb",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/qdrant-search-quality-diagnosis/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "qdrant-search-quality-diagnosis"
+    },
+    {
+      "sourceId": "source-t07-skill-javascript-typescript-jest",
+      "assetId": "T07-SKILL-JEST",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/javascript-typescript-jest/SKILL.md",
+      "rawSha256": "cb9a552dfe63cae4f310b27067ba28351b59ad17e83a9e1c5ff23c542ce6fdd8",
+      "adaptedSha256": "cb9a552dfe63cae4f310b27067ba28351b59ad17e83a9e1c5ff23c542ce6fdd8",
+      "packageManifestSha256": "24e4d8737b741291ff421ca53f1a874acc47f63ea2664e1b7634cb2f5e4feb79",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/javascript-typescript-jest/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "javascript-typescript-jest"
+    },
+    {
+      "sourceId": "source-t07-skill-azure-role-selector",
+      "assetId": "T07-SKILL-AZURE-ROLE",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/azure-role-selector/SKILL.md",
+      "rawSha256": "b4de898de0d72f258606efff41841bd31145db5ac18a57a7bd416450eaabe670",
+      "adaptedSha256": "b4de898de0d72f258606efff41841bd31145db5ac18a57a7bd416450eaabe670",
+      "packageManifestSha256": "2e68f33f7ae8a23c9ca71104a3e6e6c46fd22d971ea8cc2cbd4c0213a881169e",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/azure-role-selector/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "azure-role-selector"
+    },
+    {
+      "sourceId": "source-t07-skill-qdrant-deployment-options",
+      "assetId": "T07-SKILL-QDRANT-DEPLOY",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/qdrant-deployment-options/SKILL.md",
+      "rawSha256": "31afa639420a3434cc8c48039b38820e8248e1ba47074b3f58a724e73af20516",
+      "adaptedSha256": "31afa639420a3434cc8c48039b38820e8248e1ba47074b3f58a724e73af20516",
+      "packageManifestSha256": "b3b557e913a454b5c7382900d5d15a2b4ff2abb248b6f863e98f7084ed435dc1",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/qdrant-deployment-options/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "qdrant-deployment-options"
+    },
+    {
+      "sourceId": "source-t07-skill-qdrant-model-migration",
+      "assetId": "T07-SKILL-QDRANT-MIGRATION",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/qdrant-model-migration/SKILL.md",
+      "rawSha256": "811cc59e1b1f421449e898f4e2e3f6d4b43fd220af2d544aaed0e7e134639b07",
+      "adaptedSha256": "811cc59e1b1f421449e898f4e2e3f6d4b43fd220af2d544aaed0e7e134639b07",
+      "packageManifestSha256": "d59dd30d077f30a3be1a79d338a3f8978d3d824931acd0a7acf5d8bef3ea5796",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/qdrant-model-migration/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "qdrant-model-migration"
+    },
+    {
+      "sourceId": "source-t07-skill-qdrant-monitoring-debugging",
+      "assetId": "T07-SKILL-QDRANT-DEBUG",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/qdrant-monitoring/debugging/SKILL.md",
+      "rawSha256": "f27aa8d722235a0bb5ef56c87c0a5f00d38a5ec7fdf87603f4f28d77c6aab88a",
+      "adaptedSha256": "f27aa8d722235a0bb5ef56c87c0a5f00d38a5ec7fdf87603f4f28d77c6aab88a",
+      "packageManifestSha256": "398ee555961c99d9e40a339f5d8fd1c0f360938aa004adcf618e913d071e62d1",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/qdrant-monitoring-debugging/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "qdrant-monitoring-debugging"
+    },
+    {
+      "sourceId": "source-t07-skill-qdrant-indexing-performance",
+      "assetId": "T07-SKILL-QDRANT-INDEX",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/qdrant-performance-optimization/indexing-performance-optimization/SKILL.md",
+      "rawSha256": "344b4283daa2a2977525bccedaee4f96aed8a5bccaeb562c46816c3380c27c29",
+      "adaptedSha256": "344b4283daa2a2977525bccedaee4f96aed8a5bccaeb562c46816c3380c27c29",
+      "packageManifestSha256": "cc9c2ef6e0d81597c72748f65769c4ed217995604ed29acce13675468f2b6b36",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/qdrant-indexing-performance/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "qdrant-performance-optimization-indexing-performance-optimization"
+    },
+    {
+      "sourceId": "source-t07-skill-qdrant-memory-optimization",
+      "assetId": "T07-SKILL-QDRANT-MEMORY",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/qdrant-performance-optimization/memory-usage-optimization/SKILL.md",
+      "rawSha256": "d3be8c9d207f4b625b4724048e45e438f0efeb4650e7cca1da2d40e2ba37dd9d",
+      "adaptedSha256": "d3be8c9d207f4b625b4724048e45e438f0efeb4650e7cca1da2d40e2ba37dd9d",
+      "packageManifestSha256": "167faf13edb758bc6712f7833817912a35903f5fe3e0166e661f6fdcca5b7247",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/qdrant-memory-optimization/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "qdrant-performance-optimization-memory-usage-optimization"
+    },
+    {
+      "sourceId": "source-t07-skill-qdrant-search-speed-optimization",
+      "assetId": "T07-SKILL-QDRANT-SPEED",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/qdrant-performance-optimization/search-speed-optimization/SKILL.md",
+      "rawSha256": "ede068e053005c19718bf11853e99ab94b337db2769f74e52fe63f81fc525131",
+      "adaptedSha256": "ede068e053005c19718bf11853e99ab94b337db2769f74e52fe63f81fc525131",
+      "packageManifestSha256": "420dc89847c2a7585b20992eee77081d1ea461d98225745c2ab3eee7f3dfbb30",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/qdrant-search-speed-optimization/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "qdrant-performance-optimization-search-speed-optimization"
+    },
+    {
+      "sourceId": "source-t07-skill-typescript-mcp-server-generator",
+      "assetId": "T07-SKILL-TS-MCP",
+      "repositoryUrl": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "license": "MIT",
+      "upstreamPath": "skills/typescript-mcp-server-generator/SKILL.md",
+      "rawSha256": "e409edb78ed746e7a335c35063dea5c2d462e0498740014a58a9c250891cba19",
+      "adaptedSha256": "e409edb78ed746e7a335c35063dea5c2d462e0498740014a58a9c250891cba19",
+      "packageManifestSha256": "bf7824427264dc0b47d51336e40036a3d8d128e6f68fa07b812d9fc27e4d782a",
+      "licensePath": "_licenses/awesome-copilot-MIT.txt",
+      "licenseSha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+      "adaptationDiffPath": "skills/typescript-mcp-server-generator/adaptation.diff",
+      "adaptationDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adaptationScope": "Package bytes unchanged; neutral description/use/do-not-use metadata is stored in the formal Skill asset.",
+      "packageName": "typescript-mcp-server-generator"
+    }
+  ]
+}

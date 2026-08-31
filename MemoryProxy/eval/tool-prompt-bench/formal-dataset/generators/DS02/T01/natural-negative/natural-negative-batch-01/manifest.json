@@ -1,0 +1,20 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "t01-natural-negative-batch-01",
+  "input_source_ids": [
+    "source-t01-current-ujson-fuzzing",
+    "source-t01-current-ujson-impact",
+    "source-t01-history-python__mypy-11567",
+    "source-t01-history-python__mypy-15184",
+    "source-t01-history-python__mypy-16869",
+    "source-t01-knowledge-mypy-codegraph",
+    "source-t01-knowledge-ujson-codegraph"
+  ],
+  "generated_at": "2026-08-29T18:37:34+08:00",
+  "raw_output_file": "draft.json",
+  "raw_output_sha256": "3936bb1e03883150bf828752dc8072c86f6ddcf5f9c630174b1fcef90690dc4e",
+  "actual_count": 10
+}

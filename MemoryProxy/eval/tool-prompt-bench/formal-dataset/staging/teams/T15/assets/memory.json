@@ -1,0 +1,2021 @@
+{
+  "schema_version": "task1.team_assets.memory.v1",
+  "team_id": "T15",
+  "l0Conversations": [
+    {
+      "assetId": "T15-L0-001",
+      "ownerAgentId": "agent-task1-t15-general",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T15-L0-001",
+      "messages": [
+        {
+          "messageId": "T15-L0-001-M01",
+          "role": "user",
+          "content": "Harbor response schema 要加 trace_context，先看哪类兼容风险？",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "5366cd1febe1167b35637ea703019c125c68e7e1f20fc43de1d19e4c73464e90"
+        },
+        {
+          "messageId": "T15-L0-001-M02",
+          "role": "assistant",
+          "content": "先确认它是可选属性，旧 consumer 不会因缺少它而失败。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T10:00:00+08:00",
+          "contentHash": "71f5bcc38be85d3ac66b2fd86a528a2a540fa89457b095b5512d6cd75ef68b2e"
+        },
+        {
+          "messageId": "T15-L0-001-M03",
+          "role": "user",
+          "content": "旧 consumer 仍只读取原有字段，新字段不会出现在必填列表。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T11:00:00+08:00",
+          "contentHash": "8dd9ff493cd32826f891b45cc0906d020d963362a99324b3ab3af213a8dcb60f"
+        },
+        {
+          "messageId": "T15-L0-001-M04",
+          "role": "assistant",
+          "content": "那要把新增可选属性与收紧 required、删除字段分开审查。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T12:00:00+08:00",
+          "contentHash": "aa6b6c5f654138aa098f85fc6010d85618d7e39ca58e13dfd586bced49d15949"
+        },
+        {
+          "messageId": "T15-L0-001-M05",
+          "role": "user",
+          "content": "审查表里还出现了一个可能的主版本升级建议。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T13:00:00+08:00",
+          "contentHash": "df08b919d92b7db8b13ac75efaa19852cddde37b5312c0372f3e9f74d14c9864"
+        },
+        {
+          "messageId": "T15-L0-001-M06",
+          "role": "assistant",
+          "content": "主版本是否升级要以这次属性的兼容性分类为准，不能沿用破坏性变更模板。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T14:00:00+08:00",
+          "contentHash": "d4f437bf9db1140cd1f23483903875ebfcccb1ce15eddc5db6984f0b926f10da"
+        },
+        {
+          "messageId": "T15-L0-001-M07",
+          "role": "user",
+          "content": "我只记得最后说可以继续兼容，但具体版本决定忘了。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T15:00:00+08:00",
+          "contentHash": "110d36e814a47cd4f28708d120209a88357e01e021ea5cc8b975c99deab95514"
+        },
+        {
+          "messageId": "T15-L0-001-M08",
+          "role": "assistant",
+          "content": "团队的决定是：将可选的 trace_context 属性加入 response schema，按兼容扩展处理，沿用当前主版本，不触发 major；旧 consumer 缺省时继续正常工作。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T16:00:00+08:00",
+          "contentHash": "20c10aaf011b1f71a9ba88e6f37ef7dbebedf6f585cb73ba842802b4fc97164d"
+        },
+        {
+          "messageId": "T15-L0-001-M09",
+          "role": "user",
+          "content": "那网关发布说明需要提醒什么？",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "2104a13180c898af7f6c210935fbded5c7113a08090d9f0c66cc4a4dedd9b698"
+        },
+        {
+          "messageId": "T15-L0-001-M10",
+          "role": "assistant",
+          "content": "说明新增属性可选，并标注旧 consumer 的缺省行为；不要把它写成强制迁移。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T10:00:00+08:00",
+          "contentHash": "fb23a01fd969cddde9e81e21937be67cd441b64cce34e42dcad770383e55fa7f"
+        },
+        {
+          "messageId": "T15-L0-001-M11",
+          "role": "user",
+          "content": "删字段的审查仍然另开一项。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T11:00:00+08:00",
+          "contentHash": "3718f4682bfc4de748e37be78dd3afb9c4cfb2ca5ab0e5b271b85b6b3df2fa02"
+        },
+        {
+          "messageId": "T15-L0-001-M12",
+          "role": "assistant",
+          "content": "对，删除字段和收紧 required 继续按破坏性风险单独处理。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T12:00:00+08:00",
+          "contentHash": "5f11abd06b1bcd6a6204b21362cf00dd4228eb2634dc78984bb0d1c2e2897404"
+        }
+      ],
+      "contentHash": "0973059bfb40dfb3300c055abdc7f01a68f100cc5c11aebde0ee322e8299c536"
+    },
+    {
+      "assetId": "T15-L0-002",
+      "ownerAgentId": "agent-task1-t15-general",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T15-L0-002",
+      "messages": [
+        {
+          "messageId": "T15-L0-002-M01",
+          "role": "user",
+          "content": "Harbor 另一个变更准备移除 deprecated 字段，兼容性怎么标？",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "5ad379507331d64b61c7ca5a43a3b5a8b30272788ff6b43c42a7d3db3950f6ed"
+        },
+        {
+          "messageId": "T15-L0-002-M02",
+          "role": "assistant",
+          "content": "先查仍在使用该字段的 consumer，再评估主版本影响。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T10:00:00+08:00",
+          "contentHash": "8f2245ec4e84226dcca90005ad25da2b297f69819d12f390b9ff501a55ed6734"
+        },
+        {
+          "messageId": "T15-L0-002-M03",
+          "role": "user",
+          "content": "这里还会把一个 required 字段改成更严格的格式。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T11:00:00+08:00",
+          "contentHash": "5f89f460c397ebe645fb140d788496bc27a45e7299dd642e62e3958d3748ed4d"
+        },
+        {
+          "messageId": "T15-L0-002-M04",
+          "role": "assistant",
+          "content": "删除和收紧约束都可能阻断旧 consumer，不能与可选扩展混看。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T12:00:00+08:00",
+          "contentHash": "00bdb02242d44244e30630f69c9e31ce24ef6334908bbf4a336dca61f678ec9d"
+        },
+        {
+          "messageId": "T15-L0-002-M05",
+          "role": "user",
+          "content": "发布说明里有人写了 minor，但审查人要求重新确认。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T13:00:00+08:00",
+          "contentHash": "eabc553b34f7917ae9897d5d57f239adbab7d69112856f7cb539ab89fa54d00b"
+        },
+        {
+          "messageId": "T15-L0-002-M06",
+          "role": "assistant",
+          "content": "先以破坏性检查和 consumer 证据为准，不直接接受版本标签。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T14:00:00+08:00",
+          "contentHash": "f1185ef2007b3dbcd2ce957e081ce187dee8c127aa10d309b9c94b7163486783"
+        },
+        {
+          "messageId": "T15-L0-002-M07",
+          "role": "user",
+          "content": "这轮没有新增 trace_context 的讨论。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T15:00:00+08:00",
+          "contentHash": "d3ecf5cae24088c6767e95046e5510448f26d16317a76475ca88e7e1d21771ea"
+        },
+        {
+          "messageId": "T15-L0-002-M08",
+          "role": "assistant",
+          "content": "收到，这条记录只覆盖删除字段与约束收紧。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T16:00:00+08:00",
+          "contentHash": "b1bf978b7a418b52ce395a2a8b92800caf5235fbbc0f5a45b49d021991ff5fdf"
+        },
+        {
+          "messageId": "T15-L0-002-M09",
+          "role": "user",
+          "content": "网关回滚点也需要留档吗？",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T09:00:00+08:00",
+          "contentHash": "d5a686a63695627b37828491c1c78a04c5ec85a361787af2db04f9396df0f3e0"
+        },
+        {
+          "messageId": "T15-L0-002-M10",
+          "role": "assistant",
+          "content": "需要，尤其是旧 schema 与新 schema 的并行窗口。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T10:00:00+08:00",
+          "contentHash": "e77875af21c00fa76c80d173427733649a95c39453521bcb37692cab73d5ee54"
+        },
+        {
+          "messageId": "T15-L0-002-M11",
+          "role": "user",
+          "content": "我会把它从可选属性审查中分离。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T11:00:00+08:00",
+          "contentHash": "486a85a4e1a553cf0fd7ed1d599106100ef786907bcbd26098e6d64d8b80b239"
+        },
+        {
+          "messageId": "T15-L0-002-M12",
+          "role": "assistant",
+          "content": "这样可以避免把不同风险的版本结论相互引用。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-10T12:00:00+08:00",
+          "contentHash": "a6cf0462a853fd13a595ed772cf99429b972472eeee771a703d49962fc907554"
+        }
+      ],
+      "contentHash": "96d1741275d7f1337814c8950ff90e9a06c1df07232e0f4f82630aaa2bf7d6c3"
+    },
+    {
+      "assetId": "T15-L0-003",
+      "ownerAgentId": "agent-task1-t15-general",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T15-L0-003",
+      "messages": [
+        {
+          "messageId": "T15-L0-003-M01",
+          "role": "user",
+          "content": "另一轮契约演练也提到 header 大小写，是否同一个问题？",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T09:00:00+08:00",
+          "contentHash": "173e2c64f6aecbefc9c6e9328b8c72ab260303e83eec992811ac7e935eebe905"
+        },
+        {
+          "messageId": "T15-L0-003-M02",
+          "role": "assistant",
+          "content": "不是同一条失败；那轮只讨论日志展示和字段标签的统一。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T10:00:00+08:00",
+          "contentHash": "92ac256af410c448bccd510870b75c648d048a1a431534158f344715273e9ea3"
+        },
+        {
+          "messageId": "T15-L0-003-M03",
+          "role": "user",
+          "content": "当时有人说把 header key 做 canonicalize。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T11:00:00+08:00",
+          "contentHash": "a149aca8377b7b7008e636972041449679229e0f1a1b63f5f8bc6c4050f1de4f"
+        },
+        {
+          "messageId": "T15-L0-003-M04",
+          "role": "assistant",
+          "content": "那是报告显示层的建议，不是 provider 匹配入口的行为决定。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T12:00:00+08:00",
+          "contentHash": "c3b11ecc11f79ce1bd5c1d51134346d7c031cda22c1f43d11517ebe5915efa56"
+        },
+        {
+          "messageId": "T15-L0-003-M05",
+          "role": "user",
+          "content": "请求值需要一起变换吗？",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T13:00:00+08:00",
+          "contentHash": "a8b42156b7976a64ea21bf9922e869e2e69a0ffde7d11d0e252b203d0843ea28"
+        },
+        {
+          "messageId": "T15-L0-003-M06",
+          "role": "assistant",
+          "content": "那次讨论没有改值，也没有形成适配层实施结论。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T14:00:00+08:00",
+          "contentHash": "4a34310a4ca695bd46fd5c73a5363ce67705e7510bdbf8661e3dab1d20430513"
+        },
+        {
+          "messageId": "T15-L0-003-M07",
+          "role": "user",
+          "content": "这会不会和合作方 API 的版本协商混淆？",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T15:00:00+08:00",
+          "contentHash": "c2cc06f143d802a810bcf7bf632e0569d9bb16c62bf15f43c23cc37c67604941"
+        },
+        {
+          "messageId": "T15-L0-003-M08",
+          "role": "assistant",
+          "content": "会，所以记录里把版本协商和契约失败分开。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T16:00:00+08:00",
+          "contentHash": "4e55d42c94a4d82d2a125015f054ebbc32d65968a74b8e2e43ed971af9c56770"
+        },
+        {
+          "messageId": "T15-L0-003-M09",
+          "role": "user",
+          "content": "我只记得‘大小写无关’几个字。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T09:00:00+08:00",
+          "contentHash": "d3a3e0fe7291e25a9e62126c1a2122ed2f18e76906b11ba3a3e919c272eab397"
+        },
+        {
+          "messageId": "T15-L0-003-M10",
+          "role": "assistant",
+          "content": "这是概括，不是可直接引用的最终句子。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T10:00:00+08:00",
+          "contentHash": "17428e211798171c36a491671e7c8313a181bed6672af5eb781e34d944fa1cdd"
+        },
+        {
+          "messageId": "T15-L0-003-M11",
+          "role": "user",
+          "content": "那轮没有具体的 X-Trace-Id 重放吗？",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T11:00:00+08:00",
+          "contentHash": "1002a321787b26d296b9094e9508c8541e505900882838fef758c978ae7b5649"
+        },
+        {
+          "messageId": "T15-L0-003-M12",
+          "role": "assistant",
+          "content": "没有，使用的是普通标签样例，未进入真实请求头匹配。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T12:00:00+08:00",
+          "contentHash": "0d53bc677ec5b5944cf8f68b9000969b7eae998016686704654c37d7cdab4905"
+        }
+      ],
+      "contentHash": "758637bea4c389f52f473ef03ac6b80ec03277e318b756fb4734a0417247aaf2"
+    },
+    {
+      "assetId": "T15-L0-004",
+      "ownerAgentId": "agent-task1-t15-general",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T15-L0-004",
+      "messages": [
+        {
+          "messageId": "T15-L0-004-M01",
+          "role": "user",
+          "content": "provider verification 的失败重放先从哪条契约看？",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T09:00:00+08:00",
+          "contentHash": "0f24a5001348857309abc0a7ff15458d5dbe80e92d48cbd3695a898183c53751"
+        },
+        {
+          "messageId": "T15-L0-004-M02",
+          "role": "assistant",
+          "content": "先看带自定义请求头的 consumer 契约，失败只出现在名称大小写写法不一致时。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T10:00:00+08:00",
+          "contentHash": "45241578127b3054320d97bd21b6afbe93959aff532e475b8bcfa27200e8b765"
+        },
+        {
+          "messageId": "T15-L0-004-M03",
+          "role": "user",
+          "content": "consumer 发的是 X-Trace-Id，fixture 中是 x-trace-id，值完全相同。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T11:00:00+08:00",
+          "contentHash": "1123bd13d12435e2e320004a4ad1541948545e0b0ac32abbf76b52713c70f49c"
+        },
+        {
+          "messageId": "T15-L0-004-M04",
+          "role": "assistant",
+          "content": "那就先排除 value 转换，比较入口对名称的处理。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T12:00:00+08:00",
+          "contentHash": "ca5114cc0e7e5443878ef432f9f97bc19bb2947e1e1ad89d740f6fe81a4c34f2"
+        },
+        {
+          "messageId": "T15-L0-004-M05",
+          "role": "user",
+          "content": "HTTP 层对请求头名称本来就不应区分大小写。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T13:00:00+08:00",
+          "contentHash": "a740d32cd6a72485f03bb7b1fc81ab928cf7b5b1c0876d8b79d07adf4b0e2c91"
+        },
+        {
+          "messageId": "T15-L0-004-M06",
+          "role": "assistant",
+          "content": "对，但当前匹配入口没有在所有路径保持这个语义。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T14:00:00+08:00",
+          "contentHash": "a3230d9a0253166ff5df1f0c02fac053b18514bb4f8f5dc4f4b377b5f51fe4ba"
+        },
+        {
+          "messageId": "T15-L0-004-M07",
+          "role": "user",
+          "content": "有人建议把名称和值一起转小写。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T15:00:00+08:00",
+          "contentHash": "650429968e96753a37273dce771e6d9e47b352697e1e6dd5dea48ff1e373d649"
+        },
+        {
+          "messageId": "T15-L0-004-M08",
+          "role": "assistant",
+          "content": "值不能动，否则会改变 token 和追踪标识的语义。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T16:00:00+08:00",
+          "contentHash": "092d293c8a7eccde2a2b79beb3b9b7a2dc345b3aea8d59b25b2a8e92ee584d8e"
+        },
+        {
+          "messageId": "T15-L0-004-M09",
+          "role": "user",
+          "content": "那我们要把决定写成可以落到适配层的句子。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T09:00:00+08:00",
+          "contentHash": "157cd428856ee454bed2582601b0ce644892c317e3bdf9b648a23b53e89d0550"
+        },
+        {
+          "messageId": "T15-L0-004-M10",
+          "role": "assistant",
+          "content": "我会把归一化放在进入匹配前，并保留原值。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T10:00:00+08:00",
+          "contentHash": "db8a100570ea98ac6c4a80df886c0bbc340b28684ca6a48343d4973c3647eee3"
+        },
+        {
+          "messageId": "T15-L0-004-M11",
+          "role": "user",
+          "content": "复盘里最后采用的精确说法是什么？",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T11:00:00+08:00",
+          "contentHash": "d393b4b3ec64b808483d7e4fc575f36c12bd74efba8b8dc7b4397acb935f7c88"
+        },
+        {
+          "messageId": "T15-L0-004-M12",
+          "role": "assistant",
+          "content": "决定是：在进入匹配前把请求头名称统一转换为小写，仅归一化名称、不改动 header value；因此 X-Trace-Id 与 x-trace-id 应按同一名称处理。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T12:00:00+08:00",
+          "contentHash": "b8a305002e694085b6e0a5c60fb399cd653e3bf2dea2ef9f352899092b2b1f06"
+        },
+        {
+          "messageId": "T15-L0-004-M13",
+          "role": "user",
+          "content": "把它和失败报告的范围一起留在 Pactline 讨论里。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T13:00:00+08:00",
+          "contentHash": "5c5a348b658094e6293e606bec704802c102c3d28e228a15bbef6cd3f555e8d4"
+        },
+        {
+          "messageId": "T15-L0-004-M14",
+          "role": "assistant",
+          "content": "已记录；后续只核对这条 provider verification 复盘，不把 SDK 参数命名带进来。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-11T14:00:00+08:00",
+          "contentHash": "3c0cf6f75434cfdfd041af38218c2571755685479721696563312ce66a20ae23"
+        }
+      ],
+      "contentHash": "9ea6ca1fa83b01d771d413287eebe4b80743a10185f6c66f9aa14c990831472b"
+    },
+    {
+      "assetId": "T15-L0-005",
+      "ownerAgentId": "agent-task1-t15-assets-a",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T15-L0-005",
+      "messages": [
+        {
+          "messageId": "T15-L0-005-M01",
+          "role": "user",
+          "content": "Meridian 的候选 SDK 构建出现了版本号，能当正式号吗？",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "3e653df7670b4043024e7ea619bc5091ed76877685e212ccf62ce6629ed1ac0b"
+        },
+        {
+          "messageId": "T15-L0-005-M02",
+          "role": "assistant",
+          "content": "不能，候选构建号要等交接确认后才可能成为正式包版本。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T10:00:00+08:00",
+          "contentHash": "2f850adb3bf7f920564834cb3c2860c29395f7246b9429d0f04066a60cde4289"
+        },
+        {
+          "messageId": "T15-L0-005-M03",
+          "role": "user",
+          "content": "这次只有 TypeScript 生成完成，Python 还在排队。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T11:00:00+08:00",
+          "contentHash": "ad4365638f3e140b727b6264ce03a3168e6bd9898851856ccfe4e00550bbd4f4"
+        },
+        {
+          "messageId": "T15-L0-005-M04",
+          "role": "assistant",
+          "content": "那更不能把单语言候选号当成双语言交接决定。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "90767f13a14aeb07742d47beb40407d3cd62d4c6f80a0597962c2f467335bdbb"
+        },
+        {
+          "messageId": "T15-L0-005-M05",
+          "role": "user",
+          "content": "输入 schema 的冻结状态已经通过检查。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T13:00:00+08:00",
+          "contentHash": "d750b4b0a8f8ae5ea9d3cbc608cb14cf4f746a6ab9e3e068f37f0d37fd890921"
+        },
+        {
+          "messageId": "T15-L0-005-M06",
+          "role": "assistant",
+          "content": "冻结输入是前置条件，但不等于正式包版本已钉住。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T14:00:00+08:00",
+          "contentHash": "a53badfa07daf7d3900bd76a1bde0b55e981008f0ec46cfeec972efe0dcd554c"
+        },
+        {
+          "messageId": "T15-L0-005-M07",
+          "role": "user",
+          "content": "发布说明只写了‘待确认’。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T15:00:00+08:00",
+          "contentHash": "a1d0a1eeec363166691089c142761a21c73bb404e42fae34bd551cfa84ec0121"
+        },
+        {
+          "messageId": "T15-L0-005-M08",
+          "role": "assistant",
+          "content": "保留待确认状态，等待两个语言包一起完成交接。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T16:00:00+08:00",
+          "contentHash": "9bddd643de2287ebe84a500bce940cf1e11b2f195edad4d533175243888a80cc"
+        },
+        {
+          "messageId": "T15-L0-005-M09",
+          "role": "user",
+          "content": "不要把这里的构建编号复制到 release handbook。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "b4fdef14279a7680cab2698acb912c560d667c3233e7b354096c2761d5576c75"
+        },
+        {
+          "messageId": "T15-L0-005-M10",
+          "role": "assistant",
+          "content": "明白，这条只作为候选发布的干扰记录。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T10:00:00+08:00",
+          "contentHash": "325641302b08bc64dfe43707923843b6e5a3ca623290ad2b88ca52a26da3519b"
+        },
+        {
+          "messageId": "T15-L0-005-M11",
+          "role": "user",
+          "content": "另一个项目的版本也出现在日志里。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T11:00:00+08:00",
+          "contentHash": "3fcee45e27f3c3ae95655aa35a08cf13133aa9ae3bab5857541b8abd088668a9"
+        },
+        {
+          "messageId": "T15-L0-005-M12",
+          "role": "assistant",
+          "content": "跨项目版本一律不作为 Meridian 正式交接证据。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "f98533cbb72100011202ac00918e638273437e1022167a49a369e5e633a05d84"
+        }
+      ],
+      "contentHash": "8c2317e8dc7a9e14def4bdeb5a707f7bac376222dc3360a022d577259108ae93"
+    },
+    {
+      "assetId": "T15-L0-006",
+      "ownerAgentId": "agent-task1-t15-assets-a",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T15-L0-006",
+      "messages": [
+        {
+          "messageId": "T15-L0-006-M01",
+          "role": "user",
+          "content": "Meridian 这次从冻结 schema 生成的两个 SDK，发布交接要核对什么？",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "b9e7908ed5016580d512f632d8b87b2d9ad4e180d7d087a2b5d0a1ffb6e6a155"
+        },
+        {
+          "messageId": "T15-L0-006-M02",
+          "role": "assistant",
+          "content": "核对 TypeScript 和 Python 都来自同一份冻结输入，并分别记录正式包版本。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T10:00:00+08:00",
+          "contentHash": "59d029d1a6ce19983ba8e7c27eed1fcf27ad10e259c078eb280e5dd5943355f9"
+        },
+        {
+          "messageId": "T15-L0-006-M03",
+          "role": "user",
+          "content": "候选构建先后完成，但不能用候选号替代正式版本。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T11:00:00+08:00",
+          "contentHash": "460e3d9f5362be6f830c3d065e7e4d70ec5d0e677dab398f678ba2c9da446ef7"
+        },
+        {
+          "messageId": "T15-L0-006-M04",
+          "role": "assistant",
+          "content": "对，交接记录要把候选构建和正式发布分开。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "5446f3c41a0c63e5b5f9c2152c2cc7ad3172e5fec51c113f596f3ab43948359d"
+        },
+        {
+          "messageId": "T15-L0-006-M05",
+          "role": "user",
+          "content": "两种语言的版本数字我在摘要里没看到。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T13:00:00+08:00",
+          "contentHash": "c00a8267b7f1b0fdeae42aa38f65f4739b575957c3d704625119a7359350108a"
+        },
+        {
+          "messageId": "T15-L0-006-M06",
+          "role": "assistant",
+          "content": "那就找交接时同时确认两种包的原始消息。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T14:00:00+08:00",
+          "contentHash": "fad168fa33c5cb9555d71adf3f9074495c1bca08ffa28c399a6d795b45d9e6ef"
+        },
+        {
+          "messageId": "T15-L0-006-M07",
+          "role": "user",
+          "content": "生成器提交号和包版本也要分开留档。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T15:00:00+08:00",
+          "contentHash": "0bd3cd4710d1171dd2d8e8bc1954978f44069df57fd56f89ea11c5f3c502494b"
+        },
+        {
+          "messageId": "T15-L0-006-M08",
+          "role": "assistant",
+          "content": "是，提交号只说明生成输入，不能回答正式包版本。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T16:00:00+08:00",
+          "contentHash": "02479be657e3b855f9f3ab5525a1390065d9a96220798a99f584c1e33903fd91"
+        },
+        {
+          "messageId": "T15-L0-006-M09",
+          "role": "user",
+          "content": "最后交接时两种包都通过 smoke check。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "0316ea7b0605e6638fd10e84e04b3f466b39f3425ff7944299d0fadd74a3116f"
+        },
+        {
+          "messageId": "T15-L0-006-M10",
+          "role": "assistant",
+          "content": "正式交接钉住的是 TypeScript SDK 3.1.0 与 Python SDK 2.4.1；两者都由同一份冻结 schema 生成，候选构建号不算正式版本。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T10:00:00+08:00",
+          "contentHash": "7d5157ed1e3bd1b06c3c214ab430552d6002d28aacbacccb6a289e7012e966c9"
+        },
+        {
+          "messageId": "T15-L0-006-M11",
+          "role": "user",
+          "content": "我会把两个版本写入发布交接单。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T11:00:00+08:00",
+          "contentHash": "b5a74e9fdfbebfb9302f11c10acb47e897ec130ebe648abaf3344ee135a1b8f6"
+        },
+        {
+          "messageId": "T15-L0-006-M12",
+          "role": "assistant",
+          "content": "同时保留冻结输入与 smoke check 的证据，避免与候选发布混淆。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-12T12:00:00+08:00",
+          "contentHash": "aced04169f61afebf78dc5fa0387b908d65d3f774974b1b4f4a70f69d461748d"
+        }
+      ],
+      "contentHash": "8c7d9aefc4e5e72467c25d48db9e534bc4f976f5db029d2d28e8631f3d22b828"
+    },
+    {
+      "assetId": "T15-L0-007",
+      "ownerAgentId": "agent-task1-t15-assets-b",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T15-L0-007",
+      "messages": [
+        {
+          "messageId": "T15-L0-007-M01",
+          "role": "user",
+          "content": "Prism 要给 request 的 state enum 增加一个值，先定什么范围？",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T09:00:00+08:00",
+          "contentHash": "85e9a6759f92fb889f9a13607c5964e1b9654a68ac66c2ddefa0dd3b70c325a9"
+        },
+        {
+          "messageId": "T15-L0-007-M02",
+          "role": "assistant",
+          "content": "先看 consumer 对未知枚举值的处理，再区分 request 与 response。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "d9b8a7a54a5f4686dde0508623ce7c425dac82cd599289c9c0a61660c7058d80"
+        },
+        {
+          "messageId": "T15-L0-007-M03",
+          "role": "user",
+          "content": "这是 request schema，当前客户端会严格校验允许值。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T11:00:00+08:00",
+          "contentHash": "fa834d6ebeecb600830eb77e0d39987f5e4152cb447710cbfd16cfb501da7b4f"
+        },
+        {
+          "messageId": "T15-L0-007-M04",
+          "role": "assistant",
+          "content": "那新增 request 值可能要求先完成 consumer 迁移。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T12:00:00+08:00",
+          "contentHash": "a7539743238c7d32d70a9bf1a8431ae8da4c1202730f3bc23c15bc868cf37bfd"
+        },
+        {
+          "messageId": "T15-L0-007-M05",
+          "role": "user",
+          "content": "response enum 的规则在另一份记录里更宽松。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T13:00:00+08:00",
+          "contentHash": "1733413a2ba26adc54e2de66e40da94c983029bfea8d5379f09c04b4fea98592"
+        },
+        {
+          "messageId": "T15-L0-007-M06",
+          "role": "assistant",
+          "content": "不能把 response 的惯例直接套到 request。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T14:00:00+08:00",
+          "contentHash": "862c3cfb0f4e9ac10637f6e76146715d26df5f283765986855d604c65be06492"
+        },
+        {
+          "messageId": "T15-L0-007-M07",
+          "role": "user",
+          "content": "近期 decision 记录的时间窗是八月一日到八月二十九日。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T15:00:00+08:00",
+          "contentHash": "274c45aeaf89ca47c14d8000d8297a7ba363077bf4e27726cdc073fba52a66af"
+        },
+        {
+          "messageId": "T15-L0-007-M08",
+          "role": "assistant",
+          "content": "该时间窗内的最终决定是：request 的 state 枚举新增值按严格兼容模式处理，必须先提升请求契约版本并完成 consumer 迁移；不能作为同一版本的无破坏扩展。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T16:00:00+08:00",
+          "contentHash": "2566811e889bdb6b936ff36d4204a8098325dfd1a1f68a22706507eed6af9872"
+        },
+        {
+          "messageId": "T15-L0-007-M09",
+          "role": "user",
+          "content": "这条决定只适用于 request，不改变 response 的审查规则。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T09:00:00+08:00",
+          "contentHash": "29698a81bb13414c1d7008678f7cee386e6eb33f7169a47350dbf575051caeac"
+        },
+        {
+          "messageId": "T15-L0-007-M10",
+          "role": "assistant",
+          "content": "对，记录中明确把两个方向拆开。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "936a3a23822cb403d13d8fe3dce2c1dbb025ec15df0fac12c1e6092e8d87538d"
+        },
+        {
+          "messageId": "T15-L0-007-M11",
+          "role": "user",
+          "content": "草案里的推测不要当最终结论。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T11:00:00+08:00",
+          "contentHash": "c34514ce46ceb79699e3178efe9d08ade38c19eee27fa55b8022ef58d91c034e"
+        },
+        {
+          "messageId": "T15-L0-007-M12",
+          "role": "assistant",
+          "content": "最终只引用指定时间窗内的 decision 记录。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T12:00:00+08:00",
+          "contentHash": "a2ada85754ed3e648f5724873f6a64245da413f1c9e572f59f627936fcb1e671"
+        }
+      ],
+      "contentHash": "bd7b3474d58173babbeeb60273f2235f63a714b66f3cb39b28536dc677d27f84"
+    },
+    {
+      "assetId": "T15-L0-008",
+      "ownerAgentId": "agent-task1-t15-assets-b",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T15-L0-008",
+      "messages": [
+        {
+          "messageId": "T15-L0-008-M01",
+          "role": "user",
+          "content": "Prism 的 response state enum 新增值也要审查吗？",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T09:00:00+08:00",
+          "contentHash": "eba4bb4512eb77411d066d35d3833c166f24746248c8c13027a091d189b3c065"
+        },
+        {
+          "messageId": "T15-L0-008-M02",
+          "role": "assistant",
+          "content": "要审查，但 response 和 request 对未知值的兼容假设不同。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "8aed5c1a30563d0e4d7ec4d63e8a2c1636d777b0bf5201bfb8a653cf4bb7d0ad"
+        },
+        {
+          "messageId": "T15-L0-008-M03",
+          "role": "user",
+          "content": "这条记录讨论的是 response 消费端容忍未知值。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T11:00:00+08:00",
+          "contentHash": "a90e29fe9c6790355c2e59d166eb2378ea0ceccda66cec009f324eb56bcf9571"
+        },
+        {
+          "messageId": "T15-L0-008-M04",
+          "role": "assistant",
+          "content": "因此不能用它回答 request enum 的最终模式。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T12:00:00+08:00",
+          "contentHash": "4b6bb3a329f5c813e90ca464f0c0b923284c829676cf5f6cb001d20cde4977e4"
+        },
+        {
+          "messageId": "T15-L0-008-M05",
+          "role": "user",
+          "content": "时间是在七月末，不在最近的 decision 窗口。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T13:00:00+08:00",
+          "contentHash": "f3103bc712a428b3b9900e90bb43e8b1ec97151ae11a2f044debcdb12b96e555"
+        },
+        {
+          "messageId": "T15-L0-008-M06",
+          "role": "assistant",
+          "content": "时间范围不同，也要避免混入当前审查。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T14:00:00+08:00",
+          "contentHash": "cf26772a433b62f7e54f25fa4c452f64cce95d9bea2f5522604229fd637c128d"
+        },
+        {
+          "messageId": "T15-L0-008-M07",
+          "role": "user",
+          "content": "有人把 request 和 response 的规则合并写在草案里。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T15:00:00+08:00",
+          "contentHash": "8fd16ca8baea841bb9eedeadce7b508fee81ce6356de3f17d534df7eab8e98ff"
+        },
+        {
+          "messageId": "T15-L0-008-M08",
+          "role": "assistant",
+          "content": "草案尚未批准，只能作为需要复核的线索。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T16:00:00+08:00",
+          "contentHash": "1f80729fce5ff0fdb12bbcdebe28f6b34d0caadf567289239d3652ad0c05415a"
+        },
+        {
+          "messageId": "T15-L0-008-M09",
+          "role": "user",
+          "content": "这轮没有要求升级请求契约版本。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T09:00:00+08:00",
+          "contentHash": "741669d03b20086e75cef0e2d654fc3bd8977aa9a91896d710690b4fd571ab93"
+        },
+        {
+          "messageId": "T15-L0-008-M10",
+          "role": "assistant",
+          "content": "那更说明它不是 request 的目标决定。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "52bdf1ded51f6a081744e4f2a2e3fb677cb30ebe3da830b68bd67e83760bdf56"
+        },
+        {
+          "messageId": "T15-L0-008-M11",
+          "role": "user",
+          "content": "我会把它标为 response 方向干扰。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T11:00:00+08:00",
+          "contentHash": "a67dd76fef96811ce14eae8cbda9fc382cce204520dbb0701f78f3a4d9f8b554"
+        },
+        {
+          "messageId": "T15-L0-008-M12",
+          "role": "assistant",
+          "content": "可以，并保留日期不同这一筛选条件。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-13T12:00:00+08:00",
+          "contentHash": "396ac0df46331f0b708e15c198a9331e24b7f6390dceb5ef312ec871f2e03f1b"
+        }
+      ],
+      "contentHash": "f978c53d7a18bf6d3847db671ed78cd8cb49ba662145732c72222e9c396698ff"
+    },
+    {
+      "assetId": "T15-L0-009",
+      "ownerAgentId": "agent-task1-t15-general",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T15-L0-009",
+      "messages": [
+        {
+          "messageId": "T15-L0-009-M01",
+          "role": "user",
+          "content": "Pactline provider verification 有一条超时失败重放，先排查什么？",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T09:00:00+08:00",
+          "contentHash": "724533b4a0bfabfd7746956b8df5dc674869d3e95e529e9cfec3dda713aa00af"
+        },
+        {
+          "messageId": "T15-L0-009-M02",
+          "role": "assistant",
+          "content": "先确认 provider 是否在等待窗口内没有返回，再看 consumer 的 timeout 记录。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T10:00:00+08:00",
+          "contentHash": "fad3510de1edac17fa6fadec7d8fab89141e7371b51cf80b5f06b5cb2e9065ae"
+        },
+        {
+          "messageId": "T15-L0-009-M03",
+          "role": "user",
+          "content": "这次不是契约断言不匹配，而是等待窗口耗尽。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "9fccc8f75beb1e40d18e8a7d646a3385df5361f6312efe64e7e74e00bcc93f80"
+        },
+        {
+          "messageId": "T15-L0-009-M04",
+          "role": "assistant",
+          "content": "那就单独复盘失败后的自动重试策略。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T12:00:00+08:00",
+          "contentHash": "652e87346bc13c823b8b0fb37f570247fbf10d86505708b0fd3c5a9de7edca4d"
+        },
+        {
+          "messageId": "T15-L0-009-M05",
+          "role": "user",
+          "content": "相邻健康检查用了指数退避，别把它带到这里。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T13:00:00+08:00",
+          "contentHash": "5a7df803e4c8bb51708eae18fd22cb39499d041397ade729b003d5c5ef954f92"
+        },
+        {
+          "messageId": "T15-L0-009-M06",
+          "role": "assistant",
+          "content": "收到，目标只限 provider verification 的失败重放。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T14:00:00+08:00",
+          "contentHash": "303820b09980c3f85ba08c5a1c115439b28d58df4cc0853531aeeca3a323d984"
+        },
+        {
+          "messageId": "T15-L0-009-M07",
+          "role": "user",
+          "content": "摘要只写‘重试策略已确定’，具体次数和间隔不见了。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T15:00:00+08:00",
+          "contentHash": "42448a07e8a5a763e94c241bb211cbdc2886611d5f46ce6494c7c44bd611e410"
+        },
+        {
+          "messageId": "T15-L0-009-M08",
+          "role": "assistant",
+          "content": "失败重放的决定是：超时后最多重试 2 次，每次间隔 30 秒；仍未返回就标记本轮验证失败，不再继续自动重试。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T16:00:00+08:00",
+          "contentHash": "07cab4c20ffc5ec8168d6eee354edde96f4b972b6f99de714405d8401968e647"
+        },
+        {
+          "messageId": "T15-L0-009-M09",
+          "role": "user",
+          "content": "那不应把人工重跑算作自动重试。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T09:00:00+08:00",
+          "contentHash": "c274eca37b67e1a0415643c9b4474e1a039d077ebbf0601a807028fa0e5799fa"
+        },
+        {
+          "messageId": "T15-L0-009-M10",
+          "role": "assistant",
+          "content": "对，人工重跑另有审计记录，不改变自动策略上限。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T10:00:00+08:00",
+          "contentHash": "bf24a43987268e2ed870994a206dbeb1b873dfe055e3bc562e79498e9e72e6fd"
+        },
+        {
+          "messageId": "T15-L0-009-M11",
+          "role": "user",
+          "content": "我会把失败重放和健康检查分开归档。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "dcf78f5e23879e59beac4cb8d76a128336bacc11cc9ccce82dea9a23b6a01ab2"
+        },
+        {
+          "messageId": "T15-L0-009-M12",
+          "role": "assistant",
+          "content": "这样后续查原话时不会被相似的退避术语干扰。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T12:00:00+08:00",
+          "contentHash": "8a5826fc90aa802506c0df81e97214483e4f57efa5dd9acac08bc9c093d6f50a"
+        }
+      ],
+      "contentHash": "503a02e4e3f63f3bb394208b74fa6d5c3d96f393ebbf717d301ee78917a32254"
+    },
+    {
+      "assetId": "T15-L0-010",
+      "ownerAgentId": "agent-task1-t15-assets-b",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T15-L0-010",
+      "messages": [
+        {
+          "messageId": "T15-L0-010-M01",
+          "role": "user",
+          "content": "Atlas 合作方申请旧版本继续运行的弃用例外，审批要核对什么？",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T09:00:00+08:00",
+          "contentHash": "633c2aee04c7b12f186cdbc9e1c6b61c8f8ea3647b80115c9dcebf6ce255b7d0"
+        },
+        {
+          "messageId": "T15-L0-010-M02",
+          "role": "assistant",
+          "content": "核对例外原因、迁移负责人和旧版本退出条件，并与默认通知周期分开。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T10:00:00+08:00",
+          "contentHash": "8451453f64cd526791db7f3990d7444ad80102efd3620e60303b920059335786"
+        },
+        {
+          "messageId": "T15-L0-010-M03",
+          "role": "user",
+          "content": "这次只需要批准窗口的起止日期，不问一般通知周期。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "b5f16db573e065b8ef2ede46e54774f03063723cd31863f72cadf57c04e0304b"
+        },
+        {
+          "messageId": "T15-L0-010-M04",
+          "role": "assistant",
+          "content": "明白，草案日期和最终批准日期也要分开记录。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T12:00:00+08:00",
+          "contentHash": "43c9f4def6aa2323ead6bcdbfb2387b89f4a9f9ba93bc83a21e102dbeacc7568"
+        },
+        {
+          "messageId": "T15-L0-010-M05",
+          "role": "user",
+          "content": "合作方已经承诺在窗口后完成迁移。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T13:00:00+08:00",
+          "contentHash": "3c7250008ad1aca9f03bc27ad2c77bbca6fc438b03e71001dcadd3a6f37f7bb9"
+        },
+        {
+          "messageId": "T15-L0-010-M06",
+          "role": "assistant",
+          "content": "那就把窗口边界和迁移承诺放在同一条批准证据里。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T14:00:00+08:00",
+          "contentHash": "58537cd65e56c4388ab10ea281614a29fd41fdebc1214f0993258514f3877d6f"
+        },
+        {
+          "messageId": "T15-L0-010-M07",
+          "role": "user",
+          "content": "文档摘要目前没有显示具体日期。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T15:00:00+08:00",
+          "contentHash": "07018c4b05f2788fc56de4cf5db85b6045418665df497f3225522140b98e39f3"
+        },
+        {
+          "messageId": "T15-L0-010-M08",
+          "role": "assistant",
+          "content": "批准的例外窗口是 2026-10-15 至 2026-11-30；这段时间允许旧版本继续运行，之后按迁移指南切换。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T16:00:00+08:00",
+          "contentHash": "d0edd2d8d9d22131c79aca17cd4905b5952656194edc88036b212d2abd9395ad"
+        },
+        {
+          "messageId": "T15-L0-010-M09",
+          "role": "user",
+          "content": "超过窗口就不能继续沿用例外。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T09:00:00+08:00",
+          "contentHash": "1fb21138a6c8a575659c5149f09b6cbd9e2db2b96bbcf4075a50797b0f5cee1d"
+        },
+        {
+          "messageId": "T15-L0-010-M10",
+          "role": "assistant",
+          "content": "对，窗口结束后回到标准弃用流程。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T10:00:00+08:00",
+          "contentHash": "4a1326f63dc0d6b3a3ef81fbbf19f49b3c7aa46c345d0dc5c1ba7dda8a185a06"
+        },
+        {
+          "messageId": "T15-L0-010-M11",
+          "role": "user",
+          "content": "我会把批准记录和迁移指南互相链接。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "2fa2757150bbaeb51fe4239a4fe1a8bad85a58388fbff66f2a06a5154972abfa"
+        },
+        {
+          "messageId": "T15-L0-010-M12",
+          "role": "assistant",
+          "content": "同时保留默认通知周期作为不同治理规则。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-14T12:00:00+08:00",
+          "contentHash": "7670e3fbc96c0fa90d1624ea6a1ddb13b6fb2d6bd0188ed0b1a55e48efe9da9f"
+        }
+      ],
+      "contentHash": "a519abb0be3d5ec672d9cb8bf4bd468406d78c6b4cbce4f4f0dd18f402c6095c"
+    },
+    {
+      "assetId": "T15-L0-011",
+      "ownerAgentId": "agent-task1-t15-assets-b",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T15-L0-011",
+      "messages": [
+        {
+          "messageId": "T15-L0-011-M01",
+          "role": "user",
+          "content": "Atlas 默认弃用通知一般提前多久发？",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T09:00:00+08:00",
+          "contentHash": "e47cadc1acd74112cfc9622b5a576ab0d97eab5653b688f71ce7da49395ccfaf"
+        },
+        {
+          "messageId": "T15-L0-011-M02",
+          "role": "assistant",
+          "content": "默认周期由版本治理规则规定，不等于某个合作方的例外窗口。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T10:00:00+08:00",
+          "contentHash": "57793cbfc870018c459dffd8e318ea0a3b30a32893876e03e32b67d778e6f266"
+        },
+        {
+          "messageId": "T15-L0-011-M03",
+          "role": "user",
+          "content": "这条记录只讨论通知模板和公告渠道。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T11:00:00+08:00",
+          "contentHash": "4d95e59c30cff43c8ffd81799615c06fb2dd4c015508f25cbba1fe132b8f0379"
+        },
+        {
+          "messageId": "T15-L0-011-M04",
+          "role": "assistant",
+          "content": "没有合作方批准日期，也没有旧版本继续运行的例外。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "eb287c788d865a30c5a07ca44338bf44e5889c1e15c086d22cf05eaeb53fc0df"
+        },
+        {
+          "messageId": "T15-L0-011-M05",
+          "role": "user",
+          "content": "另一个草案写了一个暂定月份。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T13:00:00+08:00",
+          "contentHash": "aa4fe0e5c8bdf441fe4c208ebc377dc411e82c6b18994abf0362a46eacf034a2"
+        },
+        {
+          "messageId": "T15-L0-011-M06",
+          "role": "assistant",
+          "content": "暂定月份不能当最终批准窗口。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T14:00:00+08:00",
+          "contentHash": "890ff6c9ac6295ec839ec0b87224e75db3a8e2fae542f30e694f2ddd54da229a"
+        },
+        {
+          "messageId": "T15-L0-011-M07",
+          "role": "user",
+          "content": "这和 Atlas 迁移负责人名单一起更新。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T15:00:00+08:00",
+          "contentHash": "7f20de3809624666f261195cac4150694d84ddd9e766d1f582ae471a94b3d434"
+        },
+        {
+          "messageId": "T15-L0-011-M08",
+          "role": "assistant",
+          "content": "负责人名单属于迁移流程，不会替代例外审批证据。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T16:00:00+08:00",
+          "contentHash": "c24e497dac993205a5c3c670930872566c3d31aef9909b5136c534ddbf3ee119"
+        },
+        {
+          "messageId": "T15-L0-011-M09",
+          "role": "user",
+          "content": "我会把默认周期标成治理背景。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T09:00:00+08:00",
+          "contentHash": "932249949877bc8fea71e0e408f6a97f5cc3ea58c1059773a8191b8a910426c0"
+        },
+        {
+          "messageId": "T15-L0-011-M10",
+          "role": "assistant",
+          "content": "这样查具体窗口时可以排除这条通知讨论。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T10:00:00+08:00",
+          "contentHash": "9e04daacedcff14aa3948822d62db70e88e430d3f1bb6af004c05120bc90b1b1"
+        },
+        {
+          "messageId": "T15-L0-011-M11",
+          "role": "user",
+          "content": "当前没有具体合作方名称。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T11:00:00+08:00",
+          "contentHash": "11e2b1448fd45affd29e4108b0842c19526d999ec8759d5ec01a0d6dc9d2985e"
+        },
+        {
+          "messageId": "T15-L0-011-M12",
+          "role": "assistant",
+          "content": "对，它不是目标例外批准记录。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "bfaa427ae4211942eb7247f966c84b3dc9e16063c80e4128e94f3c239a7f8402"
+        }
+      ],
+      "contentHash": "99f06e6257e1601cc80999bf890b4a5c5174381c4cbe215c0ba12fc611cd8c77"
+    },
+    {
+      "assetId": "T15-L0-012",
+      "ownerAgentId": "agent-task1-t15-assets-b",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "sessionId": "T15-L0-012",
+      "messages": [
+        {
+          "messageId": "T15-L0-012-M01",
+          "role": "user",
+          "content": "Atlas 双版本运行的迁移指南要和哪些证据互链？",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T09:00:00+08:00",
+          "contentHash": "999284142bab6bdcdc11de60937d04d632d926865720e809bfe38150217a12c7"
+        },
+        {
+          "messageId": "T15-L0-012-M02",
+          "role": "assistant",
+          "content": "互链版本协商记录、弃用治理场景和合作方迁移承诺。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T10:00:00+08:00",
+          "contentHash": "e3cd6043f3bc6d8e28c3d9b2ab88098b5046be3ee9122ccb551bd44019ceb321"
+        },
+        {
+          "messageId": "T15-L0-012-M03",
+          "role": "user",
+          "content": "草案和批准记录的状态必须分开。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T11:00:00+08:00",
+          "contentHash": "0ee575a5331c014e4b7d96e3c2b22b7bbf3ab4726e5786a43d12f4b76fc3e8e9"
+        },
+        {
+          "messageId": "T15-L0-012-M04",
+          "role": "assistant",
+          "content": "对，草案只能说明待审事项，批准记录才是窗口依据。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "e84f9dde2a19ab5e3300e2342e9bab11cd91236fbd43e8c115fa34cb168e533f"
+        },
+        {
+          "messageId": "T15-L0-012-M05",
+          "role": "user",
+          "content": "Meridian 的发布交接链接也出现在索引里。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T13:00:00+08:00",
+          "contentHash": "a9e5dd3cfc76a039ccd292e83d2f353dab8bd43cbe8776ebdc5ecc3986e69ed8"
+        },
+        {
+          "messageId": "T15-L0-012-M06",
+          "role": "assistant",
+          "content": "那是跨项目导航，不是 Atlas 的窗口结论。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T14:00:00+08:00",
+          "contentHash": "d1adba70356d7fad0adbacd27120aac7f323a6a23293cee585b676ea7079b588"
+        },
+        {
+          "messageId": "T15-L0-012-M07",
+          "role": "user",
+          "content": "迁移指南需要写旧版本何时退出。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T15:00:00+08:00",
+          "contentHash": "e295794fad2c0f947731f8e21eaf481a4a39ce563b894f6d50134e67409091ee"
+        },
+        {
+          "messageId": "T15-L0-012-M08",
+          "role": "assistant",
+          "content": "需要，但日期应从批准场景引用，不能从默认通知周期推算。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T16:00:00+08:00",
+          "contentHash": "96ec09a60d22004319efb63fbee7afb4436ae14a6bfca80468b7880cd0a32b41"
+        },
+        {
+          "messageId": "T15-L0-012-M09",
+          "role": "user",
+          "content": "索引摘要目前只讲双版本运行的流程。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T09:00:00+08:00",
+          "contentHash": "5c1befdaf48b0e94ee2caaedea40ff4d6aa9cfa90b018c0c811f5be15de8aaa2"
+        },
+        {
+          "messageId": "T15-L0-012-M10",
+          "role": "assistant",
+          "content": "摘要不替代批准证据，具体窗口仍需回到对应场景。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T10:00:00+08:00",
+          "contentHash": "d769453b7f50c6284d715ab74709ccc7a161dc9fe0a68aeedd34a6f7e7917647"
+        },
+        {
+          "messageId": "T15-L0-012-M11",
+          "role": "user",
+          "content": "我会保留版本切换后的回滚说明。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T11:00:00+08:00",
+          "contentHash": "49f2b577ba70ed19e6fce76a2a912f205cbd863ba9d313aa989a3c8540fc3380"
+        },
+        {
+          "messageId": "T15-L0-012-M12",
+          "role": "assistant",
+          "content": "很好，这能帮助审查人区分治理流程和具体例外事实。",
+          "sourceEvidenceIds": [
+            "T15-SRC-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "80b027587dfd5ca9fc18f674f3e2761fd986c9f8f77046de0166e178d7796e75"
+        }
+      ],
+      "contentHash": "cc31a74d51987109753c5097addfe999009ed874afad25a69a532dc62ceca937"
+    }
+  ],
+  "l1Memories": [
+    {
+      "assetId": "T15-L1-001",
+      "ownerAgentId": "agent-task1-t15-general",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Harbor 响应 schema 的可选属性演进需要与删除字段及 required 收紧分开审查；摘要保留风险边界，不替代版本决定原文。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T15-L0-001-M02",
+        "T15-L0-001-M04"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "721c6922c9fefd8dd1e5ba21247562c4f3bcab226622d239c806e08e8f876814"
+    },
+    {
+      "assetId": "T15-L1-002",
+      "ownerAgentId": "agent-task1-t15-general",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "将可选的 trace_context 属性加入 response schema，按兼容扩展处理，沿用当前主版本，不触发 major；旧 consumer 缺省时继续正常工作。发布说明标出新增属性可选，避免写成强制迁移。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T15-L0-001-M08",
+        "T15-L0-001-M10"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "e82e34c18f614f93bdd12507086814861b15c5dea5d4b748f56c0665cefec64a"
+    },
+    {
+      "assetId": "T15-L1-003",
+      "ownerAgentId": "agent-task1-t15-general",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Harbor 的另一轮审查涉及删除字段和约束收紧，属于独立的破坏性变更线索。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T15-L0-002-M03",
+        "T15-L0-002-M07"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "cfa2e033227543988f0c756837a7ac10a858195b22ffb3598633232c61a14adf"
+    },
+    {
+      "assetId": "T15-L1-004",
+      "ownerAgentId": "agent-task1-t15-assets-a",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "正式交接钉住的是 TypeScript SDK 3.1.0 与 Python SDK 2.4.1；两者都由同一份冻结 schema 生成，候选构建号不算正式版本。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T15-L0-006-M02",
+        "T15-L0-006-M04"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "b013cd3cbb1df99bceb9b7da0c5f97e930a948ff68aa43850556f0a45ea9974d"
+    },
+    {
+      "assetId": "T15-L1-005",
+      "ownerAgentId": "agent-task1-t15-assets-a",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Meridian 候选发布尚未完成双语言交接，候选构建信息不能代替正式包版本。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T15-L0-005-M03",
+        "T15-L0-005-M08"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "6e8a51d9ee89d513e57ab461434df684538cbf3fa4f4f94f740829400a7c91ca"
+    },
+    {
+      "assetId": "T15-L1-006",
+      "ownerAgentId": "agent-task1-t15-general",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Pactline 请求头复盘摘要指出名称比较需遵守 HTTP 语义、值保持原样，但概括不保存复盘决定的逐字内容。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T15-L0-004-M11",
+        "T15-L0-004-M12"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "f370acafadeb59b6ad71f18aa58d53e4bb0d61ccb7956ac1e78c2593c69b0d94"
+    },
+    {
+      "assetId": "T15-L1-007",
+      "ownerAgentId": "agent-task1-t15-general",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Pactline 超时复盘需区分 provider 等待窗口与相邻健康检查的退避策略。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T15-L0-009-M02",
+        "T15-L0-009-M05"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "4d281cd53924fac4d8010c9a620ac1c65b14425887dda346d75732001bee34da"
+    },
+    {
+      "assetId": "T15-L1-008",
+      "ownerAgentId": "agent-task1-t15-general",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "另一轮 Pactline 记录只涉及日志显示层的 header 标签概括，没有形成 provider 匹配入口的实施结论。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T15-L0-003-M03",
+        "T15-L0-003-M10"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "6451c61611c7fc1752176dd94ab005c0674eb2c986f852c6f154a0cb018b9b25"
+    },
+    {
+      "assetId": "T15-L1-009",
+      "ownerAgentId": "agent-task1-t15-general",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Pactline 失败重放摘要区分自动处理与人工重跑，并要求保留上限与审计边界。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T15-L0-009-M08",
+        "T15-L0-009-M10"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "696ce1c23067f9bd9f805b94ff3fa770255875588f7e10a6fd16c9d408a6ca3b"
+    },
+    {
+      "assetId": "T15-L1-010",
+      "ownerAgentId": "agent-task1-t15-assets-b",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Prism 审查明确区分 request 与 response 枚举，不能从 response 的未知值惯例推断 request 规则。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T15-L0-007-M02",
+        "T15-L0-007-M06"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "fcbde77f90ec4437838e8ac62e4b163208e808032c85cfbfec8b11dd2934f725"
+    },
+    {
+      "assetId": "T15-L1-011",
+      "ownerAgentId": "agent-task1-t15-assets-b",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "在 2026-08-01 至 2026-08-29 的 decision 窗口内，request 的 state 枚举新增值按严格兼容模式处理，必须先提升请求契约版本并完成 consumer 迁移，不能作为同一版本的无破坏扩展。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T15-L0-007-M07",
+        "T15-L0-007-M08"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "2b483dae4a42896f0bf0a9741a017f0d4585e8691c752a62928f79ef7aa00ef3"
+    },
+    {
+      "assetId": "T15-L1-012",
+      "ownerAgentId": "agent-task1-t15-assets-b",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Prism 另一条记录属于 response 方向且仍是草案，不能作为 request 的最终兼容证据。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T15-L0-008-M03",
+        "T15-L0-008-M08"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "2cca6061cf4862df16e052ea7614a7be7452773d194dfe2fb76d35111538ad79"
+    },
+    {
+      "assetId": "T15-L1-013",
+      "ownerAgentId": "agent-task1-t15-assets-b",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Atlas 例外审批需要同时考虑原因、迁移责任和退出条件，并与默认通知周期区分。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T15-L0-010-M02",
+        "T15-L0-010-M05"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "a46f28dfa9f34f0eeec5ae21b920f1479302e248e01a83ef11acda9451b94309"
+    },
+    {
+      "assetId": "T15-L1-014",
+      "ownerAgentId": "agent-task1-t15-assets-b",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Atlas 默认通知记录不包含合作方例外批准日期，暂定月份也不能替代最终审批证据。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T15-L0-011-M03",
+        "T15-L0-011-M06"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "b52d074e88cee29c873af24964d513faa4eddb51b0038cc7bad1e590f2f6152a"
+    },
+    {
+      "assetId": "T15-L1-015",
+      "ownerAgentId": "agent-task1-t15-assets-b",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Atlas 迁移摘要强调例外结束后回到标准弃用流程，具体批准窗口应以场景记录为准。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T15-L0-010-M08",
+        "T15-L0-010-M10"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "c6f56a87e82db0252779ca6611323389bee3bcd39dd75902a64c00ba46f4bdf9"
+    },
+    {
+      "assetId": "T15-L1-016",
+      "ownerAgentId": "agent-task1-t15-assets-b",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "decision",
+      "content": "Atlas 索引摘要描述双版本运行与证据互链流程，提醒摘要不替代具体批准场景。",
+      "status": "active",
+      "validFrom": "2026-08-01T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T15-L0-012-M04",
+        "T15-L0-012-M09"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "4d64bf93631e3b6765a864099e1227b16aae74c3297e21d9cc838a7680a478d3"
+    }
+  ],
+  "l2Scenes": [
+    {
+      "assetId": "T15-L2-001",
+      "ownerAgentId": "agent-task1-t15-general",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "path": "api/harbor/breaking-change-review.md",
+      "summary": "说明 Harbor OpenAPI 破坏性变更审查对象、入口和证据分层，不泄露本次 response 扩展的兼容结论。",
+      "content": "该场景汇总 Harbor 的 schema 变更审查入口、consumer 影响核对、版本标签复核和发布证据分层；可选响应属性、删除字段与 required 收紧分别进入不同审查分支。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T15-L0-001",
+        "T15-L0-002",
+        "T15-L0-012"
+      ],
+      "contentHash": "b7dfc4b70ac7a938c256d321e6318f36b10b4b08c04a5b4681680a3637bf34e1"
+    },
+    {
+      "assetId": "T15-L2-002",
+      "ownerAgentId": "agent-task1-t15-assets-a",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "path": "sdk/meridian/generation-release.md",
+      "summary": "说明 Meridian 从冻结 schema 生成多语言 SDK、候选构建和发布交接流程，不泄露当前正式版本钉住值。",
+      "content": "该场景描述 Meridian 的冻结输入校验、TypeScript/Python 生成、候选构建隔离、smoke check 与正式交接步骤；版本、提交号和候选号在交接中分别留档。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T15-L0-005",
+        "T15-L0-006",
+        "T15-L0-012"
+      ],
+      "contentHash": "1119983d7ba5e4b805e89a80d4da3db263ffee74808ef5a90f43f53a1cd53fa2"
+    },
+    {
+      "assetId": "T15-L2-003",
+      "ownerAgentId": "agent-task1-t15-general",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "path": "contracts/pactline/provider-verification.md",
+      "summary": "说明 Pactline provider verification 的验证场景、失败重放入口和审计边界，不泄露失败原因或具体重试决定。",
+      "content": "该场景汇总 Pactline 的 consumer 契约验证、provider 等待窗口、失败重放与人工重跑审计入口，并将请求头显示层讨论与自动重试策略分开。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T15-L0-003",
+        "T15-L0-004",
+        "T15-L0-009"
+      ],
+      "contentHash": "4c2f3ab8a526e7f7173b4670d15f1aee05fc260f47c020778d0f9fcf692484f1"
+    },
+    {
+      "assetId": "T15-L2-004",
+      "ownerAgentId": "agent-task1-t15-assets-b",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "path": "versioning/atlas/deprecation-window.md",
+      "summary": "说明 Atlas 弃用窗口例外的审批对象、迁移流程和双版本运行入口，不泄露批准的具体日期。",
+      "content": "Atlas 批准的例外窗口是 2026-10-15 至 2026-11-30；窗口期间允许旧版本继续运行，2026-11-30 之后按迁移指南切换并回到标准弃用流程。该内容综合批准记录、迁移承诺与双版本运行边界。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T15-L0-010",
+        "T15-L0-011",
+        "T15-L0-012"
+      ],
+      "contentHash": "09ecc4343cee17e748d22a583812733ef68d5a86504fbd4dd109dee7d4824be7"
+    },
+    {
+      "assetId": "T15-L2-005",
+      "ownerAgentId": "agent-task1-t15-assets-b",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "path": "schema/prism/compatibility-modes.md",
+      "summary": "说明 Prism JSON Schema request/response 兼容模式的审查入口与区分方式，不泄露项目当前采用值。",
+      "content": "该场景说明 Prism 兼容审查需先区分 request 与 response，再核对未知枚举值处理、consumer 影响、草案状态和 decision 时间条件。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T15-L0-007",
+        "T15-L0-008",
+        "T15-L0-012"
+      ],
+      "contentHash": "6fb4c3a03280ff9b37e0b309f175c8f1d1b7f7b07ecb68863bc89d2d867cea92"
+    }
+  ],
+  "l3Profiles": [
+    {
+      "assetId": "T15-L3-001",
+      "ownerAgentId": "agent-task1-t15-general",
+      "sourceEvidenceIds": [
+        "T15-SRC-HISTORY-L3"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "content": "该团队长期偏好先看契约边界，再决定实现与发布动作；审查时优先核对可追溯的原始消息、明确项目范围和时间条件。对于相邻项目或相似术语，要求保留证据链并标出不确定性，避免用摘要推断具体结论。记录应简洁、可复核，先处理当前问题，再扩展到其他版本治理背景。此偏好只描述稳定工作方式，不包含任何具体项目答案。",
+      "stability": "team",
+      "contentHash": "c976a2d86c2d2f9aca7187df8b791999c422b8201c455d813aecbc5b0a013c6a"
+    }
+  ]
+}

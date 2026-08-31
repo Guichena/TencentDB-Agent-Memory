@@ -1,0 +1,132 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t17-knowledge-replacement-01",
+  "stage": "DS03",
+  "team_id": "T17",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T17-DS03-KNW-REP-001",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "今天继续整理 Aurora UI 的 design-token 迁移，固定快照不变；Helios 的渲染决策与 Foundry 的 web 构建图是同屏背景，但不要把它们的结论混进 Aurora UI。"},
+        {"role": "assistant", "content": "边界已记下：当前只处理 Aurora UI 的 token、组件与可访问性架构，另外两条线保持为排除项。"},
+        {"role": "user", "content": "Aurora 这条线聚焦 TokenRegistry。已有记录提到注册定义、主题装配、Button/Input/Select 样式、发布 CSS、文档预览和三组测试，但没有可靠的跨文件定位清单。"},
+        {"role": "assistant", "content": "我会把这些内容当作影响类别线索，不按相似包名猜具体路径；需要核对固定架构资料中的真实跨文件关系。"},
+        {"role": "user", "content": "Helios rendering decisions 和 Foundry web build graph 也出现在同屏摘要里；它们分别涉及渲染策略与构建交付，不属于这次 token 影响面。"},
+        {"role": "assistant", "content": "已排除 Helios 和 Foundry；当前问题仍限于 Aurora UI 中 TokenRegistry 的注册、装配、消费、产物、预览和测试关系。"},
+        {"role": "user", "content": "目前确认的是符号和影响类别，尚未抄入资料返回的每个文件路径；不要扩展到实现细节、依赖版本或改动建议。"},
+        {"role": "assistant", "content": "当前上下文仍缺 TokenRegistry 的完整跨文件影响清单。仅凭这些类别不能安全写出每个准确路径，因此先保留这一处缺口。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请确认 Aurora UI 中 TokenRegistry 的完整跨文件影响面，只列出注册定义、主题装配、组件 consumers、发布产物、文档预览和测试对应的准确文件路径。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "补充记录仍只有 TokenRegistry 的影响类别，没有资料返回的完整文件路径；请保留这一个跨文件清单缺口，不要凭包名补全。"},
+        "private_proposal": {
+          "unique_information_gap": "Aurora UI 中 TokenRegistry 的完整跨文件影响清单（注册定义、主题装配、三个组件 consumers、发布产物、文档预览和三组测试的准确路径）尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": ["T17-KNW-01"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "frozen_tool_sequence": [
+            {"tool_name": "knowledge_tools_list", "params": {"knowledge_id": "T17-KNW-01"}, "visibility": "author-only", "returns": {"tools": [{"name": "search"}, {"name": "read_page"}]}},
+            {"tool_name": "knowledge_tools_call", "tool_name_from_previous": "search", "params": {"query": "TokenRegistry impact inventory"}}
+          ],
+          "stop_after_candidate": "先列出目标资料的固定工具，再以 query=TokenRegistry impact inventory 查询一次并获得完整跨文件清单后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接摘要已补齐唯一缺口：TokenRegistry 的完整跨文件影响面是——注册定义 packages/tokens/src/registry.ts；主题装配入口 packages/theme/src/createTheme.ts；组件 consumers packages/components/src/Button/styles.ts、packages/components/src/Input/styles.ts、packages/components/src/Select/styles.ts；发布产物 packages/tokens/dist/aurora.css；文档预览 apps/docs/src/theme/preview.tsx；测试 packages/tokens/test/registry.test.ts、packages/theme/test/createTheme.test.ts、packages/components/test/token-contract.test.ts。实现细节、依赖版本和改动建议仍不纳入本次记录。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "追加消息只补齐了 TokenRegistry 的十个跨文件影响节点及其准确路径，并保留 Aurora UI 范围、Helios/Foundry 排除项和查询边界；无需再查资源。"}
+      },
+      "visible_distractor_ids_author_only": ["T17-KNW-02", "T17-KNW-03"],
+      "controlled_delta_note": "Positive 只保留 TokenRegistry 的完整跨文件路径清单缺口；Negative 只补齐注册、主题、三个组件、产物、预览和三组测试路径，其他共享消息、排除项和 query 完全不变。",
+      "source_fact_map": [],
+      "sol_review_questions": ["Positive 是否只保留完整路径清单缺口，没有泄露资源标识或工具细节？", "Negative 是否完整包含注册、主题、Button/Input/Select、产物、预览和三组测试的准确路径？", "目标资料是否 ready、工具列表是否固定为 search/read_page，且第二步只查询 TokenRegistry impact inventory？"]
+    },
+    {
+      "draft_pair_id": "T17-DS03-KNW-REP-002",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "现在整理 Helios 的 SSR 渲染架构决策，固定讨论快照不变；Aurora 的 token 架构和 Foundry 的构建决策只是同屏邻近主题。"},
+        {"role": "assistant", "content": "范围已收窄到 Helios 的 SSR、streaming 与 hydration 设计；Aurora 和 Foundry 的资料不并入这条记录。"},
+        {"role": "user", "content": "问题集中在 hydration boundary 的 ownership rationale：现有摘要描述了边界和恢复流程，但没说由哪个团队负责以及为什么这样划分。"},
+        {"role": "assistant", "content": "当前材料只够定位到 Helios 的架构决策主题，不足以可靠补出 ownership rationale；我不会按常见 SSR 分工猜测。"},
+        {"role": "user", "content": "Aurora token、组件与可访问性，以及 Foundry chunk、模块边界与构建决策都在旁边出现；两者与 Helios hydration 责任无关。"},
+        {"role": "assistant", "content": "已明确排除 Aurora 和 Foundry；本次只核对 Helios hydration boundary 的团队归属和设计理由。"},
+        {"role": "user", "content": "不要扩展到 SSR 性能指标、版本迁移或实现改动，只需要架构决策中明确写出的责任归属理由。"},
+        {"role": "assistant", "content": "当前上下文仍缺 hydration boundary ownership rationale 这一条窄事实，无法仅凭 SSR 术语安全作答。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请确认 Helios hydration boundary 的团队归属及其架构决策理由，只回答责任 ownership rationale。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "补充摘要仍没有给出 hydration boundary 的团队归属或划分理由；请保留这一条 ownership rationale 缺口，不要从 SSR 惯例推断。"},
+        "private_proposal": {
+          "unique_information_gap": "Helios 架构决策中 hydration boundary 的 SSR platform team ownership rationale 尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": ["T17-KNW-02"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "frozen_tool_sequence": [
+            {"tool_name": "knowledge_tools_list", "params": {"knowledge_id": "T17-KNW-02"}, "visibility": "author-only", "returns": {"tools": [{"name": "search"}, {"name": "read_page"}]}},
+            {"tool_name": "knowledge_tools_call", "tool_name_from_previous": "search", "params": {"query": "hydration boundary ownership rationale"}}
+          ],
+          "stop_after_candidate": "先列出目标资料的固定工具，再以 query=hydration boundary ownership rationale 查询一次并停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接摘要已补齐唯一缺口：该决定由 SSR platform team 负责 hydration boundary，因为该团队同时控制 server stream checkpoints 与 client hydration handoff，可避免跨团队变更造成边界不一致；Aurora 与 Foundry 仍是排除项。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "追加消息只补齐 Helios hydration boundary 的 SSR platform team 归属及其协议一致性理由，并保留其他主题的排除边界；无需再查资源。"}
+      },
+      "visible_distractor_ids_author_only": ["T17-KNW-01", "T17-KNW-03"],
+      "controlled_delta_note": "Positive 只保留 hydration boundary ownership rationale 缺口；Negative 只补齐 SSR platform team 归属和流式输出/客户端恢复契约理由，其他共享消息和 query 不变。",
+      "source_fact_map": [],
+      "sol_review_questions": ["Positive 是否未泄露团队归属、协议理由、资源标识或工具细节？", "Negative 是否只补齐 SSR platform team 的 ownership rationale，并维持 Aurora/Foundry 排除项？", "第二步是否统一使用 search 和 query hydration boundary ownership rationale？"]
+    },
+    {
+      "draft_pair_id": "T17-DS03-KNW-REP-003",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "这次整理 Foundry 的 web 构建架构决策，固定快照不变；Aurora token 架构和 Helios SSR 决策是同屏邻近背景，不要混入构建调用关系。"},
+        {"role": "assistant", "content": "当前只处理 Foundry 的 chunk、模块边界与构建决策，Aurora 和 Helios 保持排除。"},
+        {"role": "user", "content": "我需要确认 createChunkPlan 的 direct callers。摘要提到了 chunk 规划和异步产物，但没有列出两个直接调用方的准确名字与路径。"},
+        {"role": "assistant", "content": "这些只是定位线索；我不会根据构建阶段的常见命名猜 direct callers，需核对固定架构决策资料。"},
+        {"role": "user", "content": "旁边的 Aurora token、组件与可访问性内容，以及 Helios SSR、streaming 与 hydration 内容都不是 Foundry 的 chunk 调用图。"},
+        {"role": "assistant", "content": "已排除 Aurora 和 Helios；当前问题严格限定为 createChunkPlan 的两个 direct callers 及其路径。"},
+        {"role": "user", "content": "不要补写 chunk 算法、模块边界原则或构建性能，只返回资料明确列出的直接调用方。"},
+        {"role": "assistant", "content": "当前上下文仍缺 createChunkPlan 的 direct caller 清单，不能从异步产物等类别安全推断具体节点。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请确认 Foundry 构建决策中 createChunkPlan 的两个 direct callers 及准确路径，只返回直接调用方清单。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "补充摘要仍只有 chunk 规划和异步产物的类别，没有两个 direct callers 的准确名字与路径；请保留这一条清单缺口。"},
+        "private_proposal": {
+          "unique_information_gap": "Foundry 构建决策中 createChunkPlan 的两个 direct callers（emitAsyncChunk 与 planEntryChunks）及其准确路径尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": ["T17-KNW-03"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "frozen_tool_sequence": [
+            {"tool_name": "knowledge_tools_list", "params": {"knowledge_id": "T17-KNW-03"}, "visibility": "author-only", "returns": {"tools": [{"name": "search"}, {"name": "read_page"}]}},
+            {"tool_name": "knowledge_tools_call", "tool_name_from_previous": "search", "params": {"query": "createChunkPlan direct callers"}}
+          ],
+          "stop_after_candidate": "先列出目标资料的固定工具，再以 query=createChunkPlan direct callers 查询一次并停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "交接摘要已补齐唯一缺口：createChunkPlan 的两个 direct callers 是 emitAsyncChunk（packages/foundry/chunks/emitter.ts）和 planEntryChunks（packages/foundry/chunks/entry.ts）；Aurora 与 Helios 仍不纳入本次记录。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "追加消息只补齐 Foundry createChunkPlan 的两个直接调用方及准确路径，并保持 Aurora/Helios 排除项和查询边界；无需再查资源。"}
+      },
+      "visible_distractor_ids_author_only": ["T17-KNW-01", "T17-KNW-02"],
+      "controlled_delta_note": "Positive 只保留 createChunkPlan 的两个 direct callers 清单缺口；Negative 只补齐 emitAsyncChunk 与 planEntryChunks 及其路径，其他共享消息、排除项和 query 完全不变。",
+      "source_fact_map": [],
+      "sol_review_questions": ["Positive 是否未泄露 direct caller 名称、路径、资源标识或工具细节？", "Negative 是否只补齐 emitAsyncChunk 与 planEntryChunks 两个 direct callers 及路径？", "第二步是否统一使用 search 和 query createChunkPlan direct callers？"]
+    }
+  ]
+}

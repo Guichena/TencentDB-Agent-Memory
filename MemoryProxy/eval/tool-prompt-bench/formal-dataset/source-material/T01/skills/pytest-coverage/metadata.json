@@ -1,0 +1,30 @@
+{
+  "schema_version": "task1.github_skill_source.v1",
+  "team_id": "T01",
+  "name": "pytest-coverage",
+  "repository_url": "https://github.com/github/awesome-copilot",
+  "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+  "source_path": "skills/pytest-coverage/SKILL.md",
+  "license_spdx": "MIT",
+  "license_file": "../../licenses/MIT.txt",
+  "visibility": "listed",
+  "main_raw_sha256": "3778add8809c5aac585ab764090f46e7cfdb009ae3fc9fb308710538627970f9",
+  "raw_files": [
+    {
+      "path": "SKILL.md",
+      "source_path": "skills/pytest-coverage/SKILL.md",
+      "url": "https://raw.githubusercontent.com/github/awesome-copilot/f11a4e441c5ff061b4f8ae37952be8c602e4034e/skills/pytest-coverage/SKILL.md",
+      "sha256": "3778add8809c5aac585ab764090f46e7cfdb009ae3fc9fb308710538627970f9",
+      "byte_length": 1126
+    }
+  ],
+  "adapted_files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "1057ea1dd6a32fceb0cf79d542b703427e7970e86e4ce85f051d76a0d5f94379",
+      "byte_length": 1154
+    }
+  ],
+  "adaptation_diff": "adaptation.diff",
+  "frozen": true
+}

@@ -1,0 +1,56 @@
+{
+  "schema_version": "task1.skill_asset_candidates.v1",
+  "team_id": "T20",
+  "batch_id": "T20-DS05-SKILL-TRIAL-01",
+  "source_locks": [
+    {
+      "repository_key": "opensearch-agent-skills",
+      "repository_url": "https://github.com/opensearch-project/opensearch-agent-skills",
+      "repository_commit": "5076c03d24fdd61d9b06fa4e451c900023ad00da",
+      "license": "Apache-2.0",
+      "license_path": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T20/repos/opensearch-project__opensearch-agent-skills/LICENSE.upstream",
+      "license_sha256": "5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320"
+    }
+  ],
+  "allowed_host_adaptations": [
+    "替换宿主工具名称或宿主引用",
+    "调整中性 listing description",
+    "调整 useWhen 与 doNotUseWhen",
+    "保留核心技术步骤、示例和资源引用"
+  ],
+  "candidates": [
+    {
+      "candidate_id": "T20-SKILL-OPENSEARCH-SEARCH",
+      "name": "opensearch-search",
+      "owner": "agent-task1-t20-assets-a",
+      "visibility": "same-team-search",
+      "proposed_visibility": "same-team-search",
+      "source_id": "T20-SRC-OPENSEARCH-SEARCH",
+      "repository_key": "opensearch-agent-skills",
+      "repository_url": "https://github.com/opensearch-project/opensearch-agent-skills",
+      "repository_commit": "5076c03d24fdd61d9b06fa4e451c900023ad00da",
+      "license": "Apache-2.0",
+      "source_path": "skills/opensearch-skills/search/SKILL.md",
+      "copied_path": "opensearch-search/SKILL.md",
+      "raw_sha256": "c02706065e05a8d1087ebd5837c8dbbd6b431e67ae8a3f8a175cfaab4fbf974d",
+      "sha256": "c02706065e05a8d1087ebd5837c8dbbd6b431e67ae8a3f8a175cfaab4fbf974d",
+      "manifest_files": [
+        {
+          "path": "skills/opensearch-skills/search/SKILL.md",
+          "sha256": "c02706065e05a8d1087ebd5837c8dbbd6b431e67ae8a3f8a175cfaab4fbf974d"
+        }
+      ],
+      "resources": [],
+      "description": "构建应用搜索的类别指引，覆盖索引设置、搜索架构、语义/向量/混合与 agentic 策略、质量评估和文档处理，并指向端到端搭建的后续流程。",
+      "useWhen": "需要构建搜索应用、设置索引、选择搜索架构或检索策略，评估搜索质量，或处理用于搜索的文档。",
+      "doNotUseWhen": "任务只涉及与搜索应用无关的通用业务逻辑，或需要一个未由该类别文件支持的具体部署实现细节。",
+      "allowed_host_adaptations": [
+        "将宿主检索和打开方式映射为团队当前可用的能力入口",
+        "保留搜索应用、索引设置、架构选择、质量评估、文档处理和 launchpad 路由",
+        "不扩写 launchpad 文件未提供的端到端步骤"
+      ],
+      "use_in_draft_pair": "T20-PAIR-S01",
+      "role": "target"
+    }
+  ]
+}

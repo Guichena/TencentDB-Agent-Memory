@@ -1,0 +1,306 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t12-skill-batch-02",
+  "stage": "DS02",
+  "team_id": "T12",
+  "family": "skill",
+  "external_source_ids": [
+    "t12-skill-pg-migration",
+    "t12-skill-pg-design",
+    "t12-skill-ghost-db"
+  ],
+  "pairs": [
+    {
+      "draft_pair_id": "T12-SKILL-B01-P004",
+      "external_source_ids": [
+        "t12-skill-pg-design"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Quartz ORM 兼容性改造需要新增几张 PostgreSQL 业务表，并保留后续演进空间。"
+        },
+        {
+          "role": "assistant",
+          "content": "已列出实体关系、读写路径和预计增长；本轮先做表结构设计，不生成 DDL。"
+        },
+        {
+          "role": "user",
+          "content": "团队在主键、字段类型、约束和索引上有不同意见，担心先做宽表会留下维护问题。"
+        },
+        {
+          "role": "assistant",
+          "content": "需要先用一致的设计原则确定关系、类型、必填性和实际访问路径。"
+        },
+        {
+          "role": "user",
+          "content": "我还缺一份可复用的 PostgreSQL 设计起点，不能只凭 ORM 默认值决定。"
+        },
+        {
+          "role": "assistant",
+          "content": "在开始实现前应补齐规范化、数据类型、约束和按查询建立索引的基本次序。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "Quartz 新表设计开始前，应按什么顺序确定关系、类型、约束和索引？",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "我还缺少适用于 PostgreSQL 表设计的系统指南。请先找出最匹配的既有资料并查看其核心规则，说明规范化、类型、必填约束和访问路径索引如何衔接，先停在设计原则层。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少 PostgreSQL 表设计中从 3NF 规范化到类型选择、NOT NULL/默认值和真实访问路径索引的核心规则。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T12-SKILL-PG-DESIGN"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_search",
+              "skill_view_by_id"
+            ]
+          ],
+          "stop_after_candidate": "查看冻结表设计指导并概述核心规则，不生成或执行建表语句。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把设计起点补齐：先按 3NF 规范化以避免冗余和更新异常，只有测量证明高收益时才反规范化；再选择合适类型；语义上必填的字段加 NOT NULL，常见值用默认值；最后只为实际查询、排序、连接和外键访问路径建立索引。请据此给出顺序。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已给出规范化、反规范化条件、类型、必填性、默认值和访问路径索引的完整起点。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T12-SKILL-PG-MIGRATION",
+        "T12-SKILL-GHOST"
+      ],
+      "controlled_delta_note": "Positive 只缺冻结表设计规则；Negative 仅补齐规范化、类型、约束和访问路径索引的既有原则。",
+      "source_fact_map": [
+        {
+          "claim": "表设计应先规范化到 3NF，仅在测量证明高收益时反规范化。",
+          "source_id": "t12-skill-pg-design",
+          "locator": "design-postgres-tables/SKILL.md#Core Rules"
+        },
+        {
+          "claim": "主键、字符串、金额、时间和整数等字段应按 PostgreSQL 推荐类型选择。",
+          "source_id": "t12-skill-pg-design",
+          "locator": "design-postgres-tables/SKILL.md#Core Rules; #Data Types"
+        },
+        {
+          "claim": "语义必填字段使用 NOT NULL，索引应服务于实际查询访问路径，外键列需显式索引。",
+          "source_id": "t12-skill-pg-design",
+          "locator": "design-postgres-tables/SKILL.md#Core Rules; #Constraints"
+        }
+      ],
+      "sol_review_questions": [
+        "确认该 pair 的检索后查看路径只存在于私有提案，可见文本未暴露内部动作或资产名。",
+        "确认 Negative 没有把合成的 Quartz 实体或 ORM 细节冒充冻结来源事实。"
+      ]
+    },
+    {
+      "draft_pair_id": "T12-SKILL-B01-P005",
+      "external_source_ids": [
+        "t12-skill-pg-design"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Archive 项目要设计索引生命周期，既有时间序列日志，也有按状态和 JSON 属性筛选的查询。"
+        },
+        {
+          "role": "assistant",
+          "content": "已收集查询形态、数据增长和维护窗口；本轮只确定索引选择原则。"
+        },
+        {
+          "role": "user",
+          "content": "有人建议所有列都建同一种索引，但这可能拖慢写入并且不匹配访问方式。"
+        },
+        {
+          "role": "assistant",
+          "content": "索引类型应由操作符、过滤前缀、数据顺序和维护成本共同决定。"
+        },
+        {
+          "role": "user",
+          "content": "工作区已经准备好表设计指导，但我还没有看其中针对 B-tree、GIN、GiST 和 BRIN 的选择依据。"
+        },
+        {
+          "role": "assistant",
+          "content": "可以先直接阅读相关设计原则，再把它们映射到现有查询，不创建索引。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "Archive 的索引规划应如何按查询操作和数据分布选择索引类型？",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "请直接查看已经准备好的 PostgreSQL 表设计指导中关于索引的部分，概述 B-tree、复合索引、GIN、GiST 和 BRIN 的适用边界，暂时不要改表。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少按操作符、复合索引左前缀、JSONB/数组、范围和自然顺序数据选择索引类型的规则。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T12-SKILL-PG-DESIGN"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_view"
+            ]
+          ],
+          "stop_after_candidate": "查看冻结表设计指导的索引章节并总结选择边界，不创建或删除索引。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把选择规则补齐：B-tree 用于相等、范围和排序；复合索引要注意左前缀；JSONB、数组和全文检索适合 GIN，范围与排除约束适合 GiST；超大且与磁盘顺序相关的数据可用 BRIN；只为实际访问路径建索引。请据此说明规划方法。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已经覆盖冻结指导中的主要索引类型、适用操作和访问路径原则，足以完成规划说明。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T12-SKILL-PG-MIGRATION",
+        "T12-SKILL-GHOST"
+      ],
+      "controlled_delta_note": "Positive 只缺索引选择章节；Negative 仅补齐 B-tree、复合、GIN、GiST、BRIN 与访问路径的冻结规则。",
+      "source_fact_map": [
+        {
+          "claim": "B-tree 适合相等、范围和排序查询，复合索引的列顺序及左前缀影响可用性。",
+          "source_id": "t12-skill-pg-design",
+          "locator": "design-postgres-tables/SKILL.md#Indexing"
+        },
+        {
+          "claim": "GIN 适合 JSONB、数组和全文检索，GiST 适合范围和排除约束。",
+          "source_id": "t12-skill-pg-design",
+          "locator": "design-postgres-tables/SKILL.md#Indexing"
+        },
+        {
+          "claim": "BRIN 适合很大且磁盘行顺序与被索引列相关的数据，索引应服务实际访问路径。",
+          "source_id": "t12-skill-pg-design",
+          "locator": "design-postgres-tables/SKILL.md#Indexing; #Core Rules"
+        }
+      ],
+      "sol_review_questions": [
+        "确认该 pair 使用直接查看路径，且可见文字未泄漏动作名或内部资产标识。",
+        "确认 Negative 未加入 Archive 的具体表名、阈值或未在冻结指导中出现的索引策略。"
+      ]
+    },
+    {
+      "draft_pair_id": "T12-SKILL-B01-P006",
+      "external_source_ids": [
+        "t12-skill-ghost-db"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Beacon 的查询回归需要在独立数据库上复现，实验结束后还要把可复用的状态交给另一位同事。"
+        },
+        {
+          "role": "assistant",
+          "content": "已准备查询样本、结构核对清单和交接目标；本轮先确认数据库生命周期，不运行分析。"
+        },
+        {
+          "role": "user",
+          "content": "我希望数据库可以按需创建、暂停后恢复，并能在需要时作为快照交接。"
+        },
+        {
+          "role": "assistant",
+          "content": "这需要同时明确创建、连接、恢复、结构查看和分享的生命周期边界。"
+        },
+        {
+          "role": "user",
+          "content": "工作区已经准备好数据库管理指导，但我还没直接查看这些生命周期步骤。"
+        },
+        {
+          "role": "assistant",
+          "content": "先阅读管理流程，再决定实验数据库的创建和交接方式，暂时不调用服务。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "Beacon 独立实验数据库的创建、恢复、结构检查和交接，开始前应确认哪些生命周期步骤？",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "请直接查看已经准备好的 PostgreSQL 数据库管理指导，概述按需创建、连接、暂停恢复、结构检查和分享快照的流程边界，先停在计划阶段。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少数据库按需创建、连接、暂停恢复、结构检查及快照分享的生命周期步骤。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T12-SKILL-GHOST"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_view"
+            ]
+          ],
+          "stop_after_candidate": "查看冻结数据库管理指导并概述创建、连接、恢复、结构检查和分享边界，不操作数据库。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把生命周期要点补齐：按需创建数据库后通过名称或标识连接；空闲数据库可在需要时恢复；用结构检查确认表、列、索引和约束；需要交接时分享快照，让接收方从快照创建自己的副本。请据此给出计划边界。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已经给出创建、连接、恢复、结构检查和分享快照的完整生命周期，不必再读取管理指导。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T12-SKILL-PG-MIGRATION",
+        "T12-SKILL-PG-DESIGN"
+      ],
+      "controlled_delta_note": "Positive 只缺数据库生命周期指导；Negative 仅补齐创建、连接、恢复、结构检查和快照分享步骤。",
+      "source_fact_map": [
+        {
+          "claim": "数据库可按需创建并通过名称或标识连接，暂停后可恢复。",
+          "source_id": "t12-skill-ghost-db",
+          "locator": "ghost-database/SKILL.md#Getting Started; #Auto-Pause and Resume"
+        },
+        {
+          "claim": "结构检查返回数据库的表、列、索引和约束等结构表示。",
+          "source_id": "t12-skill-ghost-db",
+          "locator": "ghost-database/SKILL.md#Inspect Schema"
+        },
+        {
+          "claim": "分享创建快照，接收方可据分享令牌创建自己的副本。",
+          "source_id": "t12-skill-ghost-db",
+          "locator": "ghost-database/SKILL.md#Share a Database"
+        }
+      ],
+      "sol_review_questions": [
+        "确认该 pair 使用直接查看路径，且 provider-visible 文本未泄漏端点、动作名或资产标识。",
+        "确认 Negative 只概括冻结数据库管理指导的生命周期能力，没有新增服务承诺。"
+      ]
+    }
+  ]
+}

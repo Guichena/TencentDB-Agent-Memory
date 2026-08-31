@@ -1,0 +1,45 @@
+{
+  "schema_version": "task1.github_skill_source.v1",
+  "team_id": "T02",
+  "name": "workload-balancing",
+  "repository_url": "https://github.com/benchflow-ai/skillsbench",
+  "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+  "source_path": "tasks/parallel-tfidf-search/environment/skills/workload-balancing/SKILL.md",
+  "license_spdx": "Apache-2.0",
+  "license_file": "../../licenses/Apache-2.0.txt",
+  "visibility": "listed",
+  "description": "Balance uneven parallel workloads after the worker model is already selected.",
+  "use_when": "Workers exist but partition or task sizes are uneven.",
+  "do_not_use_when": "The task has not selected a parallel model or is only about Notebook structure.",
+  "main_raw_sha256": "28260b9d369855ee36fab41bc2c084bb08e0473787888a3d20ca67d25d62ad5c",
+  "raw_files": [
+    {
+      "path": "references/advanced_techniques.md",
+      "source_path": "tasks/parallel-tfidf-search/environment/skills/workload-balancing/references/advanced_techniques.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/parallel-tfidf-search/environment/skills/workload-balancing/references/advanced_techniques.md",
+      "sha256": "1978f6170b2d759bd1a281ebb0e1fdc7ba1e487ea4b82546e79211d1e9539e72",
+      "byte_length": 7936
+    },
+    {
+      "path": "SKILL.md",
+      "source_path": "tasks/parallel-tfidf-search/environment/skills/workload-balancing/SKILL.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/parallel-tfidf-search/environment/skills/workload-balancing/SKILL.md",
+      "sha256": "28260b9d369855ee36fab41bc2c084bb08e0473787888a3d20ca67d25d62ad5c",
+      "byte_length": 8341
+    }
+  ],
+  "adapted_files": [
+    {
+      "path": "references/advanced_techniques.md",
+      "sha256": "3062fb49e3b83bdbcb0699715d9a393660038c9b8b507ed4bea08d2e080ef49f",
+      "byte_length": 8210
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "a2b1f4653bd7939bd6c25f12051bed930f0e23dc2f2a269026fc39cb59cc5ef0",
+      "byte_length": 8592
+    }
+  ],
+  "adaptation_diff": "adaptation.diff",
+  "frozen": true
+}

@@ -1,0 +1,319 @@
+{
+  "schema_version": "task1.skill_asset_adaptation.v1",
+  "team_id": "T19",
+  "provenance_mode": "imported_open_source",
+  "assets": [
+    {
+      "asset_id": "T19-SKILL-AWS-AUTH",
+      "canonical_name": "aws-auth",
+      "version": "1",
+      "source_ids": ["T19-SRC-AWS-AUTH", "T19-SRC-AWS-AUTH-TOKENS-SESSIONS"],
+      "listing_description": "Amazon Cognito 用户池、身份池、OAuth/OIDC 登录、令牌生命周期和 API 授权配置。",
+      "use_when": "需要配置 Cognito 登录、托管登录、MFA、社交或 SAML 联邦、令牌刷新/轮换/撤销，或为 API 配置 Cognito/JWT 授权器时使用。",
+      "do_not_use_when": "不要用于 Amplify Gen2 后端定义、IAM/STS/Identity Center、API Gateway 路由集成或 Lambda 实现。",
+      "owner_agent_id": "agent-task1-t19-general",
+      "visibility": "bound_owned",
+      "provenance_mode": "imported_open_source",
+      "source_backed_procedure_summary": "先区分 user pool 与 identity pool；公共客户端使用授权码 + PKCE 且不设置 client secret；对完整客户端配置执行先读后改再写；启用刷新令牌轮换和撤销，并使用最新返回的刷新令牌；按 token 类型配置 API 授权。",
+      "supporting_file_manifest_intents": [
+        {"path": "skills/core-skills/aws-auth/SKILL.md", "source_id": "T19-SRC-AWS-AUTH", "intent": "主导航、适用边界、Cognito 选型、全量更新警告和安全基线"},
+        {"path": "skills/core-skills/aws-auth/references/tokens-and-sessions.md", "source_id": "T19-SRC-AWS-AUTH-TOKENS-SESSIONS", "intent": "令牌类型、刷新轮换、撤销、会话终止和客户端存储细节"}
+      ],
+      "factual_locators": [
+        {"source_id": "T19-SRC-AWS-AUTH", "locator": "SKILL.md §User Pool vs Identity Pool — pick first; §Critical Warnings; §Security Considerations"},
+        {"source_id": "T19-SRC-AWS-AUTH-TOKENS-SESSIONS", "locator": "references/tokens-and-sessions.md §Refresh token rotation; §Session termination; §Frontend token storage"}
+      ]
+    },
+    {
+      "asset_id": "T19-SKILL-AWS-IAM",
+      "canonical_name": "aws-iam",
+      "version": "2",
+      "source_ids": ["T19-SRC-AWS-IAM"],
+      "listing_description": "AWS IAM 策略评估边界、信任策略、STS、Organizations、服务角色和常见陷阱。",
+      "use_when": "创建或更新 IAM 角色、编写 IAM/桶策略、处理 STS、Organizations、条件运算符或服务执行角色时使用。",
+      "do_not_use_when": "不要用于 Cognito 用户池策略或应用层 RBAC 等非 IAM 授权问题。",
+      "owner_agent_id": "agent-task1-t19-general",
+      "visibility": "bound_owned",
+      "provenance_mode": "imported_open_source",
+      "source_backed_procedure_summary": "针对 IAM 先按工作流选择角色管理或策略生成路径；核对 ForAllValues 与 Null 的同键组合、资源策略与权限边界、PassRole 范围及服务角色信任条件；验证具体 API、限制和异常名称，不凭记忆猜测。",
+      "supporting_file_manifest_intents": [
+        {"path": "skills/core-skills/aws-iam/SKILL.md", "source_id": "T19-SRC-AWS-IAM", "intent": "IAM 常见陷阱、验证边界、条件运算符、信任策略和策略评估"}
+      ],
+      "factual_locators": [
+        {"source_id": "T19-SRC-AWS-IAM", "locator": "SKILL.md §Common Workflows; §Verified Edge Cases; §Policy Evaluation; §Service-Specific Roles"}
+      ]
+    },
+    {
+      "asset_id": "T19-SKILL-NETWORK-SECURITY",
+      "canonical_name": "network-security",
+      "version": "1",
+      "source_ids": ["T19-SRC-NETWORK-SECURITY"],
+      "listing_description": "网络分段、默认拒绝、出口控制和内部 TLS 的网络边界防护。",
+      "use_when": "配置安全组或防火墙、设计网络分段、限制横向可达性、过滤出口或启用服务间 TLS 时使用。",
+      "do_not_use_when": "身份作为信任边界时用 zero-trust；Kubernetes 网络策略和服务网格细节不属于本 Skill。",
+      "owner_agent_id": "agent-task1-t19-policy-assurance",
+      "visibility": "team_visible",
+      "provenance_mode": "imported_open_source",
+      "source_backed_procedure_summary": "按爆炸半径和数据敏感度分段，先建立默认拒绝再添加精确允许规则；对出口做目的地白名单并记录阻断；内部通信使用 TLS；持续审计规则与实际流量并删除无用路径。",
+      "supporting_file_manifest_intents": [
+        {"path": "skills/security/network-security/SKILL.md", "source_id": "T19-SRC-NETWORK-SECURITY", "intent": "网络安全原则、分段、默认拒绝、出口控制、TLS 和持续审计"}
+      ],
+      "factual_locators": [{"source_id": "T19-SRC-NETWORK-SECURITY", "locator": "SKILL.md §1–5; §Report"}]
+    },
+    {
+      "asset_id": "T19-SKILL-AWS-SECURITY",
+      "canonical_name": "aws-security",
+      "version": "1",
+      "source_ids": ["T19-SRC-AWS-SECURITY"],
+      "listing_description": "AWS Security Hub、GuardDuty、Inspector、Macie、Detective 和 Security Lake 的只读安全工作流。",
+      "use_when": "检查 AWS 安全服务配置、汇总发现、查看暴露或威胁结果、核对 CSPM 控件或跨服务安全态势时使用。",
+      "do_not_use_when": "不要建议修改、删除、启用或禁用资源的 API；不要在配置状态上添加未经证实的严重性判断或建议抑制发现。",
+      "owner_agent_id": "agent-task1-t19-policy-assurance",
+      "visibility": "team_visible",
+      "provenance_mode": "imported_open_source",
+      "source_backed_procedure_summary": "先按子技能注册表匹配配置检查或发现汇总，再加载相应服务过程；只使用只读 API，优先展示 Security Hub Exposure 和 GuardDuty AttackSequence 结果；大规模成员枚举需显式请求，敏感输出先摘要并说明内容。",
+      "supporting_file_manifest_intents": [
+        {"path": "skills/core-skills/aws-security/SKILL.md", "source_id": "T19-SRC-AWS-SECURITY", "intent": "服务路由、只读约束、发现排序、敏感数据和跨服务安全原则"}
+      ],
+      "factual_locators": [{"source_id": "T19-SRC-AWS-SECURITY", "locator": "SKILL.md §Global rules; §How this skill works; §Sub-skill registry"}]
+    },
+    {
+      "asset_id": "T19-SKILL-SIGNING-IN-TO-AWS",
+      "canonical_name": "signing-in-to-aws",
+      "version": "1",
+      "source_ids": ["T19-SRC-SIGNING-IN-TO-AWS"],
+      "listing_description": "使用 AWS CLI 本地登录获得短期、自动轮换的 CLI/SDK 凭证。",
+      "use_when": "本地开发需要 AWS 凭证、凭证过期或缺失，或用户询问如何设置 AWS 本地访问时使用。",
+      "do_not_use_when": "不要用于 CI/CD 凭证；不要绕过用户对交互式登录的确认，也不要把现有 SSO 流程强行改成另一种登录。",
+      "owner_agent_id": "agent-task1-t19-policy-assurance",
+      "visibility": "team_visible",
+      "provenance_mode": "imported_open_source",
+      "source_backed_procedure_summary": "先检查 AWS CLI 版本和当前调用身份；确认后再请求用户授权执行本地登录；登录后再次核验身份。需要切换配置时使用命名 profile，并在版本过低、浏览器不可用或区域不支持时按 Skill 的分支处理。",
+      "supporting_file_manifest_intents": [
+        {"path": "skills/core-skills/signing-in-to-aws/SKILL.md", "source_id": "T19-SRC-SIGNING-IN-TO-AWS", "intent": "AWS CLI 登录前置条件、确认门槛、验证和错误处理"}
+      ],
+      "factual_locators": [{"source_id": "T19-SRC-SIGNING-IN-TO-AWS", "locator": "SKILL.md §Prerequisites; §Flow; §Confirm and run aws login; §Verify"}]
+    },
+    {
+      "asset_id": "T19-SKILL-IAM-ACCESS-MANAGEMENT",
+      "canonical_name": "iam-access-management",
+      "version": "1",
+      "source_ids": ["T19-SRC-IAM-ACCESS-MANAGEMENT"],
+      "listing_description": "以角色、短期凭证、定期审查和按需授权实现最小权限访问管理。",
+      "use_when": "授予云或系统访问、设计角色、建立 break-glass 流程、审查访问范围或移除遗留权限时使用。",
+      "do_not_use_when": "凭证存放位置使用 secrets-management；用身份替代网络位置的边界使用 zero-trust。",
+      "owner_agent_id": "agent-task1-t19-policy-assurance",
+      "visibility": "team_visible",
+      "provenance_mode": "imported_open_source",
+      "source_backed_procedure_summary": "通过按职能命名的角色授予权限，优先使用小时级短期凭证；按季度审查并撤销不再需要的权限；break-glass 必须显式触发、记录、自动过期并复盘；敏感生产访问默认不授予，按需临时开通。",
+      "supporting_file_manifest_intents": [
+        {"path": "skills/security/iam-access-management/SKILL.md", "source_id": "T19-SRC-IAM-ACCESS-MANAGEMENT", "intent": "角色权限、短期凭证、访问审查、break-glass 和按需访问"}
+      ],
+      "factual_locators": [{"source_id": "T19-SRC-IAM-ACCESS-MANAGEMENT", "locator": "SKILL.md §1–5; §Report"}]
+    },
+    {
+      "asset_id": "T19-SKILL-SECRETS-MANAGEMENT",
+      "canonical_name": "secrets-management",
+      "version": "1",
+      "source_ids": ["T19-SRC-SECRETS-MANAGEMENT"],
+      "listing_description": "将凭证、密钥和证书置于受控存储，并以运行时最小范围注入和可撤销生命周期管理。",
+      "use_when": "发现代码硬编码密码或 token、设置 API key、配置秘密存储、处理泄露或 CI 机密注入时使用。",
+      "do_not_use_when": "谁有权读取秘密属于 iam-access-management；依赖或镜像漏洞扫描不属于本 Skill。",
+      "owner_agent_id": "agent-task1-t19-general",
+      "visibility": "bound_owned",
+      "provenance_mode": "imported_open_source",
+      "source_backed_procedure_summary": "在提交钩子和 CI 阶段阻断秘密并扫描历史；配置只保存秘密名称或 ARN；按工作负载运行时注入且不写入镜像层或日志；设置轮换周期和责任人，泄露时先撤销再调查并清理历史。",
+      "supporting_file_manifest_intents": [
+        {"path": "skills/security/secrets-management/SKILL.md", "source_id": "T19-SRC-SECRETS-MANAGEMENT", "intent": "秘密检测、存储引用、运行时注入、轮换和泄露响应"}
+      ],
+      "factual_locators": [{"source_id": "T19-SRC-SECRETS-MANAGEMENT", "locator": "SKILL.md §1–5; §Report"}]
+    },
+    {
+      "asset_id": "T19-SKILL-ZERO-TRUST",
+      "canonical_name": "zero-trust",
+      "version": "1",
+      "source_ids": ["T19-SRC-ZERO-TRUST"],
+      "listing_description": "以已验证身份、工作负载级微分段和持续验证替代网络位置的隐式信任。",
+      "use_when": "系统把 VPC 内部视为可信、要按身份而非 IP 授权，或要限制受感染工作负载的横向移动时使用。",
+      "do_not_use_when": "只配置防火墙、出口或粗粒度网络分段使用 network-security；角色模型设计使用 iam-access-management。",
+      "owner_agent_id": "agent-task1-t19-general",
+      "visibility": "bound_owned",
+      "provenance_mode": "imported_open_source",
+      "source_backed_procedure_summary": "每次请求按具体身份和动作重新验证，服务间使用带工作负载身份的 mTLS 或短期 token；默认工作负载间零连接，再按需授权；逐步从高价值资产开始，同时保留网络边界控制。",
+      "supporting_file_manifest_intents": [
+        {"path": "skills/security/zero-trust/SKILL.md", "source_id": "T19-SRC-ZERO-TRUST", "intent": "身份验证、服务间信任消除、工作负载微分段、持续验证和渐进迁移"}
+      ],
+      "factual_locators": [{"source_id": "T19-SRC-ZERO-TRUST", "locator": "SKILL.md §1–5; §Report"}]
+    },
+    {
+      "asset_id": "T19-SKILL-POLICY-AS-CODE",
+      "canonical_name": "policy-as-code",
+      "version": "1",
+      "source_ids": ["T19-SRC-POLICY-AS-CODE"],
+      "listing_description": "用 OPA、Sentinel 或 Kyverno 在计划和准入阶段自动阻止不合规的基础设施变更。",
+      "use_when": "编写 Rego/Sentinel、接入准入控制器、把策略检查放进流水线，或决定审计与强制模式时使用。",
+      "do_not_use_when": "Terraform 计划专门流程或 Kubernetes 具体准入之外的主题不要假装由本 Skill 覆盖。",
+      "owner_agent_id": "agent-task1-t19-policy-assurance",
+      "visibility": "team_visible",
+      "provenance_mode": "imported_open_source",
+      "source_backed_procedure_summary": "把检查放在变更仍可逆的计划或准入阶段；新策略先审计后强制；用真实计划和清洁/失败 fixture 测试；每个策略只负责一个规则；提供有期限、可审计的例外路径。",
+      "supporting_file_manifest_intents": [
+        {"path": "skills/iac/policy-as-code/SKILL.md", "source_id": "T19-SRC-POLICY-AS-CODE", "intent": "策略门禁时点、审计到强制、fixture、组合和例外管理"}
+      ],
+      "factual_locators": [{"source_id": "T19-SRC-POLICY-AS-CODE", "locator": "SKILL.md §1–5; §Report"}]
+    },
+    {
+      "asset_id": "T19-SKILL-COMPLIANCE-AS-CODE",
+      "canonical_name": "compliance-as-code",
+      "version": "1",
+      "source_ids": ["T19-SRC-COMPLIANCE-AS-CODE"],
+      "listing_description": "把合规控制转换为持续执行的检查和自动证据，使审计证据可查询且可追溯。",
+      "use_when": "准备 SOC 2、ISO 27001 或 PCI 审计，映射基础设施控制、检测基线漂移或证明控制持续有效时使用。",
+      "do_not_use_when": "部署时强制规则使用 policy-as-code；访问谁有权读取系统使用 iam-access-management。",
+      "owner_agent_id": "agent-task1-t19-policy-assurance",
+      "visibility": "team_visible",
+      "provenance_mode": "imported_open_source",
+      "source_backed_procedure_summary": "把框架要求拆成可查询的资源断言；将控制写成版本化检查并持续运行；给结果和修复历史加时间戳并不可变存储；检测基线漂移并把每个失败控制分配给责任人和期限。",
+      "supporting_file_manifest_intents": [
+        {"path": "skills/security/compliance-as-code/SKILL.md", "source_id": "T19-SRC-COMPLIANCE-AS-CODE", "intent": "控制断言、持续检查、自动证据、漂移检测和闭环修复"}
+      ],
+      "factual_locators": [{"source_id": "T19-SRC-COMPLIANCE-AS-CODE", "locator": "SKILL.md §1–5; §Report"}]
+    },
+    {
+      "asset_id": "T19-SKILL-KUBERNETES-SECURITY",
+      "canonical_name": "kubernetes-security",
+      "version": "1",
+      "source_ids": ["T19-SRC-KUBERNETES-SECURITY"],
+      "listing_description": "Kubernetes RBAC、Pod Security、准入策略、securityContext、秘密加密和镜像来源验证。",
+      "use_when": "配置集群 RBAC、强化 Pod、编写准入策略、限制受感染 Pod 能力或核对镜像签名时使用。",
+      "do_not_use_when": "网络隔离、镜像内容扫描或外部秘密后端分别属于其他主题，不要把它们的未冻结材料当作本 Skill 证据。",
+      "owner_agent_id": "agent-task1-t19-policy-assurance",
+      "visibility": "team_visible",
+      "provenance_mode": "imported_open_source",
+      "source_backed_procedure_summary": "将 RBAC 限制到精确资源和动词并用 auth can-i 验证；非 API 工作负载关闭服务账户 token 自动挂载；以 warn/audit 逐步过渡到 restricted 准入；启用 Secret 静态加密；要求签名镜像并按 digest 固定。",
+      "supporting_file_manifest_intents": [
+        {"path": "skills/kubernetes/kubernetes-security/SKILL.md", "source_id": "T19-SRC-KUBERNETES-SECURITY", "intent": "Kubernetes 权限、自动挂载、Pod 安全、秘密静态加密和镜像验证"}
+      ],
+      "factual_locators": [{"source_id": "T19-SRC-KUBERNETES-SECURITY", "locator": "SKILL.md §1–5; §Report"}]
+    },
+    {
+      "asset_id": "T19-SKILL-PIPELINE-SECURITY",
+      "canonical_name": "pipeline-security",
+      "version": "1",
+      "source_ids": ["T19-SRC-PIPELINE-SECURITY"],
+      "listing_description": "CI/CD 运行器最小权限、机密隔离、OIDC 联邦、流水线防投毒和依赖固定。",
+      "use_when": "配置 CI 运行器权限、保护流水线机密、审查工作流安全或设置云部署凭证时使用。",
+      "do_not_use_when": "只扫描产出镜像内容或讨论更广泛的软件供应链时不要冒充本 Skill 的完整覆盖。",
+      "owner_agent_id": "agent-task1-t19-policy-assurance",
+      "visibility": "team_visible",
+      "provenance_mode": "imported_open_source",
+      "source_backed_procedure_summary": "按测试/构建/部署作业分别授予最小权限；用 OIDC 取代长期云密钥；默认不向 fork PR 注入生产机密并掩码日志；保护流水线配置审查；第三方 action 和可复用工作流固定到 commit SHA，并验证产物签名。",
+      "supporting_file_manifest_intents": [
+        {"path": "skills/ci-cd/pipeline-security/SKILL.md", "source_id": "T19-SRC-PIPELINE-SECURITY", "intent": "运行器权限、OIDC、机密暴露、流水线投毒、SHA 固定和签名产物"}
+      ],
+      "factual_locators": [{"source_id": "T19-SRC-PIPELINE-SECURITY", "locator": "SKILL.md §1–6; §Report"}]
+    },
+    {
+      "asset_id": "T19-SKILL-ZOOM-OAUTH",
+      "canonical_name": "zoom-oauth",
+      "version": "1",
+      "source_ids": ["T19-SRC-ZOOM-OAUTH"],
+      "listing_description": "Zoom 账户、用户、设备和应用自有四类 OAuth 授权流及令牌生命周期。",
+      "use_when": "实现 Zoom API 授权、账户或用户授权、设备流、PKCE、访问/刷新令牌或 OAuth 错误处理时使用。",
+      "do_not_use_when": "仅做 Zoom REST 资源 CRUD、分页或 webhook 服务器实现时应使用相应 REST 主题；不要把 JWT Marketplace 应用类型当作新方案。",
+      "owner_agent_id": "agent-task1-t19-identity-platform",
+      "visibility": "team_visible",
+      "provenance_mode": "imported_open_source",
+      "source_backed_procedure_summary": "先按后台账户、用户、无浏览器设备或应用自有操作选择授权流；公共客户端使用 PKCE 并校验 state；用户授权交换和刷新时保存最新 refresh token，令牌失效则重新授权；回调 URI 必须逐字匹配。",
+      "supporting_file_manifest_intents": [
+        {"path": "skills/oauth/SKILL.md", "source_id": "T19-SRC-ZOOM-OAUTH", "intent": "四类授权流、PKCE、刷新/撤销、scope、错误代码和决策导航"}
+      ],
+      "factual_locators": [{"source_id": "T19-SRC-ZOOM-OAUTH", "locator": "SKILL.md §Four Authorization Use Cases; §User Authorization; §PKCE; §Common Error Codes; §Key Learnings"}]
+    },
+    {
+      "asset_id": "T19-SKILL-ZOOM-REST-API",
+      "canonical_name": "zoom-rest-api",
+      "version": "1",
+      "source_ids": ["T19-SRC-ZOOM-REST-API"],
+      "listing_description": "Zoom REST API 的会议、用户、录制、webhook、速率限制和资源管理集成。",
+      "use_when": "调用 Zoom REST 端点、管理会议或用户、处理录制下载、分页、区域 URL、webhook 或 API 错误时使用。",
+      "do_not_use_when": "只实现 OAuth 授权流和令牌管理时使用 zoom-oauth；不要继续使用已废弃的 JWT Marketplace 应用类型。",
+      "owner_agent_id": "agent-task1-t19-identity-platform",
+      "visibility": "team_visible",
+      "provenance_mode": "imported_open_source",
+      "source_backed_procedure_summary": "先确认认证流、基础 URL、区域和目标资源；创建会议时按应用类型决定是否可用 me；分页使用 next_page_token；关注账户共享速率限制、每用户每日写入限制、UUID 双重编码和录制下载的 Bearer 重定向。",
+      "supporting_file_manifest_intents": [
+        {"path": "skills/rest-api/SKILL.md", "source_id": "T19-SRC-ZOOM-REST-API", "intent": "REST 架构、认证、会议和用户示例、限制、webhook 与常见陷阱"}
+      ],
+      "factual_locators": [{"source_id": "T19-SRC-ZOOM-REST-API", "locator": "SKILL.md §Quick Start; §Base URL; §Critical Gotchas and Best Practices; §Key Learnings"}]
+    },
+    {
+      "asset_id": "T19-SKILL-LOCAL-OIDC-PROVIDER",
+      "canonical_name": "local-oidc-provider",
+      "version": "1",
+      "source_ids": ["T19-SRC-LOCAL-OIDC-PROVIDER"],
+      "listing_description": "在 localhost 上运行规范兼容的 OIDC/OAuth 提供方，用于真实客户端的首次本地接线。",
+      "use_when": "没有真实身份提供方凭据、需要离线开发 OIDC/OAuth、首次配置 client/redirect/issuer 或测试登录回调时使用。",
+      "do_not_use_when": "不要用于生产认证；E2E 自动化、CI、动态注册、Docker 或持久共享部署应使用专门的 stubIdP 指南。",
+      "owner_agent_id": "agent-task1-t19-identity-platform",
+      "visibility": "bound_owned",
+      "provenance_mode": "imported_open_source",
+      "source_backed_procedure_summary": "以 npx 启动本地提供方并精确指定回调；客户端从 issuer 的 discovery 文档读取端点；公共客户端不设置 secret 并启用 PKCE；首次配置逐字匹配 redirect URI 和 issuer，容器地址不同时显式设置 issuer。",
+      "supporting_file_manifest_intents": [
+        {"path": "skills/local-oidc-provider/SKILL.md", "source_id": "T19-SRC-LOCAL-OIDC-PROVIDER", "intent": "本地提供方首次运行、精确回调/issuer 接线、公共客户端和后续模式边界"}
+      ],
+      "factual_locators": [{"source_id": "T19-SRC-LOCAL-OIDC-PROVIDER", "locator": "SKILL.md §First run; §First configuration; §Wire the app for the first time; §Common first-setup mistakes"}]
+    },
+    {
+      "asset_id": "T19-SKILL-STUBIDP",
+      "canonical_name": "stubidp",
+      "version": "1",
+      "source_ids": ["T19-SRC-STUBIDP"],
+      "listing_description": "用于开发、E2E、CI、Docker 和动态注册测试的轻量 OIDC stub 提供方。",
+      "use_when": "需要无人工交互的登录测试、CI 中运行 OIDC、多个服务动态注册客户端、Docker 部署或持久测试 IdP 时使用。",
+      "do_not_use_when": "不要把它用于生产或面向客户的认证；首次单次本地接线优先使用 local-oidc-provider 的范围。",
+      "owner_agent_id": "agent-task1-t19-identity-platform",
+      "visibility": "team_visible",
+      "provenance_mode": "imported_open_source",
+      "source_backed_procedure_summary": "按 headless、应用接线、动态注册、CI、Docker 或 Cloudflare Workers 选择模式；headless 必须配置 default-user 或合法 login_hint；等待 healthz/readyz 而非固定睡眠；CI 优先官方 action；共享注册可用 RFC 7591/7592，生产请求必须停下澄清。",
+      "supporting_file_manifest_intents": [
+        {"path": "skills/stubidp/SKILL.md", "source_id": "T19-SRC-STUBIDP", "intent": "自动化登录、应用接线、动态注册、CI、Docker 和持久部署模式"}
+      ],
+      "factual_locators": [{"source_id": "T19-SRC-STUBIDP", "locator": "SKILL.md §Decide the setup mode; §Headless / E2E auth; §Wiring an app to stubIdP; §CI setup; §Docker; §Gotchas"}]
+    },
+    {
+      "asset_id": "T19-SKILL-AUTH-IMPLEMENTATION-PATTERNS",
+      "canonical_name": "auth-implementation-patterns",
+      "version": "1",
+      "source_ids": ["T19-SRC-AUTH-IMPLEMENTATION-PATTERNS"],
+      "listing_description": "JWT、OAuth2、会话管理和 RBAC 的通用认证授权实现模式。",
+      "use_when": "实现登录、保护 REST/GraphQL API、集成 OAuth/SSO、构建 RBAC、迁移认证或调试安全问题时使用。",
+      "do_not_use_when": "需要具体云服务 API、专门策略模型或提供方行为时不要把通用模式当成唯一操作依据。",
+      "owner_agent_id": "agent-task1-t19-identity-platform",
+      "visibility": "team_visible",
+      "provenance_mode": "imported_open_source",
+      "source_backed_procedure_summary": "先区分认证与授权，再选择会话、JWT 或 OAuth/OIDC；密码使用 bcrypt/argon2，访问令牌短期有效，cookie 设置 httpOnly/secure/sameSite，服务端验证输入和权限，加入速率限制、CSRF、秘密轮换、审计和 MFA。",
+      "supporting_file_manifest_intents": [
+        {"path": "plugins/developer-essentials/skills/auth-implementation-patterns/SKILL.md", "source_id": "T19-SRC-AUTH-IMPLEMENTATION-PATTERNS", "intent": "认证/授权概念、策略选型、通用最佳实践和常见陷阱"}
+      ],
+      "factual_locators": [{"source_id": "T19-SRC-AUTH-IMPLEMENTATION-PATTERNS", "locator": "SKILL.md §When to Use This Skill; §Core Concepts; §Best Practices; §Common Pitfalls"}]
+    },
+    {
+      "asset_id": "T19-SKILL-ACCESS-CONTROL-POLICY-DESIGN",
+      "canonical_name": "access-control-policy-design",
+      "version": "1",
+      "source_ids": ["T19-SRC-ACCESS-CONTROL-POLICY-DESIGN"],
+      "listing_description": "RBAC、ABAC、PBAC、ReBAC、ACL/DAC 及其混合授权架构和审计设计。",
+      "use_when": "讨论角色、权限、策略、多租户访问、最小权限、Zero Trust、OPA/Cedar/Casbin 或访问审计时使用。",
+      "do_not_use_when": "仅需认证、网络防火墙或具体提供方 token API 时不要将本架构导航器当成实现细节来源。",
+      "owner_agent_id": "agent-task1-t19-policy-assurance",
+      "visibility": "bound_owned",
+      "provenance_mode": "imported_open_source",
+      "source_backed_procedure_summary": "先以主体-动作-资源-当前上下文定义运行时问题；稳定组织结构用 RBAC，多租户上下文叠加 ABAC，治理用 PBAC，关系和对象例外按需引入；始终默认拒绝、服务端执行、记录决定、版本化策略并测试允许和拒绝。",
+      "supporting_file_manifest_intents": [
+        {"path": ".claude/skills/access-control-policy-design/SKILL.md", "source_id": "T19-SRC-ACCESS-CONTROL-POLICY-DESIGN", "intent": "核心心智模型、模型决策矩阵、演进路径、通用规则和警示信号"}
+      ],
+      "factual_locators": [{"source_id": "T19-SRC-ACCESS-CONTROL-POLICY-DESIGN", "locator": "SKILL.md §Core Mental Model; §Quick Decision Matrix; §Evolution Arc; §Universal Rules"}]
+    }
+  ]
+}

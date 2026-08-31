@@ -1,0 +1,143 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t07-knowledge-expansion-01",
+  "stage": "DS05",
+  "team_id": "T07",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T07-PAIR-K02",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "这次只处理 qdrant-ingestion-gateway 的 Python 网关，目录是 gateway/client.py、ingestion/batches.py、retrieval/filters.py 和 pytest adapter tests；Graph 目录同步与 partner API client 是相邻工作区，结论不要混用。"
+        },
+        {
+          "role": "assistant",
+          "content": "边界已记下。我会只核对 Qdrant 网关的批处理路径，并把另外两个同一工程空间的工作区当作干扰背景。"
+        },
+        {
+          "role": "user",
+          "content": "固定仓库是 https://github.com/qdrant/qdrant-client，提交 550484d767d319857d4f46e97d4551ba419ee670；当前材料只概括 collection setup、幂等 upsert、filter search 与质量诊断。资源列表里三个相关条目都显示 ready，需按工作区和提交匹配来区分。"
+        },
+        {
+          "role": "assistant",
+          "content": "固定版本、Python src layout 和主题范围已确认；现有上下文仍没有给出网关批量写入路径的具体符号、文件与行号，不能从目录名或主题概括中臆测。"
+        }
+      ],
+      "changed_message_index": 4,
+      "query": "在当前固定的 Qdrant 网关代码图里，批量写入路径对应的具体符号、文件和行号是什么？请只回答这个落点，不补写相邻工作区结论。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要仍只描述了批处理与幂等写入主题，没有给出批量写入路径的具体符号、文件和行号；请保留这个缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "固定 Qdrant 网关代码图中批量写入路径的具体符号、文件与行号尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": ["cg-t07qd01"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "先列出绑定资源的只读查询能力，再用 search_code 查询批量写入路径并停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充摘要给出唯一落点：批量写入路径落在 src/ingestion/batches.py 第 118 行的 upsert_batches 符号。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "交接摘要已经补齐批量写入路径唯一的符号、文件和行号，并保持 Qdrant 网关与两个相邻工作区的边界；无需再次查询。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["wiki-t07gr01", "wiki-t07ap01"],
+      "controlled_delta_note": "Positive 只保留 Qdrant 网关代码图中批量写入落点的缺口；Negative 只补充 upsert_batches 的文件与行号，其他身份、固定提交、三个 ready 条目的干扰背景和 query 完全不变。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否限定为 cg-t07qd01 中批量写入路径的具体符号、文件和行号，且没有泄露资源正文？",
+        "Negative 是否只补充 src/ingestion/batches.py:118 的 upsert_batches 落点，没有引入 gateway/client.py 的未证实调用者？",
+        "Qdrant 仓库 URL、固定提交和 src layout 是否足以在三个 ready 资源中唯一匹配 cg-t07qd01？",
+        "该代码图候选是否仍标为 synthetic、external_source_ids 为空，并把正式可见性与裁决留给 Sol？"
+      ]
+    },
+    {
+      "draft_pair_id": "T07-PAIR-K03",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "This pass is only for the partner-openapi-client workspace: a single-package generated TypeScript client with openapi/schema.yaml, src/generated, src/runtime, and contract tests. Keep the Graph directory-sync and Qdrant gateway workspaces separate."
+        },
+        {
+          "role": "assistant",
+          "content": "Understood. I will stay within the generated client and treat the other two same-domain workspaces as distractor context rather than sources for this boundary."
+        },
+        {
+          "role": "user",
+          "content": "The fixed repository is https://github.com/openapi-ts/openapi-typescript at commit 0cc7ee77d28359c7901d9cd3b5733b70a050ea49. The three related resource entries are all ready, so repository, commit, project, and structure must identify the intended one."
+        },
+        {
+          "role": "assistant",
+          "content": "The workspace identity and pinned revision are recorded. I will not infer an ownership boundary merely from the words generated, schema, or runtime."
+        },
+        {
+          "role": "user",
+          "content": "Current notes cover schema-driven generation, ordinary REST requests, runtime authentication, and contract compatibility, but they do not state which layer owns request shape versus authentication."
+        },
+        {
+          "role": "assistant",
+          "content": "Those are search cues, not a conclusion. The missing statement is the schema/runtime ownership boundary for this client, not a new endpoint design or a Graph authentication decision."
+        },
+        {
+          "role": "user",
+          "content": "The neighboring Graph and Qdrant workspaces remain visible in the same engineering space, and all three entries report ready metadata; only the OpenAPI workspace matches this repository and commit."
+        },
+        {
+          "role": "assistant",
+          "content": "The current context fixes the target workspace and excludes the neighboring projects, but it still lacks the exact compatibility statement about schema-derived request shapes and runtime authentication ownership."
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "For the pinned generated TypeScript client, what is the exact compatibility boundary between schema-derived request shapes and runtime authentication at the ordinary REST boundary? Answer only that ownership boundary.",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "The handoff still lists schema generation and runtime authentication as separate topics without saying which layer owns each responsibility; please preserve that missing boundary."
+        },
+        "private_proposal": {
+          "unique_information_gap": "The pinned partner API compatibility wiki's schema/runtime ownership boundary is absent: the current context does not say who owns schema-derived request shapes and where runtime authentication is applied.",
+          "route": "knowledge",
+          "target_asset_ids": ["wiki-t07ap01"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "List the bound read-only query capability, then call search_pages for the schema/runtime compatibility boundary and stop."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "The compatibility note supplies the sole missing boundary: the generated client owns schema-derived request shapes, while runtime authentication is applied at the ordinary REST boundary."
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "The handoff now states both ownership sides of the schema/runtime boundary for the pinned generated client and keeps the Graph and Qdrant workspaces separate; another lookup is unnecessary."
+        }
+      },
+      "visible_distractor_ids_author_only": ["wiki-t07gr01", "cg-t07qd01"],
+      "controlled_delta_note": "Positive leaves only the schema-derived request-shape versus runtime-authentication ownership boundary unresolved; Negative adds exactly that two-part boundary while preserving all workspace, revision, ready-metadata, and query context.",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Does Positive leave the exact schema/runtime ownership statement absent without quoting the wiki candidate?",
+        "Does Negative add only the two ownership clauses and avoid unrelated endpoint, retry, or Graph details?",
+        "Do the OpenAPI repository URL, commit, project structure, and three ready entries make wiki-t07ap01 the unique match?",
+        "Is this candidate synthetic with no external source ids, leaving formal visibility and Gold decisions to Sol?"
+      ]
+    }
+  ]
+}

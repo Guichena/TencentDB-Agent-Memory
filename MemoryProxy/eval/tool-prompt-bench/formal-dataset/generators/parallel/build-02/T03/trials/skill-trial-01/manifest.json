@@ -1,0 +1,14 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "t03-skill-trial-01",
+  "external_source_ids": [
+    "formal-dataset/source-material/T03/skills/rl-post-training/raw/SKILL.md",
+    "formal-dataset/source-material/T03/skills/rl-post-training/adapted/SKILL.md"
+  ],
+  "generated_at": "2026-08-29T22:10:00+08:00",
+  "actual_count": 1,
+  "raw_output_sha256": "6501c421bfea89e85ccb968c312db4ac9c3b255e08982729fe14c7542fbda154"
+}

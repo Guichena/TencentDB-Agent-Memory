@@ -1,0 +1,69 @@
+{
+  "schema_version": "task1.formal_v2_build_audit.v1",
+  "dataset_revision": "formal-v2",
+  "launch_ref": "task1-data-parallel-launch-20team-v1",
+  "launch_commit": "ffa1fe18085d47ed4da6b2306240152cc8590a86",
+  "status": "passed",
+  "checked_at": "2026-08-31T23:59:59+08:00",
+  "checks": {
+    "builder_worktrees_clean": true,
+    "launch_commit_is_ancestor": true,
+    "allowed_paths_only": true,
+    "team_gates_reexecuted": true,
+    "provider_leakage_count": 0,
+    "invalid_sequence_count": 0,
+    "source_hash_mismatch_count": 0,
+    "pair_integrity_error_count": 0,
+    "formal_v1_1_duplicate_count": 0
+  },
+  "builds": [
+    {
+      "build_id": "build-09",
+      "branch": "codex/task1-data-build-20team-t17-t18",
+      "audited_head": "9422208d8297f4df43109e9d94e7482659bf54ca",
+      "audited_commits": [
+        "b880314f1d719da1b0b02ac4fbf8d3ca8749960d",
+        "9422208d8297f4df43109e9d94e7482659bf54ca"
+      ],
+      "allowed_teams": ["T17", "T18"],
+      "changed_path_count": 184,
+      "unexpected_path_count": 0
+    },
+    {
+      "build_id": "build-10",
+      "branch": "codex/task1-data-build-20team-t19-t20",
+      "audited_head": "ae9b84e6bfb987b72a37b45e3b0e7aa19fff0836",
+      "audited_commits": [
+        "07d171ccdf5897a455ea4b6e1efd14d1d8607d77",
+        "ae9b84e6bfb987b72a37b45e3b0e7aa19fff0836"
+      ],
+      "allowed_teams": ["T19", "T20"],
+      "changed_path_count": 127,
+      "unexpected_path_count": 0
+    }
+  ],
+  "teams": {
+    "T17": { "split": "dev", "cases": 40, "pairs": 15, "memory_positive": 6, "skill_positive": 6, "knowledge_positive": 3, "paired_negative": 15, "natural_negative": 10, "discovery": 10, "direct": 5, "gate": "passed" },
+    "T18": { "split": "dev", "cases": 40, "pairs": 15, "memory_positive": 6, "skill_positive": 6, "knowledge_positive": 3, "paired_negative": 15, "natural_negative": 10, "discovery": 10, "direct": 5, "gate": "passed" },
+    "T19": { "split": "hidden_test", "cases": 40, "pairs": 15, "memory_positive": 6, "skill_positive": 6, "knowledge_positive": 3, "paired_negative": 15, "natural_negative": 10, "discovery": 10, "direct": 5, "gate": "passed" },
+    "T20": { "split": "hidden_test", "cases": 40, "pairs": 15, "memory_positive": 6, "skill_positive": 6, "knowledge_positive": 3, "paired_negative": 15, "natural_negative": 10, "discovery": 10, "direct": 5, "gate": "passed" }
+  },
+  "totals": {
+    "teams": 4,
+    "cases": 160,
+    "pairs": 60,
+    "dev_cases": 80,
+    "hidden_test_cases": 80,
+    "memory_positive": 24,
+    "skill_positive": 24,
+    "knowledge_positive": 12,
+    "paired_negative": 60,
+    "natural_negative": 40,
+    "discovery": 40,
+    "direct": 20
+  },
+  "known_limitations": [
+    "Team-local gates do not replace the full 20-Team formal-v2 compile, cross-team duplicate checks, or deterministic artifact verification.",
+    "No formal model evaluation was run during dataset construction or this build audit."
+  ]
+}

@@ -1,0 +1,1732 @@
+{
+  "schema_version": "task1.team_memory_assets.v1",
+  "team_id": "T20",
+  "l0Conversations": [
+    {
+      "assetId": "T20-L0-ATLAS-MAPPING-ANALYZER",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "sessionId": "t20-session-atlas-mapping-001",
+      "messages": [
+        {
+          "messageId": "t20-msg-atlas-map-001",
+          "role": "user",
+          "content": "AtlasSearch 要处理用户输入大小写不一致，先盘点字段映射、查询规范化和索引兼容。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "ec3d63ef0aedac79158f92f5a6f993f0582e5a75b58935bf5b4034ecd2dc744e"
+        },
+        {
+          "messageId": "t20-msg-atlas-map-002",
+          "role": "assistant",
+          "content": "我先把字段类型、分析阶段和查询阶段分开，避免用一个补丁覆盖三种边界。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "af0d90f6b48f963c809b989478a94ba8d628b566b725e5fa4cf1b0111379df78"
+        },
+        {
+          "messageId": "t20-msg-atlas-map-003",
+          "role": "user",
+          "content": "第一次尝试只在查询侧转小写，部分回归通过，但混合入口仍然出现不一致。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "5c10ac0e29aaba9f7544008ea15a35dd9a4bbebee579d8cc554945ce8b08c640"
+        },
+        {
+          "messageId": "t20-msg-atlas-map-004",
+          "role": "assistant",
+          "content": "撤回查询侧单点处理，回到映射评审确认统一规范化的位置。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "125924284f0f16163bb0a113ed9a64f9d46b525b328c9909f8137b8a74f1d135"
+        },
+        {
+          "messageId": "t20-msg-atlas-map-005",
+          "role": "user",
+          "content": "第二次改动扩大了文本字段范围，精确约束字段的过滤结果被误伤。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "d4b3f135edced3921d9358295dffc98ee7be26a3dcb2b53a61dbaaedaceda5c2"
+        },
+        {
+          "messageId": "t20-msg-atlas-map-006",
+          "role": "assistant",
+          "content": "修正为保留精确字段契约，分析设置只覆盖用户输入对应的检索路径。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "41d234687d9fa2916c87dbf3ade010b706fd2eb95d236d97e4329668f9aba1a3"
+        },
+        {
+          "messageId": "t20-msg-atlas-map-007",
+          "role": "user",
+          "content": "上次词法回归会话还讨论过空值和存在性过滤，不能把它们混成大小写问题。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "76c04d7e931992fab93f8a474ad33970aad50decf9baf4242c2aa4ecad310c9e"
+        },
+        {
+          "messageId": "t20-msg-atlas-map-008",
+          "role": "assistant",
+          "content": "我会把空值处理作为同域旁支，单独记录，不影响本次映射收敛。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "a6acbf1d00189f04f4abc005065776f08553863ae1890e9803b77d4cd9e60229"
+        },
+        {
+          "messageId": "t20-msg-atlas-map-009",
+          "role": "user",
+          "content": "跨会话复盘要求保留失败尝试、兼容风险和最终采用的边界。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "dae7bc94e6bb970cdc60707d6796abb437bfc7dbf8b713f9a00ba515c80f025f"
+        },
+        {
+          "messageId": "t20-msg-atlas-map-010",
+          "role": "assistant",
+          "content": "已把每次回退原因写入评审记录，等待确认最终规范化决定。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "cdcc4cd23a7b806b37d86d755db98a0d2d8b6803628434936fcd8392814b1e37"
+        },
+        {
+          "messageId": "t20-msg-atlas-map-011",
+          "role": "user",
+          "content": "RankLab 的评分回归也引用字段名，但那是排序层，不是本会话的映射结论。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "e70941cf056e2c102b52e7a6f955d1d8a9f1b76268759b1cd03b046bf6ebe898"
+        },
+        {
+          "messageId": "t20-msg-atlas-map-012",
+          "role": "assistant",
+          "content": "最终验收会分别覆盖大小写输入、精确过滤、空值和旧索引兼容，供后续会话引用。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "4fdd00f715a23f1a10522d9560b8d6399d6e0b91e0db2a73c5df23d72cb4a922"
+        }
+      ],
+      "contentHash": "fe29266294b754fb727fb76cd871c763389c92f0ed16a4b9d0a63f579af4b53e"
+    },
+    {
+      "assetId": "T20-L0-ATLAS-LEXICAL-REGRESSION",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "sessionId": "t20-session-atlas-lexical-002",
+      "messages": [
+        {
+          "messageId": "t20-msg-atlas-lex-001",
+          "role": "user",
+          "content": "AtlasSearch 词法回归在空值、精确约束和多语言输入上都有样本，先分组症状。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "bcbb60ba069339209000ce92081d91dbbf445e4e4ad931a15226ef5f2988cc76"
+        },
+        {
+          "messageId": "t20-msg-atlas-lex-002",
+          "role": "assistant",
+          "content": "我先区分字段缺失、大小写差异和分析器语言边界，不直接改映射。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "9e2ee967a201a114ff146d06f677e1444a17842e60188e0c7fc9d5eaede7365e"
+        },
+        {
+          "messageId": "t20-msg-atlas-lex-003",
+          "role": "user",
+          "content": "第一轮把空值当成空字符串，测试通过一部分却放宽了存在性条件。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "aec1519a50e0f84030c7aab32b651bbab83b2b533fd179cabac4d87e999b0b5d"
+        },
+        {
+          "messageId": "t20-msg-atlas-lex-004",
+          "role": "assistant",
+          "content": "撤回空字符串兜底，恢复缺失字段与空值的分层断言。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "8f81c414ee78aa911524ac6abfbf7b61401862bba7377df1f094c205ebe19636"
+        },
+        {
+          "messageId": "t20-msg-atlas-lex-005",
+          "role": "user",
+          "content": "第二轮只调整精确字段过滤，大小写样本仍失败。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "3bd36703fcc6e48a3ed38c0ad46b9a3259177b5e263777c22f5b2675900aab2f"
+        },
+        {
+          "messageId": "t20-msg-atlas-lex-006",
+          "role": "assistant",
+          "content": "改为分别跟踪规范化和过滤，避免过滤修复掩盖输入问题。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "10f8b14920e6e490498d9064e3c99f57bc6a75786449898e2dc68685bd440377"
+        },
+        {
+          "messageId": "t20-msg-atlas-lex-007",
+          "role": "user",
+          "content": "映射分析会话在另一条讨论里已经收窄了兼容范围，本会话只记录回归夹具。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "b1ccc181218a8b96189a9cf25c54b9096c8594a425ab66a33a9d2dc57b45610b"
+        },
+        {
+          "messageId": "t20-msg-atlas-lex-008",
+          "role": "assistant",
+          "content": "两条会话互相引用，但不把夹具结果当作最终分析器决定。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "68c95cdcc0642306b3db066392c5d655695a13759fc31eb34b28d31e978557fe"
+        },
+        {
+          "messageId": "t20-msg-atlas-lex-009",
+          "role": "user",
+          "content": "CursorFlow 的过滤顺序也出现过类似词汇，属于分页旁支。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "0cbf03780ee0e1411eb67fc1ad9984d6f21a07e9f73859493ef99037a8934c12"
+        },
+        {
+          "messageId": "t20-msg-atlas-lex-010",
+          "role": "assistant",
+          "content": "已在报告中标注旁支，继续按 AtlasSearch 字段与输入类型拆样本。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "7dbc8278cd2c00890e9bafdf35f85429d5a9bee293f78329ed6e9d6696f54b6f"
+        },
+        {
+          "messageId": "t20-msg-atlas-lex-011",
+          "role": "user",
+          "content": "最终要保留两次失败方向和回退理由，不能只留绿色结果。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "e950f90a97192a660326559c06005d0e9fc23727dc2b03a575c9452b6e97e7c5"
+        },
+        {
+          "messageId": "t20-msg-atlas-lex-012",
+          "role": "assistant",
+          "content": "回归报告已冻结失败样本、修正方向和待映射评审确认项。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "f303600fb3cfcbe6d182063ff9155168fef8f116d4b11fd562f781d118ea4a6f"
+        }
+      ],
+      "contentHash": "a3281f1f737f55bc47b47496ebb9e34a74e845a49d373d06b398063746bd646f"
+    },
+    {
+      "assetId": "T20-L0-RANK-SCORE-EXPERIMENT",
+      "ownerAgentId": "agent-task1-t20-relevance",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "sessionId": "t20-session-rank-score-003",
+      "messages": [
+        {
+          "messageId": "t20-msg-rank-score-001",
+          "role": "user",
+          "content": "RankLab 要复盘评分实验，先把候选召回、信号权重和最终排序拆开。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "535e478f1cb38e6ffc14929b960a2df9e05dd21e7f85aba83b507d5dc6cf050f"
+        },
+        {
+          "messageId": "t20-msg-rank-score-002",
+          "role": "assistant",
+          "content": "我先固定查询集合和现有并列处理，再比较新评分信号。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "8053502db4af2e07f8c2ca24c3abc29377a354074828bb0cfcb9a375299c8955"
+        },
+        {
+          "messageId": "t20-msg-rank-score-003",
+          "role": "user",
+          "content": "第一次直接提高新信号权重，离线曲线变好但长尾查询顺序不稳定。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "a5bf6cf34d4e8419ec9850102afb7fa3d4875478406184c38bf3694fa10f43bd"
+        },
+        {
+          "messageId": "t20-msg-rank-score-004",
+          "role": "assistant",
+          "content": "该方案被撤回，不能用平均改善掩盖长尾回归。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "2ee163a554db1167aa0c375473dd0f39f33b03af3b3123cb39b8916e4917be49"
+        },
+        {
+          "messageId": "t20-msg-rank-score-005",
+          "role": "user",
+          "content": "第二次只改并列处理，局部样本通过但已有排序回归不一致。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "b6cb76e94267e0e33d5dc2f75046b6df8639e475c81232dd71d00d2623cfbde3"
+        },
+        {
+          "messageId": "t20-msg-rank-score-006",
+          "role": "assistant",
+          "content": "改成固定集合上的分数对照，保留稳定并列处理作为独立边界。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "128d49bef67af2cc7d12e06e61de501f9ec481bc90112090007ab6106db76077"
+        },
+        {
+          "messageId": "t20-msg-rank-score-007",
+          "role": "user",
+          "content": "AtlasSearch 的字段映射和 CursorFlow 的游标问题在同周出现，不要混入评分实验。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "a280824d80341992e1a18fa08ef9babce89121de3f84397c3782833790e78bab"
+        },
+        {
+          "messageId": "t20-msg-rank-score-008",
+          "role": "assistant",
+          "content": "我把两个项目记作同域干扰，只沿 RankLab 实验时间线推进。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "b1c3f152c2bfafa23df35846c17fdb0717f0433fd34769581b5819e643c67799"
+        },
+        {
+          "messageId": "t20-msg-rank-score-009",
+          "role": "user",
+          "content": "一次离线改善与线上回归冲突后我们回滚了实验分支。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "bf84148a98eb1b2032c4398bd91d80b89dd1a4d8ef0e3a8a25050f5a06f458c7"
+        },
+        {
+          "messageId": "t20-msg-rank-score-010",
+          "role": "assistant",
+          "content": "回滚原因和触发边界已单独保留，不能从现有代码状态倒推。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "dac70fd64768ff715e6471f968654cb0eba9772a699afbe8d084c33164529d94"
+        },
+        {
+          "messageId": "t20-msg-rank-score-011",
+          "role": "user",
+          "content": "另一份质量评审会话只讨论评估窗口，不等同于本次评分选择。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "a1a236d401b6fceaf54c919ebac072e6c5cecdd384bd6d47bf1ede470cb2474d"
+        },
+        {
+          "messageId": "t20-msg-rank-score-012",
+          "role": "assistant",
+          "content": "最终记录会同时保存被拒绝尝试、接受的比较方式和回滚记录，供后续排序变更引用。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "55cf79d4b73ab9d259c359b39967f8f3d39150dcfac04a7c676dc199ca82f9b7"
+        }
+      ],
+      "contentHash": "73039e4216b0773b7df2523314d5bf54915ac0667b7536b283871e24ea126268"
+    },
+    {
+      "assetId": "T20-L0-RANK-NDCG-REVIEW",
+      "ownerAgentId": "agent-task1-t20-relevance",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "sessionId": "t20-session-rank-quality-004",
+      "messages": [
+        {
+          "messageId": "t20-msg-rank-ndcg-001",
+          "role": "user",
+          "content": "RankLab 要检查排序质量回归，先固定评测窗口、查询分层和并列结果。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "de96e9cf4777830c1a085f0d399630f260623ed1718fb8ab808d09e50fe26900"
+        },
+        {
+          "messageId": "t20-msg-rank-ndcg-002",
+          "role": "assistant",
+          "content": "我会把指标门槛和评分实现分开，避免用一条曲线代替根因。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "55f7796b79c801fae488dee9cce0f756159144ad139ece0fe9545d12f2f16b62"
+        },
+        {
+          "messageId": "t20-msg-rank-ndcg-003",
+          "role": "user",
+          "content": "第一轮只扩大评测样本，曲线更平滑但问题定位变慢。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "48d628824fceb5d621c512d6fc95ce8620d5c7ae61d8f9460a1af0c8352a1b87"
+        },
+        {
+          "messageId": "t20-msg-rank-ndcg-004",
+          "role": "assistant",
+          "content": "改回分层样本，保留长尾和头部两组对照。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "d2c339691ff004396ffe19d0e2075341afa09861e8cc20da002c2e6d4961c9a5"
+        },
+        {
+          "messageId": "t20-msg-rank-ndcg-005",
+          "role": "user",
+          "content": "第二轮改了重排候选范围，指标上升却引入延迟回归。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "329739e82e3ba3a112d5b88c4ead1ef272af7182244b58e971153ac7d60662b8"
+        },
+        {
+          "messageId": "t20-msg-rank-ndcg-006",
+          "role": "assistant",
+          "content": "撤回扩大候选范围，只保留可解释的质量观测。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "3c115691e7a5ea35b472a8bd4887624900a503afa13e1d007bd7442fbb131d17"
+        },
+        {
+          "messageId": "t20-msg-rank-ndcg-007",
+          "role": "user",
+          "content": "评分实验会话还在追具体信号，两个记录需要互相引用但不能拼接。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "7cb56082702fa99736ba06b055997ba957751f73acc94b1928f56c6a73ef3051"
+        },
+        {
+          "messageId": "t20-msg-rank-ndcg-008",
+          "role": "assistant",
+          "content": "已在评审中标出评分实验为相关会话，并保留各自失败方向。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "c274eae1316818f410024c64397cdb84078b3cb831f0f17dd82c9963dfb980d1"
+        },
+        {
+          "messageId": "t20-msg-rank-ndcg-009",
+          "role": "user",
+          "content": "AtlasSearch 的分析器回归也会改变样本，属于同域干扰。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "e0f1745bf839bd92fdc9de737e2d6d989b58632c705e43cefec97e59690fdcc9"
+        },
+        {
+          "messageId": "t20-msg-rank-ndcg-010",
+          "role": "assistant",
+          "content": "样本来源变化单独记录，不把字段修复当成排序方案。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "8aeaf9e40f3d17515b95a74ba900c2ad0d981230ca7a8b2db00342dc87d4f579"
+        },
+        {
+          "messageId": "t20-msg-rank-ndcg-011",
+          "role": "user",
+          "content": "后续复盘需要保留窗口变化与撤回原因。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "236168212d0d9c85390e88b47907e3adbacc092e0950189e24db0959491ed996"
+        },
+        {
+          "messageId": "t20-msg-rank-ndcg-012",
+          "role": "assistant",
+          "content": "评审记录已冻结分层样本、候选范围回退和与评分会话的交接点。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "abd747eb69f30a28394e3b659aeb5c5be23b495bbf70922a62bb048d6a37230a"
+        }
+      ],
+      "contentHash": "fa975deec67181bc702081e0d7edb794d4a8484f5124ec917fe48affeb5d9925"
+    },
+    {
+      "assetId": "T20-L0-CURSOR-POINT-IN-TIME",
+      "ownerAgentId": "agent-task1-t20-indexing",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "sessionId": "t20-session-cursor-pit-005",
+      "messages": [
+        {
+          "messageId": "t20-msg-cursor-pit-001",
+          "role": "user",
+          "content": "CursorFlow 深分页依赖固定读取视图，先检查数据变化、游标和排序一致性。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "809b37ec747d55e06ae7bc0c4b91cb51a5572b9de032fe7a0582b2ec70505f97"
+        },
+        {
+          "messageId": "t20-msg-cursor-pit-002",
+          "role": "assistant",
+          "content": "我先建立快照边界，再观察同一查询跨页的重复与遗漏。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "fd7e64a8a5621eb4365582882174514fa97c5024746ef6eb8a9de1ab69be6553"
+        },
+        {
+          "messageId": "t20-msg-cursor-pit-003",
+          "role": "user",
+          "content": "第一次只锁定第一页，后续页面仍受新写入影响。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "b4b2b43ec6ef1d29ab481b4a305eaa6f9bf660dac1b83ba3e1f77aa68831cfc4"
+        },
+        {
+          "messageId": "t20-msg-cursor-pit-004",
+          "role": "assistant",
+          "content": "改为覆盖完整分页读取视图，避免局部锁定制造假稳定。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "b0e206f301091b44767ba04f4ef716fecffccb426688dcf4ccd73c33e0c8ab22"
+        },
+        {
+          "messageId": "t20-msg-cursor-pit-005",
+          "role": "user",
+          "content": "第二次把刷新延迟当作排序问题，延长等待后症状仍在。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "af6575fe1b42fe997f1492adb0925be0c9e6e872fb04923a3ec73f2c1f244dab"
+        },
+        {
+          "messageId": "t20-msg-cursor-pit-006",
+          "role": "assistant",
+          "content": "撤回延迟假设，回到稳定排序和游标边界。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "c9b8192b3cb1bb2f51e714d17509647dedcfad2d41d8db75701bd7d8da46cd0d"
+        },
+        {
+          "messageId": "t20-msg-cursor-pit-007",
+          "role": "user",
+          "content": "CursorFlow 的并列排序会话正在另一条线验证 tie-break。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "ec1d271f42114c51e510da9b18cf43c0e40e7105b29031f7a66c1758ab20a6c4"
+        },
+        {
+          "messageId": "t20-msg-cursor-pit-008",
+          "role": "assistant",
+          "content": "两条会话会在分页调查中交叉引用，但分别记录读取视图和排序结论。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "cf48dc2978272da67201efa6228994e0781b75af05d8ff1862a39bfd447fa64a"
+        },
+        {
+          "messageId": "t20-msg-cursor-pit-009",
+          "role": "user",
+          "content": "ReindexRail 的切换窗口也可能改变数据可见性，是相邻干扰。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "8d476de8d50fe0407a469710c8c9fd0307e356c0e99bf8fe8efc6d2766271227"
+        },
+        {
+          "messageId": "t20-msg-cursor-pit-010",
+          "role": "assistant",
+          "content": "已把切换窗口作为环境变量观察，不当作分页设计答案。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "d61ca2d529387fc0e78280b15c748e8a0184ec4aa2d7b3ca5902ea27a1380485"
+        },
+        {
+          "messageId": "t20-msg-cursor-pit-011",
+          "role": "user",
+          "content": "验收必须覆盖深页、并列项和期间写入。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "216443d1f0b4dc57e9252f282a601378b95344aafd80b612bb4ca68088ee5510"
+        },
+        {
+          "messageId": "t20-msg-cursor-pit-012",
+          "role": "assistant",
+          "content": "测试清单已保留两次改向和跨会话引用，等待分页场景整合。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "0203084d667874997a31ee7c0cc85b96800a65c67a3986e64e7a351d56fe0512"
+        }
+      ],
+      "contentHash": "3bcf90835e2b1691356837aeb2307e47bb578be08fa46db03d774615a2b3dff6"
+    },
+    {
+      "assetId": "T20-L0-CURSOR-SORT-TIE",
+      "ownerAgentId": "agent-task1-t20-indexing",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "sessionId": "t20-session-cursor-sort-006",
+      "messages": [
+        {
+          "messageId": "t20-msg-cursor-sort-001",
+          "role": "user",
+          "content": "CursorFlow 的并列项导致深分页不稳定，先梳理排序键、游标和过滤顺序。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "b0e3c0ca6e8931ae847eb3a5a36cc8aafe158f73849046a70e7db85211f87ef9"
+        },
+        {
+          "messageId": "t20-msg-cursor-sort-002",
+          "role": "assistant",
+          "content": "我先固定主排序键，再观察相同分数记录跨页如何移动。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "68bfb37dc331ca3761c04865c38e4d7c4adbb9821f06809153471fce32dc987f"
+        },
+        {
+          "messageId": "t20-msg-cursor-sort-003",
+          "role": "user",
+          "content": "第一次只增加主排序键，重复减少但仍有遗漏。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "afdb9421ab2bd8bed877c5bd957c7d2e46cfe9f2c9361c5c5066f12c73bdabea"
+        },
+        {
+          "messageId": "t20-msg-cursor-sort-004",
+          "role": "assistant",
+          "content": "改为评估完整稳定键，不再把单字段修补当作最终方案。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "098f5137e1d131d6e95d6785bea0dec795d5a5fce5755078463f8538d8908f10"
+        },
+        {
+          "messageId": "t20-msg-cursor-sort-005",
+          "role": "user",
+          "content": "第二次调整过滤顺序，浅页变好但深页游标无法复现。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "3dae4299703d9690382355954b293664aa27a31178ba814e63fca8357d12822d"
+        },
+        {
+          "messageId": "t20-msg-cursor-sort-006",
+          "role": "assistant",
+          "content": "撤回过滤顺序改动，确保排序与读取视图先固定。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "91567f449b2917dd0902d9efea5c9916e89807bde72a2e23e3934155526ce280"
+        },
+        {
+          "messageId": "t20-msg-cursor-sort-007",
+          "role": "user",
+          "content": "点-in-time 会话已在另一处验证读取一致性。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "d09408d2a48b20879fb3a041856ece87db5265c24e19e927bfc795f8752c548b"
+        },
+        {
+          "messageId": "t20-msg-cursor-sort-008",
+          "role": "assistant",
+          "content": "我会引用那条读取结论，但不把它与并列键结论混写。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "e010d723d625c4b3e66a7417690769531ed336a198919ca14e4e97b563d8eac5"
+        },
+        {
+          "messageId": "t20-msg-cursor-sort-009",
+          "role": "user",
+          "content": "AtlasSearch 的字段类型变化会影响排序输入，是同域干扰。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "38db8edebc7cc76da2603f015001a5016470df33a82a4f0899fe474b7b864754"
+        },
+        {
+          "messageId": "t20-msg-cursor-sort-010",
+          "role": "assistant",
+          "content": "已将字段类型变化隔离，继续记录游标实验的失败和回退。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "7660f0af5e0258c0a5b1380bdf7cf9ec57f72b5d6ff09aa549e915ea286d89f2"
+        },
+        {
+          "messageId": "t20-msg-cursor-sort-011",
+          "role": "user",
+          "content": "最终验收要能重放并列项、写入和跨页边界。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "29204a1314d71596c86d0fc004d56638d619e0951a3f9cc5a705d933dba93bf1"
+        },
+        {
+          "messageId": "t20-msg-cursor-sort-012",
+          "role": "assistant",
+          "content": "并列测试和点-in-time 交接均已写入分页复盘。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "5cede1c2ca508ee022989479cb4fa6537e9afd91260538d5e1e93cbb01ce5e74"
+        }
+      ],
+      "contentHash": "73ea2faf50485627491f0704a4170a8dfa7040804a45aaa0b70dbcdfcb715d94"
+    },
+    {
+      "assetId": "T20-L0-REINDEX-ALIAS-CUTOVER",
+      "ownerAgentId": "agent-task1-t20-indexing",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "sessionId": "t20-session-reindex-cutover-007",
+      "messages": [
+        {
+          "messageId": "t20-msg-reindex-cut-001",
+          "role": "user",
+          "content": "ReindexRail 要准备索引重建切换，先排好写入、校验、读取和回退阶段。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "e99122212990d80d3a2b2c3f45e479b0177d0f3017ecf16bb764825a8bd51c98"
+        },
+        {
+          "messageId": "t20-msg-reindex-cut-002",
+          "role": "assistant",
+          "content": "我会把别名角色、验证结果和旧索引保留分开记录。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "2f7311cc7f7ca3177194c30869c3a6253a1a369eae62a2454ce837f0e7800644"
+        },
+        {
+          "messageId": "t20-msg-reindex-cut-003",
+          "role": "user",
+          "content": "第一次先删旧索引再切读别名，回退没有落点，草案已撤回。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "d72012d83cb5f743d358725a127a1b8424992673ff102fa504d781cd1682ab63"
+        },
+        {
+          "messageId": "t20-msg-reindex-cut-004",
+          "role": "assistant",
+          "content": "修正为切换前保留旧索引，并把异常回退写成独立动作。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "004b02dbdf520003a654b9eba1b4f5d96d2d9564837c9314df3e2ed2dfb82b27"
+        },
+        {
+          "messageId": "t20-msg-reindex-cut-005",
+          "role": "user",
+          "content": "第二次先切读别名再做完整校验，短暂暴露了未验证数据。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "bcbe0bb6f1487448d7e34b5c5dfc41043557fb81295e6579f46f21a5627b6a46"
+        },
+        {
+          "messageId": "t20-msg-reindex-cut-006",
+          "role": "assistant",
+          "content": "调整为校验完成后才允许读取边界变化。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "42d097f3da4432dc8c8fa1b5355a2af5b30eb032615bf6be90cb2bee55162641"
+        },
+        {
+          "messageId": "t20-msg-reindex-cut-007",
+          "role": "user",
+          "content": "CursorFlow 的分页调查会受别名变化影响，需在另一会话独立观察。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "29a74081377b2b93531e882cbb6243da58428664983e6bb4ccc15002c3e295ff"
+        },
+        {
+          "messageId": "t20-msg-reindex-cut-008",
+          "role": "assistant",
+          "content": "两条线互相引用观测时间，但不共享切换决定。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "3d54103ffee88ea82fb6905f3571f5fcde992c31e5f9f0fa6ce4f063f670b5f6"
+        },
+        {
+          "messageId": "t20-msg-reindex-cut-009",
+          "role": "user",
+          "content": "增量索引的检查点和延迟事故也出现在周报里。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "a4748d954edd5a235f9014213533b1ee20b51bc080994fd4a2738e5be4955b03"
+        },
+        {
+          "messageId": "t20-msg-reindex-cut-010",
+          "role": "assistant",
+          "content": "已将检查点、延迟和别名顺序拆成三个同域主题。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "0cd5372b1579e69bfbeda143119cb4e0aed9fb2848b8c6204d1495a88e0f1849"
+        },
+        {
+          "messageId": "t20-msg-reindex-cut-011",
+          "role": "user",
+          "content": "上线清单必须保留失败尝试和旧索引的回退窗口。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "a7c546b8cf8a70a127bac080c7341ac5de5392f2c26af5547be06fcda767034e"
+        },
+        {
+          "messageId": "t20-msg-reindex-cut-012",
+          "role": "assistant",
+          "content": "切换复盘已冻结阶段顺序和回退要求，供原子决定查询引用。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "9fc703c1110b6b25b1a05f78207833d289738a4c58b2d85b32f63b9c37634817"
+        }
+      ],
+      "contentHash": "e7ec243f0e80c46781707b6f7c0450d2223f11891a9d6d2c2ee41b854af9951e"
+    },
+    {
+      "assetId": "T20-L0-REINDEX-LAG-INCIDENT",
+      "ownerAgentId": "agent-task1-t20-indexing",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "sessionId": "t20-session-reindex-lag-008",
+      "messages": [
+        {
+          "messageId": "t20-msg-reindex-lag-001",
+          "role": "user",
+          "content": "ReindexRail 增量索引出现延迟，先把检查点、写入顺序和读后写观察分开。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "ba64bbad33acc8776467c66ebd0956f01dd0667cb8a94322556c39a1378a6e75"
+        },
+        {
+          "messageId": "t20-msg-reindex-lag-002",
+          "role": "assistant",
+          "content": "我先确认延迟发生在抓取、写入还是读取可见性，不直接扩大切换范围。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "6f855966e226dcbbbf26a6368c2072cdcf5d9b8637b03aa12ceade7fc6366c66"
+        },
+        {
+          "messageId": "t20-msg-reindex-lag-003",
+          "role": "user",
+          "content": "第一次只增加并行写入，吞吐提升但检查点顺序变得不可重放。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "c00e9814c946bf4372b38ded1a6d8ad5959335699d85419c2f8a91959df2217e"
+        },
+        {
+          "messageId": "t20-msg-reindex-lag-004",
+          "role": "assistant",
+          "content": "撤回并行扩张，恢复可审计的检查点推进。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "032d1007d68af40d6d094e34719e8cc0930a5f5861ccdee703ee70a0d778e57c"
+        },
+        {
+          "messageId": "t20-msg-reindex-lag-005",
+          "role": "user",
+          "content": "第二次延长观察窗口，短时曲线变好但旧别名仍在使用。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "809dca2a29e523372a9fd191ec03395e10092cbffbe50e02b786cbac9e599b28"
+        },
+        {
+          "messageId": "t20-msg-reindex-lag-006",
+          "role": "assistant",
+          "content": "将延迟指标和别名切换分开，保留各自回退动作。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "bee69125541a7fff9d2ef4afdf25700f087f8774af82eac9fbf40e0e6bf79092"
+        },
+        {
+          "messageId": "t20-msg-reindex-lag-007",
+          "role": "user",
+          "content": "别名切换会话已经记录了验证阶段，本事故只负责延迟根因。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "da4e9c2abffcd1be4336b70a268734b4f2da4ffeb646ee847dff2d3ec6098b17"
+        },
+        {
+          "messageId": "t20-msg-reindex-lag-008",
+          "role": "assistant",
+          "content": "跨会话引用切换阶段，但不从延迟数据推断切换顺序。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "2aee54aed42e58c59d28d1860e92112f83861ed880f0bf293a3ce56d1d1f0bcd"
+        },
+        {
+          "messageId": "t20-msg-reindex-lag-009",
+          "role": "user",
+          "content": "CursorFlow 的深分页 miss 可能放大延迟症状，属于同域旁支。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "6ec8676149a2fd99c375513255ebe785ccd6cafc44d9252b1524adc3eb71e2cc"
+        },
+        {
+          "messageId": "t20-msg-reindex-lag-010",
+          "role": "assistant",
+          "content": "报告按读后写和分页分别分组，避免重复计数。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "92ea372ceae165eb6ec0b2ec37d7e59b2b513b2362047515a2cc37857f562f1e"
+        },
+        {
+          "messageId": "t20-msg-reindex-lag-011",
+          "role": "user",
+          "content": "最终复盘需要说明两次改向和检查点边界。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "2a7d8da934f60940a2bf175e37598764491aa5c66112f65f32440951aaae5515"
+        },
+        {
+          "messageId": "t20-msg-reindex-lag-012",
+          "role": "assistant",
+          "content": "事故记录已保留失败并行化、观察窗口改向和与切换会话的交接。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "6fa4d4ec36e92b4a3100321053d6610ec1b5aa4a25dbf69359109d0145412a08"
+        }
+      ],
+      "contentHash": "c7cd731188fbfcb80dfbe50ff7a6fa07c5a56ccc01807802d8bb4786e29ad0cf"
+    },
+    {
+      "assetId": "T20-L0-VECTOR-HYBRID-ABLACTION",
+      "ownerAgentId": "agent-task1-t20-relevance",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "sessionId": "t20-session-vector-hybrid-009",
+      "messages": [
+        {
+          "messageId": "t20-msg-vector-hyb-001",
+          "role": "user",
+          "content": "VectorBlend 要做混合召回消融，先分开词法候选、向量候选、融合和评测。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "1d4b691bf36a2fcfb807b12b14c19a6daa947d0e4e5f3784d53950f6afa9fc94"
+        },
+        {
+          "messageId": "t20-msg-vector-hyb-002",
+          "role": "assistant",
+          "content": "我先固定候选集合，避免权重变化和召回覆盖变化互相干扰。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "748a0a024c9c3bf2606e37307f51c6a3abe2a679b5fc4be6c67bd22e3590978c"
+        },
+        {
+          "messageId": "t20-msg-vector-hyb-003",
+          "role": "user",
+          "content": "第一次把两路分数直接相加，热门词查询被放大，方案停止。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "8aa739b45cf5c58a2b330a30fe063952dcd3377f5435da91352339adc10f76bd"
+        },
+        {
+          "messageId": "t20-msg-vector-hyb-004",
+          "role": "assistant",
+          "content": "撤回直接相加，改为比较归一化后的融合。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "ff911273457725408c8d06a8d7f4c32f4fc34df9705b25d57650ff582c58ea4f"
+        },
+        {
+          "messageId": "t20-msg-vector-hyb-005",
+          "role": "user",
+          "content": "第二次扩大向量候选，质量上升但延迟和长尾稳定性变差。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "518f66ffbe79f3bfd08ad2ee911ebc475d96a0fb8c06fb3f091455260a4c5e84"
+        },
+        {
+          "messageId": "t20-msg-vector-hyb-006",
+          "role": "assistant",
+          "content": "恢复候选范围，只把融合权重作为变量继续观察。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "1f8bb4854b86352aaa193c79e461f7951ab11557cde51820ac5dbc210f6dac99"
+        },
+        {
+          "messageId": "t20-msg-vector-hyb-007",
+          "role": "user",
+          "content": "embedding 版本回归在另一会话中排查，不能与本消融实验合并。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "05bd3a74c6200b3a94eebbc32c6b08b1013d835fc6b2d05dc71211832973e597"
+        },
+        {
+          "messageId": "t20-msg-vector-hyb-008",
+          "role": "assistant",
+          "content": "两条会话互相引用数据版本，但分别保留融合和生成诊断。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "7298997b3b217a30e9fff8c3fae60c025561609e3838355c47b12781010c957b"
+        },
+        {
+          "messageId": "t20-msg-vector-hyb-009",
+          "role": "user",
+          "content": "RankLab 的 rerank 结果也会影响离线指标，是同域干扰。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "c581792c56f37b7ce21ea7123e5f9693be71f2c2e26be007edaa74759b7f092c"
+        },
+        {
+          "messageId": "t20-msg-vector-hyb-010",
+          "role": "assistant",
+          "content": "已固定 rerank 条件，继续记录融合实验的失败和改向。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "65d05d61ab96ac04b0f1935ce1035a111f540162eff929307cfa2179223caa89"
+        },
+        {
+          "messageId": "t20-msg-vector-hyb-011",
+          "role": "user",
+          "content": "质量边界要在固定评估集上确认，不能只看单次改善。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "15b67e9bf25400d9966c24cb0202fc690040148032a17cabcfd1a58b611acc3c"
+        },
+        {
+          "messageId": "t20-msg-vector-hyb-012",
+          "role": "assistant",
+          "content": "消融记录已准备交给融合决定会话，保留候选范围和归一化改动。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "841302d644b03fedc9adcd4f5006ca0d8b8939c643a4eb596ce2f22fe88d1508"
+        }
+      ],
+      "contentHash": "701b02b8472e5fae5c780672d5f346512f48cdfb043e12f2d3596c35e7103e5a"
+    },
+    {
+      "assetId": "T20-L0-VECTOR-EMBEDDING-REGRESSION",
+      "ownerAgentId": "agent-task1-t20-relevance",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L0"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "sessionId": "t20-session-vector-embedding-010",
+      "messages": [
+        {
+          "messageId": "t20-msg-vector-emb-001",
+          "role": "user",
+          "content": "VectorBlend 出现同一批文本向量不一致，先把生成版本、索引版本和融合层分开。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "aa7deff2e306bb95a8122da6ac22ad1490fd2ae330d849f688759477c7f644cc"
+        },
+        {
+          "messageId": "t20-msg-vector-emb-002",
+          "role": "assistant",
+          "content": "我先固定输入文本和评测样本，避免把数据变化误判成版本回归。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "85dd3d716404d64ced326a5f10ae6abe804d1d15b7e832819d9c98959cc865fa"
+        },
+        {
+          "messageId": "t20-msg-vector-emb-003",
+          "role": "user",
+          "content": "第一次只重跑融合权重，离线结果短暂变好但向量差异仍在。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "8a752aa433e4c50ad3d6823db4b05c6656e91b93e6009a8b6d7abb513dbedd88"
+        },
+        {
+          "messageId": "t20-msg-vector-emb-004",
+          "role": "assistant",
+          "content": "撤回权重 workaround，问题更像生成端和既有索引的版本不一致。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "95dc6052273e9d63a8ffa3db5a0db0a43cb30a6d34479ec9a710fb305b14dd5e"
+        },
+        {
+          "messageId": "t20-msg-vector-emb-005",
+          "role": "user",
+          "content": "第二次怀疑索引延迟，调整刷新观察后仍无法解释同一文本的表示变化。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "a2ecc13c90d307eefb6c9b6dfdb019b20ea0dfdf09e9db72ca6c895cca933c81"
+        },
+        {
+          "messageId": "t20-msg-vector-emb-006",
+          "role": "assistant",
+          "content": "改为核对生成版本与索引对应关系，并锁定受影响向量范围。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "dcb229408b37526e006883d0c0ca27a051cc6d26a108449567b7ffbdc2b3e039"
+        },
+        {
+          "messageId": "t20-msg-vector-emb-007",
+          "role": "user",
+          "content": "混合权重消融会话同时在跑，但它只讨论融合变量。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "d7c37f178a278880a5634e0765ec80e274a27f895426199b5eb8c20dbf138270"
+        },
+        {
+          "messageId": "t20-msg-vector-emb-008",
+          "role": "assistant",
+          "content": "已将消融作为旁支引用，不把权重变化当成版本根因。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "9c3e577b8f3119e4313acce33125431ecb2611b8106d74b831abaac10f3e2c4c"
+        },
+        {
+          "messageId": "t20-msg-vector-emb-009",
+          "role": "user",
+          "content": "跨会话复盘需要保留被拒绝 workaround 和最终修复边界。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "c74bb20a4956360fde6890390e95433975f6cd26f67f57c6436837ec4e5acd60"
+        },
+        {
+          "messageId": "t20-msg-vector-emb-010",
+          "role": "assistant",
+          "content": "最终方向是恢复与索引对齐的生成版本，并重建受影响向量后再评测。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "de06b8c7c36782536daae28e53c8cef60ff3d518d8afc134f224ca7d5f88ab37"
+        },
+        {
+          "messageId": "t20-msg-vector-emb-011",
+          "role": "user",
+          "content": "AtlasSearch 的 analyzer 回归会改变文本输入处理，也属于同域干扰。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "3c0b9785a5f8d17a5a113d248cd75454a1d05cfa9c0b43834c718b7c9f23a811"
+        },
+        {
+          "messageId": "t20-msg-vector-emb-012",
+          "role": "assistant",
+          "content": "版本回归记录已冻结根因、失败方向和修复范围，供给定会话查询。",
+          "sourceEvidenceIds": [
+            "T20-EVID-HISTORY-L0"
+          ],
+          "observedAt": "2026-08-30T17:30:00+08:00",
+          "contentHash": "6e4da73e7cc06f252f3234c04d85264ec4d9a012d715cfaa1b7982ff02c94f2f"
+        }
+      ],
+      "contentHash": "dc11b8d8620a8d56cc38df312b11e863754cb2916250037cd96dc187e9a1b259"
+    }
+  ],
+  "l1Memories": [
+    {
+      "assetId": "T20-L1-ATLAS-ANALYZER-LOWERCASE",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "AtlasSearch 对用户输入搜索词采用 lowercase 规范化分析器；兼容性边界是保留现有 keyword 字段的类型与既有字段契约，因此可在不改变字段类型的前提下安全接入。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t20-msg-atlas-map-006",
+        "t20-msg-atlas-map-010"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "fd3909e1b9fe4456ad742f74d8fb041d9cb253423921b48c02d2a943f8bc450b"
+    },
+    {
+      "assetId": "T20-L1-ATLAS-KEYWORD-FIELD",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "AtlasSearch 的 keyword 字段用于精确约束；该记忆只记录字段契约与过滤边界，不保存用户输入规范化分析器的最终选择。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t20-msg-atlas-lex-005",
+        "t20-msg-atlas-lex-006"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "81daf7f6a367450aef1b258e4c80783e2def1f5a1a0b09a7003470ffa8693454"
+    },
+    {
+      "assetId": "T20-L1-ATLAS-MAPPING-REBUILD",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "AtlasSearch 映射变更应评估重建与切换风险并保留回退边界；该记忆不记录 lowercase 分析器决定。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t20-msg-atlas-lex-003",
+        "t20-msg-atlas-lex-012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "21b15b2f240059dc39373a215bf3e96ffc010ca9f1b5e73918d8d2572a299796"
+    },
+    {
+      "assetId": "T20-L1-ATLAS-NULL-VALUE",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "AtlasSearch 的空值处理需与字段存在性过滤保持一致；该约定独立于用户输入大小写规范化。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t20-msg-atlas-lex-003",
+        "t20-msg-atlas-lex-004"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "07b58407c5a0210a2fc2bae6a0bc5b168f8e82ee8c07b058371301668a6dae48"
+    },
+    {
+      "assetId": "T20-L1-RANK-TIE-BREAK",
+      "ownerAgentId": "agent-task1-t20-relevance",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "RankLab 的排序并列处理依赖稳定 tie-break 字段，属于结果排序层约定。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t20-msg-rank-score-005",
+        "t20-msg-rank-score-006"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "0aeef9da740fbc701b8bc9c114225af0ba524998f215ab9842a891ec0680bbe2"
+    },
+    {
+      "assetId": "T20-L1-RANK-BOOST-BOUNDARY",
+      "ownerAgentId": "agent-task1-t20-relevance",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "RankLab 记录 boost 调整的适用边界，避免把离线分数变化当作字段映射变更。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t20-msg-rank-score-003",
+        "t20-msg-rank-score-004"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "c4609a22b28260ee806d487b931ba45888b6287aa1bf69ffb8cc2061f39e5d97"
+    },
+    {
+      "assetId": "T20-L1-RANK-NDCG-CUTOFF",
+      "ownerAgentId": "agent-task1-t20-relevance",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "RankLab 使用固定评估窗口观察排序质量，摘要不含 AtlasSearch 字段分析设置。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t20-msg-rank-ndcg-003",
+        "t20-msg-rank-ndcg-004"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "e5cb889e0061aef6d67f48da9f4c3ed733d8098abd4a852b3d5a4182efa246c2"
+    },
+    {
+      "assetId": "T20-L1-RANK-RERANK-SCOPE",
+      "ownerAgentId": "agent-task1-t20-relevance",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "RankLab 的 rerank 范围只约束候选结果阶段，不改变索引字段的分析方式。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t20-msg-rank-ndcg-005",
+        "t20-msg-rank-ndcg-006"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "df980cd2d6a7e6e5a5e8a8f534e73496c0778794dc34f8489284c6af0b596932"
+    },
+    {
+      "assetId": "T20-L1-CURSOR-SEARCH-AFTER",
+      "ownerAgentId": "agent-task1-t20-indexing",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "CursorFlow 使用 search-after 维持深分页连续性，查询游标与字段分析决策分开维护。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t20-msg-cursor-sort-003",
+        "t20-msg-cursor-sort-004"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "3816223d7cd09c3eabd0f4e0de9973940e5c186859a5a72c78d48131764ef58e"
+    },
+    {
+      "assetId": "T20-L1-CURSOR-STABLE-SORT",
+      "ownerAgentId": "agent-task1-t20-indexing",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "CursorFlow 要求稳定排序键以避免分页重复或遗漏，摘要不提供 AtlasSearch 映射结论。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t20-msg-cursor-sort-003",
+        "t20-msg-cursor-sort-006"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "6ee14b324c0a94102b399d4907fd6338122309e9c428670afb6b40adcd27acb7"
+    },
+    {
+      "assetId": "T20-L1-CURSOR-POINT-IN-TIME",
+      "ownerAgentId": "agent-task1-t20-indexing",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "CursorFlow 的点-in-time 读取用于固定分页视图，与索引重建和分析器选择独立。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t20-msg-cursor-pit-003",
+        "t20-msg-cursor-pit-004"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "e4f704ce0c01f28190c4128a443303b4abb50e951df00e3c882bb3705a200dbd"
+    },
+    {
+      "assetId": "T20-L1-DSL-FILTER-ORDER",
+      "ownerAgentId": "agent-task1-t20-indexing",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "CursorFlow 记录过滤条件与排序条件的请求顺序约定，不改变 keyword 字段契约。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t20-msg-cursor-sort-005",
+        "t20-msg-cursor-sort-006"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "9653260283cb93c070b39cfc1819f78394a5fea7528a03bf774386a4162092ae"
+    },
+    {
+      "assetId": "T20-L1-REINDEX-ALIAS-SWAP",
+      "ownerAgentId": "agent-task1-t20-indexing",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "decision",
+      "content": "ReindexRail 的切换顺序是写入新索引、完成校验后再进行原子读别名切换，并在删除旧索引前保留回退窗口。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t20-msg-reindex-cut-004",
+        "t20-msg-reindex-cut-006"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "84e5a3662adf54c1dd7bbd5d4802257cd27875d4a3c03c7766d4f536ef2423b8"
+    },
+    {
+      "assetId": "T20-L1-REINDEX-CHECKPOINT",
+      "ownerAgentId": "agent-task1-t20-indexing",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "ReindexRail 用检查点追踪增量索引进度，检查点策略不决定用户输入的分析器。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t20-msg-reindex-lag-003",
+        "t20-msg-reindex-lag-004"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "b6def65293d8369d711804c769b9c3a175c67c773dd04d517d6b06c020d831c4"
+    },
+    {
+      "assetId": "T20-L1-VECTOR-HYBRID-WEIGHT",
+      "ownerAgentId": "agent-task1-t20-relevance",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "VectorBlend 最终采用词法 0.35、向量 0.65 的融合权重；比较过 0.50/0.50 与 0.25/0.75，固定评估集 nDCG@10 达到至少 0.72 后结束调参并冻结该权重。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t20-msg-vector-hyb-006",
+        "t20-msg-vector-hyb-012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "8a8b3a6e08ca7ed296b0d6843401461995b444af716d9352ca8358037ab96930"
+    },
+    {
+      "assetId": "T20-L1-VECTOR-EMBEDDING-VERSION",
+      "ownerAgentId": "agent-task1-t20-relevance",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L1"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "type": "fact",
+      "content": "VectorBlend 的 embedding 版本变更需配套回归与修复边界；生成端版本必须与既有索引对齐，受影响向量重建后再评测。",
+      "status": "active",
+      "validFrom": "2026-08-20T00:00:00+08:00",
+      "supportingMessageIds": [
+        "t20-msg-vector-emb-004",
+        "t20-msg-vector-emb-010"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "2835644bfd2783d832ca9442f4cf1245e9646005cf5b296ac46b654bc09a9bd9"
+    }
+  ],
+  "l2Scenes": [
+    {
+      "assetId": "T20-L2-ATLAS-MAPPING-REVIEW",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "path": "t20/atlassearch/mapping-review",
+      "summary": "AtlasSearch 映射评审场景及其状态，记录字段兼容性观察。",
+      "content": "场景内容串联输入规范化、字段类型、精确过滤和重建风险，保留失败尝试与回退边界，但把最终分析器选择留给对应原子记忆。",
+      "injected": true,
+      "supportingSessionIds": [
+        "t20-session-atlas-mapping-001",
+        "t20-session-atlas-lexical-002"
+      ],
+      "contentHash": "b267a5dd01603988b418479bc414590ed48953483991407dc565fbfe5de2fd26"
+    },
+    {
+      "assetId": "T20-L2-RANK-QUALITY-REVIEW",
+      "ownerAgentId": "agent-task1-t20-relevance",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "path": "t20/ranklab/quality-review",
+      "summary": "RankLab 相关性评估场景及其状态，不在摘要中给出阈值或权重。",
+      "content": "场景内容连接评分尝试、评测窗口、并列处理和候选范围，展示一次失败改向与回滚观察，但不把局部质量改善写成可发布规则。",
+      "injected": true,
+      "supportingSessionIds": [
+        "t20-session-rank-score-003",
+        "t20-session-rank-quality-004"
+      ],
+      "contentHash": "ec6d66a41941c505a65665fc1d6d3f51fd9351c31db9792ecb35e7b1c3862710"
+    },
+    {
+      "assetId": "T20-L2-CURSOR-PAGINATION",
+      "ownerAgentId": "agent-task1-t20-indexing",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "path": "t20/cursorflow/pagination",
+      "summary": "CursorFlow 游标分页调查场景及其状态，不在摘要中泄露排序元组或边界。",
+      "content": "场景记录最终采用固定读取视图上的稳定排序元组，并以该元组作为 search-after 游标边界；offset 在深页因数据变化和并列项造成重复或遗漏，因此不再作为回退方案。",
+      "injected": true,
+      "supportingSessionIds": [
+        "t20-session-cursor-pit-005",
+        "t20-session-cursor-sort-006"
+      ],
+      "contentHash": "d90b11ad701cae3540a28548f9408cf02a40f0f0678e9eeb31d497ba2b6074f6"
+    },
+    {
+      "assetId": "T20-L2-REINDEX-CUTOVER",
+      "ownerAgentId": "agent-task1-t20-indexing",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "path": "t20/reindexrail/cutover",
+      "summary": "ReindexRail 重建切换场景及其状态，不在摘要中泄露顺序或一致性窗口。",
+      "content": "场景内容对比写入、校验、别名读取和旧索引回退，保留延迟事故与切换草案的改向过程，但摘要不展开任何目标决定。",
+      "injected": true,
+      "supportingSessionIds": [
+        "t20-session-reindex-cutover-007",
+        "t20-session-reindex-lag-008"
+      ],
+      "contentHash": "30d9ff271b1767be6cb239297d3453369c93d48cb2376717651cdffc04a1c27d"
+    },
+    {
+      "assetId": "T20-L2-VECTOR-HYBRID",
+      "ownerAgentId": "agent-task1-t20-relevance",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L2"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "path": "t20/vectorblend/hybrid",
+      "summary": "VectorBlend 混合召回实验场景及其状态，不在摘要中泄露版本、权重或结果。",
+      "content": "场景内容对比词法与向量候选、归一化、融合及评测，保留直接相加和候选扩张的失败尝试，并与版本回归会话分开。",
+      "injected": true,
+      "supportingSessionIds": [
+        "t20-session-vector-hybrid-009",
+        "t20-session-vector-embedding-010"
+      ],
+      "contentHash": "6c40f85c41bd27a5eb7dfd77334acb76e608c13218b7c02da8d4359b66ed8568"
+    }
+  ],
+  "l3Profiles": [
+    {
+      "assetId": "T20-L3-SEARCH-ENGINEERING-PREFERENCES",
+      "ownerAgentId": "agent-task1-t20-general",
+      "sourceEvidenceIds": [
+        "T20-EVID-HISTORY-L3"
+      ],
+      "observedAt": "2026-08-30T18:00:00+08:00",
+      "content": "偏好先区分映射、查询、排序、分页和索引切换边界，再讨论实现。\n偏好保留失败尝试、改向理由、跨会话引用和可回退点。\n偏好以固定样本和可复现证据核对检索质量。\n变更需保留可逆路径并按阶段观察。\n同域项目和旁支指标必须明确分组。\n不从平均指标或单次成功样本推断最终工程决定。",
+      "stability": "team",
+      "contentHash": "ba887d098c3015f92de9401bb0566315fa2863cab7c5c7a456c566dbdaa2e0fb"
+    }
+  ]
+}

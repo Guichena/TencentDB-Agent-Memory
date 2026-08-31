@@ -1,0 +1,325 @@
+{
+  "schema_version": "task1.sol_pair_review.v1",
+  "team_id": "T03",
+  "reviewedBy": "Sol/build-02-T03",
+  "status": "approved",
+  "pairs": [
+    {
+      "pairId": "T03-PAIR-MEM-001",
+      "draftPairId": "T03-MEMORY-TRIAL-01-DVC-CLI-HISTORY",
+      "family": "memory",
+      "target": "T03-L0-DVC-CLI",
+      "sequence": [
+        "tdai_conversation_search"
+      ],
+      "distractors": [
+        "T03-L0-DVC-IMPORT-URL",
+        "T03-L0-DVC-PARAM-PROPAGATION",
+        "T03-L1-DVC-RETENTION-BOUNDARY"
+      ],
+      "sourceBatch": "trials/memory-trial-01"
+    },
+    {
+      "pairId": "T03-PAIR-SKILL-001",
+      "draftPairId": "T03-SKILL-TRIAL-01-RL-DIAGNOSTIC",
+      "family": "skill",
+      "target": "T03-SKILL-RL-POST-TRAINING",
+      "sequence": [
+        "skill_search",
+        "skill_view_by_id"
+      ],
+      "distractors": [
+        "T03-SKILL-GRPO",
+        "T03-SKILL-TRL",
+        "T03-SKILL-SETUP-ENV"
+      ],
+      "sourceBatch": "trials/skill-trial-01"
+    },
+    {
+      "pairId": "T03-PAIR-KNOW-001",
+      "draftPairId": "T03-DS03-KNOWLEDGE-001",
+      "family": "knowledge",
+      "target": "T03-KNOW-MONAI-CODEGRAPH",
+      "sequence": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "distractors": [
+        "T03-KNOW-DVC-CODEGRAPH",
+        "T03-KNOW-RL-RUNBOOK"
+      ],
+      "sourceBatch": "trials/knowledge-trial-01"
+    },
+    {
+      "pairId": "T03-PAIR-MEM-002",
+      "draftPairId": "T03-MEMORY-EXPAND-01-GRPO-REWARD",
+      "family": "memory",
+      "target": "T03-L1-TRL-REWARD-DIAGNOSTIC",
+      "sequence": [
+        "tdai_memory_search"
+      ],
+      "distractors": [
+        "T03-L1-TRL-SAMPLING-BOUNDARY",
+        "T03-L1-TRL-TRAINER-CONFIG",
+        "T03-L0-TRL-ROLLOUT"
+      ],
+      "sourceBatch": "batches/memory-expand-01"
+    },
+    {
+      "pairId": "T03-PAIR-MEM-003",
+      "draftPairId": "T03-MEMORY-EXPAND-01-MONAI-CACHE",
+      "family": "memory",
+      "target": "T03-L0-MONAI-CACHE",
+      "sequence": [
+        "tdai_conversation_search",
+        "tdai_conversation_query"
+      ],
+      "distractors": [
+        "T03-L0-MONAI-NOTEBOOK",
+        "T03-L0-MONAI-PIPELINE-REVIEW",
+        "T03-L1-MONAI-DETERMINISM"
+      ],
+      "sourceBatch": "batches/memory-expand-01"
+    },
+    {
+      "pairId": "T03-PAIR-MEM-004",
+      "draftPairId": "T03-MEMORY-EXPAND-01-SIMPO-METRIC",
+      "family": "memory",
+      "target": "T03-L1-SIMPO-METRIC-SOURCE",
+      "sequence": [
+        "tdai_memory_search"
+      ],
+      "distractors": [
+        "T03-L1-SIMPO-ENV-LOCK",
+        "T03-L1-SIMPO-NOTEBOOK-DEFAULT",
+        "T03-L0-SIMPO-ENV"
+      ],
+      "sourceBatch": "batches/memory-expand-01"
+    },
+    {
+      "pairId": "T03-PAIR-MEM-005",
+      "draftPairId": "T03-MEMORY-EXPAND-01-DVC-RETENTION",
+      "family": "memory",
+      "target": "T03-L1-DVC-RETENTION-BOUNDARY",
+      "sequence": [
+        "tdai_atomic_query"
+      ],
+      "distractors": [
+        "T03-L0-DVC-PARAM-PROPAGATION",
+        "T03-L0-DVC-CLI",
+        "T03-L2-SCENE-DVC-CLI-VS-PARAMS"
+      ],
+      "sourceBatch": "batches/memory-expand-01"
+    },
+    {
+      "pairId": "T03-PAIR-MEM-006",
+      "draftPairId": "T03-MEMORY-EXPAND-01-GRPO-ROLLOUT-SCENE",
+      "family": "memory",
+      "target": "T03-L2-SCENE-TRL-SAMPLING-VS-REWARD",
+      "sequence": [
+        "tdai_read_scene"
+      ],
+      "distractors": [
+        "T03-L1-TRL-REWARD-DIAGNOSTIC",
+        "T03-L1-TRL-TRAINER-CONFIG",
+        "T03-L0-TRL-REWARD"
+      ],
+      "sourceBatch": "batches/memory-expand-01"
+    },
+    {
+      "pairId": "T03-PAIR-SKILL-002",
+      "draftPairId": "T03-SKILL-EXPAND-01-GRPO",
+      "family": "skill",
+      "target": "T03-SKILL-GRPO",
+      "sequence": [
+        "skill_view"
+      ],
+      "distractors": [
+        "T03-SKILL-TRL",
+        "T03-SKILL-RL-POST-TRAINING"
+      ],
+      "sourceBatch": "batches/skill-expand-01"
+    },
+    {
+      "pairId": "T03-PAIR-SKILL-003",
+      "draftPairId": "T03-SKILL-EXPAND-02-NLP-ENV",
+      "family": "skill",
+      "target": "T03-SKILL-NLP-REPRO-ENV",
+      "sequence": [
+        "skill_view"
+      ],
+      "distractors": [
+        "T03-SKILL-SETUP-ENV",
+        "T03-SKILL-JUPYTER"
+      ],
+      "sourceBatch": "batches/skill-expand-01"
+    },
+    {
+      "pairId": "T03-PAIR-SKILL-004",
+      "draftPairId": "T03-SKILL-EXPAND-04-TRL",
+      "family": "skill",
+      "target": "T03-SKILL-TRL",
+      "sequence": [
+        "skill_search",
+        "skill_view_by_id"
+      ],
+      "distractors": [
+        "T03-SKILL-GRPO",
+        "T03-SKILL-SETUP-ENV"
+      ],
+      "sourceBatch": "batches/skill-expand-01"
+    },
+    {
+      "pairId": "T03-PAIR-SKILL-005",
+      "draftPairId": "T03-SKILL-EXPAND-05-SETUP",
+      "family": "skill",
+      "target": "T03-SKILL-SETUP-ENV",
+      "sequence": [
+        "skill_search",
+        "skill_view_by_id"
+      ],
+      "distractors": [
+        "T03-SKILL-JUPYTER",
+        "T03-SKILL-NLP-REPRO-ENV"
+      ],
+      "sourceBatch": "batches/skill-expand-01"
+    },
+    {
+      "pairId": "T03-PAIR-SKILL-006",
+      "draftPairId": "T03-SKILL-EXPAND-06-JUPYTER",
+      "family": "skill",
+      "target": "T03-SKILL-JUPYTER",
+      "sequence": [
+        "skill_view",
+        "skill_files_read"
+      ],
+      "distractors": [
+        "T03-SKILL-NLP-REPRO-ENV",
+        "T03-SKILL-SETUP-ENV"
+      ],
+      "sourceBatch": "batches/skill-expand-01"
+    },
+    {
+      "pairId": "T03-PAIR-KNOW-002",
+      "draftPairId": "T03-DS03-KNOWLEDGE-002",
+      "family": "knowledge",
+      "target": "T03-KNOW-DVC-CODEGRAPH",
+      "sequence": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "distractors": [
+        "T03-KNOW-MONAI-CODEGRAPH",
+        "T03-KNOW-RL-RUNBOOK"
+      ],
+      "sourceBatch": "batches/knowledge-expand-01"
+    },
+    {
+      "pairId": "T03-PAIR-KNOW-003",
+      "draftPairId": "T03-DS03-KNOWLEDGE-003",
+      "family": "knowledge",
+      "target": "T03-KNOW-RL-RUNBOOK",
+      "sequence": [
+        "knowledge_tools_list",
+        "knowledge_tools_call"
+      ],
+      "distractors": [
+        "T03-KNOW-DVC-CODEGRAPH",
+        "T03-KNOW-MONAI-CODEGRAPH"
+      ],
+      "sourceBatch": "batches/knowledge-expand-01"
+    }
+  ],
+  "naturalCases": [
+    {
+      "draftCaseId": "T03-DS03-NN-001",
+      "distractors": [
+        "T03-KNOW-DVC-CODEGRAPH",
+        "T03-SKILL-CLI-CREATOR"
+      ],
+      "whyCurrentContextIsSufficient": "输入列表、函数体和展开位置都在当前消息中直接给出；返回值是一次局部列表展开，答案不需要命令行文档或仓库信息。",
+      "sourceBatch": "batches/natural-negative-01"
+    },
+    {
+      "draftCaseId": "T03-DS03-NN-002",
+      "distractors": [
+        "T03-KNOW-MONAI-CODEGRAPH",
+        "T03-SKILL-SETUP-ENV"
+      ],
+      "whyCurrentContextIsSufficient": "两份 params、比较表达式和排序规则均已完整提供；每个键的值可以在当前上下文内直接比较，未留下外部配置缺口。",
+      "sourceBatch": "batches/natural-negative-01"
+    },
+    {
+      "draftCaseId": "T03-DS03-NN-003",
+      "distractors": [
+        "T03-SKILL-NLP-REPRO-ENV",
+        "T03-SKILL-JUPYTER"
+      ],
+      "whyCurrentContextIsSufficient": "函数的全部分支、分支优先级和两个布尔输入都在当前消息中给出；这是对局部控制流的直接求值，不需要读取环境文件或安装任何依赖。",
+      "sourceBatch": "batches/natural-negative-01"
+    },
+    {
+      "draftCaseId": "T03-DS03-NN-004",
+      "distractors": [
+        "T03-SKILL-JUPYTER",
+        "T03-KNOW-RL-RUNBOOK"
+      ],
+      "whyCurrentContextIsSufficient": "原始 cell 列表、过滤条件和输出目标均已直接给出；只需执行一次列表过滤，完全不依赖 Notebook 规范或项目资料。",
+      "sourceBatch": "batches/natural-negative-01"
+    },
+    {
+      "draftCaseId": "T03-DS03-NN-005",
+      "distractors": [
+        "T03-SKILL-TESTING-PYTHON",
+        "T03-SKILL-NLP-REPRO-ENV"
+      ],
+      "whyCurrentContextIsSufficient": "测试名称、完整 result 对象和断言范围已在当前对话中明确；三条断言可以直接对给定字典做局部数据核对，无需外部指标定义。",
+      "sourceBatch": "batches/natural-negative-01"
+    },
+    {
+      "draftCaseId": "T03-DS03-NN-006",
+      "distractors": [
+        "T03-SKILL-GRPO",
+        "T03-KNOW-RL-RUNBOOK"
+      ],
+      "whyCurrentContextIsSufficient": "日志值、检查顺序和归因边界都已由当前消息明确规定；任务是对恒定 reward 与后续观测做有限的因果解释，不需要算法资料或运行查询。",
+      "sourceBatch": "batches/natural-negative-01"
+    },
+    {
+      "draftCaseId": "T03-DS03-NN-007",
+      "distractors": [
+        "T03-SKILL-RL-POST-TRAINING",
+        "T03-SKILL-TRL"
+      ],
+      "whyCurrentContextIsSufficient": "三个数值、裁剪表达式和取最小值的规则都完整出现在当前消息中；结果可直接算出，不需要外部实现或训练运行。",
+      "sourceBatch": "batches/natural-negative-01"
+    },
+    {
+      "draftCaseId": "T03-DS03-NN-008",
+      "distractors": [
+        "T03-KNOW-MONAI-CODEGRAPH",
+        "T03-SKILL-JUPYTER"
+      ],
+      "whyCurrentContextIsSufficient": "三步名称及其布尔标记、标记的含义和所需输出类别都直接给出；只需按 True/False 分组，不依赖 MONAI 代码图或外部文档。",
+      "sourceBatch": "batches/natural-negative-01"
+    },
+    {
+      "draftCaseId": "T03-DS03-NN-009",
+      "distractors": [
+        "T03-SKILL-TESTING-PYTHON",
+        "T03-KNOW-MONAI-CODEGRAPH"
+      ],
+      "whyCurrentContextIsSufficient": "四个数组、共同形状和测试目标均已在当前上下文中明确；修订只涉及断言类型的选择，不需要读取测试框架或项目代码。",
+      "sourceBatch": "batches/natural-negative-01"
+    },
+    {
+      "draftCaseId": "T03-DS03-NN-010",
+      "distractors": [
+        "T03-SKILL-NLP-REPRO-ENV",
+        "T03-SKILL-JUPYTER"
+      ],
+      "whyCurrentContextIsSufficient": "输入行、筛选条件和字典推导式全部在当前消息中直接给出；结果是简单的局部数据变换，没有隐藏的指标或仓库事实。",
+      "sourceBatch": "batches/natural-negative-01"
+    }
+  ]
+}

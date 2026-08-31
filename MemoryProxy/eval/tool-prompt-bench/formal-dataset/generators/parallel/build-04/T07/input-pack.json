@@ -1,0 +1,115 @@
+{
+  "schema_version": "task1.team_input_pack.v1",
+  "build_id": "build-04",
+  "team_id": "T07",
+  "stage": "DS05",
+  "split": "hidden_test",
+  "frozen_at": "2026-08-29T00:00:00+08:00",
+  "world_as_of": "2026-08-29T23:59:59+08:00",
+  "theme": "SDK 与集成：Microsoft Graph、Qdrant 与 API client",
+  "identity": {
+    "space_id": "space-task1-engineering",
+    "active_agent_id": "agent-task1-t07-general",
+    "asset_agent_ids": ["agent-task1-t07-assets-a", "agent-task1-t07-assets-b"],
+    "user_id": "user-task1-t07-eval",
+    "snapshot_id": "snapshot-task1-hidden-v1"
+  },
+  "project_flows": [
+    {
+      "project_id": "graph-tenant-sync",
+      "task_id": "task-task1-t07-graphsync",
+      "language": "typescript",
+      "structure": "pnpm workspace with packages/graph-client, services/directory-sync, and tests/adapter",
+      "repository_url": "https://github.com/microsoftgraph/msgraph-sdk-javascript",
+      "commit_sha": "5438ae90f50ef15d3656f0cf9c5485deee351f19",
+      "license": "MIT",
+      "focus": "daemon authentication, selected fields, pagination, throttling and adapter tests"
+    },
+    {
+      "project_id": "qdrant-ingestion-gateway",
+      "task_id": "task-task1-t07-qdrant",
+      "language": "python",
+      "structure": "src layout package with gateway/client.py, ingestion/batches.py, retrieval/filters.py and pytest adapter tests",
+      "repository_url": "https://github.com/qdrant/qdrant-client",
+      "commit_sha": "550484d767d319857d4f46e97d4551ba419ee670",
+      "license": "Apache-2.0",
+      "focus": "collection setup, idempotent upsert, filter search and quality diagnosis"
+    },
+    {
+      "project_id": "partner-openapi-client",
+      "task_id": "task-task1-t07-openapi",
+      "language": "typescript",
+      "structure": "single-package generated client with openapi/schema.yaml, src/generated, src/runtime and contract tests",
+      "repository_url": "https://github.com/openapi-ts/openapi-typescript",
+      "commit_sha": "0cc7ee77d28359c7901d9cd3b5733b70a050ea49",
+      "license": "MIT",
+      "focus": "schema-driven API client generation, runtime auth and ordinary REST boundaries"
+    }
+  ],
+  "asset_namespaces": {
+    "l0_session_ids": ["T07-L0-01", "T07-L0-02", "T07-L0-03", "T07-L0-04", "T07-L0-05", "T07-L0-06", "T07-L0-07", "T07-L0-08", "T07-L0-09", "T07-L0-10"],
+    "l1_memory_ids": ["T07-L1-01", "T07-L1-02", "T07-L1-03", "T07-L1-04", "T07-L1-05", "T07-L1-06", "T07-L1-07", "T07-L1-08", "T07-L1-09", "T07-L1-10", "T07-L1-11", "T07-L1-12", "T07-L1-13", "T07-L1-14", "T07-L1-15", "T07-L1-16"],
+    "l2_scene_ids": ["T07-L2-01", "T07-L2-02", "T07-L2-03", "T07-L2-04"],
+    "l3_profile_id": "T07-L3-01",
+    "knowledge_ids": ["wiki-t07gr01", "cg-t07qd01", "wiki-t07ap01"]
+  },
+  "skill_source_policy": {
+    "repository_url": "https://github.com/github/awesome-copilot",
+    "commit_sha": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+    "commit_time": "2026-08-28T05:41:12Z",
+    "license": "MIT",
+    "license_path": "LICENSE",
+    "license_sha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823",
+    "allowed_adaptations": ["host tool names", "listing description", "use_when", "do_not_use_when"],
+    "forbidden_adaptations": ["core technical steps", "invented APIs", "invented source files"]
+  },
+  "skills": [
+    {"asset_id":"T07-SKILL-MSGRAPH-SDK","name":"msgraph-sdk","owner":"agent-task1-t07-general","bound":true,"visibility":"team","role":"target","path":"skills/msgraph-sdk/SKILL.md","raw_sha256":"cafac367eb3fdc99e05aedc76d46ad77f49e6c3fbc549e3cc6ec86d657638d8b","resource_paths":[{"path":"skills/msgraph-sdk/references/dotnet.md","sha256":"aaaa91345ab7ff18f56d9f14d65a48e076d79221b4e1082290b67784ac26b0af"},{"path":"skills/msgraph-sdk/references/python.md","sha256":"79e06ae261ba58737f55d7839832826f9bfdfd06225f1d214ae6e5eeac8ffd79"},{"path":"skills/msgraph-sdk/references/typescript.md","sha256":"0e6f5236ecafc811d86ffe214351f03d66367e268bc76b7a904c51d0e5155acc"}],"use_when":"Microsoft 365 data access needs Graph SDK auth, paging, batching, delta or throttling guidance.","do_not_use_when":"The task is ordinary REST, static data transformation, or only tests an already-correct adapter."},
+    {"asset_id":"T07-SKILL-QDRANT-CLIENT","name":"qdrant-clients-sdk","owner":"agent-task1-t07-general","bound":true,"visibility":"team","role":"target","path":"skills/qdrant-clients-sdk/SKILL.md","raw_sha256":"eac9386970303787ccff5ce65f77e2bc51286a07b27977a8fba1f256f4c95426","use_when":"A pinned Qdrant client must be used for collection, point, payload or search APIs.","do_not_use_when":"The task is vector math, another vector store, deployment operations or general embedding generation."},
+    {"asset_id":"T07-SKILL-OPENAPI-APP","name":"openapi-to-application-code","owner":"agent-task1-t07-general","bound":true,"visibility":"team","role":"target","path":"skills/openapi-to-application-code/SKILL.md","raw_sha256":"4ac9c35e14140129df922091b62288258887e5d0efc0760ab390b3b248a35c16","use_when":"An OpenAPI document must drive typed application or client code generation.","do_not_use_when":"The request is a hand-written one-off REST call or an already-generated client unit test."},
+    {"asset_id":"T07-SKILL-ASPNET-OPENAPI","name":"aspnet-minimal-api-openapi","owner":"agent-task1-t07-general","bound":true,"visibility":"team","role":"distractor","path":"skills/aspnet-minimal-api-openapi/SKILL.md","raw_sha256":"16e632ce8cb514d413e968811a2e07b8e0f1e97c6e2e93174efd6cec2e49e86f","use_when":"ASP.NET Minimal API endpoints need OpenAPI metadata and documentation.","do_not_use_when":"The work is a TypeScript client, Microsoft Graph call or Python vector client."},
+    {"asset_id":"T07-SKILL-TYPESPEC-OPS","name":"typespec-api-operations","owner":"agent-task1-t07-general","bound":true,"visibility":"team","role":"distractor","path":"skills/typespec-api-operations/SKILL.md","raw_sha256":"882751e73fb23048fcffd739345cabec0b3176a922b528f271c3dc7ce78ddd8a","use_when":"TypeSpec service operations and HTTP bindings are being authored.","do_not_use_when":"The schema already exists and only client integration or tests remain."},
+    {"asset_id":"T07-SKILL-COPILOT-SDK","name":"copilot-sdk","owner":"agent-task1-t07-general","bound":true,"visibility":"team","role":"distractor","path":"skills/copilot-sdk/SKILL.md","raw_sha256":"5b432db55670223935a19215850f0e1e094db2026f1aa880f7d7b978fc48a42f","use_when":"An application explicitly integrates the GitHub Copilot SDK.","do_not_use_when":"The SDK is Microsoft Graph, Qdrant, OpenAPI-generated or unrelated to Copilot."},
+    {"asset_id":"T07-SKILL-QDRANT-DIAGNOSIS","name":"qdrant-search-quality-diagnosis","owner":"agent-task1-t07-assets-a","bound":false,"visibility":"team","role":"target","path":"skills/qdrant-search-quality/diagnosis/SKILL.md","raw_sha256":"faaed6cd9af51548bfc3a0c77d61bb4b96903cb5c0e17b2f3b722c41d1fb350c","use_when":"Qdrant relevance or recall is wrong and a structured search-quality diagnosis is required.","do_not_use_when":"The task only initializes a client, deploys a cluster or performs pure vector math."},
+    {"asset_id":"T07-SKILL-JEST","name":"javascript-typescript-jest","owner":"agent-task1-t07-assets-a","bound":false,"visibility":"team","role":"target","path":"skills/javascript-typescript-jest/SKILL.md","raw_sha256":"cb9a552dfe63cae4f310b27067ba28351b59ad17e83a9e1c5ff23c542ce6fdd8","use_when":"An existing correct JavaScript or TypeScript implementation needs focused Jest unit tests and mocks.","do_not_use_when":"Business logic is still missing, the test is browser E2E, or the project is not JavaScript/TypeScript."},
+    {"asset_id":"T07-SKILL-AZURE-ROLE","name":"azure-role-selector","owner":"agent-task1-t07-assets-a","bound":false,"visibility":"team","role":"target","path":"skills/azure-role-selector/SKILL.md","raw_sha256":"b4de898de0d72f258606efff41841bd31145db5ac18a57a7bd416450eaabe670","use_when":"A concrete Azure access operation needs a least-privilege built-in role selection.","do_not_use_when":"The task is OAuth flow implementation, Graph delegated scopes, or an ordinary API token."},
+    {"asset_id":"T07-SKILL-QDRANT-DEPLOY","name":"qdrant-deployment-options","owner":"agent-task1-t07-assets-a","bound":false,"visibility":"team","role":"distractor","path":"skills/qdrant-deployment-options/SKILL.md","raw_sha256":"31afa639420a3434cc8c48039b38820e8248e1ba47074b3f58a724e73af20516","use_when":"A Qdrant deployment topology or hosting option must be selected.","do_not_use_when":"The cluster already exists and the task is SDK calls or search correctness."},
+    {"asset_id":"T07-SKILL-QDRANT-MIGRATION","name":"qdrant-model-migration","owner":"agent-task1-t07-assets-a","bound":false,"visibility":"team","role":"distractor","path":"skills/qdrant-model-migration/SKILL.md","raw_sha256":"811cc59e1b1f421449e898f4e2e3f6d4b43fd220af2d544aaed0e7e134639b07","use_when":"Stored vectors or collection models must be migrated safely.","do_not_use_when":"The task creates a new collection, tunes search, or adds an API client."},
+    {"asset_id":"T07-SKILL-QDRANT-DEBUG","name":"qdrant-monitoring-debugging","owner":"agent-task1-t07-assets-b","bound":false,"visibility":"team","role":"distractor","path":"skills/qdrant-monitoring/debugging/SKILL.md","raw_sha256":"f27aa8d722235a0bb5ef56c87c0a5f00d38a5ec7fdf87603f4f28d77c6aab88a","use_when":"A running Qdrant service has observable monitoring or operational failures.","do_not_use_when":"The issue is client API usage, ranking quality or test-only behavior."},
+    {"asset_id":"T07-SKILL-QDRANT-INDEX","name":"qdrant-indexing-performance","owner":"agent-task1-t07-assets-b","bound":false,"visibility":"team","role":"distractor","path":"skills/qdrant-performance-optimization/indexing-performance-optimization/SKILL.md","raw_sha256":"344b4283daa2a2977525bccedaee4f96aed8a5bccaeb562c46816c3380c27c29","use_when":"Qdrant indexing throughput and index-build configuration need optimization.","do_not_use_when":"The task is client initialization, search relevance or payload filtering correctness."},
+    {"asset_id":"T07-SKILL-QDRANT-MEMORY","name":"qdrant-memory-optimization","owner":"agent-task1-t07-assets-b","bound":false,"visibility":"team","role":"distractor","path":"skills/qdrant-performance-optimization/memory-usage-optimization/SKILL.md","raw_sha256":"d3be8c9d207f4b625b4724048e45e438f0efeb4650e7cca1da2d40e2ba37dd9d","use_when":"Qdrant memory footprint or storage placement is the bottleneck.","do_not_use_when":"The task is API wiring, test mocking or relevance diagnosis."},
+    {"asset_id":"T07-SKILL-QDRANT-SPEED","name":"qdrant-search-speed-optimization","owner":"agent-task1-t07-assets-b","bound":false,"visibility":"team","role":"distractor","path":"skills/qdrant-performance-optimization/search-speed-optimization/SKILL.md","raw_sha256":"ede068e053005c19718bf11853e99ab94b337db2769f74e52fe63f81fc525131","use_when":"Qdrant query latency needs search-speed tuning after correctness is established.","do_not_use_when":"Recall is wrong, the client API is missing, or only vector preprocessing changes."},
+    {"asset_id":"T07-SKILL-TS-MCP","name":"typescript-mcp-server-generator","owner":"agent-task1-t07-assets-b","bound":false,"visibility":"team","role":"distractor","path":"skills/typescript-mcp-server-generator/SKILL.md","raw_sha256":"e409edb78ed746e7a335c35063dea5c2d462e0498740014a58a9c250891cba19","use_when":"A new TypeScript MCP server and tool surface must be generated.","do_not_use_when":"The task consumes an ordinary REST, Graph or Qdrant client."}
+  ],
+  "pair_plan": [
+    {"pair_id":"T07-PAIR-M01","family":"memory","task_id":"task-task1-t07-graphsync","first_route":"tdai_conversation_search","sequence":["tdai_conversation_search"],"target_asset_ids":["T07-L0-01"],"gap":"recover the exact prior daemon-auth and pagination review wording"},
+    {"pair_id":"T07-PAIR-M02","family":"memory","task_id":"task-task1-t07-qdrant","first_route":"tdai_conversation_search","sequence":["tdai_conversation_search"],"target_asset_ids":["T07-L0-04"],"gap":"recover the previous idempotent-upsert incident conclusion"},
+    {"pair_id":"T07-PAIR-M03","family":"memory","task_id":"task-task1-t07-openapi","first_route":"tdai_memory_search","sequence":["tdai_memory_search"],"target_asset_ids":["T07-L1-03"],"gap":"retrieve the current team decision for generated-client retry ownership"},
+    {"pair_id":"T07-PAIR-M04","family":"memory","task_id":"task-task1-t07-qdrant","first_route":"tdai_scenario_ls","sequence":["tdai_scenario_ls","tdai_read_scene"],"target_asset_ids":["T07-L2-03"],"gap":"discover the archived scene path for the ingestion cutover chronology"},
+    {"pair_id":"T07-PAIR-M05","family":"memory","task_id":"task-task1-t07-graphsync","first_route":"tdai_atomic_query","sequence":["tdai_atomic_query"],"target_asset_ids":["T07-L1-11"],"gap":"filter the dated active authentication decision from superseded alternatives"},
+    {"pair_id":"T07-PAIR-M06","family":"memory","task_id":"task-task1-t07-openapi","first_route":"tdai_read_scene","sequence":["tdai_read_scene"],"target_asset_ids":["T07-L2-01"],"gap":"read a scene whose injected index already supplies the exact path"},
+    {"pair_id":"T07-PAIR-S01","family":"skill","task_id":"task-task1-t07-qdrant","first_route":"skill_view","sequence":["skill_view"],"target_asset_ids":["T07-SKILL-QDRANT-CLIENT"],"gap":"load the listed pinned Qdrant client procedure"},
+    {"pair_id":"T07-PAIR-S02","family":"skill","task_id":"task-task1-t07-openapi","first_route":"skill_view","sequence":["skill_view"],"target_asset_ids":["T07-SKILL-OPENAPI-APP"],"gap":"load the listed schema-to-client generation procedure"},
+    {"pair_id":"T07-PAIR-S03","family":"skill","task_id":"task-task1-t07-graphsync","first_route":"skill_view","sequence":["skill_view","skill_files_read"],"target_asset_ids":["T07-SKILL-MSGRAPH-SDK"],"resource_path":"references/typescript.md","gap":"load the listed Graph package and then its TypeScript reference"},
+    {"pair_id":"T07-PAIR-S04","family":"skill","task_id":"task-task1-t07-qdrant","first_route":"skill_search","sequence":["skill_search","skill_view_by_id"],"target_asset_ids":["T07-SKILL-QDRANT-DIAGNOSIS"],"gap":"find the unlisted team procedure for relevance diagnosis"},
+    {"pair_id":"T07-PAIR-S05","family":"skill","task_id":"task-task1-t07-graphsync","first_route":"skill_search","sequence":["skill_search","skill_view_by_id"],"target_asset_ids":["T07-SKILL-JEST"],"gap":"find the unlisted Jest-only testing procedure after implementation is already correct"},
+    {"pair_id":"T07-PAIR-S06","family":"skill","task_id":"task-task1-t07-graphsync","first_route":"skill_search","sequence":["skill_search","skill_view_by_id"],"target_asset_ids":["T07-SKILL-AZURE-ROLE"],"gap":"find the unlisted least-privilege Azure role-selection procedure"},
+    {"pair_id":"T07-PAIR-K01","family":"knowledge","task_id":"task-task1-t07-graphsync","first_route":"knowledge_tools_list","sequence":["knowledge_tools_list","knowledge_tools_call"],"target_asset_ids":["wiki-t07gr01"],"knowledge_tool_name":"search_pages","gap":"query the Graph adapter design wiki selected by repository match"},
+    {"pair_id":"T07-PAIR-K02","family":"knowledge","task_id":"task-task1-t07-qdrant","first_route":"knowledge_tools_list","sequence":["knowledge_tools_list","knowledge_tools_call"],"target_asset_ids":["cg-t07qd01"],"knowledge_tool_name":"search_code","gap":"query the Qdrant gateway code graph selected by commit match"},
+    {"pair_id":"T07-PAIR-K03","family":"knowledge","task_id":"task-task1-t07-openapi","first_route":"knowledge_tools_list","sequence":["knowledge_tools_list","knowledge_tools_call"],"target_asset_ids":["wiki-t07ap01"],"knowledge_tool_name":"search_pages","gap":"query the partner API compatibility wiki selected by workspace match"}
+  ],
+  "natural_negative_plan": [
+    "local TypeScript URL normalization edit", "self-contained Jest mock reset fix", "Python payload validation pure function", "OpenAPI YAML description correction", "Qdrant filter dict type annotation", "Graph adapter error message copy edit", "ordinary REST timeout constant rename", "vector batch chunking off-by-one fix", "C# DTO nullable annotation", "README example correction with all facts visible"
+  ],
+  "generation_contract": {
+    "model": "gpt-5.6-luna",
+    "reasoning_effort": "high",
+    "fork_turns": "none",
+    "verbosity": "medium",
+    "trial_pairs_per_family": 1,
+    "final_pairs": {"memory":6,"skill":6,"knowledge":3},
+    "natural_negatives": 10,
+    "provider_forbidden": ["TDAI tool names", "asset ids", "knowledge ids", "Gold", "pair ids", "information gap labels"],
+    "skill_rule": "Use only frozen GitHub files; preserve core technical steps; propose only neutral host/listing/use boundaries."
+  }
+}

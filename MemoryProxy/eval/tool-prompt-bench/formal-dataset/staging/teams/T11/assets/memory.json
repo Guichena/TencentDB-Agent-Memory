@@ -1,0 +1,1363 @@
+{
+  "schema_version": "task1.formal_memory_assets.v1",
+  "team_id": "T11",
+  "l0_conversations": [
+    {
+      "assetId": "T11-L0-SUPPORT-1",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-redacted"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T11-L0-SUPPORT-1",
+      "messages": [
+        {
+          "messageId": "T11-L0-SUPPORT-1-M01",
+          "role": "user",
+          "content": "请找回 Orchid 迁移中已经验证的插件声明与仓库配置约定，用来对照当前构建失败。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "c425c324a51c905a923940523f850c8dffbbea33196c36a71267b389ef6cb384"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-1-M02",
+          "role": "assistant",
+          "content": "交接记录已补全规则：插件声明统一放在根级约定中，仓库块只保留迁移所需的官方源，并让各模块通过同一版本目录继承；这套配置已在最小构建上验证通过。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "aea0d0439a7a3f9563a2e78db53627e3d8d2984a25b52862ea6a0f53b7fea3f6"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-1-M03",
+          "role": "user",
+          "content": "请补充当时检查插件声明时先看了哪一份仓库配置。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:01:00+08:00",
+          "contentHash": "d8c0a82e07a2d703cbe34d326f226d2452777971d22cccdb804741ec9acc1c17"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-1-M04",
+          "role": "assistant",
+          "content": "先看根级插件声明，再核对仓库块与版本目录是否一致。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:02:00+08:00",
+          "contentHash": "d25473e8554ecb61ecf84d78729f5fbc1e527277ac8198f5e7fae07342a1bfc8"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-1-M05",
+          "role": "user",
+          "content": "当时是否把模块内重复声明一并清理？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:03:00+08:00",
+          "contentHash": "cb9bcf26d233c8d54c15f3a9da4ed381c612b81eb3ad006b1723a4925ec734d9"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-1-M06",
+          "role": "assistant",
+          "content": "是，模块只保留继承关系，重复声明已移除。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:04:00+08:00",
+          "contentHash": "90f68753ea5eb6e16b72357e8b16849f121915243780317052b19415815f90da"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-1-M07",
+          "role": "user",
+          "content": "最小构建验证覆盖了哪些模块？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:05:00+08:00",
+          "contentHash": "823e546972b38e7590a12919e83b8653198354e38610a6e28e0dec6f6a892f2f"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-1-M08",
+          "role": "assistant",
+          "content": "覆盖 Orchid 的核心 app 与一个库模块，结果一致。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:06:00+08:00",
+          "contentHash": "28a56a528b30c92cdabd94e275d2686ec9b19508b57bcbe8618c54739c5c1036"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-1-M09",
+          "role": "user",
+          "content": "版本目录是否由发布分支锁定？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:07:00+08:00",
+          "contentHash": "926a2baf3eeed5107b525596640523ed22c13785bf66d5da407966bffa4a0b1f"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-1-M10",
+          "role": "assistant",
+          "content": "是，发布分支锁定文件是唯一版本来源。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:08:00+08:00",
+          "contentHash": "00f3edafa13f3ce60d2aa27f7cfd133f438d0abd712c16ead2e409ba600a6c7c"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-1-M11",
+          "role": "user",
+          "content": "这条约定还适用于当前失败吗？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:09:00+08:00",
+          "contentHash": "c8c5b7114f1efbc84d9a4f2153b462a743ed23adb5dfca2bc9a27d551708da48"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-1-M12",
+          "role": "assistant",
+          "content": "适用；先按同一继承规则核对配置，再判断失败是否来自插件解析。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:10:00+08:00",
+          "contentHash": "a0e04c35f5d8b524cede6b515777871e5ed44df00d74c6532edad5899c088e2c"
+        }
+      ],
+      "contentHash": "3c39a56777cf54a5ad103be195b523951e5cad51d47c2ca1e58d8a8388052142"
+    },
+    {
+      "assetId": "T11-L0-ATLAS-CONFLICT-REVIEW",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-redacted"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T11-L0-ATLAS-CONFLICT-REVIEW",
+      "messages": [
+        {
+          "messageId": "T11-L0-ATLAS-CONFLICT-REVIEW-M01",
+          "role": "user",
+          "content": "请找回 Atlas 冲突合并评审中关于本地删除与远端更新同时到达时如何处理的原话。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "39190d2b9678e544fd0e2fc37b4b88785d966856e31c048e544d648e13b828ab"
+        },
+        {
+          "messageId": "T11-L0-ATLAS-CONFLICT-REVIEW-M02",
+          "role": "assistant",
+          "content": "评审原话已补回：并发到达时先保留删除意图，再按服务端版本确认是否可安全合并；若版本已越过删除基线，则把记录标为待人工解决，而不是静默复活本地对象。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "c135dd63199be68995ff5c3495912396b1b85c642fd572b519c8fff6f5f8042b"
+        },
+        {
+          "messageId": "T11-L0-ATLAS-CONFLICT-REVIEW-M03",
+          "role": "user",
+          "content": "请补充冲突评审中服务端版本如何参与判断。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:01:00+08:00",
+          "contentHash": "e8ee2a62c34ab2a374902684dc117a2838b1a89988f8a6454211a30dd0c80806"
+        },
+        {
+          "messageId": "T11-L0-ATLAS-CONFLICT-REVIEW-M04",
+          "role": "assistant",
+          "content": "先读取服务端版本并与删除基线比较，再决定是否可合并。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:02:00+08:00",
+          "contentHash": "d84ac275f6b8fcc3c13d39b949808d96eb7d7e79e77ea06f9151a50e82a56ddb"
+        },
+        {
+          "messageId": "T11-L0-ATLAS-CONFLICT-REVIEW-M05",
+          "role": "user",
+          "content": "如果更新版本只改变非删除字段呢？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:03:00+08:00",
+          "contentHash": "fbd59bd0a14cdc4dfccc5ced419f87dd1b5b8848841a2516e8c5ee628e7e3dd1"
+        },
+        {
+          "messageId": "T11-L0-ATLAS-CONFLICT-REVIEW-M06",
+          "role": "assistant",
+          "content": "仍保留删除意图，只有确认未越过基线才允许合并。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:04:00+08:00",
+          "contentHash": "cf2c0924c20dca04fba2ad98af911a272d701bf5bb6dd6eb12ef92b71e62ad81"
+        },
+        {
+          "messageId": "T11-L0-ATLAS-CONFLICT-REVIEW-M07",
+          "role": "user",
+          "content": "越过基线后是否自动恢复对象？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:05:00+08:00",
+          "contentHash": "d928939438db4746ad8a9f0c31168db2b9edbcfe52cb2d7403f38420d8c1a7f1"
+        },
+        {
+          "messageId": "T11-L0-ATLAS-CONFLICT-REVIEW-M08",
+          "role": "assistant",
+          "content": "不会自动恢复，记录进入待人工解决状态。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:06:00+08:00",
+          "contentHash": "d17aecd5fb24b1cef84a32ce4a8fa55b24cceecad27d9e89d34285cb7a663ed9"
+        },
+        {
+          "messageId": "T11-L0-ATLAS-CONFLICT-REVIEW-M09",
+          "role": "user",
+          "content": "本地重试会改变删除意图吗？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:07:00+08:00",
+          "contentHash": "055bfb003921bb7e9d4dabb06d2fbdf2b07edfc1df340c2272faf56ce25f2ca1"
+        },
+        {
+          "messageId": "T11-L0-ATLAS-CONFLICT-REVIEW-M10",
+          "role": "assistant",
+          "content": "不会，重试携带同一删除意图和客户端版本。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:08:00+08:00",
+          "contentHash": "f9f53e08cdf3bd5d1fd24fb5c896432810e42b9e37add58164e5aa60873be07e"
+        },
+        {
+          "messageId": "T11-L0-ATLAS-CONFLICT-REVIEW-M11",
+          "role": "user",
+          "content": "审查结束前会写入同步队列吗？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:09:00+08:00",
+          "contentHash": "fcee416bb68addeb9bbaec6f3e19a45e9eed2e3706c26508b32c8841da2b2d3e"
+        },
+        {
+          "messageId": "T11-L0-ATLAS-CONFLICT-REVIEW-M12",
+          "role": "assistant",
+          "content": "会保留待处理标记，但不把冲突静默转为成功。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:10:00+08:00",
+          "contentHash": "3d833e90727f2101039df2ee1e720bb380bef8c09c9d6a1bc87b603f97decab0"
+        }
+      ],
+      "contentHash": "e90ed2e977698c2ed66a8e338b67a5a4227a94e86a8698d932eb774854ebdc61"
+    },
+    {
+      "assetId": "T11-L0-SUPPORT-3",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-redacted"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T11-L0-SUPPORT-3",
+      "messages": [
+        {
+          "messageId": "T11-L0-SUPPORT-3-M01",
+          "role": "user",
+          "content": "请找回 Nimbus 状态恢复验证时的动作顺序：保存点检查、界面重建和状态断言分别先后如何安排？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "76461f7aae44432714f2d227607a5056dc4846b26ee08666df9394127653cfd9"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-3-M02",
+          "role": "assistant",
+          "content": "历史记录已补全顺序：先确认保存点包含目标字段，再触发界面重建，最后在重建后的界面读取并断言状态；三步均在同一恢复场景中验证。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "2e464a950f6dd49f09b01bac16ac16888acc6950c00127150a7e42db190fbbda"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-3-M03",
+          "role": "user",
+          "content": "请补充保存点检查的具体断言顺序。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:01:00+08:00",
+          "contentHash": "f980034e4121500cf93d5d25f4d4f1abd5066377c580cc229716945c5b2c1408"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-3-M04",
+          "role": "assistant",
+          "content": "先检查保存点包含字段，再触发重建，最后读取重建后的界面。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:02:00+08:00",
+          "contentHash": "fb60d1f97615b9b3616ad43c95ec3cab2d3e56c49dabb40de87ef677bd88cabb"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-3-M05",
+          "role": "user",
+          "content": "重建前是否先断言界面值？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:03:00+08:00",
+          "contentHash": "c13033efd3d34dfe4bb85da89b05c53bb1fa6bb0f3e773a41220f4d067dab772"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-3-M06",
+          "role": "assistant",
+          "content": "是，记录提交值作为重建后的比较基线。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:04:00+08:00",
+          "contentHash": "7d23b0046509e1357baed5f04153f9c9c7782d9ae1c16a81d137f62c856de701"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-3-M07",
+          "role": "user",
+          "content": "重建动作完成如何确认？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:05:00+08:00",
+          "contentHash": "5ae016036cfda63de25895ef63d7e9a62f8997ceca419391c25599b431279c67"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-3-M08",
+          "role": "assistant",
+          "content": "等待界面恢复信号后再读取字段。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:06:00+08:00",
+          "contentHash": "8c8bbd226a3abc19160868693c968241945525a940ba134d5dfff1e323770695"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-3-M09",
+          "role": "user",
+          "content": "如果字段缺失怎么办？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:07:00+08:00",
+          "contentHash": "91e4b49fec96b3793849525853fc817003b959fb5e6da54b9e6349d8dd8dac3a"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-3-M10",
+          "role": "assistant",
+          "content": "立即让测试失败，不用默认值掩盖恢复缺陷。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:08:00+08:00",
+          "contentHash": "481de917b360ee4350be210e19e0c71cc170aa3ba05ce5944920dea5f3b45035"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-3-M11",
+          "role": "user",
+          "content": "最后断言比较哪两个值？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:09:00+08:00",
+          "contentHash": "b3d1527e64e4213766fd00b8ae0eef47112a5cabf3e4474d1e109010248ccdcb"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-3-M12",
+          "role": "assistant",
+          "content": "比较重建前提交值与重建后读取值，并确认恢复完成。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:10:00+08:00",
+          "contentHash": "63f034e7116c34162978db2ffbbbbf169882161d8f05a4d563b6d5e6d967fe56"
+        }
+      ],
+      "contentHash": "0151a4912110316982d08f7ba14d7da30a19774a69c228e36305c870172a7f65"
+    },
+    {
+      "assetId": "T11-L0-SUPPORT-4",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-redacted"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T11-L0-SUPPORT-4",
+      "messages": [
+        {
+          "messageId": "T11-L0-SUPPORT-4-M01",
+          "role": "user",
+          "content": "请找回 Pulse 冷启动卡顿复核所用的历史排查流程，用于按同一顺序重新采样。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "3c90dca58a3dd1f403318088860e5cfdc83a5e6e54e0cb1be82aa0c533d83b84"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-4-M02",
+          "role": "assistant",
+          "content": "交接记录已补全流程：先记录首屏帧时序，再按同一时间窗核对主线程工作，最后用冷启动与热启动对照确认是否为回归；暂不先改渲染实现。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "192f017ed935063ef36c4cb2bb9e1f7e1887911be5e69a9667e98e0eeb5b9419"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-4-M03",
+          "role": "user",
+          "content": "请补充冷启动采样的固定时间窗。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:01:00+08:00",
+          "contentHash": "f52cbb90183c5d8bb91380c330d681bcd5eca615757dd81c529dd4a3e3bead87"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-4-M04",
+          "role": "assistant",
+          "content": "先固定首屏帧时间窗，再在相同窗口核对主线程工作。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:02:00+08:00",
+          "contentHash": "9b5d20d5b66a58fb9f4646187a2d8b2d570349edd0f86e02ae428c02632c4e51"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-4-M05",
+          "role": "user",
+          "content": "热启动对照使用相同窗口吗？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:03:00+08:00",
+          "contentHash": "d1ece7aa4f7c999bf8426de955825cf1b3201be39a3f2576715ead94fd1db938"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-4-M06",
+          "role": "assistant",
+          "content": "是，冷启动和热启动都按同一时间窗采样。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:04:00+08:00",
+          "contentHash": "f9ce16e81862ae02b36e018b97be1775093497b02ddc6451fd3fa97f0e70ac74"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-4-M07",
+          "role": "user",
+          "content": "采样时先改渲染实现吗？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:05:00+08:00",
+          "contentHash": "7604b7c938f0cb33a7e8619dc1411715bf74e728e4811938e747cf382c799038"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-4-M08",
+          "role": "assistant",
+          "content": "不先改实现，先保留证据判断是否为回归。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:06:00+08:00",
+          "contentHash": "3f43d78ced99038d64cf9094b0da82fde7dc140826489f0deb180f9804e7a850"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-4-M09",
+          "role": "user",
+          "content": "还会记录线程调度吗？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:07:00+08:00",
+          "contentHash": "1088f3295bcd77bdc1e6070da0c5a7bfc082855edd70eb3e0a13ad6717131af2"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-4-M10",
+          "role": "assistant",
+          "content": "会记录主线程工作段与首屏帧对应关系。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:08:00+08:00",
+          "contentHash": "34e9579af4d93d351f3c79318e03e05f2cf39ce1e21cb7a916bd8de6bce6ffc3"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-4-M11",
+          "role": "user",
+          "content": "怎样确认问题可复现？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:09:00+08:00",
+          "contentHash": "fda4efa755c34cf404a6260ebd5734875fa07454fb87ebee67ddba9a611da082"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-4-M12",
+          "role": "assistant",
+          "content": "至少重复冷启动采样并与热启动对照后再下结论。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:10:00+08:00",
+          "contentHash": "b2e80d07da5d411b20c13053507e80b211058d16c1ee791e1e3da7cd8bcc7961"
+        }
+      ],
+      "contentHash": "b971bb7b83ad9a9fb197cffb7a297a15078107a4b175ebe03e596f67be6fe92e"
+    },
+    {
+      "assetId": "T11-L0-SUPPORT-5",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-redacted"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T11-L0-SUPPORT-5",
+      "messages": [
+        {
+          "messageId": "T11-L0-SUPPORT-5-M01",
+          "role": "user",
+          "content": "请确认 Helio 的 Compose 状态恢复用例在重建后应断言什么，作为当前测试的对照。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "c9314cc335a2bb48f865912908eca0911ece6a9dda40bbd4bcd4bf0458f11bc1"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-5-M02",
+          "role": "assistant",
+          "content": "交接笔记已补全断言：重建后应读取同一输入字段并断言其仍等于重建前提交的值，同时确认界面已完成恢复。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "a4dd888a050697f458f0e5e89295c7e502e3791543a1b4611068d4e3441d6730"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-5-M03",
+          "role": "user",
+          "content": "请补充 Compose 恢复断言中的输入字段来源。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:01:00+08:00",
+          "contentHash": "3d6cd2de0b2ab6c4389e0ae7ccdae8202e5fa7523f3cc5ac4744fd53a3572e9b"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-5-M04",
+          "role": "assistant",
+          "content": "使用重建前提交的同一输入字段作为比较基线。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:02:00+08:00",
+          "contentHash": "e77839496d7452310c04f15cf53840add474612bc08254468114e7eb80d208b6"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-5-M05",
+          "role": "user",
+          "content": "恢复后只看界面是否显示可以吗？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:03:00+08:00",
+          "contentHash": "ddea119f0a14eafadb8aefa76742240a33510e2f8eb8b5129175a21ec8ef205a"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-5-M06",
+          "role": "assistant",
+          "content": "不够，还要读取字段值并与提交值相等。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:04:00+08:00",
+          "contentHash": "cd143163c3faca392c165dfbe6212d8a9b43744059652d04b0516c2e1e8631e8"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-5-M07",
+          "role": "user",
+          "content": "是否检查恢复信号？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:05:00+08:00",
+          "contentHash": "02f4b4fa5a931f19f6aa9ff972310cc4adf6241a7142c48920fa654adf9239e1"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-5-M08",
+          "role": "assistant",
+          "content": "是，字段相等与界面恢复完成都必须满足。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:06:00+08:00",
+          "contentHash": "c3d21827ec50a709c98cd7c600f3c9c767a98b566b3f7b5bcd06086e47c7cb56"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-5-M09",
+          "role": "user",
+          "content": "如果输入字段为空呢？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:07:00+08:00",
+          "contentHash": "c4caa6be60e78123470353f45a268b127ee771d94c64099eaa0cfcc34716ff37"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-5-M10",
+          "role": "assistant",
+          "content": "仍按提交的空值比较，不改用默认字符串。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:08:00+08:00",
+          "contentHash": "6c21df3e3cfb873a5adfaf7088e378889f5bb07686960b4ebdca281244e28cb4"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-5-M11",
+          "role": "user",
+          "content": "断言发生在重建的哪个阶段？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:09:00+08:00",
+          "contentHash": "6a0be3d38ca95fec8d02a89fc7301b1d6fecd352e08a55a5adc0079105cb014f"
+        },
+        {
+          "messageId": "T11-L0-SUPPORT-5-M12",
+          "role": "assistant",
+          "content": "恢复信号到达且字段可读之后执行断言。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:10:00+08:00",
+          "contentHash": "5147629b0c4c0fc1fc10275b650f820a8da0c81353207d10a91f271c3732ae9e"
+        }
+      ],
+      "contentHash": "22578787cd491e7f809dbcfbb0e0433e363a7b31f74656f7d75ae213562044d4"
+    },
+    {
+      "assetId": "T11-L0-ORCHID-ATLAS-RELEASE-LOCK",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-redacted"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T11-L0-ORCHID-ATLAS-RELEASE-LOCK",
+      "messages": [
+        {
+          "messageId": "T11-L0-ORCHID-ATLAS-RELEASE-LOCK-M01",
+          "role": "user",
+          "content": "请直接确认 Orchid 发布配置与 Atlas 客户端版本锁定时，历史交接约定要求满足哪两个条件。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "88020479f8f105ae2dead5ad65c1f9d4150d3554c55baaace55a6a08cf8b3b83"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-ATLAS-RELEASE-LOCK-M02",
+          "role": "assistant",
+          "content": "交接记录已补全两个条件：构建插件版本必须与发布分支锁定文件一致，且 Atlas 客户端只允许使用该分支已验证的同步协议版本；两项都满足后才可更新发布配置。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-redacted"
+          ],
+          "observedAt": "2026-08-30T12:00:00+08:00",
+          "contentHash": "012e050a190a1a9ba3488f5019e4ce6c1fa1712263aca36d35d8733716fd435e"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-ATLAS-RELEASE-LOCK-M03",
+          "role": "user",
+          "content": "请补充发布锁定时的两个前置条件如何核对。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:01:00+08:00",
+          "contentHash": "2373590e553b1dbf1184a640e3ed4def87663b45c09b6e052f4156e1fc508740"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-ATLAS-RELEASE-LOCK-M04",
+          "role": "assistant",
+          "content": "先核对插件版本与发布分支锁定文件，再核对客户端同步协议版本。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:02:00+08:00",
+          "contentHash": "32d378ac2b6a8a835c0968e7b1fbfed9a03bf199f91fd1f896f5fd19a3739f04"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-ATLAS-RELEASE-LOCK-M05",
+          "role": "user",
+          "content": "两个条件是否都来自同一分支？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:03:00+08:00",
+          "contentHash": "6d805da1483b8dd3fd02235455de8cf3ed4652ac80bd55419eba112266874109"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-ATLAS-RELEASE-LOCK-M06",
+          "role": "assistant",
+          "content": "是，都必须来自已验证的发布分支。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:04:00+08:00",
+          "contentHash": "f7123f3f4f3d9b014fd2d9c0a1c9d86758dee7b453c90464ecb4ff4e763d37f3"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-ATLAS-RELEASE-LOCK-M07",
+          "role": "user",
+          "content": "协议版本不一致时能否只更新插件？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:05:00+08:00",
+          "contentHash": "49d23ef7f680931139bfb62588fd47e067d8dd30eedcce5e6ae27fb278e85f11"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-ATLAS-RELEASE-LOCK-M08",
+          "role": "assistant",
+          "content": "不能，必须先解决协议版本差异。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:06:00+08:00",
+          "contentHash": "bee374deab767269e8e3033919c9daf3cd0ddf3b4d95f48eeb00ffe0bbe6c800"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-ATLAS-RELEASE-LOCK-M09",
+          "role": "user",
+          "content": "客户端版本锁定是否允许临时覆盖？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:07:00+08:00",
+          "contentHash": "e35495f366119ed2b29ab12b4494217a87b10fb18009a47df087751db7bddb9d"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-ATLAS-RELEASE-LOCK-M10",
+          "role": "assistant",
+          "content": "不允许，临时覆盖会破坏发布可复现性。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:08:00+08:00",
+          "contentHash": "070b618aba794b47508b2864c3e0b3a0f0fcd30180bce3b4b45dd5ec6cdb6692"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-ATLAS-RELEASE-LOCK-M11",
+          "role": "user",
+          "content": "两个条件都通过后才做什么？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:09:00+08:00",
+          "contentHash": "ca6055e549029d1d88bf09dd7145a8217627b72a4c203ff364beb5067a121f4c"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-ATLAS-RELEASE-LOCK-M12",
+          "role": "assistant",
+          "content": "只有都通过后才可更新发布配置。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T12:10:00+08:00",
+          "contentHash": "c35fb8988ae72490156b880b7db1c5613c341b23cf77b6c4b5e3507fc08a4c2b"
+        }
+      ],
+      "contentHash": "fa8c09b4984d76bd25398d7b8c47bf9a6ec8212100610dc0cab433dd4a842a3e"
+    },
+    {
+      "assetId": "T11-L0-ORCHID-GRADLE-CATALOG",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-repair"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T11-L0-ORCHID-GRADLE-CATALOG",
+      "messages": [
+        {
+          "messageId": "T11-L0-ORCHID-GRADLE-CATALOG-M01",
+          "role": "user",
+          "content": "请补充 Orchid 版本目录评审的完整记录。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:01:00+08:00",
+          "contentHash": "bf1f2892b3c11c47122dc0278083a31baec27ddbba03148db671b1fa2a09f43b"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-GRADLE-CATALOG-M02",
+          "role": "assistant",
+          "content": "先确认根目录插件声明与版本目录来源。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:02:00+08:00",
+          "contentHash": "239b5bcffabbc8350586f29777bcb816963b33df20cd4814e17778df6d9ee78e"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-GRADLE-CATALOG-M03",
+          "role": "user",
+          "content": "随后如何核对模块继承？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:03:00+08:00",
+          "contentHash": "a2b6772b440145eb05948ceebf6b5df69ec42da6c8af1699e8699728f5286fc0"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-GRADLE-CATALOG-M04",
+          "role": "assistant",
+          "content": "逐个模块确认不重复声明并继承同一目录。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:04:00+08:00",
+          "contentHash": "98b87c5bc20b71be3948f0bbdf8a5209ca294adc910f4c63938b56a20d041290"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-GRADLE-CATALOG-M05",
+          "role": "user",
+          "content": "失败时先看什么？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:05:00+08:00",
+          "contentHash": "7c4032a7612a454e83ae9f42ec3bea076c75d394baa578347a2ebb4df8a73bc6"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-GRADLE-CATALOG-M06",
+          "role": "assistant",
+          "content": "先看插件解析错误，再核对仓库源。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:06:00+08:00",
+          "contentHash": "99b72d9a1208f9d0ebe5f992f3c441ff1a7700414f664b5a0f086358d9743345"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-GRADLE-CATALOG-M07",
+          "role": "user",
+          "content": "是否记录最小构建？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:07:00+08:00",
+          "contentHash": "ce5f44cc9b80b9ca6ec0919298382e4759727f7d3dad594d7a118f49bad937e9"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-GRADLE-CATALOG-M08",
+          "role": "assistant",
+          "content": "记录 app 与库模块的最小构建结果。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:08:00+08:00",
+          "contentHash": "51359032bb6086eab13b070fe2711a15d423e563fba016a83a93e40df0eec02d"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-GRADLE-CATALOG-M09",
+          "role": "user",
+          "content": "版本漂移如何处理？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:09:00+08:00",
+          "contentHash": "8bf4f4097654a1ddaa0b4841f2cddbb30fe7ea01c98d256e7185c8cecd999d8a"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-GRADLE-CATALOG-M10",
+          "role": "assistant",
+          "content": "锁定发布分支版本，拒绝临时覆盖。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:10:00+08:00",
+          "contentHash": "be4056995e23fe49c88958496bdc2a768d869c27adddf597b09a1473d3c2141f"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-GRADLE-CATALOG-M11",
+          "role": "user",
+          "content": "最后结论是什么？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:11:00+08:00",
+          "contentHash": "facc013d4cb770f4cb23efd461b8639694ca00087a42044987253a3abcd81a80"
+        },
+        {
+          "messageId": "T11-L0-ORCHID-GRADLE-CATALOG-M12",
+          "role": "assistant",
+          "content": "配置规则在最小构建上验证通过。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:12:00+08:00",
+          "contentHash": "1bf53d76f2cccd7d24b5e8c45d075b4849da91d8e63401793e52345c54e6cf0c"
+        }
+      ],
+      "contentHash": "7f97604e1a5c97e173cb63828b3688171b5a8aea5a83250db8bddf274b79ab0c"
+    },
+    {
+      "assetId": "T11-L0-PULSE-TRACE-COMPARE",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-repair"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "sessionId": "T11-L0-PULSE-TRACE-COMPARE",
+      "messages": [
+        {
+          "messageId": "T11-L0-PULSE-TRACE-COMPARE-M01",
+          "role": "user",
+          "content": "请补充 Pulse 线程采样复核记录。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:01:00+08:00",
+          "contentHash": "e9143fcf4378dcffa6a425e77b27a32f260db05890f544a812b99c4222e978f6"
+        },
+        {
+          "messageId": "T11-L0-PULSE-TRACE-COMPARE-M02",
+          "role": "assistant",
+          "content": "先固定首屏帧采样窗口。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:02:00+08:00",
+          "contentHash": "4ca4a99b238972fa5bf5bc4434aa471aba9eb252781b2023bc837c57699e95cb"
+        },
+        {
+          "messageId": "T11-L0-PULSE-TRACE-COMPARE-M03",
+          "role": "user",
+          "content": "接着记录什么？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:03:00+08:00",
+          "contentHash": "515d23e4bbab22ae568e6607a1351d307d192a7c95be864dee97727f5f734433"
+        },
+        {
+          "messageId": "T11-L0-PULSE-TRACE-COMPARE-M04",
+          "role": "assistant",
+          "content": "记录相同窗口内的主线程工作段。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:04:00+08:00",
+          "contentHash": "0d83b9e454a3947737c3e8ba201d5f2f69c43a56b1388803f29dd165dea2e966"
+        },
+        {
+          "messageId": "T11-L0-PULSE-TRACE-COMPARE-M05",
+          "role": "user",
+          "content": "要不要先调整渲染？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:05:00+08:00",
+          "contentHash": "004cd119994db9060515d8263cb984678171a8de8726dde971488f27779dc3e7"
+        },
+        {
+          "messageId": "T11-L0-PULSE-TRACE-COMPARE-M06",
+          "role": "assistant",
+          "content": "不要，先完成冷启动证据采集。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:06:00+08:00",
+          "contentHash": "461a846d51840257e567dc538a11eae49962d73bac210fff25c8952bba6c1ae3"
+        },
+        {
+          "messageId": "T11-L0-PULSE-TRACE-COMPARE-M07",
+          "role": "user",
+          "content": "热启动怎么使用？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:07:00+08:00",
+          "contentHash": "fdb7f8cee96684cb71af15c1fcc225f6ca0f1927c169f305a99b0aa4127eed3a"
+        },
+        {
+          "messageId": "T11-L0-PULSE-TRACE-COMPARE-M08",
+          "role": "assistant",
+          "content": "使用相同窗口作为对照。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:08:00+08:00",
+          "contentHash": "3b11ecc8f5b05b44a32f35ffdaad4de70d4ec725382cdd41e5d72cf90fa4fb26"
+        },
+        {
+          "messageId": "T11-L0-PULSE-TRACE-COMPARE-M09",
+          "role": "user",
+          "content": "采样需要重复吗？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:09:00+08:00",
+          "contentHash": "7986240220e659e0e23e4f717e7780eb91e8fdfe4dc3c2472cfbb59b6358669a"
+        },
+        {
+          "messageId": "T11-L0-PULSE-TRACE-COMPARE-M10",
+          "role": "assistant",
+          "content": "重复冷启动并核对帧时序是否稳定。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:10:00+08:00",
+          "contentHash": "ec5f54fb14356cd1b08d8c70a4514e9311db951fb75213eb2d50379b6fddc095"
+        },
+        {
+          "messageId": "T11-L0-PULSE-TRACE-COMPARE-M11",
+          "role": "user",
+          "content": "何时判断回归？",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:11:00+08:00",
+          "contentHash": "408798d1dfe47769fc253ad30126bed11a5cfe8c813e8777c7a32a1330bc0227"
+        },
+        {
+          "messageId": "T11-L0-PULSE-TRACE-COMPARE-M12",
+          "role": "assistant",
+          "content": "冷热点差异与主线程证据一致后再判断。",
+          "sourceEvidenceIds": [
+            "source-t11-memory-repair"
+          ],
+          "observedAt": "2026-08-30T13:12:00+08:00",
+          "contentHash": "5aa413bbb2a5ef597ef2cf9a52bfdbe559e43d43ddd786fb0b9488f976e6d9f2"
+        }
+      ],
+      "contentHash": "8541820ee5cd627b14e7f44398877c3d67d6a06677f3a0ca08f4d1194750f63e"
+    }
+  ],
+  "l1_memories": [
+    {
+      "assetId": "T11-L1-ORCHID-AGP-MIGRATION-RULE",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "decision",
+      "content": "交接记录已补全规则：插件声明统一放在根级约定中，仓库块只保留迁移所需的官方源，并让各模块通过同一版本目录继承；这套配置已在最小构建上验证通过。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T11-L0-SUPPORT-1-M02"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "95e23bb53f1891b7088a4851abed7922c153e698a0a57e0124c3fa71b1972466"
+    },
+    {
+      "assetId": "T11-L1-HELIO-COMPOSE-RESTORE-ASSERTION",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "fact",
+      "content": "交接笔记已补全断言：重建后应读取同一输入字段并断言其仍等于重建前提交的值，同时确认界面已完成恢复。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T11-L0-SUPPORT-5-M02"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "f975c1deacc640a07401bef2bfb80ac9319c4113c5dccda9c9446e0d7b4c439c"
+    },
+    {
+      "assetId": "T11-L1-ORCHID-PLUGIN-SOURCE",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-repair-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "decision",
+      "content": "Orchid 构建先核对根级插件声明与官方仓库源，再确认模块继承同一版本目录。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T11-L0-ORCHID-GRADLE-CATALOG-M02"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "8f7f0b1768151e654e9ae345f81eafc86d2e4cb808f241ce885772a8ab1f74e0"
+    },
+    {
+      "assetId": "T11-L1-ORCHID-MODULE-INHERITANCE",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-repair-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "fact",
+      "content": "Orchid 模块不重复声明插件，统一从根级版本目录继承。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T11-L0-ORCHID-GRADLE-CATALOG-M04"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "9aa308f6e03c0b8eb171f30c8df7b375a87c5f6ee70ed7b3ee646029f30750a6"
+    },
+    {
+      "assetId": "T11-L1-ATLAS-DELETE-INTENT",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-repair-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "decision",
+      "content": "Atlas 冲突重试必须携带原删除意图和客户端版本。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T11-L0-ATLAS-CONFLICT-REVIEW-M04"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "ab1582ad767dfe65461956b3033ec952bdd3201df13d496439c7fdaee42ed5a7"
+    },
+    {
+      "assetId": "T11-L1-ATLAS-MANUAL-CONFLICT",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-repair-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "fact",
+      "content": "服务端版本越过删除基线时，Atlas 记录待人工解决而不自动复活。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T11-L0-ATLAS-CONFLICT-REVIEW-M06"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "a5873524a96787af983b04af0558af977e0fd582a126a7a3866e2a05f243e862"
+    },
+    {
+      "assetId": "T11-L1-NIMBUS-SAVEPOINT",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-repair-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "fact",
+      "content": "Nimbus 恢复测试先确认保存点包含目标字段，再触发界面重建。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T11-L0-SUPPORT-3-M02"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "404a1645b9f49277be9b647b46e369e162b684e68c24a3b73e651c3b72b9c63b"
+    },
+    {
+      "assetId": "T11-L1-NIMBUS-FAIL-MISSING-FIELD",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-repair-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "decision",
+      "content": "Nimbus 保存点缺少目标字段时立即失败，不以默认值掩盖恢复缺陷。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T11-L0-SUPPORT-3-M06"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "f74013fcceebddf421a98b1de83f21e5a8829394556a29703b8303464a1c2de1"
+    },
+    {
+      "assetId": "T11-L1-PULSE-SAME-WINDOW",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-repair-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "decision",
+      "content": "Pulse 冷启动和热启动必须使用同一首屏帧时间窗进行对照。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T11-L0-SUPPORT-4-M04"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "8c18699d9e9d466e0d6d23f49f67e4f85c4e02303652de1a6a292ffe3aa9ed89"
+    },
+    {
+      "assetId": "T11-L1-PULSE-DEFER-RENDER-CHANGE",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-repair-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "preference",
+      "content": "Pulse 性能复核先保留采样证据，不在确认回归前修改渲染实现。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T11-L0-SUPPORT-4-M06"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "7662a1a56176ba74967e7c1e2615d1493a17c25a16490ab58b7f335c5b2b6299"
+    },
+    {
+      "assetId": "T11-L1-HELIO-SAME-FIELD",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-repair-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "fact",
+      "content": "Helio 恢复后读取的字段必须与重建前提交的同一字段比较。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T11-L0-SUPPORT-5-M04"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "09d93aaccdac9bed20a0113e06dff49bb6594de31537fa2548f6c13ad253541f"
+    },
+    {
+      "assetId": "T11-L1-RELEASE-NO-OVERRIDE",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-repair-atomic"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "type": "decision",
+      "content": "发布配置的插件与同步协议版本不允许临时覆盖锁定值。",
+      "status": "active",
+      "validFrom": "2026-08-30T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T11-L0-ORCHID-ATLAS-RELEASE-LOCK-M06"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "ec0760a664165c1f0ce99bd15af40b71efd01d0fe8642297e7a542ebea920880"
+    }
+  ],
+  "l2_scenes": [
+    {
+      "assetId": "T11-L2-NIMBUS-RESTORE-TIMELINE",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-scene"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "path": "mobile/nimbus/restoration-timeline",
+      "summary": "Nimbus verified restoration timeline",
+      "content": "历史记录已补全顺序：先确认保存点包含目标字段，再触发界面重建，最后在重建后的界面读取并断言状态；三步均在同一恢复场景中验证。",
+      "injected": false,
+      "supportingSessionIds": [
+        "T11-L0-ATLAS-CONFLICT-REVIEW",
+        "T11-L0-SUPPORT-3"
+      ],
+      "contentHash": "adface4e6c426bfea3e01305b5266faffd1a3c28df4a6c5881056475136a3652"
+    },
+    {
+      "assetId": "T11-L2-PULSE-COLD-START-JANK",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-scene"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "path": "mobile/pulse/cold-start-jank",
+      "summary": "Pulse cold-start jank investigation runbook",
+      "content": "交接记录已补全流程：先记录首屏帧时序，再按同一时间窗核对主线程工作，最后用冷启动与热启动对照确认是否为回归；暂不先改渲染实现。",
+      "injected": false,
+      "supportingSessionIds": [
+        "T11-L0-SUPPORT-4",
+        "T11-L0-SUPPORT-5"
+      ],
+      "contentHash": "d0092a57259e2194b2bcdb331fabb42fa1f1b0e37df53c861167179afbe35c84"
+    },
+    {
+      "assetId": "T11-L2-ORCHID-BUILD-REVIEW",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-repair-scene"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "path": "mobile/orchid/build-review",
+      "summary": "Orchid plugin and version catalog review",
+      "content": "Orchid 构建复核按根级插件声明、官方仓库源、模块继承和最小构建顺序进行。",
+      "injected": false,
+      "supportingSessionIds": [
+        "T11-L0-SUPPORT-1",
+        "T11-L0-ORCHID-GRADLE-CATALOG"
+      ],
+      "contentHash": "bef7c7a2e280ab13c0ecd343683e1117a5ee9e87a5afe998122a772e01fefb70"
+    },
+    {
+      "assetId": "T11-L2-PULSE-TRACE-COMPARISON",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-repair-scene"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "path": "mobile/pulse/trace-comparison",
+      "summary": "Pulse cold-hot trace comparison",
+      "content": "Pulse 先固定首屏帧窗口并记录主线程工作，再用相同窗口比较冷启动与热启动。",
+      "injected": false,
+      "supportingSessionIds": [
+        "T11-L0-SUPPORT-4",
+        "T11-L0-PULSE-TRACE-COMPARE"
+      ],
+      "contentHash": "ad036fc6cb8f469f1871645250ace857879212e59035aa7035c87881b4173e3d"
+    }
+  ],
+  "l3_profiles": [
+    {
+      "assetId": "T11-L3-MOBILE-VERIFICATION-PREFERENCE",
+      "ownerAgentId": "agent-task1-t11-general",
+      "sourceEvidenceIds": [
+        "source-t11-memory-repair-profile"
+      ],
+      "observedAt": "2026-08-30T12:00:00+08:00",
+      "content": "T11 移动端工程偏好先固定可复现证据、稳定时间窗和明确验收信号，再进行构建、生命周期或性能结论判断；信息缺口明确时才检索历史资产，并保留可重复的审查轨迹，便于团队在不同设备与版本间复核。",
+      "stability": "team",
+      "contentHash": "ec53b9f2f9beb48515f6184660c9e9554d6cacfa2453008f05a9261958c10b8c"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "schema_version": "task1.github_skill_source.v1",
+  "team_id": "T01",
+  "name": "memory-optimization",
+  "repository_url": "https://github.com/benchflow-ai/skillsbench",
+  "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+  "source_path": "tasks/parallel-tfidf-search/environment/skills/memory-optimization/SKILL.md",
+  "license_spdx": "Apache-2.0",
+  "license_file": "../../licenses/Apache-2.0.txt",
+  "visibility": "same-team-search",
+  "main_raw_sha256": "cc56c4b8119265a50ae48506c20f6e495bcb7972dfb7e78adc5405b840fb2ba8",
+  "raw_files": [
+    {
+      "path": "references/advanced_techniques.md",
+      "source_path": "tasks/parallel-tfidf-search/environment/skills/memory-optimization/references/advanced_techniques.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/parallel-tfidf-search/environment/skills/memory-optimization/references/advanced_techniques.md",
+      "sha256": "68de997fe654d08b5fddef08810e4d15f765c190064a3a9628547c71da7f9226",
+      "byte_length": 4945
+    },
+    {
+      "path": "SKILL.md",
+      "source_path": "tasks/parallel-tfidf-search/environment/skills/memory-optimization/SKILL.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/parallel-tfidf-search/environment/skills/memory-optimization/SKILL.md",
+      "sha256": "cc56c4b8119265a50ae48506c20f6e495bcb7972dfb7e78adc5405b840fb2ba8",
+      "byte_length": 6012
+    }
+  ],
+  "adapted_files": [
+    {
+      "path": "references/advanced_techniques.md",
+      "sha256": "87651f6e14412a75169312054759272d36237940524b96ca185601e141f45419",
+      "byte_length": 5166
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "30daf5237b91ce4487f516fa623b624ac205f9a64a3b56978bdadaa76e5a50e5",
+      "byte_length": 6237
+    }
+  ],
+  "adaptation_diff": "adaptation.diff",
+  "frozen": true
+}

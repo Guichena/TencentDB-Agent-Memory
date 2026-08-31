@@ -1,0 +1,84 @@
+{
+  "schema_version":"task1.memory_asset_candidates.v1",
+  "batch_id":"build-08-T16-memory-trial-01",
+  "stage":"DS05",
+  "team_id":"T16",
+  "family":"memory",
+  "draft_pair_id":"T16-TRIAL-MEM-001",
+  "synthetic_team_background":{
+    "team_name":"T16 事件驱动系统小组",
+    "project_stream":"ledger-ingest",
+    "workspace":"space-task1-engineering",
+    "focus":"outbox、幂等 key、去重与至少一次投递",
+    "background":"团队维护 Ledger 事件进入 consumer 后的去重与审计，近期复盘了重复投递下业务幂等键应保持稳定的问题。以下背景、历史对话和摘要均为本试验合成内容。"
+  },
+  "candidates":[
+    {
+      "asset_id":"T16-L0-004",
+      "asset_type":"l0_session",
+      "project_stream":"ledger-ingest",
+      "role":"target",
+      "supports_trial":true,
+      "messages":[
+        {"message_id":"T16-L0-004-M01","role":"user","content":"Ledger consumer 的重复投递复盘先看哪一段？"},
+        {"message_id":"T16-L0-004-M02","role":"assistant","content":"先看 outbox 事件进入 consumer 的去重入口，确认同一事件重试时键是否稳定。"},
+        {"message_id":"T16-L0-004-M03","role":"user","content":"同一租户和账户的同一笔 entry 被投递两次，第一次成功，第二次应跳过。"},
+        {"message_id":"T16-L0-004-M04","role":"assistant","content":"那要排除 broker offset 和分区路由，它们不是业务幂等键。"},
+        {"message_id":"T16-L0-004-M05","role":"user","content":"事件 envelope 里还有 schema_version 和 attempt_id。"},
+        {"message_id":"T16-L0-004-M06","role":"assistant","content":"schema 版本可能影响事件身份，attempt_id 则要确认是否会随重试变化。"},
+        {"message_id":"T16-L0-004-M07","role":"user","content":"Relay 的 partition key 讨论不能直接套到 Ledger。"},
+        {"message_id":"T16-L0-004-M08","role":"assistant","content":"对，当前只记录 Ledger consumer 的业务去重决定。"},
+        {"message_id":"T16-L0-004-M09","role":"user","content":"我们确定要做去重，但摘要没有字段顺序。"},
+        {"message_id":"T16-L0-004-M10","role":"assistant","content":"应回到复盘原始消息，找出完整拼接表达式和排除字段。"},
+        {"message_id":"T16-L0-004-M11","role":"user","content":"请写出幂等键的精确决定。"},
+        {"message_id":"T16-L0-004-M12","role":"assistant","content":"复盘决定是：幂等键按 tenant_id|account_id|entry_id|schema_version 拼接，只使用这四个字段；明确不把 attempt_id 放入键，因为它会随投递重试变化。"},
+        {"message_id":"T16-L0-004-M13","role":"user","content":"这条要和 outbox 的至少一次语义一起留档。"},
+        {"message_id":"T16-L0-004-M14","role":"assistant","content":"已记录；partition key 和 lag 指标仍作为其他诊断信息单独维护。"}
+      ]
+    },
+    {
+      "asset_id":"T16-L0-003",
+      "asset_type":"l0_session",
+      "project_stream":"relay-orders",
+      "role":"near_synonym_distractor",
+      "supports_trial":false,
+      "messages":[
+        {"message_id":"T16-L0-003-M01","role":"user","content":"Relay Orders 的顺序问题先从哪个 key 查？"},
+        {"message_id":"T16-L0-003-M02","role":"assistant","content":"先看订单流的 partition key，保证同一订单进入同一分区。"},
+        {"message_id":"T16-L0-003-M03","role":"user","content":"这个 key 是给 broker 路由用的，不是业务去重。"},
+        {"message_id":"T16-L0-003-M04","role":"assistant","content":"对，路由键与 consumer 幂等键的职责不同。"},
+        {"message_id":"T16-L0-003-M05","role":"user","content":"订单更新事件里也有 attempt_id。"},
+        {"message_id":"T16-L0-003-M06","role":"assistant","content":"这里仅用于追踪重试次数，不决定订单事件的分区归属。"},
+        {"message_id":"T16-L0-003-M07","role":"user","content":"Consumer Watch 报告了一个 lag 峰值。"},
+        {"message_id":"T16-L0-003-M08","role":"assistant","content":"lag 是诊断指标，不可拿来回答 Ledger 的幂等键组成。"},
+        {"message_id":"T16-L0-003-M09","role":"user","content":"我会把它和 Ledger 的去重复盘分开。"},
+        {"message_id":"T16-L0-003-M10","role":"assistant","content":"这样可以避免把 partition key 当成业务身份。"},
+        {"message_id":"T16-L0-003-M11","role":"user","content":"这轮没有写 Ledger entry 的字段顺序。"},
+        {"message_id":"T16-L0-003-M12","role":"assistant","content":"正确，它只说明订单流的分区顺序约束。"}
+      ]
+    },
+    {
+      "asset_id":"T16-L1-006",
+      "asset_type":"l1_memory",
+      "project_stream":"ledger-ingest",
+      "role":"summary_distractor",
+      "supports_trial":false,
+      "summary":"Ledger consumer 已采用稳定业务身份做重复投递去重，摘要提醒不要使用会随重试变化的传输标识，但没有保留幂等键的逐字段原话。"
+    },
+    {
+      "asset_id":"T16-L2-003",
+      "asset_type":"l2_scene",
+      "project_stream":"ledger-ingest",
+      "role":"scene_distractor",
+      "path":"idempotency/ledger/dedup.md",
+      "injected":true,
+      "summary":"说明 Ledger 幂等处理、重复投递和审计入口，不泄露当前 consumer 采用的 key 组成。"
+    },
+    {
+      "asset_id":"T16-L3-001",
+      "asset_type":"l3_profile",
+      "role":"preference_support",
+      "summary":"团队处理事件问题时偏好先观察真实投递，再重放最小样本；幂等优先，保留事件顺序、关联标识和审计边界。遇到相邻系统的相似字段，会先区分路由、诊断与业务身份，再引用可追溯的原始证据。该偏好只描述稳定工作方式，不包含任何具体项目答案。"
+    }
+  ]
+}

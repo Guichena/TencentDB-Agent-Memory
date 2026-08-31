@@ -1,0 +1,57 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t10-skill-trial-01",
+  "stage": "DS05",
+  "team_id": "T10",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T10-DRAFT-SKILL-001",
+      "external_source_ids": ["source-t10-skill-maven-lifecycle"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我在 atlas-parent 整理一次多模块 Java 构建失败后的验证方案，只做证据核对和步骤设计，不运行构建或发布。"},
+        {"role": "assistant", "content": "父 POM、模块依赖关系、失败摘要和本地入口都已在工作区；本轮范围是构建生命周期和反应堆选择，不处理依赖仲裁、插件参数或 CI 日志。"},
+        {"role": "user", "content": "最初我打算直接对整个反应堆做 install，后来发现失败集中在 atlas-core 及其上游模块，应该先缩小验证范围。"},
+        {"role": "assistant", "content": "方向已调整为先固定目标模块及其所需依赖，再分别核对打包和测试阶段；暂不把本地验证延伸到安装或远程发布。"},
+        {"role": "user", "content": "现在源码、父子 POM 和 atlas-core 的依赖模块均已确认，失败摘要也已归档；下一步只缺一套可靠的阶段顺序和模块选择说明。"},
+        {"role": "assistant", "content": "当前唯一缺口是可复用的 Maven 生命周期流程：需要知道阶段与目标如何顺序执行、如何选择模块及其依赖，以及测试与打包的边界；资料确认后再开始验证。"}
+      ],
+      "changed_message_index": 6,
+      "query": "针对当前多模块构建失败，请先给出核对阶段顺序和模块范围的可执行下一步，暂时不要执行命令。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请先打开已经列出的既有 Maven 生命周期资料，概述阶段与目标的先后、按模块及依赖选择反应堆的方式，以及 test、package、install 之间的边界；停在可以开始本地验证的位置。"},
+        "private_proposal": {
+          "unique_information_gap": "当前只缺 Maven 默认生命周期阶段/目标顺序、phase 与 goal 的区别、多模块 -pl/-am 反应堆选择及 test/package/install 边界的可复用流程；目标已列出，应直接打开目标 Skill。",
+          "route": "skill",
+          "target_asset_ids": ["T10-SKILL-MAVEN-LIFECYCLE"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "打开已列出的 Maven 生命周期 Skill 并返回其正文与 manifest 后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "我把缺失流程补全：把 `validate`、`compile`、`test`、`package`、`verify`、`install` 看作按顺序推进的默认生命周期阶段，调用较后的阶段会带上前置阶段；先用 `-pl :atlas-core -am` 表示目标模块及其依赖的反应堆范围，再分别核对 `package`（创建 JAR/WAR）和 `test`（运行单元测试），验证失败就停下，不进入 `install` 或 `deploy`。请据此给出下一步，仍不要执行命令。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已补齐冻结资料支持的默认阶段顺序、后置 phase 包含前置阶段的语义、-pl/-am 反应堆选择、package 与 test 的职责以及不进入 install/deploy 的边界，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T10-SKILL-MAVEN-DEPENDENCIES", "T10-SKILL-MAVEN-PLUGINS", "T10-SKILL-ANALYZE-CI"],
+      "controlled_delta_note": "Positive 仅保留 Maven 生命周期与反应堆选择流程的唯一缺口；Negative 仅补齐冻结原文中的阶段顺序、-pl/-am 选择、test/package 职责和停止边界，shared context 与 query 完全相同。",
+      "source_fact_map": [
+        {"claim": "Maven 默认生命周期按固定阶段顺序推进，执行较后的 phase 会运行此前阶段；package 用于创建 JAR/WAR，test 用于运行单元测试。", "source_id": "source-t10-skill-maven-lifecycle", "locator": "raw/benchflow-skillsbench/maven-build-lifecycle/SKILL.md#Default Lifecycle Phases; #Common Phase Commands; #Executing Phases"},
+        {"claim": "phase 与 goal 的调用语义不同，具体 goal 可以单独执行，而执行 phase 会带上该 phase 之前的生命周期阶段。", "source_id": "source-t10-skill-maven-lifecycle", "locator": "raw/benchflow-skillsbench/maven-build-lifecycle/SKILL.md#Goals vs Phases; #Executing Phases; #Executing Goals"},
+        {"claim": "多模块反应堆可用 -pl 选择目标模块，并用 -am 同时构建该模块所需依赖。", "source_id": "source-t10-skill-maven-lifecycle", "locator": "raw/benchflow-skillsbench/maven-build-lifecycle/SKILL.md#Multi-Module Builds; #Reactor Options"}
+      ],
+      "sol_review_questions": [
+        "确认该 trial 只包含 T10-DRAFT-SKILL-001，Positive 首动作严格为冻结的 listed target skill_view。",
+        "确认 Positive 与 Negative 共享全部六条上下文消息和完全相同的 query，仅在 changed_message_index: 6 追加一条不同 delta。",
+        "确认 provider-visible 文本未出现工具名、Skill 名、私有资产 ID、Gold 或评测语言；目标、route、stop_after 仅在 author-only 字段中。",
+        "确认 Negative 只补齐冻结 Maven 生命周期正文支持的阶段、goal/phase 语义、反应堆范围与停止边界，没有引入依赖、插件或 CI 结论。",
+        "确认 asset-candidates.json 未被修改，且没有修改 raw source、adapted source、staging、registry、schema 或其他批次目录。"
+      ]
+    }
+  ]
+}

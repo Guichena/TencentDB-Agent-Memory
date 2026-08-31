@@ -1,0 +1,8 @@
+{
+  "schema_version": "task1.team_registry.v1",
+  "space_id": "space-task1-engineering",
+  "team_id": "T17",
+  "topic": "前端架构与性能",
+  "split": "dev",
+  "active_agent": { "agent_id": "agent-task1-t17-general", "name": "T17 通用业务 Agent" }
+}

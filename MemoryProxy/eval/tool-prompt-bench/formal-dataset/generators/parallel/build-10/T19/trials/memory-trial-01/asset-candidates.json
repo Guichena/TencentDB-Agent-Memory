@@ -1,0 +1,48 @@
+{
+  "schema_version": "task1.synthetic_memory_candidate_set.v1",
+  "pair_id": "T19-PAIR-M01",
+  "family": "memory",
+  "synthetic": true,
+  "candidates": [
+    {
+      "asset_id": "T19-L1-TOKEN-ROTATION-GRACE",
+      "memory_level": "L1",
+      "project": "TokenForge",
+      "candidate_role": "target",
+      "synthetic": true,
+      "memory_text": "TokenForge 约定 retry grace 为 90 秒，仅覆盖瞬时网络错误下同一 refresh token 的幂等重试，用于处理请求已被接受但响应因网关超时丢失的情况；超过 90 秒按轮换已完成或令牌已失效处理，不再重放。采用 90 秒是为了覆盖客户端与网关的重试/超时上界，同时把旧令牌再次使用的风险限制在短窗口内。",
+      "supporting_conversation_ids": ["T19-L0-TOKEN-ROTATION-INCIDENT"],
+      "relevance_note": "Directly answers the requested duration, covered failure mode, boundary, and rollout rationale."
+    },
+    {
+      "asset_id": "T19-L1-TOKEN-REVOCATION-SCOPE",
+      "memory_level": "L1",
+      "project": "TokenForge",
+      "candidate_role": "same_domain_distractor",
+      "synthetic": true,
+      "memory_text": "TokenForge 的撤销检查以主体与会话为边界；撤销传播延迟和重复使用拒绝率是轮换灰度的独立观测项。",
+      "supporting_conversation_ids": ["T19-L0-TOKEN-ROTATION-INCIDENT"],
+      "relevance_note": "Concerns token lifecycle and rollout observability but contains no retry-grace policy."
+    },
+    {
+      "asset_id": "T19-L1-TOKEN-JWKS-OVERLAP",
+      "memory_level": "L1",
+      "project": "TokenForge",
+      "candidate_role": "same_domain_distractor",
+      "synthetic": true,
+      "memory_text": "TokenForge 的 JWKS 重叠窗口用于密钥切换期间让验证方识别新旧签名；该窗口与刷新令牌重试的一致性边界分开监控。",
+      "supporting_conversation_ids": ["T19-L0-TOKEN-JWKS-OVERLAP"],
+      "relevance_note": "Is a nearby lifecycle window with similar vocabulary, but it governs key validation rather than refresh retries."
+    },
+    {
+      "asset_id": "T19-L1-TOKEN-ROLLBACK-BOUNDARY",
+      "memory_level": "L1",
+      "project": "TokenForge",
+      "candidate_role": "same_domain_distractor",
+      "synthetic": true,
+      "memory_text": "TokenForge 的轮换回滚边界要求根据重复使用拒绝率、刷新失败率和撤销传播延迟判断是否停止灰度；回滚只影响发布阶段，不改变单次使用语义。",
+      "supporting_conversation_ids": ["T19-L0-TOKEN-ROTATION-INCIDENT"],
+      "relevance_note": "Addresses rollout rollback signals, not the missing retry-grace duration or its rationale."
+    }
+  ]
+}

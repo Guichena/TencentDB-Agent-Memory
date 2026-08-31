@@ -1,0 +1,100 @@
+{
+  "schema_version": "task1.synthetic_knowledge_assets.v1",
+  "stage": "DS05",
+  "team_id": "T13",
+  "snapshot_id": "snapshot-task1-hidden-v1",
+  "status": "ready",
+  "synthetic_only": true,
+  "knowledge": [
+    {
+      "asset_id": "T13-KNOW-ASTERIA-CG",
+      "type": "code_graph",
+      "name": "Asteria Edge 代码索引",
+      "target_case_key": "KNW-001",
+      "summary": "边缘网关项目的符号、文件和依赖关系索引，供可观测性路径定位使用。",
+      "match": {
+        "project_id": "t13-asteria-edge",
+        "repo_match": "benchmark.invalid/t13/asteria-edge"
+      },
+      "status": "ready",
+      "owner_agent_id": "agent-task1-t13-general",
+      "source": "internal_synthetic_fixture",
+      "fixed_tools": [
+        {
+          "name": "search",
+          "description": "按符号名、路径或自然语言片段检索索引节点。",
+          "input": {"text": "string", "project": "string"}
+        },
+        {
+          "name": "impact",
+          "description": "返回索引节点的依赖和被依赖关系。",
+          "input": {"symbol": "string", "project": "string"}
+        }
+      ],
+      "query_fixtures": [
+        {
+          "fixture_id": "T13-KNW-FIXTURE-001",
+          "tool_name": "search",
+          "query": {"text": "MultiWindowBurnRateEvaluator", "project": "t13-asteria-edge"},
+          "result": {"matches": [{"symbol": "MultiWindowBurnRateEvaluator", "file": "internal/observability/burnrate_evaluator.go", "line": 142}]}
+        }
+      ]
+    },
+    {
+      "asset_id": "T13-KNOW-INCIDENT-WIKI",
+      "type": "wiki",
+      "name": "SentryGrid 事故响应手册",
+      "summary": "事故分级、指挥角色、告警收敛和复盘约定。",
+      "match": {
+        "project_id": "t13-sentrygrid-incident",
+        "topic_match": "incident response"
+      },
+      "status": "ready",
+      "owner_agent_id": "agent-task1-t13-assets-a",
+      "source": "internal_synthetic_fixture",
+      "fixed_tools": [
+        {
+          "name": "search",
+          "description": "按手册主题和术语检索响应条目。",
+          "input": {"text": "string", "topic": "string"}
+        }
+      ],
+      "query_fixtures": [
+        {
+          "fixture_id": "T13-KNW-FIXTURE-002",
+          "tool_name": "search",
+          "query": {"text": "告警收敛后的指挥角色", "project": "t13-sentrygrid-incident"},
+          "result": {"section": "incident-command", "statement": "由当班事故指挥统一确认收敛动作并记录复盘入口。"}
+        }
+      ]
+    },
+    {
+      "asset_id": "T13-KNOW-NIMBUS-CG",
+      "type": "code_graph",
+      "name": "Nimbus Batch 代码索引",
+      "summary": "批处理性能剖析项目的符号和影响关系索引，供回归范围分析使用。",
+      "match": {
+        "project_id": "t13-nimbus-batch",
+        "repo_match": "benchmark.invalid/t13/nimbus-batch"
+      },
+      "status": "ready",
+      "owner_agent_id": "agent-task1-t13-assets-b",
+      "source": "internal_synthetic_fixture",
+      "fixed_tools": [
+        {
+          "name": "impact",
+          "description": "分析指定批处理符号的下游影响节点。",
+          "input": {"symbol": "string", "project": "string", "depth": "number"}
+        }
+      ],
+      "query_fixtures": [
+        {
+          "fixture_id": "T13-KNW-FIXTURE-003",
+          "tool_name": "impact",
+          "query": {"symbol": "BatchProfileCollector", "project": "t13-nimbus-batch", "depth": 2},
+          "result": {"nodes": ["profile/collector.go:88", "jobs/runner.go:211"], "edge_count": 2}
+        }
+      ]
+    }
+  ]
+}

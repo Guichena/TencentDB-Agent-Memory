@@ -1,0 +1,218 @@
+{
+  "schema_version": "task1.skill_source_adaptation.v1",
+  "team_id": "T14",
+  "repositories": [
+    {
+      "repository_id": "aidas-k8s-agent-skills",
+      "repository_url": "https://github.com/Aidas-dev/k8s-agent-skills",
+      "commit_sha": "077702b44a5367fde0496db6a91b015f1416312a",
+      "license": "MIT",
+      "license_path": "LICENSE",
+      "license_raw_url": "https://raw.githubusercontent.com/Aidas-dev/k8s-agent-skills/077702b44a5367fde0496db6a91b015f1416312a/LICENSE",
+      "license_sha256": "c4bc633f51aeadb81952d445da31768f4202f18ea152a8719b741dbf2d34df7f",
+      "license_local_path": "raw/_licenses/aidas-k8s-agent-skills/LICENSE",
+      "source_task_time": "2026-08-14T14:12:25Z"
+    },
+    {
+      "repository_id": "fluxcd-agent-skills",
+      "repository_url": "https://github.com/fluxcd/agent-skills",
+      "commit_sha": "e7e95ef1648a72f5276db6f98b799c5974ea846f",
+      "license": "Apache-2.0",
+      "license_path": "LICENSE",
+      "license_raw_url": "https://raw.githubusercontent.com/fluxcd/agent-skills/e7e95ef1648a72f5276db6f98b799c5974ea846f/LICENSE",
+      "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "license_local_path": "raw/_licenses/fluxcd-agent-skills/LICENSE",
+      "source_task_time": "2026-08-25T00:13:56Z"
+    }
+  ],
+  "adaptations": [
+    {
+      "asset_id": "T14-SKILL-HELM-CHART",
+      "source_id": "T14-SRC-HELM-CHART",
+      "repository_id": "aidas-k8s-agent-skills",
+      "raw_path": "raw/helm-chart/SKILL.md",
+      "adapted_path": "adapted/T14-SKILL-HELM-CHART/SKILL.md",
+      "raw_sha256": "a76387a1fe66946d28aa21cf97fd4871d27c6971325ee769e5469cb459f48358",
+      "adapted_sha256": "a76387a1fe66946d28aa21cf97fd4871d27c6971325ee769e5469cb459f48358",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T14-SKILL-TEKTON-PIPELINES",
+      "source_id": "T14-SRC-TEKTON-PIPELINES",
+      "repository_id": "aidas-k8s-agent-skills",
+      "raw_path": "raw/tekton-pipelines/SKILL.md",
+      "adapted_path": "adapted/T14-SKILL-TEKTON-PIPELINES/SKILL.md",
+      "raw_sha256": "934070b8a220a8d1b24d58b23e728ba01614168492392c7bd3bf907acc7cc301",
+      "adapted_sha256": "934070b8a220a8d1b24d58b23e728ba01614168492392c7bd3bf907acc7cc301",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T14-SKILL-FLUX-KNOWLEDGE",
+      "source_id": "T14-SRC-FLUX-KNOWLEDGE",
+      "repository_id": "fluxcd-agent-skills",
+      "raw_path": "raw/gitops-knowledge/SKILL.md",
+      "adapted_path": "adapted/T14-SKILL-FLUX-KNOWLEDGE/SKILL.md",
+      "raw_sha256": "7be56232f0fd6ba70e05b0f0b4c54bb6d900f281edd8ed0ac0497168b44f56c9",
+      "adapted_sha256": "7be56232f0fd6ba70e05b0f0b4c54bb6d900f281edd8ed0ac0497168b44f56c9",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T14-SKILL-HARBOR-HELM",
+      "source_id": "T14-SRC-HARBOR-HELM",
+      "repository_id": "aidas-k8s-agent-skills",
+      "raw_path": "raw/harbor-helm/SKILL.md",
+      "adapted_path": "adapted/T14-SKILL-HARBOR-HELM/SKILL.md",
+      "raw_sha256": "ad3dd5bb8f6d1acb539eb6b1f73ee44c8efe4ef3936581ac888df136c98135d2",
+      "adapted_sha256": "ad3dd5bb8f6d1acb539eb6b1f73ee44c8efe4ef3936581ac888df136c98135d2",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T14-SKILL-EXTERNAL-SECRETS",
+      "source_id": "T14-SRC-EXTERNAL-SECRETS",
+      "repository_id": "aidas-k8s-agent-skills",
+      "raw_path": "raw/external-secrets/SKILL.md",
+      "adapted_path": "adapted/T14-SKILL-EXTERNAL-SECRETS/SKILL.md",
+      "raw_sha256": "7a80f91c2b20050d7deb581088f412dfd63753791b89b3447baabdeab758e33f",
+      "adapted_sha256": "7a80f91c2b20050d7deb581088f412dfd63753791b89b3447baabdeab758e33f",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T14-SKILL-CILIUM-GATEWAY",
+      "source_id": "T14-SRC-CILIUM-GATEWAY",
+      "repository_id": "aidas-k8s-agent-skills",
+      "raw_path": "raw/cilium-gateway/SKILL.md",
+      "adapted_path": "adapted/T14-SKILL-CILIUM-GATEWAY/SKILL.md",
+      "raw_sha256": "ff92e868d7231e9d79e963ff2dbf39709b19889aeeb8b0c0c245bd500b22824d",
+      "adapted_sha256": "ff92e868d7231e9d79e963ff2dbf39709b19889aeeb8b0c0c245bd500b22824d",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T14-SKILL-HELM-OPS",
+      "source_id": "T14-SRC-HELM-OPS",
+      "repository_id": "aidas-k8s-agent-skills",
+      "raw_path": "raw/helm-ops/SKILL.md",
+      "adapted_path": "adapted/T14-SKILL-HELM-OPS/SKILL.md",
+      "raw_sha256": "9066b237221141b8318dbe5630fca19641737d3e0d4f15a63f6ef27076545e7d",
+      "adapted_sha256": "9066b237221141b8318dbe5630fca19641737d3e0d4f15a63f6ef27076545e7d",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T14-SKILL-FLAGGER",
+      "source_id": "T14-SRC-FLAGGER",
+      "repository_id": "aidas-k8s-agent-skills",
+      "raw_path": "raw/flagger/SKILL.md",
+      "adapted_path": "adapted/T14-SKILL-FLAGGER/SKILL.md",
+      "raw_sha256": "99b219ca26ca7e53a045a1c0f86103973a0492e8fd77f21fc9f910928c53545f",
+      "adapted_sha256": "99b219ca26ca7e53a045a1c0f86103973a0492e8fd77f21fc9f910928c53545f",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T14-SKILL-SEALED-SECRETS",
+      "source_id": "T14-SRC-SEALED-SECRETS",
+      "repository_id": "aidas-k8s-agent-skills",
+      "raw_path": "raw/sealed-secrets/SKILL.md",
+      "adapted_path": "adapted/T14-SKILL-SEALED-SECRETS/SKILL.md",
+      "raw_sha256": "745afb8a281f7d22311da244e6a92ff33ef3d97c0976ac7580ca0a14861aa793",
+      "adapted_sha256": "745afb8a281f7d22311da244e6a92ff33ef3d97c0976ac7580ca0a14861aa793",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T14-SKILL-RELOADER",
+      "source_id": "T14-SRC-RELOADER",
+      "repository_id": "aidas-k8s-agent-skills",
+      "raw_path": "raw/stakater-reloader/SKILL.md",
+      "adapted_path": "adapted/T14-SKILL-RELOADER/SKILL.md",
+      "raw_sha256": "a227679e8e8940e7f89a379a0714d32549ae65e3fe3131b8fe03566f26f9b180",
+      "adapted_sha256": "a227679e8e8940e7f89a379a0714d32549ae65e3fe3131b8fe03566f26f9b180",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T14-SKILL-TEKTON-PAC",
+      "source_id": "T14-SRC-TEKTON-PAC",
+      "repository_id": "aidas-k8s-agent-skills",
+      "raw_path": "raw/tekton-pac/SKILL.md",
+      "adapted_path": "adapted/T14-SKILL-TEKTON-PAC/SKILL.md",
+      "raw_sha256": "a05e12878aa539854722b1d85e59965743203e221ed6903b0b91e27ea3f3c004",
+      "adapted_sha256": "a05e12878aa539854722b1d85e59965743203e221ed6903b0b91e27ea3f3c004",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T14-SKILL-GITEA-REGISTRY",
+      "source_id": "T14-SRC-GITEA-REGISTRY",
+      "repository_id": "aidas-k8s-agent-skills",
+      "raw_path": "raw/gitea-registry/SKILL.md",
+      "adapted_path": "adapted/T14-SKILL-GITEA-REGISTRY/SKILL.md",
+      "raw_sha256": "1af7d8b39adfaa60189fd79a0331abf8ecf20aababfcc08c9fb161a2f45b2103",
+      "adapted_sha256": "1af7d8b39adfaa60189fd79a0331abf8ecf20aababfcc08c9fb161a2f45b2103",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T14-SKILL-HARBOR-API",
+      "source_id": "T14-SRC-HARBOR-API",
+      "repository_id": "aidas-k8s-agent-skills",
+      "raw_path": "raw/harbor-api/SKILL.md",
+      "adapted_path": "adapted/T14-SKILL-HARBOR-API/SKILL.md",
+      "raw_sha256": "2efb7e59ba47ac896e88a005a8892e455a2f8fd2365cde1b0c8bebb9d5cdfb1c",
+      "adapted_sha256": "2efb7e59ba47ac896e88a005a8892e455a2f8fd2365cde1b0c8bebb9d5cdfb1c",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T14-SKILL-TUPPR",
+      "source_id": "T14-SRC-TUPPR",
+      "repository_id": "aidas-k8s-agent-skills",
+      "raw_path": "raw/tuppr/SKILL.md",
+      "adapted_path": "adapted/T14-SKILL-TUPPR/SKILL.md",
+      "raw_sha256": "eb8779ae2bcdb13fafcd64831e39ddafa6c35f1c2148728a2797b067b7c7b0e1",
+      "adapted_sha256": "eb8779ae2bcdb13fafcd64831e39ddafa6c35f1c2148728a2797b067b7c7b0e1",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T14-SKILL-FLUX-AUDIT",
+      "source_id": "T14-SRC-FLUX-AUDIT",
+      "repository_id": "fluxcd-agent-skills",
+      "raw_path": "raw/gitops-repo-audit/SKILL.md",
+      "adapted_path": "adapted/T14-SKILL-FLUX-AUDIT/SKILL.md",
+      "raw_sha256": "54f7177812a85b9903d5ed7333b1cfd7c248c8b468b8dcfe66f0d1ad15ba24ea",
+      "adapted_sha256": "54f7177812a85b9903d5ed7333b1cfd7c248c8b468b8dcfe66f0d1ad15ba24ea",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    },
+    {
+      "asset_id": "T14-SKILL-FLUX-DEBUG",
+      "source_id": "T14-SRC-FLUX-DEBUG",
+      "repository_id": "fluxcd-agent-skills",
+      "raw_path": "raw/gitops-cluster-debug/SKILL.md",
+      "adapted_path": "adapted/T14-SKILL-FLUX-DEBUG/SKILL.md",
+      "raw_sha256": "04acf50a728eb519ab9baa47a48a189a12c1dd71bd0ed692a80e75df4eaa29c1",
+      "adapted_sha256": "04acf50a728eb519ab9baa47a48a189a12c1dd71bd0ed692a80e75df4eaa29c1",
+      "body_transform": "byte_identical",
+      "metadata_transform": "listing_description_use_when_do_not_use_when_only"
+    }
+  ],
+  "resources": [
+    {
+      "asset_id": "T14-SKILL-FLUX-KNOWLEDGE",
+      "source_id": "T14-SRC-FLUX-IMAGE-AUTOMATION",
+      "repository_id": "fluxcd-agent-skills",
+      "raw_path": "raw/gitops-knowledge/references/image-automation.md",
+      "adapted_path": "adapted/T14-SKILL-FLUX-KNOWLEDGE/references/image-automation.md",
+      "raw_sha256": "48fe0901ddca3993acceb2b92eea365d5c6f1f5e9dfda76136319d92e16692ea",
+      "adapted_sha256": "48fe0901ddca3993acceb2b92eea365d5c6f1f5e9dfda76136319d92e16692ea",
+      "body_transform": "byte_identical"
+    }
+  ]
+}

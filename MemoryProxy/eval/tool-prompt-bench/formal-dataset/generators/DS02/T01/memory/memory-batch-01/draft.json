@@ -1,0 +1,392 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t01-memory-batch-01",
+  "stage": "DS02",
+  "team_id": "T01",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T01-MEMORY-B01-PARAMSPEC-RULE",
+      "source_ids": [
+        "source-t01-current-mypy-regression",
+        "source-t01-history-python__mypy-11567"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "今天的回归出在 mypy 增量 daemon 比较新旧 AST：输入里有一个没有 bound 的 ParamSpec 节点。当前工作区固定在 python/mypy 的提交 d7b24514d7301f86031b7d1e2215cf8c2476bec0。"
+        },
+        {
+          "role": "assistant",
+          "content": "我先把它归到增量分析稳定性这条流，旁边的 ultrajson 模糊测试仍是另一项并行工作；两边的异常处理结论不能互相借用。"
+        },
+        {
+          "role": "user",
+          "content": "现有栈只能说明失败发生在 server 侧的 AST 差异构造，当前 checkout 经过重排，暂时不能从栈上确认以前采用的表示方式。"
+        },
+        {
+          "role": "assistant",
+          "content": "本地代码可以帮助定位现状，但不能替代团队上一次验证记录；我也排除了 stub 生成和普通 checker 的相近问题。"
+        },
+        {
+          "role": "user",
+          "content": "方向已经调整为复用上一次通过验证的约定，不重新设计 snapshot 格式，也不把缺少 bound 当成另一个新类型。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前已经完成流归属、工作区和干扰项的核对；实现前只差找回那个历史约定，尤其是可选 bound 应怎样进入最终表示。"
+        },
+        {
+          "role": "user",
+          "content": "我手头的回归摘要没有保存这项约定的原文或最终结论，不能据此猜一个看起来合理的处理。"
+        },
+        {
+          "role": "assistant",
+          "content": "那就先把历史上的最终处理规则找回来，再决定是否改当前 checkout。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请先找回我们之前对 ParamSpec snapshot 中缺少 bound 的最终处理约定，用于对照当前回归。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "最新日志仍只有通用的节点分派和属性访问失败，没有保留上一次验证时对缺少 bound 的具体处理规则。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少历史会话中已经验证的可选 bound 表示规则；当前上下文没有给出该结论。",
+          "route": "memory",
+          "target_asset_ids": [
+            "T01-L1-MYPY-PARAMSPEC-OPTIONAL-BOUND"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_memory_search"
+            ]
+          ],
+          "stop_after_candidate": "tdai_memory_search returns the distilled optional-bound handling conclusion derived from the reviewed ParamSpec history."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接记录已经保留最终规则：ParamSpec 节点在 snapshot_definition 中单独处理，upper_bound 使用可选类型的快照路径；没有 bound 时保留空值，不再直接访问其属性。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta supplies the one missing historical conclusion, including the branch and the None-bound behavior; no retrieval is needed."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T01-L0-07",
+        "T01-L0-11",
+        "T01-L0-12"
+      ],
+      "controlled_delta_note": "Both variants share the same mypy workspace, stream separation, evidence, and final query. Only message 8 changes: Positive leaves the one historical rule unresolved; Negative supplies exactly that rule.",
+      "source_fact_map": [
+        {
+          "claim": "The active mypy regression stream concerns incremental AST snapshot handling and is distinct from the stub-generation line.",
+          "source_id": "source-t01-current-mypy-regression",
+          "locator": "formal-worlds/W01/drafts/w01-b-fuzzing-context-pairs.json#pairs=W01-B-PAIR-003,W01-B-PAIR-004"
+        },
+        {
+          "claim": "The reviewed historical session adds ParamSpecExpr handling in snapshot_definition and changes upper_bound handling to the optional snapshot path, with a successful final check.",
+          "source_id": "source-t01-history-python__mypy-11567",
+          "locator": "formal-worlds/W01/drafts/l0-sessions.json#session=W01-L0-12"
+        }
+      ],
+      "sol_review_questions": [
+        "是否接受由已审阅 L0 归纳出的 T01-L1-MYPY-PARAMSPEC-OPTIONAL-BOUND 作为 tdai_memory_search 的候选目标，待正式 L1 冻结后再决定？",
+        "Negative delta 是否只补足了可选 bound 规则，而没有额外改变当前回归背景？"
+      ]
+    },
+    {
+      "draft_pair_id": "T01-MEMORY-B01-STUBGEN-QUOTE",
+      "source_ids": [
+        "source-t01-current-mypy-regression",
+        "source-t01-history-python__mypy-16869"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "这轮需要说明一个 stub 生成回归：Generic 类型参数里出现 TypeVarTuple 的星号展开后，生成器曾经中断。当前仍在 python/mypy 固定工作区排查。"
+        },
+        {
+          "role": "assistant",
+          "content": "我把它放在 stubgen 稳定性流；增量 AST snapshot 的 ParamSpec 修复和 ultrajson fuzzing 都保持独立，不会用它们的文件名来补这段说明。"
+        },
+        {
+          "role": "user",
+          "content": "现象已经在最小 TypeVarTuple 示例上复现，随后也验证了多个展开项和与普通 TypeVar 混用的情况。"
+        },
+        {
+          "role": "assistant",
+          "content": "这些运行结果说明修复覆盖了几个边界，但我还没有拿到当时会话里用于总结的原始表述。"
+        },
+        {
+          "role": "user",
+          "content": "方向从重新检查所有 printer 改成只核对上一轮已经验证的修复摘要，之后再决定回归说明要引用哪句话。"
+        },
+        {
+          "role": "assistant",
+          "content": "目前已完成复现范围和两条相近 AST 工作流的区分，也确认当前 checkout 的候选方法不止一个。"
+        },
+        {
+          "role": "user",
+          "content": "我需要的是会话中的原话，而不是根据现有源码改写一段新的总结；手头笔记只有现象，没有那句验证结论。"
+        },
+        {
+          "role": "assistant",
+          "content": "在写回归说明前，先把上一轮验证时的原始总结找出来。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请找回当时确认星号展开处理已覆盖哪些边界的原话，便于在回归说明中准确引用。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "当前记录只保留了复现输入和测试通过的结果，没有保留上一轮会话中那句总结性原话。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少已审阅历史会话中的原始总结措辞；用户明确要求找回原话而不是重新概括。",
+          "route": "memory",
+          "target_asset_ids": [
+            "T01-L0-11"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_conversation_search"
+            ]
+          ],
+          "stop_after_candidate": "tdai_conversation_search returns the requested exact summary wording from the reviewed stubgen session."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "原始会话中的原话如下：\"The changes we made: 1. Added a new visit_star_expr method to the AliasPrinter class in stubgen.py to handle star expressions (*_Ts) in Generic type parameters. 2. The method correctly formats the star expression by adding a * prefix to the expression's value. 3. The fix works with: Single TypeVarTuple; Multiple TypeVarTuples; Mixed TypeVar and TypeVarTuple usage.\""
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta supplies the exact three boundary categories requested by the query, so the current context no longer needs historical retrieval."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T01-L0-07",
+        "T01-L0-12",
+        "T01-L0-10"
+      ],
+      "controlled_delta_note": "Only message 8 changes. Positive lacks the prior session's wording; Negative adds only the three boundary categories from that wording. Identity, workspace, stream separation, and query remain unchanged.",
+      "source_fact_map": [
+        {
+          "claim": "The current mypy task keeps stub generation separate from the incremental ParamSpec snapshot stream.",
+          "source_id": "source-t01-current-mypy-regression",
+          "locator": "formal-worlds/W01/drafts/w01-b-fuzzing-context-pairs.json#pairs=W01-B-PAIR-003,W01-B-PAIR-004"
+        },
+        {
+          "claim": "The quoted wording is taken from the original reviewed stubgen session message (not a newly rewritten summary); that message records the AliasPrinter visit_star_expr change and the three verified boundary categories.",
+          "source_id": "source-t01-history-python__mypy-16869",
+          "locator": "formal-worlds/W01/drafts/l0-sessions.json#session=W01-L0-11;message=T01-L0-11-M041"
+        }
+      ],
+      "sol_review_questions": [
+        "原话候选是否应限定为 T01-L0-11 的完整会话消息，而不是把 Negative 的改写当成逐字引用？",
+        "是否需要在最终 Gold 中允许一次 conversation_search 即停？"
+      ]
+    },
+    {
+      "draft_pair_id": "T01-MEMORY-B01-PARAMSPEC-ATOMIC",
+      "source_ids": [
+        "source-t01-current-mypy-regression",
+        "source-t01-history-python__mypy-11567"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "增量 daemon 的 ParamSpec snapshot 回归需要写进工程记录。工作区仍是 python/mypy 的固定提交，目标是还原上一轮修复的验证过程。"
+        },
+        {
+          "role": "assistant",
+          "content": "已确认这不是当前 ujson fuzzing 流，也不是 stubgen 星号展开问题；本次只关心增量 AST snapshot 的历史过程。"
+        },
+        {
+          "role": "user",
+          "content": "以前的会话里先做过几次源码查看，后来用一个最小脚本验证；但我不想只凭模糊记忆填写时间线。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前上下文已经有失败现象和工作区信息，却没有按消息顺序保留那几步验证之间的先后关系。"
+        },
+        {
+          "role": "user",
+          "content": "方向已从直接重跑当前 checkout 改为复核历史过程；这样可以避免把现状的报错位置误写成当时的第一次失败。"
+        },
+        {
+          "role": "assistant",
+          "content": "流归属、固定提交和干扰项都核对完了，剩下的是那次会话中几个修复动作和验证动作的实际顺序。"
+        },
+        {
+          "role": "user",
+          "content": "值班索引显示相关记录落在 2021 年 11 月 16 日，并标为 instruction 类型；正文尚未载入，我只需要按这个日期和类型筛选规则核对约定。"
+        },
+        {
+          "role": "assistant",
+          "content": "筛选条件已经明确，下一步只读取这个日期和类型下与 ParamSpec snapshot 直接相关的约定。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "只查看 2021 年 11 月 16 日记录的 instruction，确认 ParamSpec snapshot 缺少 bound 时应沿用哪条处理约定。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "当前交接只记下最终成功，没有记下缺少 bound 时应采用哪条已验证约定，因此还不能对照当前回归。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少 2021 年 11 月 16 日 instruction 记录中关于缺少 bound 的已验证处理约定；日期和类型筛选条件已经在当前上下文给出。",
+          "route": "memory",
+          "target_asset_ids": [
+            "T01-L1-MYPY-PARAMSPEC-OPTIONAL-BOUND"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_atomic_query"
+            ]
+          ],
+          "stop_after_candidate": "tdai_atomic_query returns the dated instruction record containing the reviewed optional-bound handling conclusion."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接记录已经补全约定：ParamSpec 节点在 snapshot_definition 中单独处理，upper_bound 可能为 None 时使用可选类型的快照路径并保留空值，不再直接访问其属性。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta provides the complete requested event order and the causal transition between the two failures and the successful check."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T01-L0-11",
+        "T01-L0-07",
+        "T01-L0-10"
+      ],
+      "controlled_delta_note": "Both variants expose the same dated instruction filter and final query. Only message 8 differs: Positive leaves the optional-bound rule unresolved; Negative supplies exactly that rule.",
+      "source_fact_map": [
+        {
+          "claim": "The active current stream is the mypy incremental AST snapshot regression, separated from stubgen and ujson fuzzing work.",
+          "source_id": "source-t01-current-mypy-regression",
+          "locator": "formal-worlds/W01/drafts/w01-b-fuzzing-context-pairs.json#pairs=W01-B-PAIR-003,W01-B-PAIR-004"
+        },
+        {
+          "claim": "The reviewed historical record is dated 2021-11-16 and records ParamSpecExpr handling, the optional None upper_bound path, and a successful snapshot result.",
+          "source_id": "source-t01-history-python__mypy-11567",
+          "locator": "formal-worlds/W01/drafts/l0-sessions.json#session=W01-L0-12"
+        }
+      ],
+      "sol_review_questions": [
+        "日期与 instruction 类型筛选是否足以让 tdai_atomic_query 成为可执行且不依赖隐藏 session_id 的 direct 首步？",
+        "Negative 是否只补足缺少 bound 的已验证约定，而没有引入额外时间线事实？"
+      ]
+    },
+    {
+      "draft_pair_id": "T01-MEMORY-B01-MOTO-ATOMIC",
+      "source_ids": [
+        "source-t01-history-getmoto__moto-5134"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "这轮在整理同 Team 的历史 Python 记录，需核对一条 Moto EventPattern exists 过滤器语义；当前主线仍是 mypy 回归与 ujson fuzzing。"
+        },
+        {
+          "role": "assistant",
+          "content": "我把它和当前两条主线分开；这里只记录历史事件过滤器对字段存在性的窄语义，不把其他项目的异常处理带进来。"
+        },
+        {
+          "role": "user",
+          "content": "旧回归已经缩到 EventPattern 的 exists 条件，测试数据同时出现值为 null 和完全缺少该键的事件；但现有摘要没有说明两者怎样区分。"
+        },
+        {
+          "role": "assistant",
+          "content": "我先把组件、过滤条件和两种事件形态整理好，暂不把 None 直接等同于缺失键。"
+        },
+        {
+          "role": "user",
+          "content": "方向已从重看所有事件字段改成只复核 exists 语义，避免把排序修补或其他过滤器行为混进结论。"
+        },
+        {
+          "role": "assistant",
+          "content": "来源记录显示相关结论落在 2022 年 5 月 13 日，并标为 instruction 类型；这提供了时间和类型筛选条件。"
+        },
+        {
+          "role": "user",
+          "content": "筛选条件已经明确，但键存在且值为 null 与键缺失是否都满足 exists，尚未保留在当前上下文。"
+        },
+        {
+          "role": "assistant",
+          "content": "当前准备工作已完成，下一步只读取该日期和类型下关于这两个事件形态的窄事实。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "只查看 date=2022-05-13、type=instruction 的记录，确认 EventPattern 的 exists 语义是否区分“键存在且值为 null”和“键缺失”。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "在 date=2022-05-13、type=instruction 的记录中，当前上下文没有保留 exists 对 null 值和缺失键的具体判定。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少 date=2022-05-13、type=instruction 记录中关于 exists 对 null 值与缺失键判定的窄事实；日期和类型筛选条件已公开给模型。",
+          "route": "memory",
+          "target_asset_ids": [
+            "T01-L1-MOTO-PRESENCE-PREDICATE"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "tdai_atomic_query"
+            ]
+          ],
+          "stop_after_candidate": "tdai_atomic_query returns the dated instruction record containing the reviewed EventPattern exists distinction."
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接记录已经补全事实：在 date=2022-05-13、type=instruction 的记录中，键存在但值为 null 属于 exists=true；键缺失才属于 exists=false。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "Negative delta supplies exactly the null-versus-missing exists distinction, while the historical component, date/type filter, and final query remain unchanged."
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T01-L0-12",
+        "T01-L0-11",
+        "T01-L0-07"
+      ],
+      "controlled_delta_note": "Only message 8 changes. Positive leaves the null-versus-missing exists fact unresolved; Negative supplies exactly that fact. Component scope, date/type filter, and query remain unchanged.",
+      "source_fact_map": [
+        {
+          "claim": "The reviewed historical Moto record is observed on 2022-05-13 and concerns an EventPattern exists filter.",
+          "source_id": "source-t01-history-getmoto__moto-5134",
+          "locator": "formal-worlds/W01/drafts/l0-sessions.json#session=W01-L0-01"
+        },
+        {
+          "claim": "The reviewed record explicitly distinguishes a present key with null value from a missing key for exists matching, and the corrected test passes.",
+          "source_id": "source-t01-history-getmoto__moto-5134",
+          "locator": "formal-worlds/W01/drafts/l0-sessions.json#session=W01-L0-01;messages=T01-L0-01-M091..M099"
+        }
+      ],
+      "sol_review_questions": [
+        "date=2022-05-13 与 type=instruction 是否足以让 tdai_atomic_query 成为可执行的 direct 首步？",
+        "是否接受 W01-L0-01 已审阅的 null-versus-missing exists 事实作为 T01-L1-MOTO-PRESENCE-PREDICATE 候选？"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,266 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t03-skill-expand-01",
+  "stage": "DS03",
+  "team_id": "T03",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T03-SKILL-EXPAND-01-GRPO",
+      "external_source_ids": [
+        "formal-dataset/source-material/T03/skills/grpo/adapted/SKILL.md",
+        "formal-dataset/source-material/T03/skills/grpo/raw/SKILL.md"
+      ],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"我在 TRL-GRPO 项目里复查一轮后训练，当前工作区和运行快照已经固定；这轮只做算法管线核对，不改训练代码。"},
+        {"role":"assistant","content":"我先把问题限定在从采样到更新的 GRPO 运行链路，暂不把它和环境安装或 TRL API 细节混在一起。"},
+        {"role":"user","content":"同一提示的多条 completion 奖励长期接近，日志又同时出现优势、概率和损失异常，我还不能判断是哪一段先失去信号。"},
+        {"role":"assistant","content":"现有快照能说明症状跨越多个阶段，但没有一份按阶段排列的不变量清单可供逐项排查。"},
+        {"role":"user","content":"我本来想先把学习率调小并放宽裁剪，后来意识到这样会掩盖奖励归一化或概率计算的问题。"},
+        {"role":"assistant","content":"先恢复算法参考中的标准顺序和数学检查，再决定是否需要任何参数或实现变更。"},
+        {"role":"user","content":"采样文本、奖励表、logits 摘要和损失分解都已收集；现在没有可靠的阶段起点或停止条件。"},
+        {"role":"assistant","content":"还缺少一套可执行的 GRPO 从生成到更新的步骤，以及能证明每一步没有破坏学习信号的边界。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请给出这轮 GRPO 管线的排查顺序、各段应核对的数学条件和完成前的边界，先不要改代码。",
+      "positive": {
+        "delta_message": {"role":"user","content":"我没有那套算法流程的完整内容。请先从团队已列出的参考资料中找到适用说明，概述从生成到损失的核对起点，停在可以开始逐项检查的位置。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结 GRPO 参考中的七步训练链、组内优势公式及 epsilon 约束、log-probability 非正不变量和带裁剪与 KL 的损失边界。",
+          "route": "skill",
+          "target_asset_ids": ["T03-SKILL-GRPO"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "查看 listed 的 GRPO 参考并概述从采样/解码开始的排查起点，暂不修改代码。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"user","content":"我把缺失内容补齐：每步先从当前策略为每个提示采样 G 条 completion，再解码、评分、按同一提示的组统计计算优势、计算当前和参考策略的逐 token 对数概率、计算带裁剪 surrogate 与 KL 惩罚的损失，最后反向传播更新。优势使用 mu=mean(rewards)、sigma=std(rewards)、A=(r-mu)/(sigma+epsilon)，epsilon 只作数值稳定且应很小，典型范围为 1e-4 到 1e-8；组内优势近似和为零，高奖励为正、低奖励为负，奖励恒定或 epsilon 过大会使信号消失。逐 token log-probability 用 logit-logsumexp(logits)，必须始终不大于零；损失要分别核对 ratio、clip(ratio,1-eps,1+eps) 和 beta*KL(pi_theta||pi_ref)，并确认裁剪限制过大更新、KL 约束偏离参考策略。只有这些阶段和不变量都核对完才算完成，本轮仍不改代码。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已给出冻结参考中的完整训练顺序、优势归一化与数值范围、恒定奖励边界、log-probability 不变量及裁剪/KL 损失检查，足以回答 query 而无需读取资料。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T03-SKILL-TRL", "T03-SKILL-RL-POST-TRAINING"],
+      "controlled_delta_note": "两种变体共享同一 TRL-GRPO 工作区、快照、症状、日志、范围和 query；仅追加消息不同。Positive 留下标准 GRPO 链路与数学边界的缺口，Negative 只补齐该缺口并保持不改代码的范围。",
+      "source_fact_map": [
+        {"claim":"GRPO 训练步骤按采样、解码、评分、组相对优势、当前/参考策略逐 token log-probability、裁剪损失与 KL、反向传播更新排列。","source_id":"formal-dataset/source-material/T03/skills/grpo/adapted/SKILL.md","locator":"## Training Loop"},
+        {"claim":"组内优势由均值、标准差和小 epsilon 归一化；epsilon 仅用于数值稳定，奖励恒定或 epsilon 过大时学习信号会消失。","source_id":"formal-dataset/source-material/T03/skills/grpo/raw/SKILL.md","locator":"## Advantage Estimation; Properties"},
+        {"claim":"逐 token 对数概率用 logit 减 logsumexp 且必须非正；损失由 clipped surrogate 与 beta KL 惩罚组成。","source_id":"formal-dataset/source-material/T03/skills/grpo/adapted/SKILL.md","locator":"## Log-Probability Computation; ## Loss Function"}
+      ],
+      "sol_review_questions": [
+        "确认 listed 目标是 T03-SKILL-GRPO，首选动作只为 skill_view，作者侧干扰不会改变路由。",
+        "确认 Negative 只补冻结 GRPO 正文明确的流程、公式和不变量，没有引入 TRL 实现专属细节。",
+        "确认 provider-visible 文本未暴露资产标识、动作名或评测字段，且本稿不替 Sol 决定最终 Gold。"
+      ]
+    },
+    {
+      "draft_pair_id": "T03-SKILL-EXPAND-02-NLP-ENV",
+      "external_source_ids": [
+        "formal-dataset/source-material/T03/skills/nlp-research-repo-package-installment/adapted/SKILL.md",
+        "formal-dataset/source-material/T03/skills/nlp-research-repo-package-installment/raw/SKILL.md"
+      ],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"我在 SimPO 论文复现项目中接手一台新机器，仓库快照已固定，但首次运行在依赖导入阶段失败；这轮只整理环境，不开始复现实验。"},
+        {"role":"assistant","content":"我先核对仓库声明的依赖与解释器状态，把环境重建和论文指标解释分开处理。"},
+        {"role":"user","content":"当前目录里似乎同时有环境配置和 pip 依赖文件，机器上的 Python 版本也和同事记录不一致。"},
+        {"role":"assistant","content":"在安装任何包前，应该先确定哪份声明是基础、哪份是补充，并留下可比较的当前环境记录。"},
+        {"role":"user","content":"我原来想直接升级 transformers 和相关包，但这可能破坏仓库原本的版本组合。"},
+        {"role":"assistant","content":"先找环境复现流程，按仓库声明和 Python 版本做决策，再执行最小的安装与冒烟确认。"},
+        {"role":"user","content":"仓库路径、requirements 文件、环境文件和导入错误日志都已整理；现在缺少一份可审计的安装前后顺序。"},
+        {"role":"assistant","content":"还需要明确记录哪些解释器信息、版本不匹配时如何建环境，以及安装后用什么方式确认没有偏离声明。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请给出这个 NLP 复现仓库的环境重建顺序、必须留下的记录和最小验证，先不要安装或改文件。",
+      "positive": {
+        "delta_message": {"role":"user","content":"我还缺少从依赖声明到环境验证的完整步骤。请先查看团队已列出的研究复现参考，概述安装前应做什么和应停在哪里，暂不执行安装。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结 NLP 研究仓库环境流程关于 environment.yml/requirements.txt 优先级、python_int.txt 记录、Python 版本决策、uv 建环境和依赖冒烟测试的完整顺序。",
+          "route": "skill",
+          "target_asset_ids": ["T03-SKILL-NLP-REPRO-ENV"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "查看 listed 的 NLP 复现环境流程并概述安装前检查，停在执行安装之前。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"user","content":"我把缺失步骤补全：先读取仓库依赖文件，优先 environment.yml 或 environment.yaml；若没有则使用 requirements.txt；两者都有时以环境文件为基础、requirements.txt 为补充，除非 README 另有说明。安装前写入 /root/python_int.txt，包含 python -VV、python -m pip --version 和 python -m pip freeze；将当前 Python 主次版本与仓库期望值比较，若不匹配先建立匹配环境，例如用 uv 安装 Python 3.11.8 并创建对应 venv，再在该环境更新 pip、setuptools、wheel。随后严格从仓库依赖文件安装，避免随机升级，最后做快速 import 或 smoke test。本轮只据此给出顺序，不执行安装。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已提供冻结环境流程的文件优先级、解释器记录、版本匹配决策、uv 示例、声明式安装和冒烟测试，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T03-SKILL-SETUP-ENV", "T03-SKILL-JUPYTER"],
+      "controlled_delta_note": "两种变体共享 SimPO 仓库、机器差异、文件状态、导入故障和不安装范围；仅追加消息不同。Positive 缺少复现环境流程，Negative 只补齐文件优先级、记录、版本决策和验证顺序。",
+      "source_fact_map": [
+        {"claim":"环境复现应先读取 environment.yml/environment.yaml，缺失时使用 requirements.txt；两者都有时前者为基础、后者为补充。","source_id":"formal-dataset/source-material/T03/skills/nlp-research-repo-package-installment/adapted/SKILL.md","locator":"## What to do (must run before any install); 1. Read the repo dependency files"},
+        {"claim":"安装前的 python_int.txt 必须记录 python -VV、pip 版本和 pip freeze。","source_id":"formal-dataset/source-material/T03/skills/nlp-research-repo-package-installment/raw/SKILL.md","locator":"## What to do (must run before any install); 2. Log the current environment"},
+        {"claim":"Python 主次版本不匹配时应先建立匹配环境，示例使用 uv Python 3.11.8 和 venv；随后从声明文件安装并做 import/smoke test。","source_id":"formal-dataset/source-material/T03/skills/nlp-research-repo-package-installment/adapted/SKILL.md","locator":"3. Compare & decide; Example: set up a fresh Python 3.11 environment; final paragraph"}
+      ],
+      "sol_review_questions": [
+        "确认 listed 目标是 T03-SKILL-NLP-REPRO-ENV，首选动作只为 skill_view；SETUP-ENV 仅为作者侧近义干扰。",
+        "确认 Negative 的 /root/python_int.txt、文件优先级、版本匹配和声明式安装都直接得到冻结正文支持。",
+        "确认 provider-visible 文本没有暴露资产标识或动作名，且没有替 Sol 作生产可见性或 Gold 决策。"
+      ]
+    },
+    {
+      "draft_pair_id": "T03-SKILL-EXPAND-04-TRL",
+      "external_source_ids": [
+        "formal-dataset/source-material/T03/skills/trl/adapted/SKILL.md",
+        "formal-dataset/source-material/T03/skills/trl/raw/SKILL.md"
+      ],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"我在 huggingface/trl 的固定提交上整理一次 GRPO 训练器审计，重点是定位接口契约与配置边界，不先改仓库文件。"},
+        {"role":"assistant","content":"我会把这次问题限定在 TRL 的 trainer 层和共享工具层，避免把通用算法推导当成代码库导航答案。"},
+        {"role":"user","content":"目前只知道训练器、配置和 utils 都可能相关；一次改动把 token 概率、padding 和生成阶段混在了一起。"},
+        {"role":"assistant","content":"先厘清 trainer hierarchy、GRPO 配置字段以及共享工具的输入输出契约，再定位具体实现。"},
+        {"role":"user","content":"代码快照、失败批次的 logits 形状和 tokenizer 输出都已保留，但还没有可信的模块边界说明。"},
+        {"role":"assistant","content":"现有证据能支撑代码审计，却缺少 TRL 参考中关于 trainer 覆写点和工具不变量的总览。"},
+        {"role":"user","content":"请先给出从库结构到契约核对的最短审计路线，暂时不要打开或编辑具体实现文件。"},
+        {"role":"assistant","content":"需要先从团队范围找到那份 TRL 代码库参考，并按返回的资料标识继续查看，不能自行猜模块职责。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请先找到适用于这次 TRL 审计的团队资料，并概述 trainer、共享工具和配置之间的核对起点，不修改代码。",
+      "positive": {
+        "delta_message": {"role":"user","content":"我还没有那份代码库参考的正文。请先在团队资料中检索与 TRL trainer、log-probability 和 decoding 契约有关的说明，再按检索结果查看目标内容，停在审计起点。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结 TRL 参考的包结构、trainer hierarchy、compute_loss/training_step 覆写关系、selective_log_softmax 与 decode_and_strip_padding 契约及配置字段。",
+          "route": "skill",
+          "target_asset_ids": ["T03-SKILL-TRL"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "在同 Team 范围搜索 TRL 参考，按返回标识查看 T03-SKILL-TRL，概述审计起点后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"user","content":"我把缺失的代码库边界补齐：TRL 的 trainer 目录包含 grpo_trainer.py、grpo_config.py、sft_trainer.py、dpo_trainer.py、kto_trainer.py、online_dpo_trainer.py 和 utils.py；各 trainer 继承 transformers.Trainer，分别覆写 compute_loss，GRPO 与 OnlineDPO 还在 training_step 前加入生成阶段。共享 selective_log_softmax 接收 logits[B,T,V] 与 index[B,T]，返回等价于对完整 log_softmax 后 gather 的 log_probs[B,T]，且每项非正；decode_and_strip_padding 接收 input_ids[B,T] 和 tokenizer，返回长度为 B 的清理文本，去掉 padding 与解码伪影。配置类继承 TrainingArguments，GRPOConfig 至少涉及 num_generations、beta、epsilon、reward_functions。本轮只按这些边界规划审计，不修改代码。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已给出冻结 TRL 参考的包结构、继承和覆写关系、两个共享工具的输入输出契约以及 GRPO 配置字段，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T03-SKILL-GRPO", "T03-SKILL-SETUP-ENV"],
+      "controlled_delta_note": "两种变体共享 TRL 固定提交、审计症状、证据范围和不改代码边界；仅追加消息不同。Positive 需要同 Team 检索并查看 TRL 参考，Negative 只补齐参考中的模块与契约内容。",
+      "source_fact_map": [
+        {"claim":"TRL 包含 trainer 层的 GRPO/SFT/DPO/KTO/OnlineDPO 文件、utils.py 及配置和模型目录。","source_id":"formal-dataset/source-material/T03/skills/trl/adapted/SKILL.md","locator":"## Package Structure"},
+        {"claim":"各 trainer 继承 transformers.Trainer 并覆写 compute_loss，GRPO 和 OnlineDPO 还在 training_step 中加入生成阶段。","source_id":"formal-dataset/source-material/T03/skills/trl/raw/SKILL.md","locator":"## Trainer Hierarchy"},
+        {"claim":"selective_log_softmax 与 decode_and_strip_padding 的输入输出和非正 log-probability 契约，以及 GRPOConfig 字段均在参考中定义。","source_id":"formal-dataset/source-material/T03/skills/trl/adapted/SKILL.md","locator":"## Shared Utility Functions (trainer/utils.py); ## Configuration System"}
+      ],
+      "sol_review_questions": [
+        "确认 T03-SKILL-TRL 是 team-visible 且未 listed，路由固定为同 Team 搜索后按返回标识查看。",
+        "确认 Negative 仅补冻结 TRL 正文的模块、继承、工具契约和配置事实，没有把 GRPO 算法资料冒充 TRL 代码事实。",
+        "确认 GRPO 与 SETUP-ENV 仅是作者侧近义干扰，provider-visible 文本未出现资产 ID 或动作名。"
+      ]
+    },
+    {
+      "draft_pair_id": "T03-SKILL-EXPAND-05-SETUP",
+      "external_source_ids": [
+        "formal-dataset/source-material/T03/skills/setup-env/adapted/SKILL.md",
+        "formal-dataset/source-material/T03/skills/setup-env/raw/SKILL.md"
+      ],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "medium",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"我在 MONAI imaging 项目里准备重跑一组 transform pipeline，当前机器没有可用虚拟环境；这轮只确定环境入口，不触碰 pipeline 逻辑。"},
+        {"role":"assistant","content":"我先确认项目根目录的依赖入口，再决定是同步项目环境还是从 requirements 建 venv。"},
+        {"role":"user","content":"仓库里有若干 Python 配置文件，但我还没有确认 pyproject.toml 和 requirements.txt 哪个真正存在。"},
+        {"role":"assistant","content":"不能先执行安装命令；环境流程需要先根据文件存在性选择唯一工作流。"},
+        {"role":"user","content":"我原来打算直接在系统 Python 里装 MONAI 和测试依赖，但这样无法保证后续 notebook 验证可复现。"},
+        {"role":"assistant","content":"先恢复项目环境的标准入口、安装命令和运行命令，再决定是否需要任何额外包。"},
+        {"role":"user","content":"项目路径、transform 测试入口和当前解释器状态已记录；现在缺少从文件探测到最小运行检查的明确顺序。"},
+        {"role":"assistant","content":"还缺少环境流程在两种依赖布局下的分支，以及安装后应该怎样在项目环境中执行脚本。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请先给出这个 Python/ML 项目的环境设置分支、安装方式和运行方式，暂时不要执行命令。",
+      "positive": {
+        "delta_message": {"role":"user","content":"我不知道该按哪种文件布局选择环境流程。请先在团队资料中找到适用的 Python 环境说明并查看其正文，概述两个分支和停止点，不要执行安装。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结 setup-env 关于 pyproject.toml 项目工作流、requirements.txt pip 工作流、uv venv/sync、uv run 或 .venv/bin/python 运行方式的决策树。",
+          "route": "skill",
+          "target_asset_ids": ["T03-SKILL-SETUP-ENV"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "在同 Team 范围检索 setup-env，按返回标识查看 T03-SKILL-SETUP-ENV，概述文件分支后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"user","content":"我把决策树补全：若项目根有 pyproject.toml，采用 project workflow，运行 uv sync，并用 uv run -- python script.py 或 uv run -- python -m module 执行；否则若有 requirements.txt，采用 pip workflow，先 uv venv，再 uv pip install -r requirements.txt，之后直接用 .venv/bin/python script.py 或 .venv/bin/python -m module 运行；若两者都没有就停止并报告缺少依赖文件。本轮只据此规划，不执行命令。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已完整给出冻结 setup-env 的文件判定、uv 安装分支、两种运行入口和无依赖文件时的停止条件，足以回答 query。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T03-SKILL-JUPYTER", "T03-SKILL-NLP-REPRO-ENV"],
+      "controlled_delta_note": "两种变体共享 MONAI 项目、空环境、文件不确定性、pipeline 测试范围和不执行命令的约束；仅追加消息不同。Positive 缺少 setup-env 决策树，Negative 只补齐两种文件布局的命令与停止条件。",
+      "source_fact_map": [
+        {"claim":"有 pyproject.toml 时 setup-env 选择 project workflow，以 uv sync 同步并用 uv run 执行脚本或模块。","source_id":"formal-dataset/source-material/T03/skills/setup-env/adapted/SKILL.md","locator":"## Workflow selection; ## Project workflow (pyproject.toml)"},
+        {"claim":"只有 requirements.txt 时选择 pip workflow，以 uv venv 创建环境、uv pip install -r 安装，并使用 .venv/bin/python 运行。","source_id":"formal-dataset/source-material/T03/skills/setup-env/raw/SKILL.md","locator":"## Pip workflow (requirements.txt)"},
+        {"claim":"没有 pyproject.toml 或 requirements.txt 时必须停止并报告错误。","source_id":"formal-dataset/source-material/T03/skills/setup-env/adapted/SKILL.md","locator":"## Workflow selection"}
+      ],
+      "sol_review_questions": [
+        "确认 T03-SKILL-SETUP-ENV 是 team-visible 且未 listed，路由固定为同 Team 搜索后按返回标识查看。",
+        "确认 Negative 的两条工作流、命令和无文件停止条件均来自冻结 setup-env 正文，没有加入 MONAI 特定依赖猜测。",
+        "确认 JUPYTER 与 NLP-REPRO-ENV 只是作者侧近义干扰，provider-visible 文本不含动作名或资产 ID。"
+      ]
+    },
+    {
+      "draft_pair_id": "T03-SKILL-EXPAND-06-JUPYTER",
+      "external_source_ids": [
+        "formal-dataset/source-material/T03/skills/jupyter-notebook/adapted/SKILL.md",
+        "formal-dataset/source-material/T03/skills/jupyter-notebook/adapted/references/experiment-patterns.md",
+        "formal-dataset/source-material/T03/skills/jupyter-notebook/raw/SKILL.md",
+        "formal-dataset/source-material/T03/skills/jupyter-notebook/raw/references/experiment-patterns.md"
+      ],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"我在 SimPO 复现项目里准备把一段零散脚本整理成实验 notebook，目标是让同事能从头重跑并看懂指标来源；这轮先定结构，不填完整代码。"},
+        {"role":"assistant","content":"我先确认这是 exploratory experiment 而不是教学 walkthrough，再按可复现和可复查的顺序安排 notebook 骨架。"},
+        {"role":"user","content":"目前只有一段混合了导入、参数、多个 sweep 和打印结果的脚本，seed 也散落在中间。"},
+        {"role":"assistant","content":"需要把目标、设置、假设、最小基线和结果记录拆开，避免第一次运行就被大规模 sweep 淹没。"},
+        {"role":"user","content":"仓库环境和数据切分已固定，已有脚本输出也保留；但还没有 notebook 的可读结构或成功标准。"},
+        {"role":"assistant","content":"先核对 notebook 参考及其随附的实验模式资源，再决定 cell 顺序和最小可运行边界。"},
+        {"role":"user","content":"我不想凭经验再造一套模板，也不想在还没验证基线前加入复杂可视化。"},
+        {"role":"assistant","content":"现在缺少冻结参考中关于实验 notebook 标题、设置、计划、baseline、结果和后续决策的具体组织法。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请先核对 notebook 参考及其真实随附的实验模式内容，再给出这次 SimPO 实验的结构起点，暂不填充完整实现。",
+      "positive": {
+        "delta_message": {"role":"user","content":"我还没有这份 notebook 参考和实验模式的具体内容。请先查看团队已列出的 notebook 说明，再读取其中真实存在的实验模式文件，概述从目标到最小基线的结构，停在可以开始搭骨架的位置。"},
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结 jupyter-notebook 正文以及 references/experiment-patterns.md 中 experiment 模式的标题/目标、可复现设置、计划、最小 baseline、结果记录和 next steps 结构。",
+          "route": "skill",
+          "target_asset_ids": ["T03-SKILL-JUPYTER", "T03-SKILL-JUPYTER:references/experiment-patterns.md"],
+          "allowed_sequence_candidates": [["skill_view", "skill_files_read"]],
+          "stop_after_candidate": "查看 listed 的 Jupyter notebook 说明，并读取其冻结资源 references/experiment-patterns.md，概述实验骨架后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role":"user","content":"我把实验模式补全：先在标题和目标中写清研究问题与成功标准；设置与可复现部分只导入所需内容，尽早设置 seed，并把配置集中在一个短 cell；计划部分先列假设、sweep 和指标；先做最小可运行 baseline，端到端确认后再增加复杂度；结果与 notes 放在相关代码附近，用短 markdown 和小字典或表格记录关键指标；next steps 用简短条目决定继续、转向还是停止并记录后续想法。请据此只给出 notebook 骨架起点，不填完整实现。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息逐项提供冻结 references/experiment-patterns.md 的实验结构与完成边界，足以回答 query，无需读取 notebook 资产。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T03-SKILL-NLP-REPRO-ENV", "T03-SKILL-SETUP-ENV"],
+      "controlled_delta_note": "两种变体共享 SimPO 脚本、固定数据、notebook 目标、实验类型和不填完整实现的范围；仅追加消息不同。Positive 留出正文与冻结资源的结构缺口，Negative 只补齐实验模式的六段组织法。",
+      "source_fact_map": [
+        {"claim":"Jupyter notebook skill 将实验与 tutorial 区分，并要求先锁定意图、目标、受众和完成定义。","source_id":"formal-dataset/source-material/T03/skills/jupyter-notebook/adapted/SKILL.md","locator":"## Create clean, reproducible Jupyter notebooks; ## Workflow; 1. Lock the intent"},
+        {"claim":"实验模式包含标题/目标、设置与可复现、计划、最小 baseline、结果与 notes、next steps 六段结构。","source_id":"formal-dataset/source-material/T03/skills/jupyter-notebook/adapted/references/experiment-patterns.md","locator":"# Experiment Patterns; all six bullets"},
+        {"claim":"实验设置应尽早设 seed、集中配置；baseline 应先端到端确认，再增加复杂度；结果记录应靠近代码并保持简洁。","source_id":"formal-dataset/source-material/T03/skills/jupyter-notebook/raw/references/experiment-patterns.md","locator":"# Experiment Patterns; Setup and reproducibility; Minimal baseline; Results and notes"}
+      ],
+      "sol_review_questions": [
+        "确认 T03-SKILL-JUPYTER 是 listed 目标，且必须先查看正文再读取其 manifest 真实列出的 references/experiment-patterns.md。",
+        "确认 Negative 仅复述冻结实验模式六段结构，没有加入资源未支持的 notebook 代码、库或执行结果。",
+        "确认 NLP-REPRO-ENV 与 SETUP-ENV 仅是作者侧近义干扰，provider-visible 文本未泄露资源路径、资产 ID 或动作名。"
+      ]
+    }
+  ]
+}

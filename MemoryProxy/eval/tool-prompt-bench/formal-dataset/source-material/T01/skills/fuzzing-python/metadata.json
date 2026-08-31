@@ -1,0 +1,30 @@
+{
+  "schema_version": "task1.github_skill_source.v1",
+  "team_id": "T01",
+  "name": "fuzzing-python",
+  "repository_url": "https://github.com/benchflow-ai/skillsbench",
+  "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+  "source_path": "tasks/setup-fuzzing-py/environment/skills/fuzzing-python/SKILL.md",
+  "license_spdx": "Apache-2.0",
+  "license_file": "../../licenses/Apache-2.0.txt",
+  "visibility": "same-team-search",
+  "main_raw_sha256": "718882130de22873f00e422d1c8d4d67febd002d5ee0163f314fea8890c0b835",
+  "raw_files": [
+    {
+      "path": "SKILL.md",
+      "source_path": "tasks/setup-fuzzing-py/environment/skills/fuzzing-python/SKILL.md",
+      "url": "https://raw.githubusercontent.com/benchflow-ai/skillsbench/b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af/tasks/setup-fuzzing-py/environment/skills/fuzzing-python/SKILL.md",
+      "sha256": "718882130de22873f00e422d1c8d4d67febd002d5ee0163f314fea8890c0b835",
+      "byte_length": 16925
+    }
+  ],
+  "adapted_files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "ad65e531bd79b962d2cb9678099d92f865899b206dcbc308353444fc8cac4a1f",
+      "byte_length": 17403
+    }
+  ],
+  "adaptation_diff": "adaptation.diff",
+  "frozen": true
+}

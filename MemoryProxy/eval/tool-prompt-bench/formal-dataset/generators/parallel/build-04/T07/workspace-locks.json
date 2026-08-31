@@ -1,0 +1,40 @@
+{
+  "schema_version": "task1.workspace_locks.v1",
+  "team_id": "T07",
+  "hash_recipe": "tree_sha256 = SHA-256 of UTF-8 sorted '<relative-path>\\0<byte-length>\\0<file-sha256>\\n'; file_manifest_sha256 omits per-file sha; archive_sha256 hashes the GitHub commit zip bytes",
+  "locks": [
+    {
+      "project_id": "graph-tenant-sync",
+      "repository_url": "https://github.com/microsoftgraph/msgraph-sdk-javascript",
+      "commit_sha": "5438ae90f50ef15d3656f0cf9c5485deee351f19",
+      "license": "MIT",
+      "archive_bytes": 3851606,
+      "archive_sha256": "a293474e58c49cb69adac9956e847552935a805b7d0544ff1e8b4bc3fe6d1f4d",
+      "file_count": 231,
+      "tree_sha256": "a2c9698798588719ff774404b27fc950f53ff370f7f98dcbf233e933e3f31c58",
+      "file_manifest_sha256": "5cba9eb34913be10d0381f0fbc456281fdedd2867ef424dc37015547c988bbe9"
+    },
+    {
+      "project_id": "qdrant-ingestion-gateway",
+      "repository_url": "https://github.com/qdrant/qdrant-client",
+      "commit_sha": "550484d767d319857d4f46e97d4551ba419ee670",
+      "license": "Apache-2.0",
+      "archive_bytes": 837534,
+      "archive_sha256": "ac3db3347e8c43397d0a7ef18be6a9b85d7c396352dc26d7b06a02c5b67a09fc",
+      "file_count": 239,
+      "tree_sha256": "5679870a9d7b0f976da150a50badeb4b06d8524662ee3f223a612a99b18fc0c5",
+      "file_manifest_sha256": "08badf6e8763da49756f102aa21ef79a877b6aff54709422de06f249d6bbdddd"
+    },
+    {
+      "project_id": "partner-openapi-client",
+      "repository_url": "https://github.com/openapi-ts/openapi-typescript",
+      "commit_sha": "0cc7ee77d28359c7901d9cd3b5733b70a050ea49",
+      "license": "MIT",
+      "archive_bytes": 9763663,
+      "archive_sha256": "d1d82c9fea6a11f17ab517e9812ec4a315e2b59ec1fc78902e8b2165a2b59f34",
+      "file_count": 2418,
+      "tree_sha256": "c8ac918268cdbf340eae8531ba1583f9f485a25e1869427ea4a1c1d132725ed6",
+      "file_manifest_sha256": "c8a6e48f1ca214285d188edade190873907fa280382606d168b0562c95a0fbe2"
+    }
+  ]
+}

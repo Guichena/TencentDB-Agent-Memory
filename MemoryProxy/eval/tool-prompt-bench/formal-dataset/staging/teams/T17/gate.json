@@ -1,0 +1,1033 @@
+{
+  "schema_version": "task1.team_gate.v2",
+  "dataset_revision": "formal-v2",
+  "team_id": "T17",
+  "status": "passed",
+  "checked_at": "2026-08-31T23:30:00+08:00",
+  "counts": {
+    "cases": 40,
+    "pairs": 15,
+    "memory_positive": 6,
+    "skill_positive": 6,
+    "knowledge_positive": 3,
+    "paired_no_tool_negative": 15,
+    "natural_coding_negative": 10
+  },
+  "route_distribution": {
+    "discovery": 10,
+    "direct": 5
+  },
+  "assets": {
+    "l0_sessions": 10,
+    "l1_memories": 16,
+    "l2_scenes": 5,
+    "l3_profiles": 1,
+    "skills": 16,
+    "knowledge": 3
+  },
+  "luna_batches": [
+    {
+      "batchId": "T17-TRIAL-MEM-01",
+      "path": "trial-memory-01",
+      "status": "accepted"
+    },
+    {
+      "batchId": "T17-MEM-BULK-01",
+      "path": "memory-bulk-01",
+      "status": "accepted"
+    },
+    {
+      "batchId": "T17-memory-replacement-02",
+      "path": "memory-replacement-02",
+      "status": "accepted"
+    },
+    {
+      "batchId": "T17-TRIAL-SKL-01",
+      "path": "trial-skill-01",
+      "status": "accepted"
+    },
+    {
+      "batchId": "T17-SKL-BULK-01",
+      "path": "skill-bulk-01",
+      "status": "accepted"
+    },
+    {
+      "batchId": "t17-knowledge-replacement-01",
+      "path": "knowledge-replacement-01",
+      "status": "accepted"
+    },
+    {
+      "batchId": "T17-NAT-BULK-01",
+      "path": "natural-bulk-01",
+      "status": "accepted"
+    }
+  ],
+  "skill_sources": [
+    {
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT"
+    },
+    {
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "license": "MIT"
+    }
+  ],
+  "provider_leakage_count": 0,
+  "old_set_duplicate_audit": {
+    "exact_query_copies": 0,
+    "exact_context_copies": 0,
+    "high_order_ngram_copies": 0
+  },
+  "checks": [
+    {
+      "label": "fragment identifies T17 formal-v2",
+      "passed": true
+    },
+    {
+      "label": "T17 team split is dev",
+      "passed": true
+    },
+    {
+      "label": "case count is exactly 40",
+      "passed": true
+    },
+    {
+      "label": "annotation count is exactly 40",
+      "passed": true
+    },
+    {
+      "label": "pair count is exactly 15",
+      "passed": true
+    },
+    {
+      "label": "Memory Positive count is 6",
+      "passed": true
+    },
+    {
+      "label": "Skill Positive count is 6",
+      "passed": true
+    },
+    {
+      "label": "Knowledge Positive count is 3",
+      "passed": true
+    },
+    {
+      "label": "paired No-tool Negative count is 15",
+      "passed": true
+    },
+    {
+      "label": "natural coding Negative count is 10",
+      "passed": true
+    },
+    {
+      "label": "Gold route distribution is 10 discovery / 5 direct",
+      "passed": true
+    },
+    {
+      "label": "case, pair, source, and asset ids are globally unique in T17",
+      "passed": true
+    },
+    {
+      "label": "all case, pair, source, and asset ids carry the T17 namespace",
+      "passed": true
+    },
+    {
+      "label": "accepted batch ids are unique and T17-namespaced",
+      "passed": true
+    },
+    {
+      "label": "L0 session count is 10",
+      "passed": true
+    },
+    {
+      "label": "every L0 session has 12-20 messages",
+      "passed": true
+    },
+    {
+      "label": "L1 memory count is 16",
+      "passed": true
+    },
+    {
+      "label": "L2 scene count is 5 with injected indexes and multi-session support",
+      "passed": true
+    },
+    {
+      "label": "L3 profile count is 1",
+      "passed": true
+    },
+    {
+      "label": "Skill count is at least 16",
+      "passed": true
+    },
+    {
+      "label": "listed Skill count is 6",
+      "passed": true
+    },
+    {
+      "label": "same-Team searchable Skill count is 10",
+      "passed": true
+    },
+    {
+      "label": "Knowledge resource and fixed binding counts are 3",
+      "passed": true
+    },
+    {
+      "label": "synthetic Knowledge uses wiki assets without fabricated repository provenance",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-01 references two public cases",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-01 frozen fields and query are identical",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-01 changes exactly one registered context message",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-01 controlledDeltaSha256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-01 annotations are bijective",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-02 references two public cases",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-02 frozen fields and query are identical",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-02 changes exactly one registered context message",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-02 controlledDeltaSha256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-02 annotations are bijective",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-03 references two public cases",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-03 frozen fields and query are identical",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-03 changes exactly one registered context message",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-03 controlledDeltaSha256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-03 annotations are bijective",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-04 references two public cases",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-04 frozen fields and query are identical",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-04 changes exactly one registered context message",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-04 controlledDeltaSha256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-04 annotations are bijective",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-05 references two public cases",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-05 frozen fields and query are identical",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-05 changes exactly one registered context message",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-05 controlledDeltaSha256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-05 annotations are bijective",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-06 references two public cases",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-06 frozen fields and query are identical",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-06 changes exactly one registered context message",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-06 controlledDeltaSha256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-MEM-06 annotations are bijective",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-01 references two public cases",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-01 frozen fields and query are identical",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-01 changes exactly one registered context message",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-01 controlledDeltaSha256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-01 annotations are bijective",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-02 references two public cases",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-02 frozen fields and query are identical",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-02 changes exactly one registered context message",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-02 controlledDeltaSha256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-02 annotations are bijective",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-03 references two public cases",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-03 frozen fields and query are identical",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-03 changes exactly one registered context message",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-03 controlledDeltaSha256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-03 annotations are bijective",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-04 references two public cases",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-04 frozen fields and query are identical",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-04 changes exactly one registered context message",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-04 controlledDeltaSha256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-04 annotations are bijective",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-05 references two public cases",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-05 frozen fields and query are identical",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-05 changes exactly one registered context message",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-05 controlledDeltaSha256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-05 annotations are bijective",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-06 references two public cases",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-06 frozen fields and query are identical",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-06 changes exactly one registered context message",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-06 controlledDeltaSha256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-SKL-06 annotations are bijective",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-KNW-01 references two public cases",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-KNW-01 frozen fields and query are identical",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-KNW-01 changes exactly one registered context message",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-KNW-01 controlledDeltaSha256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-KNW-01 annotations are bijective",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-KNW-02 references two public cases",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-KNW-02 frozen fields and query are identical",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-KNW-02 changes exactly one registered context message",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-KNW-02 controlledDeltaSha256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-KNW-02 annotations are bijective",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-KNW-03 references two public cases",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-KNW-03 frozen fields and query are identical",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-KNW-03 changes exactly one registered context message",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-KNW-03 controlledDeltaSha256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-PAIR-KNW-03 annotations are bijective",
+      "passed": true
+    },
+    {
+      "label": "T17-MEM-01-P has non-empty first action and sequence",
+      "passed": true
+    },
+    {
+      "label": "T17-MEM-01-P stops at the shortest legal chain",
+      "passed": true
+    },
+    {
+      "label": "T17-MEM-01-P targets visible T17 assets",
+      "passed": true
+    },
+    {
+      "label": "T17-MEM-02-P has non-empty first action and sequence",
+      "passed": true
+    },
+    {
+      "label": "T17-MEM-02-P stops at the shortest legal chain",
+      "passed": true
+    },
+    {
+      "label": "T17-MEM-02-P targets visible T17 assets",
+      "passed": true
+    },
+    {
+      "label": "T17-MEM-03-P has non-empty first action and sequence",
+      "passed": true
+    },
+    {
+      "label": "T17-MEM-03-P stops at the shortest legal chain",
+      "passed": true
+    },
+    {
+      "label": "T17-MEM-03-P targets visible T17 assets",
+      "passed": true
+    },
+    {
+      "label": "T17-MEM-04-P has non-empty first action and sequence",
+      "passed": true
+    },
+    {
+      "label": "T17-MEM-04-P stops at the shortest legal chain",
+      "passed": true
+    },
+    {
+      "label": "T17-MEM-04-P targets visible T17 assets",
+      "passed": true
+    },
+    {
+      "label": "T17-MEM-05-P has non-empty first action and sequence",
+      "passed": true
+    },
+    {
+      "label": "T17-MEM-05-P stops at the shortest legal chain",
+      "passed": true
+    },
+    {
+      "label": "T17-MEM-05-P targets visible T17 assets",
+      "passed": true
+    },
+    {
+      "label": "T17-MEM-06-P has non-empty first action and sequence",
+      "passed": true
+    },
+    {
+      "label": "T17-MEM-06-P stops at the shortest legal chain",
+      "passed": true
+    },
+    {
+      "label": "T17-MEM-06-P targets visible T17 assets",
+      "passed": true
+    },
+    {
+      "label": "T17-MEM-06-P reads a path available from the injected L2 index",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-01-P has non-empty first action and sequence",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-01-P stops at the shortest legal chain",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-01-P targets visible T17 assets",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-02-P has non-empty first action and sequence",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-02-P stops at the shortest legal chain",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-02-P targets visible T17 assets",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-03-P has non-empty first action and sequence",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-03-P stops at the shortest legal chain",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-03-P targets visible T17 assets",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-03-P obtains skill_id from the search response",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-03-P search target is unlisted but same-Team visible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-04-P has non-empty first action and sequence",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-04-P stops at the shortest legal chain",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-04-P targets visible T17 assets",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-04-P obtains skill_id from the search response",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-04-P search target is unlisted but same-Team visible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-05-P has non-empty first action and sequence",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-05-P stops at the shortest legal chain",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-05-P targets visible T17 assets",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-05-P obtains skill_id from the search response",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-05-P search target is unlisted but same-Team visible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-06-P has non-empty first action and sequence",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-06-P stops at the shortest legal chain",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-06-P targets visible T17 assets",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-06-P obtains skill_id from view and uses a manifest path",
+      "passed": true
+    },
+    {
+      "label": "T17-KNW-01-P has non-empty first action and sequence",
+      "passed": true
+    },
+    {
+      "label": "T17-KNW-01-P stops at the shortest legal chain",
+      "passed": true
+    },
+    {
+      "label": "T17-KNW-01-P targets visible T17 assets",
+      "passed": true
+    },
+    {
+      "label": "T17-KNW-01-P Knowledge list/call tool and params match the frozen fixture",
+      "passed": true
+    },
+    {
+      "label": "T17-KNW-02-P has non-empty first action and sequence",
+      "passed": true
+    },
+    {
+      "label": "T17-KNW-02-P stops at the shortest legal chain",
+      "passed": true
+    },
+    {
+      "label": "T17-KNW-02-P targets visible T17 assets",
+      "passed": true
+    },
+    {
+      "label": "T17-KNW-02-P Knowledge list/call tool and params match the frozen fixture",
+      "passed": true
+    },
+    {
+      "label": "T17-KNW-03-P has non-empty first action and sequence",
+      "passed": true
+    },
+    {
+      "label": "T17-KNW-03-P stops at the shortest legal chain",
+      "passed": true
+    },
+    {
+      "label": "T17-KNW-03-P targets visible T17 assets",
+      "passed": true
+    },
+    {
+      "label": "T17-KNW-03-P Knowledge list/call tool and params match the frozen fixture",
+      "passed": true
+    },
+    {
+      "label": "provider-visible projection has zero private-field, tool-name, and asset-id leakage",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-SOL-ANCHOR-01 synthetic provenance contains no external repository fields",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-MEMORY-L0-01 synthetic provenance contains no external repository fields",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-MEMORY-L1-01 synthetic provenance contains no external repository fields",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-MEMORY-L2-01 synthetic provenance contains no external repository fields",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-MEMORY-L3-01 synthetic provenance contains no external repository fields",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-KNOWLEDGE-WIKI-01 synthetic provenance contains no external repository fields",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-NATURAL-01 synthetic provenance contains no external repository fields",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-PAIR-TRIAL-MEMORY-01 synthetic provenance contains no external repository fields",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-PAIR-MEMORY-BULK-01 synthetic provenance contains no external repository fields",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-PAIR-MEMORY-REPLACEMENT-02 synthetic provenance contains no external repository fields",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-PAIR-TRIAL-SKILL-01 synthetic provenance contains no external repository fields",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-PAIR-SKILL-BULK-01 synthetic provenance contains no external repository fields",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-PAIR-KNOWLEDGE-REPLACEMENT-01 synthetic provenance contains no external repository fields",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-SKILL-01 external provenance pins repository, commit, and hash",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-SKILL-02 external provenance pins repository, commit, and hash",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-SKILL-03 external provenance pins repository, commit, and hash",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-SKILL-04 external provenance pins repository, commit, and hash",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-SKILL-05 external provenance pins repository, commit, and hash",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-SKILL-06 external provenance pins repository, commit, and hash",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-SKILL-07 external provenance pins repository, commit, and hash",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-SKILL-08 external provenance pins repository, commit, and hash",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-SKILL-09 external provenance pins repository, commit, and hash",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-SKILL-10 external provenance pins repository, commit, and hash",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-SKILL-11 external provenance pins repository, commit, and hash",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-SKILL-12 external provenance pins repository, commit, and hash",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-SKILL-13 external provenance pins repository, commit, and hash",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-SKILL-14 external provenance pins repository, commit, and hash",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-SKILL-15 external provenance pins repository, commit, and hash",
+      "passed": true
+    },
+    {
+      "label": "T17-SRC-SKILL-16 external provenance pins repository, commit, and hash",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-01 raw SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-01 adapted SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-01 adaptation diff is present and core steps are preserved",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-02 raw SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-02 adapted SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-02 adaptation diff is present and core steps are preserved",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-03 raw SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-03 adapted SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-03 adaptation diff is present and core steps are preserved",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-04 raw SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-04 adapted SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-04 adaptation diff is present and core steps are preserved",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-05 raw SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-05 adapted SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-05 adaptation diff is present and core steps are preserved",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-06 raw SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-06 adapted SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-06 adaptation diff is present and core steps are preserved",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-07 raw SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-07 adapted SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-07 adaptation diff is present and core steps are preserved",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-08 raw SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-08 adapted SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-08 adaptation diff is present and core steps are preserved",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-09 raw SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-09 adapted SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-09 adaptation diff is present and core steps are preserved",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-10 raw SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-10 adapted SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-10 adaptation diff is present and core steps are preserved",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-11 raw SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-11 adapted SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-11 adaptation diff is present and core steps are preserved",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-12 raw SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-12 adapted SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-12 adaptation diff is present and core steps are preserved",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-13 raw SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-13 adapted SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-13 adaptation diff is present and core steps are preserved",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-14 raw SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-14 adapted SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-14 adaptation diff is present and core steps are preserved",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-15 raw SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-15 adapted SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-15 adaptation diff is present and core steps are preserved",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-16 raw SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-16 adapted SHA-256 is reproducible",
+      "passed": true
+    },
+    {
+      "label": "T17-SKL-16 adaptation diff is present and core steps are preserved",
+      "passed": true
+    },
+    {
+      "label": "no exact Query/context or >=0.9 high-order n-gram copy against frozen formal-v1.1 ancestor",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "known_limitations": [
+    "Team Gate validates the staged fragment and deterministic fixtures; the integration task must build the full formal-v2 world/snapshot and run real-service restoration.",
+    "Task 1 stops after acquiring the target asset and does not execute or score the requested coding work."
+  ],
+  "artifact_sha256": {
+    "team_fragment": "625ccc2999ab18e4cc32682ef9acabdb2a28afce8cad5b92fe7231e8e20ae837",
+    "memory": "98a239d1caac4888e9de3aba5ffbfa542c6945f2d45a6337123f46c9e502650f",
+    "skills": "4c4574fcc485917a223b19f23bc8b85c7c3981d3cec5c6f472684c6c300331c8",
+    "knowledge": "d3e0b299ed4c2fc4a9c041bd51fe2e7b282e89882816907720d504d1e9ebe903",
+    "review": "9dbed424d6bd10342a49db7fa995034a3a0dd529ad9c95305ee6962febc81aef"
+  }
+}

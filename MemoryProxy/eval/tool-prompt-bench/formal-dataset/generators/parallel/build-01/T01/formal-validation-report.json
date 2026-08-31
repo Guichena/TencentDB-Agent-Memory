@@ -1,0 +1,110 @@
+{
+  "schema_version": "task1.formal_dataset_validation.v2",
+  "valid": true,
+  "errors": [],
+  "splits": [
+    "dev",
+    "hidden_test"
+  ],
+  "case_count": 40,
+  "team_case_counts": {
+    "T02": 0,
+    "T03": 0,
+    "T04": 0,
+    "T05": 0,
+    "T06": 0,
+    "T07": 0,
+    "T08": 0,
+    "T09": 0,
+    "T10": 0,
+    "T01": 40
+  },
+  "pair_count": 15,
+  "pairs_by_team": {
+    "T02": 0,
+    "T03": 0,
+    "T04": 0,
+    "T05": 0,
+    "T06": 0,
+    "T07": 0,
+    "T08": 0,
+    "T09": 0,
+    "T10": 0,
+    "T01": 15
+  },
+  "pair_integrity_error_count": 0,
+  "pair_integrity_errors": [],
+  "provider_leakage_count": 0,
+  "invalid_sequence_count": 0,
+  "missing_source_ref_count": 0,
+  "provenance": {
+    "synthetic": {
+      "count": 7,
+      "sourceIds": [
+        "source-t01-luna-knowledge-batch-01",
+        "source-t01-luna-memory-assets-l1",
+        "source-t01-luna-memory-assets-l2",
+        "source-t01-luna-memory-assets-l3",
+        "source-t01-luna-memory-batch-01",
+        "source-t01-luna-natural-negative-batch-01",
+        "source-t01-luna-skill-batch-01"
+      ],
+      "batchIds": [
+        "t01-knowledge-batch-01",
+        "t01-memory-assets-batch-01",
+        "t01-memory-batch-01",
+        "t01-natural-negative-batch-01",
+        "t01-skill-batch-01"
+      ]
+    },
+    "externalImport": {
+      "count": 39,
+      "sourceIds": [
+        "source-t01-current-mypy-regression",
+        "source-t01-current-ujson-fuzzing",
+        "source-t01-current-ujson-impact",
+        "source-t01-history-getmoto__moto-5134",
+        "source-t01-history-getmoto__moto-5587",
+        "source-t01-history-getmoto__moto-6567",
+        "source-t01-history-getmoto__moto-6585",
+        "source-t01-history-getmoto__moto-6913",
+        "source-t01-history-getmoto__moto-7365",
+        "source-t01-history-python__mypy-10424",
+        "source-t01-history-python__mypy-11567",
+        "source-t01-history-python__mypy-12943",
+        "source-t01-history-python__mypy-15184",
+        "source-t01-history-python__mypy-16869",
+        "source-t01-history-python__mypy-5617",
+        "source-t01-knowledge-mypy-codegraph",
+        "source-t01-knowledge-reliability-wiki",
+        "source-t01-knowledge-ujson-codegraph",
+        "source-t01-pair-001",
+        "source-t01-pair-002",
+        "source-t01-pair-003",
+        "source-t01-pair-004",
+        "source-t01-pair-005",
+        "source-t01-skill-analyze-ci",
+        "source-t01-skill-discover-important-function",
+        "source-t01-skill-fuzzing-python",
+        "source-t01-skill-grpo",
+        "source-t01-skill-memory-optimization",
+        "source-t01-skill-pytest-coverage",
+        "source-t01-skill-python-parallelization",
+        "source-t01-skill-qdrant-clients-sdk",
+        "source-t01-skill-qdrant-performance-optimization",
+        "source-t01-skill-qdrant-search-quality",
+        "source-t01-skill-setup-env",
+        "source-t01-skill-temporal-python-testing",
+        "source-t01-skill-testing-python",
+        "source-t01-skill-uv-package-manager",
+        "source-t01-skill-workload-balancing",
+        "source-task1-registry-ds00"
+      ]
+    }
+  },
+  "provider_sha256": "52913cee986b1975708d8c223dc319b266550b6ed1186b7cc3ab14134c3cd99d",
+  "snapshot_sha256": {
+    "dev": "29befd141b6534b8a73e7874e4706ce8fe9ac8226800531913cc6789f0d62435",
+    "hidden_test": "2d4314a64f02ee29a276626bea918036dfe9c9cd4cdd15ca8b75c1ac02af7892"
+  }
+}

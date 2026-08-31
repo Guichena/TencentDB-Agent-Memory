@@ -1,0 +1,1721 @@
+{
+  "schema_version": "task1.team_memory_assets.v1",
+  "team_id": "T05",
+  "l0Conversations": [
+    {
+      "assetId": "T05-L0-01",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "source-t05-history-l0"
+      ],
+      "observedAt": "2026-08-12T09:00:00+08:00",
+      "sessionId": "T05-L0-01",
+      "messages": [
+        {
+          "messageId": "T05-L0-01-M001",
+          "role": "user",
+          "content": "revenue 趋势图的提示框在滚动分析面板后偏离节点。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "20c74cdd7695ea5e08c97e4ee52e041ecf2f39bb376592ea17c9a7b03c1d290d"
+        },
+        {
+          "messageId": "T05-L0-01-M002",
+          "role": "assistant",
+          "content": "先记录首次悬停正常、滚动后偏移且 SVG 节点不动的现象。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "bdcfb62b7ba9a8146d0beb08db891e2db8fbe42c94aa4a5652ae6c8fcfb135ee"
+        },
+        {
+          "messageId": "T05-L0-01-M003",
+          "role": "user",
+          "content": "提示框是独立 HTML 层，图表外层还有可滚动面板。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "93c0c21259c52dea3ea46d3700b60a30b6beb2c694f89a1a19832e947626ed21"
+        },
+        {
+          "messageId": "T05-L0-01-M004",
+          "role": "assistant",
+          "content": "这意味着事件坐标和文档定位的参考系必须分开核对。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "05d7813237a7499e1670e260f4f8abcf08a22c8a135c9ae16336887dfd8a2bfe"
+        },
+        {
+          "messageId": "T05-L0-01-M005",
+          "role": "user",
+          "content": "窗口滚动、面板滚动、触摸和键盘聚焦都要保留。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "eee3556c3576c1fe82db95b65f0943e196a8865b33db83061210d0de02b41a9c"
+        },
+        {
+          "messageId": "T05-L0-01-M006",
+          "role": "assistant",
+          "content": "验收会覆盖这些交互，并检查提示框不闪烁且离开节点能收起。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "adb1080e58a21e9885caa7d41399d701cad977e1488d0e109a9006d0a33fe4bf"
+        },
+        {
+          "messageId": "T05-L0-01-M007",
+          "role": "user",
+          "content": "有人建议直接把 SVG 内部坐标写给文档层，我觉得需要先验证。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "0bb9303cb5142082827ada0f0b9591d0eb51040ddbadc321cbe1be4218e1475e"
+        },
+        {
+          "messageId": "T05-L0-01-M008",
+          "role": "assistant",
+          "content": "这个建议混用了两个坐标空间，不能在未核实滚动参考系前采用。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "ca08e4e5d944d35d27d5928cddd4716bda3a3b5ef2fec514cb61e4e7f677b9dc"
+        },
+        {
+          "messageId": "T05-L0-01-M009",
+          "role": "user",
+          "content": "请记录一次不改变比例尺和数据排序的最小排查。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "82fc9a6340b8ae80da2f1263a038fd26c25bc5e6e625b525f8293c8e4876a935"
+        },
+        {
+          "messageId": "T05-L0-01-M010",
+          "role": "assistant",
+          "content": "排查应观察节点视口矩形、页面滚动量和提示框的文档位置。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "2c8cbb2fadc5586ddaba2dd7bfe27872772e3e41eb317b6708c045959e4cda5c"
+        },
+        {
+          "messageId": "T05-L0-01-M011",
+          "role": "user",
+          "content": "复盘确认：用节点的 getBoundingClientRect() 得到视口矩形，再把矩形左上角加上页面滚动偏移，作为文档层提示框的定位基准。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "92e59e5e029733fb0f3d2f9b7f6f5aa94791c4aa00fa76a6f200e3832751b7e0"
+        },
+        {
+          "messageId": "T05-L0-01-M012",
+          "role": "assistant",
+          "content": "同时确认不要把 SVG 内部坐标直接当作文档坐标，也不要在事件回调里重复叠加面板滚动量；无需改比例尺、排序或用固定 magic number 补偿。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-12T09:00:00+08:00",
+          "contentHash": "d9a64e2681a60d0cf1d93ede2a5a2ed1009963ca514f2b1ce7dfa1643daa20d3"
+        }
+      ],
+      "contentHash": "280da443d8813e121920e1bb4a253682dc1a53744cf7b0cc8c25384c8bdb5cfc"
+    },
+    {
+      "assetId": "T05-L0-02",
+      "ownerAgentId": "agent-task1-t05-assets-b",
+      "sourceEvidenceIds": [
+        "source-t05-history-l0"
+      ],
+      "observedAt": "2026-08-13T10:00:00+08:00",
+      "sessionId": "T05-L0-02",
+      "messages": [
+        {
+          "messageId": "T05-L0-02-M001",
+          "role": "user",
+          "content": "同比图需要把接口返回的月份字段转成排序用的数值。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "07825271b7049b5659dcddae93903a49149e4becd46488d4dc801437189b2bb9"
+        },
+        {
+          "messageId": "T05-L0-02-M002",
+          "role": "assistant",
+          "content": "可以在数据进入比例尺前做纯映射，保留原始标签。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "08ee3cbba5f3d83593139f684af19e44f1580c37a5fbef4a920902b2d82969eb"
+        },
+        {
+          "messageId": "T05-L0-02-M003",
+          "role": "user",
+          "content": "空月份要显示为缺口，不能默认为零。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "ef36078126905481249133fb93596f090e0a8acd2e7f03c8869f68bd17792931"
+        },
+        {
+          "messageId": "T05-L0-02-M004",
+          "role": "assistant",
+          "content": "过滤空值会改变线段，建议显式保留缺口标记。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "aa2bfe5f730f93599de1702b82a11f720318273ed72327ca279d012b01f109a7"
+        },
+        {
+          "messageId": "T05-L0-02-M005",
+          "role": "user",
+          "content": "图例顺序仍按接口顺序，不随数值排序变化。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "27a880e62816709b0639c694a8b5fd3ed32a2ab80ab1a510cc213accbc17245f"
+        },
+        {
+          "messageId": "T05-L0-02-M006",
+          "role": "assistant",
+          "content": "把图例数组与绘图数组分开即可维持该约束。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "3f0ff0bdd5d5706b59715bd9d7b550e6508fd8ced4e475a1fe71840c6cd5a275"
+        },
+        {
+          "messageId": "T05-L0-02-M007",
+          "role": "user",
+          "content": "这次只改局部转换函数。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "272aee596e9491b629fe55c8f03252e2d3a6afa405e6fafb0ee5e55889c1dcaa"
+        },
+        {
+          "messageId": "T05-L0-02-M008",
+          "role": "assistant",
+          "content": "我会补充边界输入的单元样例。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "c00276a8b6c78fdb105d281e5fda58f736d73bf1614da0e02db83d5c2d4ebeb3"
+        },
+        {
+          "messageId": "T05-L0-02-M009",
+          "role": "user",
+          "content": "负数月份被当成无效值。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "ed24eda8e1809bcf572814bd9d07b01ab34fa66ac87bd099a433fedf1486faa5"
+        },
+        {
+          "messageId": "T05-L0-02-M010",
+          "role": "assistant",
+          "content": "校验范围后再进入排序，避免影响刻度。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "ebe9ba053dbf1efb59c61887ae43dc5b4a9bae86f04d95f4d0c69b5155dcffbf"
+        },
+        {
+          "messageId": "T05-L0-02-M011",
+          "role": "user",
+          "content": "局部样例已经覆盖正常、空值和负数。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "8dd89928f5ca6d3a6e601f09e6e1da527553bd761ef7c2f9dd5e50ae6926badd"
+        },
+        {
+          "messageId": "T05-L0-02-M012",
+          "role": "assistant",
+          "content": "结果稳定，未涉及提示框或滚动行为。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-13T10:00:00+08:00",
+          "contentHash": "769877e6d400de01ef9e2e72183be12cec193990479c9c4e97b467c7daf5cf76"
+        }
+      ],
+      "contentHash": "06c3580bc23a20a6263ea973f3b1adbd5ea7caf194e8231aaa6e7d272b3dbeb9"
+    },
+    {
+      "assetId": "T05-L0-03",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "source-t05-history-l0"
+      ],
+      "observedAt": "2026-08-14T11:00:00+08:00",
+      "sessionId": "T05-L0-03",
+      "messages": [
+        {
+          "messageId": "T05-L0-03-M001",
+          "role": "user",
+          "content": "商品页首屏的媒体卡片在字体加载后发生位移。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "7fec158aa27e940e34f227c7ca4620f59c646c46f7a37ba16c1af20e9b72a932"
+        },
+        {
+          "messageId": "T05-L0-03-M002",
+          "role": "assistant",
+          "content": "先把媒体尺寸、加载时机和客户端接管分别记录。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "d6a023acb5ac9d1d8a3bba4afa62d5d142bee8e44140056e6f9f4af613fc1a6c"
+        },
+        {
+          "messageId": "T05-L0-03-M003",
+          "role": "user",
+          "content": "小屏和大屏的卡片比例不同，不能用一个固定高度覆盖。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "aa262c64d1a6cf4b3ba2c47471d1beca29cfa837d2bc60989756583b22250881"
+        },
+        {
+          "messageId": "T05-L0-03-M004",
+          "role": "assistant",
+          "content": "需要可预测的响应式占位，让服务端输出先建立布局。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "e19910662a5a6bacd357e9a6566588f072146584443dc437ed8b1512150796ad"
+        },
+        {
+          "messageId": "T05-L0-03-M005",
+          "role": "user",
+          "content": "图片仍然要延迟加载，首屏不能一次请求全部资源。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "ba3cc47680135e4ff17a5efd32c5e31055fe65d06edd21dff70d497163f3d5fc"
+        },
+        {
+          "messageId": "T05-L0-03-M006",
+          "role": "assistant",
+          "content": "可以保留延迟加载边界，但必须让占位先于媒体替换生效。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "544df9c5153596352aece0704c48647a94e08fc812f27007d12538bee63be0ae"
+        },
+        {
+          "messageId": "T05-L0-03-M007",
+          "role": "user",
+          "content": "现有交接没有写每一步 rollout 的先后。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "d147aac462be775c665c32b3c3f023e80b18b827de525f957b870ac274d8a17b"
+        },
+        {
+          "messageId": "T05-L0-03-M008",
+          "role": "assistant",
+          "content": "先补齐时间线，再判断指标变化对应哪项改动。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "82d1a676b0eefff48a3ac45367eff4e26142dfd41cadbe6fe88bd1d694dd3e32"
+        },
+        {
+          "messageId": "T05-L0-03-M009",
+          "role": "user",
+          "content": "只在客户端补高度的方案让首次接管仍然跳动。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "bfe0f48913483763e1d092115d9916d2c277300ba73deb84b44f7e90ec1cd943"
+        },
+        {
+          "messageId": "T05-L0-03-M010",
+          "role": "assistant",
+          "content": "这说明占位不能延后到接管阶段。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "20ba809531afd93a9b2ac68202164fc8a78e67d59eae7a0621060a5da686c9f0"
+        },
+        {
+          "messageId": "T05-L0-03-M011",
+          "role": "user",
+          "content": "复盘顺序确定为先保留服务端可预测宽高占位，再统一延迟加载边界，最后记录 hydration 前后的布局位移。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "a1ec2d971326977a7fb491c3b100a73f2561cd4b4f931cab197efea27c4bb351"
+        },
+        {
+          "messageId": "T05-L0-03-M012",
+          "role": "assistant",
+          "content": "最终排除了只在客户端补高度、关闭延迟加载和用全局样式兜底。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-14T11:00:00+08:00",
+          "contentHash": "7a3e81effde4104325bddec3fa91f911f352872fa6751141c4ed0312014ebe9c"
+        }
+      ],
+      "contentHash": "26a023089b971bfdbb4a55bab22b39edac59263fdac211bdfa5d15011671ead2"
+    },
+    {
+      "assetId": "T05-L0-04",
+      "ownerAgentId": "agent-task1-t05-assets-b",
+      "sourceEvidenceIds": [
+        "source-t05-history-l0"
+      ],
+      "observedAt": "2026-08-15T12:00:00+08:00",
+      "sessionId": "T05-L0-04",
+      "messages": [
+        {
+          "messageId": "T05-L0-04-M001",
+          "role": "user",
+          "content": "商品推荐卡在接管时偶发 hydration 警告。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "b07fa505ccb3ba92a708991b838280997682cb7cb30ac895072492b470d7f488"
+        },
+        {
+          "messageId": "T05-L0-04-M002",
+          "role": "assistant",
+          "content": "先比较服务端和客户端生成的推荐顺序。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "ba28b06818a3f008d163d74560cac90ab58b692c62fa754497a77fede85ab4b1"
+        },
+        {
+          "messageId": "T05-L0-04-M003",
+          "role": "user",
+          "content": "随机实验标记只在客户端可用。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "20cc925dc96c626b17d90fc9a6c8bce5ed51503fcd46fb9db4b31cb1eb81a7a9"
+        },
+        {
+          "messageId": "T05-L0-04-M004",
+          "role": "assistant",
+          "content": "接管前应使用确定的默认标记，实验在接管后再切换。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "69007299ac8d083f1c713bcb82afef510c6bf5eb9a3949ee081619f9c15f1e25"
+        },
+        {
+          "messageId": "T05-L0-04-M005",
+          "role": "user",
+          "content": "卡片尺寸不是这次警告的来源。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "c8b46a96ad2ad914d36f036c537092325d64d8380d7c23ddc6ca1da78d0ec112"
+        },
+        {
+          "messageId": "T05-L0-04-M006",
+          "role": "assistant",
+          "content": "我会把尺寸变化和文本差异分开验证。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "559ef0f506192fe105ee182ffb4d19fe0b18edfccfe3f9609697dc76ca0083df"
+        },
+        {
+          "messageId": "T05-L0-04-M007",
+          "role": "user",
+          "content": "需要覆盖无推荐和单推荐两种状态。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "360891457add5eb7f426f68a46ade185554410e350d5da1a416b2fe893569091"
+        },
+        {
+          "messageId": "T05-L0-04-M008",
+          "role": "assistant",
+          "content": "测试固定输入，避免网络返回顺序干扰。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "871021971d3f15fbc3134c78db828cf44c24dab8167ae48461fc4f63e2896831"
+        },
+        {
+          "messageId": "T05-L0-04-M009",
+          "role": "user",
+          "content": "客户端实验标记在接管后更新。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "c990e5d6e08f0faac1580d5a833e19cc2cb952d94d79f40c3425c21401f7cfbe"
+        },
+        {
+          "messageId": "T05-L0-04-M010",
+          "role": "assistant",
+          "content": "警告消失且卡片高度保持。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "304f21285f9708b850f8c3ccc4d1525614b94f6913269bbda75d8d4ea5f4f203"
+        },
+        {
+          "messageId": "T05-L0-04-M011",
+          "role": "user",
+          "content": "这条记录只用于区分接管与布局问题。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "971547cad69c15190e8216ea3fbc8320f827b0d8b5675a314e98f687ab025859"
+        },
+        {
+          "messageId": "T05-L0-04-M012",
+          "role": "assistant",
+          "content": "已保留复现条件和排除范围。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-15T12:00:00+08:00",
+          "contentHash": "76d4a3c1f55b7ecc7abb43d9f6ffae0d9121ae2accee5b78f13a76b9774f1930"
+        }
+      ],
+      "contentHash": "36f494c97a10888dfd4b65aaee0d08e0fd9cb78bb2ea13cec8782939e0da1505"
+    },
+    {
+      "assetId": "T05-L0-05",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "source-t05-history-l0"
+      ],
+      "observedAt": "2026-08-16T13:00:00+08:00",
+      "sessionId": "T05-L0-05",
+      "messages": [
+        {
+          "messageId": "T05-L0-05-M001",
+          "role": "user",
+          "content": "成员列表筛选条件不变时仍有大量行重绘。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-16T13:00:00+08:00",
+          "contentHash": "1df407ee00173f0377b5a671ba0ac855de3f30f21a19d458dc4e4c66bbbf0e96"
+        },
+        {
+          "messageId": "T05-L0-05-M002",
+          "role": "assistant",
+          "content": "先记录容器提交、行提交和订阅通知的先后。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-16T13:00:00+08:00",
+          "contentHash": "882866075462318661283d8399102965650e68faf489a92b78a492800ef84256"
+        },
+        {
+          "messageId": "T05-L0-05-M003",
+          "role": "user",
+          "content": "实时计数必须继续更新。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-16T13:00:00+08:00",
+          "contentHash": "0f92450dd7bed1f3cfb0436dc79e592ca0dcf05de81e6fd20e7ac7df3aa5def3"
+        },
+        {
+          "messageId": "T05-L0-05-M004",
+          "role": "assistant",
+          "content": "局部计数订阅不能因为优化而被移除。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-16T13:00:00+08:00",
+          "contentHash": "33eba3575fa833dc0fa70e0fade4252f2c643ff3f9ac92db9b2a937813fa2d07"
+        },
+        {
+          "messageId": "T05-L0-05-M005",
+          "role": "user",
+          "content": "profiler 显示筛选事件后每行都重新渲染。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-16T13:00:00+08:00",
+          "contentHash": "987d922060c8ca64c8b91ea511e994e73fd6b4f3798dd161d825755d0df0887b"
+        },
+        {
+          "messageId": "T05-L0-05-M006",
+          "role": "assistant",
+          "content": "还要确认是否是新数组引用触发行属性变化。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-16T13:00:00+08:00",
+          "contentHash": "e97e9ba5797d9a4171aec624b2fee63f60b2613f64e829147fbaceb29a8675f9"
+        },
+        {
+          "messageId": "T05-L0-05-M007",
+          "role": "user",
+          "content": "当前摘要没有保留当时的最终归因。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-16T13:00:00+08:00",
+          "contentHash": "36b56593b1f464cc74501815bd6eb55138ce91c4ed8986490a3079971e5c0032"
+        },
+        {
+          "messageId": "T05-L0-05-M008",
+          "role": "assistant",
+          "content": "先找回复盘，再决定做引用稳定还是订阅调整。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-16T13:00:00+08:00",
+          "contentHash": "129419ca052454c602b79f693d07fc90d76cd1b347d142c66945ab08f64b0e5b"
+        },
+        {
+          "messageId": "T05-L0-05-M009",
+          "role": "user",
+          "content": "复盘最后确认：列表容器把每次筛选产生的新派生数组传给所有行，导致行属性变化并触发重绘。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-16T13:00:00+08:00",
+          "contentHash": "c540931fff38172d0fdd43629279b97dcd132caeb62629123d046abdfe073392"
+        },
+        {
+          "messageId": "T05-L0-05-M010",
+          "role": "assistant",
+          "content": "行级订阅本身没有变化，应优先稳定派生数组的引用。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-16T13:00:00+08:00",
+          "contentHash": "8d02e7a79d31afee2f663b97a8dd7314f9bc65c9d40f816af235f7a588a75bbc"
+        },
+        {
+          "messageId": "T05-L0-05-M011",
+          "role": "user",
+          "content": "复盘也排除了全量 memo、移除实时计数和改写缓存存储。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-16T13:00:00+08:00",
+          "contentHash": "42fb769b3a8dd79481b4ad626a5b83ecd95824181907400f6606b887e72bc302"
+        },
+        {
+          "messageId": "T05-L0-05-M012",
+          "role": "assistant",
+          "content": "这条归因可以作为当前改动的边界。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-16T13:00:00+08:00",
+          "contentHash": "07374c88b6967563899de9b17a4fc60d40bd4d3064b19ad23a5a0b7bbd285f83"
+        }
+      ],
+      "contentHash": "beafc68fee335cba14e3aa167ea9b4f7639cfead8d866e902518d1397abb69f9"
+    },
+    {
+      "assetId": "T05-L0-06",
+      "ownerAgentId": "agent-task1-t05-assets-b",
+      "sourceEvidenceIds": [
+        "source-t05-history-l0"
+      ],
+      "observedAt": "2026-08-17T14:00:00+08:00",
+      "sessionId": "T05-L0-06",
+      "messages": [
+        {
+          "messageId": "T05-L0-06-M001",
+          "role": "user",
+          "content": "控制台权限缓存更新后，顶部计数没有立即刷新。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-17T14:00:00+08:00",
+          "contentHash": "36e3eceef12c42cf5ee47e0affbaf259a96ad6723a2fe432bd2c436c61d070ab"
+        },
+        {
+          "messageId": "T05-L0-06-M002",
+          "role": "assistant",
+          "content": "先确认写入和读取是否使用相同的键空间。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-17T14:00:00+08:00",
+          "contentHash": "c8d9bdbb23a49819c18ee658359a541155fa9c46c5b96d4931d8bcc6020b9ed7"
+        },
+        {
+          "messageId": "T05-L0-06-M003",
+          "role": "user",
+          "content": "列表本身没有性能回归。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-17T14:00:00+08:00",
+          "contentHash": "aee82e0d5074fc52239d1f0636f54e4ef2d0b6c0dbd83017308fdf1b9f35b9ef"
+        },
+        {
+          "messageId": "T05-L0-06-M004",
+          "role": "assistant",
+          "content": "这次只看缓存失效通知，不扩展到行渲染。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-17T14:00:00+08:00",
+          "contentHash": "9d66798e7ec13d271766300d5ed1c232d9e04d067751bc4e0039a3e985713a3a"
+        },
+        {
+          "messageId": "T05-L0-06-M005",
+          "role": "user",
+          "content": "手动刷新页面后数字才正确。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-17T14:00:00+08:00",
+          "contentHash": "a031824e5355ef691f04becc70e7bea09444b3adab4f191dcf804e1e0fe5393b"
+        },
+        {
+          "messageId": "T05-L0-06-M006",
+          "role": "assistant",
+          "content": "说明持久化数据正确但订阅没有收到变更。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-17T14:00:00+08:00",
+          "contentHash": "b9f3949fccdabff963da9f97fa8aec72a5bd0968fa9c07df5b2f33ac5f406b3d"
+        },
+        {
+          "messageId": "T05-L0-06-M007",
+          "role": "user",
+          "content": "需要记录订阅边界。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-17T14:00:00+08:00",
+          "contentHash": "f8abaa5691994453b9bae0e261341eadd73292a825ac82f3e14f82bd9e9dec69"
+        },
+        {
+          "messageId": "T05-L0-06-M008",
+          "role": "assistant",
+          "content": "我会补充一次写入、失效和重读的日志。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-17T14:00:00+08:00",
+          "contentHash": "b955cfed62456de1b119070424951d0031f17d0a9ab3edc3d164ad3e8a7fb2f8"
+        },
+        {
+          "messageId": "T05-L0-06-M009",
+          "role": "user",
+          "content": "失效通知只发给详情页，没有发给顶部摘要。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-17T14:00:00+08:00",
+          "contentHash": "9526fd9fd44aa363a40c97ba5f4f439050ac6a218e5627edd69acfe7e89b65b5"
+        },
+        {
+          "messageId": "T05-L0-06-M010",
+          "role": "assistant",
+          "content": "应让摘要订阅同一权限查询的失效事件。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-17T14:00:00+08:00",
+          "contentHash": "70be373838bb62d8e0406fa580d6e76138492397b51da9770f8a4d2676b6cea0"
+        },
+        {
+          "messageId": "T05-L0-06-M011",
+          "role": "user",
+          "content": "修补后无需改变列表组件。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-17T14:00:00+08:00",
+          "contentHash": "984983a11cc0c08994295b3f27efb98952ffe2e09644322459c101eb996bb142"
+        },
+        {
+          "messageId": "T05-L0-06-M012",
+          "role": "assistant",
+          "content": "缓存订阅记录已单独归档。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-17T14:00:00+08:00",
+          "contentHash": "678d38291df55dbda0df5497f67e9d278bd63204a6de7daa493140dca4a3f0e0"
+        }
+      ],
+      "contentHash": "6a442b815c1748b31b1ef16e70f0343d8d6c220b0175b993a3add900ae8c6be9"
+    },
+    {
+      "assetId": "T05-L0-07",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "source-t05-history-l0"
+      ],
+      "observedAt": "2026-08-18T15:00:00+08:00",
+      "sessionId": "T05-L0-07",
+      "messages": [
+        {
+          "messageId": "T05-L0-07-M001",
+          "role": "user",
+          "content": "优惠信息加载时，结账按钮偶发无法被回归脚本找到。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-18T15:00:00+08:00",
+          "contentHash": "ed07e1e5207e920a79390d4c8d2fd55f52fbd67c5bc430363063a761b503b9ee"
+        },
+        {
+          "messageId": "T05-L0-07-M002",
+          "role": "assistant",
+          "content": "先保存失败时的页面状态和按钮可见状态。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-18T15:00:00+08:00",
+          "contentHash": "4e38bc46de009e60e8c93fc89e5c936f15e91f11f3eef9710963f027d7a2d031"
+        },
+        {
+          "messageId": "T05-L0-07-M003",
+          "role": "user",
+          "content": "多语言会改变按钮文案。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-18T15:00:00+08:00",
+          "contentHash": "783c0d3f7b15bcae1a2bb9395d7a9b82700cd9e51c8c6bed44e0d6d6d965c31d"
+        },
+        {
+          "messageId": "T05-L0-07-M004",
+          "role": "assistant",
+          "content": "定位不能把某个语言的文案当成永久标识。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-18T15:00:00+08:00",
+          "contentHash": "8877c65c0ed4d6e39abe1c146fb8cf875531366fd3d657976df4f5ad75929764"
+        },
+        {
+          "messageId": "T05-L0-07-M005",
+          "role": "user",
+          "content": "按钮的测试标记在设计稿里已经保留。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-18T15:00:00+08:00",
+          "contentHash": "69c02890619934a062beaf85cd45723f7df6203d50e93e0011dcf8c30b88e955"
+        },
+        {
+          "messageId": "T05-L0-07-M006",
+          "role": "assistant",
+          "content": "还要确认标记不会随优惠状态改变。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-18T15:00:00+08:00",
+          "contentHash": "ff9718440b3c6af0564e5395364bf7a8546621538106d768ba564bf7a4a376b3"
+        },
+        {
+          "messageId": "T05-L0-07-M007",
+          "role": "user",
+          "content": "当前交接只写失败现象，没有团队约定原文。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-18T15:00:00+08:00",
+          "contentHash": "256f21737b167f44bd6acc0cdfb097daa39fa7e9e588dcd737dd0f4b23c260ee"
+        },
+        {
+          "messageId": "T05-L0-07-M008",
+          "role": "assistant",
+          "content": "先核对稳定定位的原则，再修改断言。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-18T15:00:00+08:00",
+          "contentHash": "91d312f00eb3e346feb862c2be92547dbb71be0ed83c6be383fa743d7d3af8f5"
+        },
+        {
+          "messageId": "T05-L0-07-M009",
+          "role": "user",
+          "content": "实验记录显示依赖文案的断言在法语页面失败。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-18T15:00:00+08:00",
+          "contentHash": "870dbd1f3df4679c58e3f8ae50c0fc505cc479453464e4da3a4ca2947077a847"
+        },
+        {
+          "messageId": "T05-L0-07-M010",
+          "role": "assistant",
+          "content": "层级路径也会因优惠提示插入而变化。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-18T15:00:00+08:00",
+          "contentHash": "7be775254c3fa0d1287fc7e6f22ac6128809c079b7cfbc47f92ef16475d476f3"
+        },
+        {
+          "messageId": "T05-L0-07-M011",
+          "role": "user",
+          "content": "最终约定是优先使用面向用户语义且带稳定测试标记的按钮定位，等待状态变化由可见状态断言表达。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-18T15:00:00+08:00",
+          "contentHash": "605c5a5234139624bccda057555d478ea32abde082077822b7f817b6a6ad60d2"
+        },
+        {
+          "messageId": "T05-L0-07-M012",
+          "role": "assistant",
+          "content": "复盘排除了依赖按钮文案、易变层级路径和自动生成类名，并将定位器问题与网络模拟问题分开。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-18T15:00:00+08:00",
+          "contentHash": "8c914bcb58cca283fb44bc587ac3a621c2cfcf66f855b3a2efb40076f5632a2b"
+        }
+      ],
+      "contentHash": "07ac2d40c02085f3e2f6caaf37e1deaf0cbc824723c247db046acc9610cf62f6"
+    },
+    {
+      "assetId": "T05-L0-08",
+      "ownerAgentId": "agent-task1-t05-assets-b",
+      "sourceEvidenceIds": [
+        "source-t05-history-l0"
+      ],
+      "observedAt": "2026-08-19T16:00:00+08:00",
+      "sessionId": "T05-L0-08",
+      "messages": [
+        {
+          "messageId": "T05-L0-08-M001",
+          "role": "user",
+          "content": "结账接口的失败响应会泄漏到相邻测试。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-19T16:00:00+08:00",
+          "contentHash": "6f967b3cbb2527348088229ede42419a5033cabad34315768f071cf5e0632201"
+        },
+        {
+          "messageId": "T05-L0-08-M002",
+          "role": "assistant",
+          "content": "先检查每个测试的 handler 生命周期和清理时机。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-19T16:00:00+08:00",
+          "contentHash": "cb3dee876aa1f6ea0f5a8f477e2e6af64a491b1844ee630a29ce32e1b5b38735"
+        },
+        {
+          "messageId": "T05-L0-08-M003",
+          "role": "user",
+          "content": "单测并行运行时最容易出现这个问题。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-19T16:00:00+08:00",
+          "contentHash": "677c6a5b85869e723589e04fae0be8220e7e5435be55befe662fbd2091dc8995"
+        },
+        {
+          "messageId": "T05-L0-08-M004",
+          "role": "assistant",
+          "content": "每个场景应在自身边界内注册响应，不共享可变数组。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-19T16:00:00+08:00",
+          "contentHash": "b58cf51c3713fc48154f48230ad714095f5a5d64558685f69a24ec7fcfc82462"
+        },
+        {
+          "messageId": "T05-L0-08-M005",
+          "role": "user",
+          "content": "真实结账按钮定位不在这次范围。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-19T16:00:00+08:00",
+          "contentHash": "7e55f8e687e81933a5e4f8cc481eca45929051e4d5233cfe44b47687974ef595"
+        },
+        {
+          "messageId": "T05-L0-08-M006",
+          "role": "assistant",
+          "content": "记录中明确分离网络隔离与页面定位。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-19T16:00:00+08:00",
+          "contentHash": "2cb84fed9f598cf22c4ef1715b0e897fa754c13a0d8c5d70461228c2c13ac31e"
+        },
+        {
+          "messageId": "T05-L0-08-M007",
+          "role": "user",
+          "content": "失败用例结束后仍有一个请求在途。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-19T16:00:00+08:00",
+          "contentHash": "d36c70336f01243d59ccf004554557e5e43e57e0a6f65473294ac64e852fec6e"
+        },
+        {
+          "messageId": "T05-L0-08-M008",
+          "role": "assistant",
+          "content": "应等待请求完成或显式取消，再释放 handler。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-19T16:00:00+08:00",
+          "contentHash": "ee5b4ece70e5166cfd4558d1e4956bbb9fda412280ca7c4f617fa0f648bb4da3"
+        },
+        {
+          "messageId": "T05-L0-08-M009",
+          "role": "user",
+          "content": "清理改为每例执行后完成。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-19T16:00:00+08:00",
+          "contentHash": "f08a937bea9b2960e28cee65bfb1e0fb5179a3a258ff0363b5a615f8fa75f806"
+        },
+        {
+          "messageId": "T05-L0-08-M010",
+          "role": "assistant",
+          "content": "相邻测试不再收到失败响应。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-19T16:00:00+08:00",
+          "contentHash": "1ce7516a17268db456450d9d726608e089e99f88637ecd1241595480623e5440"
+        },
+        {
+          "messageId": "T05-L0-08-M011",
+          "role": "user",
+          "content": "这条记录只保留隔离策略。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-19T16:00:00+08:00",
+          "contentHash": "fee4cd0988dae63bcc79556ac0f15c500834e879fce0fb4585e124abacc7a42f"
+        },
+        {
+          "messageId": "T05-L0-08-M012",
+          "role": "assistant",
+          "content": "已与定位器约定分开存放。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-19T16:00:00+08:00",
+          "contentHash": "2b834f78b9d6c32f88561897f11b67a37189c315d61a78153c2ffd2e72f28b7f"
+        }
+      ],
+      "contentHash": "7b38ee344313e66c0ff36f85b6c98b85e01f4378ee9de7ec09880607b13877ae"
+    },
+    {
+      "assetId": "T05-L0-09",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "source-t05-history-l0"
+      ],
+      "observedAt": "2026-08-20T17:00:00+08:00",
+      "sessionId": "T05-L0-09",
+      "messages": [
+        {
+          "messageId": "T05-L0-09-M001",
+          "role": "user",
+          "content": "图表团队要整理 SVG 与 Canvas 的历史切换决策。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-20T17:00:00+08:00",
+          "contentHash": "b7b51f3533dcf31dc831cc0211658c45f9b1a105a787b03653e6c1f74f20a8c1"
+        },
+        {
+          "messageId": "T05-L0-09-M002",
+          "role": "assistant",
+          "content": "先列出数据量、键盘可读性和截图稳定性三个约束。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-20T17:00:00+08:00",
+          "contentHash": "2a52137806aade0f7300694143694c68d023e68de04ab2470dcf301efbdbbfda"
+        },
+        {
+          "messageId": "T05-L0-09-M003",
+          "role": "user",
+          "content": "小数据量的经营图仍需要键盘访问。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-20T17:00:00+08:00",
+          "contentHash": "fd96c222e46c8969edc36107d26d59ac9a6827ca325b941560fdbf0fb616a7fd"
+        },
+        {
+          "messageId": "T05-L0-09-M004",
+          "role": "assistant",
+          "content": "可读性要求会影响渲染路径选择。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-20T17:00:00+08:00",
+          "contentHash": "eaa27b41f29700733f4c0822ceb8334f834c71d61b70dd43387ec21fda1a08a4"
+        },
+        {
+          "messageId": "T05-L0-09-M005",
+          "role": "user",
+          "content": "大数据量静态概览的性能压力更明显。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-20T17:00:00+08:00",
+          "contentHash": "1b560cb9ad2c86d46d3cfd3e006648fb747e3e3f81be02c9bcc6327e55bcf1f4"
+        },
+        {
+          "messageId": "T05-L0-09-M006",
+          "role": "assistant",
+          "content": "要把适用边界与统一实现的愿望分开。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-20T17:00:00+08:00",
+          "contentHash": "3de4d61b70378ceefaa0592198f895435d39a46501085134dee0795bfd10c3b6"
+        },
+        {
+          "messageId": "T05-L0-09-M007",
+          "role": "user",
+          "content": "索引只剩日期和标题，正文没有载入。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-20T17:00:00+08:00",
+          "contentHash": "08b536cb6a335e5ef40ec7058339ef5d5ed3abcdf129f8e4df5143256c8b3357"
+        },
+        {
+          "messageId": "T05-L0-09-M008",
+          "role": "assistant",
+          "content": "按记录类型与日期核对原决定，避免凭当前代码倒推。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-20T17:00:00+08:00",
+          "contentHash": "f5bd2ef81a1eb80be634a6bc664c47ba133d2aaa723357adb4db693b96f82fa7"
+        },
+        {
+          "messageId": "T05-L0-09-M009",
+          "role": "user",
+          "content": "记录标注为 2026-08-12 的 decision。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-20T17:00:00+08:00",
+          "contentHash": "989d55d8d5a7842cfae691744cd2ebb09739d87f232b951021070890764e4c05"
+        },
+        {
+          "messageId": "T05-L0-09-M010",
+          "role": "assistant",
+          "content": "日期和类型足以缩小到一条旧决策。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-20T17:00:00+08:00",
+          "contentHash": "98daf6529b3befc8dd3b92daf7cb10a5932eff39183d2e5fa27a651d6b1cab41"
+        },
+        {
+          "messageId": "T05-L0-09-M011",
+          "role": "user",
+          "content": "decision 确认：小于中等数据量且需要键盘可读性时保留 SVG；超大数据量的静态概览才允许 Canvas，并要求另提供文本摘要与稳定截图检查。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-20T17:00:00+08:00",
+          "contentHash": "e6f38de2665312762c84246dddc18394ecec6d8117c3aac40d20e677cee74c54"
+        },
+        {
+          "messageId": "T05-L0-09-M012",
+          "role": "assistant",
+          "content": "不接受为了统一实现而全量切换；这条记录只恢复适用边界，不改变当前实现。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-20T17:00:00+08:00",
+          "contentHash": "d481709cf8e6a3ebfacee4aef75262c3a56e62a1a4cd6453ec24619b576487fd"
+        }
+      ],
+      "contentHash": "f6b15aff86b0940be2d6ada0bc911fa626ecc63de1a2754670c657c3546f36d7"
+    },
+    {
+      "assetId": "T05-L0-10",
+      "ownerAgentId": "agent-task1-t05-assets-b",
+      "sourceEvidenceIds": [
+        "source-t05-history-l0"
+      ],
+      "observedAt": "2026-08-21T18:00:00+08:00",
+      "sessionId": "T05-L0-10",
+      "messages": [
+        {
+          "messageId": "T05-L0-10-M001",
+          "role": "user",
+          "content": "报告预览在窄屏加载字体和图表时发生两次位移。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-21T18:00:00+08:00",
+          "contentHash": "4d795fb3fd5ab86a114709e14b5a3f9b7b4da8d5386ebd3f13ea16e6ad0f40d4"
+        },
+        {
+          "messageId": "T05-L0-10-M002",
+          "role": "assistant",
+          "content": "先记录预览容器、字体和图表占位的当前尺寸。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-21T18:00:00+08:00",
+          "contentHash": "d725edfb21f720ca5e2e13702bdceae49c25989f82c594564414829373dd8e5d"
+        },
+        {
+          "messageId": "T05-L0-10-M003",
+          "role": "user",
+          "content": "宽屏没有明显位移，但也要纳入回归。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-21T18:00:00+08:00",
+          "contentHash": "01d73f2d28d266e497f1ce01d14f8a0c2b6dcc3e63d25557fc89d147d8cd9220"
+        },
+        {
+          "messageId": "T05-L0-10-M004",
+          "role": "assistant",
+          "content": "事故验证需要至少覆盖窄屏和宽屏两个视口。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-21T18:00:00+08:00",
+          "contentHash": "850a297baa1f68a714bf0b156f0196ba4ea9345ec4f4e1a3f8f98b1b82e1dc4f"
+        },
+        {
+          "messageId": "T05-L0-10-M005",
+          "role": "user",
+          "content": "目前只看到标题和影响数字，正文步骤未载入。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-21T18:00:00+08:00",
+          "contentHash": "7727afa65f9bb9aa8410e3f2751a02440e724a4badfb72cbc15ef97898aa19a4"
+        },
+        {
+          "messageId": "T05-L0-10-M006",
+          "role": "assistant",
+          "content": "不要把交互图表的历史结论混作事故流程。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-21T18:00:00+08:00",
+          "contentHash": "08839f0d602a8b8fdf7fdae72e5d3607f9452969962623cd7ae425ec2c3a5424"
+        },
+        {
+          "messageId": "T05-L0-10-M007",
+          "role": "user",
+          "content": "响应式断点必须保留。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-21T18:00:00+08:00",
+          "contentHash": "9532e53139cea8c92ba60d38aca078c2f88e5c1f83d52da03c13dfc402f140ed"
+        },
+        {
+          "messageId": "T05-L0-10-M008",
+          "role": "assistant",
+          "content": "可以固定每个断点的容器约束，而不是取消响应式。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-21T18:00:00+08:00",
+          "contentHash": "b742ff6e7775d853a929163b7935811798e8e0ae8ae3e73c7b2e93ef4b905d45"
+        },
+        {
+          "messageId": "T05-L0-10-M009",
+          "role": "user",
+          "content": "事故正文已被索引，但尚未读到。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-21T18:00:00+08:00",
+          "contentHash": "251e90ed321da3b5c0976bd3945d861e8193346fcfa1cb905b83ddcf7c923f51"
+        },
+        {
+          "messageId": "T05-L0-10-M010",
+          "role": "assistant",
+          "content": "补回正文后按原步骤复盘，并在合入前重复两种视口检查。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-21T18:00:00+08:00",
+          "contentHash": "970c475332bba0707a8a3f6a6442162a330ad317942c6ca43404d905ea5f1d3f"
+        },
+        {
+          "messageId": "T05-L0-10-M011",
+          "role": "user",
+          "content": "记录当前仅用于定位事故场景。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-21T18:00:00+08:00",
+          "contentHash": "52989bd539eeda305a5fc20ef239bfe5f2ce04d451478ede7d298fece446f9da"
+        },
+        {
+          "messageId": "T05-L0-10-M012",
+          "role": "assistant",
+          "content": "已保留症状、影响和验证范围。",
+          "sourceEvidenceIds": [
+            "source-t05-history-l0"
+          ],
+          "observedAt": "2026-08-21T18:00:00+08:00",
+          "contentHash": "2bc1fc3740afc2ae0ee6bf34f9fea301cf594b8cfe0be2c7099677e192d51de2"
+        }
+      ],
+      "contentHash": "11da23f4c01115c170f64a4905376adbbc5f63944688de80712dd82a64d7c918"
+    }
+  ],
+  "l1Memories": [
+    {
+      "assetId": "T05-L1-01",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "source-t05-history-l1"
+      ],
+      "observedAt": "2026-08-12T09:00:00+08:00",
+      "type": "fact",
+      "content": "提示框定位需要区分视口矩形与文档位置。",
+      "status": "active",
+      "validFrom": "2026-08-12T09:00:00+08:00",
+      "supportingMessageIds": [
+        "T05-L0-01-M004",
+        "T05-L0-01-M010"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "bff659c203fa9d8270e8308b779c082e7e0ef0df7dd48ef48ba780bba726df85"
+    },
+    {
+      "assetId": "T05-L1-02",
+      "ownerAgentId": "agent-task1-t05-assets-b",
+      "sourceEvidenceIds": [
+        "source-t05-history-l1"
+      ],
+      "observedAt": "2026-08-13T10:00:00+08:00",
+      "type": "decision",
+      "content": "旧的局部数据转换记录只处理月份排序。",
+      "status": "superseded",
+      "supersededBy": "T05-L1-11",
+      "validFrom": "2026-08-13T10:00:00+08:00",
+      "supportingMessageIds": [
+        "T05-L0-02-M002",
+        "T05-L0-02-M012"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "fba9c20e91c8b7941b777b0b7a0a36b868521813cefcabccb5cecf02bd73e74d"
+    },
+    {
+      "assetId": "T05-L1-03",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "source-t05-history-l1"
+      ],
+      "observedAt": "2026-08-14T11:00:00+08:00",
+      "type": "decision",
+      "content": "媒体卡片需要响应式占位并保留延迟加载边界。",
+      "status": "active",
+      "validFrom": "2026-08-14T11:00:00+08:00",
+      "supportingMessageIds": [
+        "T05-L0-03-M004",
+        "T05-L0-03-M006"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "b13862feeb3fb4181942e6ac5d23a108ba23e9fb4855ed963dbe30cc0f8b0786"
+    },
+    {
+      "assetId": "T05-L1-04",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "source-t05-history-l1"
+      ],
+      "observedAt": "2026-08-14T11:00:00+08:00",
+      "type": "decision",
+      "content": "仅在客户端补高度的旧建议已被接管阶段的位移否定。",
+      "status": "superseded",
+      "supersededBy": "T05-L1-03",
+      "validFrom": "2026-08-14T11:00:00+08:00",
+      "supportingMessageIds": [
+        "T05-L0-03-M009",
+        "T05-L0-04-M004"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "38d201068c253384b14ae5557281cd34cb99d5fcb8cd9b340fa2b3ef5d92b5eb"
+    },
+    {
+      "assetId": "T05-L1-05",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "source-t05-history-l1"
+      ],
+      "observedAt": "2026-08-16T13:00:00+08:00",
+      "type": "decision",
+      "content": "成员列表重渲染来自列表容器把每次筛选产生的新派生数组传给所有行，改变行属性引用；行级订阅本身没有变化。复盘排除了全量 memo、移除实时计数和改写缓存存储。",
+      "status": "active",
+      "validFrom": "2026-08-16T13:00:00+08:00",
+      "supportingMessageIds": [
+        "T05-L0-05-M009",
+        "T05-L0-05-M010"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "9b58be84497eacee4988e82bed2cd5d38947b9ab41bb257718b15219db19b580"
+    },
+    {
+      "assetId": "T05-L1-06",
+      "ownerAgentId": "agent-task1-t05-assets-b",
+      "sourceEvidenceIds": [
+        "source-t05-history-l1"
+      ],
+      "observedAt": "2026-08-17T14:00:00+08:00",
+      "type": "fact",
+      "content": "权限摘要应订阅与详情一致的失效事件。",
+      "status": "active",
+      "validFrom": "2026-08-17T14:00:00+08:00",
+      "supportingMessageIds": [
+        "T05-L0-06-M009",
+        "T05-L0-06-M010"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "e8dfdcec5bdadb71f6def4bc5ab7f07bbd33ef32798152bec02c42cad56f15bb"
+    },
+    {
+      "assetId": "T05-L1-07",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "source-t05-history-l1"
+      ],
+      "observedAt": "2026-08-16T13:00:00+08:00",
+      "type": "decision",
+      "content": "全量 memo 曾被列为候选但不再作为列表重绘的首选方向。",
+      "status": "superseded",
+      "supersededBy": "T05-L1-05",
+      "validFrom": "2026-08-16T13:00:00+08:00",
+      "supportingMessageIds": [
+        "T05-L0-05-M011",
+        "T05-L0-05-M006"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "16200d3c66948ed4b2a7190a2c6c7f384273cb3f989013cac3182b8129efe6db"
+    },
+    {
+      "assetId": "T05-L1-08",
+      "ownerAgentId": "agent-task1-t05-assets-b",
+      "sourceEvidenceIds": [
+        "source-t05-history-l1"
+      ],
+      "observedAt": "2026-08-19T16:00:00+08:00",
+      "type": "decision",
+      "content": "优惠请求的测试隔离要求每例结束前完成清理。",
+      "status": "active",
+      "validFrom": "2026-08-19T16:00:00+08:00",
+      "supportingMessageIds": [
+        "T05-L0-08-M007",
+        "T05-L0-08-M010"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "fb9a567eb71162334826c6f65be045b6f090d912b3f99bdf1963ca8c1af4ca71"
+    },
+    {
+      "assetId": "T05-L1-09",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "source-t05-history-l1"
+      ],
+      "observedAt": "2026-08-18T15:00:00+08:00",
+      "type": "decision",
+      "content": "结账按钮优先使用面向用户语义且带稳定测试标记的定位，等待状态变化由可见状态断言表达；复盘排除了依赖按钮文案、易变层级路径和自动生成类名。",
+      "status": "active",
+      "validFrom": "2026-08-18T15:00:00+08:00",
+      "supportingMessageIds": [
+        "T05-L0-07-M005",
+        "T05-L0-07-M011"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "bf21eb5e8c447f65103de86f77eff33bd8c66f7efde1189cd02597f33a7989f1"
+    },
+    {
+      "assetId": "T05-L1-10",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "source-t05-history-l1"
+      ],
+      "observedAt": "2026-08-18T15:00:00+08:00",
+      "type": "decision",
+      "content": "依赖固定语言文案的旧定位方式已不适用于多语言页面。",
+      "status": "superseded",
+      "supersededBy": "T05-L1-09",
+      "validFrom": "2026-08-18T15:00:00+08:00",
+      "supportingMessageIds": [
+        "T05-L0-07-M003",
+        "T05-L0-07-M009"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "15f0027840010e4ac528b049e736eca2ca086d3eee88dbeb62d4c80754413ce3"
+    },
+    {
+      "assetId": "T05-L1-11",
+      "ownerAgentId": "agent-task1-t05-assets-b",
+      "sourceEvidenceIds": [
+        "source-t05-history-l1"
+      ],
+      "observedAt": "2026-08-13T10:00:00+08:00",
+      "type": "fact",
+      "content": "经营图表的缺失月份应保持缺口而非填零。",
+      "status": "active",
+      "validFrom": "2026-08-13T10:00:00+08:00",
+      "supportingMessageIds": [
+        "T05-L0-02-M003",
+        "T05-L0-02-M004"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "b073adcf2e5e409fa4e07cddfaf3bc766b5c2912cb27300f87420ab5adb7c824"
+    },
+    {
+      "assetId": "T05-L1-12",
+      "ownerAgentId": "agent-task1-t05-assets-b",
+      "sourceEvidenceIds": [
+        "source-t05-history-l1"
+      ],
+      "observedAt": "2026-08-21T18:00:00+08:00",
+      "type": "event",
+      "content": "预览事故回归覆盖窄屏与宽屏两个视口。",
+      "status": "active",
+      "validFrom": "2026-08-21T18:00:00+08:00",
+      "supportingMessageIds": [
+        "T05-L0-10-M003",
+        "T05-L0-10-M004"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "81a7e5535a9d60c5fe31fffc0dcf401bb312721f51cd1f0a1866bd0909baae09"
+    },
+    {
+      "assetId": "T05-L1-13",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "source-t05-history-l1"
+      ],
+      "observedAt": "2026-08-20T17:00:00+08:00",
+      "type": "decision",
+      "content": "旧 decision 确认：小于中等数据量且需要键盘可读性时保留 SVG；超大数据量的静态概览才允许 Canvas，并要求另提供文本摘要与稳定截图检查；不接受为了统一实现而全量切换。",
+      "status": "active",
+      "validFrom": "2026-08-12T00:00:00+08:00",
+      "supportingMessageIds": [
+        "T05-L0-09-M001",
+        "T05-L0-09-M005"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "d8aa75e4d3b63c4cc86fe25efe0047d484a99de351006fff896292395ab96e07"
+    },
+    {
+      "assetId": "T05-L1-14",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "source-t05-history-l1"
+      ],
+      "observedAt": "2026-08-20T17:00:00+08:00",
+      "type": "decision",
+      "content": "为统一实现而全量切换渲染路径的提议已被保留边界的要求取代。",
+      "status": "superseded",
+      "supersededBy": "T05-L1-13",
+      "validFrom": "2026-08-20T17:00:00+08:00",
+      "supportingMessageIds": [
+        "T05-L0-09-M006",
+        "T05-L0-09-M011"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "5f306957df58c55f6268c92f335e0173573baaabbb86dc916d731c70154a1903"
+    },
+    {
+      "assetId": "T05-L1-15",
+      "ownerAgentId": "agent-task1-t05-assets-b",
+      "sourceEvidenceIds": [
+        "source-t05-history-l1"
+      ],
+      "observedAt": "2026-08-15T12:00:00+08:00",
+      "type": "fact",
+      "content": "接管前的推荐列表应使用确定的默认标记，实验切换延后到接管后。",
+      "status": "active",
+      "validFrom": "2026-08-15T12:00:00+08:00",
+      "supportingMessageIds": [
+        "T05-L0-04-M003",
+        "T05-L0-04-M004"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "355d94d4a384bb634f70d9b93cd6a666a895f987791d2d13430d51c69a78f86a"
+    },
+    {
+      "assetId": "T05-L1-16",
+      "ownerAgentId": "agent-task1-t05-assets-b",
+      "sourceEvidenceIds": [
+        "source-t05-history-l1"
+      ],
+      "observedAt": "2026-08-21T18:00:00+08:00",
+      "type": "decision",
+      "content": "只验证窄屏的旧事故回归范围不足以作为合入门槛。",
+      "status": "superseded",
+      "supersededBy": "T05-L1-12",
+      "validFrom": "2026-08-21T18:00:00+08:00",
+      "supportingMessageIds": [
+        "T05-L0-10-M003",
+        "T05-L0-10-M010"
+      ],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "contentHash": "f50f01620482e364f8550b6297e552a32b21b648991a574030b61dd5129f9e52"
+    }
+  ],
+  "l2Scenes": [
+    {
+      "assetId": "T05-L2-01",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "source-t05-history-l2"
+      ],
+      "observedAt": "2026-08-16T13:00:00+08:00",
+      "path": "web/atlas-insights/beacon-performance.md",
+      "summary": "记录两个前端性能问题的排查入口、现象边界与复盘产物，供后续按项目区分。",
+      "content": "记录 tooltip 与列表性能问题的排查入口、现象边界、证据来源和复盘产物，按项目区分后再进入实施记录。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T05-L0-01",
+        "T05-L0-05"
+      ],
+      "contentHash": "b3e417e131a63057a25688375663f24b167ebbbcaf02201fae54f0c85e77c3fe"
+    },
+    {
+      "assetId": "T05-L2-02",
+      "ownerAgentId": "agent-task1-t05-assets-b",
+      "sourceEvidenceIds": [
+        "source-t05-history-l2"
+      ],
+      "observedAt": "2026-08-18T15:00:00+08:00",
+      "path": "web/meridian-storefront/pulse-checkout.md",
+      "summary": "汇总商品页与结账页的浏览器回归背景，强调异步状态和交互约束的差异。",
+      "content": "汇总商品页稳定性与结账回归的背景、异步状态、交互约束和各自的验证范围，供跨项目复盘。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T05-L0-03",
+        "T05-L0-07"
+      ],
+      "contentHash": "a385ad25e6860007b8859e02bac117d50c810cfd25b29e71cc1b2835e4b8f976"
+    },
+    {
+      "assetId": "T05-L2-03",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "source-t05-history-l2"
+      ],
+      "observedAt": "2026-08-21T18:00:00+08:00",
+      "path": "web/atlas-insights/canvas-reports.md",
+      "summary": "关联两条图形与报告预览时间线，保留数据规模、视口和稳定性等讨论维度。",
+      "content": "关联图形渲染决策与报告预览事故的时间线，保留数据规模、视口、可读性和稳定性等讨论维度。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T05-L0-09",
+        "T05-L0-10"
+      ],
+      "contentHash": "173a8cf72dfeb2a532a0760c55eddd8529f0ff640bad7d687687775e458902da"
+    },
+    {
+      "assetId": "T05-L2-04",
+      "ownerAgentId": "agent-task1-t05-assets-b",
+      "sourceEvidenceIds": [
+        "source-t05-history-l2"
+      ],
+      "observedAt": "2026-08-21T18:00:00+08:00",
+      "path": "web/canvas-reports/cls-incident-playbook.md",
+      "summary": "报告预览稳定性事故场景，包含跨视口复现、布局约束和发布前检查的背景，但不在摘要中写出具体修复答案。",
+      "content": "先冻结预览容器的响应式尺寸，再为字体和图表保留确定性占位，随后在窄屏与宽屏各做一次首屏位移记录；只有在两种视口均稳定且文本仍可见时才合入。",
+      "injected": true,
+      "supportingSessionIds": [
+        "T05-L0-10",
+        "T05-L0-03"
+      ],
+      "contentHash": "d8ec5d03dc3104ecc372161019ebadb50dc846f8e59668e99ef29b2c565a9e2c"
+    }
+  ],
+  "l3Profiles": [
+    {
+      "assetId": "T05-L3-01",
+      "ownerAgentId": "agent-task1-t05-assets-a",
+      "sourceEvidenceIds": [
+        "source-t05-history-l3"
+      ],
+      "observedAt": "2026-08-22T12:00:00+08:00",
+      "content": "团队偏好先保留可复现的现象与时间线，再以小范围证据确认归因；前端改动应尊重响应式、可访问性和渐进加载，回归记录需区分浏览器测量、组件渲染与测试隔离。对于历史结论，优先引用已确认的项目上下文，避免用相邻项目经验替代原记录。",
+      "stability": "team",
+      "contentHash": "f96b921eb2760e5e8cefb582f7cd2b4e7bc7c9256a1dda6988ec6035df018321"
+    }
+  ]
+}

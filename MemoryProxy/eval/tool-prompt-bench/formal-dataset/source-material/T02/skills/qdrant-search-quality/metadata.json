@@ -1,0 +1,57 @@
+{
+  "schema_version": "task1.github_skill_source.v1",
+  "team_id": "T02",
+  "name": "qdrant-search-quality",
+  "repository_url": "https://github.com/github/awesome-copilot",
+  "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+  "source_path": "skills/qdrant-search-quality/SKILL.md",
+  "license_spdx": "MIT",
+  "license_file": "../../licenses/MIT.txt",
+  "visibility": "search",
+  "description": "Evaluate Qdrant search quality, filtering, and ranking behavior.",
+  "use_when": "Retrieval quality is the target.",
+  "do_not_use_when": "The task concerns data-frame resampling or parallel partitions.",
+  "main_raw_sha256": "3af84e9019065cd90cc79210c5833153fc62acdcf55bda359ab7876809be0803",
+  "raw_files": [
+    {
+      "path": "diagnosis/SKILL.md",
+      "source_path": "skills/qdrant-search-quality/diagnosis/SKILL.md",
+      "url": "https://raw.githubusercontent.com/github/awesome-copilot/f11a4e441c5ff061b4f8ae37952be8c602e4034e/skills/qdrant-search-quality/diagnosis/SKILL.md",
+      "sha256": "faaed6cd9af51548bfc3a0c77d61bb4b96903cb5c0e17b2f3b722c41d1fb350c",
+      "byte_length": 3710
+    },
+    {
+      "path": "search-strategies/SKILL.md",
+      "source_path": "skills/qdrant-search-quality/search-strategies/SKILL.md",
+      "url": "https://raw.githubusercontent.com/github/awesome-copilot/f11a4e441c5ff061b4f8ae37952be8c602e4034e/skills/qdrant-search-quality/search-strategies/SKILL.md",
+      "sha256": "ed5044af012df8b84eca9e7cef6888dec798e5aa5b32144cf72646e93847d469",
+      "byte_length": 6963
+    },
+    {
+      "path": "SKILL.md",
+      "source_path": "skills/qdrant-search-quality/SKILL.md",
+      "url": "https://raw.githubusercontent.com/github/awesome-copilot/f11a4e441c5ff061b4f8ae37952be8c602e4034e/skills/qdrant-search-quality/SKILL.md",
+      "sha256": "3af84e9019065cd90cc79210c5833153fc62acdcf55bda359ab7876809be0803",
+      "byte_length": 1342
+    }
+  ],
+  "adapted_files": [
+    {
+      "path": "diagnosis/SKILL.md",
+      "sha256": "41f144f5e022a5dc0e3d60b93bc868c91a181c6cd719a702362fca54083d29a4",
+      "byte_length": 3763
+    },
+    {
+      "path": "search-strategies/SKILL.md",
+      "sha256": "fcfeacf499615dbafe7cdbc22313b67a8492821f865944ff8520d2503745127f",
+      "byte_length": 7033
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "21404b6887fe46e8acde2767cf6856de478240976f23111f6a8ffd010d362542",
+      "byte_length": 1366
+    }
+  ],
+  "adaptation_diff": "adaptation.diff",
+  "frozen": true
+}

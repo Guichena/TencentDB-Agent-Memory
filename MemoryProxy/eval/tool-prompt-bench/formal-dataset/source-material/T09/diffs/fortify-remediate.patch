@@ -1,0 +1,17 @@
+--- a/raw/fortify-skills/fortify-remediate/SKILL.md
++++ b/adapted/fortify-remediate/SKILL.md
+@@ -1,11 +1,13 @@
+ ---
+ name: fortify-remediate
+-description: Remediate SAST (static) and DAST (dynamic) security vulnerabilities ALREADY detected by Fortify in FoD or SSC — fix specific issues, categories, or reduce issue counts, including applying SAST Aviator fixes. For SCA / open source dependency findings (vulnerable third-party components, CVEs), use fortify-dependency-upgrade instead. NOT for discovering or reviewing new issues (use fortify-change-review for a local code-change review, or fortify-fod / fortify-ssc to scan and triage).
++description: "针对已经确认的 Fortify SAST/DAST 发现，按目标确认、修复计划、用户确认和逐项验证流程实施整改。"
++use_when: "已有具体的 Fortify SAST 或 DAST 发现，需要依照其修复流程实施并验证。"
++do_not_use_when: "需要发现或复核新问题、处理 SCA/开源依赖问题，或需要配置扫描与持续集成。"
+ license: MIT
+ metadata:
+   version: "1.1.1"
+   tested-with:
+     fcli: "3.23"
+     fod: "26.2"
+     ssc: "26.2"
+ ---

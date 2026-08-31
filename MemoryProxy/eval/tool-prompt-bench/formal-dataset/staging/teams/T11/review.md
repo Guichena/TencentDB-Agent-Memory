@@ -1,0 +1,3 @@
+# T11 Sol review
+
+Reviewed all Luna drafts against production routing contracts. Existing 40 cases, 15 pairs, and Gold annotations are preserved. Final asset pool: L0=8 sessions (12 messages each), L1=12, L2=4, L3=1, Skill=14 (5 listed, 9 same-Team searchable), with at least three same-domain searchable competitors for every skill_search route. Existing 6 Memory positives, 6 Skill positives, 3 Knowledge positives, 15 paired no-tool negatives, and 10 natural coding negatives remain unchanged. Memory scene-discovery candidates retain read_scene. Repair batch t11-memory-repair-luna-high was generated with gpt-5.6-luna/high and reviewed by Sol. New Skills reuse frozen shared GitHub files with pinned commit, path, blob/SHA-256, and license records.

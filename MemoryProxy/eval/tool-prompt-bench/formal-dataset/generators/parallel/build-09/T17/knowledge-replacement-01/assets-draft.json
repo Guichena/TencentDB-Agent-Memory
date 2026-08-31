@@ -1,0 +1,146 @@
+{
+  "schema_version": "task1.synthetic_knowledge_assets.v1",
+  "stage": "DS03",
+  "team_id": "T17",
+  "snapshot_id": "snapshot-task1-t17-knowledge-replacement-01-v1",
+  "status": "ready",
+  "synthetic_only": true,
+  "knowledge": [
+    {
+      "asset_id": "T17-KNW-01",
+      "type": "wiki",
+      "name": "Aurora architecture decisions",
+      "about": "Aurora token、组件与可访问性架构决策",
+      "summary": "Aurora UI 的 token 注册、主题装配、组件消费、发布产物、文档预览与测试架构决策。",
+      "match": "internal/aurora-ui",
+      "status": "ready",
+      "owner_agent_id": "agent-task1-t17-knowledge-assets",
+      "source": "internal_synthetic_fixture",
+      "fixed_tools": [
+        {"name": "search", "description": "按架构决策主题检索页面内容。", "input": {"query": "string"}},
+        {"name": "read_page", "description": "读取已定位的架构决策页面。", "input": {"page_id": "string"}}
+      ],
+      "tool_list_fixture": {
+        "tool_name": "knowledge_tools_list",
+        "request": {"knowledge_id": "T17-KNW-01"},
+        "response": {"tools": [{"name": "search"}, {"name": "read_page"}]}
+      },
+      "query_fixtures": [
+        {
+          "fixture_id": "T17-KNW-01-FIXTURE-001",
+          "tool_name": "search",
+          "query": {"query": "TokenRegistry impact inventory"},
+          "params": {"query": "TokenRegistry impact inventory"},
+          "result": {
+            "symbol": "TokenRegistry",
+            "impact_inventory": [
+              {"role": "registration definition", "file": "packages/tokens/src/registry.ts"},
+              {"role": "theme assembly entry", "file": "packages/theme/src/createTheme.ts"},
+              {"role": "component consumer", "component": "Button", "file": "packages/components/src/Button/styles.ts"},
+              {"role": "component consumer", "component": "Input", "file": "packages/components/src/Input/styles.ts"},
+              {"role": "component consumer", "component": "Select", "file": "packages/components/src/Select/styles.ts"},
+              {"role": "published artifact", "file": "packages/tokens/dist/aurora.css"},
+              {"role": "documentation preview", "file": "apps/docs/src/theme/preview.tsx"},
+              {"role": "test", "file": "packages/tokens/test/registry.test.ts"},
+              {"role": "test", "file": "packages/theme/test/createTheme.test.ts"},
+              {"role": "test", "file": "packages/components/test/token-contract.test.ts"}
+            ]
+          },
+          "response": {
+            "symbol": "TokenRegistry",
+            "files": [
+              "packages/tokens/src/registry.ts",
+              "packages/theme/src/createTheme.ts",
+              "packages/components/src/Button/styles.ts",
+              "packages/components/src/Input/styles.ts",
+              "packages/components/src/Select/styles.ts",
+              "packages/tokens/dist/aurora.css",
+              "apps/docs/src/theme/preview.tsx",
+              "packages/tokens/test/registry.test.ts",
+              "packages/theme/test/createTheme.test.ts",
+              "packages/components/test/token-contract.test.ts"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "asset_id": "T17-KNW-02",
+      "type": "wiki",
+      "name": "Helios rendering decisions",
+      "about": "Helios SSR、streaming 与 hydration 设计决策",
+      "summary": "Helios SSR、streaming 与 hydration boundary 的架构责任和设计理由。",
+      "match": "internal/helios-rendering",
+      "status": "ready",
+      "owner_agent_id": "agent-task1-t17-knowledge-assets",
+      "source": "internal_synthetic_fixture",
+      "fixed_tools": [
+        {"name": "search", "description": "按渲染架构决策主题检索页面内容。", "input": {"query": "string"}},
+        {"name": "read_page", "description": "读取已定位的渲染决策页面。", "input": {"page_id": "string"}}
+      ],
+      "tool_list_fixture": {
+        "tool_name": "knowledge_tools_list",
+        "request": {"knowledge_id": "T17-KNW-02"},
+        "response": {"tools": [{"name": "search"}, {"name": "read_page"}]}
+      },
+      "query_fixtures": [
+        {
+          "fixture_id": "T17-KNW-02-FIXTURE-001",
+          "tool_name": "search",
+          "query": {"query": "hydration boundary ownership rationale"},
+          "params": {"query": "hydration boundary ownership rationale"},
+          "result": {
+            "topic": "hydration boundary ownership",
+            "statement": "该决定由 SSR platform team 负责 hydration boundary，因为该团队同时控制 server stream checkpoints 与 client hydration handoff，可避免跨团队变更造成边界不一致。"
+          },
+          "response": {
+            "ownership": "SSR platform team",
+            "rationale": "SSR platform team 同时控制 server stream checkpoints 与 client hydration handoff，可避免跨团队变更造成边界不一致。"
+          }
+        }
+      ]
+    },
+    {
+      "asset_id": "T17-KNW-03",
+      "type": "wiki",
+      "name": "Foundry build decisions",
+      "about": "Foundry chunk、模块边界与构建决策",
+      "summary": "Foundry web 构建中的 chunk 规划、模块边界与异步产物架构决策。",
+      "match": "internal/foundry-web-build",
+      "status": "ready",
+      "owner_agent_id": "agent-task1-t17-knowledge-assets",
+      "source": "internal_synthetic_fixture",
+      "fixed_tools": [
+        {"name": "search", "description": "按构建架构决策主题检索页面内容。", "input": {"query": "string"}},
+        {"name": "read_page", "description": "读取已定位的构建决策页面。", "input": {"page_id": "string"}}
+      ],
+      "tool_list_fixture": {
+        "tool_name": "knowledge_tools_list",
+        "request": {"knowledge_id": "T17-KNW-03"},
+        "response": {"tools": [{"name": "search"}, {"name": "read_page"}]}
+      },
+      "query_fixtures": [
+        {
+          "fixture_id": "T17-KNW-03-FIXTURE-001",
+          "tool_name": "search",
+          "query": {"query": "createChunkPlan direct callers"},
+          "params": {"query": "createChunkPlan direct callers"},
+          "result": {
+            "symbol": "createChunkPlan",
+            "direct_callers": [
+              {"symbol": "emitAsyncChunk", "file": "packages/foundry/chunks/emitter.ts"},
+              {"symbol": "planEntryChunks", "file": "packages/foundry/chunks/entry.ts"}
+            ]
+          },
+          "response": {
+            "symbol": "createChunkPlan",
+            "direct_callers": [
+              "emitAsyncChunk (packages/foundry/chunks/emitter.ts)",
+              "planEntryChunks (packages/foundry/chunks/entry.ts)"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

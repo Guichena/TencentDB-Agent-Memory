@@ -1,0 +1,41 @@
+{
+  "schema_version": "task1.skill_source_lock.v1",
+  "team_id": "T15",
+  "frozen_at": "2026-08-30T18:00:00+08:00",
+  "repository": {
+    "url": "https://github.com/github/awesome-copilot",
+    "commit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+    "commit_author_time": "2026-08-28T05:41:12Z",
+    "license": "MIT",
+    "license_path": "LICENSE",
+    "license_sha256": "e32449d23085399adc1222f7a17408b730550258e51627c153cb108ca9955823"
+  },
+  "files": [
+    {"source_id":"T15-EXT-SKL-001","name":"aspnet-minimal-api-openapi","path":"skills/aspnet-minimal-api-openapi/SKILL.md","sha256":"16e632ce8cb514d413e968811a2e07b8e0f1e97c6e2e93174efd6cec2e49e86f"},
+    {"source_id":"T15-EXT-SKL-002","name":"openapi-to-application-code","path":"skills/openapi-to-application-code/SKILL.md","sha256":"4ac9c35e14140129df922091b62288258887e5d0efc0760ab390b3b248a35c16"},
+    {"source_id":"T15-EXT-SKL-003","name":"typespec-api-operations","path":"skills/typespec-api-operations/SKILL.md","sha256":"882751e73fb23048fcffd739345cabec0b3176a922b528f271c3dc7ce78ddd8a"},
+    {"source_id":"T15-EXT-SKL-004","name":"typespec-create-api-plugin","path":"skills/typespec-create-api-plugin/SKILL.md","sha256":"b48f961f80c931a0a31f43adf2954d60c8b9006170e45b85c01f5824d3427002"},
+    {"source_id":"T15-EXT-SKL-005","name":"copilot-sdk","path":"skills/copilot-sdk/SKILL.md","sha256":"5b432db55670223935a19215850f0e1e094db2026f1aa880f7d7b978fc48a42f"},
+    {"source_id":"T15-EXT-SKL-006","name":"msgraph-sdk","path":"skills/msgraph-sdk/SKILL.md","sha256":"cafac367eb3fdc99e05aedc76d46ad77f49e6c3fbc549e3cc6ec86d657638d8b"},
+    {"source_id":"T15-EXT-SKL-007","name":"qdrant-clients-sdk","path":"skills/qdrant-clients-sdk/SKILL.md","sha256":"eac9386970303787ccff5ce65f77e2bc51286a07b27977a8fba1f256f4c95426"},
+    {"source_id":"T15-EXT-SKL-008","name":"integrate-context-matic","path":"skills/integrate-context-matic/SKILL.md","sha256":"1251b1a1afebe0c881241dd7b87ed7688b01696866fada8f3071e0336f39ba43"},
+    {"source_id":"T15-EXT-SKL-009","name":"python-pypi-package-builder","path":"skills/python-pypi-package-builder/SKILL.md","sha256":"a936499b350cc292fead873345f54893c2e91c46ce0bae8620bd2f1734376f3e"},
+    {"source_id":"T15-EXT-SKL-010","name":"generate-custom-instructions-from-codebase","path":"skills/generate-custom-instructions-from-codebase/SKILL.md","sha256":"b0be02c9acdbffae5a1e39509c3e24567696cba666d666cece24ded66afa885b"},
+    {"source_id":"T15-EXT-SKL-011","name":"create-github-action-workflow-specification","path":"skills/create-github-action-workflow-specification/SKILL.md","sha256":"25b57a8e4ed35e2e640dc9f6f255dc6c8f86574b98d2abc5153b5a8c9b22491c"},
+    {"source_id":"T15-EXT-SKL-012","name":"update-specification","path":"skills/update-specification/SKILL.md","sha256":"2d6df53ebd1d50e5a69a4425bc579d5c8a15e0102c6bff685c3fa3ac70e920a6"},
+    {"source_id":"T15-EXT-SKL-013","name":"build-evidence-map","path":"skills/build-evidence-map/SKILL.md","sha256":"fb104196d94a0530eb5b86c56edfdaac0954a842f7cc71dfd4dcf87b20675fc9"},
+    {"source_id":"T15-EXT-SKL-014","name":"project-workflow-analysis-blueprint-generator","path":"skills/project-workflow-analysis-blueprint-generator/SKILL.md","sha256":"1563be31e5dd0568317b196dc92e10282a41d628db7bc04a990ad9019d35c37b"},
+    {"source_id":"T15-EXT-SKL-015","name":"gdpr-compliant","path":"skills/gdpr-compliant/SKILL.md","sha256":"e1f33a817a1d0f7165f4f6652cfeb52632ba124067c3f46c37f867cde730242e"},
+    {"source_id":"T15-EXT-SKL-016","name":"declarative-agents","path":"skills/declarative-agents/SKILL.md","sha256":"7a0913860f4478f8db00963c70d2fbdf32118ff8802a62175a9d5c0c77adb37f"},
+    {"source_id":"T15-EXT-SKL-017","name":"power-platform-mcp-connector-suite","path":"skills/power-platform-mcp-connector-suite/SKILL.md","sha256":"0b7764050e18c8257335da89594192c462aa33e2fcd2cef8c1f066ba1fe496d3"},
+    {"source_id":"T15-EXT-SKL-018","name":"aspire","path":"skills/aspire/SKILL.md","sha256":"f4cb7a6c3d437edd447a097d984ed43e519c8c53433ddf131a3061c477753542"},
+    {"source_id":"T15-EXT-RES-001","name":"python-pypi-versioning-strategy","path":"skills/python-pypi-package-builder/references/versioning-strategy.md","sha256":"cfb0d997b8cadc265beece2d727e5f31e07065729e65d38b1af1e5ce7a60abfa"}
+  ],
+  "review": {
+    "license_verified": true,
+    "raw_hashes_verified": true,
+    "upstream_dependencies_installed": false,
+    "upstream_tests_run": false,
+    "reviewed_by": "sol-owner"
+  }
+}

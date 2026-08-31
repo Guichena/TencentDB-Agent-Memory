@@ -1,0 +1,203 @@
+{
+  "schema_version": "task1.formal_knowledge_assets.v1",
+  "team_id": "T08",
+  "knowledge": [
+    {
+      "assetId": "cg-t08py01",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-knowledge-cg-t08py01"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "type": "code_graph",
+      "name": "pytest coverage code graph",
+      "repoUrl": "https://github.com/pytest-dev/pytest",
+      "repoCommit": "fdba12e1708313f56e9cf713d260c029764ca2b7",
+      "indexVersion": "task1.synthetic-code-graph.v1",
+      "snapshotSha256": "fe371371096d6467e1e39a78c5f99f347553eec71411e0896dd461389cdf2752",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t08-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "0cb3132088793aa4246eb3b61bab10dec1ec75a115c6f07a593225f258b2e789"
+    },
+    {
+      "assetId": "wiki-t08js01",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-knowledge-wiki-t08js01"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "type": "wiki",
+      "name": "Jest runtime test-quality wiki",
+      "snapshotSha256": "b0b9f6e513737d1b507b39c1cfffed9c645bf9419a05d575b0f191b8d8277f56",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t08-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "96ef604177e0e12f6f5e35fff01b28d4efeb5e3e400fdcf9dc22f186d53aec5d"
+    },
+    {
+      "assetId": "wiki-t08pw01",
+      "ownerAgentId": "agent-task1-t08-general",
+      "sourceEvidenceIds": [
+        "source-t08-knowledge-wiki-t08pw01"
+      ],
+      "observedAt": "2026-08-29T12:00:00Z",
+      "type": "wiki",
+      "name": "Playwright browser-journey wiki",
+      "snapshotSha256": "025fdd62f909335bf7e6281b969e589999faba3854026ffdc83f2b84e5a2dca0",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t08-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "e7a5445da181253942e77fff319fd5be54837ea7fa98d31f94459c0de5092335"
+    }
+  ],
+  "fixtures": [
+    {
+      "knowledge_id": "cg-t08py01",
+      "status": "ready",
+      "summary": "Read-only code-graph metadata for the pinned pytest repository and coverage-lab workspace.",
+      "workspace_match": {
+        "space_id": "space-task1-engineering",
+        "snapshot_id": "snapshot-task1-hidden-v1",
+        "agent_id": "agent-task1-t08-general",
+        "status": "ready",
+        "resource_slot": "pytest-coverage-lab"
+      },
+      "repo_match": {
+        "project_id": "pytest-coverage-lab",
+        "task_id": "task-task1-t08-pytest",
+        "repository_url": "https://github.com/pytest-dev/pytest",
+        "commit_sha": "fdba12e1708313f56e9cf713d260c029764ca2b7",
+        "language": "python",
+        "structure": "src-layout Python package with src/_pytest, testing, pyproject.toml and coverage annotations",
+        "status": "ready"
+      },
+      "tools_list_definition": {
+        "read_only": true,
+        "tools": [
+          {
+            "name": "search_code",
+            "description": "在固定仓库提交的合成代码图中按符号或路径检索位置。",
+            "read_only": true
+          }
+        ]
+      },
+      "query_tools": {
+        "search_code": {
+          "request_fixture": {
+            "symbol": "pytest_addoption",
+            "repository_url": "https://github.com/pytest-dev/pytest",
+            "commit_sha": "fdba12e1708313f56e9cf713d260c029764ca2b7",
+            "read_only": true
+          },
+          "response_fixture": {
+            "symbol": "pytest_addoption",
+            "path": "src/_pytest/config/__init__.py",
+            "line": 1240,
+            "synthetic_fixed_fixture": true,
+            "description": "coverage-adjacent command-line setup 的注册条目"
+          }
+        }
+      }
+    },
+    {
+      "knowledge_id": "wiki-t08js01",
+      "status": "ready",
+      "summary": "Read-only internal review notes for the pinned Jest runtime workspace and its test evidence.",
+      "workspace_match": {
+        "space_id": "space-task1-engineering",
+        "snapshot_id": "snapshot-task1-hidden-v1",
+        "agent_id": "agent-task1-t08-general",
+        "status": "ready",
+        "resource_slot": "jest-runtime-suite"
+      },
+      "repo_match": {
+        "project_id": "jest-runtime-suite",
+        "task_id": "task-task1-t08-jest",
+        "repository_url": "https://github.com/jestjs/jest",
+        "commit_sha": "be425a0b0e3bd60a74e4a7e350aa38c63a2d25ef",
+        "language": "typescript",
+        "structure": "Yarn monorepo with packages/jest-runtime, packages/expect, e2e fixtures and snapshot tests",
+        "status": "ready"
+      },
+      "tools_list_definition": {
+        "read_only": true,
+        "tools": [
+          {
+            "name": "search_pages",
+            "description": "在固定 Jest wiki 的合成页面中按主题检索只读条目。",
+            "read_only": true
+          }
+        ]
+      },
+      "query_tools": {
+        "search_pages": {
+          "request_fixture": {
+            "topic": "snapshot triage closure",
+            "repository_url": "https://github.com/jestjs/jest",
+            "commit_sha": "be425a0b0e3bd60a74e4a7e350aa38c63a2d25ef",
+            "read_only": true
+          },
+          "response_fixture": {
+            "page_title": "Jest snapshot-failure triage closure",
+            "body": "Before accepting a snapshot update, rerun the isolated failure with the original serializer and with fake timers reset, attach a focused received-versus-expected diff, and classify the change as behavior, serializer, or fixture drift. Only an approved behavior change may update the snapshot; serializer or fixture drift must be fixed at its source."
+          }
+        }
+      }
+    },
+    {
+      "knowledge_id": "wiki-t08pw01",
+      "status": "ready",
+      "summary": "Read-only internal review notes for the pinned Playwright browser-journey workspace.",
+      "workspace_match": {
+        "space_id": "space-task1-engineering",
+        "snapshot_id": "snapshot-task1-hidden-v1",
+        "agent_id": "agent-task1-t08-general",
+        "status": "ready",
+        "resource_slot": "playwright-browser-journeys"
+      },
+      "repo_match": {
+        "project_id": "playwright-browser-journeys",
+        "task_id": "task-task1-t08-playwright",
+        "repository_url": "https://github.com/microsoft/playwright",
+        "commit_sha": "de214f440b7e34937fe4886f046b78b757136087",
+        "language": "typescript",
+        "structure": "Node workspace with packages/playwright, packages/playwright-core, tests/playwright-test and browser fixtures",
+        "status": "ready"
+      },
+      "tools_list_definition": {
+        "read_only": true,
+        "tools": [
+          {
+            "name": "search_pages",
+            "description": "在固定 Playwright wiki 的合成页面中按主题检索只读条目。",
+            "read_only": true
+          }
+        ]
+      },
+      "query_tools": {
+        "search_pages": {
+          "request_fixture": {
+            "topic": "browser journey review ownership",
+            "repository_url": "https://github.com/microsoft/playwright",
+            "commit_sha": "de214f440b7e34937fe4886f046b78b757136087",
+            "read_only": true
+          },
+          "response_fixture": {
+            "page_title": "Playwright browser-journey review",
+            "body": "探索者负责可观察步骤和 locator 候选；测试作者负责持久断言；失败重试时附加 trace，并在闭环前跨浏览器验证选择器。"
+          }
+        }
+      }
+    }
+  ]
+}

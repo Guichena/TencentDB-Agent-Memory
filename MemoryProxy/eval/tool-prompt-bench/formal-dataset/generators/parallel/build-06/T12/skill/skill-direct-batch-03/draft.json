@@ -1,0 +1,304 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t12-skill-direct-batch-03",
+  "stage": "DS02",
+  "team_id": "T12",
+  "family": "skill",
+  "external_source_ids": [
+    "t12-skill-pg-migration",
+    "t12-skill-ghost-db"
+  ],
+  "pairs": [
+    {
+      "draft_pair_id": "T12-SKILL-B03-P007",
+      "external_source_ids": [
+        "t12-skill-pg-migration"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Ledger 的订单表仍在持续承载线上读写，现在要把旧状态字段平滑演进为新的表示。"
+        },
+        {
+          "role": "assistant",
+          "content": "已收集应用发布节奏、历史行规模和兼容窗口；本轮只做零停机迁移规划。"
+        },
+        {
+          "role": "user",
+          "content": "旧版本和新版本会有一段时间并存，我不希望字段切换或锁等待造成请求中断。"
+        },
+        {
+          "role": "assistant",
+          "content": "计划需要把应用兼容、历史数据处理、读取切换和旧字段清理拆成可观察的阶段。"
+        },
+        {
+          "role": "user",
+          "content": "我还缺少在线 DDL 的等待边界，也不知道每个阶段应该怎样确认数据和查询仍然正常。"
+        },
+        {
+          "role": "assistant",
+          "content": "执行前应先确定分阶段顺序、锁与语句的时间边界，以及迁移前后的验证点。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "Ledger 这次在线字段演进，开始执行前应怎样安排兼容切换、验证和清理？",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "请直接查看已经准备好的 PostgreSQL 迁移指导，补齐在线字段演进的阶段顺序、等待控制和前后验证原则；只说明计划，不执行任何变更。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少在线字段替换的兼容部署、分批历史处理、读取切换、旧字段清理，以及生产 DDL 等待和迁移前后验证的衔接。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T12-SKILL-PG-MIGRATION"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_view"
+            ]
+          ],
+          "stop_after_candidate": "查看冻结迁移指导后，概述在线字段替换、等待边界和前后验证计划，不执行 DDL。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把缺口补齐：先新增可空的新列，发布同时读写新旧列的兼容代码，按批处理历史行，再切换读取到新列并验证；确认应用不再引用旧列后，在后续独立变更中删除旧列。线上每条 DDL 都设置 lock_timeout，并用 statement_timeout 作为运行时边界，迁移前后执行数据完整性和查询性能检查。请据此整理计划。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已经给出列替换的兼容部署、分批处理、读取切换、旧列清理、超时边界和前后验证顺序，不需要再读取迁移指导。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T12-SKILL-GHOST",
+        "T12-SKILL-PG-DESIGN"
+      ],
+      "controlled_delta_note": "Positive 只缺冻结迁移指导中的在线字段替换和验证流程；Negative 仅补齐兼容部署、分批处理、切换、清理及等待边界。",
+      "source_fact_map": [
+        {
+          "claim": "零停机列替换应先添加新列，部署双写代码，分批回填，再切换读取并在后续变更中删除旧列。",
+          "source_id": "t12-skill-pg-migration",
+          "locator": "postgres-database-migration/SKILL.md#Rename a Column"
+        },
+        {
+          "claim": "生产 DDL 应设置 lock_timeout，并以 statement_timeout 作为语句运行时边界。",
+          "source_id": "t12-skill-pg-migration",
+          "locator": "postgres-database-migration/SKILL.md#Set Timeouts"
+        },
+        {
+          "claim": "每次迁移前后都应运行验证查询，覆盖数据完整性和查询性能等检查。",
+          "source_id": "t12-skill-pg-migration",
+          "locator": "postgres-database-migration/SKILL.md#Migration Validation"
+        }
+      ],
+      "sol_review_questions": [
+        "确认 Positive 只有 direct view 路径，且可见文本未泄漏资产标识、工具名、端点或 Gold 路由。",
+        "确认 Negative 仅复述冻结迁移指导的列替换、超时和验证步骤，没有新增业务假设。"
+      ]
+    },
+    {
+      "draft_pair_id": "T12-SKILL-B03-P008",
+      "external_source_ids": [
+        "t12-skill-pg-migration"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Harbor 的新字段需要为存量事件补值，表很大且线上写入不会停止。"
+        },
+        {
+          "role": "assistant",
+          "content": "已确认回填字段、数据边界和业务低峰窗口；本轮只制定可暂停、可观察的回填计划。"
+        },
+        {
+          "role": "user",
+          "content": "一次性处理全表可能拖长事务并影响复制，但我还没有确定批次和进度应怎样组织。"
+        },
+        {
+          "role": "assistant",
+          "content": "需要把历史行处理拆开，并让每一步都能被验证和监控，避免回填本身成为新的事故源。"
+        },
+        {
+          "role": "user",
+          "content": "除了回填过程，我还想知道开始前和结束后应该核对哪些数据与运行状态。"
+        },
+        {
+          "role": "assistant",
+          "content": "执行前应先补齐批量策略、可恢复进度、完整性检查和复制状态监控的原则。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "Harbor 的大表存量回填，怎样安排批次、进度、验证和运行监控？",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "请直接查看已经准备好的 PostgreSQL 迁移指导，说明大表历史数据回填的批次、进度、验证和运行监控原则；只解释方法，不运行回填。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少冻结迁移指导中的分批而非单次更新、可恢复进度、前后验证、WAL 与锁影响及复制延迟监控原则。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T12-SKILL-PG-MIGRATION"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_view"
+            ]
+          ],
+          "stop_after_candidate": "查看冻结迁移指导后，概述分批回填、进度、验证和运行监控原则，不执行回填。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把回填原则补齐：不要执行覆盖全表的单次 UPDATE，应按主键边界分批推进并保留可恢复进度；控制每批事务规模，避免过大的 WAL、表膨胀和长时间锁；回填前后运行 NULL、重复、孤儿、类型转换、数据完整性和查询性能检查，并在存在只读副本时监控复制延迟。请据此给出计划。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已经给出分批与可恢复进度、单次大更新的风险、前后验证项目和复制延迟监控，足以回答回填计划问题。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T12-SKILL-GHOST",
+        "T12-SKILL-PG-DESIGN"
+      ],
+      "controlled_delta_note": "Positive 只缺冻结迁移指导中的大表回填操作原则；Negative 仅补齐批次边界、可恢复进度、运行风险、验证和复制监控。",
+      "source_fact_map": [
+        {
+          "claim": "回填必须拆成批次，不能用单次全表 UPDATE；指导还要求考虑按主键分批、可恢复进度和调优。",
+          "source_id": "t12-skill-pg-migration",
+          "locator": "postgres-database-migration/SKILL.md#Backfill Strategies"
+        },
+        {
+          "claim": "单次大回填会产生巨大 WAL、造成表膨胀并在整个执行期间持有锁，因此应始终分批。",
+          "source_id": "t12-skill-pg-migration",
+          "locator": "postgres-database-migration/SKILL.md#Common Pitfalls"
+        },
+        {
+          "claim": "迁移前后应运行 NULL、重复、孤儿、类型转换、数据完整性和查询性能等验证，并监控复制延迟。",
+          "source_id": "t12-skill-pg-migration",
+          "locator": "postgres-database-migration/SKILL.md#Migration Validation; #Common Pitfalls"
+        }
+      ],
+      "sol_review_questions": [
+        "确认 Positive 使用 direct view 且可见文本不包含内部动作、资产标识、端点或 Gold 信息。",
+        "确认 Negative 的主键分批、可恢复进度、验证和复制监控均能在冻结迁移 SKILL.md 中定位。"
+      ]
+    },
+    {
+      "draft_pair_id": "T12-SKILL-B03-P009",
+      "external_source_ids": [
+        "t12-skill-pg-migration"
+      ],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "Ledger 的一次结构变更可能涉及不可逆的数据转换，我希望上线前先在隔离副本中验证。"
+        },
+        {
+          "role": "assistant",
+          "content": "已准备变更脚本、代表性边界数据和验收条件；本轮只确认隔离验证与失败收尾。"
+        },
+        {
+          "role": "user",
+          "content": "我不想让实验失败污染在线库，也不想在没有回退方案时贸然推进。"
+        },
+        {
+          "role": "assistant",
+          "content": "计划需要先保留可回到变更前状态的路径，并把验证成功和验证失败分成不同的后续分支。"
+        },
+        {
+          "role": "user",
+          "content": "目前还没有一份从副本准备、结构确认到失败清理的连续流程。"
+        },
+        {
+          "role": "assistant",
+          "content": "执行前应明确副本与在线库的边界、验证顺序，以及失败时如何保持原库不变。"
+        }
+      ],
+      "changed_message_index": 6,
+      "query": "Ledger 这次可能不可逆的变更，怎样用隔离副本验证并预先安排回退？",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "请直接查看已经准备好的 PostgreSQL 迁移指导，补齐隔离验证、变更前后检查以及成功和失败收尾的流程；只说明计划，不操作数据库。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "缺少迁移前记录回滚计划、创建真实数据副本、检查副本结构、在副本运行并验证变更，以及成功应用或失败删除副本的顺序。",
+          "route": "skill",
+          "target_asset_ids": [
+            "T12-SKILL-PG-MIGRATION"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "skill_view"
+            ]
+          ],
+          "stop_after_candidate": "查看冻结迁移指导后，概述 fork 隔离验证、回滚计划和成功/失败收尾，不执行迁移。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "我把流程补齐：执行前先写好每一步的回滚方案，并创建包含相同结构、数据和边界情况的完整副本；在副本确认结构后运行变更和前后验证。验证成功才把同一变更应用到在线库，验证失败则删除副本并重新规划，在线库保持不变；不可逆操作需要依靠变更前副本或备份恢复。请据此说明计划。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "新增消息已经给出回滚计划、真实数据副本、结构检查、隔离运行与验证、成功应用、失败删除和不可逆操作恢复路径，不需要再读取指导。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T12-SKILL-GHOST",
+        "T12-SKILL-PG-DESIGN"
+      ],
+      "controlled_delta_note": "Positive 只缺冻结迁移指导中的 fork 隔离验证与回滚收尾流程；Negative 仅补齐副本验证、成功应用、失败清理和不可逆恢复边界。",
+      "source_fact_map": [
+        {
+          "claim": "每次迁移都应在执行前记录回滚计划，且不可逆操作需要备份或变更前数据库副本恢复。",
+          "source_id": "t12-skill-pg-migration",
+          "locator": "postgres-database-migration/SKILL.md#Rollback Planning"
+        },
+        {
+          "claim": "fork 验证顺序是创建真实数据库副本、检查结构、在副本运行迁移、执行验证，成功后再应用到在线库。",
+          "source_id": "t12-skill-pg-migration",
+          "locator": "postgres-database-migration/SKILL.md#Fork-Based Migration Testing"
+        },
+        {
+          "claim": "副本验证失败时删除副本，原数据库保持不变。",
+          "source_id": "t12-skill-pg-migration",
+          "locator": "postgres-database-migration/SKILL.md#Fork-Based Migration Testing"
+        }
+      ],
+      "sol_review_questions": [
+        "确认 Positive 只有 direct view 序列，且 provider-visible 文本未泄漏资产 id、工具、端点或 Gold。",
+        "确认 Negative 的隔离验证和回滚表述只使用冻结迁移 SKILL.md 的 fork workflow 与 rollback planning。"
+      ]
+    }
+  ]
+}

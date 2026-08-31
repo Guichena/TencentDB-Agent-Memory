@@ -1,0 +1,245 @@
+{
+  "schema_version": "task1.team_assets.knowledge.v1",
+  "team_id": "T16",
+  "knowledge": [
+    {
+      "assetId": "T16-KNW-001",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-SRC-KNOWLEDGE-001"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "code_graph",
+      "name": "Ledger consumer code graph",
+      "repoUrl": "https://github.com/TencentCloud/TencentDB-Agent-Memory.git",
+      "repoCommit": "8257782c23eaa5e31f05b0ea33aa2ac7f2b6bb84",
+      "indexVersion": "task1-t16-synthetic-v1",
+      "snapshotSha256": "a66cc1f6411cbaa386445401023f9ca949595847c84770ae046dae94b89e921c",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t16-general",
+          "visibility": "fixed"
+        }
+      ],
+      "about": "Ledger 事件消费者的 outbox、幂等键和去重调用关联。",
+      "summary": "用于选择与 Ledger 事件摄取和消费者调用关系主题匹配的内部资源。",
+      "serviceUrl": "https://knowledge.synthetic.invalid/ledger-consumer",
+      "tools": [
+        {
+          "name": "search",
+          "params": {
+            "query": "string"
+          }
+        },
+        {
+          "name": "callers",
+          "params": {
+            "symbol": "string"
+          }
+        }
+      ],
+      "fixture": {
+        "tool_listing": {
+          "tool_name": "tools/list",
+          "result": {
+            "tools": [
+              {
+                "tool_name": "search",
+                "params": {
+                  "query": "string"
+                }
+              },
+              {
+                "tool_name": "callers",
+                "params": {
+                  "symbol": "string"
+                }
+              }
+            ]
+          }
+        },
+        "successful_query": {
+          "tool_name": "search",
+          "params": {
+            "query": "ledger outbox idempotency consumer call chain"
+          },
+          "result": {
+            "title": "Ledger consumer code graph",
+            "rule_text": "补充可直接采用的图谱结论：Ledger 写库事务在 OrderOutboxWriter.commit 中同时写入 outbox；LedgerDispatcher.publish 以 event_id 作为幂等键；重复事件在 LedgerConsumer.deduplicate 中按 event_id 丢弃，确认成功后才提交 offset；调用链为 OrderService.save → OrderOutboxWriter.commit → LedgerDispatcher.publish → LedgerConsumer.deduplicate。这就是本次要查的调用链。",
+            "transaction_entry": "OrderOutboxWriter.commit 同时写入 outbox",
+            "publish_idempotency_key": "event_id",
+            "deduplication": "LedgerConsumer.deduplicate 按 event_id 丢弃重复事件",
+            "offset_commit": "确认成功后才提交 offset",
+            "call_chain": [
+              "OrderService.save",
+              "OrderOutboxWriter.commit",
+              "LedgerDispatcher.publish",
+              "LedgerConsumer.deduplicate"
+            ]
+          }
+        }
+      },
+      "contentHash": "c2b7a29f0d9e9cb80e9415773acc318370820f4a406b52bc3188b3f164824a89"
+    },
+    {
+      "assetId": "T16-KNW-002",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-SRC-KNOWLEDGE-002"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "wiki",
+      "name": "Beacon DLQ recovery runbook",
+      "snapshotSha256": "5eb1e2796fd155f40cdae9f9a2e0a2ba3e902a186f894baca4122233f76b0343",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t16-general",
+          "visibility": "fixed"
+        }
+      ],
+      "about": "内部重试阈值、poison message 隔离、死信重放和审计步骤。",
+      "summary": "用于选择与 Beacon 消息重试、poison message 和死信恢复主题匹配的内部资源；摘要不包含阈值或步骤正文。",
+      "serviceUrl": "https://knowledge.synthetic.invalid/beacon-dlq-recovery",
+      "tools": [
+        {
+          "name": "search",
+          "params": {
+            "query": "string"
+          }
+        },
+        {
+          "name": "read_page",
+          "params": {
+            "page_id": "string"
+          }
+        }
+      ],
+      "fixture": {
+        "tool_listing": {
+          "tool_name": "tools/list",
+          "result": {
+            "tools": [
+              {
+                "tool_name": "search",
+                "params": {
+                  "query": "string"
+                }
+              },
+              {
+                "tool_name": "read_page",
+                "params": {
+                  "page_id": "string"
+                }
+              }
+            ]
+          }
+        },
+        "successful_query": {
+          "tool_name": "search",
+          "params": {
+            "query": "poison message isolation threshold dead-letter replay"
+          },
+          "result": {
+            "title": "Beacon DLQ recovery runbook",
+            "rule_text": "补充可直接执行的 runbook 决定：同一 message_id 连续失败 5 次后标记为 poison 并转入 beacon.notify.dlq，保留原始 partition、offset 和 message_id；死信重放前先暂停 consumer group，修复或隔离坏消息后按原 partition 顺序从最旧条目开始，每批 100 条重放，成功后再恢复 consumer，并在审计记录中写入 replay 操作人、时间和结果。这就是本次要查的阈值与步骤。",
+            "isolation_threshold": "同一 message_id 连续失败 5 次",
+            "dead_letter_queue": "beacon.notify.dlq",
+            "preserved_identifiers": [
+              "原始 partition",
+              "offset",
+              "message_id"
+            ],
+            "replay_steps": [
+              "暂停 consumer group",
+              "修复或隔离坏消息",
+              "按原 partition 顺序从最旧条目开始",
+              "每批 100 条重放",
+              "成功后恢复 consumer"
+            ],
+            "audit_fields": [
+              "replay 操作人",
+              "时间",
+              "结果"
+            ]
+          }
+        }
+      },
+      "contentHash": "90a481d83543d7ba435a2c35aadae84a0df0d2540039226bba496ecffa93fb83"
+    },
+    {
+      "assetId": "T16-KNW-003",
+      "ownerAgentId": "agent-task1-t16-general",
+      "sourceEvidenceIds": [
+        "T16-SRC-KNOWLEDGE-003"
+      ],
+      "observedAt": "2026-08-29T20:00:00+08:00",
+      "type": "wiki",
+      "name": "Streamline event schema governance",
+      "snapshotSha256": "c597d35a62f8af29b0f189ddd904f9332e96f4f560f3f2cd07827e7eeabbb708",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t16-general",
+          "visibility": "fixed"
+        }
+      ],
+      "about": "事件 envelope、版本演进、兼容级别和消费者迁移。",
+      "summary": "用于选择与 Streamline 事件 schema 演进和消费者兼容主题匹配的内部资源；摘要不包含字段或版本规则正文。",
+      "serviceUrl": "https://knowledge.synthetic.invalid/streamline-schema-governance",
+      "tools": [
+        {
+          "name": "search",
+          "params": {
+            "query": "string"
+          }
+        },
+        {
+          "name": "read_page",
+          "params": {
+            "page_id": "string"
+          }
+        }
+      ],
+      "fixture": {
+        "tool_listing": {
+          "tool_name": "tools/list",
+          "result": {
+            "tools": [
+              {
+                "tool_name": "search",
+                "params": {
+                  "query": "string"
+                }
+              },
+              {
+                "tool_name": "read_page",
+                "params": {
+                  "page_id": "string"
+                }
+              }
+            ]
+          }
+        },
+        "successful_query": {
+          "tool_name": "search",
+          "params": {
+            "query": "event envelope schema evolution consumer compatibility"
+          },
+          "result": {
+            "title": "Streamline event schema governance",
+            "rule_text": "补充可直接采用的治理决定：envelope 必须保留 event_id、event_type、event_version、occurred_at；新增 optional 字段沿用当前 major 并递增 minor；删除字段或把 optional 改 required 需递增 major；消费者兼容窗口要求旧消费者至少支持当前与前一 minor，迁移完成后才停发旧版本。这就是本次要查的 schema 规则。",
+            "required_envelope_fields": [
+              "event_id",
+              "event_type",
+              "event_version",
+              "occurred_at"
+            ],
+            "optional_field_evolution": "沿用当前 major 并递增 minor",
+            "breaking_evolution": "删除字段或把 optional 改 required 需递增 major",
+            "consumer_compatibility_window": "旧消费者至少支持当前与前一 minor，迁移完成后才停发旧版本"
+          }
+        }
+      },
+      "contentHash": "ba32b09a557f2d83d984b793270483843ba55b1ac25fbadaffe5c9008006a431"
+    }
+  ]
+}

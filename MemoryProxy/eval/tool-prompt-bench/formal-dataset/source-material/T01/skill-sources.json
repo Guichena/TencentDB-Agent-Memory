@@ -1,0 +1,157 @@
+{
+  "schema_version": "task1.team_skill_sources.v1",
+  "team_id": "T01",
+  "frozen": true,
+  "sources": [
+    {
+      "name": "analyze-ci",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/fix-build-agentops/environment/skills/analyze-ci/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "f59a07dcffe019f17cfa6ec211cbfb070e6292257be7119ed55ffa0b9bce7197",
+      "package_path": "skills/analyze-ci",
+      "metadata_sha256": "52d9c575f2e1b0b1905e2485b7163590010b30d958a06db357e4216f85abafaa"
+    },
+    {
+      "name": "discover-important-function",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/setup-fuzzing-py/environment/skills/discover-important-function/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "d935cc481fe8700ecfec482810dbf7fb56d0ee7e5fec7221ca5a77519d29ce29",
+      "package_path": "skills/discover-important-function",
+      "metadata_sha256": "5b715f527076ac0edea249ea08364e47ebb14bc52c43a2cdfd6413fb48a73fb1"
+    },
+    {
+      "name": "fuzzing-python",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/setup-fuzzing-py/environment/skills/fuzzing-python/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "718882130de22873f00e422d1c8d4d67febd002d5ee0163f314fea8890c0b835",
+      "package_path": "skills/fuzzing-python",
+      "metadata_sha256": "6c804ac0026f6096b0bc69d0a8be90dfcf2a30bc3242d372db7c57c6683ca89e"
+    },
+    {
+      "name": "grpo",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/debug-trl-grpo/environment/skills/grpo/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "90ef5f123f4b6107d85c69d53d6878aec29e5c08950dc52b9bd6fd872187804c",
+      "package_path": "skills/grpo",
+      "metadata_sha256": "961fba41f66e471f821f52f75826fdbbbbdc95bd8cc60f66e3785f08e2bdeee2"
+    },
+    {
+      "name": "memory-optimization",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/parallel-tfidf-search/environment/skills/memory-optimization/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "cc56c4b8119265a50ae48506c20f6e495bcb7972dfb7e78adc5405b840fb2ba8",
+      "package_path": "skills/memory-optimization",
+      "metadata_sha256": "eb14e8f62da6b2cc603a5c768c5d1b491c1bbc52718c0df85da7f692645e4dc8"
+    },
+    {
+      "name": "pytest-coverage",
+      "repository_url": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "source_path": "skills/pytest-coverage/SKILL.md",
+      "license_spdx": "MIT",
+      "main_raw_sha256": "3778add8809c5aac585ab764090f46e7cfdb009ae3fc9fb308710538627970f9",
+      "package_path": "skills/pytest-coverage",
+      "metadata_sha256": "f1021d9414323d7c551e57f02bf5314a4a5e72c306453ce1b66b7a6daaf36cd1"
+    },
+    {
+      "name": "python-parallelization",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/parallel-tfidf-search/environment/skills/python-parallelization/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "cade40ed1ab5ae28c52ef8ebeaaf0d72b0323d73aa1886f54f5a995685a48a79",
+      "package_path": "skills/python-parallelization",
+      "metadata_sha256": "841451e062a4629a389373106d639b4ac68903240edcfe05cdd68273d25e4efd"
+    },
+    {
+      "name": "qdrant-clients-sdk",
+      "repository_url": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "source_path": "skills/qdrant-clients-sdk/SKILL.md",
+      "license_spdx": "MIT",
+      "main_raw_sha256": "eac9386970303787ccff5ce65f77e2bc51286a07b27977a8fba1f256f4c95426",
+      "package_path": "skills/qdrant-clients-sdk",
+      "metadata_sha256": "f358e45430304691f3b6d95287847b8b3ed25245fac5d67cf9cff9379b8c4e56"
+    },
+    {
+      "name": "qdrant-performance-optimization",
+      "repository_url": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "source_path": "skills/qdrant-performance-optimization/SKILL.md",
+      "license_spdx": "MIT",
+      "main_raw_sha256": "5323301ea670baa98623e53f8c363845f6edde59a2f0f88e0c6e948d61438a3f",
+      "package_path": "skills/qdrant-performance-optimization",
+      "metadata_sha256": "b260307d74de70fb627133be7975b32a61879e76597da81874475d815ba0f812"
+    },
+    {
+      "name": "qdrant-search-quality",
+      "repository_url": "https://github.com/github/awesome-copilot",
+      "revision": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "source_path": "skills/qdrant-search-quality/SKILL.md",
+      "license_spdx": "MIT",
+      "main_raw_sha256": "3af84e9019065cd90cc79210c5833153fc62acdcf55bda359ab7876809be0803",
+      "package_path": "skills/qdrant-search-quality",
+      "metadata_sha256": "c3f12bc52d0fa05f380193720833b581f9d94b31512ee61351aad295b482c832"
+    },
+    {
+      "name": "setup-env",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/setup-fuzzing-py/environment/skills/setup-env/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "7b95dc92985ab21b131c5f1d14ec05cf27d145c5384e28bbf3022c7ea89f4202",
+      "package_path": "skills/setup-env",
+      "metadata_sha256": "7e0711741c4feb9ca096403ac4b630fe3a64740fcf9009eda87d13ad895d21d6"
+    },
+    {
+      "name": "temporal-python-testing",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/fix-build-agentops/environment/skills/temporal-python-testing/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "21e5d2382d474553eadb2771c764f4aa2b55a12bd75bc40894e68630c02db7bb",
+      "package_path": "skills/temporal-python-testing",
+      "metadata_sha256": "f2fd299c0e5bc661f298d113957289567044ed66adc4422456d41eac10bff23d"
+    },
+    {
+      "name": "testing-python",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/fix-build-agentops/environment/skills/testing-python/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "2741f4b02a7021658993213ce85095871e30ebfc1eba2bbef9d56f0bb71dea32",
+      "package_path": "skills/testing-python",
+      "metadata_sha256": "8e7a53b71e7233d245687763ec228d0920150cc473919c85c5f6d1deb25d952d"
+    },
+    {
+      "name": "uv-package-manager",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/fix-build-agentops/environment/skills/uv-package-manager/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "85c71e75e63966eb06a72dc0a7ed2046c45c38bb5574d748603917c4a3801878",
+      "package_path": "skills/uv-package-manager",
+      "metadata_sha256": "27ecaf002908550bd7fdbf1ec511290c8053d724e098bf918695b4a91c4b1d37"
+    },
+    {
+      "name": "workload-balancing",
+      "repository_url": "https://github.com/benchflow-ai/skillsbench",
+      "revision": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "source_path": "tasks/parallel-tfidf-search/environment/skills/workload-balancing/SKILL.md",
+      "license_spdx": "Apache-2.0",
+      "main_raw_sha256": "28260b9d369855ee36fab41bc2c084bb08e0473787888a3d20ca67d25d62ad5c",
+      "package_path": "skills/workload-balancing",
+      "metadata_sha256": "fd51944357f45f9a1c8f4253c74856782743b32be7cb2de64a1ddc99f9b4e2e3"
+    }
+  ]
+}

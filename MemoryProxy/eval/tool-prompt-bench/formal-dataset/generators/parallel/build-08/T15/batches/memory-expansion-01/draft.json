@@ -1,0 +1,140 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "build-08-T15-memory-expansion-01",
+  "stage": "DS05",
+  "team_id": "T15",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T15-EXP-MEM-001",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role":"user","content":"我在 Harbor 合作方 API 的兼容性审查工作区，需要回忆 response schema 增加 trace_context 时团队作出的版本决定。"},
+        {"role":"assistant","content":"这是 OpenAPI 3.1 演进问题，我会把请求和响应的兼容性分开核对。"},
+        {"role":"user","content":"这次只讨论响应对象；旧 consumer 仍能收到原字段，新增字段不是必填。"},
+        {"role":"assistant","content":"明白，关注点是新增可选属性如何归类，以及是否需要切换主版本。"},
+        {"role":"user","content":"相邻讨论还提到删字段和收紧 required，那些是不同风险。"},
+        {"role":"assistant","content":"对，别把破坏性收紧的结论套到这个可选扩展上。"},
+        {"role":"user","content":"当前摘要只说‘schema 已扩展’，没有留下版本决定的原句。"},
+        {"role":"assistant","content":"如果要恢复那句决定，应找 Harbor 审查中的原始记录，并在命中后停止继续翻相邻变更。"}
+      ],
+      "changed_message_index": 8,
+      "query":"Harbor response schema 增加可选 trace_context 后，团队对兼容性分类和主版本的精确决定是什么？",
+      "positive":{
+        "delta_message":{"role":"assistant","content":"这段上下文只确认新增属性可选，尚未保留团队对兼容性分类和主版本的精确决定；请找回那条原始讨论。"},
+        "private_proposal":{"unique_information_gap":"缺少 Harbor 审查中对可选 response 属性 trace_context 的正式兼容性分类及主版本处理决定。","route":"memory","target_asset_ids":["T15-L1-002"],"allowed_sequence_candidates":[["tdai_memory_search"]],"stop_after_candidate":"返回直接写出该版本决定的目标记忆后立即停止。"}
+      },
+      "negative":{
+        "delta_message":{"role":"assistant","content":"团队的决定是：将可选的 trace_context 属性加入 response schema，按兼容扩展处理，沿用当前主版本，不触发 major；旧 consumer 缺省时继续正常工作。"},
+        "private_proposal":{"route":"none","why_current_context_is_sufficient":"追加消息已给出属性可选时的兼容性分类、主版本处理和旧 consumer 边界。"}
+      },
+      "visible_distractor_ids_author_only":["T15-L0-002","T15-L1-001","T15-L2-001"],
+      "controlled_delta_note":"共享八条消息和查询完全相同；仅追加消息从缺少版本决定变为给出唯一版本事实。",
+      "source_fact_map":[],
+      "sol_review_questions":["正例是否只留下一个版本分类缺口？","负例是否没有引入删除字段或 required 收紧？","干扰候选是否至少覆盖相邻变更与审查摘要但不含目标决定？","命中目标记忆后是否明确停止？"]
+    },
+    {
+      "draft_pair_id":"T15-EXP-MEM-002",
+      "external_source_ids":[],
+      "synthetic_scope":["team","project","conversation","history"],
+      "difficulty":"hard",
+      "context_bucket":"medium_6_to_10",
+      "shared_context_messages":[
+        {"role":"user","content":"Meridian SDK Forge 昨晚要交付冻结的 TypeScript/Python SDK，我需要找回生成发布交接里的版本钉住决定。"},
+        {"role":"assistant","content":"我会先区分 OpenAPI 输入是否冻结、代码生成是否完成，以及发布包版本是否已经确定。"},
+        {"role":"user","content":"这次输入来自同一份冻结 schema，TypeScript 和 Python 都要从它生成。"},
+        {"role":"assistant","content":"那要找的是交接时写下的包版本，而不是生成器本身的提交号。"},
+        {"role":"user","content":"Meridian 还有一次候选发布，不能把候选号和正式交接号混淆。"},
+        {"role":"assistant","content":"了解，我会把候选构建的讨论作为干扰，只认正式发布交接的记录。"},
+        {"role":"user","content":"当前工作笔记只有‘版本已钉住’，没有具体数字。"},
+        {"role":"assistant","content":"需要回到 SDK 生成发布的历史消息，找到同时说明两种语言包版本的那条后停止。"}
+      ],
+      "changed_message_index":8,
+      "query":"Meridian 从冻结 schema 生成并交接时，TypeScript 与 Python SDK 正式钉住的版本分别是多少？",
+      "positive":{"delta_message":{"role":"assistant","content":"这里没有保留两种 SDK 的正式版本数字，只有‘版本已钉住’的概括；请找回生成发布交接中的原始记录。"},"private_proposal":{"unique_information_gap":"缺少 Meridian 正式交接时 TypeScript 与 Python 两个包的具体钉住版本。","route":"memory","target_asset_ids":["T15-L1-004"],"allowed_sequence_candidates":[["tdai_memory_search"]],"stop_after_candidate":"返回同时明确两种正式包版本的目标记忆后立即停止。"}},
+      "negative":{"delta_message":{"role":"assistant","content":"正式交接钉住的是 TypeScript SDK 3.1.0 与 Python SDK 2.4.1；两者都由同一份冻结 schema 生成，候选构建号不算正式版本。"},"private_proposal":{"route":"none","why_current_context_is_sufficient":"追加消息已经给出两种语言的正式版本，并排除了候选构建号。"}},
+      "visible_distractor_ids_author_only":["T15-L0-005","T15-L1-004","T15-L2-002"],
+      "controlled_delta_note":"两种条件共用同一 SDK 交接背景和查询；仅追加消息补足两种语言包的正式版本事实。",
+      "source_fact_map":[],
+      "sol_review_questions":["正例是否仍缺少具体版本数字？","负例是否同时区分正式版本和候选构建号？","干扰是否包含候选发布与生成流程摘要？","目标消息命中后是否停止？"]
+    },
+    {
+      "draft_pair_id":"T15-EXP-MEM-003",
+      "external_source_ids":[],
+      "synthetic_scope":["team","project","conversation","history"],
+      "difficulty":"hard",
+      "context_bucket":"medium_6_to_10",
+      "shared_context_messages":[
+        {"role":"user","content":"Pactline 的 provider verification 复盘里还有一条关于超时重试的决定，我要确认失败重放后的处理方式。"},
+        {"role":"assistant","content":"我会把网络超时、契约不匹配和人工重跑分开，避免把另一个请求头问题带进来。"},
+        {"role":"user","content":"这次现象是 provider 在等待窗口内没有返回，consumer 随后记录了一次 timeout。"},
+        {"role":"assistant","content":"重点应是失败后是否自动重试、重试次数和间隔，而不是把 timeout 当作契约断言失败。"},
+        {"role":"user","content":"附近另一轮讨论提到指数退避，但我不确定是不是这次验证流。"},
+        {"role":"assistant","content":"那条可能是网关健康检查的干扰；请限定在 Pactline provider verification 的失败重放。"},
+        {"role":"user","content":"摘要只留下‘重试策略已确定’，没有原话。"},
+        {"role":"assistant","content":"应找回直接描述重试次数与间隔的原始消息，找到后就停止。"}
+      ],
+      "changed_message_index":8,
+      "query":"Pactline 这次 provider verification 超时后，失败重放采用的重试次数和间隔的原话是什么？",
+      "positive":{"delta_message":{"role":"assistant","content":"当前上下文没有保留重试次数和间隔的具体决定；请找回 Pactline 失败重放讨论中直接写出策略的消息。"},"private_proposal":{"unique_information_gap":"缺少 provider verification 超时失败重放的精确重试次数与间隔，需定位原始对话而非健康检查讨论。","route":"memory","target_asset_ids":["T15-L0-009"],"allowed_sequence_candidates":[["tdai_conversation_search"]],"stop_after_candidate":"返回直接写出次数和间隔的失败重放消息后立即停止。"}},
+      "negative":{"delta_message":{"role":"assistant","content":"失败重放的决定是：超时后最多重试 2 次，每次间隔 30 秒；仍未返回就标记本轮验证失败，不再继续自动重试。"},"private_proposal":{"route":"none","why_current_context_is_sufficient":"追加消息完整给出次数、间隔和达到上限后的行为，查询已可直接回答。"}},
+      "visible_distractor_ids_author_only":["T15-L0-008","T15-L1-008","T15-L2-003"],
+      "controlled_delta_note":"共享上下文均围绕 Pactline 超时复盘；仅追加消息补足失败重放策略的三个事实维度。",
+      "source_fact_map":[],
+      "sol_review_questions":["是否将健康检查的指数退避作为自然干扰而非目标？","负例是否同时包含次数、间隔和停止条件？","查询在两种条件中是否完全一致？","找到目标对话消息后是否停止扩大搜索？"]
+    },
+    {
+      "draft_pair_id":"T15-EXP-MEM-004",
+      "external_source_ids":[],
+      "synthetic_scope":["team","project","conversation","history"],
+      "difficulty":"hard",
+      "context_bucket":"medium_6_to_10",
+      "shared_context_messages":[
+        {"role":"user","content":"Prism Schema Registry 最近审查 state 枚举演进，我要查一个明确时间窗内的 decision 记录。"},
+        {"role":"assistant","content":"可以。查询类型限定为 decision，时间窗口是 2026-08-01 至 2026-08-29，项目限定 Prism。"},
+        {"role":"user","content":"问题只问 request schema 的 state 枚举新增值，不问 response，也不问 required 字段。"},
+        {"role":"assistant","content":"收到，范围是 request enum 的兼容判定；response enum 的惯例只能当干扰。"},
+        {"role":"user","content":"当前摘要提到做过兼容性评估，但没有留下最终采用的模式。"},
+        {"role":"assistant","content":"类型和时间窗已经明确，仍需查到该窗口内的具体 decision 内容。"},
+        {"role":"user","content":"请不要把更早的草案或 Prism 以外的 schema 规则混进答案。"},
+        {"role":"assistant","content":"会严格限定项目、类型和日期，命中唯一决定后停止。"}
+      ],
+      "changed_message_index":8,
+      "query":"在 Prism 的 decision 记录中，2026-08-01 至 2026-08-29 期间 request 的 state 枚举新增值最终采用什么兼容模式？",
+      "positive":{"delta_message":{"role":"assistant","content":"上下文给出了查询类型和时间窗，但没有给出该窗口内 request state 枚举新增值的最终兼容模式。"},"private_proposal":{"unique_information_gap":"类型为 decision、时间窗为 2026-08-01 至 2026-08-29 的 Prism 记录中，缺少 request state enum 新增值的采用模式。","route":"memory","target_asset_ids":["T15-L1-011"],"allowed_sequence_candidates":[["tdai_atomic_query"]],"stop_after_candidate":"返回满足项目、类型和时间窗口的唯一决定后立即停止。"}},
+      "negative":{"delta_message":{"role":"assistant","content":"该时间窗内的最终决定是：request 的 state 枚举新增值按严格兼容模式处理，必须先提升请求契约版本并完成 consumer 迁移；不能作为同一版本的无破坏扩展。"},"private_proposal":{"route":"none","why_current_context_is_sufficient":"追加消息已明确 request 枚举新增值的模式、版本前置条件和迁移要求。"}},
+      "visible_distractor_ids_author_only":["T15-L0-008","T15-L1-010","T15-L2-005"],
+      "controlled_delta_note":"共享上下文明确给出 decision 类型与时间窗；仅追加消息补足该窗口内唯一 request enum 兼容模式。",
+      "source_fact_map":[],
+      "sol_review_questions":["是否明确给出 type=decision 与时间窗口且不泄露答案？","负例是否只补足 request enum 的模式和必要迁移？","response enum 与旧草案是否构成至少两个真实干扰？","命中窗口内唯一决定后是否停止？"]
+    },
+    {
+      "draft_pair_id":"T15-EXP-MEM-005",
+      "external_source_ids":[],
+      "synthetic_scope":["team","project","conversation","history"],
+      "difficulty":"hard",
+      "context_bucket":"medium_6_to_10",
+      "shared_context_messages":[
+        {"role":"user","content":"Atlas Partner API 的弃用窗口例外要从注入的索引文档继续核对，当前打开的是 versioning/atlas/deprecation-window.md。"},
+        {"role":"assistant","content":"我看到该文档的摘要只描述弃用场景和迁移流程，没有显示批准窗口的具体日期。"},
+        {"role":"user","content":"这次只问旧版本继续运行的例外窗口，不问一般弃用通知周期。"},
+        {"role":"assistant","content":"明白，需区分合作方例外批准和默认通知周期，也不要把 Atlas 的草案时间当成批准日期。"},
+        {"role":"user","content":"附近还有 Meridian 发布交接记录，和 Atlas 的弃用治理不是一件事。"},
+        {"role":"assistant","content":"我会沿当前文档索引定位例外批准记录，拿到具体窗口后停止。"},
+        {"role":"user","content":"摘要没有留下日期，所以仅凭眼前内容无法回答。"},
+        {"role":"assistant","content":"那就只查这份弃用窗口场景的原始内容，不扩大到其他版本治理记录。"}
+      ],
+      "changed_message_index":8,
+      "query":"Atlas 旧版本继续运行的弃用窗口例外，批准的起止日期是什么？",
+      "positive":{"delta_message":{"role":"assistant","content":"注入文档的摘要没有包含批准例外的日期；请读取当前索引路径对应的场景内容以找回起止日期。"},"private_proposal":{"unique_information_gap":"versioning/atlas/deprecation-window.md 的场景摘要不含 Atlas 例外窗口批准日期，需要读取该场景。","route":"memory","target_asset_ids":["T15-L2-004"],"allowed_sequence_candidates":[["tdai_read_scene"]],"stop_after_candidate":"返回该索引路径中直接给出批准起止日期的场景内容后立即停止。"}},
+      "negative":{"delta_message":{"role":"assistant","content":"批准的例外窗口是 2026-10-15 至 2026-11-30；这段时间允许旧版本继续运行，之后按迁移指南切换。"},"private_proposal":{"route":"none","why_current_context_is_sufficient":"追加消息已经给出例外窗口的起止日期及其适用边界。"}},
+      "visible_distractor_ids_author_only":["T15-L0-011","T15-L1-014","T15-L2-002"],
+      "controlled_delta_note":"共享消息包含可见的索引路径但摘要不含日期；仅追加消息补足批准窗口事实。",
+      "source_fact_map":[],
+      "sol_review_questions":["注入路径是否原样可见且摘要仍不泄露日期？","负例是否只增加 Atlas 例外窗口的起止日期和边界？","Meridian 发布记录与默认通知周期是否形成真实干扰？","读取到目标场景后是否停止？"]
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "T17-TRIAL-MEM-01",
+  "stage": "DS03",
+  "team_id": "T17",
+  "family": "memory",
+  "pairs": [
+    {
+      "draft_pair_id": "T17-TRIAL-MEM-01-P01",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "我们在 Atlas 状态与数据缓存流里复盘一个后台批量 mutation 后的数据陈旧问题，当前只看查询缓存的失效策略。"
+        },
+        {
+          "role": "assistant",
+          "content": "我会把 Atlas 的查询键归一化、乐观更新和服务端确认分开核对，不把 Aurora 的组件 token 缓存或 Helios 的 hydration 现象混进来。"
+        },
+        {
+          "role": "user",
+          "content": "这次请求由租户管理员发起，操作会同时触及多个租户的资源；读侧既有租户列表，也有资源详情和后台预取结果。"
+        },
+        {
+          "role": "assistant",
+          "content": "现有监控能看到 mutation 的成功、失败和重试状态，也能看到乐观更新的回滚，但这些状态还不能说明哪些查询键最终会被清掉。"
+        },
+        {
+          "role": "user",
+          "content": "交接摘要提过要等服务端确认，并提醒过不要因为一次跨租户操作就粗暴清空整个客户端缓存。"
+        },
+        {
+          "role": "assistant",
+          "content": "摘要只保留了原则性的提醒，没有留下历史决定中触发最终失效的精确事件和它覆盖的租户、资源范围。"
+        },
+        {
+          "role": "user",
+          "content": "别把同一页面的预取去重、乐观更新回滚，或者跨浏览器渲染差异当成这次要找的结论；我需要当时已经评审过的缓存边界。"
+        },
+        {
+          "role": "assistant",
+          "content": "范围已经限定在 Atlas 的跨租户 mutation 与查询缓存，身份、工作区和当前发布快照都不变；剩下只需核对历史记录里的最终失效规则。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请确认 Atlas 查询缓存遇到跨租户 mutation 时，最终失效在什么条件下触发，影响范围到哪里为止？",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "当前交接只说明要等服务端确认并避免全局清理，还没有保留最终失效由哪个确认条件触发、按什么租户与资源边界生效的精确决定；请找回当时的历史结论。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "仅缺 T17-L1-03 中 Atlas 查询缓存对跨租户 mutation 的最终失效边界：服务端确认触发条件、目标租户与资源键范围，以及不扩大的缓存范围。",
+          "route": "memory",
+          "target_asset_ids": ["T17-L1-03"],
+          "allowed_sequence_candidates": [["tdai_memory_search"]],
+          "stop_after_candidate": "返回直接写出跨租户 mutation 最终失效触发条件与租户/资源范围的历史记忆后立即停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "历史决定已补全：只有 mutation 得到服务端成功确认且响应带有目标租户与资源版本时，才按目标租户加资源键让对应查询缓存最终失效；失败或仍在重试的 mutation 不触发最终失效，同批次其他租户、客户端乐观副本和仅预取的列表也不连带清理，因此边界停在已确认的目标租户资源键，不扩展为全局缓存清空。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "追加消息完整给出了服务端成功确认与版本条件、目标租户加资源键的作用范围、失败重试例外，以及不连带清理和不做全局清空的最终边界。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T17-L1-01",
+        "T17-L1-07",
+        "T17-L0-06"
+      ],
+      "controlled_delta_note": "正负样本共享相同的 Atlas 团队背景、8 条上下文消息、身份与查询；仅追加 delta 从缺少跨租户最终失效边界变为完整给出触发条件、作用范围和例外。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 是否只留下服务端确认触发条件与目标租户资源键边界这一个事实缺口？",
+        "Negative 是否仅补齐成功确认、资源版本、失败重试例外及不扩大全局的范围，而未加入新的缓存策略？",
+        "租户列表预取、乐观更新回滚、查询键归一化和 Aurora/Helios 邻域是否提供了足够的同域干扰？",
+        "历史记录命中后是否只需一次记忆检索并立即停止？"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": "task1.workspace_code_lock.v1",
+  "team_id": "T19",
+  "repository": "https://github.com/TencentCloud/TencentDB-Agent-Memory.git",
+  "commit": "ffa1fe18085d47ed4da6b2306240152cc8590a86",
+  "license": "MIT",
+  "purpose": "Ground the T19 PermitMesh code-graph fixture in the real launch-revision skill visibility implementation.",
+  "files": [
+    {
+      "path": "MemoryProxy/src/skill/skill-bridge.ts",
+      "sha256": "600b834c5948202e0be130c3d9a1fc133f2d9582dca9730aa2d75da840f07991",
+      "facts": [
+        "createSkillBridgeHandler composes the team-visible and current-owner skill whitelist and fails closed when visibility resolution fails.",
+        "createSkillBridgeHandler calls filterTeamSearchResponse before lazy pinning.",
+        "filterTeamSearchResponse filters data.items by skill_id and slices to the original top-k."
+      ]
+    },
+    {
+      "path": "MemoryProxy/src/meta/client.ts",
+      "sha256": "70ba7317c1ac2d1d21bbd8efd9aceeac6f8b8a3062a8b93b592ca1dbda3e6b69",
+      "facts": [
+        "The meta client exposes the server-side visibility listing used by team-wide skill search."
+      ]
+    },
+    {
+      "path": "MemoryCore/src/gateway/skill-schemas.ts",
+      "sha256": "a0f1936413baf09872080afda06239e32232112b9a48d8f20bcfd5a66f5e431f",
+      "facts": [
+        "The search input schema defines team scope behavior for the gateway."
+      ]
+    },
+    {
+      "path": "MemoryCore/src/gateway/skill-handlers.ts",
+      "sha256": "c5b0e1d2e93ea9fa11f5bc5117de6cfea993fcab5b91b67165251cb0e3a40bae",
+      "facts": [
+        "The gateway handler strips agent_id for team-scoped search before calling the store."
+      ]
+    }
+  ]
+}

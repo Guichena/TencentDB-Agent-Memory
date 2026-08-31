@@ -1,0 +1,13 @@
+{
+  "schema_version": "task1.luna_batch_validation.v1",
+  "batch_id": "build-07-T14-expand-skill-01",
+  "team_id": "T14",
+  "stage": "DS05",
+  "family": "skill",
+  "expected_count": 5,
+  "actual_count": 5,
+  "valid": true,
+  "error_count": 0,
+  "errors": [],
+  "raw_output_sha256": "75326dc69d14e036f2335daceb1b9330a176532100db5f5fb7a65f91a7658cc7"
+}

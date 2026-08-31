@@ -1,0 +1,51 @@
+{
+  "schema_version": "task1.luna_asset_candidates.v1",
+  "batch_id": "t01-memory-batch-01",
+  "status": "proposal_only_not_approved_or_visible",
+  "source_gate_status": {
+    "policy_locator": "formal-worlds/W01/reviews/L0-ASSET-CANDIDATE-REVIEW.md#Two-session-L2--Skill-audit",
+    "l1_policy": "Only narrow L1 candidates grounded in reviewed W01-L0-01, W01-L0-11, or W01-L0-12, plus atomic candidates supported by a reviewed current anchor and pinned code/test evidence, may be listed.",
+    "l2_policy": "blocked_no_l2_authorized_from_current_evidence",
+    "l3_policy": "frozen_no_l3_creation_or_proposal"
+  },
+  "candidates": [
+    {
+      "candidate_id": "T01-L1-MYPY-PARAMSPEC-OPTIONAL-BOUND",
+      "level": "L1",
+      "kind": "distilled_memory",
+      "source_gate_status": "allowed_narrow_l1_candidate_from_reviewed_W01-L0-12; pending Sol freeze",
+      "source_ids": [
+        "source-t01-history-python__mypy-11567",
+        "source-t01-current-mypy-regression"
+      ],
+      "proposed_content": "在 mypy/server/astdiff.py 的 snapshot_definition 中为 ParamSpecExpr 增加分支；ParamSpec 的 upper_bound 可能为空，因此使用可选类型快照路径，保留 None 而不直接访问属性。",
+      "source_locator": "formal-worlds/W01/drafts/l0-sessions.json#session=W01-L0-12",
+      "notes": "仅供 Sol 判断是否冻结为 L1；当前 registry 没有该 L1。"
+    },
+    {
+      "candidate_id": "T01-L1-MYPY-STUBGEN-STAR-EXPANSION",
+      "level": "L1",
+      "kind": "distilled_memory",
+      "source_gate_status": "allowed_narrow_l1_candidate_from_reviewed_W01-L0-11; pending Sol freeze",
+      "source_ids": [
+        "source-t01-history-python__mypy-16869",
+        "source-t01-current-mypy-regression"
+      ],
+      "proposed_content": "stubgen 的 AliasPrinter 增加 visit_star_expr 后，已审阅会话验证了单个、多个 TypeVarTuple 展开以及普通 TypeVar 与 TypeVarTuple 混用的 Generic 参数。",
+      "source_locator": "formal-worlds/W01/drafts/l0-sessions.json#session=W01-L0-11",
+      "notes": "仅供 Sol 判断是否冻结为 L1；当前 registry 没有该 L1。"
+    },
+    {
+      "candidate_id": "T01-L1-MOTO-PRESENCE-PREDICATE",
+      "level": "L1",
+      "kind": "distilled_memory",
+      "source_gate_status": "allowed_narrow_l1_candidate_from_reviewed_W01-L0-01; pending Sol freeze",
+      "source_ids": [
+        "source-t01-history-getmoto__moto-5134"
+      ],
+      "proposed_content": "在 EventPattern 的 exists 过滤中，键存在且值为 null 属于 exists=true；键缺失才属于 exists=false。",
+      "source_locator": "formal-worlds/W01/drafts/l0-sessions.json#session=W01-L0-01",
+      "notes": "该候选属于审查允许列出的历史窄 L1；不代表当前 mypy/ujson 流，也未冻结。"
+    }
+  ]
+}

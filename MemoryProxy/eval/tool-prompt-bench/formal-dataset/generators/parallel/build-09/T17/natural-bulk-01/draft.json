@@ -1,0 +1,148 @@
+{
+  "schema_version": "task1.luna_natural_negative_draft.v1",
+  "batch_id": "T17-NAT-BULK-01",
+  "stage": "DS03",
+  "team_id": "T17",
+  "cases": [
+    {
+      "draft_case_id": "T17-NAT-01",
+      "difficulty": "medium",
+      "context_messages": [
+        {"role": "user", "content": "在前端组件库中新增 Button 的 quiet 变体。现有组件接受 variant 为 primary、secondary 或 danger，所有颜色只能引用 CSS 自定义属性。"},
+        {"role": "assistant", "content": "我检查了约束：quiet 应保持现有的尺寸、圆角、焦点环和 disabled 行为，只改变背景与文字颜色；不能新增硬编码颜色，也不能改动其他变体。"},
+        {"role": "user", "content": "设计 token 已给定：--color-surface-muted 是背景，--color-text-strong 是文字，hover 背景使用 --color-surface-muted-hover。请把 variant 类型、样式和组件测试补齐。"},
+        {"role": "assistant", "content": "测试环境使用 DOM 渲染与键盘事件，既有测试已覆盖其他三个变体；新增测试应验证 quiet 的三个 token、disabled 属性和 Tab 聚焦时仍有焦点环。"}
+      ],
+      "query": "请直接编辑 Button 的类型、样式和测试，使 quiet 变体满足上述契约，并运行相关组件测试。",
+      "why_current_context_is_sufficient": "目标文件的现有变体、精确 token、行为边界和测试环境都已在当前对话给出；这是一个局部、确定性的类型与样式编辑，不需要外部事实。",
+      "visible_distractor_ids_author_only": ["ui-variant-history", "token-migration-note"],
+      "sol_review_questions": ["quiet 变体是否应继续沿用现有 focus-visible 样式？"]
+    },
+    {
+      "draft_case_id": "T17-NAT-02",
+      "difficulty": "hard",
+      "context_messages": [
+        {"role": "user", "content": "请修复一个自定义 Combobox。输入框 id 为 city-input，列表 id 为 city-list；打开后选项是 li 元素，当前选项由 aria-selected 表示。现在按 ArrowDown 能移动视觉高亮，但屏幕阅读器不会得知当前项。"},
+        {"role": "assistant", "content": "组件目前把 activeIndex 存在本地状态，选项 key 是城市代码；列表打开时输入框已有 aria-expanded=true 和 aria-controls=city-list。"},
+        {"role": "user", "content": "要求是：输入框始终保留焦点；活动项变化时设置 aria-activedescendant 为 `city-option-${code}`；每个 li 使用 role=option 和对应 id；Escape 关闭列表并清除 aria-activedescendant。"},
+        {"role": "assistant", "content": "浏览器兼容要求是不要依赖 scrollIntoView 的新参数，活动项滚动用 element.scrollIntoView({block: 'nearest'})；已有鼠标选择和 Enter 选择逻辑不能改变。"}
+      ],
+      "query": "请在 Combobox 中实现上述键盘与 ARIA 修复，补充 ArrowDown、Escape 和 Enter 的 DOM 测试，并运行测试。",
+      "why_current_context_is_sufficient": "问题表现、DOM 结构、状态来源、所需 ARIA 属性、滚动兼容写法及不可回归的既有行为均已明确，可在本地组件和测试内完成。",
+      "visible_distractor_ids_author_only": ["a11y-review-log", "browser-support-matrix"],
+      "sol_review_questions": ["活动项没有城市代码时是否应移除 aria-activedescendant？"]
+    },
+    {
+      "draft_case_id": "T17-NAT-03",
+      "difficulty": "hard",
+      "context_messages": [
+        {"role": "user", "content": "实现查询缓存的 mutation 更新。缓存键是 `['users', tenantId, filters]`，其中 filters 是对象；列表数据形状为 `{items, total}`，mutation 返回 `{id, name, role, version}`。"},
+        {"role": "assistant", "content": "规则已确定：更新成功后只修改同一 tenantId 且 filters 中包含该用户的缓存；items 中按 id 替换，total 不变；没有该用户的缓存不能被创建。"},
+        {"role": "user", "content": "filters 可能包含 role、search 和 page。只有当旧 item 的 role 通过 filters.role 且 name 包含 filters.search（忽略大小写）时才替换；没有 role 或 search 的过滤条件视为通过。"},
+        {"role": "assistant", "content": "请使用现有缓存客户端的 setData 接口实现纯函数式更新，保持其他租户、其他页和未命中的缓存引用不变，并为四种过滤组合编写单元测试。"}
+      ],
+      "query": "请编辑 mutation 成功回调及其单元测试，按给定规则精确更新查询缓存并运行测试。",
+      "why_current_context_is_sufficient": "缓存键、数据结构、租户隔离、过滤匹配、引用保持和测试矩阵都已给出，所需实现完全由当前输入定义。",
+      "visible_distractor_ids_author_only": ["cache-invalidation-retrospective", "tenant-routing-doc"],
+      "sol_review_questions": ["当 filters.search 为空字符串时是否按没有搜索条件处理？"]
+    },
+    {
+      "draft_case_id": "T17-NAT-04",
+      "difficulty": "medium",
+      "context_messages": [
+        {"role": "user", "content": "修复设置页面的乐观更新。状态 `{theme, pending, error}` 初始为 `{theme:'light', pending:false, error:null}`；点击 dark 时要立即显示 dark。保存请求可能成功或失败，且用户可能在第一次请求未结束前再次点击 light。"},
+        {"role": "assistant", "content": "每次点击都产生递增 requestId，并把该次目标主题和 requestId 一起提交；按钮在请求期间仍可点击，界面显示最后一次选择。"},
+        {"role": "user", "content": "响应处理规则：成功只在响应 requestId 等于当前最新 requestId 时清除 pending 和 error；失败时仅最新请求可以回滚到该请求开始前的主题并显示错误，过期响应必须被忽略。"},
+        {"role": "assistant", "content": "请改写 reducer 和请求协调代码，测试顺序为 dark 点击、light 点击、dark 失败、light 成功，以及过期 dark 失败到达的情况；不能增加全局变量。"}
+      ],
+      "query": "请实现 requestId 驱动的乐观更新与回滚，并补齐给定顺序的 reducer/协调层测试。",
+      "why_current_context_is_sufficient": "状态形状、并发事件顺序、最新请求判定、回滚目标和测试场景已经完整定义，代码修改无需推断项目外的策略。",
+      "visible_distractor_ids_author_only": ["optimistic-update-incident", "state-library-comparison"],
+      "sol_review_questions": ["最新请求失败时的错误文案是否保持现有请求层返回值？"]
+    },
+    {
+      "draft_case_id": "T17-NAT-05",
+      "difficulty": "medium",
+      "context_messages": [
+        {"role": "user", "content": "修复 SSR 页面首次渲染不一致。服务端模板渲染 `<time>{new Date().toLocaleDateString()}</time>`，客户端组件初始化也调用同一个表达式；跨时区用户偶尔看到 hydration mismatch。"},
+        {"role": "assistant", "content": "页面请求已经得到 `publishedAt` ISO 字符串和用户时区 `timeZone`，服务端可以把它们作为 props 传给时间组件；组件不应在 render 阶段读取当前时间。"},
+        {"role": "user", "content": "显示规则固定为 `Intl.DateTimeFormat(timeZone, {dateStyle:'medium'}).format(new Date(publishedAt))`；timeZone 无效时使用 `UTC`。服务端和客户端必须共享同一格式化函数。"},
+        {"role": "assistant", "content": "请把日期格式化移到共享纯函数，修改服务端 props 传递和客户端组件，并添加固定 ISO、Asia/Shanghai、无效时区三组渲染测试。"}
+      ],
+      "query": "请完成时间组件的 SSR/hydration 修复，确保首次 HTML 与客户端首帧一致，并运行三组测试。",
+      "why_current_context_is_sufficient": "触发 mismatch 的非确定性来源、可用输入、精确 Intl 规则、回退值和测试样例均已明确，可以直接局部重构。",
+      "visible_distractor_ids_author_only": ["rendering-postmortem", "timezone-policy-draft"],
+      "sol_review_questions": ["timeZone 为空字符串时是否与无效时区一样回退到 UTC？"]
+    },
+    {
+      "draft_case_id": "T17-NAT-06",
+      "difficulty": "hard",
+      "context_messages": [
+        {"role": "user", "content": "给流式 SSR 页面增加评论区边界。文章 HTML 先流出，评论数据稍后到达；当前客户端评论组件在数据为空时渲染 `No comments`，服务端占位却是空 div，导致首次接管不一致。"},
+        {"role": "assistant", "content": "服务端可以传 `commentsReady` 布尔值和评论数组；在 commentsReady=false 时，服务端与客户端都必须渲染固定的 `<div data-comments-skeleton aria-busy=\"true\">Loading comments…</div>`。"},
+        {"role": "user", "content": "数据到达后只替换评论边界内部内容：有评论渲染 ul/li，无评论渲染 `<p>No comments</p>`；文章主体不能重新渲染。客户端边界需要清理订阅。"},
+        {"role": "assistant", "content": "请修改边界组件、流式数据传递和测试，覆盖未就绪、有评论、空评论三种首帧，并验证文章主体只渲染一次。"}
+      ],
+      "query": "请实现评论区的确定性流式边界与 hydration 修复，补齐首帧和订阅清理测试。",
+      "why_current_context_is_sufficient": "占位 HTML、就绪后的两种内容、边界更新范围和测试断言已完全给出；不需要了解其他页面或历史设计决策。",
+      "visible_distractor_ids_author_only": ["streaming-rollout-checklist", "comments-architecture-note"],
+      "sol_review_questions": ["评论流异常时是否复用现有错误边界而不改变文章主体？"]
+    },
+    {
+      "draft_case_id": "T17-NAT-07",
+      "difficulty": "hard",
+      "context_messages": [
+        {"role": "user", "content": "浏览器入口意外打包了仅服务端使用的数据库适配器。目录中 `packages/data/client.ts` 应供浏览器使用，`packages/data/server.ts` 含 Node 专属模块；应用入口只能导入 `@app/data/client`。"},
+        {"role": "assistant", "content": "包当前 exports 只有 `.` 指向 server.ts，浏览器构建因此解析到错误入口；类型声明也必须与实际入口一致，不能靠运行时判断隐藏服务端导入。"},
+        {"role": "user", "content": "请把 exports 改为 `.` 默认 client.ts、`./server` 指向 server.ts，并为两者分别声明 types 与 import；client.ts 不得 transitively 引入 server.ts。"},
+        {"role": "assistant", "content": "验证要求是浏览器目标构建产物中不出现 Node 专属模块，服务端类型检查仍能解析 `@app/data/server`；请更新包配置和边界测试。"}
+      ],
+      "query": "请修正 data 包的 exports、类型入口与模块边界测试，并分别运行浏览器构建和服务端类型检查。",
+      "why_current_context_is_sufficient": "目录、错误原因、精确 exports 映射、传递依赖约束和两个验证目标都已说明，修改仅涉及给定包的配置与测试。",
+      "visible_distractor_ids_author_only": ["module-ownership-map", "dependency-boundary-history"],
+      "sol_review_questions": ["是否需要保留旧的深层导入路径作为兼容别名？"]
+    },
+    {
+      "draft_case_id": "T17-NAT-08",
+      "difficulty": "medium",
+      "context_messages": [
+        {"role": "user", "content": "优化管理页的 bundle。首屏入口静态导入了仅点击后才使用的 `ReportEditor` 和 `CsvPreview`，目标是让首屏 JS 降到 180 KiB 以下。"},
+        {"role": "assistant", "content": "路由页面已有两个按钮；编辑器只在点击 Edit 后显示，预览只在选择 CSV 后显示。两者都能接受现有 props，不需要在首屏执行。"},
+        {"role": "user", "content": "请使用原生动态 import 分出两个异步 chunk，加载期间显示各自的 `aria-live=\"polite\"` 文案；失败时显示重试按钮。不要把二者合并为一个大 chunk。"},
+        {"role": "assistant", "content": "构建测试会检查首屏入口不包含这两个模块、生成两个可加载 chunk，交互测试会检查 loading、成功和失败重试；仅调整该页面和测试配置。"}
+      ],
+      "query": "请将两个延迟功能拆成独立异步 chunk，实现 loading/失败重试状态，更新构建与交互测试并运行它们。",
+      "why_current_context_is_sufficient": "首屏预算、触发条件、拆分边界、可访问的状态文案和验证方式都有精确要求，可直接修改入口页面。",
+      "visible_distractor_ids_author_only": ["chunk-budget-history", "build-dashboard-snapshot"],
+      "sol_review_questions": ["异步 chunk 的命名是否需要沿用现有构建命名规则？"]
+    },
+    {
+      "draft_case_id": "T17-NAT-09",
+      "difficulty": "hard",
+      "context_messages": [
+        {"role": "user", "content": "搜索结果页在一次点击筛选时同步处理 10,000 行并计算每行高亮，主线程长任务约 280ms。列表必须保持当前顺序，筛选结果不能改变。"},
+        {"role": "assistant", "content": "每批最多处理 250 行；批次之间让出主线程，优先使用 `scheduler.postTask`，不存在时使用 `setTimeout(runNext, 0)`。每批结果追加到局部数组，不能改写输入数组。"},
+        {"role": "user", "content": "用户再次筛选或离开页面时要取消未完成工作；取消后不得提交部分结果。高亮函数是纯函数 `highlight(row, term)`，term 为空时仍需遍历并返回原行。"},
+        {"role": "assistant", "content": "请重构筛选处理器为可取消的分批任务，保留现有回调签名，测试顺序、取消和 scheduler 缺失回退，并用假计时器证明不会同步处理全部行。"}
+      ],
+      "query": "请实现可取消的分批筛选以消除长任务，补齐顺序、重入、取消和回退调度测试，并运行性能相关测试。",
+      "why_current_context_is_sufficient": "数据规模、批大小、调度优先级、回退方式、取消语义、纯函数和测试要求均已完整给出，性能修复不依赖运行环境之外的信息。",
+      "visible_distractor_ids_author_only": ["long-task-trace", "scheduler-experiment"],
+      "sol_review_questions": ["取消时是否需要调用现有的 onCancel 回调？"]
+    },
+    {
+      "draft_case_id": "T17-NAT-10",
+      "difficulty": "medium",
+      "context_messages": [
+        {"role": "user", "content": "文章卡片首屏图片造成布局偏移。图片元素只有 src 和 alt，没有尺寸；图片加载后卡片高度从 160px 变成 240px。卡片列表有固定的宽度列。"},
+        {"role": "assistant", "content": "每张图的已知固有尺寸是 320x180；请在图片上声明 width=320、height=180，并用 CSS `max-width:100%; height:auto` 适配窄列，保留 object-fit:cover。"},
+        {"role": "user", "content": "图片还要兼容旧浏览器：不能依赖 aspect-ratio 才保留空间；在图片失败时显示同尺寸的灰色占位，alt 仍应描述文章标题。动画装饰必须遵守 prefers-reduced-motion。"},
+        {"role": "assistant", "content": "请修改卡片标记和样式，添加加载成功、加载失败、窄列和减少动态偏好四个测试；不要通过 JavaScript 测量图片后再设置高度。"}
+      ],
+      "query": "请消除卡片图片带来的布局偏移，加入无脚本尺寸保留、失败占位和减少动态样式，并运行四个测试。",
+      "why_current_context_is_sufficient": "固有尺寸、响应式 CSS、旧浏览器限制、失败状态、替代文本和测试维度均已确定，局部标记与样式改动即可完成。",
+      "visible_distractor_ids_author_only": ["web-vitals-report", "legacy-browser-notes"],
+      "sol_review_questions": ["失败占位是否应继续使用图片的原始 alt 文本供辅助技术读取？"]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+diff --git a/raw/create-cli/SKILL.md b/adapted/T06-SKILL-CREATE-CLI/SKILL.md
+index 184ecaa..685165f 100644
+--- a/raw/create-cli/SKILL.md
++++ b/adapted/T06-SKILL-CREATE-CLI/SKILL.md
+@@ -1,7 +1,9 @@
+ ---
+-name: CreateCLI
++name: create-typescript-cli
+ version: 1.1.25
+-description: "Generates production-ready TypeScript CLIs via a 3-tier template system (manual arg parsing, Commander.js, oclif), each shipping full implementation, docs, package.json, strict config, JSON output, and exit-code compliance. USE WHEN create CLI, build CLI, command-line tool, wrap API, add command, upgrade tier, TypeScript CLI. NOT FOR LifeOS skill scaffolding (use CreateSkill)."
++description: "Generates production-ready TypeScript command-line applications through a tiered template workflow."
++use_when: "Use when creating or expanding a TypeScript CLI and selecting manual parsing, Commander.js, or oclif complexity."
++do_not_use_when: "Do not use for .NET System.CommandLine, DVC operations, VS Code extension commands, or plain documentation."
+ ---
+ 
+ ## Customization

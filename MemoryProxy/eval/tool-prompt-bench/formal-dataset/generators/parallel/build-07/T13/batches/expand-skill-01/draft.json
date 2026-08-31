@@ -1,0 +1,209 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "task1-T13-expand-skill-01",
+  "stage": "DS05",
+  "team_id": "T13",
+  "family": "skill",
+  "pairs": [
+    {
+      "draft_pair_id": "T13-SKL-001-expand-01",
+      "external_source_ids": ["T13-SRC-PROMETHEUS"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Asteria Edge 的边缘网关最近有间歇性 5xx 和延迟尖峰。请基于当前项目上下文准备指标侧的排障方案，不先改应用代码。"},
+        {"role": "assistant", "content": "已确认当前范围是 Prometheus 指标、告警路由和仪表盘性能；网关的指标入口与现有告警文件已经整理，但还没有可复用的查询和规则核验顺序。"},
+        {"role": "user", "content": "我想先得到能执行的最小验证路径，并知道哪些结果能支持后续告警调整。"}
+      ],
+      "changed_message_index": 3,
+      "query": "请给出这次指标侧排障的下一步和判断依据，暂时不要修改应用代码。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请直接查看列表中面向指标查询与告警运维的指南，补齐从选择器和区间速率查询、聚合，到告警路由及记录规则校验/重载/验证的可执行流程；先停在可以开始验证的位置。"},
+        "private_proposal": {
+          "unique_information_gap": "上下文没有给出指标排障所需的完整技术流程：用选择器、范围向量和 rate/increase 组织查询并聚合，配置并检查告警路由，以及校验、重载并验证记录规则和可用的指标探索。",
+          "route": "skill",
+          "target_asset_ids": ["T13-SKILL-PROMETHEUS"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "直接打开列表中的指标运维指南，提炼查询、告警和记录规则验证步骤后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "缺失流程补齐如下：先用指标选择器与范围向量组织查询，计数器按区间用 rate 或 increase，再用 sum、avg、topk、quantile 等聚合定位异常；配置带标签匹配器的告警路由并检查路由；对记录规则先做语法校验，重载后读取规则接口确认健康，并在可用时用指标探索界面核对结果。请据此给出下一步，仍不要改应用代码。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "追加消息已经提供查询构造、聚合、告警路由检查、记录规则校验/重载/健康验证和指标探索核对的完整顺序，足以回答 query。"}
+      },
+      "visible_distractor_ids_author_only": ["T13-SKILL-PROMQL", "T13-SKILL-DASHBOARDING", "T13-SKILL-LOKI"],
+      "controlled_delta_note": "Positive 只指出需要读取指标运维流程来补足查询、告警和记录规则验证；Negative 仅补齐同一技术流程，其他共享上下文与 query 不变。",
+      "source_fact_map": [
+        {"claim": "指标查询可由选择器、范围向量、rate/increase 与 sum/avg/topk/quantile 聚合构成。", "source_id": "T13-SRC-PROMETHEUS", "locator": "PromQL Quick Reference: Instant Vector Selectors, Range Vectors & Rates, Aggregations"},
+        {"claim": "告警路由可按标签匹配器配置并检查，记录规则需校验、重载后读取规则健康状态。", "source_id": "T13-SRC-PROMETHEUS", "locator": "Alerting Rules; Validate Alerting Configuration; Deploy and Verify Recording Rules"},
+        {"claim": "指标探索界面可用于核对指标结果并关联遥测信号。", "source_id": "T13-SRC-PROMETHEUS", "locator": "Metrics Drilldown (Grafana 12+)"}
+      ],
+      "sol_review_questions": [
+        "Positive 是否通过 listed 直达指标指南，而没有要求先做发现？",
+        "Negative 是否只补齐冻结文件支持的查询、聚合、告警路由和记录规则验证流程？",
+        "可见干扰是否包含真实同域的 PromQL 与 dashboarding 能力，且未让首屏描述直接给出完整答案？"
+      ]
+    },
+    {
+      "draft_pair_id": "T13-SKL-002-expand-01",
+      "external_source_ids": ["T13-SRC-LOKI"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Harborlane Payments 的支付链路出现少量超时和 5xx。请在当前项目内准备日志侧的定位方案，不先动服务实现。"},
+        {"role": "assistant", "content": "已知应用日志带有环境、服务和结构化字段，采集代理与日志后端连接已整理；但查询性能、字段过滤和日志指标的具体次序尚未确定。"},
+        {"role": "user", "content": "先给我一条可复核的最小路径，能区分日志查询问题和采集链路问题。"}
+      ],
+      "changed_message_index": 3,
+      "query": "请说明支付超时的日志侧下一步、查询写法和验证依据，暂时不要改服务实现。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请直接查看列表中面向日志聚合与查询的指南，补齐先限定日志流、再做行过滤和解析/字段过滤，随后格式化与标签控制、范围聚合或 unwrap，以及按采集到存储的路径排障的完整步骤；停在可执行查询准备完成处。"},
+        "private_proposal": {
+          "unique_information_gap": "上下文缺少日志诊断的具体 LogQL 与管线流程：每条查询的流选择、先行过滤再解析和字段过滤、输出/标签控制、范围聚合或 unwrap，以及沿采集、分发、摄取、查询前端、查询器和存储路径排障。",
+          "route": "skill",
+          "target_asset_ids": ["T13-SKILL-LOKI"],
+          "allowed_sequence_candidates": [["skill_view"]],
+          "stop_after_candidate": "直接打开列表中的日志指南，提炼查询构造和端到端管线排障步骤后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "缺失流程补齐如下：每条 LogQL 先限定日志流，先放行过滤再解析（json、logfmt、pattern 或 regexp）并应用字段/标签过滤；用 line_format、label_format 和 drop/keep 控制输出；用 rate/count_over_time 或 unwrap 做日志指标；若查询或数据异常，依次检查采集、分发、摄取、查询前端、查询器和对象存储路径。请据此给出最小验证路径，仍不改服务实现。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "追加消息完整给出了流选择、行过滤、解析、字段/标签过滤、输出控制、日志指标和端到端组件排障顺序，足以回答 query。"}
+      },
+      "visible_distractor_ids_author_only": ["T13-SKILL-LOKI-LABEL", "T13-SKILL-ALLOY", "T13-SKILL-PROMQL"],
+      "controlled_delta_note": "Positive 只留下日志查询与摄取排障流程缺口；Negative 仅补齐同一 LogQL 和组件路径步骤，其他变量不变。",
+      "source_fact_map": [
+        {"claim": "每个 LogQL 查询必须先用日志流选择器，并应先行过滤再解析。", "source_id": "T13-SRC-LOKI", "locator": "LogQL Quick Reference: Log Stream Selector; Line Filters; Parsers"},
+        {"claim": "line_format、label_format、drop/keep 与范围聚合或 unwrap 用于输出控制和日志指标。", "source_id": "T13-SRC-LOKI", "locator": "Label Filters; Line Format; Label Format; Drop/Keep Labels; Metric Queries"},
+        {"claim": "日志管线可按 Client/Distributor/Ingester/Query Frontend/Querier/Store 的路径排障。", "source_id": "T13-SRC-LOKI", "locator": "Architecture: Push path, Read path, Components"}
+      ],
+      "sol_review_questions": [
+        "Positive 是否通过 listed 直达日志指南，并保持查询流程正文未在共享历史中出现？",
+        "Negative 是否只补足冻结 Loki 文件中的 LogQL、指标查询和管线排障顺序？",
+        "是否保留了 Loki-label 与 Alloy 等真实同域干扰而没有让 listing 直接暴露答案？"
+      ]
+    },
+    {
+      "draft_pair_id": "T13-SKL-004-expand-01",
+      "external_source_ids": ["T13-SRC-PYROSCOPE"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Nimbus Batch 的批处理延迟在最近一次回归中升高。请准备应用性能剖析方案，先不改批处理代码。"},
+        {"role": "assistant", "content": "已确认项目有可观测运行环境和一组慢批次，但尚未确定采用应用端采样、采集器转发还是集群级剖析，也没有火焰图验证依据。"},
+        {"role": "user", "content": "我只需要一条从接入到定位热点的最小路径，并保留能复核的证据。"}
+      ],
+      "changed_message_index": 3,
+      "query": "请给出批处理性能剖析的下一步和最小验证路径，暂时不要修改代码。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请先从项目可用能力中搜索涵盖持续性能剖析、SDK/eBPF 接入、ProfileQL 和火焰图的条目，再打开最匹配的完整内容；我需要其中的接入、到达检查、查询和常见失败判断，停在资料核对完成处。"},
+        "private_proposal": {
+          "unique_information_gap": "上下文没有给出持续剖析的技术流程：选择 SDK 直推、SDK 到采集器或 eBPF，配置应用名/服务器/采样率/标签，验证 ready/标签/profile 到达，用 ProfileQL 查询，并检查 eBPF 内核/BTF、组件健康、认证和空帧问题。",
+          "route": "skill",
+          "target_asset_ids": ["T13-SKILL-PYROSCOPE"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "检索并按 id 打开最匹配的剖析指南，提炼接入、验证、查询和排障步骤后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "缺失流程补齐如下：先选择 SDK 直推、SDK 到采集器或采集器 eBPF 路径；配置应用名、服务器、采样率和标签；检查服务 ready、标签和 profile 是否到达；用 ProfileQL 指定服务、环境和 profile 类型查询。若走 eBPF，再检查 Linux 内核/BTF、组件健康和火焰图帧，并针对云端 401、空帧及运行时兼容性排障。请据此给出最小验证路径，仍不改代码。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "追加消息已完整补齐三种接入路径、配置、到达检查、ProfileQL 查询及 eBPF/认证/空帧排障，足以回答 query。"}
+      },
+      "visible_distractor_ids_author_only": ["T13-SKILL-PROFILECLI", "T13-SKILL-TEMPO", "T13-SKILL-ALLOY"],
+      "controlled_delta_note": "Positive 只留下持续剖析接入与热点验证的流程缺口，并要求搜索后按 id 查看；Negative 仅补齐冻结剖析流程，其他上下文与 query 不变。",
+      "source_fact_map": [
+        {"claim": "冻结指南提供 Alloy eBPF、SDK 直推和 SDK 到采集器三种路径。", "source_id": "T13-SRC-PYROSCOPE", "locator": "Instrumentation paths; Common Workflows 1 and 2"},
+        {"claim": "SDK 路径需配置应用名、服务器、采样率和标签，并用 ready、labels 与 profile 到达验证。", "source_id": "T13-SRC-PYROSCOPE", "locator": "Common Workflows 1: representative Python"},
+        {"claim": "ProfileQL 指定服务/环境/profile type，eBPF 需检查内核/BTF、组件健康和火焰图帧，故障包括 401 与空帧。", "source_id": "T13-SRC-PYROSCOPE", "locator": "Common Workflows 2 and 3; Troubleshooting"}
+      ],
+      "sol_review_questions": [
+        "Positive 是否遵守 team-visible 资产必须先搜索再按 id 查看，且没有直接列出正式名称？",
+        "Negative 是否只补齐冻结 Pyroscope 的接入、验证、ProfileQL 和排障流程？",
+        "是否包含真实同域的 profilecli、Tempo 或 Alloy 干扰，同时不让首屏 listing 暴露完整技术答案？"
+      ]
+    },
+    {
+      "draft_pair_id": "T13-SKL-005-expand-01",
+      "external_source_ids": ["T13-SRC-ALERTING-IRM"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "SentryGrid 正在整理事故分级和多窗口告警。请在当前项目范围内准备一条从告警到值班响应的验证路径，暂不改变生产策略。"},
+        {"role": "assistant", "content": "已有服务标签、目标通知渠道和事故响应联系人，但联系点、层级路由、测试告警、SLO 燃烧率与静默策略还没有串成流程。"},
+        {"role": "user", "content": "先明确最小可执行顺序和每一步的读回证据，再决定是否提交配置。"}
+      ],
+      "changed_message_index": 3,
+      "query": "请给出告警到事故响应的下一步和验证依据，暂时不要改生产策略。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请先在项目可用能力中搜索涵盖通知目的地、分层匹配路由、测试告警、值班集成和多窗口燃烧率的条目，再打开最匹配的完整内容；补齐端到端配置与验证流程，停在可以开始审计的位置。"},
+        "private_proposal": {
+          "unique_information_gap": "上下文缺少告警与 IRM 的完整技术流程：联系点创建及读回、带标签匹配器的层级策略、告警规则类型选择、测试告警接收器验证、webhook 接入事故响应、多窗口燃烧率 SLO，以及静默/静音和可编辑 API 配置。",
+          "route": "skill",
+          "target_asset_ids": ["T13-SKILL-ALERTING-IRM"],
+          "allowed_sequence_candidates": [["skill_search", "skill_view_by_id"]],
+          "stop_after_candidate": "检索并按 id 打开最匹配的告警值班指南，提炼配置和验证流程后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "缺失流程补齐如下：先创建联系点并读回确认；配置带标签匹配器的层级通知策略；按场景选择 Grafana、Prometheus/Mimir 或日志规则类型；触发测试告警并检查实际接收器；通过 webhook 接入事故响应/值班系统；用多窗口燃烧率定义并验证 SLO；需要时创建静默、静音时间，并用 API 的可编辑配置选项保留 UI 编辑能力。请据此给出审计起点，仍不要改生产策略。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "追加消息已提供联系点、层级路由、规则选择、测试验证、IRM webhook、SLO 燃烧率和静默/API 编辑的完整流程，足以回答 query。"}
+      },
+      "visible_distractor_ids_author_only": ["T13-SKILL-PROMETHEUS", "T13-SKILL-LOKI", "T13-SKILL-SYNTHETIC"],
+      "controlled_delta_note": "Positive 只留下告警/值班/SLO 技术流程缺口，并要求搜索后按 id 查看；Negative 仅补齐相同端到端流程，其他变量不变。",
+      "source_fact_map": [
+        {"claim": "告警端到端流程从创建联系点并验证读回开始，再配置层级通知策略和规则类型。", "source_id": "T13-SRC-ALERTING-IRM", "locator": "Common Workflows: Provisioning a new alert end-to-end; Contact Points; Notification policies"},
+        {"claim": "通过测试告警检查实际接收器，并可用 webhook 接入 IRM/值班系统。", "source_id": "T13-SRC-ALERTING-IRM", "locator": "Common Workflows: Verify routing; Routing alerts to IRM / on-call"},
+        {"claim": "SLO 使用多窗口燃烧率，且可按需配置静默、静音时间和可编辑 API 配置。", "source_id": "T13-SRC-ALERTING-IRM", "locator": "Common Workflows: Defining an SLO; API provisioning; Silences"}
+      ],
+      "sol_review_questions": [
+        "Positive 是否遵守 team-visible 告警指南必须先搜索再按 id 查看？",
+        "Negative 是否只补齐冻结 Alerting/IRM 的联系点、路由、测试、webhook、SLO 和静默流程？",
+        "是否保留 Prometheus、Loki、Synthetic 等真实同域干扰，并避免首屏 listing 直接呈现完整答案？"
+      ]
+    },
+    {
+      "draft_pair_id": "T13-SKL-006-expand-01",
+      "external_source_ids": ["T13-SRC-DPM-FINDER", "T13-SRC-DPM-CLI"],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "short_2_to_4",
+      "shared_context_messages": [
+        {"role": "user", "content": "Asteria Edge 的云端指标费用突然上升。请在当前项目内准备高消耗指标和标签基数的核查路径，先不改采集配置。"},
+        {"role": "assistant", "content": "已有云端指标端点、实例访问安排和费用变化时间窗，但尚未把凭据预检、DPM 扫描参数、序列明细和多实例并发限制整理成可重复流程。"},
+        {"role": "user", "content": "我需要一个可复核的命令级起点，并知道输出怎样支持成本判断。"}
+      ],
+      "changed_message_index": 3,
+      "query": "请给出指标成本核查的下一步、最小命令路径和输出判断依据，暂时不要改采集配置。",
+      "positive": {
+        "delta_message": {"role": "user", "content": "请直接打开列表中面向指标成本与基数诊断的指南，然后读取其中真实存在的 CLI 参考文件；补齐 Python 环境、端点和数字实例标识、凭据预检、DPM 扫描、排序输出、序列明细和多实例并发限制，停在可以开始扫描的位置。"},
+        "private_proposal": {
+          "unique_information_gap": "上下文缺少成本诊断流程及其 CLI 细节：准备 Python 依赖、配置端点/数字实例标识/读取凭据、请求指标名预检、按回看窗口/DPM 阈值/并发执行扫描、按 DPM 排序读取序列明细，并把多实例并发限制为最多 3 个。",
+          "route": "skill",
+          "target_asset_ids": ["T13-SKILL-DPM-FINDER", "T13-SKILL-DPM-FINDER:references/cli.md"],
+          "allowed_sequence_candidates": [["skill_view", "skill_files_read"]],
+          "stop_after_candidate": "直接查看列表中的指标成本指南后读取其 references/cli.md，再提炼可复核的扫描起点。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "user", "content": "缺失流程补齐如下：准备 Python 3.9+ 虚拟环境并安装依赖；配置无尾随路径的 Prometheus 端点、数字实例标识和 metrics:read 凭据；先请求 label/__name__/values 确认序列数大于零；以 JSON、10 分钟回看、最小 DPM 2.0、8 个线程和 120 秒超时运行扫描；按 DPM 降序读取前十指标及 series_detail 标签组合；多个实例最多并发 3 个。CLI 参考还说明 JSON 输出为 metric_rates.json，CSV/文本/Prometheus 输出各有对应文件，直方图/摘要组件和 grafana_ 前缀会自动排除。请据此给出扫描起点，仍不要改采集配置。"},
+        "private_proposal": {"route": "none", "why_current_context_is_sufficient": "追加消息已经提供环境、认证预检、扫描参数、排序与序列明细、多实例限制及 CLI 输出/排除规则，足以回答 query，无需读取指南。"}
+      },
+      "visible_distractor_ids_author_only": ["T13-SKILL-PROMQL", "T13-SKILL-PROMETHEUS", "T13-SKILL-LOKI-LABEL"],
+      "controlled_delta_note": "Positive 只留下成本诊断与 CLI 参考文件缺口，并要求 listed 指南先 view 再读取真实 references/cli.md；Negative 仅补齐同一流程，其他上下文与 query 不变。",
+      "source_fact_map": [
+        {"claim": "成本扫描需 Python 3.9+、端点、数字 stack ID 和 metrics:read API key，先请求指标名确认序列存在。", "source_id": "T13-SRC-DPM-FINDER", "locator": "Prerequisites; Common Workflows 1 steps 1-3"},
+        {"claim": "一次扫描可用 JSON、2.0 DPM、8 线程、120 秒超时和 10 分钟回看，并按 DPM 与 series_detail 读取结果。", "source_id": "T13-SRC-DPM-FINDER", "locator": "Common Workflows 1 steps 4-5; Interpreting results"},
+        {"claim": "CLI 参考定义输出文件、exporter/端口和自动排除规则；多 stack 运行最多 3 个并发。", "source_id": "T13-SRC-DPM-CLI", "locator": "Output formats; Exporter mode; Auto-excluded metrics; T13-SRC-DPM-FINDER Common Workflows: Multi-stack runs"}
+      ],
+      "sol_review_questions": [
+        "Positive 是否使用 listed 直达指南后再读取真实 references/cli.md，顺序没有反转？",
+        "Negative 是否只补齐冻结 Skill 与 CLI 参考中的环境、预检、扫描、输出和并发限制？",
+        "是否包含 PromQL、Prometheus、Loki 标签等真实同域成本/指标干扰，同时没有让 listing 首屏直接给出命令答案？"
+      ]
+    }
+  ]
+}

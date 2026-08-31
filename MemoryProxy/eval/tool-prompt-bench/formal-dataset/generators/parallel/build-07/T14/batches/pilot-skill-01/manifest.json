@@ -1,0 +1,19 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "build-07-T14-pilot-skill-01",
+  "external_source_ids": ["T14-SRC-FLUX-AUDIT"],
+  "generated_at": "2026-08-30T02:20:00+08:00",
+  "raw_output_file": "draft.json",
+  "raw_output_sha256": "9301487aca95e882ed9bbf62c95b1556df2306eb95e4d851ba4ae058b56b57d9",
+  "actual_count": 1,
+  "revision": {
+    "revision_id": "pilot-skill-01-revision-02",
+    "supersedes_raw_output_sha256": "c064950218fabb0db0a2fef1a872c91bdc5dc9396887d5b66744ce08a04b6002",
+    "reason": "repair cross-team duplicate query while preserving the existing Skill pair delta and Gold route",
+    "generator_model": "gpt-5.6-luna",
+    "reasoning_effort": "high"
+  }
+}

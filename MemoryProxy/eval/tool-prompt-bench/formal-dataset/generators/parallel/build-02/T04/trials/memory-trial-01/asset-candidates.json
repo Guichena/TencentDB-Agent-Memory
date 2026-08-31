@@ -1,0 +1,221 @@
+{
+  "schema_version": "task1.luna_asset_candidates.v1",
+  "batch_id": "t04-memory-trial-01",
+  "status": "proposal_only_not_approved_or_visible",
+  "source_gate_status": {
+    "policy_locator": "synthetic-build-02/T04/memory-trial-01",
+    "l1_policy": "Synthetic narrow summaries may be proposed only when each is traceable to one or more listed sessions; pending Sol freeze.",
+    "l2_policy": "Synthetic scene candidates require at least two sessions sharing a boundary; pending Sol freeze.",
+    "l3_policy": "Synthetic profile is proposal-only and cannot set production visibility."
+  },
+  "project_timeline": [
+    {"date":"2026-08-03","project":"PetClinic","event":"Jakarta 命名空间迁移边界与保留包分类复核"},
+    {"date":"2026-08-06","project":"Rest consumer","event":"同步 HTTP 客户端的响应映射与异常行为对照"},
+    {"date":"2026-08-09","project":"Google Auto","event":"多模块 Maven 生命周期阶段与插件执行顺序诊断"},
+    {"date":"2026-08-12","project":"Druid","event":"Jackson 解析边界与对抗请求兼容性复核"},
+    {"date":"2026-08-15","project":"PetClinic","event":"安全过滤链迁移后的放行与拒绝路径复盘"},
+    {"date":"2026-08-18","project":"Rest consumer","event":"RestClient 同步调用的错误处理与测试样例核对"},
+    {"date":"2026-08-21","project":"Google Auto","event":"依赖收敛与传递版本来源的构建证据整理"},
+    {"date":"2026-08-24","project":"Druid","event":"Jackson 白名单解析器与模块隔离回归记录"},
+    {"date":"2026-08-26","project":"Google Auto","event":"插件配置参数与 profile 激活条件的差异定位"},
+    {"date":"2026-08-28","project":"PetClinic","event":"Jakarta、校验与安全迁移结论的交接汇总"}
+  ],
+  "candidates": [
+    {
+      "candidate_id":"T04-L0-PETCLINIC-NAMESPACE","level":"L0","kind":"conversation_session","project_id":"T04-PROJECT-PETCLINIC","time_window":"2026-08-03","title":"PetClinic Jakarta 包边界复核",
+      "messages":[
+        {"role":"user","content":"今天先复核 PetClinic 的 Jakarta 迁移，工作区和提交保持不变。"},
+        {"role":"assistant","content":"我把业务 API、校验、持久化和 JDK 自带类型分成四类，不把安全配置混进来。"},
+        {"role":"user","content":"编译器报错集中在旧的 Java EE 导入，但有几处看起来像 JDK 类型。"},
+        {"role":"assistant","content":"先记录每个失败文件和使用场景，再决定哪些需要迁移。"},
+        {"role":"user","content":"控制器和实体校验的导入确实来自旧 API，数据库日期类型的报错表现不一样。"},
+        {"role":"assistant","content":"这两个现象不能用同一条替换规则解释，先保留原始错误。"},
+        {"role":"user","content":"我排除了依赖下载和测试容器问题，剩下的是命名空间边界。"},
+        {"role":"assistant","content":"迁移说明需要写出业务包和 JDK 所有包的区别，避免全局替换。"},
+        {"role":"user","content":"第一次改动让主代码能编译，但一个安全相关类仍然需要重新核对。"},
+        {"role":"assistant","content":"安全类先按它所属 API 判断，不能因为类名相似就改包。"},
+        {"role":"user","content":"回归前要恢复之前验证过的最小修改原则和保留清单。"},
+        {"role":"assistant","content":"我会把最终分类和未改动的 JDK 类型一起写进交接，旁支另行记录。"}
+      ]
+    },
+    {
+      "candidate_id":"T04-L0-PETCLINIC-SECURITY","level":"L0","kind":"conversation_session","project_id":"T04-PROJECT-PETCLINIC","time_window":"2026-08-15","title":"PetClinic 安全过滤链迁移复盘",
+      "messages":[
+        {"role":"user","content":"这次只复盘 PetClinic 安全过滤链迁移后的请求行为，不重新改命名空间。"},
+        {"role":"assistant","content":"我先区分公开页面、登录入口和管理区域的访问边界。"},
+        {"role":"user","content":"匿名访问首页正常，但静态资源偶尔被当成需要认证的请求。"},
+        {"role":"assistant","content":"先比对匹配顺序和路径表达式，不把它归因到数据库。"},
+        {"role":"user","content":"登录成功后的会话能访问宠物列表，管理路径仍按预期拒绝。"},
+        {"role":"assistant","content":"这说明主体认证已经工作，剩下要核对放行规则的范围。"},
+        {"role":"user","content":"测试里还混有一个校验注解迁移失败，和这次访问控制不是同一个问题。"},
+        {"role":"assistant","content":"我会把校验编译错误单独标注，避免安全回归被旁支干扰。"},
+        {"role":"user","content":"目前只缺一次历史复盘里确认过的路径顺序。"},
+        {"role":"assistant","content":"当前日志足以定位现象，但没有保留当时最终采用的边界写法。"},
+        {"role":"user","content":"交接需要说明哪些请求先放行、哪些请求必须经过认证。"},
+        {"role":"assistant","content":"我会寻找同一安全迁移时间线中的确认记录，不从现象猜配置。"}
+      ]
+    },
+    {
+      "candidate_id":"T04-L0-PETCLINIC-VALIDATION","level":"L0","kind":"conversation_session","project_id":"T04-PROJECT-PETCLINIC","time_window":"2026-08-28","title":"PetClinic 校验迁移交接",
+      "messages":[
+        {"role":"user","content":"今天补 PetClinic 校验注解迁移的交接，安全过滤链先不展开。"},
+        {"role":"assistant","content":"我按表单输入、实体约束和控制器参数三处检查旧导入。"},
+        {"role":"user","content":"表单校验已经恢复，实体上的日期约束仍有一处编译提示。"},
+        {"role":"assistant","content":"先确认提示来自注解包还是来自 JDK 日期类型。"},
+        {"role":"user","content":"注解来自 Java EE API，日期类型只是同文件里的字段。"},
+        {"role":"assistant","content":"那就只处理注解归属，保留日期类型原有声明。"},
+        {"role":"user","content":"单元测试覆盖了空值和格式错误，集成测试暂时没有变化。"},
+        {"role":"assistant","content":"测试结果能证明约束行为，但不能替代迁移包分类记录。"},
+        {"role":"user","content":"交接还缺少一次最终检查的文件范围。"},
+        {"role":"assistant","content":"我会把已改文件和明确未改文件分开列出。"},
+        {"role":"user","content":"不要把安全规则或 REST 客户端的结论抄到这份说明。"},
+        {"role":"assistant","content":"收到，这条记录只保留校验迁移的局部事实和验证边界。"}
+      ]
+    },
+    {
+      "candidate_id":"T04-L0-REST-MAPPING","level":"L0","kind":"conversation_session","project_id":"T04-PROJECT-REST-CONSUMER","time_window":"2026-08-06","title":"同步客户端响应映射对照",
+      "messages":[
+        {"role":"user","content":"今天对照同步客户端迁移后的响应映射，目标是保持原有业务结果。"},
+        {"role":"assistant","content":"我把请求构造、响应反序列化和异常处理分开比较。"},
+        {"role":"user","content":"正常响应能拿到状态和名称，但集合响应的泛型映射看起来不同。"},
+        {"role":"assistant","content":"先记录原客户端返回的对象形状，再核对新实现的读取方式。"},
+        {"role":"user","content":"服务端返回的 JSON 没变，差异只在客户端的调用链。"},
+        {"role":"assistant","content":"这更像响应类型声明或读取时机的差异，不是服务端契约变化。"},
+        {"role":"user","content":"错误状态以前会转成业务异常，新代码目前只抛通用异常。"},
+        {"role":"assistant","content":"把错误状态、响应体和异常类型并列记录，避免只看状态码。"},
+        {"role":"user","content":"测试夹具已经覆盖一个成功和一个错误响应。"},
+        {"role":"assistant","content":"还需要回看历史上确认的映射与错误处理顺序。"},
+        {"role":"user","content":"当前任务只要求行为对照，不继续改造为异步客户端。"},
+        {"role":"assistant","content":"我会查找同一同步迁移会话的最终结论，找到后停止扩展范围。"}
+      ]
+    },
+    {
+      "candidate_id":"T04-L0-REST-ERROR-TEST","level":"L0","kind":"conversation_session","project_id":"T04-PROJECT-REST-CONSUMER","time_window":"2026-08-18","title":"同步客户端错误测试复盘",
+      "messages":[
+        {"role":"user","content":"这次补同步客户端的错误测试，保留原来阻塞式调用的使用方式。"},
+        {"role":"assistant","content":"先列出连接失败、非成功状态和响应体解析失败三种路径。"},
+        {"role":"user","content":"连接失败已经能在夹具里重现，非成功状态的消息还不一致。"},
+        {"role":"assistant","content":"先固定测试响应头和正文，再比较异常映射。"},
+        {"role":"user","content":"正文是一个简单错误对象，正常响应则是列表。"},
+        {"role":"assistant","content":"列表和错误对象要使用各自的目标类型，不能共用一个宽泛映射。"},
+        {"role":"user","content":"同事提到过一次保留原行为的检查顺序，但笔记没有写全。"},
+        {"role":"assistant","content":"我会把顺序当作独立历史事实，不从测试名称推断。"},
+        {"role":"user","content":"这条记录不涉及 Jakarta 包，也不涉及 Maven 插件。"},
+        {"role":"assistant","content":"已经把其他项目词汇排除，剩下只看同步调用和错误路径。"},
+        {"role":"user","content":"完成前要确认成功响应和错误响应都保持可观察的旧语义。"},
+        {"role":"assistant","content":"先找回以前的对照结论，再据此补局部测试说明。"}
+      ]
+    },
+    {
+      "candidate_id":"T04-L0-GA-LIFECYCLE","level":"L0","kind":"conversation_session","project_id":"T04-PROJECT-GOOGLE-AUTO","time_window":"2026-08-09","title":"Google Auto 多模块生命周期诊断",
+      "messages":[
+        {"role":"user","content":"今天诊断 Google Auto 多模块构建，现象是某个模块单独通过但聚合构建失败。"},
+        {"role":"assistant","content":"我先按父工程、模块和生命周期阶段分层记录，不把依赖版本问题先定性。"},
+        {"role":"user","content":"编译阶段没有错误，失败出现在打包前后的某个插件步骤。"},
+        {"role":"assistant","content":"先确认阶段顺序和插件是否绑定到聚合模块。"},
+        {"role":"user","content":"不同模块的日志时间相近，容易把子模块失败看成父工程失败。"},
+        {"role":"assistant","content":"我会用模块前缀和阶段标记拆开日志。"},
+        {"role":"user","content":"一个 profile 只在发布构建打开，日常验证不会经过它。"},
+        {"role":"assistant","content":"这条条件要和默认生命周期分开，避免把发布路径当成常规路径。"},
+        {"role":"user","content":"当前记录没有保留最终确认的阶段和执行顺序。"},
+        {"role":"assistant","content":"已有日志能定位失败类别，但不能还原历史上的最短诊断步骤。"},
+        {"role":"user","content":"交接只需要那次诊断的阶段证据，不需要现在运行整套构建。"},
+        {"role":"assistant","content":"我会查同一构建会话的阶段记录，拿到结论后停止。"}
+      ]
+    },
+    {
+      "candidate_id":"T04-L0-GA-DEPENDENCY","level":"L0","kind":"conversation_session","project_id":"T04-PROJECT-GOOGLE-AUTO","time_window":"2026-08-21","title":"Google Auto 依赖收敛证据",
+      "messages":[
+        {"role":"user","content":"这次整理 Google Auto 依赖收敛，重点是传递版本从哪里进入。"},
+        {"role":"assistant","content":"我把直接声明、父工程管理和传递依赖分成三列。"},
+        {"role":"user","content":"冲突只在测试模块出现，主模块的编译类路径看起来稳定。"},
+        {"role":"assistant","content":"先比较模块边界和作用域，再判断是不是同一个版本冲突。"},
+        {"role":"user","content":"依赖树里有两个相近版本，日志没有说明最终选择依据。"},
+        {"role":"assistant","content":"把声明位置、管理位置和最近路径一起记下，不能只看最终版本。"},
+        {"role":"user","content":"一次临时排除让测试通过，但不确定是否破坏其他模块。"},
+        {"role":"assistant","content":"临时排除先作为实验记录，不能直接当成收敛结论。"},
+        {"role":"user","content":"我只需要恢复历史上验证过的依赖证据链。"},
+        {"role":"assistant","content":"当前上下文有冲突现象，却没有那次会话里写下的最终来源判断。"},
+        {"role":"user","content":"不要把生命周期插件的执行问题并到依赖说明。"},
+        {"role":"assistant","content":"我会只追踪依赖管理时间线，找到来源结论后结束。"}
+      ]
+    },
+    {
+      "candidate_id":"T04-L0-MAVEN-PLUGIN-DIAGNOSIS","level":"L0","kind":"conversation_session","project_id":"T04-PROJECT-GOOGLE-AUTO","time_window":"2026-08-26","title":"Google Auto 插件配置差异",
+      "messages":[
+        {"role":"user","content":"今天看 Google Auto 插件配置差异，只有特定 profile 下会出现失败。"},
+        {"role":"assistant","content":"我先区分插件参数、绑定阶段和 profile 激活条件。"},
+        {"role":"user","content":"默认构建通过，发布 profile 会多出一次生成步骤。"},
+        {"role":"assistant","content":"先比较有效配置，再看生成步骤是否重复绑定。"},
+        {"role":"user","content":"日志显示生成目录不同，但没有说明哪个参数改变了目录。"},
+        {"role":"assistant","content":"把参数来源和最终生效值并列，避免只凭目录猜测。"},
+        {"role":"user","content":"同一插件在另一个模块里没有问题，模块级配置可能不同。"},
+        {"role":"assistant","content":"我会按模块和 profile 逐项对照，不把依赖收敛结论带入。"},
+        {"role":"user","content":"之前有人验证过最小配置，但交接只留下通过与否。"},
+        {"role":"assistant","content":"缺少的是历史里的具体参数与阶段关系，不是新的配置建议。"},
+        {"role":"user","content":"当前不需要重新执行构建，只要恢复已验证的诊断顺序。"},
+        {"role":"assistant","content":"我会查找那段插件诊断会话，确认顺序后只返回相关事实。"}
+      ]
+    },
+    {
+      "candidate_id":"T04-L0-DRUID-JACKSON","level":"L0","kind":"conversation_session","project_id":"T04-PROJECT-DRUID-BACKEND","time_window":"2026-08-12","title":"Druid Jackson 解析边界复核",
+      "messages":[
+        {"role":"user","content":"今天复核 Druid 后端的 Jackson 解析边界，既要挡住对抗请求也要保留合法请求。"},
+        {"role":"assistant","content":"我把输入形状、类型解析和响应兼容性分开观察。"},
+        {"role":"user","content":"恶意多态类型字段会触发拒绝，普通对象请求仍能通过。"},
+        {"role":"assistant","content":"先保留两类请求的最小样例，不把所有解析错误归为同一根因。"},
+        {"role":"user","content":"问题只在一个后端模块出现，其他模块使用不同的读取边界。"},
+        {"role":"assistant","content":"模块隔离很重要，先锁定实际入口和配置作用域。"},
+        {"role":"user","content":"测试已覆盖恶意字段和正常字段，但历史记录没写清最终边界。"},
+        {"role":"assistant","content":"当前测试说明了现象，不能代替之前验证过的解析器选择。"},
+        {"role":"user","content":"这轮不需要修改代码，只要找回安全复盘里的具体判断。"},
+        {"role":"assistant","content":"我会按请求类型和模块时间线查回原先的验证记录。"},
+        {"role":"user","content":"不要把 Google Auto 的 Maven 诊断词汇混到安全说明。"},
+        {"role":"assistant","content":"收到，我只追踪 Jackson 边界和合法请求兼容性。"}
+      ]
+    },
+    {
+      "candidate_id":"T04-L0-DRUID-MODULE","level":"L0","kind":"conversation_session","project_id":"T04-PROJECT-DRUID-BACKEND","time_window":"2026-08-24","title":"Druid 解析器模块隔离回归",
+      "messages":[
+        {"role":"user","content":"这次回归 Druid 的解析器模块隔离，重点是安全边界不向其他模块扩散。"},
+        {"role":"assistant","content":"我先检查模块依赖、注册点和请求到达的实际路径。"},
+        {"role":"user","content":"目标模块的白名单解析能拒绝未知类型，旁边模块仍使用普通数据绑定。"},
+        {"role":"assistant","content":"两条路径的输入契约不同，不能用一个全局开关解释。"},
+        {"role":"user","content":"一次集成测试误把旁边模块的请求发到了目标入口。"},
+        {"role":"assistant","content":"先修正测试路由，再看拒绝结果是否稳定。"},
+        {"role":"user","content":"修正后合法请求保持兼容，未知类型仍被拒绝。"},
+        {"role":"assistant","content":"这支持按模块隔离解析策略，而不是扩大白名单。"},
+        {"role":"user","content":"历史复盘里还有一次关于 Jackson 配置边界的确认，但摘要不完整。"},
+        {"role":"assistant","content":"当前回归证明了方向，没有保留那次确认使用的精确边界描述。"},
+        {"role":"user","content":"交接只要模块隔离与合法请求兼容性的结论。"},
+        {"role":"assistant","content":"我会找回对应安全会话，不延伸到其他项目或完整修复。"}
+      ]
+    },
+
+    {"candidate_id":"T04-L1-PETCLINIC-NAMESPACE-RULE","level":"L1","kind":"distilled_memory","project_id":"T04-PROJECT-PETCLINIC","supporting_session_ids":["T04-L0-PETCLINIC-NAMESPACE"],"proposed_content":"PetClinic 迁移时，业务 API、校验和持久化相关的 Java EE 导入迁到 jakarta 命名空间；java.sql、javax.crypto 等 JDK 所有类型保持原包，避免全局替换。","source_gate_status":"pending Sol freeze"},
+    {"candidate_id":"T04-L1-PETCLINIC-SECURITY-BOUNDARY","level":"L1","kind":"distilled_memory","project_id":"T04-PROJECT-PETCLINIC","supporting_session_ids":["T04-L0-PETCLINIC-SECURITY","T04-L0-PETCLINIC-NAMESPACE"],"proposed_content":"安全过滤链迁移只按请求边界做最小修改：公开资源保持放行，登录后访问受保护区域，管理路径仍需认证；命名空间判断单独记录。","source_gate_status":"pending Sol freeze"},
+    {"candidate_id":"T04-L1-PETCLINIC-VALIDATION-SCOPE","level":"L1","kind":"distilled_memory","project_id":"T04-PROJECT-PETCLINIC","supporting_session_ids":["T04-L0-PETCLINIC-VALIDATION","T04-L0-PETCLINIC-NAMESPACE"],"proposed_content":"校验注解属于迁移范围，和同文件中的 JDK 日期类型分开判断；局部替换后用空值与格式错误测试确认行为。","source_gate_status":"pending Sol freeze"},
+    {"candidate_id":"T04-L1-PETCLINIC-REGRESSION-ORDER","level":"L1","kind":"distilled_memory","project_id":"T04-PROJECT-PETCLINIC","supporting_session_ids":["T04-L0-PETCLINIC-NAMESPACE","T04-L0-PETCLINIC-SECURITY","T04-L0-PETCLINIC-VALIDATION"],"proposed_content":"PetClinic 迁移回归先核对导入分类，再分别检查校验行为和安全过滤路径，不用编译日志推断未记录的边界。","source_gate_status":"pending Sol freeze"},
+    {"candidate_id":"T04-L1-RESTCLIENT-PARITY","level":"L1","kind":"distilled_memory","project_id":"T04-PROJECT-REST-CONSUMER","supporting_session_ids":["T04-L0-REST-MAPPING","T04-L0-REST-ERROR-TEST"],"proposed_content":"同步客户端迁移要保持请求构造、成功响应映射和非成功状态异常语义；集合与错误对象使用各自类型，不改为异步调用。","source_gate_status":"pending Sol freeze"},
+    {"candidate_id":"T04-L1-RESTCLIENT-MAPPING","level":"L1","kind":"distilled_memory","project_id":"T04-PROJECT-REST-CONSUMER","supporting_session_ids":["T04-L0-REST-MAPPING"],"proposed_content":"服务端 JSON 契约不变时，优先比较客户端读取时机与泛型声明；不要把响应映射差异归因到服务端变化。","source_gate_status":"pending Sol freeze"},
+    {"candidate_id":"T04-L1-RESTCLIENT-ERRORS","level":"L1","kind":"distilled_memory","project_id":"T04-PROJECT-REST-CONSUMER","supporting_session_ids":["T04-L0-REST-ERROR-TEST","T04-L0-REST-MAPPING"],"proposed_content":"同步调用的错误对照至少区分连接失败、非成功状态和错误正文解析失败，并保留状态、正文与异常类型的对应关系。","source_gate_status":"pending Sol freeze"},
+    {"candidate_id":"T04-L1-RESTCLIENT-TEST-BOUNDARY","level":"L1","kind":"distilled_memory","project_id":"T04-PROJECT-REST-CONSUMER","supporting_session_ids":["T04-L0-REST-ERROR-TEST"],"proposed_content":"客户端测试用一个成功列表和一个错误对象覆盖行为对照；测试目标是语义保持，不扩展到响应式客户端。","source_gate_status":"pending Sol freeze"},
+    {"candidate_id":"T04-L1-GA-LIFECYCLE","level":"L1","kind":"distilled_memory","project_id":"T04-PROJECT-GOOGLE-AUTO","supporting_session_ids":["T04-L0-GA-LIFECYCLE"],"proposed_content":"Google Auto 聚合构建诊断应按父工程、模块和生命周期阶段拆日志，区分默认构建与仅在发布 profile 激活的路径。","source_gate_status":"pending Sol freeze"},
+    {"candidate_id":"T04-L1-MAVEN-DEPENDENCY-CONVERGENCE","level":"L1","kind":"distilled_memory","project_id":"T04-PROJECT-GOOGLE-AUTO","supporting_session_ids":["T04-L0-GA-DEPENDENCY"],"proposed_content":"依赖收敛要同时记录直接声明、父工程管理、传递路径和作用域；临时排除使测试通过不等于形成全局结论。","source_gate_status":"pending Sol freeze"},
+    {"candidate_id":"T04-L1-GA-PLUGIN","level":"L1","kind":"distilled_memory","project_id":"T04-PROJECT-GOOGLE-AUTO","supporting_session_ids":["T04-L0-MAVEN-PLUGIN-DIAGNOSIS"],"proposed_content":"插件失败诊断分开核对参数、绑定阶段和 profile 激活条件，并按模块比较最终生效值，不从生成目录反推参数。","source_gate_status":"pending Sol freeze"},
+    {"candidate_id":"T04-L1-GA-BUILD-EVIDENCE","level":"L1","kind":"distilled_memory","project_id":"T04-PROJECT-GOOGLE-AUTO","supporting_session_ids":["T04-L0-GA-LIFECYCLE","T04-L0-GA-DEPENDENCY","T04-L0-MAVEN-PLUGIN-DIAGNOSIS"],"proposed_content":"Google Auto 构建交接把生命周期、依赖来源和插件配置作为三类独立证据，保留模块前缀、阶段标记与 profile 条件。","source_gate_status":"pending Sol freeze"},
+    {"candidate_id":"T04-L1-DRUID-SECURITY-BOUNDARY","level":"L1","kind":"distilled_memory","project_id":"T04-PROJECT-DRUID-BACKEND","supporting_session_ids":["T04-L0-DRUID-JACKSON","T04-L0-DRUID-MODULE"],"proposed_content":"Druid 解析边界采用模块内的白名单策略拒绝未知多态类型，同时保持普通对象请求兼容；不要用全局开关扩大范围。","source_gate_status":"pending Sol freeze"},
+    {"candidate_id":"T04-L1-DRUID-REQUEST-CLASSES","level":"L1","kind":"distilled_memory","project_id":"T04-PROJECT-DRUID-BACKEND","supporting_session_ids":["T04-L0-DRUID-JACKSON"],"proposed_content":"安全复核把对抗请求与合法请求分开保留最小样例，解析错误按输入形状和类型边界区分，不笼统归因。","source_gate_status":"pending Sol freeze"},
+    {"candidate_id":"T04-L1-DRUID-MODULE-ISOLATION","level":"L1","kind":"distilled_memory","project_id":"T04-PROJECT-DRUID-BACKEND","supporting_session_ids":["T04-L0-DRUID-MODULE","T04-L0-DRUID-JACKSON"],"proposed_content":"Druid 安全解析器只绑定实际目标模块和入口，旁边模块保留普通数据绑定；集成测试必须先确认请求没有误投入口。","source_gate_status":"pending Sol freeze"},
+    {"candidate_id":"T04-L1-DRUID-COMPATIBILITY","level":"L1","kind":"distilled_memory","project_id":"T04-PROJECT-DRUID-BACKEND","supporting_session_ids":["T04-L0-DRUID-MODULE"],"proposed_content":"解析器回归同时验证未知类型被拒绝和合法对象保持兼容，安全修复的边界是隔离策略而非放宽白名单。","source_gate_status":"pending Sol freeze"},
+
+    {"candidate_id":"T04-L2-SCENE-PETCLINIC-MIGRATION","level":"L2","kind":"scene","project_id":"T04-PROJECT-PETCLINIC","member_session_ids":["T04-L0-PETCLINIC-NAMESPACE","T04-L0-PETCLINIC-SECURITY","T04-L0-PETCLINIC-VALIDATION"],"scene_summary":"PetClinic 的迁移记录把业务 Java EE 导入、JDK 所有类型、校验约束和安全过滤链分层核对；相近错误共享词汇，但每条边界都有独立回归证据。","source_gate_status":"pending Sol freeze"},
+    {"candidate_id":"T04-L2-SCENE-RESTCLIENT-PARITY","level":"L2","kind":"scene","project_id":"T04-PROJECT-REST-CONSUMER","member_session_ids":["T04-L0-REST-MAPPING","T04-L0-REST-ERROR-TEST"],"scene_summary":"同步客户端迁移围绕请求构造、正常响应映射和错误语义保持展开；服务端契约稳定，集合与错误对象的测试边界分别记录。","source_gate_status":"pending Sol freeze"},
+    {"candidate_id":"T04-L2-SCENE-GA-BUILD-ROOT-CAUSES","level":"L2","kind":"scene","project_id":"T04-PROJECT-GOOGLE-AUTO","member_session_ids":["T04-L0-GA-LIFECYCLE","T04-L0-GA-DEPENDENCY","T04-L0-MAVEN-PLUGIN-DIAGNOSIS"],"scene_summary":"Google Auto 多模块构建把生命周期阶段、依赖收敛和插件配置视为三类根因；父子模块、作用域和 profile 条件需要在同一时间线中区分。","source_gate_status":"pending Sol freeze"},
+    {"candidate_id":"T04-L2-SCENE-DRUID-SECURITY","level":"L2","kind":"scene","project_id":"T04-PROJECT-DRUID-BACKEND","member_session_ids":["T04-L0-DRUID-JACKSON","T04-L0-DRUID-MODULE"],"scene_summary":"Druid 安全复核将对抗输入、合法对象和模块入口分开；白名单解析只在目标边界内生效，兼容性与拒绝行为成对验证。","source_gate_status":"pending Sol freeze"},
+    {"candidate_id":"T04-L2-SPRING-MIGRATION-BOUNDARIES","level":"L2","kind":"scene","project_id":"T04-PROJECT-PETCLINIC","member_session_ids":["T04-L0-PETCLINIC-NAMESPACE","T04-L0-PETCLINIC-SECURITY","T04-L0-REST-MAPPING","T04-L0-GA-LIFECYCLE","T04-L0-DRUID-JACKSON"],"scene_summary":"四条后端项目流都强调最小边界：PetClinic 区分迁移包与安全链，客户端保持同步语义，构建按根因分层，解析器限制在模块入口。","source_gate_status":"pending Sol freeze"},
+
+    {"candidate_id":"T04-L3-PROFILE-BACKEND-BOUNDARIES","level":"L3","kind":"profile","project_id":"T04-PROJECT-PETCLINIC","member_session_ids":["T04-L0-PETCLINIC-NAMESPACE","T04-L0-PETCLINIC-SECURITY","T04-L0-PETCLINIC-VALIDATION","T04-L0-REST-MAPPING","T04-L0-REST-ERROR-TEST","T04-L0-GA-LIFECYCLE","T04-L0-GA-DEPENDENCY","T04-L0-MAVEN-PLUGIN-DIAGNOSIS","T04-L0-DRUID-JACKSON","T04-L0-DRUID-MODULE"],"profile_summary":"该合成团队处理 Java 后端迁移与构建时，偏好先锁定项目边界，再把现象拆成可验证的最小根因。会保留请求、配置、模块和测试证据的对应关系，区分历史结论与当前观察，不用相近术语替代未确认的细节。","source_gate_status":"proposal_only_pending Sol freeze"}
+  ],
+  "candidate_counts":{"L0_sessions":10,"L1_memories":16,"L2_scenes":5,"L3_profiles":1}
+}

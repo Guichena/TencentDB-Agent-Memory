@@ -1,0 +1,165 @@
+{
+  "schema_version": "task1.github_skill_source.v1",
+  "team_id": "T02",
+  "name": "jupyter-notebook",
+  "repository_url": "https://github.com/openai/skills",
+  "revision": "49f948faa9258a0c61caceaf225e179651397431",
+  "source_path": "skills/.curated/jupyter-notebook/SKILL.md",
+  "license_spdx": "Apache-2.0",
+  "license_file": "raw/LICENSE.txt",
+  "visibility": "listed",
+  "description": "Create and maintain reproducible Jupyter notebooks with clear structure, runnable cells, and reviewable outputs.",
+  "use_when": "A data-computing result must be delivered or audited as a reproducible Notebook.",
+  "do_not_use_when": "The main gap is a Dask partition plan or a time-series detrending method.",
+  "main_raw_sha256": "62f102e8554b25716dccef0ffab4572d4e3eaf05ccc76562d33a065bc9c521fb",
+  "raw_files": [
+    {
+      "path": "LICENSE.txt",
+      "source_path": "skills/.curated/jupyter-notebook/LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/jupyter-notebook/LICENSE.txt",
+      "sha256": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9",
+      "byte_length": 10776
+    },
+    {
+      "path": "SKILL.md",
+      "source_path": "skills/.curated/jupyter-notebook/SKILL.md",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/jupyter-notebook/SKILL.md",
+      "sha256": "62f102e8554b25716dccef0ffab4572d4e3eaf05ccc76562d33a065bc9c521fb",
+      "byte_length": 4154
+    },
+    {
+      "path": "agents/openai.yaml",
+      "source_path": "skills/.curated/jupyter-notebook/agents/openai.yaml",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/jupyter-notebook/agents/openai.yaml",
+      "sha256": "3a2d6a8f9ed10e18f6caa66aeb26a02305bc61f36fc4b333c904e02f9988fb9c",
+      "byte_length": 325
+    },
+    {
+      "path": "assets/experiment-template.ipynb",
+      "source_path": "skills/.curated/jupyter-notebook/assets/experiment-template.ipynb",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/jupyter-notebook/assets/experiment-template.ipynb",
+      "sha256": "25f85914103cd84244e20ef378f59097479c72481cd18d3a931354d107c3f300",
+      "byte_length": 2570
+    },
+    {
+      "path": "assets/jupyter-small.svg",
+      "source_path": "skills/.curated/jupyter-notebook/assets/jupyter-small.svg",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/jupyter-notebook/assets/jupyter-small.svg",
+      "sha256": "a36bd27bef3775f111309241754b386db81e7d356f07672190e2fcb24478a250",
+      "byte_length": 1043
+    },
+    {
+      "path": "assets/jupyter.png",
+      "source_path": "skills/.curated/jupyter-notebook/assets/jupyter.png",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/jupyter-notebook/assets/jupyter.png",
+      "sha256": "852fd5468885bb176d266d547e61684792332e44a88cfbc8cd07323937040ccb",
+      "byte_length": 2713
+    },
+    {
+      "path": "assets/tutorial-template.ipynb",
+      "source_path": "skills/.curated/jupyter-notebook/assets/tutorial-template.ipynb",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/jupyter-notebook/assets/tutorial-template.ipynb",
+      "sha256": "704a809c09c7c9e6e5c437860df95524412b50c58571a14204610d73e0744765",
+      "byte_length": 2490
+    },
+    {
+      "path": "references/experiment-patterns.md",
+      "source_path": "skills/.curated/jupyter-notebook/references/experiment-patterns.md",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/jupyter-notebook/references/experiment-patterns.md",
+      "sha256": "1ff9c04281c01e8e2209bde9f1fd910b8e4b620dd1f1f040e2101f1d88513a91",
+      "byte_length": 699
+    },
+    {
+      "path": "references/notebook-structure.md",
+      "source_path": "skills/.curated/jupyter-notebook/references/notebook-structure.md",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/jupyter-notebook/references/notebook-structure.md",
+      "sha256": "a85051a2e88fd3424bbed2636e952ec5f858e7efa4e076c28d62a8cc2cc9dc06",
+      "byte_length": 751
+    },
+    {
+      "path": "references/quality-checklist.md",
+      "source_path": "skills/.curated/jupyter-notebook/references/quality-checklist.md",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/jupyter-notebook/references/quality-checklist.md",
+      "sha256": "ed01afe6ff47714d85935d11053b64c414772f02250fdc604e3fca65e5139136",
+      "byte_length": 572
+    },
+    {
+      "path": "references/tutorial-patterns.md",
+      "source_path": "skills/.curated/jupyter-notebook/references/tutorial-patterns.md",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/jupyter-notebook/references/tutorial-patterns.md",
+      "sha256": "8c194bb640de2fb7747e3db87006ecec5219252d301f53670975dbb5310ff659",
+      "byte_length": 685
+    },
+    {
+      "path": "scripts/new_notebook.py",
+      "source_path": "skills/.curated/jupyter-notebook/scripts/new_notebook.py",
+      "url": "https://raw.githubusercontent.com/openai/skills/49f948faa9258a0c61caceaf225e179651397431/skills/.curated/jupyter-notebook/scripts/new_notebook.py",
+      "sha256": "a004e2ea3115edb24313928be0be6d1dc07e571d7ca6c1b24375f0569c616d2f",
+      "byte_length": 4086
+    }
+  ],
+  "adapted_files": [
+    {
+      "path": "agents/openai.yaml",
+      "sha256": "3a2d6a8f9ed10e18f6caa66aeb26a02305bc61f36fc4b333c904e02f9988fb9c",
+      "byte_length": 325
+    },
+    {
+      "path": "assets/experiment-template.ipynb",
+      "sha256": "25f85914103cd84244e20ef378f59097479c72481cd18d3a931354d107c3f300",
+      "byte_length": 2570
+    },
+    {
+      "path": "assets/jupyter-small.svg",
+      "sha256": "a36bd27bef3775f111309241754b386db81e7d356f07672190e2fcb24478a250",
+      "byte_length": 1043
+    },
+    {
+      "path": "assets/jupyter.png",
+      "sha256": "852fd5468885bb176d266d547e61684792332e44a88cfbc8cd07323937040ccb",
+      "byte_length": 2713
+    },
+    {
+      "path": "assets/tutorial-template.ipynb",
+      "sha256": "704a809c09c7c9e6e5c437860df95524412b50c58571a14204610d73e0744765",
+      "byte_length": 2490
+    },
+    {
+      "path": "LICENSE.txt",
+      "sha256": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9",
+      "byte_length": 10776
+    },
+    {
+      "path": "references/experiment-patterns.md",
+      "sha256": "1ff9c04281c01e8e2209bde9f1fd910b8e4b620dd1f1f040e2101f1d88513a91",
+      "byte_length": 699
+    },
+    {
+      "path": "references/notebook-structure.md",
+      "sha256": "a85051a2e88fd3424bbed2636e952ec5f858e7efa4e076c28d62a8cc2cc9dc06",
+      "byte_length": 751
+    },
+    {
+      "path": "references/quality-checklist.md",
+      "sha256": "ed01afe6ff47714d85935d11053b64c414772f02250fdc604e3fca65e5139136",
+      "byte_length": 572
+    },
+    {
+      "path": "references/tutorial-patterns.md",
+      "sha256": "8c194bb640de2fb7747e3db87006ecec5219252d301f53670975dbb5310ff659",
+      "byte_length": 685
+    },
+    {
+      "path": "scripts/new_notebook.py",
+      "sha256": "a004e2ea3115edb24313928be0be6d1dc07e571d7ca6c1b24375f0569c616d2f",
+      "byte_length": 4086
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "62f102e8554b25716dccef0ffab4572d4e3eaf05ccc76562d33a065bc9c521fb",
+      "byte_length": 4154
+    }
+  ],
+  "adaptation_diff": "adaptation.diff",
+  "frozen": true
+}

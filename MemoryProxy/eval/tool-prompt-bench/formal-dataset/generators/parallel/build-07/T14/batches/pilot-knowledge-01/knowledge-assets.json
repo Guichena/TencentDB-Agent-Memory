@@ -1,0 +1,107 @@
+{
+  "schema_version": "task1.synthetic_knowledge_assets.v1",
+  "stage": "DS05",
+  "team_id": "T14",
+  "snapshot_id": "snapshot-task1-hidden-v1",
+  "status": "ready",
+  "synthetic_only": true,
+  "knowledge": [
+    {
+      "asset_id": "T14-KNOW-BOREALIS-CG",
+      "type": "code_graph",
+      "name": "Borealis Platform 代码索引",
+      "target_case_key": "KNW-001",
+      "summary": "Borealis Platform 的符号、文件和依赖关系索引，供 Kubernetes 工作负载与 Helm 回滚护栏定位使用。",
+      "match": {
+        "project_id": "t14-borealis-platform",
+        "repo_match": "benchmark.invalid/t14/borealis-platform"
+      },
+      "status": "ready",
+      "owner_agent_id": "agent-task1-t14-general",
+      "source": "internal_synthetic_fixture",
+      "fixed_tools": [
+        {
+          "name": "search",
+          "description": "按符号名、路径或自然语言片段检索代码索引节点。",
+          "input": {"text": "string", "project": "string"}
+        }
+      ],
+      "query_fixtures": [
+        {
+          "fixture_id": "T14-KNW-FIXTURE-001",
+          "tool_name": "search",
+          "query": {"text": "RollbackGuardEvaluator", "project": "t14-borealis-platform"},
+          "result": {
+            "matches": [
+              {"symbol": "RollbackGuardEvaluator", "file": "internal/helm/rollback_guard.go", "line": 117}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "asset_id": "T14-KNOW-MERIDIAN-WIKI",
+      "type": "wiki",
+      "name": "Meridian Fleet 交付手册",
+      "target_case_key": "KNW-002",
+      "summary": "Meridian Fleet 的多集群 GitOps、配置漂移例外和发布协调约定。",
+      "match": {
+        "project_id": "t14-meridian-fleet",
+        "topic_match": "GitOps drift exceptions and release coordination"
+      },
+      "status": "ready",
+      "owner_agent_id": "agent-task1-t14-assets-a",
+      "source": "internal_synthetic_fixture",
+      "fixed_tools": [
+        {
+          "name": "search",
+          "description": "按手册主题和术语检索 GitOps 交付条目。",
+          "input": {"text": "string", "topic": "string"}
+        }
+      ],
+      "query_fixtures": [
+        {
+          "fixture_id": "T14-KNW-FIXTURE-002",
+          "tool_name": "search",
+          "query": {"text": "漂移例外的发布协调", "topic": "GitOps"},
+          "result": {
+            "section": "drift-exceptions",
+            "statement": "漂移例外须在发布协调记录中登记影响集群与解除条件。"
+          }
+        }
+      ]
+    },
+    {
+      "asset_id": "T14-KNOW-FORGE-CG",
+      "type": "code_graph",
+      "name": "Forge Build 代码索引",
+      "target_case_key": "KNW-003",
+      "summary": "Forge Build 的 Tekton 构建、OCI registry 和供应链交付符号及影响关系索引。",
+      "match": {
+        "project_id": "t14-forge-build",
+        "repo_match": "benchmark.invalid/t14/forge-build"
+      },
+      "status": "ready",
+      "owner_agent_id": "agent-task1-t14-assets-b",
+      "source": "internal_synthetic_fixture",
+      "fixed_tools": [
+        {
+          "name": "impact",
+          "description": "分析指定构建符号的下游影响节点。",
+          "input": {"symbol": "string", "project": "string", "depth": "number"}
+        }
+      ],
+      "query_fixtures": [
+        {
+          "fixture_id": "T14-KNW-FIXTURE-003",
+          "tool_name": "impact",
+          "query": {"symbol": "ImageAttestationStep", "project": "t14-forge-build", "depth": 2},
+          "result": {
+            "nodes": ["pipelines/attestation.yaml:64", "tasks/publish-oci.yaml:91"],
+            "edge_count": 2
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "schema_version": "task1.formal_dataset_validation.v2",
+  "valid": true,
+  "errors": [],
+  "splits": [
+    "hidden_test"
+  ],
+  "case_count": 40,
+  "team_case_counts": {
+    "T01": 0,
+    "T02": 0,
+    "T03": 0,
+    "T04": 0,
+    "T05": 0,
+    "T06": 0,
+    "T07": 0,
+    "T08": 0,
+    "T09": 40,
+    "T10": 0
+  },
+  "pair_count": 15,
+  "pairs_by_team": {
+    "T01": 0,
+    "T02": 0,
+    "T03": 0,
+    "T04": 0,
+    "T05": 0,
+    "T06": 0,
+    "T07": 0,
+    "T08": 0,
+    "T09": 15,
+    "T10": 0
+  },
+  "pair_integrity_error_count": 0,
+  "pair_integrity_errors": [],
+  "provider_leakage_count": 0,
+  "invalid_sequence_count": 0,
+  "missing_source_ref_count": 0,
+  "provenance": {
+    "synthetic": {
+      "count": 15,
+      "sourceIds": [
+        "source-t09-knowledge-batch-02",
+        "source-t09-knowledge-cg-t09risk01",
+        "source-t09-knowledge-trial-01",
+        "source-t09-knowledge-wiki-t09audit01",
+        "source-t09-knowledge-wiki-t09comp01",
+        "source-t09-luna-l0",
+        "source-t09-luna-l1",
+        "source-t09-luna-l2",
+        "source-t09-luna-l3",
+        "source-t09-memory-batch-02",
+        "source-t09-memory-trial-01",
+        "source-t09-natural-negative-batch-01",
+        "source-t09-skill-batch-02",
+        "source-t09-skill-trial-01",
+        "source-t09-sol-input-pack"
+      ],
+      "batchIds": [
+        "build-05-T09-input-pack",
+        "t09-knowledge-batch-02",
+        "t09-knowledge-trial-01",
+        "t09-memory-batch-02",
+        "t09-memory-trial-01",
+        "t09-natural-negative-batch-01",
+        "t09-skill-batch-02",
+        "t09-skill-trial-01"
+      ]
+    },
+    "externalImport": {
+      "count": 15,
+      "sourceIds": [
+        "source-t09-skill-attack-tree",
+        "source-t09-skill-cvss-extraction",
+        "source-t09-skill-dependency-upgrade",
+        "source-t09-skill-deployment-pipeline",
+        "source-t09-skill-fortify-remediate",
+        "source-t09-skill-github-actions",
+        "source-t09-skill-gitlab-ci",
+        "source-t09-skill-sast-configuration",
+        "source-t09-skill-secrets-management",
+        "source-t09-skill-security-requirements",
+        "source-t09-skill-stride-analysis",
+        "source-t09-skill-threat-mitigation",
+        "source-t09-skill-trivy-offline",
+        "source-t09-skill-vulnerability-csv",
+        "source-task1-registry-ds00"
+      ]
+    }
+  },
+  "provider_sha256": "4efaee9f2e3dbf814b8418f743170304dd50f5795737ec6fe37d351c10173eab",
+  "snapshot_sha256": {
+    "dev": "a0a74fd13599b96304dca7fb03b8ace5e75627a1f659bbd542134dcd59a15e9d",
+    "hidden_test": "a79e523f65da9639319b9bfae1f2106c097600b43215a6ba6cd512ac60d7eddc"
+  }
+}

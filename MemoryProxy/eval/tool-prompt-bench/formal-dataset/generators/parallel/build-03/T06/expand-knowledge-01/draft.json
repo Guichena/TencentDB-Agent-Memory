@@ -1,0 +1,101 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t06-expand-knowledge-01",
+  "stage": "DS05",
+  "team_id": "T06",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T06-KNOW-BP-02",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我们在复查 orbit-vscode-extension 的命令体验改造，范围限定为命令贡献、菜单可见性与多语言标题。"},
+        {"role": "assistant", "content": "现有记录确认扩展通过 package.json 声明命令和菜单，运行时注册只负责绑定命令 ID 与处理器；标题文本由本地化资源提供。"},
+        {"role": "user", "content": "orbit.commands.refresh 和 orbit.commands.openPanel 是本轮的相邻参照，另外 configure 命令也在同一扩展中，但它们不是唯一目标。"},
+        {"role": "assistant", "content": "命令 ID、Command Palette 条目和侧栏 view/title 条目属于不同贡献面，不能把 enablement 条件误当成标题来源。"},
+        {"role": "user", "content": "本轮重点是核对命令标题本地化在贡献清单和语言资源之间的对应关系，同时留意相邻命令造成的干扰。"},
+        {"role": "assistant", "content": "复查边界包括 package.json 的 commands 与 menus、语言包键值以及中文回退行为；Harbor CLI 和 Lineage 流水线不在范围内。"},
+        {"role": "user", "content": "项目索引里也会出现 Harbor 的 export 命令和 Lineage 的 train 阶段，但它们只是跨项目的可见干扰。"},
+        {"role": "assistant", "content": "最近摘要只确认了贡献面和运行时绑定，尚未给出命令标题本地化的来源键、具体语言文件和完整核对边界。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请确认 Orbit 扩展中命令标题“命令标题 本地化”的来源键、贡献位置和校验边界。",
+      "positive": {
+        "delta_message": {"role": "assistant", "content": "补充本轮检视结果：当前记录仍没有命令标题的本地化来源键、对应语言文件或贡献面核对结果，请继续查明这三项。"},
+        "private_proposal": {
+          "unique_information_gap": "共享上下文缺少 Orbit 扩展命令标题本地化决策页中的来源键、语言文件、贡献位置和校验边界。",
+          "route": "knowledge",
+          "target_asset_ids": ["T06-KNOWLEDGE-ORBIT-WIKI"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "search_pages 查询“命令标题 本地化”成功返回唯一决策页及其来源键、语言文件和核对边界后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "assistant", "content": "补充本轮检视结果：决策页规定命令 ID 保持不变，package.json 的 commands、menus.commandPalette 与 views/title 均引用键 orbit.command.openPanel.title；英文值在 package.nls.json，简体中文值在 package.nls.zh-cn.json。校验需同时核对三处贡献引用、两份语言包键值及中文缺失时的英文回退。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "补充消息已经给出本地化来源键、两份语言文件、三处贡献位置和回退校验边界，无需查询外部索引。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T06-KNOWLEDGE-HARBOR-CG", "T06-KNOWLEDGE-LINEAGE-CG", "orbit.commands.refresh", "orbit.commands.configure", "Command Palette", "sidebar view/title"],
+      "controlled_delta_note": "Positive 与 Negative 共享完全相同的 8 条上下文和 query；仅追加索引结果补充消息，Positive 保留来源键、语言文件和贡献边界缺口，Negative 一次性闭合全部信息。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 是否只缺 Orbit 命令标题本地化决策页的唯一结果？",
+        "Negative 是否同时给出来源键、语言文件、三处贡献引用和回退校验边界？",
+        "refresh、configure、Command Palette 和 sidebar view/title 是否构成至少三个同域可见干扰？",
+        "Harbor 与 Lineage 资源是否保持可见但不改变 Orbit 目标的唯一性？",
+        "provider-visible 文本是否未泄漏内部资源标识、发现协议或私有字段？"
+      ]
+    },
+    {
+      "draft_pair_id": "T06-KNOW-BP-03",
+      "external_source_ids": [],
+      "synthetic_scope": ["team", "project", "conversation", "history"],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {"role": "user", "content": "我们在复查 lineage-ml-pipeline 的训练流水线，范围限定为阶段依赖、产物、指标和下游重跑边界。"},
+        {"role": "assistant", "content": "现有记录确认项目用 dvc.yaml 描述 preprocess、train、evaluate 和 publish，参数文件与锁文件只作为执行状态参照。"},
+        {"role": "user", "content": "preprocess 和 evaluate 是本轮的相邻阶段，publish 也会出现在同一 DAG 中；它们不能代替 train 阶段的细节。"},
+        {"role": "assistant", "content": "阶段命令、deps、outs、metrics 和下游依赖是不同字段，不能把参数变更或缓存命中误认为阶段产物。"},
+        {"role": "user", "content": "本轮重点是核对 train stage 的输入、执行命令、模型输出、训练指标和 evaluate 的连接关系。"},
+        {"role": "assistant", "content": "复查边界包括 dvc.yaml 的 train 定义、训练脚本约定和下游阶段引用；Harbor 命令树与 Orbit 本地化不在范围内。"},
+        {"role": "user", "content": "项目索引里也会出现 Harbor 的 ExportCommand 和 Orbit 的命令标题决策，但它们只是跨项目的可见干扰。"},
+        {"role": "assistant", "content": "最近摘要只确认了 DAG 中的阶段名称，尚未给出 train 的完整依赖、产物、指标和下游连接结果。"}
+      ],
+      "changed_message_index": 8,
+      "query": "请确认 Lineage 流水线 train stage 的依赖、产物、metrics 和下游关联，并给出核对边界。",
+      "positive": {
+        "delta_message": {"role": "assistant", "content": "补充本轮检视结果：当前记录仍没有 train stage 的依赖文件、执行命令、模型产物、metrics 文件或下游关联，请继续查明这些流水线事实。"},
+        "private_proposal": {
+          "unique_information_gap": "共享上下文缺少 Lineage 流水线索引对 train 阶段的完整结构结果，包括 deps、命令、outs、metrics 和 evaluate 下游边界。",
+          "route": "knowledge",
+          "target_asset_ids": ["T06-KNOWLEDGE-LINEAGE-CG"],
+          "allowed_sequence_candidates": [["knowledge_tools_list", "knowledge_tools_call"]],
+          "stop_after_candidate": "inspect_stage 查询 train 成功返回唯一阶段结构及 evaluate 下游引用后停止。"
+        }
+      },
+      "negative": {
+        "delta_message": {"role": "assistant", "content": "补充本轮检视结果：train stage 定义为 `python src/train.py --config params.yaml`，依赖 `data/features.parquet`、`data/labels.parquet` 和 `params.yaml`；产物为 `model/model.pkl`，metrics 为 `metrics/train.json`；evaluate 通过 `model/model.pkl` 依赖 train，publish 不直接读取 train 输出。核对范围是该阶段的 deps、cmd、outs、metrics 以及 evaluate 的直接引用。"},
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "补充消息已经完整给出 train 的依赖、命令、产物、指标、下游连接和核对边界，无需读取流水线索引。"
+        }
+      },
+      "visible_distractor_ids_author_only": ["T06-KNOWLEDGE-HARBOR-CG", "T06-KNOWLEDGE-ORBIT-WIKI", "preprocess", "evaluate", "publish", "params.yaml", "dvc.lock"],
+      "controlled_delta_note": "Positive 与 Negative 共享完全相同的 8 条上下文和 query；仅追加索引结果补充消息，Positive 保留 train 阶段结构缺口，Negative 一次性闭合阶段字段与直接下游关系。",
+      "source_fact_map": [],
+      "sol_review_questions": [
+        "Positive 是否只缺 Lineage train stage 的唯一索引结果？",
+        "Negative 是否给出 deps、cmd、outs、metrics、evaluate 引用及 publish 非直接依赖关系？",
+        "preprocess、evaluate、publish 和 dvc.lock 是否构成至少三个同域可见干扰？",
+        "Harbor 与 Orbit 资源是否保持可见但不改变 Lineage 目标的唯一性？",
+        "provider-visible 文本是否未泄漏内部资源标识、发现协议或私有字段？"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,205 @@
+{
+  "schema_version": "task1.luna_pair_draft.v1",
+  "batch_id": "t04-knowledge-expand-01",
+  "stage": "DS03",
+  "team_id": "T04",
+  "family": "knowledge",
+  "pairs": [
+    {
+      "draft_pair_id": "T04-DS03-KNOWLEDGE-002",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "这条工作线固定在 Spring PetClinic Jakarta 与安全迁移项目和给定提交上，范围是 Jakarta 命名空间归属、保留的 JDK javax 包、校验/持久化边界与安全配置关系；不要把它写成未核对的外部源码事实。"
+        },
+        {
+          "role": "assistant",
+          "content": "工作区边界已记下。我会只核对这条线的固定合成结构结果，区分 Java EE 命名空间迁移与 JDK 自带 javax 包保留边界。"
+        },
+        {
+          "role": "user",
+          "content": "当前症状是升级后 import 看起来混杂：日志出现 jakarta、javax.sql、javax.crypto、校验和安全这些词，但没有留下哪些包属于迁移范围、哪些 javax 包必须保留的关系。"
+        },
+        {
+          "role": "assistant",
+          "content": "这些词只能定位到命名空间和安全边界，不能证明固定图中的具体归属、路径关系或保留决定；我不会从相似项目推断。"
+        },
+        {
+          "role": "user",
+          "content": "我已排除同步 REST 客户端替换和 Maven 构建诊断两条相邻主线；这次只处理 PetClinic 的 Jakarta ownership 与 JDK javax 保留边界。"
+        },
+        {
+          "role": "assistant",
+          "content": "排除范围保持不变。下一步只需要核对固定合成 PetClinic 图中命名空间归属的关系、对应节点位置，以及 javax.sql/javax.crypto 是否属于保留边界。"
+        },
+        {
+          "role": "user",
+          "content": "现有交接材料仍只有升级症状和包名线索，没有给出固定合成图里的 ownership 关系、节点文件位置或 JDK 包保留决定。"
+        },
+        {
+          "role": "assistant",
+          "content": "因此当前唯一未决事实是固定合成图中的命名空间关系、路径位置和保留决策；不要把未冻结的外部实现或修复方案补进来。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请核对固定合成 PetClinic 代码图中 Jakarta 命名空间的 ownership 关系与节点路径，并明确 javax.sql、javax.crypto 的 JDK 保留边界；只返回与这条迁移诊断直接相关的结构和决定。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充日志仍只有 jakarta、javax.sql、javax.crypto、校验和安全这些主题，没有提供固定合成图的 ownership 关系、节点路径或 JDK 包保留决定；请保留这个结构缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "固定 synthetic PetClinic code graph 中 Jakarta-owned 命名空间的关系与文件路径，以及 javax.sql/javax.crypto 的 JDK 保留边界尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": [
+            "T04-KNOW-PETCLINIC-CODEGRAPH"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "knowledge_tools_list",
+              "knowledge_tools_call"
+            ]
+          ],
+          "chain_kind": "self_discovery_two_step",
+          "tool_call_plan": {
+            "after_listed_tool": "search",
+            "params": {
+              "query": "Jakarta namespace retained JDK javax validation persistence security boundary",
+              "limit": 8
+            },
+            "read_only": true
+          },
+          "stop_after_candidate": "先发现 fixed ready synthetic PetClinic 图的只读检索能力，再以已发现的 search 契约查询一次；返回 Jakarta ownership、节点路径以及 javax.sql/javax.crypto 保留边界后停止，并明确这些关系来自 fixed synthetic fixture。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已补齐唯一缺口。以下值全部明确属于 fixed synthetic fixture，不是未经冻结源码核对的外部实现事实：fixture/petclinic/src/main/java/org/springframework/samples/petclinic/model/Owner.java --imports--> jakarta.persistence.Entity 与 jakarta.validation.constraints.NotEmpty，表示 Java EE-owned 命名空间由该节点负责；fixture/petclinic/src/main/java/org/springframework/samples/petclinic/config/JdbcConfig.java --imports--> javax.sql.DataSource，javax.sql 属于 JDK-owned、必须保留的边界；fixture/petclinic/src/main/java/org/springframework/samples/petclinic/security/KeyMaterialLoader.java --imports--> javax.crypto.SecretKey 和 javax.crypto.spec.SecretKeySpec，javax.crypto 同样属于 JDK-owned、必须保留的边界。迁移决定是仅把 Java EE-owned javax.persistence/javax.validation 映射到 jakarta.persistence/jakarta.validation，不改 javax.sql 或 javax.crypto。该摘要不引入 REST 客户端、Maven 或其他项目结论。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已经包含 fixed synthetic 图所需的 Jakarta ownership 节点路径、javax.sql/javax.crypto 的 JDK-owned 保留值以及唯一迁移边界；工具调用不再提供新的必要信息。负例只改变是否仍需要 Knowledge 工具，项目、任务和其余上下文保持不变。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T04-KNOW-GOOGLE-AUTO-CODEGRAPH",
+        "T04-KNOW-BACKEND-MIGRATION-WIKI"
+      ],
+      "controlled_delta_note": "Positive 只保留 fixed synthetic PetClinic 图的 ownership、节点路径和 JDK javax 保留边界缺口；Negative 只补齐这些具体关系与迁移决定，其他项目边界、症状、排除项和 query 完全不变。",
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为 fixed synthetic PetClinic 图的 Jakarta ownership、节点路径和 javax.sql/javax.crypto 保留边界，没有暗示未经冻结的外部源码事实或修复方案？",
+        "Positive 的私有序列是否明确先发现固定合成图的只读能力，再以固定关键词执行一次 search，并在返回关系后停止？",
+        "Negative 是否只因交接摘要已经给出具体 synthetic 路径、ownership 与 JDK 保留决定而不再需要 Knowledge 工具，且没有改变项目、任务或其他 provider-visible 文本？",
+        "PetClinic、Jakarta 命名空间、javax.sql/javax.crypto 和保留边界这些自然线索是否足以在三个 ready 候选中唯一选择目标代码图？"
+      ]
+    },
+    {
+      "draft_pair_id": "T04-DS03-KNOWLEDGE-003",
+      "external_source_ids": [],
+      "synthetic_scope": [
+        "team",
+        "project",
+        "conversation",
+        "history"
+      ],
+      "difficulty": "hard",
+      "context_bucket": "medium_6_to_10",
+      "shared_context_messages": [
+        {
+          "role": "user",
+          "content": "这条工作线固定在 Java backend migration triage 项目；我要整理同步 HTTP 客户端、Jakarta 命名空间、安全配置和 Maven 构建症状之间的决策边界，不把内部迁移 wiki 冒充成外部仓库事实。"
+        },
+        {
+          "role": "assistant",
+          "content": "范围已记下。我会只核对固定合成迁移 wiki 的决策矩阵，先把同步客户端替换与命名空间、安全、Maven 诊断分开。"
+        },
+        {
+          "role": "user",
+          "content": "最近的交接把 RestTemplate、RestClient、Jakarta、Security 和 Maven 混在同一段症状里，但没有留下哪一种症状触发哪条迁移决策。"
+        },
+        {
+          "role": "assistant",
+          "content": "这些关键词能说明需要做迁移分流，却不能单凭名称判断固定合成 wiki 的选择值、保留条件或排除关系。"
+        },
+        {
+          "role": "user",
+          "content": "我已排除 PetClinic 源码图关系和 Google Auto 模块构建图两条相邻工作线；这次只处理后端迁移 wiki 的同步客户端与其他边界。"
+        },
+        {
+          "role": "assistant",
+          "content": "排除范围保持不变。需要核对的是固定合成 wiki 对同步 RestClient、Jakarta namespace、Security 和 Maven-only 症状分别给出的决策边界。"
+        },
+        {
+          "role": "user",
+          "content": "当前交接摘要只有症状分类词，没有给出同步客户端应选什么、哪些命名空间需要迁移、安全是否独立处理，以及 Maven-only 失败是否改业务代码。"
+        },
+        {
+          "role": "assistant",
+          "content": "因此唯一未决信息是固定合成迁移 wiki 中这些分流的具体决策值；不会从相邻项目或未冻结的实现推导额外结论。"
+        }
+      ],
+      "changed_message_index": 8,
+      "query": "请核对固定合成后端迁移 wiki 对同步 RestTemplate/RestClient、Jakarta 命名空间、安全配置和 Maven-only 症状的决策边界；只返回这份迁移决策矩阵的具体值，并标明其 synthetic 属性。",
+      "positive": {
+        "delta_message": {
+          "role": "user",
+          "content": "补充记录仍只有 RestTemplate、RestClient、Jakarta、Security、Maven 和症状分类词，没有给出固定合成迁移 wiki 的同步客户端选择、命名空间映射、安全隔离或 Maven-only 处理值；请保留这个决策缺口。"
+        },
+        "private_proposal": {
+          "unique_information_gap": "固定 synthetic backend migration wiki 中同步 RestClient 选择、Jakarta namespace 映射、安全配置隔离及 Maven-only 处理边界的具体决策值尚未出现在当前上下文。",
+          "route": "knowledge",
+          "target_asset_ids": [
+            "T04-KNOW-BACKEND-MIGRATION-WIKI"
+          ],
+          "allowed_sequence_candidates": [
+            [
+              "knowledge_tools_list",
+              "knowledge_tools_call"
+            ]
+          ],
+          "chain_kind": "self_discovery_two_step",
+          "tool_call_plan": {
+            "after_listed_tool": "search",
+            "params": {
+              "query": "backend migration decision boundary Jakarta RestClient security Maven",
+              "limit": 6
+            },
+            "read_only": true
+          },
+          "stop_after_candidate": "先发现 fixed ready synthetic migration wiki 的只读检索能力，再以已发现的 search 契约查询一次；返回四类分流的具体决策值后停止，并明确这是 fixed synthetic wiki 内容。"
+        }
+      },
+      "negative": {
+        "delta_message": {
+          "role": "user",
+          "content": "交接摘要已补齐唯一缺口。以下决策全部明确属于 fixed synthetic wiki，不是外部仓库事实：同步阻塞式 HTTP 调用从 RestTemplate 迁移时选择 RestClient，并保持同步响应映射与错误处理语义；Java EE-owned javax.persistence/javax.validation 统一迁移到 jakarta.persistence/jakarta.validation，而 JDK-owned javax.sql/javax.crypto 不在该映射范围；Spring Security 配置变化单独归入 Security migration，不由客户端或 namespace 症状推断；仅 Maven 依赖、插件或 profile 失败时归入 build-only diagnosis，不修改 HTTP 或命名空间业务代码。该摘要不引入 PetClinic 图或模块构建图结论。"
+        },
+        "private_proposal": {
+          "route": "none",
+          "why_current_context_is_sufficient": "当前上下文已经包含 fixed synthetic wiki 对同步客户端、Jakarta namespace、Security isolation 和 Maven-only diagnosis 的具体决策值；工具调用不再提供新的必要信息。负例只改变是否仍需要 Knowledge 工具，项目、任务和其余上下文保持不变。"
+        }
+      },
+      "visible_distractor_ids_author_only": [
+        "T04-KNOW-PETCLINIC-CODEGRAPH",
+        "T04-KNOW-GOOGLE-AUTO-CODEGRAPH"
+      ],
+      "controlled_delta_note": "Positive 只保留 fixed synthetic 迁移 wiki 的四类决策边界缺口；Negative 只补齐同步 RestClient、Jakarta mapping、Security isolation 与 Maven-only diagnosis 的具体值，其他项目边界、症状、排除项和 query 完全不变。",
+      "sol_review_questions": [
+        "Positive 的唯一缺口是否严格限定为 fixed synthetic migration wiki 的四类决策值，没有泄露 wiki 正文或冒充外部实现事实？",
+        "Positive 的私有序列是否明确先发现固定合成 wiki 的只读能力，再以固定关键词执行一次 search，并在获得决策矩阵后停止？",
+        "Negative 是否只因交接摘要已包含同步客户端、Jakarta、Security 和 Maven-only 的具体 synthetic 决策值而不再需要 Knowledge 工具？",
+        "Java backend migration、RestTemplate/RestClient、Jakarta、Security 与 Maven-only 这些自然线索是否足以在三个 ready 候选中唯一选择迁移 wiki？"
+      ]
+    }
+  ]
+}

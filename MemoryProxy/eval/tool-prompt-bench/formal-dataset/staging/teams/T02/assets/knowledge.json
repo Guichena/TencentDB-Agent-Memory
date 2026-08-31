@@ -1,0 +1,64 @@
+{
+  "knowledge": [
+    {
+      "assetId": "cg-t02pnd01",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-knowledge-code-graphs"
+      ],
+      "observedAt": "2026-08-29T21:40:00+08:00",
+      "type": "code_graph",
+      "name": "pandas pinned resampling graph",
+      "repoUrl": "https://github.com/pandas-dev/pandas",
+      "repoCommit": "4f86f278709810f97841f8e130f888146cc0a998",
+      "indexVersion": "task1-codegraph-fixture-v1",
+      "snapshotSha256": "3abae61cd390d73f053012982bf3ebfa14d658c44a082c56701f4f38f59c5321",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t02-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "a868194674afff7101bcdbc9f6270b85e945f3030e98890408f16485f5579f05"
+    },
+    {
+      "assetId": "cg-t02dsk01",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-knowledge-code-graphs"
+      ],
+      "observedAt": "2026-08-29T21:40:00+08:00",
+      "type": "code_graph",
+      "name": "Dask pinned repartition graph",
+      "repoUrl": "https://github.com/dask/dask",
+      "repoCommit": "9dc535daa30d7d36d63d4a003b54342fbc7032db",
+      "indexVersion": "task1-codegraph-fixture-v1",
+      "snapshotSha256": "c955f7e9581e78c627ce0fad538e73ab0e5fb83c6066b48a74ad30e30a85856f",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t02-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "b9764d58d061fa0bb2b20aef5b020934d9ca28eda314bc093c242fe7e0cae198"
+    },
+    {
+      "assetId": "wiki-t02ops01",
+      "ownerAgentId": "agent-task1-t02-general",
+      "sourceEvidenceIds": [
+        "source-t02-luna-knowledge-wiki"
+      ],
+      "observedAt": "2026-08-29T21:40:00+08:00",
+      "type": "wiki",
+      "name": "T02 data-computing evidence policy",
+      "snapshotSha256": "aa8d55aa74755c40b78de6fa68b7ffef41664017f44768ef9131df45f4fcf59b",
+      "bindings": [
+        {
+          "agentId": "agent-task1-t02-general",
+          "visibility": "fixed"
+        }
+      ],
+      "contentHash": "8a579abbcf648e87374b7c72c9014acd477c14fa3b61e2c1024f5f268eb1d588"
+    }
+  ]
+}

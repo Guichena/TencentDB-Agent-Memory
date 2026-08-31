@@ -1,0 +1,18 @@
+diff --git a/raw/dvc-data-and-pipelines/SKILL.md b/adapted/T06-SKILL-DVC-DATA-PIPELINES/SKILL.md
+index a40c1e2..cc6e21a 100644
+--- a/raw/dvc-data-and-pipelines/SKILL.md
++++ b/adapted/T06-SKILL-DVC-DATA-PIPELINES/SKILL.md
+@@ -1,9 +1,8 @@
+ ---
+-name: data-and-pipelines
+-description: "Use DVC for core data tracking and pipeline workflows: dvc
+-  init/add, .dvc files, dvc.yaml stages, dvc.lock, stage/repro/status/diff/dag,
+-  cache checkout/commit/remove/move/update/freeze/unfreeze, dvcignore, and safe
+-  dry-run planning."
++name: dvc-data-and-pipelines
++description: "Plan DVC data tracking and pipeline workflows, including stages, locks, status, DAGs, cache checks, and dry runs."
++use_when: "Use for dvc init/add, .dvc files, dvc.yaml stages, lock files, repro, status, diff, DAG planning, and safe dry runs."
++do_not_use_when: "Do not use for experiment queues, remote credentials, generic CLIs, or editor extensions."
+ disable-model-invocation: true
+ metadata:
+   disco-role: operating

@@ -1,0 +1,13 @@
+{
+  "schema_version": "task1.luna_batch_validation.v1",
+  "valid": true,
+  "batch_dir": "D:\\projects\\TencentDB-Agent-Memory-task1-data-build-16team-t13-t14\\MemoryProxy\\eval\\tool-prompt-bench\\formal-dataset\\generators\\parallel\\build-07\\T14\\batches\\natural-negative-01",
+  "expected_stage": "DS05",
+  "expected_team": "T14",
+  "family": "natural-negative",
+  "expected_count": 10,
+  "actual_count": 10,
+  "raw_output_sha256": "d6db221229cb616041a3982eb0a2c9cc43630567edfb108116502179f3ed4761",
+  "error_count": 0,
+  "errors": []
+}

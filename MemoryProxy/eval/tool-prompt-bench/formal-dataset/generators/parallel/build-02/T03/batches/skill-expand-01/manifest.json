@@ -1,0 +1,19 @@
+{
+  "schema_version": "task1.luna_generation_manifest.v1",
+  "generator_model": "gpt-5.6-luna",
+  "reasoning_effort": "high",
+  "prompt_version": "task1.luna-batch.v1",
+  "batch_id": "t03-skill-expand-01",
+  "external_source_ids": [
+    "formal-dataset/source-material/T03/skills/grpo/adapted/SKILL.md",
+    "formal-dataset/source-material/T03/skills/nlp-research-repo-package-installment/adapted/SKILL.md",
+    "formal-dataset/source-material/T03/skills/trl/adapted/SKILL.md",
+    "formal-dataset/source-material/T03/skills/setup-env/adapted/SKILL.md",
+    "formal-dataset/source-material/T03/skills/jupyter-notebook/adapted/SKILL.md",
+    "formal-dataset/source-material/T03/skills/jupyter-notebook/adapted/references/experiment-patterns.md"
+  ],
+  "generated_at": "2026-08-29T22:15:00+08:00",
+  "raw_output_file": "draft.json",
+  "raw_output_sha256": "70f73107c45d5e7629ce85b5b88a547f0c61bbfa11a857c497e0acc06750f47b",
+  "actual_count": 5
+}

@@ -1,0 +1,129 @@
+{
+  "schema_version": "task1.knowledge_assets_draft.v1",
+  "team_id": "T05",
+  "external_source_ids": [],
+  "generated_at": "2026-08-29T22:30:00+08:00",
+  "resources": [
+    {
+      "asset_id": "T05-KNOWLEDGE-ATLAS-CG",
+      "type": "code_graph",
+      "name": "Atlas 图表代码索引",
+      "summary": "atlas-insights 中符号定义与直接调用关系的最小只读索引。",
+      "workspace_match": "atlas-insights",
+      "status": "ready",
+      "visibility": "fixed",
+      "owner_agent_id": "agent-task1-t05-general",
+      "tool_list": [
+        {
+          "name": "find_symbol",
+          "required_params": ["symbol"],
+          "read_only": true
+        }
+      ],
+      "tool_fixtures": [
+        {
+          "tool_name": "find_symbol",
+          "read_only": true,
+          "request": {"symbol": "RevenueTooltip"},
+          "response": {
+            "symbol": "RevenueTooltip",
+            "definitions": [
+              {
+                "kind": "component",
+                "file": "src/charts/revenue/RevenueTooltip.tsx",
+                "line": 18
+              }
+            ],
+            "direct_callers": [
+              {
+                "symbol": "RevenuePanel",
+                "file": "src/charts/revenue/RevenuePanel.tsx",
+                "line": 74
+              },
+              {
+                "symbol": "RevenueSmallMultiples",
+                "file": "src/charts/revenue/RevenueSmallMultiples.tsx",
+                "line": 41
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "asset_id": "T05-KNOWLEDGE-MERIDIAN-WIKI",
+      "type": "wiki",
+      "name": "Meridian 前端决策库",
+      "summary": "meridian-storefront 商品媒体布局与 CLS 验收决策的最小只读页面集。",
+      "workspace_match": "meridian-storefront",
+      "status": "ready",
+      "visibility": "fixed",
+      "owner_agent_id": "agent-task1-t05-general",
+      "tool_list": [
+        {
+          "name": "search_pages",
+          "required_params": ["query"],
+          "read_only": true
+        }
+      ],
+      "tool_fixtures": [
+        {
+          "tool_name": "search_pages",
+          "read_only": true,
+          "request": {"query": "媒体占位 CLS"},
+          "response": {
+            "pages": [
+              {
+                "title": "商品媒体占位与 CLS 决策",
+                "path": "decisions/media-placeholder-cls.md",
+                "summary": "媒体内容到达前必须保留固定比例的空间，首图预加载不能替代空间预留。",
+                "content": "商品媒体必须在内容到达前保留固定宽高比盒子，优先使用明确的 width/height 或 aspect-ratio；首图预加载不能替代空间预留。验证顺序为先按商品图库的 4:3 约束预留空间，再测量 CLS，最后才调整加载优先级。"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "asset_id": "T05-KNOWLEDGE-PULSE-CG",
+      "type": "code_graph",
+      "name": "Pulse 结账调用图",
+      "summary": "pulse-checkout 中结账确认动作及直接入口的最小只读调用索引。",
+      "workspace_match": "pulse-checkout",
+      "status": "ready",
+      "visibility": "fixed",
+      "owner_agent_id": "agent-task1-t05-general",
+      "tool_list": [
+        {
+          "name": "find_callers",
+          "required_params": ["symbol"],
+          "read_only": true
+        }
+      ],
+      "tool_fixtures": [
+        {
+          "tool_name": "find_callers",
+          "read_only": true,
+          "request": {"symbol": "confirmPurchase"},
+          "response": {
+            "symbol": "confirmPurchase",
+            "direct_callers": [
+              {
+                "symbol": "ReviewPanel",
+                "file": "src/checkout/ReviewPanel.tsx",
+                "line": 88,
+                "entry_kind": "standard_checkout"
+              },
+              {
+                "symbol": "ExpressPayButton",
+                "file": "src/checkout/ExpressPayButton.tsx",
+                "line": 52,
+                "entry_kind": "express_payment"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+--- a/plugins/ui-design/skills/accessibility-compliance/SKILL.md
++++ b/adapted/accessibility-compliance/SKILL.md
+@@ -5,0 +5,20 @@
++
++
++## TDAI Host Routing
++
++Load this package with `skill_view`. If the manifest points to a supporting file, read that file with `skill_files_read`; do not install or execute source-repository dependencies for Task 1.
++
++Use when:
++- Implementing WCAG 2.2 Level AA or AAA compliance
++- Building screen reader accessible interfaces
++- Adding keyboard navigation to interactive components
++- Implementing focus management and focus trapping
++- Creating accessible forms with proper labeling
++- Supporting reduced motion and high contrast preferences
++- Building mobile accessibility features (iOS VoiceOver, Android TalkBack)
++- Conducting accessibility audits and fixing violations
++
++Do not use when:
++- Do not use when the task has no accessibility, inclusive-design, ARIA, keyboard, focus, form-labeling, mobile-assistive-technology, or audit requirement
++
++The upstream technical workflow below is preserved unchanged.

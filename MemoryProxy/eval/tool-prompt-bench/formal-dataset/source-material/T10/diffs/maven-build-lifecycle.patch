@@ -1,0 +1,10 @@
+--- a/raw/benchflow-skillsbench/maven-build-lifecycle/SKILL.md
++++ b/adapted/maven-build-lifecycle/SKILL.md
+@@ -1,4 +1,6 @@
+ ---
+ name: maven-build-lifecycle
+-description: Use when working with Maven build phases, goals, profiles, or customizing the build process for Java projects.
++description: "说明 Maven 生命周期阶段与目标的执行顺序、配置 profile、模块反应堆选择及构建验证边界。"
++use_when: "需要确定 Maven 阶段或目标的先后、选择多模块构建范围、配置 profile，或分析阶段级构建失败。"
++do_not_use_when: "问题主要是依赖版本/BOM 冲突、单个插件参数配置，或需要设计平台无关的部署流水线。"
+ ---

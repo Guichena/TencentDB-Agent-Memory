@@ -1,0 +1,138 @@
+{
+  "schema_version": "task1.team_input_pack.v1",
+  "build_id": "build-07",
+  "stage": "DS05",
+  "team_id": "T13",
+  "split": "hidden_test",
+  "topic": "可观测性与故障定位",
+  "frozen_by": "sol",
+  "world_as_of": "2026-08-29T12:00:00+08:00",
+  "identity": {
+    "space_id": "space-task1-engineering",
+    "active_agent_id": "agent-task1-t13-general",
+    "asset_agent_ids": ["agent-task1-t13-assets-a", "agent-task1-t13-assets-b"],
+    "user_id": "user-task1-hidden-t13",
+    "snapshot_id": "snapshot-task1-hidden-v1"
+  },
+  "projects": [
+    {
+      "project_id": "t13-asteria-edge",
+      "task_id": "task-t13-asteria-slo",
+      "name": "Asteria Edge",
+      "stream": "边缘网关 metrics、SLO 与多窗口告警",
+      "workspace_repo": "https://benchmark.invalid/t13/asteria-edge.git"
+    },
+    {
+      "project_id": "t13-harborlane-payments",
+      "task_id": "task-t13-harborlane-trace",
+      "name": "Harborlane Payments",
+      "stream": "支付链路 logs、traces 与告警关联",
+      "workspace_repo": "https://benchmark.invalid/t13/harborlane-payments.git"
+    },
+    {
+      "project_id": "t13-nimbus-batch",
+      "task_id": "task-t13-nimbus-profile",
+      "name": "Nimbus Batch",
+      "stream": "批处理性能剖析、火焰图与回归定位",
+      "workspace_repo": "https://benchmark.invalid/t13/nimbus-batch.git"
+    },
+    {
+      "project_id": "t13-atlas-collector",
+      "task_id": "task-t13-atlas-otel",
+      "name": "Atlas Collector",
+      "stream": "OpenTelemetry Collector 管线与采样迁移",
+      "workspace_repo": "https://benchmark.invalid/t13/atlas-collector.git"
+    },
+    {
+      "project_id": "t13-sentrygrid-incident",
+      "task_id": "task-t13-sentrygrid-incident",
+      "name": "SentryGrid",
+      "stream": "事故分级、告警收敛、复盘与演练",
+      "workspace_repo": "https://benchmark.invalid/t13/sentrygrid-incident.git"
+    }
+  ],
+  "asset_targets": {
+    "l0_sessions": 10,
+    "l0_messages_per_session": [12, 20],
+    "l1_memories": 16,
+    "l2_scenes": 5,
+    "l3_profiles": 1,
+    "skills": 16,
+    "knowledge": 3
+  },
+  "memory_namespaces": {
+    "l0": "T13-L0-001..010",
+    "l1": "T13-L1-001..016",
+    "l2": "T13-L2-001..005",
+    "l3": "T13-L3-001"
+  },
+  "memory_case_routes": [
+    {"case_key": "MEM-001", "project_id": "t13-asteria-edge", "target_asset_id": "T13-L1-003", "sequence": ["tdai_memory_search"], "search_or_discovery": true},
+    {"case_key": "MEM-002", "project_id": "t13-harborlane-payments", "target_asset_id": "T13-L0-003", "sequence": ["tdai_conversation_search"], "search_or_discovery": true},
+    {"case_key": "MEM-003", "project_id": "t13-harborlane-payments", "target_asset_id": "T13-L0-004", "sequence": ["tdai_conversation_search", "tdai_conversation_query"], "search_or_discovery": true},
+    {"case_key": "MEM-004", "project_id": "t13-nimbus-batch", "target_asset_id": "T13-L1-010", "sequence": ["tdai_memory_search"], "search_or_discovery": true},
+    {"case_key": "MEM-005", "project_id": "t13-atlas-collector", "target_asset_id": "T13-L1-013", "sequence": ["tdai_atomic_query"], "search_or_discovery": false, "required_filter": {"type": "decision", "time_start": "2026-08-01T00:00:00+08:00", "time_end": "2026-08-16T00:00:00+08:00"}},
+    {"case_key": "MEM-006", "project_id": "t13-sentrygrid-incident", "target_asset_id": "T13-L2-005", "sequence": ["tdai_read_scene"], "search_or_discovery": false, "injected_path": "incidents/sentrygrid/noise-budget-review.md"}
+  ],
+  "skill_pool": [
+    {"asset_id": "T13-SKILL-PROMETHEUS", "source_id": "T13-SRC-PROMETHEUS", "raw_path": "source-material/T13/raw/prometheus/SKILL.md", "owner_agent_id": "agent-task1-t13-general", "visibility": "private", "bound": true},
+    {"asset_id": "T13-SKILL-LOKI", "source_id": "T13-SRC-LOKI", "raw_path": "source-material/T13/raw/loki/SKILL.md", "owner_agent_id": "agent-task1-t13-general", "visibility": "private", "bound": true},
+    {"asset_id": "T13-SKILL-DPM-FINDER", "source_id": "T13-SRC-DPM-FINDER", "raw_path": "source-material/T13/raw/dpm-finder/SKILL.md", "resource_source_id": "T13-SRC-DPM-CLI", "resource_path": "references/cli.md", "owner_agent_id": "agent-task1-t13-general", "visibility": "private", "bound": true},
+    {"asset_id": "T13-SKILL-OPENTELEMETRY", "source_id": "T13-SRC-OPENTELEMETRY", "raw_path": "source-material/T13/raw/opentelemetry/SKILL.md", "owner_agent_id": "agent-task1-t13-general", "visibility": "private", "bound": true},
+    {"asset_id": "T13-SKILL-DASHBOARDING", "source_id": "T13-SRC-DASHBOARDING", "raw_path": "source-material/T13/raw/dashboarding/SKILL.md", "owner_agent_id": "agent-task1-t13-general", "visibility": "private", "bound": true},
+    {"asset_id": "T13-SKILL-SYNTHETIC", "source_id": "T13-SRC-SYNTHETIC", "raw_path": "source-material/T13/raw/synthetic-monitoring-checks/SKILL.md", "owner_agent_id": "agent-task1-t13-general", "visibility": "private", "bound": true},
+    {"asset_id": "T13-SKILL-TEMPO", "source_id": "T13-SRC-TEMPO", "raw_path": "source-material/T13/raw/tempo/SKILL.md", "owner_agent_id": "agent-task1-t13-assets-a", "visibility": "team", "bound": false},
+    {"asset_id": "T13-SKILL-PYROSCOPE", "source_id": "T13-SRC-PYROSCOPE", "raw_path": "source-material/T13/raw/pyroscope/SKILL.md", "owner_agent_id": "agent-task1-t13-assets-a", "visibility": "team", "bound": false},
+    {"asset_id": "T13-SKILL-ALERTING-IRM", "source_id": "T13-SRC-ALERTING-IRM", "raw_path": "source-material/T13/raw/alerting-irm/SKILL.md", "owner_agent_id": "agent-task1-t13-assets-a", "visibility": "team", "bound": false},
+    {"asset_id": "T13-SKILL-ALLOY", "source_id": "T13-SRC-ALLOY", "raw_path": "source-material/T13/raw/alloy/SKILL.md", "owner_agent_id": "agent-task1-t13-assets-a", "visibility": "team", "bound": false},
+    {"asset_id": "T13-SKILL-PROFILECLI", "source_id": "T13-SRC-PROFILECLI", "raw_path": "source-material/T13/raw/profilecli-insights/SKILL.md", "owner_agent_id": "agent-task1-t13-assets-a", "visibility": "team", "bound": false},
+    {"asset_id": "T13-SKILL-PROMQL", "source_id": "T13-SRC-PROMQL", "raw_path": "source-material/T13/raw/promql/SKILL.md", "owner_agent_id": "agent-task1-t13-assets-b", "visibility": "team", "bound": false},
+    {"asset_id": "T13-SKILL-LOKI-LABEL", "source_id": "T13-SRC-LOKI-LABEL", "raw_path": "source-material/T13/raw/loki-label-analyzer/SKILL.md", "owner_agent_id": "agent-task1-t13-assets-b", "visibility": "team", "bound": false},
+    {"asset_id": "T13-SKILL-K6-INVESTIGATE", "source_id": "T13-SRC-K6-INVESTIGATE", "raw_path": "source-material/T13/raw/k6-cloud-investigate-test/SKILL.md", "owner_agent_id": "agent-task1-t13-assets-b", "visibility": "team", "bound": false},
+    {"asset_id": "T13-SKILL-K6-TREND", "source_id": "T13-SRC-K6-TREND", "raw_path": "source-material/T13/raw/k6-trend-analysis/SKILL.md", "owner_agent_id": "agent-task1-t13-assets-b", "visibility": "team", "bound": false},
+    {"asset_id": "T13-SKILL-K6-WEBSITE", "source_id": "T13-SRC-K6-WEBSITE", "raw_path": "source-material/T13/raw/k6-perf-test-website/SKILL.md", "owner_agent_id": "agent-task1-t13-assets-b", "visibility": "team", "bound": false}
+  ],
+  "skill_case_routes": [
+    {"case_key": "SKL-001", "project_id": "t13-asteria-edge", "target_asset_id": "T13-SKILL-PROMETHEUS", "sequence": ["skill_view"], "listing_state": "listed"},
+    {"case_key": "SKL-002", "project_id": "t13-harborlane-payments", "target_asset_id": "T13-SKILL-LOKI", "sequence": ["skill_view"], "listing_state": "listed"},
+    {"case_key": "SKL-003", "project_id": "t13-harborlane-payments", "target_asset_id": "T13-SKILL-TEMPO", "sequence": ["skill_search", "skill_view_by_id"], "listing_state": "searchable_not_listed"},
+    {"case_key": "SKL-004", "project_id": "t13-nimbus-batch", "target_asset_id": "T13-SKILL-PYROSCOPE", "sequence": ["skill_search", "skill_view_by_id"], "listing_state": "searchable_not_listed"},
+    {"case_key": "SKL-005", "project_id": "t13-sentrygrid-incident", "target_asset_id": "T13-SKILL-ALERTING-IRM", "sequence": ["skill_search", "skill_view_by_id"], "listing_state": "searchable_not_listed"},
+    {"case_key": "SKL-006", "project_id": "t13-asteria-edge", "target_asset_id": "T13-SKILL-DPM-FINDER", "sequence": ["skill_view", "skill_files_read"], "listing_state": "listed", "required_resource_path": "references/cli.md"}
+  ],
+  "knowledge_pool": [
+    {"asset_id": "T13-KNOW-ASTERIA-CG", "type": "code_graph", "name": "Asteria Edge 代码索引", "repo_match": "benchmark.invalid/t13/asteria-edge", "tool_name": "search", "target_case_key": "KNW-001"},
+    {"asset_id": "T13-KNOW-INCIDENT-WIKI", "type": "wiki", "name": "SentryGrid 事故响应手册", "summary": "事故分级、指挥角色、告警收敛和复盘约定", "tool_name": "search", "target_case_key": "KNW-002"},
+    {"asset_id": "T13-KNOW-NIMBUS-CG", "type": "code_graph", "name": "Nimbus Batch 代码索引", "repo_match": "benchmark.invalid/t13/nimbus-batch", "tool_name": "impact", "target_case_key": "KNW-003"}
+  ],
+  "knowledge_case_routes": [
+    {"case_key": "KNW-001", "project_id": "t13-asteria-edge", "target_asset_id": "T13-KNOW-ASTERIA-CG", "sequence": ["knowledge_tools_list", "knowledge_tools_call"]},
+    {"case_key": "KNW-002", "project_id": "t13-sentrygrid-incident", "target_asset_id": "T13-KNOW-INCIDENT-WIKI", "sequence": ["knowledge_tools_list", "knowledge_tools_call"]},
+    {"case_key": "KNW-003", "project_id": "t13-nimbus-batch", "target_asset_id": "T13-KNOW-NIMBUS-CG", "sequence": ["knowledge_tools_list", "knowledge_tools_call"]}
+  ],
+  "fixed_counts": {
+    "memory_positive": 6,
+    "skill_positive": 6,
+    "knowledge_positive": 3,
+    "paired_no_tool_negative": 15,
+    "natural_coding_negative": 10,
+    "total_cases": 40,
+    "pairs": 15,
+    "search_or_discovery_positive": 10,
+    "direct_positive": 5
+  },
+  "provider_visible_rules": [
+    "只允许 shared_context_messages、选中的 delta_message 和 query 进入 provider 输入",
+    "不得出现工具名、endpoint、knowledge_id、私有资产 id、Gold、信息缺口标签或评测术语",
+    "Positive 与 Negative 共用身份、workspace、snapshot、shared messages 和完全相同的 query",
+    "Negative 只能由追加的 delta_message 补足唯一信息缺口",
+    "答案不得在 L3 或 L2 summary 或 available skill description 中直接可见"
+  ],
+  "generation_rules": [
+    "Luna 只能写自己的唯一 batch 目录，不能写 staging 或 source-material",
+    "每个 pair batch 不超过 5 组；changed_message_index 必须等于 shared_context_messages.length",
+    "可以合成 Team、项目、会话、Memory 和内部 Knowledge，不得把合成事实声称为外部仓库事实",
+    "Skill 只能基于 source-freeze.json 与 raw 文件压缩描述、补 use_when/do_not_use_when、适配宿主工具名；核心技术步骤保持不变",
+    "不得决定最终 Gold；private_proposal 只是 Sol 审查候选"
+  ]
+}

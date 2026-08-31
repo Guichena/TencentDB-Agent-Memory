@@ -1,0 +1,426 @@
+{
+  "schema_version": "task1.formal_skill_assets.v1",
+  "team_id": "T03",
+  "skills": [
+    {
+      "assetId": "T03-SKILL-GRPO",
+      "ownerAgentId": "agent-task1-t03-general",
+      "sourceEvidenceIds": [
+        "source-t03-skill-grpo"
+      ],
+      "observedAt": "2026-08-29T20:40:00+08:00",
+      "name": "grpo",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Explains GRPO objectives, group-relative advantages, clipping, and stable training diagnostics.",
+      "useWhen": "The task needs the GRPO algorithmic procedure or its objective-level debugging sequence.",
+      "doNotUseWhen": "The issue is a generic tensor shape, environment setup, or an already localized constant edit.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "90ef5f123f4b6107d85c69d53d6878aec29e5c08950dc52b9bd6fd872187804c"
+        }
+      ],
+      "contentHash": "39be871e187687c1040ac5af90b8c3b8f7f01797d743b0bdba62e03eeabe248a"
+    },
+    {
+      "assetId": "T03-SKILL-NLP-REPRO-ENV",
+      "ownerAgentId": "agent-task1-t03-general",
+      "sourceEvidenceIds": [
+        "source-t03-skill-nlp-research-repo-package-installment"
+      ],
+      "observedAt": "2026-08-29T20:40:00+08:00",
+      "name": "nlp-research-repo-package-installment",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Reconstructs a version-pinned NLP research repository environment before reproducing results.",
+      "useWhen": "A paper repository must be installed and pinned reproducibly before code or metric reproduction.",
+      "doNotUseWhen": "The environment is already locked and the request is a localized model or loss edit.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "65c77284858ffc4544dd8d85dbae5771855e6df44c37812f2877490e3afa70b2"
+        }
+      ],
+      "contentHash": "6b0a12b5bd681c4cd1adcf4e160187fd54ce9dc6c95dcbb9c2c459992a3e9260"
+    },
+    {
+      "assetId": "T03-SKILL-JUPYTER",
+      "ownerAgentId": "agent-task1-t03-general",
+      "sourceEvidenceIds": [
+        "source-t03-skill-jupyter-notebook"
+      ],
+      "observedAt": "2026-08-29T20:40:00+08:00",
+      "name": "jupyter-notebook",
+      "version": "0.0.0+49f948faa925",
+      "description": "Creates or refactors reproducible experiment and tutorial notebooks using bundled patterns.",
+      "useWhen": "The deliverable is a new or structurally refactored Jupyter notebook for an experiment or tutorial.",
+      "doNotUseWhen": "A complete notebook is already present and only one identified cell needs a local edit.",
+      "repoCommit": "49f948faa9258a0c61caceaf225e179651397431",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "62f102e8554b25716dccef0ffab4572d4e3eaf05ccc76562d33a065bc9c521fb"
+        },
+        {
+          "path": "references/experiment-patterns.md",
+          "sha256": "1ff9c04281c01e8e2209bde9f1fd910b8e4b620dd1f1f040e2101f1d88513a91"
+        }
+      ],
+      "contentHash": "89345dae56b603244eb90d02d33b9faf0b5028bbbecc3c1d69fe834ed077ca35"
+    },
+    {
+      "assetId": "T03-SKILL-TESTING-PYTHON",
+      "ownerAgentId": "agent-task1-t03-general",
+      "sourceEvidenceIds": [
+        "source-t03-skill-testing-python"
+      ],
+      "observedAt": "2026-08-29T20:40:00+08:00",
+      "name": "testing-python",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Plans focused Python tests and diagnoses test failures without conflating them with environment setup.",
+      "useWhen": "A Python or ML repository needs a testing workflow or failure-isolation procedure.",
+      "doNotUseWhen": "The request is notebook authoring, GRPO diagnosis, or an already specified assertion change.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "2741f4b02a7021658993213ce85095871e30ebfc1eba2bbef9d56f0bb71dea32"
+        }
+      ],
+      "contentHash": "074bcb0e6c761c5d9b406505cc3ec7abf5c752aa579c4f754798a48849e26fbe"
+    },
+    {
+      "assetId": "T03-SKILL-CLI-CREATOR",
+      "ownerAgentId": "agent-task1-t03-general",
+      "sourceEvidenceIds": [
+        "source-t03-skill-cli-creator"
+      ],
+      "observedAt": "2026-08-29T20:40:00+08:00",
+      "name": "cli-creator",
+      "version": "0.0.0+49f948faa925",
+      "description": "Designs a new persistent CLI around an API or script with stable commands and output contracts.",
+      "useWhen": "The task is to create a new command-line product or durable command surface.",
+      "doNotUseWhen": "The task only uses DVC commands, adjusts one existing flag, or diagnoses a training run.",
+      "repoCommit": "49f948faa9258a0c61caceaf225e179651397431",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "24058eabf0aafce6def3fb937ac93cbe3fa341c653c658dc589edb77f73d6152"
+        }
+      ],
+      "contentHash": "7697279d74c04c9488806daed3e28d60a95eb5cd0e39ff4afd94f1a4bc87f3b5"
+    },
+    {
+      "assetId": "T03-SKILL-JAX",
+      "ownerAgentId": "agent-task1-t03-general",
+      "sourceEvidenceIds": [
+        "source-t03-skill-jax-skills"
+      ],
+      "observedAt": "2026-08-29T20:40:00+08:00",
+      "name": "jax-skills",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Applies JAX array, transformation, vectorization, and accelerator execution patterns.",
+      "useWhen": "The current ML implementation specifically uses JAX transformations or execution semantics.",
+      "doNotUseWhen": "The repository is PyTorch, MONAI, DVC, or the problem is framework-independent.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "private",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "2cff1fe8e449fe60ab8009980c4e44eaf0d6bc7ca14ae03fc1e5c7f7e82eb6d1"
+        }
+      ],
+      "contentHash": "5016fc00fee1a51d8edd8ea8b0df6fc05cf12787585eae6a56f76686a3079e64"
+    },
+    {
+      "assetId": "T03-SKILL-RL-POST-TRAINING",
+      "ownerAgentId": "agent-task1-t03-assets-a",
+      "sourceEvidenceIds": [
+        "source-t03-skill-rl-post-training"
+      ],
+      "observedAt": "2026-08-29T20:40:00+08:00",
+      "name": "rl-post-training",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Diagnoses reward, sampling, logging, and optimization failures in post-training runs.",
+      "useWhen": "A post-training run is not improving and the missing piece is a disciplined diagnosis workflow.",
+      "doNotUseWhen": "The exact bad value and replacement are already supplied or the issue is ordinary supervised training.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "3ff7177b02003bb50dc6a9783fec7a7835b3aeb184b0f161d649de498f65eb99"
+        }
+      ],
+      "contentHash": "68cf54971131a2bea299f5204b57adb4a31ca509dfb891486932c0c2ffbc00e6"
+    },
+    {
+      "assetId": "T03-SKILL-TRL",
+      "ownerAgentId": "agent-task1-t03-assets-b",
+      "sourceEvidenceIds": [
+        "source-t03-skill-trl"
+      ],
+      "observedAt": "2026-08-29T20:40:00+08:00",
+      "name": "trl",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Navigates TRL trainer configuration and implementation boundaries for post-training code.",
+      "useWhen": "The information gap concerns TRL-specific trainer APIs, configuration, or code paths.",
+      "doNotUseWhen": "The question is purely about the GRPO objective or general reward diagnostics.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "96e11df1379f5488435028ea9c073006917319d29540cd42baca0a97c6f2edcd"
+        }
+      ],
+      "contentHash": "e884c6078bc4727f2d4efc008f9b6d1bc65de792a1c7817abb987e67e6a23f81"
+    },
+    {
+      "assetId": "T03-SKILL-SETUP-ENV",
+      "ownerAgentId": "agent-task1-t03-assets-a",
+      "sourceEvidenceIds": [
+        "source-t03-skill-setup-env"
+      ],
+      "observedAt": "2026-08-29T20:40:00+08:00",
+      "name": "setup-env",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Builds a pinned Python environment and resolves interpreter and native dependency prerequisites.",
+      "useWhen": "A reproducible Python or ML environment is missing and must be established before the task can proceed.",
+      "doNotUseWhen": "The environment is already verified or the missing piece is a repository-specific algorithm.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "7b95dc92985ab21b131c5f1d14ec05cf27d145c5384e28bbf3022c7ea89f4202"
+        }
+      ],
+      "contentHash": "cb59aed75c3215f508a27afd61f6b1713be57d1817d1280302c79dc37a298db0"
+    },
+    {
+      "assetId": "T03-SKILL-PDF",
+      "ownerAgentId": "agent-task1-t03-assets-b",
+      "sourceEvidenceIds": [
+        "source-t03-skill-pdf"
+      ],
+      "observedAt": "2026-08-29T20:40:00+08:00",
+      "name": "pdf",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Extracts and inspects information from PDF documents such as research papers.",
+      "useWhen": "The task requires facts, formulas, or tables that remain only in a PDF artifact.",
+      "doNotUseWhen": "The paper facts are already quoted or the task is repository environment reproduction.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "38d8559d4899602f82f3560052132aa0c40cfca80203037729756bdb4fb8e0cb"
+        }
+      ],
+      "contentHash": "a838a51b7acac150bab87d3602039424c962fe0b392d49108c9339d7938240d9"
+    },
+    {
+      "assetId": "T03-SKILL-ANALYZE-CI",
+      "ownerAgentId": "agent-task1-t03-assets-a",
+      "sourceEvidenceIds": [
+        "source-t03-skill-analyze-ci"
+      ],
+      "observedAt": "2026-08-29T20:40:00+08:00",
+      "name": "analyze-ci",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Classifies CI failures from logs before selecting a build, environment, or test repair.",
+      "useWhen": "The failure root cause is still unknown and CI evidence must be classified first.",
+      "doNotUseWhen": "The exact failing assertion, dependency, or command is already identified.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "f59a07dcffe019f17cfa6ec211cbfb070e6292257be7119ed55ffa0b9bce7197"
+        }
+      ],
+      "contentHash": "f00adbd4b4a9c3dafcc229ca105f97c7f498dd291c6cdb361d86be0aa100a479"
+    },
+    {
+      "assetId": "T03-SKILL-UV",
+      "ownerAgentId": "agent-task1-t03-assets-b",
+      "sourceEvidenceIds": [
+        "source-t03-skill-uv-package-manager"
+      ],
+      "observedAt": "2026-08-29T20:40:00+08:00",
+      "name": "uv-package-manager",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Uses uv to resolve and reproduce Python package environments and lockfiles.",
+      "useWhen": "The project explicitly uses uv and dependency or lockfile reproduction is the missing procedure.",
+      "doNotUseWhen": "The project uses another resolver or the environment is already locked and passing.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "85c71e75e63966eb06a72dc0a7ed2046c45c38bb5574d748603917c4a3801878"
+        }
+      ],
+      "contentHash": "683d6b8173b71f24d3b29d2e5d9e02c9d6084a89979759a0631e86b7d861ebf1"
+    },
+    {
+      "assetId": "T03-SKILL-PYTHON-PARALLEL",
+      "ownerAgentId": "agent-task1-t03-assets-a",
+      "sourceEvidenceIds": [
+        "source-t03-skill-python-parallelization"
+      ],
+      "observedAt": "2026-08-29T20:40:00+08:00",
+      "name": "python-parallelization",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Selects and implements Python parallel execution patterns for CPU-bound data work.",
+      "useWhen": "A CPU-bound Python workload needs a concrete parallelization design.",
+      "doNotUseWhen": "The issue is GPU training, DVC orchestration, or simple test concurrency.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "cade40ed1ab5ae28c52ef8ebeaaf0d72b0323d73aa1886f54f5a995685a48a79"
+        }
+      ],
+      "contentHash": "c6bfb54c04a4afc5eb39e132f3bda7f68eae392bdb01188c6f9107095491a5e9"
+    },
+    {
+      "assetId": "T03-SKILL-MEMORY-OPT",
+      "ownerAgentId": "agent-task1-t03-assets-b",
+      "sourceEvidenceIds": [
+        "source-t03-skill-memory-optimization"
+      ],
+      "observedAt": "2026-08-29T20:40:00+08:00",
+      "name": "memory-optimization",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Reduces memory pressure in Python data workloads through bounded representations and processing.",
+      "useWhen": "Memory consumption, not training semantics or test design, is the dominant bottleneck.",
+      "doNotUseWhen": "The request concerns GRPO reward behavior, notebook structure, or CLI usage.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "cc56c4b8119265a50ae48506c20f6e495bcb7972dfb7e78adc5405b840fb2ba8"
+        }
+      ],
+      "contentHash": "f40de5df9e93f7add9135ce853fae5e4d405264f5a67387ec8082dc94d57219b"
+    },
+    {
+      "assetId": "T03-SKILL-WORKLOAD-BALANCING",
+      "ownerAgentId": "agent-task1-t03-assets-a",
+      "sourceEvidenceIds": [
+        "source-t03-skill-workload-balancing"
+      ],
+      "observedAt": "2026-08-29T20:40:00+08:00",
+      "name": "workload-balancing",
+      "version": "0.0.0+b63b7b285022",
+      "description": "Balances uneven work units across parallel workers and diagnoses stragglers.",
+      "useWhen": "Parallel workers are underutilized because work distribution is skewed.",
+      "doNotUseWhen": "The task is single-process training diagnosis or deterministic test authoring.",
+      "repoCommit": "b63b7b2850226b6aa4fb5929a8c1ac7bc4d9a6af",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "28260b9d369855ee36fab41bc2c084bb08e0473787888a3d20ca67d25d62ad5c"
+        }
+      ],
+      "contentHash": "f8adcbab72715bf9355da34dee5724abe3e3c87162df444d41c8b210145a5c5e"
+    },
+    {
+      "assetId": "T03-SKILL-PYTEST-COVERAGE",
+      "ownerAgentId": "agent-task1-t03-assets-b",
+      "sourceEvidenceIds": [
+        "source-t03-skill-pytest-coverage"
+      ],
+      "observedAt": "2026-08-29T20:40:00+08:00",
+      "name": "pytest-coverage",
+      "version": "0.0.0+f11a4e441c5f",
+      "description": "Improves pytest coverage for a known uncovered branch with focused regression tests.",
+      "useWhen": "The explicit goal is to cover identified Python branches with pytest tests.",
+      "doNotUseWhen": "The task is to fix a failing test, validate a notebook, or diagnose model training.",
+      "repoCommit": "f11a4e441c5ff061b4f8ae37952be8c602e4034e",
+      "visibility": "team",
+      "provenanceMode": "imported_open_source",
+      "supportingSessionIds": [],
+      "codeEvidenceLocators": [],
+      "testEvidenceLocators": [],
+      "manifest": [
+        {
+          "path": "SKILL.md",
+          "sha256": "3778add8809c5aac585ab764090f46e7cfdb009ae3fc9fb308710538627970f9"
+        }
+      ],
+      "contentHash": "89967a1acd3bae29f3b7a64f2998f8dd3731c258da7bde34b6a8b671a03f5beb"
+    }
+  ]
+}

@@ -1,0 +1,219 @@
+{
+  "schema_version": "task1.skill_source_lock.v1",
+  "team_id": "T17",
+  "frozen_at": "2026-08-31T12:00:00+08:00",
+  "repositories": {
+    "agents": {
+      "repository": "https://github.com/wshobson/agents",
+      "slug": "wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "committedAt": "2026-08-26T12:14:08Z",
+      "treeSha": "126e6a70b327db3e744797ba952f06bdf67aa5c5",
+      "license": "MIT",
+      "licensePath": "LICENSE",
+      "licenseSha256": "f89abb55d9f073f38f1703e4518f0613c788c6174be7f13b8dfe48a1c076c746",
+      "licenseCopiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/licenses/agents-LICENSE"
+    },
+    "claudeSkills": {
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "slug": "jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "committedAt": "2026-08-07T20:19:14Z",
+      "treeSha": "2b301c97991bcf5f838cce82637332bb28ae4b83",
+      "license": "MIT",
+      "licensePath": "LICENSE",
+      "licenseSha256": "06dcddbb6908a0c6dd4a9e8ec822eea41d5a460a53089fecccc8a68049e99241",
+      "licenseCopiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/licenses/claudeSkills-LICENSE"
+    }
+  },
+  "skills": [
+    {
+      "assetId": "T17-SKL-01",
+      "name": "screen-reader-testing",
+      "listing": "listed",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/accessibility-compliance/skills/screen-reader-testing/SKILL.md",
+      "rawSha256": "591c7ff80f40ed866071920f723c1d22a6ceb096c0794aeec1cf9562865119d8",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/accessibility-compliance/skills/screen-reader-testing/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-02",
+      "name": "wcag-audit-patterns",
+      "listing": "listed",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/accessibility-compliance/skills/wcag-audit-patterns/SKILL.md",
+      "rawSha256": "db263a3405deb95a63175f33da4a9d82d8595599fbee4a81979059b35a7cec40",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/accessibility-compliance/skills/wcag-audit-patterns/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-03",
+      "name": "react-modernization",
+      "listing": "listed",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/framework-migration/skills/react-modernization/SKILL.md",
+      "rawSha256": "7787e2435f53744559f1c48a0769f17ffba48cb1e2ca4fe207cbb81b800055f1",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/framework-migration/skills/react-modernization/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-04",
+      "name": "nextjs-app-router-patterns",
+      "listing": "listed",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/frontend-mobile-development/skills/nextjs-app-router-patterns/SKILL.md",
+      "rawSha256": "8de4ab196350d6bb2d191260e13d1645822b7ec1bae205a2018a24cdc3f9b26c",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/frontend-mobile-development/skills/nextjs-app-router-patterns/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-05",
+      "name": "react-state-management",
+      "listing": "listed",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/frontend-mobile-development/skills/react-state-management/SKILL.md",
+      "rawSha256": "71abf349b19fe5cef64f4e4f2dd4a89011a5e947d8ce278d53a489292f508032",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/frontend-mobile-development/skills/react-state-management/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-06",
+      "name": "tailwind-design-system",
+      "listing": "listed",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/frontend-mobile-development/skills/tailwind-design-system/SKILL.md",
+      "rawSha256": "b6577edb7b7f71a6954f68b80c7eea1748ccdf31862759f864bce558fb2bcf83",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/frontend-mobile-development/skills/tailwind-design-system/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-07",
+      "name": "design-system-patterns",
+      "listing": "searchable",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/ui-design/skills/design-system-patterns/SKILL.md",
+      "rawSha256": "618355f0e6c6ba8ca5d231035c9da18302fe6894aedce565743e9181b6c928ee",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/ui-design/skills/design-system-patterns/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-08",
+      "name": "responsive-design",
+      "listing": "searchable",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/ui-design/skills/responsive-design/SKILL.md",
+      "rawSha256": "c8bd56f8fc0f122c4ff392b02617f0e6bb4a353b2d0189235c6ee77cdcfe8690",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/ui-design/skills/responsive-design/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-09",
+      "name": "web-component-design",
+      "listing": "searchable",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/ui-design/skills/web-component-design/SKILL.md",
+      "rawSha256": "a7978f5e9e3fa7129cf3eb8d607cedece4e207011321893d9a3c5dd92cf32603",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/ui-design/skills/web-component-design/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-10",
+      "name": "accessibility-compliance",
+      "listing": "searchable",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/ui-design/skills/accessibility-compliance/SKILL.md",
+      "rawSha256": "3ad0fbcb0a69b69e70652641a8eeb59f168cceb4bc9d9b9c8b47154072b9e1a2",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/ui-design/skills/accessibility-compliance/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-11",
+      "name": "e2e-testing-patterns",
+      "listing": "searchable",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/developer-essentials/skills/e2e-testing-patterns/SKILL.md",
+      "rawSha256": "1653690dde9eeca6dcb66086277791c2a3ccc2b37eaab6ec9b627a10adfb94be",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/developer-essentials/skills/e2e-testing-patterns/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-12",
+      "name": "javascript-testing-patterns",
+      "listing": "searchable",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/javascript-typescript/skills/javascript-testing-patterns/SKILL.md",
+      "rawSha256": "d99e1d7344ca7b87395c7e49f6c635ea67fe16d57f4698d72c78d405020f5782",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/javascript-typescript/skills/javascript-testing-patterns/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-13",
+      "name": "react-expert",
+      "listing": "searchable",
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "license": "MIT",
+      "path": "skills/react-expert/SKILL.md",
+      "rawSha256": "542b344c6b4c3b801255c77fe93c7685ff37a4a1c2d04ecaaa81f3f5aa15dc0a",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/claudeSkills/skills/react-expert/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-14",
+      "name": "nextjs-developer",
+      "listing": "searchable",
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "license": "MIT",
+      "path": "skills/nextjs-developer/SKILL.md",
+      "rawSha256": "a8631cf7789732d8f9924ec763d5f9b99ddb35b793929a2d067a72088c96de70",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/claudeSkills/skills/nextjs-developer/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-15",
+      "name": "playwright-expert",
+      "listing": "searchable",
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "license": "MIT",
+      "path": "skills/playwright-expert/SKILL.md",
+      "rawSha256": "d6c5c04e570659a902e7c212067116131743e588af16406672fab58f0f62d8e1",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/claudeSkills/skills/playwright-expert/SKILL.md"
+    },
+    {
+      "assetId": "T17-SKL-16",
+      "name": "typescript-pro",
+      "listing": "searchable",
+      "repository": "https://github.com/jeffallan/claude-skills",
+      "revision": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "license": "MIT",
+      "path": "skills/typescript-pro/SKILL.md",
+      "rawSha256": "5f5bc47c167f0485c01a3b5a14b9999141b1e7c54e7775aecf73ad16f114c066",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/claudeSkills/skills/typescript-pro/SKILL.md"
+    }
+  ],
+  "resources": [
+    {
+      "assetId": "T17-SKL-02",
+      "repository": "https://github.com/wshobson/agents",
+      "revision": "38e19c20d2b154510b0e624a2e3e186b19b5c527",
+      "license": "MIT",
+      "path": "plugins/accessibility-compliance/skills/wcag-audit-patterns/references/details.md",
+      "manifestPath": "references/details.md",
+      "rawSha256": "0a61237ccb4e1b2cba4291f83e0747ad64ac9ba81b37427ee0e648537c9c78d6",
+      "copiedTo": "MemoryProxy/eval/tool-prompt-bench/formal-dataset/source-material/T17/raw/agents/plugins/accessibility-compliance/skills/wcag-audit-patterns/references/details.md"
+    }
+  ]
+}
