@@ -108,7 +108,7 @@
     "memory_followup_audit_canonical_sha256": "fa223ad798042076155b4b4b7d651b0ce230c8e31a275550d182c0ce53a8b8b3"
   },
   "formal_v2_artifacts": {
-    "dataset_content_commit": "0bae5053b1910a66b026dcb1b63a93c32abfe502",
+    "dataset_content_commit": "cb64facdbdc5d46e6d0a0a2810fb891b956b131d",
     "contract": "registry/contracts/formal-v2.json",
     "contract_file_sha256": "0d398c9e4c46b60f86f245265769062b9ede2ffdf53a80088fe0421fdd797d9d",
     "contract_canonical_sha256": "eb04b26cfe03810030f6b7d0a06f82dfedf7c8011ce11bb181db8af0b94b58b7",
