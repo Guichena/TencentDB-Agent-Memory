@@ -54,3 +54,14 @@ Dev 与 Hidden 还必须分别带 `--split dev`、`--split hidden_test` 运行�
 ## 版本边界
 
 formal-v2 的 provider、private Gold 与 snapshot 只服务 formal-v2 运行。现有 Measurement-v2 overlay 仍绑定 formal-v1.1 的 640 条数据；在生成 800 条对应 overlay 并重新通过 M0/M1/M2 之前，`formal-v2` 不是正式指标可比输入，也不能沿用 formal-v1.1 的测量 hash。
+
+## formal-v2.1 来源封装修正
+
+`formal-v2.1` 不改变 20-Team 数据合同、800 条 case、300 组 pair、provider、private Gold 或 snapshot；它只修正来源材料在新 checkout 中的可复现性和门禁盲点：
+
+- 显式纳管 T19 原先被 `.gitignore` 排除的 `.claude/skills/access-control-policy-design/SKILL.md`，其 SHA-256 为 `e6ab349cc89f628a71f1b729d83406c96f04a5cad7de8ab04e41f77b2460fe81`。
+- 用 `.gitattributes` 固定 T17-T20 来源文件的字节策略；T18 的上游/适配原文按 source-lock 保存原始字节，其余文本固定为 LF。
+- 严格 validator 现在会解析每个 team fragment 的 `externalImports`，读取仓库内实际文件并核对 SHA-256；文件缺失、越界或字节不符都会失败。
+- T17-T20 Team Gate、Dev/Hidden/Full 严格校验、两次独立编译和 D0/基准测试均须在干净提交上重新通过。
+
+原 `task1-data-formal-v2` 标签保持不动；修正冻结点使用 `task1-data-formal-v2.1`，审计证据记录在 `formal-dataset/reports/DS09-FORMAL-V2.1-FREEZE.json`。

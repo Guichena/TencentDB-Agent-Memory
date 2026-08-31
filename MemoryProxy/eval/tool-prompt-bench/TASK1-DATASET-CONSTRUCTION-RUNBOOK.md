@@ -1181,6 +1181,7 @@ git merge-base --is-ancestor 960021e472456515a89d3c2c4f2962fbf6cc51a1 HEAD
 - Knowledge 资源不 ready 或工具清单会漂移。
 - 开源 Skill 触发描述带强制调用偏置，无法通过中性适配消除。
 - 实际导入的外部内容缺少许可证、revision 或必要 hash。
+- source-lock 指向的仓库内文件被忽略、缺失，或实际字节 SHA-256 与登记值不一致。
 - Dev 和 Hidden 出现 query、上下文、信息缺口或 pair 模板重叠。
 - 快照恢复后资产 hash 漂移。
 
@@ -1192,13 +1193,13 @@ git merge-base --is-ancestor 960021e472456515a89d3c2c4f2962fbf6cc51a1 HEAD
 
 只有以下条件全部满足，数据集构造才算完成：
 
-- 一个 Space、十六个 Team 的 schema 和 registry 已冻结。
-- Dev 240 条、Hidden 400 条均通过 validator。
+- 一个 Space、二十个 Team 的 schema 和 registry 已冻结。
+- Dev 320 条、Hidden 480 条均通过 validator。
 - 每个 Positive 的首路由和最小链路 Gold 均已冻结。
-- 至少一百六十条 Positive 从真实搜索或发现入口开始，八十条保留直接入口。
+- 至少二百条 Positive 从真实搜索或发现入口开始，一百条保留直接入口。
 - 所有 Skill 搜索 Positive 的目标都不在实际注入 listing 中，并能从 same-Team 池搜到。
-- 240 组配对负例通过单变量审查。
-- 160 条自然 coding Negative 在完整干扰资产池下可运行。
+- 300 组配对负例通过单变量审查。
+- 200 条自然 coding Negative 在完整干扰资产池下可运行。
 - Memory、Skill 和最小 Knowledge 资产都能通过真实接口恢复和读取。
 - 连续两次恢复得到相同 snapshot hash。
 - Provider input 与私有 Gold 完全分离，泄漏为 0。

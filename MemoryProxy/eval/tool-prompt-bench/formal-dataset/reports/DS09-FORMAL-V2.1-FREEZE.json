@@ -1,0 +1,74 @@
+{
+  "schema_version": "task1.formal_v2_1_freeze_report.v1",
+  "status": "passed",
+  "dataset_revision": "formal-v2.1",
+  "dataset_content_commit": "6db143f770f78fd98925cb1395cba1909d971fcb",
+  "freeze_tag": "task1-data-formal-v2.1",
+  "base_revision": "formal-v2",
+  "scope": "source packaging, checkout byte reproducibility, and fail-closed local source hash validation; dataset semantics unchanged",
+  "counts": {
+    "teams": 20,
+    "cases": 800,
+    "dev_cases": 320,
+    "hidden_cases": 480,
+    "pairs": 300,
+    "memory_positive": 120,
+    "skill_positive": 120,
+    "knowledge_positive": 60,
+    "paired_negative": 300,
+    "natural_coding_negative": 200
+  },
+  "source_packaging": {
+    "T17_gate": "passed",
+    "T18_gate": "passed",
+    "T19_gate": "passed",
+    "T20_gate": "passed",
+    "raw_hash_mismatches": 0,
+    "adapted_hash_mismatches": 0,
+    "missing_local_sources": 0,
+    "t19_previously_ignored_source_sha256": "e6ab349cc89f628a71f1b729d83406c96f04a5cad7de8ab04e41f77b2460fe81",
+    "validator_mode": "read localPath/rawPath/copiedTo bytes and compare SHA-256; reject missing, escaping, or mismatched files"
+  },
+  "validation": {
+    "dev": "passed",
+    "hidden": "passed",
+    "full": "passed",
+    "schema_errors": 0,
+    "freeze_errors": 0,
+    "pair_errors": 0,
+    "provider_leakage_errors": 0,
+    "source_hash_errors": 0,
+    "duplicate_errors_against_formal_v1_1": 0
+  },
+  "deterministic_compile": {
+    "status": "passed",
+    "independent_compiles": 2,
+    "byte_identical_artifacts": 6
+  },
+  "hashes": {
+    "contract_file_sha256": "0d398c9e4c46b60f86f245265769062b9ede2ffdf53a80088fe0421fdd797d9d",
+    "contract_canonical_sha256": "eb04b26cfe03810030f6b7d0a06f82dfedf7c8011ce11bb181db8af0b94b58b7",
+    "provider_dev_file_sha256": "b062d284cb849edd6504340e81f4f34e1dc37b126dca53edab6062749b1c2ed4",
+    "provider_dev_canonical_sha256": "2b4d0645d8111699f7a6a06d4fb387b767122037b2c813583fe393068dbcde10",
+    "provider_hidden_file_sha256": "0a38a9433761adaf286b00a62b2bbda6526c41ab83dcad844b0f7b83929118fc",
+    "provider_hidden_canonical_sha256": "34e01c72495d4617ff8951d2c4b0b2a574b9dabc9b621fcd5385bb27c4699566",
+    "private_gold_dev_file_sha256": "bbe6fa20aa46a00d484e5d22e5b9c2a8b4d8afb42fb4205de2e459541d25cf1c",
+    "private_gold_dev_canonical_sha256": "cca93a58c796ee38ddfeb9d4512ce32f493c7b8e0ce8e47b498f9c8802cae1fa",
+    "private_gold_hidden_file_sha256": "859ba15c0b50f96d34844f415e411e444283a9cf83948e12bf0636b7204a9723",
+    "private_gold_hidden_canonical_sha256": "39b444c7de45975b27948d0320108f9bdea4c998b39dd99ff99f319b1ed28940",
+    "snapshot_dev_file_sha256": "3ae4b58c1ece2e871a9e4eec4ffafc18807a98b15ac080fd2c6b5a360faa9fb0",
+    "snapshot_dev_canonical_sha256": "addd9c6311d4bd44478ea9438f50816d59eb2c8adfb9c4d9f53fd3fc152e0b7e",
+    "snapshot_hidden_file_sha256": "d2014bc57f5235fad86c1a3155604526c7b4a21b554ee144335c7faa38fc73bc",
+    "snapshot_hidden_canonical_sha256": "93d18538660330603f082a396791712e9b0cdba6647ea819fa3ca6e456085fbb"
+  },
+  "test_gates": {
+    "tool_prompt_tests": "30/30 passed",
+    "d0_vitest": "44/44 passed",
+    "d0_python_unittest": "19/19 passed"
+  },
+  "unchanged_contract": "formal-v2 provider, private Gold, snapshot, case counts, pair counts, and all recorded artifact hashes are unchanged",
+  "known_limitations": [
+    "Measurement-v2 private overlays remain bound to formal-v1.1 (640 cases).",
+    "No model campaign or real-service R01-R04 gate was run for formal-v2.1; it is not yet formal-metric eligible."
+  ]
+}
