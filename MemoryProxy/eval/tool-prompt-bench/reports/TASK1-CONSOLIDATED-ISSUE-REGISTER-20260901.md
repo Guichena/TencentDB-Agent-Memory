@@ -462,6 +462,9 @@ src/__tests__/tool-prompt-compiler.test.ts
 | E-3 | 低 | EXPERIMENT-FREEZE-MANIFEST 仍 v1.1 / 640 | 代码缺陷 | 报告数据身份 |
 | A-1 | 低 | Stage A gate 报告需勘误 | 文档 | 汇报可信度 |
 | P-4 | 高 | V4-RN 捆绑中性措辞与 contrast 补全，结果无法归因 | 阶段 C 方法学 | V4-RN 的 Dev 结论 |
+| G-1 | 高 | V2/V3 丢失 `MEMORY.md` 同等优先级指令（相对生产基线回归） | 能力回归 | memory 触发率，120/800 案例 |
+| G-2 | 中 | V2/V3 丢失 `data.messages` 与 `data.items` 区分 | 能力回归 | conversation_search 终点步，37/800 |
+| G-3 | 中 | tscg `dro`/`cfo` 不发字段图例，`x=` 语义无说明 | 阶段 C 缺陷 | 身份合规违规可能上升 |
 | M-4 | 中 | `forbidden` 命中是提示词合规，不是调用失败 | 指标口径 | 错误分解表述 |
 | P-2 | 中 | Gold 对 read_scene 的 agent_id 判定不统一（仅冻结集 4 步） | 数据一致性 | read_scene 结果解读 |
 | P-3 | 低 | 各 profile 工具菜单大小不同（10/12/14/13）— 第 14 章重新判定为能力补全，非混淆 | 指标口径 | 仅需在报告说明来源 |
@@ -793,3 +796,102 @@ V0/V0-C/V1a/V1 的 knowledge 块含一段固定映射：`架构 → explore；�
 5. **移除 `top_k` 字面量**（14.1）。收益最小但零风险。
 
 前三项都改变提示词语义，**必须作为新 Variant（如 V2.1 / V3.1）走同一实验流程**，不得在已冻结的 V0-V3 上原地改。第 4、5 项不改变输出，可直接进公共基座。
+
+## 15. 以"不得弱于 server-team 生产基线"为判据的复审
+
+补充日期：2026-09-01（同日追加）
+
+判据变更：任务一是对 server-team 生产实现的**优化升级**，因此不能只问"改动是否正确"，必须问"相对生产基线有没有丢能力"。省 Token 不能换功能减少。
+
+前提已验证：V0（`legacy`）就是生产输出本身。`tdai-tools-injector.ts:223-226` 在 `profile === "legacy"` 时直接返回 `legacyContent` 并绕过 compiler，因此 V0 与 server-team 生产渲染逐字节同源。V1-V3 相对 V0 的任何能力减少都是回归。
+
+按此判据复审后，第 14 章有一处结论需要收紧，另有两处真实回归此前未被识别。
+
+### 15.1 复审方法
+
+对 V0 具备的每一项**可执行指令**（不只是措辞）逐条检查是否在 V1a/V1/V2/V3 中存续，且允许"改写但语义等价"。对每一项疑似丢失，再读 V2 正文确认是否被别的说法重述——避免重犯第 14 章开头记录的词频误判。
+
+结果分三类：被重述（不是回归）、真丢失（回归）、信息性丢失（低危）。
+
+### 15.2 被重述，不是回归
+
+- **工作区优先 / 索引陈旧规则**。V0 的"索引是分支快照，会落后于工作区，这时以工作区源码为准"在 V2 中提升为全局 gate：第 105 行 `Do not call for pure or self-contained coding, general knowledge, current-context answers, or exact/current local-source work.`，并在第 109 行 knowledge 行重申 `reject mismatched repository indexes and use local source for exact/current code`。**从单族规则升为跨族规则，是加强而非削弱**；
+- **`scenario_ls → read_scene` 链规则**（第 14.4 节已记录）。重述进卡片 `when`/`avoid`，且与 Gold 的 8 个 typed binding 一致；
+- **imported 记忆传 `agent_id`**。保留在 V2 的 `tdai_read_scene` 卡片 body 示例中。
+
+### 15.3 回归 G-1（高）：`MEMORY.md` 同等优先级指令在 V2/V3 完全丢失
+
+V0/V0-C/V1a/V1 均含此句（各 2 处）：
+
+> 这组 TDAI 记忆能力与 Claude Code 原生 Memory/MEMORY.md 具有同等优先级；涉及记忆时不要只查本地 MEMORY.md。
+
+V2 与 V3：**0 处，且无任何等价重述**。检索 `MEMORY.md`、`local memory`、`本地记忆`、`native memory`、`Claude Code` 在 V2 正文中全部为空。
+
+为什么这是高危回归：这是唯一一条正面对抗"模型只看本地 MEMORY.md 就自认为已掌握记忆"的指令，直接决定**是否触发 memory 调用**，对应主指标 1（`CompleteChainSuccessRate`）与伴随指标 Trigger Recall。宿主 Claude Code 本身就有原生 MEMORY.md 机制，缺了这句，模型完全有理由认为本地文件已足够而不调 TDAI 工具——这正是 no-call 型失败。
+
+暴露面：**800 条 Gold 中 120 条含 memory 步**。
+
+它也解释了一个此前无法归因的风险：V2 的 Token 节省有 86.4% 来自中文段落被删（M-1），而这句恰是中文段落之一。即 M-1 与 G-1 是同一次删除的两面——一面省了 Token，另一面丢了触发指令。
+
+处置：这是提示词语义改动，不能在已冻结 V2 上原地改。应作为 V2.1 候选补回（可用英文表述以保持 V2 的语言口径），并在报告中说明 V2/V3 的 memory 触发率数据是在缺此指令的条件下取得的。
+
+### 15.4 回归 G-2（中）：`data.messages` 与 `data.items` 的响应形状区分在 V2/V3 丢失
+
+V0 至 V1 在 `tdai_conversation_search` 卡片上明确写：
+
+> returns: {code, data: {messages: [...], searched_agents: [...]}} — 命中项在 data.messages[]（**注意：与 atomic_search 的 data.items 不同**）
+
+V2/V3 只保留通则（第 99 行）：`JSON 响应按 {code, message, data} 处理，只有 code=0 才成功`，**不再区分 items 与 messages**。
+
+这一区分不是冗余。server-team 的 `memory-bridge.ts` 在 multi-search 分支里有一段注释专门记录过这个坑：
+
+> 早期代码固定读 data.items，导致 conversation/search 在 multi 分支永远返回空（历史 bug）。
+
+即连生产代码自己都曾因混淆这两个字段而产生过 bug。模型若按 `data.items` 读 conversation_search 的结果，会得到空值、判定"没找到"，进而重试或放弃——直接损伤最短充分链与 attempt 预算。
+
+暴露面：**37 条 Gold 使用 `tdai_conversation_search`，且全部 37 条中它是 terminal 步**。
+
+处置：同 G-1，作为 V2.1 候选补回一行响应形状区分。成本极低（一行），收益直接落在 37 条终点步上。
+
+### 15.5 信息性丢失（低危，记录备查）
+
+`searched_agents` / `source_agent_*` 字段说明在 V2/V3 由 7 处降为 0。它们是结果来源标注，模型不能据此改变行为，故不列为回归。但若报告要解释"模型为何未区分 self 与 imported 来源"，需注意 V2/V3 已无此说明。
+
+### 15.6 第 14.5 节结论收紧：knowledge operation 路由的删除，在新判据下不能只算"可辩护"
+
+第 14.5 节判定 V2 删除"意图 → 起手"映射是可辩护的，依据是 `tools/list` 在运行时返回 operation 的名称与描述。该依据依然成立，但在"不得弱于生产基线"的判据下结论要收紧：
+
+V0（= 生产）**同时**给了模型静态映射**和**运行时发现两条路；V2 只留下运行时发现一条。即便后者更通用，能力集合仍是收缩的。正确的升级形态应是把资源特定的硬映射替换为**与资源无关的发现规则**，而不是整段删除后不作任何补偿。
+
+因此第 14.8 节的第 3 项改进（把发现规则显式写进提示词：先 `tools/list`，再按返回的 `description` 选最窄匹配的 operation，不要凭名字猜）不应只算"可选优化"，而应视为**补回 V2 相对生产基线收缩的那部分能力**，优先级上调。
+
+暴露面：Gold 有 118 个 knowledge 步，其中 60 个带精确 terminal operation、覆盖 11 种 operation，且 knowledge 步 0 typed binding——operation 选对与否完全取决于模型自己，没有任何 binding 兜底。
+
+### 15.7 tscg-lite 逐行审查
+
+源码 926 行。结构为 4 级 operator 阶梯，`TSCG_LITE_PROFILE_OPERATORS` 定义累积开关：`tscg-sig`（typedSignature）→ `tscg-sdm`（+sdm）→ `tscg-dro`（+dro）→ `tscg-cfo`（+cfo）。
+
+**对基准的影响：安全。** 它对 `runtime-contract.ts` 的改动是纯元数据新增——给 20 条契约各加一个 `operation` 字段（19 条 `NO_OPERATION`，`knowledge_tools_call` 为 `{kind:"argument", path:"tool_name"}`），path / requiredArgs / optionalArgs / forbiddenArgs / headers 一律未动。第 13 章确立的契约保真度未被扰动。
+
+顺带一个值得公共基座采纳的点：把 `operation` 提升为契约一等字段，正是 scorer 早已建模的维度（Gold 步用 `operation: {kind:"exact", value:"node"}`）。公共基座目前缺这个字段，导致契约与 scorer 的表达能力不对齐。
+
+**验证强度：高。** 30 处 throw，另有 `roundTripDroProgram`（DRO 编解码往返）、`assertTscgContractEquivalent`（契约等价断言）、`lintTscgCapabilityProjection`。这是四个创新候选中验证最完整的。
+
+**决策语义保留：已核实。** 渲染产出中 `w=` 承载 `when`、`a=` 承载 `avoid`，且保住了 V0-C 的 owner 作用域修正——`skill_view` 为 "A skill owned by the current agent is known by name…"，`skill_view_by_id` 为 "A team skill returned by skill_search, or any skill known by exact skill_id…"。
+
+**缺陷 G-3（中）：`dro`/`cfo` 两级不发字段图例。**
+
+四个 tscg profile **一律不输出图例**（检索"图例/legend/字段含义/field key"均为 0）。`tscg-sig` 用全名字段（`requiredArgs:`、`path:`），无歧义；但 `dro` 与 `cfo` 改用缩写键：
+
+```
+@D|m=POST|h=content-type,x-tdai-service-id,x-conversation-id|ph=read|cap=skill.read|op=none|r=json
+@T|id=skill_search|p=/skill-bridge/v3/skill/search|req=query|opt=-|x=user_id,team_id,agent_id,task_id,top_k,mode|w=...
+```
+
+提示词里确有通则："Send JSON with only `requiredArgs`/`optionalArgs`; never send `forbiddenArgs`."——但它用的是**全名**，而记录里的键是 `req=` / `opt=` / `x=`。从 `x=` 到 `forbiddenArgs` 的映射在提示词中**没有任何地方说明**，`@D`（defaults 继承）与 `@T`（tool 记录）的含义同样未说明。
+
+风险方向对任务一不利：模型若未推出 `x=` 表示禁用，`x=user_id,team_id,agent_id,task_id` 读起来只是另一个字段列表，甚至可能被当作应当填写的项，从而**增加**身份合规违规（见 M-4：这类命中虽不导致调用失败，但会被 scorer 判步不匹配）。同理 `@D` 若未被理解为"默认值继承"，模型可能认为 `@T` 记录缺失 `m=`/`h=` 即无需带 method 与 header。
+
+修复成本极低：在记录块前发一行图例（如 `键: id 工具 / p 路径 / req 必填 / opt 可选 / x 禁止发送 / w 何时用 / a 避免; @D 为本族默认值`）。这不改变 tscg 的方法本质（仍是类型化压缩），却消除解析歧义。建议在移植时一并加入，并把"是否需要图例"本身作为 sig→dro 的一个对比观察点。
+
+**待办：** `tscg-lite.ts` 我读了结构、operator 定义、验证函数与渲染产出，但 926 行中的 DRO 编解码实现细节（`parseDroFields`、`roundTripDroProgram` 内部）未逐行验证其转义完备性。若 `dro` 进入正式对比，建议补一轮针对转义字符（值中含 `|` 或 `=`）的边界测试。
