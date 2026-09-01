@@ -384,19 +384,19 @@ describe("TDAI-ToolPromptBench dataset", () => {
     )).toThrow(/origin/i);
   });
 
-  it("builds a fresh ephemeral Codex invocation without inherited task state", () => {
+  it("builds a fresh isolated Codex invocation with automatic approval review", () => {
     const invocation = buildCodexInvocation({
       workspaceDir: "D:/eval/run-001/workspace",
       model: "gpt-test",
-      configArgs: ["-c", 'approval_policy="never"'],
+      configArgs: ["-c", 'model_reasoning_effort="high"'],
     });
     expect(invocation.args).toEqual([
       "exec",
-      "--ephemeral",
+      "--approve-for-me",
       "--ignore-rules",
       "--ignore-user-config",
       "-c",
-      'approval_policy="never"',
+      'model_reasoning_effort="high"',
       "--json",
       "--skip-git-repo-check",
       "--sandbox",
@@ -459,8 +459,7 @@ describe("TDAI-ToolPromptBench dataset", () => {
     expect(configArgs).toContain('model_providers.custom.http_headers={ "x-tdai-eval-mode" = "mock-contract" }');
     expect(configArgs).toContain('model_providers.custom.env_http_headers={ "x-tdai-user-key" = "TDAI_EVAL_USER_KEY" }');
     expect(configArgs).toContain('shell_environment_policy.exclude=["TDAI_EVAL_USER_KEY"]');
-    expect(configArgs).toContain('approval_policy="on-request"');
-    expect(configArgs).toContain('approvals_reviewer="auto_review"');
+    expect(configArgs).not.toContain('approvals_reviewer="auto_review"');
     expect(configArgs).not.toContain('approval_policy="never"');
     expect(configArgs).toContain("skills.include_instructions=false");
     expect(configArgs).toContain("sandbox_workspace_write.network_access=true");

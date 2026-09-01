@@ -260,7 +260,10 @@ export function buildCodexInvocation(input: CodexInvocationInput): CodexInvocati
     commandPrefix: [],
     args: [
       "exec",
-      "--ephemeral",
+      // The CLI's automatic approval reviewer creates a review fork. Keep
+      // persistence enabled inside the run-isolated CODEX_SQLITE_HOME so that
+      // reviewer can operate without touching the user's normal task state.
+      "--approve-for-me",
       "--ignore-rules",
       "--ignore-user-config",
       ...input.configArgs,
@@ -328,8 +331,6 @@ export function isolateCodexEnvironment(
 /** Convert the benchmark-only profile into invocation-scoped CLI overrides. */
 export function buildCodexConfigArgs(input: CodexProfileInput): string[] {
   const values = [
-    'approval_policy="on-request"',
-    'approvals_reviewer="auto_review"',
     `model_reasoning_effort=${JSON.stringify(input.reasoningEffort)}`,
     `model_verbosity=${JSON.stringify(input.verbosity)}`,
     "features.plugins=false",

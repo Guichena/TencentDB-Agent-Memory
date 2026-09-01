@@ -383,7 +383,7 @@ Dev 与 Hidden Test 各有一份不可变的真实数据栈快照。正式 Campa
 - 临时 `HOME` 与 `USERPROFILE`。
 - 本地 trace 与产物目录。
 
-runner 使用 `codex exec --ephemeral --ignore-rules --ignore-user-config --json`，并关闭用户 Plugins、Apps、多 Agent、Skill search 和个人 Skill instructions。认证继续引用当前官方 Codex 已登录的 `CODEX_HOME`，不得复制、编辑或替换 `auth.json`，也不改用户的全局 Codex 配置。
+runner 使用 `codex exec --approve-for-me --ignore-rules --ignore-user-config --json`，并关闭用户 Plugins、Apps、多 Agent、Skill search 和个人 Skill instructions。自动审批 reviewer 的临时会话只写入每个 run 独立的 `CODEX_SQLITE_HOME`，不使用 `--ephemeral`，因此既能完成自动审批又不会继承其他 Case 的状态。认证继续引用当前官方 Codex 已登录的 `CODEX_HOME`，不得复制、编辑或替换 `auth.json`，也不改用户的全局 Codex 配置。
 
 正式 Campaign 串行运行，避免认证刷新竞争。实验期间不执行 `codex login` 或 `codex logout`。所有实验差异通过本次命令参数和 benchmark 专用配置传入。
 
