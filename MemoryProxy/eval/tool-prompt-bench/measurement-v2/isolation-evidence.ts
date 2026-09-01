@@ -26,14 +26,11 @@ export type IsolationBlockerCode =
   | "SESSION_ID_INVALID"
   | "MEMORY_PROXY_CONTEXT_ID_INVALID"
   | "SNAPSHOT_ID_INVALID"
-  | "SNAPSHOT_EXPECTED_SHA256_INVALID"
-  | "SNAPSHOT_RESTORED_SHA256_INVALID"
   | "VISIBLE_ASSETS_SHA256_INVALID"
   | "LOCAL_STATE_ID_INVALID"
   | "FRESH_SESSION_NOT_PROVEN"
   | "FRESH_MEMORY_PROXY_CONTEXT_NOT_PROVEN"
   | "SNAPSHOT_RESTORE_FAILED"
-  | "SNAPSHOT_HASH_MISMATCH"
   | "LOCAL_STATE_NOT_FRESH"
   | "LOCAL_HISTORY_INHERITED";
 
@@ -62,8 +59,6 @@ export interface BuildRunIsolationEvidenceInput {
   memoryProxyContext: { id: string; fresh: boolean };
   snapshot: {
     id: string;
-    expectedSha256: string;
-    restoredSha256: string;
     restoreSucceeded: boolean;
   };
   visibleAssetsSha256: string;
@@ -225,16 +220,11 @@ export function buildRunIsolationEvidence(input: BuildRunIsolationEvidenceInput)
   if (!isIdentity(input.session.id)) blockers.push("SESSION_ID_INVALID");
   if (!isIdentity(input.memoryProxyContext.id)) blockers.push("MEMORY_PROXY_CONTEXT_ID_INVALID");
   if (!isIdentity(input.snapshot.id)) blockers.push("SNAPSHOT_ID_INVALID");
-  if (!isSha256(input.snapshot.expectedSha256)) blockers.push("SNAPSHOT_EXPECTED_SHA256_INVALID");
-  if (!isSha256(input.snapshot.restoredSha256)) blockers.push("SNAPSHOT_RESTORED_SHA256_INVALID");
   if (!isSha256(input.visibleAssetsSha256)) blockers.push("VISIBLE_ASSETS_SHA256_INVALID");
   if (!isIdentity(input.localState.pathId)) blockers.push("LOCAL_STATE_ID_INVALID");
   if (!input.session.fresh) blockers.push("FRESH_SESSION_NOT_PROVEN");
   if (!input.memoryProxyContext.fresh) blockers.push("FRESH_MEMORY_PROXY_CONTEXT_NOT_PROVEN");
   if (!input.snapshot.restoreSucceeded) blockers.push("SNAPSHOT_RESTORE_FAILED");
-  if (input.snapshot.expectedSha256 !== input.snapshot.restoredSha256) {
-    blockers.push("SNAPSHOT_HASH_MISMATCH");
-  }
   if (!input.localState.fresh) blockers.push("LOCAL_STATE_NOT_FRESH");
   if (input.localState.inheritedHistory) blockers.push("LOCAL_HISTORY_INHERITED");
 
@@ -297,10 +287,7 @@ export function assessPairedIsolationEvidence(
       left.counterfactualRole !== null
       && right.counterfactualRole !== null
       && left.counterfactualRole !== right.counterfactualRole,
-    sameSnapshot:
-      left.snapshot.id === right.snapshot.id
-      && left.snapshot.expectedSha256 === right.snapshot.expectedSha256
-      && left.snapshot.restoredSha256 === right.snapshot.restoredSha256,
+    sameSnapshot: left.snapshot.id === right.snapshot.id,
     sameVisibleAssets: left.visibleAssetsSha256 === right.visibleAssetsSha256,
     distinctRunId: left.runId !== right.runId,
     distinctRunNamespace: left.runNamespace !== right.runNamespace,

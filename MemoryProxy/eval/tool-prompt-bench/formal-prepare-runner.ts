@@ -99,8 +99,6 @@ export interface FormalPrepareDataSource {
     readonly cases: readonly FormalPrepareCase[];
     readonly caseBindingsFileSha256: string;
   }>;
-  /** Must delegate to R02-B's frozen canonical JSON helper. */
-  canonicalProviderInputSha256(value: unknown): string;
 }
 
 export interface PrepareFormalCampaignInput {
@@ -147,7 +145,6 @@ export interface FormalPrepareRunManifest {
   readonly dataset_commit: string;
   readonly contract_sha256: string;
   readonly provider_input_sha256: string;
-  readonly provider_input_canonical_sha256: string;
   readonly provider_corpus_sha256: string;
   readonly private_gold_sha256: string;
   readonly private_gold_hash_scope: "measurement-v2-split-canonical";
@@ -159,18 +156,13 @@ export interface FormalPrepareRunManifest {
   readonly proxy_instance_id: string;
   readonly proxy_instance_epoch: string;
   readonly proxy_config_sha256: string;
-  readonly proxy_config_file_sha256: string;
-  readonly proxy_base_config_sha256: string;
   readonly identity_binding_state: "unverified-prepare-only";
   readonly expected_tool_prompt_profile: ToolPromptProfile;
   readonly expected_codex_upstream_url: typeof OFFICIAL_CODEX_UPSTREAM_URL;
   readonly expected_codex_upstream_auth: "client-passthrough";
-  readonly case_binding_sha256: string;
   readonly case_bindings_file_sha256: string;
   readonly execution_workspace_path: string;
-  readonly execution_workspace_policy_sha256: string;
   readonly asset_binding_state: "not-restored-prepare-only";
-  readonly asset_binding_input_sha256: string;
   readonly visible_asset_set_sha256: string;
   readonly snapshot_id: string;
   readonly variant_id: FormalVariantId;
@@ -531,10 +523,6 @@ function buildRun(
   } as const;
   const stdinEnvelope = messages[0]!.content[0]!.text;
   const exactProviderInputSha256 = sha256(stdinEnvelope);
-  const canonicalProviderInputSha256 = requireSha256(
-    "providerInputCanonicalSha256",
-    input.source.canonicalProviderInputSha256(messages),
-  );
   const runId = deterministicId("run", [status.datasetRevision, input.campaignId, caseId, variant, repeat]);
   const directory = join(
     input.outputRoot,
@@ -555,14 +543,6 @@ function buildRun(
     inheritsDatasetWorkspace: false,
     createAtExecution: true,
   } as const;
-  const workspacePolicySha256 = requireSha256(
-    "executionWorkspacePolicySha256",
-    input.source.canonicalProviderInputSha256({
-      initialState: workspacePolicy.initialState,
-      inheritsDatasetWorkspace: workspacePolicy.inheritsDatasetWorkspace,
-      createAtExecution: workspacePolicy.createAtExecution,
-    }),
-  );
   const model = requireNonBlank("model", input.model ?? DEFAULT_FORMAL_MODEL);
   const reasoningEffort = input.reasoningEffort ?? DEFAULT_FORMAL_REASONING_EFFORT;
   const proxyBaseUrl = normalizeFormalProxyBaseUrl(input.proxyInstance.proxyBaseUrl);
@@ -707,7 +687,6 @@ function buildRun(
     dataset_commit: requireCommit("datasetCommit", status.datasetCommit),
     contract_sha256: requireSha256("contractSha256", status.contractSha256),
     provider_input_sha256: exactProviderInputSha256,
-    provider_input_canonical_sha256: canonicalProviderInputSha256,
     provider_corpus_sha256: requireSha256("providerInputSha256", splitStatus.providerInputSha256),
     private_gold_sha256: requireSha256("privateGoldSha256", splitStatus.privateGoldSha256),
     private_gold_hash_scope: splitStatus.privateGoldHashScope,
@@ -722,42 +701,13 @@ function buildRun(
       "proxyInstance.experimentEffectiveConfigSha256",
       input.proxyInstance.experimentEffectiveConfigSha256,
     ),
-    proxy_config_file_sha256: requireSha256(
-      "proxyInstance.configFileSha256",
-      input.proxyInstance.configFileSha256,
-    ),
-    proxy_base_config_sha256: requireSha256(
-      "proxyInstance.experimentBaseConfigSha256",
-      input.proxyInstance.experimentBaseConfigSha256,
-    ),
     identity_binding_state: "unverified-prepare-only",
     expected_tool_prompt_profile: input.proxyInstance.expectedToolPromptProfile,
     expected_codex_upstream_url: OFFICIAL_CODEX_UPSTREAM_URL,
     expected_codex_upstream_auth: "client-passthrough",
-    case_binding_sha256: requireSha256(
-      "caseBindingSha256",
-      input.source.canonicalProviderInputSha256({
-        caseId,
-        split: item.split,
-        identity: item.binding.identity,
-        snapshotId: item.binding.snapshotId,
-        workspace: item.binding.workspace,
-        visibleAssetSetSha256: item.binding.visibleAssetSetSha256,
-      }),
-    ),
     case_bindings_file_sha256: requireSha256("caseBindingsFileSha256", caseBindingsFileSha256),
     execution_workspace_path: executionWorkspace,
-    execution_workspace_policy_sha256: workspacePolicySha256,
     asset_binding_state: "not-restored-prepare-only",
-    asset_binding_input_sha256: requireSha256(
-      "assetBindingInputSha256",
-      input.source.canonicalProviderInputSha256({
-        caseId,
-        snapshotId: item.binding.snapshotId,
-        workspace: item.binding.workspace,
-        visibleAssetSetSha256: item.binding.visibleAssetSetSha256,
-      }),
-    ),
     visible_asset_set_sha256: requireSha256(
       "visibleAssetSetSha256",
       item.binding.visibleAssetSetSha256,

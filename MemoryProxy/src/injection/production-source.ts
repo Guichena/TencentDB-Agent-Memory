@@ -43,7 +43,6 @@ export interface ProductionPromptSourceManifest {
   readonly segmenterVersion: typeof PRODUCTION_PROMPT_SOURCE_SEGMENTER_VERSION;
   readonly providerVisibleTextSha256: string;
   readonly providerVisibleUtf8Bytes: number;
-  readonly orderedSourceManifestSha256: string;
   readonly sources: readonly ProductionPromptSourceSegment[];
   readonly canonicalSha256: string;
 }
@@ -275,15 +274,11 @@ export function sealProductionPromptSourceManifest(
       "ordered production sources must reconstruct provider-visible text byte-for-byte",
     );
   }
-  const orderedSourceManifestSha256 = sha256(canonicalJson(
-    sources.map(sourceDescriptor),
-  ));
   const withoutCanonicalSha = {
     schemaVersion: PRODUCTION_PROMPT_SOURCE_SCHEMA,
     segmenterVersion: PRODUCTION_PROMPT_SOURCE_SEGMENTER_VERSION,
     providerVisibleTextSha256: sha256(providerVisibleText),
     providerVisibleUtf8Bytes: Buffer.byteLength(providerVisibleText, "utf8"),
-    orderedSourceManifestSha256,
     sources,
   };
   return deepFreeze({
@@ -325,7 +320,6 @@ export function validateProductionPromptSourceManifest(
     segmentMismatch
     || rebuilt.sources.length !== value.sources.length
     || rebuilt.canonicalSha256 !== value.canonicalSha256
-    || rebuilt.orderedSourceManifestSha256 !== value.orderedSourceManifestSha256
     || rebuilt.providerVisibleTextSha256 !== value.providerVisibleTextSha256
     || rebuilt.providerVisibleUtf8Bytes !== value.providerVisibleUtf8Bytes
   ) {
@@ -536,11 +530,6 @@ function kindForPromptUnit(kind: PromptUnitKind): ProductionPromptSourceKind {
   if (kind === "execution-grammar") return "execution-contract";
   if (kind === "dynamic-assets") return "dynamic-asset";
   return "static-tool";
-}
-
-function sourceDescriptor(source: ProductionPromptSourceSegment): object {
-  const { text: _text, ...descriptor } = source;
-  return descriptor;
 }
 
 function isSourceKind(value: unknown): value is ProductionPromptSourceKind {

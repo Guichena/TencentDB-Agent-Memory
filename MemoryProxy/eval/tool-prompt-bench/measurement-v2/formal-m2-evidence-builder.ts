@@ -630,9 +630,7 @@ export function buildFormalM2PreGoldEvidence(
       fresh: true,
     },
     snapshot: {
-      id: input.execution.snapshotBinding.snapshotId,
-      expectedSha256: input.execution.snapshotBinding.snapshotCanonicalSha256,
-      restoredSha256: input.execution.snapshotBinding.snapshotCanonicalSha256,
+      id: input.execution.snapshotId,
       restoreSucceeded: true,
     },
     visibleAssetsSha256: input.frozenControl.visibleAssetSetSha256,

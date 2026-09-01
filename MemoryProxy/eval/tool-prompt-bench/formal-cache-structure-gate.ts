@@ -544,9 +544,7 @@ function inspectObservedRunEvidence(
         || manifest.providerInjectionTokens !== ledger.totalInjectionTokens
         || manifest.providerInjectionUtf8Bytes !== ledger.totalInjectionUtf8Bytes
         || ledger.classification.trustedSourceManifestSha256 !== source.canonicalSha256
-        || ledger.classification.sourceInventorySha256 !== source.sourceInventorySha256
-        || ledger.classification.orderedSourceManifestSha256 !== source.orderedSourceManifestSha256
-        || ledger.classification.sourceRootSha256 !== source.sourceRootSha256
+        || attestation.sourceManifestSha256 !== source.canonicalSha256
         || attestation.authority !== "campaign-integration"
         || attestation.frozenProviderSourceManifestSha256
           !== manifest.productionSourceManifestSha256

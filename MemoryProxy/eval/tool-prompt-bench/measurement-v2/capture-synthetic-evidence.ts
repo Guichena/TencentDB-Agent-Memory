@@ -405,9 +405,7 @@ async function main(): Promise<void> {
     sourceManifest,
     expectedSourceAttestation: {
       authority: "synthetic-self-built",
-      sourceInventorySha256: sourceManifest.sourceInventorySha256,
-      orderedSourceManifestSha256: sourceManifest.orderedSourceManifestSha256,
-      sourceRootSha256: sourceManifest.sourceRootSha256,
+      sourceManifestSha256: sourceManifest.canonicalSha256,
     },
     segments: segments.map((segment, index) => ({
       order: segment.order,
@@ -510,8 +508,6 @@ async function main(): Promise<void> {
     memoryProxyContext: { id: "synthetic-proxy-context", fresh: true },
     snapshot: {
       id: "synthetic-snapshot",
-      expectedSha256: SHA.snapshot,
-      restoredSha256: SHA.snapshot,
       restoreSucceeded: true,
     },
     visibleAssetsSha256: SHA.visibleAssets,
@@ -543,8 +539,6 @@ async function main(): Promise<void> {
     memoryProxyContext: { id: "synthetic-proxy-context-repeat-1", fresh: true },
     snapshot: {
       id: "synthetic-snapshot",
-      expectedSha256: SHA.snapshot,
-      restoredSha256: SHA.snapshot,
       restoreSucceeded: true,
     },
     visibleAssetsSha256: SHA.visibleAssets,
@@ -721,7 +715,6 @@ async function main(): Promise<void> {
       },
       trustedSourceManifest: {
         canonicalSha256: sourceManifest.canonicalSha256,
-        sourceInventorySha256: sourceManifest.sourceInventorySha256,
         orderedSources: sourceManifest.orderedSources,
       },
       formalCompilerClosure: tokenLedger.classification.formalCompilerClosure,

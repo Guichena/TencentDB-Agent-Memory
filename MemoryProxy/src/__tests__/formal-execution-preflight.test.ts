@@ -7,12 +7,6 @@ import {
 
 const VISIBLE_ASSET_SET_SHA256 =
   "4bc4f16956d42fab61e3ec2bbba32a7a3200f8f78b1cc4f0089c20b123f1e455";
-const L0_READ_BACK_SHA256 = "c".repeat(64);
-const L1_READ_BACK_SHA256 = "d".repeat(64);
-const L2_READ_BACK_SHA256 = "e".repeat(64);
-const L3_READ_BACK_SHA256 = "f".repeat(64);
-const SKILL_READ_BACK_SHA256 = "1".repeat(64);
-const KNOWLEDGE_READ_BACK_SHA256 = "2".repeat(64);
 const RUNTIME_ASSET_OBSERVATION_IDENTITY = {
   serviceId: "space-runtime-a",
   resolvedUserId: "auth-user-a",
@@ -33,7 +27,6 @@ function validInput(): FormalExecutionPreflightInput {
       visibleAssetSetSha256: VISIBLE_ASSET_SET_SHA256,
     },
     identityMapping: {
-      sourceArtifactSha256: "a".repeat(64),
       logicalIdentity: {
         datasetUserId: "dataset-user-a",
         spaceId: "space-a",
@@ -58,21 +51,18 @@ function validInput(): FormalExecutionPreflightInput {
             sessionId: "runtime-conversation-a",
             messageIds: ["runtime-message-1", "runtime-message-2"],
           },
-          readBackReceiptSha256: L0_READ_BACK_SHA256,
         },
         {
           logicalAssetId: "memory-l1-a",
           family: "memory",
           subtype: "l1",
           runtimeLocator: { kind: "asset-id", assetId: "runtime-memory-l1-a" },
-          readBackReceiptSha256: L1_READ_BACK_SHA256,
         },
         {
           logicalAssetId: "memory-l2-a",
           family: "memory",
           subtype: "l2",
           runtimeLocator: { kind: "scenario-path", path: "runtime/scenario/a" },
-          readBackReceiptSha256: L2_READ_BACK_SHA256,
         },
         {
           logicalAssetId: "memory-l3-a",
@@ -85,21 +75,18 @@ function validInput(): FormalExecutionPreflightInput {
             userId: "auth-user-a",
             agentId: "agent-runtime-a",
           },
-          readBackReceiptSha256: L3_READ_BACK_SHA256,
         },
         {
           logicalAssetId: "skill-a",
           family: "skill",
           subtype: "skill",
           runtimeLocator: { kind: "asset-id", assetId: "runtime-skill-a" },
-          readBackReceiptSha256: SKILL_READ_BACK_SHA256,
         },
         {
           logicalAssetId: "knowledge-a",
           family: "knowledge",
           subtype: "wiki",
           runtimeLocator: { kind: "asset-id", assetId: "runtime-knowledge-a" },
-          readBackReceiptSha256: KNOWLEDGE_READ_BACK_SHA256,
         },
       ],
     },
@@ -151,8 +138,6 @@ function validInput(): FormalExecutionPreflightInput {
           requestPath: "/v3/conversation/query",
           httpStatus: 200,
           envelopeCode: 0,
-          contentSha256: "3".repeat(64),
-          receiptSha256: L0_READ_BACK_SHA256,
           items: [{
             subtype: "l0",
             runtimeLocator: {
@@ -168,8 +153,6 @@ function validInput(): FormalExecutionPreflightInput {
           requestPath: "/v3/atomic/query",
           httpStatus: 200,
           envelopeCode: 0,
-          contentSha256: "4".repeat(64),
-          receiptSha256: L1_READ_BACK_SHA256,
           items: [{ subtype: "l1", runtimeLocator: { kind: "asset-id", assetId: "runtime-memory-l1-a" } }],
         },
         {
@@ -178,8 +161,6 @@ function validInput(): FormalExecutionPreflightInput {
           requestPath: "/v3/scenario/read",
           httpStatus: 200,
           envelopeCode: 0,
-          contentSha256: "5".repeat(64),
-          receiptSha256: L2_READ_BACK_SHA256,
           items: [{ subtype: "l2", runtimeLocator: { kind: "scenario-path", path: "runtime/scenario/a" } }],
         },
         {
@@ -188,8 +169,6 @@ function validInput(): FormalExecutionPreflightInput {
           requestPath: "/v3/core/read",
           httpStatus: 200,
           envelopeCode: 0,
-          contentSha256: "6".repeat(64),
-          receiptSha256: L3_READ_BACK_SHA256,
           items: [{
             subtype: "l3",
             runtimeLocator: {
@@ -207,8 +186,6 @@ function validInput(): FormalExecutionPreflightInput {
           requestPath: "/v3/skill/listing",
           httpStatus: 200,
           envelopeCode: 0,
-          contentSha256: "7".repeat(64),
-          receiptSha256: SKILL_READ_BACK_SHA256,
           items: [{ subtype: "skill", runtimeLocator: { kind: "asset-id", assetId: "runtime-skill-a" } }],
         },
         {
@@ -217,14 +194,11 @@ function validInput(): FormalExecutionPreflightInput {
           requestPath: "/v3/meta/agent-fixed-asset/list-with-detail",
           httpStatus: 200,
           envelopeCode: 0,
-          contentSha256: "8".repeat(64),
-          receiptSha256: KNOWLEDGE_READ_BACK_SHA256,
           items: [{ subtype: "wiki", runtimeLocator: { kind: "asset-id", assetId: "runtime-knowledge-a" } }],
         },
       ],
     },
     effectiveWriteConfig: {
-      configFingerprintSha256: "b".repeat(64),
       extractionEnabled: false,
       extractionExtractorIds: [],
       tdaiL0WriteEnabled: false,
@@ -270,16 +244,6 @@ describe("formal execution identity and asset preflight", () => {
       agentSource: "codex",
       visibleAssetSetSha256: VISIBLE_ASSET_SET_SHA256,
       visibleAssetCount: 6,
-      identityMappingSourceSha256: "a".repeat(64),
-      effectiveConfigSha256: "b".repeat(64),
-      assetReadBackReceipts: [
-        { receiptSha256: "1".repeat(64), contentSha256: "7".repeat(64) },
-        { receiptSha256: "2".repeat(64), contentSha256: "8".repeat(64) },
-        { receiptSha256: "c".repeat(64), contentSha256: "3".repeat(64) },
-        { receiptSha256: "d".repeat(64), contentSha256: "4".repeat(64) },
-        { receiptSha256: "e".repeat(64), contentSha256: "5".repeat(64) },
-        { receiptSha256: "f".repeat(64), contentSha256: "6".repeat(64) },
-      ],
       checks: [
         { id: "auth-user-mapping", status: "pass" },
         { id: "metadata-identity", status: "pass" },
@@ -292,8 +256,6 @@ describe("formal execution identity and asset preflight", () => {
     expect(Object.isFrozen(receipt)).toBe(true);
     expect(Object.isFrozen(receipt.logicalIdentity)).toBe(true);
     expect(Object.isFrozen(receipt.runtimeIdentity)).toBe(true);
-    expect(Object.isFrozen(receipt.assetReadBackReceipts)).toBe(true);
-    expect(receipt.assetReadBackReceipts.every(Object.isFrozen)).toBe(true);
     expect(Object.isFrozen(receipt.checks)).toBe(true);
     expect(receipt.checks.every(Object.isFrozen)).toBe(true);
   });
@@ -313,7 +275,7 @@ describe("formal execution identity and asset preflight", () => {
       },
       assetInventory: {
         sources: input.assetInventory.sources.map((source) => (
-          source.receiptSha256 === L1_READ_BACK_SHA256
+          source.requestPath === "/v3/atomic/query"
             ? { ...source, agentId: importedAgentId }
             : source
         )),
@@ -333,7 +295,7 @@ describe("formal execution identity and asset preflight", () => {
       },
       assetInventory: {
         sources: input.assetInventory.sources.map((source) => (
-          source.receiptSha256 === L1_READ_BACK_SHA256
+          source.requestPath === "/v3/atomic/query"
             ? { ...source, agentId: "agent-runtime-foreign" }
             : source
         )),
@@ -420,7 +382,7 @@ describe("formal execution identity and asset preflight", () => {
     expect(receipt.checks).toContainEqual({ id: "visible-assets", status: "fail" });
   });
 
-  it("fails when a logical asset locator is not bound to the observed read-back receipt", () => {
+  it("fails when a logical asset locator does not match the observed read-back item", () => {
     const input = validInput();
     const receipt = evaluateFormalExecutionPreflight({
       ...input,
@@ -428,7 +390,7 @@ describe("formal execution identity and asset preflight", () => {
         ...input.identityMapping,
         assetLocators: input.identityMapping.assetLocators.map((mapping) => (
           mapping.logicalAssetId === "memory-l1-a"
-            ? { ...mapping, readBackReceiptSha256: "9".repeat(64) }
+            ? { ...mapping, runtimeLocator: { kind: "asset-id", assetId: "runtime-memory-other" } as const }
             : mapping
         )),
       },
@@ -537,26 +499,19 @@ describe("formal execution identity and asset preflight", () => {
     expect(JSON.stringify(receipt)).not.toMatch(/userKey|Authorization|sk-mem|secret/u);
   });
 
-  it("rejects a non-hash identity-mapping source receipt", () => {
+  it("rejects a read-back observation without a valid request path", () => {
     const input = validInput();
-
-    expect(() => evaluateFormalExecutionPreflight({
-      ...input,
-      identityMapping: { ...input.identityMapping, sourceArtifactSha256: "not-a-hash" },
-    })).toThrow(/identityMapping\.sourceArtifactSha256 must be a SHA-256/u);
-  });
-
-  it("rejects a read-back observation without an exact response-content hash", () => {
-    const input = validInput();
-    expect(() => evaluateFormalExecutionPreflight({
+    const receipt = evaluateFormalExecutionPreflight({
       ...input,
       assetInventory: {
         ...input.assetInventory,
         sources: [
-          { ...input.assetInventory.sources[0], contentSha256: "missing" },
+          { ...input.assetInventory.sources[0], requestPath: "/not-a-real-tool" },
           ...input.assetInventory.sources.slice(1),
         ],
       },
-    })).toThrow(/contentSha256 must be a SHA-256/u);
+    });
+    expect(receipt.ready).toBe(false);
+    expect(receipt.checks).toContainEqual({ id: "visible-assets", status: "fail" });
   });
 });

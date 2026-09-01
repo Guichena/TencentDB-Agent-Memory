@@ -207,9 +207,6 @@ function m2Evidence(overrides: Readonly<{
   const injectionText = segments.map((segment) => segment.text).join("");
   const sourceContent = {
     schemaVersion: 1,
-    sourceInventorySha256: sha("1"),
-    orderedSourceManifestSha256: sha("2"),
-    sourceRootSha256: sha("3"),
   };
   const sourceManifest = {
     ...sourceContent,
@@ -235,11 +232,9 @@ function m2Evidence(overrides: Readonly<{
     totalInjectionUtf8Bytes: Buffer.byteLength(injectionText, "utf8"),
     classification: {
       trustedSourceManifestSha256: sourceManifest.canonicalSha256,
-      sourceInventorySha256: sourceManifest.sourceInventorySha256,
-      orderedSourceManifestSha256: sourceManifest.orderedSourceManifestSha256,
-      sourceRootSha256: sourceManifest.sourceRootSha256,
       expectedSourceAttestation: {
         authority: "campaign-integration",
+        sourceManifestSha256: sourceManifest.canonicalSha256,
         frozenProviderSourceManifestSha256: captureManifest.productionSourceManifestSha256,
         providerRequestBindingSha256: sha("6"),
       },

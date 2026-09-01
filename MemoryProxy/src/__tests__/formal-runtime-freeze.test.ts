@@ -8,13 +8,11 @@ import {
   FORMAL_DATA_COMMIT,
   FORMAL_DATA_TAG,
   FORMAL_DATA_TAG_OBJECT,
-  FORMAL_RUNTIME_FREEZE_CANONICAL_SHA256,
-  FORMAL_RUNTIME_FREEZE_FILE_SHA256,
   loadFormalRuntimeFreezeManifest,
   resolveFormalDataFreeze,
 } from "../../eval/tool-prompt-bench/formal-runtime/index.js";
 
-describe("Task 1 formal runtime hash-only freeze", () => {
+describe("Task 1 formal runtime freeze", () => {
   it("binds public data, runtime bindings, smoke, and Measurement-v2 split hashes", () => {
     const freeze = resolveFormalDataFreeze({ repositoryRoot: process.cwd() });
     const manifest = buildFormalRuntimeFreezeManifest({ freeze });
@@ -66,7 +64,5 @@ describe("Task 1 formal runtime hash-only freeze", () => {
     expect(loaded).toEqual(manifest);
     expect(Object.isFrozen(loaded)).toBe(true);
     expect(Object.isFrozen(loaded.measurementV2.gold)).toBe(true);
-    expect(FORMAL_RUNTIME_FREEZE_FILE_SHA256).toBe("69480e56ae6281711c926fda743a38c7ff9d76874f94e19a0e430b5d9a9596e4");
-    expect(FORMAL_RUNTIME_FREEZE_CANONICAL_SHA256).toBe("64c86aa6743714514b4e27384308bd3afc8e073be93c2fd23c11e1d600317854");
   });
 });

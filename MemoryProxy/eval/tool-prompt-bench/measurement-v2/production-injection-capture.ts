@@ -159,9 +159,7 @@ function attestationFor(
 ): ExpectedTokenSourceAttestation {
   return {
     authority,
-    sourceInventorySha256: sourceManifest.sourceInventorySha256,
-    orderedSourceManifestSha256: sourceManifest.orderedSourceManifestSha256,
-    sourceRootSha256: sourceManifest.sourceRootSha256,
+    sourceManifestSha256: sourceManifest.canonicalSha256,
     ...(providerEvidence
       ? {
           frozenProviderSourceManifestSha256: providerEvidence.sourceManifestSha256,

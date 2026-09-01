@@ -94,8 +94,6 @@ describe("R02 formal PrepareOnly source factory", () => {
       case_id: "T01-KNOWLEDGE-014-N",
       proxy_instance_id: "formal-instance-01",
       proxy_instance_epoch: "2026-08-30T02:00:00.000Z",
-      proxy_config_file_sha256: createHash("sha256").update(CONFIG_BYTES).digest("hex"),
-      proxy_base_config_sha256: SHA_A,
       proxy_config_sha256: SHA_B,
       code_commit: "7".repeat(40),
       prompt_freeze_commit: "8".repeat(40),

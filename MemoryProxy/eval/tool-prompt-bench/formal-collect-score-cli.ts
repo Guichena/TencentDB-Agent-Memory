@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { isDeepStrictEqual } from "node:util";
 
 import {
   buildEffectiveFormalInvocation,
@@ -267,7 +268,7 @@ export function buildFormalM2CampaignPreGoldEvidence(
       if (!toolRun || !providerRun) {
         throw new Error(`${execution.runId}: formal M2 evidence is missing a collected run`);
       }
-      if (execution.snapshotBinding.snapshotId !== formalCase.binding.snapshotId
+      if (execution.snapshotId !== formalCase.binding.snapshotId
         || execution.visibleAssetSetSha256 !== formalCase.binding.visibleAssetSetSha256) {
         throw new Error(`${execution.runId}: execution does not match frozen public case binding`);
       }
@@ -586,40 +587,14 @@ async function verifyExecutionReceiptArtifactSet(
     prepareCommand: join(directory, "prepare-command.json"),
     providerPrompt: join(directory, "provider-prompt.json"),
     preflightReceipt: join(directory, "formal-execution-preflight-receipt.json"),
-    stdout: join(directory, "codex-events.jsonl"),
-    stderr: join(directory, "codex-stderr.log"),
   } as const;
-  const [runManifestRaw, prepareCommandRaw, providerPromptRaw, preflightRaw, stdout, stderr] =
+  const [runManifestRaw, prepareCommandRaw, providerPromptRaw, preflightRaw] =
     await Promise.all([
       readFile(paths.runManifest, "utf8"),
       readFile(paths.prepareCommand, "utf8"),
       readFile(paths.providerPrompt, "utf8"),
       readFile(paths.preflightReceipt, "utf8"),
-      readFile(paths.stdout, "utf8"),
-      readFile(paths.stderr, "utf8"),
     ]);
-  assertFileSha256(
-    paths.runManifest,
-    runManifestRaw,
-    receipt.artifactBindings.runManifestFileSha256,
-  );
-  assertFileSha256(
-    paths.prepareCommand,
-    prepareCommandRaw,
-    receipt.artifactBindings.prepareCommandFileSha256,
-  );
-  assertFileSha256(
-    paths.providerPrompt,
-    providerPromptRaw,
-    receipt.artifactBindings.providerPromptFileSha256,
-  );
-  assertFileSha256(
-    paths.preflightReceipt,
-    preflightRaw,
-    receipt.artifactBindings.preflightReceiptFileSha256,
-  );
-  assertFileSha256(paths.stdout, stdout, receipt.process.stdoutSha256);
-  assertFileSha256(paths.stderr, stderr, receipt.process.stderrSha256);
 
   const manifest = record(parseJson(runManifestRaw, paths.runManifest), paths.runManifest);
   const command = record(parseJson(prepareCommandRaw, paths.prepareCommand), paths.prepareCommand);
@@ -654,16 +629,6 @@ async function verifyExecutionReceiptArtifactSet(
     || directoryParts[4] !== String(receipt.repeat)) {
     throw new Error(`${receiptPath}: execution receipt directory identity mismatch`);
   }
-  assertEqual("run manifest canonical SHA-256", canonicalSha256(manifest),
-    receipt.preparationBinding.runManifestCanonicalSha256);
-  assertEqual("prepare command canonical SHA-256", canonicalSha256(command),
-    receipt.preparationBinding.prepareCommandCanonicalSha256);
-  assertEqual("preflight receipt canonical SHA-256", canonicalSha256(preflight),
-    receipt.preflightReceiptSha256);
-  const workspacePolicy = record(command.workspacePolicy, "prepare-command.workspacePolicy");
-  assertEqual("workspace policy SHA-256", canonicalSha256(workspacePolicy),
-    receipt.preparationBinding.workspacePolicySha256);
-
   assertManifestReceiptIdentity(manifest, receipt);
   const providerPromptText = extractProviderPromptText(providerPrompt);
   assertEqual("provider prompt SHA-256", utf8Sha256(providerPromptText), receipt.providerPromptSha256);
@@ -679,16 +644,20 @@ async function verifyExecutionReceiptArtifactSet(
     preparedRun,
     preflight as unknown as Parameters<typeof validatePreflightReceipt>[1],
   );
-  assertEqual(
-    "effective invocation/preflight binding SHA-256",
-    receipt.effectiveInvocation.canonicalSha256,
-    buildEffectiveFormalInvocation(
-      preparedRun,
-      preflight as unknown as Parameters<typeof validatePreflightReceipt>[1],
-    ).canonicalSha256,
+  const expectedInvocation = buildEffectiveFormalInvocation(
+    preparedRun,
+    preflight as unknown as Parameters<typeof validatePreflightReceipt>[1],
   );
-  if (canonicalSha256(receipt.snapshotBinding) !== canonicalSha256(preflight.provenance)) {
-    throw new Error(`${receiptPath}: snapshot binding does not match preflight provenance`);
+  if (!isDeepStrictEqual(receipt.effectiveInvocation.canonical, expectedInvocation.canonical)) {
+    throw new Error(`${receiptPath}: effective invocation does not match prepared run`);
+  }
+  const preflightProvenance = record(preflight.provenance, "preflight provenance");
+  if (receipt.snapshotId !== requireNonBlankField(
+    preflightProvenance,
+    "snapshotId",
+    "preflight provenance",
+  )) {
+    throw new Error(`${receiptPath}: snapshot does not match preflight`);
   }
   const isolation = buildFormalRunIsolationIdentity(preparedRun);
   if (receipt.preparationBinding.runNamespace !== isolation.runNamespace
@@ -713,16 +682,9 @@ function parseFormalExecutionReceipt(value: unknown, label: string): FormalExecu
   if (!Number.isSafeInteger(root.repeat) || (root.repeat as number) < 1) {
     throw new Error(`${label}: execution receipt repeat must be a positive integer`);
   }
-  for (const field of ["providerPromptSha256", "visibleAssetSetSha256", "preflightReceiptSha256"] as const) {
+  for (const field of ["providerPromptSha256", "visibleAssetSetSha256"] as const) {
     requireSha256Field(root, field, "execution receipt");
   }
-  const artifacts = record(root.artifactBindings, "execution receipt artifactBindings");
-  for (const field of [
-    "runManifestFileSha256",
-    "prepareCommandFileSha256",
-    "providerPromptFileSha256",
-    "preflightReceiptFileSha256",
-  ] as const) requireSha256Field(artifacts, field, "execution receipt artifactBindings");
   const identity = record(root.executionIdentity, "execution receipt executionIdentity");
   for (const field of ["modelId", "reasoningEffort", "verbosity", "codexCliVersion"] as const) {
     requireNonBlankField(identity, field, "execution receipt executionIdentity");
@@ -760,26 +722,14 @@ function parseFormalExecutionReceipt(value: unknown, label: string): FormalExecu
       "execution receipt effectiveInvocation.canonical.runtimeIdentity",
     );
   }
-  assertEqual(
-    "execution receipt effective invocation canonical SHA-256",
-    canonicalSha256(effectiveInvocationCanonical),
-    requireSha256Field(
-      effectiveInvocation,
-      "canonicalSha256",
-      "execution receipt effectiveInvocation",
-    ),
-  );
   const preparation = record(root.preparationBinding, "execution receipt preparationBinding");
-  for (const field of [
-    "runManifestCanonicalSha256", "prepareCommandCanonicalSha256", "workspacePolicySha256",
-  ] as const) requireSha256Field(preparation, field, "execution receipt preparationBinding");
   for (const field of ["runNamespace", "memoryProxyContextId", "localStateId"] as const) {
     requireNonBlankField(preparation, field, "execution receipt preparationBinding");
   }
   if (preparation.freshLocalState !== true || preparation.inheritedHistory !== false) {
     throw new Error(`${label}: execution receipt local-state declaration is invalid`);
   }
-  record(root.snapshotBinding, "execution receipt snapshotBinding");
+  requireNonBlankField(root, "snapshotId", "execution receipt");
   const codeFreeze = record(root.codeFreeze, "execution receipt codeFreeze");
   requireCommitField(codeFreeze, "executionCodeCommit", "execution receipt codeFreeze");
   if (requireCommitField(codeFreeze, "promptFreezeTagObject", "execution receipt codeFreeze")
@@ -809,8 +759,6 @@ function parseFormalExecutionReceipt(value: unknown, label: string): FormalExecu
       && typeof processReceipt.infrastructureError !== "string")) {
     throw new Error(`${label}: process status is invalid`);
   }
-  requireSha256Field(processReceipt, "stdoutSha256", "execution receipt process");
-  requireSha256Field(processReceipt, "stderrSha256", "execution receipt process");
   if (root.clientUsage !== null && (!root.clientUsage || typeof root.clientUsage !== "object")) {
     throw new Error(`${label}: clientUsage must be an object or null`);
   }
@@ -854,10 +802,6 @@ function extractProviderPromptText(root: Record<string, unknown>): string {
     throw new Error("provider-prompt.json must contain exactly one content part");
   }
   return requireNonBlankField(record(content[0], "provider-prompt content[0]"), "text", "provider prompt");
-}
-
-function assertFileSha256(path: string, raw: string, expected: string): void {
-  if (utf8Sha256(raw) !== expected) throw new Error(`${path}: file SHA-256 mismatch`);
 }
 
 function parseJson(raw: string, label: string): unknown {

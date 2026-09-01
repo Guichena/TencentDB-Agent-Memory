@@ -138,19 +138,13 @@ export interface TrustedTokenSourceManifest {
   contractSha256: string;
   compilerVersion: string;
   segmenterVersion: string;
-  captureManifestSha256: string;
-  sourceInventorySha256: string;
-  orderedSourceManifestSha256: string;
-  sourceRootSha256: string;
   orderedSources: readonly TokenLedgerSourceDescriptor[];
   canonicalSha256: string;
 }
 
 export interface ExpectedTokenSourceAttestation {
   authority: "campaign-integration" | "synthetic-self-built";
-  sourceInventorySha256: string;
-  orderedSourceManifestSha256: string;
-  sourceRootSha256: string;
+  sourceManifestSha256: string;
   /** Present only after the provider observer sealed an independent manifest. */
   frozenProviderSourceManifestSha256?: string;
   /** Binds correlation id + raw provider request hash + source manifest. */
@@ -194,10 +188,6 @@ export interface TokenLedger {
     compilerVersion: string;
     segmenterVersion: string;
     trustedSourceManifestSha256: string;
-    captureManifestSha256: string;
-    sourceInventorySha256: string;
-    orderedSourceManifestSha256: string;
-    sourceRootSha256: string;
     expectedSourceAttestation: ExpectedTokenSourceAttestation;
     orderedSources: readonly TokenLedgerSourceDescriptor[];
     sourceKindToComponent: Readonly<Record<TokenLedgerSourceKind, TokenLedgerComponent>>;
@@ -244,9 +234,7 @@ export class TokenLedgerInfrastructureError extends Error {
       | "CLASSIFICATION_SOURCE_HASH_MISMATCH"
       | "CLASSIFICATION_SOURCE_MANIFEST_MISMATCH"
       | "EXPECTED_SOURCE_ATTESTATION_MISSING"
-      | "EXPECTED_SOURCE_INVENTORY_MISMATCH"
-      | "EXPECTED_ORDERED_SOURCE_MANIFEST_MISMATCH"
-      | "EXPECTED_SOURCE_ROOT_MISMATCH"
+      | "EXPECTED_SOURCE_MANIFEST_MISMATCH"
       | "CAPTURE_MANIFEST_MISSING"
       | "CAPTURE_MANIFEST_HASH_MISMATCH"
       | "SEGMENT_COVERAGE_MISMATCH",
@@ -562,21 +550,6 @@ export function buildTrustedTokenSourceManifest(
     );
   }
 
-  const sourceInventory = [...inventory.values()].sort((left, right) => (
-    left.sourceId.localeCompare(right.sourceId)
-  ));
-  const sourceInventorySha256 = canonicalSha256(sourceInventory);
-  const orderedSourceManifestSha256 = canonicalSha256(orderedSources);
-  const sourceRootSha256 = canonicalSha256({
-    contractId: TOKEN_CLASSIFICATION_CONTRACT.contractId,
-    contractVersion: TOKEN_CLASSIFICATION_CONTRACT.contractVersion,
-    contractSha256: TOKEN_CLASSIFICATION_CONTRACT.contractSha256,
-    compilerVersion: input.compilerVersion,
-    segmenterVersion: input.segmenterVersion,
-    captureManifestSha256: captureManifest.canonicalSha256,
-    sourceInventorySha256,
-    orderedSourceManifestSha256,
-  });
   const withoutSha = {
     schemaVersion: 1 as const,
     contractId: TOKEN_CLASSIFICATION_CONTRACT.contractId,
@@ -584,10 +557,6 @@ export function buildTrustedTokenSourceManifest(
     contractSha256: TOKEN_CLASSIFICATION_CONTRACT.contractSha256,
     compilerVersion: input.compilerVersion,
     segmenterVersion: input.segmenterVersion,
-    captureManifestSha256: captureManifest.canonicalSha256,
-    sourceInventorySha256,
-    orderedSourceManifestSha256,
-    sourceRootSha256,
     orderedSources,
   };
   return canonicalJsonClone({
@@ -686,67 +655,22 @@ function validateClassification(input: BuildTokenLedgerInput): void {
     }
     manifestSourceIds.add(source.sourceId);
   }
-  const derivedInventory = manifest.orderedSources
-    .map(({ order: _order, ...source }) => source)
-    .sort((left, right) => left.sourceId.localeCompare(right.sourceId));
-  if (canonicalSha256(derivedInventory) !== manifest.sourceInventorySha256) {
-    throw new TokenLedgerInfrastructureError(
-      "CLASSIFICATION_MANIFEST_HASH_MISMATCH",
-      "trusted source inventory hash does not match its ordered descriptors",
-    );
-  }
-  if (canonicalSha256(manifest.orderedSources) !== manifest.orderedSourceManifestSha256) {
-    throw new TokenLedgerInfrastructureError(
-      "CLASSIFICATION_MANIFEST_HASH_MISMATCH",
-      "trusted ordered source manifest hash does not match its descriptors",
-    );
-  }
-  const derivedSourceRootSha256 = canonicalSha256({
-    contractId: manifest.contractId,
-    contractVersion: manifest.contractVersion,
-    contractSha256: manifest.contractSha256,
-    compilerVersion: manifest.compilerVersion,
-    segmenterVersion: manifest.segmenterVersion,
-    captureManifestSha256: manifest.captureManifestSha256,
-    sourceInventorySha256: manifest.sourceInventorySha256,
-    orderedSourceManifestSha256: manifest.orderedSourceManifestSha256,
-  });
-  if (derivedSourceRootSha256 !== manifest.sourceRootSha256) {
-    throw new TokenLedgerInfrastructureError(
-      "CLASSIFICATION_MANIFEST_HASH_MISMATCH",
-      "trusted source root hash does not match its frozen source hashes",
-    );
-  }
   const expected = input.expectedSourceAttestation;
   if (
     expected === null
     || typeof expected !== "object"
     || (expected.authority !== "campaign-integration" && expected.authority !== "synthetic-self-built")
-    || !isSha256(expected.sourceInventorySha256)
-    || !isSha256(expected.orderedSourceManifestSha256)
-    || !isSha256(expected.sourceRootSha256)
+    || !isSha256(expected.sourceManifestSha256)
   ) {
     throw new TokenLedgerInfrastructureError(
       "EXPECTED_SOURCE_ATTESTATION_MISSING",
       "a typed campaign/Integration source attestation is required before token accounting",
     );
   }
-  if (expected.sourceInventorySha256 !== manifest.sourceInventorySha256) {
+  if (expected.sourceManifestSha256 !== manifest.canonicalSha256) {
     throw new TokenLedgerInfrastructureError(
-      "EXPECTED_SOURCE_INVENTORY_MISMATCH",
-      "trusted source inventory does not match the campaign/Integration expectation",
-    );
-  }
-  if (expected.orderedSourceManifestSha256 !== manifest.orderedSourceManifestSha256) {
-    throw new TokenLedgerInfrastructureError(
-      "EXPECTED_ORDERED_SOURCE_MANIFEST_MISMATCH",
-      "trusted source order does not match the campaign/Integration expectation",
-    );
-  }
-  if (expected.sourceRootSha256 !== manifest.sourceRootSha256) {
-    throw new TokenLedgerInfrastructureError(
-      "EXPECTED_SOURCE_ROOT_MISMATCH",
-      "trusted source root does not match the campaign/Integration expectation",
+      "EXPECTED_SOURCE_MANIFEST_MISMATCH",
+      "trusted source manifest does not match the campaign/Integration expectation",
     );
   }
   if (!Array.isArray(input.segments) || input.segments.length === 0) {
@@ -918,10 +842,6 @@ function buildTokenLedgerInternal(
       compilerVersion: TOKEN_CLASSIFICATION_CONTRACT.compilerVersion,
       segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
       trustedSourceManifestSha256: input.sourceManifest.canonicalSha256,
-      captureManifestSha256: input.sourceManifest.captureManifestSha256,
-      sourceInventorySha256: input.sourceManifest.sourceInventorySha256,
-      orderedSourceManifestSha256: input.sourceManifest.orderedSourceManifestSha256,
-      sourceRootSha256: input.sourceManifest.sourceRootSha256,
       expectedSourceAttestation: input.expectedSourceAttestation,
       orderedSources,
       sourceKindToComponent: SOURCE_KIND_TO_COMPONENT,

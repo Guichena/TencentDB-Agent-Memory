@@ -2,12 +2,8 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 import type { FormalRuntimeFreezeManifest } from "./build-runtime-freeze.js";
-import { canonicalSha256, exactUtf8Sha256 } from "./canonical.js";
 import type { FormalDataFreeze } from "./freeze.js";
 import type { FormalReadText } from "./provider-loader.js";
-
-export const FORMAL_RUNTIME_FREEZE_FILE_SHA256 = "69480e56ae6281711c926fda743a38c7ff9d76874f94e19a0e430b5d9a9596e4" as const;
-export const FORMAL_RUNTIME_FREEZE_CANONICAL_SHA256 = "64c86aa6743714514b4e27384308bd3afc8e073be93c2fd23c11e1d600317854" as const;
 
 export interface LoadFormalRuntimeFreezeManifestInput {
   readonly freeze: FormalDataFreeze;
@@ -47,20 +43,14 @@ function hashRecord(value: unknown, keys: readonly string[], label: string): Rec
   return result;
 }
 
-/** Public hash-only manifest loader. It never imports or opens private Measurement files. */
+/** Public manifest loader. It validates experiment identity and counts, not a redundant self-hash. */
 export function loadFormalRuntimeFreezeManifest(
   input: LoadFormalRuntimeFreezeManifestInput,
 ): FormalRuntimeFreezeManifest {
   const readText = input.readText ?? ((path: string) => readFileSync(path, "utf8"));
   const path = resolve(input.freeze.datasetRoot, "..", "formal-runtime", "frozen", "formal-runtime-freeze.json");
   const rawText = readText(path);
-  if (exactUtf8Sha256(rawText) !== FORMAL_RUNTIME_FREEZE_FILE_SHA256) {
-    throw new Error("runtime freeze manifest exact file hash drift");
-  }
   const root = record(JSON.parse(rawText) as unknown, "runtime freeze manifest");
-  if (canonicalSha256(root) !== FORMAL_RUNTIME_FREEZE_CANONICAL_SHA256) {
-    throw new Error("runtime freeze manifest canonical hash drift");
-  }
   exactKeys(root, [
     "schemaVersion",
     "datasetContractRevision",

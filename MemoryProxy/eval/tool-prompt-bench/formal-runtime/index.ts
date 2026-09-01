@@ -45,8 +45,6 @@ export type {
   FormalSmokeTeamRule,
 } from "./build-smoke-preregistration.js";
 export {
-  FORMAL_RUNTIME_FREEZE_CANONICAL_SHA256,
-  FORMAL_RUNTIME_FREEZE_FILE_SHA256,
   loadFormalRuntimeFreezeManifest,
   type LoadFormalRuntimeFreezeManifestInput,
 } from "./runtime-freeze.js";

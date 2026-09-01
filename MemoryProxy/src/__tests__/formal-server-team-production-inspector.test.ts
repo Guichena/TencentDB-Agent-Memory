@@ -203,7 +203,6 @@ describe("server_team production asset inspector", () => {
           data: {
             session: { request: identity, response: { ...identity, httpStatus: 200, envelopeCode: 0 } },
             effectiveWriteConfig: {
-              configFingerprintSha256: "b".repeat(64),
               extractionEnabled: false,
               extractionExtractorIds: [],
               tdaiL0WriteEnabled: false,

@@ -133,9 +133,7 @@ function trustedTokenSources(
     sourceManifest,
     expectedSourceAttestation: {
       authority: "synthetic-self-built" as const,
-      sourceInventorySha256: sourceManifest.sourceInventorySha256,
-      orderedSourceManifestSha256: sourceManifest.orderedSourceManifestSha256,
-      sourceRootSha256: sourceManifest.sourceRootSha256,
+      sourceManifestSha256: sourceManifest.canonicalSha256,
     },
     segments: sources.map((source, index) => ({
       order: source.order,
@@ -953,7 +951,7 @@ describe("Task 1 measurement v2 token ledger", () => {
     }));
   });
 
-  it("binds capture provenance and source roots to the frozen campaign expectation", () => {
+  it("binds capture provenance to one frozen source-manifest identity", () => {
     const text = "ASSET";
     const sourceSha256 = createHash("sha256").update(text).digest("hex");
     const captureManifest = buildFrozenCaptureSourceManifest({
@@ -982,9 +980,7 @@ describe("Task 1 measurement v2 token ledger", () => {
     const sourceManifest = buildManifest(captureManifest, "frozen-capture-dynamic-asset");
     const expectedSourceAttestation = {
       authority: "campaign-integration" as const,
-      sourceInventorySha256: sourceManifest.sourceInventorySha256,
-      orderedSourceManifestSha256: sourceManifest.orderedSourceManifestSha256,
-      sourceRootSha256: sourceManifest.sourceRootSha256,
+      sourceManifestSha256: sourceManifest.canonicalSha256,
     };
     const buildLedger = (
       manifest: typeof sourceManifest,
@@ -1009,18 +1005,8 @@ describe("Task 1 measurement v2 token ledger", () => {
     expect(buildLedger(sourceManifest).dynamicAssetTokens).toBe(text.length);
     expect(() => buildLedger(sourceManifest, {
       ...expectedSourceAttestation,
-      sourceInventorySha256: "f".repeat(64),
-    })).toThrowError(expect.objectContaining({ code: "EXPECTED_SOURCE_INVENTORY_MISMATCH" }));
-    expect(() => buildLedger(sourceManifest, {
-      ...expectedSourceAttestation,
-      orderedSourceManifestSha256: "f".repeat(64),
-    })).toThrowError(expect.objectContaining({
-      code: "EXPECTED_ORDERED_SOURCE_MANIFEST_MISMATCH",
-    }));
-    expect(() => buildLedger(sourceManifest, {
-      ...expectedSourceAttestation,
-      sourceRootSha256: "f".repeat(64),
-    })).toThrowError(expect.objectContaining({ code: "EXPECTED_SOURCE_ROOT_MISMATCH" }));
+      sourceManifestSha256: "f".repeat(64),
+    })).toThrowError(expect.objectContaining({ code: "EXPECTED_SOURCE_MANIFEST_MISMATCH" }));
 
     const relabeledCaptureManifest = buildFrozenCaptureSourceManifest({
       segmenterVersion: TOKEN_CLASSIFICATION_CONTRACT.segmenterVersion,
@@ -1036,7 +1022,7 @@ describe("Task 1 measurement v2 token ledger", () => {
       "frozen-capture-runtime-binding",
     );
     expect(() => buildLedger(relabeledSourceManifest)).toThrowError(expect.objectContaining({
-      code: "EXPECTED_SOURCE_INVENTORY_MISMATCH",
+      code: "EXPECTED_SOURCE_MANIFEST_MISMATCH",
     }));
 
     const changedText = "ASSET-CHANGED";
@@ -1057,7 +1043,7 @@ describe("Task 1 measurement v2 token ledger", () => {
       recomputedSourceManifest,
       expectedSourceAttestation,
       changedText,
-    )).toThrowError(expect.objectContaining({ code: "EXPECTED_SOURCE_INVENTORY_MISMATCH" }));
+    )).toThrowError(expect.objectContaining({ code: "EXPECTED_SOURCE_MANIFEST_MISMATCH" }));
   });
 
   it("qualifies repeated compiler unit ids across real prompt surfaces", () => {
@@ -1798,8 +1784,6 @@ describe("Task 1 measurement v2 isolation evidence", () => {
       memoryProxyContext: { id: "proxy-context-a", fresh: true },
       snapshot: {
         id: "snapshot-1",
-        expectedSha256: EVIDENCE_SHA.snapshot,
-        restoredSha256: EVIDENCE_SHA.snapshot,
         restoreSucceeded: true,
       },
       visibleAssetsSha256: EVIDENCE_SHA.visibleAssets,
@@ -1861,8 +1845,6 @@ describe("Task 1 measurement v2 isolation evidence", () => {
       memoryProxyContext: { id: "", fresh: true },
       snapshot: {
         id: "",
-        expectedSha256: "",
-        restoredSha256: "",
         restoreSucceeded: true,
       },
       visibleAssetsSha256: "",
@@ -1883,8 +1865,6 @@ describe("Task 1 measurement v2 isolation evidence", () => {
       "SESSION_ID_INVALID",
       "MEMORY_PROXY_CONTEXT_ID_INVALID",
       "SNAPSHOT_ID_INVALID",
-      "SNAPSHOT_EXPECTED_SHA256_INVALID",
-      "SNAPSHOT_RESTORED_SHA256_INVALID",
       "VISIBLE_ASSETS_SHA256_INVALID",
       "LOCAL_STATE_ID_INVALID",
     ]));
@@ -1925,8 +1905,6 @@ describe("Task 1 measurement v2 isolation evidence", () => {
       memoryProxyContext: { id: "identity-context", fresh: true },
       snapshot: {
         id: "identity-snapshot",
-        expectedSha256: EVIDENCE_SHA.snapshot,
-        restoredSha256: EVIDENCE_SHA.snapshot,
         restoreSucceeded: true,
       },
       visibleAssetsSha256: EVIDENCE_SHA.visibleAssets,
@@ -2055,8 +2033,6 @@ describe("Task 1 measurement v2 isolation evidence", () => {
       memoryProxyContext: { id: `proxy-${suffix}`, fresh: true },
       snapshot: {
         id: "snapshot-paired",
-        expectedSha256: EVIDENCE_SHA.snapshot,
-        restoredSha256: EVIDENCE_SHA.snapshot,
         restoreSucceeded: true,
       },
       visibleAssetsSha256: EVIDENCE_SHA.visibleAssets,
@@ -2244,8 +2220,6 @@ describe("Task 1 measurement v2 isolation evidence", () => {
       memoryProxyContext: { id: `context-${role}`, fresh: true },
       snapshot: {
         id: "counterfactual-snapshot",
-        expectedSha256: EVIDENCE_SHA.snapshot,
-        restoredSha256: EVIDENCE_SHA.snapshot,
         restoreSucceeded: true,
       },
       visibleAssetsSha256: EVIDENCE_SHA.visibleAssets,
@@ -2328,8 +2302,6 @@ describe("Task 1 measurement v2 isolation evidence", () => {
       memoryProxyContext: { id: `repeat-context-${suffix}`, fresh: true },
       snapshot: {
         id: "repeat-snapshot",
-        expectedSha256: EVIDENCE_SHA.snapshot,
-        restoredSha256: EVIDENCE_SHA.snapshot,
         restoreSucceeded: true,
       },
       visibleAssetsSha256: EVIDENCE_SHA.visibleAssets,
@@ -2443,8 +2415,6 @@ describe("Task 1 measurement v2 final-eligibility evidence", () => {
       memoryProxyContext: { id: `context-${suffix}`, fresh: true },
       snapshot: {
         id: "mock-snapshot",
-        expectedSha256: EVIDENCE_SHA.snapshot,
-        restoredSha256: EVIDENCE_SHA.snapshot,
         restoreSucceeded: true,
       },
       visibleAssetsSha256: EVIDENCE_SHA.visibleAssets,
@@ -2610,8 +2580,6 @@ describe("Task 1 measurement v2 final-eligibility evidence", () => {
       memoryProxyContext: { id: "ordinary-context", fresh: true },
       snapshot: {
         id: "ordinary-snapshot",
-        expectedSha256: EVIDENCE_SHA.snapshot,
-        restoredSha256: EVIDENCE_SHA.snapshot,
         restoreSucceeded: true,
       },
       visibleAssetsSha256: EVIDENCE_SHA.visibleAssets,

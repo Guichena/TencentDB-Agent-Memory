@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { isDeepStrictEqual } from "node:util";
 
 import {
   buildCodexConfigArgs,
@@ -21,7 +22,6 @@ import {
   materializePreparedRunExecutionContext,
   type PreparedFormalRun,
 } from "./formal-prepare-runner.js";
-import { canonicalSha256 } from "./formal-runtime/canonical.js";
 import {
   buildMemoryProxyCodexBaseUrl,
   buildRealChainIdentityHeaders,
@@ -81,13 +81,6 @@ export interface FormalExecutionReceipt {
   readonly knowledgeInstanceId: string;
   readonly providerPromptSha256: string;
   readonly visibleAssetSetSha256: string;
-  readonly preflightReceiptSha256: string;
-  readonly artifactBindings: {
-    readonly runManifestFileSha256: string;
-    readonly prepareCommandFileSha256: string;
-    readonly providerPromptFileSha256: string;
-    readonly preflightReceiptFileSha256: string;
-  };
   readonly executionIdentity: {
     readonly modelId: string;
     readonly reasoningEffort: string;
@@ -101,19 +94,15 @@ export interface FormalExecutionReceipt {
       readonly cwd: string;
       readonly runtimeIdentity: PinnedFormalExecutionPreflightReceipt["runtimeIdentity"];
     };
-    readonly canonicalSha256: string;
   };
   readonly preparationBinding: {
-    readonly runManifestCanonicalSha256: string;
-    readonly prepareCommandCanonicalSha256: string;
-    readonly workspacePolicySha256: string;
     readonly runNamespace: string;
     readonly memoryProxyContextId: string;
     readonly localStateId: string;
     readonly freshLocalState: true;
     readonly inheritedHistory: false;
   };
-  readonly snapshotBinding: PinnedFormalExecutionPreflightReceipt["provenance"];
+  readonly snapshotId: string;
   readonly codeFreeze: FormalCodeFreezeReceipt;
   readonly startedAt: string;
   readonly finishedAt: string;
@@ -123,8 +112,6 @@ export interface FormalExecutionReceipt {
     readonly exitCode: number | null;
     readonly timedOut: boolean;
     readonly infrastructureError: string | null;
-    readonly stdoutSha256: string;
-    readonly stderrSha256: string;
   };
   readonly clientUsage: CodexUsage | null;
   readonly promptEvidenceState: "captured-by-provider-observer-pending-seal";
@@ -228,8 +215,6 @@ export async function executePreparedFormalRun(
     knowledgeInstanceId: expectedKnowledgeInstanceId,
     providerPromptSha256: run.manifest.provider_input_sha256,
     visibleAssetSetSha256: run.manifest.visible_asset_set_sha256,
-    preflightReceiptSha256: canonicalSha256(input.preflightReceipt),
-    artifactBindings: preparedArtifacts.artifactBindings,
     executionIdentity: Object.freeze({
       modelId: run.manifest.model_id,
       reasoningEffort: run.manifest.reasoning_effort,
@@ -238,14 +223,11 @@ export async function executePreparedFormalRun(
     }),
     effectiveInvocation,
     preparationBinding: Object.freeze({
-      runManifestCanonicalSha256: canonicalSha256(run.manifest),
-      prepareCommandCanonicalSha256: canonicalSha256(run.command),
-      workspacePolicySha256: canonicalSha256(run.command.workspacePolicy),
       ...isolationIdentity,
       freshLocalState: true,
       inheritedHistory: false,
     }),
-    snapshotBinding: Object.freeze({ ...input.preflightReceipt.provenance }),
+    snapshotId: input.preflightReceipt.provenance.snapshotId,
     codeFreeze: Object.freeze({ ...input.codeFreeze }),
     startedAt,
     finishedAt,
@@ -255,8 +237,6 @@ export async function executePreparedFormalRun(
       exitCode: result.exitCode,
       timedOut: result.timedOut,
       infrastructureError,
-      stdoutSha256: sha256(result.stdout),
-      stderrSha256: sha256(result.stderr),
     }),
     clientUsage: clientUsage ? Object.freeze({ ...clientUsage }) : null,
     promptEvidenceState: "captured-by-provider-observer-pending-seal",
@@ -274,7 +254,6 @@ async function readPreparedExecutionArtifacts(
 ): Promise<Readonly<{
   stdin: string;
   preflightReceiptRaw: string;
-  artifactBindings: FormalExecutionReceipt["artifactBindings"];
 }>> {
   const [runManifestRaw, prepareCommandRaw, providerPromptRaw] = await Promise.all([
     readFile(join(run.directory, "run-manifest.json"), "utf8"),
@@ -288,12 +267,6 @@ async function readPreparedExecutionArtifacts(
   return Object.freeze({
     stdin,
     preflightReceiptRaw,
-    artifactBindings: Object.freeze({
-      runManifestFileSha256: sha256(runManifestRaw),
-      prepareCommandFileSha256: sha256(prepareCommandRaw),
-      providerPromptFileSha256: sha256(providerPromptRaw),
-      preflightReceiptFileSha256: sha256(preflightReceiptRaw),
-    }),
   });
 }
 
@@ -332,7 +305,7 @@ function assertCanonicalJsonFile(label: string, raw: string, expected: unknown):
   } catch (error) {
     throw new Error(`${label} is not valid JSON`, { cause: error });
   }
-  if (canonicalSha256(parsed) !== canonicalSha256(expected)) {
+  if (!isDeepStrictEqual(parsed, expected)) {
     throw new Error(`${label} does not match the prepared run object`);
   }
 }
@@ -399,11 +372,9 @@ export function validatePreflightReceipt(
     sessionId: run.manifest.session_id,
     agentSource: "codex",
     visibleAssetSetSha256: run.manifest.visible_asset_set_sha256,
-    effectiveConfigSha256: run.manifest.proxy_config_sha256,
   }, receipt);
-  if (receipt.provenance.snapshotId !== run.manifest.snapshot_id
-    || receipt.provenance.snapshotCanonicalSha256 !== run.manifest.snapshot_sha256) {
-    throw new Error("formal preflight snapshot provenance does not match prepared manifest");
+  if (receipt.provenance.snapshotId !== run.manifest.snapshot_id) {
+    throw new Error("formal preflight snapshot does not match prepared manifest");
   }
 }
 
@@ -439,10 +410,7 @@ export function buildEffectiveFormalInvocation(
     cwd: run.command.workspacePolicy.path,
     runtimeIdentity,
   });
-  return Object.freeze({
-    canonical,
-    canonicalSha256: canonicalSha256(canonical),
-  });
+  return Object.freeze({ canonical });
 }
 
 function proxyBaseUrlFromHealthUrl(value: string): string {
@@ -464,21 +432,9 @@ export function buildFormalRunIsolationIdentity(run: PreparedFormalRun): Readonl
     sessionId: run.manifest.session_id,
   };
   return Object.freeze({
-    runNamespace: `run:${canonicalSha256({
-      ...common,
-      executionWorkspacePath: run.manifest.execution_workspace_path,
-    })}`,
-    memoryProxyContextId: `proxy-context:${canonicalSha256({
-      ...common,
-      proxyInstanceId: run.manifest.proxy_instance_id,
-    })}`,
-    localStateId: `local-state:${canonicalSha256({
-      ...common,
-      executionWorkspacePath: run.manifest.execution_workspace_path,
-      isolatedHome: run.command.environmentPolicy.isolatedHome,
-      isolatedCodexSqliteHome: run.command.environmentPolicy.isolatedCodexSqliteHome,
-      workspacePolicySha256: canonicalSha256(run.command.workspacePolicy),
-    })}`,
+    runNamespace: `run:${common.runId}`,
+    memoryProxyContextId: `proxy-context:${run.manifest.proxy_instance_id}:${common.sessionId}`,
+    localStateId: `local-state:${common.runId}:${common.sessionId}`,
   });
 }
 

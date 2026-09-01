@@ -13,7 +13,6 @@ import type {
   FormalExecutionPreflightInput,
   FormalExecutionPreflightReceipt,
 } from "../../eval/tool-prompt-bench/formal-execution-preflight.js";
-import { canonicalSha256 } from "../../eval/tool-prompt-bench/formal-runtime/canonical.js";
 
 describe("formal preflight receipt CLI", () => {
   it("requires explicit hidden-test authorization", () => {
@@ -65,10 +64,7 @@ describe("formal preflight receipt CLI", () => {
     expect(result).toMatchObject({
       ready: true,
       provenance: {
-        restorePlanSha256: "a".repeat(64),
         snapshotId: "snapshot-a",
-        snapshotCanonicalSha256: "c".repeat(64),
-        inspectEnvelopeCanonicalSha256: canonicalSha256(inspected),
       },
     });
     expect(parseObservations).toHaveBeenCalledWith(

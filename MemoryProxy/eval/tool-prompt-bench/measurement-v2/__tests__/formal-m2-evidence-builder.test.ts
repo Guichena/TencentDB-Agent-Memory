@@ -157,13 +157,6 @@ function execution(): FormalExecutionReceipt {
     knowledgeInstanceId: "knowledge-1",
     providerPromptSha256: SHA_A,
     visibleAssetSetSha256: SHA_E,
-    preflightReceiptSha256: SHA_B,
-    artifactBindings: {
-      runManifestFileSha256: SHA_A,
-      prepareCommandFileSha256: SHA_B,
-      providerPromptFileSha256: SHA_C,
-      preflightReceiptFileSha256: SHA_D,
-    },
     executionIdentity: {
       modelId: "gpt-5.6-luna",
       reasoningEffort: "high",
@@ -172,24 +165,15 @@ function execution(): FormalExecutionReceipt {
     },
     effectiveInvocation: {
       canonical: effectiveInvocationCanonical,
-      canonicalSha256: canonicalSha256(effectiveInvocationCanonical),
     },
     preparationBinding: {
-      runManifestCanonicalSha256: SHA_A,
-      prepareCommandCanonicalSha256: SHA_B,
-      workspacePolicySha256: SHA_C,
       runNamespace: "run:isolated-1",
       memoryProxyContextId: "proxy-context:isolated-1",
       localStateId: "local-state:isolated-1",
       freshLocalState: true,
       inheritedHistory: false,
     },
-    snapshotBinding: {
-      restorePlanSha256: SHA_A,
-      snapshotId: "snapshot-1",
-      snapshotCanonicalSha256: SHA_D,
-      inspectEnvelopeCanonicalSha256: SHA_E,
-    },
+    snapshotId: "snapshot-1",
     codeFreeze: {
       executionCodeCommit: "1".repeat(40),
       promptFreezeTagObject: FORMAL_PROMPT_FREEZE_TAG_OBJECT,
@@ -205,8 +189,6 @@ function execution(): FormalExecutionReceipt {
       exitCode: 0,
       timedOut: false,
       infrastructureError: null,
-      stdoutSha256: SHA_A,
-      stderrSha256: SHA_B,
     },
     clientUsage: null,
     promptEvidenceState: "captured-by-provider-observer-pending-seal",

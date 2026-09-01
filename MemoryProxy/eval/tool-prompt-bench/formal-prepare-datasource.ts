@@ -1,7 +1,6 @@
 import { isDeepStrictEqual } from "node:util";
 
 import {
-  canonicalSha256,
   loadFormalDatasetMetadata,
   loadFormalRuntimeFreezeManifest,
   loadFormalSmokePreregistration,
@@ -122,10 +121,6 @@ export function createFormalPrepareDataSource(
         cases: Object.freeze(cases),
         caseBindingsFileSha256: manifest.artifacts.caseBindings.fileSha256,
       });
-    },
-
-    canonicalProviderInputSha256(value: unknown): string {
-      return canonicalSha256(value);
     },
   });
 }

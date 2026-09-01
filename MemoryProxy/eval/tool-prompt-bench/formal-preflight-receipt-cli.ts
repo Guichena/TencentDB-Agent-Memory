@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { isDeepStrictEqual } from "node:util";
 
 import {
   parsePinnedFormalAssetRestorePlan,
@@ -20,7 +21,6 @@ import {
 } from "./formal-execution-preflight.js";
 import { loadPreparedFormalRunDirectory } from "./formal-execution-cli.js";
 import type { PreparedFormalRun } from "./formal-prepare-runner.js";
-import { canonicalSha256 } from "./formal-runtime/canonical.js";
 
 export interface FormalPreflightReceiptCliOptions {
   readonly runDirectory: string;
@@ -118,17 +118,14 @@ export function createFormalExecutionPreflightReceipt(
     "inspect unverifiedObservations",
     inspected.unverifiedObservations,
   ) as unknown as FormalExecutionPreflightInput;
-  if (canonicalSha256(observations.expected) !== canonicalSha256(input.expected)) {
+  if (!isDeepStrictEqual(observations.expected, input.expected)) {
     throw new Error("formal inspect expected binding does not match the prepared run");
   }
   const evaluated = evaluate({ ...observations, expected: input.expected });
   return Object.freeze({
     ...evaluated,
     provenance: Object.freeze({
-      restorePlanSha256: plan.planSha256,
       snapshotId: plan.snapshot.snapshotId,
-      snapshotCanonicalSha256: plan.revision.snapshotCanonicalSha256,
-      inspectEnvelopeCanonicalSha256: canonicalSha256(inspected),
     }),
   });
 }

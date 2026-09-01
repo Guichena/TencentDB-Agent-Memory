@@ -1,6 +1,4 @@
 /** Production read-back inspector for a restored local server_team snapshot. */
-import { createHash } from "node:crypto";
-
 import type {
   FormalAssetInspectionAdapter,
   FormalAssetInspectionContext,
@@ -16,7 +14,6 @@ import type {
   FormalExecutionPreflightInput,
   FormalRuntimeAssetLocator,
 } from "../formal-execution-preflight.js";
-import { canonicalSha256 } from "../formal-runtime/canonical.js";
 import type {
   ProductionAssetRestoreReceipt,
   ProductionRestoreActionReceipt,
@@ -54,8 +51,6 @@ interface RawExchange {
   readonly status: number;
   readonly envelopeCode: number;
   readonly body: JsonRecord;
-  readonly contentSha256: string;
-  readonly requestBodySha256: string;
 }
 
 interface RuntimeIdentity {
@@ -154,13 +149,7 @@ async function getJson(
     status: response.status,
     envelopeCode: typeof parsed.code === "number" ? parsed.code : -1,
     body: parsed,
-    contentSha256: sha256(text),
-    requestBodySha256: sha256(""),
   };
-}
-
-function sha256(text: string): string {
-  return createHash("sha256").update(text, "utf8").digest("hex");
 }
 
 function endpoint(base: URL, path: string): string {
@@ -197,8 +186,6 @@ async function postJson(
     status: response.status,
     envelopeCode: typeof parsed.code === "number" ? parsed.code : -1,
     body: parsed,
-    contentSha256: sha256(text),
-    requestBodySha256: sha256(serialized),
   };
 }
 
@@ -411,18 +398,6 @@ function inventorySource(
   serviceId: string,
 ): FormalAssetInventorySourceObservation {
   assertVisible(exchange, located);
-  const receiptSha256 = canonicalSha256({
-    schemaVersion: "task1.formal-read-back-receipt.v1",
-    serviceId,
-    resolvedUserId: runtime.resolvedUserId,
-    teamId: runtime.runtimeTeamId,
-    agentId: located[0]?.sourceAgentId ?? fail("read-back source has no assets"),
-    path: exchange.path,
-    requestBodySha256: exchange.requestBodySha256,
-    httpStatus: exchange.status,
-    envelopeCode: exchange.envelopeCode,
-    contentSha256: exchange.contentSha256,
-  });
   return {
     serviceId,
     resolvedUserId: runtime.resolvedUserId,
@@ -432,8 +407,6 @@ function inventorySource(
     requestPath: exchange.path,
     httpStatus: exchange.status,
     envelopeCode: exchange.envelopeCode,
-    contentSha256: exchange.contentSha256,
-    receiptSha256,
     items: located.map((item) => ({ subtype: item.asset.subtype, runtimeLocator: item.locator })),
   };
 }
@@ -621,42 +594,17 @@ export async function inspectServerTeamProductionAssets(
   const sessionNamespace = record(proxyData.sessionNamespace, "preflight session namespace");
   const effectiveWriteConfig = record(proxyData.effectiveWriteConfig, "preflight write config");
 
-  const receiptByLocator = new Map<string, string>();
-  for (const source of inventory) {
-    for (const item of source.items) {
-      receiptByLocator.set(canonicalSha256({
-        family: source.family, subtype: item.subtype, sourceAgentId: source.agentId,
-        locator: item.runtimeLocator,
-      }), source.receiptSha256);
-    }
-  }
-  const assetLocators: FormalAssetLocatorMapping[] = located.map((item) => {
-    const key = canonicalSha256({
-      family: item.asset.family, subtype: item.asset.subtype, sourceAgentId: item.sourceAgentId,
-      locator: item.locator,
-    });
-    return {
-      logicalAssetId: item.asset.formalAssetId,
-      family: item.asset.family,
-      subtype: item.asset.subtype,
-      sourceAgentId: item.sourceAgentId,
-      runtimeLocator: item.locator,
-      readBackReceiptSha256: receiptByLocator.get(key) ?? fail(`no read-back receipt for ${item.asset.formalAssetId}`),
-    };
-  });
-  const sourceArtifactSha256 = canonicalSha256({
-    schemaVersion: "task1.formal-runtime-identity-mapping.v1",
-    planSha256: plan.planSha256,
-    restoreReceiptSha256: canonicalSha256(receipt),
-    logicalIdentity: context.expectedBinding,
-    runtimeIdentity: runtime,
-    assetLocators,
-  });
+  const assetLocators: FormalAssetLocatorMapping[] = located.map((item) => ({
+    logicalAssetId: item.asset.formalAssetId,
+    family: item.asset.family,
+    subtype: item.asset.subtype,
+    sourceAgentId: item.sourceAgentId,
+    runtimeLocator: item.locator,
+  }));
 
   return {
     expected: context.expectedBinding,
     identityMapping: {
-      sourceArtifactSha256,
       logicalIdentity: {
         datasetUserId: runtime.datasetUserId,
         spaceId: runtime.datasetSpaceId,

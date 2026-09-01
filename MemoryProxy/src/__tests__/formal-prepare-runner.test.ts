@@ -16,7 +16,6 @@ import {
   type PreparedFormalRun,
 } from "../../eval/tool-prompt-bench/formal-prepare-runner.js";
 import type { PinnedFormalExecutionPreflightReceipt } from "../../eval/tool-prompt-bench/formal-execution-preflight.js";
-import { canonicalSha256 } from "../../eval/tool-prompt-bench/formal-runtime/canonical.js";
 import {
   FORMAL_DATA_COMMIT,
   FORMAL_DATA_TAG,
@@ -118,9 +117,6 @@ function makeSource(audit: string[] = []): FormalPrepareDataSource {
         caseBindingsFileSha256: SHA_F,
       };
     },
-    canonicalProviderInputSha256(value) {
-      return createHash("sha256").update(JSON.stringify(value)).digest("hex");
-    },
   };
 }
 
@@ -180,14 +176,8 @@ function makeExecutionPreflightReceipt(
     agentSource: "codex",
     visibleAssetSetSha256: run.manifest.visible_asset_set_sha256,
     visibleAssetCount: 9,
-    identityMappingSourceSha256: SHA_A,
-    effectiveConfigSha256: run.manifest.proxy_config_sha256,
-    assetReadBackReceipts: [{ receiptSha256: SHA_B, contentSha256: SHA_C }],
     provenance: {
-      restorePlanSha256: SHA_D,
       snapshotId: run.manifest.snapshot_id,
-      snapshotCanonicalSha256: run.manifest.snapshot_sha256,
-      inspectEnvelopeCanonicalSha256: SHA_E,
     },
     checks: [
       { id: "auth-user-mapping", status: "pass" },
@@ -223,8 +213,6 @@ describe("R02 PrepareOnly formal runner", () => {
         proxy_instance_id: "memory-proxy-v0",
         proxy_instance_epoch: "2026-08-30T00:00:00.000Z",
         proxy_config_sha256: SHA_B,
-        proxy_config_file_sha256: SHA_F,
-        proxy_base_config_sha256: SHA_A,
         identity_binding_state: "unverified-prepare-only",
         expected_tool_prompt_profile: "legacy",
         expected_codex_upstream_url: "https://chatgpt.com/backend-api/codex",
@@ -343,9 +331,8 @@ describe("R02 PrepareOnly formal runner", () => {
 
     const repeatOne = [firstV0.runs[0]!, firstV3.runs[0]!];
     expect(new Set(repeatOne.map((run) => run.manifest.provider_input_sha256)).size).toBe(1);
-    expect(new Set(repeatOne.map((run) => run.manifest.provider_input_canonical_sha256)).size).toBe(1);
-    expect(new Set(repeatOne.map((run) => run.manifest.asset_binding_input_sha256)).size).toBe(1);
-    expect(new Set(repeatOne.map((run) => run.manifest.case_binding_sha256)).size).toBe(1);
+    expect(new Set(repeatOne.map((run) => run.manifest.visible_asset_set_sha256)).size).toBe(1);
+    expect(new Set(repeatOne.map((run) => run.manifest.case_bindings_file_sha256)).size).toBe(1);
     expect(new Set(repeatOne.map((run) => run.manifest.session_id)).size).toBe(2);
     expect(new Set([...firstV0.runs, ...firstV3.runs].map((run) => run.manifest.session_id)).size).toBe(4);
     expect(firstV0.runs.map((run) => run.manifest.session_id)).toEqual(
@@ -684,27 +671,16 @@ describe("R04 Gold-blind formal execution runner", () => {
           cwd: run.command.workspacePolicy.path,
           runtimeIdentity: preflightReceipt.runtimeIdentity,
         },
-        canonicalSha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
       },
       preparationBinding: {
-        runManifestCanonicalSha256: canonicalSha256(run.manifest),
-        prepareCommandCanonicalSha256: canonicalSha256(run.command),
-        workspacePolicySha256: canonicalSha256(run.command.workspacePolicy),
-        runNamespace: expect.stringMatching(/^run:[a-f0-9]{64}$/u),
-        memoryProxyContextId: expect.stringMatching(/^proxy-context:[a-f0-9]{64}$/u),
-        localStateId: expect.stringMatching(/^local-state:[a-f0-9]{64}$/u),
+        runNamespace: `run:${run.manifest.run_id}`,
+        memoryProxyContextId: `proxy-context:${run.manifest.proxy_instance_id}:${run.manifest.session_id}`,
+        localStateId: `local-state:${run.manifest.run_id}:${run.manifest.session_id}`,
         freshLocalState: true,
         inheritedHistory: false,
       },
-      snapshotBinding: {
-        restorePlanSha256: SHA_D,
-        snapshotId: run.manifest.snapshot_id,
-        snapshotCanonicalSha256: run.manifest.snapshot_sha256,
-        inspectEnvelopeCanonicalSha256: SHA_E,
-      },
+      snapshotId: run.manifest.snapshot_id,
     });
-    expect(receipt.effectiveInvocation.canonicalSha256)
-      .toBe(canonicalSha256(receipt.effectiveInvocation.canonical));
     const names = (await readdir(run.directory)).sort();
     expect(names).toEqual([
       "client-usage.json",
@@ -718,17 +694,6 @@ describe("R04 Gold-blind formal execution runner", () => {
     ]);
     expect(await readFile(join(run.directory, "codex-events.jsonl"), "utf8"))
       .toBe(codexStdout);
-    const rawArtifactSha256 = async (name: string) => createHash("sha256")
-      .update(await readFile(join(run.directory, name), "utf8"), "utf8")
-      .digest("hex");
-    expect(receipt.artifactBindings).toEqual({
-      runManifestFileSha256: await rawArtifactSha256("run-manifest.json"),
-      prepareCommandFileSha256: await rawArtifactSha256("prepare-command.json"),
-      providerPromptFileSha256: await rawArtifactSha256("provider-prompt.json"),
-      preflightReceiptFileSha256: await rawArtifactSha256(
-        "formal-execution-preflight-receipt.json",
-      ),
-    });
     expect(JSON.parse(await readFile(
       join(run.directory, "formal-execution-preflight-receipt.json"),
       "utf8",

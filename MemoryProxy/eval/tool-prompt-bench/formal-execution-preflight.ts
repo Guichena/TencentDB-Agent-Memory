@@ -64,11 +64,9 @@ export interface FormalAssetLocatorMapping {
   /** Actual Agent scope used to read this asset; defaults to the selected Agent. */
   readonly sourceAgentId?: string;
   readonly runtimeLocator: FormalRuntimeAssetLocator;
-  readonly readBackReceiptSha256: string;
 }
 
 export interface FormalIdentityMappingObservation {
-  readonly sourceArtifactSha256: string;
   readonly logicalIdentity: FormalLogicalIdentity;
   readonly runtimeIdentity: FormalRuntimeIdentity;
   readonly assetLocators: readonly FormalAssetLocatorMapping[];
@@ -131,10 +129,6 @@ export interface FormalAssetInventorySourceObservation {
   readonly requestPath: string;
   readonly httpStatus: number;
   readonly envelopeCode: number;
-  /** Hash of the exact successful read-back response content. */
-  readonly contentSha256: string;
-  /** Hash of the request/response receipt referenced by the mapping artifact. */
-  readonly receiptSha256: string;
   readonly items: readonly FormalAssetReadBackItemObservation[];
 }
 
@@ -145,7 +139,6 @@ export interface FormalAssetInventoryObservation {
 
 /** Raw effective config fields; there is deliberately no caller-supplied `disabled` verdict. */
 export interface FormalEffectiveWriteConfigObservation {
-  readonly configFingerprintSha256: string;
   readonly extractionEnabled: boolean;
   readonly extractionExtractorIds: readonly string[];
   readonly tdaiL0WriteEnabled: boolean;
@@ -191,12 +184,6 @@ export interface FormalExecutionPreflightReceipt {
   readonly agentSource: string;
   readonly visibleAssetSetSha256: string;
   readonly visibleAssetCount: number;
-  readonly identityMappingSourceSha256: string;
-  readonly effectiveConfigSha256: string;
-  readonly assetReadBackReceipts: readonly Readonly<{
-    readonly receiptSha256: string;
-    readonly contentSha256: string;
-  }>[];
   readonly checks: readonly FormalPreflightCheck[];
 }
 
@@ -206,10 +193,7 @@ export interface FormalExecutionPreflightReceipt {
  * raw evaluator deliberately cannot manufacture this binding on its own.
  */
 export interface FormalPreflightProvenance {
-  readonly restorePlanSha256: string;
   readonly snapshotId: string;
-  readonly snapshotCanonicalSha256: string;
-  readonly inspectEnvelopeCanonicalSha256: string;
 }
 
 export interface PinnedFormalExecutionPreflightReceipt
@@ -272,19 +256,19 @@ function validateRuntimeLocator(name: string, locator: FormalRuntimeAssetLocator
 
 function locatorKey(locator: FormalRuntimeAssetLocator): string {
   if (locator.kind === "asset-id") {
-    return canonicalSha256({ kind: locator.kind, assetId: locator.assetId });
+    return JSON.stringify({ kind: locator.kind, assetId: locator.assetId });
   }
   if (locator.kind === "scenario-path") {
-    return canonicalSha256({ kind: locator.kind, path: locator.path });
+    return JSON.stringify({ kind: locator.kind, path: locator.path });
   }
   if (locator.kind === "conversation-message") {
-    return canonicalSha256({
+    return JSON.stringify({
       kind: locator.kind,
       sessionId: locator.sessionId,
       messageIds: [...locator.messageIds].sort((left, right) => left.localeCompare(right)),
     });
   }
-  return canonicalSha256({
+  return JSON.stringify({
     kind: locator.kind,
     spaceId: locator.spaceId,
     teamId: locator.teamId,
@@ -346,7 +330,6 @@ function validateStructure(input: FormalExecutionPreflightInput): void {
   })) requireNonBlank(`expected.${name}`, value);
   requireSha256("expected.visibleAssetSetSha256", expected.visibleAssetSetSha256);
 
-  requireSha256("identityMapping.sourceArtifactSha256", input.identityMapping.sourceArtifactSha256);
   for (const [name, value] of Object.entries({
     datasetUserId: input.identityMapping.logicalIdentity.datasetUserId,
     spaceId: input.identityMapping.logicalIdentity.spaceId,
@@ -378,10 +361,6 @@ function validateStructure(input: FormalExecutionPreflightInput): void {
       requireNonBlank(`identityMapping.assetLocators[${index}].sourceAgentId`, mapping.sourceAgentId);
     }
     validateRuntimeLocator(`identityMapping.assetLocators[${index}].runtimeLocator`, mapping.runtimeLocator);
-    requireSha256(
-      `identityMapping.assetLocators[${index}].readBackReceiptSha256`,
-      mapping.readBackReceiptSha256,
-    );
   });
 
   requireNonBlank("authVerify.serviceId", input.authVerify.serviceId);
@@ -428,8 +407,6 @@ function validateStructure(input: FormalExecutionPreflightInput): void {
     requireNonBlank(`assetInventory.sources[${index}].requestPath`, source.requestPath);
     requireInteger(`assetInventory.sources[${index}].httpStatus`, source.httpStatus);
     requireInteger(`assetInventory.sources[${index}].envelopeCode`, source.envelopeCode);
-    requireSha256(`assetInventory.sources[${index}].contentSha256`, source.contentSha256);
-    requireSha256(`assetInventory.sources[${index}].receiptSha256`, source.receiptSha256);
     if (!Array.isArray(source.items)) throw new Error(`assetInventory.sources[${index}].items must be an array`);
     (source.items as readonly FormalAssetReadBackItemObservation[]).forEach((item, itemIndex) => {
       requireNonBlank(`assetInventory.sources[${index}].items[${itemIndex}].subtype`, item.subtype);
@@ -440,10 +417,6 @@ function validateStructure(input: FormalExecutionPreflightInput): void {
     });
   });
 
-  requireSha256(
-    "effectiveWriteConfig.configFingerprintSha256",
-    input.effectiveWriteConfig.configFingerprintSha256,
-  );
   requireStringArray(
     "effectiveWriteConfig.extractionExtractorIds",
     input.effectiveWriteConfig.extractionExtractorIds,
@@ -505,10 +478,8 @@ export function evaluateFormalExecutionPreflight(
   let inventorySourcesPass = true;
   const observedKeys: string[] = [];
   const successfulObservedKeys = new Set<string>();
-  const observedReceiptHashes: string[] = [];
   for (const source of input.assetInventory.sources) {
     sourceFamilies.add(source.family);
-    observedReceiptHashes.push(source.receiptSha256.toLowerCase());
     if (source.serviceId !== mappedRuntime.spaceId
       || source.resolvedUserId !== mappedRuntime.resolvedAuthUserId
       || source.teamId !== mappedRuntime.teamId) {
@@ -521,7 +492,6 @@ export function evaluateFormalExecutionPreflight(
         inventorySourcesPass = false;
       }
       const key = [
-        source.receiptSha256.toLowerCase(),
         source.family,
         item.subtype,
         source.agentId,
@@ -531,14 +501,12 @@ export function evaluateFormalExecutionPreflight(
       if (sourcePasses) successfulObservedKeys.add(key);
     }
   }
-  if (new Set(observedReceiptHashes).size !== observedReceiptHashes.length) inventorySourcesPass = false;
   if (new Set(observedKeys).size !== observedKeys.length) inventorySourcesPass = false;
 
   const locatorMappings = input.identityMapping.assetLocators;
   const logicalAssetIds = locatorMappings.map((mapping) => mapping.logicalAssetId);
   if (new Set(logicalAssetIds).size !== logicalAssetIds.length) inventorySourcesPass = false;
   const mappingKeys = locatorMappings.map((mapping) => [
-    mapping.readBackReceiptSha256.toLowerCase(),
     mapping.family,
     mapping.subtype,
     mapping.sourceAgentId ?? mappedRuntime.agentId,
@@ -617,12 +585,6 @@ export function evaluateFormalExecutionPreflight(
     agentId: input.session.response.agentId,
     taskId: input.session.response.taskId,
   });
-  const assetReadBackReceipts = Object.freeze(input.assetInventory.sources
-    .map((source) => Object.freeze({
-      receiptSha256: source.receiptSha256.toLowerCase(),
-      contentSha256: source.contentSha256.toLowerCase(),
-    }))
-    .sort((left, right) => left.receiptSha256.localeCompare(right.receiptSha256)));
   return Object.freeze({
     schemaVersion: FORMAL_EXECUTION_PREFLIGHT_RECEIPT_SCHEMA,
     ready: checks.every((item) => item.status === "pass"),
@@ -632,9 +594,6 @@ export function evaluateFormalExecutionPreflight(
     agentSource: input.session.response.agentSource,
     visibleAssetSetSha256: computedVisibleAssetSetSha256,
     visibleAssetCount: successfulLogicalAssetIds.length,
-    identityMappingSourceSha256: input.identityMapping.sourceArtifactSha256.toLowerCase(),
-    effectiveConfigSha256: input.effectiveWriteConfig.configFingerprintSha256.toLowerCase(),
-    assetReadBackReceipts,
     checks,
   });
 }

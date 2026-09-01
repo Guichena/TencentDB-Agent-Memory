@@ -102,13 +102,6 @@ function execution(
     knowledgeInstanceId: "knowledge-a",
     providerPromptSha256: "a".repeat(64),
     visibleAssetSetSha256: "9".repeat(64),
-    preflightReceiptSha256: "b".repeat(64),
-    artifactBindings: {
-      runManifestFileSha256: "1".repeat(64),
-      prepareCommandFileSha256: "2".repeat(64),
-      providerPromptFileSha256: "3".repeat(64),
-      preflightReceiptFileSha256: "4".repeat(64),
-    },
     executionIdentity: {
       modelId: "gpt-5.6-luna",
       reasoningEffort: "high",
@@ -117,24 +110,15 @@ function execution(
     },
     effectiveInvocation: {
       canonical: effectiveInvocationCanonical,
-      canonicalSha256: canonicalSha256(effectiveInvocationCanonical),
     },
     preparationBinding: {
-      runManifestCanonicalSha256: "3".repeat(64),
-      prepareCommandCanonicalSha256: "4".repeat(64),
-      workspacePolicySha256: "5".repeat(64),
       runNamespace: `run:${runId}`,
       memoryProxyContextId: `proxy-context:${runId}`,
       localStateId: `local-state:${runId}`,
       freshLocalState: true,
       inheritedHistory: false,
     },
-    snapshotBinding: {
-      restorePlanSha256: "6".repeat(64),
-      snapshotId: "snapshot-test",
-      snapshotCanonicalSha256: "7".repeat(64),
-      inspectEnvelopeCanonicalSha256: "8".repeat(64),
-    },
+    snapshotId: "snapshot-test",
     codeFreeze: {
       executionCodeCommit: "1".repeat(40),
       promptFreezeTagObject: FORMAL_PROMPT_FREEZE_TAG_OBJECT,
@@ -150,8 +134,6 @@ function execution(
       exitCode: 0,
       timedOut: false,
       infrastructureError: null,
-      stdoutSha256: "c".repeat(64),
-      stderrSha256: "d".repeat(64),
     },
     clientUsage: null,
     promptEvidenceState: "captured-by-provider-observer-pending-seal",

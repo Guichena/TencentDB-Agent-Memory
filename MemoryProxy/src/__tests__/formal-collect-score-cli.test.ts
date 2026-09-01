@@ -52,16 +52,13 @@ function executionReceipt(
       codexCliVersion,
     },
     preparationBinding: {
-      runManifestCanonicalSha256: "1".repeat(64),
-      prepareCommandCanonicalSha256: "2".repeat(64),
-      workspacePolicySha256: "3".repeat(64),
       runNamespace: `run-namespace-${runId}`,
       memoryProxyContextId: `proxy-context-${runId}`,
       localStateId: `local-state-${runId}`,
       freshLocalState: true,
       inheritedHistory: false,
     },
-  } as FormalExecutionReceipt;
+  } as unknown as FormalExecutionReceipt;
 }
 
 function providerRun(execution: FormalExecutionReceipt): CollectedProviderRun {
@@ -251,12 +248,8 @@ async function writeCompletedExecutionFixture(
     sessionId,
     agentSource: "codex",
     visibleAssetSetSha256,
-    effectiveConfigSha256: manifest.proxy_config_sha256,
     provenance: {
-      restorePlanSha256: "8".repeat(64),
       snapshotId: manifest.snapshot_id,
-      snapshotCanonicalSha256,
-      inspectEnvelopeCanonicalSha256: "9".repeat(64),
     },
     checks: [
       "auth-user-mapping",
@@ -273,7 +266,6 @@ async function writeCompletedExecutionFixture(
   const preflightRaw = json(preflight);
   const stdout = `${JSON.stringify({ type: "turn.completed" })}\n`;
   const stderr = "";
-  const commonIsolation = { runId, sessionId };
   const effectiveInvocation = buildEffectiveFormalInvocation(
     { directory, manifest, command } as unknown as PreparedFormalRun,
     preflight as unknown as Parameters<typeof buildEffectiveFormalInvocation>[1],
@@ -290,13 +282,6 @@ async function writeCompletedExecutionFixture(
     knowledgeInstanceId: "knowledge-instance-a",
     providerPromptSha256: manifest.provider_input_sha256,
     visibleAssetSetSha256,
-    preflightReceiptSha256: canonicalSha256(preflight),
-    artifactBindings: {
-      runManifestFileSha256: utf8Sha256(runManifestRaw),
-      prepareCommandFileSha256: utf8Sha256(prepareCommandRaw),
-      providerPromptFileSha256: utf8Sha256(providerPromptRaw),
-      preflightReceiptFileSha256: utf8Sha256(preflightRaw),
-    },
     executionIdentity: {
       modelId: manifest.model_id,
       reasoningEffort: manifest.reasoning_effort,
@@ -305,28 +290,13 @@ async function writeCompletedExecutionFixture(
     },
     effectiveInvocation,
     preparationBinding: {
-      runManifestCanonicalSha256: canonicalSha256(manifest),
-      prepareCommandCanonicalSha256: canonicalSha256(command),
-      workspacePolicySha256: canonicalSha256(workspacePolicy),
-      runNamespace: `run:${canonicalSha256({
-        ...commonIsolation,
-        executionWorkspacePath,
-      })}`,
-      memoryProxyContextId: `proxy-context:${canonicalSha256({
-        ...commonIsolation,
-        proxyInstanceId,
-      })}`,
-      localStateId: `local-state:${canonicalSha256({
-        ...commonIsolation,
-        executionWorkspacePath,
-        isolatedHome,
-        isolatedCodexSqliteHome,
-        workspacePolicySha256: canonicalSha256(workspacePolicy),
-      })}`,
+      runNamespace: `run:${runId}`,
+      memoryProxyContextId: `proxy-context:${proxyInstanceId}:${sessionId}`,
+      localStateId: `local-state:${runId}:${sessionId}`,
       freshLocalState: true,
       inheritedHistory: false,
     },
-    snapshotBinding: preflight.provenance,
+    snapshotId: preflight.provenance.snapshotId,
     codeFreeze: {
       executionCodeCommit: manifest.code_commit,
       promptFreezeTagObject: FORMAL_PROMPT_FREEZE_TAG_OBJECT,
@@ -342,8 +312,6 @@ async function writeCompletedExecutionFixture(
       exitCode: 0,
       timedOut: false,
       infrastructureError: null,
-      stdoutSha256: utf8Sha256(stdout),
-      stderrSha256: utf8Sha256(stderr),
     },
     clientUsage: null,
     promptEvidenceState: "captured-by-provider-observer-pending-seal",
@@ -557,7 +525,7 @@ describe("formal collect/score CLI", () => {
       .toEqual(["case-a:1", "case-a:2", "case-b:1"]);
   });
 
-  it("rejects a one-byte drift in every receipt-bound sibling artifact", async () => {
+  it("ignores irrelevant formatting and log-byte drift while revalidating semantic bindings", async () => {
     const files = [
       "run-manifest.json",
       "prepare-command.json",
@@ -572,7 +540,7 @@ describe("formal collect/score CLI", () => {
       const path = join(fixture.directory, file);
       await writeFile(path, `${await readFile(path, "utf8")} `, "utf8");
       await expect(discoverExecutionReceipts(root, "campaign-a"))
-        .rejects.toThrow(/file SHA-256 mismatch/i);
+        .resolves.toHaveLength(1);
     }
   });
 
@@ -590,7 +558,6 @@ describe("formal collect/score CLI", () => {
       ...fixture.receipt,
       effectiveInvocation: {
         canonical,
-        canonicalSha256: canonicalSha256(canonical),
       },
     };
     await writeFile(
@@ -600,7 +567,7 @@ describe("formal collect/score CLI", () => {
     );
 
     await expect(discoverExecutionReceipts(root, "campaign-a"))
-      .rejects.toThrow(/effective invocation\/preflight binding SHA-256 mismatch/i);
+      .rejects.toThrow(/effective invocation does not match prepared run/i);
   });
 
   it("rejects a schema-only receipt and a cross-directory receipt splice", async () => {
