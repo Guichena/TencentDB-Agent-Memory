@@ -895,7 +895,13 @@ V0（= 生产）**同时**给了模型静态映射**和**运行时发现两条�
 
 修复成本极低：在记录块前发一行图例（如 `键: id 工具 / p 路径 / req 必填 / opt 可选 / x 禁止发送 / w 何时用 / a 避免; @D 为本族默认值`）。这不改变 tscg 的方法本质（仍是类型化压缩），却消除解析歧义。建议在移植时一并加入，并把"是否需要图例"本身作为 sig→dro 的一个对比观察点。
 
-**待办：** `tscg-lite.ts` 我读了结构、operator 定义、验证函数与渲染产出，但 926 行中的 DRO 编解码实现细节（`parseDroFields`、`roundTripDroProgram` 内部）未逐行验证其转义完备性。若 `dro` 进入正式对比，建议补一轮针对转义字符（值中含 `|` 或 `=`）的边界测试。
+**关于 DRO 转义完备性：已查证，不是任务一待办。** 曾拟列为待办，核查后撤销。逐字段解析两个冻结产物（`tscg-dro`、`tscg-cfo`）的全部 `@D`/`@T` 记录，**没有任何字段值含裸 `|` 或 `=`**：
+
+- 自由文本字段（`w=`、`a=`）是纯散文，如 `w=A specific resource path from a viewed skill manifest must be read into context.`；
+- 三个子分隔符刻意避开了主分隔符——operation 用 `:`（`op=argument:tool_name`）、contrast 用 `>`（`c=tdai_conversation_search>Use atomic search for...`）、列表用 `,`（`req=skill_id,path`）；
+- 我曾担心 `encoding` 的字面值 `utf-8|base64` 含 `|`，但 DRO 只承载参数**名**（`opt=version,encoding`）、整段丢弃 `body:` 示例，故该值不进入记录。
+
+更根本的原因：记录值只来自固定的 spec 文本（`when`/`avoid`/`contrasts`）与契约字段（路径、参数名、枚举），全部为作者手写、无动态或用户输入。除非有人往 spec 散文里写入 `|`，冲突无从产生。这属于构建期健壮性，且与任务一的三个主指标无因果关系。
 
 ## 16. 其余三个创新渲染器逐行审查
 
@@ -940,7 +946,9 @@ handoffs are conditional, not mandatory prerequisites.
 
 它明确告诉模型 handoff 非强制。这对"最短充分链"有利（id 已知时不必再走发现步，改善 ToolSPL），但也可能让模型跳过 Gold 期望的发现步。Gold 在 8 个 `read_scene` 步有 typed binding 兜底，且卡片仍写 `avoid: Do not guess`，故可辩护。建议把它作为 ToolSPL 与 CompleteChain 的一个明确对比观察点。
 
-**待办**：`runtime-contract.ts` 的改动已核为纯元数据新增（第 15.7 节），但 `lintToolActionGraph` 与 `buildToolActionGraph` 的图完整性校验（环检测、悬空 producer）未逐行验证。
+**关于图完整性校验：不是任务一待办。** 曾拟列为待办，撤销。理由是任务边界：任务一只评价提示词能否让模型正确决定是否调用、调用哪一族、完成最短充分链。v4-g 的 "typed action graph" 是**提示词编码来源关系的一种表示法**，贡献点是"把散文来源改成类型化来源"，不是在检验图算法——"图"指渲染格式，不是被测对象。因此环检测与悬空 producer 属构建正确性，与三个主指标无因果关系。
+
+它也已被经验覆盖：该图由手写死的 `ACTION_SEMANTICS` 表（20 个工具、固定关系、无动态输入）构建，若存在环或悬空 producer 会直接显现在渲染产物中，而产物已冻结、有 hash，且其 `requires`/`handoff` 行已在 16.1 逐行核对无误。补环检测单测的边际收益极低。
 
 ### 16.2 neutral-symmetric.ts（v4-rn，400 行，27 处 throw，4 个 lint）
 
@@ -983,7 +991,7 @@ vs tdai_atomic_query: Choose this for semantic similarity; choose atomic query f
 | 候选 | 行数 | throw | 专用验证 | 对契约基准 | 相对生产基线 | 主要缺陷 |
 |---|---:|---:|---|---|---|---|
 | tscg-lite | 926 | 30 | 往返 + 契约等价 + 投影 lint | 纯元数据新增，安全 | 继承 V3 的 G-1/G-2 | G-3 无图例（dro/cfo） |
-| typed-action-graph | 600 | 24 | `lintToolActionGraph` | 未触碰 | **增加**字段级 handoff | 图完整性校验未逐行核 |
+| typed-action-graph | 600 | 24 | `lintToolActionGraph` | 未触碰 | **增加**字段级 handoff | 无（direct-call 取舍待观察） |
 | neutral-symmetric | 400 | 27 | 4 个 lint | 未触碰（specs 纯新增） | 未修回 G-1/G-2 | G-4 填充字段；P-4 混淆 |
 | three-plane | 299 | 17 | 字节完整性 + fail-closed 归属 | 未触碰 | 零改动 | 非变体，产不出 Dev |
 
