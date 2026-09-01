@@ -465,6 +465,7 @@ src/__tests__/tool-prompt-compiler.test.ts
 | G-1 | 高 | V2/V3 丢失 `MEMORY.md` 同等优先级指令（相对生产基线回归） | 能力回归 | memory 触发率，120/800 案例 |
 | G-2 | 中 | V2/V3 丢失 `data.messages` 与 `data.items` 区分 | 能力回归 | conversation_search 终点步，37/800 |
 | G-3 | 中 | tscg `dro`/`cfo` 不发字段图例，`x=` 语义无说明 | 阶段 C 缺陷 | 身份合规违规可能上升 |
+| G-4 | 低 | v4-rn 固定 mask 产生 12 处填充字段（`limitations: None.`） | 阶段 C 缺陷 | Token 账目需单列 |
 | M-4 | 中 | `forbidden` 命中是提示词合规，不是调用失败 | 指标口径 | 错误分解表述 |
 | P-2 | 中 | Gold 对 read_scene 的 agent_id 判定不统一（仅冻结集 4 步） | 数据一致性 | read_scene 结果解读 |
 | P-3 | 低 | 各 profile 工具菜单大小不同（10/12/14/13）— 第 14 章重新判定为能力补全，非混淆 | 指标口径 | 仅需在报告说明来源 |
@@ -895,3 +896,95 @@ V0（= 生产）**同时**给了模型静态映射**和**运行时发现两条�
 修复成本极低：在记录块前发一行图例（如 `键: id 工具 / p 路径 / req 必填 / opt 可选 / x 禁止发送 / w 何时用 / a 避免; @D 为本族默认值`）。这不改变 tscg 的方法本质（仍是类型化压缩），却消除解析歧义。建议在移植时一并加入，并把"是否需要图例"本身作为 sig→dro 的一个对比观察点。
 
 **待办：** `tscg-lite.ts` 我读了结构、operator 定义、验证函数与渲染产出，但 926 行中的 DRO 编解码实现细节（`parseDroFields`、`roundTripDroProgram` 内部）未逐行验证其转义完备性。若 `dro` 进入正式对比，建议补一轮针对转义字符（值中含 `|` 或 `=`）的边界测试。
+
+## 16. 其余三个创新渲染器逐行审查
+
+补充日期：2026-09-01（同日追加）。判据同第 15 章：是否扰动契约基准、验证强度、决策语义是否保留、相对生产基线有无能力丢失。
+
+### 16.1 typed-action-graph.ts（v4-g，600 行，24 处 throw）
+
+**曾疑为高危，核实后不成立。** `TYPED_ACTION_GRAPH_DEDUPLICATIONS` 有 5 条改写，每条都删掉了来源短语：
+
+```
+"A team skill returned by skill_search, or any skill known by exact skill_id, must be opened."
+  → "A skill known by exact skill_id must be opened."
+"A specific resource path from a viewed skill manifest must be read into context."
+  → "A specific skill resource must be read into context."
+"A tool name and parameter schema returned by tools/list must be executed..."
+  → "A selected typed operation must be executed against its knowledge resource."
+"A scene path is known from the injected index or scenario listing and its full body is required."
+  → "The full body of a known scene is required."
+```
+
+被删的四处恰是 §B2 要求覆盖的全部路由（search-to-view、view-to-files-read、list-to-call、scenario_ls→read_scene）。初判为链路信息丢失。
+
+但产出核实显示，来源被**类型化重编码并真实渲染**，且比散文更精确：
+
+```
+action skill_view_by_id: requires=skill_id:skill-id[user|injected_asset|prior_tool_output]<=skill_search; ...
+action knowledge_tools_call[typed-operation]: requires=...,tool_name:knowledge-operation[prior_tool_output]<=knowledge_tools_list,...
+handoff skill_view.data.manifest[].path -> skill_files_read.path; when=use an exact manifest path
+handoff knowledge_tools_list.data.tools[].name -> knowledge_tools_call.tool_name; ...
+```
+
+`<=` 显式点名生产者，`[...]` 声明允许来源，`handoff` 精确到字段路径。`tool_name` 标为 `PRIOR_ONLY`，**比 V0 的散文更严**。G1（`typed-action-graph`）保留完整散文 `when`，G2 才做去重，因此 G1→G2 正是"散文来源 → 类型化来源"的干净对照。
+
+**相对生产基线是增加能力**，不是减少：字段级 handoff 路径（如 `data.manifest[].path`）是 V0-V3 任何一代都没有的。
+
+一条值得观察的设计取舍（非缺陷）：
+
+```
+direct-call: a downstream action is legal when every required binding already has one declared provenance;
+handoffs are conditional, not mandatory prerequisites.
+```
+
+它明确告诉模型 handoff 非强制。这对"最短充分链"有利（id 已知时不必再走发现步，改善 ToolSPL），但也可能让模型跳过 Gold 期望的发现步。Gold 在 8 个 `read_scene` 步有 typed binding 兜底，且卡片仍写 `avoid: Do not guess`，故可辩护。建议把它作为 ToolSPL 与 CompleteChain 的一个明确对比观察点。
+
+**待办**：`runtime-contract.ts` 的改动已核为纯元数据新增（第 15.7 节），但 `lintToolActionGraph` 与 `buildToolActionGraph` 的图完整性校验（环检测、悬空 producer）未逐行验证。
+
+### 16.2 neutral-symmetric.ts（v4-rn，400 行，27 处 throw，4 个 lint）
+
+设计：7 分量固定 mask（`purpose`/`use-when`/`limitations`/`contrast`/`required-inputs`/`returns`/`execution`）统一施加到每张卡，配 **12 条 `CONFUSION_EDGE_AXES`** 命名双向易混对，每条带因果轴说明。4 个 lint：`lintNeutralToolCards`、`lintNeutralSymmetricCatalog`、`lintNeutralFieldSkeleton`、`lintNeutralContrastVisibility`。
+
+**12 条轴恰好覆盖 P-1 指出的全部空缺**：`skill.search-vs-view-name`、`skill.search-vs-view-id`、`skill.view-name-vs-id`、`skill.file-read-vs-download`（4 条 smoke 关键 skill 路由）、`knowledge.list-vs-call`（list-to-call 链）、`memory.scene-list-vs-read`，另加三条 memory search/query 区分。渲染产出为双向带轴标签，例如：
+
+```
+contrast: (memory.atomic-vs-conversation-search) vs tdai_conversation_search: Choose this for distilled
+memory; choose conversation search for message wording or timeline evidence. | (memory.atomic-search-vs-query)
+vs tdai_atomic_query: Choose this for semantic similarity; choose atomic query for filters and pagination...
+```
+
+这**确证 P-4 的混淆是实质性的**：V4-RN 的收益必然包含"这些工具第一次有了区分信息"这一部分。
+
+**它没有修回 G-1，也没有修回 G-2。** 全文无 `MEMORY.md`。`returns` 是语义描述而非结构路径——`returns: Matching historical messages.` 与 `returns: Matching atomic memory items.`，不给 `data.messages` / `data.items`。这不是疏忽而是方法的内在张力：**统一 mask 要求每张卡形状一致，而 `data.messages` vs `data.items` 恰是不对称事实**，中性对称的目标与编码该不对称直接冲突。因此 G-2 在 V0-C/V1a/V1 之后的所有 profile（V2、V3、V4-RN）中一律缺失。
+
+**缺陷 G-4（低）：固定 mask 产生填充字段。** 13 张卡中出现 12 处 `limitations: None.` 或 `required inputs: none`——零信息的纯 Token 成本。这是对称性约束换来的代价：它买到了无偏比较，付出的是填充。若 V4-RN 的 Token 账目要与 V3 对比，应把这部分单独列出，否则会低估"中性化"本身的成本。
+
+### 16.3 three-plane.ts（c3p-eq，299 行，17 处 throw）
+
+**不接触提示词，零 provider 可见改动**，因此不存在能力回归风险。它是度量工具，且是诚实的度量工具：
+
+- 三平面 `decision` / `execution` / `runtime-binding`；
+- `PLANES_BY_KIND` 给出**保守候选集**：`legacy-body` 得全部三个平面（不敢声称归属），`execution-grammar` 得恰好一个，`dynamic-assets` 得 `runtime-binding`；
+- 只有 `shared.selection-gate` 有精确编目（`provenance: "catalog:shared.selection-gate"`），其余标 `prompt-unit-kind:<kind>:fail-closed`；
+- `exact: possiblePlanes.length === 1`——精确性是挣得的，不是假定的；
+- `semanticOwnershipAttested: false` 硬编码；
+- 分析前先校验 `joined === compiled.content` 与 `contentSha256` 一致，否则抛错。
+
+**建议重新定性它的用途（承接 C-1）。** 它作为"第四个创新候选"确实产不出 Dev 数据，但它恰好是回答本登记册两个悬而未决问题的仪器：
+
+- **M-1**：V2 省下的 1719 token 中，有多少落在 `decision` 平面（真正的决策指引）、多少落在 `execution` 平面（协议样板）？若大部分是 execution，则 V2 的压缩更无害；若大量是 decision，则与 G-1 呼应；
+- **P-1 / P-4**：contrast 属 `decision` 平面，可量化 V0-V3 各代 decision 平面的实际含量，从而把"招牌机制是空的"从定性变为定量。
+
+即把 C-1 的决策从"移出候选 or 补 profile"扩展为第三个选项：**作为归因仪器保留并用于报告**。这比前两个选项都更有价值，且不占 smoke/Dev 预算。
+
+### 16.4 四个候选横向对照
+
+| 候选 | 行数 | throw | 专用验证 | 对契约基准 | 相对生产基线 | 主要缺陷 |
+|---|---:|---:|---|---|---|---|
+| tscg-lite | 926 | 30 | 往返 + 契约等价 + 投影 lint | 纯元数据新增，安全 | 继承 V3 的 G-1/G-2 | G-3 无图例（dro/cfo） |
+| typed-action-graph | 600 | 24 | `lintToolActionGraph` | 未触碰 | **增加**字段级 handoff | 图完整性校验未逐行核 |
+| neutral-symmetric | 400 | 27 | 4 个 lint | 未触碰（specs 纯新增） | 未修回 G-1/G-2 | G-4 填充字段；P-4 混淆 |
+| three-plane | 299 | 17 | 字节完整性 + fail-closed 归属 | 未触碰 | 零改动 | 非变体，产不出 Dev |
+
+共同事实：四个候选**无一修回 G-1（`MEMORY.md` 优先级）与 G-2（响应形状区分）**。这两条回归自 V2 起贯穿全部下游 profile 与全部创新分支。若最终交付要保证"不弱于 server-team 生产基线"，它们必须在公共基座层面补回，而不能指望某个创新分支顺带解决。
