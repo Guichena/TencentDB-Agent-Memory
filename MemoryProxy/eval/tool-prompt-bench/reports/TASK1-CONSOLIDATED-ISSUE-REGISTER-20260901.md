@@ -464,7 +464,7 @@ src/__tests__/tool-prompt-compiler.test.ts
 | P-4 | 高 | V4-RN 捆绑中性措辞与 contrast 补全，结果无法归因 | 阶段 C 方法学 | V4-RN 的 Dev 结论 |
 | M-4 | 中 | `forbidden` 命中是提示词合规，不是调用失败 | 指标口径 | 错误分解表述 |
 | P-2 | 中 | Gold 对 read_scene 的 agent_id 判定不统一（仅冻结集 4 步） | 数据一致性 | read_scene 结果解读 |
-| P-3 | 中 | 各 profile 工具菜单大小不同（10/12/14/13） | 指标口径 | TerminalSelection 分母可比性 |
+| P-3 | 低 | 各 profile 工具菜单大小不同（10/12/14/13）— 第 14 章重新判定为能力补全，非混淆 | 指标口径 | 仅需在报告说明来源 |
 
 已解决：R-1 至 R-6（详见第 2 章）。
 
@@ -686,3 +686,110 @@ memory 侧同理：`tdai_atomic_query` 与 `tdai_conversation_query` 在 V0-V3 �
 - MemoryKnowledge 侧的路由与 header 契约（`KNOWLEDGE_HEADERS` 只声明 `content-type` 与 `x-tdai-service-id`，而 V0 正文示例给出 6 个额外 header），未与 MemoryKnowledge 生产代码比对；
 - skill 契约的 requiredArgs/optionalArgs 未与 skill 侧 schema 逐字段比对（本章只比对了 memory 的 6 条）；
 - 未映射的 3 条 skill 子路径（`list`、`versions`、`listing`）是否被 Gold 需要。
+
+## 14. 逐代审查：每一代的改动是否正确、相对前代是否改进、对任务一是否有效
+
+补充日期：2026-09-01（同日追加）
+
+审查框架：V0-V3 是继承链 `legacy → contract-corrected → protocol-compact → compact → selection-calibrated → capability-pruned`，每代只在父代上加一个变换。因此判据是三条：**改动本身是否正确**（对 server-team 生产代码）、**相对前代是否真的改进**、**对任务一三个主指标是否有效**。
+
+本章推翻了前文三处判断，先记录：
+
+| 前文判断 | 本章结论 |
+|---|---|
+| P-3：工具菜单大小不同（10/12/14/13）是混淆 | **判错**。卡片增长是 V0-C 与 V1a 在补 V0 缺失的能力覆盖，是功能改进而非混淆。P-3 降级 |
+| V2 删掉了 memory 多步链规则 | **判错**。规则被重述进卡片字段（`when`/`avoid`），语义等价 |
+| V2 丢掉 knowledge operation 路由是退化 | **判错**。委托运行时 `tools/list` 发现更正确，见 14.5 |
+
+我用 `grep -o` 词频下降推断语义丢失，这个方法本身不可靠——压缩型改动本就会降低词频而保留语义。本章改为读卡片正文判定。
+
+### 14.1 V0 → V0-C（contract-corrected）：价值最高的一代
+
+改动：15 条契约修正。抽样对 server-team `29d609a` 验真，全部为真：
+
+- `skill-search-bm25-contract`：V0 写"关键词 + **语义**检索"。`skill-bridge.ts:760` 明确 "LLM only supplies `query` — top_k / mode / scope / any other field is dropped"（2026-08-10 硬白名单），Core 默认 BM25。V0-C 改为"BM25 关键词检索"——**真修正**；
+- `skill-team-result-view-by-id`：`get-by-name` 限于当前 owner agent，团队搜索命中需 `/get`。V0-C 因此**新增 `skill_view_by_id` 卡片**；
+- `skill-file-read-json-only`：`/files/read` 返回 JSON 信封，原始字节走 `/files/download`。V0-C 因此**新增 `skill_files_download` 卡片**；
+- `knowledge-node-requires-include-code`：`node` 仅在 `includeCode=true` 时返回源码。已验证 `MemoryKnowledge/src/routes/code-graph.ts:89` 与 `routes/tools.ts:159` 默认 `false`（"默认 false 以节省上下文"）——**真修正**；
+- 6 条 `expected_version` 修正（update/patch/delete/files_write/files_remove）：对本实验无影响（写工具在 `skill_write=0` 下不可调用），但对生产准确。
+
+对任务一有效性：**高**。它是唯一填补真实能力缺口的一代——`skill_view_by_id` 与 `skill_files_download` 让 §B2 要求的 search-to-view 与 view-to-files-read 路由第一次可达。卡片 10→12 即此。为此 Token 上升 245 是应该付的代价。
+
+仍可改进：`skill-search-bm25-contract` 修正了描述，但 V0-C 正文仍出现 `top_k` 字面量（各一次，在"不要在 body 里加 top_k/mode 等其它字段（会被忽略）"句中）。既然 bridge 无条件丢弃，更彻底的做法是不出现该字段名，避免模型把它当可调项。收益小、风险零。
+
+### 14.2 V0-C → V1a（protocol-compact）：工程质量最高的一代
+
+改动：把 POST/JSON/公共 header/响应信封/错误分类提取为 `renderSharedExecutionGrammar` 渲染一次；路径由契约派生；把 knowledge 补成正式工具卡（12→14）。Token −363。
+
+正确性有代码级保证。`protocol-compact.ts` 全文 **14 处 throw、零 `removeIfPresent`**：`captureOne`、`replaceOnce`、`replaceRegexOnce`、`insertExecutionGrammar` 均在匹配数不为 1 时抛错，且 `replaceOnce` 对**片段缺失也抛错**（`first < 0` 即抛）。上游文案任何漂移都会让构建失败，而不是静默产出退化提示词。
+
+对任务一有效性：**高**。去重无损，且是全链唯一有构造性证明的一代。knowledge 补卡使三族在卡片层面首次齐备。
+
+### 14.3 V1a → V1（compact / semantic-compact）：有效但纪律回退
+
+改动：语义级去重，为每条重复规则指定唯一保留所有者，6 条 `SEMANTIC_UNIT_INVENTORY` 记录 removed/retained 位置，`lintDuplicateSemanticUnits` 校验"恰好一个保留者"。Token −386。
+
+对任务一有效性：**中**。去重方向正确，所有权模型可审计。
+
+缺陷（已在 S-2 记录，此处给出代际归因）：这一代引入了 `removeIfPresent`——片段缺失时**静默返回原文**，5 个调用点（`semantic-compact.ts:156/157/162/167/179`）。这相对 V1a 是纪律回退：同一 seam 内 V1a 的 `replaceOnce` 对缺失抛错，V1 却选择静默。叠加 `lintDuplicateSemanticUnits` 不在生产编译路径上（S-1），上游改一个标点即可让 V1 静默退化回 V1a 而无任何 gate 失败。
+
+可改进：把这 5 处改为 fail-closed。因现有片段都存在，改动不产生输出差异，故不影响任何冻结 hash，但需复跑 `integration:gate` 确认。
+
+### 14.4 V1 → V2（selection-calibrated）：Token 赢最多，但招牌机制是空的
+
+改动：7 条集中所有权的共享选择策略 + `renderSelectionGate` 全局 gate + 契约支撑的 when/avoid/contrast 卡片。Token −1719（全链最大）。
+
+本轮核实推翻了两处"退化"初判：
+
+- **memory 多步链规则未丢失**。V2 的 `tdai_read_scene` 卡片保留了等价语义：`when: A scene path is known from the injected index or scenario listing and its full body is required.` 对应原"path 必须先从 `<l2_scene_index>` 或 tdai_scenario_ls 获取"；`avoid: Do not invent a scene path.` 对应原"不要凭空构造"；连 imported 记忆传 `agent_id` 的指引也保留在 body 示例里。这正是 C04 应做的：语义保留、形式压缩；
+- Gold 侧有 8 个 `read_scene` 步带 typed binding（`argumentPath: path` ← `priorStepId: step-1` 的 `data.entries.0.path`，`comparison: exact`），即链路由 binding 强制。V2 的卡片语义与该 binding 一致。
+
+对任务一有效性：**中偏高**。它是唯一为"是否调用 / 调用哪一族"写入显式 gate 的一代，直接对应主指标 1 与 2。
+
+但缺陷集中且都落在主指标上：
+
+1. **招牌的 contrast 机制 18/20 为空**（P-1）。`renderSelectionGate` 的 family 级路由是实的，但工具级 when/avoid/contrast 卡片里，20 条 spec 只有 2 条有 `contrasts`（memory 互指一对），4 条 smoke 关键 skill 只读路由与 2 条 knowledge 工具**全部为 0**。而 `TerminalSelectionRate` 恰恰考察同族相邻工具的区分。招牌机制在被考察处没有内容；
+2. **Token 节省的 86.4% 来自中文改英文**（M-1），真正去重仅约 234 token；
+3. 引入 2 处 `removeIfPresent`（`selection-calibrated.ts:221/225`），同 14.3。
+
+### 14.5 关于 V2 删除 knowledge "意图 → 起手"映射：可辩护，甚至更正确
+
+V0/V0-C/V1a/V1 的 knowledge 块含一段固定映射：`架构 → explore；符号名在哪 → search；要源码 → node（includeCode=true）；谁调用 X → callers/callees；影响面 → search 后 impact；为什么这么设计 → wiki search 后 read_page`。V2 删除，未重述。
+
+初判为退化，核实后**不成立**，三条依据：
+
+1. `MemoryKnowledge/src/routes/tools.ts` 的 `tools/list` 在运行时返回每个 operation 的**名称 + 描述 + params**（如 `search`："BM25 全文搜索 wiki 页面内容。用关键词查找相关文档。"；`includeCode`："是否包含完整源码（默认 false 以节省上下文）"）。Gold 的 knowledge 链第一步恰是 `knowledge_tools_list`，故模型必然先拿到这份清单；
+2. 该映射是**资源类型特定**的。wiki 与 code_graph 暴露的工具集不同，静态提示词无法预知某资源暴露哪些 operation；对不暴露 `explore`/`node` 的 wiki 资源，V0-V1 那张表本身就是错的。V2 改为"执行 `tools/list` 返回的 name 与 params"是更正确的抽象；
+3. 丢掉 `includeCode=true` 对本数据集无影响。Gold 仅 3 个 `node` 步，其 `stopAfter` 均只要位置（如"返回 AliasPrinter 位于 mypy/stubgen.py:364 后停止"），而 `node` 不带 `includeCode` 即返回位置/签名/调用链。
+
+残留事实（非缺陷，供解读）：Gold 有 **118 个 knowledge 步、其中 60 个带精确 terminal operation、覆盖 11 种 operation**（`search` 29、`search_pages` 11、`search_code` 6、`node` 3、`search_symbols` 3 等），且 knowledge 步 **0 typed binding**。即 operation 选择完全依赖运行时发现是否奏效——这是实验要回答的经验问题，而非提示词缺陷。V2/V3 与 V0-V1 在此点上的差异应作为一个明确的对比维度报告。
+
+### 14.6 V2 → V3（capability-pruned）：正确但在本实验中被闲置
+
+改动：按 session 能力事实求交剪枝，13 处双向 fail-closed 断言。Token −84。
+
+对任务一有效性：**低**——不是方法不好，而是配置使其无从发挥。实验 signature 冻结为 `memory=1;skill=1;knowledge=1;wiki=1;code_graph=1;skill_write=0;skill_extract=0`，三族全开、仅两个 skill 子能力关闭，故 V3 实际只剪掉 1 张卡（`skill_extract`），14→13。
+
+**最大的可改进点在这里**：`resolveSessionCapabilitySignature` 已支持按 session 资产标志收窄，但实验用的是全局固定 signature。若改为**按每条 Case 实际绑定的资源类型派生** signature（该 Case 只绑 wiki 就 `code_graph=0`，只绑 code_graph 就 `wiki=0`，无 Skill 资产就 `skill=0`），V3 能剪掉整段不可用的族说明与资源策略文本。收益远大于 84 token，且**直接降低 no-tool 误调用**（模型看不到本 Case 根本没有的资源，就不会去调）。这既符合"从快照派生、不引入新自变量"的原则（binding 已经知道每条 Case 的可见资产），也让 V3 的方法第一次被真正考察。
+
+代价：不同 Case 的静态前缀不同，会削弱 provider prompt cache 命中。这是真实权衡，须在报告中量化 `cached_tokens` 变化，不能只报 Token 下降。
+
+### 14.7 各代小结
+
+| 代 | 改动 | 正确性 | 相对前代 | 对任务一有效性 | 主要缺陷 |
+|---|---|---|---|---|---|
+| V0-C | 15 条契约修正 + 补 2 张卡 | 对 server-team 验真通过 | 补真实能力缺口 | **高** | 仍出现 `top_k` 字面量 |
+| V1a | 共享执行语法 + 契约派生路径 + 补 knowledge 卡 | 14 处 throw、零静默 | 无损去重 | **高** | 无 |
+| V1 | 语义去重 + 唯一所有者 | 有 lint 但脱链 | 方向对 | 中 | 引入 5 处静默 `removeIfPresent` |
+| V2 | 共享选择 gate + when/avoid/contrast 卡 | 语义保留已核实 | Token 赢最多 | 中偏高 | contrast 18/20 空；86.4% 节省来自换语言 |
+| V3 | 按能力求交剪枝 | 13 处双向断言 | 正确但仅剪 1 张卡 | **低（被配置闲置）** | signature 全局固定，方法未被考察 |
+
+### 14.8 这条方法链上仍可改进的地方（按对主指标的预期收益排序）
+
+1. **补齐 V2 的 contrast 覆盖**（对应 P-1）。为 `skill_search`/`skill_view`/`skill_view_by_id`/`skill_files_read` 与 `knowledge_tools_list`/`knowledge_tools_call` 补 `contrasts` 与 `avoid`。唯一直接作用于主指标 `TerminalSelectionRate` 的改进，且机制已存在（memory 那一对证明填了就有输出）。
+2. **V3 按 Case 资源类型派生 signature**（14.6）。同时改善 `StaticToolTokens` 与 `FalseCallAttemptRate`，并让 V3 第一次被真正考察。须同时量化 cache 影响。
+3. **把发现规则显式写进提示词**（承接 14.5）。V2 删掉资源特定映射是对的，但可以补一条与资源无关的规则：先 `tools/list`，再按返回的 `description` 选最窄匹配的 operation，不要凭名字猜。这不引入资源特定知识，却直接支撑 60 个带精确 terminal operation 的 Gold 步。
+4. **把 V1a 的 fail-closed 纪律回填 V1/V2**（S-2）。7 处 `removeIfPresent` 改为缺失即抛。不改变输出，纯消除静默退化风险。
+5. **移除 `top_k` 字面量**（14.1）。收益最小但零风险。
+
+前三项都改变提示词语义，**必须作为新 Variant（如 V2.1 / V3.1）走同一实验流程**，不得在已冻结的 V0-V3 上原地改。第 4、5 项不改变输出，可直接进公共基座。
