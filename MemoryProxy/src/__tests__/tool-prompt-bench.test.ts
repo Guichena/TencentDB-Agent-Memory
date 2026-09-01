@@ -399,8 +399,6 @@ describe("TDAI-ToolPromptBench dataset", () => {
       'model_reasoning_effort="high"',
       "--json",
       "--skip-git-repo-check",
-      "--sandbox",
-      "workspace-write",
       "--cd",
       "D:/eval/run-001/workspace",
       "--model",

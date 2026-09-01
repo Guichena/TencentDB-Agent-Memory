@@ -269,8 +269,6 @@ export function buildCodexInvocation(input: CodexInvocationInput): CodexInvocati
       ...input.configArgs,
       "--json",
       "--skip-git-repo-check",
-      "--sandbox",
-      "workspace-write",
       "--cd",
       input.workspaceDir,
       "--model",
