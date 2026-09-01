@@ -20,6 +20,7 @@ export interface CodexInvocationInput {
   workspaceDir: string;
   model: string;
   configArgs: string[];
+  approveForMe?: boolean;
 }
 
 export interface CodexInvocation {
@@ -263,6 +264,7 @@ export function buildCodexInvocation(input: CodexInvocationInput): CodexInvocati
       "--ephemeral",
       "--ignore-rules",
       "--ignore-user-config",
+      ...(input.approveForMe ? ["--approve-for-me"] : []),
       ...input.configArgs,
       "--json",
       "--skip-git-repo-check",

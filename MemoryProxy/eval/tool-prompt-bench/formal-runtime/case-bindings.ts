@@ -10,18 +10,24 @@ import type {
 } from "./build-case-bindings.js";
 import type { FormalDataFreeze } from "./freeze.js";
 import type { FormalReadText } from "./provider-loader.js";
+import {
+  loadRepoBackedSelection,
+  repoBackedFilePath,
+  REPO_BACKED_COUNTS,
+} from "./repo-backed-selection.js";
 
 export interface LoadFormalCaseBindingsInput {
   readonly freeze: FormalDataFreeze;
   readonly split: FormalBindingSplit;
   readonly allowHiddenTest?: true;
   readonly readText?: FormalReadText;
+  readonly projection?: "repo-backed-v2.1";
 }
 
 export interface FormalCaseBindingSplitData {
   readonly split: FormalBindingSplit;
   readonly count: number;
-  readonly totalCount: 800;
+  readonly totalCount: number;
   readonly rows: readonly FormalCaseBinding[];
   readonly fileSha256: string;
   readonly canonicalSha256: string;
@@ -153,7 +159,9 @@ export function loadFormalCaseBindings(input: LoadFormalCaseBindingsInput): Form
     throw new Error("hidden_test binding access is not authorized");
   }
   const readText = input.readText ?? ((path: string) => readFileSync(path, "utf8"));
-  const path = resolve(input.freeze.datasetRoot, "..", "formal-runtime", "frozen", "case-bindings.jsonl");
+  const path = input.projection === "repo-backed-v2.1"
+    ? repoBackedFilePath(input.freeze.datasetRoot, "case-bindings")
+    : resolve(input.freeze.datasetRoot, "..", "formal-runtime", "frozen", "case-bindings.jsonl");
   const rawText = readText(path);
   const allRows = rawText
     .split(/\r?\n/u)
@@ -174,16 +182,28 @@ export function loadFormalCaseBindings(input: LoadFormalCaseBindingsInput): Form
   }
   const devCount = allRows.filter((row) => row.split === "dev").length;
   const hiddenCount = allRows.filter((row) => row.split === "hidden_test").length;
-  if (allRows.length !== 800 || devCount !== 320 || hiddenCount !== 480) {
-    throw new Error(`case binding counts must be 800/320/480, got ${allRows.length}/${devCount}/${hiddenCount}`);
+  const expected = input.projection === "repo-backed-v2.1"
+    ? REPO_BACKED_COUNTS
+    : { total: 800, dev: 320, hiddenTest: 480 };
+  if (allRows.length !== expected.total || devCount !== expected.dev || hiddenCount !== expected.hiddenTest) {
+    throw new Error(
+      `case binding counts must be ${expected.total}/${expected.dev}/${expected.hiddenTest}, got ${allRows.length}/${devCount}/${hiddenCount}`,
+    );
+  }
+  const fileSha256 = exactUtf8Sha256(rawText);
+  if (input.projection === "repo-backed-v2.1") {
+    const selection = loadRepoBackedSelection({ datasetRoot: input.freeze.datasetRoot, readText });
+    if (fileSha256 !== selection.files["case-bindings"].activeFileSha256) {
+      throw new Error("case-bindings does not match the repo-backed selection");
+    }
   }
   const rows = Object.freeze(allRows.filter((row) => row.split === input.split));
   return Object.freeze({
     split: input.split,
     count: rows.length,
-    totalCount: 800 as const,
+    totalCount: expected.total,
     rows,
-    fileSha256: exactUtf8Sha256(rawText),
+    fileSha256,
     canonicalSha256: canonicalSha256(allRows),
     formalMetricEligible: false as const,
   });

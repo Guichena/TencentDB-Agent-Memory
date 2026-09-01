@@ -23,6 +23,7 @@ import {
   computeExpectedPairMembershipSha256V2,
   computePairScoringPolicySha256V2,
   FormalPairScoringRequiredError,
+  applyFormalEpisodeHorizon,
   integrateFormalMeasurement,
   integrateFormalPairScores,
   type FormalPairScoringInput,
@@ -36,6 +37,25 @@ import {
   NO_TOOL_GOLD,
   SYNTHETIC_RUNTIME_CONTRACTS,
 } from "../synthetic-fixtures.js";
+
+describe("formal Task 1 episode horizon", () => {
+  it("allows four positive TDAI attempts while preserving the full no-tool episode", () => {
+    const observation = {
+      evaluationSchemaVersion: 2 as const,
+      caseId: "episode-case",
+      runId: "episode-run",
+      variantId: "V0",
+      rawTraceStatus: "complete" as const,
+      attempts: Array.from({ length: 5 }, (_, index) => ({
+        attemptId: `attempt-${index + 1}`,
+        executorBound: true,
+      })),
+    };
+
+    expect(applyFormalEpisodeHorizon(observation, "tool").attempts).toHaveLength(4);
+    expect(applyFormalEpisodeHorizon(observation, "no-tool").attempts).toHaveLength(5);
+  });
+});
 
 const INJECTION = [
   "<tdai_injections>",
@@ -157,6 +177,7 @@ function execution(
     promptEvidenceState: "captured-by-provider-observer-pending-seal",
     providerUsageState: "captured-by-provider-observer-pending-seal",
     traceCollectionState: "pending-campaign-seal",
+    episodePolicy: { additionalUserTurns: 0, tdaiAttemptHorizon: 4, wallTimeMs: 180_000 },
   };
 }
 

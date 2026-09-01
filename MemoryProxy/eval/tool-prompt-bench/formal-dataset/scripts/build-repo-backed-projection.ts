@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -10,7 +11,15 @@ const benchRoot = resolve(datasetRoot, "..");
 interface JsonRecord {
   readonly caseId?: string;
   readonly positiveCaseId?: string;
-  readonly identity?: { readonly teamId?: string };
+  readonly identity?: { readonly teamId?: string; readonly taskId?: string };
+  readonly workspace?: unknown;
+  readonly allowedSequences?: readonly Array<{
+    readonly steps?: readonly Array<{
+      readonly arguments?: {
+        readonly exact?: readonly Array<{ readonly path?: string; readonly value?: unknown }>;
+      };
+    }>;
+  }>;
 }
 
 interface DatasetFile {
@@ -82,31 +91,82 @@ function teamId(record: JsonRecord): string {
   return match[0];
 }
 
-function writeJsonl(path: string, records: readonly JsonRecord[]): void {
+function writeJsonl(path: string, records: readonly JsonRecord[]): string {
   mkdirSync(dirname(path), { recursive: true });
   const text = records.length === 0
     ? ""
     : `${records.map((record) => JSON.stringify(record)).join("\n")}\n`;
   writeFileSync(path, text, "utf8");
+  return text;
 }
 
-const fileCounts: Record<string, { source: number; active: number; archived: number }> = {};
+function correctActiveBindings(records: readonly JsonRecord[]): readonly JsonRecord[] {
+  const anchor = records.find((record) => record.caseId === "T03-MEM-005-P");
+  if (!anchor?.workspace || !anchor.identity?.taskId) {
+    throw new Error("T03 DVC binding anchor is missing");
+  }
+  const corrected = new Set(["T03-MEM-001-P", "T03-MEM-001-N"]);
+  return records.map((record) => corrected.has(record.caseId ?? "")
+    ? {
+      ...record,
+      identity: { ...record.identity, taskId: anchor.identity?.taskId },
+      workspace: structuredClone(anchor.workspace),
+    }
+    : record);
+}
+
+function relaxUnobservableT18Dates(records: readonly JsonRecord[]): readonly JsonRecord[] {
+  return records.map((record) => {
+    if (record.caseId !== "T18-MEM-05-P") return record;
+    return {
+      ...record,
+      allowedSequences: record.allowedSequences?.map((sequence) => ({
+        ...sequence,
+        steps: sequence.steps?.map((step) => ({
+          ...step,
+          arguments: step.arguments === undefined
+            ? undefined
+            : {
+              ...step.arguments,
+              exact: step.arguments.exact?.filter((predicate) => (
+                predicate.path !== "time_start" && predicate.path !== "time_end"
+              )),
+            },
+        })),
+      })),
+    };
+  });
+}
+
+function sha256(text: string): string {
+  return createHash("sha256").update(text.replace(/\r\n/gu, "\n"), "utf8").digest("hex");
+}
+
+const fileCounts: Record<string, {
+  source: number;
+  active: number;
+  archived: number;
+  activeFileSha256: string;
+}> = {};
 
 for (const file of files) {
   const source = readJsonl(file.source);
   const archived = source.filter((record) => ARCHIVED_TEAMS.has(teamId(record)));
-  const active = source.filter((record) => !ARCHIVED_TEAMS.has(teamId(record)));
-  writeJsonl(file.active, active);
+  let active = source.filter((record) => !ARCHIVED_TEAMS.has(teamId(record)));
+  if (file.name === "case-bindings") active = [...correctActiveBindings(active)];
+  if (file.name === "gold-dev") active = [...relaxUnobservableT18Dates(active)];
+  const activeText = writeJsonl(file.active, active);
   writeJsonl(file.archive, archived);
   fileCounts[file.name] = {
     source: source.length,
     active: active.length,
     archived: archived.length,
+    activeFileSha256: sha256(activeText),
   };
 }
 
 const selection = {
-  schemaVersion: "task1.repo-backed-selection.v1",
+  schemaVersion: "task1.repo-backed-selection.v2",
   sourceDataset: "task1-data-formal-v2.1",
   activeDataset: "task1-data-formal-v2.1-repo-backed-640",
   reason: "T05, T06, T13 and T14 have benchmark.invalid repositories and no restorable local workspace.",
@@ -120,6 +180,12 @@ const selection = {
     archivedCases: { total: 160, dev: 0, hiddenTest: 160 },
     pairs: { total: 240, dev: 120, hiddenTest: 120 },
     archivedPairs: { total: 60, dev: 0, hiddenTest: 60 },
+  },
+  corrections: {
+    workspaceBindings: ["T03-MEM-001-P", "T03-MEM-001-N"],
+    relaxedUnobservableArguments: {
+      "T18-MEM-05-P": ["time_start", "time_end"],
+    },
   },
   files: fileCounts,
 } as const;

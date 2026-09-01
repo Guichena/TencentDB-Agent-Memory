@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -21,8 +22,8 @@ describe("R02 PrepareOnly public datasource adapter", () => {
     });
     expect(status.splits.dev).toMatchObject({
       expectedCaseCount: 320,
-      privateGoldHashScope: "measurement-v2-split-canonical",
-      pairContractHashScope: "measurement-v2-split-canonical",
+      privateGoldHashScope: "repo-backed-v2.1-file",
+      pairContractHashScope: "repo-backed-v2.1-file",
     });
     expect(status.splits.hidden_test.expectedCaseCount).toBe(320);
     expect(status.preregisteredSmokeCaseIds).toHaveLength(40);
@@ -72,5 +73,36 @@ describe("R02 PrepareOnly public datasource adapter", () => {
     expect([...teams].sort()).toEqual([
       "T07", "T08", "T09", "T10", "T15", "T16", "T19", "T20",
     ]);
+  });
+
+  it("reads the active projection and uses the corrected DVC binding", async () => {
+    const freeze = resolveFormalDataFreeze({ repositoryRoot: process.cwd() });
+    const reads: string[] = [];
+    const source = createFormalPrepareDataSource({
+      freeze,
+      readText(path) {
+        reads.push(path.replace(/\\/gu, "/"));
+        return readFileSync(path, "utf8");
+      },
+    });
+    const dev = await source.openProviderSplit("dev");
+    const positive = dev.cases.find((item) => item.providerRecord.caseId === "T03-MEM-001-P");
+    const negative = dev.cases.find((item) => item.providerRecord.caseId === "T03-MEM-001-N");
+    const dvcAnchor = dev.cases.find((item) => item.providerRecord.caseId === "T03-MEM-005-P");
+
+    expect(positive?.binding.workspace).toMatchObject({
+      workspaceId: "workspace-t03-project-dvc-pipelines",
+      repoSlug: "iterative/dvc",
+      baseCommit: "a2f1367a9a75849ef6ad7ee23a5bacc18580f102",
+    });
+    expect(negative?.binding.workspace).toEqual(positive?.binding.workspace);
+    expect(positive?.binding.identity.taskId).toBe(dvcAnchor?.binding.identity.taskId);
+    expect(negative?.binding.identity.taskId).toBe(dvcAnchor?.binding.identity.taskId);
+    expect(reads).toContainEqual(expect.stringMatching(
+      /formal-dataset\/repo-backed-v2\.1\/provider\/dev\.jsonl$/u,
+    ));
+    expect(reads).not.toContainEqual(expect.stringMatching(
+      /formal-dataset\/provider\/dev\.jsonl$/u,
+    ));
   });
 });

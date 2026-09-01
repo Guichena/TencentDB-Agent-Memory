@@ -52,6 +52,7 @@ describe("Task 1 DS00 identity registry", () => {
       "build-formal-restore-plan.ts",
       "build-formal-v21-coverage.ts",
       "build-measurement-v2-overlay.ts",
+      "build-repo-backed-projection.ts",
       "compile-formal-dataset.ts",
       "inspect-formal-snapshot.ts",
       "integrate-formal-v2.ts",

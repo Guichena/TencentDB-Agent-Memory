@@ -11,12 +11,14 @@ import {
 } from "./provider-loader.js";
 import { loadFormalDatasetMetadata } from "./public-metadata.js";
 import { loadFormalRuntimeFreezeManifest } from "./runtime-freeze.js";
+import { REPO_BACKED_DATASET_REVISION } from "./repo-backed-selection.js";
 
 export interface OpenFormalProviderSplitInput {
   readonly freeze: FormalDataFreeze;
   readonly split: FormalProviderSplit;
   readonly allowHiddenTest?: true;
   readonly readText?: FormalReadText;
+  readonly projection?: "repo-backed-v2.1";
 }
 
 export interface FormalProviderRuntimeCase {
@@ -79,23 +81,27 @@ export function openFormalProviderSplit(input: OpenFormalProviderSplitInput): Fo
     split: input.split,
     allowHiddenTest: input.allowHiddenTest,
     readText: input.readText,
+    projection: input.projection,
   });
   const bindings = loadFormalCaseBindings({
     freeze: input.freeze,
     split: input.split,
     allowHiddenTest: input.allowHiddenTest,
     readText: input.readText,
+    projection: input.projection,
   });
-  assertProviderFreeze(provider, input.split === "dev"
-    ? {
-      fileSha256: manifest.sources.provider.devFileSha256,
-      canonicalSha256: manifest.sources.provider.devCanonicalSha256,
-    }
-    : {
-      fileSha256: manifest.sources.provider.hiddenFileSha256,
-      canonicalSha256: manifest.sources.provider.hiddenCanonicalSha256,
-    });
-  assertBindingFreeze(bindings, manifest.artifacts.caseBindings);
+  if (input.projection !== "repo-backed-v2.1") {
+    assertProviderFreeze(provider, input.split === "dev"
+      ? {
+        fileSha256: manifest.sources.provider.devFileSha256,
+        canonicalSha256: manifest.sources.provider.devCanonicalSha256,
+      }
+      : {
+        fileSha256: manifest.sources.provider.hiddenFileSha256,
+        canonicalSha256: manifest.sources.provider.hiddenCanonicalSha256,
+      });
+    assertBindingFreeze(bindings, manifest.artifacts.caseBindings);
+  }
 
   const bindingById = new Map(bindings.rows.map((binding) => [binding.caseId, binding]));
   const cases = provider.cases.map((providerCase): FormalProviderRuntimeCase => {
@@ -111,7 +117,9 @@ export function openFormalProviderSplit(input: OpenFormalProviderSplitInput): Fo
   return Object.freeze({
     split: input.split,
     count: cases.length,
-    datasetContractRevision: metadata.datasetContractRevision,
+    datasetContractRevision: input.projection === "repo-backed-v2.1"
+      ? REPO_BACKED_DATASET_REVISION
+      : metadata.datasetContractRevision,
     snapshotCanonicalSha256: dev
       ? manifest.sources.snapshots.devCanonicalSha256
       : manifest.sources.snapshots.hiddenCanonicalSha256,

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "task1.repo-backed-selection.v1",
+  "schemaVersion": "task1.repo-backed-selection.v2",
   "sourceDataset": "task1-data-formal-v2.1",
   "activeDataset": "task1-data-formal-v2.1-repo-backed-640",
   "reason": "T05, T06, T13 and T14 have benchmark.invalid repositories and no restorable local workspace.",
@@ -49,41 +49,60 @@
       "hiddenTest": 60
     }
   },
+  "corrections": {
+    "workspaceBindings": [
+      "T03-MEM-001-P",
+      "T03-MEM-001-N"
+    ],
+    "relaxedUnobservableArguments": {
+      "T18-MEM-05-P": [
+        "time_start",
+        "time_end"
+      ]
+    }
+  },
   "files": {
     "provider-dev": {
       "source": 320,
       "active": 320,
-      "archived": 0
+      "archived": 0,
+      "activeFileSha256": "b062d284cb849edd6504340e81f4f34e1dc37b126dca53edab6062749b1c2ed4"
     },
     "provider-hidden": {
       "source": 480,
       "active": 320,
-      "archived": 160
+      "archived": 160,
+      "activeFileSha256": "79dc5738f45973fd34876c5dba4c1294257bce49e653a4256ef3ee86067561ad"
     },
     "gold-dev": {
       "source": 320,
       "active": 320,
-      "archived": 0
+      "archived": 0,
+      "activeFileSha256": "95aebebf8d41e4dc6aeeb5d9d499b466d406e7fc2a8b7f8aac25b49b8d71c990"
     },
     "gold-hidden": {
       "source": 480,
       "active": 320,
-      "archived": 160
+      "archived": 160,
+      "activeFileSha256": "83a321a6e29e8fd5f7599f3dd77ae48b0c68dd6221c92d83dc185c6b7bd3196a"
     },
     "pairs-dev": {
       "source": 120,
       "active": 120,
-      "archived": 0
+      "archived": 0,
+      "activeFileSha256": "cf7d5b6f80c475f3d58c651d605bcdcc88a06f00692cc9e056f92131195da996"
     },
     "pairs-hidden": {
       "source": 180,
       "active": 120,
-      "archived": 60
+      "archived": 60,
+      "activeFileSha256": "55d911d1d19956099be88e36092fbfb81877696c307beb823290231fb6f0a499"
     },
     "case-bindings": {
       "source": 800,
       "active": 640,
-      "archived": 160
+      "archived": 160,
+      "activeFileSha256": "56eeceb8d0ddd1d1ab77d2e0b7b3f816126a2870ca644af9e86804ba1275f00c"
     }
   }
 }

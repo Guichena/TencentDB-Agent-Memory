@@ -199,6 +199,11 @@ async function writeCompletedExecutionFixture(
     snapshot_sha256: snapshotCanonicalSha256,
     proxy_config_sha256: "7".repeat(64),
     execution_workspace_path: executionWorkspacePath,
+    episode_policy: {
+      additionalUserTurns: 0,
+      tdaiAttemptHorizon: 4,
+      defaultWallTimeMs: 180_000,
+    },
   };
   const workspacePolicy = {
     path: executionWorkspacePath,
@@ -349,6 +354,7 @@ async function writeCompletedExecutionFixture(
     promptEvidenceState: "captured-by-provider-observer-pending-seal",
     providerUsageState: "captured-by-provider-observer-pending-seal",
     traceCollectionState: "pending-campaign-seal",
+    episodePolicy: { additionalUserTurns: 0, tdaiAttemptHorizon: 4, wallTimeMs: 180_000 },
   } as const satisfies FormalExecutionReceipt;
   await Promise.all([
     writeFile(join(directory, "run-manifest.json"), runManifestRaw, "utf8"),

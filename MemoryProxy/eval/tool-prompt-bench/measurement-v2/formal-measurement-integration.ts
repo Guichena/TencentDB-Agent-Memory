@@ -1,4 +1,5 @@
 import type { FormalExecutionReceipt } from "../formal-execution-runner.js";
+import { FORMAL_EPISODE_POLICY } from "../formal-episode-policy.js";
 import type { PrivateMeasurementSplitData } from "../formal-runtime/private-loader.js";
 import { aggregateCaseChainFacts } from "./aggregate.js";
 import { canonicalJsonV2 } from "./canonical-json.js";
@@ -38,6 +39,23 @@ import type {
 
 export const FORMAL_MEASUREMENT_INTEGRATION_SCHEMA =
   "task1.formal-measurement-integration.v2" as const;
+
+export function applyFormalEpisodeHorizon(
+  observation: RawTraceObservationV2,
+  expectation: "tool" | "no-tool",
+): RawTraceObservationV2 {
+  if (expectation === "no-tool") return observation;
+  let executorBoundCount = 0;
+  const endIndex = observation.attempts.findIndex((attempt) => {
+    if (attempt.executorBound) executorBoundCount += 1;
+    return executorBoundCount === FORMAL_EPISODE_POLICY.tdaiAttemptHorizon;
+  });
+  if (endIndex < 0 || endIndex === observation.attempts.length - 1) return observation;
+  return Object.freeze({
+    ...observation,
+    attempts: Object.freeze(observation.attempts.slice(0, endIndex + 1)),
+  });
+}
 
 export interface FormalPairRunEvidenceBinding {
   readonly runId: string;
@@ -218,8 +236,9 @@ export function integrateFormalMeasurement(
       entries: toolRun.entries,
       completions: toolRun.completions,
     });
+    const scoredObservation = applyFormalEpisodeHorizon(projected.observation, gold.expectation);
     const score = scoreCaseChain({
-      observation: projected.observation,
+      observation: scoredObservation,
       gold: gold as unknown as PrivateChainGoldV2,
       runtimeContracts: input.privateMeasurement.runtimeContracts as unknown as readonly RuntimeToolContractV2[],
     });

@@ -26,6 +26,7 @@ import {
 } from "./variant-profiles.js";
 import type { ToolPromptProfile } from "../../src/injection/tool-prompt/types.js";
 import { EXPERIMENT_CONFIG_FINGERPRINT_SCHEMA } from "../../src/experiment-config-fingerprint.js";
+import { FORMAL_EPISODE_POLICY } from "./formal-episode-policy.js";
 
 export const DEFAULT_FORMAL_MODEL = "gpt-5.6-luna" as const;
 export const DEFAULT_FORMAL_REASONING_EFFORT = "high" as const;
@@ -72,9 +73,9 @@ export interface FormalPrepareSplitStatus {
   readonly providerInputSha256: string;
   /** Public status metadata only; the runner never opens the private Gold. */
   readonly privateGoldSha256: string;
-  readonly privateGoldHashScope: "measurement-v2-split-canonical";
+  readonly privateGoldHashScope: "measurement-v2-split-canonical" | "repo-backed-v2.1-file";
   readonly pairContractSha256: string;
-  readonly pairContractHashScope: "measurement-v2-split-canonical";
+  readonly pairContractHashScope: "measurement-v2-split-canonical" | "repo-backed-v2.1-file";
   readonly snapshotSha256: string;
 }
 
@@ -150,10 +151,10 @@ export interface FormalPrepareRunManifest {
   readonly provider_input_canonical_sha256: string;
   readonly provider_corpus_sha256: string;
   readonly private_gold_sha256: string;
-  readonly private_gold_hash_scope: "measurement-v2-split-canonical";
+  readonly private_gold_hash_scope: "measurement-v2-split-canonical" | "repo-backed-v2.1-file";
   readonly snapshot_sha256: string;
   readonly pair_contract_sha256: string;
-  readonly pair_contract_hash_scope: "measurement-v2-split-canonical";
+  readonly pair_contract_hash_scope: "measurement-v2-split-canonical" | "repo-backed-v2.1-file";
   readonly code_commit: string;
   readonly prompt_freeze_commit: string;
   readonly proxy_instance_id: string;
@@ -185,6 +186,7 @@ export interface FormalPrepareRunManifest {
   readonly run_id: string;
   readonly session_id: string;
   readonly history_transport: typeof USER_PLANE_HISTORY_TRANSPORT_V1;
+  readonly episode_policy: typeof FORMAL_EPISODE_POLICY;
   readonly prepared_at: string;
   readonly started_at: null;
   readonly finished_at: null;
@@ -409,12 +411,14 @@ function validatePublicStatus(status: FormalPreparePublicStatus): FormalPrepareP
     }
     requireSha256(`${split}.providerInputSha256`, splitStatus.providerInputSha256);
     requireSha256(`${split}.privateGoldSha256`, splitStatus.privateGoldSha256);
-    if (splitStatus.privateGoldHashScope !== "measurement-v2-split-canonical") {
-      throw new Error(`${split}.privateGoldHashScope must be Measurement-v2 split canonical`);
+    if (splitStatus.privateGoldHashScope !== "measurement-v2-split-canonical"
+      && splitStatus.privateGoldHashScope !== "repo-backed-v2.1-file") {
+      throw new Error(`${split}.privateGoldHashScope is unsupported`);
     }
     requireSha256(`${split}.pairContractSha256`, splitStatus.pairContractSha256);
-    if (splitStatus.pairContractHashScope !== "measurement-v2-split-canonical") {
-      throw new Error(`${split}.pairContractHashScope must be Measurement-v2 split canonical`);
+    if (splitStatus.pairContractHashScope !== "measurement-v2-split-canonical"
+      && splitStatus.pairContractHashScope !== "repo-backed-v2.1-file") {
+      throw new Error(`${split}.pairContractHashScope is unsupported`);
     }
     requireSha256(`${split}.snapshotSha256`, splitStatus.snapshotSha256);
   }
@@ -569,6 +573,7 @@ function buildRun(
   const invocation = buildCodexInvocation({
     workspaceDir: executionWorkspace,
     model,
+    approveForMe: true,
     configArgs: buildCodexConfigArgs({
       providerBaseUrl: buildMemoryProxyCodexBaseUrl(
         proxyBaseUrl,
@@ -777,6 +782,7 @@ function buildRun(
     run_id: runId,
     session_id: sessionId,
     history_transport: USER_PLANE_HISTORY_TRANSPORT_V1,
+    episode_policy: FORMAL_EPISODE_POLICY,
     prepared_at: preparedAt,
     started_at: null,
     finished_at: null,

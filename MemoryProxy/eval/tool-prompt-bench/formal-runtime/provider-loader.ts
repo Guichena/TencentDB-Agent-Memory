@@ -5,6 +5,11 @@ import { resolve } from "node:path";
 import type { ProviderVisibleCase } from "../worlds/formal-schema.js";
 import { canonicalSha256 } from "../worlds/formal-snapshot.js";
 import type { FormalDataFreeze } from "./freeze.js";
+import {
+  loadRepoBackedSelection,
+  repoBackedFilePath,
+  REPO_BACKED_COUNTS,
+} from "./repo-backed-selection.js";
 
 export type FormalProviderSplit = "dev" | "hidden_test";
 export type FormalReadText = (path: string) => string;
@@ -14,6 +19,7 @@ export interface LoadFormalProviderSplitInput {
   readonly split: FormalProviderSplit;
   readonly allowHiddenTest?: true;
   readonly readText?: FormalReadText;
+  readonly projection?: "repo-backed-v2.1";
 }
 
 export interface FormalProviderSplitData {
@@ -87,7 +93,17 @@ function parseProviderRow(value: unknown, lineNumber: number): ProviderVisibleCa
   return Object.freeze(result);
 }
 
-function providerPath(freeze: FormalDataFreeze, split: FormalProviderSplit): string {
+function providerPath(
+  freeze: FormalDataFreeze,
+  split: FormalProviderSplit,
+  projection?: "repo-backed-v2.1",
+): string {
+  if (projection === "repo-backed-v2.1") {
+    return repoBackedFilePath(
+      freeze.datasetRoot,
+      split === "dev" ? "provider-dev" : "provider-hidden",
+    );
+  }
   const fileName = split === "dev" ? "dev.jsonl" : "hidden.sealed.jsonl";
   return resolve(freeze.datasetRoot, "revisions", "formal-v2", "provider", fileName);
 }
@@ -101,7 +117,8 @@ export function loadFormalProviderSplit(input: LoadFormalProviderSplitInput): Fo
     throw new Error("hidden_test provider access is not authorized");
   }
   const readText = input.readText ?? ((path: string) => readFileSync(path, "utf8"));
-  const text = readText(providerPath(input.freeze, input.split));
+  const path = providerPath(input.freeze, input.split, input.projection);
+  const text = readText(path);
   const cases = text
     .split(/\r?\n/u)
     .map((line) => line.trim())
@@ -121,12 +138,21 @@ export function loadFormalProviderSplit(input: LoadFormalProviderSplitInput): Fo
     if (ids.has(item.caseId)) throw new Error(`provider duplicate caseId: ${item.caseId}`);
     ids.add(item.caseId);
   }
+  const fileSha256 = createHash("sha256").update(text.replace(/\r\n/gu, "\n"), "utf8").digest("hex");
+  if (input.projection === "repo-backed-v2.1") {
+    const selection = loadRepoBackedSelection({ datasetRoot: input.freeze.datasetRoot, readText });
+    const fileId = input.split === "dev" ? "provider-dev" : "provider-hidden";
+    if (cases.length !== REPO_BACKED_COUNTS[input.split === "dev" ? "dev" : "hiddenTest"]
+      || fileSha256 !== selection.files[fileId].activeFileSha256) {
+      throw new Error(`${fileId} does not match the repo-backed selection`);
+    }
+  }
   return Object.freeze({
     split: input.split,
     count: cases.length,
     cases: Object.freeze(cases),
     // Git may materialize JSONL with CRLF. The frozen data hash is over LF bytes.
-    fileSha256: createHash("sha256").update(text.replace(/\r\n/gu, "\n"), "utf8").digest("hex"),
+    fileSha256,
     canonicalSha256: canonicalSha256(cases),
     formalMetricEligible: false as const,
   });

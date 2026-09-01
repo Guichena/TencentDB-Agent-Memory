@@ -5,11 +5,13 @@ import {
   loadFormalDatasetMetadata,
   loadFormalRuntimeFreezeManifest,
   loadFormalSmokePreregistration,
+  loadRepoBackedSelection,
   openFormalProviderSplit,
   type FormalDataFreeze,
   type FormalDatasetMetadata,
   type FormalReadText,
   type FormalRuntimeFreezeManifest,
+  type RepoBackedSelection,
 } from "./formal-runtime/index.js";
 import type {
   FormalPrepareDataSource,
@@ -17,7 +19,6 @@ import type {
   FormalSplit,
 } from "./formal-prepare-runner.js";
 import {
-  isRepoBackedTeam,
   REPO_BACKED_COUNTS,
   REPO_BACKED_DATASET_REVISION,
 } from "./formal-runtime/repo-backed-selection.js";
@@ -32,6 +33,7 @@ interface PublicFreezeContext {
   readonly metadata: FormalDatasetMetadata;
   readonly manifest: FormalRuntimeFreezeManifest;
   readonly smokeCaseIds: readonly string[];
+  readonly selection: RepoBackedSelection;
 }
 
 function assertPublicFreeze(
@@ -63,16 +65,20 @@ export function createFormalPrepareDataSource(
     const manifest = loadFormalRuntimeFreezeManifest({ freeze: input.freeze, readText: input.readText });
     assertPublicFreeze(metadata, manifest);
     const smoke = loadFormalSmokePreregistration({ freeze: input.freeze, readText: input.readText });
+    const selection = loadRepoBackedSelection({
+      datasetRoot: input.freeze.datasetRoot,
+      readText: input.readText,
+    });
     if (smoke.sha256 !== manifest.artifacts.devSmokePreregistration.selectionCanonicalSha256) {
       throw new Error("formal smoke preregistration does not match runtime freeze manifest");
     }
-    cached = Object.freeze({ metadata, manifest, smokeCaseIds: smoke.caseIds });
+    cached = Object.freeze({ metadata, manifest, smokeCaseIds: smoke.caseIds, selection });
     return cached;
   };
 
   return Object.freeze({
     async readPublicStatus(): Promise<FormalPreparePublicStatus> {
-      const { metadata, manifest, smokeCaseIds } = publicFreeze();
+      const { metadata, smokeCaseIds, selection } = publicFreeze();
       return Object.freeze({
         datasetRevision: REPO_BACKED_DATASET_REVISION,
         datasetTag: input.freeze.tag,
@@ -83,20 +89,20 @@ export function createFormalPrepareDataSource(
         splits: Object.freeze({
           dev: Object.freeze({
             expectedCaseCount: REPO_BACKED_COUNTS.dev,
-            providerInputSha256: metadata.providerHashes.devCanonicalSha256,
-            privateGoldSha256: manifest.measurementV2.gold.devCanonicalSha256,
-            privateGoldHashScope: "measurement-v2-split-canonical" as const,
-            pairContractSha256: manifest.measurementV2.pairs.devCanonicalSha256,
-            pairContractHashScope: "measurement-v2-split-canonical" as const,
+            providerInputSha256: selection.files["provider-dev"].activeFileSha256,
+            privateGoldSha256: selection.files["gold-dev"].activeFileSha256,
+            privateGoldHashScope: "repo-backed-v2.1-file" as const,
+            pairContractSha256: selection.files["pairs-dev"].activeFileSha256,
+            pairContractHashScope: "repo-backed-v2.1-file" as const,
             snapshotSha256: metadata.snapshotHashes.devCanonicalSha256,
           }),
           hidden_test: Object.freeze({
             expectedCaseCount: REPO_BACKED_COUNTS.hiddenTest,
-            providerInputSha256: metadata.providerHashes.hiddenCanonicalSha256,
-            privateGoldSha256: manifest.measurementV2.gold.hiddenCanonicalSha256,
-            privateGoldHashScope: "measurement-v2-split-canonical" as const,
-            pairContractSha256: manifest.measurementV2.pairs.hiddenCanonicalSha256,
-            pairContractHashScope: "measurement-v2-split-canonical" as const,
+            providerInputSha256: selection.files["provider-hidden"].activeFileSha256,
+            privateGoldSha256: selection.files["gold-hidden"].activeFileSha256,
+            privateGoldHashScope: "repo-backed-v2.1-file" as const,
+            pairContractSha256: selection.files["pairs-hidden"].activeFileSha256,
+            pairContractHashScope: "repo-backed-v2.1-file" as const,
             snapshotSha256: metadata.snapshotHashes.hiddenCanonicalSha256,
           }),
         }),
@@ -111,15 +117,15 @@ export function createFormalPrepareDataSource(
       if (split === "hidden_test" && options?.allowHiddenTest !== true) {
         throw new Error("hidden_test Prepare datasource access is not authorized");
       }
-      const { manifest } = publicFreeze();
+      const { selection } = publicFreeze();
       const loaded = openFormalProviderSplit({
         freeze: input.freeze,
         split,
         allowHiddenTest: options?.allowHiddenTest,
         readText: input.readText,
+        projection: "repo-backed-v2.1",
       });
       const cases = loaded.cases
-        .filter((item) => isRepoBackedTeam(item.binding.identity.teamId))
         .map((item) => Object.freeze({
           split: item.binding.split as FormalSplit,
           providerRecord: item.provider,
@@ -127,7 +133,7 @@ export function createFormalPrepareDataSource(
         }));
       return Object.freeze({
         cases: Object.freeze(cases),
-        caseBindingsFileSha256: manifest.artifacts.caseBindings.fileSha256,
+        caseBindingsFileSha256: selection.files["case-bindings"].activeFileSha256,
       });
     },
 

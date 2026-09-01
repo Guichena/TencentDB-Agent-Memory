@@ -26,6 +26,7 @@ import {
   buildMemoryProxyCodexBaseUrl,
   buildRealChainIdentityHeaders,
 } from "./real-chain-adapter.js";
+import { FORMAL_EPISODE_POLICY } from "./formal-episode-policy.js";
 
 export const FORMAL_EXECUTION_RECEIPT_SCHEMA =
   "task1.formal-execution-receipt.v1" as const;
@@ -35,7 +36,7 @@ export const FORMAL_PROMPT_FREEZE_TAG_OBJECT =
 export const FORMAL_PROMPT_FREEZE_COMMIT =
   "d0996809ed63f6cfc67504ad180db0d48ac70475" as const;
 
-const DEFAULT_TIMEOUT_MS = 180_000;
+const DEFAULT_TIMEOUT_MS = FORMAL_EPISODE_POLICY.defaultWallTimeMs;
 export interface FormalCodeFreezeReceipt {
   readonly executionCodeCommit: string;
   readonly promptFreezeTagObject: typeof FORMAL_PROMPT_FREEZE_TAG_OBJECT;
@@ -130,6 +131,11 @@ export interface FormalExecutionReceipt {
   readonly promptEvidenceState: "captured-by-provider-observer-pending-seal";
   readonly providerUsageState: "captured-by-provider-observer-pending-seal";
   readonly traceCollectionState: "pending-campaign-seal";
+  readonly episodePolicy: {
+    readonly additionalUserTurns: 0;
+    readonly tdaiAttemptHorizon: 4;
+    readonly wallTimeMs: number;
+  };
 }
 
 /**
@@ -262,6 +268,11 @@ export async function executePreparedFormalRun(
     promptEvidenceState: "captured-by-provider-observer-pending-seal",
     providerUsageState: "captured-by-provider-observer-pending-seal",
     traceCollectionState: "pending-campaign-seal",
+    episodePolicy: Object.freeze({
+      additionalUserTurns: FORMAL_EPISODE_POLICY.additionalUserTurns,
+      tdaiAttemptHorizon: FORMAL_EPISODE_POLICY.tdaiAttemptHorizon,
+      wallTimeMs: timeoutMs,
+    }),
   });
 
   await writeExecutionArtifacts(run, result, preparedArtifacts.preflightReceiptRaw, receipt);
@@ -422,6 +433,7 @@ export function buildEffectiveFormalInvocation(
   const invocation = buildCodexInvocation({
     workspaceDir: run.command.workspacePolicy.path,
     model: run.manifest.model_id,
+    approveForMe: true,
     configArgs: buildCodexConfigArgs({
       providerBaseUrl: buildMemoryProxyCodexBaseUrl(
         proxyBaseUrlFromHealthUrl(run.command.preflight.healthUrl),

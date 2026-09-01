@@ -212,6 +212,7 @@ function execution(): FormalExecutionReceipt {
     promptEvidenceState: "captured-by-provider-observer-pending-seal",
     providerUsageState: "captured-by-provider-observer-pending-seal",
     traceCollectionState: "pending-campaign-seal",
+    episodePolicy: { additionalUserTurns: 0, tdaiAttemptHorizon: 4, wallTimeMs: 180_000 },
   };
 }
 

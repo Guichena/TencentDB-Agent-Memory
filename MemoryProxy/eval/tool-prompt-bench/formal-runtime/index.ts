@@ -60,6 +60,11 @@ export {
 export {
   ARCHIVED_NO_WORKSPACE_TEAMS,
   isRepoBackedTeam,
+  loadRepoBackedSelection,
   REPO_BACKED_COUNTS,
   REPO_BACKED_DATASET_REVISION,
+  REPO_BACKED_PAIR_COUNTS,
+  repoBackedFilePath,
+  type RepoBackedFileId,
+  type RepoBackedSelection,
 } from "./repo-backed-selection.js";

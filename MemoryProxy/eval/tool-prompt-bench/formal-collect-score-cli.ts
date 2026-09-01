@@ -13,6 +13,7 @@ import {
 } from "./formal-execution-runner.js";
 import type { PreparedFormalRun } from "./formal-prepare-runner.js";
 import { inspectFormalCacheStructureFreeze } from "./formal-cache-structure-gate.js";
+import { FORMAL_EPISODE_POLICY } from "./formal-episode-policy.js";
 import {
   loadFormalDatasetMetadata,
   openFormalProviderSplit,
@@ -447,6 +448,7 @@ export async function runFormalCollectScoreCli(
     freeze,
     split: options.split,
     ...(options.allowHiddenTest ? { allowHiddenTest: true as const } : {}),
+    projection: "repo-backed-v2.1",
   });
   const expectedPromptsByRunId = buildFormalExpectedProviderPrompts(
     publicDatasource,
@@ -486,6 +488,7 @@ export async function runFormalCollectScoreCli(
     freeze,
     split: options.split,
     ...(options.allowHiddenTest ? { allowHiddenTest: true as const } : {}),
+    projection: "repo-backed-v2.1",
   });
   const formalWorld = await loadFrozenFormalWorld(freeze);
   const preparedPair = prepareFormalPairScoring({
@@ -819,6 +822,13 @@ function parseFormalExecutionReceipt(value: unknown, label: string): FormalExecu
     || root.traceCollectionState !== "pending-campaign-seal") {
     throw new Error(`${label}: execution receipt evidence state is invalid`);
   }
+  const episodePolicy = record(root.episodePolicy, "execution receipt episodePolicy");
+  if (episodePolicy.additionalUserTurns !== FORMAL_EPISODE_POLICY.additionalUserTurns
+    || episodePolicy.tdaiAttemptHorizon !== FORMAL_EPISODE_POLICY.tdaiAttemptHorizon
+    || !Number.isSafeInteger(episodePolicy.wallTimeMs)
+    || (episodePolicy.wallTimeMs as number) < 1) {
+    throw new Error(`${label}: execution receipt episode policy is invalid`);
+  }
   return root as unknown as FormalExecutionReceipt;
 }
 
@@ -839,6 +849,10 @@ function assertManifestReceiptIdentity(
     ["verbosity", receipt.executionIdentity.verbosity, manifest.verbosity],
     ["executionCodeCommit", receipt.codeFreeze.executionCodeCommit, manifest.code_commit],
     ["promptFreezeCommit", receipt.codeFreeze.promptFreezeCommit, manifest.prompt_freeze_commit],
+    ["additionalUserTurns", receipt.episodePolicy.additionalUserTurns,
+      record(manifest.episode_policy, "run manifest episode_policy").additionalUserTurns],
+    ["tdaiAttemptHorizon", receipt.episodePolicy.tdaiAttemptHorizon,
+      record(manifest.episode_policy, "run manifest episode_policy").tdaiAttemptHorizon],
   ];
   for (const [field, actual, expected] of pairs) assertEqual(`receipt/manifest ${field}`, actual, expected);
 }

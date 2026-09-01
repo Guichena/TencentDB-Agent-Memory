@@ -58,6 +58,29 @@ describe("Task 1 private Measurement boundary", () => {
     expect(reads).toEqual([]);
   });
 
+  it("loads the active 640 projection and removes T18's unobservable dates", () => {
+    const freeze = resolveFormalDataFreeze({ repositoryRoot: process.cwd() });
+    const dev = loadPrivateMeasurementSplit({
+      freeze,
+      split: "dev",
+      projection: "repo-backed-v2.1",
+    });
+    const hidden = loadPrivateMeasurementSplit({
+      freeze,
+      split: "hidden_test",
+      allowHiddenTest: true,
+      projection: "repo-backed-v2.1",
+    });
+    const t18 = dev.gold.find((item) => item.caseId === "T18-MEM-05-P");
+    const exact = t18?.allowedSequences[0]?.steps[0]?.arguments?.exact ?? [];
+
+    expect(dev).toMatchObject({ goldCount: 320, pairCount: 120 });
+    expect(hidden).toMatchObject({ goldCount: 320, pairCount: 120 });
+    expect(exact).toEqual([{ path: "type", value: "instruction" }]);
+    expect(hidden.gold.some((item) => /^T(?:05|06|13|14)-/u.test(item.caseId))).toBe(false);
+    expect(hidden.pairs.some((item) => /^T(?:05|06|13|14)-/u.test(item.positiveCaseId))).toBe(false);
+  });
+
   it("keeps provider and runner dependency graphs physically free of the private loader", () => {
     const benchRoot = resolve(process.cwd(), "eval", "tool-prompt-bench");
     const publicFiles = [

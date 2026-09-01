@@ -10,6 +10,12 @@ import { canonicalSha256, utf8Sha256 } from "./canonical.js";
 import type { FormalDataFreeze } from "./freeze.js";
 import type { FormalReadText } from "./provider-loader.js";
 import { loadFormalDatasetMetadata } from "./public-metadata.js";
+import {
+  loadRepoBackedSelection,
+  repoBackedFilePath,
+  REPO_BACKED_COUNTS,
+  REPO_BACKED_PAIR_COUNTS,
+} from "./repo-backed-selection.js";
 
 export interface MeasurementRuntimeContract {
   readonly contractId: string;
@@ -28,6 +34,7 @@ export interface LoadPrivateMeasurementSplitInput {
   readonly split: "dev" | "hidden_test";
   readonly allowHiddenTest?: true;
   readonly readText?: FormalReadText;
+  readonly projection?: "repo-backed-v2.1";
 }
 
 export interface PrivateMeasurementSplitData {
@@ -199,6 +206,21 @@ function validateArtifact(
   return actualCanonicalSha256;
 }
 
+function validateProjectedArtifact(
+  rawText: string,
+  rows: readonly unknown[],
+  expectedFileSha256: string,
+  expectedCount: number,
+  label: string,
+): string {
+  if (rows.length !== expectedCount) throw new Error(`${label} count mismatch`);
+  const normalizedFileSha256 = utf8Sha256(rawText.replace(/\r\n/gu, "\n"));
+  if (normalizedFileSha256 !== expectedFileSha256) {
+    throw new Error(`${label} does not match the repo-backed selection`);
+  }
+  return canonicalSha256(rows);
+}
+
 /** Private-only import path. Deliberately absent from formal-runtime/index.ts. */
 export function loadPrivateMeasurementSplit(input: LoadPrivateMeasurementSplitInput): PrivateMeasurementSplitData {
   if (input.split === "hidden_test" && input.allowHiddenTest !== true) {
@@ -207,14 +229,23 @@ export function loadPrivateMeasurementSplit(input: LoadPrivateMeasurementSplitIn
   const readText = input.readText ?? ((path: string) => readFileSync(path, "utf8"));
   loadFormalDatasetMetadata({ freeze: input.freeze, readText });
   const privateRoot = resolve(input.freeze.datasetRoot, "measurement-v2", "private");
+  const selection = input.projection === "repo-backed-v2.1"
+    ? loadRepoBackedSelection({ datasetRoot: input.freeze.datasetRoot, readText })
+    : undefined;
   const manifest = record(JSON.parse(readText(resolve(privateRoot, "manifest.private.json"))) as unknown, "private manifest");
   if (manifest.visibility !== "private_never_provider_visible" || manifest.formalMetricEligible !== false) {
     throw new Error("private manifest visibility/eligibility contract is invalid");
   }
   const manifestCanonicalSha256 = canonicalSha256(manifest);
   const dev = input.split === "dev";
-  const goldPath = resolve(privateRoot, "gold", dev ? "dev.private.jsonl" : "hidden.private.jsonl");
-  const pairPath = resolve(privateRoot, "pairs", dev ? "dev.private.jsonl" : "hidden.private.jsonl");
+  const goldFileId = dev ? "gold-dev" : "gold-hidden";
+  const pairFileId = dev ? "pairs-dev" : "pairs-hidden";
+  const goldPath = selection
+    ? repoBackedFilePath(input.freeze.datasetRoot, goldFileId)
+    : resolve(privateRoot, "gold", dev ? "dev.private.jsonl" : "hidden.private.jsonl");
+  const pairPath = selection
+    ? repoBackedFilePath(input.freeze.datasetRoot, pairFileId)
+    : resolve(privateRoot, "pairs", dev ? "dev.private.jsonl" : "hidden.private.jsonl");
   const runtimePath = resolve(privateRoot, "runtime-contracts.private.json");
   const goldText = readText(goldPath);
   const pairText = readText(pairPath);
@@ -225,22 +256,42 @@ export function loadPrivateMeasurementSplit(input: LoadPrivateMeasurementSplitIn
   const runtimeValue = JSON.parse(runtimeText) as unknown;
   if (!Array.isArray(runtimeValue)) throw new Error("runtime contracts must be an array");
   const runtimeContracts = runtimeValue.map(parseRuntimeContract);
-  const goldExpected = dev ? 320 : 480;
-  const pairExpected = dev ? 120 : 180;
-  const goldCanonicalSha256 = validateArtifact(
-    goldText,
-    gold,
-    manifestArtifact(manifest, ["overlays", dev ? "goldDev" : "goldHidden"]),
-    goldExpected,
-    "private Gold",
-  );
-  const pairCanonicalSha256 = validateArtifact(
-    pairText,
-    pairs,
-    manifestArtifact(manifest, ["overlays", dev ? "pairDev" : "pairHidden"]),
-    pairExpected,
-    "private Pair",
-  );
+  const goldExpected = selection
+    ? REPO_BACKED_COUNTS[dev ? "dev" : "hiddenTest"]
+    : dev ? 320 : 480;
+  const pairExpected = selection
+    ? REPO_BACKED_PAIR_COUNTS[dev ? "dev" : "hiddenTest"]
+    : dev ? 120 : 180;
+  const goldCanonicalSha256 = selection
+    ? validateProjectedArtifact(
+      goldText,
+      gold,
+      selection.files[goldFileId].activeFileSha256,
+      goldExpected,
+      "private Gold",
+    )
+    : validateArtifact(
+      goldText,
+      gold,
+      manifestArtifact(manifest, ["overlays", dev ? "goldDev" : "goldHidden"]),
+      goldExpected,
+      "private Gold",
+    );
+  const pairCanonicalSha256 = selection
+    ? validateProjectedArtifact(
+      pairText,
+      pairs,
+      selection.files[pairFileId].activeFileSha256,
+      pairExpected,
+      "private Pair",
+    )
+    : validateArtifact(
+      pairText,
+      pairs,
+      manifestArtifact(manifest, ["overlays", dev ? "pairDev" : "pairHidden"]),
+      pairExpected,
+      "private Pair",
+    );
   const runtimeContractsCanonicalSha256 = validateArtifact(
     runtimeText,
     runtimeContracts,
