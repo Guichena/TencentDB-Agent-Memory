@@ -461,6 +461,10 @@ src/__tests__/tool-prompt-compiler.test.ts
 | S-5 | 低 | `memory=0` 时共享策略宿主迁移 | 代码结构 | 生产前缀复用 |
 | E-3 | 低 | EXPERIMENT-FREEZE-MANIFEST 仍 v1.1 / 640 | 代码缺陷 | 报告数据身份 |
 | A-1 | 低 | Stage A gate 报告需勘误 | 文档 | 汇报可信度 |
+| P-4 | 高 | V4-RN 捆绑中性措辞与 contrast 补全，结果无法归因 | 阶段 C 方法学 | V4-RN 的 Dev 结论 |
+| M-4 | 中 | `forbidden` 命中是提示词合规，不是调用失败 | 指标口径 | 错误分解表述 |
+| P-2 | 中 | Gold 对 read_scene 的 agent_id 判定不统一（仅冻结集 4 步） | 数据一致性 | read_scene 结果解读 |
+| P-3 | 中 | 各 profile 工具菜单大小不同（10/12/14/13） | 指标口径 | TerminalSelection 分母可比性 |
 
 已解决：R-1 至 R-6（详见第 2 章）。
 
@@ -529,3 +533,156 @@ node -e （require tiktoken get_encoding o200k_base，重算 6 个 profile 的 C
 ```
 
 未执行：任何 Docker 启动、任何模型调用、任何 git 写操作（commit / tag / push / checkout / stash / reset）。唯一写入是本文件与一次确定性重跑（产物逐字节未变）。
+
+## 13. 与 server-team 原始代码的对照审查
+
+补充日期：2026-09-01（同日追加）
+
+对照基准：`D:\projects\TencentDB-Agent-Memory-server-team`，commit `29d609a`（`v2.0.1-beta.2`）。
+
+动机：`RuntimeToolContract` 是任务一手写的派生物，其 `sourceRefs` 指向 server-team 生产代码。若契约本身失真，V0-C 的"契约修正"会把 V0 修向错误方向，且 V0-C→V3 全部继承，scorer 也建在同一错误上。因此必须以生产代码而非契约为基准复核。
+
+### 13.1 契约对生产代码的保真度：全部通过
+
+**路径**：18 条已映射契约路径逐条命中 server-team 的 allowlist——`MemoryProxy/src/memory/memory-bridge.ts:46` 的 6 条 memory 子路径与 `MemoryProxy/src/skill/skill-bridge.ts:140` 的 12 条 skill 子路径，无一错误。任务一的命名映射（如 `scenario/read` → `tdai_read_scene`、`get-by-name` → `skill_view`）是正常改名，不是路径错误。
+
+**参数**：memory 契约与 `MemoryCore/src/gateway/generated/schemas.ts` 逐字段一致：
+
+| 契约 | required | optional | 结论 |
+|---|---|---|---|
+| `tdai_memory_search` | `query` | `limit,type,time_start,time_end` | 与 `atomicSearchRequestSchema` 一致 |
+| `tdai_atomic_query` | （无） | `limit,offset,type,time_start,time_end` | 一致（`limit`/`offset` 来自组合的 `paginationSchema:41`） |
+| `tdai_conversation_search` | `query` | `limit,session_id,time_start,time_end` | 与 `conversationSearchRequestSchema` 一致 |
+| `tdai_conversation_query` | （无） | `session_id,limit,offset,time_start,time_end` | 一致 |
+| `tdai_read_scene` | `path` | `agent_id,version` | 与 `scenarioReadRequestSchema` 一致，`agent_id` 见 13.2 |
+| `tdai_scenario_ls` | （无） | `path_prefix` | `scenarioListRequestSchema:236` 确有 `path_prefix` |
+
+审查中我曾误判两处，均已自我推翻：一是以为 `tdai_atomic_query` 的 `limit/offset` 无出处（实际来自 `paginationSchema`）；二是以为 `tdai_read_scene` 自相矛盾地同时把 `agent_id` 列入 optional 与 forbidden（实际它有独立的 `forbiddenArgs: ["user_id","team_id","task_id"]`，**刻意排除** `agent_id`）。契约比初判更准确。
+
+**提示词**：6 个 profile 的全部工具卡与契约在 path、requiredArgs、method 上零不符；卡片体内未出现该契约的 forbiddenArgs。
+
+**未映射项**：server-team 的 skill allowlist 有 3 条未被任务一映射：`list`、`versions`、`listing`。`listing` 对应 `<available_skills>` 块（非工具卡），`list`/`versions` 任务一未考察。建议确认 Gold 是否需要，若不需要则在报告中说明这是有意的考察范围收窄。
+
+### 13.2 `agent_id` 的语义落差：核实后不是缺陷
+
+Gold 共 445 步，`agent_id` 出现在 `arguments.forbidden` 的有 **245 步 / 182 案例**（memory 82、skill 157、knowledge 6），在 `required` 中 **0 次**，无自相矛盾。
+
+而 server-team 侧 `agent_id` 在 memory 是**功能性选择器**，不是禁用字段：
+
+- `memory-bridge.ts:384`：search 类若模型不传 `agent_id`，扇出查询 self + 全部借入 ctx；传了则走单目标；
+- `memory-bridge.ts:443`：`selectTargetCtx(ctxs, inboundBody.agent_id)` 按它选中具体 imported agent；
+- `memory-bridge.ts:230-232`：按 `agentId` 匹配 ctx。
+
+初判这是"推理正确的模型被判失败"的缺陷。核实后**不成立**，依据两条：
+
+1. **不存在借入 agent**。`worlds/formal-schema.ts:155` 虽建模了 `importedMemoryAgentIds`，但数据集中全部 **146 处均为空数组 `[]`**；冻结产物的 `<tdai_profile_memory>` 也只有一个 `role="self"`。故不存在需要选借入 agent 的案例，合规模型不会传 `agent_id`。
+2. **skill 侧禁用是正确的**。`skill-bridge.ts:591` 起明确 identity 由 bridge 从 session 强制 stamp（v3 strict-isolation 中间件要求 team_id/agent_id/user_id），模型无法选择。故 157 个 skill 步禁用 `agent_id` 与生产行为一致。
+
+结论：Gold 的禁用是合理严格，记录为"已核实不是问题"，避免后续重复怀疑。
+
+### 13.3 问题 M-4（中）：`forbidden` 命中衡量的是提示词合规，不是调用失败
+
+这是 13.2 的副产品，但影响报告表述的正确性。
+
+server-team 从不因身份字段的**存在**而拒绝请求：
+
+- `memory-bridge.ts:338-343` 的 `makeOutbound` 展开顺序是 `...inboundBody` 在前、`user_id/team_id/agent_id` 在后，即模型传的身份被**静默覆盖**，不返回 400；
+- `MemoryCore` 的 `idFieldsSchema:24` 注明身份字段"**全部可选**：接口 schema 层不做必填校验"，其错误码是 404/403 的归属校验，与存在性无关；
+- schemas.ts 未使用 `.strict()`，未知键按 Zod 默认被剥离而非拒绝。
+
+因此当模型多传 `user_id` 时，真实链路上**调用是成功的**，只是 scorer 的 `matchesArguments`（`scorer.ts:237-239`，要求 `readJsonPath(body, field) === undefined`）判该步不匹配。
+
+这是任务一合理的设计选择——它考察提示词是否教会模型不要伪造身份。但报告不得把这类命中描述为"调用失败"或"工具调用错误"，否则与真实链路事实相反。建议在错误分解中单列"身份字段合规违规（调用成功但不合规）"，与真正的调用失败区分。
+
+### 13.4 问题 P-2（中）：Gold 对 `tdai_read_scene` 的 `agent_id` 判定不统一，且不一致只存在于冻结验证集
+
+23 个 `tdai_read_scene` 步中，**4 步禁用 `agent_id`、19 步不禁用**，而契约明确将其列为 optional。4 例全部落在 hidden 分片：
+
+```
+T07-PAIR-M04-P  step-2
+T07-PAIR-M06-P  step-1
+T08-PAIR-M03-P  step-2
+T08-PAIR-M06-P  step-1
+```
+
+即 Dev 的 19 步统一允许，只有 Frozen Holdout 有 4 步更严。实际影响低（无借入 agent，合规模型不会传），但两点值得记录：一是同一工具同一契约下判定不统一；二是不一致恰好落在冻结后不可据其改 Prompt 的分片里，若将来引入借入 agent，这 4 步会直接变成错判。
+
+建议：不修改已冻结数据，在报告的数据说明中记录该不统一，并在 `tdai_read_scene` 的结果解读中标注。
+
+### 13.5 问题 P-3（中）：各 profile 的工具菜单大小不同，需作为"工具选择正确率"的口径说明
+
+冻结产物中 `<tool name="...">` 卡片数：
+
+| Variant | 卡片数 | 相对 V0 |
+|---|---:|---|
+| V0 | 10 | 基线 |
+| V0-C | 12 | +`skill_view_by_id`、+`skill_files_download` |
+| V1a / V1 / V2 | 14 | 再 +`knowledge_tools_list`、+`knowledge_tools_call` |
+| V3 | 13 | 上述 14 项减 `skill_extract`（能力剪枝） |
+
+其中 knowledge 的 +2 **不是覆盖缺口**：V0 的 `<knowledge_tools>` 块内容完整（含 list→call 两步链、完整 curl、`tool_name` 与 `params` 约定、`knowledge_id` 不拼 URL 的警告），5 个顶层块与 V1a 相同，只是未采用 `<tool name=>` 卡片格式。V0-C 的 +2 则对应 C07 记录的"补齐两个 Skill 只读入口"。
+
+但事实仍然成立：模型在不同 profile 下面对的可选工具集合大小不同（10 / 12 / 14 / 13）。`TerminalSelectionRate` 的分母语义因此不完全可比，报告需说明该差异，不能仅以"选择更准"解释 V1a 之后的提升。
+
+### 13.6 问题 P-4（高）：V4-RN 同时改变两件事，结果无法归因
+
+`v4-rn` 修改了 `specs/memory.ts`、`specs/skill.ts`、`specs/knowledge.ts`——**124 行纯新增、0 删除**，只添加 `neutralPurpose`、`neutralWhen`、`neutralContrasts`、`responseHints` 等新字段，原有 `when`/`contrasts` 未动。**隔离是安全的**，V0-V3 输出不受影响（这一点已核实，不是问题）。
+
+问题在于新增内容的性质。V4-RN 给 12 个 skill 工具中的 10 个添加了 `neutralContrasts`，而这些工具在 V0-V3 的 `contrasts` 中**全部为空**：
+
+```
+skill_search          contrasts(V0-V3)=无   neutralContrasts(V4-RN)=有
+skill_view            contrasts(V0-V3)=无   neutralContrasts(V4-RN)=有
+skill_view_by_id      contrasts(V0-V3)=无   neutralContrasts(V4-RN)=有
+skill_files_read      contrasts(V0-V3)=无   neutralContrasts(V4-RN)=有
+skill_files_download  contrasts(V0-V3)=无   neutralContrasts(V4-RN)=有
+（另 5 个写工具同样从无到有；仅 skill_extract 与 skill_delete 未加）
+```
+
+memory 侧同理：`tdai_atomic_query` 与 `tdai_conversation_query` 在 V0-V3 无 contrasts，V4-RN 补上了。
+
+因此 V4-RN 捆绑了两个自变量：
+
+1. 中性对称卡片措辞（它声明的方法本身）；
+2. **为原本没有区分信息的工具补上了 contrast 覆盖**——恰好是 P-1 指出的空缺，且恰好覆盖 4 条 smoke 关键只读路由。
+
+若 V4-RN 的 `TerminalSelectionRate` 上升，实验无法区分是措辞中性化起作用，还是仅仅因为"这些工具第一次有了区分信息"。这违反 §2.1"唯一自变量是 Prompt Variant"在方法内部粒度上的意图。
+
+处理建议（三选一，须在 V4-RN 跑 Dev 前定）：
+
+1. 增加一个 V4-RN 消融档：保留中性措辞，但不注入新增的 `neutralContrasts`，以隔离措辞效应；
+2. 先把缺失的 contrasts 补进一个 V2.1 基线，让 V4-RN 与 contrast 完整的基线比较；
+3. 至少在报告中显式声明该混淆，并说明 V4-RN 的收益上限包含了 contrast 补全的贡献。
+
+方案 1 最干净且成本最低，建议采用。
+
+### 13.7 本章新增条目的处置顺序
+
+第 10 章的顺序仍然有效，以下四项插入其中：
+
+**在 V4-RN 跑 Dev 之前（阻塞项）**
+
+- **P-4**：定 V4-RN 的消融方案。建议采用消融档（保留中性措辞、不注入新增 `neutralContrasts`），成本最低且能干净隔离措辞效应。若不做，V4-RN 的 Dev 结果只能作为"措辞 + contrast 补全"的合并效应报告，不能声称是中性对称卡片的贡献。这条与 P-1 是同一根因的两面，应一并决策。
+
+**报告撰写时（不改代码、不改数据）**
+
+- **M-4**：错误分解单列"身份字段合规违规（调用成功但不合规）"，与真正的调用失败区分。表述上不得把 `forbidden` 命中写成"调用失败"。
+- **P-3**：说明各 profile 工具菜单大小为 10/12/14/13，`TerminalSelectionRate` 的分母语义不完全可比；V1a 之后的提升不能仅以"选择更准"解释。同时说明 knowledge 的 +2 是格式差异而非 V0 覆盖缺口。
+- **P-2**：在数据说明中记录 Gold 对 `tdai_read_scene` 的 `agent_id` 判定不统一（19 允许 / 4 禁用，4 例全在冻结集），并在该工具的结果解读处标注。不修改已冻结数据。
+
+**无需处置（已核实不是问题，记录以免重复怀疑）**
+
+- 契约对 server-team 的路径与参数保真度（13.1）；
+- `agent_id` 在 Gold 中被禁用的合理性（13.2）；
+- v4-rn 对三个 specs 文件的修改是纯新增，V0-V3 输出不受影响（13.6 首段）。
+
+### 13.8 本章的方法与未验证项
+
+本章执行：读取 server-team `29d609a` 的 `memory-bridge.ts`、`skill-bridge.ts`、`MemoryCore/src/gateway/generated/schemas.ts`、`tdai-fixed-asset.ts`；用 tsx 加载真实契约对象与 MemoryCore schema 逐字段比对；解析 800 条 Gold 的 445 个 step 统计参数判定；比对四个方法分支相对各自 merge-base 的 `src/injection/tool-prompt/` 变更。
+
+本章**未**覆盖：
+
+- 四个创新渲染器的实现正文。`tscg-lite.ts`、`typed-action-graph.ts`、`neutral-symmetric.ts`、`three-plane.ts` 均只核了注册面、compiler cascade 扩展完整性与 specs 影响面，未逐行读实现。tscg-lite 另外修改了 `runtime-contract.ts`，该改动对契约保真度的影响**尚未核实**，应在移植前单独审查；
+- MemoryKnowledge 侧的路由与 header 契约（`KNOWLEDGE_HEADERS` 只声明 `content-type` 与 `x-tdai-service-id`，而 V0 正文示例给出 6 个额外 header），未与 MemoryKnowledge 生产代码比对；
+- skill 契约的 requiredArgs/optionalArgs 未与 skill 侧 schema 逐字段比对（本章只比对了 memory 的 6 条）；
+- 未映射的 3 条 skill 子路径（`list`、`versions`、`listing`）是否被 Gold 需要。
