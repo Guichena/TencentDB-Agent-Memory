@@ -355,6 +355,9 @@ describe("R02 PrepareOnly formal runner", () => {
       args: string[];
     };
     const argsText = command.args.join("\n");
+    expect(argsText).toContain('approval_policy="on-request"');
+    expect(argsText).toContain('approvals_reviewer="auto_review"');
+    expect(argsText).not.toContain('approval_policy="never"');
     expect(argsText).toContain("http://127.0.0.1:8787/codex/space-formal/v1");
     expect(argsText).toContain('"session-id"');
     expect(argsText).toContain('"x-team-id"');

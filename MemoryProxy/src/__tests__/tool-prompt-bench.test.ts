@@ -459,8 +459,12 @@ describe("TDAI-ToolPromptBench dataset", () => {
     expect(configArgs).toContain('model_providers.custom.http_headers={ "x-tdai-eval-mode" = "mock-contract" }');
     expect(configArgs).toContain('model_providers.custom.env_http_headers={ "x-tdai-user-key" = "TDAI_EVAL_USER_KEY" }');
     expect(configArgs).toContain('shell_environment_policy.exclude=["TDAI_EVAL_USER_KEY"]');
+    expect(configArgs).toContain('approval_policy="on-request"');
+    expect(configArgs).toContain('approvals_reviewer="auto_review"');
+    expect(configArgs).not.toContain('approval_policy="never"');
     expect(configArgs).toContain("skills.include_instructions=false");
     expect(configArgs).toContain("sandbox_workspace_write.network_access=true");
+    expect(configArgs.join("\n")).not.toMatch(/dangerously-bypass|danger-full-access|yolo/i);
     expect(configArgs.join("\n")).not.toMatch(/api[_-]?key|secret|bearer/i);
   });
 

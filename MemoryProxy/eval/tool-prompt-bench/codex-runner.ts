@@ -328,7 +328,8 @@ export function isolateCodexEnvironment(
 /** Convert the benchmark-only profile into invocation-scoped CLI overrides. */
 export function buildCodexConfigArgs(input: CodexProfileInput): string[] {
   const values = [
-    'approval_policy="never"',
+    'approval_policy="on-request"',
+    'approvals_reviewer="auto_review"',
     `model_reasoning_effort=${JSON.stringify(input.reasoningEffort)}`,
     `model_verbosity=${JSON.stringify(input.verbosity)}`,
     "features.plugins=false",
