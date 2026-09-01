@@ -16,6 +16,11 @@ import type {
   FormalPreparePublicStatus,
   FormalSplit,
 } from "./formal-prepare-runner.js";
+import {
+  isRepoBackedTeam,
+  REPO_BACKED_COUNTS,
+  REPO_BACKED_DATASET_REVISION,
+} from "./formal-runtime/repo-backed-selection.js";
 
 export interface CreateFormalPrepareDataSourceInput {
   readonly freeze: FormalDataFreeze;
@@ -69,7 +74,7 @@ export function createFormalPrepareDataSource(
     async readPublicStatus(): Promise<FormalPreparePublicStatus> {
       const { metadata, manifest, smokeCaseIds } = publicFreeze();
       return Object.freeze({
-        datasetRevision: metadata.datasetContractRevision,
+        datasetRevision: REPO_BACKED_DATASET_REVISION,
         datasetTag: input.freeze.tag,
         datasetTagObject: input.freeze.tagObject,
         datasetCommit: input.freeze.commit,
@@ -77,7 +82,7 @@ export function createFormalPrepareDataSource(
         preregisteredSmokeCaseIds: smokeCaseIds,
         splits: Object.freeze({
           dev: Object.freeze({
-            expectedCaseCount: metadata.counts.dev,
+            expectedCaseCount: REPO_BACKED_COUNTS.dev,
             providerInputSha256: metadata.providerHashes.devCanonicalSha256,
             privateGoldSha256: manifest.measurementV2.gold.devCanonicalSha256,
             privateGoldHashScope: "measurement-v2-split-canonical" as const,
@@ -86,7 +91,7 @@ export function createFormalPrepareDataSource(
             snapshotSha256: metadata.snapshotHashes.devCanonicalSha256,
           }),
           hidden_test: Object.freeze({
-            expectedCaseCount: metadata.counts.hiddenTest,
+            expectedCaseCount: REPO_BACKED_COUNTS.hiddenTest,
             providerInputSha256: metadata.providerHashes.hiddenCanonicalSha256,
             privateGoldSha256: manifest.measurementV2.gold.hiddenCanonicalSha256,
             privateGoldHashScope: "measurement-v2-split-canonical" as const,
@@ -113,11 +118,13 @@ export function createFormalPrepareDataSource(
         allowHiddenTest: options?.allowHiddenTest,
         readText: input.readText,
       });
-      const cases = loaded.cases.map((item) => Object.freeze({
-        split: item.binding.split as FormalSplit,
-        providerRecord: item.provider,
-        binding: item.binding,
-      }));
+      const cases = loaded.cases
+        .filter((item) => isRepoBackedTeam(item.binding.identity.teamId))
+        .map((item) => Object.freeze({
+          split: item.binding.split as FormalSplit,
+          providerRecord: item.provider,
+          binding: item.binding,
+        }));
       return Object.freeze({
         cases: Object.freeze(cases),
         caseBindingsFileSha256: manifest.artifacts.caseBindings.fileSha256,

@@ -57,3 +57,9 @@ export {
   type FormalPublicDatasourceSplit,
   type OpenFormalProviderSplitInput,
 } from "./public-datasource.js";
+export {
+  ARCHIVED_NO_WORKSPACE_TEAMS,
+  isRepoBackedTeam,
+  REPO_BACKED_COUNTS,
+  REPO_BACKED_DATASET_REVISION,
+} from "./repo-backed-selection.js";

@@ -403,7 +403,7 @@ function validatePublicStatus(status: FormalPreparePublicStatus): FormalPrepareP
   requireSha256("contractSha256", status.contractSha256);
   for (const split of ["dev", "hidden_test"] as const) {
     const splitStatus = status.splits[split];
-    const requiredCount = split === "dev" ? 320 : 480;
+    const requiredCount = 320;
     if (splitStatus.expectedCaseCount !== requiredCount) {
       throw new Error(`${split}: public status expectedCaseCount must be ${requiredCount}`);
     }

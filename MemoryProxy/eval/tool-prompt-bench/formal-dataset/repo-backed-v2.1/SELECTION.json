@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "task1.repo-backed-selection.v1",
+  "sourceDataset": "task1-data-formal-v2.1",
+  "activeDataset": "task1-data-formal-v2.1-repo-backed-640",
+  "reason": "T05, T06, T13 and T14 have benchmark.invalid repositories and no restorable local workspace.",
+  "archivedTeams": [
+    "T05",
+    "T06",
+    "T13",
+    "T14"
+  ],
+  "activeTeams": [
+    "T01",
+    "T02",
+    "T03",
+    "T04",
+    "T07",
+    "T08",
+    "T09",
+    "T10",
+    "T11",
+    "T12",
+    "T15",
+    "T16",
+    "T17",
+    "T18",
+    "T19",
+    "T20"
+  ],
+  "counts": {
+    "cases": {
+      "total": 640,
+      "dev": 320,
+      "hiddenTest": 320
+    },
+    "archivedCases": {
+      "total": 160,
+      "dev": 0,
+      "hiddenTest": 160
+    },
+    "pairs": {
+      "total": 240,
+      "dev": 120,
+      "hiddenTest": 120
+    },
+    "archivedPairs": {
+      "total": 60,
+      "dev": 0,
+      "hiddenTest": 60
+    }
+  },
+  "files": {
+    "provider-dev": {
+      "source": 320,
+      "active": 320,
+      "archived": 0
+    },
+    "provider-hidden": {
+      "source": 480,
+      "active": 320,
+      "archived": 160
+    },
+    "gold-dev": {
+      "source": 320,
+      "active": 320,
+      "archived": 0
+    },
+    "gold-hidden": {
+      "source": 480,
+      "active": 320,
+      "archived": 160
+    },
+    "pairs-dev": {
+      "source": 120,
+      "active": 120,
+      "archived": 0
+    },
+    "pairs-hidden": {
+      "source": 180,
+      "active": 120,
+      "archived": 60
+    },
+    "case-bindings": {
+      "source": 800,
+      "active": 640,
+      "archived": 160
+    }
+  }
+}

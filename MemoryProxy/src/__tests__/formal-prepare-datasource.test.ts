@@ -13,7 +13,7 @@ describe("R02 PrepareOnly public datasource adapter", () => {
     const dev = await source.openProviderSplit("dev");
 
     expect(status).toMatchObject({
-      datasetRevision: "formal-v2.1",
+      datasetRevision: "formal-v2.1-repo-backed-640",
       datasetTag: "task1-data-formal-v2.1",
       datasetTagObject: freeze.tagObject,
       datasetCommit: freeze.commit,
@@ -24,8 +24,10 @@ describe("R02 PrepareOnly public datasource adapter", () => {
       privateGoldHashScope: "measurement-v2-split-canonical",
       pairContractHashScope: "measurement-v2-split-canonical",
     });
+    expect(status.splits.hidden_test.expectedCaseCount).toBe(320);
     expect(status.preregisteredSmokeCaseIds).toHaveLength(40);
     expect(dev.cases).toHaveLength(320);
+    expect(new Set(dev.cases.map((item) => item.binding.identity.teamId))).not.toContain("T05");
     expect(dev.caseBindingsFileSha256).toMatch(/^[a-f0-9]{64}$/);
     expect(dev.cases[0]).toMatchObject({
       split: "dev",
@@ -58,5 +60,17 @@ describe("R02 PrepareOnly public datasource adapter", () => {
       "utf8",
     );
     expect(sourceText).not.toMatch(/from ["'].*private-loader/);
+  });
+
+  it("excludes the four archived no-workspace Teams from the active Hidden split", async () => {
+    const freeze = resolveFormalDataFreeze({ repositoryRoot: process.cwd() });
+    const source = createFormalPrepareDataSource({ freeze });
+    const hidden = await source.openProviderSplit("hidden_test", { allowHiddenTest: true });
+    const teams = new Set(hidden.cases.map((item) => item.binding.identity.teamId));
+
+    expect(hidden.cases).toHaveLength(320);
+    expect([...teams].sort()).toEqual([
+      "T07", "T08", "T09", "T10", "T15", "T16", "T19", "T20",
+    ]);
   });
 });

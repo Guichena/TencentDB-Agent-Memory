@@ -70,7 +70,7 @@ function makeCase(index: number, split: "dev" | "hidden_test" = "dev"): FormalPr
 
 function makeStatus(): FormalPreparePublicStatus {
   return {
-    datasetRevision: "formal-v2.1",
+    datasetRevision: "formal-v2.1-repo-backed-640",
     datasetTag: FORMAL_DATA_TAG,
     datasetTagObject: FORMAL_DATA_TAG_OBJECT,
     datasetCommit: FORMAL_DATA_COMMIT,
@@ -90,7 +90,7 @@ function makeStatus(): FormalPreparePublicStatus {
         snapshotSha256: SHA_E,
       },
       hidden_test: {
-        expectedCaseCount: 480,
+        expectedCaseCount: 320,
         providerInputSha256: SHA_D,
         privateGoldSha256: SHA_E,
         privateGoldHashScope: "measurement-v2-split-canonical",
@@ -105,7 +105,7 @@ function makeStatus(): FormalPreparePublicStatus {
 
 function makeSource(audit: string[] = []): FormalPrepareDataSource {
   const dev = Array.from({ length: 320 }, (_, index) => makeCase(index + 1));
-  const hidden = Array.from({ length: 480 }, (_, index) => makeCase(index + 1, "hidden_test"));
+  const hidden = Array.from({ length: 320 }, (_, index) => makeCase(index + 1, "hidden_test"));
   return {
     async readPublicStatus() {
       audit.push("public-status");
@@ -212,7 +212,7 @@ describe("R02 PrepareOnly formal runner", () => {
 
     for (const run of result.runs) {
       expect(run.manifest).toMatchObject({
-        dataset_revision: "formal-v2.1",
+        dataset_revision: "formal-v2.1-repo-backed-640",
         dataset_commit: FORMAL_DATA_COMMIT,
         contract_sha256: SHA_A,
         private_gold_sha256: SHA_D,
@@ -239,7 +239,7 @@ describe("R02 PrepareOnly formal runner", () => {
         finished_at: null,
       });
       expect(run.directory.replaceAll("\\", "/")).toContain(
-        "/formal-v2.1/campaign-r02-c/D-001-P/",
+        "/formal-v2.1-repo-backed-640/campaign-r02-c/D-001-P/",
       );
       expect(run.directory.replaceAll("\\", "/")).toMatch(/\/V0\/1$/);
 
@@ -469,7 +469,7 @@ describe("R02 PrepareOnly formal runner", () => {
       writeArtifacts: false,
     });
     expect(audit).toEqual(["public-status", "open:hidden_test:true"]);
-    expect(allowed.runs).toHaveLength(480);
+    expect(allowed.runs).toHaveLength(320);
     expect(JSON.stringify(allowed)).not.toContain("heldOutAuthorized");
   });
 
