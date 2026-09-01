@@ -111,9 +111,9 @@
     "classificationContract": {
       "contractId": "task1.m2.prompt-unit-classification",
       "contractVersion": "1",
-      "contractSha256": "978d44d211a4c013fde9e2c93a075bf3f587d734b80c3fa79bd626be21df1afe",
+      "contractSha256": "e90f4b4223dc55f7e86cfaba6c8e1744f0e32a5db19cc993c4a16a666b0831a2",
       "compilerVersion": "c05.1",
-      "segmenterVersion": "capture-profile-artifacts.measureBlock-v1",
+      "segmenterVersion": "context-block-prompt-unit-v1",
       "sourceKindToComponent": {
         "legacy-body": "staticTemplate",
         "policy": "staticTemplate",
@@ -124,8 +124,7 @@
       }
     },
     "trustedSourceManifest": {
-      "canonicalSha256": "2e279c9edece75d24653b577c6bc112c5af722bba61bcd4fc88fd787f0c245dc",
-      "sourceInventorySha256": "044e32b4eb9ca5d3e7b27080841bcb8ceb13f473c0e23ca9a5511ea6afaa5235",
+      "canonicalSha256": "a13b4f6119f8850d8dcd62d4febd0a98fd3f7fa29faba42cad583d5a54be9a10",
       "orderedSources": [
         {
           "compilerFamily": "skill",
@@ -186,7 +185,6 @@
     "staticPromptSha256": "Frozen model-visible Variant/static Prompt before fresh runtime bindings.",
     "executionIdentitySha256": "Frozen model, reasoning effort, verbosity, Codex CLI version, provider, usage schema, API/adapter versions, and usage-field contract.",
     "requestUsageLedgerSha256": "M2-owned ordered request/attempt/trace/phase usage evidence plus deterministic cumulative totals.",
-    "snapshotSha256": "Expected and restored MemoryProxy asset snapshot identity.",
     "visibleAssetsSha256": "Exact provider-visible asset-set identity."
   },
   "comparisonPurposes": {
@@ -199,7 +197,7 @@
     "universalEqual": [
       "comparisonGroupSha256",
       "executionIdentity.canonicalSha256",
-      "snapshot.id+expectedSha256+restoredSha256",
+      "snapshot.id",
       "visibleAssetsSha256"
     ],
     "universalDistinct": [

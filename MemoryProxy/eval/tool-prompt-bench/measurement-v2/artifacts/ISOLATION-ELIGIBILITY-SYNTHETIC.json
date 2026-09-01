@@ -41,8 +41,6 @@
     },
     "snapshot": {
       "id": "synthetic-snapshot",
-      "expectedSha256": "4444444444444444444444444444444444444444444444444444444444444444",
-      "restoredSha256": "4444444444444444444444444444444444444444444444444444444444444444",
       "restoreSucceeded": true
     },
     "visibleAssetsSha256": "5555555555555555555555555555555555555555555555555555555555555555",
@@ -103,8 +101,6 @@
     },
     "snapshot": {
       "id": "synthetic-snapshot",
-      "expectedSha256": "4444444444444444444444444444444444444444444444444444444444444444",
-      "restoredSha256": "4444444444444444444444444444444444444444444444444444444444444444",
       "restoreSucceeded": true
     },
     "visibleAssetsSha256": "5555555555555555555555555555555555555555555555555555555555555555",
@@ -172,9 +168,9 @@
       "authFilesRead": false,
       "authFilesCopied": false
     },
-    "requestUsageLedgerCanonicalSha256": "740cce532385734f97c9dfbbca5cfafead1bc1070b2522866997bad8291be592",
-    "usageHorizonCanonicalSha256": "e99815061d2721e04e63244799de47dd3b7da8f0a1b704f7595e4cdaa409cab6",
-    "tokenLedgerCanonicalSha256": "79934293c8bb7a263ff063961f2d1d2859b96e691dd3729dd75ea8d01be029f0",
+    "requestUsageLedgerCanonicalSha256": "d564532de42a007a41ec8a5d1825e73c366f3ad6863c11d52edb444950d11149",
+    "usageHorizonCanonicalSha256": "6bd7cad6b1a502fc271d9d17e52752eb3b22e461ec40615c79b8746871b7ef53",
+    "tokenLedgerCanonicalSha256": "8185df6daabc87149f23d9727a77457d3b426259c8cb0884352fec2502799068",
     "comparisonPurpose": "none",
     "m0EvaluationBoundary": {
       "status": "observed",

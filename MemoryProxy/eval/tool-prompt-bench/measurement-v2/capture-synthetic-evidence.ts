@@ -29,7 +29,6 @@ const SHA = {
   comparisonGroup: "2".repeat(64),
   providerRequest: "3".repeat(64),
   providerRequestB: "7".repeat(64),
-  snapshot: "4".repeat(64),
   visibleAssets: "5".repeat(64),
   staticPrompt: "6".repeat(64),
 } as const;
@@ -38,10 +37,9 @@ function json(value: unknown): string {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
 
-function writeArtifact(name: string, value: unknown): { file: string; sha256: string } {
+function writeArtifact(name: string, value: unknown): void {
   const content = json(value);
   writeFileSync(resolve(ARTIFACT_DIR, name), content, "utf8");
-  return { file: name, sha256: sha256(content) };
 }
 
 const providerFixtureInputs: Array<{ fixtureId: string; input: NormalizeProviderUsageInput }> = [
@@ -288,19 +286,18 @@ async function captureMetadataCase(input: {
 
 async function main(): Promise<void> {
   mkdirSync(ARTIFACT_DIR, { recursive: true });
-  const artifacts: Array<{ file: string; sha256: string }> = [];
   const providerFixtures = providerFixtureInputs.map((fixture) => ({
     fixtureId: fixture.fixtureId,
     provenance: "synthetic",
     input: fixture.input,
     result: normalizeProviderUsage(fixture.input),
   }));
-  artifacts.push(writeArtifact("PROVIDER-USAGE-SYNTHETIC.json", {
+  writeArtifact("PROVIDER-USAGE-SYNTHETIC.json", {
     schemaVersion: 2,
     measurementModuleId: "M2",
     formalDataState: "blocked",
     fixtures: providerFixtures,
-  }));
+  });
 
   const encoding = get_encoding("o200k_base");
   const sourceSegment = (
@@ -420,10 +417,10 @@ async function main(): Promise<void> {
     },
   });
   encoding.free();
-  artifacts.push(writeArtifact("TOKEN-LEDGER-SYNTHETIC.json", {
+  writeArtifact("TOKEN-LEDGER-SYNTHETIC.json", {
     formalDataState: "blocked",
     ledger: tokenLedger,
-  }));
+  });
 
   const usage = providerFixtures[1].result;
   const requestUsageLedger = buildRequestUsageLedger({
@@ -479,14 +476,14 @@ async function main(): Promise<void> {
     requestUsageLedger.ledger,
     m0EvaluationBoundary,
   );
-  artifacts.push(writeArtifact("REQUEST-USAGE-LEDGER-SYNTHETIC.json", {
+  writeArtifact("REQUEST-USAGE-LEDGER-SYNTHETIC.json", {
     schemaVersion: 2,
     measurementModuleId: "M2",
     formalDataState: "blocked",
     requestUsageLedger,
     m0EvaluationBoundary,
     usageHorizon,
-  }));
+  });
   const runIsolation = buildRunIsolationEvidence({
     runId: tokenLedger.runId,
     runNamespace: "task1/synthetic-m2-evidence",
@@ -572,13 +569,13 @@ async function main(): Promise<void> {
     },
     m0EvaluationBoundary,
   });
-  artifacts.push(writeArtifact("ISOLATION-ELIGIBILITY-SYNTHETIC.json", {
+  writeArtifact("ISOLATION-ELIGIBILITY-SYNTHETIC.json", {
     formalDataState: "blocked",
     runIsolation,
     repeatedRunIsolation,
     repeatIsolation,
     eligibility,
-  }));
+  });
 
   const originalSystem = [
     "Claude Code",
@@ -669,9 +666,9 @@ async function main(): Promise<void> {
       }),
     ],
   };
-  artifacts.push(writeArtifact("METADATA-PARITY.json", metadataParity));
+  writeArtifact("METADATA-PARITY.json", metadataParity);
 
-  artifacts.push(writeArtifact("INTERFACE-MANIFEST.json", {
+  writeArtifact("INTERFACE-MANIFEST.json", {
     schemaVersion: 2,
     measurementModuleId: "M2",
     formalDataState: "blocked",
@@ -726,7 +723,6 @@ async function main(): Promise<void> {
       staticPromptSha256: "Frozen model-visible Variant/static Prompt before fresh runtime bindings.",
       executionIdentitySha256: "Frozen model, reasoning effort, verbosity, Codex CLI version, provider, usage schema, API/adapter versions, and usage-field contract.",
       requestUsageLedgerSha256: "M2-owned ordered request/attempt/trace/phase usage evidence plus deterministic cumulative totals.",
-      snapshotSha256: "Expected and restored MemoryProxy asset snapshot identity.",
       visibleAssetsSha256: "Exact provider-visible asset-set identity.",
     },
     comparisonPurposes: {
@@ -739,7 +735,7 @@ async function main(): Promise<void> {
       universalEqual: [
         "comparisonGroupSha256",
         "executionIdentity.canonicalSha256",
-        "snapshot.id+expectedSha256+restoredSha256",
+        "snapshot.id",
         "visibleAssetsSha256",
       ],
       universalDistinct: [
@@ -801,9 +797,9 @@ async function main(): Promise<void> {
       usageTotalsOwnedByM0: false,
     },
     metadataParityScope: metadataParity.supportedScope,
-  }));
+  });
 
-  artifacts.push(writeArtifact("NO-MODEL-GATE.json", {
+  writeArtifact("NO-MODEL-GATE.json", {
     schemaVersion: 2,
     measurementModuleId: "M2",
     status: "FORMAL_DATA_BLOCKED",
@@ -826,12 +822,6 @@ async function main(): Promise<void> {
         && item.forwardableProviderRequestProduced,
     ).length,
     repeatIsolationStatus: repeatIsolation.pairStatus,
-  }));
-
-  writeArtifact("ARTIFACT-SHA256.json", {
-    schemaVersion: 2,
-    measurementModuleId: "M2",
-    artifacts,
   });
 }
 

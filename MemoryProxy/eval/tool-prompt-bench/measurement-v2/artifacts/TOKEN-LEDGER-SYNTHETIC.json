@@ -12,19 +12,13 @@
     "classification": {
       "contractId": "task1.m2.prompt-unit-classification",
       "contractVersion": "1",
-      "contractSha256": "978d44d211a4c013fde9e2c93a075bf3f587d734b80c3fa79bd626be21df1afe",
+      "contractSha256": "e90f4b4223dc55f7e86cfaba6c8e1744f0e32a5db19cc993c4a16a666b0831a2",
       "compilerVersion": "c05.1",
-      "segmenterVersion": "capture-profile-artifacts.measureBlock-v1",
-      "trustedSourceManifestSha256": "2e279c9edece75d24653b577c6bc112c5af722bba61bcd4fc88fd787f0c245dc",
-      "captureManifestSha256": "72e0c73de689babd4f621111a302acd81eed783e11908674ef0550c946ab5114",
-      "sourceInventorySha256": "044e32b4eb9ca5d3e7b27080841bcb8ceb13f473c0e23ca9a5511ea6afaa5235",
-      "orderedSourceManifestSha256": "0cca277e6281a5bb8b8887e484b084dc91595878bc2a8b6bffdbefc5b53c79c5",
-      "sourceRootSha256": "60b79dc3089678d8fe7c2b5b3f1ade5bf0a8b8ad8dabfd98c9b77cebbbcccde5",
+      "segmenterVersion": "context-block-prompt-unit-v1",
+      "trustedSourceManifestSha256": "a13b4f6119f8850d8dcd62d4febd0a98fd3f7fa29faba42cad583d5a54be9a10",
       "expectedSourceAttestation": {
         "authority": "synthetic-self-built",
-        "sourceInventorySha256": "044e32b4eb9ca5d3e7b27080841bcb8ceb13f473c0e23ca9a5511ea6afaa5235",
-        "orderedSourceManifestSha256": "0cca277e6281a5bb8b8887e484b084dc91595878bc2a8b6bffdbefc5b53c79c5",
-        "sourceRootSha256": "60b79dc3089678d8fe7c2b5b3f1ade5bf0a8b8ad8dabfd98c9b77cebbbcccde5"
+        "sourceManifestSha256": "a13b4f6119f8850d8dcd62d4febd0a98fd3f7fa29faba42cad583d5a54be9a10"
       },
       "orderedSources": [
         {
@@ -119,6 +113,6 @@
         "sha256": "c8fc770f54a62cc4883bcd607ea53ea27750a6ab3fe4032072437b5929fe8c27"
       }
     },
-    "canonicalSha256": "79934293c8bb7a263ff063961f2d1d2859b96e691dd3729dd75ea8d01be029f0"
+    "canonicalSha256": "8185df6daabc87149f23d9727a77457d3b426259c8cb0884352fec2502799068"
   }
 }
