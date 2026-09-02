@@ -8,10 +8,18 @@ import {
   type CodexReasoningEffort,
   type CodexVerbosity,
 } from "./codex-runner.js";
+import {
+  CODEX_HISTORY_TRANSPORT_HEADER,
+  USER_PLANE_HISTORY_ENVELOPE_TYPE,
+  USER_PLANE_HISTORY_TRANSPORT_V1,
+  buildCodexNativeHistoryMessages,
+  parseUserPlaneHistoryEnvelope,
+} from "../../src/common/codex-history-transport.js";
+
+export { USER_PLANE_HISTORY_TRANSPORT_V1 } from "../../src/common/codex-history-transport.js";
 
 export const REAL_CHAIN_RUN_MODE = "memory-proxy-real-chain" as const;
 export const REAL_CHAIN_TDAI_USER_KEY_ENV = "TDAI_EVAL_USER_KEY" as const;
-export const USER_PLANE_HISTORY_TRANSPORT_V1 = "user-plane-envelope-v1" as const;
 
 export interface RealChainIdentity {
   spaceId: string;
@@ -42,15 +50,15 @@ export interface RealChainUserPromptTransport {
 }
 
 /**
- * Codex 0.149.1 cannot preload arbitrary native messages into `exec`. Until a
- * supported native transport exists, history is carried in one deterministic
- * user-plane JSON envelope. It is never placed in developer/system content.
+ * Codex 0.149.1 cannot preload arbitrary native messages into `exec`. The CLI
+ * therefore carries one deterministic envelope to MemoryProxy, which expands
+ * it into native Responses API history before production injection/forwarding.
  */
 export const userPlaneHistoryEnvelopeV1: RealChainUserPromptTransport = {
   id: USER_PLANE_HISTORY_TRANSPORT_V1,
   serialize(input): string {
     return JSON.stringify({
-      type: "task1_user_history_envelope",
+      type: USER_PLANE_HISTORY_ENVELOPE_TYPE,
       version: 1,
       history: input.history.map((message, index) => ({
         ...(validateHistoryMessage(message, index)),
@@ -303,6 +311,7 @@ export function buildRealChainIdentityHeaders(identityInput: RealChainIdentity):
     "x-team-id": identity.teamId,
     "x-agent-id": identity.agentId,
     ...(identity.taskId ? { "x-task-id": identity.taskId } : {}),
+    [CODEX_HISTORY_TRANSPORT_HEADER]: USER_PLANE_HISTORY_TRANSPORT_V1,
   };
 }
 
@@ -333,15 +342,46 @@ export function auditCapturedRealChainRequest(
   if (runnerOwnedTdaiText) {
     throw new Error("captured real-chain request contains TDAI prompt text outside the production wrapper");
   }
-  const userPrompts = input.flatMap((item) => {
-    if (!item || typeof item !== "object" || (item as Record<string, unknown>).role !== "user") return [];
-    return extractMessageTexts(item);
-  });
-  if (userPrompts.length !== 1) {
-    throw new Error(`captured real-chain request must contain exactly one user-plane prompt; got ${userPrompts.length}`);
+  if (expectedUserPrompt === undefined) {
+    throw new Error("captured real-chain audit requires the frozen user-plane prompt");
   }
-  if (expectedUserPrompt !== undefined && userPrompts[0] !== expectedUserPrompt) {
-    throw new Error("captured real-chain user-plane prompt changed before the provider boundary");
+  let expectedEnvelope: unknown = null;
+  try {
+    expectedEnvelope = JSON.parse(expectedUserPrompt);
+  } catch {
+    // Non-envelope prompts remain supported for legacy evidence fixtures and
+    // non-formal callers. Formal Task 1 inputs always use the typed envelope.
+  }
+  const isHistoryEnvelope = expectedEnvelope
+    && typeof expectedEnvelope === "object"
+    && !Array.isArray(expectedEnvelope)
+    && (expectedEnvelope as Record<string, unknown>).type === USER_PLANE_HISTORY_ENVELOPE_TYPE;
+  if (isHistoryEnvelope) {
+    const expectedMessages = buildCodexNativeHistoryMessages(
+      parseUserPlaneHistoryEnvelope(expectedEnvelope),
+    );
+    const observedMessages = input.flatMap((item) => {
+      if (!item || Array.isArray(item) || typeof item !== "object") return [];
+      const record = item as Record<string, unknown>;
+      if (record.role !== "user" && record.role !== "assistant") return [];
+      const texts = extractMessageTexts(item);
+      return texts.length === 1 ? [{ role: record.role, text: texts[0] }] : [];
+    });
+    const expectedConversation = expectedMessages.map((message) => ({
+      role: message.role,
+      text: message.content[0]!.text,
+    }));
+    if (JSON.stringify(observedMessages.slice(0, expectedConversation.length)) !== JSON.stringify(expectedConversation)) {
+      throw new Error("captured real-chain native history does not match the frozen user-plane prompt");
+    }
+  } else {
+    const userPrompts = input.flatMap((item) => {
+      if (!item || typeof item !== "object" || (item as Record<string, unknown>).role !== "user") return [];
+      return extractMessageTexts(item);
+    });
+    if (userPrompts.length !== 1 || userPrompts[0] !== expectedUserPrompt) {
+      throw new Error("captured real-chain user-plane prompt changed before the provider boundary");
+    }
   }
   const injection = injections[0];
   const toolFamilies: CapturedRealChainAudit["toolFamilies"] = [];
@@ -358,7 +398,7 @@ export function auditCapturedRealChainRequest(
     hasSessionContext: injection.includes("<session_context>"),
     toolFamilies,
     userPromptCount: 1,
-    userPromptSha256: sha256(userPrompts[0]),
+    userPromptSha256: sha256(expectedUserPrompt),
   };
 }
 

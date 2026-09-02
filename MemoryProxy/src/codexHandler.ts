@@ -68,6 +68,10 @@ import {
   extractCompletedResponseUsage,
   type ProviderRequestObserver,
 } from "./provider-request-trace-sink.js";
+import {
+  CODEX_HISTORY_TRANSPORT_HEADER,
+  expandCodexHistoryTransport,
+} from "./common/codex-history-transport.js";
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
@@ -78,6 +82,7 @@ const SKIP_REQUEST_HEADERS = new Set([
   "connection",
   "x-tdai-user-key",
   "x-tdai-eval-mode",
+  CODEX_HISTORY_TRANSPORT_HEADER,
 ]);
 
 const SKIP_RESPONSE_HEADERS = new Set([
@@ -411,6 +416,12 @@ export async function handleCodexEndpoint(
     pipe.info("CODEX_AUX", `auxiliary request → passthrough (path=${path})`);
     // aux 不上报 langfuse（跟 CC/CB 对齐——sidequery/fork 类 aux 不算真对话轮）
     return forwardToUpstream(c, config, body, traceId, startTime, keyId, modelId, pipe, null, null, dependencies.providerRequestObserver);
+  }
+
+  try {
+    body = expandCodexHistoryTransport(body, headers[CODEX_HISTORY_TRANSPORT_HEADER]);
+  } catch (error) {
+    return c.json({ error: error instanceof Error ? error.message : String(error) }, 400);
   }
 
   // ── 6. Session ID extraction ───────────────────────────────────────────────

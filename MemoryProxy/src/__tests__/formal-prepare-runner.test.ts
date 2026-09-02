@@ -644,7 +644,9 @@ describe("R04 Gold-blind formal execution runner", () => {
     expect(effectiveArgs).toContain(
       'model_providers.custom.http_headers={ "session-id" = '
         + `${JSON.stringify(run.manifest.session_id)}, "x-agent-id" = "runtime-agent-42", `
-        + '"x-task-id" = "runtime-task-42", "x-team-id" = "runtime-team-42" }',
+        + '"x-task-id" = "runtime-task-42", '
+        + '"x-tdai-history-transport" = "user-plane-envelope-v1", '
+        + '"x-team-id" = "runtime-team-42" }',
     );
     expect(effectiveArgs).not.toContain(
       'model_providers.custom.base_url="http://127.0.0.1:8787/codex/space-formal/v1"',

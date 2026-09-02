@@ -15,6 +15,10 @@ import {
   replayRealChainEntry,
 } from "../../eval/tool-prompt-bench/real-chain-trace.js";
 import { parseCodexJsonlEvents } from "../../eval/tool-prompt-bench/codex-runner.js";
+import {
+  USER_PLANE_HISTORY_TRANSPORT_V1,
+  expandCodexHistoryTransport,
+} from "../common/codex-history-transport.js";
 import { initAuth } from "../auth.js";
 import type { ObservedBridgeEntry } from "../bridge-entry-observer.js";
 import { handleCodexEndpoint } from "../codexHandler.js";
@@ -387,6 +391,7 @@ describe("Task 1 R01 real-chain Adapter", () => {
       "x-team-id": "team-alpha",
       "x-agent-id": "agent-general",
       "x-task-id": "task-prompt-eval",
+      "x-tdai-history-transport": "user-plane-envelope-v1",
     });
     const expectedUserPrompt = "{\"type\":\"task1_user_history_envelope\",\"version\":1,"
       + "\"history\":[{\"role\":\"user\",\"content\":\"The release failed on the \\\"cache\\\" gate.\\nRetry it.\"},"
@@ -553,6 +558,23 @@ describe("Task 1 R01 real-chain Adapter", () => {
     })).toThrow(/taskId is required/);
   });
 
+  it("requires explicit, well-formed opt-in before expanding Codex history", () => {
+    const ordinaryBody = {
+      input: [{
+        type: "message",
+        role: "user",
+        content: [{ type: "input_text", text: "ordinary JSON: {\"history\":[]}" }],
+      }],
+    };
+    expect(expandCodexHistoryTransport(ordinaryBody, undefined)).toBe(ordinaryBody);
+    expect(() => expandCodexHistoryTransport(
+      ordinaryBody,
+      USER_PLANE_HISTORY_TRANSPORT_V1,
+    )).toThrow(/exactly one history envelope/);
+    expect(() => expandCodexHistoryTransport(ordinaryBody, "unknown-v9"))
+      .toThrow(/unsupported Codex history transport/);
+  });
+
   it("checks runner-owned prompt text only on the developer plane", () => {
     const userPrompt = userPlaneHistoryEnvelopeV1.serialize({
       history: [{ role: "user", content: "The user literally mentioned <skill_tools>." }],
@@ -568,7 +590,12 @@ describe("Task 1 R01 real-chain Adapter", () => {
         {
           type: "message",
           role: "user",
-          content: [{ type: "input_text", text: userPrompt }],
+          content: [{ type: "input_text", text: "The user literally mentioned <skill_tools>." }],
+        },
+        {
+          type: "message",
+          role: "user",
+          content: [{ type: "input_text", text: "Explain the text without invoking anything." }],
         },
       ],
     };
@@ -1234,6 +1261,7 @@ describe("Task 1 R01 real-chain Adapter", () => {
     expect(providerRequest.headers.authorization).toBe("Bearer provider-probe-token");
     expect(providerRequest.headers["x-tdai-user-key"]).toBeUndefined();
     expect(providerRequest.headers["x-tdai-eval-mode"]).toBeUndefined();
+    expect(providerRequest.headers["x-tdai-history-transport"]).toBeUndefined();
     expect(providerRequest.headers).toMatchObject({
       "session-id": input.identity.sessionId,
       "x-team-id": input.identity.teamId,
@@ -1261,8 +1289,26 @@ describe("Task 1 R01 real-chain Adapter", () => {
     });
     const providerInput = providerRequest.body.input as Array<{
       role?: string;
-      content?: Array<{ text?: string }>;
+      content?: Array<{ type?: string; text?: string }>;
     }>;
+    expect(providerInput
+      .filter((message) => message.role === "user" || message.role === "assistant")
+      .map((message) => ({ role: message.role, content: message.content })))
+      .toEqual([
+        {
+          role: "user",
+          content: [{ type: "input_text", text: input.history[0]!.content }],
+        },
+        {
+          role: "assistant",
+          content: [{ type: "input_text", text: input.history[1]!.content }],
+        },
+        {
+          role: "user",
+          content: [{ type: "input_text", text: input.finalQuery }],
+        },
+      ]);
+    expect(JSON.stringify(providerRequest.body)).not.toContain("task1_user_history_envelope");
     const productionWrapper = providerInput
       .flatMap((message) => message.content ?? [])
       .map((part) => part.text ?? "")
